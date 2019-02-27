@@ -21,6 +21,7 @@ export const DeveloperSplitComponent = {
                 .then(response => this.acbs = response.acbs);
             this.productsToMoveToNew = [];
             this.productsToMoveToOld = [];
+            this.attestations = {};
             this.splitDeveloper = {
                 newProducts: [],
                 newDeveloper: {},
@@ -43,7 +44,6 @@ export const DeveloperSplitComponent = {
                 }
             }
             this.productsToMoveToNew = [];
-            this.$log.info(this.splitDeveloper);
         }
 
         moveToOld () {
@@ -56,7 +56,14 @@ export const DeveloperSplitComponent = {
                 }
             }
             this.versionsToMoveToOld = [];
-            this.$log.info(this.splitDeveloper);
+        }
+
+        attestationChange() {
+            var mappedAttestations = [];
+            angular.forEach(this.attestations, function (value, key) {
+                mappedAttestations.push({acbName: key, attestation: value});
+            });
+            this.splitDeveloper.newDeveloper.transparencyAttestations = mappedAttestations;
         }
 
         save () {
