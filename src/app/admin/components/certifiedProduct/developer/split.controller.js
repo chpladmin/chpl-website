@@ -83,7 +83,7 @@ export const DeveloperSplitComponent = {
                             splitProduct: that.splitDeveloper,
                         });
                     } else {
-                        that.errorMessages = response.data.error;
+                        that.errorMessages = response.data.errorMessages;
                     }
                 },function (error) {
                     that.errorMessages = error.data.errorMessages;
