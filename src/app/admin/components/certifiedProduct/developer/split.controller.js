@@ -55,15 +55,16 @@ export const DeveloperSplitComponent = {
                     }
                 }
             }
-            this.versionsToMoveToOld = [];
+            this.productsToMoveToOld = [];
         }
 
-        attestationChange() {
+        attestationChange () {
             let that = this;
             var mappedAttestations = [];
+            this.$log.info(this.attestations);
             angular.forEach(this.attestations, function (value, key) {
                 let acb = that.acbs.find(function (acb) {
-                    return acb.id == key;
+                    return acb.id === parseInt(key, 10);
                 });
                 if (acb) {
                     mappedAttestations.push({acbId: acb.id, acbName: acb.name, attestation: value});
@@ -80,7 +81,7 @@ export const DeveloperSplitComponent = {
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         that.close({
-                            splitDeveloper: that.splitDeveloper,
+                            $value: that.splitDeveloper,
                         });
                     } else {
                         if (response.data.errorMessages) {
