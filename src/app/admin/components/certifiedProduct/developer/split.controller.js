@@ -95,7 +95,7 @@ export const DeveloperSplitComponent = {
                         that.errorMessages = error.data.errorMessages;
                     } else if (error.data.error) {
                         that.errorMessages = [];
-                        that.errorMessages.push(error.data,error);
+                        that.errorMessages.push(error.data.error);
                     }
                 });
         }
