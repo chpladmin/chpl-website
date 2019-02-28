@@ -80,7 +80,7 @@ export const DeveloperSplitComponent = {
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         that.close({
-                            splitProduct: that.splitDeveloper,
+                            splitDeveloper: that.splitDeveloper,
                         });
                     } else {
                         if (response.data.errorMessages) {
