@@ -309,8 +309,8 @@ export class NetworkService {
         return this.apiGET('/data/practice_types');
     }
 
-    getProduct (productId) {
-        return this.apiGET('/certified_products/' + productId + '/details');
+    getProduct (productId, forceReload) {
+        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
     }
 
     getProductActivity (activityRange) {
@@ -585,18 +585,32 @@ export class NetworkService {
             .then(response => response, response => this.$q.reject(response));
     }
 
-    apiGET (endpoint) {
-        return this.$http.get(this.API + endpoint)
-            .then(response => {
-                if (angular.isObject(response.data)) {
-                    if (response.data.error === 'Invalid authentication token.') {
-                        this.$rootScope.$broadcast('badAuthorization');
+    apiGET (endpoint, forceReload) {
+        if (forceReload) {
+            return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
+                .then(response => {
+                    if (angular.isObject(response.data)) {
+                        if (response.data.error === 'Invalid authentication token.') {
+                            this.$rootScope.$broadcast('badAuthorization');
+                        }
+                        return response.data;
+                    } else {
+                        return this.$q.reject(response.data);
                     }
-                    return response.data;
-                } else {
-                    return this.$q.reject(response.data);
-                }
-            }, response => this.$q.reject(response.data));
+                }, response => this.$q.reject(response.data));
+        } else {
+            return this.$http.get(this.API + endpoint)
+                .then(response => {
+                    if (angular.isObject(response.data)) {
+                        if (response.data.error === 'Invalid authentication token.') {
+                            this.$rootScope.$broadcast('badAuthorization');
+                        }
+                        return response.data;
+                    } else {
+                        return this.$q.reject(response.data);
+                    }
+                }, response => this.$q.reject(response.data));
+        }
     }
 
     apiPOST (endpoint, postObject) {

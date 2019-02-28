@@ -826,6 +826,14 @@
             $httpBackend.flush();
         });
 
+        it('should getProduct and force refresh', function () {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
+            networkService.getProduct('payload', true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getProductActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/products$/).respond(200, {data: 'response'});
