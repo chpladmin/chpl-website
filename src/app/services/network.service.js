@@ -1,9 +1,10 @@
 export class NetworkService {
-    constructor ($http, $log, $q, API) {
+    constructor ($http, $log, $q, $rootScope, API) {
         'ngInject';
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.API = API;
         this.store = {
             activity: {
@@ -627,6 +628,9 @@ export class NetworkService {
         return this.$http.get(this.API + endpoint)
             .then(response => {
                 if (angular.isObject(response.data)) {
+                    if (response.data.error === 'Invalid authentication token.') {
+                        this.$rootScope.$broadcast('badAuthorization');
+                    }
                     return response.data;
                 } else {
                     return this.$q.reject(response.data);
