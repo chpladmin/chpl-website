@@ -10,15 +10,6 @@ export class NetworkService {
             activity: {
                 types: { },
             },
-            certifiedProducts: {
-                data: undefined,
-                lastUpdated: -1,
-                details: { },
-            },
-            searchOptions: {
-                data: undefined,
-                lastUpdated: -1,
-            },
         };
     }
 
@@ -45,7 +36,6 @@ export class NetworkService {
     }
 
     confirmPendingSurveillance (surveillance) {
-        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance/pending/confirm', surveillance);
     }
 
@@ -90,7 +80,6 @@ export class NetworkService {
     }
 
     deleteSurveillance (surveillanceId, reason) {
-        this.store.certifiedProducts.details = {};
         return this.apiDELETE('/surveillance/' + surveillanceId, {
             reason: reason,
         });
@@ -122,12 +111,7 @@ export class NetworkService {
     }
 
     getAll () {
-        const EXPIRATION_TIME = 5; // in minutes
-        if (!this.store.certifiedProducts.data || (Date.now() - this.store.certifiedProducts.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            this.store.certifiedProducts.data = this.apiGET('/collections/certified_products');
-            this.store.certifiedProducts.lastUpdated = Date.now();
-        }
-        return this.store.certifiedProducts.data;
+        return this.apiGET('/collections/certified_products');
     }
 
     getAnnouncement (announcementId) {
@@ -326,14 +310,7 @@ export class NetworkService {
     }
 
     getProduct (productId) {
-        const EXPIRATION_TIME = 15; // in minutes
-        if (!this.store.certifiedProducts.details[productId] || !this.store.certifiedProducts.details[productId].data || (Date.now() - this.store.certifiedProducts.details[productId].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            this.store.certifiedProducts.details[productId] = {
-                data: this.apiGET('/certified_products/' + productId + '/details'),
-                lastUpdated: Date.now(),
-            };
-        }
-        return this.store.certifiedProducts.details[productId].data;
+        return this.apiGET('/certified_products/' + productId + '/details');
     }
 
     getProductActivity (activityRange) {
@@ -358,15 +335,7 @@ export class NetworkService {
     }
 
     getSearchOptions () {
-        const EXPIRATION_TIME = 5; // in minutes
-        if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            return this.apiGET('/data/search_options').then(data => {
-                this.store.searchOptions.data = data;
-                this.store.searchOptions.lastUpdated = Date.now();
-                return data;
-            })
-        }
-        return this.$q.when(this.store.searchOptions.data);
+        return this.apiGET('/data/search_options');
     }
 
     getSedParticipantStatisticsCount () {
@@ -490,7 +459,6 @@ export class NetworkService {
     }
 
     initiateSurveillance (surveillance) {
-        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance', surveillance);
     }
 
@@ -575,12 +543,6 @@ export class NetworkService {
     }
 
     updateCP (cpObject) {
-        if (this.store.certifiedProducts.details[cpObject.listing.id]) {
-            this.store.certifiedProducts.details[cpObject.listing.id] = {
-                data: undefined,
-                lastUpdated: -1,
-            };
-        }
         return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
     }
 
@@ -605,7 +567,6 @@ export class NetworkService {
     }
 
     updateSurveillance (surveillance) {
-        this.store.certifiedProducts.details = {};
         return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
     }
 
