@@ -82,6 +82,7 @@
             vm.surveillanceUploadErrors = [];
             vm.surveillanceUploadSuccess = true;
             vm.resources = {};
+            vm.forceRefresh = false;
             vm.refreshDevelopers();
             vm.refreshPending();
 
@@ -499,10 +500,11 @@
                 vm.activeCP.certifyingBody = {};
                 vm.activeCP.practiceType = {};
                 vm.activeCP.classificationType = {};
-                networkService.getProduct(vm.cpSelect)
+                networkService.getProduct(vm.cpSelect, vm.forceRefresh)
                     .then(function (cp) {
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
+                        vm.forceRefresh = false;
                     })
             }
         }
@@ -538,6 +540,7 @@
                 getResources();
                 vm.productId = result.id;
                 vm.refreshDevelopers();
+                vm.forceRefresh = true;
                 vm.loadCp();
             }, function (result) {
                 if (result !== 'cancelled') {
@@ -725,7 +728,7 @@
         }
 
         function loadCp () {
-            networkService.getProduct(vm.productId)
+            networkService.getProduct(vm.productId, vm.forceRefresh)
                 .then(function (result) {
                     for (var i = 0; i < vm.developers.length; i++) {
                         if (result.developer.developerId === vm.developers[i].developerId) {
@@ -768,7 +771,7 @@
         }
 
         function loadSurveillance () {
-            networkService.getProduct(vm.productId)
+            networkService.getProduct(vm.productId, vm.forceRefresh)
                 .then(function (result) {
                     vm.surveillanceProduct = result;
                 });
