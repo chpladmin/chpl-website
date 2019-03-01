@@ -139,7 +139,7 @@
                 };
                 ctrl.save();
                 scope.$digest();
-                expect(scope.close).toHaveBeenCalledWith(ctrl.splitDeveloper);
+                expect(scope.close).toHaveBeenCalled();
             });
 
             it('should report errors if response has errors', () => {
