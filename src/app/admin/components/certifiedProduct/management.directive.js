@@ -794,7 +794,7 @@
                 $log.info(result);
                 $log.info('ProductId');
                 $log.info(vm.productId);
-
+                vm.forceRefresh = true;
                 refreshDevelopers();
                 if (!isEditingListing()) {
                     vm.developerSelect = '';
@@ -825,10 +825,15 @@
                 },
             });
             vm.splitProductInstance.result.then(function (result) {
-                vm.activeProduct = result.product;
-                vm.activeVersion = '';
-                vm.products.push(result.newProduct);
-                vm.versions = result.versions;
+                if (isEditingListing()) {
+                    vm.forceRefresh = true;
+                    refreshDevelopers()
+                } else {
+                    vm.activeProduct = result.product;
+                    vm.activeVersion = '';
+                    vm.products.push(result.newProduct);
+                    vm.versions = result.versions;
+                }
             }, function (result) {
                 if (result !== 'cancelled') {
                     vm.productMessage = result;
@@ -944,7 +949,7 @@
                 });
         }
 
-        function isEditingListing() {
+        function isEditingListing () {
             if (vm.productId) {
                 return true;
             } else {
