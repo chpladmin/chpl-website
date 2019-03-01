@@ -790,10 +790,6 @@
                 },
             });
             vm.splitDeveloperModalInstance.result.then(result => {
-                $log.info('Successfully Saved!');
-                $log.info(result);
-                $log.info('ProductId');
-                $log.info(vm.productId);
                 vm.forceRefresh = true;
                 refreshDevelopers();
                 if (!isEditingListing()) {
