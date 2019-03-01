@@ -81,7 +81,7 @@ export const DeveloperSplitComponent = {
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         that.close({
-                            $value: that.splitDeveloper,
+                            $value: response,
                         });
                     } else {
                         if (response.data.errorMessages) {

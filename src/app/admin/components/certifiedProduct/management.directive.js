@@ -206,9 +206,9 @@
                     vm.developers = developers.developers;
                     prepCodes();
 
-                    if (vm.productId && vm.workType === 'manage') {
+                    if (isEditingListing() && vm.workType === 'manage') {
                         vm.loadCp();
-                    } else if (vm.productId && vm.workType === 'manageSurveillance') {
+                    } else if (isEditingListing() && vm.workType === 'manageSurveillance') {
                         vm.loadSurveillance();
                     }
                 });
@@ -789,19 +789,24 @@
             vm.splitDeveloperModalInstance.result.then(result => {
                 $log.info('Successfully Saved!');
                 $log.info(result);
+                $log.info('ProductId');
+                $log.info(vm.productId);
+
                 refreshDevelopers();
-                vm.developerSelect = '';
-                vm.activeDeveloper = '';
-                vm.activeProduct = '';
-                vm.activeVersion = '';
-                vm.activeCP = '';
+                if (!isEditingListing()) {
+                    vm.developerSelect = '';
+                    vm.activeDeveloper = '';
+                    vm.activeProduct = '';
+                    vm.activeVersion = '';
+                    vm.activeCP = '';
+                }
             }, result => {
                 if (result !== 'cancelled') {
                     $log.info('dismissed', result);
                 }
             });
         }
-        
+
         function splitProduct () {
             vm.splitProductInstance = $uibModal.open({
                 templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
@@ -934,6 +939,14 @@
                     vm.resources.targetedUsers = response;
                     vm.resourcesReady.targetedUsers = true;
                 });
+        }
+
+        function isEditingListing() {
+            if (vm.productId) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function prepCodes () {
