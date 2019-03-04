@@ -4,6 +4,7 @@ export const CertificationCriteriaComponent = {
         accessibilityStandards: '<',
         cert: '<',
         hasIcs: '<',
+        isConfirming: '<',
         isEditing: '<',
         onChange: '&',
         qmsStandards: '<',
@@ -33,6 +34,7 @@ export const CertificationCriteriaComponent = {
             const cert = this.cert;
             const hasIcs = this.hasIcs;
             const resources = this.resources;
+            const isConfirming = this.isConfirming;
             this.editUibModalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.components/listing_details/criteriaModal.html',
                 controller: 'EditCertificationCriteriaController',
@@ -44,6 +46,7 @@ export const CertificationCriteriaComponent = {
                 resolve: {
                     cert: () => cert,
                     hasIcs: () => hasIcs,
+                    isConfirming: () => isConfirming,
                     resources: () => resources,
                 },
             });

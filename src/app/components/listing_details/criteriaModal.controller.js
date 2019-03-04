@@ -5,19 +5,20 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, resources, utilService) {
+    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, isConfirming, hasIcs, resources, utilService) {
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;
         vm.cancel = cancel;
         vm.extendSelect = utilService.extendSelect;
         vm.isTestToolRetired = isTestToolRetired;
-        vm.isToolAvailable = isToolAvailable;
+        vm.isToolDisabled = isToolDisabled;
         vm.save = save;
         vm.testDataOnChange = testDataOnChange;
         vm.testFunctionalityOnChange = testFunctionalityOnChange;
         vm.testProceduresOnChange = testProceduresOnChange;
         vm.testToolsOnChange = testToolsOnChange;
+        vm.testToolValidation = testToolValidation;
         vm.testStandardOnChange = testStandardOnChange;
 
         activate();
@@ -37,6 +38,7 @@
             ];
             vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0;
             vm.hasIcs = hasIcs;
+            vm.isConfirming = isConfirming;
             vm.resources = resources;
 
             vm.selectedTestDataKeys = _getSelectedTestDataKeys();
@@ -45,6 +47,8 @@
             vm.selectedTestStandardKeys = _getSelectedTestStandardKeys();
             vm.selectedTestToolKeys = _getSelectedTestToolKeys();
             vm.sortedTestFunctionalities = _getSortedTestFunctionalities();
+
+            _setTestToolDropDownText();
         }
 
         function cancel () {
@@ -52,13 +56,18 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
+        function isToolDisabled (tool) {
+            if (vm.isConfirming) {
+                return isTestToolRetired(tool);
+            } else {
+                return false;
+            }
+        }
+
         function isTestToolRetired (testTool) {
             return testTool.retired;
         }
 
-        function isToolAvailable (tool) {
-            return vm.hasIcs || !tool.retired;
-        }
 
         function save () {
             $uibModalInstance.close();
@@ -133,6 +142,25 @@
             }
         }
 
+        function testToolValidation (item) {
+            var validation = {};
+            validation.valid = true;
+            validation.errors = [];
+            validation.warnings = [];
+            if (vm.isConfirming) {
+                if (item.retired && !vm.hasIcs) {
+                    validation.valid = false;
+                    validation.errors.push(item.name + ' is retired.  Retired test tools are only valid if the Certified Product does not carry ICS.');
+                }
+            } else {
+                if (item.retired) {
+                    validation.valid = false;
+                    validation.warnings.push(item.name + ' is retired. Please ensure is appropriate to use it.');
+                }
+            }
+            return validation;
+        }
+
         ////////////////////////////////////////////////////////////////////
 
         function _getSortedTestFunctionalities () {
@@ -190,6 +218,15 @@
                 ttKeys.push({'key': tt.testToolId, 'additionalInputValue': tt.testToolVersion});
             });
             return ttKeys;
+        }
+
+        function _setTestToolDropDownText () {
+            angular.forEach(vm.resources.testTools.data, function (tt) {
+                tt.dropDownText = tt.name;
+                if (tt.retired) {
+                    tt.dropDownText += ' (Retired)';
+                }
+            });
         }
 
         function _testDataEditItem (testData) {
