@@ -155,7 +155,7 @@
             } else {
                 if (item.retired) {
                     validation.valid = false;
-                    validation.warnings.push(item.name + ' is retired. Please ensure is appropriate to use it.');
+                    validation.warnings.push(item.name + ' is retired. Please ensure it is appropriate to use it.');
                 }
             }
             return validation;
