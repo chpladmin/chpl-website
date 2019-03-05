@@ -28,7 +28,7 @@ export const SurveillanceEditComponent = {
                 this.authorities.push('ROLE_ACB');
             }
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-                this.authorities.push('ROLE_ADMIN');
+                this.authorities.push('ROLE_ONC');
             }
             if (this.surveillance.startDate) {
                 this.surveillance.startDateObject = new Date(this.surveillance.startDate);
@@ -169,7 +169,7 @@ export const SurveillanceEditComponent = {
             } else if (this.workType === 'initiate') {
                 if (!this.surveillance.authority){
                     if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])){
-                        this.surveillance.authority = 'ROLE_ADMIN';
+                        this.surveillance.authority = 'ROLE_ONC';
                     }
                     else if (this.hasAnyRole(['ROLE_ACB'])){
                         this.surveillance.authority = 'ROLE_ACB';
