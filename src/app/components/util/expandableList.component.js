@@ -40,7 +40,7 @@
         ctrl.removeItem = removeItem;
         ctrl.selectOnChange = selectOnChange;
 
-/////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////
 
         ctrl.$onInit = function () {
             ctrl.addItem = ''
@@ -196,7 +196,7 @@
         function _validateItems (selectedItems) {
             ctrl.warnings = [];
             ctrl.errors = [];
-            if (ctrl.$attrs.onValidate)  {
+            if (ctrl.$attrs.onValidate) {
                 angular.forEach(selectedItems, function (item) {
                     let validation = ctrl.onValidate({'item': item.item});  //This is what makes the method binding work
                     if (!validation.valid) {

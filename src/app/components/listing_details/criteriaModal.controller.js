@@ -5,7 +5,7 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, isConfirming, hasIcs, resources, utilService) {
+    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, isConfirming, resources, utilService) {
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;
@@ -67,7 +67,6 @@
         function isTestToolRetired (testTool) {
             return testTool.retired;
         }
-
 
         function save () {
             $uibModalInstance.close();
