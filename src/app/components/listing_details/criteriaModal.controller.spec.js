@@ -38,6 +38,7 @@
                     ],
                     resources: mock.resources,
                     hasIcs: false,
+                    isConfirming: false,
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -72,14 +73,18 @@
 
         describe('when concerned with retired tools', function () {
             it('should have a way of knowing if a tool is unselectable', function () {
-                expect(vm.isToolAvailable).toBeDefined();
+                expect(vm.isToolDisabled).toBeDefined();
             });
 
             it('should know when a tool is available', function () {
-                expect(vm.isToolAvailable(mock.resources.testTools.data[0])).toBe(true);
-                expect(vm.isToolAvailable(mock.resources.testTools.data[1])).toBe(false);
+                //When isConfirming = false (user is editing listing), all test tool are available
+                expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
+                expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(false);
+
                 vm.hasIcs = true;
-                expect(vm.isToolAvailable(mock.resources.testTools.data[1])).toBe(true);
+                vm.isConfirming = true;
+                expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
+                expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(true);
             });
         });
 
@@ -111,6 +116,7 @@
                     cert: certMet,
                     resources: mock.resources,
                     hasIcs: false,
+                    isConfirming: false,
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
