@@ -40,7 +40,7 @@
         ctrl.removeItem = removeItem;
         ctrl.selectOnChange = selectOnChange;
 
-        /////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////
 
         ctrl.$onInit = function () {
             ctrl.addItem = ''

@@ -149,7 +149,7 @@
             if (vm.isConfirming) {
                 if (item.retired && !vm.hasIcs) {
                     validation.valid = false;
-                    validation.errors.push(item.name + ' is retired.  Retired test tools are only valid if the Certified Product does not carry ICS.');
+                    validation.errors.push(item.name + ' is retired.  Retired test tools are only valid if the Certified Product carries ICS.');
                 }
             } else {
                 if (item.retired) {
