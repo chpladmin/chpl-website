@@ -62,7 +62,7 @@
                 vm.token = $stateParams.token;
             }
 
-            $scope.$on('Keepalive', function () {
+            var keepalive = $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
                 if (vm.hasAnyRole()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
@@ -77,8 +77,14 @@
                     Idle.unwatch();
                 }
             });
+            $scope.$on('$destroy', keepalive);
 
-            $scope.$on('IdleTimeout', function () {
+            var badAuthorization = $scope.$on('badAuthorization', function () {
+                vm.activity = vm.activityEnum.LOGIN;
+            })
+            $scope.$on('$destroy', badAuthorization);
+
+            var idle = $scope.$on('IdleTimeout', function () {
                 $log.info('IdleTimeout - being logged out.');
                 logout();
                 setTimeout(function () {
@@ -86,6 +92,7 @@
                     $scope.$apply();
                 });
             });
+            $scope.$on('$destroy', idle);
         }
 
         function changePassword () {
