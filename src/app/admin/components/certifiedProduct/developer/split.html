@@ -83,9 +83,9 @@
                   <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrCountry.$touched && $ctrl.splitForm.developerAddrCountry.$error.required">Country is required</div>
                 </div>
                 <div class="form-group">
-                  <label for="developer-addr-website">Website</label>
-                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.website" id="developer-addr-website" name="developerAddrWebsite" ></input>
-                  <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrWebsite.$touched && $ctrl.splitForm.developerAddrWebsite.$error.required">Website is required</div>
+                  <label for="developer-website">Website</label>
+                  <input class="input-sm form-control" type="url" ng-model="$ctrl.splitDeveloper.newDeveloper.website" id="developer-website" name="developerWebsite" placeholder="http://www.example.com"></input>
+                  <div class="text-danger" ng-if="$ctrl.splitForm.developerWebsite.$touched && $ctrl.splitForm.developerWebsite.$error.url">Website is invalid</div>
                 </div>
               </div>
             </div>
@@ -104,7 +104,7 @@
               <div class="panel-body">
                 <div class="form-group" ng-repeat="acb in $ctrl.acbs | orderBy:'toString()'">
                   <label for="developer-transparency-{{acb.acbCode}}">{{ acb.name }} Transparency Attestation</label>
-                  <select class="input-sm form-control" ng-model="$ctrl.splitDeveloper.newDeveloper.transMap[acb.acbCode]" id="developer-transparency-{{acb.acbCode}}" name="developerTransparency{{acb.acbCode}}">
+                  <select class="input-sm form-control" ng-model="$ctrl.attestations[acb.id]" id="developer-transparency-{{acb.acbCode}}" name="developerTransparency{{acb.acbCode}}" ng-change="$ctrl.attestationChange()">
                     <option value="Negative">Negative</option>
                     <option value="Affirmative">Affirmative</option>
                     <option value="N/A">N/A</option>
@@ -123,7 +123,7 @@
           <select ng-model="$ctrl.productsToMoveToNew" multiple data-ng-attr-size="{{ $ctrl.products.length }}"
                     id="old-products" name="oldProducts" class="input-sm form-control"
                     ng-dblclick="$ctrl.moveToNew()" ng-keyup="$event.keyCode === 13 && $ctrl.moveToNew()"
-                    ng-options="p as p.name for p in $ctrl.splitDeveloper.oldProducts | orderBy: 'product'">
+                    ng-options="p as p.name for p in $ctrl.splitDeveloper.oldProducts | orderBy: 'name'">
           </select>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitForm.oldProducts.$touched) && $ctrl.splitDeveloper.oldProductss.length === 0">At least one Product must remain</div>
         </div>
@@ -138,7 +138,7 @@
           <select ng-model="$ctrl.productsToMoveToOld" multiple data-ng-attr-size="{{ $ctrl.products.length }}"
                     id="new-products" name="newProducts" class="input-sm form-control"
                     ng-dblclick="$ctrl.moveToOld()" ng-keyup="$event.keyCode === 13 && $ctrl.moveToOld()"
-                    ng-options="p as p.name for p in $ctrl.splitDeveloper.newProducts | orderBy: 'product'">
+                    ng-options="p as p.name for p in $ctrl.splitDeveloper.newProducts | orderBy: 'name'">
           </select>
           <div class="text-danger" ng-if="($ctrl.splitForm.newProducts.$touched) && $ctrl.splitDeveloper.newProducts.length === 0">At least one Product must transfer</div>
         </div>
@@ -146,7 +146,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</div>
+    <div class="text-danger text-left" ng-if="$ctrl.errorMessages.length > 0">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-repeat="error in $ctrl.errorMessages">{{ error }}</li>
+      </ul>
+    </div>
     <button ng-disabled="$ctrl.splitForm.$invalid && $ctrl.showFormErrors"
             ng-mouseover="$ctrl.showFormErrors = true"
             class="btn btn-ai-success btn-block" ng-click="$ctrl.save()">Save Developers</button>

@@ -21,6 +21,7 @@ export const DeveloperSplitComponent = {
                 .then(response => this.acbs = response.acbs);
             this.productsToMoveToNew = [];
             this.productsToMoveToOld = [];
+            this.attestations = {};
             this.splitDeveloper = {
                 newProducts: [],
                 newDeveloper: {},
@@ -43,7 +44,6 @@ export const DeveloperSplitComponent = {
                 }
             }
             this.productsToMoveToNew = [];
-            this.$log.info(this.splitDeveloper);
         }
 
         moveToOld () {
@@ -55,8 +55,21 @@ export const DeveloperSplitComponent = {
                     }
                 }
             }
-            this.versionsToMoveToOld = [];
-            this.$log.info(this.splitDeveloper);
+            this.productsToMoveToOld = [];
+        }
+
+        attestationChange () {
+            let that = this;
+            var mappedAttestations = [];
+            angular.forEach(this.attestations, function (value, key) {
+                let acb = that.acbs.find(function (acb) {
+                    return acb.id === parseInt(key, 10);
+                });
+                if (acb) {
+                    mappedAttestations.push({acbId: acb.id, acbName: acb.name, attestation: value});
+                }
+            });
+            this.splitDeveloper.newDeveloper.transparencyAttestations = mappedAttestations;
         }
 
         save () {
@@ -66,15 +79,23 @@ export const DeveloperSplitComponent = {
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         that.close({
-                            //product: response.oldProduct,
-                            //versions: vm.splitProduct.oldVersions,
-                            //newProduct: response.newProduct,
+                            $value: response,
                         });
                     } else {
-                        that.errorMessage = response.data.error;
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages = [];
+                            that.errorMessages.push(response.data.error);
+                        }
                     }
                 },function (error) {
-                    that.errorMessage = error.data.errorMessages[0];
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages = [];
+                        that.errorMessages.push(error.data.error);
+                    }
                 });
         }
     },
