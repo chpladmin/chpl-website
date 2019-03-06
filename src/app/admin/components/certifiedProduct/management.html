@@ -372,9 +372,7 @@
         </div>
         <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
           <label for="developer-merge-select" class="control-label admin-label-spaced">Select developers to merge</label>
-          <div class="pull-right" ng-if="vm.mergingDevelopers && vm.mergingDevelopers.length !== 0">
-            <button class="btn-small btn-link" ng-click="vm.mergingDevelopers=[];">Clear Selection(s)</button>
-          </div>
+          <button id="clear-selection-developers" class="btn btn-small btn-link pull-right" ng-click="vm.mergingDevelopers=[];" ng-if="vm.mergingDevelopers && vm.mergingDevelopers.length !== 0">Clear Selection(s)<span class="sr-only">Developers</span></button>
           <select ng-model="vm.mergingDevelopers" multiple="true"
                   id="developer-merge-select" class="input-sm form-control"
                   size="12" ng-options="v.name disable when !vm.isDeveloperMergeable(v) for v in vm.developers | orderBy: 'name'">
@@ -494,9 +492,7 @@
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'product' && vm.products.length > 1">
           <label for="product-merge-select" class="control-label admin-label-spaced">Select products to merge</label>
-          <div class="pull-right" ng-if="vm.mergingProducts && vm.mergingProducts.length !== 0">
-            <button class="btn-small btn-link" ng-click="vm.mergingProducts=[];">Clear Selection(s)</button>
-          </div>
+          <button id="clear-selection-products" class="btn btn-small btn-link pull-right" ng-click="vm.mergingProducts=[];" ng-if="vm.mergingProducts && vm.mergingProducts.length !== 0">Clear Selection(s)<span class="sr-only">Products</span></button>
           <select ng-model="vm.mergingProducts" multiple="true"
                   id="product-merge-select" class="input-sm form-control"
                   size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
@@ -567,9 +563,7 @@
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
           <label for="version-merge-select" class="control-label admin-label-spaced">Select versions to merge</label>
-          <div class="pull-right" ng-if="vm.mergingVersions && vm.mergingVersions.length !== 0">
-            <button class="btn-small btn-link" ng-click="vm.mergingVersions=[];">Clear Selection(s)</button>
-          </div>
+          <button id="clear-selection-versions" class="btn btn-small btn-link pull-right" ng-click="vm.mergingVersions=[];" ng-if="vm.mergingVersions && vm.mergingVersions.length !== 0">Clear Selection(s)<span class="sr-only">Versions</span></button>
           <select ng-model="vm.mergingVersions" multiple="true"
                   id="version-merge-select" class="input-sm form-control"
                   size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">

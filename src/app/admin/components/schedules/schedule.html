@@ -35,9 +35,7 @@
     <div class="form-group row" ng-if="vm.trigger.job.jobDataMap.acbSpecific">
       <label class="col-md-4" for="acb">ONC-ACB</label>
       <div class="col-md-8">
-        <div class="pull-right" ng-if="vm.selectedAcb.length !== 0">
-          <button class="btn-small btn-link" ng-click="vm.selectedAcb=[];">Clear Selection(s)</button>
-        </div>
+        <button id="clear-selection-acbs" class="btn btn-small btn-link pull-right" ng-click="vm.selectedAcb=[];" ng-if="vm.selectedAcb.length !== 0">Clear Selection(s)<span class="sr-only">ACBs</span></button>
         <select multiple required data-ng-attr-size="{{ vm.acbs.length }}" class="form-control"
                 id="acb" name="acb" ng-model="vm.selectedAcb"
                 ng-options="acb as acb.name for acb in vm.acbs | orderBy: 'name' track by acb.name">
