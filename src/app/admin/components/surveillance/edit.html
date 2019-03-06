@@ -17,7 +17,7 @@
       <div class="col-sm-3"><strong>Surveillance ID:</strong></div>
       <div class="col-sm-9">{{ $ctrl.surveillance.friendlyId }}</div>
     </div>
-    <div class="row" ng-if="$ctrl.workType !== 'initiate'">
+    <div class="row" ng-if="$ctrl.workType !== 'initiate' || $ctrl.surveillance.authority">
       <div class="col-sm-3"><strong>Surveillance initiated by:</strong></div>
       <div class="col-sm-9">
         <span>{{ $ctrl.surveillance.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}</span>
