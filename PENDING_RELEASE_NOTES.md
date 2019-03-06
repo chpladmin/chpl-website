@@ -8,5 +8,6 @@ _Date TBD_
 
 ### Bug fixes
 * Show user as logged out when JWT has expired
+* Use correct ROLE on surveillance initiation
 
 ---
