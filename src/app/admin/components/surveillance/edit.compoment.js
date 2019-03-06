@@ -30,6 +30,9 @@ export const SurveillanceEditComponent = {
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                 this.authorities.push('ROLE_ONC');
             }
+            if (this.workType === 'initiate' && this.authorities.length === 1) {
+                this.surveillance.authority = this.authorities[0];
+            }
             if (this.surveillance.startDate) {
                 this.surveillance.startDateObject = new Date(this.surveillance.startDate);
             }
@@ -167,14 +170,6 @@ export const SurveillanceEditComponent = {
             if (this.workType === 'confirm') {
                 this.close({$value: this.surveillance});
             } else if (this.workType === 'initiate') {
-                if (!this.surveillance.authority){
-                    if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])){
-                        this.surveillance.authority = 'ROLE_ONC';
-                    }
-                    else if (this.hasAnyRole(['ROLE_ACB'])){
-                        this.surveillance.authority = 'ROLE_ACB';
-                    }
-                }
                 this.surveillance.certifiedProduct.edition = this.surveillance.certifiedProduct.certificationEdition.name;
                 this.networkService.initiateSurveillance(this.surveillance)
                     .then(response => {
