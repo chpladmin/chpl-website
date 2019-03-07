@@ -94,6 +94,14 @@
                 template: require('./compare/compare.html'),
                 data: { title: 'CHPL Product Comparison' },
             })
+            .state('listing', {
+                url: '/listing/{id}/{initialPanel}',
+                params: {
+                    initialPanel: {squash: true, value: null},
+                },
+                component: 'chplListing',
+                data: { title: 'CHPL Product Details' },
+            })
             .state('product', {
                 url: '/product/{id}/{initialPanel}',
                 params: {

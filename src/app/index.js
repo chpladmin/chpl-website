@@ -48,6 +48,7 @@ import /* collectionsModule from*/ './collections/index';
 import /* compareModule from*/ './compare/index';
 import /* componentsModule from*/ './components/index';
 import /* downloadModule from*/ './resources/download/index';
+import chplListing from './listing/index';
 import /* navigationModule from*/ './navigation/index';
 import /* overviewModule from*/ './resources/overview/index';
 import /* productModule from*/ './product/index';
@@ -71,6 +72,7 @@ const dependencies = [
     'chpl.components',
     'chpl.constants',
     'chpl.download',
+    chplListing.name,
     'chpl.navigation',
     'chpl.overview',
     'chpl.product',

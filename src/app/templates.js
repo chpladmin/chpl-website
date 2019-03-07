@@ -7,6 +7,7 @@ ctxs.push({module: 'chpl.components', ctx: require.context('./components/', true
 ctxs.push({module: 'chpl.cms_lookup', ctx: require.context('./resources/cms_lookup/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.collections', ctx: require.context('./collections/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.download', ctx: require.context('./resources/download/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.listing', ctx: require.context('./listing/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.navigation', ctx: require.context('./navigation/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.overview', ctx: require.context('./resources/overview/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.product', ctx: require.context('./product/', true, /.*\.html$/)});
