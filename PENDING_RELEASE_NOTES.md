@@ -8,6 +8,7 @@ _Date TBD_
 * Add validation capability to ai-expandable-list control
 * Validate retired test tools based on workflow and ICS
 * Allow splitting of a developer with multiple products
+* Allow ROLE_ADMIN to confirm listing
 
 ### Bug fixes
 * Show user as logged out when JWT has expired
