@@ -12,8 +12,9 @@ export const DeveloperComponent = {
         showProducts: '<',
     },
     controller: class DeveloperComponent {
-        constructor () {
+        constructor ($log) {
             'ngInject'
+            this.$log = $log;
             this.isEditing = false;
             this.isSplitting = false;
         }
@@ -40,7 +41,7 @@ export const DeveloperComponent = {
             if (changes.showProducts) {
                 this.showProducts = angular.copy(changes.showProducts.currentValue);
             }
-            this.canSplit = this.canSplit && this.products.length > 1;
+            this.canSplit = this.canSplit && this.products && this.products.length > 1;
         }
 
         cancel () {
@@ -52,6 +53,11 @@ export const DeveloperComponent = {
         edit () {
             this.backup = angular.copy(this.developer);
             this.isEditing = true;
+        }
+
+        editAddress (address) {
+            this.$log.info('edited address', address);
+            this.developer.address = angular.copy(address);
         }
 
         save () {

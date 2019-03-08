@@ -1,0 +1,34 @@
+<span>
+  <span ng-if="!$ctrl.isEditing">
+    <address>
+      Line 1: {{ $ctrl.address.line1 }}<br />
+      Line 2: {{ $ctrl.address.line2 }}<br />
+      City: {{ $ctrl.address.city }}<br />
+      State: {{ $ctrl.address.state }}<br />
+      Zip: {{ $ctrl.address.zipcode }}<br />
+      Country: {{ $ctrl.address.country }}<br />
+    </address>
+  </span>
+  <span ng-if="$ctrl.isEditing">
+    <address>
+      <label class="control-label">Line 1
+        <input type="text" class="form-control" ng-model=" $ctrl.address.line1" ng-change="$ctrl.onChange({address: $ctrl.address})">
+      </label>
+      <label class="control-label">Line 2
+        <input type="text" class="form-control" ng-model=" $ctrl.address.line2" ng-change="$ctrl.onChange({address: $ctrl.address})">
+      </label>
+      <label class="control-label">City
+        <input type="text" class="form-control" ng-model=" $ctrl.address.city" ng-change="$ctrl.onChange({address: $ctrl.address})">
+      </label>
+      <label class="control-label">State
+        <input type="text" class="form-control" ng-model=" $ctrl.address.state" ng-change="$ctrl.onChange({address: $ctrl.address})">
+      </label>
+      <label class="control-label">Zip
+        <input type="text" class="form-control" ng-model=" $ctrl.address.zipcode" ng-change="$ctrl.onChange({address: $ctrl.address})">
+      </label>
+      <label class="control-label">Country
+        <input type="text" class="form-control" ng-model=" $ctrl.address.country" ng-change="$ctrl.onChange({address: $ctrl.address})">
+      </label>
+    </address>
+  </span>
+</span>

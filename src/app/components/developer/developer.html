@@ -14,40 +14,8 @@
   <label ng-if="$ctrl.isEditing" class="control-label">Website
     <input type="text" class="form-control" ng-model="$ctrl.developer.website">
   </label>
-  <span ng-if="$ctrl.developer.address && !$ctrl.isEditing">
-    <h3>Address</h3>
-    <address>
-      Line 1: {{ $ctrl.developer.address.line1 }}<br />
-      Line 2: {{ $ctrl.developer.address.line2 }}<br />
-      City: {{ $ctrl.developer.address.city }}<br />
-      State: {{ $ctrl.developer.address.state }}<br />
-      Zip: {{ $ctrl.developer.address.zipcode }}<br />
-      Country: {{ $ctrl.developer.address.country }}<br />
-    </address>
-  </span>
-  <span ng-if="$ctrl.isEditing">
-    <h3>Address</h3>
-    <address>
-      <label class="control-label">Line 1
-        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.line1">
-      </label>
-      <label class="control-label">Line 2
-        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.line2">
-      </label>
-      <label class="control-label">City
-        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.city">
-      </label>
-      <label class="control-label">State
-        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.state">
-      </label>
-      <label class="control-label">Zip
-        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.zipcode">
-      </label>
-      <label class="control-label">Country
-        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.country">
-      </label>
-    </address>
-  </span>
+  <h3>Address</h3>
+  <chpl-address address="$ctrl.developer.address" can-edit="$ctrl.canEdit" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address)"></chpl-address>
   <span ng-if="$ctrl.productContact">
     <h3>Contact information</h3>
     <ai-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing"></ai-contact>
