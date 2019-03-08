@@ -37,6 +37,14 @@ export const ListingComponent = {
             this.loadProduct();
         }
 
+        editDeveloper (developer) {
+            this.$log.info('editing developer', developer);
+        }
+
+        splitDeveloper (oldDeveloper, newDeveloper) {
+            this.$log.info('spliting developer [old/new]', oldDeveloper, newDeveloper);
+        }
+
         loadProduct () {
             let that = this;
             this.networkService.getProduct(this.productId)

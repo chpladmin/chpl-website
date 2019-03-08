@@ -32,29 +32,16 @@
       <div class="row">
         <div class="col-sm-4" id="product-information-basic">
           <div class="product-element" id="product-information-developer">
-            <h2 class="product-heading">Developer</h2>
-            <p>{{ $ctrl.product.developer.name }}</p>
-            <p ng-if="$ctrl.product && $ctrl.product.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.product.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.product.developer.status.status }}</p>
-            <p ng-if="$ctrl.product.developer.website"><a ai-a href="{{ $ctrl.product.developer.website }}">{{ $ctrl.product.developer.website }}</a></p>
-            <span ng-if="$ctrl.product.developer.address">
-              <h3>Address</h3>
-              <address>
-                Line 1: {{ $ctrl.product.developer.address.line1 }}<br />
-                Line 2: {{ $ctrl.product.developer.address.line2 }}<br />
-                City: {{ $ctrl.product.developer.address.city }}<br />
-                State: {{ $ctrl.product.developer.address.state }}<br />
-                Zip: {{ $ctrl.product.developer.address.zipcode }}<br />
-                Country: {{ $ctrl.product.developer.address.country }}<br />
-              </address>
-            </span>
-            <span ng-if="$ctrl.product.product.contact">
-              <h3>Contact information</h3>
-              <ai-contact contact="$ctrl.product.product.contact"></ai-contact>
-            </span>
-            <span ng-if="!$ctrl.product.product.contact && $ctrl.product.developer.contact">
-              <h3>Contact information</h3>
-              <ai-contact contact="$ctrl.product.developer.contact"></ai-contact>
-            </span>
+            <chpl-developer developer="$ctrl.product.developer"
+                            can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                            can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
+                            can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                            on-edit="$ctrl.editDeveloper(developer)"
+                            on-split="$ctrl.splitDeveloper(oldDeveloper, newDeveloper)"
+                            product-contact="$ctrl.product.product.contact"
+                            ></chpl-developer>
+          </div>
+          <div class="product-element" id="product-information-product-history">
             <span ng-if="$ctrl.product.product.ownerHistory && $ctrl.product.product.ownerHistory.length > 0">
               <h3>Previous Developer<span ng-if="$ctrl.product.product.ownerHistory.length > 1">s</span></h3>
               <ul>

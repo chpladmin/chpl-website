@@ -1,0 +1,63 @@
+<div id="chpl-developer">
+  <span class="pull-right">
+    <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing && !$ctrl.isSplitting" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
+    <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isEditing && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
+    <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge && !$ctrl.isEditing && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
+  </span>
+  <h2>Developer</h2>
+  <p ng-if="!$ctrl.isEditing">{{ $ctrl.developer.name }}</p>
+  <label ng-if="$ctrl.isEditing" class="control-label">Developer name
+    <input type="text" class="form-control" required ng-model="$ctrl.developer.name">
+  </label>
+  <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
+  <p ng-if="$ctrl.developer.website && !$ctrl.isEditing"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
+  <label ng-if="$ctrl.isEditing" class="control-label">Website
+    <input type="text" class="form-control" ng-model="$ctrl.developer.website">
+  </label>
+  <span ng-if="$ctrl.developer.address && !$ctrl.isEditing">
+    <h3>Address</h3>
+    <address>
+      Line 1: {{ $ctrl.developer.address.line1 }}<br />
+      Line 2: {{ $ctrl.developer.address.line2 }}<br />
+      City: {{ $ctrl.developer.address.city }}<br />
+      State: {{ $ctrl.developer.address.state }}<br />
+      Zip: {{ $ctrl.developer.address.zipcode }}<br />
+      Country: {{ $ctrl.developer.address.country }}<br />
+    </address>
+  </span>
+  <span ng-if="$ctrl.isEditing">
+    <h3>Address</h3>
+    <address>
+      <label class="control-label">Line 1
+        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.line1">
+      </label>
+      <label class="control-label">Line 2
+        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.line2">
+      </label>
+      <label class="control-label">City
+        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.city">
+      </label>
+      <label class="control-label">State
+        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.state">
+      </label>
+      <label class="control-label">Zip
+        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.zipcode">
+      </label>
+      <label class="control-label">Country
+        <input type="text" class="form-control" ng-model=" $ctrl.developer.address.country">
+      </label>
+    </address>
+  </span>
+  <span ng-if="$ctrl.productContact">
+    <h3>Contact information</h3>
+    <ai-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing"></ai-contact>
+  </span>
+  <span ng-if="!$ctrl.productContact && $ctrl.developer.contact">
+    <h3>Contact information</h3>
+    <ai-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing"></ai-contact>
+  </span>
+  <div ng-if="$ctrl.canEdit || $ctrl.canSplit">
+    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+  </div>
+</div>
