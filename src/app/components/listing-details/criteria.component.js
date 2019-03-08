@@ -36,7 +36,7 @@ export const CertificationCriteriaComponent = {
             const resources = this.resources;
             const isConfirming = this.isConfirming;
             this.editUibModalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.components/listing_details/criteriaModal.html',
+                templateUrl: 'chpl.components/listing-details/criteria-modal.html',
                 controller: 'EditCertificationCriteriaController',
                 controllerAs: 'vm',
                 animation: false,
