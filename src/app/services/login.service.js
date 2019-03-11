@@ -5,7 +5,7 @@
         .factory('authService', authService);
 
     /** @ngInclude */
-    function authService ($localStorage, $log, $window, API_KEY) {
+    function authService ($localStorage, $log, $rootScope, $window, API_KEY) {
         var service = {
             canImpersonate: canImpersonate,
             getApiKey: getApiKey,

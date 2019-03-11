@@ -258,20 +258,22 @@
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith(response);
             });
 
-            it('should dismiss the modal if bad status', function () {
-                var response = {status: 400}
+            it('should not dismiss the modal if bad status', function () {
+                var response = {status: 400, data: {errorMessages: ['An error occurred']}};
                 networkService.updateDeveloper.and.returnValue($q.when(response));
+                vm.errorMessages = [];
                 vm.save();
                 scope.$digest();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
-            it('should dismiss the modal if bad response', function () {
-                var response = {data: {error: 'An error occurred'}};
+            it('should not dismiss the modal if bad response', function () {
+                var response = {status: 400, data: {errorMessages: ['An error occurred']}};
                 networkService.updateDeveloper.and.returnValue($q.reject(response));
+                vm.errorMessages = [];
                 vm.save();
                 scope.$digest();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
         });
     });

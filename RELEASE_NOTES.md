@@ -1,5 +1,32 @@
 # Release Notes
 
+## Version 10.14.0
+_11 March 2019_
+
+### New features
+* Removed old UI based caching
+* Force "no-cache" GET of details after Listing update
+* Add validation capability to ai-expandable-list control
+* Validate retired test tools based on workflow and ICS
+* Allow splitting of a developer with multiple products
+
+### Bug fixes
+* Show user as logged out when JWT has expired
+
+---
+
+## Version 10.13.0
+_25 February 2019_
+
+### New features
+* Update the language on the Overview page.
+* Tweak CMS download workflow to reduce unnecessary network calls
+
+### Bug fixes
+* Remove unusable "file documentation upload" section from surveillance inspect workflow
+
+---
+
 ## Version 10.12.0
 _11 February 2019_
 

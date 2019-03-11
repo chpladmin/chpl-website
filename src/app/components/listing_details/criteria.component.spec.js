@@ -26,8 +26,9 @@
                 scope.cert = mock.cert;
                 scope.refreshSed = jasmine.createSpy('refreshSed');
                 scope.resources = {};
+                scope.isConfirming = false;
 
-                el = angular.element('<ai-certification-criteria cert="cert" refresh-sed="refreshSed()" resources="resources"></ai-certification-criteria>');
+                el = angular.element('<ai-certification-criteria cert="cert" refresh-sed="refreshSed()" resources="resources" is-confirming="isConfirming"></ai-certification-criteria>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -195,6 +196,7 @@
                         resolve: {
                             cert: jasmine.any(Function),
                             hasIcs: jasmine.any(Function),
+                            isConfirming: jasmine.any(Function),
                             resources: jasmine.any(Function),
                         },
                     };
