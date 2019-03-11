@@ -8,30 +8,30 @@
   </span>
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactFull">Full Name <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="contactFull">Full Name <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.contact.fullName" id="contactFull" name="contactFull" ng-maxlength="500" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactFriendly">Friendly Name</label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="contactFriendly">Friendly Name</label>
+      <div>
         <input class="input-sm form-control" type="text" ng-model="$ctrl.contact.friendlyName" id="contactFriendly" name="contactFriendly" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFriendly.$touched) && $ctrl.form.contactFriendly.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactTitle">Title</label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="contactTitle">Title</label>
+      <div>
         <input class="input-sm form-control" type="text" ng-model="$ctrl.contact.title" id="contactTitle" name="contactTitle" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactTitle.$touched) && $ctrl.form.contactTitle.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="email" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.contact.email" id="contactEmail" name="contactEmail" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.maxlength">Field is too long</div>
@@ -39,8 +39,8 @@
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactPhoneNumber">Phone <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="contactPhoneNumber">Phone <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber" ng-maxlength="100" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.maxlength">Field is too long</div>

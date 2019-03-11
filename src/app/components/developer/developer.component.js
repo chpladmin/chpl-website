@@ -70,7 +70,6 @@ export const DeveloperComponent = {
         }
 
         isValid () {
-            this.$log.info(this.form, this.valid);
             return this.form.$valid && this.valid.address && this.valid.contact;
         }
 

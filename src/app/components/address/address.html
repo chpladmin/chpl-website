@@ -11,47 +11,47 @@
   </span>
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="line1">Line 1 <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="line1">Line 1 <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.address.line1" id="line1" name="line1" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="line2">Line 2</label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="line2">Line 2</label>
+      <div>
         <input class="input-sm form-control" type="text" ng-model="$ctrl.address.line2" id="line2" name="line2" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line2.$touched) && $ctrl.form.line2.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="city">City <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="city">City <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.address.city" id="city" name="city" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="state">State <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="state">State <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.address.state" id="state" name="state" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="zipcode">Zip <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="zipcode">Zip <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.address.zipcode" id="zipcode" name="zipcode" ng-maxlength="25" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="country">Country <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-      <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <label class="control-label" for="country">Country <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+      <div>
         <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.address.country" id="country" name="country" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.maxlength">Field is too long</div>

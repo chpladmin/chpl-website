@@ -2,7 +2,6 @@ export const AddressComponent = {
     templateUrl: 'chpl.components/address/address.html',
     bindings: {
         address: '<',
-        formHorizontal: '<',
         isEditing: '<',
         isRequired: '<',
         onChange: '&',
@@ -18,9 +17,6 @@ export const AddressComponent = {
         $onChanges (changes) {
             if (changes.address) {
                 this.address = angular.copy(changes.address.currentValue);
-            }
-            if (changes.formHorizontal) {
-                this.formHorizontal = angular.copy(changes.formHorizontal.currentValue);
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
