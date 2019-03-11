@@ -14,7 +14,7 @@
                 scope = $rootScope.$new();
                 scope.onChange = jasmine.createSpy('onChange');
 
-                el = angular.element('<chpl-contact on-change="onChange(contact, errors)"></chpl-contact>');
+                el = angular.element('<chpl-contact on-change="onChange(contact, errors, validForm)"></chpl-contact>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -80,7 +80,7 @@
             it('should require a contact if "isRequired" is true', () => {
                 scope.isRequired = true;
                 scope.contact = {};
-                el = angular.element('<chpl-contact contact="contact" is-required="isRequired" on-change="onChange(contact, errors)"></chpl-contact>');
+                el = angular.element('<chpl-contact contact="contact" is-required="isRequired" on-change="onChange(contact, errors, validForm)"></chpl-contact>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -97,6 +97,7 @@
             it('should pass the errors up', () => {
                 ctrl.contact = {};
                 ctrl.isRequired = true;
+                ctrl.form = { $valid: true };
                 ctrl.update();
                 expect(scope.onChange).toHaveBeenCalledWith(
                     {},
@@ -105,12 +106,14 @@
                         'Email is required',
                         'Phone number is required',
                     ],
+                    false,
                 );
             });
 
             it('should have errors for missing fields', () => {
                 ctrl.contact = {};
                 ctrl.isRequired = true;
+                ctrl.form = { $valid: true };
                 ctrl.update();
                 expect(ctrl.errorMessages).toEqual([
                     'Full name is required',

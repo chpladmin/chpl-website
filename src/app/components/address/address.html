@@ -21,7 +21,7 @@
     <div class="form-group">
       <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="line2">Line 2</label>
       <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
-        <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.address.line2" id="line2" name="line2" ng-maxlength="250" ng-change="$ctrl.update()"></input>
+        <input class="input-sm form-control" type="text" ng-model="$ctrl.address.line2" id="line2" name="line2" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line2.$touched) && $ctrl.form.line2.$error.maxlength">Field is too long</div>
       </div>
     </div>

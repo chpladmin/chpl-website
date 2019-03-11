@@ -14,7 +14,7 @@
                 scope = $rootScope.$new();
                 scope.onChange = jasmine.createSpy('onChange');
 
-                el = angular.element('<chpl-address on-change="onChange(address, errors)"></chpl-address>');
+                el = angular.element('<chpl-address on-change="onChange(address, errors, validForm)"></chpl-address>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -85,7 +85,7 @@
             it('should require an address if "isRequired" is true', () => {
                 scope.isRequired = true;
                 scope.address = {};
-                el = angular.element('<chpl-address is-required="isRequired" on-change="onChange(address, errors)"></chpl-address>');
+                el = angular.element('<chpl-address is-required="isRequired" on-change="onChange(address, errors, validForm)"></chpl-address>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -102,6 +102,7 @@
             it('should pass the errors up', () => {
                 ctrl.address = {};
                 ctrl.isRequired = true;
+                ctrl.form = { $valid: true };
                 ctrl.update();
                 expect(scope.onChange).toHaveBeenCalledWith(
                     {},
@@ -112,12 +113,14 @@
                         'Zip is required',
                         'Country is required',
                     ],
+                    false,
                 );
             });
 
             it('should have errors for missing fields', () => {
                 ctrl.address = {};
                 ctrl.isRequired = true;
+                ctrl.form = { $valid: true };
                 ctrl.update();
                 expect(ctrl.errorMessages).toEqual([
                     'Line 1 is required',

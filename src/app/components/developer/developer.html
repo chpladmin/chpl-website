@@ -25,17 +25,17 @@
     </div>
   </div>
   <h3>Address</h3>
-  <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+  <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
   <span ng-if="$ctrl.productContact">
     <h3>Contact information</h3>
-    <chpl-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+    <chpl-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span>
   <span ng-if="!$ctrl.productContact && $ctrl.developer.contact">
     <h3>Contact information</h3>
-    <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+    <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span>
   <div ng-if="$ctrl.canEdit || $ctrl.canSplit">
-    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.save()" ng-disabled="!$ctrl.isValid()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
     <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
   </div>
 </div>

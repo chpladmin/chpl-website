@@ -32,9 +32,10 @@
     <div class="form-group">
       <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
       <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
-        <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.contact.email" id="contactEmail" name="contactEmail" ng-maxlength="250" ng-change="$ctrl.update()"></input>
+        <input class="input-sm form-control" type="email" ng-required="$ctrl.valuesRequired()" ng-model="$ctrl.contact.email" id="contactEmail" name="contactEmail" ng-maxlength="250" ng-change="$ctrl.update()"></input>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.maxlength">Field is too long</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.email">Improper format (sample@example.com)</div>
       </div>
     </div>
     <div class="form-group">

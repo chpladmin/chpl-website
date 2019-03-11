@@ -45,6 +45,7 @@ export const AddressComponent = {
             this.onChange({
                 address: this.address,
                 errors: this.errorMessages,
+                validForm: this.form.$valid && this.errorMessages.length === 0,
             });
         }
 

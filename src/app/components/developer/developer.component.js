@@ -17,6 +17,10 @@ export const DeveloperComponent = {
             this.$log = $log;
             this.isEditing = false;
             this.isSplitting = false;
+            this.valid = {
+                address: true,
+                contact: true,
+            }
         }
 
         $onChanges (changes) {
@@ -55,14 +59,19 @@ export const DeveloperComponent = {
             this.isEditing = true;
         }
 
-        editAddress (address, errors) {
-            this.$log.info('edited address', address, errors);
+        editAddress (address, errors, validForm) {
             this.developer.address = angular.copy(address);
+            this.valid.address = validForm;
         }
 
-        editContact (contact, errors) {
-            this.$log.info('edited contact', contact, errors);
+        editContact (contact, errors, validForm) {
             this.developer.contact = angular.copy(contact);
+            this.valid.contact = validForm;
+        }
+
+        isValid () {
+            this.$log.info(this.form, this.valid);
+            return this.form.$valid && this.valid.address && this.valid.contact;
         }
 
         save () {
