@@ -1,4 +1,4 @@
-<div id="chpl-developer">
+<div id="chpl-developer" ng-form="$ctrl.form">
   <span class="pull-right">
     <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing && !$ctrl.isSplitting" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
     <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isEditing && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
@@ -6,23 +6,33 @@
   </span>
   <h2>Developer</h2>
   <p ng-if="!$ctrl.isEditing">{{ $ctrl.developer.name }}</p>
-  <label ng-if="$ctrl.isEditing" class="control-label">Developer name
-    <input type="text" class="form-control" required ng-model="$ctrl.developer.name">
-  </label>
+  <div class="form-group" ng-if="$ctrl.isEditing">
+    <label class="control-label" for="developerName">Developer name <span class="text-danger">*</span></label>
+    <div>
+      <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300"></input>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
+    </div>
+  </div>
   <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
   <p ng-if="$ctrl.developer.website && !$ctrl.isEditing"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
-  <label ng-if="$ctrl.isEditing" class="control-label">Website
-    <input type="text" class="form-control" ng-model="$ctrl.developer.website">
-  </label>
+  <div class="form-group" ng-if="$ctrl.isEditing">
+    <label class="control-label" for="developerWebsite">Developer website</label>
+    <div>
+      <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
+    </div>
+  </div>
   <h3>Address</h3>
-  <chpl-address address="$ctrl.developer.address" can-edit="$ctrl.canEdit" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address)"></chpl-address>
+  <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
   <span ng-if="$ctrl.productContact">
     <h3>Contact information</h3>
-    <ai-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing"></ai-contact>
+    <chpl-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span>
   <span ng-if="!$ctrl.productContact && $ctrl.developer.contact">
     <h3>Contact information</h3>
-    <ai-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing"></ai-contact>
+    <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span>
   <div ng-if="$ctrl.canEdit || $ctrl.canSplit">
     <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>

@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'chpl.components/contact/contact.html',
+                templateUrl: 'chpl.components/contact/contact.old.html',
                 bindToController: {
                     contact: '=?',
                     errorMessages: '=?',

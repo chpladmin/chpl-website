@@ -1,14 +1,14 @@
-export const AddressComponent = {
-    templateUrl: 'chpl.components/address/address.html',
+export const ContactComponent = {
+    templateUrl: 'chpl.components/contact/contact.html',
     bindings: {
-        address: '<',
+        contact: '<',
         formHorizontal: '<',
         isEditing: '<',
         isRequired: '<',
         onChange: '&',
         showFormErrors: '<',
     },
-    controller: class AddressComponent {
+    controller: class ContactComponent {
         constructor ($log) {
             'ngInject'
             this.$log = $log;
@@ -16,8 +16,8 @@ export const AddressComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.address) {
-                this.address = angular.copy(changes.address.currentValue);
+            if (changes.contact) {
+                this.contact = angular.copy(changes.contact.currentValue);
             }
             if (changes.formHorizontal) {
                 this.formHorizontal = angular.copy(changes.formHorizontal.currentValue);
@@ -36,30 +36,27 @@ export const AddressComponent = {
         update () {
             this.errorMessages = [];
             if (this.valuesRequired()) {
-                if (!this.address || !this.address.line1) { this.errorMessages.push('Line 1 is required'); }
-                if (!this.address || !this.address.city) { this.errorMessages.push('City is required'); }
-                if (!this.address || !this.address.state) { this.errorMessages.push('State is required'); }
-                if (!this.address || !this.address.zipcode) { this.errorMessages.push('Zip is required'); }
-                if (!this.address || !this.address.country) { this.errorMessages.push('Country is required'); }
+                if (!this.contact || !this.contact.fullName) { this.errorMessages.push('Full name is required'); }
+                if (!this.contact || !this.contact.email) { this.errorMessages.push('Email is required'); }
+                if (!this.contact || !this.contact.phoneNumber) { this.errorMessages.push('Phone number is required'); }
             }
             this.onChange({
-                address: this.address,
+                contact: this.contact,
                 errors: this.errorMessages,
             });
         }
 
         valuesRequired () {
             return !!this.isRequired ||
-                !!this.address && (
-                    !!this.address.line1 ||
-                        !!this.address.line2 ||
-                        !!this.address.city ||
-                        !!this.address.state ||
-                        !!this.address.zipcode ||
-                        !!this.address.country);
+                !!this.contact && (
+                    !!this.contact.fullName ||
+                        !!this.contact.friendlyName ||
+                        !!this.contact.title ||
+                        !!this.contact.email ||
+                        !!this.contact.phoneNumber);
         }
     },
 }
 
 angular.module('chpl.components')
-    .component('chplAddress', AddressComponent);
+    .component('chplContact', ContactComponent);

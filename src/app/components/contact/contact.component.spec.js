@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Address component', () => {
+    fdescribe('the Contact component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
@@ -14,7 +14,7 @@
                 scope = $rootScope.$new();
                 scope.onChange = jasmine.createSpy('onChange');
 
-                el = angular.element('<chpl-address on-change="onChange(address, errors)"></chpl-address>');
+                el = angular.element('<chpl-contact on-change="onChange(contact, errors)"></chpl-contact>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -43,49 +43,44 @@
         });
 
         describe('with respect to required fields', () => {
-            it('should not require an address by default', () => {
+            it('should not require a contact by default', () => {
                 expect(ctrl.valuesRequired()).toBe(false);
             });
 
-            it('should require an address if any elements of the address exist', () => {
-                ctrl.address = {};
+            it('should require a contact if any elements of the contact exist', () => {
+                ctrl.contact = {};
                 expect(ctrl.valuesRequired()).toBe(false);
 
-                ctrl.address.line1 = 'Line 1';
+                ctrl.contact.fullName = 'John';
                 expect(ctrl.valuesRequired()).toBe(true);
-                ctrl.address = {};
+                ctrl.contact = {};
                 expect(ctrl.valuesRequired()).toBe(false);
 
-                ctrl.address.line2 = 'Line 2';
+                ctrl.contact.friendlyName = 'Smith';
                 expect(ctrl.valuesRequired()).toBe(true);
-                ctrl.address = {};
+                ctrl.contact = {};
                 expect(ctrl.valuesRequired()).toBe(false);
 
-                ctrl.address.city = 'City';
+                ctrl.contact.title = 'Mr.';
                 expect(ctrl.valuesRequired()).toBe(true);
-                ctrl.address = {};
+                ctrl.contact = {};
                 expect(ctrl.valuesRequired()).toBe(false);
 
-                ctrl.address.state = 'State';
+                ctrl.contact.email = 'sample@example.com';
                 expect(ctrl.valuesRequired()).toBe(true);
-                ctrl.address = {};
+                ctrl.contact = {};
                 expect(ctrl.valuesRequired()).toBe(false);
 
-                ctrl.address.zipcode = 'Zip';
+                ctrl.contact.phoneNumber = '123-123-1234';
                 expect(ctrl.valuesRequired()).toBe(true);
-                ctrl.address = {};
-                expect(ctrl.valuesRequired()).toBe(false);
-
-                ctrl.address.country = 'Country';
-                expect(ctrl.valuesRequired()).toBe(true);
-                ctrl.address = {};
+                ctrl.contact = {};
                 expect(ctrl.valuesRequired()).toBe(false);
             });
 
-            it('should require an address if "isRequired" is true', () => {
+            it('should require a contact if "isRequired" is true', () => {
                 scope.isRequired = true;
-                scope.address = {};
-                el = angular.element('<chpl-address is-required="isRequired" on-change="onChange(address, errors)"></chpl-address>');
+                scope.contact = {};
+                el = angular.element('<chpl-contact contact="contact" is-required="isRequired" on-change="onChange(contact, errors)"></chpl-contact>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -100,64 +95,43 @@
             });
 
             it('should pass the errors up', () => {
-                ctrl.address = {};
+                ctrl.contact = {};
                 ctrl.isRequired = true;
                 ctrl.update();
                 expect(scope.onChange).toHaveBeenCalledWith(
                     {},
                     [
-                        'Line 1 is required',
-                        'City is required',
-                        'State is required',
-                        'Zip is required',
-                        'Country is required',
+                        'Full name is required',
+                        'Email is required',
+                        'Phone number is required',
                     ],
                 );
             });
 
             it('should have errors for missing fields', () => {
-                ctrl.address = {};
+                ctrl.contact = {};
                 ctrl.isRequired = true;
                 ctrl.update();
                 expect(ctrl.errorMessages).toEqual([
-                    'Line 1 is required',
-                    'City is required',
-                    'State is required',
-                    'Zip is required',
-                    'Country is required',
+                    'Full name is required',
+                    'Email is required',
+                    'Phone number is required',
                 ]);
 
-                ctrl.address.line1 = 'Line1';
+                ctrl.contact.fullName = 'John';
                 ctrl.update();
                 expect(ctrl.errorMessages).toEqual([
-                    'City is required',
-                    'State is required',
-                    'Zip is required',
-                    'Country is required',
+                    'Email is required',
+                    'Phone number is required',
                 ]);
 
-                ctrl.address.city = 'City';
+                ctrl.contact.email = 'sample@example.com';
                 ctrl.update();
                 expect(ctrl.errorMessages).toEqual([
-                    'State is required',
-                    'Zip is required',
-                    'Country is required',
+                    'Phone number is required',
                 ]);
 
-                ctrl.address.state = 'State';
-                ctrl.update();
-                expect(ctrl.errorMessages).toEqual([
-                    'Zip is required',
-                    'Country is required',
-                ]);
-
-                ctrl.address.zipcode = 'Zip';
-                ctrl.update();
-                expect(ctrl.errorMessages).toEqual([
-                    'Country is required',
-                ]);
-
-                ctrl.address.country = 'Country';
+                ctrl.contact.phoneNumber = '123-123-1234';
                 ctrl.update();
                 expect(ctrl.errorMessages).toEqual([]);
             });

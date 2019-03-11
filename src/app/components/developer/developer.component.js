@@ -55,9 +55,14 @@ export const DeveloperComponent = {
             this.isEditing = true;
         }
 
-        editAddress (address) {
-            this.$log.info('edited address', address);
+        editAddress (address, errors) {
+            this.$log.info('edited address', address, errors);
             this.developer.address = angular.copy(address);
+        }
+
+        editContact (contact, errors) {
+            this.$log.info('edited contact', contact, errors);
+            this.developer.contact = angular.copy(contact);
         }
 
         save () {
