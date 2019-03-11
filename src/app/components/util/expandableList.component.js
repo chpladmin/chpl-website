@@ -22,13 +22,16 @@
             items: '<',                         //An array of objects to display in the drop down
             itemText: '@',                      //String that identifies the text property in the 'items' array.  This is used to create the display value in the dropdown.  For example: "name" for an object that looks like [{id: 2, name: 'AI'}]
             onChange: '&',                      //Callback that is used when the user makes a change to the control
+            onValidate: '&',                    //Callback that is used to validate the selected item.  Response looks like {valid: bool, errors = [], warnings: []}
             placeholder: '@',                   //The text that appears in the drop down providing instruction to the user.  For example: "Select a Test Standard"
             selectedItemKeys: '<',              //An array of the items that are pre-selected.  Should be in the form {key: value, additionalInputValue: value, additionalInput2Value: value}. The key value should match an item in the 'items' array.
         },
     });
 
-    function ExapandableListController () {
+    function ExapandableListController ($attrs, $log) {
         var ctrl = this;
+        ctrl.$log = $log;
+        ctrl.$attrs = $attrs;
         ctrl.addItemToListClick = addItemToListClick;
         ctrl.additionalInputChange = additionalInputChange;
         ctrl.additionalInput2Change = additionalInput2Change;
@@ -45,9 +48,12 @@
             ctrl.options = [];
             ctrl.selectedItem = '';
             ctrl.selectedItems = [];
+            ctrl.errors = [];
+            ctrl.warnings = [];
 
             _populateOptions();
             _populateSelectedItems();
+            _validateItems(ctrl.selectedItems);
         }
 
         function addItemToListClick () {
@@ -100,6 +106,7 @@
             }
             var onChangeObject = _getOnChangeObject('Remove', item)
             ctrl.onChange({'action': onChangeObject});  //This is what makes the method binding work
+            _validateItems(ctrl.selectedItems);
         }
 
         function selectOnChange () {
@@ -114,6 +121,7 @@
                 }
                 ctrl.selectedItem = '';
             }
+            _validateItems(ctrl.selectedItems);
         }
 
         /////////////////////////////////////////////////////////////////
@@ -183,6 +191,20 @@
                 }
                 ctrl.selectedItems.push(newItem);
             });
+        }
+
+        function _validateItems (selectedItems) {
+            ctrl.warnings = [];
+            ctrl.errors = [];
+            if (ctrl.$attrs.onValidate) {
+                angular.forEach(selectedItems, function (item) {
+                    let validation = ctrl.onValidate({'item': item.item});  //This is what makes the method binding work
+                    if (!validation.valid) {
+                        ctrl.warnings = ctrl.warnings.concat(validation.warnings);
+                        ctrl.errors = ctrl.errors.concat(validation.errors);
+                    }
+                });
+            }
         }
     }
 })();

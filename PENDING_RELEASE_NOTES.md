@@ -1,13 +1,11 @@
 
-## Version 10.14.0
+## Version 10.15.0
 _Date TBD_
 
 ### New features
-* Removed old UI based caching
-* Force "no-cache" GET of details after Listing update
+* Provide "Clear Selection(s)" link for multi-select lists
 
 ### Bug fixes
-* Show user as logged out when JWT has expired
 * Use correct ROLE on surveillance initiation
 
 ---

@@ -59,6 +59,7 @@
         vm.selectProduct = selectProduct;
         vm.selectVersion = selectVersion;
         vm.splitProduct = splitProduct;
+        vm.splitDeveloper = splitDeveloper;
         vm.ternaryFilter = utilService.ternaryFilter;
 
         ////////////////////////////////////////////////////////////////////
@@ -206,9 +207,9 @@
                     vm.developers = developers.developers;
                     prepCodes();
 
-                    if (vm.productId && vm.workType === 'manage') {
+                    if (isEditingListing() && vm.workType === 'manage') {
                         vm.loadCp();
-                    } else if (vm.productId && vm.workType === 'manageSurveillance') {
+                    } else if (isEditingListing() && vm.workType === 'manageSurveillance') {
                         vm.loadSurveillance();
                     }
                 });
@@ -776,6 +777,35 @@
                 });
         }
 
+        function splitDeveloper () {
+            vm.splitDeveloperModalInstance = $uibModal.open({
+                component: 'aiDeveloperSplit',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    developer: () => vm.activeDeveloper,
+                    products: () => vm.products,
+                },
+            });
+            vm.splitDeveloperModalInstance.result.then(result => {
+                vm.forceRefresh = true;
+                refreshDevelopers();
+                if (!isEditingListing()) {
+                    vm.developerSelect = '';
+                    vm.activeDeveloper = '';
+                    vm.activeProduct = '';
+                    vm.activeVersion = '';
+                    vm.activeCP = '';
+                }
+            }, result => {
+                if (result !== 'cancelled') {
+                    $log.info('dismissed', result);
+                }
+            });
+        }
+
         function splitProduct () {
             vm.splitProductInstance = $uibModal.open({
                 templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
@@ -791,10 +821,15 @@
                 },
             });
             vm.splitProductInstance.result.then(function (result) {
-                vm.activeProduct = result.product;
-                vm.activeVersion = '';
-                vm.products.push(result.newProduct);
-                vm.versions = result.versions;
+                if (isEditingListing()) {
+                    vm.forceRefresh = true;
+                    refreshDevelopers()
+                } else {
+                    vm.activeProduct = result.product;
+                    vm.activeVersion = '';
+                    vm.products.push(result.newProduct);
+                    vm.versions = result.versions;
+                }
             }, function (result) {
                 if (result !== 'cancelled') {
                     vm.productMessage = result;
@@ -908,6 +943,14 @@
                     vm.resources.targetedUsers = response;
                     vm.resourcesReady.targetedUsers = true;
                 });
+        }
+
+        function isEditingListing () {
+            if (vm.productId) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function prepCodes () {
