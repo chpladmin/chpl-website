@@ -136,15 +136,28 @@
                     vm.developer.transparencyAttestations.push({acbName: key, attestation: value});
                 }
             });
+
+            vm.showFormErrors = true;
+            
             networkService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         $uibModalInstance.close(response);
                     } else {
-                        $uibModalInstance.dismiss('An error occurred');
+                        if (response.data.errorMessages) {
+                            vm.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            vm.errorMessages = [];
+                            vm.errorMessages.push(response.data.error);
+                        }
                     }
                 },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
+                    if (error.data.errorMessages) {
+                        vm.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        vm.errorMessages = [];
+                        vm.errorMessages.push(error.data.error);
+                    }
                 });
         }
 

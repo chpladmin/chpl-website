@@ -74,4 +74,10 @@
       <button class="btn btn-danger btn-sm" ng-click="$ctrl.cancelAddItemToListClick()"><i class="fa fa-close"></i></button>
     </span>
   </div>
+  <p class="text-danger" ng-if="$ctrl.errors && $ctrl.errors.length !== 0" ng-repeat="error in $ctrl.errors track by $index">
+      {{ error }}
+  </p>
+  <p class="text-warning" ng-if="$ctrl.warnings && $ctrl.warnings.length !== 0" ng-repeat="warning in $ctrl.warnings track by $index">
+      {{ warning }}
+  </p>
 </div>
