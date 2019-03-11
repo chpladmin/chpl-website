@@ -1,6 +1,9 @@
 
-## Version 10.13.1
+## Version 10.15
 _Date TBD_
+
+### New features
+* Provide "Clear Selection(s)" link for multi-select lists
 
 ### Bug fixes and cleanup
 * Remove unusable corrective action plan activity reports

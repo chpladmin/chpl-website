@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Network service', function () {
-        var $httpBackend, $log, mock, networkService;
+        var $httpBackend, $log, $rootScope, mock, networkService;
 
         mock = {};
         mock.editions = ['Edition 1', 'Edition 2'];
@@ -10,10 +10,11 @@
         beforeEach(function () {
             angular.mock.module('chpl.services');
 
-            inject(function (_$httpBackend_, _$log_, _networkService_) {
-                $log = _$log_;
-                networkService = _networkService_;
+            inject(function (_$httpBackend_, _$log_, _$rootScope_, _networkService_) {
                 $httpBackend = _$httpBackend_;
+                $log = _$log_;
+                $rootScope = _$rootScope_;
+                networkService = _networkService_;
 
                 $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
             })
@@ -30,6 +31,15 @@
         });
 
         describe('for general REST calls', () => {
+            it('should log the user out if a GET responds with that message', () => {
+                spyOn($rootScope, '$broadcast').and.callFake(() => {});
+                $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, {error: 'Invalid authentication token.'});
+                networkService.getProduct('id').then(() => {
+                    expect($rootScope.$broadcast).toHaveBeenCalledWith('badAuthorization');
+                });
+                $httpBackend.flush();
+            });
+
             it('should return a promise with the data if a GET doesn\'t return an object', function () {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
                 networkService.getProduct('id').then(function (response) {
@@ -119,84 +129,6 @@
         });
 
         describe('with respect to caching', () => {
-            describe('for getAll', () => {
-                it('should refresh if old', () => {
-                    networkService.store.certifiedProducts.data = [];
-                    networkService.store.certifiedProducts.lastUpdated = new Date('2014-01-01');
-                    $httpBackend.expectGET(/^\/rest\/collections\/certified_products$/).respond(200, {data: 'response'});
-                    networkService.getAll().then(response => {
-                        expect(response.data).toEqual('response');
-                    });
-                    $httpBackend.flush();
-                });
-
-                it('should not refresh if data is recent', () => {
-                    networkService.store.certifiedProducts.data = [];
-                    networkService.store.certifiedProducts.lastUpdated = new Date();
-                    $httpBackend.whenGET(/^\/rest\/collections\/certified_products$/);
-                    networkService.getAll();
-                    expect($httpBackend.flush).toThrow();
-                });
-            });
-
-            describe('for getProduct', () => {
-                it('should refresh if old', () => {
-                    networkService.store.certifiedProducts.details = {3: {
-                        data: {},
-                        lastUpdated: new Date('2014-01-01'),
-                    }};
-                    $httpBackend.expectGET(/^\/rest\/certified_products\/3\/details$/).respond(200, {data: 'response'});
-                    networkService.getProduct(3).then(response => {
-                        expect(response.data).toEqual('response');
-                    });
-                    $httpBackend.flush();
-                });
-
-                it('should not refresh if data is recent', () => {
-                    networkService.store.certifiedProducts.details = {3: {
-                        data: {},
-                        lastUpdated: new Date(),
-                    }};
-                    $httpBackend.whenGET(/^\/rest\/certified_products\/3\/details$/);
-                    networkService.getProduct(3);
-                    expect($httpBackend.flush).toThrow();
-                });
-            });
-
-            describe('for getSearchOptions', () => {
-                it('should refresh if old', () => {
-                    networkService.store.searchOptions.data = [];
-                    networkService.store.searchOptions.lastUpdated = new Date('2014-01-01');
-                    $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {data: 'response'});
-                    networkService.getSearchOptions().then(response => {
-                        expect(response.data).toEqual('response');
-                    });
-                    $httpBackend.flush();
-                });
-
-                it('should not refresh if data is recent', () => {
-                    networkService.store.searchOptions.data = [];
-                    networkService.store.searchOptions.lastUpdated = new Date();
-                    $httpBackend.whenGET(/^\/rest\/data\/search_options$/);
-                    networkService.getSearchOptions();
-                    expect($httpBackend.flush).toThrow();
-                });
-            });
-
-            describe('when updating a certified product', () => {
-                it('should purge the cache', () => {
-                    networkService.store.certifiedProducts.details = {3: {
-                        data: {id: 3},
-                        lastUpdated: new Date('2014-01-01'),
-                    }};
-                    $httpBackend.expectPUT(/^\/rest\/certified_products\/3$/).respond(200, {data: 'response'});
-                    networkService.updateCP({listing: {id: 3}, reason: 'none'});
-                    $httpBackend.flush();
-                    expect(networkService.store.certifiedProducts.details[3].data).toBeUndefined();
-                    expect(networkService.store.certifiedProducts.details[3].lastUpdated).toBe(-1);
-                });
-            });
-
             describe('when getting activity', () => {
                 it('should refresh if old', () => {
                     networkService.store.activity.types = {
@@ -865,6 +797,14 @@
         it('should getProduct', function () {
             $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
             networkService.getProduct('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getProduct and force refresh', function () {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
+            networkService.getProduct('payload', true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
