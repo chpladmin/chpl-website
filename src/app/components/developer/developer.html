@@ -118,6 +118,16 @@
       </table>
       <div class="bg-info" ng-if="$ctrl.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
     </span>
+    <span ng-if="$ctrl.hasAnyRole(['ROLE_ACB'])">
+      <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy:'toString()'">
+        <label for="developer-transparency-{{acb}}">{{ acb }} Transparency Attestation</label>
+        <select class="input-sm form-control" ng-model="$ctrl.developer.transMap[acb]" id="developer-transparency-{{ acb }}" name="developerTransparency{{ acb }}">
+          <option value="Negative">Negative</option>
+          <option value="Affirmative">Affirmative</option>
+          <option value="N/A">N/A</option>
+        </select>
+      </div>
+    </span>
     <h3>Address</h3>
     <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
     <span ng-if="$ctrl.productContact">
