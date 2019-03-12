@@ -97,10 +97,6 @@
                         expect(vm.filterItems.acbItems).toBeDefined();
                     });
 
-                    it('should filter out the "pending" acb', () => {
-                        vm.filterItems.acbItems.forEach(acb => { expect(acb.value).not.toBe('Pending'); });
-                    });
-
                     it('should sort the names', () => {
                         expect(vm.filterItems.acbItems[1].value).toBe('Drummond Group');
                     });

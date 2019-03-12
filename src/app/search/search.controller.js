@@ -413,12 +413,6 @@
                     for (i = 0; i < options.practiceTypeNames.length; i++) {
                         options.practiceTypes.push(options.practiceTypeNames[i].name);
                     }
-                    for (i = 0; i < options.certificationStatuses.length; i++) {
-                        if (options.certificationStatuses[i].name === 'Pending') {
-                            options.certificationStatuses.splice(i,1);
-                            break;
-                        }
-                    }
                     for (i = 0; i < options.developerNames.length; i++) {
                         vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
                         vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
@@ -467,7 +461,6 @@
                 statusItems: [],
             };
             vm.filterItems.acbItems = vm.searchOptions.certBodyNames
-                .filter(a => a.name !== 'Pending')
                 .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                 .map(a => {
                     let ret = {
