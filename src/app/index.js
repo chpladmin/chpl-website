@@ -40,6 +40,7 @@ import 'zxcvbn';
 import 'angular-ui-router';
 
 // import app modules
+import './administration/index';
 import /* adminModule from*/ './admin/index';
 import /* chartsModule from*/ './pages/charts/index';
 import /* chplApiModule from*/ './pages/resources/chpl-api/index';
@@ -64,6 +65,7 @@ const dependencies = [
     'angulartics',
     'angulartics.google.tagmanager',
     'chpl.admin',
+    'chpl.administration',
     'chpl.charts',
     'chpl.chpl_api',
     'chpl.cms_lookup',

@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Developer Merge</h1>
+    </div>
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <div class="col-md-6">
+      <chpl-developer developer="$ctrl.developer"></chpl-developer>
+    </div>
+    <div class="col-md-6">
+      <div ng-repeat="developer in $ctrl.developers">{{ developer.name }}</div>
+    </div>
+  </div>
+</div>

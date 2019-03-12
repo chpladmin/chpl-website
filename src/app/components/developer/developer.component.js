@@ -12,10 +12,11 @@ export const DeveloperComponent = {
         showProducts: '<',
     },
     controller: class DeveloperComponent {
-        constructor ($filter, $log, authService) {
+        constructor ($filter, $log, $state, authService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.isEditing = false;
             this.isSplitting = false;
@@ -60,6 +61,10 @@ export const DeveloperComponent = {
         edit () {
             this.backup = angular.copy(this.developer);
             this.isEditing = true;
+        }
+
+        merge () {
+            this.$state.go('administration.merge.developers', { developerId: this.developer.developerId });
         }
 
         split () {

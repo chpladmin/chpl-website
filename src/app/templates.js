@@ -1,5 +1,6 @@
 const ctxs = [];
 ctxs.push({module: 'chpl.admin', ctx: require.context('./admin/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.administration', ctx: require.context('./administration/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.charts', ctx: require.context('./pages/charts/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.chpl_api', ctx: require.context('./pages/resources/chpl-api/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.compare', ctx: require.context('./pages/compare/', true, /.*\.html$/)});
