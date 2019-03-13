@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Developer Merge component', () => {
+    fdescribe('the Developers component', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {
@@ -14,23 +14,28 @@
                 status: {id: 1, status: 'Active'},
             },
             developers: [
+                { name: 'a developer' },
+            ],
+            products: [
                 { name: 'a product' },
             ],
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.administration');
+            angular.mock.module('chpl', 'chpl.organizations');
 
             inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
                 $log = _$log_;
 
                 scope = $rootScope.$new();
+                scope.action = '';
                 scope.developer = mock.developer;
                 scope.developers = mock.developers;
+                scope.products = mock.products;
                 scope.onMerge = jasmine.createSpy('onMerge');
 
-                el = angular.element('<chpl-developer-merge developer="developer" developers="developers" on-merge="onMerge()"></chpl-developer-merge>');
+                el = angular.element('<chpl-developers action="action" developer="developer" developers="developers" products="products"></chpl-developers>');
 
                 $compile(el)(scope);
                 scope.$digest();

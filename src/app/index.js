@@ -40,7 +40,6 @@ import 'zxcvbn';
 import 'angular-ui-router';
 
 // import app modules
-import './administration/index';
 import /* adminModule from*/ './admin/index';
 import /* chartsModule from*/ './pages/charts/index';
 import /* chplApiModule from*/ './pages/resources/chpl-api/index';
@@ -52,6 +51,7 @@ import /* downloadModule from*/ './pages/resources/download/index';
 import chplListing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
 import /* overviewModule from*/ './pages/resources/overview/index';
+import './pages/organizations/index';
 import /* productModule from*/ './product/index';
 import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
@@ -65,7 +65,6 @@ const dependencies = [
     'angulartics',
     'angulartics.google.tagmanager',
     'chpl.admin',
-    'chpl.administration',
     'chpl.charts',
     'chpl.chpl_api',
     'chpl.cms_lookup',
@@ -76,6 +75,7 @@ const dependencies = [
     'chpl.download',
     chplListing.name,
     'chpl.navigation',
+    'chpl.organizations',
     'chpl.overview',
     'chpl.product',
     'chpl.registration',

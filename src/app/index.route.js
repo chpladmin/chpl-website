@@ -26,24 +26,20 @@
                 controllerAs: 'vm',
                 data: { title: 'Password Reset' },
             })
-            .state('administration', {
+            .state('organizations', {
                 abstract: true,
-                url: '/administration',
+                url: '/organizations',
                 template: '<ui-view/>',
             })
-            .state('administration.merge', {
-                abstract: true,
-                url: '/merge',
-                template: '<ui-view/>',
-            })
-            .state('administration.merge.developers', {
-                url: '/developers/{developerId}',
-                component: 'chplDeveloperMerge',
+            .state('organizations.developers', {
+                url: '/developers/{developerId}/{action}',
+                component: 'chplDevelopers',
                 resolve: {
                     developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
                     developers: networkService => networkService.getDevelopers(),
+                    products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
                 },
-                data: { title: 'CHPL Administration - Merge - Developers' },
+                data: { title: 'CHPL Developers' },
             })
             .state('charts', {
                 url: '/charts',

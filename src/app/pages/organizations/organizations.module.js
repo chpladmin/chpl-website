@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.administration', [
+    angular.module('chpl.organizations', [
         'chpl.services',
         'ui.bootstrap',
     ])
