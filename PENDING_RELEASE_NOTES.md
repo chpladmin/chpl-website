@@ -4,6 +4,7 @@ _Date TBD_
 
 ### New features
 * Provide "Clear Selection(s)" link for multi-select lists
+* Allow ROLE_ADMIN to confirm listing
 
 ### Bug fixes and cleanup
 * Remove unusable corrective action plan activity reports
