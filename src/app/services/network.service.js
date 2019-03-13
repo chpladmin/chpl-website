@@ -453,6 +453,10 @@ export class NetworkService {
         return this.apiGET('/versions?productId=' + productId);
     }
 
+    impersonateUser (user) {
+        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+    }
+
     initiateSurveillance (surveillance) {
         return this.apiPOST('/surveillance', surveillance);
     }
@@ -539,6 +543,10 @@ export class NetworkService {
 
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
+    }
+
+    unimpersonateUser () {
+        return this.apiGET('/auth/unimpersonate');
     }
 
     updateCP (cpObject) {
