@@ -1,25 +1,27 @@
 export const DeveloperComponent = {
     templateUrl: 'chpl.components/developer/developer.html',
     bindings: {
+        allowedAcbs: '<',
         developer: '<',
         canEdit: '<',
         canMerge: '<',
         canSplit: '<',
+        isEditing: '<',
+        isSplitting: '<',
+        onCancel: '&?',
         onEdit: '&?',
         onSplit: '&?',
         products: '<',
-        productContact: '<?',
+        showFull: '<',
         showProducts: '<',
+        takeAction: '&',
     },
     controller: class DeveloperComponent {
-        constructor ($filter, $log, $state, authService) {
+        constructor ($filter, $log, authService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
-            this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
-            this.isEditing = false;
-            this.isSplitting = false;
             this.valid = {
                 address: true,
                 contact: true,
@@ -27,11 +29,18 @@ export const DeveloperComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.allowedAcbs) {
+                this.allowedAcbs = angular.copy(changes.allowedAcbs.currentValue);
+            }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.developer.statusEvents = this.developer.statusEvents.map(e => {
                     e.statusDateObject = new Date(e.statusDate);
                     return e;
+                });
+                this.transMap = {};
+                this.developer.transparencyAttestations.forEach(att => {
+                    this.transMap[att.acbName] = att.attestation;
                 });
             }
             if (changes.canEdit) {
@@ -43,33 +52,48 @@ export const DeveloperComponent = {
             if (changes.canSplit) {
                 this.canSplit = angular.copy(changes.canSplit.currentValue);
             }
+            if (changes.isEditing) {
+                this.isEditing = angular.copy(changes.isEditing.currentValue);
+            }
+            if (changes.isSplitting) {
+                this.isSplitting = angular.copy(changes.isSplitting.currentValue);
+            }
             if (changes.products) {
                 this.products = angular.copy(changes.products.currentValue);
             }
             if (changes.productContact) {
                 this.productContact = angular.copy(changes.productContact.currentValue);
             }
+            if (changes.showFull) {
+                this.showFull = angular.copy(changes.showFull.currentValue);
+            }
             if (changes.showProducts) {
                 this.showProducts = angular.copy(changes.showProducts.currentValue);
             }
-            this.canSplit = this.canSplit && this.products && this.products.length > 1;
         }
 
         /*
          * Initiate changes
          */
         edit () {
-            this.backup = angular.copy(this.developer);
-            this.isEditing = true;
+            this.takeAction({
+                developerId: this.developer.developerId,
+                action: 'edit',
+            });
         }
 
         merge () {
-            this.$state.go('administration.merge.developers', { developerId: this.developer.developerId });
+            this.takeAction({
+                developerId: this.developer.developerId,
+                action: 'merge',
+            });
         }
 
         split () {
-            this.backup = angular.copy(this.developer);
-            this.isSplitting = true;
+            this.takeAction({
+                developerId: this.developer.developerId,
+                action: 'split',
+            });
         }
 
         /*
@@ -81,22 +105,19 @@ export const DeveloperComponent = {
                     e.statusDate = e.statusDateObject.getTime();
                     return e;
                 });
+                this.developer.transparencyAttestations = Object.keys(this.transMap).map(key => { return {acbName: key, attestation: this.transMap[key]}; });
                 this.onEdit({developer: this.developer});
-                this.isEditing = false;
             }
             if (this.isSplitting) {
                 this.onSplit({
                     oldDeveloper: this.developer,
                     newDeveloper: this.newDeveloper,
                 });
-                this.isSplitting = false;
             }
         }
 
         cancel () {
-            this.developer = angular.copy(this.backup);
-            this.isEditing = false;
-            this.isSplitting = false;
+            this.onCancel();
         }
 
         /*

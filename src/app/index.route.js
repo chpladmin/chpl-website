@@ -32,9 +32,13 @@
                 template: '<ui-view/>',
             })
             .state('organizations.developers', {
-                url: '/developers/{developerId}/{action}',
+                url: '/developers/{developerId}/{action}?',
                 component: 'chplDevelopers',
+                params: {
+                    action: {squash: true, value: null},
+                },
                 resolve: {
+                    allowedAcbs: networkService => networkService.getAcbs(true),
                     developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
                     developers: networkService => networkService.getDevelopers(),
                     products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),

@@ -2,10 +2,11 @@ export const ListingComponent = {
     templateUrl: 'chpl.listing/listing.html',
     bindings: { },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $stateParams, $uibModal, authService, networkService, utilService) {
+        constructor ($localStorage, $log, $state, $stateParams, $uibModal, authService, networkService, utilService) {
             'ngInject'
             this.$localStorage = $localStorage;
             this.$log = $log;
+            this.$state = $state;
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.authService = authService;
@@ -37,14 +38,6 @@ export const ListingComponent = {
             this.loadProduct();
         }
 
-        editDeveloper (developer) {
-            this.$log.info('editing developer', developer);
-        }
-
-        splitDeveloper (oldDeveloper, newDeveloper) {
-            this.$log.info('spliting developer [old/new]', oldDeveloper, newDeveloper);
-        }
-
         loadProduct () {
             let that = this;
             this.networkService.getProduct(this.productId)
@@ -58,6 +51,13 @@ export const ListingComponent = {
                 .then(data => {
                     that.activity = data;
                 });
+        }
+
+        takeDeveloperAction (developerId, action) {
+            this.$state.go('organizations.developers', {
+                developerId: developerId,
+                action: action,
+            });
         }
 
         viewProductHistory () {

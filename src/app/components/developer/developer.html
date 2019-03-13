@@ -5,40 +5,42 @@
       <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
       <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
     </span>
-    <h2>Developer</h2>
-    <p>{{ $ctrl.developer.name }}</p>
-    <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
-    <table ng-if="$ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole()" class="table table-condensed">
-      <thead>
-        <tr>
-          <th scope="col">Status History</th>
-          <th scope="col">Effective date</th>
-          <th scope="col">Reason for status change</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
-          <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
-          <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
-          <td>{{ status.reason || 'N/A' }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p ng-if="$ctrl.developer.website"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
-    <h3>Address</h3>
-    <chpl-address address="$ctrl.developer.address"></chpl-address>
-    <span ng-if="$ctrl.productContact">
-      <h3>Contact information</h3>
-      <chpl-contact contact="$ctrl.productContact"></chpl-contact>
+    <span ng-if="$ctrl.showFull">
+      <h2>{{ $ctrl.developer.name }}</h2>
     </span>
-    <span ng-if="!$ctrl.productContact && $ctrl.developer.contact">
+    <span ng-if="!$ctrl.showFull">
+      <h2>Developer</h2>
+      <a ng-if="!$ctrl.showFull" ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a>
+    </span>
+    <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
+    <span ng-if="$ctrl.showFull">
+      <table ng-if="$ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole()" class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col">Status History</th>
+            <th scope="col">Effective date</th>
+            <th scope="col">Reason for status change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
+            <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
+            <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ status.reason || 'N/A' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p ng-if="$ctrl.developer.website"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
+      <h3>Transparency Attestations</h3>
+      <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+      <h3>Address</h3>
+      <chpl-address address="$ctrl.developer.address"></chpl-address>
       <h3>Contact information</h3>
       <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
     </span>
   </span> <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
-    <h2>Developer</h2>
     <div class="form-group">
       <label class="control-label" for="developerName">Developer name <span class="text-danger">*</span></label>
       <div>
@@ -119,9 +121,9 @@
       <div class="bg-info" ng-if="$ctrl.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
     </span>
     <span ng-if="$ctrl.hasAnyRole(['ROLE_ACB'])">
-      <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy:'toString()'">
-        <label for="developer-transparency-{{acb}}">{{ acb }} Transparency Attestation</label>
-        <select class="input-sm form-control" ng-model="$ctrl.developer.transMap[acb]" id="developer-transparency-{{ acb }}" name="developerTransparency{{ acb }}">
+      <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
+        <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
+        <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name]" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
           <option value="Negative">Negative</option>
           <option value="Affirmative">Affirmative</option>
           <option value="N/A">N/A</option>
@@ -130,14 +132,8 @@
     </span>
     <h3>Address</h3>
     <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
-    <span ng-if="$ctrl.productContact">
-      <h3>Contact information</h3>
-      <chpl-contact contact="$ctrl.productContact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
-    </span>
-    <span ng-if="!$ctrl.productContact && $ctrl.developer.contact">
-      <h3>Contact information</h3>
-      <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
-    </span>
+    <h3>Contact information</h3>
+    <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span> <!-- end edit -->
 
   <div ng-if="$ctrl.canEdit || $ctrl.canSplit">
