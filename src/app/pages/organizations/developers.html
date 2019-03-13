@@ -14,7 +14,8 @@
                       can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
                       can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
                       can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                      is-editing="$ctrl.action === 'edit'"
+                      is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
+                      is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length === 0"
                       on-cancel="$ctrl.cancel()"
                       on-edit="$ctrl.save(developer)"
                       show-full="true"
@@ -26,8 +27,19 @@
       <div ng-repeat="product in $ctrl.products | orderBy: 'name'"><pre>{{ product | json }}</pre></div>
     </div>
     <div class="col-md-6" ng-if="$ctrl.action === 'merge'">
+      <h2>Developers to merge</h2>
+      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length === 0">At least one Developer must be selected to merge</div>
+      <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-warning btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, false)"><i class="fa fa-minus"></i><span class="sr-only"> Remove</span></button>
+        <div class="clearfix"></div>
+      </div>
       <h2>All Developers</h2>
-      <div ng-repeat="developer in $ctrl.developers | orderBy: 'name'">{{ developer.name }}</div>
+      <div ng-repeat="developer in $ctrl.developers | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, true)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <div class="clearfix"></div>
+      </div>
     </div>
     <div class="col-md-6" ng-if="$ctrl.action === 'split'">
       <h2>New Developer</h2>

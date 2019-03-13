@@ -7,6 +7,7 @@ export const DeveloperComponent = {
         canMerge: '<',
         canSplit: '<',
         isEditing: '<',
+        isInvalid: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
@@ -54,6 +55,9 @@ export const DeveloperComponent = {
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
+            }
+            if (changes.isInvalid) {
+                this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
@@ -138,6 +142,7 @@ export const DeveloperComponent = {
          */
         isValid () {
             return this.form.$valid // basic form validation
+                && !this.isInvalid // validation from outside
                 && this.valid.address && this.valid.contact // validation from sub-components
                 && this.developer.statusEvents && this.developer.statusEvents.length > 0 // status history exists
                 && this.developer.statusEvents.reduce((acc, e) => acc && !this.matchesPreviousStatus(e) && !this.matchesPreviousDate(e), true); // no duplicate status history data

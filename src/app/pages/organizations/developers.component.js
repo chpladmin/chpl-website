@@ -7,12 +7,14 @@ export const DevelopersComponent = {
         products: '<',
     },
     controller: class DevelopersComponent {
-        constructor ($log, $stateParams, authService, networkService) {
+        constructor ($log, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.backup = {};
         }
 
         $onChanges (changes) {
@@ -22,10 +24,12 @@ export const DevelopersComponent = {
             }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
-                this.backup = angular.copy(this.developer);
+                this.backup.developer = angular.copy(this.developer);
             }
             if (changes.developers) {
                 this.developers = (angular.copy(changes.developers.currentValue)).developers;
+                this.backup.developers = angular.copy(this.developers);
+                this.mergingDevelopers = [];
             }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
@@ -33,19 +37,29 @@ export const DevelopersComponent = {
         }
 
         cancel () {
-            this.developer = angular.copy(this.backup);
+            this.developer = angular.copy(this.backup.developer);
+            this.developers = angular.copy(this.backup.developers);
+            this.mergingDevelopers = [];
             this.action = undefined;
-            this.$log.info('cancel', this.developer);
         }
 
         save (developer) {
+            let developerIds = [this.developer.developerId];
+            if (this.action === 'merge') {
+                developerIds = developerIds.concat(this.mergingDevelopers.map(dev => dev.developerId));
+            }
             let that = this;
             this.developer = developer;
             this.networkService.updateDeveloper({
                 developer: this.developer,
-                developerIds: [this.developer.developerId],
+                developerIds: developerIds,
             }).then(response => {
                 if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                    if (that.action === 'merge') {
+                        this.$state.go('organizations.developers', {
+                            developerId: response.developerId,
+                        });
+                    }
                     that.developer = response;
                     that.action = undefined;
                 } else {
@@ -72,6 +86,16 @@ export const DevelopersComponent = {
 
         takeAction (action) {
             this.action = action;
+        }
+
+        toggleMerge (developer, merge) {
+            if (merge) {
+                this.mergingDevelopers.push(this.developers.filter(dev => dev.developerId === developer.developerId)[0]);
+                this.developers = this.developers.filter(dev => dev.developerId !== developer.developerId);
+            } else {
+                this.developers.push(this.mergingDevelopers.filter(dev => dev.developerId === developer.developerId)[0]);
+                this.mergingDevelopers = this.mergingDevelopers.filter(dev => dev.developerId !== developer.developerId);
+            }
         }
     },
 }
