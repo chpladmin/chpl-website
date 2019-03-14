@@ -1,7 +1,7 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
     <span class="pull-right">
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isSplitting" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
       <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
       <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
     </span>
@@ -136,8 +136,8 @@
     <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span> <!-- end edit -->
 
-  <div ng-if="$ctrl.canEdit || $ctrl.canSplit">
-    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing || $ctrl.isSplitting" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+  <div ng-if="$ctrl.canEdit">
+    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
   </div>
 </div>

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Address component', () => {
+    describe('the Address component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

@@ -1,10 +1,13 @@
 (() => {
     'use strict';
 
-    fdescribe('the Developers component', () => {
+    describe('the Developers component', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {
+            acbs: [
+                { name: 'an acb' },
+            ],
             developer: {
                 developerId: 636, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
                 address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
@@ -29,13 +32,12 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-                scope.action = '';
+                scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
                 scope.developers = mock.developers;
                 scope.products = mock.products;
-                scope.onMerge = jasmine.createSpy('onMerge');
 
-                el = angular.element('<chpl-developers action="action" developer="developer" developers="developers" products="products"></chpl-developers>');
+                el = angular.element('<chpl-developers allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers>');
 
                 $compile(el)(scope);
                 scope.$digest();

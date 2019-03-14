@@ -11,7 +11,6 @@ export const DeveloperComponent = {
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
-        onSplit: '&?',
         products: '<',
         showFull: '<',
         showProducts: '<',
@@ -104,20 +103,12 @@ export const DeveloperComponent = {
          * Resolve changes
          */
         save () {
-            if (this.isEditing) {
-                this.developer.statusEvents = this.developer.statusEvents.map(e => {
-                    e.statusDate = e.statusDateObject.getTime();
-                    return e;
-                });
-                this.developer.transparencyAttestations = Object.keys(this.transMap).map(key => { return {acbName: key, attestation: this.transMap[key]}; });
-                this.onEdit({developer: this.developer});
-            }
-            if (this.isSplitting) {
-                this.onSplit({
-                    oldDeveloper: this.developer,
-                    newDeveloper: this.newDeveloper,
-                });
-            }
+            this.developer.statusEvents = this.developer.statusEvents.map(e => {
+                e.statusDate = e.statusDateObject.getTime();
+                return e;
+            });
+            this.developer.transparencyAttestations = Object.keys(this.transMap).map(key => { return {acbName: key, attestation: this.transMap[key]}; });
+            this.onEdit({developer: this.developer});
         }
 
         cancel () {
