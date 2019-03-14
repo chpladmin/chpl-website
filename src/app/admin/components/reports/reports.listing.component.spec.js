@@ -8,6 +8,7 @@
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
                 $provide.decorator('networkService', $delegate => {
+                    $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
                     $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
                     return $delegate;
@@ -26,6 +27,7 @@
                     return Mock.fakeModal;
                 });
                 networkService = _networkService_;
+                networkService.getActivityMetadata.and.returnValue($q.when(Mock.listingActivityMetadata));
                 networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
                 networkService.getSingleCertifiedProductActivity.and.returnValue($q.when([]));
 
@@ -65,28 +67,6 @@
             });
 
             describe('helper functions', () => {
-                describe('for refreshing', () => {
-                    beforeEach(() => {
-                        spyOn(ctrl, 'singleCp');
-                        spyOn(ctrl, 'refreshCp');
-                    });
-
-                    it('should refresh the single CP if on a single product', () => {
-                        ctrl.productId = 1;
-                        ctrl.workType = '';
-                        ctrl.refreshActivity();
-                        expect(ctrl.singleCp).toHaveBeenCalled();
-                        expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the CP data specifically', () => {
-                        ctrl.workType = '';
-                        ctrl.refreshActivity();
-                        expect(ctrl.singleCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCp).toHaveBeenCalled();
-                    });
-                });
-
                 describe('for comparing surveillances', () => {
                     var modalOptions, newS, oldS;
                     beforeEach(() => {

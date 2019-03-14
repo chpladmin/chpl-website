@@ -16,7 +16,6 @@ export const ReportsListingsComponent = {
         }
 
         $onInit () {
-            this.tab = 'cp';
             this.activityRange = { range: 30 };
             var start = new Date();
             var end = new Date();
@@ -27,8 +26,16 @@ export const ReportsListingsComponent = {
             };
             if (this.productId) {
                 this.activityRange.listing.startDate = new Date('4/1/2016');
+                this.singleCp();
+            } else {
+                this.refreshCp();
             }
-            this.refreshActivity();
+            let that = this;
+            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange.listing)).then(results => {
+                that.results = results;
+                that.displayed = [].concat(results);
+                that.$log.info(results);
+            });
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
@@ -44,21 +51,17 @@ export const ReportsListingsComponent = {
                     causeRefresh = true;
                 }
                 if (causeRefresh) {
-                    this.refreshActivity();
+                    if (this.productId) {
+                        this.singleCp();
+                    } else {
+                        this.refreshCp();
+                    }
                 }
             }
         }
 
         ////////////////////////////////////////////////////////////////////
         // Functions
-
-        refreshActivity () {
-            if (this.productId) {
-                this.singleCp();
-            } else {
-                this.refreshCp();
-            }
-        }
 
         refreshCp () {
             let ctrl = this;

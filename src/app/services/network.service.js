@@ -642,6 +642,21 @@ export class NetworkService {
             }, response => this.$q.reject(response));
     }
 
+    getActivityMetadata (key, activityRange) {
+        let call = '/activity/metadata/' + key;
+        let params = [];
+        if (activityRange.startDate) {
+            params.push('start=' + activityRange.startDate.getTime());
+        }
+        if (activityRange.endDate) {
+            params.push('end=' + activityRange.endDate.getTime());
+        }
+        if (params.length > 0) {
+            call += '?' + params.join('&');
+        }
+        return this.apiGET(call);
+    }
+
     getActivity (call, activityRange) {
         const EXPIRATION_TIME = 15; // in minutes
         var params = [];
