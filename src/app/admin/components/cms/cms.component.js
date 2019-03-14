@@ -22,7 +22,7 @@ export const CmsManagementComponent = {
                 removeAfterUpload: true,
                 headers: {
                     Authorization: 'Bearer ' + this.authService.getToken(),
-                    'this.API-Key': this.authService.getApiKey(),
+                    'API-Key': this.authService.getApiKey(),
                 },
                 filters: [{
                     name: 'csvFilter',

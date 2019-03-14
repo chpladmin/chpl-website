@@ -58,7 +58,7 @@
 
         function isToolDisabled (tool) {
             if (vm.isConfirming) {
-                return isTestToolRetired(tool);
+                return isTestToolRetired(tool) && !vm.hasIcs;
             } else {
                 return false;
             }

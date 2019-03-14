@@ -84,6 +84,11 @@
                 vm.hasIcs = true;
                 vm.isConfirming = true;
                 expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
+                expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(false);
+
+                vm.hasIcs = false;
+                vm.isConfirming = true;
+                expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
                 expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(true);
             });
         });

@@ -36,10 +36,6 @@ export const ReportsComponent = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
             };
-            this.activityRange.cap = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
             this.activityRange.acb = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
@@ -109,9 +105,6 @@ export const ReportsComponent = {
             case 'prod':
                 this.refreshProduct();
                 break;
-            case 'cap':
-                this.refreshCap();
-                break;
             case 'acb':
                 this.refreshAcb();
                 break;
@@ -143,15 +136,6 @@ export const ReportsComponent = {
                     ctrl.displayedCertifiedProductsStatus = [].concat(ctrl.searchedCertifiedProductsStatus);
                     ctrl.displayedCertifiedProductsSurveillance = [].concat(ctrl.searchedCertifiedProductsSurveillance);
                     ctrl.displayedCertifiedProducts = [].concat(ctrl.searchedCertifiedProducts);
-                });
-        }
-
-        refreshCap () {
-            let ctrl = this;
-            this.networkService.getCorrectiveActionPlanActivity(this.dateAdjust(this.activityRange.cap))
-                .then(function (data) {
-                    ctrl.searchedCertifiedProductsCAP = ctrl.interpretCaps(data);
-                    ctrl.displayedCertifiedProductsCAP = [].concat(ctrl.searchedCertifiedProductsCAP);
                 });
         }
 
@@ -351,7 +335,6 @@ export const ReportsComponent = {
                 upload: [],
                 status: [],
                 surveillance: [],
-                cap: [],
                 other: [],
             };
             var change;
@@ -561,7 +544,6 @@ export const ReportsComponent = {
             this.searchedCertifiedProductsUpload = output.upload;
             this.searchedCertifiedProductsStatus = output.status;
             this.searchedCertifiedProductsSurveillance = output.surveillance;
-            this.searchedCertifiedProductsCAP = output.cap;
             this.searchedCertifiedProducts = output.other;
         }
 
@@ -651,33 +633,6 @@ export const ReportsComponent = {
                     var testTasks = this.compareSedTasks(prev[i].testTasks, curr[i].testTasks);
                     for (j = 0; j < testTasks.length; j++) {
                         obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
-                    }
-                }
-                if (obj.changes.length > 0) {
-                    ret.push(obj);
-                }
-            }
-            return ret;
-        }
-
-        compareCapCerts (prev, curr) {
-            var ret = [];
-            var change;
-            var certKeys = [
-                {key: 'acbSummary', display: 'ONC-ACB Summary'},
-                {key: 'developerSummary', display: 'Developer Summary'},
-                {key: 'resolution', display: 'Resolution'},
-                {key: 'surveillancePassRate', display: 'Pass Rate'},
-                {key: 'surveillanceSitesSurveilled', display: 'Sites Surveilled'},
-            ];
-            prev.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
-            curr.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
-            for (var i = 0; i < prev.length; i++) {
-                var obj = { number: curr[i].certificationCriterionNumber, changes: [] };
-                for (var j = 0; j < certKeys.length; j++) {
-                    change = this.compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
-                    if (change) {
-                        obj.changes.push('<li>' + change + '</li>');
                     }
                 }
                 if (obj.changes.length > 0) {
@@ -1015,77 +970,6 @@ export const ReportsComponent = {
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
-                }
-            }
-            return ret;
-        }
-
-        interpretCaps (data) {
-            this.loadedCapActivity = data;
-            var ret = [];
-            var change;
-
-            var certChanges, cpNum, i, j;
-            for (i = 0; i < data.length; i++) {
-                var activity = {
-                    date: data[i].activityDate,
-                    newId: data[i].id,
-                    acb: '',
-                };
-                activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
-                if (data[i].description.startsWith('A corrective action plan for')) {
-                    cpNum = data[i].description.split(' ')[7];
-                    if (data[i].description.endsWith('created.')) {
-                        activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].newData.id;
-                        activity.acb = data[i].newData.acbName;
-                    } else if (data[i].description.endsWith('deleted.')) {
-                        activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].originalData.id;
-                        activity.acb = data[i].originalData.acbName;
-                    } else if (data[i].description.endsWith('updated.')) {
-                        activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].newData.id;
-                        activity.acb = data[i].newData.acbName;
-                        var capFields = [
-                            {key: 'acbSummary', display: 'ONC/ACB Summary'},
-                            {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
-                            {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
-                            {key: 'developerSummary', display: 'Developer Explanation'},
-                            {key: 'effectiveDate', display: 'Effective Date', filter: 'date'},
-                            {key: 'estimatedCompleteionDate', display: 'Estimated Complete Date', filter: 'date'},
-                            {key: 'noncomplianceDate', display: 'Date of Determination', filter: 'date'},
-                            {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
-                            {key: 'resolution', display: 'Description of Resolution'},
-                            {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
-                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'},
-                        ];
-                        activity.details = [];
-                        for (j = 0; j < capFields.length; j++) {
-                            change = this.compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
-                            if (change) { activity.details.push(change); }
-                        }
-                        certChanges = this.compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
-                        for (j = 0; j < certChanges.length; j++) {
-                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
-                        }
-                        activity.csvDetails = activity.details.join('\n');
-                    } else {
-                        activity.action = data[i].description;
-                    }
-                    ret.push(activity);
-                } else if (data[i].description.startsWith('Documentation was added to ')) {
-                    cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
-                    activity.action = cpNum.join(' ');
-                    activity.acb = data[i].newData.acbName;
-                    ret.push(activity);
-                } else if (data[i].description.startsWith('Documentation was removed from ')) {
-                    cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
-                    activity.action = cpNum.join(' ');
-                    activity.acb = data[i].newData.acbName;
-                    ret.push(activity);
                 }
             }
             return ret;

@@ -9,7 +9,6 @@
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
-                    $delegate.getCorrectiveActionPlanActivity = jasmine.createSpy('getCorrectiveActionPlanActivity');
                     $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
                     $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
                     $delegate.getVersionActivity = jasmine.createSpy('getVersionActivity');
@@ -39,7 +38,6 @@
                 });
                 networkService = _networkService_;
                 networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
-                networkService.getCorrectiveActionPlanActivity.and.returnValue($q.when([]));
                 networkService.getDeveloperActivity.and.returnValue($q.when([]));
                 networkService.getProductActivity.and.returnValue($q.when([]));
                 networkService.getVersionActivity.and.returnValue($q.when([]));
@@ -93,7 +91,6 @@
                     beforeEach(function () {
                         spyOn(ctrl, 'singleCp');
                         spyOn(ctrl, 'refreshCp');
-                        spyOn(ctrl, 'refreshCap');
                         spyOn(ctrl, 'refreshDeveloper');
                         spyOn(ctrl, 'refreshProduct');
                         spyOn(ctrl, 'refreshAcb');
@@ -110,7 +107,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -126,7 +122,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -143,23 +138,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
-                        expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the cap data specifically', function () {
-                        ctrl.workType = 'cap';
-                        ctrl.refreshActivity();
-                        expect(ctrl.singleCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -175,7 +153,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -191,7 +168,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -207,7 +183,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).toHaveBeenCalled();
@@ -223,7 +198,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -239,7 +213,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -255,7 +228,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();
@@ -271,7 +243,6 @@
                         ctrl.refreshActivity();
                         expect(ctrl.singleCp).not.toHaveBeenCalled();
                         expect(ctrl.refreshCp).not.toHaveBeenCalled();
-                        expect(ctrl.refreshCap).not.toHaveBeenCalled();
                         expect(ctrl.refreshDeveloper).not.toHaveBeenCalled();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAcb).not.toHaveBeenCalled();

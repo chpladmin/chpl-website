@@ -1,15 +1,18 @@
 
-## Version 10.14.0
+## Version 10.15
 _Date TBD_
 
 ### New features
-* Removed old UI based caching
-* Force "no-cache" GET of details after Listing update
-* Add validation capability to ai-expandable-list control
-* Validate retired test tools based on workflow and ICS
-* Allow splitting of a developer with multiple products
+* Provide "Clear Selection(s)" link for multi-select lists
+* Allow ROLE_ADMIN to confirm listing
+* Allow users to impersonate other users as appropriate
+* Add new Organizations - Developer page
+  * Includes support for Edit, Merge, Split
+  * Not yet connected to the rest of the site
 
-### Bug fixes
-* Show user as logged out when JWT has expired
+### Bug fixes and cleanup
+* Remove unusable corrective action plan activity reports
+* Remove unused "compliance terms accepted" on user creation
+* Remove references to "Pending" ACB
 
 ---
