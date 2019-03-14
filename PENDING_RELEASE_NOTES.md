@@ -12,4 +12,7 @@ _Date TBD_
 * Remove unused "compliance terms accepted" on user creation
 * Remove references to "Pending" ACB
 
+### Bug fixes
+* Use correct ROLE on surveillance initiation
+
 ---
