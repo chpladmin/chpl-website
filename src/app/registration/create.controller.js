@@ -46,7 +46,7 @@ window.zxcvbn = zxcvbn;
                 networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
                         $location.path('/admin');
-                    },function (error) {
+                    }, function (error) {
                         vm.message.value = error.data.error;
                         vm.authorizeDetails = {};
                         vm.authorizeUserForm.$setPristine();
