@@ -106,6 +106,25 @@ export class NetworkService {
         return this.apiGET('/data/accessibility_standards');
     }
 
+    getActivityMetadata (key, activityRange) {
+        let call = '/activity/metadata/' + key;
+        let params = [];
+        if (activityRange.startDate) {
+            params.push('start=' + activityRange.startDate.getTime());
+        }
+        if (activityRange.endDate) {
+            params.push('end=' + activityRange.endDate.getTime());
+        }
+        if (params.length > 0) {
+            call += '?' + params.join('&');
+        }
+        return this.apiGET(call);
+    }
+
+    getActivityById (id) {
+        return this.apiGET('/activity/' + id);
+    }
+
     getAgeRanges () {
         return this.apiGET('/data/age_ranges');
     }
@@ -342,7 +361,7 @@ export class NetworkService {
     }
 
     getSingleCertifiedProductActivity (productId) {
-        return this.apiGET('/activity/certified_products/' + productId);
+        return this.apiGET('/activity/metadata/listings/' + productId);
     }
 
     getSurveillanceLookups () {
@@ -640,21 +659,6 @@ export class NetworkService {
                     return this.$q.reject(response);
                 }
             }, response => this.$q.reject(response));
-    }
-
-    getActivityMetadata (key, activityRange) {
-        let call = '/activity/metadata/' + key;
-        let params = [];
-        if (activityRange.startDate) {
-            params.push('start=' + activityRange.startDate.getTime());
-        }
-        if (activityRange.endDate) {
-            params.push('end=' + activityRange.endDate.getTime());
-        }
-        if (params.length > 0) {
-            call += '?' + params.join('&');
-        }
-        return this.apiGET(call);
     }
 
     getActivity (call, activityRange) {

@@ -1,8 +1,7 @@
 export const ReportsListingsComponent = {
     templateUrl: 'chpl.admin/components/reports/reports.listing.html',
     bindings: {
-        workType: '<',
-        productId: '<',
+        productId: '<?',
     },
     controller: class ReportsListings {
         constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
@@ -13,66 +12,245 @@ export const ReportsListingsComponent = {
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
-        }
-
-        $onInit () {
-            this.activityRange = { range: 30 };
-            var start = new Date();
-            var end = new Date();
-            start.setDate(end.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            this.activityRange.listing = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
+            this.activityRange = {
+                range: 30,
+                startDate: new Date(),
+                endDate: new Date(),
             };
-            if (this.productId) {
-                this.activityRange.listing.startDate = new Date('4/1/2016');
-                this.singleCp();
-            } else {
-                this.refreshCp();
-            }
-            let that = this;
-            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange.listing)).then(results => {
-                that.results = results;
-                that.displayed = [].concat(results);
-                that.$log.info(results);
-            });
+            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
         $onChanges (changes) {
-            if (!changes.workType.isFirstChange()) {
-                let causeRefresh = false;
-                if (changes.workType) {
-                    this.workType = angular.copy(changes.workType.currentValue);
-                    causeRefresh = true;
-                }
-                if (changes.productId) {
-                    this.productId = angular.copy(changes.productId.currentValue);
-                    causeRefresh = true;
-                }
-                if (causeRefresh) {
-                    if (this.productId) {
-                        this.singleCp();
-                    } else {
-                        this.refreshCp();
-                    }
-                }
+            if (changes.productId && changes.productId.currentValue) {
+                let that = this;
+                this.activityRange.endDate = new Date();
+                this.activityRange.startDate = new Date('4/1/2016');
+                this.productId = angular.copy(changes.productId.currentValue);
+                this.networkService.getSingleCertifiedProductActivity(this.productId)
+                    .then(results => {
+                        that.results = results;
+                        that.prepare(that.results, true);
+                    });
+            } else {
+                this.search();
             }
         }
 
-        ////////////////////////////////////////////////////////////////////
-        // Functions
-
-        refreshCp () {
-            let ctrl = this;
-            this.networkService.getCertifiedProductActivity(this.dateAdjust(this.activityRange.listing))
-                .then(function (data) {
-                    ctrl._interpretCps(data);
-                    ctrl.displayedCertifiedProductsUpload = [].concat(ctrl.searchedCertifiedProductsUpload);
-                    ctrl.displayedCertifiedProductsStatus = [].concat(ctrl.searchedCertifiedProductsStatus);
-                    ctrl.displayedCertifiedProductsSurveillance = [].concat(ctrl.searchedCertifiedProductsSurveillance);
-                    ctrl.displayedCertifiedProducts = [].concat(ctrl.searchedCertifiedProducts);
+        search () {
+            let that = this;
+            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
+                .then(results => {
+                    that.results = results;
+                    that.prepare(that.results);
                 });
+        }
+
+        prepare (results, full) {
+            this.activeAcbs = [];
+            this.displayed = results.map(item => {
+                item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
+                item.categoriesFilter = '|' + item.categories.join('|') + '|';
+                item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+                item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
+                if (this.activeAcbs.indexOf(item.acbName) === -1) {
+                    this.activeAcbs.push(item.acbName);
+                }
+                if (full) {
+                    this.parse(item);
+                    item.showDetails = true;
+                }
+                return item;
+            });
+        }
+
+        prepareDownload () {
+            this.displayed
+                .filter(item => !item.action)
+                .forEach(item => this.parse(item));
+        }
+
+        downloadReady () {
+            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
+        }
+
+        acbCount (acb) {
+            return this.displayed.reduce((acc, activity) => activity.acbName === acb ? acc + 1 : acc, 0);
+        }
+
+        parse (meta) {
+            return this.networkService.getActivityById(meta.id).then(item => {
+                var simpleCpFields = [
+                    {key: 'acbCertificationId', display: 'ACB Certification ID'},
+                    {key: 'accessibilityCertified', display: 'Accessibility Certified'},
+                    {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
+                    {key: 'chplProductNumber', display: 'CHPL Product Number'},
+                    {key: 'otherAcb', display: 'Other ONC-ACB'},
+                    {key: 'productAdditionalSoftware', display: 'Product-wide Relied Upon Software'},
+                    {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
+                    {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
+                    {key: 'sedReportFileLocation', display: 'SED Report File Location'},
+                    {key: 'sedTesting', display: 'SED Tested'},
+                    {key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date'},
+                    {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
+                ];
+                var nestedKeys = [
+                    {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
+                    {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
+                    {key: 'ics', subkey: 'inherits', display: 'ICS Status'},
+                    {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
+                    {key: 'testingLab', subkey: 'name', display: 'Testing Lab'},
+                ];
+                var change;
+
+                var certChanges, j, k, link;
+                var activity = {
+                    action: '',
+                    details: [],
+                };
+                if (item.description === 'Created a certified product') {
+                    activity.action = 'Created a certified product';
+                } else if (item.description.startsWith('Updated certified')) {
+                    activity.action = 'Updated a certified product';
+                    if (item.newData.certificationStatus) {
+                        change = this.nestedCompare(item.originalData, item.newData, 'certificationStatus', 'name', 'Certification Status');
+                        if (change) {
+                            activity.details.push(change);
+                        }
+                    } else {
+                        change = this._compareCertificationEvents(item.originalData.certificationEvents, item.newData.certificationEvents);
+                        if (change && change.length > 0) {
+                            activity.details.push(change);
+                        }
+                    }
+
+                    for (j = 0; j < simpleCpFields.length; j++) {
+                        change = this.compareItem(item.originalData, item.newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
+                        if (change) {
+                            activity.details.push(change);
+                        }
+                    }
+                    for (j = 0; j < nestedKeys.length; j++) {
+                        change = this.nestedCompare(item.originalData, item.newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                        if (change) {
+                            activity.details.push(change);
+                        }
+                    }
+                    var accessibilityStandardsKeys = [];
+                    var accessibilityStandards = this.compareArray(item.originalData.accessibilityStandards, item.newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
+                    for (j = 0; j < accessibilityStandards.length; j++) {
+                        activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
+                    }
+                    certChanges = this.compareCerts(item.originalData.certificationResults, item.newData.certificationResults);
+                    for (j = 0; j < certChanges.length; j++) {
+                        activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                    }
+                    var cqmChanges = this.compareCqms(item.originalData.cqmResults, item.newData.cqmResults);
+                    for (j = 0; j < cqmChanges.length; j++) {
+                        activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
+                    }
+                    if (typeof(item.originalData.ics) === 'object' &&
+                        typeof(item.newData.ics) === 'object' &&
+                        item.originalData.ics &&
+                        item.newData.ics) {
+                        if (item.originalData.ics.parents) {
+                            var icsParentsKeys = [];
+                            var icsParents = this.compareArray(item.originalData.ics.parents, item.newData.ics.parents, icsParentsKeys, 'chplProductNumber');
+                            for (j = 0; j < icsParents.length; j++) {
+                                activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
+                            }
+                        }
+                        if (item.originalData.ics.children) {
+                            var icsChildrenKeys = [];
+                            var icsChildren = this.compareArray(item.originalData.ics.children, item.newData.ics.children, icsChildrenKeys, 'chplProductNumber');
+                            for (j = 0; j < icsChildren.length; j++) {
+                                activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
+                            }
+                        }
+                    }
+                    if (item.originalData.meaningfulUseUserHistory) {
+                        var meaningfulUseUserHistory = this.ReportService.compare(item.originalData.meaningfulUseUserHistory, item.newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
+                        if (meaningfulUseUserHistory.length > 0) {
+                            activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
+                        }
+                    }
+                    if (item.originalData.testingLabs) {
+                        var testingLabsKeys = [];
+                        var testingLabs = this.compareArray(item.originalData.testingLabs, item.newData.testingLabs, testingLabsKeys, 'testingLabName');
+                        for (j = 0; j < testingLabs.length; j++) {
+                            activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
+                        }
+                    }
+                    var qmsStandards = this.ReportService.compare(item.originalData.qmsStandards, item.newData.qmsStandards, 'qmsStandards');
+                    if (qmsStandards.length > 0) {
+                        activity.details.push('QMS Standards changes<ul>' + qmsStandards.join('') + '</ul>');
+                    }
+                    if (item.originalData.sed && item.newData.sed) {
+                        var sedChanges = this._compareSed(item.originalData.sed, item.newData.sed);
+                        if (sedChanges && sedChanges.length > 0) {
+                            activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
+                        }
+                    }
+                    var targetedUsers = this.ReportService.compare(item.originalData.targetedUsers, item.newData.targetedUsers, 'targetedUsers');
+                    if (targetedUsers.length > 0) {
+                        activity.details.push('Targeted Users changes:<ul>' + targetedUsers.join('') + '</ul>');
+                    }
+                } else if (item.description.startsWith('Surveillance')) {
+                    if (item.description.startsWith('Surveillance was delete')) {
+                        activity.action = 'Surveillance was deleted';
+                    } else if (item.description.startsWith('Surveillance upload')) {
+                        activity.action = 'Surveillance was uploaded';
+                    } else if (item.description.startsWith('Surveillance was added')) {
+                        activity.action = 'Surveillance was added';
+                    } else if (item.description.startsWith('Surveillance was updated')) {
+                        activity.action = 'Surveillance was updated';
+                        for (j = 0; j < item.originalData.surveillance.length; j++) {
+                            var action = [item.originalData.surveillance[j].friendlyId + '<ul><li>'];
+                            var actions = [];
+                            var simpleFields = [
+                                {key: 'endDate', display: 'End Date', filter: 'date'},
+                                {key: 'friendlyId', display: 'Surveillance ID'},
+                                {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
+                                {key: 'startDate', display: 'Start Date', filter: 'date'},
+                            ];
+                            nestedKeys = [
+                                {key: 'type', subkey: 'name', display: 'Certification Type'},
+                            ];
+                            for (k = 0; k < simpleFields.length; k++) {
+                                change = this.compareItem(item.originalData.surveillance[j], item.newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
+                                if (change) { actions.push(change); }
+                            }
+                            for (k = 0; k < nestedKeys.length; k++) {
+                                change = this.nestedCompare(item.originalData.surveillance[j], item.newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
+                                if (change) {
+                                    actions.push(change);
+                                }
+                            }
+                            if (actions.length === 0) {
+                                meta.source = {
+                                    oldS: item.originalData,
+                                    newS: item.newData,
+                                }
+                            } else {
+                                action += actions.join('</li><li>');
+                                action += '</li></ul>';
+                                activity.details.push(action);
+                            }
+                        }
+                    } else {
+                        activity.action = item.description + '<br />' + link;
+                    }
+                } else if (item.description.startsWith('Documentation')) {
+                    activity.action = 'Documentation was added to a nonconformity';
+                } else if (item.description.startsWith('A document was removed')) {
+                    activity.action = 'Documentation was removed from a nonconformity';
+                } else {
+                    activity.action = item.description;
+                }
+                meta.action = activity.action;
+                meta.details = activity.details;
+                meta.csvDetails = activity.details.join('\n');
+            });
         }
 
         compareSurveillances (oldS, newS) {
@@ -91,278 +269,22 @@ export const ReportsListingsComponent = {
             });
         }
 
-        singleCp () {
-            let ctrl = this;
-            this.networkService.getSingleCertifiedProductActivity(this.productId)
-                .then(function (data) {
-                    ctrl._interpretCps(data);
-                    ctrl.displayedCertifiedProductsUpload = [].concat(ctrl.searchedCertifiedProductsUpload);
-                    ctrl.displayedCertifiedProductsStatus = [].concat(ctrl.searchedCertifiedProductsStatus);
-                    ctrl.displayedCertifiedProductsSurveillance = [].concat(ctrl.searchedCertifiedProductsSurveillance);
-                    ctrl.displayedCertifiedProducts = [].concat(ctrl.searchedCertifiedProducts);
-                });
-        }
-
-        validDates (key) {
+        validDates () {
             var utcEnd = Date.UTC(
-                this.activityRange[key].endDate.getFullYear(),
-                this.activityRange[key].endDate.getMonth(),
-                this.activityRange[key].endDate.getDate()
+                this.activityRange.endDate.getFullYear(),
+                this.activityRange.endDate.getMonth(),
+                this.activityRange.endDate.getDate()
             );
             var utcStart = Date.UTC(
-                this.activityRange[key].startDate.getFullYear(),
-                this.activityRange[key].startDate.getMonth(),
-                this.activityRange[key].startDate.getDate()
+                this.activityRange.startDate.getFullYear(),
+                this.activityRange.startDate.getMonth(),
+                this.activityRange.startDate.getDate()
             );
             var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
-            if (key === 'listing' && this.productId) {
+            if (this.productId) {
                 return (utcStart < utcEnd);
             }
             return (0 <= diffDays && diffDays < this.activityRange.range);
-        }
-
-        ////////////////////////////////////////////////////////////////////
-        // Helper functions
-
-        _interpretCps (data) {
-            this.loadedCpActivity = data;
-            var simpleCpFields = [
-                {key: 'acbCertificationId', display: 'ACB Certification ID'},
-                {key: 'accessibilityCertified', display: 'Accessibility Certified'},
-                {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
-                {key: 'chplProductNumber', display: 'CHPL Product Number'},
-                ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
-                {key: 'otherAcb', display: 'Other ONC-ACB'},
-                {key: 'productAdditionalSoftware', display: 'Product-wide Relied Upon Software'},
-                {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
-                {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
-                {key: 'sedReportFileLocation', display: 'SED Report File Location'},
-                {key: 'sedTesting', display: 'SED Tested'},
-                {key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date'},
-                {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
-            ];
-            var nestedKeys = [
-                //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
-                {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
-                {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
-                {key: 'ics', subkey: 'inherits', display: 'ICS Status'},
-                {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
-                {key: 'testingLab', subkey: 'name', display: 'Testing Lab'},
-            ];
-            var output = {
-                upload: [],
-                status: [],
-                surveillance: [],
-                other: [],
-            };
-            var change;
-
-            var certChanges, chplNum, cpId, i, j, k, link;
-            for (i = 0; i < data.length; i++) {
-                var activity = {
-                    date: data[i].activityDate,
-                    newId: data[i].id,
-                    acb: '',
-                };
-                activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
-                if (data[i].description === 'Created a certified product') {
-                    activity.id = data[i].newData.id;
-                    activity.chplProductNumber = data[i].newData.chplProductNumber;
-                    activity.acb = data[i].newData.certifyingBody.name;
-                    activity.developer = data[i].newData.developer.name;
-                    activity.product = data[i].newData.product.name;
-                    activity.certificationEdition = data[i].newData.certificationEdition.name;
-                    activity.certificationDate = data[i].newData.certificationDate;
-                    activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
-                    output.upload.push(activity);
-                } else if (data[i].description.startsWith('Updated certified')) {
-                    activity.id = data[i].newData.id;
-                    activity.chplProductNumber = data[i].newData.chplProductNumber;
-                    activity.acb = data[i].newData.certifyingBody.name;
-                    activity.developer = data[i].newData.developer.name;
-                    activity.product = data[i].newData.product.name;
-                    activity.certificationEdition = data[i].newData.certificationEdition.name;
-                    activity.certificationDate = data[i].newData.certificationDate;
-                    activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
-                    activity.details = [];
-                    var statusActivity, statusChange;
-                    if (data[i].newData.certificationStatus) {
-                        statusChange = this.nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
-                        if (statusChange) {
-                            statusActivity = angular.copy(activity);
-                            statusActivity.details = statusChange;
-                            output.status.push(statusActivity);
-                            activity.details.push(statusChange);
-                        }
-                    } else {
-                        statusChange = this._compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
-                        if (statusChange && statusChange.length > 0) {
-                            statusActivity = angular.copy(activity);
-                            statusActivity.details = ('<ul>' + statusChange.map(function (s) { return '<li>' + s + '</li>';}).join('') + '</ul>');
-                            output.status.push(statusActivity);
-                            //activity.details.push(statusChange);
-                        }
-                    }
-
-                    for (j = 0; j < simpleCpFields.length; j++) {
-                        change = this.compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
-                        if (change) { activity.details.push(change); }
-                    }
-                    for (j = 0; j < nestedKeys.length; j++) {
-                        change = this.nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                        if (change) {
-                            activity.details.push(change);
-                        }
-                    }
-                    var accessibilityStandardsKeys = [];
-                    var accessibilityStandards = this.compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
-                    for (j = 0; j < accessibilityStandards.length; j++) {
-                        activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
-                    }
-                    certChanges = this.compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
-                    for (j = 0; j < certChanges.length; j++) {
-                        activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
-                    }
-                    var cqmChanges = this.compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
-                    for (j = 0; j < cqmChanges.length; j++) {
-                        activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
-                    }
-                    if (typeof(data[i].originalData.ics) === 'object' &&
-                        typeof(data[i].newData.ics) === 'object' &&
-                        data[i].originalData.ics &&
-                        data[i].newData.ics) {
-                        if (data[i].originalData.ics.parents) {
-                            var icsParentsKeys = [];
-                            var icsParents = this.compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
-                            for (j = 0; j < icsParents.length; j++) {
-                                activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
-                            }
-                        }
-                        if (data[i].originalData.ics.children) {
-                            var icsChildrenKeys = [];
-                            var icsChildren = this.compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
-                            for (j = 0; j < icsChildren.length; j++) {
-                                activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
-                            }
-                        }
-                    }
-                    if (data[i].originalData.meaningfulUseUserHistory) {
-                        var meaningfulUseUserHistory = this.ReportService.compare(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
-                        if (meaningfulUseUserHistory.length > 0) {
-                            activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
-                        }
-                    }
-                    if (data[i].originalData.testingLabs) {
-                        var testingLabsKeys = [];
-                        var testingLabs = this.compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
-                        for (j = 0; j < testingLabs.length; j++) {
-                            activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
-                        }
-                    }
-                    var qmsStandards = this.ReportService.compare(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, 'qmsStandards');
-                    if (qmsStandards.length > 0) {
-                        activity.details.push('QMS Standards changes<ul>' + qmsStandards.join('') + '</ul>');
-                    }
-                    if (data[i].originalData.sed &&
-                        data[i].newData.sed) {
-                        var sedChanges = this._compareSed(data[i].originalData.sed, data[i].newData.sed);
-                        if (sedChanges && sedChanges.length > 0) {
-                            activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
-                        }
-                    }
-                    var targetedUsers = this.ReportService.compare(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, 'targetedUsers');
-                    if (targetedUsers.length > 0) {
-                        activity.details.push('Targeted Users changes:<ul>' + targetedUsers.join('') + '</ul>');
-                    }
-                    if (activity.details.length === 0) {
-                        delete activity.details;
-                    } else if (!statusChange || statusChange.length === 0 || (statusChange && activity.details.length > 1)) {
-                        activity.csvDetails = activity.details.join('\n');
-                        output.other.push(activity);
-                    }
-                } else if (data[i].description.startsWith('Surveillance')) {
-                    cpId = data[i].newData.id;
-                    chplNum = data[i].newData.chplProductNumber;
-                    link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
-                    activity.acb = data[i].newData.certifyingBody.name;
-                    activity.details = ['N/A'];
-                    if (data[i].description.startsWith('Surveillance was delete')) {
-                        activity.action = 'Surveillance was deleted from CHPL Product ' + link;
-                    } else if (data[i].description.startsWith('Surveillance upload')) {
-                        activity.action = 'Surveillance was uploaded for CHPL Product ' + link;
-                    } else if (data[i].description.startsWith('Surveillance was added')) {
-                        activity.action = 'Surveillance was added for CHPL Product ' + link;
-                    } else if (data[i].description.startsWith('Surveillance was updated')) {
-                        activity.action = 'Surveillance was updated for CHPL Product ' + link;
-                        activity.details = [];
-                        for (j = 0; j < data[i].originalData.surveillance.length; j++) {
-                            var action = [data[i].originalData.surveillance[j].friendlyId + '<ul><li>'];
-                            var actions = [];
-                            var simpleFields = [
-                                {key: 'endDate', display: 'End Date', filter: 'date'},
-                                {key: 'friendlyId', display: 'Surveillance ID'},
-                                {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
-                                {key: 'startDate', display: 'Start Date', filter: 'date'},
-                            ];
-                            nestedKeys = [
-                                //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
-                                {key: 'type', subkey: 'name', display: 'Certification Type'},
-                            ];
-                            for (k = 0; k < simpleFields.length; k++) {
-                                change = this.compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
-                                if (change) { actions.push(change); }
-                            }
-                            for (k = 0; k < nestedKeys.length; k++) {
-                                change = this.nestedCompare(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
-                                if (change) {
-                                    actions.push(change);
-                                }
-                            }
-                            /*
-                              if (!angular.equals(data[i].originalData.surveillance[j].requirements, data[i].newData.surveillance[j].requirements)) {
-                              actions.push('Requirements changed');
-                              }
-                            */
-                            if (actions.length === 0) {
-                                activity.source = {
-                                    oldS: data[i].originalData,
-                                    newS: data[i].newData,
-                                }
-                            } else {
-                                action += actions.join('</li><li>');
-                                action += '</li></ul>';
-                                activity.details.push(action);
-                            }
-                        }
-                    } else {
-                        activity.action = data[i].description + '<br />' + link;
-                    }
-                    output.surveillance.push(activity);
-                } else if (data[i].description.startsWith('Documentation')) {
-                    cpId = data[i].newData.id;
-                    chplNum = data[i].newData.chplProductNumber;
-                    link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
-                    activity.acb = data[i].newData.certifyingBody.name;
-                    activity.details = ['N/A'];
-                    activity.action = 'Documentation was added to a nonconformity for ' + link;
-                    output.surveillance.push(activity);
-                } else if (data[i].description.startsWith('A document was removed')) {
-                    cpId = data[i].newData.id;
-                    chplNum = data[i].newData.chplProductNumber;
-                    link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
-                    activity.acb = data[i].newData.certifyingBody.name;
-                    activity.details = ['N/A'];
-                    activity.action = 'Documentation was removed from a nonconformity for ' + link;
-                    output.surveillance.push(activity);
-                } else {
-                    activity.action = data[i].description;
-                    output.other.push(activity);
-                }
-            }
-            this.searchedCertifiedProductsUpload = output.upload;
-            this.searchedCertifiedProductsStatus = output.status;
-            this.searchedCertifiedProductsSurveillance = output.surveillance;
-            this.searchedCertifiedProducts = output.other;
         }
 
         compareCerts (prev, curr) {

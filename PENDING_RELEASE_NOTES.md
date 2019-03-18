@@ -6,6 +6,7 @@ _Date TBD_
 * Provide "Clear Selection(s)" link for multi-select lists
 * Allow ROLE_ADMIN to confirm listing
 * Allow users to impersonate other users as appropriate
+* Use new Activity end points for Listing reports
 
 ### Bug fixes and cleanup
 * Remove unusable corrective action plan activity reports

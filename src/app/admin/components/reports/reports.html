@@ -1,7 +1,7 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content form-horizontal" ng-form="$ctrl.activityForm">
-    <div ng-if="$ctrl.workType === 'cp-upload' || ($ctrl.workType === '' && $ctrl.productId) || $ctrl.workType === 'cp-status' || $ctrl.workType === 'cp-surveillance' || $ctrl.workType === 'cp-other'">
-      <chpl-reports-listings work-type="$ctrl.workType" product-id="$ctrl.productId"></chpl-reports-listings>
+    <div ng-if="$ctrl.workType === 'listings' || $ctrl.workType === 'cp-upload' || ($ctrl.workType === '' && $ctrl.productId) || $ctrl.workType === 'cp-status' || $ctrl.workType === 'cp-surveillance' || $ctrl.workType === 'cp-other'">
+      <chpl-reports-listings product-id="$ctrl.productId"></chpl-reports-listings>
     </div>
 
     <div class="row" ng-if="$ctrl.workType === 'dev'">
