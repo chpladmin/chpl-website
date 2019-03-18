@@ -899,6 +899,14 @@
         });
 
         it('should getSingleCertifiedProductActivity', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/certified_products\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleCertifiedProductActivity('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleCertifiedProductMetadataActivity', () => {
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
             networkService.getSingleCertifiedProductActivity('payload').then(response => {
                 expect(response.data).toEqual('response');

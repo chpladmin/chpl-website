@@ -361,6 +361,10 @@ export class NetworkService {
     }
 
     getSingleCertifiedProductActivity (productId) {
+        return this.apiGET('/activity/certified_products/' + productId);
+    }
+
+    getSingleCertifiedProductMetadataActivity (productId) {
         return this.apiGET('/activity/metadata/listings/' + productId);
     }
 
