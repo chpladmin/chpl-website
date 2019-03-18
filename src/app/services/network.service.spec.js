@@ -908,7 +908,7 @@
 
         it('should getSingleCertifiedProductMetadataActivity', () => {
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
-            networkService.getSingleCertifiedProductActivity('payload').then(response => {
+            networkService.getSingleCertifiedProductMetadataActivity('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
