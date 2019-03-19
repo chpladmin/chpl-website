@@ -34,7 +34,7 @@
             angular.mock.module('chpl.product', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getProduct = jasmine.createSpy('getProduct');
-                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
+                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
                     return $delegate;
                 });
             });
@@ -49,7 +49,7 @@
                 $q = _$q_;
                 networkService = _networkService_;
                 networkService.getProduct.and.returnValue($q.when(mock.products));
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductController', {
@@ -90,12 +90,12 @@
             });
 
             it('should get product history on load', function () {
-                expect(networkService.getSingleCertifiedProductActivity).toHaveBeenCalled();
+                expect(networkService.getSingleCertifiedProductMetadataActivity).toHaveBeenCalled();
             });
 
             it('should log an error if the product history load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.reject('error message'));
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);
