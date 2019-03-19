@@ -27,7 +27,7 @@ export const ReportsListingsComponent = {
                 this.activityRange.endDate = new Date();
                 this.activityRange.startDate = new Date('4/1/2016');
                 this.productId = angular.copy(changes.productId.currentValue);
-                this.networkService.getSingleCertifiedProductActivity(this.productId)
+                this.networkService.getSingleCertifiedProductMetadataActivity(this.productId)
                     .then(results => {
                         that.results = results;
                         that.prepare(that.results, true);
@@ -68,6 +68,7 @@ export const ReportsListingsComponent = {
             this.displayed
                 .filter(item => !item.action)
                 .forEach(item => this.parse(item));
+            //todo, eventually: use the $q.all function as demonstrated in product history eye
         }
 
         downloadReady () {

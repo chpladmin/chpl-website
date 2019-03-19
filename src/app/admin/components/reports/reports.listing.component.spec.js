@@ -9,8 +9,8 @@
             angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
-                    $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
-                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
+                    $delegate.getActivityById = jasmine.createSpy('getActivityById');
+                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
                     return $delegate;
                 });
             });
@@ -28,8 +28,8 @@
                 });
                 networkService = _networkService_;
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.listingActivityMetadata));
-                networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when([]));
+                networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()
 
