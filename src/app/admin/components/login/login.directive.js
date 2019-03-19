@@ -76,6 +76,9 @@
                     networkService.keepalive()
                         .then(function (response) {
                             authService.saveToken(response.token);
+                            if (!authService.isImpersonating() && vm.activity === vm.activityEnum.IMPERSONATING) {
+                                vm.activity = vm.activityEnum.NONE;
+                            }
                         });
                 } else {
                     vm.activity = vm.activityEnum.LOGIN;
@@ -98,7 +101,9 @@
                 });
             });
             $scope.$on('$destroy', idle);
-            $scope.$on('impersonating', () => vm.activity = vm.activityEnum.IMPERSONATING);
+
+            var impersonating = $scope.$on('impersonating', () => vm.activity = vm.activityEnum.IMPERSONATING);
+            $scope.$on('$destroy', impersonating);
         }
 
         function changePassword () {
@@ -232,7 +237,10 @@
 
         function stopImpersonating () {
             networkService.unimpersonateUser()
-                .then(token => authService.saveToken(token.token));
+                .then(token => {
+                    authService.saveToken(token.token);
+                    vm.clear();
+                });
         }
 
         /////////////////////////////////////////////////////////
