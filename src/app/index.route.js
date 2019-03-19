@@ -1,3 +1,5 @@
+/* global DEVELOPER_MODE */
+
 (function () {
     'use strict';
 
@@ -25,25 +27,6 @@
                 controller: 'AdminController',
                 controllerAs: 'vm',
                 data: { title: 'Password Reset' },
-            })
-            .state('organizations', {
-                abstract: true,
-                url: '/organizations',
-                template: '<ui-view/>',
-            })
-            .state('organizations.developers', {
-                url: '/developers/{developerId}/{action}?',
-                component: 'chplDevelopers',
-                params: {
-                    action: {squash: true, value: null},
-                },
-                resolve: {
-                    allowedAcbs: networkService => networkService.getAcbs(true),
-                    developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
-                    developers: networkService => networkService.getDevelopers(),
-                    products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
-                },
-                data: { title: 'CHPL Developers' },
             })
             .state('charts', {
                 url: '/charts',
@@ -113,14 +96,6 @@
                 template: require('./pages/compare/compare.html'),
                 data: { title: 'CHPL Product Comparison' },
             })
-            .state('listing', {
-                url: '/listing/{id}/{initialPanel}',
-                params: {
-                    initialPanel: {squash: true, value: null},
-                },
-                component: 'chplListing',
-                data: { title: 'CHPL Product Details' },
-            })
             .state('product', {
                 url: '/product/{id}/{initialPanel}',
                 params: {
@@ -186,6 +161,37 @@
                 template: require('./pages/search/search.html'),
                 data: { title: 'CHPL Search' },
             });
+        if (DEVELOPER_MODE) {
+            $stateProvider
+                .state('organizations', {
+                    abstract: true,
+                    url: '/organizations',
+                    template: '<ui-view/>',
+                })
+                .state('organizations.developers', {
+                    url: '/developers/{developerId}/{action}?',
+                    component: 'chplDevelopers',
+                    params: {
+                        action: {squash: true, value: null},
+                    },
+                    resolve: {
+                        allowedAcbs: networkService => networkService.getAcbs(true),
+                        developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
+                        developers: networkService => networkService.getDevelopers(),
+                        products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
+                    },
+                    data: { title: 'CHPL Developers' },
+                })
+                .state('listing', {
+                    url: '/listing/{id}/{initialPanel}',
+                    params: {
+                        initialPanel: {squash: true, value: null},
+                    },
+                    component: 'chplListing',
+                    data: { title: 'CHPL Product Details' },
+                });
+        }
+
         $urlRouterProvider.otherwise('/search');
     }
 })();
