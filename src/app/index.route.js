@@ -156,7 +156,7 @@
                 .state('organizations', {
                     abstract: true,
                     url: '/organizations',
-                    template: '<ui-view/>',
+                    template: '<ui-view />',
                 })
                 .state('organizations.developers', {
                     url: '/developers/{developerId}/{action}?',
@@ -167,10 +167,22 @@
                     resolve: {
                         allowedAcbs: networkService => networkService.getAcbs(true),
                         developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
-                        developers: networkService => networkService.getDevelopers(),
+                        developers: networkService => networkService.getDevelopers(true),
                         products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
                     },
                     data: { title: 'CHPL Developers' },
+                })
+                .state('organizations.developers.products', {
+                    url: '/products/{productId}/{action}?',
+                    component: 'chplProducts',
+                    params: {
+                        action: {squash: true, value: null},
+                    },
+                    resolve: {
+                        product: (networkService, $transition$) => networkService.getSimpleProduct($transition$.params().productId),
+                        versions: (networkService, $transition$) => networkService.getVersionsByProduct($transition$.params().productId),
+                    },
+                    data: { title: 'CHPL Products' },
                 })
                 .state('listing', {
                     url: '/listing/{id}/{initialPanel}',

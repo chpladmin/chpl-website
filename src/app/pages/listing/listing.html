@@ -36,7 +36,7 @@
                             can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
                             can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
                             can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                            take-action="$ctrl.takeDeveloperAction(developerId, action)"
+                            take-action="$ctrl.takeDeveloperAction(action, developerId)"
                             ></chpl-developer>
           </div>
           <div class="product-element" id="product-information-product-history">
