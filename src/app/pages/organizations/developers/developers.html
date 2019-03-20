@@ -58,7 +58,7 @@
         <div class="clearfix"></div>
       </div>
       <h2>All Developers</h2>
-      <div ng-repeat="developer in $ctrl.developers | filter: {deleted: true} | orderBy: 'name'">
+      <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
         {{ developer.name }}
         <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, true)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
         <div class="clearfix"></div>
