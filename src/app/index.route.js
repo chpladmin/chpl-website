@@ -96,16 +96,6 @@
                 template: require('./pages/compare/compare.html'),
                 data: { title: 'CHPL Product Comparison' },
             })
-            .state('product', {
-                url: '/product/{id}/{initialPanel}',
-                params: {
-                    initialPanel: {squash: true, value: null},
-                },
-                template: require('./product/product.html'),
-                controller: 'ProductController',
-                controllerAs: 'vm',
-                data: { title: 'CHPL Product Details' },
-            })
             .state('registration', {
                 abstract: true,
                 url: '/registration',
@@ -189,7 +179,42 @@
                     },
                     component: 'chplListing',
                     data: { title: 'CHPL Product Details' },
+                })
+                .state('product', { //temporary redirect
+                    url: '/product/{id}',
+                    redirectTo: trans => {
+                        return {
+                            state: 'listing',
+                            params: {
+                                id: trans.params().id,
+                            },
+                        }
+                    },
+                })
+                .state('product_initial_panel', { //temporary redirect
+                    url: '/product/{id}/{initialPanel}',
+                    redirectTo: trans => {
+                        return {
+                            state: 'listing',
+                            params: {
+                                id: trans.params().id,
+                                initialPanel: trans.params().initialPanel,
+                            },
+                        }
+                    },
                 });
+        } else {
+            $stateProvider
+                .state('product', {
+                    url: '/product/{id}/{initialPanel}',
+                    params: {
+                        initialPanel: {squash: true, value: null},
+                    },
+                    template: require('./product/product.html'),
+                    controller: 'ProductController',
+                    controllerAs: 'vm',
+                    data: { title: 'CHPL Product Details' },
+                })
         }
 
         $urlRouterProvider.otherwise('/search');
