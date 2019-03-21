@@ -1,3 +1,5 @@
+/* global DEVELOPER_MODE */
+
 (function () {
     'use strict';
 
@@ -30,7 +32,7 @@
                 url: '/charts',
                 controller: 'ChartsController',
                 controllerAs: 'vm',
-                template: require('./charts/charts.html'),
+                template: require('./pages/charts/charts.html'),
                 data: { title: 'CHPL Charts' },
             })
             .state('collections', {
@@ -39,59 +41,59 @@
                 template: '<ui-view/>',
             })
             .state('collections.apiDocumentation', {
-                url: '/apiDocumentation',
+                url: '/api-documentation',
                 controller: 'ApiDocumentationController',
                 controllerAs: 'vm',
-                template: require('./collections/apiDocumentation/apiDocumentation.html'),
+                template: require('./pages/collections/api-documentation/api-documentation.html'),
                 data: { title: 'API Information for 2015 Edition Products' },
             })
             .state('collections.correctiveAction', {
-                url: '/correctiveAction',
+                url: '/corrective-action',
                 controller: 'CorrectiveActionController',
                 controllerAs: 'vm',
-                template: require('./collections/correctiveAction/correctiveAction.html'),
+                template: require('./pages/collections/corrective-action/corrective-action.html'),
                 data: { title: 'Products: Corrective Action Status' },
             })
             .state('collections.developers', {
                 url: '/developers',
                 controller: 'BannedDevelopersController',
                 controllerAs: 'vm',
-                template: require('./collections/developers/developers.html'),
+                template: require('./pages/collections/developers/developers.html'),
                 data: { title: 'Banned Developers' },
             })
             .state('collections.inactive', {
                 url: '/inactive',
                 controller: 'InactiveCertificatesController',
                 controllerAs: 'vm',
-                template: require('./collections/inactive/inactive.html'),
+                template: require('./pages/collections/inactive/inactive.html'),
                 data: { title: 'Inactive Certificates' },
             })
             .state('collections.products', {
                 url: '/products',
                 controller: 'DecertifiedProductsController',
                 controllerAs: 'vm',
-                template: require('./collections/products/products.html'),
+                template: require('./pages/collections/products/products.html'),
                 data: { title: 'Decertified Products' },
             })
             .state('collections.sed', {
                 url: '/sed',
                 controller: 'SedCollectionController',
                 controllerAs: 'vm',
-                template: require('./collections/sed/sed.html'),
+                template: require('./pages/collections/sed/sed.html'),
                 data: { title: 'SED Information for 2014 &amp; 2015 Edition Products' },
             })
             .state('collections.transparencyAttestations', {
-                url: '/transparencyAttestations',
+                url: '/transparency-attestations',
                 controller: 'TransparencyAttestationsController',
                 controllerAs: 'vm',
-                template: require('./collections/transparencyAttestations/transparencyAttestations.html'),
+                template: require('./pages/collections/transparency-attestations/transparency-attestations.html'),
                 data: { title: 'Transparency Attestations' },
             })
             .state('compare', {
                 url: '/compare/{compareIds}',
                 controller: 'CompareController',
                 controllerAs: 'vm',
-                template: require('./compare/compare.html'),
+                template: require('./pages/compare/compare.html'),
                 data: { title: 'CHPL Product Comparison' },
             })
             .state('product', {
@@ -111,14 +113,14 @@
             })
             .state('registration.create-user}', {
                 url: '/create-user/{hash}',
-                template: require('./registration/create-user.html'),
+                template: require('./pages/registration/create-user.html'),
                 controller: 'CreateController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Registration' },
             })
             .state('registration.confirm-user}', {
                 url: '/confirm-user/{hash}',
-                template: require('./registration/confirm-user.html'),
+                template: require('./pages/registration/confirm-user.html'),
                 controller: 'ConfirmController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Registration' },
@@ -129,15 +131,15 @@
                 template: '<ui-view/>',
             })
             .state('resources.chpl_api', {
-                url: '/chpl_api',
-                template: require('./resources/chpl_api/chpl_api.html'),
+                url: '/chpl-api',
+                template: require('./pages/resources/chpl-api/chpl-api.html'),
                 controller: 'ChplApiController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL API' },
             })
             .state('resources.cms_lookup', {
-                url: '/cms_lookup',
-                template: require('./resources/cms_lookup/cms_lookup.html'),
+                url: '/cms-lookup',
+                template: require('./pages/resources/cms-lookup/cms-lookup.html'),
                 controller: 'CmsLookupController',
                 controllerAs: 'vm',
                 data: { title: 'CMS ID Reverse Lookup' },
@@ -156,9 +158,40 @@
                 url: '/search',
                 controller: 'SearchController',
                 controllerAs: 'vm',
-                template: require('./search/search.html'),
+                template: require('./pages/search/search.html'),
                 data: { title: 'CHPL Search' },
             });
+        if (DEVELOPER_MODE) {
+            $stateProvider
+                .state('organizations', {
+                    abstract: true,
+                    url: '/organizations',
+                    template: '<ui-view/>',
+                })
+                .state('organizations.developers', {
+                    url: '/developers/{developerId}/{action}?',
+                    component: 'chplDevelopers',
+                    params: {
+                        action: {squash: true, value: null},
+                    },
+                    resolve: {
+                        allowedAcbs: networkService => networkService.getAcbs(true),
+                        developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
+                        developers: networkService => networkService.getDevelopers(),
+                        products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
+                    },
+                    data: { title: 'CHPL Developers' },
+                })
+                .state('listing', {
+                    url: '/listing/{id}/{initialPanel}',
+                    params: {
+                        initialPanel: {squash: true, value: null},
+                    },
+                    component: 'chplListing',
+                    data: { title: 'CHPL Product Details' },
+                });
+        }
+
         $urlRouterProvider.otherwise('/search');
     }
 })();
