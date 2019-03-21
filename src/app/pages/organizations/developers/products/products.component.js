@@ -1,12 +1,13 @@
-export const DevelopersComponent = {
-    templateUrl: 'chpl.organizations/developers.html',
+export const ProductsComponent = {
+    templateUrl: 'chpl.organizations/developers/products/products.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
         developers: '<',
+        product: '<',
         products: '<',
+        versions: '<',
     },
-    controller: class DevelopersComponent {
+    controller: class ProductsComponent {
         constructor ($log, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
@@ -20,61 +21,65 @@ export const DevelopersComponent = {
 
         $onChanges (changes) {
             this.action = this.$stateParams.action;
-            if (changes.allowedAcbs) {
-                this.allowedAcbs = (angular.copy(changes.allowedAcbs.currentValue)).acbs;
-            }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
-                this.newDeveloper = angular.copy(this.developer);
-                this.backup.developer = angular.copy(this.developer);
             }
             if (changes.developers) {
                 this.developers = (angular.copy(changes.developers.currentValue)).developers;
-                this.backup.developers = angular.copy(this.developers);
-                this.mergingDevelopers = [];
+            }
+            if (changes.product) {
+                this.product = angular.copy(changes.product.currentValue);
+                this.newProduct = angular.copy(this.product);
+                this.backup.product = angular.copy(this.product);
             }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
                 this.backup.products = angular.copy(this.products);
-                this.movingProducts = [];
+                this.mergingProducts = [];
+            }
+            if (changes.versions) {
+                this.versions = angular.copy(changes.versions.currentValue);
+                this.backup.versions = angular.copy(this.versions);
+                this.movingVersions = [];
             }
         }
 
         cancel () {
-            this.developer = angular.copy(this.backup.developer);
-            this.newDeveloper = angular.copy(this.developer);
-            this.developers = angular.copy(this.backup.developers);
+            this.product = angular.copy(this.backup.product);
+            this.newProduct = angular.copy(this.product);
             this.products = angular.copy(this.backup.products);
-            this.mergingDevelopers = [];
-            this.movingProducts = [];
+            this.versions = angular.copy(this.backup.versions);
+            this.mergingProducts = [];
+            this.movingVersions = [];
             this.action = undefined;
             this.splitEdit = true;
         }
 
         cancelSplitEdit () {
-            this.newDeveloper = angular.copy(this.developer);
+            this.newProduct = angular.copy(this.product);
             this.splitEdit = false;
         }
 
-        save (developer) {
-            let developerIds = [this.developer.developerId];
+        save (product) {
+            let productIds = [this.product.productId];
             if (this.action === 'merge') {
-                developerIds = developerIds.concat(this.mergingDevelopers.map(dev => dev.developerId));
+                productIds = productIds.concat(this.mergingProducts.map(prod => prod.productId));
             }
             let that = this;
-            this.developer = developer;
-            this.networkService.updateDeveloper({
-                developer: this.developer,
-                developerIds: developerIds,
+            this.product = product;
+            this.networkService.updateProduct({
+                product: this.product,
+                productIds: productIds,
+                newDeveloperId: this.product.owner.developerId,
             }).then(response => {
                 if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                     if (that.action === 'merge') {
                         that.$state.go('organizations.developers', {
-                            developerId: response.developerId,
                             action: undefined,
+                            developerId: that.developer.developerId,
                         });
                     }
-                    that.developer = response;
+                    that.product = response;
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
@@ -98,25 +103,26 @@ export const DevelopersComponent = {
             });
         }
 
-        saveSplitEdit (developer) {
-            this.newDeveloper = developer;
+        saveSplitEdit (product) {
+            this.newProduct = product;
             this.splitEdit = false;
         }
 
         split () {
             let that = this;
-            let splitDeveloper = {
-                oldDeveloper: this.developer,
-                newDeveloper: this.newDeveloper,
-                oldProducts: this.products,
-                newProducts: this.movingProducts,
+            let splitProduct = {
+                oldProduct: this.product,
+                newProductName: this.newProduct.name,
+                newProductCode: this.newProduct.newProductCode,
+                oldVersions: this.versions,
+                newVersions: this.movingVersions,
             };
-            this.networkService.splitDeveloper(splitDeveloper)
+            this.networkService.splitProduct(splitProduct)
                 .then(response => {
                     if (!response.status || response.status === 200) {
                         that.$state.go('organizations.developers', {
-                            developerId: response.oldDeveloper.developerId,
                             action: undefined,
+                            developerId: that.developer.developerId,
                         });
                     } else {
                         if (response.data.errorMessages) {
@@ -144,31 +150,45 @@ export const DevelopersComponent = {
             this.action = action;
         }
 
+        takeDeveloperAction () {
+            this.$state.go('organizations.developers', {
+                action: undefined,
+                developerId: this.developer.developerId,
+            });
+        }
+
+        takeVersionAction (action, versionId) {
+            this.$state.go('organizations.developers.products.versions', {
+                action: action,
+                versionId: versionId,
+            });
+        }
+
         takeSplitAction () {
             this.splitEdit = true;
         }
 
-        toggleMerge (developer, merge) {
+        toggleMerge (product, merge) {
             if (merge) {
-                this.mergingDevelopers.push(this.developers.filter(dev => dev.developerId === developer.developerId)[0]);
-                this.developers = this.developers.filter(dev => dev.developerId !== developer.developerId);
+                this.mergingProducts.push(this.products.filter(prod => prod.productId === product.productId)[0]);
+                this.products = this.products.filter(prod => prod.productId !== product.productId);
             } else {
-                this.developers.push(this.mergingDevelopers.filter(dev => dev.developerId === developer.developerId)[0]);
-                this.mergingDevelopers = this.mergingDevelopers.filter(dev => dev.developerId !== developer.developerId);
+                this.products.push(this.mergingProducts.filter(prod => prod.productId === product.productId)[0]);
+                this.mergingProducts = this.mergingProducts.filter(prod => prod.productId !== product.productId);
             }
         }
 
-        toggleMove (product, toNew) {
+        toggleMove (version, toNew) {
             if (toNew) {
-                this.movingProducts.push(this.products.filter(prod => prod.productId === product.productId)[0]);
-                this.products = this.products.filter(prod => prod.productId !== product.productId);
+                this.movingVersions.push(this.versions.filter(ver => ver.versionId === version.versionId)[0]);
+                this.versions = this.versions.filter(ver => ver.versionId !== version.versionId);
             } else {
-                this.products.push(this.movingProducts.filter(prod => prod.productId === product.productId)[0]);
-                this.movingProducts = this.movingProducts.filter(prod => prod.productId !== product.productId);
+                this.versions.push(this.movingVersions.filter(ver => ver.versionId === version.versionId)[0]);
+                this.movingVersions = this.movingVersions.filter(ver => ver.versionId !== version.versionId);
             }
         }
     },
 }
 
 angular.module('chpl.organizations')
-    .component('chplDevelopers', DevelopersComponent);
+    .component('chplProducts', ProductsComponent);

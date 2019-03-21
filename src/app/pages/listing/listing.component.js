@@ -53,7 +53,7 @@ export const ListingComponent = {
                 });
         }
 
-        takeDeveloperAction (developerId, action) {
+        takeDeveloperAction (action, developerId) {
             this.$state.go('organizations.developers', {
                 developerId: developerId,
                 action: action,

@@ -1,10 +1,13 @@
 (() => {
     'use strict';
 
-    describe('the Developer component', () => {
+    xdescribe('the Developers component', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {
+            acbs: [
+                { name: 'an acb' },
+            ],
             developer: {
                 developerId: 636, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
                 address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
@@ -13,24 +16,32 @@
                 statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
                 status: {id: 1, status: 'Active'},
             },
+            developers: [
+                { name: 'a developer' },
+            ],
+            products: [
+                { name: 'a product' },
+            ],
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.components');
-
+            angular.mock.module('chpl', 'chpl.organizations', $provide => {
+                $provide.decorator('chplDevelopersDirective', $delegate => {
+                    $delegate[0].terminal = true;
+                    return $delegate;
+                });
+            });
             inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
                 $log = _$log_;
 
                 scope = $rootScope.$new();
+                scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
-                scope.canEdit = true;
-                scope.canMerge = true;
-                scope.canSplit = true;
-                scope.onEdit = jasmine.createSpy('onEdit');
-                scope.onSplit = jasmine.createSpy('onSplit');
+                scope.developers = mock.developers;
+                scope.products = mock.products;
 
-                el = angular.element('<chpl-developer developer="developer" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" on-edit="onEdit()" on-split="onSplit()"></chpl-developer>');
+                el = angular.element('<chpl-developers allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers>');
 
                 $compile(el)(scope);
                 scope.$digest();

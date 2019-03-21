@@ -96,16 +96,6 @@
                 template: require('./pages/compare/compare.html'),
                 data: { title: 'CHPL Product Comparison' },
             })
-            .state('product', {
-                url: '/product/{id}/{initialPanel}',
-                params: {
-                    initialPanel: {squash: true, value: null},
-                },
-                template: require('./product/product.html'),
-                controller: 'ProductController',
-                controllerAs: 'vm',
-                data: { title: 'CHPL Product Details' },
-            })
             .state('registration', {
                 abstract: true,
                 url: '/registration',
@@ -166,7 +156,7 @@
                 .state('organizations', {
                     abstract: true,
                     url: '/organizations',
-                    template: '<ui-view/>',
+                    template: '<ui-view />',
                 })
                 .state('organizations.developers', {
                     url: '/developers/{developerId}/{action}?',
@@ -177,10 +167,22 @@
                     resolve: {
                         allowedAcbs: networkService => networkService.getAcbs(true),
                         developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
-                        developers: networkService => networkService.getDevelopers(),
+                        developers: networkService => networkService.getDevelopers(true),
                         products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
                     },
                     data: { title: 'CHPL Developers' },
+                })
+                .state('organizations.developers.products', {
+                    url: '/products/{productId}/{action}?',
+                    component: 'chplProducts',
+                    params: {
+                        action: {squash: true, value: null},
+                    },
+                    resolve: {
+                        product: (networkService, $transition$) => networkService.getSimpleProduct($transition$.params().productId),
+                        versions: (networkService, $transition$) => networkService.getVersionsByProduct($transition$.params().productId),
+                    },
+                    data: { title: 'CHPL Products' },
                 })
                 .state('listing', {
                     url: '/listing/{id}/{initialPanel}',
@@ -189,7 +191,42 @@
                     },
                     component: 'chplListing',
                     data: { title: 'CHPL Product Details' },
+                })
+                .state('product', { //temporary redirect
+                    url: '/product/{id}',
+                    redirectTo: trans => {
+                        return {
+                            state: 'listing',
+                            params: {
+                                id: trans.params().id,
+                            },
+                        }
+                    },
+                })
+                .state('product_initial_panel', { //temporary redirect
+                    url: '/product/{id}/{initialPanel}',
+                    redirectTo: trans => {
+                        return {
+                            state: 'listing',
+                            params: {
+                                id: trans.params().id,
+                                initialPanel: trans.params().initialPanel,
+                            },
+                        }
+                    },
                 });
+        } else {
+            $stateProvider
+                .state('product', {
+                    url: '/product/{id}/{initialPanel}',
+                    params: {
+                        initialPanel: {squash: true, value: null},
+                    },
+                    template: require('./product/product.html'),
+                    controller: 'ProductController',
+                    controllerAs: 'vm',
+                    data: { title: 'CHPL Product Details' },
+                })
         }
 
         $urlRouterProvider.otherwise('/search');
