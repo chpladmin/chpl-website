@@ -167,7 +167,6 @@
                     resolve: {
                         allowedAcbs: networkService => networkService.getAcbs(true),
                         developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
-                        developers: networkService => networkService.getDevelopers(true),
                         products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
                     },
                     data: { title: 'CHPL Developers' },
@@ -183,6 +182,18 @@
                         versions: (networkService, $transition$) => networkService.getVersionsByProduct($transition$.params().productId),
                     },
                     data: { title: 'CHPL Products' },
+                })
+                .state('organizations.developers.products.versions', {
+                    url: '/versions/{versionId}/{action}?',
+                    component: 'chplVersions',
+                    params: {
+                        action: {squash: true, value: null},
+                    },
+                    resolve: {
+                        version: (networkService, $transition$) => networkService.getVersion($transition$.params().versionId),
+                        listings: (networkService, $transition$) => networkService.getProductsByVersion($transition$.params().versionId, false),
+                    },
+                    data: { title: 'CHPL Product Versions' },
                 })
                 .state('listing', {
                     url: '/listing/{id}/{initialPanel}',

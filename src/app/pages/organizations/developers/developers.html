@@ -22,7 +22,7 @@
                       can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
                       can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
                       is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
-                      is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length === 0"
+                      is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length < 2"
                       on-cancel="$ctrl.cancel()"
                       on-edit="$ctrl.save(developer)"
                       show-full="true"
@@ -45,22 +45,24 @@
                       can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
                       can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
                       can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      can-view="true"
+                      is-list="true"
                       take-action="$ctrl.takeProductAction(action, productId)"
                       ></chpl-product>
       </div>
     </div>
-    <div class="col-md-6" ng-if="$ctrl.action === 'merge'">
+    <div class="col-md-6" ng-if="$ctrl.action === 'merge' && $ctrl.developers && $ctrl.mergingDevelopers">
       <h2>Developers to merge</h2>
-      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length === 0">At least one Developer must be selected to merge</div>
+      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length < 2">At least one other Developer must be selected to merge</div>
       <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
         {{ developer.name }}
-        <button class="btn btn-warning btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, false)"><i class="fa fa-minus"></i><span class="sr-only"> Remove</span></button>
+        <button class="btn btn-warning btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, false)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa" ng-class="developer.developerId === $ctrl.developer.developerId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
         <div class="clearfix"></div>
       </div>
-      <h2>All Developers</h2>
+      <h2>Developers not merging</h2>
       <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
         {{ developer.name }}
-        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, true)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
         <div class="clearfix"></div>
       </div>
     </div>

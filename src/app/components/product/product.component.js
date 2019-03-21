@@ -9,12 +9,11 @@ export const ProductComponent = {
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
+        isList: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
-        versions: '<',
         showFull: '<',
-        showVersions: '<',
         takeAction: '&',
     },
     controller: class ProductComponent {
@@ -57,20 +56,14 @@ export const ProductComponent = {
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
+            if (changes.isList) {
+                this.isList = angular.copy(changes.isList.currentValue);
+            }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
-            if (changes.versions) {
-                this.versions = angular.copy(changes.versions.currentValue);
-            }
-            if (changes.versionContact) {
-                this.versionContact = angular.copy(changes.versionContact.currentValue);
-            }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
-            }
-            if (changes.showVersions) {
-                this.showVersions = angular.copy(changes.showVersions.currentValue);
             }
         }
 

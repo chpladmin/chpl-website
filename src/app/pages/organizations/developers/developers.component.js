@@ -3,7 +3,6 @@ export const DevelopersComponent = {
     bindings: {
         allowedAcbs: '<',
         developer: '<',
-        developers: '<',
         products: '<',
     },
     controller: class DevelopersComponent {
@@ -18,6 +17,18 @@ export const DevelopersComponent = {
             this.splitEdit = true;
         }
 
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.developers = this.networkService.getDevelopers().then(response => {
+                    that.developers = response.developers.filter(d => d.developerId !== that.developer.developerId);
+                    that.mergingDevelopers = response.developers.filter(d => d.developerId === that.developer.developerId);
+                    that.backup.developers = angular.copy(that.developers);
+                    that.backup.mergingDevelopers = angular.copy(that.mergingDevelopers);
+                });
+            }
+        }
+
         $onChanges (changes) {
             this.action = this.$stateParams.action;
             if (changes.allowedAcbs) {
@@ -27,11 +38,6 @@ export const DevelopersComponent = {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
-            }
-            if (changes.developers) {
-                this.developers = (angular.copy(changes.developers.currentValue)).developers;
-                this.backup.developers = angular.copy(this.developers);
-                this.mergingDevelopers = [];
             }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
@@ -45,7 +51,7 @@ export const DevelopersComponent = {
             this.newDeveloper = angular.copy(this.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.mergingDevelopers = [];
+            this.mergingDevelopers = angular.copy(this.backup.mergingDevelopers);
             this.movingProducts = [];
             this.action = undefined;
             this.splitEdit = true;
@@ -57,9 +63,11 @@ export const DevelopersComponent = {
         }
 
         save (developer) {
-            let developerIds = [this.developer.developerId];
+            let developerIds = [];
             if (this.action === 'merge') {
-                developerIds = developerIds.concat(this.mergingDevelopers.map(dev => dev.developerId));
+                developerIds = developerIds.concat(this.mergingDevelopers.map(ver => ver.developerId));
+            } else {
+                developerIds.push(this.developer.developerId);
             }
             let that = this;
             this.developer = developer;
@@ -141,6 +149,7 @@ export const DevelopersComponent = {
         }
 
         takeAction (action) {
+            this.cancel();
             this.action = action;
         }
 

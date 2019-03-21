@@ -10,7 +10,7 @@
     </span>
     <span ng-if="!$ctrl.showFull">
       <h2>Developer</h2>
-      <a ng-if="!$ctrl.showFull" ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a>
+      <a ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a>
     </span>
     <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
     <span ng-if="$ctrl.showFull">

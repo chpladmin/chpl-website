@@ -1,0 +1,31 @@
+<div id="chpl-version-{{ $ctrl.version.versionId }}" ng-form="$ctrl.form">
+  <span ng-if="!$ctrl.isEditing">
+    <span class="pull-right">
+      <button class="btn btn-link btn-small" ng-if="!$ctrl.isEditing && !$ctrl.showFull" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View Version</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Version</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Version</span></button>
+    </span>
+    <span ng-if="!$ctrl.showFull">
+      <h3>{{ $ctrl.version.version }}</h3>
+    </span>
+    <span ng-if="$ctrl.showFull">
+      <h2>{{ $ctrl.version.version }}</h2>
+    </span>
+  </span> <!-- end view -->
+
+  <span ng-if="$ctrl.isEditing">
+    <div class="form-group">
+      <label class="control-label" for="versionName">Version <span class="text-danger">*</span></label>
+      <div>
+        <input class="input-sm form-control" type="text" required ng-model="$ctrl.version.version" id="version-name" name="versionName" ng-maxlength="300"></input>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.versionName.$touched) && $ctrl.form.versionName.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.versionName.$touched) && $ctrl.form.versionName.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+  </span> <!-- end edit -->
+
+  <div ng-if="$ctrl.canEdit">
+    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+  </div>
+</div>
