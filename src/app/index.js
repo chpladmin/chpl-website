@@ -41,18 +41,20 @@ import 'angular-ui-router';
 
 // import app modules
 import /* adminModule from*/ './admin/index';
-import /* chartsModule from*/ './charts/index';
-import /* chplApiModule from*/ './resources/chpl_api/index';
-import /* cmsLookupModule from*/ './resources/cms_lookup/index';
-import /* collectionsModule from*/ './collections/index';
-import /* compareModule from*/ './compare/index';
+import /* chartsModule from*/ './pages/charts/index';
+import /* chplApiModule from*/ './pages/resources/chpl-api/index';
+import /* cmsLookupModule from*/ './pages/resources/cms-lookup/index';
+import /* collectionsModule from*/ './pages/collections/index';
+import /* compareModule from*/ './pages/compare/index';
 import /* componentsModule from*/ './components/index';
-import /* downloadModule from*/ './resources/download/index';
+import /* downloadModule from*/ './pages/resources/download/index';
+import chplListing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
-import /* overviewModule from*/ './resources/overview/index';
+import /* overviewModule from*/ './pages/resources/overview/index';
+import './pages/organizations/index';
 import /* productModule from*/ './product/index';
-import /* registrationModule from*/ './registration/index';
-import /* searchModule from*/ './search/index';
+import /* registrationModule from*/ './pages/registration/index';
+import /* searchModule from*/ './pages/search/index';
 import /* servicesModule from*/ './services/index';
 import /* sharedModule from*/ './shared/index';
 
@@ -71,7 +73,9 @@ const dependencies = [
     'chpl.components',
     'chpl.constants',
     'chpl.download',
+    chplListing.name,
     'chpl.navigation',
+    'chpl.organizations',
     'chpl.overview',
     'chpl.product',
     'chpl.registration',
