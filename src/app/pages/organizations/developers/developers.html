@@ -12,7 +12,7 @@
   </div>
   <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.$stateParams.productId">
     <div class="col-md-6">
-      <ul ng-if="$ctrl.errorMesssages && $ctrl.errorMessages.length > 0" class="bg-danger">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <h2 ng-if="$ctrl.action === 'split'">Original Developer</h2>
