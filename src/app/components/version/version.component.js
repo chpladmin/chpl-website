@@ -7,8 +7,8 @@ export const VersionComponent = {
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
-        onCancel: '&?',
-        onEdit: '&?',
+        onCancel: '&',
+        onEdit: '&',
         showFull: '<',
         takeAction: '&',
     },
@@ -23,9 +23,6 @@ export const VersionComponent = {
         $onChanges (changes) {
             if (changes.version) {
                 this.version = angular.copy(changes.version.currentValue);
-            }
-            if (changes.developers) {
-                this.developers = angular.copy(changes.developers.currentValue);
             }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);

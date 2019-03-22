@@ -37,7 +37,7 @@ export const VersionsComponent = {
                 this.backup.mergingVersions = angular.copy(this.mergingVersions);
             }
             if (changes.listings) {
-                this.listings = angular.copy(changes.listings.currentValue);
+                this.listings = changes.listings.currentValue.map(l => l);
             }
         }
 
@@ -119,7 +119,7 @@ export const VersionsComponent = {
         }
 
         takeListingAction (listingId) {
-            this.$state.go('listiing', {
+            this.$state.go('listing', {
                 id: listingId,
             });
         }
