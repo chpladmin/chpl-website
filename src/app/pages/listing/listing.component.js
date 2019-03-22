@@ -17,10 +17,9 @@ export const ListingComponent = {
         }
 
         $onInit () {
-            this.$log.info(this);
             this.loading = true;
-            this.productId = this.$stateParams.id; //this.id; //this.resolve.id; ?
-            this.initialPanel = this.$stateParams.initialPanel || 'cert'; //this.resolve.initialPanel || 'cert';
+            this.productId = this.$stateParams.id;
+            this.initialPanel = this.$stateParams.initialPanel || 'cert';
             if (this.$localStorage.previouslyViewed) {
                 this.previouslyViewed = this.$localStorage.previouslyViewed;
 
@@ -36,6 +35,12 @@ export const ListingComponent = {
             }
 
             this.loadProduct();
+        }
+
+        can (action) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
+            if (action === 'merge') { return false; } // if not above roles, can't merge
+            return this.product.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
         }
 
         loadProduct () {
