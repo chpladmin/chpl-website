@@ -21,7 +21,7 @@
                     ></chpl-product>
     </div>
     <div class="col-md-4">
-      <ul ng-if="$ctrl.errorMesssages && $ctrl.errorMessages.length > 0" class="bg-danger">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <chpl-version version="$ctrl.version"
