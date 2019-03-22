@@ -1,4 +1,4 @@
-/* global DEVELOPER_MODE */
+/* global UAT_MODE */
 
 (function () {
     'use strict';
@@ -151,7 +151,7 @@
                 template: require('./pages/search/search.html'),
                 data: { title: 'CHPL Search' },
             });
-        if (DEVELOPER_MODE) {
+        if (UAT_MODE) {
             $stateProvider
                 .state('organizations', {
                     abstract: true,

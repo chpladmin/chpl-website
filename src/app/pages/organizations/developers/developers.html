@@ -18,9 +18,9 @@
       <h2 ng-if="$ctrl.action === 'split'">Original Developer</h2>
       <chpl-developer allowed-acbs="$ctrl.allowedAcbs"
                       developer="$ctrl.developer"
-                      can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                      can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
-                      can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      can-edit="$ctrl.can('edit')"
+                      can-merge="$ctrl.can('merge')"
+                      can-split="$ctrl.can('split-developer')"
                       is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
                       is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length < 2"
                       on-cancel="$ctrl.cancel()"
@@ -42,9 +42,9 @@
       <h2>Products</h2>
       <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
         <chpl-product product="product"
-                      can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                      can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
-                      can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      can-edit="$ctrl.can('edit')"
+                      can-merge="$ctrl.can('merge')"
+                      can-split="$ctrl.can('split-product')"
                       can-view="true"
                       is-list="true"
                       take-action="$ctrl.takeProductAction(action, productId)"
@@ -69,7 +69,7 @@
     <div class="col-md-6" ng-if="$ctrl.action === 'split'">
       <h2>New Developer</h2>
       <chpl-developer developer="$ctrl.newDeveloper"
-                      can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      can-edit="$ctrl.can('edit')"
                       is-editing="$ctrl.splitEdit"
                       is-splitting="true"
                       on-cancel="$ctrl.cancelSplitEdit()"

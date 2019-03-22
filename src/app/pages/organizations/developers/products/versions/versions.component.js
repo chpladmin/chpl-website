@@ -41,6 +41,12 @@ export const VersionsComponent = {
             }
         }
 
+        can (action) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
+            if (action === 'merge') { return false; } // if not above roles, can't merge
+            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+        }
+
         cancel () {
             this.version = angular.copy(this.backup.version);
             this.versions = angular.copy(this.backup.versions);
