@@ -36,6 +36,7 @@ module.exports = merge(base, {
             ENABLE_LOGGING: false,
             MINUTES_UNTIL_IDLE: 50,
             MINUTES_BETWEEN_KEEPALIVE: 1,
+            UAT_MODE: false,
         }),
         new webpack.HashedModuleIdsPlugin(),
     ],

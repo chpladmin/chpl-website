@@ -15,6 +15,7 @@ module.exports = merge(base, {
             ENABLE_LOGGING: true,
             MINUTES_UNTIL_IDLE: 120,
             MINUTES_BETWEEN_KEEPALIVE: 1,
+            UAT_MODE: true,
         }),
     ]
 });
