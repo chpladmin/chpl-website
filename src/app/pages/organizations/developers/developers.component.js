@@ -40,6 +40,13 @@ export const DevelopersComponent = {
             }
         }
 
+        can (action) {
+            if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
+            if (action === 'merge') { return false; } // if not above roles, can't merge
+            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+        }
+
         cancel () {
             this.developer = angular.copy(this.backup.developer);
             this.newDeveloper = angular.copy(this.developer);

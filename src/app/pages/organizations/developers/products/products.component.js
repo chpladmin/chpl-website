@@ -44,6 +44,13 @@ export const ProductsComponent = {
             }
         }
 
+        can (action) {
+            if (action === 'split-product' && this.versions.length < 2) { return false; } // cannot split product without at least two versions
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
+            if (action === 'merge') { return false; } // if not above roles, can't merge
+            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+        }
+
         cancel () {
             this.product = angular.copy(this.backup.product);
             this.newProduct = angular.copy(this.product);

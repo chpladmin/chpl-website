@@ -17,15 +17,15 @@
                       ></chpl-developer>
     </div>
     <div class="col-md-5">
-      <ul ng-if="$ctrl.errorMesssages && $ctrl.errorMessages.length > 0" class="bg-danger">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <h2 ng-if="$ctrl.action === 'split'">Original Product</h2>
       <chpl-product product="$ctrl.product"
                     developers="$ctrl.developers"
-                    can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                    can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
-                    can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                    can-edit="$ctrl.can('edit')"
+                    can-merge="$ctrl.can('merge')"
+                    can-split="$ctrl.can('split-product')"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
                     is-invalid="$ctrl.action === 'merge' && $ctrl.mergingProducts.length === 0"
                     on-cancel="$ctrl.cancel()"
@@ -76,7 +76,7 @@
       <h2>New Product</h2>
       <chpl-product product="$ctrl.newProduct"
                     developers="$ctrl.developers"
-                    can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                    can-edit="$ctrl.can('edit')"
                     is-editing="$ctrl.splitEdit"
                     is-splitting="true"
                     on-cancel="$ctrl.cancelSplitEdit()"
