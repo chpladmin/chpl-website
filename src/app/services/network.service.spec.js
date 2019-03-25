@@ -786,6 +786,22 @@
             $httpBackend.flush();
         });
 
+        it('should getPendingListings', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/metadata$/).respond(200, {data: 'response'});
+            networkService.getPendingListings().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getPendingListingById', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/id$/).respond(200, {data: 'response'});
+            networkService.getPendingListingById('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getPractices', () => {
             $httpBackend.expectGET(/^\/rest\/data\/practice_types$/).respond(200, {data: 'response'});
             networkService.getPractices().then(response => {
@@ -984,14 +1000,6 @@
         it('should getUcdProcesses', () => {
             $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, {data: 'response'});
             networkService.getUcdProcesses().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getUploadingCps', () => {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/pending$/).respond(200, {data: 'response'});
-            networkService.getUploadingCps().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
