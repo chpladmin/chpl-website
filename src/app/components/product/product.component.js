@@ -1,6 +1,7 @@
 export const ProductComponent = {
     templateUrl: 'chpl.components/product/product.html',
     bindings: {
+        developer: '<',
         product: '<',
         developers: '<',
         canEdit: '<',
@@ -29,6 +30,9 @@ export const ProductComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.developer) {
+                this.developer = angular.copy(changes.developer.currentValue);
+            }
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
                 this.product.ownerHistory = this.product.ownerHistory.map(o => {
@@ -40,13 +44,13 @@ export const ProductComponent = {
                 this.developers = angular.copy(changes.developers.currentValue);
             }
             if (changes.canEdit) {
-                this.canEdit = angular.copy(changes.canEdit.currentValue);
+                this.canEdit = angular.copy(changes.canEdit.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.canMerge) {
-                this.canMerge = angular.copy(changes.canMerge.currentValue);
+                this.canMerge = angular.copy(changes.canMerge.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.canSplit) {
-                this.canSplit = angular.copy(changes.canSplit.currentValue);
+                this.canSplit = angular.copy(changes.canSplit.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.canView) {
                 this.canView = angular.copy(changes.canView.currentValue);

@@ -22,6 +22,7 @@
       </ul>
       <h2 ng-if="$ctrl.action === 'split'">Original Product</h2>
       <chpl-product product="$ctrl.product"
+                    developer="$ctrl.developer"
                     developers="$ctrl.developers"
                     can-edit="$ctrl.can('edit')"
                     can-merge="$ctrl.can('merge')"
@@ -75,6 +76,7 @@
     <div class="col-md-5" ng-if="$ctrl.action === 'split'">
       <h2>New Product</h2>
       <chpl-product product="$ctrl.newProduct"
+                    developer="$ctrl.developer"
                     developers="$ctrl.developers"
                     can-edit="$ctrl.can('edit')"
                     is-editing="$ctrl.splitEdit"
