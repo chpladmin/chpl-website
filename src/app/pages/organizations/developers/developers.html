@@ -42,6 +42,7 @@
       <h2>Products</h2>
       <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
         <chpl-product product="product"
+                      developer="$ctrl.developer"
                       can-edit="$ctrl.can('edit')"
                       can-merge="$ctrl.can('merge')"
                       can-split="$ctrl.can('split-product')"
@@ -62,7 +63,7 @@
       <h2>Developers not merging</h2>
       <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
         {{ developer.name }}
-        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(developer, true)" ng-disabled="developer.status.status !== 'Active'"><i class="fa" ng-class="developer.status.status !== 'Active' ? 'fa-ban' : 'fa-plus'"></i><span class="sr-only"> Add</span></button>
         <div class="clearfix"></div>
       </div>
     </div>

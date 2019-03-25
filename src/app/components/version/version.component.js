@@ -2,6 +2,7 @@ export const VersionComponent = {
     templateUrl: 'chpl.components/version/version.html',
     bindings: {
         version: '<',
+        developer: '<',
         canEdit: '<',
         canMerge: '<',
         canView: '<',
@@ -25,10 +26,10 @@ export const VersionComponent = {
                 this.version = angular.copy(changes.version.currentValue);
             }
             if (changes.canEdit) {
-                this.canEdit = angular.copy(changes.canEdit.currentValue);
+                this.canEdit = angular.copy(changes.canEdit.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.canMerge) {
-                this.canMerge = angular.copy(changes.canMerge.currentValue);
+                this.canMerge = angular.copy(changes.canMerge.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.canView) {
                 this.canView = angular.copy(changes.canView.currentValue);

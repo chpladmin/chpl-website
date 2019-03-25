@@ -25,6 +25,7 @@
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <chpl-version version="$ctrl.version"
+                    developer="$ctrl.developer"
                     can-edit="$ctrl.can('edit')"
                     can-merge="$ctrl.can('merge')"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
