@@ -45,10 +45,10 @@ export const DeveloperComponent = {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
             }
             if (changes.canMerge) {
-                this.canMerge = angular.copy(changes.canMerge.currentValue);
+                this.canMerge = angular.copy(changes.canMerge.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.canSplit) {
-                this.canSplit = angular.copy(changes.canSplit.currentValue);
+                this.canSplit = angular.copy(changes.canSplit.currentValue) && this.developer.status.status === 'Active';
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
