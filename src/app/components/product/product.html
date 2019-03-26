@@ -1,0 +1,104 @@
+<div id="chpl-product-{{ $ctrl.product.productId }}" ng-form="$ctrl.form">
+  <span ng-if="!$ctrl.isEditing">
+    <span class="pull-right">
+      <button class="btn btn-link btn-small" ng-if="!$ctrl.isEditing && !$ctrl.isSplitting && !$ctrl.showFull" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View Product</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Product</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Product</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Product</span></button>
+    </span>
+    <span ng-if="!$ctrl.showFull">
+      <h3>{{ $ctrl.product.name }}</h3>
+    </span>
+    <span ng-if="$ctrl.showFull">
+      <h2>{{ $ctrl.product.name }}</h2>
+      <span ng-if="$ctrl.isSplitting"><strong>New Product Code:</strong> {{ $ctrl.product.newProductCode }}</span>
+      <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0 && !$ctrl.isSplitting" class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col">Previous Owner<span ng-if="$ctrl.product.ownerHistory.length > 1">s</span></th>
+            <th scope="col">Effective date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="owner in $ctrl.product.ownerHistory | orderBy : '-transferDate'">
+            <td>{{ owner.developer.name }}<span ng-if="$first"> (current)</span></td>
+            <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <span ng-if="$ctrl.product.contact && !$ctrl.isSplitting">
+        <h3>Contact information</h3>
+        <chpl-contact contact="$ctrl.product.contact"></chpl-contact>
+      </span>
+    </span>
+  </span> <!-- end view -->
+
+  <span ng-if="$ctrl.isEditing">
+    <div class="form-group">
+      <label class="control-label" for="productName">Product name <span class="text-danger">*</span></label>
+      <div>
+        <input class="input-sm form-control" type="text" required ng-model="$ctrl.product.name" id="product-name" name="productName" ng-maxlength="300"></input>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+    <div class="form-group" ng-if="$ctrl.isSplitting">
+      <label class="control-label" for="productCode">New Product Code</label>
+      <div>
+        <input class="input-sm form-control" type="text"  ng-model="$ctrl.product.newProductCode" id="product-code" name="productCode" ng-pattern="/^[A-Za-z0-9_]{4}$/" required></input>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productCode.$touched) && $ctrl.form.productCode.$error.required">Product code is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productCode.$touched) && !$ctrl.form.productCode.$error.required && !$ctrl.form.productCode.$valid">Product Code must consist of letters, numbers and/or "_", and be 4 characters long</div>
+      </div>
+    </div>
+    <span ng-if="!$ctrl.isSplitting">
+      <div class="form-group">
+        <label class="control-label" for="product-owner">Current Product owner <span class="text-danger">*</span></label>
+        <div>
+          <select ng-model="$ctrl.product.owner.developerId" required
+                  ng-change="$ctrl.changeCurrentOwner({{ $ctrl.product.owner.developerId }})"
+                  id="product-owner" name="productOwner" class="input-sm form-control"
+                  ng-options="d.developerId as (d.name + (d.deleted ? ' - deleted' : ' - active')) for d in $ctrl.developers | orderBy: 'name'">
+          </select>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productOwner.$touched) && $ctrl.form.productOwner.$error.required">Product owner is required</div>
+        </div>
+      </div>
+      <div ng-repeat="owner in $ctrl.product.ownerHistory | orderBy : '-transferDate' track by $index">
+        <div class="form-group">
+          <label class="control-label" for="product-owner{{ $index }}">Previous Product owner <span class="text-danger">*</span></label>
+          <div>
+            <select ng-model="owner.developer.developerId" required
+                    id="product-owner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
+                    ng-options="d.developerId as (d.name + (d.deleted ? ' - deleted' : ' - active')) for d in $ctrl.developers | orderBy: 'name'">
+            </select>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['productOwner' + $index].$touched) && $ctrl.form['productOwner' + $index].$error.required">Product owner is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="transfer-date{{ $index }}">Transfer Date <span class="text-danger">*</span></label>
+          <div>
+            <button class="btn btn-sm btn-danger pull-right" ng-click="$ctrl.removeOwnerHistory($index)"><i class="fa fa-trash"></i></button>
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="owner.transferDateObject" is-open="owner.transferDatePicker" close-text="Close" id="transfer-date{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-ai btn-sm" ng-click="owner.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['transferDate' + $index].$touched) && $ctrl.form['transferDate' + $index].$error.required">Transfer date is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <button class="btn btn-ai-success" ng-click="$ctrl.addOwnerHistory()"><i class="fa fa-plus"></i> Add Product owner</button>
+        </div>
+      </div>
+      <h3>Contact information</h3>
+      <chpl-contact contact="$ctrl.product.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+    </span>
+  </span> <!-- end edit -->
+
+  <div ng-if="$ctrl.canEdit">
+    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+  </div>
+</div>

@@ -11,9 +11,7 @@ export const DeveloperComponent = {
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
-        products: '<',
         showFull: '<',
-        showProducts: '<',
         takeAction: '&',
     },
     controller: class DeveloperComponent {
@@ -61,17 +59,8 @@ export const DeveloperComponent = {
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
-            if (changes.products) {
-                this.products = angular.copy(changes.products.currentValue);
-            }
-            if (changes.productContact) {
-                this.productContact = angular.copy(changes.productContact.currentValue);
-            }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
-            }
-            if (changes.showProducts) {
-                this.showProducts = angular.copy(changes.showProducts.currentValue);
             }
         }
 
@@ -80,22 +69,22 @@ export const DeveloperComponent = {
          */
         edit () {
             this.takeAction({
-                developerId: this.developer.developerId,
                 action: 'edit',
+                developerId: this.developer.developerId,
             });
         }
 
         merge () {
             this.takeAction({
-                developerId: this.developer.developerId,
                 action: 'merge',
+                developerId: this.developer.developerId,
             });
         }
 
         split () {
             this.takeAction({
-                developerId: this.developer.developerId,
                 action: 'split',
+                developerId: this.developer.developerId,
             });
         }
 

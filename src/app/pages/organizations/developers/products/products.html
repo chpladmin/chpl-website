@@ -1,0 +1,95 @@
+<div class="container-fluid">
+  <ui-view></ui-view>
+  <div class="row" ng-if="!$ctrl.$stateParams.versionId">
+    <div class="col-sm-12">
+      <h1 ng-switch on="$ctrl.action">
+        <span ng-switch-when="edit">Edit Product</span>
+        <span ng-switch-when="merge">Merge Products</span>
+        <span ng-switch-when="split">Split a Product</span>
+        <span ng-switch-default>View Product</span>
+      </h1>
+    </div>
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.$stateParams.versionId">
+    <div class="col-md-2">
+      <chpl-developer developer="$ctrl.developer"
+                      take-action="$ctrl.takeDeveloperAction()"
+                      ></chpl-developer>
+    </div>
+    <div class="col-md-5">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
+        <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
+      </ul>
+      <h2 ng-if="$ctrl.action === 'split'">Original Product</h2>
+      <chpl-product product="$ctrl.product"
+                    developers="$ctrl.developers"
+                    can-edit="$ctrl.can('edit')"
+                    can-merge="$ctrl.can('merge')"
+                    can-split="$ctrl.can('split-product')"
+                    is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
+                    is-invalid="$ctrl.action === 'merge' && $ctrl.mergingProducts.length === 0"
+                    on-cancel="$ctrl.cancel()"
+                    on-edit="$ctrl.save(product)"
+                    show-full="true"
+                    take-action="$ctrl.takeAction(action)"
+                    ></chpl-product>
+      <div ng-if="$ctrl.action === 'split'">
+        <h3>Versions staying with original Product</h3>
+        <div class="bg-danger" ng-if="$ctrl.versions.length === 0">At least one Version must remain</div>
+        <div ng-repeat="version in $ctrl.versions | orderBy: 'name'">
+          {{ version.version }}
+          <button class="btn btn-default btn-small pull-right" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
+      <h2>Versions</h2>
+      <div ng-repeat="version in $ctrl.versions | orderBy: 'version'">
+        {{ version.version }}
+        <!--
+        <chpl-version version="version"
+                      can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
+                      can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      take-action="$ctrl.takeVersionAction(action, versionId)"
+                      ></chpl-version>
+        -->
+      </div>
+    </div>
+    <div class="col-md-5" ng-if="$ctrl.action === 'merge'">
+      <h2>Products to merge</h2>
+      <div class="bg-danger" ng-if="$ctrl.mergingProducts.length === 0">At least one Product must be selected to merge</div>
+      <div ng-repeat="product in $ctrl.mergingProducts | orderBy: 'name'">
+        {{ product.name }}
+        <button class="btn btn-warning btn-small pull-right" ng-click="$ctrl.toggleMerge(product, false)"><i class="fa fa-minus"></i><span class="sr-only"> Remove</span></button>
+        <div class="clearfix"></div>
+      </div>
+      <h2>All Products</h2>
+      <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
+        {{ product.name }}
+        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(product, true)" ng-disabled="product.productId === $ctrl.product.productId"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-5" ng-if="$ctrl.action === 'split'">
+      <h2>New Product</h2>
+      <chpl-product product="$ctrl.newProduct"
+                    developers="$ctrl.developers"
+                    can-edit="$ctrl.can('edit')"
+                    is-editing="$ctrl.splitEdit"
+                    is-splitting="true"
+                    on-cancel="$ctrl.cancelSplitEdit()"
+                    on-edit="$ctrl.saveSplitEdit(product)"
+                    show-full="true"
+                    take-action="$ctrl.takeSplitAction()"></chpl-product>
+      <h3>Versions moving to new Product</h3>
+      <div class="bg-danger" ng-if="$ctrl.movingVersions.length === 0">At least one Version must be selected to move</div>
+      <div ng-repeat="version in $ctrl.movingVersions | orderBy: 'name'">
+        <button class="btn btn-default btn-small" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ version.version }}
+      </div>
+      <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingVersions.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    </div>
+  </div>
+</div>
