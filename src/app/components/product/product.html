@@ -2,9 +2,9 @@
   <span ng-if="!$ctrl.isEditing">
     <span class="pull-right">
       <button class="btn btn-link btn-small" ng-if="!$ctrl.isEditing && !$ctrl.isSplitting && !$ctrl.showFull" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View Product</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Product</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Product</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Product</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Product</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Product</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Product</span></button>
     </span>
     <span ng-if="!$ctrl.showFull">
       <h3>{{ $ctrl.product.name }}</h3>
