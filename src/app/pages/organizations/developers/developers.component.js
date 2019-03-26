@@ -1,15 +1,14 @@
 export const DevelopersComponent = {
     templateUrl: 'chpl.organizations/developers/developers.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
-        developers: '<',
         products: '<',
     },
     controller: class DevelopersComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
@@ -18,20 +17,25 @@ export const DevelopersComponent = {
             this.splitEdit = true;
         }
 
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.loadAcbs();
+                this.loadDevelopers();
+            }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadAcbs();
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
+        }
+
         $onChanges (changes) {
             this.action = this.$stateParams.action;
-            if (changes.allowedAcbs) {
-                this.allowedAcbs = (angular.copy(changes.allowedAcbs.currentValue)).acbs;
-            }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
-            }
-            if (changes.developers) {
-                this.developers = (angular.copy(changes.developers.currentValue)).developers;
-                this.backup.developers = angular.copy(this.developers);
-                this.mergingDevelopers = [];
             }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
@@ -61,6 +65,22 @@ export const DevelopersComponent = {
         cancelSplitEdit () {
             this.newDeveloper = angular.copy(this.developer);
             this.splitEdit = false;
+        }
+
+        loadAcbs () {
+            let that = this;
+            this.networkService.getAcbs(true).then(response => {
+                that.allowedAcbs = response.acbs;
+            });
+        }
+
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers;
+                that.backup.developers = angular.copy(that.developers);
+                that.mergingDevelopers = [];
+            });
         }
 
         save (developer) {

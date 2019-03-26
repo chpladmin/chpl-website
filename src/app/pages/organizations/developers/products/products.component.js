@@ -2,7 +2,7 @@ export const ProductsComponent = {
     templateUrl: 'chpl.organizations/developers/products/products.html',
     bindings: {
         developer: '<',
-        developers: '<',
+        developers: '<?',
         product: '<',
         products: '<',
         versions: '<',
@@ -24,7 +24,7 @@ export const ProductsComponent = {
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
             }
-            if (changes.developers) {
+            if (changes.developers && changes.developers.currentValue) {
                 this.developers = (angular.copy(changes.developers.currentValue)).developers;
             }
             if (changes.product) {

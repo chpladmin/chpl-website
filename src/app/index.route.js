@@ -165,9 +165,7 @@
                         action: {squash: true, value: null},
                     },
                     resolve: {
-                        allowedAcbs: networkService => networkService.getAcbs(true),
                         developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
-                        developers: networkService => networkService.getDevelopers(true),
                         products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
                     },
                     data: { title: 'CHPL Developers' },
