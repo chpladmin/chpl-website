@@ -26,10 +26,10 @@ export const VersionComponent = {
                 this.version = angular.copy(changes.version.currentValue);
             }
             if (changes.canEdit) {
-                this.canEdit = angular.copy(changes.canEdit.currentValue) && this.developer.status.status === 'Active';
+                this.canEdit = angular.copy(changes.canEdit.currentValue);
             }
             if (changes.canMerge) {
-                this.canMerge = angular.copy(changes.canMerge.currentValue) && this.developer.status.status === 'Active';
+                this.canMerge = angular.copy(changes.canMerge.currentValue);
             }
             if (changes.canView) {
                 this.canView = angular.copy(changes.canView.currentValue);
@@ -42,6 +42,20 @@ export const VersionComponent = {
             }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
+            }
+        }
+
+        /*
+         * Allowed actions
+         */
+        can (action) {
+            if (action === 'edit') {
+                return this.canEdit // allowed by containing component
+                    && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
+            }
+            if (action === 'merge') {
+                return this.canMerge // allowed by containing component
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // allowed for only ADMIN/ONC
             }
         }
 

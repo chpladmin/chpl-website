@@ -43,13 +43,13 @@ export const ProductComponent = {
                 this.developers = angular.copy(changes.developers.currentValue);
             }
             if (changes.canEdit) {
-                this.canEdit = angular.copy(changes.canEdit.currentValue) && this.developer.status.status === 'Active';
+                this.canEdit = angular.copy(changes.canEdit.currentValue);
             }
             if (changes.canMerge) {
-                this.canMerge = angular.copy(changes.canMerge.currentValue) && this.developer.status.status === 'Active';
+                this.canMerge = angular.copy(changes.canMerge.currentValue);
             }
             if (changes.canSplit) {
-                this.canSplit = angular.copy(changes.canSplit.currentValue) && this.developer.status.status === 'Active';
+                this.canSplit = angular.copy(changes.canSplit.currentValue);
             }
             if (changes.canView) {
                 this.canView = angular.copy(changes.canView.currentValue);
@@ -68,6 +68,25 @@ export const ProductComponent = {
             }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
+            }
+        }
+
+        /*
+         * Allowed actions
+         */
+        can (action) {
+            if (action === 'edit') {
+                return this.canEdit // allowed by containing component
+                    && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
+            }
+            if (action === 'merge') {
+                return this.canMerge // allowed by containing component
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // allowed for only  ADMIN/ONC
+            }
+            if (action === 'split') {
+                return this.canSplit // allowed by containing component
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
         }
 

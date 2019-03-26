@@ -27,7 +27,7 @@
       <chpl-version version="$ctrl.version"
                     developer="$ctrl.developer"
                     can-edit="$ctrl.can('edit')"
-                    can-merge="$ctrl.can('merge')"
+                    can-merge="$ctrl.can('merge') && $ctrl.versions.length > 0"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
                     is-invalid="$ctrl.action === 'merge' && $ctrl.mergingVersions.length < 2"
                     on-cancel="$ctrl.cancel()"

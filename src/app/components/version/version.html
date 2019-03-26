@@ -2,8 +2,8 @@
   <span ng-if="!$ctrl.isEditing">
     <span class="pull-right">
       <button class="btn btn-link btn-small" ng-if="!$ctrl.isEditing && !$ctrl.showFull" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View Version</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Version</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Version</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Version</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('merge')" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Version</span></button>
     </span>
     <span ng-if="!$ctrl.showFull">
       <h3>{{ $ctrl.version.version }}</h3>

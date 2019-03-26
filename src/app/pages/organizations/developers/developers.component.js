@@ -78,6 +78,7 @@ export const DevelopersComponent = {
             }
             let that = this;
             this.developer = developer;
+            this.errorMessages = [];
             this.networkService.updateDeveloper({
                 developer: this.developer,
                 developerIds: developerIds,
@@ -95,7 +96,6 @@ export const DevelopersComponent = {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
                     } else if (response.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(response.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
@@ -105,7 +105,6 @@ export const DevelopersComponent = {
                 if (error.data.errorMessages) {
                     that.errorMessages = error.data.errorMessages;
                 } else if (error.data.error) {
-                    that.errorMessages = [];
                     that.errorMessages.push(error.data.error);
                 } else {
                     that.errorMessages = ['An error has occurred.'];
@@ -126,6 +125,7 @@ export const DevelopersComponent = {
                 oldProducts: this.products,
                 newProducts: this.movingProducts,
             };
+            this.errorMessages = [];
             this.networkService.splitDeveloper(splitDeveloper)
                 .then(response => {
                     if (!response.status || response.status === 200) {
@@ -137,7 +137,6 @@ export const DevelopersComponent = {
                         if (response.data.errorMessages) {
                             that.errorMessages = response.data.errorMessages;
                         } else if (response.data.error) {
-                            that.errorMessages = [];
                             that.errorMessages.push(response.data.error);
                         } else {
                             that.errorMessages = ['An error has occurred.'];
@@ -147,7 +146,6 @@ export const DevelopersComponent = {
                     if (error.data.errorMessages) {
                         that.errorMessages = error.data.errorMessages;
                     } else if (error.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(error.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];

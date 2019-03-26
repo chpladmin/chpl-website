@@ -63,6 +63,7 @@ export const VersionsComponent = {
             }
             let that = this;
             this.version = version;
+            this.errorMessages = [];
             this.networkService.updateVersion({
                 version: this.version,
                 versionIds: versionIds,
@@ -81,7 +82,6 @@ export const VersionsComponent = {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
                     } else if (response.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(response.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
@@ -91,7 +91,6 @@ export const VersionsComponent = {
                 if (error.data.errorMessages) {
                     that.errorMessages = error.data.errorMessages;
                 } else if (error.data.error) {
-                    that.errorMessages = [];
                     that.errorMessages.push(error.data.error);
                 } else {
                     that.errorMessages = ['An error has occurred.'];
