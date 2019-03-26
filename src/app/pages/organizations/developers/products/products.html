@@ -25,7 +25,7 @@
                     developer="$ctrl.developer"
                     developers="$ctrl.developers"
                     can-edit="$ctrl.can('edit')"
-                    can-merge="$ctrl.can('merge')"
+                    can-merge="$ctrl.can('merge') && $ctrl.products.length > 1"
                     can-split="$ctrl.can('split-product')"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
                     is-invalid="$ctrl.action === 'merge' && $ctrl.mergingProducts.length === 0"
