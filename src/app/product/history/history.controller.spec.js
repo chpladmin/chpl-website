@@ -3,9 +3,9 @@ import './history.mock';
 (function () {
     'use strict';
 
-    describe('the Listing History popup controller', function () {
+    xdescribe('the Listing History popup controller', function () {
 
-        var $location, $log, mock, scope, vm;
+        var $location, $log, $q, Mock, mock, networkService, scope, vm;
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
@@ -13,17 +13,26 @@ import './history.mock';
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.product');
-            inject(function ($controller, _$location_, _$log_, $rootScope, product_activity) {
+            angular.mock.module('chpl.mock', 'chpl.product', function ($provide) {
+                $provide.decorator('networkService', function ($delegate) {
+                    $delegate.getActivityById = jasmine.createSpy('getActivityById');
+                    return $delegate;
+                });
+            });
+            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _Mock_, _networkService_, product_activity) {
                 $location = _$location_;
                 $log = _$log_;
-                mock.activity = product_activity();
+                $q = _$q_;
+                Mock = _Mock_;
+                mock.activity = product_activity;
+                networkService = _networkService_;
+                networkService.getActivityById.and.returnValue($q.when(product_activity[0]));
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductHistoryController', {
                     $scope: scope,
                     $uibModalInstance: mock.modalInstance,
-                    activity: mock.activity,
+                    activity: Mock.listingActivityMetadata,
                 });
                 scope.$digest();
             });

@@ -6,7 +6,7 @@
         .controller('ProductHistoryController', ProductHistoryController);
 
     /** @ngInject */
-    function ProductHistoryController ($filter, $location, $log, $uibModalInstance, activity, utilService) {
+    function ProductHistoryController ($filter, $location, $log, $q, $uibModalInstance, activity, networkService, utilService) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -17,9 +17,13 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.activity = activity;
-            _interpretActivity();
-            vm.activity = vm.activity.filter(function (a) { return a.change && a.change.length > 0; });
+            let promises = activity.map(item => networkService.getActivityById(item.id).then(response => response));
+            $q.all(promises)
+                .then(response => {
+                    vm.activity = response;
+                    _interpretActivity();
+                    vm.activity = vm.activity.filter(a => a.change && a.change.length > 0);
+                });
         }
 
         function cancel () {
