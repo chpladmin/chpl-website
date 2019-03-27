@@ -1,6 +1,7 @@
 export const ProductComponent = {
     templateUrl: 'chpl.components/product/product.html',
     bindings: {
+        developer: '<',
         product: '<',
         developers: '<',
         canEdit: '<',
@@ -29,6 +30,9 @@ export const ProductComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.developer) {
+                this.developer = angular.copy(changes.developer.currentValue);
+            }
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
                 this.product.ownerHistory = this.product.ownerHistory.map(o => {
@@ -71,6 +75,25 @@ export const ProductComponent = {
             }
             if (changes.showVersions) {
                 this.showVersions = angular.copy(changes.showVersions.currentValue);
+            }
+        }
+
+        /*
+         * Allowed actions
+         */
+        can (action) {
+            if (action === 'edit') {
+                return this.canEdit // allowed by containing component
+                    && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
+            }
+            if (action === 'merge') {
+                return this.canMerge // allowed by containing component
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // allowed for only  ADMIN/ONC
+            }
+            if (action === 'split') {
+                return this.canSplit // allowed by containing component
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
         }
 
