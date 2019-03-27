@@ -789,7 +789,7 @@
                     products: () => vm.products,
                 },
             });
-            vm.splitDeveloperModalInstance.result.then(result => {
+            vm.splitDeveloperModalInstance.result.then(() => {
                 vm.forceRefresh = true;
                 refreshDevelopers();
                 if (!isEditingListing()) {

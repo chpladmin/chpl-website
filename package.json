@@ -1,10 +1,11 @@
 {
   "name": "chpl",
-  "version": "10.14.0",
+  "version": "10.15.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
+    "build:uat": "webpack --config webpack.dev-prod.js",
     "html-lint": "htmllint src/app/**/*.html",
     "html-lint:verbose": "htmllint --rc .htmllintrc.verbose src/app/**/*.html",
     "start": "webpack-dev-server --config webpack.dev.js",

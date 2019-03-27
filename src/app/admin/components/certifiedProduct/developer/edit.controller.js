@@ -137,8 +137,6 @@
                 }
             });
 
-            vm.showFormErrors = true;
-            
             networkService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {

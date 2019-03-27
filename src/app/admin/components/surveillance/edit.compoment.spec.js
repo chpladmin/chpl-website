@@ -17,6 +17,7 @@
                     return $delegate;
                 });
                 $provide.decorator('utilService', $delegate => {
+                    $delegate.findModel = jasmine.createSpy('findModel');
                     $delegate.sortRequirements = jasmine.createSpy('sortRequirements');
                     return $delegate;
                 });
@@ -33,6 +34,7 @@
                 networkService.initiateSurveillance.and.returnValue($q.when({}));
                 networkService.updateSurveillance.and.returnValue($q.when({}));
                 utilService = _utilService_;
+                utilService.findModel.and.returnValue({});
                 utilService.sortRequirements.and.returnValue(1);
                 Mock = _Mock_;
                 $uibModal = _$uibModal_;
@@ -104,10 +106,42 @@
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
-                    expect(ctrl.authorities).toEqual(['ROLE_ACB', 'ROLE_ADMIN']);
+                    expect(ctrl.authorities).toEqual(['ROLE_ACB', 'ROLE_ONC']);
                     expect(typeof(ctrl.surveillance.startDateObject)).toBe('undefined');
                     expect(typeof(ctrl.surveillance.endDateObject)).toBe('object');
                     expect(ctrl.surveillance.type).toBeUndefined();
+                });
+
+                describe('on initiation', () => {
+                    it('should set authority if only one role', () => {
+                        authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                        scope.resolve = {
+                            surveillance: {},
+                            surveillanceTypes: Mock.surveillanceData,
+                            workType: 'initiate',
+                        };
+                        el = angular.element('<ai-surveillance-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-edit>');
+                        $compile(el)(scope);
+                        scope.$digest();
+                        ctrl = el.isolateScope().$ctrl;
+                        expect(ctrl.authorities).toEqual(['ROLE_ACB']);
+                        expect(ctrl.surveillance.authority).toBe('ROLE_ACB');
+                    });
+
+                    it('should not set authority if more than one role', () => {
+                        authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB' || param === 'ROLE_ONC';}, false)); // user is ACB & ONC
+                        scope.resolve = {
+                            surveillance: {},
+                            surveillanceTypes: Mock.surveillanceData,
+                            workType: 'initiate',
+                        };
+                        el = angular.element('<ai-surveillance-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-edit>');
+                        $compile(el)(scope);
+                        scope.$digest();
+                        ctrl = el.isolateScope().$ctrl;
+                        expect(ctrl.authorities).toEqual(['ROLE_ACB', 'ROLE_ONC']);
+                        expect(ctrl.surveillance.authority).toBeUndefined();
+                    });
                 });
             });
 
@@ -146,7 +180,7 @@
                     expect(actualOptions.resolve.randomizedSitesUsed()).toBeNull();
                     expect(actualOptions.resolve.requirement()).toEqual({nonconformities: []});
                     expect(actualOptions.resolve.surveillanceId()).toEqual(Mock.surveillances[0].id);
-                    //expect(actualOptions.resolve.surveillanceTypes()).toEqual(Mock.surveillanceData);
+                    expect(angular.toJson(actualOptions.resolve.surveillanceTypes())).toEqual(angular.toJson(Mock.surveillanceData));
                     expect(actualOptions.resolve.workType()).toEqual('add');
                 });
 
@@ -276,7 +310,7 @@
                     expect(actualOptions.resolve.randomizedSitesUsed()).toBeNull();
                     expect(actualOptions.resolve.requirement()).toEqual(ctrl.surveillance.requirements[1]);
                     expect(actualOptions.resolve.surveillanceId()).toEqual(Mock.surveillances[0].id);
-                    //expect(actualOptions.resolve.surveillanceTypes()).toEqual(Mock.surveillanceData);
+                    expect(angular.toJson(actualOptions.resolve.surveillanceTypes())).toEqual(angular.toJson(Mock.surveillanceData));
                     expect(actualOptions.resolve.workType()).toEqual('edit');
                 });
 
@@ -430,26 +464,6 @@
                         ctrl.surveillance.certifiedProduct.certificationEdition = {name: 'fake'};
                         ctrl.save();
                         expect(ctrl.surveillance.certifiedProduct.edition).toBe('fake');
-                    });
-
-                    it('should not assign an authority if one is already there', () => {
-                        var initCount = authService.hasAnyRole.calls.count();
-                        ctrl.surveillance.authority = 'ROLE_ADMIN';
-                        ctrl.save();
-                        expect(authService.hasAnyRole.calls.count()).toBe(initCount);
-                    });
-
-                    it('should assign the highest authority to the surveillance', () => {
-                        ctrl.surveillance.authority = undefined;
-                        authService.hasAnyRole.and.returnValues(true, false, true);
-                        ctrl.save();                                            // calls once
-                        expect(ctrl.surveillance.authority).toBe('ROLE_ADMIN');
-                        ctrl.surveillance.authority = undefined;
-                        ctrl.save();                                            // calls twice
-                        expect(ctrl.surveillance.authority).toBe('ROLE_ACB');
-                        ctrl.surveillance.authority = undefined;
-                        ctrl.save();                                            // doesn't call
-                        expect(ctrl.surveillance.authority).toBeUndefined();
                     });
 
                     it('should close it\'s own modal on a status:200 response', () => {

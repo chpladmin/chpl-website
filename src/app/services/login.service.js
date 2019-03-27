@@ -7,11 +7,13 @@
     /** @ngInclude */
     function authService ($localStorage, $log, $rootScope, $window, API_KEY) {
         var service = {
+            canImpersonate: canImpersonate,
             getApiKey: getApiKey,
             getFullname: getFullname,
             getToken: getToken,
             getUsername: getUsername,
             hasAnyRole: hasAnyRole,
+            isImpersonating: isImpersonating,
             logout: logout,
             parseJwt: parseJwt,
             saveToken: saveToken,
@@ -19,6 +21,22 @@
         return service;
 
         ////////////////////////////////////////////////////////////////////////
+
+        function canImpersonate (target) {
+            let userRoles = parseJwt(getToken()).Authorities;
+            let targetRoles = target.roles;
+            return !isImpersonating() && userRoles.reduce((userAcc, user) => {
+                return userAcc && targetRoles.reduce((targetAcc, target) => {
+                    if (user === 'ROLE_ADMIN') {
+                        return targetAcc && target !== 'ROLE_ADMIN';
+                    }
+                    if (user === 'ROLE_ONC') {
+                        return targetAcc && target !== 'ROLE_ADMIN' && target !== 'ROLE_ONC';
+                    }
+                    return false;
+                }, true);
+            }, true);
+        }
 
         function getApiKey () {
             return API_KEY;
@@ -28,7 +46,11 @@
             if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                return identity[2];
+                if (identity.length === 3) {
+                    return identity[2];
+                } else {
+                    return 'Impersonating ' + identity[2];
+                }
             } else {
                 logout();
                 return '';
@@ -63,6 +85,12 @@
                 return true; // logged in, no role required
             }
             return false; // not logged in
+        }
+
+        function isImpersonating () {
+            var token = getToken();
+            var identity = parseJwt(token).Identity;
+            return identity.length !== 3;
         }
 
         function logout () {
