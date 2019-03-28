@@ -18,30 +18,22 @@
       <button class="btn btn-ai-success btn-block" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success btn-block" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Certified_Products_{{ $ctrl.filename }}"
-              csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Activity Date']"
-              csv-column-order="['acbName', 'developerName', 'productName', 'edition', 'chplProductNumber', 'friendlyCertificationDate', 'csvDetails', 'friendlyActivityDate']">
+              csv-header="['Developer', 'Developer Code', 'Responsible User', 'Activity', 'Activity Date']"
+              csv-column-order="['developerName', 'developerCode', 'responsibleUser.fullName', 'csvDetails', 'friendlyActivityDate']">
           <i class="fa fa-cloud-download"></i> Download</button>
       </div>
   </div>
   <div class="row">
       <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates()">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
   </div>
-  <!--
+
   <div class="row">
-      <div class="col-sm-12">
-      <input st-search="filterText" placeholder="Filter on Developer, Product, or CHPL Product Number" class="input-sm form-control" type="search">
-      <label class="control-label">Activity ({{ $ctrl.displayed.length }})
-          <select st-search="categoriesFilter" class="form-control">
-          <option value="|LISTING|" selected>All</option>
-          <option value="|SURVEILLANCE|">Surveillance</option>
-          <option value="|LISTING_UPLOAD|">Upload</option>
-          <option value="|LISTING_STATUS_CHANGE|">Status Change</option>
-          </select>
-      </label>
-      </div>
+    <div class="col-sm-12">
+      <input st-search="filterText" placeholder="Filter on Developer, Developer Code, or Responsible User" class="input-sm form-control" type="search">
+    </div>
   </div>
--->
-  <table st-table="$ctrl.displayedDevelopers" st-safe-src="$ctrl.searchedDevelopers" class="table table-responsize">
+
+  <table class="table table-responsive">
     <thead>
       <tr>
         <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
@@ -49,31 +41,7 @@
         <th class="search-header" st-sort="responsibleUser" st-skip-natural="true">Responsible User</th>
         <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
       </tr>
-      <!--
-      <tr>
-        <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
-        <th><input st-search="developerCode" placeholder="Filter Developer Code" class="input-sm form-control" type="search"></th>
-        <th><input st-search="responsibleUser" placeholder="Filter Responsible User" class="input-sm form-control" type="search"></th>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
-      </tr>
-    -->
     </thead>
-    <!--
-    <tfoot>
-      <tr>
-        <td colspan="5">
-          <a type="button" class="btn btn-lg btn-ai-success"
-              ng-csv="$ctrl.displayedDevelopers" filename="Developers_{{ $ctrl.filename }}"
-              csv-header="['Developer', 'Developer Code', 'Resonsible User'
-              , 'Activity', 'Details', 'Activity Date']"
-              csv-column-order="['developer', 'developerCode', 'responsibleUser', 'csvAction', 'csvDetails', 'friendlyActivityDate']">
-            <i class="fa fa-cloud-download"></i> Download
-          </a>
-        </td>
-      </tr>
-    </tfoot>
-  -->
     <tbody>
       <tr ng-if="$ctrl.displayed.length === 0">
         <td colspan="5">No activity found</td>

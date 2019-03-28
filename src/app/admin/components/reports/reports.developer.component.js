@@ -1,8 +1,5 @@
 export const ReportsDevelopersComponent = {
     templateUrl: 'chpl.admin/components/reports/reports.developer.html',
-    bindings: {
-        productId: '<?',
-    },
     controller: class ReportsDevelopers {
         constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
@@ -19,55 +16,35 @@ export const ReportsDevelopersComponent = {
             };
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
-
-            this.$log.info('In the constructor');
         }
 
-        $onChanges (changes) {
-            this.$log.info('In the onChange');
-            if (changes.productId && changes.productId.currentValue) {
-                let that = this;
-                this.activityRange.endDate = new Date();
-                this.activityRange.startDate = new Date('4/1/2016');
-                this.productId = angular.copy(changes.productId.currentValue);
-                this.networkService.getSingleCertifiedProductMetadataActivity(this.productId)
-                    .then(results => {
-                        that.results = results;
-                        that.prepare(that.results, true);
-                    });
-            } else {
-                this.$log.info('Calling search');
-                this.search();
-            }
+        $onChanges () {
+            this.search();
         }
 
         search () {
-            this.$log.info('In the search');
             let that = this;
             this.networkService.getActivityMetadata('developers', this.dateAdjust(this.activityRange))
                 .then(results => {
-                    this.$log.info('Processing results');
-                    this.$log.info(results);
                     that.results = results;
                     that.prepare(that.results);
                 });
         }
 
-        parse(meta) {
+        parse (meta) {
             return this.networkService.getActivityById(meta.id).then(item => {
                 var simpleFields = [
                     {key: 'deleted', display: 'Deleted'},
                     {key: 'developerCode', display: 'Developer Code'},
-                    //{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                     {key: 'name', display: 'Name'},
                     {key: 'website', display: 'Website'},
                 ];
                 var nestedKeys = [
                     {key: 'status', subkey: 'statusName', display: 'Developer Status'},
                 ];
-                var ret = [];
+
                 var change;
-                var i, j;
+                var j;
 
                 var activity = {
                     action: '',
@@ -78,7 +55,7 @@ export const ReportsDevelopersComponent = {
                     activity.action = 'Updated developer "' + item.newData.name + '"';
                     activity.details = [];
                     for (j = 0; j < simpleFields.length; j++) {
-                        change = this.compareItem(item.originalData, item.newData, item.key, item.display, item.filter);
+                        change = this.compareItem(item.originalData, item.newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
                         if (change) {
                             activity.details.push(change);
                         }
@@ -166,40 +143,40 @@ export const ReportsDevelopersComponent = {
             });
         }
 
-        prepare (results, full) {
+        prepare (results) {
             this.activeAcbs = [];
             this.displayed = results.map(item => {
-                item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
+                item.filterText = item.developerName + '|' + item.developerCode + '|' + item.responsibleUser.fullName
                 item.categoriesFilter = '|' + item.categories.join('|') + '|';
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-                item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
-                if (this.activeAcbs.indexOf(item.acbName) === -1) {
-                    this.activeAcbs.push(item.acbName);
-                }
-                if (full) {
-                    this.parse(item);
-                    item.showDetails = true;
-                }
                 return item;
             });
         }
 
         validDates () {
-            var utcEnd = Date.UTC(
-                this.activityRange.endDate.getFullYear(),
-                this.activityRange.endDate.getMonth(),
-                this.activityRange.endDate.getDate()
-            );
-            var utcStart = Date.UTC(
-                this.activityRange.startDate.getFullYear(),
-                this.activityRange.startDate.getMonth(),
-                this.activityRange.startDate.getDate()
-            );
-            var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
-            if (this.productId) {
-                return (utcStart < utcEnd);
+            if (this.isValidDate(this.activityRange.endDate) && this.isValidDate(this.activityRange.startDate)) {
+                var utcEnd = Date.UTC(
+                    this.activityRange.endDate.getFullYear(),
+                    this.activityRange.endDate.getMonth(),
+                    this.activityRange.endDate.getDate()
+                );
+                var utcStart = Date.UTC(
+                    this.activityRange.startDate.getFullYear(),
+                    this.activityRange.startDate.getMonth(),
+                    this.activityRange.startDate.getDate()
+                );
+                var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
+                if (this.productId) {
+                    return (utcStart < utcEnd);
+                }
+                return (0 <= diffDays && diffDays < this.activityRange.range);
+            } else {
+                return false;
             }
-            return (0 <= diffDays && diffDays < this.activityRange.range);
+        }
+
+        isValidDate (d) {
+            return d instanceof Date && !isNaN(d);
         }
 
         dateAdjust (obj) {
@@ -220,6 +197,7 @@ export const ReportsDevelopersComponent = {
         }
 
         compareItem (oldData, newData, key, display, filter) {
+            //this.$log.info('Compare: (' + key + ') ' + oldData[key] + " and " + newData[key]);
             if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
                 if (filter) {
                     return display + ' changed from ' + this.$filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + this.$filter(filter)(newData[key],'mediumDate','UTC');
@@ -352,6 +330,17 @@ export const ReportsDevelopersComponent = {
                 activity.name = data.newData[key];
                 activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': "' + activity.name + '"'];
             }
+        }
+
+        prepareDownload () {
+            this.displayed
+                .filter(item => !item.action)
+                .forEach(item => this.parse(item));
+            //todo, eventually: use the $q.all function as demonstrated in product history eye
+        }
+
+        downloadReady () {
+            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
         }
     },
 }

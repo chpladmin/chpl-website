@@ -36,7 +36,7 @@
 
             <li ng-class="{'active': vm.navState.screen === 'reports'}" id="admin-nav.reports" ng-if="(vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']))"><a href="#/admin/reports">Reports</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'listings'}" id="admin-nav.reports.listings" ng-if="vm.navState.screen === 'reports'"><a href="#/admin/reports/listings">Certified Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'dev'}" id="admin-nav.reports.dev" ng-if="vm.navState.screen === 'reports'"><a href="#/admin/reports/developers">Developers</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'developers'}" id="admin-nav.reports.dev" ng-if="vm.navState.screen === 'reports'"><a href="#/admin/reports/developers">Developers</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'prod'}" id="admin-nav.reports.prod" ng-if="vm.navState.screen === 'reports'"><a href="#/admin/reports/prod">Products</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'acb'}" id="admin-nav.reports.acb" ng-if="vm.navState.screen === 'reports'"><a href="#/admin/reports/acb">ONC-ACBs</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" id="admin-nav.reports.atl" ng-if="vm.navState.screen === 'reports' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/atl">ONC-ATLs</a></li>
