@@ -67,7 +67,8 @@
     </div>
     <div class="col-md-6" ng-if="$ctrl.action === 'split'">
       <h2>New Developer</h2>
-      <chpl-developer developer="$ctrl.newDeveloper"
+      <chpl-developer allowed-acbs="$ctrl.allowedAcbs"
+                      developer="$ctrl.newDeveloper"
                       can-edit="$ctrl.can('edit')"
                       is-editing="$ctrl.splitEdit"
                       is-splitting="true"
