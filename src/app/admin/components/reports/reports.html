@@ -4,6 +4,10 @@
       <chpl-reports-listings product-id="$ctrl.productId"></chpl-reports-listings>
     </div>
 
+    <div ng-if="$ctrl.workType === 'developers'">
+      <chpl-reports-developers product-id="$ctrl.productId"></chpl-reports-developers>
+    </div>
+    <!--
     <div class="row" ng-if="$ctrl.workType === 'dev'">
       <div class="col-sm-12">
         <h3>Developer Activity</h3>
@@ -70,7 +74,7 @@
         </table>
       </div>
     </div>
-
+  -->
     <div class="row" ng-if="$ctrl.workType === 'prod'">
       <div class="col-sm-12">
         <h3>Product Activity</h3>
