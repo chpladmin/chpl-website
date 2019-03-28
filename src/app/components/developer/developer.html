@@ -131,7 +131,7 @@
       </div>
     </span>
     <h3>Address</h3>
-    <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+    <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" is-required="$ctrl.isSplitting" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
     <h3>Contact information</h3>
     <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" is-required="true" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span> <!-- end edit -->
