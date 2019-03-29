@@ -135,11 +135,13 @@ export const ProductComponent = {
          * Resolve changes
          */
         save () {
-            this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
-            this.product.ownerHistory = this.product.ownerHistory.map(o => {
-                o.transferDate = o.transferDateObject.getTime();
-                return o;
-            });
+            if (!this.isSplitting) {
+                this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
+                this.product.ownerHistory = this.product.ownerHistory.map(o => {
+                    o.transferDate = o.transferDateObject.getTime();
+                    return o;
+                });
+            }
             this.onEdit({product: this.product});
         }
 
