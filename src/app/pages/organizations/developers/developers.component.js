@@ -15,6 +15,7 @@ export const DevelopersComponent = {
             this.networkService = networkService;
             this.backup = {};
             this.splitEdit = true;
+            this.movingProducts = [];
         }
 
         $onInit () {
@@ -40,7 +41,6 @@ export const DevelopersComponent = {
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
                 this.backup.products = angular.copy(this.products);
-                this.movingProducts = [];
             }
         }
 
@@ -77,9 +77,10 @@ export const DevelopersComponent = {
         loadDevelopers () {
             let that = this;
             this.networkService.getDevelopers().then(response => {
-                that.developers = response.developers;
+                that.developers = response.developers.filter(d => d.developerId !== that.developer.developerId);
+                that.mergingDevelopers = response.developers.filter(d => d.developerId === that.developer.developerId);
                 that.backup.developers = angular.copy(that.developers);
-                that.mergingDevelopers = [];
+                that.backup.mergingDevelopers = angular.copy(that.mergingDevelopers);
             });
         }
 
