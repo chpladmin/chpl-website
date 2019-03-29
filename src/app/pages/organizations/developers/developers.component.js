@@ -1,14 +1,14 @@
 export const DevelopersComponent = {
     templateUrl: 'chpl.organizations/developers/developers.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
         products: '<',
     },
     controller: class DevelopersComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
@@ -20,20 +20,18 @@ export const DevelopersComponent = {
         $onInit () {
             let that = this;
             if (this.hasAnyRole()) {
-                this.developers = this.networkService.getDevelopers().then(response => {
-                    that.developers = response.developers.filter(d => d.developerId !== that.developer.developerId);
-                    that.mergingDevelopers = response.developers.filter(d => d.developerId === that.developer.developerId);
-                    that.backup.developers = angular.copy(that.developers);
-                    that.backup.mergingDevelopers = angular.copy(that.mergingDevelopers);
-                });
+                this.loadAcbs();
+                this.loadDevelopers();
             }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadAcbs();
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
         }
 
         $onChanges (changes) {
             this.action = this.$stateParams.action;
-            if (changes.allowedAcbs) {
-                this.allowedAcbs = (angular.copy(changes.allowedAcbs.currentValue)).acbs;
-            }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.developer);
@@ -67,6 +65,22 @@ export const DevelopersComponent = {
         cancelSplitEdit () {
             this.newDeveloper = angular.copy(this.developer);
             this.splitEdit = false;
+        }
+
+        loadAcbs () {
+            let that = this;
+            this.networkService.getAcbs(true).then(response => {
+                that.allowedAcbs = response.acbs;
+            });
+        }
+
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers;
+                that.backup.developers = angular.copy(that.developers);
+                that.mergingDevelopers = [];
+            });
         }
 
         save (developer) {

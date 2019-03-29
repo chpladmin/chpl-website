@@ -165,7 +165,6 @@
                         action: {squash: true, value: null},
                     },
                     resolve: {
-                        allowedAcbs: networkService => networkService.getAcbs(true),
                         developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
                         products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
                     },

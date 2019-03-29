@@ -16,8 +16,8 @@
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <h2 ng-if="$ctrl.action === 'split'">Original Developer</h2>
-      <chpl-developer allowed-acbs="$ctrl.allowedAcbs"
-                      developer="$ctrl.developer"
+      <chpl-developer developer="$ctrl.developer"
+                      allowed-acbs="$ctrl.allowedAcbs"
                       can-edit="$ctrl.can('edit')"
                       can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
                       can-split="$ctrl.can('split-developer')"
@@ -70,6 +70,7 @@
     <div class="col-md-6" ng-if="$ctrl.action === 'split'">
       <h2>New Developer</h2>
       <chpl-developer developer="$ctrl.newDeveloper"
+                      allowed-acbs="$ctrl.allowedAcbs"
                       can-edit="$ctrl.can('edit')"
                       is-editing="$ctrl.splitEdit"
                       is-splitting="true"

@@ -1,8 +1,8 @@
 export const DeveloperComponent = {
     templateUrl: 'chpl.components/developer/developer.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
+        allowedAcbs: '<',
         canEdit: '<',
         canMerge: '<',
         canSplit: '<',
