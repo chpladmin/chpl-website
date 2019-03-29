@@ -4,5 +4,6 @@ _Date TBD_
 
 ### New features
 * Use new Activity end points for Listing reports
+* Use new Activity end points for Developer reports
 
 ---
