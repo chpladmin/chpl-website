@@ -50,7 +50,7 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productCode.$touched) && !$ctrl.form.productCode.$error.required && !$ctrl.form.productCode.$valid">Product Code must consist of letters, numbers and/or "_", and be 4 characters long</div>
       </div>
     </div>
-    <span ng-if="!$ctrl.isSplitting">
+    <span ng-if="!$ctrl.isSplitting && !$ctrl.isMerging">
       <div class="form-group">
         <label class="control-label" for="product-owner">Current Product owner <span class="text-danger">*</span></label>
         <div>
@@ -92,6 +92,8 @@
           <button class="btn btn-ai-success" ng-click="$ctrl.addOwnerHistory()"><i class="fa fa-plus"></i> Add Product owner</button>
         </div>
       </div>
+    </span>
+    <span ng-if="!$ctrl.isSplitting">
       <h3>Contact information</h3>
       <chpl-contact contact="$ctrl.product.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
     </span>

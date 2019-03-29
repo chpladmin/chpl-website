@@ -10,6 +10,7 @@ export const ProductComponent = {
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
+        isMerging: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
@@ -60,6 +61,9 @@ export const ProductComponent = {
             }
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
+            }
+            if (changes.isMerging) {
+                this.isMerging = angular.copy(changes.isMerging.currentValue);
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
@@ -131,11 +135,13 @@ export const ProductComponent = {
          * Resolve changes
          */
         save () {
-            this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
-            this.product.ownerHistory = this.product.ownerHistory.map(o => {
-                o.transferDate = o.transferDateObject.getTime();
-                return o;
-            });
+            if (!this.isSplitting) {
+                this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
+                this.product.ownerHistory = this.product.ownerHistory.map(o => {
+                    o.transferDate = o.transferDateObject.getTime();
+                    return o;
+                });
+            }
             this.onEdit({product: this.product});
         }
 
