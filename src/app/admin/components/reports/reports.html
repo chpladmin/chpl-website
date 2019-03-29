@@ -3,78 +3,9 @@
     <div ng-if="$ctrl.workType === 'listings' || $ctrl.workType === 'cp-upload' || ($ctrl.workType === '' && $ctrl.productId) || $ctrl.workType === 'cp-status' || $ctrl.workType === 'cp-surveillance' || $ctrl.workType === 'cp-other'">
       <chpl-reports-listings product-id="$ctrl.productId"></chpl-reports-listings>
     </div>
-
     <div ng-if="$ctrl.workType === 'developers'">
       <chpl-reports-developers product-id="$ctrl.productId"></chpl-reports-developers>
     </div>
-    <!--
-    <div class="row" ng-if="$ctrl.workType === 'dev'">
-      <div class="col-sm-12">
-        <h3>Developer Activity</h3>
-        <div>
-          <label for="activity-start-developer" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.developer.startDate" name="activityStartDeveloper" id="activity-start-developer" placeholder="yyyy-MM-dd">
-          </div>
-          <label for="activity-end-developer" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.developer.endDate" name="activityEndDeveloper" id="activity-end-developer" placeholder="yyyy-MM-dd">
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="$ctrl.refreshActivity()" ng-disabled="!$ctrl.validDates('developer')">Search <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates('developer')">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
-        </div>
-        <table st-table="$ctrl.displayedDevelopers" st-safe-src="$ctrl.searchedDevelopers" class="table table-striped">
-          <thead>
-            <tr>
-              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
-              <th class="search-header" st-sort="developerCode" st-skip-natural="true">Developer Code</th>
-              <th class="search-header" st-sort="responsibleUser" st-skip-natural="true">Responsible User</th>
-              <th>Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
-            </tr>
-            <tr>
-              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
-              <th><input st-search="developerCode" placeholder="Filter Developer Code" class="input-sm form-control" type="search"></th>
-              <th><input st-search="responsibleUser" placeholder="Filter Responsible User" class="input-sm form-control" type="search"></th>
-              <th>&nbsp;</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="5">
-                <a type="button" class="btn btn-lg btn-ai-success"
-                   ng-csv="$ctrl.displayedDevelopers" filename="Developers_{{ $ctrl.filename }}"
-                   csv-header="['Developer', 'Developer Code', 'Resonsible User', 'Activity', 'Details', 'Activity Date']"
-                   csv-column-order="['developer', 'developerCode', 'responsibleUser', 'csvAction', 'csvDetails', 'friendlyActivityDate']">
-                  <i class="fa fa-cloud-download"></i> Download
-                </a>
-              </td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr ng-if="$ctrl.displayedDevelopers.length === 0">
-              <td colspan="5">No activity found</td>
-            </tr>
-            <tr ng-repeat="activity in $ctrl.displayedDevelopers" ng-if="$ctrl.displayedDevelopers.length > 0">
-              <td>{{ activity.developer }}</td>
-              <td>{{ activity.developerCode }}</td>
-              <td>{{ activity.responsibleUser }}</td>
-              <td>
-                <span ng-bind-html="activity.action"></span>
-                <ul class="list-unstyled" ng-if="activity.details">
-                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
-                </ul>
-              </td>
-              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  -->
     <div class="row" ng-if="$ctrl.workType === 'prod'">
       <div class="col-sm-12">
         <h3>Product Activity</h3>
