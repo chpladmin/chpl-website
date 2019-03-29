@@ -10,6 +10,7 @@ export const ProductComponent = {
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
+        isMerging: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
@@ -60,6 +61,9 @@ export const ProductComponent = {
             }
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
+            }
+            if (changes.isMerging) {
+                this.isMerging = angular.copy(changes.isMerging.currentValue);
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);

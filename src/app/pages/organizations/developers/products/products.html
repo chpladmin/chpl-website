@@ -29,6 +29,7 @@
                     can-split="$ctrl.can('split-product')"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
                     is-invalid="$ctrl.action === 'merge' && $ctrl.mergingProducts.length === 0"
+                    is-merging="$ctrl.action === 'merge'"
                     on-cancel="$ctrl.cancel()"
                     on-edit="$ctrl.save(product)"
                     show-full="true"
