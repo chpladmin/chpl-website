@@ -1,8 +1,8 @@
 export const ProductComponent = {
     templateUrl: 'chpl.components/product/product.html',
     bindings: {
-        developer: '<',
         product: '<',
+        developer: '<',
         developers: '<',
         canEdit: '<',
         canMerge: '<',
@@ -79,18 +79,18 @@ export const ProductComponent = {
          * Allowed actions
          */
         can (action) {
-            if (action === 'edit') {
+            switch (action) {
+            case 'edit':
                 return this.canEdit // allowed by containing component
                     && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
-            }
-            if (action === 'merge') {
+            case 'merge':
                 return this.canMerge // allowed by containing component
                     && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // allowed for only  ADMIN/ONC
-            }
-            if (action === 'split') {
+            case 'split':
                 return this.canSplit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+                // no default
             }
         }
 

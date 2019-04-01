@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Version component', () => {
+    describe('the Version component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
@@ -25,6 +25,7 @@
                     return $delegate;
                 });
             });
+
             inject((_$compile_, _$log_, $rootScope, _authService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
