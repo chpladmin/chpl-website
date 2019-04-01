@@ -34,8 +34,7 @@
                 if (response.config.url.indexOf(API) === 0) {
                     response.data = parseToken(response.data);
                 }
-                if (response.data.error === 'Invalid authentication token.' && authService.hasAnyRole()) {
-                    $log.debug('Invalid authentication token; logging out', response);
+                if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole()) {
                     authService.logout();
                 }
                 return response;
