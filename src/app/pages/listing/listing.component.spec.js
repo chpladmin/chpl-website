@@ -34,7 +34,7 @@
             angular.mock.module('chpl', 'chpl.listing', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getProduct = jasmine.createSpy('getProduct');
-                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
+                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
                     return $delegate;
                 });
             });
@@ -50,7 +50,7 @@
                 });
                 networkService = _networkService_;
                 networkService.getProduct.and.returnValue($q.when(mock.products));
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new();
                 $stateParams.id = mock.productId;
@@ -85,7 +85,7 @@
                 });
 
                 it('should get product history on load', () => {
-                    expect(networkService.getSingleCertifiedProductActivity).toHaveBeenCalled();
+                    expect(networkService.getSingleCertifiedProductMetadataActivity).toHaveBeenCalled();
                 });
 
                 it('should be loading', () => {
