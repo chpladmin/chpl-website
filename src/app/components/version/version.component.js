@@ -25,6 +25,9 @@ export const VersionComponent = {
             if (changes.version) {
                 this.version = angular.copy(changes.version.currentValue);
             }
+            if (changes.developer) {
+                this.developer = angular.copy(changes.developer.currentValue);
+            }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
             }
