@@ -22,63 +22,6 @@ export const ReportsDevelopersComponent = {
             this.search();
         }
 
-        compareArray (prev, curr, keys, root, nested, altRoot) {
-            var ret = [];
-            var change, i, j, k, l;
-            if (prev !== null) {
-                for (i = 0; i < prev.length; i++) {
-                    for (j = 0; j < curr.length; j++) {
-                        var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
-                        if (prev[i][root] === curr[j][root]) {
-                            for (k = 0; k < keys.length; k++) {
-                                change = this.ReportService.compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
-                                if (change) { obj.changes.push('<li>' + change + '</li>'); }
-                            }
-                            if (nested) {
-                                for (k = 0; k < nested.length; k++) {
-                                    nested[k].changes = this.utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
-                                    if (nested[k].changes.added.length > 0) {
-                                        if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
-                                        else {
-                                            obj.changes.push('<li>Added ' + nested[k].display + ':<ul>');
-                                            for (l = 0; l < nested[k].changes.added.length; l++) {
-                                                obj.changes.push('<li>' + nested[k].changes.added[l][nested[k].value] + '</li>');
-                                            }
-                                            obj.changes.push('</ul></li>');
-                                        }
-                                    }
-                                    if (nested[k].changes.removed.length > 0) {
-                                        if (nested[k].countOnly) { obj.changes.push('<li>Removed ' + nested[k].changes.removed.length + ' ' + nested[k].display + (nested[k].changes.removed.length !== 1 ? 's' : '') + '</li>') }
-                                        else {
-                                            obj.changes.push('<li>Removed ' + nested[k].display + ':<ul>');
-                                            for (l = 0; l < nested[k].changes.removed.length; l++) {
-                                                obj.changes.push('<li>' + nested[k].changes.removed[l][nested[k].value] + '</li>');
-                                            }
-                                            obj.changes.push('</ul></li>');
-                                        }
-                                    }
-                                }
-                            }
-                            prev[i].evaluated = true;
-                            curr[j].evaluated = true;
-                        }
-                        if (obj.changes.length > 0) {
-                            ret.push(obj);
-                        }
-                    }
-                    if (!prev[i].evaluated) {
-                        ret.push({ name: prev[i][altRoot ? altRoot : root], changes: ['<li>' + prev[i][altRoot ? altRoot : root] + ' removed</li>']});
-                    }
-                }
-                for (i = 0; i < curr.length; i++) {
-                    if (!curr[i].evaluated) {
-                        ret.push({ name: curr[i][altRoot ? altRoot : root], changes: ['<li>' + curr[i][altRoot ? altRoot : root] + ' added</li>']});
-                    }
-                }
-            }
-            return ret;
-        }
-
         dateAdjust (obj) {
             var ret = angular.copy(obj);
             ret.startDate = this.ReportService.coerceToMidnight(ret.startDate);
@@ -92,10 +35,6 @@ export const ReportsDevelopersComponent = {
             } else {
                 return false;
             }
-        }
-
-        isValidDate (d) {
-            return d instanceof Date && !isNaN(d);
         }
 
         parse (meta) {
@@ -145,7 +84,7 @@ export const ReportsDevelopersComponent = {
                     }
 
                     var transKeys = [{key: 'transparencyAttestation', display: 'Transparency Attestation'}];
-                    var trans = this.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName');
+                    var trans = this.ReportService.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName');
                     for (j = 0; j < trans.length; j++) {
                         activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
                     }
@@ -237,25 +176,7 @@ export const ReportsDevelopersComponent = {
         }
 
         validDates () {
-            if (this.isValidDate(this.activityRange.endDate) && this.isValidDate(this.activityRange.startDate)) {
-                var utcEnd = Date.UTC(
-                    this.activityRange.endDate.getFullYear(),
-                    this.activityRange.endDate.getMonth(),
-                    this.activityRange.endDate.getDate()
-                );
-                var utcStart = Date.UTC(
-                    this.activityRange.startDate.getFullYear(),
-                    this.activityRange.startDate.getMonth(),
-                    this.activityRange.startDate.getDate()
-                );
-                var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
-                if (this.productId) {
-                    return (utcStart < utcEnd);
-                }
-                return (0 <= diffDays && diffDays < this.activityRange.range);
-            } else {
-                return false;
-            }
+            return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
         }
     },
 }

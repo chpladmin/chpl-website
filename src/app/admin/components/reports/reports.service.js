@@ -5,6 +5,63 @@ export class ReportService {
         this.$log = $log;
     }
 
+    compareArray (prev, curr, keys, root, nested, altRoot) {
+        var ret = [];
+        var change, i, j, k, l;
+        if (prev !== null) {
+            for (i = 0; i < prev.length; i++) {
+                for (j = 0; j < curr.length; j++) {
+                    var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
+                    if (prev[i][root] === curr[j][root]) {
+                        for (k = 0; k < keys.length; k++) {
+                            change = this.ReportService.compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
+                            if (change) { obj.changes.push('<li>' + change + '</li>'); }
+                        }
+                        if (nested) {
+                            for (k = 0; k < nested.length; k++) {
+                                nested[k].changes = this.utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
+                                if (nested[k].changes.added.length > 0) {
+                                    if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
+                                    else {
+                                        obj.changes.push('<li>Added ' + nested[k].display + ':<ul>');
+                                        for (l = 0; l < nested[k].changes.added.length; l++) {
+                                            obj.changes.push('<li>' + nested[k].changes.added[l][nested[k].value] + '</li>');
+                                        }
+                                        obj.changes.push('</ul></li>');
+                                    }
+                                }
+                                if (nested[k].changes.removed.length > 0) {
+                                    if (nested[k].countOnly) { obj.changes.push('<li>Removed ' + nested[k].changes.removed.length + ' ' + nested[k].display + (nested[k].changes.removed.length !== 1 ? 's' : '') + '</li>') }
+                                    else {
+                                        obj.changes.push('<li>Removed ' + nested[k].display + ':<ul>');
+                                        for (l = 0; l < nested[k].changes.removed.length; l++) {
+                                            obj.changes.push('<li>' + nested[k].changes.removed[l][nested[k].value] + '</li>');
+                                        }
+                                        obj.changes.push('</ul></li>');
+                                    }
+                                }
+                            }
+                        }
+                        prev[i].evaluated = true;
+                        curr[j].evaluated = true;
+                    }
+                    if (obj.changes.length > 0) {
+                        ret.push(obj);
+                    }
+                }
+                if (!prev[i].evaluated) {
+                    ret.push({ name: prev[i][altRoot ? altRoot : root], changes: ['<li>' + prev[i][altRoot ? altRoot : root] + ' removed</li>']});
+                }
+            }
+            for (i = 0; i < curr.length; i++) {
+                if (!curr[i].evaluated) {
+                    ret.push({ name: curr[i][altRoot ? altRoot : root], changes: ['<li>' + curr[i][altRoot ? altRoot : root] + ' added</li>']});
+                }
+            }
+        }
+        return ret;
+    }
+
     /**
      * Compare two arrays.
      * previous & current are arrays of objects
@@ -199,6 +256,10 @@ export class ReportService {
         }
     }
 
+    isValidDate (d) {
+        return d instanceof Date && !isNaN(d);
+    }
+
     coerceToMidnight (date, roundUp) {
         if (date) {
             date.setHours(0,0,0,0);
@@ -206,6 +267,29 @@ export class ReportService {
                 date.setDate(date.getDate() + 1);
             }
             return date;
+        }
+    }
+
+    validDates (startDate, endDate, range, ignoreRange) {
+        if (this.isValidDate(endDate) && this.isValidDate(startDate)) {
+            var utcEnd = Date.UTC(
+                endDate.getFullYear(),
+                endDate.getMonth(),
+                endDate.getDate()
+            );
+            var utcStart = Date.UTC(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate()
+            );
+            var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
+            if (ignoreRange) {
+                return (utcStart < utcEnd);
+            }
+
+            return (0 <= diffDays && diffDays < range);
+        } else {
+            return false;
         }
     }
 }

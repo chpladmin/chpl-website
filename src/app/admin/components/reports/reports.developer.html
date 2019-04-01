@@ -50,12 +50,12 @@
         <td>{{ activity.developerName }}</td>
         <td>{{ activity.developerCode }}</td>
         <td>{{ activity.responsibleUser.fullName }}</td>
-        <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
         <td>
           <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
           <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
+          {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
           <div ng-if="activity.action && activity.showDetails">
             {{ activity.action }}
             <ul>
