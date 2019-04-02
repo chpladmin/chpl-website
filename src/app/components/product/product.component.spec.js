@@ -20,7 +20,7 @@
                 lastModifiedDate: null, deleted: null, transparencyAttestations: [],
                 statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
                 status: {id: 1, status: 'Active'},
-            }, {
+            },{
                 developerId: 2042, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
                 address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
                 contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
@@ -74,7 +74,7 @@
                 scope.showFull = true;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-product product="product" developer="developer" developers="developers" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" isInvalid="isInvalid" is-list="isList" is-merging="isMerging" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(product)" show-full="showFull" take-action="takeAction(action, productId)"></chpl-product>');
+                el = angular.element('<chpl-product product="product" developer="developer" developers="developers" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" is-invalid="isInvalid" is-list="isList" is-merging="isMerging" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(product)" show-full="showFull" take-action="takeAction(action, productId)"></chpl-product>');
 
                 $compile(el)(scope);
                 scope.$digest();
