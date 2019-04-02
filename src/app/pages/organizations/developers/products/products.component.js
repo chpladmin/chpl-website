@@ -2,15 +2,15 @@ export const ProductsComponent = {
     templateUrl: 'chpl.organizations/developers/products/products.html',
     bindings: {
         developer: '<',
-        developers: '<?',
         product: '<',
         products: '<',
         versions: '<',
     },
     controller: class ProductsComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
@@ -19,13 +19,21 @@ export const ProductsComponent = {
             this.splitEdit = true;
         }
 
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.loadDevelopers();
+            }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
+        }
+
         $onChanges (changes) {
             this.action = this.$stateParams.action;
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
-            }
-            if (changes.developers && changes.developers.currentValue) {
-                this.developers = (angular.copy(changes.developers.currentValue)).developers;
             }
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
@@ -67,6 +75,12 @@ export const ProductsComponent = {
             this.splitEdit = false;
         }
 
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers;
+            });
+        }
         save (product) {
             let productIds = [this.product.productId];
             if (this.action === 'merge') {
