@@ -1,9 +1,9 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
     <span class="pull-right">
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canSplit && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.canMerge && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
+      <button class="btn btn-link btn-small" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
     </span>
     <span ng-if="$ctrl.showFull">
       <h2>{{ $ctrl.developer.name }}</h2>
@@ -131,9 +131,9 @@
       </div>
     </span>
     <h3>Address</h3>
-    <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+    <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" is-required="$ctrl.isSplitting" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
     <h3>Contact information</h3>
-    <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+    <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" is-required="true" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span> <!-- end edit -->
 
   <div ng-if="$ctrl.canEdit">

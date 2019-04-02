@@ -1,6 +1,7 @@
 export const ProductComponent = {
     templateUrl: 'chpl.components/product/product.html',
     bindings: {
+        developer: '<',
         product: '<',
         developers: '<',
         canEdit: '<',
@@ -9,6 +10,7 @@ export const ProductComponent = {
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
+        isMerging: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
@@ -29,6 +31,9 @@ export const ProductComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.developer) {
+                this.developer = angular.copy(changes.developer.currentValue);
+            }
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
                 this.product.ownerHistory = this.product.ownerHistory.map(o => {
@@ -57,6 +62,9 @@ export const ProductComponent = {
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
+            if (changes.isMerging) {
+                this.isMerging = angular.copy(changes.isMerging.currentValue);
+            }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
@@ -71,6 +79,25 @@ export const ProductComponent = {
             }
             if (changes.showVersions) {
                 this.showVersions = angular.copy(changes.showVersions.currentValue);
+            }
+        }
+
+        /*
+         * Allowed actions
+         */
+        can (action) {
+            if (action === 'edit') {
+                return this.canEdit // allowed by containing component
+                    && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
+            }
+            if (action === 'merge') {
+                return this.canMerge // allowed by containing component
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // allowed for only  ADMIN/ONC
+            }
+            if (action === 'split') {
+                return this.canSplit // allowed by containing component
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
         }
 
@@ -108,11 +135,13 @@ export const ProductComponent = {
          * Resolve changes
          */
         save () {
-            this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
-            this.product.ownerHistory = this.product.ownerHistory.map(o => {
-                o.transferDate = o.transferDateObject.getTime();
-                return o;
-            });
+            if (!this.isSplitting) {
+                this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
+                this.product.ownerHistory = this.product.ownerHistory.map(o => {
+                    o.transferDate = o.transferDateObject.getTime();
+                    return o;
+                });
+            }
             this.onEdit({product: this.product});
         }
 

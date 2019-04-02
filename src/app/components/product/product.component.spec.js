@@ -5,6 +5,14 @@
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {
+            developer: {
+                developerId: 636, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
+                address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
+                contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
+                lastModifiedDate: null, deleted: null, transparencyAttestations: [],
+                statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
+                status: {id: 1, status: 'Active'},
+            },
             product: {
                 productId: 636, name: 'OnBase,  Inc.', lastModifiedDate: null,
                 contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
@@ -25,6 +33,7 @@
 
                 scope = $rootScope.$new();
                 scope.product = mock.product;
+                scope.developer = mock.developer;
                 scope.canEdit = true;
                 scope.canMerge = true;
                 scope.canSplit = true;
@@ -33,7 +42,7 @@
                 scope.versions = mock.versions;
                 scope.showVersions = false;
 
-                el = angular.element('<chpl-product product="product" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" on-edit="onEdit()" on-split="onSplit()" versions="versions" show-versions="showVersions"></chpl-product>');
+                el = angular.element('<chpl-product product="product" developer="developer" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" on-edit="onEdit()" on-split="onSplit()" versions="versions" show-versions="showVersions"></chpl-product>');
 
                 $compile(el)(scope);
                 scope.$digest();

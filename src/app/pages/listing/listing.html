@@ -33,9 +33,9 @@
         <div class="col-sm-4" id="product-information-basic">
           <div class="product-element" id="product-information-developer">
             <chpl-developer developer="$ctrl.product.developer"
-                            can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                            can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
-                            can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                            can-edit="$ctrl.can('edit')"
+                            can-merge="$ctrl.can('merge')"
+                            can-split="$ctrl.can('split')"
                             take-action="$ctrl.takeDeveloperAction(action, developerId)"
                             ></chpl-developer>
           </div>

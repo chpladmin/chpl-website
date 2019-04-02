@@ -2,7 +2,7 @@ export const ProductsComponent = {
     templateUrl: 'chpl.organizations/developers/products/products.html',
     bindings: {
         developer: '<',
-        developers: '<',
+        developers: '<?',
         product: '<',
         products: '<',
         versions: '<',
@@ -24,7 +24,7 @@ export const ProductsComponent = {
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
             }
-            if (changes.developers) {
+            if (changes.developers && changes.developers.currentValue) {
                 this.developers = (angular.copy(changes.developers.currentValue)).developers;
             }
             if (changes.product) {
@@ -42,6 +42,13 @@ export const ProductsComponent = {
                 this.backup.versions = angular.copy(this.versions);
                 this.movingVersions = [];
             }
+        }
+
+        can (action) {
+            if (action === 'split-product' && this.versions.length < 2) { return false; } // cannot split product without at least two versions
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
+            if (action === 'merge') { return false; } // if not above roles, can't merge
+            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
         }
 
         cancel () {
@@ -67,6 +74,7 @@ export const ProductsComponent = {
             }
             let that = this;
             this.product = product;
+            this.errorMessages = [];
             this.networkService.updateProduct({
                 product: this.product,
                 productIds: productIds,
@@ -85,7 +93,6 @@ export const ProductsComponent = {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
                     } else if (response.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(response.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
@@ -95,7 +102,6 @@ export const ProductsComponent = {
                 if (error.data.errorMessages) {
                     that.errorMessages = error.data.errorMessages;
                 } else if (error.data.error) {
-                    that.errorMessages = [];
                     that.errorMessages.push(error.data.error);
                 } else {
                     that.errorMessages = ['An error has occurred.'];
@@ -117,6 +123,7 @@ export const ProductsComponent = {
                 oldVersions: this.versions,
                 newVersions: this.movingVersions,
             };
+            this.errorMessages = [];
             this.networkService.splitProduct(splitProduct)
                 .then(response => {
                     if (!response.status || response.status === 200) {
@@ -128,7 +135,6 @@ export const ProductsComponent = {
                         if (response.data.errorMessages) {
                             that.errorMessages = response.data.errorMessages;
                         } else if (response.data.error) {
-                            that.errorMessages = [];
                             that.errorMessages.push(response.data.error);
                         } else {
                             that.errorMessages = ['An error has occurred.'];
@@ -138,7 +144,6 @@ export const ProductsComponent = {
                     if (error.data.errorMessages) {
                         that.errorMessages = error.data.errorMessages;
                     } else if (error.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(error.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];

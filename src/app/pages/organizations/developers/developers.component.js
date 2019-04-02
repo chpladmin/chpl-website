@@ -1,15 +1,14 @@
 export const DevelopersComponent = {
     templateUrl: 'chpl.organizations/developers/developers.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
-        developers: '<',
         products: '<',
     },
     controller: class DevelopersComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
@@ -18,26 +17,38 @@ export const DevelopersComponent = {
             this.splitEdit = true;
         }
 
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.loadAcbs();
+                this.loadDevelopers();
+            }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadAcbs();
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
+        }
+
         $onChanges (changes) {
             this.action = this.$stateParams.action;
-            if (changes.allowedAcbs) {
-                this.allowedAcbs = (angular.copy(changes.allowedAcbs.currentValue)).acbs;
-            }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
-            }
-            if (changes.developers) {
-                this.developers = (angular.copy(changes.developers.currentValue)).developers;
-                this.backup.developers = angular.copy(this.developers);
-                this.mergingDevelopers = [];
             }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
                 this.backup.products = angular.copy(this.products);
                 this.movingProducts = [];
             }
+        }
+
+        can (action) {
+            if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
+            if (action === 'merge') { return false; } // if not above roles, can't merge
+            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
         }
 
         cancel () {
@@ -56,6 +67,22 @@ export const DevelopersComponent = {
             this.splitEdit = false;
         }
 
+        loadAcbs () {
+            let that = this;
+            this.networkService.getAcbs(true).then(response => {
+                that.allowedAcbs = response.acbs;
+            });
+        }
+
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers;
+                that.backup.developers = angular.copy(that.developers);
+                that.mergingDevelopers = [];
+            });
+        }
+
         save (developer) {
             let developerIds = [this.developer.developerId];
             if (this.action === 'merge') {
@@ -63,6 +90,7 @@ export const DevelopersComponent = {
             }
             let that = this;
             this.developer = developer;
+            this.errorMessages = [];
             this.networkService.updateDeveloper({
                 developer: this.developer,
                 developerIds: developerIds,
@@ -80,7 +108,6 @@ export const DevelopersComponent = {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
                     } else if (response.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(response.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
@@ -90,7 +117,6 @@ export const DevelopersComponent = {
                 if (error.data.errorMessages) {
                     that.errorMessages = error.data.errorMessages;
                 } else if (error.data.error) {
-                    that.errorMessages = [];
                     that.errorMessages.push(error.data.error);
                 } else {
                     that.errorMessages = ['An error has occurred.'];
@@ -111,6 +137,7 @@ export const DevelopersComponent = {
                 oldProducts: this.products,
                 newProducts: this.movingProducts,
             };
+            this.errorMessages = [];
             this.networkService.splitDeveloper(splitDeveloper)
                 .then(response => {
                     if (!response.status || response.status === 200) {
@@ -122,7 +149,6 @@ export const DevelopersComponent = {
                         if (response.data.errorMessages) {
                             that.errorMessages = response.data.errorMessages;
                         } else if (response.data.error) {
-                            that.errorMessages = [];
                             that.errorMessages.push(response.data.error);
                         } else {
                             that.errorMessages = ['An error has occurred.'];
@@ -132,7 +158,6 @@ export const DevelopersComponent = {
                     if (error.data.errorMessages) {
                         that.errorMessages = error.data.errorMessages;
                     } else if (error.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(error.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
