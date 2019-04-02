@@ -319,6 +319,14 @@ export class NetworkService {
         return this.apiGET('/statistics/participant_professional_experience_count');
     }
 
+    getPendingListings () {
+        return this.apiGET('/certified_products/pending/metadata');
+    }
+
+    getPendingListingById (id) {
+        return this.apiGET('/certified_products/pending/' + id);
+    }
+
     getPractices () {
         return this.apiGET('/data/practice_types');
     }
@@ -419,10 +427,6 @@ export class NetworkService {
 
     getUcdProcesses () {
         return this.apiGET('/data/ucd_processes');
-    }
-
-    getUploadingCps () {
-        return this.apiGET('/certified_products/pending');
     }
 
     getUploadingSurveillances () {
