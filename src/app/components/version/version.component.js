@@ -54,11 +54,12 @@ export const VersionComponent = {
         can (action) {
             if (action === 'edit') {
                 return this.canEdit // allowed by containing component
-                    && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
             if (action === 'merge') {
                 return this.canMerge // allowed by containing component
-                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // allowed for only ADMIN/ONC
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
             }
         }
 

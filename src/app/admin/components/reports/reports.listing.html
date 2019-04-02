@@ -18,8 +18,8 @@
       <button class="btn btn-ai-success btn-block" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success btn-block" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Certified_Products_{{ $ctrl.filename }}"
-              csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Activity Date']"
-              csv-column-order="['acbName', 'developerName', 'productName', 'edition', 'chplProductNumber', 'friendlyCertificationDate', 'csvDetails', 'friendlyActivityDate']">
+              csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Details', 'Activity Date']"
+              csv-column-order="['acbName', 'developerName', 'productName', 'edition', 'chplProductNumber', 'friendlyCertificationDate', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>

@@ -128,9 +128,12 @@
             });
 
             describe('when figuring out what it can do', () => {
-                it('should allow edit iff the container allows it and the developer is active', () => {
+                it('should allow edit based on the container, the developer status, and the user\'s role', () => {
                     expect(ctrl.can('edit')).toBe(true);
                     ctrl.developer.status.status = 'not active';
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+                    expect(ctrl.can('edit')).toBe(true);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
                     expect(ctrl.can('edit')).toBe(false);
                     ctrl.developer.status.status = 'Active';
                     ctrl.canEdit = false;
@@ -141,7 +144,7 @@
                     expect(ctrl.can('merge')).toBe(true);
                     authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
                     expect(ctrl.can('merge')).toBe(true);
-                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ONC
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
                     expect(ctrl.can('merge')).toBe(false);
                     authService.hasAnyRole.and.returnValue(true);
                     authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
@@ -149,7 +152,7 @@
                     expect(ctrl.can('merge')).toBe(false);
                 });
 
-                it('should allow split iff the container allows it and the user is ADMIN or ONC', () => {
+                it('should allow split based on the container, the developer status, and the user\'s role', () => {
                     expect(ctrl.can('split')).toBe(true);
                     authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
                     expect(ctrl.can('split')).toBe(true);

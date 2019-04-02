@@ -95,9 +95,12 @@
             });
 
             describe('when figuring out what it can do', () => {
-                it('should allow edit iff the container allows it and the developer is active', () => {
+                it('should allow edit based on the container, the developer status, and the user\'s role', () => {
                     expect(ctrl.can('edit')).toBe(true);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
                     ctrl.developer.status.status = 'not active';
+                    expect(ctrl.can('edit')).toBe(true);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
                     expect(ctrl.can('edit')).toBe(false);
                     ctrl.developer.status.status = 'Active';
                     ctrl.canEdit = false;
