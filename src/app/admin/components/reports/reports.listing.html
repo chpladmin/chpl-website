@@ -30,7 +30,7 @@
     <div class="col-sm-12">
       <input st-search="filterText" placeholder="Filter on Developer, Product, or CHPL Product Number" class="input-sm form-control" type="search">
       <label class="control-label">Activity ({{ $ctrl.displayed.length }})
-        <select st-search="categoriesFilter" class="form-control">
+        <select st-search="categoriesFilter" st-input-event="change" class="form-control" ng-model="$ctrl.categoriesFilter">
           <option value="|LISTING|" selected>All</option>
           <option value="|SURVEILLANCE|">Surveillance</option>
           <option value="|LISTING_UPLOAD|">Upload</option>
