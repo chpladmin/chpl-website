@@ -18,9 +18,7 @@
             dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'chpl.product/history/history.html',
-            controller: 'ProductHistoryController',
-            controllerAs: 'vm',
+            component: 'chplListingHistory',
             animation: false,
             backdrop: 'static',
             keyboard: false,

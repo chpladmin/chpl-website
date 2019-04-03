@@ -1,64 +1,59 @@
-(function () {
-    'use strict';
+export const ListingHistoryComponent = {
+    templateUrl: 'chpl.listing/history/history.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&',
+    },
+    controller: class ListingHistoryComponent {
+        constructor ($filter, $location, $log, $q, networkService, utilService) {
+            'ngInject'
+            this.$filter = $filter;
+            this.$location = $location;
+            this.$q = $q;
+            this.$log = $log;
+            this.networkService = networkService;
+            this.utilService = utilService;
+        }
 
-    angular
-        .module('chpl.product')
-        .controller('ProductHistoryController', ProductHistoryController);
-
-    /** @ngInject */
-    function ProductHistoryController ($filter, $location, $log, $q, $uibModalInstance, activity, networkService, utilService) {
-        var vm = this;
-
-        vm.cancel = cancel;
-        vm.goToApi = goToApi;
-
-        activate();
-
-        ////////////////////////////////////////////////////////////////////
-
-        function activate () {
-            let promises = activity.map(item => networkService.getActivityById(item.id).then(response => response));
-            $q.all(promises)
+        $onInit () {
+            let that = this;
+            let promises = this.resolve.activity.map(item => that.networkService.getActivityById(item.id).then(response => response));
+            this.$q.all(promises)
                 .then(response => {
-                    vm.activity = response;
-                    _interpretActivity();
-                    vm.activity = vm.activity.filter(a => a.change && a.change.length > 0);
+                    that.activity = response;
+                    that._interpretActivity();
+                    that.activity = that.activity.filter(a => a.change && a.change.length > 0);
                 });
         }
 
-        function cancel () {
-            $uibModalInstance.dismiss('product history cancelled');
+        cancel () {
+            this.dismiss();
         }
 
-        function goToApi () {
-            $location.path('/resources/chpl_api');
-            vm.cancel();
+        goToApi () {
+            this.$location.path('/resources/chpl-api');
+            this.cancel();
         }
 
-        ////////////////////////////////////////////////////////////////////
-
-        // Exposing helper functions for testing purposes
-        vm._interpretCertificationStatusChanges = _interpretCertificationStatusChanges;
-        vm._interpretMuuHistory = _interpretMuuHistory;
-
-        function _interpretActivity () {
+        _interpretActivity () {
             var activity, curr, prev, statusIndex;
             statusIndex = -1;
-            for (var i = 0; i < vm.activity.length; i++) {
-                activity = vm.activity[i];
+            for (var i = 0; i < this.activity.length; i++) {
+                activity = this.activity[i];
                 activity.change = [];
                 prev = activity.originalData;
                 curr = activity.newData;
                 if (prev) {
-                    vm.listingId = prev.id;
+                    this.listingId = prev.id;
                 } else {
-                    vm.listingId = curr.id;
+                    this.listingId = curr.id;
                 }
                 if (activity.description.startsWith('Updated certified product')) {
                     statusIndex = i;
-                    _interpretCertificationCriteria(prev, curr, activity);
-                    _interpretCqms(prev, curr, activity);
-                    _interpretListingChange(prev, curr, activity);
+                    this._interpretCertificationCriteria(prev, curr, activity);
+                    this._interpretCqms(prev, curr, activity);
+                    this._interpretListingChange(prev, curr, activity);
                 } else if (activity.description === 'Created a certified product') {
                     statusIndex = i;
                     activity.change.push('Certified product was uploaded to the CHPL');
@@ -74,12 +69,12 @@
                 }
             }
             if (statusIndex !== -1) {
-                _interpretCertificationStatusChanges(vm.activity[statusIndex]);
-                _interpretMuuHistory(vm.activity[statusIndex]);
+                this._interpretCertificationStatusChanges(this.activity[statusIndex]);
+                this._interpretMuuHistory(this.activity[statusIndex]);
             }
         }
 
-        function _interpretCertificationCriteria (prev, curr, activity) {
+        _interpretCertificationCriteria (prev, curr, activity) {
             var pCC = prev.certificationResults;
             var cCC = curr.certificationResults;
             var i, j;
@@ -103,7 +98,7 @@
                 }
 
                 // Change to G1/G2 Macra Measures
-                var measures = utilService.arrayCompare(pCC[i].g1MacraMeasures,cCC[i].g1MacraMeasures);
+                var measures = this.utilService.arrayCompare(pCC[i].g1MacraMeasures,cCC[i].g1MacraMeasures);
                 if (measures.added.length > 0) {
                     obj.changes.push('<li>Added G1 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
                     for (j = 0; j < measures.added.length; j++) {
@@ -118,7 +113,7 @@
                     }
                     obj.changes.push('</ul></li>');
                 }
-                measures = utilService.arrayCompare(pCC[i].g2MacraMeasures,cCC[i].g2MacraMeasures);
+                measures = this.utilService.arrayCompare(pCC[i].g2MacraMeasures,cCC[i].g2MacraMeasures);
                 if (measures.added.length > 0) {
                     obj.changes.push('<li>Added G2 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
                     for (j = 0; j < measures.added.length; j++) {
@@ -140,9 +135,9 @@
             }
         }
 
-        function _interpretCertificationStatusChanges (activity) {
+        _interpretCertificationStatusChanges (activity) {
             var ce = activity.newData.certificationEvents;
-            vm.activity = vm.activity.concat(
+            this.activity = this.activity.concat(
                 ce.filter(function (e) {
                     return !e.eventTypeId || e.eventTypeId === 1;
                 }).map(function (e) {
@@ -160,19 +155,19 @@
                 }));
         }
 
-        function _interpretMuuHistory (activity) {
+        _interpretMuuHistory (activity) {
             if (activity.newData.meaningfulUseUserHistory && activity.newData.meaningfulUseUserHistory.length > 0) {
-                vm.activity = vm.activity.concat(
+                this.activity = this.activity.concat(
                     activity.newData.meaningfulUseUserHistory
                         .sort((a, b) => a.muuDate - b.muuDate)
                         .map((item, idx, arr) => {
                             if (idx > 0) {
                                 item.activityDate = parseInt(item.muuDate, 10);
                                 item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
-                                               + ' to ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
+                                               + ' to ' + item.muuCount + ' on ' + this.$filter('date')(item.muuDate, 'mediumDate')];
                             } else {
                                 item.activityDate = parseInt(item.muuDate, 10);
-                                item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
+                                item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + this.$filter('date')(item.muuDate, 'mediumDate')];
                             }
                             return item;
                         })
@@ -180,7 +175,7 @@
             }
         }
 
-        function _interpretCqms (prev, curr, activity) {
+        _interpretCqms (prev, curr, activity) {
             var pCqms = prev.cqmResults;
             var cCqms = curr.cqmResults;
             pCqms.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
@@ -203,7 +198,7 @@
                         obj.changes.push('<li>' + pCqms[i].allVersions[j] + ' removed</li>');
                     }
                 }
-                var criteria = _compareArray(pCqms[i].criteria, cCqms[i].criteria, 'certificationNumber');
+                var criteria = this._compareArray(pCqms[i].criteria, cCqms[i].criteria, 'certificationNumber');
                 for (j = 0; j < criteria.length; j++) {
                     obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                 }
@@ -213,13 +208,13 @@
             }
         }
 
-        function _interpretListingChange (prev, curr, activity) {
+        _interpretListingChange (prev, curr, activity) {
             if (prev.chplProductNumber !== curr.chplProductNumber) {
                 activity.change.push('CHPL Product Number changed from ' + prev.chplProductNumber + ' to ' + curr.chplProductNumber);
             }
         }
 
-        function _compareArray (prev, curr, root) {
+        _compareArray (prev, curr, root) {
             var ret = [];
             var i, j;
             for (i = 0; i < prev.length; i++) {
@@ -240,5 +235,9 @@
             }
             return ret;
         }
-    }
-})();
+    },
+}
+
+angular
+    .module('chpl.listing')
+    .component('chplListingHistory', ListingHistoryComponent);

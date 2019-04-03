@@ -68,9 +68,7 @@ export const ListingComponent = {
         viewProductHistory () {
             let that = this;
             this.$uibModal.open({
-                templateUrl: 'chpl.listing/history/history.html',
-                controller: 'ProductHistoryController',
-                controllerAs: 'vm',
+                component: 'chplListingHistory',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,

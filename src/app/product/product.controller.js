@@ -61,9 +61,7 @@
 
         function viewProductHistory () {
             vm.viewProductHistoryInstance = $uibModal.open({
-                templateUrl: 'chpl.product/history/history.html',
-                controller: 'ProductHistoryController',
-                controllerAs: 'vm',
+                component: 'chplListingHistory',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
