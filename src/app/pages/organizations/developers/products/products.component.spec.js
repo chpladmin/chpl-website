@@ -2,7 +2,7 @@
     'use strict';
 
     xdescribe('the Products component', () => {
-        var $compile, $log, ctrl, el, mock, scope;
+        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
             developer: {
@@ -32,24 +32,30 @@
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.organizations', $provide => {
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
+                    return $delegate;
+                });
                 $provide.decorator('chplProductsDirective', $delegate => {
                     $delegate[0].terminal = true;
                     return $delegate;
                 });
             });
-            inject((_$compile_, _$log_, $rootScope) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                networkService = _networkService_;
+                networkService.getDevelopers.and.returnValue($q.when(mock.developers));
 
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
-                scope.developers = mock.developers;
                 scope.product = mock.product;
-                scope.products = mock.products;
+                scope.products = {products: mock.products};
                 scope.versions = mock.versions;
 
-                el = angular.element('<chpl-products developer="developer" developers="developers" product="product" products="products" versions="versions"></chpl-products>');
+                el = angular.element('<chpl-products developer="developer" product="product" products="products" versions="versions"></chpl-products>');
 
                 $compile(el)(scope);
                 scope.$digest();

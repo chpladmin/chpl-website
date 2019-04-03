@@ -1,8 +1,8 @@
 export const ProductComponent = {
     templateUrl: 'chpl.components/product/product.html',
     bindings: {
-        developer: '<',
         product: '<',
+        developer: '<',
         developers: '<',
         canEdit: '<',
         canMerge: '<',
@@ -10,13 +10,12 @@ export const ProductComponent = {
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
+        isList: '<',
         isMerging: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
-        versions: '<',
         showFull: '<',
-        showVersions: '<',
         takeAction: '&',
     },
     controller: class ProductComponent {
@@ -62,23 +61,17 @@ export const ProductComponent = {
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
+            if (changes.isList) {
+                this.isList = angular.copy(changes.isList.currentValue);
+            }
             if (changes.isMerging) {
                 this.isMerging = angular.copy(changes.isMerging.currentValue);
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
-            if (changes.versions) {
-                this.versions = angular.copy(changes.versions.currentValue);
-            }
-            if (changes.versionContact) {
-                this.versionContact = angular.copy(changes.versionContact.currentValue);
-            }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
-            }
-            if (changes.showVersions) {
-                this.showVersions = angular.copy(changes.showVersions.currentValue);
             }
         }
 
@@ -86,19 +79,19 @@ export const ProductComponent = {
          * Allowed actions
          */
         can (action) {
-            if (action === 'edit') {
+            switch (action) {
+            case 'edit':
                 return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-            }
-            if (action === 'merge') {
+            case 'merge':
                 return this.canMerge // allowed by containing component
-                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed asADMIN/ONC
-            }
-            if (action === 'split') {
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+            case 'split':
                 return this.canSplit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"o
+                // no default
             }
         }
 
