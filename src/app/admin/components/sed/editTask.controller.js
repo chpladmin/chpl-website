@@ -45,7 +45,7 @@
 
         function viewParticipants () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing_details/sed/participantsModal.html',
+                templateUrl: 'chpl.components/listing-details/sed/participants-modal.html',
                 controller: 'ViewSedParticipantsController',
                 controllerAs: 'vm',
                 animation: false,
