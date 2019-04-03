@@ -7,9 +7,10 @@ export const ProductsComponent = {
         versions: '<',
     },
     controller: class ProductsComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
@@ -26,6 +27,17 @@ export const ProductsComponent = {
                     that.developers = response.developers;
                 });
             }
+        }
+
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.loadDevelopers();
+            }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
         }
 
         $onChanges (changes) {
@@ -73,6 +85,12 @@ export const ProductsComponent = {
             this.splitEdit = false;
         }
 
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers;
+            });
+        }
         save (product) {
             let productIds = [];
             if (this.action === 'merge') {

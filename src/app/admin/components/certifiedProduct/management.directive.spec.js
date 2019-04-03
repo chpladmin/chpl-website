@@ -47,6 +47,7 @@
                     $delegate.getCertificationStatuses = jasmine.createSpy('getCertificationStatuses');
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.getEditions = jasmine.createSpy('getEditions');
+                    $delegate.getPendingListings = jasmine.createSpy('getPendingListings');
                     $delegate.getPractices = jasmine.createSpy('getPractices');
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getProducts = jasmine.createSpy('getProducts');
@@ -60,7 +61,6 @@
                     $delegate.getTestStandards = jasmine.createSpy('getTestStandards');
                     $delegate.getTestTools = jasmine.createSpy('getTestTools');
                     $delegate.getUcdProcesses = jasmine.createSpy('getUcdProcesses');
-                    $delegate.getUploadingCps = jasmine.createSpy('getUploadingCps');
                     $delegate.getUploadingSurveillances = jasmine.createSpy('getUploadingSurveillances');
                     $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
                     $delegate.massRejectPendingListings = jasmine.createSpy('massRejectPendingListings');
@@ -105,7 +105,7 @@
                 networkService.getTestStandards.and.returnValue($q.when({data: []}));
                 networkService.getTestTools.and.returnValue($q.when([]));
                 networkService.getUcdProcesses.and.returnValue($q.when([]));
-                networkService.getUploadingCps.and.returnValue($q.when(mock.uploadingCps));
+                networkService.getPendingListings.and.returnValue($q.when(mock.uploadingCps));
                 networkService.getUploadingSurveillances.and.returnValue($q.when(mock.uploadingSurveillances));
                 networkService.getVersionsByProduct.and.returnValue($q.when(mock.products));
                 networkService.massRejectPendingListings.and.returnValue($q.when({}));
@@ -299,69 +299,6 @@
             });
         });
 
-        describe('rejecting a pending listing', function () {
-            beforeEach(function () {
-                vm.uploadingCps = [{id: 1}, {id: 2}];
-                vm.massReject = {
-                    1: true,
-                    2: false,
-                };
-            });
-
-            it('should call the common service to reject listings', function () {
-                vm.rejectCp(1);
-                el.isolateScope().$digest();
-                expect(networkService.rejectPendingCp).toHaveBeenCalled();
-            });
-
-            it('should remove the listing from the list of listings if rejection is successful', function () {
-                vm.rejectCp(1);
-                el.isolateScope().$digest();
-                expect(vm.uploadingCps).toEqual([{id: 2}]);
-            });
-
-            it('should have error messages if rejection fails', function () {
-                networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
-                vm.rejectCp(1);
-                el.isolateScope().$digest();
-                expect(vm.uploadingListingsMessages).toEqual([1,2]);
-            });
-
-            it('should call the common service to mass reject listings', function () {
-                vm.massRejectPendingListings();
-                el.isolateScope().$digest();
-                expect(networkService.massRejectPendingListings).toHaveBeenCalledWith([1]);
-            });
-
-            it('should reset the pending checkboxes', function () {
-                vm.massRejectPendingListings();
-                expect(vm.massReject).toEqual({2: false});
-            });
-
-            it('should remove the listings from the list of listings', function () {
-                vm.massRejectPendingListings();
-                expect(vm.uploadingCps).toEqual([{id: 2}]);
-            });
-
-            it('should have error messages if rejection fails', function () {
-                networkService.massRejectPendingListings.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
-                vm.massRejectPendingListings();
-                el.isolateScope().$digest();
-                expect(vm.uploadingListingsMessages.length).toEqual(3);
-            });
-
-            it('should know how many Listings are ready to be rejected', function () {
-                expect(vm.getNumberOfListingsToReject()).toBe(1);
-                vm.massReject[2] = true;
-                vm.massReject[3] = true;
-                expect(vm.getNumberOfListingsToReject()).toBe(3);
-                vm.massReject[1] = false;
-                vm.massReject[2] = false;
-                vm.massReject[3] = false;
-                expect(vm.getNumberOfListingsToReject()).toBe(0);
-            });
-        });
-
         describe('rejecting pending surveillances', function () {
             beforeEach(function () {
                 vm.uploadingSurveillances = [{id: 1}, {id: 2}];
@@ -403,75 +340,6 @@
                 vm.massRejectSurveillance[2] = false;
                 vm.massRejectSurveillance[3] = false;
                 expect(vm.getNumberOfSurveillanceToReject()).toBe(0);
-            });
-        });
-
-        describe('inspecting a pending Listing', function () {
-            var listingInspectOptions;
-            beforeEach(function () {
-                vm.uploadingCps = [
-                    {id: 1},
-                    {id: 2},
-                ];
-                listingInspectOptions = {
-                    templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
-                    controller: 'InspectController',
-                    controllerAs: 'vm',
-                    animation: false,
-                    backdrop: 'static',
-                    keyboard: false,
-                    resolve: {
-                        developers: jasmine.any(Function),
-                        inspectingCp: jasmine.any(Function),
-                        isAcbAdmin: jasmine.any(Function),
-                        isChplAdmin: jasmine.any(Function),
-                        resources: jasmine.any(Function),
-                        workType: jasmine.any(Function),
-                    },
-                    size: 'lg',
-                };
-            });
-
-            it('should create a modal instance when a Listing is to be edited', function () {
-                expect(vm.modalInstance).toBeUndefined();
-                vm.inspectCp({})
-                expect(vm.modalInstance).toBeDefined();
-            });
-
-            it('should resolve elements on inspect', function () {
-                vm.inspectCp(2)
-                expect($uibModal.open).toHaveBeenCalledWith(listingInspectOptions);
-                expect(actualOptions.resolve.inspectingCp()).toEqual({id: 2});
-                el.isolateScope().$digest();
-            });
-
-            it('should remove the inspected listing on close', function () {
-                var result = {
-                    status: 'confirmed',
-                };
-                vm.inspectCp(1);
-                vm.modalInstance.close(result);
-                expect(vm.uploadingCps).toEqual([{id: 2}]);
-            });
-
-            it('should report the user who did something on resolved', function () {
-                var result = {
-                    status: 'resolved',
-                    objectId: 'id',
-                    contact: {
-                        fullName: 'fname',
-                    },
-                };
-                vm.inspectCp(1);
-                vm.modalInstance.close(result);
-                expect(vm.uploadingListingsMessages[0]).toEqual('Product with ID: "id" has already been resolved by "fname"');
-            });
-
-            it('should log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.inspectCp({});
-                vm.modalInstance.dismiss('cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
 

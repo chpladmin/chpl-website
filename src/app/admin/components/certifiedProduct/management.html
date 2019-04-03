@@ -106,68 +106,8 @@
     </div> <!-- end upload certified products &amp; surveillance activities -->
 
     <div class="row" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && vm.workType === 'confirm'">
-      <div class="col-sm-12">
-        <h3>View Products in the process of upload</h3>
-        <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
-        <div ng-if="vm.uploadingListingsMessages">
-          <ul>
-            <li ng-repeat="message in vm.uploadingListingsMessages">{{ message }}</li>
-          </ul>
-        </div>
-        <table class="table table-striped" ng-if="vm.uploadingCps.length > 0" id="pending-listings-table">
-          <thead>
-            <tr>
-              <th scope="col">CHPL ID</th>
-              <th scope="col">Developer</th>
-              <th scope="col">Product</th>
-              <th scope="col">Version</th>
-              <th scope="col">Certification date</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-              <th scope="col">Mass Reject</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th colspan="7">&nbsp;</th>
-              <th>
-                <button class="btn btn-danger btn-block"
-                        ng-disabled="vm.getNumberOfListingsToReject() < 1"
-                        confirm="Are you sure you wish to remove {{ vm.getNumberOfListingsToReject() }} product{{ vm.getNumberOfListingsToReject() > 1 ? 's' : '' }} from the queue?"
-                        confirm-ok="Yes"
-                        confirm-cancel="No"
-                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="vm.massRejectPendingListings()"><i class="fa fa-trash-o"></i> Reject</button>
-              </th>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate' track by cp.id">
-              <td>{{ cp.chplProductNumber }}</td>
-              <td>{{ cp.developer.name }}</td>
-              <td>{{ cp.product.name }}</td>
-              <td>{{ cp.version.version }}</td>
-              <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
-              <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"
-                        ng-disabled="!vm.areResourcesReady()"
-                        id="pending-listing-inspect-{{ cp.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
-              </td>
-              <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
-                <button class="btn btn-warning btn-block" id="pending-listing-reject-{{ cp.id }}"
-                        confirm="Are you sure you wish to remove this product from the queue?"
-                        confirm-ok="Yes"
-                        confirm-cancel="No"
-                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="vm.rejectCp(cp.id)"><i class="fa fa-trash-o"></i> Clear</button>
-              </td>
-              <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <input type="checkbox" class="form-control" ng-model="vm.massReject[cp.id]" id="pending-listing-reject-checkbox-{{ cp.id }}">
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-sm-12" ng-if="vm.areResourcesReady()">
+        <chpl-confirm-listings developer="vm.developers" on-change="vm.refreshPending()" resources="vm.resources"></chpl-confirm-listings>
       </div>
     </div> <!-- end of upload process table -->
 

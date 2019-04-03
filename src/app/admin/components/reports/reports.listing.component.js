@@ -19,6 +19,7 @@ export const ReportsListingsComponent = {
             };
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
+            this.categoriesFilter = '|LISTING|';
         }
 
         $onChanges (changes) {
