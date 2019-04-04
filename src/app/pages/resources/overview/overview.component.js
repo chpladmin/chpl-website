@@ -8,20 +8,14 @@ export const OverviewComponent = {
             this.$anchorScroll = $anchorScroll;
             this.$location = $location;
             this.$log = $log;
-            this.$rootScope = $rootScope;
+            this.currentPage = $rootScope.currentPage;
             this.networkService = networkService;
         }
 
         $onInit () {
-            this.setCurrentPage();
             this.loadAnnouncements();
             this.loadAcbs();
             this.loadAtls();
-        }
-
-        setCurrentPage () {
-            let ctrl = this;
-            ctrl.currentPage = this.$rootScope.currentPage;
         }
 
         loadAnnouncements () {
