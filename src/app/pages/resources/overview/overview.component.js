@@ -3,18 +3,25 @@ export const OverviewComponent = {
     bindings: {
     },
     controller: class OverviewController {
-        constructor ($anchorScroll, $location, $log, networkService) {
+        constructor ($anchorScroll, $location, $log, $rootScope, networkService) {
             'ngInject'
             this.$anchorScroll = $anchorScroll;
             this.$location = $location;
             this.$log = $log;
+            this.$rootScope = $rootScope;
             this.networkService = networkService;
         }
 
         $onInit () {
+            this.setCurrentPage();
             this.loadAnnouncements();
             this.loadAcbs();
             this.loadAtls();
+        }
+
+        setCurrentPage () {
+            let ctrl = this;
+            ctrl.currentPage = this.$rootScope.currentPage;
         }
 
         loadAnnouncements () {
