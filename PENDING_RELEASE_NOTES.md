@@ -8,5 +8,6 @@ _Date TBD_
 
 ### Bug fixes
 * Allow editing of SED Participants
+* Fix behavior of left-side links on the Overview page.
 
 ---
