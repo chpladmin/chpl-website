@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the CHPL Listing component', () => {
+    fdescribe('the CHPL Listing component', () => {
 
         var $componentController, $log, $q, $stateParams, $uibModal, actualOptions, ctrl, mock, networkService, scope;
         mock = {};
@@ -18,15 +18,13 @@
             dismiss: type => { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'chpl.listing/history/history.html',
-            controller: 'ProductHistoryController',
-            controllerAs: 'vm',
+            component: 'chplListingHistory',
             animation: false,
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
             resolve: {
-                activity: jasmine.any(Function),
+                listing: jasmine.any(Function),
             },
         };
 
@@ -139,10 +137,10 @@
             });
 
             it('should resolve modal stuff when product history is viewed', () => {
-                ctrl.activity = mock.activity;
+                ctrl.product = mock.products[0];
                 ctrl.viewProductHistory();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.activity()).toEqual(mock.activity);
+                expect(actualOptions.resolve.listing()).toEqual(mock.products[0]);
             });
         });
     });

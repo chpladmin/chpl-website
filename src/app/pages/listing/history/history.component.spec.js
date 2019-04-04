@@ -4,33 +4,42 @@ import './history.mock';
     'use strict';
 
     fdescribe('the Listing History popup component', () => {
-        var $compile, $location, $log, $q, ctrl, el, mock, networkService, scope;
+        var $compile, $location, $log, $q, ctrl, el, listingActivity, mock, networkService, scope;
 
-        mock = {};
+        mock = {
+            listing: {
+                id: 9939,
+                developer: { developerId: 1654 },
+                product: { productId: 3067 },
+                version: { versionId: 7708 },
+                certificationEvents: [],
+            },
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.listing', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
+                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$location_, _$log_, _$q_, $rootScope, _networkService_, product_activity) => {
+            inject((_$compile_, _$location_, _$log_, _$q_, $rootScope, listing_activity, listing_metadata, _networkService_) => {
                 $compile = _$compile_;
                 $location = _$location_;
                 $log = _$log_;
                 $q = _$q_;
+                listingActivity = listing_activity;
                 networkService = _networkService_;
-                networkService.getActivityById.and.returnValue($q.when({}));
-
-                mock.activity = product_activity();
+                networkService.getActivityById.and.callFake(id => $q.when(listing_activity(id)));
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when(listing_metadata()));
 
                 scope = $rootScope.$new();
                 scope.close = jasmine.createSpy('close');
                 scope.dismiss = jasmine.createSpy('dismiss');
                 scope.resolve = {
-                    activity: [],
+                    listing: mock.listing,
                 }
 
                 el = angular.element('<chpl-listing-history close="close($value)" dismiss="dismiss()" resolve="resolve"></chpl-listing-history>');
@@ -38,11 +47,6 @@ import './history.mock';
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-
-                // stupid way of doing this now
-                ctrl.activity = mock.activity;
-                ctrl._interpretActivity();
-                ctrl.activity = ctrl.activity.filter(a => a.change && a.change.length > 0);
             });
         });
 
@@ -64,6 +68,7 @@ import './history.mock';
             it('should exist', () => {
                 expect(ctrl).toBeDefined();
             });
+
             it('should have a way to close the modal', () => {
                 expect(ctrl.cancel).toBeDefined();
                 ctrl.cancel();
@@ -83,8 +88,17 @@ import './history.mock';
             });
 
             describe('when loading', () => {
-                it('should know what the Listing id is', () => {
-                    expect(ctrl.listingId).toBe(33);
+                it('should get activity from the network', () => {
+                    expect(networkService.getSingleCertifiedProductMetadataActivity).toHaveBeenCalledWith(9939);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(4607);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(381);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(404);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(408);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(433);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(382);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(17925);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(5452);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(375);
                 });
             });
 
@@ -133,20 +147,23 @@ import './history.mock';
                     });
 
                     it('should have an item for certification status becoming active during confirmation', () => {
-                        ctrl._interpretCertificationStatusChanges(mock.activity[0]);
+                        ctrl.listing = listingActivity(4607).newData;
+                        ctrl._interpretCertificationStatusChanges();
                         expect(ctrl.activity.length).toBe(1);
                         expect(ctrl.activity[0].change).toEqual(['Certification Status became "Active"']);
                     });
 
                     it('should have an item for certification status changing', () => {
-                        ctrl._interpretCertificationStatusChanges(mock.activity[4]);
+                        ctrl.listing = listingActivity(433).newData;
+                        ctrl._interpretCertificationStatusChanges();
                         expect(ctrl.activity.length).toBe(2);
                         expect(ctrl.activity[0].change).toEqual(['Certification Status became "Active"']);
                         expect(ctrl.activity[1].change).toEqual(['Certification Status became "Suspended by ONC"']);
                     });
 
                     it('should have an item for certification status changing after confirmation', () => {
-                        ctrl._interpretCertificationStatusChanges(mock.activity[6]);
+                        ctrl.listing = listingActivity(17925).newData;
+                        ctrl._interpretCertificationStatusChanges();
                         expect(ctrl.activity.length).toBe(1);
                         expect(ctrl.activity[0].change).toEqual(['Certification Status became "Active"']);
                     });
@@ -155,32 +172,27 @@ import './history.mock';
                 describe('when dealing with MUU data', () => {
                     beforeEach(() => {
                         ctrl.activity = [];
+                        ctrl.listing = angular.copy(listingActivity(5452).newData);
                     });
 
                     it('should know when the MUU number changed', () => {
-                        ctrl._interpretMuuHistory(mock.activity[7]);
+                        ctrl._interpretMuuHistory();
                         expect(ctrl.activity[1].change[0].substring(0, 64)).toEqual('Estimated number of Meaningful Use Users changed from 4 to 6 on ');
                         expect(ctrl.activity[1].change[0].length).toBeGreaterThan(64); // should have the date of the change at the end of the string, but timezones make dates different on different systems, so testing for equality is hard
                     });
 
                     it('should handle listings with no MUU history', () => {
-                        const activity = {
-                            newData: {},
-                        };
-                        ctrl._interpretMuuHistory(activity);
+                        ctrl.listing.meaningfulUseUserHistory = undefined;
+                        ctrl._interpretMuuHistory();
                         expect(ctrl.activity).toEqual([]);
                     });
 
                     it('should handle listings with only one item', () => {
-                        const activity = {
-                            newData: {
-                                meaningfulUseUserHistory: [{
-                                    muuDate: 23,
-                                    muuCount: 3,
-                                }],
-                            },
-                        };
-                        ctrl._interpretMuuHistory(activity);
+                        ctrl.listing.meaningfulUseUserHistory = [{
+                            muuDate: 23,
+                            muuCount: 3,
+                        }];
+                        ctrl._interpretMuuHistory();
                         expect(ctrl.activity[0].change[0].substring(0, 53)).toEqual('Estimated number of Meaningful Use Users became 3 on ');
                         expect(ctrl.activity[0].change[0].length).toBeGreaterThan(53);
                     });

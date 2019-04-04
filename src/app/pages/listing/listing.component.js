@@ -74,7 +74,7 @@ export const ListingComponent = {
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    activity: () => that.activity,
+                    listing: () => that.product,
                 },
             });
         }

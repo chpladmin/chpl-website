@@ -14,17 +14,23 @@ export const ListingHistoryComponent = {
             this.$log = $log;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.activity = [];
         }
 
         $onInit () {
             let that = this;
-            let promises = this.resolve.activity.map(item => that.networkService.getActivityById(item.id).then(response => response));
-            this.$q.all(promises)
-                .then(response => {
-                    that.activity = response;
-                    that._interpretActivity();
-                    that.activity = that.activity.filter(a => a.change && a.change.length > 0);
-                });
+            this.listing = angular.copy(this.resolve.listing);
+            this._interpretCertificationStatusChanges();
+            this._interpretMuuHistory();
+            this.networkService.getSingleCertifiedProductMetadataActivity(this.listing.id).then(response => {
+                let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretActivity(response)));
+                that.$q.all(promises)
+                    .then(response => {
+                        that.activity = that.activity
+                            .concat(response)
+                            .filter(a => a.change && a.change.length > 0);
+                    });
+            });
         }
 
         cancel () {
@@ -36,42 +42,25 @@ export const ListingHistoryComponent = {
             this.cancel();
         }
 
-        _interpretActivity () {
-            var activity, curr, prev, statusIndex;
-            statusIndex = -1;
-            for (var i = 0; i < this.activity.length; i++) {
-                activity = this.activity[i];
-                activity.change = [];
-                prev = activity.originalData;
-                curr = activity.newData;
-                if (prev) {
-                    this.listingId = prev.id;
-                } else {
-                    this.listingId = curr.id;
-                }
-                if (activity.description.startsWith('Updated certified product')) {
-                    statusIndex = i;
-                    this._interpretCertificationCriteria(prev, curr, activity);
-                    this._interpretCqms(prev, curr, activity);
-                    this._interpretListingChange(prev, curr, activity);
-                } else if (activity.description === 'Created a certified product') {
-                    statusIndex = i;
-                    activity.change.push('Certified product was uploaded to the CHPL');
-                } else if (activity.description.startsWith('Surveillance was added')) {
-                    statusIndex = i;
-                    activity.change.push('Surveillance activity was added');
-                } else if (activity.description.startsWith('Surveillance was updated')) {
-                    statusIndex = i;
-                    activity.change.push('Surveillance activity was updated');
-                } else if (activity.description.startsWith('Surveillance was delete')) {
-                    statusIndex = i;
-                    activity.change.push('Surveillance activity was deleted');
-                }
+        _interpretActivity (activity) {
+            var curr, prev;
+            activity.change = [];
+            prev = activity.originalData;
+            curr = activity.newData;
+            if (activity.description.startsWith('Updated certified product')) {
+                this._interpretCertificationCriteria(prev, curr, activity);
+                this._interpretCqms(prev, curr, activity);
+                this._interpretListingChange(prev, curr, activity);
+            } else if (activity.description === 'Created a certified product') {
+                activity.change.push('Certified product was uploaded to the CHPL');
+            } else if (activity.description.startsWith('Surveillance was added')) {
+                activity.change.push('Surveillance activity was added');
+            } else if (activity.description.startsWith('Surveillance was updated')) {
+                activity.change.push('Surveillance activity was updated');
+            } else if (activity.description.startsWith('Surveillance was delete')) {
+                activity.change.push('Surveillance activity was deleted');
             }
-            if (statusIndex !== -1) {
-                this._interpretCertificationStatusChanges(this.activity[statusIndex]);
-                this._interpretMuuHistory(this.activity[statusIndex]);
-            }
+            return activity;
         }
 
         _interpretCertificationCriteria (prev, curr, activity) {
@@ -135,30 +124,29 @@ export const ListingHistoryComponent = {
             }
         }
 
-        _interpretCertificationStatusChanges (activity) {
-            var ce = activity.newData.certificationEvents;
+        _interpretCertificationStatusChanges () {
+            var ce = this.listing.certificationEvents;
             this.activity = this.activity.concat(
-                ce.filter(function (e) {
-                    return !e.eventTypeId || e.eventTypeId === 1;
-                }).map(function (e) {
-                    e.activityDate = parseInt(e.eventDate, 10);
-                    if (e.eventTypeId && e.eventTypeId === 1) {
-                        e.change = ['Certification Status became "Active"'];
-                    } else if (e.certificationStatusName) {
-                        e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
-                    } else if (e.status) {
-                        e.change = ['Certification Status became "' + e.status.name + '"'];
-                    } else {
-                        e.change = ['Undetermined change'];
-                    }
-                    return e;
-                }));
+                ce.filter(e => !e.eventTypeId || e.eventTypeId === 1)
+                    .map(e => {
+                        e.activityDate = parseInt(e.eventDate, 10);
+                        if (e.eventTypeId && e.eventTypeId === 1) {
+                            e.change = ['Certification Status became "Active"'];
+                        } else if (e.certificationStatusName) {
+                            e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
+                        } else if (e.status) {
+                            e.change = ['Certification Status became "' + e.status.name + '"'];
+                        } else {
+                            e.change = ['Undetermined change'];
+                        }
+                        return e;
+                    }));
         }
 
-        _interpretMuuHistory (activity) {
-            if (activity.newData.meaningfulUseUserHistory && activity.newData.meaningfulUseUserHistory.length > 0) {
+        _interpretMuuHistory () {
+            if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
                 this.activity = this.activity.concat(
-                    activity.newData.meaningfulUseUserHistory
+                    this.listing.meaningfulUseUserHistory
                         .sort((a, b) => a.muuDate - b.muuDate)
                         .map((item, idx, arr) => {
                             if (idx > 0) {
