@@ -107,7 +107,7 @@
 
     <div class="row" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && vm.workType === 'confirm'">
       <div class="col-sm-12" ng-if="vm.areResourcesReady()">
-        <chpl-confirm-listings developer="vm.developers" on-change="vm.refreshPending()" resources="vm.resources"></chpl-confirm-listings>
+        <chpl-confirm-listings developers="vm.developers" on-change="vm.refreshPending()" resources="vm.resources"></chpl-confirm-listings>
       </div>
     </div> <!-- end of upload process table -->
 
