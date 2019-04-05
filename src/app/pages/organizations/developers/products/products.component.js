@@ -23,15 +23,6 @@ export const ProductsComponent = {
         $onInit () {
             let that = this;
             if (this.hasAnyRole()) {
-                this.developers = this.networkService.getDevelopers(true).then(response => {
-                    that.developers = response.developers;
-                });
-            }
-        }
-
-        $onInit () {
-            let that = this;
-            if (this.hasAnyRole()) {
                 this.loadDevelopers();
             }
             let loggedIn = this.$scope.$on('loggedIn', function () {
@@ -91,6 +82,7 @@ export const ProductsComponent = {
                 that.developers = response.developers;
             });
         }
+
         save (product) {
             let productIds = [];
             if (this.action === 'merge') {
