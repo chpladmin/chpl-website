@@ -1,0 +1,9 @@
+{
+    "presets": [
+        ["@babel/preset-env", {
+            "useBuiltIns":"usage",
+            "include":["es6.promise","es7.promise.finally"],
+            "debug":true
+        }]
+    ]
+}
