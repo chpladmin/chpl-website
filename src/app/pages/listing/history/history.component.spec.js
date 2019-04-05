@@ -110,6 +110,7 @@ import './history.mock';
                 it('should get version activity from the network', () => {
                     expect(networkService.getSingleVersionActivityMetadata).toHaveBeenCalledWith(7708);
                     expect(networkService.getActivityById).toHaveBeenCalledWith(46857);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(46860);
                 });
 
                 it('should get product activity from the network', () => {
@@ -223,14 +224,24 @@ import './history.mock';
                 });
 
                 describe('when dealing with Version changes', () => {
-                    let activity;
-                    beforeEach(() => {
-                        activity = getActivity(46857);
-                    });
-
                     it('should know when a version changed', () => {
+                        let activity = getActivity(46857);
                         ctrl._interpretVersion(activity);
                         expect(activity.change[0]).toEqual('Version changed from 5.3 to 5.30');
+                    });
+
+                    it('should know when a version was merged', () => {
+                        let activity = getActivity(46860);
+                        ctrl._interpretVersion(activity);
+                        expect(activity.change[0]).toEqual('Merged Versions 6.00, 6.0 to make Version 6.00');
+                    });
+
+                    xit('should know get the history of the merged parents', () => {
+                        let activity = getActivity(46860);
+                        networkService.getSingleVersionActivityMetadata.and.returnValue($q.when([]));
+                        ctrl._interpretVersion(activity);
+                        expect(networkService.getSingleVersionActivityMetadata).toHaveBeenCalledWith(4411);
+                        expect(networkService.getSingleVersionActivityMetadata).toHaveBeenCalledWith(4396);
                     });
                 });
 
