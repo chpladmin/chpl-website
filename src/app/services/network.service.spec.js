@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Network service', () => {
+    fdescribe('the Network service', () => {
         var $httpBackend, $log, $rootScope, mock, networkService;
 
         mock = {};
@@ -914,9 +914,33 @@
             $httpBackend.flush();
         });
 
-        it('should getSingleCertifiedProductMetadataActivity', () => {
+        it('should getSingleDeveloperActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/developers\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleDeveloperActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleListingActivityMetadata', () => {
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
-            networkService.getSingleCertifiedProductMetadataActivity('payload').then(response => {
+            networkService.getSingleListingActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleProductActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/products\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleProductActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleVersionActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/versions\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleVersionActivityMetadata('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

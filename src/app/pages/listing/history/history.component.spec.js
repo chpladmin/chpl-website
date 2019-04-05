@@ -4,7 +4,7 @@ import './history.mock';
     'use strict';
 
     fdescribe('the Listing History popup component', () => {
-        var $compile, $location, $log, $q, ctrl, el, listingActivity, mock, networkService, scope;
+        var $compile, $location, $log, $q, ctrl, el, getActivity, mock, networkService, scope;
 
         mock = {
             listing: {
@@ -20,20 +20,26 @@ import './history.mock';
             angular.mock.module('chpl.listing', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
-                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
+                    $delegate.getSingleDeveloperActivityMetadata = jasmine.createSpy('getSingleDeveloperActivityMetadata');
+                    $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
+                    $delegate.getSingleProductActivityMetadata = jasmine.createSpy('getSingleProductActivityMetadata');
+                    $delegate.getSingleVersionActivityMetadata = jasmine.createSpy('getSingleVersionActivityMetadata');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$location_, _$log_, _$q_, $rootScope, listing_activity, listing_metadata, _networkService_) => {
+            inject((_$compile_, _$location_, _$log_, _$q_, $rootScope, activity, metadata, _networkService_) => {
                 $compile = _$compile_;
                 $location = _$location_;
                 $log = _$log_;
                 $q = _$q_;
-                listingActivity = listing_activity;
+                getActivity = activity;
                 networkService = _networkService_;
-                networkService.getActivityById.and.callFake(id => $q.when(listing_activity(id)));
-                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when(listing_metadata()));
+                networkService.getSingleDeveloperActivityMetadata.and.returnValue($q.when(metadata('developer')));
+                networkService.getSingleListingActivityMetadata.and.returnValue($q.when(metadata('listing')));
+                networkService.getSingleProductActivityMetadata.and.returnValue($q.when(metadata('product')));
+                networkService.getSingleVersionActivityMetadata.and.returnValue($q.when(metadata('version')));
+                networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
 
                 scope = $rootScope.$new();
                 scope.close = jasmine.createSpy('close');
@@ -88,8 +94,8 @@ import './history.mock';
             });
 
             describe('when loading', () => {
-                it('should get activity from the network', () => {
-                    expect(networkService.getSingleCertifiedProductMetadataActivity).toHaveBeenCalledWith(9939);
+                it('should get listing activity from the network', () => {
+                    expect(networkService.getSingleListingActivityMetadata).toHaveBeenCalledWith(9939);
                     expect(networkService.getActivityById).toHaveBeenCalledWith(4607);
                     expect(networkService.getActivityById).toHaveBeenCalledWith(381);
                     expect(networkService.getActivityById).toHaveBeenCalledWith(404);
@@ -100,9 +106,27 @@ import './history.mock';
                     expect(networkService.getActivityById).toHaveBeenCalledWith(5452);
                     expect(networkService.getActivityById).toHaveBeenCalledWith(375);
                 });
+
+                it('should get version activity from the network', () => {
+                    expect(networkService.getSingleVersionActivityMetadata).toHaveBeenCalledWith(7708);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(46857);
+                });
+
+                it('should get product activity from the network', () => {
+                    expect(networkService.getSingleProductActivityMetadata).toHaveBeenCalledWith(3067);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(46858);
+                });
+
+                it('should get developer activity from the network', () => {
+                    expect(networkService.getSingleDeveloperActivityMetadata).toHaveBeenCalledWith(1654);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(8905);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(8910);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(42854);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(46859);
+                });
             });
 
-            describe('when interpreting the report', () => {
+            describe('when interpreting the reports', () => {
                 it('should have an item for when the product was certified but not edited', () => {
                     expect(ctrl.activity[0].change).toEqual(['Certified product was uploaded to the CHPL']);
                 });
@@ -147,14 +171,14 @@ import './history.mock';
                     });
 
                     it('should have an item for certification status becoming active during confirmation', () => {
-                        ctrl.listing = listingActivity(4607).newData;
+                        ctrl.listing = getActivity(4607).newData;
                         ctrl._interpretCertificationStatusChanges();
                         expect(ctrl.activity.length).toBe(1);
                         expect(ctrl.activity[0].change).toEqual(['Certification Status became "Active"']);
                     });
 
                     it('should have an item for certification status changing', () => {
-                        ctrl.listing = listingActivity(433).newData;
+                        ctrl.listing = getActivity(433).newData;
                         ctrl._interpretCertificationStatusChanges();
                         expect(ctrl.activity.length).toBe(2);
                         expect(ctrl.activity[0].change).toEqual(['Certification Status became "Active"']);
@@ -162,7 +186,7 @@ import './history.mock';
                     });
 
                     it('should have an item for certification status changing after confirmation', () => {
-                        ctrl.listing = listingActivity(17925).newData;
+                        ctrl.listing = getActivity(17925).newData;
                         ctrl._interpretCertificationStatusChanges();
                         expect(ctrl.activity.length).toBe(1);
                         expect(ctrl.activity[0].change).toEqual(['Certification Status became "Active"']);
@@ -172,7 +196,7 @@ import './history.mock';
                 describe('when dealing with MUU data', () => {
                     beforeEach(() => {
                         ctrl.activity = [];
-                        ctrl.listing = angular.copy(listingActivity(5452).newData);
+                        ctrl.listing = angular.copy(getActivity(5452).newData);
                     });
 
                     it('should know when the MUU number changed', () => {
@@ -195,6 +219,42 @@ import './history.mock';
                         ctrl._interpretMuuHistory();
                         expect(ctrl.activity[0].change[0].substring(0, 53)).toEqual('Estimated number of Meaningful Use Users became 3 on ');
                         expect(ctrl.activity[0].change[0].length).toBeGreaterThan(53);
+                    });
+                });
+
+                describe('when dealing with Version changes', () => {
+                    let activity;
+                    beforeEach(() => {
+                        activity = getActivity(46857);
+                    });
+
+                    it('should know when a version changed', () => {
+                        ctrl._interpretVersion(activity);
+                        expect(activity.change[0]).toEqual('Version changed from 5.3 to 5.30');
+                    });
+                });
+
+                describe('when dealing with Product changes', () => {
+                    let activity;
+                    beforeEach(() => {
+                        activity = getActivity(46858);
+                    });
+
+                    it('should know when a product changed', () => {
+                        ctrl._interpretProduct(activity);
+                        expect(activity.change[0]).toEqual('Product changed from axiUm CE to axiUm ce');
+                    });
+                });
+
+                describe('when dealing with Developer changes', () => {
+                    let activity;
+                    beforeEach(() => {
+                        activity = getActivity(46859);
+                    });
+
+                    it('should know when a developer changed', () => {
+                        ctrl._interpretDeveloper(activity);
+                        expect(activity.change[0]).toEqual('Developer changed from Exan Enterprises to Exan Enterprises, Inc.');
                     });
                 });
             });

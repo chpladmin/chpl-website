@@ -51,7 +51,7 @@
                     vm.loading = false;
                     $log.error(error);
                 });
-            networkService.getSingleCertifiedProductMetadataActivity(vm.productId)
+            networkService.getSingleListingActivityMetadata(vm.productId)
                 .then(function (data) {
                     vm.activity = data;
                 }, function (error) {

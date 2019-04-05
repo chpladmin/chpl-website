@@ -52,7 +52,7 @@ export const ListingComponent = {
                 }, () => {
                     that.loading = false;
                 });
-            this.networkService.getSingleCertifiedProductMetadataActivity(this.productId)
+            this.networkService.getSingleListingActivityMetadata(this.productId)
                 .then(data => {
                     that.activity = data;
                 });

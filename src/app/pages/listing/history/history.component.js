@@ -22,8 +22,35 @@ export const ListingHistoryComponent = {
             this.listing = angular.copy(this.resolve.listing);
             this._interpretCertificationStatusChanges();
             this._interpretMuuHistory();
-            this.networkService.getSingleCertifiedProductMetadataActivity(this.listing.id).then(response => {
+            this.networkService.getSingleListingActivityMetadata(this.listing.id).then(response => {
                 let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretActivity(response)));
+                that.$q.all(promises)
+                    .then(response => {
+                        that.activity = that.activity
+                            .concat(response)
+                            .filter(a => a.change && a.change.length > 0);
+                    });
+            });
+            this.networkService.getSingleVersionActivityMetadata(this.listing.version.versionId).then(response => {
+                let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
+                that.$q.all(promises)
+                    .then(response => {
+                        that.activity = that.activity
+                            .concat(response)
+                            .filter(a => a.change && a.change.length > 0);
+                    });
+            });
+            this.networkService.getSingleProductActivityMetadata(this.listing.product.productId).then(response => {
+                let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
+                that.$q.all(promises)
+                    .then(response => {
+                        that.activity = that.activity
+                            .concat(response)
+                            .filter(a => a.change && a.change.length > 0);
+                    });
+            });
+            this.networkService.getSingleDeveloperActivityMetadata(this.listing.developer.developerId).then(response => {
+                let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
                 that.$q.all(promises)
                     .then(response => {
                         that.activity = that.activity
@@ -200,6 +227,39 @@ export const ListingHistoryComponent = {
             if (prev.chplProductNumber !== curr.chplProductNumber) {
                 activity.change.push('CHPL Product Number changed from ' + prev.chplProductNumber + ' to ' + curr.chplProductNumber);
             }
+        }
+
+        _interpretDeveloper (activity) {
+            var curr, prev;
+            activity.change = [];
+            prev = activity.originalData;
+            curr = activity.newData;
+            if (prev.name !== curr.name) {
+                activity.change.push('Developer changed from ' + prev.name + ' to ' + curr.name);
+            }
+            return activity;
+        }
+
+        _interpretProduct (activity) {
+            var curr, prev;
+            activity.change = [];
+            prev = activity.originalData;
+            curr = activity.newData;
+            if (prev.name !== curr.name) {
+                activity.change.push('Product changed from ' + prev.name + ' to ' + curr.name);
+            }
+            return activity;
+        }
+
+        _interpretVersion (activity) {
+            var curr, prev;
+            activity.change = [];
+            prev = activity.originalData;
+            curr = activity.newData;
+            if (prev.version !== curr.version) {
+                activity.change.push('Version changed from ' + prev.version + ' to ' + curr.version);
+            }
+            return activity;
         }
 
         _compareArray (prev, curr, root) {
