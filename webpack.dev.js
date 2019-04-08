@@ -9,6 +9,7 @@ const base = require('./webpack.ci.js');
 
 module.exports = merge(base, {
     devServer: {
+        disableHostCheck: true,
         port: 3000,
         proxy: {
             '/rest': {
