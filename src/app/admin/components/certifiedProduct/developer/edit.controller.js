@@ -10,6 +10,7 @@
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
@@ -37,8 +38,6 @@
                 }
             }
 
-            vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isChplAdmin = authService.isChplAdmin();
             vm.showFormErrors = false;
             vm.loadedAsInactiveByOnc = (vm.developer.status.status === 'Suspended by ONC' || vm.developer.status.status === 'Under certification ban by ONC');
         }
@@ -137,15 +136,26 @@
                     vm.developer.transparencyAttestations.push({acbName: key, attestation: value});
                 }
             });
+
             networkService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         $uibModalInstance.close(response);
                     } else {
-                        $uibModalInstance.dismiss('An error occurred');
+                        if (response.data.errorMessages) {
+                            vm.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            vm.errorMessages = [];
+                            vm.errorMessages.push(response.data.error);
+                        }
                     }
                 },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
+                    if (error.data.errorMessages) {
+                        vm.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        vm.errorMessages = [];
+                        vm.errorMessages.push(error.data.error);
+                    }
                 });
         }
 

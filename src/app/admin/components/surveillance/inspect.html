@@ -5,23 +5,23 @@
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+            ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="inspect-label">Inspect Surveillance Activity</h4>
   </div>
   <div class="modal-body">
     <div class="row">
       <div class="col-sm-12 lead">
         <strong>
-          <div ng-if="vm.surveillance.errorMessages.length > 0">
-            <span class="text-danger">Error<span ng-if="vm.surveillance.errorMessages.length > 1">s</span>:</span>
+          <div ng-if="$ctrl.surveillance.errorMessages.length > 0">
+            <span class="text-danger">Error<span ng-if="$ctrl.surveillance.errorMessages.length > 1">s</span>:</span>
             <ul>
-              <li ng-repeat="error in vm.surveillance.errorMessages"><pre>{{ error }}</pre></li>
+              <li ng-repeat="error in $ctrl.surveillance.errorMessages"><pre>{{ error }}</pre></li>
             </ul>
           </div>
-          <div ng-if="vm.surveillance.warningMessages.length > 0">
-            <span class="text-danger">Warning<span ng-if="vm.surveillance.warningMessages.length > 1">s</span>:</span>
+          <div ng-if="$ctrl.surveillance.warningMessages.length > 0">
+            <span class="text-danger">Warning<span ng-if="$ctrl.surveillance.warningMessages.length > 1">s</span>:</span>
             <ul>
-              <li ng-repeat="error in vm.surveillance.warningMessages"><pre>{{ error }}</pre></li>
+              <li ng-repeat="error in $ctrl.surveillance.warningMessages"><pre>{{ error }}</pre></li>
             </ul>
           </div>
         </strong>
@@ -31,13 +31,13 @@
     <div class="row">
       <div class="col-sm-12">
         <button class="btn btn-ai-success pull-right"
-                ng-click="vm.editSurveillance()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
-        <strong>CHPL Product Number:</strong>{{ vm.surveillance.certifiedProduct.chplProductNumber }}<br />
-        <strong>Start Date:</strong>{{ vm.surveillance.startDate | date : 'mediumDate' : 'UTC' }}<br />
-        <strong>End Date:</strong>{{ vm.surveillance.endDate | date : 'mediumDate' : 'UTC' }}<br />
-        <strong>Surveillance Type:</strong>{{ vm.surveillance.type.name }}<br />
-        <strong>Number of sites surveilled:</strong>{{ vm.surveillance.randomizedSitesUsed ? vm.surveillance.randomizedSitesUsed : 'N/A' }}<br />
-        <strong>Surveillance initiated by:</strong>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}<br />
+                ng-click="$ctrl.editSurveillance()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+        <strong>CHPL Product Number:</strong>{{ $ctrl.surveillance.certifiedProduct.chplProductNumber }}<br />
+        <strong>Start Date:</strong>{{ $ctrl.surveillance.startDate | date : 'mediumDate' : 'UTC' }}<br />
+        <strong>End Date:</strong>{{ $ctrl.surveillance.endDate | date : 'mediumDate' : 'UTC' }}<br />
+        <strong>Surveillance Type:</strong>{{ $ctrl.surveillance.type.name }}<br />
+        <strong>Number of sites surveilled:</strong>{{ $ctrl.surveillance.randomizedSitesUsed ? $ctrl.surveillance.randomizedSitesUsed : 'N/A' }}<br />
+        <strong>Surveillance initiated by:</strong>{{ $ctrl.surveillance.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}<br />
         <table class="table table-condensed">
           <thead>
             <tr>
@@ -48,13 +48,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:vm.sortRequirements">
+            <tr ng-repeat="req in $ctrl.surveillance.requirements | orderBy:$ctrl.sortRequirements">
               <td>{{ req.type.name }}</td>
               <td>{{ req.requirement }}</td>
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>
-                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i><span class="sr-only">Inspect</span></button>
+                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success" ng-click="$ctrl.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i><span class="sr-only">Inspect</span></button>
               </td>
             </tr>
           </tbody>
@@ -64,11 +64,11 @@
   </div>
 
   <div class="modal-footer">
-    <div ng-if="vm.errorMessages && vm.errorMessages.length !== 0" class="row">
+    <div ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length !== 0" class="row">
       <div class="col-sm-12 text-left bg-danger">
         Error in activity confirmation
         <ul>
-          <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
+          <li ng-repeat="error in $ctrl.errorMessages">{{ error }}</li>
         </ul>
       </div>
     </div>
@@ -77,12 +77,12 @@
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.reject()"><i class="fa fa-trash-o"></i> Reject</button>
+            ng-click="$ctrl.reject()"><i class="fa fa-trash-o"></i> Reject</button>
     <button class="btn btn-ai-success btn-large pull-right"
             confirm="Are you sure you wish to confirm this Surveillance Activity?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.confirm()"><i class="fa fa-cloud-upload"></i> Confirm</button>
+            ng-click="$ctrl.confirm()"><i class="fa fa-cloud-upload"></i> Confirm</button>
   </div>
 </div>

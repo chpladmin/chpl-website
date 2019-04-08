@@ -1,19 +1,14 @@
 export class NetworkService {
-    constructor ($http, $log, $q, API) {
+    constructor ($http, $log, $q, $rootScope, API) {
         'ngInject';
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.API = API;
         this.store = {
-            certifiedProducts: {
-                data: undefined,
-                lastUpdated: -1,
-                details: { },
-            },
-            searchOptions: {
-                data: undefined,
-                lastUpdated: -1,
+            activity: {
+                types: { },
             },
         };
     }
@@ -57,7 +52,7 @@ export class NetworkService {
     }
 
     createAnnouncement (announcement) {
-        return this.apiPOST('/announcements/create', announcement);
+        return this.apiPOST('/announcements', announcement);
     }
 
     createCmsId (ids) {
@@ -66,6 +61,10 @@ export class NetworkService {
 
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
+    }
+
+    createScheduleOneTimeTrigger (trigger) {
+        return this.apiPOST('/schedules/triggers/one_time', trigger);
     }
 
     createScheduleTrigger (trigger) {
@@ -107,17 +106,31 @@ export class NetworkService {
         return this.apiGET('/data/accessibility_standards');
     }
 
+    getActivityMetadata (key, activityRange) {
+        let call = '/activity/metadata/' + key;
+        let params = [];
+        if (activityRange.startDate) {
+            params.push('start=' + activityRange.startDate.getTime());
+        }
+        if (activityRange.endDate) {
+            params.push('end=' + activityRange.endDate.getTime());
+        }
+        if (params.length > 0) {
+            call += '?' + params.join('&');
+        }
+        return this.apiGET(call);
+    }
+
+    getActivityById (id) {
+        return this.apiGET('/activity/' + id);
+    }
+
     getAgeRanges () {
         return this.apiGET('/data/age_ranges');
     }
 
     getAll () {
-        const EXPIRATION_TIME = 5; // in minutes
-        if (!this.store.certifiedProducts.data || (Date.now() - this.store.certifiedProducts.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            this.store.certifiedProducts.data = this.apiGET('/collections/certified_products');
-            this.store.certifiedProducts.lastUpdated = Date.now();
-        }
-        return this.store.certifiedProducts.data;
+        return this.apiGET('/collections/certified_products');
     }
 
     getAnnouncement (announcementId) {
@@ -221,11 +234,6 @@ export class NetworkService {
         }
     }
 
-    getCorrectiveActionPlanActivity (activityRange) {
-        var call = '/activity/corrective_action_plans';
-        return this.getActivity(call, activityRange);
-    }
-
     getDeveloper (developerId) {
         return this.apiGET('/developers/' + developerId);
     }
@@ -311,19 +319,20 @@ export class NetworkService {
         return this.apiGET('/statistics/participant_professional_experience_count');
     }
 
+    getPendingListings () {
+        return this.apiGET('/certified_products/pending/metadata');
+    }
+
+    getPendingListingById (id) {
+        return this.apiGET('/certified_products/pending/' + id);
+    }
+
     getPractices () {
         return this.apiGET('/data/practice_types');
     }
 
-    getProduct (productId) {
-        const EXPIRATION_TIME = 15; // in minutes
-        if (!this.store.certifiedProducts.details[productId] || !this.store.certifiedProducts.details[productId].data || (Date.now() - this.store.certifiedProducts.details[productId].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            this.store.certifiedProducts.details[productId] = {
-                data: this.apiGET('/certified_products/' + productId + '/details'),
-                lastUpdated: Date.now(),
-            };
-        }
-        return this.store.certifiedProducts.details[productId].data;
+    getProduct (productId, forceReload) {
+        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
     }
 
     getProductActivity (activityRange) {
@@ -348,12 +357,7 @@ export class NetworkService {
     }
 
     getSearchOptions () {
-        const EXPIRATION_TIME = 5; // in minutes
-        if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            this.store.searchOptions.data = this.apiGET('/data/search_options');
-            this.store.searchOptions.lastUpdated = Date.now();
-        }
-        return this.store.searchOptions.data;
+        return this.apiGET('/data/search_options');
     }
 
     getSedParticipantStatisticsCount () {
@@ -364,8 +368,8 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleCertifiedProductActivity (productId) {
-        return this.apiGET('/activity/certified_products/' + productId);
+    getSingleCertifiedProductMetadataActivity (productId) {
+        return this.apiGET('/activity/metadata/listings/' + productId);
     }
 
     getSurveillanceLookups () {
@@ -425,10 +429,6 @@ export class NetworkService {
         return this.apiGET('/data/ucd_processes');
     }
 
-    getUploadingCps () {
-        return this.apiGET('/certified_products/pending');
-    }
-
     getUploadingSurveillances () {
         return this.apiGET('/surveillance/pending');
     }
@@ -476,6 +476,10 @@ export class NetworkService {
         return this.apiGET('/versions?productId=' + productId);
     }
 
+    impersonateUser (user) {
+        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+    }
+
     initiateSurveillance (surveillance) {
         return this.apiPOST('/surveillance', surveillance);
     }
@@ -505,7 +509,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.apiPUT('/acbs/' + acb.id, acb);
+        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
     }
 
     modifyATL (atl) {
@@ -556,17 +560,19 @@ export class NetworkService {
         return this.apiPOST('/search', queryObj);
     }
 
+    splitDeveloper (developerSplitObject) {
+        return this.apiPOST('/developers/' + developerSplitObject.oldDeveloper.developerId + '/split', developerSplitObject);
+    }
+
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
+    unimpersonateUser () {
+        return this.apiGET('/auth/unimpersonate');
+    }
+
     updateCP (cpObject) {
-        if (this.store.certifiedProducts.details[cpObject.listing.id]) {
-            this.store.certifiedProducts.details[cpObject.listing.id] = {
-                data: undefined,
-                lastUpdated: -1,
-            };
-        }
         return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
     }
 
@@ -609,15 +615,32 @@ export class NetworkService {
             .then(response => response, response => this.$q.reject(response));
     }
 
-    apiGET (endpoint) {
-        return this.$http.get(this.API + endpoint)
-            .then(response => {
-                if (angular.isObject(response.data)) {
-                    return response.data;
-                } else {
-                    return this.$q.reject(response.data);
-                }
-            }, response => this.$q.reject(response.data));
+    apiGET (endpoint, forceReload) {
+        if (forceReload) {
+            return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
+                .then(response => {
+                    if (angular.isObject(response.data)) {
+                        if (response.data.error === 'Invalid authentication token.') {
+                            this.$rootScope.$broadcast('badAuthorization');
+                        }
+                        return response.data;
+                    } else {
+                        return this.$q.reject(response.data);
+                    }
+                }, response => this.$q.reject(response.data));
+        } else {
+            return this.$http.get(this.API + endpoint)
+                .then(response => {
+                    if (angular.isObject(response.data)) {
+                        if (response.data.error === 'Invalid authentication token.') {
+                            this.$rootScope.$broadcast('badAuthorization');
+                        }
+                        return response.data;
+                    } else {
+                        return this.$q.reject(response.data);
+                    }
+                }, response => this.$q.reject(response.data));
+        }
     }
 
     apiPOST (endpoint, postObject) {
@@ -643,6 +666,7 @@ export class NetworkService {
     }
 
     getActivity (call, activityRange) {
+        const EXPIRATION_TIME = 15; // in minutes
         var params = [];
         if (activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
@@ -653,7 +677,13 @@ export class NetworkService {
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
-        return this.apiGET(call);
+        if (!this.store.activity.types[call] || !this.store.activity.types[call].data || (Date.now() - this.store.activity.types[call].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.activity.types[call] = {
+                data: this.apiGET(call),
+                lastUpdated: Date.now(),
+            };
+        }
+        return this.store.activity.types[call].data;
     }
 }
 

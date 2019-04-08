@@ -10,7 +10,7 @@
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -24,7 +24,7 @@
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
-                authService.isChplAdmin.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.updateDeveloper.and.returnValue($q.when({}));
                 utilService = _utilService_;
@@ -258,20 +258,22 @@
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith(response);
             });
 
-            it('should dismiss the modal if bad status', function () {
-                var response = {status: 400}
+            it('should not dismiss the modal if bad status', function () {
+                var response = {status: 400, data: {errorMessages: ['An error occurred']}};
                 networkService.updateDeveloper.and.returnValue($q.when(response));
+                vm.errorMessages = [];
                 vm.save();
                 scope.$digest();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
-            it('should dismiss the modal if bad response', function () {
-                var response = {data: {error: 'An error occurred'}};
+            it('should not dismiss the modal if bad response', function () {
+                var response = {status: 400, data: {errorMessages: ['An error occurred']}};
                 networkService.updateDeveloper.and.returnValue($q.reject(response));
+                vm.errorMessages = [];
                 vm.save();
                 scope.$digest();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
         });
     });

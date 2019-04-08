@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    describe('chpl.product.controller', function () {
+    describe('the CHPL Listing Display Controller', function () {
 
-        var $controller, $log, $q, $uibModal, actualOptions, authService, mock, networkService, scope, vm;
+        var $controller, $log, $q, $uibModal, actualOptions, mock, networkService, scope, vm;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -34,15 +34,11 @@
             angular.mock.module('chpl.product', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getProduct = jasmine.createSpy('getProduct');
-                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
-                    return $delegate;
-                });
-                $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
                     return $delegate;
                 });
             });
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $uibModal = _$uibModal_;
@@ -53,9 +49,7 @@
                 $q = _$q_;
                 networkService = _networkService_;
                 networkService.getProduct.and.returnValue($q.when(mock.products));
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
-                authService = _authService_;
-                authService.isAuthed.and.returnValue(true);
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductController', {
@@ -68,7 +62,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -79,10 +75,6 @@
         describe('loading', function () {
             it('should know what the product id is', function () {
                 expect(vm.productId).toEqual(mock.productId);
-            });
-
-            it('should know if the user is authenticated on load', function () {
-                expect(authService.isAuthed).toHaveBeenCalled();
             });
 
             it('should find product details on load', function () {
@@ -98,12 +90,12 @@
             });
 
             it('should get product history on load', function () {
-                expect(networkService.getSingleCertifiedProductActivity).toHaveBeenCalled();
+                expect(networkService.getSingleCertifiedProductMetadataActivity).toHaveBeenCalled();
             });
 
             it('should log an error if the product history load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.reject('error message'));
+                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);

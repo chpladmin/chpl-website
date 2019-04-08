@@ -1,4 +1,4 @@
-(function () {
+(() => {
     'use strict';
 
     angular.module('chpl.services')
@@ -111,8 +111,8 @@
         }
 
         function arrayToCsv (data) {
-            return data.map(function (row) {
-                return row.map(function (cell) {
+            return data.map(row => {
+                return row.map(cell => {
                     if (typeof(cell) === 'string' &&
                         (cell.indexOf('"') > -1 ||
                          cell.indexOf(',') > -1 ||
@@ -131,7 +131,7 @@
         function certificationStatus (listing, options) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
                 if (options && options.editing) {
-                    return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
+                    return $filter('orderBy')(listing.certificationEvents.map(event => { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
                 }
                 return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
             }
@@ -147,17 +147,13 @@
             options.push({name: value});
         }
 
-        function findModel (item, options, key) {
-            if (!key) {
-                key = 'id';
+        function findModel (item, options, key = 'id') {
+            const ret = options.filter(option => item[key] === option[key]);
+            if (ret.length === 1) {
+                return ret[0];
+            } else {
+                return item;
             }
-            for (var i = 0; i < options.length; i++) {
-                if (item[key] === options[i][key]) {
-                    item = options[i];
-                    return item;
-                }
-            }
-            return item;
         }
 
         function makeCsv (data) {

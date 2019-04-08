@@ -13,7 +13,7 @@
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -29,7 +29,7 @@
                 Mock = _Mock_;
                 $q = _$q_;
                 authService = _authService_;
-                authService.isChplAdmin.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.createAnnouncement.and.returnValue($q.when({status: 200}));
                 networkService.deleteAnnouncement.and.returnValue($q.when({status: 200}));
@@ -48,7 +48,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -57,7 +59,6 @@
         });
 
         it('should have some starting values', function () {
-            expect(vm.isChplAdmin).toBe(true);
             expect(vm.announcement.startDate).toEqual(new Date(mock.announcement.startDate));
             expect(vm.announcement.endDate).toEqual(new Date(mock.announcement.endDate));
         });

@@ -2,6 +2,7 @@ export const AcbManagementComponent = {
     templateUrl: 'chpl.admin/components/acb/view.html',
     bindings: {
         acb: '<',
+        onChange: '&',
     },
     controller: class AcbManagementController {
         constructor ($log, $uibModal, authService) {
@@ -19,9 +20,11 @@ export const AcbManagementComponent = {
         }
 
         $onInit () {
-            this.isAcbAdmin = this.authService.isAcbAdmin();
-            this.isChplAdmin = this.authService.isChplAdmin();
-            this.workType = 'acb';
+            this.isAcbAdmin = this.authService.hasAnyRole(['ROLE_ACB']);
+            this.isChplAdmin = this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            if (!this.workType) {
+                this.workType = 'acb';
+            }
         }
 
         createAcb () {
@@ -57,7 +60,10 @@ export const AcbManagementComponent = {
                     isChplAdmin: () => isChplAdmin,
                 },
             });
-            this.modalInstance.result.then(result => { this.acb = angular.copy(result); });
+            this.modalInstance.result.then(result => {
+                this.acb = angular.copy(result);
+                this.onChange({ acb: this.acb});
+            });
         }
     },
 }

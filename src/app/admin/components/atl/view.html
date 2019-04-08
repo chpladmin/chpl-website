@@ -17,6 +17,7 @@
         <span>Website: <a ai-a href="{{ $ctrl.atl.website }}" ng-if="$ctrl.atl.website">{{ $ctrl.atl.website }}</a><span ng-if="!$ctrl.atl.website">None</span></span><br />
         <span>ONC-ATL Code: {{ $ctrl.atl.atlCode }}</span><br />
         <span>Retired: {{ $ctrl.atl.retired ? 'Yes' : 'No ' }}</span><br />
+        <span ng-if="$ctrl.atl.retired">Retirement Date: {{ $ctrl.atl.retirementDate | date : 'mediumDate' : 'UTC' }}<br /></span>
         <h3>Address</h3>
         <span>Line 1: {{ $ctrl.atl.address.line1 }}</span><br />
         <span>Line 2: {{ $ctrl.atl.address.line2 }}</span><br />

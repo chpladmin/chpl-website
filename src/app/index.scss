@@ -76,6 +76,19 @@ a.btn {
 
 @media (max-width: 767px) {
 
+    body {
+        margin-top: 0;
+    }
+
+    .navbar-fixed-top {
+        position: relative;
+        top: auto;
+    }
+
+    .navbar-fixed-bottom {
+        position: relative;
+    }
+
     .navbar-nav > li > a {
         line-height: 20px;
         padding-top: 10px;
@@ -670,4 +683,12 @@ option[disabled] {
             opacity: 1;
         }
     }
+}
+
+.uirTranVis_history {
+    bottom: 90px !important;
+}
+
+.uirStateVisContainer {
+    bottom: 90px !important;
 }

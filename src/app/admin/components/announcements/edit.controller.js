@@ -12,6 +12,7 @@
         vm.create = create;
         vm.datesInvalid = datesInvalid;
         vm.deleteAnnouncement = deleteAnnouncement;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.save = save;
 
         activate();
@@ -21,7 +22,6 @@
         function activate () {
             vm.announcement = angular.copy(announcement);
             vm.action = action;
-            vm.isChplAdmin = authService.isChplAdmin();
             vm.announcement.startDate = new Date(announcement.startDate);
             vm.announcement.endDate = new Date(announcement.endDate);
         }

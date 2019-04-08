@@ -3,43 +3,45 @@
     <div class="col-md-12 main-content">
       <h2>Download the latest CMS listing</h2>
       <div>
-        <a type="button" class="btn btn-lg btn-ai-success" ng-disabled="!vm.isReady"
-           ng-csv="vm.cmsArray" filename="{{ vm.filename }}"
-           csv-header="vm.csvHeader" csv-column-order="vm.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</a>
+        <button class="btn btn-lg btn-ai-success" ng-if="!$ctrl.isReady && !$ctrl.isProcessing" ng-click="$ctrl.getDownload()"><i class="fa fa-bolt"></i> Prepare download</button>
+        <button class="btn btn-lg btn-ai-success" ng-if="!$ctrl.isReady && $ctrl.isProcessing"><i class="fa fa-spinner fa-spin"></i> Processing...</button>
+        <button class="btn btn-lg btn-ai-success" ng-if="$ctrl.isReady"
+           ng-csv="$ctrl.cmsArray" filename="{{ $ctrl.filename }}"
+           csv-header="$ctrl.csvHeader" csv-column-order="$ctrl.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</button>
       </div>
     </div>
   </section> <!-- end download cms listing -->
   <section class="row">
-    <div class="col-md-12 main-content spaced-out" ng-if="vm.isChplAdmin || vm.isOncStaff">
+    <div class="col-md-12 main-content spaced-out" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
       <h3>Upload Meaningful Use Users</h3>
-      <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
-      <input type="file" nv-file-select="" uploader="vm.uploader" />
-      <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
-        {{ vm.uploadMessage }}
-        <ul ng-if="vm.uploadErrors.length > 0" ng-class="'bg-danger'">
-          <li ng-repeat="error in vm.uploadErrors">{{ error.error }}</li>
+      <p ng-if="$ctrl.uploader.queue.length === 0">CSV files only</p>
+      <input type="file" nv-file-select="" uploader="$ctrl.uploader" />
+      <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
+        {{ $ctrl.uploadMessage }}
+        <ul ng-if="$ctrl.uploadErrors.length > 0" ng-class="'bg-danger'">
+          <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
         </ul>
       </div>
-      <table class="table table-responsive" ng-if="vm.uploader.queue.length > 0" id="meaningful-use-upload-table">
+      <table class="table table-responsive" ng-if="$ctrl.uploader.queue.length > 0" id="meaningful-use-upload-table">
         <thead>
           <tr>
             <th scope="col">Name</th>
-            <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
-            <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
+            <th scope="col" ng-show="$ctrl.uploader.isHTML5">Size</th>
+            <th scope="col" ng-show="$ctrl.uploader.isHTML5">Progress</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in vm.uploader.queue">
+          <tr ng-repeat="item in $ctrl.uploader.queue">
             <td><strong>{{ item.file.name }}</strong></td>
-            <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-            <td ng-show="vm.uploader.isHTML5">
+            <td ng-show="$ctrl.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="$ctrl.uploader.isHTML5">
               <div class="progress">
                 <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
               </div>
             </td>
             <td nowrap>
-              <button type="button" class="btn btn-ai-success btn-xs" ng-click="vm.setAccurateDate(item)" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !vm.muuAccurateAsOfDateObject">
+              <button type="button" class="btn btn-ai-success btn-xs" ng-click="$ctrl.setAccurateDate(item)" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !$ctrl.muuAccurateAsOfDateObject">
                 <i class="fa fa-cloud-upload"></i> Upload
               </button>
               <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -52,17 +54,17 @@
           </tr>
         </tbody>
       </table>
-      <form class="form form-horizontal" name="vm.muuForm">
+      <form class="form form-horizontal" name="$ctrl.muuForm">
         <div class="form-group">
           <label for="new-muu-date" class="col-sm-4">Enter the Accurate As of date for Meaningful Use Users associated with this upload</label>
           <div class="col-sm-4">
             <div class="input-group">
-              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.muuAccurateAsOfDateObject" is-open="vm.muuAccurateAsOfPicker" close-text="Close" id="new-muu-date" name="newMuuDate" ng-model-options="{ timezone: 'UTC' }" required>
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.muuAccurateAsOfDateObject" is-open="$ctrl.muuAccurateAsOfPicker" close-text="Close" id="new-muu-date" name="newMuuDate" ng-model-options="{ timezone: 'UTC' }" required>
               <span class="input-group-btn">
-                <button type="button" class="btn btn-ai btn-sm" ng-click="vm.muuAccurateAsOfPicker = true"><i class="fa fa-calendar"></i></button>
+                <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.muuAccurateAsOfPicker = true"><i class="fa fa-calendar"></i></button>
               </span>
             </div>
-            <div class="text-danger" ng-if="vm.muuForm.newMuuDate.$touched && vm.muuForm.newMuuDate.$error.date">Improper format (mm/dd/yyyy)</div>
+            <div class="text-danger" ng-if="$ctrl.muuForm.newMuuDate.$touched && $ctrl.muuForm.newMuuDate.$error.date">Improper format (mm/dd/yyyy)</div>
           </div>
         </div>
       </form>

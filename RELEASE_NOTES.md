@@ -1,5 +1,88 @@
 # Release Notes
 
+## Version 10.16.0
+_8 April 2019_
+
+### New features
+* Use new endpoints for better responsiveness on Listing confirmation page
+* Use new Activity end points for Listing reports
+* Redirect users using unsupported browsers to a page telling them that
+
+### Bug fixes
+* Allow editing of SED Participants
+
+---
+
+## Version 10.15.0
+_27 March 2019_
+
+### New features
+* Provide "Clear Selection(s)" link for multi-select lists
+* Allow ROLE_ADMIN to confirm listing
+* Allow users to impersonate other users as appropriate
+
+### Bug fixes and cleanup
+* Remove unusable corrective action plan activity reports
+* Remove unused "compliance terms accepted" on user creation
+* Remove references to "Pending" ACB
+
+### Bug fixes
+* Use correct ROLE on surveillance initiation
+
+---
+
+## Version 10.14.0
+_11 March 2019_
+
+### New features
+* Removed old UI based caching
+* Force "no-cache" GET of details after Listing update
+* Add validation capability to ai-expandable-list control
+* Validate retired test tools based on workflow and ICS
+* Allow splitting of a developer with multiple products
+
+### Bug fixes
+* Show user as logged out when JWT has expired
+
+---
+
+## Version 10.13.0
+_25 February 2019_
+
+### New features
+* Update the language on the Overview page.
+* Tweak CMS download workflow to reduce unnecessary network calls
+
+### Bug fixes
+* Remove unusable "file documentation upload" section from surveillance inspect workflow
+
+---
+
+## Version 10.12.0
+_11 February 2019_
+
+### New features
+* Support new ROLE_ONC role
+* Allow ROLE_ADMIN and ROLE_ONC to manage pending surveillances
+* Add ability for ROLE_ADMIN to run Quartz system jobs on demand
+* Allow edit of retirement dates for ACBs/ATLs
+* Default search filter changed for ACBs. Leaves "recently retired" ACBs defaulted to on. "Recent" is defined as "about four months"
+* Slightly improve performance on mobile by removing "sticky" header/footer
+* Populate ACB filter automatically on Collections pages
+
+### Bug fixes
+* Allow logged in users to see download files
+
+---
+
+## Version 10.11.0
+_28 January 2019_
+
+### New features
+* Support new ROLE_ONC role
+
+---
+
 ## Version 10.10.0
 _14 January 2019_
 

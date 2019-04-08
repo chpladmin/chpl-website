@@ -12,7 +12,9 @@
             angular.mock.module('chpl.navigation', 'chpl', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getFullname = jasmine.createSpy('getFullname');
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    $delegate.getUsername = jasmine.createSpy('getUsername');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    $delegate.isImpersonating = jasmine.createSpy('isImpersonating');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -33,7 +35,10 @@
             $rootScope = _$rootScope_;
             authService = _authService_;
             authService.getFullname.and.returnValue(mock.username);
-            authService.isAuthed.and.returnValue(true);
+            authService.getUsername.and.returnValue(mock.username);
+            authService.hasAnyRole.and.returnValue(true);
+            authService.isImpersonating.and.returnValue(false);
+
             networkService = _networkService_;
             networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
             networkService.getUserByUsername.and.returnValue($q.when({user: {}}));
@@ -53,7 +58,7 @@
             }
         });
 
-        describe('directives', function () {
+        describe('directives,', function () {
             it('should compile the top', function () {
                 el = angular.element('<ai-cms-widget><ai-compare-widget><ai-navigation-top></ai-navigation-top></ai-compare-widget></ai-cms-widget>');
                 $compile(el)(scope);
@@ -71,7 +76,7 @@
             });
         });
 
-        describe('controller', function () {
+        describe('controller,', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
             });
@@ -82,39 +87,40 @@
                 expect(authService.getFullname).toHaveBeenCalled();
             });
 
-            it('should call the authService to check if the user is authenticated', function () {
-                vm.isAuthed();
-                expect(authService.isAuthed).toHaveBeenCalled();
-            });
-
             it('should know what page is active', function () {
                 spyOn($location,'path').and.returnValue('/admin/userManagement');
                 expect(vm.isActive('/admin')).toBe(true);
                 expect(vm.isActive('resources')).toBe(false);
             });
 
-            xdescribe('when dealing with $broadcast', function () {
+            xdescribe('when dealing with $broadcast,', function () {
                 it('should show the CMS Widget', function () {
                     spyOn(vm, 'showCmsWidget');
-                    $rootScope.$broadcast('ShowWidget');
+                    scope.$apply(() => {
+                        $rootScope.$broadcast('ShowWidget');
+                    });
                     expect(vm.showCmsWidget).toHaveBeenCalled();
                 });
 
                 it('should show the Compare Widget', function () {
                     spyOn(vm, 'showCompareWidget');
-                    $rootScope.$broadcast('ShowCompareWidget');
-                    expect(vm.showCompareWidget).toHaveBeenCalledWith(true);
+                    $rootScope.$broadcast('ShowCompareWidget').then(() => {
+                        expect(vm.showCompareWidget).toHaveBeenCalledWith(true);
+                    });
+                    scope.$digest();
                 });
 
                 it('should hide the Compare Widget', function () {
                     spyOn(vm, 'showCompareWidget');
                     $rootScope.$broadcast('HideCompareWidget');
+                    scope.$digest();
                     expect(vm.showCompareWidget).toHaveBeenCalledWith(false);
                 });
 
                 it('should show announcements', function () {
                     spyOn(vm, 'loadAnnouncements');
                     $rootScope.$broadcast('loggedIn');
+                    scope.$digest();
                     expect(vm.loadAnnouncements).toHaveBeenCalled();
                 });
             });

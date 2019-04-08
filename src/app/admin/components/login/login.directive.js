@@ -30,7 +30,7 @@
         vm.broadcastLogin = broadcastLogin;
         vm.changePassword = changePassword;
         vm.clear = clear;
-        vm.isAuthed = authService.isAuthed;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
@@ -39,6 +39,7 @@
         vm.resetPassword = resetPassword;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
+        vm.stopImpersonating = stopImpersonating;
 
         vm.activityEnum = {
             LOGIN: 1,
@@ -47,38 +48,51 @@
             NONE: 4,
             EXPIRED: 5,
             PASSWORD_RESET: 6,
+            IMPERSONATING: 7,
         };
 
         /////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.clear();
-            if (vm.isAuthed()) {
+            if (vm.hasAnyRole()) {
                 Idle.watch();
                 _updateExtras();
+                if (authService.isImpersonating()) {
+                    vm.activity = vm.activityEnum.IMPERSONATING;
+                }
             }
             if ($stateParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
                 vm.token = $stateParams.token;
             }
 
-            $scope.$on('Keepalive', function () {
+            var keepalive = $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
-                if (vm.isAuthed()) {
+                if (vm.hasAnyRole()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
                     }
                     networkService.keepalive()
                         .then(function (response) {
                             authService.saveToken(response.token);
+                            if (!authService.isImpersonating() && vm.activity === vm.activityEnum.IMPERSONATING) {
+                                vm.activity = vm.activityEnum.NONE;
+                            }
                         });
                 } else {
                     vm.activity = vm.activityEnum.LOGIN;
                     Idle.unwatch();
                 }
             });
+            $scope.$on('$destroy', keepalive);
 
-            $scope.$on('IdleTimeout', function () {
+            var badAuthorization = $scope.$on('badAuthorization', function () {
+                vm.activity = vm.activityEnum.LOGIN;
+            })
+            $scope.$on('$destroy', badAuthorization);
+
+            var idle = $scope.$on('IdleTimeout', function () {
                 $log.info('IdleTimeout - being logged out.');
                 logout();
                 setTimeout(function () {
@@ -86,6 +100,10 @@
                     $scope.$apply();
                 });
             });
+            $scope.$on('$destroy', idle);
+
+            var impersonating = $scope.$on('impersonating', () => vm.activity = vm.activityEnum.IMPERSONATING);
+            $scope.$on('$destroy', impersonating);
         }
 
         function changePassword () {
@@ -149,7 +167,7 @@
         }
 
         function clear () {
-            if (vm.isAuthed()) {
+            if (vm.hasAnyRole()) {
                 vm.activity = vm.activityEnum.NONE;
             } else {
                 vm.activity = vm.activityEnum.LOGIN;
@@ -194,6 +212,7 @@
             authService.logout();
             vm.clear();
             Idle.unwatch();
+            $rootScope.$broadcast('loggedOut');
         }
 
         function setActivity (activity) {
@@ -213,6 +232,14 @@
                 }, function () {
                     vm.messageClass = vm.pClassFail;
                     vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
+                });
+        }
+
+        function stopImpersonating () {
+            networkService.unimpersonateUser()
+                .then(token => {
+                    authService.saveToken(token.token);
+                    vm.clear();
                 });
         }
 

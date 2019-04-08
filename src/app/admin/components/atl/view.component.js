@@ -2,6 +2,7 @@ export const AtlManagementComponent = {
     templateUrl: 'chpl.admin/components/atl/view.html',
     bindings: {
         atl: '<',
+        onChange: '&',
     },
     controller: class AtlManagementController {
         constructor ($log, $uibModal, authService) {
@@ -19,9 +20,11 @@ export const AtlManagementComponent = {
         }
 
         $onInit () {
-            this.isAtlAdmin = this.authService.isAtlAdmin();
-            this.isChplAdmin = this.authService.isChplAdmin();
-            this.workType = 'atl';
+            this.isAtlAdmin = this.authService.hasAnyRole(['ROLE_ATL']);
+            this.isChplAdmin = this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            if (!this.workType) {
+                this.workType = 'atl';
+            }
         }
 
         createAtl () {
@@ -57,7 +60,10 @@ export const AtlManagementComponent = {
                     isChplAdmin: () => isChplAdmin,
                 },
             });
-            this.modalInstance.result.then(result => { this.atl = angular.copy(result); });
+            this.modalInstance.result.then(result => {
+                this.atl = angular.copy(result);
+                this.onChange({ atl: this.atl});
+            });
         }
     },
 }
