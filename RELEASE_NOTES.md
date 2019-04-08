@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 10.16.0
+_8 April 2019_
+
+### New features
+* Use new endpoints for better responsiveness on Listing confirmation page
+* Use new Activity end points for Listing reports
+* Redirect users using unsupported browsers to a page telling them that
+
+### Bug fixes
+* Allow editing of SED Participants
+
+---
+
 ## Version 10.15.0
 _27 March 2019_
 
