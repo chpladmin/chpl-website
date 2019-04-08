@@ -5,7 +5,7 @@
         var $controller, $log, $q, Mock, authService, mock, networkService, scope, vm;
 
         mock = {};
-        mock.user = {roles: ['ROLE_ADMIN'], user: {subjectName: 'username', userId: 'userId'}};
+        mock.user = {user: {subjectName: 'username', userId: 'userId', role: 'ROLE_ADMIN'}};
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
@@ -14,12 +14,10 @@
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.addRole = jasmine.createSpy('addRole');
                     $delegate.deleteUser = jasmine.createSpy('deleteUser');
                     $delegate.inviteUser = jasmine.createSpy('inviteUser');
                     $delegate.removeUserFromAcb = jasmine.createSpy('removeUserFromAcb');
                     $delegate.removeUserFromAtl = jasmine.createSpy('removeUserFromAtl');
-                    $delegate.revokeRole = jasmine.createSpy('revokeRole');
                     $delegate.updateUser = jasmine.createSpy('updateUser');
                     return $delegate;
                 });
@@ -30,14 +28,12 @@
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
-                authService.hasAnyRole.and.returnValue($q.when({}));
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
-                networkService.addRole.and.returnValue($q.when({}));
                 networkService.deleteUser.and.returnValue($q.when({}));
                 networkService.inviteUser.and.returnValue($q.when({}));
                 networkService.removeUserFromAcb.and.returnValue($q.when({}));
                 networkService.removeUserFromAtl.and.returnValue($q.when({}));
-                networkService.revokeRole.and.returnValue($q.when({}));
                 networkService.updateUser.and.returnValue($q.when({}));
                 Mock = _Mock_;
 
@@ -71,15 +67,64 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
+        describe('with respect to ROLE invitation', () => {
+            it('should only show ACB if managing an ACB', () => {
+                vm.acbId = 'an id';
+                vm.atlId = null;
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1); // user is ROLE_ACB
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ACB']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1); // user is ROLE_ONC
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ACB']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') > -1); // user is ROLE_ADMIN
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ACB']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') > -1); // user is ROLE_ATL
+                vm.loadRoles();
+                expect(vm.roles).toEqual([]);
+            });
+
+            it('should only show ATL if managing an ATL', () => {
+                vm.acbId = null;
+                vm.atlId = 'an id';
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1); // user is ROLE_ACB
+                vm.loadRoles();
+                expect(vm.roles).toEqual([]);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1); // user is ROLE_ONC
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ATL']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') > -1); // user is ROLE_ADMIN
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ATL']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') > -1); // user is ROLE_ATL
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ATL']);
+            });
+
+            it('should show appropritate roles when not managing ACB/ATL', () => {
+                vm.acbId = null;
+                vm.acbId = null;
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') > -1); // user is ROLE_ADMIN
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ADMIN','ROLE_ONC','ROLE_CMS_STAFF']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1); // user is ROLE_ONC
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_ONC','ROLE_CMS_STAFF']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_CMS_STAFF') > -1); // user is ROLE_CMS_STAFF
+                vm.loadRoles();
+                expect(vm.roles).toEqual(['ROLE_CMS_STAFF']);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1); // user is ROLE_ACB
+                vm.loadRoles();
+                expect(vm.roles).toEqual([]);
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') > -1); // user is ROLE_ATL
+                vm.loadRoles();
+                expect(vm.roles).toEqual([]);
+            });
+        });
+
         it('should know what roles to display', function () {
-            vm.acbId = null;
-            vm.atlId = null;
             vm.loadRoles();
-            expect(vm.roles).toEqual(['ROLE_ADMIN','ROLE_ONC','ROLE_CMS_STAFF','ROLE_ACB','ROLE_ATL']);
-            vm.acbId = 3;
-            vm.loadRoles();
-            expect(vm.roles).toEqual(['ROLE_ACB']);
-            vm.acbId = null;
             vm.atlId = 3;
             vm.loadRoles();
             expect(vm.roles).toEqual(['ROLE_ATL']);
@@ -88,7 +133,7 @@
         describe('when inviting users,', function () {
             beforeEach(function () {
                 vm.userInvitation = {
-                    permissions: ['a role'],
+                    permission: 'a role',
                     emailAddress: 'fake@sample.com',
                 }
             });
@@ -100,7 +145,7 @@
             });
 
             it('should not call the common service if missing roles', function () {
-                vm.userInvitation.permissions = [];
+                vm.userInvitation.permission = '';
                 vm.invite();
                 scope.$digest();
                 expect(networkService.inviteUser).not.toHaveBeenCalled();
@@ -174,7 +219,7 @@
                 });
 
                 it('should not default to having roles', function () {
-                    expect(vm.userInvitation.permissions).toEqual([]);
+                    expect(vm.userInvitation.permission).toEqual('');
                 });
             });
 
@@ -191,46 +236,12 @@
                 });
 
                 it('should default to the single role', function () {
-                    expect(vm.userInvitation.permissions).toEqual(['ROLE_ACB']);
+                    expect(vm.userInvitation.permission).toEqual('ROLE_ACB');
                 });
             });
         });
 
         describe('when saving users,', function () {
-            describe('with respect to role activity,', function () {
-                it('should call the common service to add roles', function () {
-                    vm.save();
-                    scope.$digest();
-                    expect(networkService.addRole).toHaveBeenCalledWith({subjectName: 'username', role: 'ROLE_ADMIN'});
-                });
-
-                it('should call the common service to revoke roles', function () {
-                    vm.save();
-                    scope.$digest();
-                    expect(networkService.revokeRole).toHaveBeenCalledWith({subjectName: 'username', role: 'ROLE_ACB'});
-                });
-
-                it('should not call the common service to revoke roles if acb', function () {
-                    vm.acbId = 1
-                    vm.save();
-                    scope.$digest();
-                    expect(networkService.revokeRole).not.toHaveBeenCalled();
-                });
-
-                it('should not call the common service to revoke roles if atl', function () {
-                    vm.atlId = 1
-                    vm.save();
-                    scope.$digest();
-                    expect(networkService.revokeRole).not.toHaveBeenCalled();
-                });
-
-                it('should give the user an empty roles array if they don\'t have one', function () {
-                    delete vm.user.roles;
-                    vm.save();
-                    expect(vm.user.roles).toEqual([]);
-                });
-            });
-
             it('should call the common service', function () {
                 vm.save();
                 scope.$digest();

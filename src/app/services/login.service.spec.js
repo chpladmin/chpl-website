@@ -5,11 +5,11 @@
         var $localStorage, $log, $window, auth, mock;
         mock = {
             user: {
-                Authorities: [],
+                Authorities: undefined,
                 Identity: [31, 'username', 'Full Name'],
             },
             impersonating: {
-                Authorities: ['ROLE_ADMIN'],
+                Authorities: 'ROLE_ADMIN',
                 Identity: [31, 'username', 'Full Name', 3, 'admin'],
             },
         }
@@ -65,7 +65,7 @@
 
         it('should parse a JWT Token', () => {
             var token = angular.copy(buildToken(mock.user));
-            expect(auth.parseJwt(token).Authorities).toEqual([]);
+            expect(auth.parseJwt(token).Authorities).toBeUndefined;
             expect(auth.parseJwt(token).Identity).toEqual(mock.user.Identity);
         });
 
@@ -98,7 +98,7 @@
                 expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(false);
                 auth.saveToken(buildToken(user));
                 expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(false);
-                user.Authorities = ['ROLE_ACB'];
+                user.Authorities = 'ROLE_ACB';
                 auth.saveToken(buildToken(user));
                 expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(true);
             });
@@ -120,59 +120,59 @@
                 expect(auth.isImpersonating()).toBe(true);
             });
 
-            xdescribe('when knowing who may be be impersonated', () => {
+            describe('when knowing who may be be impersonated', () => {
                 let user;
                 let target;
                 beforeEach(() => {
                     user = angular.copy(mock.user);
-                    user.Authorities = [];
-                    target = { roles: [] };
+                    user.Authorities = undefined;
+                    target = { role: '' };
                 });
 
                 it('should let ROLE_ADMIN impersonate non ROLE_ADMIN', () => {
-                    user.Authorities.push('ROLE_ADMIN');
-                    target.roles.push('ROLE_ONC');
+                    user.Authorities = 'ROLE_ADMIN';
+                    target.role = 'ROLE_ONC';
                     auth.saveToken(buildToken(user));
                     expect(auth.canImpersonate(target)).toBe(true);
                 });
 
                 it('should not let ROLE_ADMIN impersonate ROLE_ADMIN', () => {
-                    user.Authorities.push('ROLE_ADMIN');
-                    target.roles.push('ROLE_ADMIN', 'ROLE_ACB');
+                    user.Authorities = 'ROLE_ADMIN';
+                    target.role = 'ROLE_ADMIN';
                     auth.saveToken(buildToken(user));
                     expect(auth.canImpersonate(target)).toBe(false);
                 });
 
                 it('should let ROLE_ONC impersonate non ROLE_ONC / non ROLE_ADMIN', () => {
-                    user.Authorities.push('ROLE_ONC');
-                    target.roles.push('ROLE_ACB');
+                    user.Authorities = 'ROLE_ONC';
+                    target.role = 'ROLE_ACB';
                     auth.saveToken(buildToken(user));
                     expect(auth.canImpersonate(target)).toBe(true);
                 });
 
                 it('should not let ROLE_ONC impersonate ROLE_ONC', () => {
-                    user.Authorities.push('ROLE_ONC');
-                    target.roles.push('ROLE_ONC');
+                    user.Authorities = 'ROLE_ONC';
+                    target.role = 'ROLE_ONC';
                     auth.saveToken(buildToken(user));
                     expect(auth.canImpersonate(target)).toBe(false);
                 });
 
                 it('should not let ROLE_ONC impersonate ROLE_ADMIN', () => {
-                    user.Authorities.push('ROLE_ONC');
-                    target.roles.push('ROLE_ADMIN');
+                    user.Authorities = 'ROLE_ONC';
+                    target.role = 'ROLE_ADMIN';
                     auth.saveToken(buildToken(user));
                     expect(auth.canImpersonate(target)).toBe(false);
                 });
 
                 it('should not let ROLE_ACB impersonate anyone', () => {
-                    user.Authorities.push('ROLE_ACB');
-                    target.roles.push('ROLE_ATL');
+                    user.Authorities = 'ROLE_ACB';
+                    target.role = 'ROLE_ATL';
                     auth.saveToken(buildToken(user));
                     expect(auth.canImpersonate(target)).toBe(false);
                 });
 
                 it('should not let anyone impersonate while already impersonating', () => {
-                    target.roles.push('ROLE_ATL');
+                    target.role = 'ROLE_ATL';
                     auth.saveToken(buildToken(angular.copy(mock.impersonating)));
                     expect(auth.canImpersonate(target)).toBe(false);
                 });

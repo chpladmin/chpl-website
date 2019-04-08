@@ -23,11 +23,11 @@
             vm.action = action;
             vm.acbId = acbId;
             vm.atlId = atlId;
-            vm.userInvitation = {permissions: []};
+            vm.userInvitation = {permission: ''};
             vm.message = '';
             vm.loadRoles();
             if (vm.roles.length === 1) {
-                vm.userInvitation.permissions.push(vm.roles[0]);
+                vm.userInvitation.permission = vm.roles[0];
             }
         }
 
@@ -49,7 +49,7 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             } else if (vm.atlId) {
@@ -64,7 +64,7 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             } else {
@@ -75,7 +75,7 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             }
@@ -88,7 +88,7 @@
             if (vm.atlId) {
                 vm.userInvitation.testingLabId = vm.atlId;
             }
-            if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.permissions.length > 0) {
+            if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.permission.length > 0) {
                 networkService.inviteUser(vm.userInvitation)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
@@ -96,7 +96,7 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             }
@@ -108,33 +108,20 @@
                 if (authService.hasAnyRole(['ROLE_ADMIN'])) {
                     vm.roles.push('ROLE_ADMIN');
                 }
-                vm.roles.push('ROLE_ONC');
-                vm.roles.push('ROLE_CMS_STAFF');
-            }
-            if (!vm.atlId) {
+                if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                    vm.roles.push('ROLE_ONC');
+                }
+                if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])) {
+                    vm.roles.push('ROLE_CMS_STAFF');
+                }
+            } else if (vm.acbId && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 vm.roles.push('ROLE_ACB');
-            }
-            if (!vm.acbId) {
+            } else if (vm.atlId && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])) {
                 vm.roles.push('ROLE_ATL');
             }
         }
 
         function save () {
-            if (!vm.user.roles) {
-                vm.user.roles = [];
-            }
-
-            var roleObject = {subjectName: vm.user.user.subjectName};
-            for (var i = 0; i < vm.roles.length; i++) {
-                var payload = angular.copy(roleObject);
-                payload.role = vm.roles[i];
-                if (vm.user.roles.indexOf(payload.role) > -1) {
-                    networkService.addRole(payload);
-                } else if (!vm.acbId && !vm.atlId) {
-                    networkService.revokeRole(payload);
-                }
-            }
-
             networkService.updateUser(vm.user.user)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
@@ -142,7 +129,7 @@
                     } else {
                         errorMessage(response);
                     }
-                },function (error) {
+                }, function (error) {
                     errorMessage(error.data.error);
                 });
         }
