@@ -3,7 +3,7 @@ import './history.mock';
 (() => {
     'use strict';
 
-    fdescribe('the Listing History popup component', () => {
+    describe('the Listing History popup component', () => {
         var $compile, $location, $log, $q, ctrl, el, getActivity, mock, networkService, scope;
 
         mock = {

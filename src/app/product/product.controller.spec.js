@@ -24,7 +24,7 @@
             keyboard: false,
             size: 'lg',
             resolve: {
-                activity: jasmine.any(Function),
+                listing: jasmine.any(Function),
             },
         };
 
@@ -124,11 +124,13 @@
             });
 
             it('should create a modal instance when a product history is viewed', function () {
+                let listing = {};
+                vm.product = listing;
                 expect(vm.viewProductHistoryInstance).toBeUndefined();
                 vm.viewProductHistory();
                 expect(vm.viewProductHistoryInstance).toBeDefined();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.activity()).toEqual(mock.activity);
+                expect(actualOptions.resolve.listing()).toEqual(listing);
             });
 
             it('should log that the history was closed', function () {

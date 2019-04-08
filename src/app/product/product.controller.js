@@ -67,7 +67,7 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    activity: function () { return vm.activity; },
+                    listing: function () { return vm.product; },
                 },
             });
             vm.viewProductHistoryInstance.result.then(function (response) {
