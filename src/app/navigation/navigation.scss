@@ -1,5 +1,14 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
 
+.toggle-navigation {
+    position: relative;
+    bottom: -80px;
+
+    .btn-link {
+        color: #fff;
+    }
+}
+
 .nav {
 
     .dropdown-menu {
@@ -30,6 +39,7 @@
             min-width: $screen-xs * 4 / 5;
         }
     }
+
 }
 
 footer {

@@ -46,11 +46,13 @@
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
+        vm.toggleNav = toggleNav;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.loadAnnouncements();
+            vm.navShown = true;
 
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
@@ -108,6 +110,10 @@
 
         function showCompareWidget (show) {
             vm.compareWidgetExpanded = show;
+        }
+
+        function toggleNav () {
+            vm.navShown = !vm.navShown;
         }
     }
 })();
