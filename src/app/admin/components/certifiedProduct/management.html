@@ -315,7 +315,7 @@
           <button id="clear-selection-developers" class="btn btn-small btn-link pull-right" ng-click="vm.mergingDevelopers=[];" ng-if="vm.mergingDevelopers && vm.mergingDevelopers.length !== 0">Clear Selection(s)<span class="sr-only">of Developers</span></button>
           <select ng-model="vm.mergingDevelopers" multiple="true"
                   id="developer-merge-select" class="input-sm form-control"
-                  size="12" ng-options="v.name disable when !vm.isDeveloperMergeable(v) for v in vm.developers | orderBy: 'name'">
+                  size="12" ng-options="v.name for v in vm.developers | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
         </div>
