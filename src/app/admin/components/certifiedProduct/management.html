@@ -162,10 +162,10 @@
               </td>
               <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
               <td class="text-center">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)" id="pending-surveillance-inspect-{{ surv.id}}"><i class="fa fa-eye"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)" id="pending-surveillance-inspect-{{ surv.certifiedProduct.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center">
-                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]" id="pending-surveillance-reject-{{ surv.id }}">
+                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]" id="pending-surveillance-reject-{{ surv.certifiedProduct.chplProductNumber }}">
               </td>
             </tr>
           </tbody>
