@@ -11,11 +11,11 @@ module.exports = merge(base, {
     mode: 'development',
     plugins: [
         new webpack.DefinePlugin({
-            DEVELOPER_MODE: true,
-            ENABLE_LOGGING: true,
+            DEVELOPER_MODE: JSON.stringify(true),
+            ENABLE_LOGGING: JSON.stringify(true),
             MINUTES_UNTIL_IDLE: 120,
             MINUTES_BETWEEN_KEEPALIVE: 1,
-            UAT_MODE: true,
+            UAT_MODE: JSON.stringify(true),
         }),
     ]
 });

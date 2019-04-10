@@ -1,3 +1,5 @@
+/* global UAT_MODE */
+
 (function () {
     'use strict';
 
@@ -51,6 +53,7 @@
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
+            vm.UAT_MODE = UAT_MODE;
             vm.loadAnnouncements();
             vm.navShown = true;
 

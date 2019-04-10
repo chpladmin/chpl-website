@@ -39,11 +39,11 @@ module.exports = merge(base, {
     },
     plugins: [
         new webpack.DefinePlugin({
-            DEVELOPER_MODE: false,
-            ENABLE_LOGGING: true,
+            DEVELOPER_MODE: JSON.stringify(false),
+            ENABLE_LOGGING: JSON.stringify(true),
             MINUTES_UNTIL_IDLE: 150,
             MINUTES_BETWEEN_KEEPALIVE: 1,
-            UAT_MODE: true,
+            UAT_MODE: JSON.stringify(false),
         }),
         new webpack.HashedModuleIdsPlugin(),
     ],

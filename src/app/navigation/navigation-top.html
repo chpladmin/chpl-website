@@ -56,7 +56,7 @@
     </div><!-- /.container-fluid -->
     <div class="text-center toggle-navigation"><button class="btn btn-link" ng-click="vm.toggleNav()">{{ vm.navShown ? 'Hide' : 'Show' }} navigation <i class="fa" ng-class="vm.navShown ? 'fa-caret-up' : 'fa-caret-down'"></i></button></div>
   </nav>
-  <nav class="navbar navbar-default navbar-static-top">
+  <nav class="navbar navbar-default navbar-static-top" ng-if="vm.UAT_MODE">
     <div class="container-fluid">
       <ul class="nav navbar-nav"> <!-- admin-nav -->
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
