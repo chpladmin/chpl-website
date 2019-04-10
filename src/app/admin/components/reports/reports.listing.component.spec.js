@@ -10,7 +10,7 @@
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
-                    $delegate.getSingleCertifiedProductMetadataActivity = jasmine.createSpy('getSingleCertifiedProductMetadataActivity');
+                    $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
                     return $delegate;
                 });
             });
@@ -29,7 +29,7 @@
                 networkService = _networkService_;
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.listingActivityMetadata));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
-                networkService.getSingleCertifiedProductMetadataActivity.and.returnValue($q.when([]));
+                networkService.getSingleListingActivityMetadata.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()
 
