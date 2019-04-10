@@ -40,6 +40,7 @@ import 'zxcvbn';
 import 'angular-ui-router';
 
 // import app modules
+import administration from './pages/administration/index';
 import /* adminModule from*/ './admin/index';
 import /* chartsModule from*/ './pages/charts/index';
 import /* chplApiModule from*/ './pages/resources/chpl-api/index';
@@ -51,7 +52,8 @@ import /* downloadModule from*/ './pages/resources/download/index';
 import chplListing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
 import /* overviewModule from*/ './pages/resources/overview/index';
-import './pages/organizations/index';
+import organizations from './pages/organizations/index';
+import reports from './pages/reports/index';
 import /* productModule from*/ './product/index';
 import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
@@ -64,6 +66,7 @@ const dependencies = [
     'angular-loading-bar',
     'angulartics',
     'angulartics.google.tagmanager',
+    administration.name,
     'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',
@@ -75,10 +78,11 @@ const dependencies = [
     'chpl.download',
     chplListing.name,
     'chpl.navigation',
-    'chpl.organizations',
+    organizations.name,
     'chpl.overview',
     'chpl.product',
     'chpl.registration',
+    reports.name,
     'chpl.search',
     'chpl.services',
     'chpl.shared',

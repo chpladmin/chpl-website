@@ -1,13 +1,14 @@
 export const ReportsListingsComponent = {
-    templateUrl: 'chpl.admin/components/reports/reports.listing.html',
+    templateUrl: 'chpl.reports/listings.html',
     bindings: {
         productId: '<?',
     },
     controller: class ReportsListings {
-        constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $stateParams, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.ReportService = ReportService;
             this.networkService = networkService;
@@ -821,5 +822,5 @@ export const ReportsListingsComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.reports')
     .component('chplReportsListings', ReportsListingsComponent);

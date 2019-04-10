@@ -59,39 +59,41 @@
   <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
       <ul class="nav navbar-nav"> <!-- admin-nav -->
-        <li class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
           <a href class="dropdown-toggle" id="administration-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.administrationIsOpen">Administration</a>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="administration-toggle" id="administration-dropdown-menu">
-            <li><a href="#/administration/upload">Upload</a></li>
-            <li><a href="#/administration/confirm/listings">Confirm Listings</a></li>
-            <li><a href="#/administration/confirm/surveillance">Confirm Surveillance</a></li>
-            <li><a href="#/administration/fuzzy-matching">Fuzzy Matching</a></li>
-            <li><a href="#/administration/jobs/scheduled">Scheduled Jobs</a></li>
-            <li><a href="#/administration/jobs/background">Background Jobs</a></li>
-            <li><a href="#/administration/cms">CMS</a></li>
-            <li><a href="#/administration/api-keys">API Keys</a></li>
-            <li><a href="#/administration/announcements">Announcements</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/upload">Upload</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings()">Confirm Listings</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/confirmSurveillance">Confirm Surveillance</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/scheduledJobs">Scheduled Jobs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Background Jobs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement">CMS</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
           </ul>
         </li>
-        <li ng-class="{'active': vm.isActive('/users') }"><a href="#/users">Users</a></li>
-        <li class="dropdown" uib-dropdown is-open="vm.organizationsIsOpen">
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" ng-class="{'active': vm.isActive('/users') }"><a href="#/admin/userManagement">Users</a></li>
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL'])" class="dropdown" uib-dropdown is-open="vm.organizationsIsOpen">
           <a href class="dropdown-toggle" id="organizations-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.organizationsIsOpen">Organizations</a>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="organizations-toggle" id="organizations-dropdown-menu">
-            <li><a href="#/organizations/onc-acbs">ONC-ACBs</a></li>
-            <li><a href="#/organizations/onc-atls">ONC-ATLs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/acbManagement">ONC-ACBs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a href="#/admin/atlManagement">ONC-ATLs</a></li>
           </ul>
         </li>
-        <li class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
           <a href class="dropdown-toggle" id="reports-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.reportsIsOpen">Reports</a>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
-            <li><a ui-sref="reports.listings()">Listings</a></li>
-            <li><a href="#/reports/organizations/developers">Developers</a></li>
-            <li><a href="#/reports/organizations/onc-acbs">ONC-ACBs</a></li>
-            <li><a href="#/reports/organizations/onc-atls">ONC-ATLs</a></li>
-            <li><a href="#/reports/products">Products</a></li>
-            <li><a href="#/reports/announcements">Announcements</a></li>
-            <li><a href="#/reports/users">Users</a></li>
-            <li><a href="#/reports/api-keys">API Keys</a></li>
+            <li><a ui-sref="reports.listings({productId: null})">Listings</a></li>
+            <li><a href="#/admin/reports/dev">Developers</a></li>
+            <li><a href="#/admin/reports/acb">ONC-ACBs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/atl">ONC-ATLs</a></li>
+            <li><a href="#/admin/reports/prod">Products</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/announcement">Announcements</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/users">Users</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_management">API Keys</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_usage">API Key Usage</a></li>
           </ul>
         </li>
       </ul><!-- /admin nav -->
@@ -99,18 +101,6 @@
         <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
           <button href class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getFullname()">Administrator Login</span>{{ vm.getFullname() }} <span class="fa" ng-class="vm.adminLoginIsOpen ? 'fa-caret-up' : 'fa-caret-right'"></span></button>
           <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/userManagement">User Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF', 'ROLE_ACB'])"><a href="#/admin/reports">Reports</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/scheduledJobs">Scheduled Jobs</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement">CMS Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Jobs Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching Management</a></li>
             <li>
               <ai-login form-class="navbar-form"
                         p-class="navbar-text"

@@ -1,0 +1,59 @@
+function getResources ($q, networkService) {
+    let promises = [
+        networkService.getSearchOptions()
+            .then(response => ({
+                bodies: response.certBodyNames,
+                classifications: response.productClassifications,
+                editions: response.editions,
+                practices: response.practiceTypeNames,
+                statuses: response.certificationStatuses,
+            })),
+        networkService.getAtls(false)
+            .then(response => ({ testingLabs: response.atls })),
+        networkService.getQmsStandards()
+            .then(response => ({ qmsStandards: response })),
+        networkService.getAccessibilityStandards()
+            .then(response => ({ accessibilityStandards: response })),
+        networkService.getUcdProcesses()
+            .then(response => ({ ucdProcesses: response })),
+        networkService.getTestProcedures()
+            .then(response => ({ testProcedures: response })),
+        networkService.getTestData()
+            .then(response => ({ testData: response })),
+        networkService.getTestStandards()
+            .then(response => ({ testStandards: response })),
+        networkService.getTestFunctionality()
+            .then(response => ({ testFunctionalities: response })),
+        networkService.getTestTools()
+            .then(response => ({ testTools: response })),
+        networkService.getTargetedUsers()
+            .then(response => ({ targetedUsers: response })),
+    ];
+    return $q.all(promises)
+        .then(response => response[0]);
+}
+
+function stateConfig ($stateProvider) {
+    $stateProvider
+        .state('administration', {
+            abstract: true,
+            url: '/administration',
+            template: '<div class="container-fluid"><div class="row"><div class="col-sm-12"><h1>CHPL Administration</h1></div></div><div class="main-content" id="main-content" tabindex="-1"><ui-view/></div></div>',
+        })
+        .state('administration.confirm', {
+            abstract: true,
+            url: '/confirm',
+            template: '<ui-view/>',
+        })
+        .state('administration.confirm.listings', {
+            url: '/listings',
+            component: 'chplConfirmListings',
+            resolve: {
+                developers: networkService => networkService.getDevelopers().then(response => response.developers),
+                resources: ($q, networkService) => getResources($q, networkService),
+            },
+            data: { title: 'CHPL Reports - Listings' },
+        });
+}
+
+module.exports = stateConfig;
