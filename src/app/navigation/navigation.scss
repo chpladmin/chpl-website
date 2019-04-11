@@ -1,6 +1,7 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
 
 .toggle-navigation-open {
+    transition: all .4s ease;
     position: relative;
     bottom: -80px;
 
@@ -16,6 +17,13 @@
 
     .btn-link {
         color: #fff;
+    }
+}
+
+.navbar-scrolled {
+
+    .toggle-navigation-open {
+        bottom: -30px;
     }
 }
 
