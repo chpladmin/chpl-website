@@ -28,7 +28,7 @@ export const ReportsListingsComponent = {
                 this.activityRange.endDate = new Date();
                 this.activityRange.startDate = new Date('4/1/2016');
                 this.productId = angular.copy(changes.productId.currentValue);
-                this.networkService.getSingleCertifiedProductMetadataActivity(this.productId)
+                this.networkService.getSingleListingActivityMetadata(this.productId)
                     .then(results => {
                         that.results = results;
                         that.prepare(that.results, true);
