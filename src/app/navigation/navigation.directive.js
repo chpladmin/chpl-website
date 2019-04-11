@@ -133,6 +133,9 @@
         }
 
         function loadOrganizations () {
+            if (!vm.UAT_MODE) {
+                return;
+            }
             networkService.getAcbs(true)
                 .then(data => {
                     vm.acbs = data.acbs
