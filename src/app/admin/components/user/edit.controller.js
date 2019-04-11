@@ -23,11 +23,11 @@
             vm.action = action;
             vm.acbId = acbId;
             vm.atlId = atlId;
-            vm.userInvitation = {permission: ''};
+            vm.userInvitation = {role: ''};
             vm.message = '';
             vm.loadRoles();
             if (vm.roles.length === 1) {
-                vm.userInvitation.permission = vm.roles[0];
+                vm.userInvitation.role = vm.roles[0];
             }
         }
 
@@ -88,7 +88,7 @@
             if (vm.atlId) {
                 vm.userInvitation.testingLabId = vm.atlId;
             }
-            if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.permission.length > 0) {
+            if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.role && vm.userInvitation.role.length > 0) {
                 networkService.inviteUser(vm.userInvitation)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {

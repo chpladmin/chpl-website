@@ -34,9 +34,9 @@
         <div class="text-danger" ng-if="vm.editForm.inviteEmail.$touched && vm.editForm.inviteEmail.$error.required">Email is required</div>
         <div class="text-danger" ng-if="vm.editForm.inviteEmail.$touched && vm.editForm.inviteEmail.$error.email">Invalid email</div>
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-if="vm.roles.length > 1">
         <label for="new-role" class="control-label">User Role <span class="text-danger">*</span></label>
-        <select id="new-role" name="newRole" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.permission" class="form-control" required></select>
+        <select id="new-role" name="newRole" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.role" class="form-control" required></select>
         <div class="text-danger" ng-if="vm.editForm.newRole.$touched && vm.editForm.newRole.$error.required">Role is required</div>
       </div>
     </div>

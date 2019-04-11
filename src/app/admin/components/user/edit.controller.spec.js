@@ -133,7 +133,7 @@
         describe('when inviting users,', () => {
             beforeEach(() => {
                 vm.userInvitation = {
-                    permission: 'a role',
+                    role: 'a role',
                     emailAddress: 'fake@sample.com',
                 }
             });
@@ -145,7 +145,7 @@
             });
 
             it('should not call the common service if missing roles', () => {
-                vm.userInvitation.permission = '';
+                vm.userInvitation.role = '';
                 vm.invite();
                 scope.$digest();
                 expect(networkService.inviteUser).not.toHaveBeenCalled();
@@ -219,7 +219,7 @@
                 });
 
                 it('should not default to having roles', () => {
-                    expect(vm.userInvitation.permission).toEqual('');
+                    expect(vm.userInvitation.role).toEqual('');
                 });
             });
 
@@ -236,7 +236,7 @@
                 });
 
                 it('should default to the single role', () => {
-                    expect(vm.userInvitation.permission).toEqual('ROLE_ACB');
+                    expect(vm.userInvitation.role).toEqual('ROLE_ACB');
                 });
             });
         });
