@@ -11,21 +11,21 @@
   <div class="modal-body" ng-form="vm.editForm">
     <p ng-if="vm.message" class="bg-danger">{{ vm.message }}</p>
     <div ng-if="vm.action === 'edit'">
-      <strong>Username: </strong>{{ vm.user.user.subjectName }}<br />
-      <ai-contact contact="vm.user.user" error-messages="vm.contactErrorMessages" form="vm.editForm" is-editing="true" is-required="true" show-form-errors="vm.showFormErrors"></ai-contact>
+      <strong>Username: </strong>{{ vm.user.subjectName }}<br />
+      <ai-contact contact="vm.user" error-messages="vm.contactErrorMessages" form="vm.editForm" is-editing="true" is-required="true" show-form-errors="vm.showFormErrors"></ai-contact>
       <div class="form-group">
         <label for="is-locked">Locked</label>
-        <input type="checkbox" ng-model="vm.user.user.accountLocked" id="is-locked"></input>
+        <input type="checkbox" ng-model="vm.user.accountLocked" id="is-locked"></input>
       </div>
       <div class="form-group">
         <label for="is-enabled">Enabled</label>
-        <input type="checkbox" ng-model="vm.user.user.accountEnabled" id="is-enabled"></input>
+        <input type="checkbox" ng-model="vm.user.accountEnabled" id="is-enabled"></input>
       </div>
       <div class="form-group">
         <label for="is-pwchange">Password change on next login</label>
-        <input type="checkbox" ng-model="vm.user.user.passwordResetRequired" id="is-pwchange"></input>
+        <input type="checkbox" ng-model="vm.user.passwordResetRequired" id="is-pwchange"></input>
       </div>
-      <strong>User role: </strong>{{ vm.user.user.role }}<br />
+      <strong>User role: </strong>{{ vm.user.role }}<br />
     </div>
     <div ng-if="vm.action === 'invite'">
       <div class="form-group">

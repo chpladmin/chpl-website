@@ -1,19 +1,19 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the User Editing Controller', function () {
+    describe('the User Editing Controller', () => {
         var $controller, $log, $q, Mock, authService, mock, networkService, scope, vm;
 
         mock = {};
-        mock.user = {user: {subjectName: 'username', userId: 'userId', role: 'ROLE_ADMIN'}};
+        mock.user = {subjectName: 'username', userId: 'userId', role: 'ROLE_ADMIN'};
 
-        beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('authService', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+                $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
-                $provide.decorator('networkService', function ($delegate) {
+                $provide.decorator('networkService', $delegate => {
                     $delegate.deleteUser = jasmine.createSpy('deleteUser');
                     $delegate.inviteUser = jasmine.createSpy('inviteUser');
                     $delegate.removeUserFromAcb = jasmine.createSpy('removeUserFromAcb');
@@ -23,7 +23,7 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _networkService_) {
+            inject((_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _networkService_) => {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
@@ -49,7 +49,7 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
                 console.log('Debug:\n' + angular.toJson($log.debug.logs));
@@ -57,11 +57,11 @@
             }
         });
 
-        it('should exist', function () {
+        it('should exist', () => {
             expect(vm).toBeDefined();
         });
 
-        it('should have a way to close the modal', function () {
+        it('should have a way to close the modal', () => {
             expect(vm.cancel).toBeDefined();
             vm.cancel();
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
@@ -123,91 +123,91 @@
             });
         });
 
-        it('should know what roles to display', function () {
+        it('should know what roles to display', () => {
             vm.loadRoles();
             vm.atlId = 3;
             vm.loadRoles();
             expect(vm.roles).toEqual(['ROLE_ATL']);
         });
 
-        describe('when inviting users,', function () {
-            beforeEach(function () {
+        describe('when inviting users,', () => {
+            beforeEach(() => {
                 vm.userInvitation = {
                     permission: 'a role',
                     emailAddress: 'fake@sample.com',
                 }
             });
 
-            it('should call the common service', function () {
+            it('should call the common service', () => {
                 vm.invite();
                 scope.$digest();
                 expect(networkService.inviteUser).toHaveBeenCalled();
             });
 
-            it('should not call the common service if missing roles', function () {
+            it('should not call the common service if missing roles', () => {
                 vm.userInvitation.permission = '';
                 vm.invite();
                 scope.$digest();
                 expect(networkService.inviteUser).not.toHaveBeenCalled();
             });
 
-            it('should not call the common service if missing email', function () {
+            it('should not call the common service if missing email', () => {
                 delete vm.userInvitation.emailAddress;
                 vm.invite();
                 scope.$digest();
                 expect(networkService.inviteUser).not.toHaveBeenCalled();
             });
 
-            it('should not call the common service if missing email', function () {
+            it('should not call the common service if missing email', () => {
                 vm.userInvitation.emailAddress = '';
                 vm.invite();
                 scope.$digest();
                 expect(networkService.inviteUser).not.toHaveBeenCalled();
             });
 
-            it('should add the acbId if it exists', function () {
+            it('should add the acbId if it exists', () => {
                 vm.acbId = 1;
                 vm.invite();
                 scope.$digest();
                 expect(vm.userInvitation.acbId).toBe(1);
             });
 
-            it('should add the atlId if it exists', function () {
+            it('should add the atlId if it exists', () => {
                 vm.atlId = 1;
                 vm.invite();
                 scope.$digest();
                 expect(vm.userInvitation.testingLabId).toBe(1);
             });
 
-            it('should close the modal', function () {
+            it('should close the modal', () => {
                 vm.invite();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalled();
             });
 
-            it('should close the modal', function () {
+            it('should close the modal', () => {
                 networkService.inviteUser.and.returnValue($q.when({status: 200}));
                 vm.invite();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalled();
             });
 
-            it('should display an error message on error', function () {
+            it('should display an error message on error', () => {
                 networkService.inviteUser.and.returnValue($q.when({status: 500}));
                 vm.invite();
                 scope.$digest();
                 expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
             });
 
-            it('should display an error message on error', function () {
+            it('should display an error message on error', () => {
                 networkService.inviteUser.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.invite();
                 scope.$digest();
                 expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "bad thing"');
             });
 
-            describe('with multiple available roles,', function () {
-                beforeEach(function () {
+            describe('with multiple available roles,', () => {
+                beforeEach(() => {
                     vm = $controller('EditUserController', {
                         action: 'invite',
                         acbId: null,
@@ -218,13 +218,13 @@
                     scope.$digest();
                 });
 
-                it('should not default to having roles', function () {
+                it('should not default to having roles', () => {
                     expect(vm.userInvitation.permission).toEqual('');
                 });
             });
 
-            describe('with a single available role,', function () {
-                beforeEach(function () {
+            describe('with a single available role,', () => {
+                beforeEach(() => {
                     vm = $controller('EditUserController', {
                         action: 'invite',
                         acbId: 1,
@@ -235,40 +235,40 @@
                     scope.$digest();
                 });
 
-                it('should default to the single role', function () {
+                it('should default to the single role', () => {
                     expect(vm.userInvitation.permission).toEqual('ROLE_ACB');
                 });
             });
         });
 
-        describe('when saving users,', function () {
-            it('should call the common service', function () {
+        describe('when saving users,', () => {
+            it('should call the common service', () => {
                 vm.save();
                 scope.$digest();
                 expect(networkService.updateUser).toHaveBeenCalled();
             });
 
-            it('should close the modal', function () {
+            it('should close the modal', () => {
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalled();
             });
 
-            it('should close the modal', function () {
+            it('should close the modal', () => {
                 networkService.updateUser.and.returnValue($q.when({status: 200}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalled();
             });
 
-            it('should display an error message on error', function () {
+            it('should display an error message on error', () => {
                 networkService.updateUser.and.returnValue($q.when({status: 500}));
                 vm.save();
                 scope.$digest();
                 expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
             });
 
-            it('should display an error message on error', function () {
+            it('should display an error message on error', () => {
                 networkService.updateUser.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
@@ -276,35 +276,35 @@
             });
         });
 
-        describe('when deleting users,', function () {
-            describe('as non-ACB/non-ATL,', function () {
-                it('should call the common service', function () {
+        describe('when deleting users,', () => {
+            describe('as non-ACB/non-ATL,', () => {
+                it('should call the common service', () => {
                     vm.deleteUser();
                     scope.$digest();
                     expect(networkService.deleteUser).toHaveBeenCalledWith('userId');
                 });
 
-                it('should close the modal', function () {
+                it('should close the modal', () => {
                     vm.deleteUser();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
-                it('should close the modal', function () {
+                it('should close the modal', () => {
                     networkService.deleteUser.and.returnValue($q.when({status: 200}));
                     vm.deleteUser();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
-                it('should display an error message on error', function () {
+                it('should display an error message on error', () => {
                     networkService.deleteUser.and.returnValue($q.when({status: 500}));
                     vm.deleteUser();
                     scope.$digest();
                     expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
                 });
 
-                it('should display an error message on error', function () {
+                it('should display an error message on error', () => {
                     networkService.deleteUser.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                     vm.deleteUser();
                     scope.$digest();
@@ -312,38 +312,38 @@
                 });
             });
 
-            describe('as ACB,', function () {
-                beforeEach(function () {
+            describe('as ACB,', () => {
+                beforeEach(() => {
                     vm.acbId = 1;
                 });
 
-                it('should call the common service', function () {
+                it('should call the common service', () => {
                     vm.deleteUser();
                     scope.$digest();
                     expect(networkService.removeUserFromAcb).toHaveBeenCalledWith('userId', 1);
                 });
 
-                it('should close the modal', function () {
+                it('should close the modal', () => {
                     vm.deleteUser();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
-                it('should close the modal', function () {
+                it('should close the modal', () => {
                     networkService.removeUserFromAcb.and.returnValue($q.when({status: 200}));
                     vm.deleteUser();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
-                it('should display an error message on error', function () {
+                it('should display an error message on error', () => {
                     networkService.removeUserFromAcb.and.returnValue($q.when({status: 500}));
                     vm.deleteUser();
                     scope.$digest();
                     expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
                 });
 
-                it('should display an error message on error', function () {
+                it('should display an error message on error', () => {
                     networkService.removeUserFromAcb.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                     vm.deleteUser();
                     scope.$digest();
@@ -351,38 +351,38 @@
                 });
             });
 
-            describe('as ATL,', function () {
-                beforeEach(function () {
+            describe('as ATL,', () => {
+                beforeEach(() => {
                     vm.atlId = 1;
                 });
 
-                it('should call the common service', function () {
+                it('should call the common service', () => {
                     vm.deleteUser();
                     scope.$digest();
                     expect(networkService.removeUserFromAtl).toHaveBeenCalledWith('userId', 1);
                 });
 
-                it('should close the modal', function () {
+                it('should close the modal', () => {
                     vm.deleteUser();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
-                it('should close the modal', function () {
+                it('should close the modal', () => {
                     networkService.removeUserFromAtl.and.returnValue($q.when({status: 200}));
                     vm.deleteUser();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
-                it('should display an error message on error', function () {
+                it('should display an error message on error', () => {
                     networkService.removeUserFromAtl.and.returnValue($q.when({status: 500}));
                     vm.deleteUser();
                     scope.$digest();
                     expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
                 });
 
-                it('should display an error message on error', function () {
+                it('should display an error message on error', () => {
                     networkService.removeUserFromAtl.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                     vm.deleteUser();
                     scope.$digest();

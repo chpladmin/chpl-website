@@ -1159,7 +1159,7 @@
 
         it('should impersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
-            networkService.impersonateUser({user: {subjectName: 'name'}}).then(response => {
+            networkService.impersonateUser({subjectName: 'name'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

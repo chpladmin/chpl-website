@@ -40,7 +40,7 @@
             if (vm.acbId) {
                 userObject = {
                     acbId: vm.acbId,
-                    userId: vm.user.user.userId,
+                    userId: vm.user.userId,
                 };
                 networkService.removeUserFromAcb(userObject.userId, userObject.acbId)
                     .then(function (response) {
@@ -55,7 +55,7 @@
             } else if (vm.atlId) {
                 userObject = {
                     atlId: vm.atlId,
-                    userId: vm.user.user.userId,
+                    userId: vm.user.userId,
                 };
                 networkService.removeUserFromAtl(userObject.userId, userObject.atlId)
                     .then(function (response) {
@@ -68,7 +68,7 @@
                         errorMessage(error.data.error);
                     });
             } else {
-                networkService.deleteUser(vm.user.user.userId)
+                networkService.deleteUser(vm.user.userId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close('deleted');
@@ -122,7 +122,7 @@
         }
 
         function save () {
-            networkService.updateUser(vm.user.user)
+            networkService.updateUser(vm.user)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
