@@ -24,9 +24,12 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
 }
 
 body {
-    margin-top: 170px;
     background-image: url("../assets/images/CHPL_BackgroundPattern.png");
     font-family: "Lato", sans-serif;
+}
+
+.navigation-shown {
+    margin-top: 170px;
 }
 
 header {
@@ -51,7 +54,7 @@ a.btn {
     background-image: url("../assets/images/CHPL_Header.png");
     background-repeat: no-repeat;
     background-size: cover;
-    border-bottom: 20px solid #0070c9;
+    border-bottom: 33px solid #0070c9;
     min-height: 160px;
     box-shadow: none;
 }
@@ -103,7 +106,7 @@ a.btn {
         min-height: 160px;
     }
 
-    .navbar-fixed-top .nav {
+    .navbar-fixed-top .nav-main {
         position: absolute;
         bottom: 0;
         right: 15px;

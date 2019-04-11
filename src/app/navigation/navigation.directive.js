@@ -57,9 +57,11 @@
             vm.UAT_MODE = UAT_MODE;
             vm.loadAnnouncements();
             vm.navShown = true;
+            $rootScope.bodyClass = 'navigation-shown';
 
             if (vm.hasAnyRole()) {
                 vm.loadOrganizations();
+                vm.toggleNav();
             }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
@@ -84,11 +86,17 @@
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
                 vm.loadOrganizations();
+                if (vm.navShown) {
+                    vm.toggleNav();
+                }
             })
             $scope.$on('$destroy', loggedIn);
 
             var loggedOut = $scope.$on('loggedOut', function () {
                 vm.loadAnnouncements();
+                if (!vm.navShown) {
+                    vm.toggleNav();
+                }
             })
             $scope.$on('$destroy', loggedOut);
 
@@ -159,6 +167,7 @@
 
         function toggleNav () {
             vm.navShown = !vm.navShown;
+            $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : '';
         }
     }
 })();

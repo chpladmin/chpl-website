@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" ng-if="vm.navShown">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" ng-click="navCollapsed = !navCollapsed" ng-init="navCollapsed = true" aria-haspopup="true" aria-expanded="false" id="menu-toggle">
@@ -13,7 +13,7 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right nav-main">
           <li ng-class="{'active': vm.isActive('/search') }"><a href="#/search">Search CHPL <i class="fa fa-search"></i></a></li>
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-right'"></span></a>
@@ -54,9 +54,10 @@
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-    <div class="text-center toggle-navigation"><button class="btn btn-link" ng-click="vm.toggleNav()">{{ vm.navShown ? 'Hide' : 'Show' }} navigation <i class="fa" ng-class="vm.navShown ? 'fa-caret-up' : 'fa-caret-down'"></i></button></div>
+    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole()"><button class="btn btn-link" ng-click="vm.toggleNav()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
-  <nav class="navbar navbar-default navbar-static-top" ng-if="vm.UAT_MODE">
+  <nav class="navbar navbar-default" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'" ng-if="vm.UAT_MODE">
+    <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown"><button class="btn btn-link" ng-click="vm.toggleNav()">Show navigation <i class="fa fa-caret-down"></i></button></div>
     <div class="container-fluid">
       <ul class="nav navbar-nav"> <!-- admin-nav -->
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">

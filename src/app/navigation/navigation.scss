@@ -1,8 +1,18 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
 
-.toggle-navigation {
+.toggle-navigation-open {
     position: relative;
     bottom: -80px;
+
+    .btn-link {
+        color: #fff;
+    }
+}
+
+.toggle-navigation-closed {
+    position: relative;
+    top: 0;
+    background-color: #0070c9;
 
     .btn-link {
         color: #fff;
