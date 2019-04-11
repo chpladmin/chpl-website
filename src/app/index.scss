@@ -29,11 +29,13 @@ body {
 }
 
 .navigation-shown {
-    margin-top: 170px;
-}
+    @media (max-width: 767px) {
+        margin-top: 0;
+    }
 
-header {
-    transition: all .4s ease;
+    @media (min-width: 767px) {
+        margin-top: 170px;
+    }
 }
 
 a {
@@ -43,6 +45,10 @@ a {
 
 a.btn {
     text-decoration: none;
+}
+
+.navbar {
+    transition: all .4s ease;
 }
 
 .navbar-inverse .navbar-nav>li>a {
@@ -55,8 +61,24 @@ a.btn {
     background-repeat: no-repeat;
     background-size: cover;
     border-bottom: 33px solid #0070c9;
-    min-height: 160px;
     box-shadow: none;
+    min-height: 160px;
+}
+
+.navbar-brand img {
+    transition: all .4s ease;
+    margin: 10px 40px;
+}
+
+.navbar-scrolled {
+    @media (min-width: 767px) {
+        min-height: 0 !important;
+
+        .navbar-brand img {
+            max-height: 40px;
+            margin: 0 !important;
+        }
+    }
 }
 
 .navbar-inverse .navbar-nav>.active>a,
@@ -78,10 +100,6 @@ a.btn {
 }
 
 @media (max-width: 767px) {
-
-    body {
-        margin-top: 0;
-    }
 
     .navbar-fixed-top {
         position: relative;
@@ -178,13 +196,6 @@ h4 {
 
 footer .spaced-out {
     margin: 10px 40px;
-}
-
-header {
-
-    a.navbar-brand img {
-        margin: 10px 40px;
-    }
 }
 
 #loading-bar .bar {
