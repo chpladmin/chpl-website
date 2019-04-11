@@ -23,7 +23,7 @@
         ////////////////////////////////////////////////////////////////////////
 
         function canImpersonate (target) {
-            let userRole = parseJwt(getToken()).Authorities;
+            let userRole = parseJwt(getToken()).Authority;
             let targetRole = target.role;
             return !isImpersonating() &&
                 ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
@@ -67,7 +67,7 @@
         function hasAnyRole (roles) {
             var token = getToken();
             if (token) {
-                let userRole = parseJwt(token).Authorities;
+                let userRole = parseJwt(token).Authority;
                 if (roles) {
                     if (userRole) {
                         return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
