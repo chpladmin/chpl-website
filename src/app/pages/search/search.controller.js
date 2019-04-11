@@ -296,7 +296,7 @@
 
         function viewCertificationStatusLegend () {
             vm.viewCertificationStatusLegendInstance = $uibModal.open({
-                templateUrl: 'chpl.components/certificationStatus/certificationStatus.html',
+                templateUrl: 'chpl.components/certification-status/certification-status.html',
                 controller: 'CertificationStatusController',
                 controllerAs: 'vm',
                 animation: false,

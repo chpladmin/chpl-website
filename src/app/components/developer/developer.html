@@ -1,19 +1,22 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
     <span class="pull-right">
-      <button class="btn btn-link btn-small" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
+      <button class="btn btn-link btn-small" id="developer-component-edit-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
+      <button class="btn btn-link btn-small" id="developer-component-split-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
+      <button class="btn btn-link btn-small" id="developer-component-merge-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
     </span>
     <span ng-if="$ctrl.showFull">
       <h2>{{ $ctrl.developer.name }}</h2>
     </span>
     <span ng-if="!$ctrl.showFull">
       <h2>Developer</h2>
-      <a ng-if="!$ctrl.showFull" ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a>
+      <p>
+        <a ng-if="!$ctrl.showFull" ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a>
+      </p>
     </span>
     <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
     <span ng-if="$ctrl.showFull">
+      <p ng-if="$ctrl.developer.website"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
       <table ng-if="$ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole()" class="table table-condensed">
         <thead>
           <tr>
@@ -30,7 +33,6 @@
           </tr>
         </tbody>
       </table>
-      <p ng-if="$ctrl.developer.website"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
       <h3>Transparency Attestations</h3>
       <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
       <h3>Address</h3>
@@ -131,13 +133,13 @@
       </div>
     </span>
     <h3>Address</h3>
-    <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+    <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing" is-required="$ctrl.isSplitting" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
     <h3>Contact information</h3>
     <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing" is-required="true" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
   </span> <!-- end edit -->
 
   <div ng-if="$ctrl.canEdit">
-    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    <button class="btn btn-ai-success btn-small pull-right" id="developer-component-save-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-warning btn-small" id="developer-component-cancel-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
   </div>
 </div>

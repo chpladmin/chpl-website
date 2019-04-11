@@ -786,6 +786,22 @@
             $httpBackend.flush();
         });
 
+        it('should getPendingListings', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/metadata$/).respond(200, {data: 'response'});
+            networkService.getPendingListings().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getPendingListingById', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/id$/).respond(200, {data: 'response'});
+            networkService.getPendingListingById('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getPractices', () => {
             $httpBackend.expectGET(/^\/rest\/data\/practice_types$/).respond(200, {data: 'response'});
             networkService.getPractices().then(response => {
@@ -898,9 +914,33 @@
             $httpBackend.flush();
         });
 
-        it('should getSingleCertifiedProductMetadataActivity', () => {
+        it('should getSingleDeveloperActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/developers\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleDeveloperActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleListingActivityMetadata', () => {
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
-            networkService.getSingleCertifiedProductMetadataActivity('payload').then(response => {
+            networkService.getSingleListingActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleProductActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/products\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleProductActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleVersionActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/versions\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleVersionActivityMetadata('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -984,14 +1024,6 @@
         it('should getUcdProcesses', () => {
             $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, {data: 'response'});
             networkService.getUcdProcesses().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getUploadingCps', () => {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/pending$/).respond(200, {data: 'response'});
-            networkService.getUploadingCps().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

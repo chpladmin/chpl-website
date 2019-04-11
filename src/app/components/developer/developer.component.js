@@ -1,8 +1,8 @@
 export const DeveloperComponent = {
     templateUrl: 'chpl.components/developer/developer.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
+        allowedAcbs: '<',
         canEdit: '<',
         canMerge: '<',
         canSplit: '<',
@@ -70,17 +70,16 @@ export const DeveloperComponent = {
         can (action) {
             if (action === 'edit') {
                 return this.canEdit // allowed by containing component
-                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
             if (action === 'merge') {
                 return this.canMerge // allowed by containing component
-                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
-                    && this.developer.status.status === 'Active'; // allowed iff Developer is "Active"
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
             }
             if (action === 'split') {
                 return this.canSplit // allowed by containing component
-                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // allowed as ADMIN/ONC
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
         }

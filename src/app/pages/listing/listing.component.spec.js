@@ -18,15 +18,13 @@
             dismiss: type => { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'chpl.listing/history/history.html',
-            controller: 'ProductHistoryController',
-            controllerAs: 'vm',
+            component: 'chplListingHistory',
             animation: false,
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
             resolve: {
-                activity: jasmine.any(Function),
+                listing: jasmine.any(Function),
             },
         };
 
@@ -34,7 +32,7 @@
             angular.mock.module('chpl', 'chpl.listing', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getProduct = jasmine.createSpy('getProduct');
-                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
+                    $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
                     return $delegate;
                 });
             });
@@ -50,7 +48,7 @@
                 });
                 networkService = _networkService_;
                 networkService.getProduct.and.returnValue($q.when(mock.products));
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
+                networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new();
                 $stateParams.id = mock.productId;
@@ -85,7 +83,7 @@
                 });
 
                 it('should get product history on load', () => {
-                    expect(networkService.getSingleCertifiedProductActivity).toHaveBeenCalled();
+                    expect(networkService.getSingleListingActivityMetadata).toHaveBeenCalled();
                 });
 
                 it('should be loading', () => {
@@ -139,10 +137,10 @@
             });
 
             it('should resolve modal stuff when product history is viewed', () => {
-                ctrl.activity = mock.activity;
+                ctrl.product = mock.products[0];
                 ctrl.viewProductHistory();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.activity()).toEqual(mock.activity);
+                expect(actualOptions.resolve.listing()).toEqual(mock.products[0]);
             });
         });
     });

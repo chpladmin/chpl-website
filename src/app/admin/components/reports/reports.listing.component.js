@@ -19,6 +19,7 @@ export const ReportsListingsComponent = {
             };
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
+            this.categoriesFilter = '|LISTING|';
         }
 
         $onChanges (changes) {
@@ -27,7 +28,7 @@ export const ReportsListingsComponent = {
                 this.activityRange.endDate = new Date();
                 this.activityRange.startDate = new Date('4/1/2016');
                 this.productId = angular.copy(changes.productId.currentValue);
-                this.networkService.getSingleCertifiedProductMetadataActivity(this.productId)
+                this.networkService.getSingleListingActivityMetadata(this.productId)
                     .then(results => {
                         that.results = results;
                         that.prepare(that.results, true);

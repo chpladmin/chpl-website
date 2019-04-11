@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 ng-switch on="$ctrl.action">
+        <span ng-switch-when="edit">Edit Version</span>
+        <span ng-switch-when="merge">Merge Versions</span>
+        <span ng-switch-default>View Version</span>
+      </h1>
+    </div>
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <div class="col-md-2">
+      <chpl-developer developer="$ctrl.developer"
+                      take-action="$ctrl.takeDeveloperAction()"
+                      ></chpl-developer>
+    </div>
+    <div class="col-md-2">
+      <chpl-product product="$ctrl.product"
+                    can-view="false"
+                    take-action="$ctrl.takeProductAction()"
+                    ></chpl-product>
+    </div>
+    <div class="col-md-4">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
+        <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
+      </ul>
+      <chpl-version version="$ctrl.version"
+                    developer="$ctrl.developer"
+                    can-edit="$ctrl.can('edit')"
+                    can-merge="$ctrl.can('merge') && $ctrl.versions.length > 0"
+                    is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
+                    is-invalid="$ctrl.action === 'merge' && $ctrl.mergingVersions.length < 2"
+                    on-cancel="$ctrl.cancel()"
+                    on-edit="$ctrl.save(version)"
+                    show-full="true"
+                    take-action="$ctrl.takeAction(action)"
+                    ></chpl-version>
+    </div>
+    <div class="col-md-4" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
+      <h2>Listings</h2>
+      <div ng-repeat="listing in $ctrl.listings | orderBy: 'chplProductNumber'">
+        <a ui-sref="listing({id: listing.id})">{{ listing.chplProductNumber }}</a>
+      </div>
+    </div>
+    <div class="col-md-4" ng-if="$ctrl.action === 'merge'">
+      <h2>Versions to merge</h2>
+      <div class="bg-danger" ng-if="$ctrl.mergingVersions.length < 2">At least one other Version must be selected to merge</div>
+      <div ng-repeat="version in $ctrl.mergingVersions | orderBy: 'version'">
+        {{ version.version }}
+        <button class="btn btn-warning btn-small pull-right" id="versions-version-no-merge-{{ version.versionId }}" ng-click="$ctrl.toggleMerge(version, false)" ng-disabled="version.versionId === $ctrl.version.versionId"><i class="fa" ng-class="version.versionId === $ctrl.version.versionId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
+        <div class="clearfix"></div>
+      </div>
+      <h2>Versions not merging</h2>
+      <div ng-repeat="version in $ctrl.versions | orderBy: 'version'">
+        {{ version.version }}
+        <button class="btn btn-ai-success btn-small pull-right" id="versions-version-can-merge-{{ version.versionId }}" ng-click="$ctrl.toggleMerge(version, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>

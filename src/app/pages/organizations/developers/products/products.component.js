@@ -2,21 +2,33 @@ export const ProductsComponent = {
     templateUrl: 'chpl.organizations/developers/products/products.html',
     bindings: {
         developer: '<',
-        developers: '<?',
         product: '<',
         products: '<',
         versions: '<',
     },
     controller: class ProductsComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.backup = {};
             this.splitEdit = true;
+            this.movingVersions = [];
+        }
+
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.loadDevelopers();
+            }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
         }
 
         $onChanges (changes) {
@@ -24,23 +36,20 @@ export const ProductsComponent = {
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
             }
-            if (changes.developers && changes.developers.currentValue) {
-                this.developers = (angular.copy(changes.developers.currentValue)).developers;
-            }
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
                 this.newProduct = angular.copy(this.product);
                 this.backup.product = angular.copy(this.product);
             }
             if (changes.products) {
-                this.products = (angular.copy(changes.products.currentValue)).products;
+                this.products = changes.products.currentValue.products.filter(p => p.productId !== this.product.productId);
+                this.mergingProducts = changes.products.currentValue.products.filter(p => p.productId === this.product.productId);
                 this.backup.products = angular.copy(this.products);
-                this.mergingProducts = [];
+                this.backup.mergingProducts = angular.copy(this.mergingProducts);
             }
             if (changes.versions) {
                 this.versions = angular.copy(changes.versions.currentValue);
                 this.backup.versions = angular.copy(this.versions);
-                this.movingVersions = [];
             }
         }
 
@@ -56,7 +65,7 @@ export const ProductsComponent = {
             this.newProduct = angular.copy(this.product);
             this.products = angular.copy(this.backup.products);
             this.versions = angular.copy(this.backup.versions);
-            this.mergingProducts = [];
+            this.mergingProducts = angular.copy(this.backup.mergingProducts);
             this.movingVersions = [];
             this.action = undefined;
             this.splitEdit = true;
@@ -67,10 +76,19 @@ export const ProductsComponent = {
             this.splitEdit = false;
         }
 
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers;
+            });
+        }
+
         save (product) {
-            let productIds = [this.product.productId];
+            let productIds = [];
             if (this.action === 'merge') {
                 productIds = productIds.concat(this.mergingProducts.map(prod => prod.productId));
+            } else {
+                productIds.push(this.product.productId);
             }
             let that = this;
             this.product = product;
@@ -152,6 +170,7 @@ export const ProductsComponent = {
         }
 
         takeAction (action) {
+            this.cancel();
             this.action = action;
         }
 

@@ -46,7 +46,6 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
-                    presets: ['@babel/preset-env']
                 }
             },{
                 loader: 'eslint-loader',
@@ -162,6 +161,12 @@ module.exports = {
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/error.html'),
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'unsupported-browser.html',
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/unsupported-browser.html'),
         }),
         new StyleLintPlugin(),
     ]

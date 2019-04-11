@@ -1,13 +1,19 @@
 <div id="chpl-product-{{ $ctrl.product.productId }}" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
     <span class="pull-right">
-      <button class="btn btn-link btn-small" ng-if="!$ctrl.isEditing && !$ctrl.isSplitting && !$ctrl.showFull" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View Product</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Product</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Product</span></button>
-      <button class="btn btn-link btn-small" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Product</span></button>
+      <button class="btn btn-link btn-small" id="product-component-view-{{ $ctrl.product.productId }}" ng-if="!$ctrl.isEditing && !$ctrl.isSplitting && !$ctrl.showFull && $ctrl.canView" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View Product</span></button>
+      <button class="btn btn-link btn-small" id="product-component-edit-{{ $ctrl.product.productId }}" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Product</span></button>
+      <button class="btn btn-link btn-small" id="product-component-split-{{ $ctrl.product.productId }}" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Product</span></button>
+      <button class="btn btn-link btn-small" id="product-component-merge-{{ $ctrl.product.productId }}" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Product</span></button>
     </span>
     <span ng-if="!$ctrl.showFull">
-      <h3>{{ $ctrl.product.name }}</h3>
+      <span ng-if="$ctrl.isList">
+        <h3>{{ $ctrl.product.name }}</h3>
+      </span>
+      <span ng-if="!$ctrl.isList">
+        <h2>Product</h2>
+        <a ui-sref="organizations.developers.products({productId: $ctrl.product.productId})">{{ $ctrl.product.name }}</a>
+      </span>
     </span>
     <span ng-if="$ctrl.showFull">
       <h2>{{ $ctrl.product.name }}</h2>
@@ -50,7 +56,7 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productCode.$touched) && !$ctrl.form.productCode.$error.required && !$ctrl.form.productCode.$valid">Product Code must consist of letters, numbers and/or "_", and be 4 characters long</div>
       </div>
     </div>
-    <span ng-if="!$ctrl.isSplitting">
+    <span ng-if="!$ctrl.isSplitting && !$ctrl.isMerging">
       <div class="form-group">
         <label class="control-label" for="product-owner">Current Product owner <span class="text-danger">*</span></label>
         <div>
@@ -92,13 +98,15 @@
           <button class="btn btn-ai-success" ng-click="$ctrl.addOwnerHistory()"><i class="fa fa-plus"></i> Add Product owner</button>
         </div>
       </div>
+    </span>
+    <span ng-if="!$ctrl.isSplitting">
       <h3>Contact information</h3>
       <chpl-contact contact="$ctrl.product.contact" is-editing="$ctrl.isEditing" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
     </span>
   </span> <!-- end edit -->
 
   <div ng-if="$ctrl.canEdit">
-    <button class="btn btn-ai-success btn-small pull-right" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-    <button class="btn btn-warning btn-small" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    <button class="btn btn-ai-success btn-small pull-right" id="product-component-save-{{ $ctrl.product.productId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-warning btn-small" id="product-component-cancel-{{ $ctrl.product.productId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
   </div>
 </div>

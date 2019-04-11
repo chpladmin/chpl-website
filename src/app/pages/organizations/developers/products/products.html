@@ -25,10 +25,11 @@
                     developer="$ctrl.developer"
                     developers="$ctrl.developers"
                     can-edit="$ctrl.can('edit')"
-                    can-merge="$ctrl.can('merge') && $ctrl.products.length > 1"
+                    can-merge="$ctrl.can('merge') && $ctrl.products.length > 0"
                     can-split="$ctrl.can('split-product')"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
-                    is-invalid="$ctrl.action === 'merge' && $ctrl.mergingProducts.length === 0"
+                    is-invalid="$ctrl.action === 'merge' && $ctrl.mergingProducts.length < 2"
+                    is-merging="$ctrl.action === 'merge'"
                     on-cancel="$ctrl.cancel()"
                     on-edit="$ctrl.save(product)"
                     show-full="true"
@@ -37,9 +38,9 @@
       <div ng-if="$ctrl.action === 'split'">
         <h3>Versions staying with original Product</h3>
         <div class="bg-danger" ng-if="$ctrl.versions.length === 0">At least one Version must remain</div>
-        <div ng-repeat="version in $ctrl.versions | orderBy: 'name'">
+        <div ng-repeat="version in $ctrl.versions | orderBy: 'version'">
           {{ version.version }}
-          <button class="btn btn-default btn-small pull-right" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
+          <button class="btn btn-default btn-small pull-right" id="products-version-move-new-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
           <div class="clearfix"></div>
         </div>
       </div>
@@ -47,29 +48,26 @@
     <div class="col-md-5" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
       <h2>Versions</h2>
       <div ng-repeat="version in $ctrl.versions | orderBy: 'version'">
-        {{ version.version }}
-        <!--
         <chpl-version version="version"
-                      can-edit="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
-                      can-merge="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"
-                      can-split="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                      developer="$ctrl.developer"
+                      can-edit="$ctrl.can('edit')"
+                      can-merge="$ctrl.can('merge') && $ctrl.versions.length > 1"
                       take-action="$ctrl.takeVersionAction(action, versionId)"
                       ></chpl-version>
-        -->
       </div>
     </div>
     <div class="col-md-5" ng-if="$ctrl.action === 'merge'">
       <h2>Products to merge</h2>
-      <div class="bg-danger" ng-if="$ctrl.mergingProducts.length === 0">At least one Product must be selected to merge</div>
+      <div class="bg-danger" ng-if="$ctrl.mergingProducts.length < 2">At least one other Product must be selected to merge</div>
       <div ng-repeat="product in $ctrl.mergingProducts | orderBy: 'name'">
         {{ product.name }}
-        <button class="btn btn-warning btn-small pull-right" ng-click="$ctrl.toggleMerge(product, false)"><i class="fa fa-minus"></i><span class="sr-only"> Remove</span></button>
+        <button class="btn btn-warning btn-small pull-right" id="products-product-no-merge-{{ product.productId }}" ng-click="$ctrl.toggleMerge(product, false)" ng-disabled="product.productId === $ctrl.product.productId"><i class="fa" ng-class="product.productId === $ctrl.product.productId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
         <div class="clearfix"></div>
       </div>
-      <h2>All Products</h2>
+      <h2>Products not merging</h2>
       <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
         {{ product.name }}
-        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(product, true)" ng-disabled="product.productId === $ctrl.product.productId"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <button class="btn btn-ai-success btn-small pull-right" id="products-product-can-merge-{{ product.productId }}" ng-click="$ctrl.toggleMerge(product, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
         <div class="clearfix"></div>
       </div>
     </div>
@@ -87,11 +85,11 @@
                     take-action="$ctrl.takeSplitAction()"></chpl-product>
       <h3>Versions moving to new Product</h3>
       <div class="bg-danger" ng-if="$ctrl.movingVersions.length === 0">At least one Version must be selected to move</div>
-      <div ng-repeat="version in $ctrl.movingVersions | orderBy: 'name'">
-        <button class="btn btn-default btn-small" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ version.version }}
+      <div ng-repeat="version in $ctrl.movingVersions | orderBy: 'version'">
+        <button class="btn btn-default btn-small" id="products-version-move-old-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ version.version }}
       </div>
-      <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingVersions.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-      <button class="btn btn-warning btn-small" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+      <button class="btn btn-ai-success btn-small pull-right" id="products-component-save-{{ $ctrl.product.productId }}" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingVersions.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" id="products-component-cancel-{{ $ctrl.product.productId }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
     </div>
   </div>
 </div>
