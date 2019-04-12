@@ -47,13 +47,13 @@
       <div class="bg-danger" ng-if="$ctrl.mergingVersions.length < 2">At least one other Version must be selected to merge</div>
       <div ng-repeat="version in $ctrl.mergingVersions | orderBy: 'version'">
         {{ version.version }}
-        <button class="btn btn-warning btn-small pull-right" ng-click="$ctrl.toggleMerge(version, false)" ng-disabled="version.versionId === $ctrl.version.versionId"><i class="fa" ng-class="version.versionId === $ctrl.version.versionId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
+        <button class="btn btn-warning btn-small pull-right" id="versions-version-no-merge-{{ version.versionId }}" ng-click="$ctrl.toggleMerge(version, false)" ng-disabled="version.versionId === $ctrl.version.versionId"><i class="fa" ng-class="version.versionId === $ctrl.version.versionId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
         <div class="clearfix"></div>
       </div>
       <h2>Versions not merging</h2>
       <div ng-repeat="version in $ctrl.versions | orderBy: 'version'">
         {{ version.version }}
-        <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.toggleMerge(version, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <button class="btn btn-ai-success btn-small pull-right" id="versions-version-can-merge-{{ version.versionId }}" ng-click="$ctrl.toggleMerge(version, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
         <div class="clearfix"></div>
       </div>
     </div>
