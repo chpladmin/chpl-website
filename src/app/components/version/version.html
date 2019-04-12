@@ -25,7 +25,7 @@
   </span> <!-- end edit -->
 
   <div ng-if="$ctrl.canEdit">
-    <button class="btn btn-ai-success btn-small pull-right" id="version-component-cancel-{{ $ctrl.version.versionId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-ai-success btn-small pull-right" id="version-component-save-{{ $ctrl.version.versionId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
     <button class="btn btn-warning btn-small" id="version-component-cancel-{{ $ctrl.version.versionId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
   </div>
 </div>
