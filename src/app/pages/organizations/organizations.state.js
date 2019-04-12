@@ -1,4 +1,5 @@
-function stateConfig ($stateProvider) {
+function organizationsStateConfig ($stateProvider) {
+    'ngInject'
     $stateProvider
         .state('organizations', {
             abstract: true,
@@ -43,4 +44,4 @@ function stateConfig ($stateProvider) {
         });
 }
 
-module.exports = stateConfig;
+module.exports = organizationsStateConfig;

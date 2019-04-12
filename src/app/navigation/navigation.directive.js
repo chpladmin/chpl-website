@@ -59,7 +59,7 @@
             vm.navShown = true;
             $rootScope.bodyClass = 'navigation-shown';
 
-            if (vm.hasAnyRole()) {
+            if (vm.hasAnyRole() && vm.UAT_MODE) {
                 vm.loadOrganizations();
                 vm.toggleNav();
             }
@@ -86,7 +86,7 @@
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
                 vm.loadOrganizations();
-                if (vm.navShown) {
+                if (vm.navShown && vm.UAT_MODE) {
                     vm.toggleNav();
                 }
             })

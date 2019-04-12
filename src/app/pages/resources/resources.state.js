@@ -1,4 +1,5 @@
-function stateConfig ($stateProvider) {
+function resourcesStateConfig ($stateProvider) {
+    'ngInject'
     $stateProvider
         .state('resources', {
             abstract: true,
@@ -31,4 +32,4 @@ function stateConfig ($stateProvider) {
         });
 }
 
-module.exports = stateConfig;
+module.exports = resourcesStateConfig;

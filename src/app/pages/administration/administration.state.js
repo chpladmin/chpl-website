@@ -1,4 +1,5 @@
 function getResources ($q, networkService) {
+    'ngInject'
     let promises = [
         networkService.getSearchOptions()
             .then(response => ({
@@ -33,7 +34,8 @@ function getResources ($q, networkService) {
         .then(response => response[0]);
 }
 
-function stateConfig ($stateProvider) {
+function administrationStateConfig ($stateProvider) {
+    'ngInject'
     $stateProvider
         .state('administration', {
             abstract: true,
@@ -56,4 +58,4 @@ function stateConfig ($stateProvider) {
         });
 }
 
-module.exports = stateConfig;
+module.exports = administrationStateConfig;

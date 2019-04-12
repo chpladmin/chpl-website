@@ -1,4 +1,5 @@
-function stateConfig ($stateProvider) {
+function reportsStateConfig ($stateProvider) {
+    'ngInject'
     $stateProvider
         .state('reports', {
             abstract: true,
@@ -18,4 +19,4 @@ function stateConfig ($stateProvider) {
         });
 }
 
-module.exports = stateConfig;
+module.exports = reportsStateConfig;

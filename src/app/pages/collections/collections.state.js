@@ -1,4 +1,5 @@
-function stateConfig ($stateProvider) {
+function collectionsStateConfig ($stateProvider) {
+    'ngInject'
     $stateProvider
         .state('collections', {
             abstract: true,
@@ -56,4 +57,4 @@ function stateConfig ($stateProvider) {
         });
 }
 
-module.exports = stateConfig;
+module.exports = collectionsStateConfig;
