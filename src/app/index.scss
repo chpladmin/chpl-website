@@ -47,45 +47,6 @@ a.btn {
     text-decoration: none;
 }
 
-.navbar {
-    transition: all .4s ease;
-}
-
-.navbar-inverse .navbar-nav>li>a {
-    font-family: "Oswald", sans-serif;
-    color: #ffdd3c;
-}
-
-.navbar-inverse {
-    background-image: url("../assets/images/CHPL_Header.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-bottom: 33px solid #0070c9;
-    box-shadow: none;
-    min-height: 160px;
-}
-
-.navbar-brand img {
-    transition: all .4s ease;
-    margin: 10px 40px;
-}
-
-.navbar-scrolled {
-    @media (min-width: 767px) {
-        min-height: 0 !important;
-
-        .navbar-brand img {
-            max-height: 40px;
-            margin: 0 !important;
-        }
-    }
-}
-
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.open>a {
-    box-shadow: none;
-}
-
 .no-br {
     white-space: nowrap;
 }
@@ -97,63 +58,6 @@ a.btn {
 .page-anchor {
     position: absolute;
     top: -125px;
-}
-
-@media (max-width: 767px) {
-
-    .navbar-fixed-top {
-        position: relative;
-        top: auto;
-    }
-
-    .navbar-fixed-bottom {
-        position: relative;
-    }
-
-    .navbar-nav > li > a {
-        line-height: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-}
-
-@media (min-width: 767px) {
-
-    .navbar-fixed-top .container {
-        position: relative;
-        min-height: 160px;
-    }
-
-    .navbar-fixed-top .nav-main {
-        position: absolute;
-        bottom: 0;
-        right: 15px;
-    }
-}
-
-footer {
-    margin-top: 150px;
-
-    .navbar-default {
-        background-color: #ebebeb;
-        background-image: none;
-
-        p {
-            color: #363636;
-
-            a {
-                color: #214e75;
-            }
-        }
-
-        .badge {
-            color: #fff;
-        }
-    }
-}
-
-.announcement.badge {
-    white-space: inherit;
 }
 
 .nav,
@@ -192,10 +96,6 @@ h4 {
 
 .splash-row .spaced-out {
     margin: 40px;
-}
-
-footer .spaced-out {
-    margin: 10px 40px;
 }
 
 #loading-bar .bar {
@@ -297,14 +197,6 @@ footer .spaced-out {
 .ai-gradient {
     color: #f5d43c;
     background: linear-gradient(#0070c9, #004378);
-}
-
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.active>a:focus,
-.navbar-inverse .navbar-nav>.active>a:hover,
-.navbar-inverse .navbar-nav>.open>a {
-    background: #0070c9;
-    background-image: none;
 }
 
 .text-bottom {
