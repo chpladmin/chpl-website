@@ -8,6 +8,7 @@ const base = require('./webpack.config.js');
 module.exports = merge(base, {
     mode: 'production',
     devServer: {
+        disableHostCheck: true,
         port: 3000,
         proxy: {
             '/rest': {

@@ -49,7 +49,7 @@ import /* collectionsModule from*/ './pages/collections/index';
 import /* compareModule from*/ './pages/compare/index';
 import /* componentsModule from*/ './components/index';
 import /* downloadModule from*/ './pages/resources/download/index';
-import chplListing from './pages/listing/index';
+import listing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
 import /* overviewModule from*/ './pages/resources/overview/index';
 import organizations from './pages/organizations/index';
@@ -66,7 +66,23 @@ const dependencies = [
     'angular-loading-bar',
     'angulartics',
     'angulartics.google.tagmanager',
+    'googlechart',
+    'ngAnimate',
+    'ngAria',
+    'ngCytoscape',
+    'ngFileSaver',
+    'ngResource',
+    'ngStorage',
+    'ngSanitize',
+    'smart-table',
+    'toaster',
+    'ui.bootstrap',
+    'ui.router',
+    'zxcvbn',
     administration.name,
+    listing.name,
+    organizations.name,
+    reports.name,
     'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',
@@ -76,32 +92,13 @@ const dependencies = [
     'chpl.components',
     'chpl.constants',
     'chpl.download',
-    chplListing.name,
     'chpl.navigation',
-    organizations.name,
     'chpl.overview',
     'chpl.product',
     'chpl.registration',
-    reports.name,
     'chpl.search',
     'chpl.services',
     'chpl.shared',
-    'googlechart',
-    'ngAnimate',
-    'ngAria',
-    'ngCytoscape',
-    //    'ngMessages',
-    'ngFileSaver',
-    'ngResource',
-    'ngStorage',
-    'ngSanitize',
-    //    'ngTouch',
-    'smart-table',
-    'toaster',
-    'ui.bootstrap',
-    'ui.router',
-    //    'ui.bootstrap.fontawesome',
-    'zxcvbn',
 ];
 
 const appModule = angular.module('chpl', dependencies);
