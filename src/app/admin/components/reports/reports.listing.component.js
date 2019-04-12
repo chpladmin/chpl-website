@@ -247,7 +247,7 @@ export const ReportsListingsComponent = {
             var ucdProcessesNested = [
                 {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
             ];
-            var ucdProcesses = this.compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
+            var ucdProcesses = this.ReportService.compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
             for (i = 0; i < ucdProcesses.length; i++) {
                 ret.push('<li>UCD Process Name "' + ucdProcesses[i].name + '" changes<ul>' + ucdProcesses[i].changes.join('') + '</ul></li>');
             }

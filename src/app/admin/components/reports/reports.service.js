@@ -1,8 +1,9 @@
 export class ReportService {
-    constructor ($filter, $log) {
+    constructor ($filter, $log, utilService) {
         'ngInject';
         this.$filter = $filter;
         this.$log = $log;
+        this.utilService = utilService;
     }
 
     compareArray (prev, curr, keys, root, nested, altRoot) {
@@ -14,7 +15,7 @@ export class ReportService {
                     var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
                     if (prev[i][root] === curr[j][root]) {
                         for (k = 0; k < keys.length; k++) {
-                            change = this.ReportService.compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
+                            change = this.compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
                             if (change) { obj.changes.push('<li>' + change + '</li>'); }
                         }
                         if (nested) {
