@@ -55,7 +55,6 @@ export const ReportsDevelopersComponent = {
                 var activity = {
                     action: '',
                     details: [],
-                    responsibleUserName: item.responsibleUser.fullName,
                 };
 
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
@@ -146,7 +145,6 @@ export const ReportsDevelopersComponent = {
 
                 meta.action = activity.action;
                 meta.details = activity.details;
-                meta.responsibleUserName = activity.responsibleUserName;
                 meta.csvDetails = activity.details.join('\n');
             });
         }
@@ -157,6 +155,7 @@ export const ReportsDevelopersComponent = {
                 item.filterText = item.developerName + '|' + item.developerCode + '|' + item.responsibleUser.fullName
                 item.categoriesFilter = '|' + item.categories.join('|') + '|';
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+                item.fullName = item.responsibleUser.fullName;
                 return item;
             });
         }
