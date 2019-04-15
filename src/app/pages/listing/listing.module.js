@@ -3,4 +3,4 @@ export default angular
         'chpl.services',
         'ngSanitize',
         'ui.bootstrap',
-]);
+    ]);

@@ -16,6 +16,11 @@ function reportsStateConfig ($stateProvider) {
                 productId: $transition$ => $transition$.params().productId,
             },
             data: { title: 'CHPL Reports - Listings' },
+        })
+        .state('reports.developers', {
+            url: '/developers',
+            component: 'chplReportsDevelopers',
+            data: { title: 'CHPL Reports - Developers' },
         });
 }
 
