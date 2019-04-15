@@ -28,16 +28,6 @@ body {
     font-family: "Lato", sans-serif;
 }
 
-.navigation-shown {
-    @media (max-width: 767px) {
-        margin-top: 0;
-    }
-
-    @media (min-width: 767px) {
-        margin-top: 170px;
-    }
-}
-
 a {
     color: #1a67a9;
     text-decoration: underline;

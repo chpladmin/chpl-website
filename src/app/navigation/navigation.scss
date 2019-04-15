@@ -79,6 +79,26 @@
     }
 }
 
+.navigation-shown {
+    @media (max-width: 767px) {
+        margin-top: 0;
+    }
+
+    @media (min-width: 767px) {
+        margin-top: 170px;
+    }
+}
+
+.navigation-hidden {
+    @media (max-width: 767px) {
+        margin-top: 0;
+    }
+
+    @media (min-width: 767px) {
+        margin-top: 70px;
+    }
+}
+
 .toggle-navigation-open {
     transition: all .4s ease;
     position: absolute;

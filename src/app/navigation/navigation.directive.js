@@ -170,7 +170,7 @@
 
         function toggleNav () {
             vm.navShown = !vm.navShown;
-            $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : '';
+            $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
         }
     }
 })();
