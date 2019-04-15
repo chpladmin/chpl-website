@@ -155,6 +155,7 @@ export const ReportsDevelopersComponent = {
                 item.filterText = item.developerName + '|' + item.developerCode + '|' + item.responsibleUser.fullName
                 item.categoriesFilter = '|' + item.categories.join('|') + '|';
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+                item.fullName = item.responsibleUser.fullName;
                 return item;
             });
         }
