@@ -19,7 +19,7 @@
       <button class="btn btn-ai-success btn-block" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Developer_{{ $ctrl.filename }}"
               csv-header="['Developer', 'Developer Code', 'Responsible User', 'Activity', 'Details', 'Activity Date']"
-              csv-column-order="['developerName', 'developerCode', 'responsibleUser.fullName', 'csvDetails', 'action', 'friendlyActivityDate']">
+              csv-column-order="['developerName', 'developerCode', 'responsibleUserName', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
@@ -38,7 +38,7 @@
       <tr>
         <th class="search-header" st-sort="developerName" st-skip-natural="true">Developer</th>
         <th class="search-header" st-sort="developerCode" st-skip-natural="true">Developer Code</th>
-        <th class="search-header" st-sort="responsibleUser.fullName" st-skip-natural="true">Responsible User</th>
+        <th class="search-header" st-sort="responsibleUserName" st-skip-natural="true">Responsible User</th>
         <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
       </tr>
     </thead>
@@ -49,7 +49,7 @@
       <tr ng-repeat="activity in $ctrl.displayed">
         <td>{{ activity.developerName }}</td>
         <td>{{ activity.developerCode }}</td>
-        <td>{{ activity.responsibleUser.fullName }}</td>
+        <td>{{ activity.responsibleUserName }}</td>
         <td>
           <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
@@ -68,4 +68,3 @@
     </tbody>
   </table>
 </div>
-
