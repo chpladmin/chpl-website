@@ -166,6 +166,14 @@ export const ReportsDevelopersComponent = {
             //todo, eventually: use the $q.all function as demonstrated in product history eye
         }
 
+        saveFilter () {
+            let filter = {};
+            filter.filter = '{\"filter\": \"stuff\"}';
+            filter.filterType = {};
+            filter.filterType.id = 1;
+            this.networkService.createFilter(filter);
+        }
+
         search () {
             let that = this;
             this.networkService.getActivityMetadata('developers', this.dateAdjust(this.activityRange))

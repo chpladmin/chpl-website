@@ -59,6 +59,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createFilter (filter) {
+        return this.apiPOST('/filters', filter);
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
     }
