@@ -83,10 +83,10 @@
 
         function invite () {
             if (vm.acbId) {
-                vm.userInvitation.acbId = vm.acbId;
+                vm.userInvitation.permissionObjectId = vm.acbId;
             }
             if (vm.atlId) {
-                vm.userInvitation.testingLabId = vm.atlId;
+                vm.userInvitation.permissionObjectId = vm.atlId;
             }
             if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.role && vm.userInvitation.role.length > 0) {
                 networkService.inviteUser(vm.userInvitation)

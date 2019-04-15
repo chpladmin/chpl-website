@@ -169,14 +169,14 @@
                 vm.acbId = 1;
                 vm.invite();
                 scope.$digest();
-                expect(vm.userInvitation.acbId).toBe(1);
+                expect(vm.userInvitation.permissionObjectId).toBe(1);
             });
 
             it('should add the atlId if it exists', () => {
                 vm.atlId = 1;
                 vm.invite();
                 scope.$digest();
-                expect(vm.userInvitation.testingLabId).toBe(1);
+                expect(vm.userInvitation.permissionObjectId).toBe(1);
             });
 
             it('should close the modal', () => {
