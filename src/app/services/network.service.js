@@ -368,8 +368,20 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleCertifiedProductMetadataActivity (productId) {
-        return this.apiGET('/activity/metadata/listings/' + productId);
+    getSingleDeveloperActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/developers/' + id);
+    }
+
+    getSingleListingActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/listings/' + id);
+    }
+
+    getSingleProductActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/products/' + id);
+    }
+
+    getSingleVersionActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/versions/' + id);
     }
 
     getSurveillanceLookups () {

@@ -51,7 +51,7 @@
                     vm.loading = false;
                     $log.error(error);
                 });
-            networkService.getSingleCertifiedProductMetadataActivity(vm.productId)
+            networkService.getSingleListingActivityMetadata(vm.productId)
                 .then(function (data) {
                     vm.activity = data;
                 }, function (error) {
@@ -61,15 +61,13 @@
 
         function viewProductHistory () {
             vm.viewProductHistoryInstance = $uibModal.open({
-                templateUrl: 'chpl.product/history/history.html',
-                controller: 'ProductHistoryController',
-                controllerAs: 'vm',
+                component: 'chplListingHistory',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    activity: function () { return vm.activity; },
+                    listing: function () { return vm.product; },
                 },
             });
             vm.viewProductHistoryInstance.result.then(function (response) {
