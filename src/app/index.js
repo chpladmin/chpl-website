@@ -32,7 +32,7 @@ import /* smartTable from*/ 'angular-smart-table';
 import /* toaster from*/ 'angularjs-toaster';
 import /* uiBoostrap from*/ 'angular-ui-bootstrap';
 //import ui.bootstrap.fontawesome from 'ui.bootstrap.fontawesome';
-import /* ngFileUpload from*/ 'angular-file-upload';
+//import /* ngFileUpload from*/ 'angular-file-upload';
 import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
 import 'angular-zxcvbn';

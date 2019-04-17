@@ -4752,7 +4752,7 @@ file-saver@^1.3.3:
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.8.tgz#e68a30c7cb044e2fb362b428469feb291c2e09d8"
   integrity sha512-spKHSBQIxxS81N/O21WmuXA2F6wppUCsutpzenOeZzOCCJ5gEfcbqJP983IrpLXzYmXnMUa6J03SubcNPdKrlg==
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -8093,6 +8093,11 @@ ng-csv@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/ng-csv/-/ng-csv-0.3.6.tgz#a89cf02e4c3fa2a5b24d5c19984443dda7f275d8"
   integrity sha1-qJzwLkw/oqWyTVwZmERD3afyddg=
+
+ng-file-upload@^12.2.13:
+  version "12.2.13"
+  resolved "https://registry.yarnpkg.com/ng-file-upload/-/ng-file-upload-12.2.13.tgz#01800f3872e526f95310f8477e99e4f12d0d8d14"
+  integrity sha1-AYAPOHLlJvlTEPhHfpnk8S0NjRQ=
 
 ng-idle@^1.3.2:
   version "1.3.2"

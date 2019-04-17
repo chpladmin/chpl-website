@@ -1,3 +1,4 @@
+import 'ng-file-upload';
 /* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE */
 (function () {
     'use strict';
@@ -5,10 +6,10 @@
     angular.module('chpl.admin', [
         'angular-cron-gen',
         'angular-confirm',
-        'angularFileUpload',
         'chpl.constants',
         'chpl.services',
         'ngCsv',
+        'ngFileUpload',
         'ngIdle',
         'ngSanitize',
         'smart-table',
