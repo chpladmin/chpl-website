@@ -32,10 +32,12 @@ export const ApiDocumentationManagementComponent = {
                     that.uploadMessage = 'File "' + response.data.fileName + '" was uploaded successfully.';
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
+                    that.file = undefined;
                 }, response => {
                     that.uploadMessage = 'File "' + response.data.fileName + '" was not uploaded successfully.';
                     that.uploadErrors = response.errorMessages;
                     that.uploadSuccess = false;
+                    that.file = undefined;
                 }, event => {
                     that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
                     that.$log.info('progress: ' + that.progressPercentage + '% ' + event.config.data.file.name);
