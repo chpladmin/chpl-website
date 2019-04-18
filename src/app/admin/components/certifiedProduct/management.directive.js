@@ -69,9 +69,6 @@
                 vm.workType = 'manage';
             }
             vm.mergeType = 'developer';
-            vm.uploadMessage = '';
-            vm.uploadErrors = [];
-            vm.uploadSuccess = true;
             vm.surveillanceUploadMessage = '';
             vm.surveillanceUploadErrors = [];
             vm.surveillanceUploadSuccess = true;
@@ -79,58 +76,6 @@
             vm.forceRefresh = false;
             vm.refreshDevelopers();
             vm.refreshPending();
-
-            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
-                vm.uploader = new FileUploader({
-                    url: API + '/certified_products/upload',
-                    removeAfterUpload: true,
-                    headers: {
-                        Authorization: 'Bearer ' + authService.getToken(),
-                        'API-Key': authService.getApiKey(),
-                    },
-                });
-                if (angular.isUndefined(vm.uploader.filters)) {
-                    vm.uploader.filters = [];
-                }
-                vm.uploader.filters.push({
-                    name: 'csvFilter',
-                    fn: function (item) {
-                        var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
-                        return '|csv|'.indexOf(extension) !== -1;
-                    },
-                });
-                vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
-                    vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
-                    if (headers.warning === '299 - "Deprecated upload template"') {
-                        vm.uploadWarnings = ['The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.'];
-                    }
-                    vm.uploadErrors = [];
-                    vm.uploadSuccess = true;
-                };
-                vm.uploader.onCompleteItem = function () {
-                    vm.refreshPending();
-                };
-                vm.uploader.onErrorItem = function (fileItem, response) {
-                    vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
-                    if (response.errorMessages
-                        && response.errorMessages.length === 1
-                        && response.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
-                        vm.uploadMessage += ' The CSV header row does not match any of the headers in the system. Available templates are:';
-                        networkService.getUploadTemplateVersions().then(function (response) {
-                            vm.uploadErrors = response.data.map(function (item) {
-                                var ret = item.name + ', available as of: '
-                                    + $filter('date')(item.availableAsOf, 'mediumDate', 'UTC')
-                                    + (item.deprecated ? ' (deprecated)' : ' (active)');
-                                return ret;
-                            });
-                        });
-                    } else {
-                        vm.uploadErrors = response.errorMessages;
-                    }
-                    vm.uploadWarnings = [];
-                    vm.uploadSuccess = false;
-                };
-            }
 
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 vm.surveillanceUploader = new FileUploader({
