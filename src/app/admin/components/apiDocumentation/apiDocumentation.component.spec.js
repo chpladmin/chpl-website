@@ -1,4 +1,4 @@
-(function () {
+(() => {
     'use strict';
 
     describe('the api documentation component', () => {

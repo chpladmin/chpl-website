@@ -2,10 +2,27 @@
     'use strict';
 
     describe('the surveillance nonconformity edit component', () => {
-        var $compile, $log, $q, authService, ctrl, el, networkService, scope;
+        var $compile, $log, $q, Upload, authService, ctrl, el, mock, networkService, scope;
 
         beforeEach(() => {
+            mock = {
+                baseData: {
+                    url: '/rest/surveillance/1/nonconformity/undefined/document',
+                    headers: {
+                        Authorization: 'Bearer token',
+                        'API-Key': 'api-key',
+                    },
+                    data: {
+                        file: 'file',
+                    },
+                },
+            };
+
             angular.mock.module('chpl.admin', $provide => {
+                $provide.decorator('Upload', $delegate => {
+                    $delegate.upload = jasmine.createSpy('upload');
+                    return $delegate;
+                });
                 $provide.decorator('authService', $delegate => {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
@@ -17,12 +34,14 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                Upload = _Upload_;
+                Upload.upload.and.returnValue($q.when({}));
                 authService = _authService_;
-                authService.getApiKey.and.returnValue('api key');
+                authService.getApiKey.and.returnValue('api-key');
                 authService.getToken.and.returnValue('token');
                 networkService = _networkService_;
                 networkService.deleteSurveillanceDocument.and.returnValue($q.when({}));
@@ -124,42 +143,52 @@
                 expect(ctrl.nonconformity.status.id).toBe(data.nonconformityStatusTypes.data[0].id);
             });
 
-            describe('when editing the FileUploader', () => {
-                beforeEach(() => {
-                    scope.resolve = {
-                        disableValidation: false,
-                        nonconformity: {},
-                        randomized: false,
-                        randomizedSitesUsed: undefined,
-                        requirementId: 1,
-                        surveillanceId: 1,
-                        surveillanceTypes: {},
-                        workType: 'edit',
-                    };
-                    el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
-                    $compile(el)(scope);
-                    scope.$digest();
-                    ctrl = el.isolateScope().$ctrl;
+            describe('when uploading', () => {
+                it('should not do anything without a file', () => {
+                    ctrl.file = undefined;
+                    ctrl.upload();
+                    expect(Upload.upload).not.toHaveBeenCalled();
+                    ctrl.file = 'file';
+                    ctrl.upload();
+                    expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
                 });
 
-                it('should exist', () => {
-                    expect(ctrl.uploader).toBeDefined();
-                });
+                xdescribe('in response to the upload', () => {
+                    let data;
+                    beforeEach(() => {
+                        data = angular.copy(mock.baseData);
+                        ctrl.accurateAsOfDateObject = '2018-11-28';
+                        ctrl.file = {
+                            name: 'name',
+                        };
+                    });
 
-                it('should log results', () => {
-                    var logCount = $log.info.logs.length;
-                    ctrl.uploader.onCompleteItem();
-                    expect($log.info.logs.length).toBe(logCount + 1);
-                    ctrl.uploader.onErrorItem();
-                    expect($log.info.logs.length).toBe(logCount + 2);
-                    ctrl.uploader.onCancelItem();
-                    expect($log.info.logs.length).toBe(logCount + 3);
-                });
+                    it('should mark the uploaded document as pending', () => {
+                        ctrl.nonconformity.documents = [];
+                        Upload.upload.and.returnValue($q.when(data));
+                        ctrl.upload();
+                        scope.$digest();
+                        ctrl.uploader.onSuccessItem({fileName: 'a name'});
+                        expect(ctrl.nonconformity.documents[0]).toEqual({fileName: 'a name is pending'});
+                    });
 
-                it('should mark the uploaded document as pending', () => {
-                    ctrl.nonconformity.documents = [];
-                    ctrl.uploader.onSuccessItem({file: {name: 'a name'}});
-                    expect(ctrl.nonconformity.documents[0]).toEqual({fileName: 'a name is pending'});
+                    it('should handle success', () => {
+                        Upload.upload.and.returnValue($q.when(data));
+                        ctrl.upload();
+                        scope.$digest();
+                        expect(ctrl.uploadMessage).toBe('File "name" was uploaded successfully.');
+                        expect(ctrl.uploadErrors).toEqual([]);
+                        expect(ctrl.uploadSuccess).toBe(true);
+                    });
+
+                    it('should handle strings', () => {
+                        Upload.upload.and.returnValue($q.reject(data));
+                        ctrl.upload();
+                        scope.$digest();
+                        expect(ctrl.uploadMessage).toBe('File "name" was not uploaded successfully.');
+                        expect(ctrl.uploadErrors).toEqual([1]);
+                        expect(ctrl.uploadSuccess).toBe(false);
+                    });
                 });
             });
 
