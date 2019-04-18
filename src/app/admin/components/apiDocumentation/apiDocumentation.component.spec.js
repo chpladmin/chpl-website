@@ -118,7 +118,7 @@
                     expect(ctrl.uploadSuccess).toBe(true);
                 });
 
-                it('should handle strings', () => {
+                it('should handle failure', () => {
                     Upload.upload.and.returnValue($q.reject(data));
                     ctrl.upload();
                     scope.$digest();

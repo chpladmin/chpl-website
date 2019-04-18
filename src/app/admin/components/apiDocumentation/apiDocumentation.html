@@ -8,7 +8,7 @@
           <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
         </ul>
       </div>
-      <form class="form form-horizontal" name="$ctrl.apiForm">
+      <form class="form form-horizontal" name="$ctrl.documentForm">
         <div class="row">
           <div ng-class="$ctrl.file ? 'col-sm-3' : 'col-sm-12'">
             <button type="button" class="btn btn-default" ngf-select ng-model="$ctrl.file" name="file" id="upload-button">Choose file to upload</button>
@@ -37,7 +37,7 @@
                 <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.accurateAsOfPicker = true"><i class="fa fa-calendar"></i></button>
               </span>
             </div>
-            <div class="text-danger" ng-if="$ctrl.apiForm.newApiDate.$touched && $ctrl.apiForm.newApiDate.$error.date">Improper format (mm/dd/yyyy)</div>
+            <div class="text-danger" ng-if="$ctrl.documentForm.newApiDate.$touched && $ctrl.documentForm.newApiDate.$error.date">Improper format (mm/dd/yyyy)</div>
           </div>
         </div>
       </form>
