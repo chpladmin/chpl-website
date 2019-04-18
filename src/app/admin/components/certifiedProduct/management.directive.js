@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -69,53 +69,10 @@
                 vm.workType = 'manage';
             }
             vm.mergeType = 'developer';
-            vm.surveillanceUploadMessage = '';
-            vm.surveillanceUploadErrors = [];
-            vm.surveillanceUploadSuccess = true;
             vm.resources = {};
             vm.forceRefresh = false;
             vm.refreshDevelopers();
             vm.refreshPending();
-
-            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-                vm.surveillanceUploader = new FileUploader({
-                    url: API + '/surveillance/upload',
-                    removeAfterUpload: true,
-                    headers: {
-                        Authorization: 'Bearer ' + authService.getToken(),
-                        'API-Key': authService.getApiKey(),
-                    },
-                });
-                if (angular.isUndefined(vm.surveillanceUploader.filters)) {
-                    vm.surveillanceUploader.filters = [];
-                }
-                vm.surveillanceUploader.filters.push({
-                    name: 'csvFilter',
-                    fn: function (item) { //, options) {
-                        var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
-                        return '|csv|'.indexOf(extension) !== -1;
-                    },
-                });
-                vm.surveillanceUploader.onSuccessItem = function (fileItem, response) {
-                    if (response.pendingSurveillance) {
-                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
-                        vm.surveillanceUploadErrors = [];
-                        vm.surveillanceUploadSuccess = true;
-                    } else {
-                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.user.email + ' when processing is complete.';
-                        vm.surveillanceUploadErrors = [];
-                        vm.surveillanceUploadSuccess = true;
-                    }
-                };
-                vm.surveillanceUploader.onCompleteItem = function () {
-                    vm.refreshPending();
-                };
-                vm.surveillanceUploader.onErrorItem = function (fileItem, response) {
-                    vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
-                    vm.surveillanceUploadErrors = response.errorMessages;
-                    vm.surveillanceUploadSuccess = false;
-                };
-            }
 
             getResources();
         }
