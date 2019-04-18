@@ -16,6 +16,7 @@ export const ReportsDevelopersComponent = {
             };
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
+            this.filterText = '';
         }
 
         $onChanges () {
@@ -35,6 +36,29 @@ export const ReportsDevelopersComponent = {
             } else {
                 return false;
             }
+        }
+
+        onApplyFilter (filter) {
+            this.$log.info('in onApplyFilter');
+            this.$log.info(filter);
+            let f = JSON.parse(filter);
+            this.activityRange.startDate = new Date(Date.parse(f.startDate));
+            this.activityRange.endDate = new Date(Date.parse(f.endDate));
+            this.filterText = f.dataFilter;
+            this.search();
+        }
+
+        createFilterDataObject () {
+            let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            filterData.dataFilter = this.filterText;
+            return filterData;
+        }
+
+        tableStateCallback (tableState) {
+            this.$log.info('tableStateCallback');
+            this.$log.info(tableState);
         }
 
         parse (meta) {
@@ -164,14 +188,6 @@ export const ReportsDevelopersComponent = {
                 .filter(item => !item.action)
                 .forEach(item => this.parse(item));
             //todo, eventually: use the $q.all function as demonstrated in product history eye
-        }
-
-        saveFilter () {
-            let filter = {};
-            filter.filter = '{\"filter\": \"stuff\"}';
-            filter.filterType = {};
-            filter.filterType.id = 1;
-            this.networkService.createFilter(filter);
         }
 
         search () {

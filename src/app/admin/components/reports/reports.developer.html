@@ -1,36 +1,49 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results">
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-pipe="$ctrl.tableStateCallback(tableState)">
   <div class="row">
       <div class="col-sm-12">
-      <h3>Developer</h3>
+        <h3>Developer</h3>
       </div>
-  </div>
-  <button class="btn btn-primary btn-block" ng-click="$ctrl.saveFilter()" ><i class="fa fa-save"></i> Save Filter</button>
-  <div class="row">
-      <label for="activity-start-upload" class="col-sm-2 control-label">Start Date</label>
-      <div class="col-sm-3">
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
-      </div>
-      <label for="activity-end-upload" class="col-sm-2 control-label">End Date</label>
-      <div class="col-sm-3">
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
-      </div>
-      <div class="col-sm-2">
-      <button class="btn btn-primary btn-block" ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
-      <button class="btn btn-ai-success btn-block" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
-      <button class="btn btn-ai-success btn-block" ng-if="$ctrl.downloadReady()"
-              ng-csv="$ctrl.displayed" filename="Developer_{{ $ctrl.filename }}"
-              csv-header="['Developer', 'Developer Code', 'Responsible User', 'Activity', 'Activity Date']"
-              csv-column-order="['developerName', 'developerCode', 'responsibleUser.fullName', 'csvDetails', 'friendlyActivityDate']">
-          <i class="fa fa-cloud-download"></i> Download</button>
-      </div>
-  </div>
-  <div class="row">
-      <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates()">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
   </div>
 
   <div class="row">
+    <div class="col-sm-6">
+      <ai-filter filter-type-id="1" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></ai-filter>
+    </div>
+    <div class="col-sm-6">
+      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
+      <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
+            ng-csv="$ctrl.displayed" filename="Developer_{{ $ctrl.filename }}"
+            csv-header="['Developer', 'Developer Code', 'Responsible User', 'Activity', 'Activity Date']"
+            csv-column-order="['developerName', 'developerCode', 'responsibleUser.fullName', 'csvDetails', 'friendlyActivityDate']">
+        <i class="fa fa-cloud-download"></i> Download</button>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-6">
+      <label for="activity-start-upload" class="control-label">Start Date</label>
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
+    </div>
+    <div class="col-sm-6">
+      <label for="activity-end-upload" class="control-label">End Date</label>
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
+    </div>
+  </div>
+  <div class="row form-group">
     <div class="col-sm-12">
-      <input st-search="filterText" placeholder="Filter on Developer, Developer Code, or Responsible User" class="input-sm form-control" type="search">
+      <button class="btn btn-primary btn-block" ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
+    </div>
+  </div>
+  <div class="row form-group" ng-if="!$ctrl.validDates()">
+    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-12">
+      <label for="activity-end-upload" class="control-label">Filter</label>
+      <input
+          ai-search="filterText"
+          ng-model="$ctrl.filterText"
+          name="dataFilter"
+          id="data-filter" placeholder="Filter on Developer, Developer Code, or Responsible User" class="form-control" type="search">
     </div>
   </div>
 

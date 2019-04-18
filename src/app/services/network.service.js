@@ -79,6 +79,10 @@ export class NetworkService {
         return this.apiDELETE('/announcements/' + announcementId);
     }
 
+    deleteFilter (filterId) {
+        return this.apiDELETE('/filters/' + filterId);
+    }
+
     deleteScheduleTrigger (trigger) {
         return this.apiDELETE('/schedules/triggers/' + trigger.group + '/' + trigger.name);
     }
@@ -261,6 +265,10 @@ export class NetworkService {
 
     getEducation () {
         return this.apiGET('/data/education_types');
+    }
+
+    getFilters (filterTypeId) {
+        return this.apiGET('/filters?filterTypeId=' + filterTypeId);
     }
 
     getFuzzyTypes () {
