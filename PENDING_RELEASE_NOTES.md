@@ -9,5 +9,6 @@ _Date TBD_
 
 ### Bug Fixes
 * Fix behavior of left-side links on the Overview page.
+* Allow upload of files from Edge
 
 ---
