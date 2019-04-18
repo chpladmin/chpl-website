@@ -52,9 +52,6 @@ export const SurveillanceNonconformityEditComponent = {
             if (this.nonconformity.capMustCompleteDate) {
                 this.nonconformity.capMustCompleteDateObject = new Date(this.nonconformity.capMustCompleteDate);
             }
-            if (this.workType === 'edit') {
-                this.buildFileUploader();
-            }
         }
 
         cancel () {
@@ -108,14 +105,14 @@ export const SurveillanceNonconformityEditComponent = {
                 };
                 let that = this;
                 this.Upload.upload(this.item).then(response => {
-                    this.nonconformity.documents.push({fileName: response.data.fileName + ' is pending'});
+                    that.nonconformity.documents.push({fileName: response.data.fileName + ' is pending'});
                     that.uploadMessage = 'File "' + response.data.fileName + '" was uploaded successfully.';
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;
                 }, response => {
                     that.uploadMessage = 'File "' + response.data.fileName + '" was not uploaded successfully.';
-                    that.uploadErrors = response.errorMessages;
+                    that.uploadErrors = response.data.errorMessages;
                     that.uploadSuccess = false;
                     that.file = undefined;
                 }, event => {

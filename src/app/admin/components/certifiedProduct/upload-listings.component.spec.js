@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Upload Listing component', () => {
+    describe('the Upload Listing component', () => {
         var $compile, $log, $q, Upload, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -85,28 +85,50 @@
                     expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
                 });
 
-                xdescribe('in response to the upload', () => {
-                    let data;
+                describe('in response to the upload', () => {
+                    let response;
                     beforeEach(() => {
-                        data = angular.copy(mock.baseData);
                         ctrl.file = {
                             name: 'name',
+                        };
+                        response = {
+                            data: {
+                                errorMessages: undefined,
+                            },
+                            config: { data: { file: { name: 'filename' }}},
+                            headers: {},
                         };
                     });
 
                     it('should handle success', () => {
-                        Upload.upload.and.returnValue($q.when(data));
+                        response.data.pendingCertifiedProducts = [1, 2]
+                        Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
+                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully. 2 pending products are ready for confirmation.');
+                        expect(ctrl.uploadErrors).toEqual([]);
+                        expect(ctrl.uploadSuccess).toBe(true);
+                        expect(scope.onChange).toHaveBeenCalled();
+                    });
+
+                    it('should handle a deprecated template', () => {
+                        response.headers.warning = '299 - "Deprecated upload template"';
+                        response.data.pendingCertifiedProducts = [1, 2]
+                        Upload.upload.and.returnValue($q.when(response));
+                        ctrl.upload();
+                        scope.$digest();
+                        expect(ctrl.uploadWarnings[0]).toEqual('The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.');
                     });
 
                     it('should handle failure', () => {
-                        Upload.upload.and.returnValue($q.reject(data));
+                        response.data.errorMessages = ['An error is here'];
+                        Upload.upload.and.returnValue($q.reject(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "name" was not uploaded successfully.');
-                        expect(ctrl.uploadErrors).toEqual([1]);
+                        expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
+                        expect(ctrl.uploadErrors).toEqual(['An error is here']);
                         expect(ctrl.uploadSuccess).toBe(false);
+                        expect(scope.onChange).not.toHaveBeenCalled();
                     });
                 });
             });

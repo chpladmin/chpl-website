@@ -27,13 +27,14 @@ export const UploadListingsComponent = {
                 };
                 let that = this;
                 this.Upload.upload(item).then(response => {
-                    that.uploadMessage = 'File "' + response.data.fileName + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
                     if (response.headers.warning === '299 - "Deprecated upload template"') {
                         that.uploadWarnings = ['The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.'];
                     }
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;
+                    that.onChange();
                 }, response => {
                     that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
                     if (response.data.errorMessages

@@ -153,39 +153,44 @@
                     expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
                 });
 
-                xdescribe('in response to the upload', () => {
-                    let data;
+                describe('in response to the upload', () => {
+                    let response;
                     beforeEach(() => {
-                        data = angular.copy(mock.baseData);
-                        ctrl.accurateAsOfDateObject = '2018-11-28';
                         ctrl.file = {
                             name: 'name',
+                        };
+                        ctrl.accurateAsOfDateObject = '2018-11-28';
+                        ctrl.nonconformity.documents = [];
+                        response = {
+                            data: {
+                                fileName: 'filename',
+                                errorMessages: undefined,
+                            },
                         };
                     });
 
                     it('should mark the uploaded document as pending', () => {
-                        ctrl.nonconformity.documents = [];
-                        Upload.upload.and.returnValue($q.when(data));
+                        Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
-                        ctrl.uploader.onSuccessItem({fileName: 'a name'});
-                        expect(ctrl.nonconformity.documents[0]).toEqual({fileName: 'a name is pending'});
+                        expect(ctrl.nonconformity.documents[0]).toEqual({fileName: 'filename is pending'});
                     });
 
                     it('should handle success', () => {
-                        Upload.upload.and.returnValue($q.when(data));
+                        Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "name" was uploaded successfully.');
+                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully.');
                         expect(ctrl.uploadErrors).toEqual([]);
                         expect(ctrl.uploadSuccess).toBe(true);
                     });
 
-                    it('should handle strings', () => {
-                        Upload.upload.and.returnValue($q.reject(data));
+                    it('should handle failure', () => {
+                        response.data.errorMessages = [1];
+                        Upload.upload.and.returnValue($q.reject(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "name" was not uploaded successfully.');
+                        expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
                         expect(ctrl.uploadErrors).toEqual([1]);
                         expect(ctrl.uploadSuccess).toBe(false);
                     });

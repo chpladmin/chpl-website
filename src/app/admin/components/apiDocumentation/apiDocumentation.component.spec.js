@@ -99,30 +99,35 @@
                 });
             });
 
-            xdescribe('in response to the upload', () => {
-                let data;
+            describe('in response to the upload', () => {
+                let response;
                 beforeEach(() => {
-                    data = angular.copy(mock.baseData);
-                    ctrl.accurateAsOfDateObject = '2018-11-28';
                     ctrl.file = {
                         name: 'name',
+                    };
+                    response = {
+                        data: {
+                            fileName: 'filename',
+                            errorMessages: undefined,
+                        },
                     };
                 });
 
                 it('should handle success', () => {
-                    Upload.upload.and.returnValue($q.when(data));
+                    Upload.upload.and.returnValue($q.when(response));
                     ctrl.upload();
                     scope.$digest();
-                    expect(ctrl.uploadMessage).toBe('File "name" was uploaded successfully.');
+                    expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully.');
                     expect(ctrl.uploadErrors).toEqual([]);
                     expect(ctrl.uploadSuccess).toBe(true);
                 });
 
                 it('should handle failure', () => {
-                    Upload.upload.and.returnValue($q.reject(data));
+                    response.data.errorMessages = [1];
+                    Upload.upload.and.returnValue($q.reject(response));
                     ctrl.upload();
                     scope.$digest();
-                    expect(ctrl.uploadMessage).toBe('File "name" was not uploaded successfully.');
+                    expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
                     expect(ctrl.uploadErrors).toEqual([1]);
                     expect(ctrl.uploadSuccess).toBe(false);
                 });
