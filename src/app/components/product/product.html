@@ -8,7 +8,7 @@
     </span>
     <span ng-if="!$ctrl.showFull">
       <span ng-if="$ctrl.isList">
-        <h3>{{ $ctrl.product.name }}</h3>
+        {{ $ctrl.product.name }}
       </span>
       <span ng-if="!$ctrl.isList">
         <h2>Product</h2>
@@ -16,8 +16,9 @@
       </span>
     </span>
     <span ng-if="$ctrl.showFull">
-      <h2>{{ $ctrl.product.name }}</h2>
-      <span ng-if="$ctrl.isSplitting"><strong>New Product Code:</strong> {{ $ctrl.product.newProductCode }}</span>
+      <h2>Product</h2>
+      {{ $ctrl.product.name }}
+      <div ng-if="$ctrl.isSplitting"><strong>New Product Code:</strong> {{ $ctrl.product.newProductCode }}</div>
       <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0 && !$ctrl.isSplitting" class="table table-condensed">
         <thead>
           <tr>
@@ -37,6 +38,7 @@
         <chpl-contact contact="$ctrl.product.contact"></chpl-contact>
       </span>
     </span>
+    <div class="clearfix"></div>
   </span> <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
