@@ -1,14 +1,14 @@
 angular.module('chpl.components')
-    .directive("aiSearch", ['stConfig', '$timeout','$parse', function (stConfig, $timeout, $parse) {
+    .directive('aiSearch', ['$timeout', 'stConfig', function ($timeout, stConfig) {
         /* Like st-search, but relies on the value of ng-model to trigger changes.
         * Usage:
         * <input type="text" placeholder="Search..." ng-model="myCtrl.searchParams.search" mh-search="search" />
         */
         return {
             require: ['^stTable', 'ngModel'],
-            link: function(scope, element, attr, ctrls) {
-                var tableCtrl = ctrls[0],
-                    modelCtrl = ctrls[1];
+            link: function (scope, element, attr, ctrls) {
+                var modelCtrl = ctrls[1],
+                    tableCtrl = ctrls[0];
                 var promise = null;
                 var throttle = attr.stDelay || stConfig.search.delay;
 

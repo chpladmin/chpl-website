@@ -1,4 +1,5 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-pipe="$ctrl.tableStateCallback(tableState)">
+<div>
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" ai-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
       <div class="col-sm-12">
         <h3>Developer</h3>
@@ -39,11 +40,7 @@
   <div class="row form-group">
     <div class="col-sm-12">
       <label for="activity-end-upload" class="control-label">Filter</label>
-      <input
-          ai-search="filterText"
-          ng-model="$ctrl.filterText"
-          name="dataFilter"
-          id="data-filter" placeholder="Filter on Developer, Developer Code, or Responsible User" class="form-control" type="search">
+      <input ai-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Developer Code, or Responsible User" class="form-control" type="search">
     </div>
   </div>
 
@@ -82,4 +79,4 @@
     </tbody>
   </table>
 </div>
-
+</div>

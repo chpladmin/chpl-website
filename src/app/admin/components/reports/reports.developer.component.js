@@ -1,10 +1,11 @@
 export const ReportsDevelopersComponent = {
     templateUrl: 'chpl.admin/components/reports/reports.developer.html',
     controller: class ReportsDevelopers {
-        constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $scope, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.$scope = $scope;
             this.$uibModal = $uibModal;
             this.ReportService = ReportService;
             this.networkService = networkService;
@@ -17,6 +18,7 @@ export const ReportsDevelopersComponent = {
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
+            this.tableController = {};
         }
 
         $onChanges () {
@@ -39,12 +41,11 @@ export const ReportsDevelopersComponent = {
         }
 
         onApplyFilter (filter) {
-            this.$log.info('in onApplyFilter');
-            this.$log.info(filter);
             let f = JSON.parse(filter);
             this.activityRange.startDate = new Date(Date.parse(f.startDate));
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
             this.filterText = f.dataFilter;
+            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
             this.search();
         }
 
@@ -53,12 +54,13 @@ export const ReportsDevelopersComponent = {
             filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
             filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             filterData.dataFilter = this.filterText;
+            filterData.tableState = {};
+            filterData.tableState = this.tableController.tableState();
             return filterData;
         }
 
-        tableStateCallback (tableState) {
-            this.$log.info('tableStateCallback');
-            this.$log.info(tableState);
+        tableStateListener (tableController) {
+            this.tableController = tableController;
         }
 
         parse (meta) {

@@ -20,6 +20,8 @@ export const ReportsListingsComponent = {
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.categoriesFilter = '|LISTING|';
+            this.filterText = '';
+            this.tableController = {};
         }
 
         $onChanges (changes) {
@@ -36,6 +38,29 @@ export const ReportsListingsComponent = {
             } else {
                 this.search();
             }
+        }
+
+        onApplyFilter (filter) {
+            let f = JSON.parse(filter);
+            this.activityRange.startDate = new Date(Date.parse(f.startDate));
+            this.activityRange.endDate = new Date(Date.parse(f.endDate));
+            this.filterText = f.dataFilter;
+            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
+            this.search();
+        }
+
+        createFilterDataObject () {
+            let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            filterData.dataFilter = this.filterText;
+            filterData.tableState = {};
+            filterData.tableState = this.tableController.tableState();
+            return filterData;
+        }
+
+        tableStateListener (tableController) {
+            this.tableController = tableController;
         }
 
         acbCount (acb) {
