@@ -1,9 +1,9 @@
 angular.module('chpl.components')
-    .directive('aiTableStateListener',function (){
+    .directive('chplTableStateListener',function (){
         return {
             require: '^stTable',
             scope: {
-                onChange: '&aiTableStateListener',
+                onChange: '&chplTableStateListener',
             },
 
             link: function (scope, element, attr, stTable) {

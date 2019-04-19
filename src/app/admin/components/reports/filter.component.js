@@ -5,7 +5,7 @@ export const FilterComponent = {
         onApplyFilter: '&',
         getFilterData: '&',
     },
-    controller: class ReportsController {
+    controller: class FilterComponent {
         constructor ($filter, $log, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
