@@ -19,11 +19,11 @@ import { Visualizer } from '@uirouter/visualizer';
                     title = title.call(transition.to(), transition.params());
                 }
                 $window.document.title = title;
+
+                // Set currentPage for internal page links
+                $rootScope.currentPage = $location.path();
             }
         });
-
-        // Set currentPage for internal page links
-        $rootScope.currentPage = $location.path();
 
         // If there's an anchor, scroll to it
         if ($location.hash()) {

@@ -5,12 +5,11 @@
       <button class="btn btn-link btn-small" id="version-component-edit-{{ $ctrl.version.versionId }}" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Version</span></button>
       <button class="btn btn-link btn-small" id="version-component-merge-{{ $ctrl.version.versionId }}" ng-if="$ctrl.can('merge')" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Version</span></button>
     </span>
-    <span ng-if="!$ctrl.showFull">
-      <h3>{{ $ctrl.version.version }}</h3>
-    </span>
     <span ng-if="$ctrl.showFull">
-      <h2>{{ $ctrl.version.version }}</h2>
+      <h2>Version</h2>
     </span>
+    {{ $ctrl.version.version }}
+    <div class="clearfix"></div>
   </span> <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
@@ -25,7 +24,7 @@
   </span> <!-- end edit -->
 
   <div ng-if="$ctrl.canEdit">
-    <button class="btn btn-ai-success btn-small pull-right" id="version-component-cancel-{{ $ctrl.version.versionId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+    <button class="btn btn-ai-success btn-small pull-right" id="version-component-save-{{ $ctrl.version.versionId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
     <button class="btn btn-warning btn-small" id="version-component-cancel-{{ $ctrl.version.versionId }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
   </div>
 </div>
