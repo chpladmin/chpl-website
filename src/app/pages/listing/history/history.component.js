@@ -235,11 +235,11 @@ export const ListingHistoryComponent = {
             prev = activity.originalData;
             curr = activity.newData;
             if (activity.description.startsWith('Developer ')) {
-                if (prev.name !== curr.name) {
+                if (prev && prev.name !== curr.name) {
                     activity.change.push('Developer changed from ' + prev.name + ' to ' + curr.name);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Developers ' + prev.map(v => v.name).join(', ') + ' to make Developer ' + curr.name);
+                activity.change.push('Merged Developers ' + prev.map(d => d.name).join(', ') + ' to make Developer ' + curr.name);
             }
             return activity;
         }
@@ -250,28 +250,28 @@ export const ListingHistoryComponent = {
             prev = activity.originalData;
             curr = activity.newData;
             if (activity.description.startsWith('Product ')) {
-                if (prev.name !== curr.name) {
+                if (prev && prev.name !== curr.name) {
                     activity.change.push('Product changed from ' + prev.name + ' to ' + curr.name);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Products ' + prev.map(v => v.name).join(', ') + ' to make Product ' + curr.name);
+                activity.change.push('Merged Products ' + prev.map(p => p.name).join(', ') + ' to make Product ' + curr.name);
             }
             return activity;
         }
 
         _interpretVersion (activity) {
             let curr, prev;
-            //let that = this;
             activity.change = [];
             prev = activity.originalData;
             curr = activity.newData;
             if (activity.description.startsWith('Product Version ')) {
-                if (prev.version !== curr.version) {
+                if (prev && prev.version !== curr.version) {
                     activity.change.push('Version changed from ' + prev.version + ' to ' + curr.version);
                 }
             } else if (activity.description.startsWith('Merged ')) {
                 activity.change.push('Merged Versions ' + prev.map(v => v.version).join(', ') + ' to make Version ' + curr.version);
-                /*prev.forEach(v => {  // look at history of "parent" Versions; doesn't work now as those Versions are marked as deleted
+                /*let that = this;
+                  prev.forEach(v => {  // look at history of "parent" Versions; doesn't work now as those Versions are marked as deleted
                   that.networkService.getSingleVersionActivityMetadata(v.id).then(response => {
                   let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
                   that.$q.all(promises)

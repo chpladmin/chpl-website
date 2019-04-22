@@ -427,25 +427,25 @@
                     describe('UCD Processes', () => {
                         it('should recognize changed details', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
                             expect(activity[0]).toEqual('<li>UCD Process Name "A process" changes<ul><li>UCD Process Details changed from some details to Changed details</li></ul></li>');
                         });
 
                         it('should recognize removed processes', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
                             expect(activity[1]).toEqual('<li>UCD Process Name "A second" changes<ul><li>A second removed</li></ul></li>');
                         });
 
                         it('should recognize changed criteria', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
                             expect(activity[2]).toEqual('<li>UCD Process Name "Fourth" changes<ul><li>Added Certification Criteria:<ul><li>170.315 (a)(2)</li></ul></li><li>Removed Certification Criteria:<ul><li>170.315 (a)(1)</li></ul></li></ul></li>');
                         });
 
                         it('should recognize added processes', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
                             expect(activity[3]).toEqual('<li>UCD Process Name "A third" changes<ul><li>A third added</li></ul></li>');
                         });
                     });
@@ -453,43 +453,43 @@
                     describe('Tasks', () => {
                         it('should recognize changed elements', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[0]).toEqual('<li>Task Description "A description that changed" changes<ul><li>Description changed from A description that changes to A description that changed</li></ul></li>');
                         });
 
                         it('should recognize removed tasks', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[1]).toEqual('<li>Task Description "A removed task" changes<ul><li>A removed task removed</li></ul></li>');
                         });
 
                         it('should recognize added participants', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[2]).toEqual('<li>Task Description "Added participant" changes<ul><li>Added 1 Test Participant</li></ul></li>');
                         });
 
                         it('should recognize removed participants', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[3]).toEqual('<li>Task Description "Removed participant" changes<ul><li>Removed 1 Test Participant</li></ul></li>');
                         });
 
                         it('should recognize adding criteria', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[4]).toEqual('<li>Task Description "Adding criteria" changes<ul><li>Added Certification Criteria:<ul><li>number</li></ul></li></ul></li>');
                         });
 
                         it('should recognize removed criteria', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[5]).toEqual('<li>Task Description "Removing criteria" changes<ul><li>Removed Certification Criteria:<ul><li>number</li></ul></li></ul></li>');
                         });
 
                         it('should recognize added tasks', () => {
                             var activity;
-                            activity = ctrl._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            activity = ctrl.compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
                             expect(activity[6]).toEqual('<li>Task Description "An added task" changes<ul><li>An added task added</li></ul></li>');
                         });
                     });
@@ -502,18 +502,18 @@
                         });
 
                         it('should dedupe participants', () => {
-                            ctrl._compareSed(prev, curr);
+                            ctrl.compareSed(prev, curr);
                             expect(prev.allParticipants.length).toBe(3);
                             expect(curr.allParticipants.length).toBe(3);
                         });
 
                         it('should recognize changed age', () => {
-                            activity = ctrl._compareSed(prev, curr);
+                            activity = ctrl.compareSed(prev, curr);
                             expect(activity[2]).toEqual('<li>Participant changes<ul><li>Age Range changed from 1-9 to 100+</li></ul></li>');
                         });
 
                         it('should recognize changed gender', () => {
-                            activity = ctrl._compareSed(prev, curr);
+                            activity = ctrl.compareSed(prev, curr);
                             expect(activity[3]).toEqual('<li>Participant changes<ul><li>Gender changed from Male to Female</li></ul></li>');
                         });
                     });
@@ -525,7 +525,7 @@
                             var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
                             var curr = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity).toEqual([]);
                         });
 
@@ -533,7 +533,7 @@
                             var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
                             var curr = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}, {id: 14429, eventDate: 1515764832087, certificationStatusId: 3, certificationStatusName: 'Withdrawn by Developer', lastModifiedUser: 5, lastModifiedDate: 1515764824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('Added "Withdrawn by Developer" status at Jan 12, 2018');
                         });
 
@@ -541,7 +541,7 @@
                             var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
                             var curr = [{id: 8251, eventDate: 1515764832087, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('"Active" status changed effective date to Jan 12, 2018');
                         });
 
@@ -549,7 +549,7 @@
                             var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}, {id: 14429, eventDate: 1515764832087, certificationStatusId: 3, certificationStatusName: 'Withdrawn by Developer', lastModifiedUser: 5, lastModifiedDate: 1515764824875}];
                             var curr = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}, {id: 14430, eventDate: 1515764832087, certificationStatusId: 3, certificationStatusName: 'Withdrawn by ONC-ACB', lastModifiedUser: 5, lastModifiedDate: 1515764824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('"Withdrawn by Developer" status became "Withdrawn by ONC-ACB" at Jan 12, 2018');
                         });
                     });
@@ -559,7 +559,7 @@
                             var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
                             var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity).toEqual([]);
                         });
 
@@ -567,7 +567,7 @@
                             var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
                             var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('Added "Active" status at Feb 8, 2018 with reason: "They wanted it back"');
                         });
 
@@ -575,7 +575,7 @@
                             var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
                             var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1516555888888, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('"Withdrawn by Developer" status changed effective date to Jan 21, 2018');
                         });
 
@@ -583,7 +583,7 @@
                             var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
                             var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by ONC-ACB'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('"Withdrawn by Developer" status became "Withdrawn by ONC-ACB" at Jan 12, 2018');
                         });
 
@@ -591,7 +591,7 @@
                             var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModiefiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
                             var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
 
-                            var activity = ctrl._compareCertificationEvents(prev, curr);
+                            var activity = ctrl.compareCertificationEvents(prev, curr);
                             expect(activity[0]).toEqual('Removed "Active" status at Feb 8, 2018 with reason: "They wanted it back"');
                         });
                     });

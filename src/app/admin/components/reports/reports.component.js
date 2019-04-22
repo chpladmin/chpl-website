@@ -21,10 +21,6 @@ export const ReportsComponent = {
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            this.activityRange.developer = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
             this.activityRange.product = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
@@ -81,9 +77,6 @@ export const ReportsComponent = {
 
         refreshActivity () {
             switch (this.workType) {
-            case 'dev':
-                this.refreshDeveloper();
-                break;
             case 'prod':
                 this.refreshProduct();
                 break;
@@ -107,15 +100,6 @@ export const ReportsComponent = {
                 break;
                 // no default
             }
-        }
-
-        refreshDeveloper () {
-            let ctrl = this;
-            this.networkService.getDeveloperActivity(this.dateAdjust(this.activityRange.developer))
-                .then(function (data) {
-                    ctrl.searchedDevelopers = ctrl.interpretDevelopers(data);
-                    ctrl.displayedDevelopers = [].concat(ctrl.searchedDevelopers);
-                });
         }
 
         refreshProduct () {
@@ -245,130 +229,6 @@ export const ReportsComponent = {
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
-
-        interpretDevelopers (data) {
-            var simpleFields = [
-                {key: 'deleted', display: 'Deleted'},
-                {key: 'developerCode', display: 'Developer Code'},
-                //{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
-                {key: 'name', display: 'Name'},
-                {key: 'website', display: 'Website'},
-            ];
-            var nestedKeys = [
-                {key: 'status', subkey: 'statusName', display: 'Developer Status'},
-            ];
-            var ret = [];
-            var change;
-            var i, j;
-
-            for (i = 0; i < data.length; i++) {
-                var activity = {
-                    id: data[i].id,
-                    developer: data[i].newData.name,
-                    developerCode: data[i].newData.developerCode,
-                    responsibleUser: this.getResponsibleUser(data[i].responsibleUser),
-                    date: data[i].activityDate,
-                };
-                activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
-                if (data[i].description.startsWith('Merged')) {
-                    activity.developerCode = data[i].originalData.map(function (elem){
-                        return elem.developerCode;
-                    }).join(',');
-                } else if (!activity.developerCode) {
-                    activity.developerCode = 'N/A';
-                }
-                if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                    activity.action = 'Updated developer "' + data[i].newData.name + '"';
-                    activity.details = [];
-                    for (j = 0; j < simpleFields.length; j++) {
-                        change = this.compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
-                        if (change) {
-                            activity.details.push(change);
-                        }
-                    }
-                    for (j = 0; j < nestedKeys.length; j++) {
-                        change = this.nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                        if (change) {
-                            activity.details.push(change);
-                        }
-                    }
-                    var addressChanges = this.compareAddress(data[i].originalData.address, data[i].newData.address);
-                    if (addressChanges && addressChanges.length > 0) {
-                        activity.details.push('Address changes<ul>' + addressChanges.join('') + '</ul>');
-                    }
-                    var contactChanges = this.compareContact(data[i].originalData.contact, data[i].newData.contact);
-                    if (contactChanges && contactChanges.length > 0) {
-                        activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
-                    }
-                    var transKeys = [{key: 'transparencyAttestation', display: 'Transparency Attestation'}];
-                    var trans = this.compareArray(data[i].originalData.transparencyAttestationMappings, data[i].newData.transparencyAttestationMappings, transKeys, 'acbName');
-                    for (j = 0; j < trans.length; j++) {
-                        activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
-                    }
-
-                    var foundEvents = false;
-                    var statusEvents = this.utilService.arrayCompare(data[i].originalData.statusEvents,data[i].newData.statusEvents);
-                    var sortedEvents, translatedEvents;
-                    translatedEvents = '<table class="table table-condensed"><thead><tr>';
-                    if (statusEvents.added.length > 0) {
-                        foundEvents = true;
-                        translatedEvents += '<th>Added Status Event' + (statusEvents.added.length > 1 ? 's' : '') + '</th>';
-                    }
-                    if (statusEvents.edited.length > 0) {
-                        foundEvents = true;
-                        translatedEvents += '<th>Edited Status Event' + (statusEvents.edited.length > 1 ? 's' : '') + '</th>';
-                    }
-                    if (statusEvents.removed.length > 0) {
-                        foundEvents = true;
-                        translatedEvents += '<th>Removed Status Event' + (statusEvents.removed.length > 1 ? 's' : '') + '</th>';
-                    }
-                    translatedEvents += '</tr></thead><tbody><tr>';
-                    if (statusEvents.added.length > 0) {
-                        translatedEvents += '<td><ul>';
-
-                        sortedEvents = this.$filter('orderBy')(statusEvents.added,'statusDate',true);
-                        for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
-                        }
-                        translatedEvents += '</ul></td>';
-                    }
-                    if (statusEvents.edited.length > 0) {
-                        translatedEvents += '<td><ul>';
-
-                        sortedEvents = this.$filter('orderBy')(statusEvents.edited,'before.statusDate',true);
-                        for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
-                        }
-                        translatedEvents += '</ul></td>';
-                    }
-                    if (statusEvents.removed.length > 0) {
-                        translatedEvents += '<td><ul>';
-
-                        sortedEvents = this.$filter('orderBy')(statusEvents.removed,'statusDate',true);
-                        for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
-                        }
-                        translatedEvents += '</ul></td>';
-                    }
-                    translatedEvents += '</tr></tbody><table>';
-                    if (foundEvents) {
-                        activity.details.push(translatedEvents);
-                    }
-
-                    if (activity.details.length === 0 && !foundEvents) {
-                        delete activity.details;
-                    } else {
-                        activity.csvDetails = activity.details.join('\n');
-                    }
-                    activity.csvAction = activity.action;
-                } else {
-                    this.interpretNonUpdate(activity, data[i], 'developer');
-                    activity.csvAction = activity.action[0].replace(',','","');
-                }
-                ret.push(activity);
-            }
-            return ret;
-        }
 
         interpretProducts (data) {
             var ret = [];
