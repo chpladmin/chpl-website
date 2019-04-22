@@ -589,7 +589,7 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/decertifications\/developers$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/collections\/decertified-developers$/).respond(200, {data: 'response'});
             networkService.getCollection('bannedDevelopers').then(response => {
                 expect(response.data).toEqual('response');
             });

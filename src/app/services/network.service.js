@@ -220,7 +220,7 @@ export class NetworkService {
         case 'apiDocumentation':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
         case 'bannedDevelopers':
-            return this.apiGET('/decertifications/developers');
+            return this.apiGET('/collections/decertified-developers');
         case 'correctiveAction':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         case 'decertifiedProducts':
