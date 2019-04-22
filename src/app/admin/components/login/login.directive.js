@@ -248,12 +248,14 @@
         function _updateExtras () {
             const vals = ['chpl'];
             networkService.getUserByUsername(authService.getUsername())
-                .then(function (response) {
-                    if (response.user.subjectName) { vals.push(response.user.subjectName); }
-                    if (response.user.fullName) { vals.push(response.user.fullName); }
-                    if (response.user.friendlyName) { vals.push(response.user.friendlyName); }
-                    if (response.user.email) { vals.push(response.user.email); }
-                    if (response.user.phoneNumber) { vals.push(response.user.phoneNumber); }
+                .then(response => {
+                    if (response.user) {
+                        if (response.user.subjectName) { vals.push(response.user.subjectName); }
+                        if (response.user.fullName) { vals.push(response.user.fullName); }
+                        if (response.user.friendlyName) { vals.push(response.user.friendlyName); }
+                        if (response.user.email) { vals.push(response.user.email); }
+                        if (response.user.phoneNumber) { vals.push(response.user.phoneNumber); }
+                    }
                     vm.extras = vals;
                 });
         }

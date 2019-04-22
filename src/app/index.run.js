@@ -9,7 +9,7 @@ import { Visualizer } from '@uirouter/visualizer';
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window) {
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $state, $timeout, $transitions, $uiRouter, $window, authService, networkService) {
 
         // Update page title on state change
         $transitions.onSuccess({}, transition => {
@@ -36,6 +36,16 @@ import { Visualizer } from '@uirouter/visualizer';
                     element.focus();
                 }
             });
+        }
+
+        if (authService.hasAnyRole()) {
+            networkService.keepalive()
+                .then(function (response) {
+                    if (response.error === 'Invalid authentication token.') {
+                        authService.logout();
+                        $state.reload();
+                    }
+                });
         }
 
         // Display ui-router state changes
