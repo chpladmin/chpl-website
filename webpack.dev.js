@@ -9,6 +9,7 @@ const base = require('./webpack.ci.js');
 
 module.exports = merge(base, {
     devServer: {
+        disableHostCheck: true,
         port: 3000,
         proxy: {
             '/rest': {
@@ -32,6 +33,7 @@ module.exports = merge(base, {
             ENABLE_LOGGING: true,
             MINUTES_UNTIL_IDLE: 150,
             MINUTES_BETWEEN_KEEPALIVE: 1,
+            UAT_MODE: true,
         }),
     ]
 });

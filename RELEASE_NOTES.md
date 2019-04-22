@@ -1,5 +1,50 @@
 # Release Notes
 
+## Version 10.17.0
+_22 April 2019_
+
+### New features
+* Use new Activity end points
+  * Listing reports
+  * Developer reports
+* Show Developer/Product/Version name changes in Listing history popup
+
+### Bug Fixes
+* Fix behavior of left-side links on the Overview page.
+
+---
+
+## Version 10.16.0
+_8 April 2019_
+
+### New features
+* Use new endpoints for better responsiveness on Listing confirmation page
+* Use new Activity end points for Listing reports
+* Redirect users using unsupported browsers to a page telling them that
+
+### Bug fixes
+* Allow editing of SED Participants
+
+---
+
+## Version 10.15.0
+_27 March 2019_
+
+### New features
+* Provide "Clear Selection(s)" link for multi-select lists
+* Allow ROLE_ADMIN to confirm listing
+* Allow users to impersonate other users as appropriate
+
+### Bug fixes and cleanup
+* Remove unusable corrective action plan activity reports
+* Remove unused "compliance terms accepted" on user creation
+* Remove references to "Pending" ACB
+
+### Bug fixes
+* Use correct ROLE on surveillance initiation
+
+---
+
 ## Version 10.14.0
 _11 March 2019_
 

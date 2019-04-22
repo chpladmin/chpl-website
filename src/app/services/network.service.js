@@ -106,6 +106,25 @@ export class NetworkService {
         return this.apiGET('/data/accessibility_standards');
     }
 
+    getActivityMetadata (key, activityRange) {
+        let call = '/activity/metadata/' + key;
+        let params = [];
+        if (activityRange.startDate) {
+            params.push('start=' + activityRange.startDate.getTime());
+        }
+        if (activityRange.endDate) {
+            params.push('end=' + activityRange.endDate.getTime());
+        }
+        if (params.length > 0) {
+            call += '?' + params.join('&');
+        }
+        return this.apiGET(call);
+    }
+
+    getActivityById (id) {
+        return this.apiGET('/activity/' + id);
+    }
+
     getAgeRanges () {
         return this.apiGET('/data/age_ranges');
     }
@@ -215,11 +234,6 @@ export class NetworkService {
         }
     }
 
-    getCorrectiveActionPlanActivity (activityRange) {
-        var call = '/activity/corrective_action_plans';
-        return this.getActivity(call, activityRange);
-    }
-
     getDeveloper (developerId) {
         return this.apiGET('/developers/' + developerId);
     }
@@ -305,6 +319,14 @@ export class NetworkService {
         return this.apiGET('/statistics/participant_professional_experience_count');
     }
 
+    getPendingListings () {
+        return this.apiGET('/certified_products/pending/metadata');
+    }
+
+    getPendingListingById (id) {
+        return this.apiGET('/certified_products/pending/' + id);
+    }
+
     getPractices () {
         return this.apiGET('/data/practice_types');
     }
@@ -346,8 +368,20 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleCertifiedProductActivity (productId) {
-        return this.apiGET('/activity/certified_products/' + productId);
+    getSingleDeveloperActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/developers/' + id);
+    }
+
+    getSingleListingActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/listings/' + id);
+    }
+
+    getSingleProductActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/products/' + id);
+    }
+
+    getSingleVersionActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/versions/' + id);
     }
 
     getSurveillanceLookups () {
@@ -407,10 +441,6 @@ export class NetworkService {
         return this.apiGET('/data/ucd_processes');
     }
 
-    getUploadingCps () {
-        return this.apiGET('/certified_products/pending');
-    }
-
     getUploadingSurveillances () {
         return this.apiGET('/surveillance/pending');
     }
@@ -456,6 +486,10 @@ export class NetworkService {
 
     getVersionsByProduct (productId) {
         return this.apiGET('/versions?productId=' + productId);
+    }
+
+    impersonateUser (user) {
+        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
     }
 
     initiateSurveillance (surveillance) {
@@ -544,6 +578,10 @@ export class NetworkService {
 
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
+    }
+
+    unimpersonateUser () {
+        return this.apiGET('/auth/unimpersonate');
     }
 
     updateCP (cpObject) {

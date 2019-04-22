@@ -1,16 +1,16 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Network service', function () {
+    describe('the Network service', () => {
         var $httpBackend, $log, $rootScope, mock, networkService;
 
         mock = {};
         mock.editions = ['Edition 1', 'Edition 2'];
 
-        beforeEach(function () {
+        beforeEach(() => {
             angular.mock.module('chpl.services');
 
-            inject(function (_$httpBackend_, _$log_, _$rootScope_, _networkService_) {
+            inject((_$httpBackend_, _$log_, _$rootScope_, _networkService_) => {
                 $httpBackend = _$httpBackend_;
                 $log = _$log_;
                 $rootScope = _$rootScope_;
@@ -20,12 +20,12 @@
             })
         });
 
-        afterEach(function () {
+        afterEach(() => {
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
@@ -42,86 +42,86 @@
 
             it('should return a promise with the data if a GET doesn\'t return an object', function () {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
-                networkService.getProduct('id').then(function (response) {
-                    response.then(function (reject) {
+                networkService.getProduct('id').then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
             });
 
-            it('should return a promise with the data if a GET responds with a failure', function () {
+            it('should return a promise with the data if a GET responds with a failure', () => {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
-                networkService.getProduct('id').then(function (response) {
-                    response.then(function (reject) {
+                networkService.getProduct('id').then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
             });
 
-            it('should return a promise with the data if a POST doesn\'t return an object', function () {
+            it('should return a promise with the data if a POST doesn\'t return an object', () => {
                 $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, 'response');
-                networkService.confirmPendingCp({id: 'id'}).then(function (response) {
-                    response.then(function (reject) {
+                networkService.confirmPendingCp({id: 'id'}).then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
             });
 
-            it('should return a promise with the data if a POST responds with a failure', function () {
+            it('should return a promise with the data if a POST responds with a failure', () => {
                 $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(500, 'response');
-                networkService.confirmPendingCp({id: 'id'}).then(function (response) {
-                    response.then(function (reject) {
+                networkService.confirmPendingCp({id: 'id'}).then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
             });
 
-            it('should return a promise with the data if a PUT doesn\'t return an object', function () {
+            it('should return a promise with the data if a PUT doesn\'t return an object', () => {
                 $httpBackend.expectPUT(/announcements\/id/).respond(200, 'response');
-                networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
-                    response.then(function (reject) {
+                networkService.modifyAnnouncement({id: 'id'}).then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
             });
 
-            it('should return a promise with the data if a PUT responds with a failure', function () {
+            it('should return a promise with the data if a PUT responds with a failure', () => {
                 $httpBackend.expectPUT(/announcements\/id/).respond(500, 'response');
-                networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
-                    response.then(function (reject) {
+                networkService.modifyAnnouncement({id: 'id'}).then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
             });
 
-            it('should return a promise with the data if a DELETE responds with a failure', function () {
+            it('should return a promise with the data if a DELETE responds with a failure', () => {
                 $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(500, 'response');
                 networkService.deleteScheduleTrigger({
                     group: 'CacheStatusAgeTrigger',
                     name: 'something',
-                }).then(function (response) {
-                    response.then(function (reject) {
+                }).then(response => {
+                    response.then(reject => {
                         expect(reject).toEqual('response');
                     });
-                }, function () {
+                }, () => {
                     //noop
                 });
                 $httpBackend.flush();
@@ -138,7 +138,7 @@
                         },
                     };
                     $httpBackend.expectGET(/^\/rest\/activity\/acbs$/).respond(200, {data: 'response'});
-                    networkService.getAcbActivity({}).then(function (response) {
+                    networkService.getAcbActivity({}).then(response => {
                         expect(response.data).toEqual('response');
                     });
                     $httpBackend.flush();
@@ -158,78 +158,78 @@
             });
         });
 
-        it('should addRole', function () {
+        it('should addRole', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/name\/roles\/role$/).respond(200, {data: 'response'});
-            networkService.addRole({subjectName: 'name', role: 'role'}).then(function (response) {
+            networkService.addRole({subjectName: 'name', role: 'role'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should authorizeUser', function () {
+        it('should authorizeUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/username\/authorize$/, 'payload').respond(200, {data: 'response'});
-            networkService.authorizeUser('payload', 'username').then(function (response) {
+            networkService.authorizeUser('payload', 'username').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should changePassword', function () {
+        it('should changePassword', () => {
             $httpBackend.expectPOST(/^\/rest\/auth\/change_password$/).respond(200, {data: 'response'});
-            networkService.changePassword({userName: '', oldPassword: 'password', newPassword: 'newPassword'}).then(function (response) {
+            networkService.changePassword({userName: '', oldPassword: 'password', newPassword: 'newPassword'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectPOST(/^\/rest\/auth\/change_expired_password$/).respond(200, {data: 'response'});
-            networkService.changePassword({userName: 'userName', oldPassword: 'password', newPassword: 'newPassword'}).then(function (response) {
+            networkService.changePassword({userName: 'userName', oldPassword: 'password', newPassword: 'newPassword'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should confirmPendingCp', function () {
+        it('should confirmPendingCp', () => {
             $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/id\/confirm$/).respond(200, {data: 'response'});
-            networkService.confirmPendingCp({id: 'id'}).then(function (response) {
+            networkService.confirmPendingCp({id: 'id'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should confirmPendingSurveillance', function () {
+        it('should confirmPendingSurveillance', () => {
             $httpBackend.expectPOST(/^\/rest\/surveillance\/pending\/confirm$/).respond(200, {data: 'response'});
-            networkService.confirmPendingSurveillance('payload').then(function (response) {
+            networkService.confirmPendingSurveillance('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should confirmUser', function () {
+        it('should confirmUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/confirm$/).respond(200, {data: 'response'});
-            networkService.confirmUser('payload').then(function (response) {
+            networkService.confirmUser('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should createACB', function () {
+        it('should createACB', () => {
             $httpBackend.expectPOST(/^\/rest\/acbs$/).respond(200, {data: 'response'});
-            networkService.createACB('payload').then(function (response) {
+            networkService.createACB('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should createATL', function () {
+        it('should createATL', () => {
             $httpBackend.expectPOST(/^\/rest\/atls$/).respond(200, {data: 'response'});
-            networkService.createATL('payload').then(function (response) {
+            networkService.createATL('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should createAnnouncement', function () {
+        it('should createAnnouncement', () => {
             $httpBackend.expectPOST(/^\/rest\/announcements$/).respond(200, {data: 'response'});
-            networkService.createAnnouncement('payload').then(function (response) {
+            networkService.createAnnouncement('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -237,178 +237,178 @@
 
         it('should createCmsId', () => {
             $httpBackend.expectPOST(/^\/rest\/certification_ids\?ids=1,2,3$/).respond(200, {data: 'response'});
-            networkService.createCmsId([1, 2, 3]).then(function (response) {
+            networkService.createCmsId([1, 2, 3]).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should createInvitedUser', function () {
+        it('should createInvitedUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/create$/).respond(200, {data: 'response'});
-            networkService.createInvitedUser('payload').then(function (response) {
+            networkService.createInvitedUser('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should createScheduleOneTimeTrigger', function () {
+        it('should createScheduleOneTimeTrigger', () => {
             $httpBackend.expectPOST(/^\/rest\/schedules\/triggers\/one_time$/).respond(200, {data: 'response'});
-            networkService.createScheduleOneTimeTrigger('payload').then(function (response) {
+            networkService.createScheduleOneTimeTrigger('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should createScheduleTrigger', function () {
+        it('should createScheduleTrigger', () => {
             $httpBackend.expectPOST(/^\/rest\/schedules\/triggers$/).respond(200, {data: 'response'});
-            networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
+            networkService.createScheduleTrigger({email: 'something'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should deleteAnnouncement', function () {
+        it('should deleteAnnouncement', () => {
             $httpBackend.expectDELETE(/^\/rest\/announcements\/1$/).respond(200);
-            networkService.deleteAnnouncement(1).then(function (response) {
+            networkService.deleteAnnouncement(1).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should deleteScheduleTrigger', function () {
+        it('should deleteScheduleTrigger', () => {
             $httpBackend.expectDELETE(/^\/rest\/schedules\/triggers\/CacheStatusAgeTrigger\/something$/).respond(200);
             networkService.deleteScheduleTrigger({
                 group: 'CacheStatusAgeTrigger',
                 name: 'something',
-            }).then(function (response) {
+            }).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should deleteSurveillance', function () {
+        it('should deleteSurveillance', () => {
             $httpBackend.expectDELETE(/^\/rest\/surveillance\/1$/).respond(200);
-            networkService.deleteSurveillance(1,'changeReason').then(function (response) {
+            networkService.deleteSurveillance(1,'changeReason').then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should deleteSurveillanceDocument', function () {
+        it('should deleteSurveillanceDocument', () => {
             $httpBackend.expectDELETE(/^\/rest\/surveillance\/1\/document\/3$/).respond(200);
-            networkService.deleteSurveillanceDocument(1, 3).then(function (response) {
+            networkService.deleteSurveillanceDocument(1, 3).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should deleteUser', function () {
+        it('should deleteUser', () => {
             $httpBackend.expectDELETE(/^\/rest\/users\/1$/).respond(200);
-            networkService.deleteUser(1).then(function (response) {
+            networkService.deleteUser(1).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should getAcbActivity', function () {
+        it('should getAcbActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/acbs$/).respond(200, {data: 'response'});
-            networkService.getAcbActivity({}).then(function (response) {
+            networkService.getAcbActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/acbs\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getAcbActivity({startDate: aDate}).then(function (response) {
+            networkService.getAcbActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/acbs\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getAcbActivity({endDate: aDate}).then(function (response) {
+            networkService.getAcbActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/acbs\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getAcbActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getAcbActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAcbs', function () {
+        it('should getAcbs', () => {
             $httpBackend.expectGET(/^\/rest\/acbs\?editable=false$/).respond(200, {data: 'response'});
-            networkService.getAcbs(false).then(function (response) {
+            networkService.getAcbs(false).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAccessibilityStandards', function () {
+        it('should getAccessibilityStandards', () => {
             $httpBackend.expectGET(/^\/rest\/data\/accessibility_standards$/).respond(200, {data: 'response'});
-            networkService.getAccessibilityStandards().then(function (response) {
+            networkService.getAccessibilityStandards().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAgeRanges', function () {
+        it('should getAgeRanges', () => {
             $httpBackend.expectGET(/^\/rest\/data\/age_ranges$/).respond(200, {data: 'response'});
-            networkService.getAgeRanges().then(function (response) {
+            networkService.getAgeRanges().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAll', function () {
+        it('should getAll', () => {
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products$/).respond(200, {data: 'response'});
-            networkService.getAll().then(function (response) {
+            networkService.getAll().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAnnouncement', function () {
+        it('should getAnnouncement', () => {
             $httpBackend.expectGET(/^\/rest\/announcements\/payload$/).respond(200, {data: 'response'});
-            networkService.getAnnouncement('payload').then(function (response) {
+            networkService.getAnnouncement('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAnnouncementActivity', function () {
+        it('should getAnnouncementActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/announcements$/).respond(200, {data: 'response'});
-            networkService.getAnnouncementActivity({}).then(function (response) {
+            networkService.getAnnouncementActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/announcements\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getAnnouncementActivity({startDate: aDate}).then(function (response) {
+            networkService.getAnnouncementActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/announcements\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getAnnouncementActivity({endDate: aDate}).then(function (response) {
+            networkService.getAnnouncementActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/announcements\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getAnnouncementActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getAnnouncementActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAnnouncements', function () {
+        it('should getAnnouncements', () => {
             $httpBackend.expectGET(/^\/rest\/announcements\?future=payload$/).respond(200, {data: 'response'});
-            networkService.getAnnouncements('payload').then(function (response) {
+            networkService.getAnnouncements('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getApiActivity', function () {
+        it('should getApiActivity', () => {
             $httpBackend.expectGET(/^\/rest\/key\/activity$/).respond(200, {data: 'response'});
-            networkService.getApiActivity({}).then(function (response) {
+            networkService.getApiActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -420,7 +420,7 @@
                 endDate: new Date(),
                 dateAscending: true,
                 filter: 'apiKeyFilter',
-            }).then(function (response) {
+            }).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -428,7 +428,7 @@
             networkService.getApiActivity({
                 filter: 'apiKeyFilter',
                 showOnly: true,
-            }).then(function (response) {
+            }).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -436,111 +436,111 @@
 
         it('should getApiDocumentationDate', () => {
             $httpBackend.expectGET(/^\/rest\/files\/api_documentation\/details$/).respond(200, {data: 'response'});
-            networkService.getApiDocumentationDate().then(function (response) {
+            networkService.getApiDocumentationDate().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getApiUserActivity', function () {
+        it('should getApiUserActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/api_keys$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({}).then(function (response) {
+            networkService.getApiUserActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/api_keys\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({startDate: aDate}).then(function (response) {
+            networkService.getApiUserActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/api_keys\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({endDate: aDate}).then(function (response) {
+            networkService.getApiUserActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/api_keys\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getApiUserActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getApiUsers', function () {
+        it('should getApiUsers', () => {
             $httpBackend.expectGET(/^\/rest\/key$/).respond(200, {data: 'response'});
-            networkService.getApiUsers().then(function (response) {
+            networkService.getApiUsers().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAtlActivity', function () {
+        it('should getAtlActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/atls$/).respond(200, {data: 'response'});
-            networkService.getAtlActivity({}).then(function (response) {
+            networkService.getAtlActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/atls\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getAtlActivity({startDate: aDate}).then(function (response) {
+            networkService.getAtlActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/atls\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getAtlActivity({endDate: aDate}).then(function (response) {
+            networkService.getAtlActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/atls\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getAtlActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getAtlActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getAtls', function () {
+        it('should getAtls', () => {
             $httpBackend.expectGET(/^\/rest\/atls\?editable=false$/).respond(200, {data: 'response'});
-            networkService.getAtls(false).then(function (response) {
+            networkService.getAtls(false).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getCertBodies', function () {
+        it('should getCertBodies', () => {
             $httpBackend.expectGET(/^\/rest\/data\/certification_bodies$/).respond(200, {data: 'response'});
-            networkService.getCertBodies().then(function (response) {
+            networkService.getCertBodies().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getCertificationStatuses', function () {
+        it('should getCertificationStatuses', () => {
             $httpBackend.expectGET(/^\/rest\/data\/certification_statuses$/).respond(200, {data: 'response'});
-            networkService.getCertificationStatuses().then(function (response) {
+            networkService.getCertificationStatuses().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getCertifiedProductActivity', function () {
+        it('should getCertifiedProductActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/certified_products$/).respond(200, {data: 'response'});
-            networkService.getCertifiedProductActivity({}).then(function (response) {
+            networkService.getCertifiedProductActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/certified_products\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getCertifiedProductActivity({startDate: aDate}).then(function (response) {
+            networkService.getCertifiedProductActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/certified_products\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getCertifiedProductActivity({endDate: aDate}).then(function (response) {
+            networkService.getCertifiedProductActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/certified_products\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getCertifiedProductActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getCertifiedProductActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -548,12 +548,12 @@
 
         it('should getCmsId', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids\/key\?includeCriteria=false$/).respond(200, {data: 'response'});
-            networkService.getCmsId('key').then(function (response) {
+            networkService.getCmsId('key').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/certification_ids\/key\?includeCriteria=true$/).respond(200, {data: 'response'});
-            networkService.getCmsId('key', true).then(function (response) {
+            networkService.getCmsId('key', true).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -561,266 +561,258 @@
 
         it('should getCmsIds', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids\/search\?ids=ids$/).respond(200, {data: 'response'});
-            networkService.getCmsIds('ids').then(function (response) {
+            networkService.getCmsIds('ids').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getCorrectiveActionPlanActivity', function () {
-            var aDate = new Date();
-            $httpBackend.expectGET(/^\/rest\/activity\/corrective_action_plans$/).respond(200, {data: 'response'});
-            networkService.getCorrectiveActionPlanActivity({}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/activity\/corrective_action_plans\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getCorrectiveActionPlanActivity({startDate: aDate}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/activity\/corrective_action_plans\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getCorrectiveActionPlanActivity({endDate: aDate}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/activity\/corrective_action_plans\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getCorrectiveActionPlanActivity({startDate: aDate, endDate: aDate}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getCriterionProductStatistics', function () {
+        it('should getCriterionProductStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/criterion_product$/).respond(200, {data: 'response'});
-            networkService.getCriterionProductStatistics().then(function (response) {
+            networkService.getCriterionProductStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getCmsDownload', function () {
+        it('should getCmsDownload', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids$/).respond(200, {data: 'response'});
-            networkService.getCmsDownload().then(function (response) {
+            networkService.getCmsDownload().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getCollection', function () {
+        it('should getCollection', () => {
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl$/).respond(200, {data: 'response'});
-            networkService.getCollection('apiDocumentation').then(function (response) {
+            networkService.getCollection('apiDocumentation').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/decertifications\/developers$/).respond(200, {data: 'response'});
-            networkService.getCollection('bannedDevelopers').then(function (response) {
+            networkService.getCollection('bannedDevelopers').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount$/).respond(200, {data: 'response'});
-            networkService.getCollection('correctiveAction').then(function (response) {
+            networkService.getCollection('correctiveAction').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate$/).respond(200, {data: 'response'});
-            networkService.getCollection('decertifiedProducts').then(function (response) {
+            networkService.getCollection('decertifiedProducts').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate$/).respond(200, {data: 'response'});
-            networkService.getCollection('inactiveCertificates').then(function (response) {
+            networkService.getCollection('inactiveCertificates').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet$/).respond(200, {data: 'response'});
-            networkService.getCollection('sed').then(function (response) {
+            networkService.getCollection('sed').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/developers$/).respond(200, {data: 'response'});
-            networkService.getCollection('transparencyAttestations').then(function (response) {
+            networkService.getCollection('transparencyAttestations').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getDeveloper', function () {
+        it('should getDeveloper', () => {
             $httpBackend.expectGET(/^\/rest\/developers\/payload$/).respond(200, {data: 'response'});
-            networkService.getDeveloper('payload').then(function (response) {
+            networkService.getDeveloper('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getDeveloperActivity', function () {
+        it('should getDeveloperActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/developers$/).respond(200, {data: 'response'});
-            networkService.getDeveloperActivity({}).then(function (response) {
+            networkService.getDeveloperActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/developers\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getDeveloperActivity({startDate: aDate}).then(function (response) {
+            networkService.getDeveloperActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/developers\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getDeveloperActivity({endDate: aDate}).then(function (response) {
+            networkService.getDeveloperActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/developers\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getDeveloperActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getDeveloperActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getDevelopers', function () {
+        it('should getDevelopers', () => {
             $httpBackend.expectGET(/^\/rest\/developers$/).respond(200, {data: 'response'});
-            networkService.getDevelopers().then(function (response) {
+            networkService.getDevelopers().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/developers\?showDeleted=true$/).respond(200, {data: 'response'});
-            networkService.getDevelopers(true).then(function (response) {
+            networkService.getDevelopers(true).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getEditions', function () {
+        it('should getEditions', () => {
             $httpBackend.expectGET(/^\/rest\/data\/certification_editions$/).respond(200, {data: 'response'});
-            networkService.getEditions().then(function (response) {
+            networkService.getEditions().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getEducation', function () {
+        it('should getEducation', () => {
             $httpBackend.expectGET(/^\/rest\/data\/education_types$/).respond(200, {data: 'response'});
-            networkService.getEducation().then(function (response) {
+            networkService.getEducation().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getFuzzyTypes', function () {
+        it('should getFuzzyTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/fuzzy_choices$/).respond(200, {data: 'response'});
-            networkService.getFuzzyTypes().then(function (response) {
+            networkService.getFuzzyTypes().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getIncumbentDeveloperStatistics', function () {
+        it('should getIncumbentDeveloperStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/incumbent_developers$/).respond(200, {data: 'response'});
-            networkService.getIncumbentDevelopersStatistics().then(function (response) {
+            networkService.getIncumbentDevelopersStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getJobTypes', function () {
+        it('should getJobTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/job_types$/).respond(200, {data: 'response'});
-            networkService.getJobTypes().then(function (response) {
+            networkService.getJobTypes().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getJobs', function () {
+        it('should getJobs', () => {
             $httpBackend.expectGET(/^\/rest\/jobs$/).respond(200, {data: 'response'});
-            networkService.getJobs().then(function (response) {
+            networkService.getJobs().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getIcsFamily', function () {
+        it('should getIcsFamily', () => {
             $httpBackend.expectGET(/^\/rest\/certified_products\/id\/ics_relationships$/).respond(200, {data: 'response'});
-            networkService.getIcsFamily('id').then(function (response) {
+            networkService.getIcsFamily('id').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getListingCountStatistics', function () {
+        it('should getListingCountStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/listing_count$/).respond(200, {data: 'response'});
-            networkService.getListingCountStatistics().then(function (response) {
+            networkService.getListingCountStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getNonconformityStatisticsCount', function () {
+        it('should getNonconformityStatisticsCount', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/nonconformity_criteria_count$/).respond(200, {data: 'response'});
-            networkService.getNonconformityStatisticsCount().then(function (response) {
+            networkService.getNonconformityStatisticsCount().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getParticipantAgeStatistics', function () {
+        it('should getParticipantAgeStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/participant_age_count$/).respond(200, {data: 'response'});
-            networkService.getParticipantAgeStatistics().then(function (response) {
+            networkService.getParticipantAgeStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getParticipantComputerExperienceStatistics', function () {
+        it('should getParticipantComputerExperienceStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/participant_computer_experience_count$/).respond(200, {data: 'response'});
-            networkService.getParticipantComputerExperienceStatistics().then(function (response) {
+            networkService.getParticipantComputerExperienceStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getParticipantEducationStatistics', function () {
+        it('should getParticipantEducationStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/participant_education_count$/).respond(200, {data: 'response'});
-            networkService.getParticipantEducationStatistics().then(function (response) {
+            networkService.getParticipantEducationStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getParticipantGenderStatistics', function () {
+        it('should getParticipantGenderStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/participant_gender_count$/).respond(200, {data: 'response'});
-            networkService.getParticipantGenderStatistics().then(function (response) {
+            networkService.getParticipantGenderStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getParticipantProductExperienceStatistics', function () {
+        it('should getParticipantProductExperienceStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/participant_product_experience_count$/).respond(200, {data: 'response'});
-            networkService.getParticipantProductExperienceStatistics().then(function (response) {
+            networkService.getParticipantProductExperienceStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getParticipantProfessionalExperienceStatistics', function () {
+        it('should getParticipantProfessionalExperienceStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/participant_professional_experience_count$/).respond(200, {data: 'response'});
-            networkService.getParticipantProfessionalExperienceStatistics().then(function (response) {
+            networkService.getParticipantProfessionalExperienceStatistics().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getPractices', function () {
+        it('should getPendingListings', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/metadata$/).respond(200, {data: 'response'});
+            networkService.getPendingListings().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getPendingListingById', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/id$/).respond(200, {data: 'response'});
+            networkService.getPendingListingById('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getPractices', () => {
             $httpBackend.expectGET(/^\/rest\/data\/practice_types$/).respond(200, {data: 'response'});
-            networkService.getPractices().then(function (response) {
+            networkService.getPractices().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getProduct', function () {
+        it('should getProduct', () => {
             $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
-            networkService.getProduct('payload').then(function (response) {
+            networkService.getProduct('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -837,108 +829,132 @@
         it('should getProductActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/products$/).respond(200, {data: 'response'});
-            networkService.getProductActivity({}).then(function (response) {
+            networkService.getProductActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/products\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getProductActivity({startDate: aDate}).then(function (response) {
+            networkService.getProductActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/products\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getProductActivity({endDate: aDate}).then(function (response) {
+            networkService.getProductActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/products\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getProductActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getProductActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getProductsByDeveloper', function () {
+        it('should getProductsByDeveloper', () => {
             $httpBackend.expectGET(/^\/rest\/products\?developerId=payload$/).respond(200, {data: 'response'});
-            networkService.getProductsByDeveloper('payload').then(function (response) {
+            networkService.getProductsByDeveloper('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getProductsByVersion', function () {
+        it('should getProductsByVersion', () => {
             $httpBackend.expectGET(/^\/rest\/certified_products\?versionId=payload&editable=p2$/).respond(200, {data: 'response'});
-            networkService.getProductsByVersion('payload', 'p2').then(function (response) {
+            networkService.getProductsByVersion('payload', 'p2').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getQmsStandards', function () {
+        it('should getQmsStandards', () => {
             $httpBackend.expectGET(/^\/rest\/data\/qms_standards$/).respond(200, {data: 'response'});
-            networkService.getQmsStandards().then(function (response) {
+            networkService.getQmsStandards().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getRelatedListings', function () {
+        it('should getRelatedListings', () => {
             $httpBackend.expectGET(/^\/rest\/products\/payload\/listings$/).respond(200, {data: 'response'});
-            networkService.getRelatedListings('payload').then(function (response) {
+            networkService.getRelatedListings('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getSearchOptions', function () {
+        it('should getSearchOptions', () => {
             $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {data: 'response'});
-            networkService.getSearchOptions().then(function (response) {
+            networkService.getSearchOptions().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getScheduleTriggers', function () {
+        it('should getScheduleTriggers', () => {
             $httpBackend.expectGET(/^\/rest\/schedules\/triggers$/).respond(200, {data: 'response'});
-            networkService.getScheduleTriggers().then(function (response) {
+            networkService.getScheduleTriggers().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getScheduleJobs', function () {
+        it('should getScheduleJobs', () => {
             $httpBackend.expectGET(/^\/rest\/schedules\/jobs$/).respond(200, {data: 'response'});
-            networkService.getScheduleJobs().then(function (response) {
+            networkService.getScheduleJobs().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getSimpleProduct', function () {
+        it('should getSimpleProduct', () => {
             $httpBackend.expectGET(/^\/rest\/products\/payload$/).respond(200, {data: 'response'});
-            networkService.getSimpleProduct('payload').then(function (response) {
+            networkService.getSimpleProduct('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getSingleCertifiedProductActivity', function () {
-            $httpBackend.expectGET(/^\/rest\/activity\/certified_products\/payload$/).respond(200, {data: 'response'});
-            networkService.getSingleCertifiedProductActivity('payload').then(function (response) {
+        it('should getSingleDeveloperActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/developers\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleDeveloperActivityMetadata('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getSedParticipantStatisticsCount', function () {
+        it('should getSingleListingActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleListingActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleProductActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/products\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleProductActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleVersionActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/versions\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleVersionActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSedParticipantStatisticsCount', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/sed_participant_count$/).respond(200, {data: 'response'});
-            networkService.getSedParticipantStatisticsCount().then(function (response) {
+            networkService.getSedParticipantStatisticsCount().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getSurveillanceLookups', function () {
+        it('should getSurveillanceLookups', () => {
             $httpBackend.expectGET(/^\/rest\/data\/surveillance_types$/).respond(200, {data: 'surveillance_types'});
             $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirement_types$/).respond(200, {data: 'surveillance_requirement_types'});
             $httpBackend.expectGET(/^\/rest\/data\/surveillance_result_types$/).respond(200, {data: 'surveillance_result_types'});
@@ -957,282 +973,282 @@
             });
         });
 
-        it('should getTargetedUsers', function () {
+        it('should getTargetedUsers', () => {
             $httpBackend.expectGET(/^\/rest\/data\/targeted_users$/).respond(200, {data: 'response'});
-            networkService.getTargetedUsers().then(function (response) {
+            networkService.getTargetedUsers().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getTestData', function () {
+        it('should getTestData', () => {
             $httpBackend.expectGET(/^\/rest\/data\/test_data$/).respond(200, {data: 'response'});
-            networkService.getTestData().then(function (response) {
+            networkService.getTestData().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getTestFunctionality', function () {
+        it('should getTestFunctionality', () => {
             $httpBackend.expectGET(/^\/rest\/data\/test_functionality$/).respond(200, {data: 'response'});
-            networkService.getTestFunctionality().then(function (response) {
+            networkService.getTestFunctionality().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getTestProcedures', function () {
+        it('should getTestProcedures', () => {
             $httpBackend.expectGET(/^\/rest\/data\/test_procedures$/).respond(200, {data: 'response'});
-            networkService.getTestProcedures().then(function (response) {
+            networkService.getTestProcedures().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getTestStandards', function () {
+        it('should getTestStandards', () => {
             $httpBackend.expectGET(/^\/rest\/data\/test_standards$/).respond(200, {data: 'response'});
-            networkService.getTestStandards().then(function (response) {
+            networkService.getTestStandards().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getTestTools', function () {
+        it('should getTestTools', () => {
             $httpBackend.expectGET(/^\/rest\/data\/test_tools$/).respond(200, {data: 'response'});
-            networkService.getTestTools().then(function (response) {
+            networkService.getTestTools().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUcdProcesses', function () {
+        it('should getUcdProcesses', () => {
             $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, {data: 'response'});
-            networkService.getUcdProcesses().then(function (response) {
+            networkService.getUcdProcesses().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUploadingCps', function () {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/pending$/).respond(200, {data: 'response'});
-            networkService.getUploadingCps().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getUploadingSurveillances', function () {
+        it('should getUploadingSurveillances', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance\/pending$/).respond(200, {data: 'response'});
-            networkService.getUploadingSurveillances().then(function (response) {
+            networkService.getUploadingSurveillances().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUploadTemplateVersions', function () {
+        it('should getUploadTemplateVersions', () => {
             $httpBackend.expectGET(/^\/rest\/data\/upload_template_versions$/).respond(200, {data: 'response'});
-            networkService.getUploadTemplateVersions().then(function (response) {
+            networkService.getUploadTemplateVersions().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUserActivitiesActivity', function () {
+        it('should getUserActivitiesActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/user_activities$/).respond(200, {data: 'response'});
-            networkService.getUserActivities({}).then(function (response) {
+            networkService.getUserActivities({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getUserActivities({startDate: aDate}).then(function (response) {
+            networkService.getUserActivities({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getUserActivities({endDate: aDate}).then(function (response) {
+            networkService.getUserActivities({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getUserActivities({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getUserActivities({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUserActivity', function () {
+        it('should getUserActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/users$/).respond(200, {data: 'response'});
-            networkService.getUserActivity({}).then(function (response) {
+            networkService.getUserActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/users\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getUserActivity({startDate: aDate}).then(function (response) {
+            networkService.getUserActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/users\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getUserActivity({endDate: aDate}).then(function (response) {
+            networkService.getUserActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/users\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getUserActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getUserActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUserByUsername', function () {
+        it('should getUserByUsername', () => {
             $httpBackend.expectGET(/^\/rest\/users\/admin\/details$/).respond(200, {data: 'response'});
-            networkService.getUserByUsername('admin').then(function (response) {
+            networkService.getUserByUsername('admin').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUsers', function () {
+        it('should getUsers', () => {
             $httpBackend.expectGET(/^\/rest\/users$/).respond(200, {data: 'response'});
-            networkService.getUsers().then(function (response) {
+            networkService.getUsers().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUsersAtAcb', function () {
+        it('should getUsersAtAcb', () => {
             $httpBackend.expectGET(/^\/rest\/acbs\/payload\/users$/).respond(200, {data: 'response'});
-            networkService.getUsersAtAcb('payload').then(function (response) {
+            networkService.getUsersAtAcb('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getUsersAtAtl', function () {
+        it('should getUsersAtAtl', () => {
             $httpBackend.expectGET(/^\/rest\/atls\/payload\/users$/).respond(200, {data: 'response'});
-            networkService.getUsersAtAtl('payload').then(function (response) {
+            networkService.getUsersAtAtl('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getVersion', function () {
+        it('should getVersion', () => {
             $httpBackend.expectGET(/^\/rest\/versions\/payload$/).respond(200, {data: 'response'});
-            networkService.getVersion('payload').then(function (response) {
+            networkService.getVersion('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getVersionActivity', function () {
+        it('should getVersionActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/versions$/).respond(200, {data: 'response'});
-            networkService.getVersionActivity({}).then(function (response) {
+            networkService.getVersionActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/versions\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getVersionActivity({startDate: aDate}).then(function (response) {
+            networkService.getVersionActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/versions\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getVersionActivity({endDate: aDate}).then(function (response) {
+            networkService.getVersionActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/versions\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getVersionActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+            networkService.getVersionActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getVersionsByProduct', function () {
+        it('should getVersionsByProduct', () => {
             $httpBackend.expectGET(/^\/rest\/versions\?productId=payload$/).respond(200, {data: 'response'});
-            networkService.getVersionsByProduct('payload').then(function (response) {
+            networkService.getVersionsByProduct('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should initiateSurveillance', function () {
+        it('should impersonateUser', () => {
+            $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
+            networkService.impersonateUser({user: {subjectName: 'name'}}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should initiateSurveillance', () => {
             $httpBackend.expectPOST(/^\/rest\/surveillance$/).respond(200, {data: 'response'});
-            networkService.initiateSurveillance('payload').then(function (response) {
+            networkService.initiateSurveillance('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should inviteUser', function () {
+        it('should inviteUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/invite$/).respond(200, {data: 'response'});
-            networkService.inviteUser('payload').then(function (response) {
+            networkService.inviteUser('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should keepalive', function () {
+        it('should keepalive', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/keep_alive$/).respond(200, {data: 'response'});
-            networkService.keepalive('payload').then(function (response) {
+            networkService.keepalive('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should login', function () {
+        it('should login', () => {
             $httpBackend.expectPOST(/^\/rest\/auth\/authenticate$/).respond(200, {data: 'response'});
-            networkService.login('payload').then(function (response) {
+            networkService.login('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should lookupCertificationId', function () {
+        it('should lookupCertificationId', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids\/payload$/).respond(200, {data: 'response'});
-            networkService.lookupCertificationId('payload').then(function (response) {
+            networkService.lookupCertificationId('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should massRejectPendingListings', function () {
+        it('should massRejectPendingListings', () => {
             $httpBackend.expectDELETE(/^\/rest\/certified_products\/pending$/).respond(200);
-            networkService.massRejectPendingListings('payload').then(function (response) {
+            networkService.massRejectPendingListings('payload').then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should massRejectPendingSurveillance', function () {
+        it('should massRejectPendingSurveillance', () => {
             $httpBackend.expectDELETE(/^\/rest\/surveillance\/pending$/).respond(200);
-            networkService.massRejectPendingSurveillance('payload').then(function (response) {
+            networkService.massRejectPendingSurveillance('payload').then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should modifyACB', function () {
+        it('should modifyACB', () => {
             $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {});
             $httpBackend.expectPUT(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
-            networkService.modifyACB({id: 'id'}).then(function (response) {
+            networkService.modifyACB({id: 'id'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should modifyATL', function () {
+        it('should modifyATL', () => {
             $httpBackend.expectPUT(/^\/rest\/atls\/id$/).respond(200, {data: 'response'});
-            networkService.modifyATL({id: 'id'}).then(function (response) {
+            networkService.modifyATL({id: 'id'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should modifyAnnouncement', function () {
+        it('should modifyAnnouncement', () => {
             $httpBackend.expectPUT(/^\/rest\/announcements\/id$/).respond(200, {data: 'response'});
-            networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
+            networkService.modifyAnnouncement({id: 'id'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1240,159 +1256,167 @@
 
         it('should registerApi', () => {
             $httpBackend.expectPOST(/^\/rest\/key$/).respond(200, {data: 'response'});
-            networkService.registerApi('payload').then(function (response) {
+            networkService.registerApi('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should rejectPendingCp', function () {
+        it('should rejectPendingCp', () => {
             $httpBackend.expectDELETE(/^\/rest\/certified_products\/pending\/1$/).respond(200);
-            networkService.rejectPendingCp(1).then(function (response) {
+            networkService.rejectPendingCp(1).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should rejectPendingSurveillance', function () {
+        it('should rejectPendingSurveillance', () => {
             $httpBackend.expectDELETE(/^\/rest\/surveillance\/pending\/1$/).respond(200);
-            networkService.rejectPendingSurveillance(1).then(function (response) {
+            networkService.rejectPendingSurveillance(1).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should removeUserFromAcb', function () {
+        it('should removeUserFromAcb', () => {
             $httpBackend.expectDELETE(/^\/rest\/acbs\/2\/users\/1$/).respond(200);
-            networkService.removeUserFromAcb(1, 2).then(function (response) {
+            networkService.removeUserFromAcb(1, 2).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should removeUserFromAtl', function () {
+        it('should removeUserFromAtl', () => {
             $httpBackend.expectDELETE(/^\/rest\/atls\/2\/users\/1$/).respond(200);
-            networkService.removeUserFromAtl(1, 2).then(function (response) {
+            networkService.removeUserFromAtl(1, 2).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should resetPassword', function () {
+        it('should resetPassword', () => {
             $httpBackend.expectPOST(/^\/rest\/auth\/reset_password_request$/).respond(200, {data: 'response'});
-            networkService.resetPassword('payload').then(function (response) {
+            networkService.resetPassword('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should emailResetPassword', function () {
+        it('should emailResetPassword', () => {
             $httpBackend.expectPOST(/^\/rest\/auth\/email_reset_password$/).respond(200, {data: 'response'});
-            networkService.emailResetPassword('payload').then(function (response) {
+            networkService.emailResetPassword('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should revokeApi', function () {
+        it('should revokeApi', () => {
             $httpBackend.expectDELETE(/^\/rest\/key\/userKey$/).respond(200);
-            networkService.revokeApi({key: 'userKey'}).then(function (response) {
+            networkService.revokeApi({key: 'userKey'}).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should revokeRole', function () {
+        it('should revokeRole', () => {
             $httpBackend.expectDELETE(/^\/rest\/users\/name\/roles\/role$/).respond(200);
-            networkService.revokeRole({subjectName: 'name', role: 'role'}).then(function (response) {
+            networkService.revokeRole({subjectName: 'name', role: 'role'}).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
-        it('should search', function () {
+        it('should search', () => {
             $httpBackend.expectPOST(/^\/rest\/search$/).respond(200, {data: 'response'});
-            networkService.search('payload').then(function (response) {
+            networkService.search('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should splitProduct', function () {
+        it('should splitProduct', () => {
             $httpBackend.expectPOST(/^\/rest\/products\/1\/split$/).respond(200, {data: 'response'});
-            networkService.splitProduct({oldProduct: {productId: 1}}).then(function (response) {
+            networkService.splitProduct({oldProduct: {productId: 1}}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateCP', function () {
+        it('should unimpersonateUser', () => {
+            $httpBackend.expectGET(/^\/rest\/auth\/unimpersonate$/).respond(200, {data: 'response'});
+            networkService.unimpersonateUser().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateCP', () => {
             $httpBackend.expectPUT(/^\/rest\/certified_products\/id$/).respond(200, {data: 'response'});
-            networkService.updateCP({listing: {id: 'id'}, reason: 'none'}).then(function (response) {
+            networkService.updateCP({listing: {id: 'id'}, reason: 'none'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateDeveloper', function () {
+        it('should updateDeveloper', () => {
             $httpBackend.expectPUT(/^\/rest\/developers$/).respond(200, {data: 'response'});
-            networkService.updateDeveloper('payload').then(function (response) {
+            networkService.updateDeveloper('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateFuzzyType', function () {
+        it('should updateFuzzyType', () => {
             $httpBackend.expectPUT(/^\/rest\/data\/fuzzy_choices\/3$/).respond(200, {data: 'response'});
-            networkService.updateFuzzyType({id: 3}).then(function (response) {
+            networkService.updateFuzzyType({id: 3}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateJob', function () {
+        it('should updateJob', () => {
             $httpBackend.expectPUT(/^\/rest\/schedules\/jobs$/).respond(200, {data: 'response'});
-            networkService.updateJob('payload').then(function (response) {
+            networkService.updateJob('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateProduct', function () {
+        it('should updateProduct', () => {
             $httpBackend.expectPUT(/^\/rest\/products$/).respond(200, {data: 'response'});
-            networkService.updateProduct('payload').then(function (response) {
+            networkService.updateProduct('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateScheduleTrigger', function () {
+        it('should updateScheduleTrigger', () => {
             $httpBackend.expectPUT(/^\/rest\/schedules\/triggers$/).respond(200, {data: 'response'});
-            networkService.updateScheduleTrigger({name: 'something'}).then(function (response) {
+            networkService.updateScheduleTrigger({name: 'something'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateSurveillance', function () {
+        it('should updateSurveillance', () => {
             $httpBackend.expectPUT(/^\/rest\/surveillance\/id$/).respond(200, {data: 'response'});
-            networkService.updateSurveillance({id: 'id'}).then(function (response) {
+            networkService.updateSurveillance({id: 'id'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateUser', function () {
+        it('should updateUser', () => {
             $httpBackend.expectPUT(/^\/rest\/users\/2$/).respond(200, {data: 'response'});
-            networkService.updateUser({userId: 2}).then(function (response) {
+            networkService.updateUser({userId: 2}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should updateVersion', function () {
+        it('should updateVersion', () => {
             $httpBackend.expectPUT(/^\/rest\/versions$/).respond(200, {data: 'response'});
-            networkService.updateVersion('payload').then(function (response) {
+            networkService.updateVersion('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

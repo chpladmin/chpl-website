@@ -8,7 +8,7 @@
         });
 
     /** @ngInclude */
-    function authInterceptor (API, authService, toaster) {
+    function authInterceptor ($log, API, authService, toaster) {
         return {
             // automatically attach Authorization header
             request: function (config) {
@@ -33,6 +33,9 @@
                 }
                 if (response.config.url.indexOf(API) === 0) {
                     response.data = parseToken(response.data);
+                }
+                if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole()) {
+                    authService.logout();
                 }
                 return response;
             },

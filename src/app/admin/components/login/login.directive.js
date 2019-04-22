@@ -39,6 +39,7 @@
         vm.resetPassword = resetPassword;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
+        vm.stopImpersonating = stopImpersonating;
 
         vm.activityEnum = {
             LOGIN: 1,
@@ -47,6 +48,7 @@
             NONE: 4,
             EXPIRED: 5,
             PASSWORD_RESET: 6,
+            IMPERSONATING: 7,
         };
 
         /////////////////////////////////////////////////////////
@@ -56,6 +58,9 @@
             if (vm.hasAnyRole()) {
                 Idle.watch();
                 _updateExtras();
+                if (authService.isImpersonating()) {
+                    vm.activity = vm.activityEnum.IMPERSONATING;
+                }
             }
             if ($stateParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
@@ -71,6 +76,9 @@
                     networkService.keepalive()
                         .then(function (response) {
                             authService.saveToken(response.token);
+                            if (!authService.isImpersonating() && vm.activity === vm.activityEnum.IMPERSONATING) {
+                                vm.activity = vm.activityEnum.NONE;
+                            }
                         });
                 } else {
                     vm.activity = vm.activityEnum.LOGIN;
@@ -93,6 +101,9 @@
                 });
             });
             $scope.$on('$destroy', idle);
+
+            var impersonating = $scope.$on('impersonating', () => vm.activity = vm.activityEnum.IMPERSONATING);
+            $scope.$on('$destroy', impersonating);
         }
 
         function changePassword () {
@@ -221,6 +232,14 @@
                 }, function () {
                     vm.messageClass = vm.pClassFail;
                     vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
+                });
+        }
+
+        function stopImpersonating () {
+            networkService.unimpersonateUser()
+                .then(token => {
+                    authService.saveToken(token.token);
+                    vm.clear();
                 });
         }
 

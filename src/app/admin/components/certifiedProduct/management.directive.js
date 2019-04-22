@@ -31,26 +31,21 @@
         vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
-        vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
         vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
         vm.hasAnyRole = authService.hasAnyRole;
-        vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
         vm.isProductEditable = isProductEditable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
-        vm.massRejectPendingListings = massRejectPendingListings;
         vm.massRejectPendingSurveillance = massRejectPendingSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
-        vm.parseUploadError = parseUploadError;
         vm.parseSurveillanceUploadError = parseSurveillanceUploadError;
         vm.refreshDevelopers = refreshDevelopers;
         vm.refreshPending = refreshPending;
-        vm.rejectCp = rejectCp;
         vm.rejectSurveillance = rejectSurveillance;
         vm.searchForSurveillance = searchForSurveillance;
         vm.selectAllPendingSurveillance = selectAllPendingSurveillance;
@@ -69,7 +64,6 @@
             vm.activeProduct = '';
             vm.activeVersion = '';
             vm.activeCP = '';
-            vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
                 vm.workType = 'manage';
@@ -89,7 +83,6 @@
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
-                    //method: 'PUT',
                     removeAfterUpload: true,
                     headers: {
                         Authorization: 'Bearer ' + authService.getToken(),
@@ -137,9 +130,6 @@
                     vm.uploadWarnings = [];
                     vm.uploadSuccess = false;
                 };
-                /*vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
-                    $log.info('onCancelItem', fileItem, response, status, headers);
-                };*/
             }
 
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
@@ -180,8 +170,6 @@
                     vm.surveillanceUploadErrors = response.errorMessages;
                     vm.surveillanceUploadSuccess = false;
                 };
-                /*vm.surveillanceUploader.onCancelItem = function (fileItem, response, status, headers) {
-                };*/
             }
 
             getResources();
@@ -217,10 +205,9 @@
 
         function refreshPending () {
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
-                networkService.getUploadingCps()
-                    .then(function (cps) {
-                        vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
-                        vm.pendingProducts = vm.uploadingCps.length;
+                networkService.getPendingListings()
+                    .then(function (listings) {
+                        vm.pendingProducts = listings.length;
                     })
             }
             networkService.getUploadingSurveillances()
@@ -274,26 +261,6 @@
                     vm.developerMessage = result;
                 }
             });
-        }
-
-        function massRejectPendingListings () {
-            var idsToReject = [];
-            angular.forEach(vm.massReject, function (value, key) {
-                if (value) {
-                    idsToReject.push(parseInt(key));
-                    clearPendingListing(parseInt(key));
-                    delete(vm.massReject[key]);
-                }
-            });
-            networkService.massRejectPendingListings(idsToReject)
-                .then(function () {}, function (error) {
-                    if (error.data.errors && error.data.errors.length > 0) {
-                        vm.uploadingListingsMessages = error.data.errors.map(function (error) {
-                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"';
-                            return ret;
-                        });
-                    }
-                });
         }
 
         function massRejectPendingSurveillance () {
@@ -467,16 +434,6 @@
             });
         }
 
-        function getNumberOfListingsToReject () {
-            var ret = 0;
-            angular.forEach(vm.massReject, function (value) {
-                if (value) {
-                    ret += 1;
-                }
-            });
-            return ret;
-        }
-
         function getNumberOfSurveillanceToReject () {
             var ret = 0;
             angular.forEach(vm.massRejectSurveillance, function (value) {
@@ -551,51 +508,6 @@
             });
         }
 
-        function inspectCp (cpId) {
-            var cp;
-            for (var i = 0; i < vm.uploadingCps.length; i++) {
-                if (cpId === vm.uploadingCps[i].id) {
-                    cp = vm.uploadingCps[i];
-                }
-            }
-
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
-                controller: 'InspectController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    developers: function () { return vm.developers; },
-                    inspectingCp: function () { return cp; },
-                    isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
-                    isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
-                    resources: function () { return vm.resources; },
-                    workType: function () { return vm.workType; },
-                },
-                size: 'lg',
-            });
-            vm.modalInstance.result.then(function (result) {
-                if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
-                    if (result.developerCreated) {
-                        vm.developers.push(result.developer);
-                    }
-                    for (var i = 0; i < vm.uploadingCps.length; i++) {
-                        if (cpId === vm.uploadingCps[i].id) {
-                            vm.uploadingCps.splice(i,1)
-                            vm.pendingProducts = vm.uploadingCps.length;
-                        }
-                    }
-                    if (result.status === 'resolved') {
-                        vm.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
-                    }
-                }
-            }, function (result) {
-                $log.info('inspection: ' + result);
-            });
-        }
-
         function inspectSurveillance (surv) {
             vm.modalInstance = $uibModal.open({
                 component: 'aiSurveillanceInspect',
@@ -641,15 +553,6 @@
             }
         }
 
-        function rejectCp (cpId) {
-            networkService.rejectPendingCp(cpId)
-                .then(function () {
-                    clearPendingListing(cpId);
-                }, function (error) {
-                    vm.uploadingListingsMessages = error.data.errorMessages;
-                });
-        }
-
         function rejectSurveillance (survId) {
             networkService.rejectPendingSurveillance(survId)
                 .then(function () {
@@ -675,28 +578,6 @@
                         vm.loadSurveillance();
                     }
                 });
-        }
-
-        function parseUploadError (cp) {
-            var ret = '';
-            if (cp.recordStatus.toLowerCase() !== 'new') {
-                ret = 'Existing Certified Product found';
-            } else {
-                if (cp.errorMessages.length > 0) {
-                    ret += 'Errors:&nbsp;' + cp.errorMessages.length;
-                }
-                if (cp.warningMessages.length > 0) {
-                    if (ret.length > 0) {
-                        ret += '<br />';
-                    }
-                    ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
-                }
-                if (ret.length === 0) {
-                    ret = 'OK';
-
-                }
-            }
-            return ret;
         }
 
         function parseSurveillanceUploadError (surv) {
@@ -789,7 +670,7 @@
                     products: () => vm.products,
                 },
             });
-            vm.splitDeveloperModalInstance.result.then(result => {
+            vm.splitDeveloperModalInstance.result.then(() => {
                 vm.forceRefresh = true;
                 refreshDevelopers();
                 if (!isEditingListing()) {
@@ -840,15 +721,6 @@
         }
 
         ////////////////////////////////////////////////////////////////////
-
-        function clearPendingListing (cpId) {
-            for (var i = 0; i < vm.uploadingCps.length; i++) {
-                if (cpId === vm.uploadingCps[i].id) {
-                    vm.uploadingCps.splice(i,1)
-                    vm.pendingProducts = vm.uploadingCps.length;
-                }
-            }
-        }
 
         function clearPendingSurveillance (survId) {
             for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
