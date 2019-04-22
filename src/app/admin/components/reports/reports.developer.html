@@ -34,7 +34,7 @@
   <div class="row form-group">
     <div class="col-sm-5">
       <label for="activity-end-upload" class="control-label">Filter</label>
-      <input ai-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Developer Code, or Responsible User" class="form-control" type="search">
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Developer Code, or Responsible User" class="form-control" type="search">
     </div>
   </div>
 
@@ -43,7 +43,7 @@
       <tr>
         <th class="search-header" st-sort="developerName" st-skip-natural="true">Developer</th>
         <th class="search-header" st-sort="developerCode" st-skip-natural="true">Developer Code</th>
-        <th class="search-header" st-sort="responsibleUser.fullName" st-skip-natural="true">Responsible User</th>
+        <th class="search-header" st-sort="fullName" st-skip-natural="true">Responsible User</th>
         <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
       </tr>
     </thead>

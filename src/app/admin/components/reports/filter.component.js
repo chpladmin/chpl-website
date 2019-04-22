@@ -24,6 +24,7 @@ export const FilterComponent = {
             this.networkService.getFilters(this.filterTypeId)
                 .then(response => {
                     that.availableFilters = response.results;
+                    that.availableFilters.sort((a, b) => (a.name > b.name) ? 1 : -1)
                 });
         }
 

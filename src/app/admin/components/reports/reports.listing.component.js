@@ -4,10 +4,11 @@ export const ReportsListingsComponent = {
         productId: '<?',
     },
     controller: class ReportsListings {
-        constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.$state = $state;
             this.$uibModal = $uibModal;
             this.ReportService = ReportService;
             this.networkService = networkService;
@@ -26,35 +27,59 @@ export const ReportsListingsComponent = {
 
         $onChanges (changes) {
             if (changes.productId && changes.productId.currentValue) {
-                let that = this;
-                this.activityRange.endDate = new Date();
-                this.activityRange.startDate = new Date('4/1/2016');
                 this.productId = angular.copy(changes.productId.currentValue);
-                this.networkService.getSingleListingActivityMetadata(this.productId)
-                    .then(results => {
-                        that.results = results;
-                        that.prepare(that.results, true);
-                    });
-            } else {
-                this.search();
             }
+            this.search();
         }
 
         onApplyFilter (filter) {
             let f = JSON.parse(filter);
-            this.activityRange.startDate = new Date(Date.parse(f.startDate));
-            this.activityRange.endDate = new Date(Date.parse(f.endDate));
-            this.filterText = f.dataFilter;
-            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
-            this.search();
+            if (f.productId) {
+                this.productId = f.productId;
+                this.$state.go('admin.reports.listings.listingId', {
+                    listingId: f.productId,
+                })
+                    .then(() => this.doFilter(f));
+            } else {
+                this.productId = undefined;
+                this.$state.go('admin.reports.listings')
+                    .then(() => this.doFilter(f));
+            }
+
+        }
+
+        doFilter (filter) {
+            let that = this;
+            this.display = {};
+            this.activityRange.startDate = new Date(Date.parse(filter.startDate));
+            this.activityRange.endDate = new Date(Date.parse(filter.endDate));
+            this.search()
+                .then( () => {
+                    that.display = filter.displayAcbs;
+                    that.filterText = filter.dataFilter;
+                    that.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
+                    that.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+                });
+        }
+
+        testFunc () {
+            this.$state.go('admin.reports.listings', {
+                filterId: 481,
+            },
+            {
+                inherit: false,
+            });
         }
 
         createFilterDataObject () {
             let filterData = {};
             filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
             filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            if (this.productId) {
+                filterData.productId = this.productId;
+            }
             filterData.dataFilter = this.filterText;
-            filterData.tableState = {};
+            filterData.displayAcbs = this.display;
             filterData.tableState = this.tableController.tableState();
             return filterData;
         }
@@ -722,13 +747,32 @@ export const ReportsListingsComponent = {
             //todo, eventually: use the $q.all function as demonstrated in product history eye
         }
 
-        search () {
+        searchAllListings () {
             let that = this;
-            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
+            return this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results);
                 });
+        }
+
+        searchSingleProductId () {
+            let that = this;
+            this.activityRange.endDate = new Date();
+            this.activityRange.startDate = new Date('4/1/2016');
+            return this.networkService.getSingleListingActivityMetadata(this.productId)
+                .then(results => {
+                    that.results = results;
+                    that.prepare(that.results, true);
+                });
+        }
+
+        search () {
+            if (this.productId) {
+                return this.searchSingleProductId();
+            } else {
+                return this.searchAllListings();
+            }
         }
 
         validDates () {

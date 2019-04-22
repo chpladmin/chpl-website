@@ -40,8 +40,8 @@ export const ReportsDevelopersComponent = {
             }
         }
 
-        onApplyFilter (filter) {
-            let f = JSON.parse(filter);
+        onApplyFilter (filterObj) {
+            let f = JSON.parse(filterObj.filter);
             this.activityRange.startDate = new Date(Date.parse(f.startDate));
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
             this.filterText = f.dataFilter;

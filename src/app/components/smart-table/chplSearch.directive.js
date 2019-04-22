@@ -1,8 +1,8 @@
 angular.module('chpl.components')
-    .directive('aiSearch', ['$timeout', 'stConfig', function ($timeout, stConfig) {
+    .directive('chplSearch', ['$timeout', 'stConfig', function ($timeout, stConfig) {
         /* Like st-search, but relies on the value of ng-model to trigger changes.
         * Usage:
-        * <input type="text" placeholder="Search..." ng-model="myCtrl.searchParams.search" mh-search="search" />
+        * <input type="text" placeholder="Search..." ng-model="myCtrl.searchParams.search" chpl-search="search" />
         */
         return {
             require: ['^stTable', 'ngModel'],
