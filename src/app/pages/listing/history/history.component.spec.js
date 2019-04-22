@@ -243,6 +243,12 @@ import './history.mock';
                         expect(networkService.getSingleVersionActivityMetadata).toHaveBeenCalledWith(4411);
                         expect(networkService.getSingleVersionActivityMetadata).toHaveBeenCalledWith(4396);
                     });
+
+                    it('should report nothing for a created version', () => {
+                        let activity = getActivity(32545);
+                        ctrl._interpretVersion(activity);
+                        expect(activity.change).toEqual([]);
+                    });
                 });
 
                 describe('when dealing with Product changes', () => {
@@ -255,6 +261,12 @@ import './history.mock';
                         ctrl._interpretProduct(activity);
                         expect(activity.change[0]).toEqual('Product changed from axiUm CE to axiUm ce');
                     });
+
+                    it('should report nothing for a created product', () => {
+                        let activity = getActivity(10910);
+                        ctrl._interpretProduct(activity);
+                        expect(activity.change).toEqual([]);
+                    });
                 });
 
                 describe('when dealing with Developer changes', () => {
@@ -266,6 +278,12 @@ import './history.mock';
                     it('should know when a developer changed', () => {
                         ctrl._interpretDeveloper(activity);
                         expect(activity.change[0]).toEqual('Developer changed from Exan Enterprises to Exan Enterprises, Inc.');
+                    });
+
+                    it('should report nothing for a created developer', () => {
+                        let activity = getActivity(10909);
+                        ctrl._interpretDeveloper(activity);
+                        expect(activity.change).toEqual([]);
                     });
                 });
             });
