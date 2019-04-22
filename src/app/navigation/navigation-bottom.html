@@ -15,7 +15,7 @@
         <p class="announcement nav-text spaced-out badge" ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
           {{ announcement.title }}<span ng-if="announcement.text">: {{ announcement.text }}</span>
         </p>
-        <ul class="nav pull-right" ng-if="!vm.UAT_MODE">
+        <ul class="nav pull-right" feature-flag="adminNav" feature-flag-hide>
           <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
             <button href class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getFullname()">Administrator Login</span>{{ vm.getFullname() }} <span class="fa" ng-class="vm.adminLoginIsOpen ? 'fa-caret-up' : 'fa-caret-right'"></span></button>
             <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">

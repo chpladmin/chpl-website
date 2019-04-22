@@ -34,6 +34,7 @@ module.exports = merge(base, {
         new webpack.DefinePlugin({
             DEVELOPER_MODE: JSON.stringify(false),
             ENABLE_LOGGING: JSON.stringify(false),
+            FEATURE_FLAGS: JSON.stringify(require('./flags.prod.json')),
             MINUTES_UNTIL_IDLE: 50,
             MINUTES_BETWEEN_KEEPALIVE: 1,
             UAT_MODE: JSON.stringify(false),

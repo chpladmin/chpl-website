@@ -17,6 +17,7 @@ import /* angularCronGen from*/ 'angular-cron-gen';
 import /* angularLoadingBar from*/ 'angular-loading-bar';
 import /* angulartics from*/ 'angulartics';
 import /* angularticsGoogleTagManager from*/ 'angulartics-google-tag-manager';
+import 'angular-feature-flags';
 import /* googlechart from*/ 'angular-google-chart';
 import /* ngAnimate from*/ 'angular-animate';
 import /* ngAria from*/ 'angular-aria';
@@ -66,6 +67,7 @@ const dependencies = [
     'angular-loading-bar',
     'angulartics',
     'angulartics.google.tagmanager',
+    'feature-flags',
     'googlechart',
     'ngAnimate',
     'ngAria',

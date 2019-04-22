@@ -40,12 +40,12 @@ function administrationStateConfig ($stateProvider) {
         .state('administration', {
             abstract: true,
             url: '/administration',
-            template: '<div class="container-fluid"><div class="row"><div class="col-sm-12"><h1>CHPL Administration</h1></div></div><div class="main-content" id="main-content" tabindex="-1"><ui-view/></div></div>',
+            template: '<div class="container-fluid"><div class="row"><div class="col-sm-12"><h1>CHPL Administration</h1></div></div>><div class="main-content row" id="main-content" tabindex="-1"><div class="col-sm-12"><ui-view/></div></div></div>',
         })
         .state('administration.confirm', {
             abstract: true,
             url: '/confirm',
-            template: '<ui-view/>',
+            template: '<ui-view/></div>',
         })
         .state('administration.confirm.listings', {
             url: '/listings',
@@ -55,6 +55,11 @@ function administrationStateConfig ($stateProvider) {
                 resources: ($q, networkService) => getResources($q, networkService),
             },
             data: { title: 'CHPL Reports - Listings' },
+        })
+        .state('administration.features', {
+            url: '/features',
+            component: 'chplFeatures',
+            data: { title: 'CHPL Feature Flags' },
         });
 }
 

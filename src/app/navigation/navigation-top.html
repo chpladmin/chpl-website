@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" chpl-add-class-on-scroll offset="50" scroll-class="navbar-scrolled" ng-if="vm.navShown || !vm.UAT_MODE">
+  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" chpl-add-class-on-scroll offset="50" scroll-class="navbar-scrolled" ng-if="vm.navShown || !vm.isOn('adminNav')">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" ng-click="navCollapsed = !navCollapsed" ng-init="navCollapsed = true" aria-haspopup="true" aria-expanded="false" id="menu-toggle">
@@ -54,9 +54,9 @@
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole() && vm.UAT_MODE"><button class="btn btn-link" ng-click="vm.toggleNav()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
+    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole()" feature-flag="adminNav"><button class="btn btn-link" ng-click="vm.toggleNav()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
-  <nav class="navbar navbar-default" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'" ng-if="vm.UAT_MODE">
+  <nav class="navbar navbar-default" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'" feature-flag="adminNav">
     <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown"><button class="btn btn-link" ng-click="vm.toggleNav()">Show navigation <i class="fa fa-caret-down"></i></button></div>
     <div class="container-fluid">
       <ul class="nav navbar-nav"> <!-- admin-nav -->
@@ -73,6 +73,7 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN']) && vm.DEVELOPER_MODE"><a ui-sref="administration.features()">Feature Flags</a></li>
           </ul>
         </li>
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" ng-class="{'active': vm.isActive('/users') }"><a href="#/admin/userManagement">Users</a></li>

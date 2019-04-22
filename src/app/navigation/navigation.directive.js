@@ -1,5 +1,4 @@
-/* global UAT_MODE */
-
+/* global DEVELOPER_MODE */
 (function () {
     'use strict';
 
@@ -38,12 +37,14 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, networkService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, featureFlags, networkService) {
         var vm = this;
 
         vm.clear = clear;
+        vm.DEVELOPER_MODE = DEVELOPER_MODE;
         vm.getFullname = authService.getFullname;
         vm.isActive = isActive;
+        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;
         vm.loadOrganizations = loadOrganizations;
@@ -54,12 +55,11 @@
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
-            vm.UAT_MODE = UAT_MODE;
             vm.loadAnnouncements();
             vm.navShown = true;
             $rootScope.bodyClass = 'navigation-shown';
 
-            if (vm.hasAnyRole() && vm.UAT_MODE) {
+            if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
                 vm.loadOrganizations();
                 vm.toggleNav();
             }
@@ -86,7 +86,7 @@
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
                 vm.loadOrganizations();
-                if (vm.navShown && vm.UAT_MODE) {
+                if (vm.navShown && featureFlags.isOn('adminNav')) {
                     vm.toggleNav();
                 }
             })
@@ -133,7 +133,7 @@
         }
 
         function loadOrganizations () {
-            if (!vm.UAT_MODE) {
+            if (!featureFlags.isOn('adminNav')) {
                 return;
             }
             networkService.getAcbs(true)

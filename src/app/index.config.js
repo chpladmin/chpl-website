@@ -1,4 +1,4 @@
-/* global DEVELOPER_MODE ENABLE_LOGGING */
+/* global DEVELOPER_MODE ENABLE_LOGGING FEATURE_FLAGS */
 
 (function () {
     'use strict';
@@ -8,7 +8,7 @@
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
+    function config ($analyticsProvider, $locationProvider, $logProvider, TitleProvider, featureFlagsProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
@@ -27,9 +27,12 @@
         // Enable log
         $logProvider.debugEnabled(ENABLE_LOGGING);
 
+        TitleProvider.enabled(false);
+
+        // Set feature flags
+        featureFlagsProvider.setInitialFlags(FEATURE_FLAGS);
+
         // Set smart-table pagination template
         stConfig.pagination.template = 'chpl.components/smart-table/stPagination.html';
-
-        TitleProvider.enabled(false);
     }
 })();
