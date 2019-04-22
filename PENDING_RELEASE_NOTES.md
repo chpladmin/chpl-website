@@ -4,5 +4,6 @@ _Date TBD_
 
 ### New features
 * Updated security for edit/split/merge of developers, products, and versions
+* Updated language on Charts page.
 
 ---
