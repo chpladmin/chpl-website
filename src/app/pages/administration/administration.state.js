@@ -38,9 +38,9 @@ function administrationStateConfig ($stateProvider) {
     'ngInject'
     $stateProvider
         .state('administration', {
-            abstract: true,
             url: '/administration',
-            template: '<div class="container-fluid"><div class="row"><div class="col-sm-12"><h1>CHPL Administration</h1></div></div>><div class="main-content row" id="main-content" tabindex="-1"><div class="col-sm-12"><ui-view/></div></div></div>',
+            component: 'chplAdministration',
+            data: { title: 'CHPL Administration' },
         })
         .state('administration.confirm', {
             abstract: true,
@@ -56,11 +56,7 @@ function administrationStateConfig ($stateProvider) {
             },
             data: { title: 'CHPL Reports - Listings' },
         })
-        .state('administration.features', {
-            url: '/features',
-            component: 'chplFeatures',
-            data: { title: 'CHPL Feature Flags' },
-        });
+    ;
 }
 
 module.exports = administrationStateConfig;
