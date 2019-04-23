@@ -62,15 +62,6 @@ export const ReportsListingsComponent = {
                 });
         }
 
-        testFunc () {
-            this.$state.go('admin.reports.listings', {
-                filterId: 481,
-            },
-            {
-                inherit: false,
-            });
-        }
-
         createFilterDataObject () {
             let filterData = {};
             filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
