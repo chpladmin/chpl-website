@@ -36,16 +36,14 @@ export const ReportsListingsComponent = {
             let f = JSON.parse(filter);
             if (f.productId) {
                 this.productId = f.productId;
-                this.$state.go('admin.reports.listings.listingId', {
-                    listingId: f.productId,
-                })
-                    .then(() => this.doFilter(f));
             } else {
                 this.productId = undefined;
-                this.$state.go('admin.reports.listings')
-                    .then(() => this.doFilter(f));
             }
 
+            this.$state.go('reports.listings', {
+                listingId: f.productId,
+            })
+                .then(() => this.doFilter(f));
         }
 
         doFilter (filter) {
