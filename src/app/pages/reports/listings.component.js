@@ -1,5 +1,5 @@
 export const ReportsListingsComponent = {
-    templateUrl: 'chpl.admin/components/reports/reports.listing.html',
+    templateUrl: 'chpl.reports/listings.html',
     bindings: {
         productId: '<?',
     },
@@ -779,5 +779,5 @@ export const ReportsListingsComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.reports')
     .component('chplReportsListings', ReportsListingsComponent);

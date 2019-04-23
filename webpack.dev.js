@@ -29,11 +29,12 @@ module.exports = merge(base, {
             template: path.resolve(__dirname, './src/style.html'),
         }),
         new webpack.DefinePlugin({
-            DEVELOPER_MODE: true,
-            ENABLE_LOGGING: true,
+            DEVELOPER_MODE: JSON.stringify(true),
+            ENABLE_LOGGING: JSON.stringify(true),
+            FEATURE_FLAGS: JSON.stringify(require('./flags.dev.json')),
             MINUTES_UNTIL_IDLE: 150,
             MINUTES_BETWEEN_KEEPALIVE: 1,
-            UAT_MODE: true,
+            UAT_MODE: JSON.stringify(true),
         }),
     ]
 });

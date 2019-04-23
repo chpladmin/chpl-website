@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <span ng-if="$ctrl.hasAnyRole()">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>CHPL Administration</h1>
+      </div>
+    </div>
+    <div class="main-content row" id="main-content" tabindex="-1" ng-if="$ctrl.hasAnyRole()">
+      <div class="col-sm-12">
+        <ui-view></ui-view>
+        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN']) && $ctrl.DEVELOPER_MODE" feature-flag-overrides></div>
+      </div>
+    </div>
+  </span>
+  <div class="main-content row splash-row" id="main-content" tabindex="-1" ng-if="!$ctrl.hasAnyRole()">
+    <div class="col-md-6 col-md-offset-3 jumbotron">
+      <ai-login form-class=""
+                p-class="bg-success lead"
+                p-class-fail="bg-danger lead">
+      </ai-login>
+    </div>
+  </div>
+</div>

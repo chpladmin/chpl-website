@@ -1,5 +1,5 @@
 export const ConfirmListingsComponent = {
-    templateUrl: 'chpl.admin/components/certifiedProduct/confirm-listings.html',
+    templateUrl: 'chpl.administration/confirm/listings.html',
     bindings: {
         developers: '<',
         onChange: '&',
@@ -101,5 +101,5 @@ export const ConfirmListingsComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.administration')
     .component('chplConfirmListings', ConfirmListingsComponent);

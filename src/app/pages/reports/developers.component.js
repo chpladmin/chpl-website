@@ -1,5 +1,5 @@
 export const ReportsDevelopersComponent = {
-    templateUrl: 'chpl.admin/components/reports/reports.developer.html',
+    templateUrl: 'chpl.reports/developers.html',
     controller: class ReportsDevelopers {
         constructor ($filter, $log, $scope, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
@@ -208,5 +208,5 @@ export const ReportsDevelopersComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.reports')
     .component('chplReportsDevelopers', ReportsDevelopersComponent);

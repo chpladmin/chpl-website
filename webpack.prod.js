@@ -32,11 +32,12 @@ module.exports = merge(base, {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new webpack.DefinePlugin({
-            DEVELOPER_MODE: false,
-            ENABLE_LOGGING: false,
+            DEVELOPER_MODE: JSON.stringify(false),
+            ENABLE_LOGGING: JSON.stringify(false),
+            FEATURE_FLAGS: JSON.stringify(require('./flags.prod.json')),
             MINUTES_UNTIL_IDLE: 50,
             MINUTES_BETWEEN_KEEPALIVE: 1,
-            UAT_MODE: false,
+            UAT_MODE: JSON.stringify(false),
         }),
         new webpack.HashedModuleIdsPlugin(),
     ],
