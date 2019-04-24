@@ -1,9 +1,11 @@
 angular.module('chpl.components')
-    .directive('chplSearch', ['$timeout', 'stConfig', function ($timeout, stConfig) {
+    .directive('chplSearch', ($timeout, stConfig) => {
+        'ngInject'
         /* Like st-search, but relies on the value of ng-model to trigger changes.
         * Usage:
         * <input type="text" placeholder="Search..." ng-model="myCtrl.searchParams.search" chpl-search="search" />
         */
+
         return {
             require: ['^stTable', 'ngModel'],
             link: function (scope, element, attr, ctrls) {
@@ -28,4 +30,4 @@ angular.module('chpl.components')
                 scope.$watch(function () { return modelCtrl.$modelValue; }, triggerSearch);
             },
         };
-    }])
+    })
