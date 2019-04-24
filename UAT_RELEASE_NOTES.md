@@ -10,3 +10,4 @@
 * Add new Admin navigation bar, including direct pages for:
   * Listing Reports
   * Confirmation of Listings
+* Add "Save Search" functionality to admin reports
