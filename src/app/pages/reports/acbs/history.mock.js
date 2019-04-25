@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.listing')
+    angular.module('chpl.reports')
         .value('metadata', getMetadata)
         .value('activity', getActivity);
 

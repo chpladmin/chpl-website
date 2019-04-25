@@ -22,8 +22,8 @@ import './history.mock';
                 $q = _$q_;
                 getActivity = activity;
                 networkService = _networkService_;
-                networkService.getActivityMetadata.and.returnValue($q.when(metadata('acb')));
                 networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
+                networkService.getActivityMetadata.and.returnValue($q.when(metadata('acb')));
                 networkService.getFilters.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new()

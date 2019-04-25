@@ -33,11 +33,13 @@ export const ReportsAcbsComponent = {
         }
 
         downloadReady () {
-            if (this.displayed) {
-                return this.displayed.reduce((acc, activity) => activity.action && acc, true);
-            } else {
-                return false;
-            }
+            return this.displayed.reduce((acc, activity) => activity.action && acc, this.displayed);
+            /*
+              if (this.displayed) {
+              return this.displayed.reduce((acc, activity) => activity.action && acc, true);
+              } else {
+              return false;
+              }*/
         }
 
         onApplyFilter (filterObj) {
@@ -109,8 +111,7 @@ export const ReportsAcbsComponent = {
                 .map(item => {
                     item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
                     return item;
-                })
-                .forEach(item => this.parse(item));
+                });
         }
 
         prepareDownload () {
