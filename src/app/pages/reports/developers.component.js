@@ -1,12 +1,11 @@
 export const ReportsDevelopersComponent = {
     templateUrl: 'chpl.reports/developers.html',
-    controller: class ReportsDevelopers {
-        constructor ($filter, $log, $scope, $uibModal, ReportService, networkService, utilService) {
+    controller: class ReportsDevelopersComponent {
+        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
-            this.$uibModal = $uibModal;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -41,7 +40,7 @@ export const ReportsDevelopersComponent = {
         }
 
         onApplyFilter (filterObj) {
-            let f = JSON.parse(filterObj);
+            let f = angular.fromJson(filterObj);
             this.activityRange.startDate = new Date(Date.parse(f.startDate));
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
             this.filterText = f.dataFilter;
