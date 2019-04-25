@@ -33,7 +33,7 @@ export const ReportsListingsComponent = {
         }
 
         onApplyFilter (filter) {
-            let f = angluar.fromJson(filter);
+            let f = angular.fromJson(filter);
             if (f.productId) {
                 this.productId = f.productId;
             } else {
