@@ -99,7 +99,7 @@ export class NetworkService {
     }
 
     getAcbs (editable) {
-        return this.apiGET('/acbs?editable=' + editable);
+        return this.apiGET('/acbs?editable=' + editable, true);
     }
 
     getAccessibilityStandards () {
@@ -183,7 +183,7 @@ export class NetworkService {
     }
 
     getAtls (editable) {
-        return this.apiGET('/atls?editable=' + editable);
+        return this.apiGET('/atls?editable=' + editable, true);
     }
 
     getCertBodies () {

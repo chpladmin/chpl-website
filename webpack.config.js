@@ -10,6 +10,7 @@ module.exports = {
     entry: {
         app: path.resolve(__dirname, './src/app/index.js'),
         admin: path.resolve(__dirname, './src/app/admin/index.js'),
+        administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
         charts: path.resolve(__dirname, './src/app/pages/charts/index.js'),
         collections: path.resolve(__dirname, './src/app/pages/collections/index.js'),
         compare: path.resolve(__dirname, './src/app/pages/compare/index.js'),
@@ -18,6 +19,7 @@ module.exports = {
         organizations: path.resolve(__dirname, './src/app/pages/organizations/index.js'),
         product: path.resolve(__dirname, './src/app/product/index.js'),
         registration: path.resolve(__dirname, './src/app/pages/registration/index.js'),
+        reports: path.resolve(__dirname, './src/app/pages/reports/index.js'),
         search: path.resolve(__dirname, './src/app/pages/search/index.js'),
         templates: path.resolve(__dirname, './src/app/templates.js'),
     },
