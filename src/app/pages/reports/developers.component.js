@@ -175,7 +175,6 @@ export const ReportsDevelopersComponent = {
         }
 
         prepare (results) {
-            this.activeAcbs = [];
             this.displayed = results.map(item => {
                 item.filterText = item.developerName + '|' + item.developerCode + '|' + item.responsibleUser.fullName
                 item.categoriesFilter = '|' + item.categories.join('|') + '|';
