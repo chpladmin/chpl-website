@@ -8,6 +8,7 @@ import './history.mock';
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
+                $provide.factory('aiFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
