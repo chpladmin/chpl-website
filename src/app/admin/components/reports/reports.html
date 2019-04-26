@@ -96,43 +96,8 @@
       <chpl-reports-acbs></chpl-reports-acbs>
     </div>
 
-    <div class="row" ng-if="$ctrl.workType === 'atl'">
-      <div class="col-sm-12">
-        <h3>ONC-ATL Activity</h3>
-        <div>
-          <label for="activity-start-atl" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.atl.startDate" name="activityStartATL" id="activity-start-atl" placeholder="yyyy-MM-dd">
-          </div>
-          <label for="activity-end-atl" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.atl.endDate" name="activityEndATL" id="activity-end-atl" placeholder="yyyy-MM-dd">
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="$ctrl.refreshActivity()" ng-disabled="!$ctrl.validDates('atl')">Search <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates('atl')">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
-        </div>
-        <table st-table="$ctrl.displayedATLs" st-safe-src="$ctrl.searchedATLs" class="table table-striped">
-          <thead>
-            <tr>
-              <th class="search-header" st-sort="name" st-skip-natural="true">ONC-ATL</th>
-              <th>Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="$ctrl.displayedATLs.length === 0">
-              <td colspan="3">No activity found</td>
-            </tr>
-            <tr ng-repeat="activity in $ctrl.displayedATLs" ng-if="$ctrl.displayedATLs.length > 0">
-              <td>{{ activity.name }}</td>
-              <td><span ng-bind-html="activity.action"></span></td>
-              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div ng-if="$ctrl.workType === 'atl'">
+      <chpl-reports-atls></chpl-reports-atls>
     </div>
 
     <div class="row" ng-if="$ctrl.workType === 'announcement'">
