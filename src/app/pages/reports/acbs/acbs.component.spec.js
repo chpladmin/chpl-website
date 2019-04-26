@@ -1,10 +1,10 @@
-import './history.mock';
+import {getActivity, getMetadata} from './history.mock';
 
 (() => {
     'use strict';
 
     fdescribe('the Reports.ACBs component', () => {
-        var $compile, $log, $q, ctrl, el, getActivity, networkService, scope;
+        var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
@@ -17,14 +17,13 @@ import './history.mock';
                 });
             });
 
-            inject((_$compile_, $controller, _$log_, _$q_, $rootScope, activity, metadata, _networkService_) => {
+            inject((_$compile_, $controller, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
-                getActivity = activity;
                 networkService = _networkService_;
                 networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
-                networkService.getActivityMetadata.and.returnValue($q.when(metadata('acb')));
+                networkService.getActivityMetadata.and.returnValue($q.when(getMetadata('acb')));
                 networkService.getFilters.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new()
