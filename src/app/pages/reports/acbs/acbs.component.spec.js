@@ -28,7 +28,7 @@ import {getActivity, getMetadata} from './history.mock';
 
                 scope = $rootScope.$new()
 
-                el = angular.element('<chpl-reports-acbs></chpl-reports-acbs');
+                el = angular.element('<chpl-reports-acbs></chpl-reports-acbs>');
 
                 $compile(el)(scope);
                 scope.$digest();
