@@ -39,14 +39,23 @@ export const ReportsProductsComponent = {
             }
         }
 
+        onApplyFilter (filterObj) {
+            let f = angular.fromJson(filterObj);
+            this.activityRange.startDate = new Date(Date.parse(f.startDate));
+            this.activityRange.endDate = new Date(Date.parse(f.endDate));
+            this.filterText = f.dataFilter;
+            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
+            this.search();
+        }
+
         createFilterDataObject () {
-            //let filterData = {};
-            //filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
-            //filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
-            //filterData.dataFilter = this.filterText;
-            //filterData.tableState = {};
-            //filterData.tableState = this.tableController.tableState();
-            //return filterData;
+            let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            filterData.dataFilter = this.filterText;
+            filterData.tableState = {};
+            filterData.tableState = this.tableController.tableState();
+            return filterData;
         }
 
         tableStateListener (tableController) {
