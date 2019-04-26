@@ -26,6 +26,11 @@ function reportsStateConfig ($stateProvider) {
             url: '/products',
             component: 'chplReportsProducts',
             data: { title: 'CHPL Reports - Products' },
+        })
+        .state('reports.versions', {
+            url: '/versions',
+            component: 'chplReportsVersions',
+            data: { title: 'CHPL Reports - Versions' },
         });
 }
 

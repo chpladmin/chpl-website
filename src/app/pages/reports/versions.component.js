@@ -1,6 +1,6 @@
-export const ReportsProductsComponent = {
-    templateUrl: 'chpl.reports/products.html',
-    controller: class ReportsProductsComponent {
+export const ReportsVersionsComponent = {
+    templateUrl: 'chpl.reports/versions.html',
+    controller: class ReportsVersionsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -64,65 +64,34 @@ export const ReportsProductsComponent = {
 
         parse (meta) {
             return this.networkService.getActivityById(meta.id).then(item => {
-                var activity = {
-                    id: item.id,
-                    date: item.activityDate,
-                };
-                if (item.developer) {
-                    activity.developer = item.developer.name;
-                } else {
-                    activity.developer = '';
-                }
-
-                var j;
                 var change;
+
+                var activity = {};
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
-                    activity.name = item.newData.name;
+                    activity.product = item.newData.productName;
+                    activity.name = item.newData.version;
                     activity.action = 'Update:<ul>';
-                    change = this.ReportService.compareItem(item.originalData, item.newData, 'name', 'Name');
-                    if (change) {
-                        activity.action += '<li>' + change + '</li>';
-                    }
-                    change = this.ReportService.compareItem(item.originalData, item.newData, 'developerName', 'Developer');
-                    if (change) {
-                        activity.action += '<li>' + change + '</li>';
-                    }
-                    var contactChanges = this.ReportService.compareContact(item.originalData.contact, item.newData.contact);
-                    if (contactChanges && contactChanges.length > 0) {
-                        activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
-                    }
-                    if (!angular.equals(item.originalData.ownerHistory, item.newData.ownerHistory)) {
-                        var action = '<li>Owner history changed. Was:<ul>';
-                        if (item.originalData.ownerHistory.length === 0) {
-                            action += '<li>No previous history</li>';
-                        } else {
-                            for (j = 0; j < item.originalData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + item.originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
-                            }
-                        }
-                        action += '</ul>Now:<ul>';
-                        if (item.newData.ownerHistory.length === 0) {
-                            action += '<li>No new history</li>';
-                        } else {
-                            for (j = 0; j < item.newData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
-                            }
-                        }
-                        action += '</ul></li>';
-                        activity.action += action;
-                    }
+                    change = this.ReportService.compareItem(item.originalData, item.newData, 'version', 'Version');
+                    if (change) { activity.action += '<li>' + change + '</li>'; }
+                    change = this.ReportService.compareItem(item.originalData, item.newData, 'productName', 'Associated Product');
+                    if (change) { activity.action += '<li>' + change + '</li>'; }
                     activity.action += '</ul>';
+                    meta.action = activity.action;
                 } else {
-                    this.ReportService.interpretNonUpdate(activity, item, 'product');
-                    activity.action = activity.action[0];
+                    if (item.newData) {
+                        activity.product = item.newData.productName;
+                    } else if (item.originalData) {
+                        activity.product = item.originalData.productName;
+                    }
+                    this.ReportService.interpretNonUpdate(activity, item, 'version', 'version');
+                    meta.action = activity.action[0];
                 }
-                meta.action = activity.action;
             });
         }
 
         prepare (results) {
             this.displayed = results.map(item => {
-                item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
+                item.filterText = item.productName + '|' + item.version + '|' + item.responsibleUser.fullName
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
                 item.fullName = item.responsibleUser.fullName;
                 return item;
@@ -138,7 +107,7 @@ export const ReportsProductsComponent = {
 
         search () {
             let that = this;
-            this.networkService.getActivityMetadata('products', this.dateAdjust(this.activityRange))
+            this.networkService.getActivityMetadata('versions', this.dateAdjust(this.activityRange))
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results);
@@ -152,4 +121,4 @@ export const ReportsProductsComponent = {
 }
 
 angular.module('chpl.reports')
-    .component('chplReportsProducts', ReportsProductsComponent);
+    .component('chplReportsVersions', ReportsVersionsComponent);
