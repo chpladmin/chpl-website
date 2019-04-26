@@ -12,6 +12,11 @@ function reportsStateConfig ($stateProvider) {
             component: 'chplReportsAcbs',
             data: { title: 'CHPL Reports - ONC-ACBs' },
         })
+        .state('reports.atls', {
+            url: '/onc-atls',
+            component: 'chplReportsAtls',
+            data: { title: 'CHPL Reports - ONC-ATLs' },
+        })
         .state('reports.listings', {
             url: '/listings/{productId}?',
             component: 'chplReportsListings',

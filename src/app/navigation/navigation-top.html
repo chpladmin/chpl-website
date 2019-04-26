@@ -92,7 +92,7 @@
             <li><a ui-sref="reports.listings({productId: null})">Listings</a></li>
             <li><a ui-sref="reports.developers()">Developers</a></li>
             <li><a ui-sref="reports.acbs()">ONC-ACBs</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/atl">ONC-ATLs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()">ONC-ATLs</a></li>
             <li><a href="#/admin/reports/prod">Products</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/announcement">Announcements</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/users">Users</a></li>
