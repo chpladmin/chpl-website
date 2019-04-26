@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Reports component', () => {
+    describe('the Reports component', () => {
         var $compile, $log, authService, ctrl, el, scope;
 
         beforeEach(() => {
