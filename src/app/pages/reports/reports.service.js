@@ -295,5 +295,5 @@ export class ReportService {
     }
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.reports')
     .service('ReportService', ReportService);

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Report Utility service', () => {
+    fdescribe('the Report Utility service', () => {
         var $log, mock, service;
 
         mock = {
@@ -29,7 +29,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.admin');
+            angular.mock.module('chpl.reports');
 
             inject((_$log_, _ReportService_) => {
                 $log = _$log_;
