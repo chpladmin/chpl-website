@@ -11,7 +11,7 @@ export const ReportsAcbsComponent = {
             this.networkService = networkService;
             this.utilService = utilService;
             this.activityRange = {
-                range: 30,
+                range: 365 * 6, //30
                 startDate: new Date(),
                 endDate: new Date(),
             };
@@ -83,6 +83,8 @@ export const ReportsAcbsComponent = {
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
                     if (item.originalData.deleted !== item.newData.deleted) {
                         activity.action = item.newData.deleted ? 'ONC-ACB was deleted' : 'ONC-ACB was restored';
+                    } else if (item.originalData.retired !== item.newData.retired) {
+                        activity.action = item.newData.retired ? 'ONC-ACB was retired' : 'ONC-ACB was un-retired';
                     } else {
                         activity.action = 'ONC-ACB was updated';
                         simpleFields.forEach(field => {
@@ -111,7 +113,8 @@ export const ReportsAcbsComponent = {
                 .map(item => {
                     item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
                     return item;
-                });
+                })
+                .forEach(item => this.parse(item));
         }
 
         prepareDownload () {

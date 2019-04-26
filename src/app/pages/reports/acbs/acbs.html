@@ -47,7 +47,7 @@
         <td>{{ activity.acbName }}</td>
         <td>
           <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
-          <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
+          <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails && activity.details && activity.details.length > 0" ng-click="activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
           <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
           <div ng-if="activity.action">
