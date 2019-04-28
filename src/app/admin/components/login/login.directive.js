@@ -240,6 +240,7 @@
                 .then(token => {
                     authService.saveToken(token.token);
                     vm.clear();
+                    $rootScope.$broadcast('unimpersonating');
                 });
         }
 

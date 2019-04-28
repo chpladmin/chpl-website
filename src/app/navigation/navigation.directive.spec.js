@@ -18,7 +18,9 @@
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
+                    $delegate.getAtls = jasmine.createSpy('getAtls');
                     $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
                     return $delegate;
                 });
@@ -40,7 +42,9 @@
             authService.isImpersonating.and.returnValue(false);
 
             networkService = _networkService_;
+            networkService.getAcbs.and.returnValue($q.when({acbs: []}));
             networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
+            networkService.getAtls.and.returnValue($q.when({atls: []}));
             networkService.getUserByUsername.and.returnValue($q.when({user: {}}));
 
             scope = $rootScope.$new();
