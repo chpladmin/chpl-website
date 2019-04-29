@@ -15,7 +15,7 @@ module.exports = env => {
         env.NODE_ENV =  'development'; // default to development if not provided
     }
     if (!env.flags) {
-        env.flags =  'development'; // default to development if not provided
+        env.flags =  env.NODE_ENV; // defaults to environment if not provided
     }
     let config = {
         entry: {

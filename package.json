@@ -7,7 +7,7 @@
     "build": "webpack",
     "html-lint": "htmllint src/app/**/*.html",
     "html-lint:verbose": "htmllint --rc .htmllintrc.verbose src/app/**/*.html",
-    "start": "webpack-dev-server --server",
+    "start": "webpack-dev-server --env.server",
     "profile": "webpack --profile --json > test_reports/stats.json",
     "test": "karma start --single-run",
     "test:auto": "karma start",
