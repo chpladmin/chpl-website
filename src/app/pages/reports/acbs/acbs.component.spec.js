@@ -8,11 +8,9 @@ import {getActivity, getMetadata} from './history.mock';
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
-                $provide.factory('aiFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
-                    $delegate.getFilters = jasmine.createSpy('getFilters');
                     return $delegate;
                 });
             });
@@ -24,7 +22,6 @@ import {getActivity, getMetadata} from './history.mock';
                 networkService = _networkService_;
                 networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
                 networkService.getActivityMetadata.and.returnValue($q.when(getMetadata('acb')));
-                networkService.getFilters.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new()
 
@@ -51,71 +48,13 @@ import {getActivity, getMetadata} from './history.mock';
         });
 
         describe('controller', () => {
-            describe('when loading', () => {
-                it('should get activity from the network', () => {
-                    expect(networkService.getActivityMetadata).toHaveBeenCalledWith('acbs', jasmine.any(Object));
-                });
+            it('should exist', () => {
+                expect(ctrl).toBeDefined();
             });
 
-            describe('helper functions', () => {
-                describe('for date ranges', () => {
-                    beforeEach(() => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('1/15/2017'),
-                            endDate: new Date('2/15/2017'),
-                        };
-                    });
-
-                    it('should have a function to determine if a date range is okay', () => {
-                        expect(ctrl.validDates).toBeDefined()
-                    });
-
-                    it('should allow dates with less than the range separation', () => {
-                        expect(ctrl.validDates()).toBe(true);
-                    });
-
-                    it('should not allow dates separated by more than the range', () => {
-                        ctrl.activityRange.range = 1;
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-
-                    it('should not allow dates where start is after end', () => {
-                        ctrl.activityRange.startDate = new Date('3/15/2017');
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-
-                    it('should allow "all time" if on a single listing', () => {
-                        ctrl.productId = 1;
-                        expect(ctrl.validDates()).toBe(true);
-                    });
-
-                    it('should correctly validate dates crossing DST', () => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('9/17/2017'),
-                            endDate: new Date('11/16/2017'),
-                        };
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-
-                    it('should correctly validate dates crossing DST', () => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('9/06/2017'),
-                            endDate: new Date('11/04/2017'),
-                        };
-                        expect(ctrl.validDates()).toBe(true);
-                    });
-
-                    it('should correctly validate dates crossing DST', () => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('9/06/2017'),
-                            endDate: new Date('11/05/2017'),
-                        };
-                        expect(ctrl.validDates()).toBe(false);
-                    });
+            describe('when loading', () => {
+                it('should get activity from the network', () => {
+                    expect(networkService.getActivityMetadata).toHaveBeenCalledWith('acbs');
                 });
             });
         });

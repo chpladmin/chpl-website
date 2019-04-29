@@ -1,4 +1,4 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results">
   <div class="row">
       <div class="col-sm-12">
         <h3>ONC-ACBs</h3>
@@ -6,29 +6,13 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-6">
-      <ai-filter feature-flag="adminNav" filter-type-id="1" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></ai-filter>
-    </div>
-    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
-      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
+    <div class="col-sm-6 col-sm-offset-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
             ng-csv="$ctrl.displayed" filename="ONC-ACB_{{ $ctrl.filename }}"
             csv-header="['ONC-ACB', 'Action', 'Details', 'Activity Date']"
             csv-column-order="['acbName', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
-  </div>
-  <div class="row form-group form-inline">
-    <div class="col-sm-12">
-      <label for="activity-start" class="control-label">Start Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStart" id="activity-start" placeholder="yyyy-MM-dd">
-      <label for="activity-end" class="control-label">End Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEnd" id="activity-end" placeholder="yyyy-MM-dd">
-      <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
-    </div>
-  </div>
-  <div class="row form-group" ng-if="!$ctrl.validDates()">
-    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
   </div>
 
   <table class="table table-responsive">
@@ -46,10 +30,8 @@
       <tr ng-repeat="activity in $ctrl.displayed">
         <td>{{ activity.acbName }}</td>
         <td>
-          <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
-          <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails && activity.details && activity.details.length > 0" ng-click="activity.showDetails = true">Details</button>
-          <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
-          <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
+          <button class="btn btn-link pull-right" ng-if="!activity.showDetails && activity.details && activity.details.length > 0" ng-click="activity.showDetails = true">Details</button>
+          <button class="btn btn-link pull-right" ng-if="activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
           <div ng-if="activity.action">
             <span ng-bind-html="activity.action"></span>
             <span ng-if="activity.showDetails">
