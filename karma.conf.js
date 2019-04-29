@@ -1,7 +1,9 @@
 'use strict';
 process.env.CHROME_BIN = require('puppeteer').executablePath()
 
-module.exports = (config) => {
+let webpack = require('./webpack.config');
+
+module.exports = config => {
     config.set({
         autoWatchBatchDelay: 3000,
         browsers: config.ahrq ? ['ChromeHeadlessNoSandbox'] : ['ChromeHeadless'],
@@ -50,6 +52,6 @@ module.exports = (config) => {
             dir: 'test_reports/coverage/',
             reports: ['html', 'lcov', 'text-summary'],
         },
-        webpack: require('./webpack.ci'),
+        webpack: webpack({NODE_ENV: 'development'}),
     });
 };

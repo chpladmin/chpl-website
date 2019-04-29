@@ -35,10 +35,10 @@ yarn install
 
 ### Yarn scripts
 
-* `yarn build`: Build deployable artifacts
+* `yarn build`: Build deployable artifacts. Takesa parameter of either `--env.NODE_ENV=production` or `--env.NODE_ENV=development` to indicate whether to build for development or production environments. Defaults to `development` if not provided
+* `yarn html`: Run HTML Linter with rules that should all pass
 * `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
-* `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
-* `yarn start:dist`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading. This version builds the production files, so should have minified/bundled/etc. sources
+* `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading. Takes a parameter of either `--env.NODE_ENV=production` or `--env.NODE_ENV=development` to indicate whether to build for development or production environments. Defaults to `development` if not provided
 * `yarn profile`: Generate a webpack statistics output file
 * `yarn test`: Run the unit tests once
 * `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
