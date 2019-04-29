@@ -7,4 +7,7 @@ _Date TBD_
 * Updated security for edit/split/merge of developers, products, and versions
 * Shrink main header navigation on page scroll
 
+### Text changes
+* Tweak text on unsupported browsers page to confirm IE is not supported
+
 ---
