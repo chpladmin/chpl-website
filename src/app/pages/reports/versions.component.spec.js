@@ -1,21 +1,21 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Developers component', () => {
+    describe('the Reports.Versions component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
+                $provide.factory('aiFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
-                    $delegate.getFilters = jasmine.createSpy('getFilters');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, $controller, _$log_, _$q_, $rootScope, _ActivityMock_, _Mock_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
@@ -24,12 +24,9 @@
 
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.developerReportsMetadata));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
-                networkService.getFilters.and.returnValue($q.when(Mock.developerReportsFilter))
 
                 scope = $rootScope.$new()
-
-                el = angular.element('<chpl-reports-developers></chpl-reports-developers>');
-
+                el = angular.element('<chpl-reports-versions></chpl-reports-versions>');
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -51,6 +48,9 @@
         });
 
         describe('controller', () => {
+            it('should exist', function () {
+                expect(ctrl).toBeDefined();
+            });
             describe('helper functions', () => {
                 describe('for date ranges', () => {
                     beforeEach(() => {
