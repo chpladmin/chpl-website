@@ -24,13 +24,8 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
 }
 
 body {
-    margin-top: 170px;
     background-image: url("../assets/images/CHPL_BackgroundPattern.png");
     font-family: "Lato", sans-serif;
-}
-
-header {
-    transition: all .4s ease;
 }
 
 a {
@@ -40,25 +35,6 @@ a {
 
 a.btn {
     text-decoration: none;
-}
-
-.navbar-inverse .navbar-nav>li>a {
-    font-family: "Oswald", sans-serif;
-    color: #ffdd3c;
-}
-
-.navbar-inverse {
-    background-image: url("../assets/images/CHPL_Header.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-bottom: 20px solid #0070c9;
-    min-height: 160px;
-    box-shadow: none;
-}
-
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.open>a {
-    box-shadow: none;
 }
 
 .no-br {
@@ -72,67 +48,6 @@ a.btn {
 .page-anchor {
     position: absolute;
     top: -125px;
-}
-
-@media (max-width: 767px) {
-
-    body {
-        margin-top: 0;
-    }
-
-    .navbar-fixed-top {
-        position: relative;
-        top: auto;
-    }
-
-    .navbar-fixed-bottom {
-        position: relative;
-    }
-
-    .navbar-nav > li > a {
-        line-height: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-}
-
-@media (min-width: 767px) {
-
-    .navbar-fixed-top .container {
-        position: relative;
-        min-height: 160px;
-    }
-
-    .navbar-fixed-top .nav {
-        position: absolute;
-        bottom: 0;
-        right: 15px;
-    }
-}
-
-footer {
-    margin-top: 150px;
-
-    .navbar-default {
-        background-color: #ebebeb;
-        background-image: none;
-
-        p {
-            color: #363636;
-
-            a {
-                color: #214e75;
-            }
-        }
-
-        .badge {
-            color: #fff;
-        }
-    }
-}
-
-.announcement.badge {
-    white-space: inherit;
 }
 
 .nav,
@@ -171,17 +86,6 @@ h4 {
 
 .splash-row .spaced-out {
     margin: 40px;
-}
-
-footer .spaced-out {
-    margin: 10px 40px;
-}
-
-header {
-
-    a.navbar-brand img {
-        margin: 10px 40px;
-    }
 }
 
 #loading-bar .bar {
@@ -283,14 +187,6 @@ header {
 .ai-gradient {
     color: #f5d43c;
     background: linear-gradient(#0070c9, #004378);
-}
-
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.active>a:focus,
-.navbar-inverse .navbar-nav>.active>a:hover,
-.navbar-inverse .navbar-nav>.open>a {
-    background: #0070c9;
-    background-image: none;
 }
 
 .text-bottom {
@@ -686,9 +582,9 @@ option[disabled] {
 }
 
 .uirTranVis_history {
-    bottom: 90px !important;
+    bottom: 25px !important;
 }
 
 .uirStateVisContainer {
-    bottom: 90px !important;
+    bottom: 25px !important;
 }

@@ -1,3 +1,4 @@
+/* global DEVELOPER_MODE */
 (function () {
     'use strict';
 
@@ -36,22 +37,32 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, networkService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, featureFlags, networkService) {
         var vm = this;
 
         vm.clear = clear;
+        vm.DEVELOPER_MODE = DEVELOPER_MODE;
         vm.getFullname = authService.getFullname;
         vm.isActive = isActive;
+        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;
+        vm.loadOrganizations = loadOrganizations;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
+        vm.toggleNav = toggleNav;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.loadAnnouncements();
+            vm.navShown = true;
+            $rootScope.bodyClass = 'navigation-shown';
 
+            if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
+                vm.loadOrganizations();
+                vm.toggleNav();
+            }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
             });
@@ -74,13 +85,32 @@
 
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
+                vm.loadOrganizations();
+                if (vm.navShown && featureFlags.isOn('adminNav')) {
+                    vm.toggleNav();
+                }
             })
             $scope.$on('$destroy', loggedIn);
 
             var loggedOut = $scope.$on('loggedOut', function () {
                 vm.loadAnnouncements();
+                if (!vm.navShown) {
+                    vm.toggleNav();
+                }
             })
             $scope.$on('$destroy', loggedOut);
+
+            var impersonating = $scope.$on('impersonating', function () {
+                vm.loadAnnouncements();
+                vm.loadOrganizations();
+            })
+            $scope.$on('$destroy', impersonating);
+
+            var unimpersonating = $scope.$on('unimpersonating', function () {
+                vm.loadAnnouncements();
+                vm.loadOrganizations();
+            })
+            $scope.$on('$destroy', unimpersonating);
         }
 
         function clear () {
@@ -102,12 +132,45 @@
                 });
         }
 
+        function loadOrganizations () {
+            if (!featureFlags.isOn('adminNav')) {
+                return;
+            }
+            networkService.getAcbs(true)
+                .then(data => {
+                    vm.acbs = data.acbs
+                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                        .map(a => {
+                            if (a.retired) {
+                                a.name += '<span class="pull-right">&lt;retired&gt;</span>';
+                            }
+                            return a;
+                        });
+                });
+            networkService.getAtls(true)
+                .then(data => {
+                    vm.atls = data.atls
+                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                        .map(a => {
+                            if (a.retired) {
+                                a.name += '<span class="pull-right">&lt;retired&gt;</span>';
+                            }
+                            return a;
+                        });
+                });
+        }
+
         function showCmsWidget (show) {
             vm.widgetExpanded = show;
         }
 
         function showCompareWidget (show) {
             vm.compareWidgetExpanded = show;
+        }
+
+        function toggleNav () {
+            vm.navShown = !vm.navShown;
+            $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
         }
     }
 })();
