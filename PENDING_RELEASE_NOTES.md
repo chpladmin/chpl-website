@@ -6,5 +6,6 @@ _Date TBD_
 * Shrink main header navigation on page scroll
 * Show "history popup" on all Listings
 * Updated security for edit/split/merge of developers, products, and versions
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
 
 ---

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Report Utility service', () => {
+    describe('the Report Utility service', () => {
         var $log, mock, service;
 
         mock = {
