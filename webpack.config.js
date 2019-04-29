@@ -8,8 +8,14 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = env => {
-    if (!env || !env.NODE_ENV) {
-        env = {NODE_ENV: 'development'}; // default to development if not provided
+    if (!env) {
+        env = {};
+    };
+    if (!env.NODE_ENV) {
+        env.NODE_ENV =  'development'; // default to development if not provided
+    }
+    if (!env.flags) {
+        env.flags =  'development'; // default to development if not provided
     }
     let config = {
         entry: {
@@ -207,7 +213,7 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 DEVELOPER_MODE: JSON.stringify(false),
                 ENABLE_LOGGING: JSON.stringify(false),
-                FEATURE_FLAGS: JSON.stringify(require('./flags.production.json')),
+                FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
                 MINUTES_UNTIL_IDLE: 50,
                 MINUTES_BETWEEN_KEEPALIVE: 1,
                 UAT_MODE: JSON.stringify(false),
@@ -230,7 +236,7 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 DEVELOPER_MODE: JSON.stringify(true),
                 ENABLE_LOGGING: JSON.stringify(true),
-                FEATURE_FLAGS: JSON.stringify(require('./flags.development.json')),
+                FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
                 MINUTES_UNTIL_IDLE: 150,
                 MINUTES_BETWEEN_KEEPALIVE: 1,
                 UAT_MODE: JSON.stringify(true),
