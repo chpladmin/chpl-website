@@ -55,6 +55,52 @@ import {getActivity, getMetadata} from './history.mock';
             describe('when loading', () => {
                 it('should get activity from the network', () => {
                     expect(networkService.getActivityMetadata).toHaveBeenCalledWith('atls');
+                    expect(ctrl.results.length).toBe(1);
+                });
+
+                it('should set the friendly date on metadata', () => {
+                    expect(ctrl.results[0].friendlyActivityDate).toBe('2019-04-26');
+                });
+
+                it('should parse the activity to find an action', () => {
+                    expect(ctrl.results[0].action).toBe('ONC-ATL was updated');
+                });
+
+                it('should parse the activity to find details', () => {
+                    expect(ctrl.results[0].details).toEqual([
+                        'Address changes<ul><li>Street Line 2 changed from 3rd Floor to 3rd Floor, room 2</li></ul>',
+                    ]);
+                });
+
+                it('should parse the activity to find csvdetails', () => {
+                    expect(ctrl.results[0].csvDetails).toBe('Address changes<ul><li>Street Line 2 changed from 3rd Floor to 3rd Floor, room 2</li></ul>');
+                });
+            });
+
+            describe('when handling download', () => {
+                it('should not be ready when no results are defined', () => {
+                    ctrl.displayed = undefined;
+                    expect(ctrl.downloadReady()).toBeUndefined();
+                });
+
+                it('should not be ready when there are no results', () => {
+                    ctrl.displayed = [];
+                    expect(ctrl.downloadReady()).toBe(false);
+                });
+
+                it('should not be ready when the action is not defined', () => {
+                    ctrl.displayed = [{ action: undefined }];
+                    expect(ctrl.downloadReady()).toBe(false);
+                });
+
+                it('should not be ready when any of the actions are not defined', () => {
+                    ctrl.displayed = [{action: 'defined'}, { action: undefined }];
+                    expect(ctrl.downloadReady()).toBe(false);
+                });
+
+                it('should be ready when all of the actions are defined', () => {
+                    ctrl.displayed = [{action: 'defined'}, { action: 'defined too' }];
+                    expect(ctrl.downloadReady()).toBe(true);
                 });
             });
         });

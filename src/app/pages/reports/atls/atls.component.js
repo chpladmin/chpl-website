@@ -12,7 +12,7 @@ export const ReportsAtlsComponent = {
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
-        $onChanges () {
+        $onInit () {
             let that = this;
             this.networkService.getActivityMetadata('atls')
                 .then(results => {
@@ -22,7 +22,7 @@ export const ReportsAtlsComponent = {
         }
 
         downloadReady () {
-            return this.displayed.reduce((acc, activity) => activity.action && acc, this.displayed);
+            return this.displayed && this.displayed.reduce((acc, activity) => !!activity.action && acc, this.displayed.length > 0);
         }
 
         parse (meta) {

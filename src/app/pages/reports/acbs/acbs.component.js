@@ -22,7 +22,7 @@ export const ReportsAcbsComponent = {
         }
 
         downloadReady () {
-            return this.displayed.reduce((acc, activity) => activity.action && acc, this.displayed);
+            return this.displayed && this.displayed.reduce((acc, activity) => !!activity.action && acc, this.displayed.length > 0);
         }
 
         parse (meta) {
