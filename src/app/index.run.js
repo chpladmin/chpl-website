@@ -9,7 +9,7 @@ import { Visualizer } from '@uirouter/visualizer';
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $location, $log, $rootScope, $state, $timeout, $transitions, $uiRouter, $window, authService, networkService) {
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $state, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
 
         // Update page title on state change
         $transitions.onSuccess({}, transition => {
@@ -40,9 +40,18 @@ import { Visualizer } from '@uirouter/visualizer';
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(() => angular.noop)
+                .then(response => {
+                    if (featureFlags.isOn('ocd2820')) {
+                        angular.noop;
+                    } else if (response.error === 'Invalid authentication token.') {
+                        authService.logout();
+                        $state.reload();
+                    }
+                })
                 .catch(error => {
-                    if (error.status === 401) {
+                    if (!featureFlags.isOn('ocd2820')) {
+                        angular.noop;
+                    } else if (error.status === 401) {
                         authService.logout();
                         $state.reload();
                     }
