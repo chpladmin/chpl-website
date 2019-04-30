@@ -632,26 +632,20 @@ export class NetworkService {
             return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         } else {
             return this.$http.get(this.API + endpoint)
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         }
     }
 

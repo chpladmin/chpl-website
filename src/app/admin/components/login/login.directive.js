@@ -87,11 +87,6 @@
             });
             $scope.$on('$destroy', keepalive);
 
-            var badAuthorization = $scope.$on('badAuthorization', function () {
-                vm.activity = vm.activityEnum.LOGIN;
-            })
-            $scope.$on('$destroy', badAuthorization);
-
             var idle = $scope.$on('IdleTimeout', function () {
                 $log.info('IdleTimeout - being logged out.');
                 logout();

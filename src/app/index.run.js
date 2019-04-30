@@ -40,8 +40,9 @@ import { Visualizer } from '@uirouter/visualizer';
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(function (response) {
-                    if (response.error === 'Invalid authentication token.') {
+                .then(() => angular.noop)
+                .catch(error => {
+                    if (error.status === 401) {
                         authService.logout();
                         $state.reload();
                     }

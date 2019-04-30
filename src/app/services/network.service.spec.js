@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Network service', () => {
-        var $httpBackend, $log, $rootScope, mock, networkService;
+        var $httpBackend, $log, mock, networkService;
 
         mock = {};
         mock.editions = ['Edition 1', 'Edition 2'];
@@ -10,10 +10,9 @@
         beforeEach(() => {
             angular.mock.module('chpl.services');
 
-            inject((_$httpBackend_, _$log_, _$rootScope_, _networkService_) => {
+            inject((_$httpBackend_, _$log_, _networkService_) => {
                 $httpBackend = _$httpBackend_;
                 $log = _$log_;
-                $rootScope = _$rootScope_;
                 networkService = _networkService_;
 
                 $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
@@ -31,15 +30,6 @@
         });
 
         describe('for general REST calls', () => {
-            it('should log the user out if a GET responds with that message', () => {
-                spyOn($rootScope, '$broadcast').and.callFake(() => {});
-                $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, {error: 'Invalid authentication token.'});
-                networkService.getProduct('id').then(() => {
-                    expect($rootScope.$broadcast).toHaveBeenCalledWith('badAuthorization');
-                });
-                $httpBackend.flush();
-            });
-
             it('should return a promise with the data if a GET doesn\'t return an object', function () {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
                 networkService.getProduct('id').then(response => {
