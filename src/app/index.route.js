@@ -1,4 +1,4 @@
-/* global UAT_MODE */
+/* global DEVELOPER_MODE */
 
 (function () {
     'use strict';
@@ -17,7 +17,7 @@
         .config(reportsState)
         .config(resourcesState);
 
-    if (UAT_MODE) {
+    if (DEVELOPER_MODE) {
         angular
             .module('chpl')
             .config(organizationsState);
@@ -107,7 +107,7 @@
                 template: require('./pages/search/search.html'),
                 data: { title: 'CHPL Search' },
             });
-        if (UAT_MODE) {
+        if (DEVELOPER_MODE) {
             $stateProvider
                 .state('listing', {
                     url: '/listing/{id}/{initialPanel}',
