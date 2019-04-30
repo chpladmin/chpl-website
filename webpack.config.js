@@ -18,6 +18,7 @@ module.exports = env => {
         env.flags =  env.NODE_ENV; // defaults to environment if not provided
     }
     let config = {
+        mode: env.NODE_ENV,
         entry: {
             app: path.resolve(__dirname, './src/app/index.js'),
             admin: path.resolve(__dirname, './src/app/admin/index.js'),
@@ -185,8 +186,17 @@ module.exports = env => {
         ]
     };
 
+    config.plugins.push(
+        new webpack.DefinePlugin({
+            DEVELOPER_MODE: JSON.stringify(env.NODE_ENV === 'development' || env.flags === 'development'),
+            ENABLE_LOGGING: JSON.stringify(env.NODE_ENV === 'development' && env.flags === 'development'),
+            FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
+            MINUTES_UNTIL_IDLE: env.NODE_ENV === 'development' ? 150 : 50,
+            MINUTES_BETWEEN_KEEPALIVE: 1,
+        })
+    );
+
     if (env.NODE_ENV === 'production') {
-        config.mode = 'production';
         config.optimization = {
             runtimeChunk: 'single',
             splitChunks: {
@@ -209,37 +219,16 @@ module.exports = env => {
             },
         };
         config.plugins.push(new CleanWebpackPlugin(['dist']));
-        config.plugins.push(
-            new webpack.DefinePlugin({
-                DEVELOPER_MODE: JSON.stringify(false),
-                ENABLE_LOGGING: JSON.stringify(false),
-                FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
-                MINUTES_UNTIL_IDLE: 50,
-                MINUTES_BETWEEN_KEEPALIVE: 1,
-                UAT_MODE: JSON.stringify(false),
-            })
-        );
         config.plugins.push(new webpack.HashedModuleIdsPlugin());
     };
     if (env.NODE_ENV === 'development') {
         config.devtool = 'inline-source-map',
-        config.mode = 'development',
         config.plugins.push(
             new HtmlWebpackPlugin({
                 filename: 'style.html',
                 hash: true,
                 inject: 'body',
                 template: path.resolve(__dirname, './src/style.html'),
-            })
-        );
-        config.plugins.push(
-            new webpack.DefinePlugin({
-                DEVELOPER_MODE: JSON.stringify(true),
-                ENABLE_LOGGING: JSON.stringify(true),
-                FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
-                MINUTES_UNTIL_IDLE: 150,
-                MINUTES_BETWEEN_KEEPALIVE: 1,
-                UAT_MODE: JSON.stringify(true),
             })
         );
     };
