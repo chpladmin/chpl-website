@@ -30,7 +30,7 @@ export const ReportsAcbsComponent = {
                 const simpleFields = [
                     {key: 'name', display: 'Name'},
                     {key: 'retired', display: 'Retired'},
-                    {key: 'retirementDate', display: 'RetirementDate', filter: 'date'},
+                    {key: 'retirementDate', display: 'Retirement Date', filter: 'date'},
                     {key: 'website', display: 'Website'},
                 ];
 
