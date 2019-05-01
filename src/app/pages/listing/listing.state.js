@@ -1,5 +1,3 @@
-/* global DEVELOPER_MODE */
-
 let states = {
     'listing-edit-on': [
         {
@@ -50,17 +48,14 @@ let states = {
     ],
 }
 
+/**
+ * This config can only be used when the listing-edit flag is set to true and/or removed when listing-edit is fully deployed
+ */
 function listingStateConfig ($stateProvider) {
     'ngInject'
-    if (DEVELOPER_MODE) {
-        states['listing-edit-on'].forEach(state => {
-            $stateProvider.state(state);
-        });
-    } else {
-        states['listing-edit-off'].forEach(state => {
-            $stateProvider.state(state);
-        });
-    }
+    states['listing-edit-on'].forEach(state => {
+        $stateProvider.state(state);
+    });
 }
 
 export { listingStateConfig, states };
