@@ -8,7 +8,6 @@
     <div class="main-content row" id="main-content" tabindex="-1" ng-if="$ctrl.hasAnyRole()">
       <div class="col-sm-12">
         <ui-view></ui-view>
-        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN'])" feature-flag="feature-flag-toggle" feature-flag-overrides></div>
       </div>
     </div>
   </span>
