@@ -1,13 +1,8 @@
-/* global DEVELOPER_MODE */
-
-import { listingStateConfig } from './pages/listing/listing.state.js';
-
 (function () {
     'use strict';
 
     let administrationState = require('./pages/administration/administration.state.js');
     let collectionsState = require('./pages/collections/collections.state.js');
-    let organizationsState = require('./pages/organizations/organizations.state.js');
     let reportsState = require('./pages/reports/reports.state.js');
     let resourcesState = require('./pages/resources/resources.state.js');
 
@@ -15,16 +10,9 @@ import { listingStateConfig } from './pages/listing/listing.state.js';
         .module('chpl')
         .config(routeConfig)
         .config(administrationState)
-        .config(listingStateConfig)
         .config(collectionsState)
         .config(reportsState)
         .config(resourcesState);
-
-    if (DEVELOPER_MODE) {
-        angular
-            .module('chpl')
-            .config(organizationsState);
-    }
 
     function routeConfig ($stateProvider, $urlRouterProvider) {
         $stateProvider

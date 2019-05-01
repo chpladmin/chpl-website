@@ -1,4 +1,5 @@
 [
     { "key": "adminNav", "active": true, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" },
+    { "key": "developer-page", "active": true, "name": "Developer Page", "description": "A specific page for Developers" },
     { "key": "listing-edit", "active": true, "name": "Improved editing", "description": "In place editing of Developer, Product, Version, and Listing" }
 ]

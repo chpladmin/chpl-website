@@ -63,4 +63,4 @@ function listingStateConfig ($stateProvider) {
     }
 }
 
-export { listingStateConfig };
+export { listingStateConfig, states };
