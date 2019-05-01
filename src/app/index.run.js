@@ -1,5 +1,7 @@
 /* global DEVELOPER_MODE ENABLE_LOGGING */
 import { Visualizer } from '@uirouter/visualizer';
+import { states as listingStates } from './pages/listing/listing.state.js';
+import { states as organizationsStates } from './pages/organizations/organizations.state.js';
 
 (function () {
     'use strict';
@@ -9,7 +11,7 @@ import { Visualizer } from '@uirouter/visualizer';
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window) {
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window, featureFlags) {
 
         // Update page title on state change
         $transitions.onSuccess({}, transition => {
@@ -35,6 +37,22 @@ import { Visualizer } from '@uirouter/visualizer';
                     elementAng.attr('tabindex', '-1');
                     element.focus();
                 }
+            });
+        }
+
+        // load states dependent on features
+        if (featureFlags.isOn('listing-edit')) {
+            listingStates['listing-edit-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else {
+            listingStates['listing-edit-off'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+        if (featureFlags.isOn('developer-page')) {
+            organizationsStates.forEach(state => {
+                $uiRouter.stateRegistry.register(state);
             });
         }
 
