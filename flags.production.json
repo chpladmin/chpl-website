@@ -1,3 +1,4 @@
 [
-    { "key": "adminNav", "active": false, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" }
+    { "key": "adminNav", "active": false, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" },
+    { "key": "ocd2894", "active": false, "name": "Overview nav", "description": "Modifications to the Overview page" }
 ]
