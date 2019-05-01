@@ -9,4 +9,7 @@ _Date TBD_
 * Updated language on Charts page.
 * Shrink main header navigation on page scroll
 
+### Text changes
+* Tweak text on unsupported browsers page to confirm IE is not supported
+
 ---
