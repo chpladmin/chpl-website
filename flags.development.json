@@ -1,3 +1,4 @@
 [
-    { "key": "adminNav", "active": true, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" }
+    { "key": "adminNav", "active": true, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" },
+    { "key": "listing-edit", "active": true, "name": "Improved editing", "description": "In place editing of Developer, Product, Version, and Listing" }
 ]
