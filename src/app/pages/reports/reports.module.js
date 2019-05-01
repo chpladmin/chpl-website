@@ -1,6 +1,6 @@
 export default angular
-    .module('chpl.listing', [
+    .module('chpl.reports', [
         'chpl.services',
-        'ngSanitize',
+        'ngCsv',
         'ui.bootstrap',
     ]);

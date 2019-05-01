@@ -1,5 +1,6 @@
 const ctxs = [];
 ctxs.push({module: 'chpl.admin', ctx: require.context('./admin/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.administration', ctx: require.context('./pages/administration/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.charts', ctx: require.context('./pages/charts/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.chpl_api', ctx: require.context('./pages/resources/chpl-api/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.compare', ctx: require.context('./pages/compare/', true, /.*\.html$/)});
@@ -13,6 +14,7 @@ ctxs.push({module: 'chpl.overview', ctx: require.context('./pages/resources/over
 ctxs.push({module: 'chpl.organizations', ctx: require.context('./pages/organizations/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.product', ctx: require.context('./product/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.registration', ctx: require.context('./pages/registration/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.reports', ctx: require.context('./pages/reports/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.search', ctx: require.context('./pages/search/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.services', ctx: require.context('./services/', true, /.*\.html$/)});
 

@@ -7,3 +7,6 @@
   * Includes Edit, Merge, and Split
 * Add support for Version editing on new Organizations - Developer - Product page
   * Includes Edit, and Merge
+* Add new Admin navigation bar, including direct pages for:
+  * Listing Reports
+  * Confirmation of Listings
