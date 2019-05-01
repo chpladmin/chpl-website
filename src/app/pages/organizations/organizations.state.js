@@ -12,8 +12,14 @@ let states = [
             action: {squash: true, value: null},
         },
         resolve: {
-            developer: (networkService, $transition$) => networkService.getDeveloper($transition$.params().developerId),
-            products: (networkService, $transition$) => networkService.getProductsByDeveloper($transition$.params().developerId),
+            developer: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getDeveloper($transition$.params().developerId);
+            },
+            products: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getProductsByDeveloper($transition$.params().developerId);
+            },
         },
         data: { title: 'CHPL Developers' },
     },{
@@ -24,8 +30,14 @@ let states = [
             action: {squash: true, value: null},
         },
         resolve: {
-            product: (networkService, $transition$) => networkService.getSimpleProduct($transition$.params().productId),
-            versions: (networkService, $transition$) => networkService.getVersionsByProduct($transition$.params().productId),
+            product: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getSimpleProduct($transition$.params().productId);
+            },
+            versions: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getVersionsByProduct($transition$.params().productId);
+            },
         },
         data: { title: 'CHPL Products' },
     },{
@@ -36,8 +48,14 @@ let states = [
             action: {squash: true, value: null},
         },
         resolve: {
-            version: (networkService, $transition$) => networkService.getVersion($transition$.params().versionId),
-            listings: (networkService, $transition$) => networkService.getProductsByVersion($transition$.params().versionId, false),
+            version: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getVersion($transition$.params().versionId);
+            },
+            listings: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getProductsByVersion($transition$.params().versionId, false);
+            },
         },
         data: { title: 'CHPL Product Versions' },
     },
