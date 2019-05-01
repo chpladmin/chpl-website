@@ -240,6 +240,18 @@ export const ListingHistoryComponent = {
                 }
             } else if (activity.description.startsWith('Merged ')) {
                 activity.change.push('Merged Developers ' + prev.map(d => d.name).join(', ') + ' to make Developer ' + curr.name);
+                let that = this;
+                prev.forEach(v => {  // look at history of "parent" Developers
+                    that.networkService.getSingleDeveloperActivityMetadata(v.id).then(response => {
+                        let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
+                        that.$q.all(promises)
+                            .then(response => {
+                                that.activity = that.activity
+                                    .concat(response)
+                                    .filter(a => a.change && a.change.length > 0);
+                            });
+                    });
+                });
             }
             return activity;
         }
@@ -255,6 +267,18 @@ export const ListingHistoryComponent = {
                 }
             } else if (activity.description.startsWith('Merged ')) {
                 activity.change.push('Merged Products ' + prev.map(p => p.name).join(', ') + ' to make Product ' + curr.name);
+                let that = this;
+                prev.forEach(v => {  // look at history of "parent" Products
+                    that.networkService.getSingleProductActivityMetadata(v.id).then(response => {
+                        let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
+                        that.$q.all(promises)
+                            .then(response => {
+                                that.activity = that.activity
+                                    .concat(response)
+                                    .filter(a => a.change && a.change.length > 0);
+                            });
+                    });
+                });
             }
             return activity;
         }
@@ -270,18 +294,18 @@ export const ListingHistoryComponent = {
                 }
             } else if (activity.description.startsWith('Merged ')) {
                 activity.change.push('Merged Versions ' + prev.map(v => v.version).join(', ') + ' to make Version ' + curr.version);
-                /*let that = this;
-                  prev.forEach(v => {  // look at history of "parent" Versions; doesn't work now as those Versions are marked as deleted
-                  that.networkService.getSingleVersionActivityMetadata(v.id).then(response => {
-                  let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
-                  that.$q.all(promises)
-                  .then(response => {
-                  that.activity = that.activity
-                  .concat(response)
-                  .filter(a => a.change && a.change.length > 0);
-                  });
-                  });
-                  });*/
+                let that = this;
+                prev.forEach(v => {  // look at history of "parent" Versions
+                    that.networkService.getSingleVersionActivityMetadata(v.id).then(response => {
+                        let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
+                        that.$q.all(promises)
+                            .then(response => {
+                                that.activity = that.activity
+                                    .concat(response)
+                                    .filter(a => a.change && a.change.length > 0);
+                            });
+                    });
+                });
             }
             return activity;
         }
