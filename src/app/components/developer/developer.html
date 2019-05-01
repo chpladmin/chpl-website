@@ -12,7 +12,7 @@
       </p>
     </span>
     <span ng-if="$ctrl.showFull">
-      {{ $ctrl.developer.name }} (Developer code: {{$ctrl.developer.developerCode }})  <em class="pull-right">Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em>
+      {{ $ctrl.developer.name }} <span ng-if="!$ctrl.isSplitting">(Developer code: {{$ctrl.developer.developerCode }}) <em class="pull-right">Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></span>
     </span>
     <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
     <span ng-if="$ctrl.showFull">
