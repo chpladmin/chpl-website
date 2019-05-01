@@ -1,4 +1,3 @@
-/* global DEVELOPER_MODE ENABLE_LOGGING */
 import { Visualizer } from '@uirouter/visualizer';
 import { states as listingStates } from './pages/listing/listing.state.js';
 import { states as organizationsStates } from './pages/organizations/organizations.state.js';
@@ -57,7 +56,7 @@ import { states as organizationsStates } from './pages/organizations/organizatio
         }
 
         // Display ui-router state changes
-        if (DEVELOPER_MODE && ENABLE_LOGGING) {
+        if (featureFlags.isOn('states')) {
             $uiRouter.plugin(Visualizer);
         }
     }
