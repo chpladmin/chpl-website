@@ -371,7 +371,7 @@ export class NetworkService {
     getSingleDeveloperActivityMetadata (id, options) {
         let url = '/activity/metadata/developers/' + id
         if (options && options.end) {
-            url += "?end=" + options.end;
+            url += '?end=' + options.end;
         }
         return this.apiGET(url);
     }
@@ -379,7 +379,7 @@ export class NetworkService {
     getSingleListingActivityMetadata (id, options) {
         let url = '/activity/metadata/listings/' + id;
         if (options && options.end) {
-            url += "?end=" + options.end;
+            url += '?end=' + options.end;
         }
         return this.apiGET(url);
     }
@@ -387,7 +387,7 @@ export class NetworkService {
     getSingleProductActivityMetadata (id, options) {
         let url = '/activity/metadata/products/' + id;
         if (options && options.end) {
-            url += "?end=" + options.end;
+            url += '?end=' + options.end;
         }
         return this.apiGET(url);
     }
@@ -395,7 +395,7 @@ export class NetworkService {
     getSingleVersionActivityMetadata (id, options) {
         let url = '/activity/metadata/versions/' + id;
         if (options && options.end) {
-            url += "?end=" + options.end;
+            url += '?end=' + options.end;
         }
         return this.apiGET(url);
     }
