@@ -241,8 +241,8 @@ export const ListingHistoryComponent = {
             } else if (activity.description.startsWith('Merged ')) {
                 activity.change.push('Merged Developers ' + prev.map(d => d.name).join(', ') + ' to make Developer ' + curr.name);
                 let that = this;
-                prev.forEach(v => {  // look at history of "parent" Developers
-                    that.networkService.getSingleDeveloperActivityMetadata(v.id).then(response => {
+                prev.forEach(d => {  // look at history of "parent" Developers
+                    that.networkService.getSingleDeveloperActivityMetadata(d.id).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
                         that.$q.all(promises)
                             .then(response => {
@@ -252,6 +252,8 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
+            } else if (activity.description.startsWith('Split ')) {
+                activity.change.push('Split Developer ' + prev.name + ' into Developers ' + curr[0].name + ' and ' + curr[1].name);
             }
             return activity;
         }
@@ -268,8 +270,8 @@ export const ListingHistoryComponent = {
             } else if (activity.description.startsWith('Merged ')) {
                 activity.change.push('Merged Products ' + prev.map(p => p.name).join(', ') + ' to make Product ' + curr.name);
                 let that = this;
-                prev.forEach(v => {  // look at history of "parent" Products
-                    that.networkService.getSingleProductActivityMetadata(v.id).then(response => {
+                prev.forEach(p => {  // look at history of "parent" Products
+                    that.networkService.getSingleProductActivityMetadata(p.id).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
                         that.$q.all(promises)
                             .then(response => {
@@ -279,6 +281,8 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
+            } else if (activity.description.startsWith('Split ')) {
+                activity.change.push('Split Product ' + prev.name + ' into Products ' + curr[0].name + ' and ' + curr[1].name);
             }
             return activity;
         }
@@ -306,6 +310,8 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
+            } else if (activity.description.startsWith('Split ')) {
+                activity.change.push('Split Version ' + prev.version + ' into Versions ' + curr[0].version + ' and ' + curr[1].version);
             }
             return activity;
         }
