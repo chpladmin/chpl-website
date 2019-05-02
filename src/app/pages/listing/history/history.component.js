@@ -263,7 +263,7 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
-            } else if (activity.description.startsWith('Split ')) {
+            } else if (activity.description.startsWith('Split ') && featureFlags.isOn('better-split')) {
                 activity.change.push('Split Developer ' + prev.name + ' into Developers ' + curr[0].name + ' and ' + curr[1].name);
                 if (this.interpretedActivity.developers.indexOf(prev.id) === -1) {
                     let that = this;
@@ -306,7 +306,7 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
-            } else if (activity.description.startsWith('Split ')) {
+            } else if (activity.description.startsWith('Split ') && featureFlags.isOn('better-split')) {
                 activity.change.push('Split Product ' + prev.name + ' into Products ' + curr[0].name + ' and ' + curr[1].name);
                 if (this.interpretedActivity.products.indexOf(prev.id) === -1) {
                     let that = this;
@@ -349,7 +349,7 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
-            } else if (activity.description.startsWith('Split ')) {
+            } else if (activity.description.startsWith('Split ') && featureFlags.isOn('better-split')) {
                 activity.change.push('Split Version ' + prev.version + ' into Versions ' + curr[0].version + ' and ' + curr[1].version);
                 if (this.interpretedActivity.versions.indexOf(prev.id) === -1) {
                     let that = this;
