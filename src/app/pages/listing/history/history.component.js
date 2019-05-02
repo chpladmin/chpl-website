@@ -6,7 +6,7 @@ export const ListingHistoryComponent = {
         dismiss: '&',
     },
     controller: class ListingHistoryComponent {
-        constructor ($filter, $location, $log, $q, networkService, utilService) {
+        constructor ($filter, $location, $log, $q, featureFlags, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$location = $location;
@@ -15,6 +15,12 @@ export const ListingHistoryComponent = {
             this.networkService = networkService;
             this.utilService = utilService;
             this.activity = [];
+            this.interpretedActivity = {
+                listings: [],
+                versions: [],
+                products: [],
+                developers: [],
+            };
         }
 
         $onInit () {
@@ -23,6 +29,7 @@ export const ListingHistoryComponent = {
             this._interpretCertificationStatusChanges();
             this._interpretMuuHistory();
             this.networkService.getSingleListingActivityMetadata(this.listing.id).then(response => {
+                that.interpretedActivity.listings.push(that.listing.id);
                 let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretActivity(response)));
                 that.$q.all(promises)
                     .then(response => {
@@ -32,6 +39,7 @@ export const ListingHistoryComponent = {
                     });
             });
             this.networkService.getSingleVersionActivityMetadata(this.listing.version.versionId).then(response => {
+                that.interpretedActivity.versions.push(that.listing.version.versionId);
                 let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
                 that.$q.all(promises)
                     .then(response => {
@@ -41,6 +49,7 @@ export const ListingHistoryComponent = {
                     });
             });
             this.networkService.getSingleProductActivityMetadata(this.listing.product.productId).then(response => {
+                that.interpretedActivity.products.push(that.listing.product.productId);
                 let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
                 that.$q.all(promises)
                     .then(response => {
@@ -50,6 +59,7 @@ export const ListingHistoryComponent = {
                     });
             });
             this.networkService.getSingleDeveloperActivityMetadata(this.listing.developer.developerId).then(response => {
+                that.interpretedActivity.developers.push(that.listing.developer.developerId);
                 let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
                 that.$q.all(promises)
                     .then(response => {
@@ -242,6 +252,7 @@ export const ListingHistoryComponent = {
                 activity.change.push('Merged Developers ' + prev.map(d => d.name).join(', ') + ' to make Developer ' + curr.name);
                 let that = this;
                 prev.forEach(d => {  // look at history of "parent" Developers
+                    that.interpretedActivity.developers.push(d.id);
                     that.networkService.getSingleDeveloperActivityMetadata(d.id).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
                         that.$q.all(promises)
@@ -254,6 +265,19 @@ export const ListingHistoryComponent = {
                 });
             } else if (activity.description.startsWith('Split ')) {
                 activity.change.push('Split Developer ' + prev.name + ' into Developers ' + curr[0].name + ' and ' + curr[1].name);
+                if (this.interpretedActivity.developers.indexOf(prev.id) === -1) {
+                    let that = this;
+                    that.interpretedActivity.developers.push(prev.id);
+                    that.networkService.getSingleDeveloperActivityMetadata(prev.id, {end: activity.date}).then(response => {
+                        let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
+                        that.$q.all(promises)
+                            .then(response => {
+                                that.activity = that.activity
+                                    .concat(response)
+                                    .filter(a => a.change && a.change.length > 0);
+                            });
+                    });
+                }
             }
             return activity;
         }
@@ -271,6 +295,7 @@ export const ListingHistoryComponent = {
                 activity.change.push('Merged Products ' + prev.map(p => p.name).join(', ') + ' to make Product ' + curr.name);
                 let that = this;
                 prev.forEach(p => {  // look at history of "parent" Products
+                    that.interpretedActivity.products.push(prev.id);
                     that.networkService.getSingleProductActivityMetadata(p.id).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
                         that.$q.all(promises)
@@ -283,6 +308,19 @@ export const ListingHistoryComponent = {
                 });
             } else if (activity.description.startsWith('Split ')) {
                 activity.change.push('Split Product ' + prev.name + ' into Products ' + curr[0].name + ' and ' + curr[1].name);
+                if (this.interpretedActivity.products.indexOf(prev.id) === -1) {
+                    let that = this;
+                    that.interpretedActivity.products.push(prev.id);
+                    that.networkService.getSingleProductActivityMetadata(prev.id, {end: activity.date}).then(response => {
+                        let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
+                        that.$q.all(promises)
+                            .then(response => {
+                                that.activity = that.activity
+                                    .concat(response)
+                                    .filter(a => a.change && a.change.length > 0);
+                            });
+                    });
+                }
             }
             return activity;
         }
@@ -300,6 +338,7 @@ export const ListingHistoryComponent = {
                 activity.change.push('Merged Versions ' + prev.map(v => v.version).join(', ') + ' to make Version ' + curr.version);
                 let that = this;
                 prev.forEach(v => {  // look at history of "parent" Versions
+                    that.interpretedActivity.versions.push(prev.id);
                     that.networkService.getSingleVersionActivityMetadata(v.id).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
                         that.$q.all(promises)
@@ -312,6 +351,19 @@ export const ListingHistoryComponent = {
                 });
             } else if (activity.description.startsWith('Split ')) {
                 activity.change.push('Split Version ' + prev.version + ' into Versions ' + curr[0].version + ' and ' + curr[1].version);
+                if (this.interpretedActivity.versions.indexOf(prev.id) === -1) {
+                    let that = this;
+                    that.interpretedActivity.versions.push(prev.id);
+                    that.networkService.getSingleVersionActivityMetadata(prev.id, {end: activity.date}).then(response => {
+                        let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
+                        that.$q.all(promises)
+                            .then(response => {
+                                that.activity = that.activity
+                                    .concat(response)
+                                    .filter(a => a.change && a.change.length > 0);
+                            });
+                    });
+                }
             }
             return activity;
         }

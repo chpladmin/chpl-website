@@ -368,20 +368,36 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleDeveloperActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/developers/' + id);
+    getSingleDeveloperActivityMetadata (id, options) {
+        let url = '/activity/metadata/developers/' + id
+        if (options && options.end) {
+            url += "?end=" + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleListingActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/listings/' + id);
+    getSingleListingActivityMetadata (id, options) {
+        let url = '/activity/metadata/listings/' + id;
+        if (options && options.end) {
+            url += "?end=" + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleProductActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/products/' + id);
+    getSingleProductActivityMetadata (id, options) {
+        let url = '/activity/metadata/products/' + id;
+        if (options && options.end) {
+            url += "?end=" + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleVersionActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/versions/' + id);
+    getSingleVersionActivityMetadata (id, options) {
+        let url = '/activity/metadata/versions/' + id;
+        if (options && options.end) {
+            url += "?end=" + options.end;
+        }
+        return this.apiGET(url);
     }
 
     getSurveillanceLookups () {
