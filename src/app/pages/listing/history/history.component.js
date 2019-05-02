@@ -250,7 +250,7 @@ export const ListingHistoryComponent = {
                     activity.change.push('Developer changed from ' + prev.name + ' to ' + curr.name);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Developers ' + prev.map(d => d.name).join(', ') + ' to make Developer ' + curr.name);
+                activity.change.push('Merged Developers ' + prev.map(d => d.name).join(' and ') + ' to make Developer ' + curr.name);
                 let that = this;
                 prev.forEach(d => {  // look at history of "parent" Developers
                     that.interpretedActivity.developers.push(d.id);
@@ -293,7 +293,7 @@ export const ListingHistoryComponent = {
                     activity.change.push('Product changed from ' + prev.name + ' to ' + curr.name);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Products ' + prev.map(p => p.name).join(', ') + ' to make Product ' + curr.name);
+                activity.change.push('Merged Products ' + prev.map(p => p.name).join(' and ') + ' to make Product ' + curr.name);
                 let that = this;
                 prev.forEach(p => {  // look at history of "parent" Products
                     that.interpretedActivity.products.push(prev.id);
@@ -336,7 +336,7 @@ export const ListingHistoryComponent = {
                     activity.change.push('Version changed from ' + prev.version + ' to ' + curr.version);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Versions ' + prev.map(v => v.version).join(', ') + ' to make Version ' + curr.version);
+                activity.change.push('Merged Versions ' + prev.map(v => v.version).join(' and ') + ' to make Version ' + curr.version);
                 let that = this;
                 prev.forEach(v => {  // look at history of "parent" Versions
                     that.interpretedActivity.versions.push(prev.id);
