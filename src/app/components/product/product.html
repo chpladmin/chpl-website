@@ -28,7 +28,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="owner in $ctrl.product.ownerHistory | orderBy : '-transferDate'">
-            <td>{{ owner.developer.name }}<span ng-if="$first"> (current)</span></td>
+            <td>{{ owner.developer.name }}</td>
             <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
         </tbody>
