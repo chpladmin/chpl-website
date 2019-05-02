@@ -250,7 +250,7 @@ export const ListingHistoryComponent = {
                     activity.change.push('Developer changed from ' + prev.name + ' to ' + curr.name);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Developers ' + prev.map(d => d.name).join(' and ') + ' to make Developer ' + curr.name);
+                activity.change.push('Developers ' + prev.map(d => d.name).join(' and ') + ' merged to form ' + curr.name);
                 let that = this;
                 prev.forEach(d => {  // look at history of "parent" Developers
                     that.interpretedActivity.developers.push(d.id);
@@ -265,7 +265,7 @@ export const ListingHistoryComponent = {
                     });
                 });
             } else if (activity.description.startsWith('Split ') && this.featureFlags.isOn('better-split')) {
-                activity.change.push('Split Developer ' + prev.name + ' into Developers ' + curr[0].name + ' and ' + curr[1].name);
+                activity.change.push('Developer ' + prev.name + ' split to become Developers ' + curr[0].name + ' and ' + curr[1].name);
                 if (this.interpretedActivity.developers.indexOf(prev.id) === -1) {
                     let that = this;
                     that.interpretedActivity.developers.push(prev.id);
@@ -293,7 +293,7 @@ export const ListingHistoryComponent = {
                     activity.change.push('Product changed from ' + prev.name + ' to ' + curr.name);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Products ' + prev.map(p => p.name).join(' and ') + ' to make Product ' + curr.name);
+                activity.change.push('Products ' + prev.map(p => p.name).join(' and ') + ' merged to form ' + curr.name);
                 let that = this;
                 prev.forEach(p => {  // look at history of "parent" Products
                     that.interpretedActivity.products.push(prev.id);
@@ -308,7 +308,7 @@ export const ListingHistoryComponent = {
                     });
                 });
             } else if (activity.description.startsWith('Split ') && this.featureFlags.isOn('better-split')) {
-                activity.change.push('Split Product ' + prev.name + ' into Products ' + curr[0].name + ' and ' + curr[1].name);
+                activity.change.push('Product ' + prev.name + ' split to become Products ' + curr[0].name + ' and ' + curr[1].name);
                 if (this.interpretedActivity.products.indexOf(prev.id) === -1) {
                     let that = this;
                     that.interpretedActivity.products.push(prev.id);
@@ -336,7 +336,7 @@ export const ListingHistoryComponent = {
                     activity.change.push('Version changed from ' + prev.version + ' to ' + curr.version);
                 }
             } else if (activity.description.startsWith('Merged ')) {
-                activity.change.push('Merged Versions ' + prev.map(v => v.version).join(' and ') + ' to make Version ' + curr.version);
+                activity.change.push('Versions ' + prev.map(v => v.version).join(' and ') + ' merged to form ' + curr.version);
                 let that = this;
                 prev.forEach(v => {  // look at history of "parent" Versions
                     that.interpretedActivity.versions.push(prev.id);
@@ -351,7 +351,7 @@ export const ListingHistoryComponent = {
                     });
                 });
             } else if (activity.description.startsWith('Split ') && this.featureFlags.isOn('better-split')) {
-                activity.change.push('Split Version ' + prev.version + ' into Versions ' + curr[0].version + ' and ' + curr[1].version);
+                activity.change.push('Version ' + prev.version + ' split to become Versions ' + curr[0].version + ' and ' + curr[1].version);
                 if (this.interpretedActivity.versions.indexOf(prev.id) === -1) {
                     let that = this;
                     that.interpretedActivity.versions.push(prev.id);
