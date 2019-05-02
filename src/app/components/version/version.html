@@ -7,8 +7,11 @@
     </span>
     <span ng-if="$ctrl.showFull">
       <h2>Version</h2>
+      {{ $ctrl.version.version }} <em class="pull-right">Last modified date: {{ $ctrl.version.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em>
     </span>
-    {{ $ctrl.version.version }}
+    <span ng-if="!$ctrl.showFull">
+      {{ $ctrl.version.version }}
+    </span>
     <div class="clearfix"></div>
   </span> <!-- end view -->
 

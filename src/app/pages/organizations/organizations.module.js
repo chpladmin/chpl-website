@@ -1,8 +1,5 @@
-(function () {
-    'use strict';
-
-    angular.module('chpl.organizations', [
+export default angular
+    .module('chpl.organizations', [
         'chpl.services',
         'ui.bootstrap',
-    ])
-})();
+    ]);

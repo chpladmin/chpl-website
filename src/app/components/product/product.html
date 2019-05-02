@@ -17,7 +17,7 @@
     </span>
     <span ng-if="$ctrl.showFull">
       <h2>Product</h2>
-      {{ $ctrl.product.name }}
+      {{ $ctrl.product.name }} <em class="pull-right" ng-if="!$ctrl.isSplitting">Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em>
       <div ng-if="$ctrl.isSplitting"><strong>New Product Code:</strong> {{ $ctrl.product.newProductCode }}</div>
       <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0 && !$ctrl.isSplitting" class="table table-condensed">
         <thead>
