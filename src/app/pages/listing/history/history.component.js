@@ -22,6 +22,7 @@ export const ListingHistoryComponent = {
                 products: [],
                 developers: [],
             };
+            this.SPLIT_DATE_SKEW_ADJUSTMENT = 5 * 1000; // in milliseconds
         }
 
         $onInit () {
@@ -269,7 +270,7 @@ export const ListingHistoryComponent = {
                 if (this.interpretedActivity.developers.indexOf(prev.id) === -1) {
                     let that = this;
                     that.interpretedActivity.developers.push(prev.id);
-                    that.networkService.getSingleDeveloperActivityMetadata(prev.id, {end: activity.date}).then(response => {
+                    that.networkService.getSingleDeveloperActivityMetadata(prev.id, {end: activity.activityDate - this.SPLIT_DATE_SKEW_ADJUSTMENT}).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretDeveloper(response)));
                         that.$q.all(promises)
                             .then(response => {
@@ -312,7 +313,7 @@ export const ListingHistoryComponent = {
                 if (this.interpretedActivity.products.indexOf(prev.id) === -1) {
                     let that = this;
                     that.interpretedActivity.products.push(prev.id);
-                    that.networkService.getSingleProductActivityMetadata(prev.id, {end: activity.date}).then(response => {
+                    that.networkService.getSingleProductActivityMetadata(prev.id, {end: activity.activityDate - this.SPLIT_DATE_SKEW_ADJUSTMENT}).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretProduct(response)));
                         that.$q.all(promises)
                             .then(response => {
@@ -355,7 +356,7 @@ export const ListingHistoryComponent = {
                 if (this.interpretedActivity.versions.indexOf(prev.id) === -1) {
                     let that = this;
                     that.interpretedActivity.versions.push(prev.id);
-                    that.networkService.getSingleVersionActivityMetadata(prev.id, {end: activity.date}).then(response => {
+                    that.networkService.getSingleVersionActivityMetadata(prev.id, {end: activity.activityDate - this.SPLIT_DATE_SKEW_ADJUSTMENT}).then(response => {
                         let promises = response.map(item => that.networkService.getActivityById(item.id).then(response => that._interpretVersion(response)));
                         that.$q.all(promises)
                             .then(response => {
