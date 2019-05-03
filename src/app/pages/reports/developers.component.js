@@ -146,7 +146,9 @@ export const ReportsDevelopersComponent = {
                     activity.details = [];
                 } else {
                     this.ReportService.interpretNonUpdate(activity, item, 'developer');
-                    activity.csvAction = activity.action[0].replace(',','","');
+                    activity.action = activity.action[0];
+                    activity.details = [];
+                    activity.csvAction = activity.action.replace(',','","');
                 }
 
                 meta.action = activity.action;
