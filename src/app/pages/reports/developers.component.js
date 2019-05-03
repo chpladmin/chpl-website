@@ -57,7 +57,7 @@ export const ReportsDevelopersComponent = {
                     details: [],
                 };
 
-                if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
+                if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
                     activity.action = 'Updated developer "' + item.newData.name + '"';
                     activity.details = [];
                     for (j = 0; j < simpleFields.length; j++) {
@@ -138,6 +138,12 @@ export const ReportsDevelopersComponent = {
                         activity.details.push(translatedEvents);
                     }
 
+                } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
+                    activity.action ='Developers ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+                    activity.details = [];
+                } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
+                    activity.action = 'Developer ' + item.originalData.name + ' split to become Developers ' + item.newData[0].name + ' and ' + item.newData[1].name;
+                    activity.details = [];
                 } else {
                     this.ReportService.interpretNonUpdate(activity, item, 'developer');
                     activity.csvAction = activity.action[0].replace(',','","');
