@@ -6,11 +6,12 @@
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
+
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
+                $provide.factory('aiFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
-                    $delegate.getFilters = jasmine.createSpy('getFilters');
                     return $delegate;
                 });
             });
@@ -24,7 +25,6 @@
 
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.developerReportsMetadata));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
-                networkService.getFilters.and.returnValue($q.when(Mock.developerReportsFilter))
 
                 scope = $rootScope.$new()
 

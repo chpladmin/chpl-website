@@ -73,7 +73,6 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN']) && vm.DEVELOPER_MODE"><a ui-sref="administration.features()">Feature Flags</a></li>
           </ul>
         </li>
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" ng-class="{'active': vm.isActive('/users') }"><a href="#/admin/userManagement">Users</a></li>

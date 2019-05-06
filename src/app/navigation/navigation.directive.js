@@ -1,4 +1,3 @@
-/* global DEVELOPER_MODE */
 (function () {
     'use strict';
 
@@ -41,7 +40,6 @@
         var vm = this;
 
         vm.clear = clear;
-        vm.DEVELOPER_MODE = DEVELOPER_MODE;
         vm.getFullname = authService.getFullname;
         vm.isActive = isActive;
         vm.isOn = featureFlags.isOn;
