@@ -20,7 +20,6 @@ export const FilterComponent = {
             this.networkService.getFilterTypes()
                 .then(response => {
                     that.filterTypeId = response.data.find(item => item.name === that.filterTypeName).id;
-                    this.$log.info(that.filterTypeId);
                     that.refreshFilterList();
                 });
         }
