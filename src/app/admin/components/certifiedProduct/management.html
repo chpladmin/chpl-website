@@ -450,7 +450,7 @@
             <div class="panel-heading">
               <span>Active Product</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)">
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
                   <span ng-if="vm.versions.length > 1">
                     <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
                   </span>
