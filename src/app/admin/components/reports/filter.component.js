@@ -1,7 +1,7 @@
 export const FilterComponent = {
     templateUrl: 'chpl.admin/components/reports/filter.component.html',
     bindings: {
-        filterTypeName: '<?',
+        filterTypeName: '@',
         onApplyFilter: '&',
         getFilterData: '&',
     },
@@ -19,10 +19,10 @@ export const FilterComponent = {
             this.filterName = '';
             this.networkService.getFilterTypes()
                 .then(response => {
-                    that.filterTypeId = response.find(item => item.name === that.filterTypeName);
+                    that.filterTypeId = response.data.find(item => item.name === that.filterTypeName).id;
+                    this.$log.info(that.filterTypeId);
                     that.refreshFilterList();
-                })
-
+                });
         }
 
         refreshFilterList () {

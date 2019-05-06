@@ -7,7 +7,7 @@
 
   <div class="row">
     <div class="col-sm-6">
-      <ai-filter feature-flag="adminNav" filter-type-id="1" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></ai-filter>
+      <ai-filter feature-flag="adminNav" filter-type-name="Developer Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></ai-filter>
     </div>
     <div class="col-sm-6">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
