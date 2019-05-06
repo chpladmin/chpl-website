@@ -271,6 +271,10 @@ export class NetworkService {
         return this.apiGET('/filters?filterTypeId=' + filterTypeId);
     }
 
+    getFilterTypes () {
+        return this.apiGET('/data/filter_types');
+    }
+
     getFuzzyTypes () {
         return this.apiGET('/data/fuzzy_choices');
     }

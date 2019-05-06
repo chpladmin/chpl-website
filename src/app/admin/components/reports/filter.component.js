@@ -1,7 +1,7 @@
 export const FilterComponent = {
     templateUrl: 'chpl.admin/components/reports/filter.component.html',
     bindings: {
-        filterTypeId: '<?',
+        filterTypeName: '<?',
         onApplyFilter: '&',
         getFilterData: '&',
     },
@@ -15,8 +15,14 @@ export const FilterComponent = {
         }
 
         $onInit () {
+            let that = this;
             this.filterName = '';
-            this.refreshFilterList();
+            this.networkService.getFilterTypes()
+                .then(response => {
+                    that.filterTypeId = response.find(item => item.name === that.filterTypeName);
+                    that.refreshFilterList();
+                })
+
         }
 
         refreshFilterList () {
