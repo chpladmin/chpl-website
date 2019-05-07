@@ -44,7 +44,6 @@ export const FilterComponent = {
             filter.filterType.id = this.filterTypeId;
             filter.filter = JSON.stringify(this.getFilterData());
             filter.name = this.filterName;
-            this.$log.info(filter);
 
             this.networkService.createFilter(filter)
                 .then(() => {
