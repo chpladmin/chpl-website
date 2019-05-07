@@ -61,5 +61,5 @@ export const FilterComponent = {
 }
 
 angular.module('chpl.admin')
-    .component('aiFilter', FilterComponent);
+    .component('chplFilter', FilterComponent);
 
