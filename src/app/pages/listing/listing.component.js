@@ -18,37 +18,37 @@ export const ListingComponent = {
 
         $onInit () {
             this.loading = true;
-            this.productId = this.$stateParams.id;
+            this.listingId = this.$stateParams.id;
             this.initialPanel = this.$stateParams.initialPanel || 'cert';
             if (this.$localStorage.previouslyViewed) {
                 this.previouslyViewed = this.$localStorage.previouslyViewed;
 
-                if (this.previouslyViewed.indexOf((this.productId + '')) === -1) {
-                    this.previouslyViewed.push((this.productId + ''));
+                if (this.previouslyViewed.indexOf((this.listingId + '')) === -1) {
+                    this.previouslyViewed.push((this.listingId + ''));
                     if (this.previouslyViewed.length > 20) {
                         this.previouslyViewed.shift();
                     }
                     this.$localStorage.previouslyViewed = this.previouslyViewed;
                 }
             } else {
-                this.$localStorage.previouslyViewed = [this.productId + ''];
+                this.$localStorage.previouslyViewed = [this.listingId + ''];
             }
 
-            this.loadProduct();
+            this.loadListing();
         }
 
         can (action) {
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
-            return this.product.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+            return this.listing.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
         }
 
-        loadProduct () {
+        loadListing () {
             let that = this;
-            this.networkService.getProduct(this.productId)
+            this.networkService.getListing(this.listingId)
                 .then(data => {
                     that.loading = false;
-                    that.product = data;
+                    that.listing = data;
                 }, () => {
                     that.loading = false;
                 });
@@ -61,7 +61,7 @@ export const ListingComponent = {
             });
         }
 
-        viewProductHistory () {
+        viewListingHistory () {
             let that = this;
             this.$uibModal.open({
                 component: 'chplListingHistory',
@@ -70,7 +70,7 @@ export const ListingComponent = {
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    listing: () => that.product,
+                    listing: () => that.listing,
                 },
             });
         }
