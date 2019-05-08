@@ -71,9 +71,11 @@ export const VersionsComponent = {
             }).then(response => {
                 if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                     if (that.action === 'merge') {
-                        that.$state.go('organizations.developers', {
+                        that.$state.go('organizations.developers.products.versions', {
                             action: undefined,
                             developerId: that.developer.developerId,
+                            productId: that.product.productId,
+                            versionId: response.versionId,
                         });
                     }
                     that.version = response;

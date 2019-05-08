@@ -1,1 +1,6 @@
-export default angular.module('chpl.listing', ['ui.bootstrap', 'chpl.services']);
+export default angular
+    .module('chpl.listing', [
+        'chpl.services',
+        'ngSanitize',
+        'ui.bootstrap',
+    ]);

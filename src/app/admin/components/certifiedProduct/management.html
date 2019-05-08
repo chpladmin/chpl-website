@@ -162,10 +162,10 @@
               </td>
               <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
               <td class="text-center">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)" id="pending-surveillance-inspect-{{ surv.id}}"><i class="fa fa-eye"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)" id="pending-surveillance-inspect-{{ surv.certifiedProduct.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center">
-                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]" id="pending-surveillance-reject-{{ surv.id }}">
+                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]" id="pending-surveillance-reject-{{ surv.certifiedProduct.chplProductNumber }}">
               </td>
             </tr>
           </tbody>
@@ -315,7 +315,7 @@
           <button id="clear-selection-developers" class="btn btn-small btn-link pull-right" ng-click="vm.mergingDevelopers=[];" ng-if="vm.mergingDevelopers && vm.mergingDevelopers.length !== 0">Clear Selection(s)<span class="sr-only">of Developers</span></button>
           <select ng-model="vm.mergingDevelopers" multiple="true"
                   id="developer-merge-select" class="input-sm form-control"
-                  size="12" ng-options="v.name disable when !vm.isDeveloperMergeable(v) for v in vm.developers | orderBy: 'name'">
+                  size="12" ng-options="v.name for v in vm.developers | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
         </div>
@@ -450,10 +450,12 @@
             <div class="panel-heading">
               <span>Active Product</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)">
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
                   <span ng-if="vm.versions.length > 1">
                     <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
                   </span>
+                </span>
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
                   <a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |
                 </span>
                 <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
@@ -520,7 +522,7 @@
             <div class="panel-heading">
               <span>Active Version</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |</span>
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |</span>
                 <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>

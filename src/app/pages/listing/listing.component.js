@@ -52,10 +52,6 @@ export const ListingComponent = {
                 }, () => {
                     that.loading = false;
                 });
-            this.networkService.getSingleCertifiedProductMetadataActivity(this.productId)
-                .then(data => {
-                    that.activity = data;
-                });
         }
 
         takeDeveloperAction (action, developerId) {
@@ -68,15 +64,13 @@ export const ListingComponent = {
         viewProductHistory () {
             let that = this;
             this.$uibModal.open({
-                templateUrl: 'chpl.listing/history/history.html',
-                controller: 'ProductHistoryController',
-                controllerAs: 'vm',
+                component: 'chplListingHistory',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    activity: () => that.activity,
+                    listing: () => that.product,
                 },
             });
         }
