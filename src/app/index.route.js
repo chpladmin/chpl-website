@@ -16,11 +16,6 @@
 
     function routeConfig ($stateProvider, $urlRouterProvider) {
         $stateProvider
-            /*.state('admin', {
-                abstract: true,
-                url: '/admin',
-                template: '<ui-view/>',
-            })*/
             .state('admin', {
                 url: '/admin/{section}/{subSection}/{productId}?',
                 params: {
