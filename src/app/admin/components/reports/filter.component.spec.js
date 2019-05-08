@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Filter component', () => {
+    describe('the Filter component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
