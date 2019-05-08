@@ -9,7 +9,7 @@
   </div>
   <div class="main-content" id="main-content" tabindex="-1">
     <p class="lead" ng-if="!$ctrl.listing">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
-    <div ng-if="$ctrl.listing">
+    <div ng-if="$ctrl.listing && !$ctrl.isEditing">
       <div class="row">
         <div class="col-sm-4">
           <p>CHPL Product Number: {{ $ctrl.listing.chplProductNumber }}</p>
@@ -17,7 +17,8 @@
         </div>
         <div class="col-sm-8 text-right">
           <p>Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <button class="btn btn-default btn-sm" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i><span class="sr-only">View Details</span></button></p>
-          <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
+          <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])" feature-flag="listing-edit" feature-flag-hide><a ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
+          <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])" feature-flag="listing-edit"><button class="btn btn-link" ng-click="$ctrl.isEditing = true"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button></p>
           <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ng-href="#/admin/dpManagement/manageSurveillance/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
           <div class="btn-group">
             <div class="btn-group" ng-if="$ctrl.certificationStatus($ctrl.listing) !== 'Retired'">
@@ -99,6 +100,12 @@
                     product="$ctrl.listing">
           </ai-certs>
         </div>
+      </div>
+    </div>
+    <div feature-flag="listing-edit">
+      <div ng-if="$ctrl.listing && $ctrl.isEditing">
+        <chpl-listing-edit listing="$ctrl.listing" options="$ctrl.editOptions" callbacks="$ctrl.editCallbacks" resources="$ctrl.resources"></chpl-listing-edit>
+        <button class="btn btn-success" ng-click="$ctrl.cancel()"><i class="fa fa-save"></i> Save</button>
       </div>
     </div>
   </div>

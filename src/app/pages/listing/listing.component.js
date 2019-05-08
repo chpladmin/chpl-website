@@ -2,10 +2,11 @@ export const ListingComponent = {
     templateUrl: 'chpl.listing/listing.html',
     bindings: { },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $state, $stateParams, $uibModal, authService, networkService, utilService) {
+        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, networkService, utilService) {
             'ngInject'
             this.$localStorage = $localStorage;
             this.$log = $log;
+            this.$q = $q;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
@@ -14,6 +15,9 @@ export const ListingComponent = {
             this.utilService = utilService;
             this.certificationStatus = utilService.certificationStatus;
             this.hasAnyRole = authService.hasAnyRole;
+            this.resources = {};
+            this.editCallbacks = {};
+            this.editOptions = {};
         }
 
         $onInit () {
@@ -35,6 +39,7 @@ export const ListingComponent = {
             }
 
             this.loadListing();
+            this.loadResources();
         }
 
         can (action) {
@@ -43,15 +48,47 @@ export const ListingComponent = {
             return this.listing.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
         }
 
+        cancel () {
+            this.listing = angular.copy(this.backupListing);
+            this.isEditing = false;
+        }
+
         loadListing () {
             let that = this;
             this.networkService.getListing(this.listingId)
                 .then(data => {
                     that.loading = false;
                     that.listing = data;
+                    that.backupListing = angular.copy(that.listing);
                 }, () => {
                     that.loading = false;
                 });
+        }
+
+        loadResources () {
+            let that = this;
+            this.$q.all([
+                this.networkService.getSearchOptions()
+                    .then(response => {
+                        that.resources.bodies = response.certBodyNames;
+                        that.resources.classifications = response.productClassifications;
+                        that.resources.editions = response.editions;
+                        that.resources.practices = response.practiceTypeNames;
+                        that.resources.statuses = response.certificationStatuses;
+                    }),
+                this.networkService.getAccessibilityStandards().then(response => that.resources.accessibilityStandards = response),
+                this.networkService.getAtls(false).then(response => that.resources.testingLabs = response.atls),
+                this.networkService.getQmsStandards().then(response => that.resources.qmsStandards = response),
+                this.networkService.getTargetedUsers().then(response => that.resources.targetedUsers = response),
+                this.networkService.getTestData().then(response => that.resources.testData = response),
+                this.networkService.getTestFunctionality().then(response => that.resources.testFunctionalities = response),
+                this.networkService.getTestProcedures().then(response => that.resources.testProcedures = response),
+                this.networkService.getTestStandards().then(response => that.resources.testStandards = response),
+                this.networkService.getTestTools().then(response => that.resources.testTools = response),
+                this.networkService.getUcdProcesses().then(response => that.resources.ucdProcesses = response),
+            ]).then(() => {
+                angular.noop;
+            });
         }
 
         takeDeveloperAction (action, developerId) {
