@@ -35,24 +35,6 @@
                 controllerAs: 'vm',
                 data: { title: 'Password Reset' },
             })
-            .state('admin.reports', {
-                url: '/reports',
-                component: 'ReportsListingsComponent',
-                data: { title: 'CHPL Adminstration' },
-            })
-            .state('admin.reports.listings', {
-                url: '/listings',
-                component: 'ReportsListingsComponent',
-                data: { title: 'CHPL Adminstration' },
-            })
-            .state('admin.reports.listings.listingId', {
-                url: '/{listingId}',
-                component: 'ReportsListingsComponent',
-                params: {
-                    listingId: {squash: true, value: null},
-                },
-                data: { title: 'CHPL Adminstration' },
-            })
             .state('charts', {
                 url: '/charts',
                 controller: 'ChartsController',
