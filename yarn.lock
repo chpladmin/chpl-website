@@ -1306,11 +1306,6 @@ angular-file-saver@^1.1.3:
     blob-tmp "^1.0.0"
     file-saver "^1.3.3"
 
-angular-file-upload@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/angular-file-upload/-/angular-file-upload-2.5.0.tgz#0f53c93fbc70ed8ba8340a9a289ba64b680e2167"
-  integrity sha1-D1PJP7xw7YuoNAqaKJumS2gOIWc=
-
 angular-google-chart@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/angular-google-chart/-/angular-google-chart-0.1.0.tgz#ccfcee5aeb8e02f230730fd75f996f5410ca19d0"

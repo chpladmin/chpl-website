@@ -1,12 +1,14 @@
 /* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE */
+import 'ng-file-upload';
+
 export default angular
     .module('chpl.administration', [
         'angular-cron-gen',
         'angular-confirm',
-        'angularFileUpload',
         'chpl.constants',
         'chpl.services',
         'ngCsv',
+        'ngFileUpload',
         'ngIdle',
         'ngSanitize',
         'smart-table',
