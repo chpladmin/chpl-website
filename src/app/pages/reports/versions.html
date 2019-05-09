@@ -6,7 +6,7 @@
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <ai-filter feature-flag="adminNav" filter-type-name="Version Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></ai-filter>
+        <chpl-filter feature-flag="adminNav" filter-type-name="Version Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
       </div>
       <div class="col-sm-6">
         <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
