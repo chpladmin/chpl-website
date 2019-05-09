@@ -12,7 +12,7 @@ _Date TBD_
 * Updated security for edit/split/merge of developers, products, and versions
 * Updated text and column headings on the Decertified Products and Inactive Certificates pages.
 * Updated language on Charts page.
-* Updated produc and version activity reports to use activity metadata
+* Updated product and version activity reports to use activity metadata
 
 ### Text changes
 * Tweak text on unsupported browsers page to confirm IE is not supported
