@@ -11,6 +11,7 @@
                     $delegate.getFilters = jasmine.createSpy('getFilters');
                     $delegate.createFilter = jasmine.createSpy('createFilter');
                     $delegate.deleteFilter = jasmine.createSpy('deleteFilter');
+                    $delegate.getFilterTypes = jasmine.createSpy('getFilterTypes');
                     return $delegate;
                 });
             });
@@ -22,13 +23,17 @@
                 Mock = _Mock_;
                 networkService = _networkService_;
 
-                networkService.getFilters.and.returnValue($q.when(Mock.developerReportsFilter))
+                networkService.getFilters.and.returnValue($q.when(Mock.developerReportsFilter));
                 networkService.createFilter.and.returnValue($q.when({}));
                 networkService.deleteFilter.and.returnValue($q.when({}));
+                networkService.getFilterTypes.and.returnValue($q.when(Mock.filterTypes));
 
                 scope = $rootScope.$new()
 
-                el = angular.element('<ai-filter filter-type-id="2" on-apply-filter="onApplyFilter(filter)" get-filter-data="createFilterDataObject()"></ai-filter>');
+                el = angular.element('<chpl-filter filter-type-name="Listing Report" on-apply-filter="onApplyFilter(filter)" get-filter-data="createFilterDataObject()"></chpl-filter>');
+
+                scope.onApplyFilter = jasmine.createSpy('onApplyFilter');
+                scope.createFilterDataObject = jasmine.createSpy('createFilterDataObject');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -57,6 +62,7 @@
 
             it('when saving a filter', () => {
                 ctrl.saveFilter();
+                expect(scope.createFilterDataObject).toHaveBeenCalled();
                 expect(networkService.createFilter).toHaveBeenCalled();
             });
 
@@ -68,6 +74,12 @@
             it('when deleteing a filters', () => {
                 ctrl.deleteFilter();
                 expect(networkService.deleteFilter).toHaveBeenCalled();
+            });
+
+            it('when selecting a filter', () => {
+                let filter = {filter: {test: 'test'}};
+                ctrl.applyFilter(filter);
+                expect(scope.onApplyFilter).toHaveBeenCalledWith(filter.filter);
             });
         });
     });

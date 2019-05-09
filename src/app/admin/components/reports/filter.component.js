@@ -44,7 +44,6 @@ export const FilterComponent = {
             filter.filterType.id = this.filterTypeId;
             filter.filter = JSON.stringify(this.getFilterData());
             filter.name = this.filterName;
-            this.$log.info(filter);
 
             this.networkService.createFilter(filter)
                 .then(() => {
@@ -62,5 +61,5 @@ export const FilterComponent = {
 }
 
 angular.module('chpl.admin')
-    .component('aiFilter', FilterComponent);
+    .component('chplFilter', FilterComponent);
 

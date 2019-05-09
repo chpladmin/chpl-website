@@ -1,21 +1,40 @@
-(function () {
+(() => {
     'use strict';
 
     describe('the api documentation component', () => {
-        var $compile, $log, authService, ctrl, el, scope;
+        var $compile, $log, $q, Upload, authService, ctrl, el, mock, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.admin', ($provide) => {
-                $provide.decorator('authService', ($delegate) => {
+            mock = {
+                baseData: {
+                    url: '/rest/files/api_documentation',
+                    headers: {
+                        Authorization: 'Bearer token',
+                        'API-Key': 'api-key',
+                    },
+                    data: {
+                        file: 'file',
+                    },
+                },
+            };
+            angular.mock.module('chpl.admin', $provide => {
+                $provide.decorator('Upload', $delegate => {
+                    $delegate.upload = jasmine.createSpy('upload');
+                    return $delegate;
+                });
+                $provide.decorator('authService', $delegate => {
                     $delegate.getToken = jasmine.createSpy('getToken');
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, $rootScope, _authService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                Upload = _Upload_;
+                Upload.upload.and.returnValue($q.when({}));
                 authService = _authService_;
                 authService.getToken.and.returnValue('token');
                 authService.getApiKey.and.returnValue('api-key');
@@ -44,76 +63,74 @@
             expect(ctrl).toEqual(jasmine.any(Object));
         });
 
-        describe('when handling the accuracy date', () => {
-            beforeEach(() => {
-                ctrl.uploader.upload = jasmine.createSpy('upload');
+        describe('when uploading', () => {
+            it('should not do anything without both a file and a date', () => {
+                ctrl.file = undefined;
+                ctrl.accurateAsOfDateObject = undefined;
+                ctrl.upload();
+                expect(Upload.upload).not.toHaveBeenCalled();
+                ctrl.accurateAsOfDateObject = 3;
+                ctrl.upload();
+                expect(Upload.upload).not.toHaveBeenCalled();
+                ctrl.file = 'file';
+                ctrl.upload();
+                expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
             });
 
-            it('should append the date as a request parameter', () => {
-                ctrl.accurateAsOfDateObject = new Date('2018-11-28');
-                ctrl.setAccurateDate(ctrl.uploader);
-                expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_update_date=1543363200000');
-            });
-
-            it('should call the upload function', () => {
-                ctrl.setAccurateDate(ctrl.uploader);
-                expect(ctrl.uploader.upload).toHaveBeenCalled();
-            });
-
-            describe('and the date is not an object', () => {
+            describe('when the date is valid', () => {
+                let data;
                 beforeEach(() => {
+                    data = angular.copy(mock.baseData);
+                    ctrl.file = 'file';
+                });
+
+                it('should handle objects', () => {
+                    ctrl.accurateAsOfDateObject = new Date(33);
+                    data.url = data.url + '?file_update_date=33';
+                    ctrl.upload();
+                    expect(Upload.upload).toHaveBeenCalledWith(data);
+                });
+
+                it('should handle strings', () => {
                     ctrl.accurateAsOfDateObject = '2018-11-28';
-                });
-
-                it('should append the date as a request parameter', () => {
-                    ctrl.setAccurateDate(ctrl.uploader);
-                    expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_update_date=1543363200000');
-                });
-
-                it('should call the upload function', () => {
-                    ctrl.setAccurateDate(ctrl.uploader);
-                    expect(ctrl.uploader.upload).toHaveBeenCalled();
+                    data.url = data.url + '?file_update_date=1543363200000';
+                    ctrl.upload();
+                    expect(Upload.upload).toHaveBeenCalledWith(data);
                 });
             });
 
-            describe('and the date is missing', () => {
+            describe('in response to the upload', () => {
+                let response;
                 beforeEach(() => {
-                    ctrl.accurateAsOfDateObject = undefined;
+                    ctrl.file = {
+                        name: 'name',
+                    };
+                    response = {
+                        data: {
+                            fileName: 'filename',
+                            errorMessages: undefined,
+                        },
+                    };
                 });
 
-                it('should not call the upload function', () => {
-                    ctrl.setAccurateDate(ctrl.uploader);
-                    expect(ctrl.uploader.upload).not.toHaveBeenCalled();
+                it('should handle success', () => {
+                    Upload.upload.and.returnValue($q.when(response));
+                    ctrl.upload();
+                    scope.$digest();
+                    expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully.');
+                    expect(ctrl.uploadErrors).toEqual([]);
+                    expect(ctrl.uploadSuccess).toBe(true);
                 });
-            });
-        });
 
-        describe('when handling the upload', () => {
-            it('should report success on success', () => {
-                const fileItem = {
-                    file: {
-                        name: 'name',
-                    },
-                };
-                ctrl.uploader.onSuccessItem(fileItem);
-                expect(ctrl.uploadMessage).toBe('File "name" was uploaded successfully.');
-                expect(ctrl.uploadErrors).toEqual([]);
-                expect(ctrl.uploadSuccess).toBe(true);
-            });
-
-            it('should report errors on error', () => {
-                const fileItem = {
-                    file: {
-                        name: 'name',
-                    },
-                };
-                const response = {
-                    errorMessages: [1],
-                };
-                ctrl.uploader.onErrorItem(fileItem, response);
-                expect(ctrl.uploadMessage).toBe('File "name" was not uploaded successfully.');
-                expect(ctrl.uploadErrors).toEqual([1]);
-                expect(ctrl.uploadSuccess).toBe(false);
+                it('should handle failure', () => {
+                    response.data.errorMessages = [1];
+                    Upload.upload.and.returnValue($q.reject(response));
+                    ctrl.upload();
+                    scope.$digest();
+                    expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
+                    expect(ctrl.uploadErrors).toEqual([1]);
+                    expect(ctrl.uploadSuccess).toBe(false);
+                });
             });
         });
     });
