@@ -2,44 +2,24 @@ export const CmsManagementComponent = {
     templateUrl: 'chpl.admin/components/cms/cms.html',
     bindings: {},
     controller: class CmsManagementController {
-        constructor ($location, $log, API, FileUploader, authService, networkService) {
+        constructor ($location, $log, API, Upload, authService, networkService) {
             'ngInject'
             this.$location = $location;
             this.$log = $log;
-            this.API = API;
-            this.FileUploader = FileUploader;
-            this.authService = authService;
+            this.Upload = Upload;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.muuAccurateAsOfDateObject = new Date();
+            this.item = {
+                url: API + '/meaningful_use/upload',
+                headers: {
+                    Authorization: 'Bearer ' + authService.getToken(),
+                    'API-Key': authService.getApiKey(),
+                },
+            };
         }
 
         $onInit () {
-            this.muuAccurateAsOfDateObject = new Date();
-
-            let ctrl = this;
-            this.uploader = new this.FileUploader({
-                url: this.API + '/meaningful_use/upload',
-                removeAfterUpload: true,
-                headers: {
-                    Authorization: 'Bearer ' + this.authService.getToken(),
-                    'API-Key': this.authService.getApiKey(),
-                },
-                filters: [{
-                    name: 'csvFilter',
-                    fn: (item) => {
-                        const extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
-                        return '|csv|'.indexOf(extension) !== -1;
-                    },
-                }],
-                onSuccessItem: () => {
-                    ctrl.$location.url('/admin/jobsManagement');
-                },
-                onErrorItem: (fileItem, response) => {
-                    ctrl.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
-                    ctrl.uploadErrors = response.errorMessages;
-                    ctrl.uploadSuccess = false;
-                },
-            });
             this.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
             this.csvHeader = ['CMS ID', 'Creation Date'];
             this.csvColumnOrder = ['certificationId', 'created'];
@@ -65,10 +45,35 @@ export const CmsManagementComponent = {
                 });
         }
 
-        setAccurateDate (item) {
-            this.uploader.url += '?accurate_as_of=' + this.muuAccurateAsOfDateObject.getTime();
-            item.url += '?accurate_as_of=' + this.muuAccurateAsOfDateObject.getTime();
-            item.upload();
+        upload () {
+            let item = angular.copy(this.item);
+            if (this.muuAccurateAsOfDateObject && this.file) {
+                item.data = {
+                    file: this.file,
+                };
+                if (typeof this.muuAccurateAsOfDateObject === 'object') {
+                    item.url += '?accurate_as_of=' + this.muuAccurateAsOfDateObject.getTime();
+                } else if (typeof this.muuAccurateAsOfDateObject === 'string') {
+                    item.url += '?accurate_as_of=' + new Date(this.muuAccurateAsOfDateObject).getTime();
+                }
+                let that = this;
+                this.Upload.upload(item).then(() => {
+                    that.$location.url('/admin/jobsManagement');
+                }, response => {
+                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
+                    if (response.data.error) {
+                        that.uploadErrors = [response.data.error];
+                    } else {
+                        that.uploadErrors = [];
+                    }
+                    that.uploadErrors = that.uploadErrors.concat(response.data.errorMessages);
+                    that.uploadSuccess = false;
+                    that.file = undefined;
+                }, event => {
+                    that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
+                    that.$log.info('progress: ' + that.progressPercentage + '% ' + event.config.data.file.name);
+                });
+            }
         }
     },
 }
