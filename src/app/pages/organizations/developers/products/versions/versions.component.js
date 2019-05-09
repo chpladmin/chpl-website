@@ -16,6 +16,8 @@ export const VersionsComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.backup = {};
+            this.splitEdit = true;
+            this.movingListings = [];
         }
 
         $onChanges (changes) {
@@ -28,6 +30,7 @@ export const VersionsComponent = {
             }
             if (changes.version) {
                 this.version = angular.copy(changes.version.currentValue);
+                this.newVersion = angular.copy(this.version);
                 this.backup.version = angular.copy(this.version);
             }
             if (changes.versions) {
@@ -38,10 +41,12 @@ export const VersionsComponent = {
             }
             if (changes.listings) {
                 this.listings = changes.listings.currentValue.map(l => l);
+                this.backup.listings = angular.copy(this.listings);
             }
         }
 
         can (action) {
+            if (action === 'split-version' && this.listings.length < 2) { return false; } // cannot split version without at least two listings
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
             return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
@@ -49,9 +54,18 @@ export const VersionsComponent = {
 
         cancel () {
             this.version = angular.copy(this.backup.version);
+            this.newVersion = angular.copy(this.backup.version);
             this.versions = angular.copy(this.backup.versions);
+            this.listings = angular.copy(this.backup.listings);
             this.mergingVersions = angular.copy(this.backup.mergingVersions);
+            this.movingVersions = [];
             this.action = undefined;
+            this.splitEdit = true;
+        }
+
+        cancelSplitEdit () {
+            this.newVersion = angular.copy(this.version);
+            this.splitEdit = false;
         }
 
         save (version) {
@@ -100,6 +114,51 @@ export const VersionsComponent = {
             });
         }
 
+        saveSplitEdit (listing) {
+            this.newListing = listing;
+            this.splitEdit = false;
+        }
+
+        split () {
+            let that = this;
+            let splitVersion = {
+                oldVersion: this.version,
+                newVersionName: this.newVersion.name,
+                newVersionCode: this.newVersion.newVersionCode,
+                oldListings: this.listings,
+                newListings: this.movingListings,
+            };
+            this.errorMessages = [];
+            this.networkService.splitVersion(splitVersion)
+                .then(response => {
+                    if (!response.status || response.status === 200) {
+                        that.$state.go('organizations.developers.products', {
+                            action: undefined,
+                            developerId: that.developer.developerId,
+                            productId: that.product.productId,
+                        }, {
+                            reload: true,
+                        });
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
+                        } else {
+                            that.errorMessages = ['An error has occurred.'];
+                        }
+                    }
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
+                    } else {
+                        that.errorMessages = ['An error has occurred.'];
+                    }
+                });
+        }
+
         takeAction (action) {
             this.cancel();
             this.action = action;
@@ -125,6 +184,10 @@ export const VersionsComponent = {
             });
         }
 
+        takeSplitAction () {
+            this.splitEdit = true;
+        }
+
         toggleMerge (version, merge) {
             if (merge) {
                 this.mergingVersions.push(this.versions.filter(ver => ver.versionId === version.versionId)[0]);
@@ -132,6 +195,16 @@ export const VersionsComponent = {
             } else {
                 this.versions.push(this.mergingVersions.filter(ver => ver.versionId === version.versionId)[0]);
                 this.mergingVersions = this.mergingVersions.filter(ver => ver.versionId !== version.versionId);
+            }
+        }
+
+        toggleMove (version, toNew) {
+            if (toNew) {
+                this.movingVersions.push(this.versions.filter(ver => ver.versionId === version.versionId)[0]);
+                this.versions = this.versions.filter(ver => ver.versionId !== version.versionId);
+            } else {
+                this.versions.push(this.movingVersions.filter(ver => ver.versionId === version.versionId)[0]);
+                this.movingVersions = this.movingVersions.filter(ver => ver.versionId !== version.versionId);
             }
         }
     },
