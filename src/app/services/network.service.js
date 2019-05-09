@@ -59,6 +59,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createFilter (filter) {
+        return this.apiPOST('/filters', filter);
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
     }
@@ -73,6 +77,10 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteFilter (filterId) {
+        return this.apiDELETE('/filters/' + filterId);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -257,6 +265,14 @@ export class NetworkService {
 
     getEducation () {
         return this.apiGET('/data/education_types');
+    }
+
+    getFilters (filterTypeId) {
+        return this.apiGET('/filters?filterTypeId=' + filterTypeId);
+    }
+
+    getFilterTypes () {
+        return this.apiGET('/data/filter_types');
     }
 
     getFuzzyTypes () {

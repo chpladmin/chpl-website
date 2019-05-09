@@ -13,95 +13,10 @@
     </div>
     <div class="row" ng-if="vm.workType === 'upload'">
       <div class="col-sm-12" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
-        <h3>Upload Certified Products</h3>
-        <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
-        <input type="file" nv-file-select="" uploader="vm.uploader" id="listing-file-upload" />
-        <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
-          <p>{{ vm.uploadMessage }}</p>
-          <ul ng-if="vm.uploadErrors.length > 0">
-            <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
-          </ul>
-          <ul ng-if="vm.uploadWarnings.length > 0" class="bg-warning list-unstyled">
-            <li ng-repeat="warning in vm.uploadWarnings">{{ warning }}</li>
-          </ul>
-          <p ng-if="!vm.uploadSuccess">If you correct an issue within a file that displayed an error on initial upload, selecting the same file name again will NOT upload the file.  Recommendation is to fix the file AND rename the file so that the file name is different than the original file.</p>
-        </div>
-        <table class="table" ng-if="vm.uploader.queue.length > 0">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
-              <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="item in vm.uploader.queue track by $index">
-              <td><strong>{{ item.file.name }}</strong></td>
-              <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-              <td ng-show="vm.uploader.isHTML5">
-                <div class="progress">
-                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                </div>
-              </td>
-              <td nowrap>
-                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess" id="listing-file-confirm-{{ $index }}">
-                  <i class="fa fa-cloud-upload"></i> Upload
-                </button>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading" id="listing-file-cancel-{{ $index }}">
-                  <i class="fa fa-ban"></i> Cancel
-                </button>
-                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()" id="listing-file-remove-{{ $index }}">
-                  <i class="fa fa-trash-o"></i> Remove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <chpl-upload-listings on-change="vm.refreshPending()"></chpl-upload-listings>
       </div>
       <div class="col-sm-12">
-        <h3>Upload Surveillance Activities</h3>
-        <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
-        <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" id="surveillance-file-upload" />
-        <div ng-if="vm.surveillanceUploadMessage.length > 0" ng-class="vm.surveillanceUploadSuccess ? 'bg-success' : 'bg-danger'">
-          <p>{{ vm.surveillanceUploadMessage }}</p>
-          <ul ng-if="vm.surveillanceUploadErrors.length > 0">
-            <li ng-repeat="error in vm.surveillanceUploadErrors">{{ error }}</li>
-          </ul>
-          <p ng-if="!vm.surveillanceUploadSuccess">If you correct an issue within a file that displayed an error on initial upload, selecting the same file name again will NOT upload the file.  Recommendation is to fix the file AND rename the file so that the file name is different than the original file.</p>
-        </div>
-        <table class="table" ng-if="vm.surveillanceUploader.queue.length > 0">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Size</th>
-              <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Progress</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="item in vm.surveillanceUploader.queue track by $index">
-              <td><strong>{{ item.file.name }}</strong></td>
-              <td ng-show="vm.surveillanceUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-              <td ng-show="vm.surveillanceUploader.isHTML5">
-                <div class="progress">
-                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                </div>
-              </td>
-              <td nowrap>
-                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess" id="surveillance-file-confirm-{{ $index }}">
-                  <i class="fa fa-cloud-upload"></i> Upload
-                </button>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading" id="surveillance-file-cancel-{{ $index }}">
-                  <i class="fa fa-ban"></i> Cancel
-                </button>
-                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()" id="surveillance-file-remove-{{ $index }}">
-                  <i class="fa fa-trash-o"></i> Remove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <chpl-upload-surveillances on-change="vm.refreshPending()"></chpl-upload-surveillances>
       </div>
     </div> <!-- end upload certified products &amp; surveillance activities -->
 
@@ -450,7 +365,7 @@
             <div class="panel-heading">
               <span>Active Product</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)">
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
                   <span ng-if="vm.versions.length > 1">
                     <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
                   </span>

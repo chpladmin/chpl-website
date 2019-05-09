@@ -1,4 +1,9 @@
 [
     { "key": "adminNav", "active": true, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" },
-    { "key": "better-split", "active": true, "name": "Better Split", "description": "Add Split of Version, display more history in eye" }
+    { "key": "better-split", "active": true, "name": "Better Split", "description": "Add Split of Version, display more history in eye" },
+    { "key": "ocd2894", "active": true, "name": "Overview nav", "description": "Modifications to the Overview page" },
+    { "key": "developer-page", "active": true, "name": "Developer Page", "description": "A specific page for Developers" },
+    { "key": "feature-flag-toggle", "active": true, "name": "Feature Flag toggle toggler", "description": "Whether or not to display the toggle for feature flags" },
+    { "key": "listing-edit", "active": true, "name": "Improved editing", "description": "In place editing of Developer, Product, Version, and Listing" },
+    { "key": "states", "active": false, "name": "State transitions", "description": "Display state transitions, and state tree" }
 ]

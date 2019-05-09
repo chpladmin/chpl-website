@@ -51,8 +51,14 @@ function administrationStateConfig ($stateProvider) {
             url: '/listings',
             component: 'chplConfirmListings',
             resolve: {
-                developers: networkService => networkService.getDevelopers().then(response => response.developers),
-                resources: ($q, networkService) => getResources($q, networkService),
+                developers: networkService => {
+                    'ngInject'
+                    return networkService.getDevelopers().then(response => response.developers);
+                },
+                resources: ($q, networkService) => {
+                    'ngInject'
+                    return getResources($q, networkService);
+                },
             },
             data: { title: 'CHPL Reports - Listings' },
         })
