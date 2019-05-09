@@ -1,8 +1,9 @@
 
-## Version 10.17.1
+## Version 10.19
 _Date TBD_
 
-### Bug Fixes
+
+## Bug Fixes
 * Allow upload of files from Edge
 
 ---
