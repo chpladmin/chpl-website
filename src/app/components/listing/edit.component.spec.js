@@ -70,13 +70,11 @@
                 scope.options = {
                     workType: 'edit',
                 };
-                scope.callbacks = {
-                    onCancel: jasmine.createSpy('onCancel'),
-                    onSave: jasmine.createSpy('onSave'),
-                };
                 scope.resources = angular.copy(mock.resources);
+                scope.onCancel = jasmine.createSpy('onCancel');
+                scope.onSave = jasmine.createSpy('onSave');
 
-                el = angular.element('<chpl-listing-edit listing="listing" options="options" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" options="options" resources="resources" on-save="onSave(listing, reason)" on-cancel="onCancel()"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();

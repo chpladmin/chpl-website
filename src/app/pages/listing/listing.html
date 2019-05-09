@@ -104,8 +104,7 @@
     </div>
     <div feature-flag="listing-edit">
       <div ng-if="$ctrl.listing && $ctrl.isEditing">
-        <chpl-listing-edit listing="$ctrl.listing" options="$ctrl.editOptions" callbacks="$ctrl.editCallbacks" resources="$ctrl.resources"></chpl-listing-edit>
-        <button class="btn btn-success" ng-click="$ctrl.cancel()"><i class="fa fa-save"></i> Save</button>
+        <chpl-listing-edit listing="$ctrl.listing" messages="$ctrl.saveErrors" options="$ctrl.editOptions" resources="$ctrl.resources" on-cancel="$ctrl.cancel()" on-save="$ctrl.saveEdit(listing, reason)"></chpl-listing-edit>
       </div>
     </div>
   </div>

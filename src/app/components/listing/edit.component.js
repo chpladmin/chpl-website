@@ -2,9 +2,11 @@ export const ListingEditComponent = {
     templateUrl: 'chpl.components/listing/edit.html',
     bindings: {
         listing: '<',
+        messages: '<',
         options: '<',
-        callbacks: '<',
         resources: '<',
+        onSave: '&',
+        onCancel: '&',
     },
     controller: class ListingEditComponent {
         constructor ($filter, $log, $timeout, authService, networkService, utilService) {
@@ -12,6 +14,7 @@ export const ListingEditComponent = {
             this.$filter = $filter;
             this.$log = $log;
             this.$timeout = $timeout;
+            this.addNewValue = utilService.addNewValue;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -20,21 +23,24 @@ export const ListingEditComponent = {
         $onChanges (changes) {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
+                this.backupListing = angular.copy(changes.listing.currentValue);
+            }
+            if (changes.messages) {
+                this.messages = angular.copy(changes.messages.currentValue);
             }
             if (changes.options) {
                 this.options = angular.copy(changes.options.currentValue);
             }
-            if (changes.callbacks) {
-                this.callbacks = angular.copy(changes.callbacks.currentValue);
-            }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
-                this.resources.qmsStandards.data = this.resources.qmsStandards.data
-                    .concat(this.listing.qmsStandards.filter(standard => !standard.id))
-                    .map(standard => {
-                        standard.name = standard.qmsStandardName;
-                        return standard;
-                    });
+                this.resources.qmsStandards.data = this.resources.qmsStandards.data.concat(
+                    this.listing.qmsStandards
+                        .filter(standard => !standard.id)
+                        .map(standard => {
+                            standard.name = standard.qmsStandardName;
+                            return standard;
+                        })
+                );
             }
             if (this.listing && this.resources) {
                 this._prepareFields();
@@ -97,6 +103,11 @@ export const ListingEditComponent = {
             });
         }
 
+        cancel () {
+            this.listing = angular.copy(this.backupListing);
+            this.onCancel();
+        }
+
         disabledParent (listing) {
             return this.listing.ics.parents
                 .reduce((disabled, current) => disabled || current.chplProductNumber === listing.chplProductNumber, !!(this.listing.chplProductNumber === listing.chplProductNumber));
@@ -108,12 +119,12 @@ export const ListingEditComponent = {
 
         hasDateMatches () {
             return this.listing.certificationEvents
-                .reduce((ce, current) => current || !!this.matchesPreviousDate(ce), false);
+                .reduce((acc, ce) => acc || this.matchesPreviousDate(ce), false);
         }
 
         hasStatusMatches () {
             return this.listing.certificationEvents
-                .reduce((ce, current) => current || !!this.matchesPreviousStatus(ce), false);
+                .reduce((acc, ce) => acc || this.matchesPreviousStatus(ce), false);
         }
 
         improperFirstStatus () {
@@ -124,7 +135,8 @@ export const ListingEditComponent = {
             let orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject');
             let statusLoc = orderedStatus.indexOf(event);
             if (statusLoc > 0) {
-                return (this.$filter('date')(event.statusDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC'));
+                let test = this.$filter('date')(event.statusDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC');
+                return test;
             }
             return false;
         }
@@ -183,62 +195,57 @@ export const ListingEditComponent = {
             return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
-        /*
-          function save () {
-          for (var i = 0; i < this.listing.certificationEvents.length; i++) {
-          this.listing.certificationEvents[i].eventDate = this.listing.certificationEvents[i].statusDateObject.getTime();
-          }
-          if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
-          this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map(item => {
-          item.muuDate = item.muuDateObject.getTime();
-          return item;
-          });
-          }
-          if (this.listing.chplProductNumber.length > 12) {
-          this.listing.chplProductNumber =
-          vm.idFields.prefix + '.' +
-          vm.idFields.prod + '.' +
-          vm.idFields.ver + '.' +
-          vm.idFields.ics + '.' +
-          vm.idFields.suffix;
-          }
-          this.listing.certificationDate = this.listing.certDate.getTime();
-          if (this.options.workType === 'edit') {
-          vm.isSaving = true;
-          networkService.updateCP({
-          listing: this.listing,
-          reason: vm.reason,
-          }).then(function (response) {
-          if (!response.status || response.status === 200) {
-          $uibModalInstance.close(response);
-          } else {
-          vm.errors = [response.error];
-          vm.isSaving = false;
-          }
-          },function (error) {
-          vm.errors = [];
-          vm.warnings = [];
-          if (error.data) {
-          if (error.data.error && error.data.error.length > 0) {
-          vm.errors.push(error.data.error);
-          }
-          if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-          vm.errors = vm.errors.concat(error.data.errorMessages);
-          }
-          if (error.data.warningMessages && error.data.warningMessages.length > 0) {
-          vm.warnings = vm.warnings.concat(error.data.warningMessages);
-          }
-          }
-          vm.isSaving = false;
-          });
-          } else if (this.options.workType === 'confirm') {
-          $uibModalInstance.close(this.listing);
-          } else {
-          $log.info('Cannot save; no work type found');
-          }
-          }
-
-        */
+        save () {
+            this.listing.certificationEvents.forEach(ce => ce.eventDate = ce.statusDateObject.getTime());
+            this.listing.meaningfulUseUserHistory.forEach(muu => muu.muuDate = muu.muuDateObject.getTime());
+            if (this.listing.chplProductNumber.length > 12) {
+                this.listing.chplProductNumber =
+                    this.idFields.prefix + '.' +
+                    this.idFields.prod + '.' +
+                    this.idFields.ver + '.' +
+                    this.idFields.ics + '.' +
+                    this.idFields.suffix;
+            }
+            this.listing.certificationDate = this.listing.certDate.getTime();
+            this.onSave({
+                listing: this.listing,
+                reason: this.reason,
+            });
+            /*
+              vm.isSaving = true;
+              networkService.updateCP({
+              listing: this.listing,
+              reason: vm.reason,
+              }).then(function (response) {
+              if (!response.status || response.status === 200) {
+              $uibModalInstance.close(response);
+              } else {
+              vm.errors = [response.error];
+              vm.isSaving = false;
+              }
+              },function (error) {
+              vm.errors = [];
+              vm.warnings = [];
+              if (error.data) {
+              if (error.data.error && error.data.error.length > 0) {
+              vm.errors.push(error.data.error);
+              }
+              if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+              vm.errors = vm.errors.concat(error.data.errorMessages);
+              }
+              if (error.data.warningMessages && error.data.warningMessages.length > 0) {
+              vm.warnings = vm.warnings.concat(error.data.warningMessages);
+              }
+              }
+              vm.isSaving = false;
+              });
+            */
+            /*}/* else if (this.options.workType === 'confirm') {
+              $uibModalInstance.close(this.listing);
+              } else {
+              $log.info('Cannot save; no work type found');
+              }*/
+        }
     },
 }
 angular.module('chpl.components')

@@ -17,7 +17,10 @@ export const ListingComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.resources = {};
             this.editCallbacks = {};
-            this.editOptions = {};
+            this.editOptions = {
+                isSaving: false,
+                workType: 'edit',
+            };
         }
 
         $onInit () {
@@ -89,6 +92,40 @@ export const ListingComponent = {
             ]).then(() => {
                 angular.noop;
             });
+        }
+
+        saveEdit (listing, reason) {
+            let that = this;
+            this.editOptions.isSaving = true;
+            this.networkService.updateCP({
+                listing: listing,
+                reason: reason,
+            }).then(response => {
+                if (!response.status || response.status === 200) {
+                    that.isEditing = false;
+                    that.listing = response;
+                } else {
+                    that.saveErrors = { errors: [response.error]};
+                    that.editOptions.isSaving = false;
+                }
+            }, error => {
+                that.saveErrors = {
+                    errors: [],
+                    warnings: [],
+                }
+                if (error.data) {
+                    if (error.data.error && error.data.error.length > 0) {
+                        that.saveErrors.errors.push(error.data.error);
+                    }
+                    if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                        that.saveErrors.errors = that.saveErrors.errors.concat(error.data.errorMessages);
+                    }
+                    if (error.data.warningMessages && error.data.warningMessages.length > 0) {
+                        that.saveErrors.warnings = that.saveErrors.warnings.concat(error.data.warningMessages);
+                    }
+                }
+                that.editOptions.isSaving = false;
+            })
         }
 
         takeDeveloperAction (action, developerId) {

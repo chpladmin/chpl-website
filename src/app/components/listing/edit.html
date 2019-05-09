@@ -34,7 +34,7 @@
   <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
     <label for="cp-practice">Practice Type</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"
-            ng-options="practice as practice.name for practice in $ctrl.practices" required>
+            ng-options="practice as practice.name for practice in $ctrl.resources.practices" required>
     </select>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpPractice.$touched) && $ctrl.form.cpPractice.$error.required">Field is required</div>
   </div>
@@ -365,7 +365,7 @@
                 </span>
               </div>
             </label>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousMuuDate(muu)">Only effective date allowed per day</div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousMuuDate(muu)">Only one value allowed per day</div>
           </div>
         </td>
         <td>
@@ -421,28 +421,23 @@
       <li ng-if="$ctrl.improperFirstStatus()">The earliest status of this product must be "Active"</li>
     </ul>
   </div>
-  <div class="text-left text-warning" ng-if="$ctrl.warnings && $ctrl.warnings.length > 0">
+  <div class="text-left text-warning" ng-if="$ctrl.messages.warnings && $ctrl.messages.warnings.length > 0">
     The following warning(s) should be fixed:
     <ul>
-      <li ng-repeat="msg in $ctrl.warnings | orderBy:'toString()' track by $index">{{ msg }}</li>
+      <li ng-repeat="msg in $ctrl.messages.warnings | orderBy:'toString()' track by $index">{{ msg }}</li>
     </ul>
   </div>
-  <div class="text-danger text-left" ng-if="$ctrl.errors">
+  <div class="text-danger text-left" ng-if="$ctrl.messages.errors">
     The following error(s) must be fixed:
     <ul>
-      <li ng-repeat="msg in $ctrl.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
+      <li ng-repeat="msg in $ctrl.messages.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
     </ul>
   </div>
-  <button ng-disabled="(($ctrl.form.$invalid || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus()) && $ctrl.showFormErrors) || $ctrl.isSaving"
+  <button ng-disabled="(($ctrl.form.$invalid || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus()) && $ctrl.showFormErrors) || $ctrl.options.isSaving"
           id="edit-save"
-          class="btn btn-ai-success btn-block"
+          class="btn btn-ai-success pull-right"
           ng-mouseover="$ctrl.showFormErrors = true"
-          ng-click="$ctrl.save()">Save Certified Product</button>
-  <button class="btn btn-warning btn-block"
-          id="edit-cancel"
-          confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
-          confirm-ok="Yes"
-          confirm-cancel="No"
-          confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-          ng-click="$ctrl.cancel()">Cancel Edits</button>
+          ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
+  <button class="btn btn-warning"
+          ng-click="$ctrl.cancel()"><i class="fa fa-close"></i> Cancel</button>
 </div>
