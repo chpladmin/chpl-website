@@ -1374,6 +1374,14 @@
             $httpBackend.flush();
         });
 
+        it('should splitVersion', () => {
+            $httpBackend.expectPOST(/^\/rest\/versions\/1\/split$/).respond(200, {data: 'response'});
+            networkService.splitVersion({oldVersion: {versionId: 1}}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should unimpersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/unimpersonate$/).respond(200, {data: 'response'});
             networkService.unimpersonateUser().then(response => {
