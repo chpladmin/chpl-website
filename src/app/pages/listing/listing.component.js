@@ -52,10 +52,6 @@ export const ListingComponent = {
                 }, () => {
                     that.loading = false;
                 });
-            this.networkService.getSingleListingActivityMetadata(this.productId)
-                .then(data => {
-                    that.activity = data;
-                });
         }
 
         takeDeveloperAction (action, developerId) {

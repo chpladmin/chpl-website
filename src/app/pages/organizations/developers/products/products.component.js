@@ -100,9 +100,10 @@ export const ProductsComponent = {
             }).then(response => {
                 if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                     if (that.action === 'merge') {
-                        that.$state.go('organizations.developers', {
+                        that.$state.go('organizations.developers.products', {
                             action: undefined,
                             developerId: that.developer.developerId,
+                            productId: response.productId,
                         });
                     }
                     that.product = response;
@@ -148,6 +149,8 @@ export const ProductsComponent = {
                         that.$state.go('organizations.developers', {
                             action: undefined,
                             developerId: that.developer.developerId,
+                        }, {
+                            reload: true,
                         });
                     } else {
                         if (response.data.errorMessages) {

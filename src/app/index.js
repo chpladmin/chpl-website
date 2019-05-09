@@ -17,6 +17,7 @@ import /* angularCronGen from*/ 'angular-cron-gen';
 import /* angularLoadingBar from*/ 'angular-loading-bar';
 import /* angulartics from*/ 'angulartics';
 import /* angularticsGoogleTagManager from*/ 'angulartics-google-tag-manager';
+import 'angular-feature-flags';
 import /* googlechart from*/ 'angular-google-chart';
 import /* ngAnimate from*/ 'angular-animate';
 import /* ngAria from*/ 'angular-aria';
@@ -40,6 +41,7 @@ import 'zxcvbn';
 import 'angular-ui-router';
 
 // import app modules
+import administration from './pages/administration/index';
 import /* adminModule from*/ './admin/index';
 import /* chartsModule from*/ './pages/charts/index';
 import /* chplApiModule from*/ './pages/resources/chpl-api/index';
@@ -48,10 +50,11 @@ import /* collectionsModule from*/ './pages/collections/index';
 import /* compareModule from*/ './pages/compare/index';
 import /* componentsModule from*/ './components/index';
 import /* downloadModule from*/ './pages/resources/download/index';
-import chplListing from './pages/listing/index';
+import listing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
 import /* overviewModule from*/ './pages/resources/overview/index';
-import './pages/organizations/index';
+import organizations from './pages/organizations/index';
+import reports from './pages/reports/index';
 import /* productModule from*/ './product/index';
 import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
@@ -64,6 +67,24 @@ const dependencies = [
     'angular-loading-bar',
     'angulartics',
     'angulartics.google.tagmanager',
+    'feature-flags',
+    'googlechart',
+    'ngAnimate',
+    'ngAria',
+    'ngCytoscape',
+    'ngFileSaver',
+    'ngResource',
+    'ngStorage',
+    'ngSanitize',
+    'smart-table',
+    'toaster',
+    'ui.bootstrap',
+    'ui.router',
+    'zxcvbn',
+    administration.name,
+    listing.name,
+    organizations.name,
+    reports.name,
     'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',
@@ -73,31 +94,13 @@ const dependencies = [
     'chpl.components',
     'chpl.constants',
     'chpl.download',
-    chplListing.name,
     'chpl.navigation',
-    'chpl.organizations',
     'chpl.overview',
     'chpl.product',
     'chpl.registration',
     'chpl.search',
     'chpl.services',
     'chpl.shared',
-    'googlechart',
-    'ngAnimate',
-    'ngAria',
-    'ngCytoscape',
-    //    'ngMessages',
-    'ngFileSaver',
-    'ngResource',
-    'ngStorage',
-    'ngSanitize',
-    //    'ngTouch',
-    'smart-table',
-    'toaster',
-    'ui.bootstrap',
-    'ui.router',
-    //    'ui.bootstrap.fontawesome',
-    'zxcvbn',
 ];
 
 const appModule = angular.module('chpl', dependencies);

@@ -162,7 +162,7 @@ export const DeveloperComponent = {
 
         isBeingActivatedFromOncInactiveStatus () {
             let orderedStatus = this.developer.statusEvents.sort((a, b) => a.statusDateObject < b.statusDateObject ? 1 : a.statusDateObject > b.statusDateObject ? -1 : 0); // latest first
-            return this.developer.status.status !== 'Active' && orderedStatus[0].status.status === 'Active';
+            return this.developer.status.status !== 'Active' && orderedStatus[0].status && orderedStatus[0].status.status === 'Active';
         }
 
         /*

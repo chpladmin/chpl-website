@@ -82,17 +82,12 @@
                     expect(networkService.getProduct).toHaveBeenCalled();
                 });
 
-                it('should get product history on load', () => {
-                    expect(networkService.getSingleListingActivityMetadata).toHaveBeenCalled();
-                });
-
                 it('should be loading', () => {
                     expect(ctrl.loading).toBe(true);
                 });
 
                 it('shouldn\'t have data immediately', () => {
                     expect(ctrl.product).toBeUndefined();
-                    expect(ctrl.activity).toBeUndefined();
                 });
 
                 describe('after getting data', () => {
@@ -106,10 +101,6 @@
 
                     it('should load product data', () => {
                         expect(ctrl.product).toEqual(mock.products);
-                    });
-
-                    it('should load product activity', () => {
-                        expect(ctrl.activity).toEqual(mock.activity);
                     });
                 });
             });
