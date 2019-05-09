@@ -1,7 +1,7 @@
 export const FilterComponent = {
     templateUrl: 'chpl.admin/components/reports/filter.component.html',
     bindings: {
-        filterTypeId: '<?',
+        filterTypeName: '@',
         onApplyFilter: '&',
         getFilterData: '&',
     },
@@ -15,8 +15,13 @@ export const FilterComponent = {
         }
 
         $onInit () {
+            let that = this;
             this.filterName = '';
-            this.refreshFilterList();
+            this.networkService.getFilterTypes()
+                .then(response => {
+                    that.filterTypeId = response.data.find(item => item.name === that.filterTypeName).id;
+                    that.refreshFilterList();
+                });
         }
 
         refreshFilterList () {
@@ -39,7 +44,6 @@ export const FilterComponent = {
             filter.filterType.id = this.filterTypeId;
             filter.filter = JSON.stringify(this.getFilterData());
             filter.name = this.filterName;
-            this.$log.info(filter);
 
             this.networkService.createFilter(filter)
                 .then(() => {
@@ -57,5 +61,5 @@ export const FilterComponent = {
 }
 
 angular.module('chpl.admin')
-    .component('aiFilter', FilterComponent);
+    .component('chplFilter', FilterComponent);
 
