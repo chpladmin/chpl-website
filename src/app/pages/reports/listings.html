@@ -8,7 +8,7 @@
     <div class="col-sm-6">
       <chpl-filter feature-flag="adminNav" filter-type-name="Listing Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Certified_Products_{{ $ctrl.filename }}"

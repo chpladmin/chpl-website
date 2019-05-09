@@ -4,7 +4,18 @@ function reportsStateConfig ($stateProvider) {
         .state('reports', {
             abstract: true,
             url: '/reports',
-            template: '<div class="container-fluid"><div class="row"><div class="col-sm-12"><h1>CHPL Reports</h1></div></div><div class="main-content" id="main-content" tabindex="-1"><ui-view/></div></div>',
+            component: 'chplReports',
+            data: { title: 'CHPL Reports' },
+        })
+        .state('reports.acbs', {
+            url: '/onc-acbs',
+            component: 'chplReportsAcbs',
+            data: { title: 'CHPL Reports - ONC-ACBs' },
+        })
+        .state('reports.atls', {
+            url: '/onc-atls',
+            component: 'chplReportsAtls',
+            data: { title: 'CHPL Reports - ONC-ATLs' },
         })
         .state('reports.listings', {
             url: '/listings/{productId}?',
