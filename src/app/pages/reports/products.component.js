@@ -20,7 +20,7 @@ export const ReportsProductsComponent = {
             this.tableController = {};
         }
 
-        $onChanges () {
+        $onInit () {
             this.search();
         }
 
