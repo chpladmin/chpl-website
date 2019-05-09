@@ -6,15 +6,20 @@ export const SurveillanceNonconformityEditComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceNonconformityEditController {
-        constructor ($log, API, FileUploader, authService, networkService, utilService) {
+        constructor ($log, API, Upload, authService, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.API = API;
-            this.FileUploader = FileUploader;
-            this.authService = authService;
+            this.Upload = Upload;
             this.networkService = networkService;
             this.utilService = utilService;
             this.sortNonconformityTypes = utilService.sortNonconformityTypes;
+            this.item = {
+                headers: {
+                    Authorization: 'Bearer ' + authService.getToken(),
+                    'API-Key': authService.getApiKey(),
+                },
+            };
         }
 
         $onInit () {
@@ -27,6 +32,7 @@ export const SurveillanceNonconformityEditComponent = {
             this.showFormErrors = false;
             this.surveillanceId = this.resolve.surveillanceId;
             this.workType = this.resolve.workType;
+            this.item.url = this.API + '/surveillance/' + this.surveillanceId + '/nonconformity/' + this.nonconformity.id + '/document';
 
             if (this.nonconformity.status) {
                 this.nonconformity.status = this.utilService.findModel(this.nonconformity.status, this.data.nonconformityStatusTypes.data, 'name');
@@ -45,9 +51,6 @@ export const SurveillanceNonconformityEditComponent = {
             }
             if (this.nonconformity.capMustCompleteDate) {
                 this.nonconformity.capMustCompleteDateObject = new Date(this.nonconformity.capMustCompleteDate);
-            }
-            if (this.workType === 'edit') {
-                this.buildFileUploader();
             }
         }
 
@@ -95,30 +98,28 @@ export const SurveillanceNonconformityEditComponent = {
             this.close({$value: this.nonconformity});
         }
 
-        ////////////////////////////////////////////////////////////////////
-
-        buildFileUploader () {
-            this.uploader = new this.FileUploader({
-                url: this.API + '/surveillance/' + this.surveillanceId + '/nonconformity/' + this.nonconformity.id + '/document',
-                removeAfterUpload: true,
-                headers: {
-                    Authorization: 'Bearer ' + this.authService.getToken(),
-                    'API-Key': this.authService.getApiKey(),
-                },
-            });
-            this.uploader.onSuccessItem = (fileItem, response, status, headers) => {
-                this.$log.info('onSuccessItem', fileItem, response, status, headers);
-                this.nonconformity.documents.push({fileName: fileItem.file.name + ' is pending'});
-            };
-            this.uploader.onCompleteItem = (fileItem, response, status, headers) => {
-                this.$log.info('onCompleteItem', fileItem, response, status, headers);
-            };
-            this.uploader.onErrorItem = (fileItem, response, status, headers) => {
-                this.$log.info('onErrorItem', fileItem, response, status, headers);
-            };
-            this.uploader.onCancelItem = (fileItem, response, status, headers) => {
-                this.$log.info('onCancelItem', fileItem, response, status, headers);
-            };
+        upload () {
+            if (this.file) {
+                this.item.data = {
+                    file: this.file,
+                };
+                let that = this;
+                this.Upload.upload(this.item).then(response => {
+                    that.nonconformity.documents.push({fileName: response.data.fileName + ' is pending'});
+                    that.uploadMessage = 'File "' + response.data.fileName + '" was uploaded successfully.';
+                    that.uploadErrors = [];
+                    that.uploadSuccess = true;
+                    that.file = undefined;
+                }, response => {
+                    that.uploadMessage = 'File "' + response.data.fileName + '" was not uploaded successfully.';
+                    that.uploadErrors = response.data.errorMessages;
+                    that.uploadSuccess = false;
+                    that.file = undefined;
+                }, event => {
+                    that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
+                    that.$log.info('progress: ' + that.progressPercentage + '% ' + event.config.data.file.name);
+                });
+            }
         }
     },
 }
