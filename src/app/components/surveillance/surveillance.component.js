@@ -50,7 +50,7 @@ export const SurveillanceComponent = {
                 },
             });
             this.uibModalInstance.result.then(() => {
-                this.networkService.getProduct(this.certifiedProduct.id)
+                this.networkService.getListing(this.certifiedProduct.id)
                     .then((result) => {
                         this.certifiedProduct = result;
                     });
@@ -112,7 +112,7 @@ export const SurveillanceComponent = {
                 },
             });
             this.uibModalInstance.result.then(() => {
-                this.networkService.getProduct(this.certifiedProduct.id)
+                this.networkService.getListing(this.certifiedProduct.id)
                     .then((result) => {
                         this.certifiedProduct = result;
                     });

@@ -457,7 +457,7 @@
                 vm.activeCP.certifyingBody = {};
                 vm.activeCP.practiceType = {};
                 vm.activeCP.classificationType = {};
-                networkService.getProduct(vm.cpSelect, vm.forceRefresh)
+                networkService.getListing(vm.cpSelect, vm.forceRefresh)
                     .then(function (cp) {
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
@@ -609,7 +609,7 @@
         }
 
         function loadCp () {
-            networkService.getProduct(vm.productId, vm.forceRefresh)
+            networkService.getListing(vm.productId, vm.forceRefresh)
                 .then(function (result) {
                     for (var i = 0; i < vm.developers.length; i++) {
                         if (result.developer.developerId === vm.developers[i].developerId) {
@@ -652,7 +652,7 @@
         }
 
         function loadSurveillance () {
-            networkService.getProduct(vm.productId, vm.forceRefresh)
+            networkService.getListing(vm.productId, vm.forceRefresh)
                 .then(function (result) {
                     vm.surveillanceProduct = result;
                 });

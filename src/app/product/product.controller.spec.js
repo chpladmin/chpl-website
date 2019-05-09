@@ -31,7 +31,7 @@
         beforeEach(function () {
             angular.mock.module('chpl.product', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
+                    $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
                     return $delegate;
                 });
@@ -46,7 +46,7 @@
                 });
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getProduct.and.returnValue($q.when(mock.products));
+                networkService.getListing.and.returnValue($q.when(mock.products));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new();
@@ -76,12 +76,12 @@
             });
 
             it('should find product details on load', function () {
-                expect(networkService.getProduct).toHaveBeenCalled();
+                expect(networkService.getListing).toHaveBeenCalled();
             });
 
             it('should log an error if the product load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                networkService.getProduct.and.returnValue($q.reject('error message'));
+                networkService.getListing.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);
