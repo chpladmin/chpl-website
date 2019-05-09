@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Version component', () => {
+    fdescribe('the Version component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
@@ -37,15 +37,17 @@
                 scope.developer = mock.developer;
                 scope.canEdit = true;
                 scope.canMerge = true;
+                scope.canSplit = true;
                 scope.canView = true;
                 scope.isEditing = true;
                 scope.isInvalid = false;
+                scope.isSplitting = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onEdit = jasmine.createSpy('onEdit');
                 scope.showFull = true;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-version version="version" developer="developer" can-edit="canEdit" can-merge="canMerge" can-view="canView" is-editing="isEditing" is-Invalid="isInvalid" on-cancel="onCancel()" on-edit="onEdit(version)" show-full="showFull" take-action="takeAction(action, versionId)"></chpl-version>');
+                el = angular.element('<chpl-version version="version" developer="developer" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" is-invalid="isInvalid" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(version)" show-full="showFull" take-action="takeAction(action, versionId)"></chpl-version>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -115,6 +117,19 @@
                     ctrl.canMerge = false;
                     expect(ctrl.can('merge')).toBe(false);
                 });
+
+                it('should allow split based on the container, the developer status, and the user\'s role', () => {
+                    expect(ctrl.can('split')).toBe(true);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+                    expect(ctrl.can('split')).toBe(true);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
+                    expect(ctrl.can('split')).toBe(true);
+                    ctrl.developer.status.status = 'not active';
+                    expect(ctrl.can('split')).toBe(false);
+                    ctrl.developer.status.status = 'Active';
+                    ctrl.canSplit = false;
+                    expect(ctrl.can('merge')).toBe(false);
+                });
             });
 
             describe('when using callbacks', () => {
@@ -126,6 +141,11 @@
                 it('should send back data on merge', () => {
                     ctrl.merge();
                     expect(scope.takeAction).toHaveBeenCalledWith('merge', 636);
+                });
+
+                it('should send back data on split', () => {
+                    ctrl.split();
+                    expect(scope.takeAction).toHaveBeenCalledWith('split', 636);
                 });
 
                 it('should send back data on view', () => {
