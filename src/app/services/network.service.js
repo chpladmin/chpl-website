@@ -117,10 +117,10 @@ export class NetworkService {
     getActivityMetadata (key, activityRange) {
         let call = '/activity/metadata/' + key;
         let params = [];
-        if (activityRange.startDate) {
+        if (activityRange && activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
         }
-        if (activityRange.endDate) {
+        if (activityRange && activityRange.endDate) {
             params.push('end=' + activityRange.endDate.getTime());
         }
         if (params.length > 0) {

@@ -29,7 +29,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.admin');
+            angular.mock.module('chpl.reports');
 
             inject((_$log_, _ReportService_) => {
                 $log = _$log_;
