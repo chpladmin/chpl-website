@@ -1,0 +1,48 @@
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results">
+  <div class="row">
+      <div class="col-sm-12">
+        <h3>ONC-ACBs</h3>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-6" ng-if="$ctrl.displayed.length > 0">
+      <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
+            ng-csv="$ctrl.displayed" filename="ONC-ACB_{{ $ctrl.filename }}"
+            csv-header="['ONC-ACB', 'Action', 'Details', 'Activity Date']"
+            csv-column-order="['acbName', 'action', 'csvDetails', 'friendlyActivityDate']">
+        <i class="fa fa-cloud-download"></i> Download</button>
+    </div>
+  </div>
+
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
+        <th>Activity</th>
+        <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-if="$ctrl.displayed.length === 0">
+        <td colspan="3">No activity found</td>
+      </tr>
+      <tr ng-repeat="activity in $ctrl.displayed">
+        <td>{{ activity.acbName }}</td>
+        <td>
+          <button class="btn btn-link pull-right" ng-if="!activity.showDetails && activity.details && activity.details.length > 0" ng-click="activity.showDetails = true">Details</button>
+          <button class="btn btn-link pull-right" ng-if="activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
+          <div ng-if="activity.action">
+            <span ng-bind-html="activity.action"></span>
+            <span ng-if="activity.showDetails">
+              <ul>
+                <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
+              </ul>
+            </span>
+          </div>
+        </td>
+        <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
