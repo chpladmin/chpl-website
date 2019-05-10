@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the CHPL Listing component', () => {
+    describe('the CHPL Listing component', () => {
 
         var $componentController, $log, $q, $stateParams, $uibModal, actualOptions, ctrl, mock, networkService, scope;
         mock = {};
