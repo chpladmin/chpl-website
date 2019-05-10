@@ -67,14 +67,13 @@
 
                 scope = $rootScope.$new();
                 scope.listing = angular.copy(mock.listing);
-                scope.options = {
-                    workType: 'edit',
-                };
-                scope.resources = angular.copy(mock.resources);
+                scope.isSaving = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onSave = jasmine.createSpy('onSave');
+                scope.resources = angular.copy(mock.resources);
+                scope.workType = 'edit';
 
-                el = angular.element('<chpl-listing-edit listing="listing" options="options" resources="resources" on-save="onSave(listing, reason)" on-cancel="onCancel()"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" is-saving="isSaving" on-save="onSave(listing, reason)" on-cancel="onCancel()" resources="resources" work-type="workType"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -99,7 +98,7 @@
             cp.ics.parents = [{name: 'a parent'}];
             scope.listing = cp;
 
-            el = angular.element('<chpl-listing-edit listing="listing" options="options" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+            el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
 
             $compile(el)(scope);
             scope.$digest();
@@ -112,7 +111,7 @@
             cp.chplProductNumber = '15.07.07.2713.CQ01.02.00.1.170331';
             scope.listing = cp;
 
-            el = angular.element('<chpl-listing-edit listing="listing" options="options" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+            el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
 
             $compile(el)(scope);
             scope.$digest();
@@ -157,7 +156,7 @@
                 cp.certificationEdition = {name: '2014'};
                 scope.listing = cp;
 
-                el = angular.element('<chpl-listing-edit listing="listing" options="options" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -171,7 +170,7 @@
                 cp.product = {productId: undefined};
                 scope.listing = cp;
 
-                el = angular.element('<chpl-listing-edit listing="listing" options="options" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -185,7 +184,7 @@
                 cp.product = undefined;
                 scope.listing = cp;
 
-                el = angular.element('<chpl-listing-edit listing="listing" options="options" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -287,10 +286,10 @@
         });
 
         it('should know which statuses should be disabled', () => {
-            ctrl.options.workType = 'edit';
+            ctrl.workType = 'edit';
             expect(ctrl.disabledStatus('Pending')).toBe(true);
             expect(ctrl.disabledStatus('Active')).toBe(false);
-            ctrl.options.workType = 'confirm';
+            ctrl.workType = 'confirm';
             expect(ctrl.disabledStatus('Pending')).toBe(false);
             expect(ctrl.disabledStatus('Active')).toBe(true);
         });
@@ -386,7 +385,7 @@
 
             describe('that is pending', () => {
                 xit('should close it\'s modal with the current Listing', () => {
-                    ctrl.options.workType = 'confirm';
+                    ctrl.workType = 'confirm';
                     ctrl.save();
                 });
             });
@@ -424,7 +423,7 @@
             });
 
             it('should not error on improper first status when confirming', () => {
-                ctrl.options.workType = 'confirm';
+                ctrl.workType = 'confirm';
                 ctrl.listing.certificationEvents = [];
                 expect(ctrl.improperFirstStatus()).toBe(false);
             });

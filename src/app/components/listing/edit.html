@@ -433,7 +433,7 @@
       <li ng-repeat="msg in $ctrl.messages.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
     </ul>
   </div>
-  <button ng-disabled="(($ctrl.form.$invalid || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus()) && $ctrl.showFormErrors) || $ctrl.options.isSaving"
+  <button ng-disabled="(($ctrl.form.$invalid || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus()) && $ctrl.showFormErrors) || $ctrl.isSaving"
           id="edit-save"
           class="btn btn-ai-success pull-right"
           ng-mouseover="$ctrl.showFormErrors = true"

@@ -2,11 +2,12 @@ export const ListingEditComponent = {
     templateUrl: 'chpl.components/listing/edit.html',
     bindings: {
         listing: '<',
+        isSaving: '<',
         messages: '<',
-        options: '<',
-        resources: '<',
         onSave: '&',
         onCancel: '&',
+        resources: '<',
+        workType: '<',
     },
     controller: class ListingEditComponent {
         constructor ($filter, $log, $timeout, authService, networkService, utilService) {
@@ -25,11 +26,11 @@ export const ListingEditComponent = {
                 this.listing = angular.copy(changes.listing.currentValue);
                 this.backupListing = angular.copy(changes.listing.currentValue);
             }
+            if (changes.isSaving) {
+                this.isSaving = angular.copy(changes.isSaving.currentValue);
+            }
             if (changes.messages) {
                 this.messages = angular.copy(changes.messages.currentValue);
-            }
-            if (changes.options) {
-                this.options = angular.copy(changes.options.currentValue);
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
@@ -41,6 +42,9 @@ export const ListingEditComponent = {
                             return standard;
                         })
                 );
+            }
+            if (changes.workType) {
+                this.workType = angular.copy(changes.workType.currentValue);
             }
             if (this.listing && this.resources) {
                 this._prepareFields();
@@ -114,7 +118,7 @@ export const ListingEditComponent = {
         }
 
         disabledStatus (name) {
-            return ((name === 'Pending' && this.options.workType === 'edit') || (name !== 'Pending' && this.options.workType === 'confirm'));
+            return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
         }
 
         hasDateMatches () {
@@ -128,7 +132,7 @@ export const ListingEditComponent = {
         }
 
         improperFirstStatus () {
-            return this.options.workType === 'confirm' ? false : this.$filter('orderBy')(this.listing.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
+            return this.workType === 'confirm' ? false : this.$filter('orderBy')(this.listing.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
         }
 
         matchesPreviousDate (event) {

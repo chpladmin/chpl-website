@@ -17,10 +17,8 @@ export const ListingComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.resources = {};
             this.editCallbacks = {};
-            this.editOptions = {
-                isSaving: false,
-                workType: 'edit',
-            };
+            this.isSaving = false;
+            this.workType = 'edit';
         }
 
         $onInit () {
@@ -96,7 +94,7 @@ export const ListingComponent = {
 
         saveEdit (listing, reason) {
             let that = this;
-            this.editOptions.isSaving = true;
+            this.isSaving = true;
             this.networkService.updateCP({
                 listing: listing,
                 reason: reason,
@@ -106,7 +104,7 @@ export const ListingComponent = {
                     that.listing = response;
                 } else {
                     that.saveErrors = { errors: [response.error]};
-                    that.editOptions.isSaving = false;
+                    that.isSaving = false;
                 }
             }, error => {
                 that.saveErrors = {
@@ -124,7 +122,7 @@ export const ListingComponent = {
                         that.saveErrors.warnings = that.saveErrors.warnings.concat(error.data.warningMessages);
                     }
                 }
-                that.editOptions.isSaving = false;
+                that.isSaving = false;
             })
         }
 
