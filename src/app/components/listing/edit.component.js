@@ -215,40 +215,6 @@ export const ListingEditComponent = {
                 listing: this.listing,
                 reason: this.reason,
             });
-            /*
-              vm.isSaving = true;
-              networkService.updateCP({
-              listing: this.listing,
-              reason: vm.reason,
-              }).then(function (response) {
-              if (!response.status || response.status === 200) {
-              $uibModalInstance.close(response);
-              } else {
-              vm.errors = [response.error];
-              vm.isSaving = false;
-              }
-              },function (error) {
-              vm.errors = [];
-              vm.warnings = [];
-              if (error.data) {
-              if (error.data.error && error.data.error.length > 0) {
-              vm.errors.push(error.data.error);
-              }
-              if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-              vm.errors = vm.errors.concat(error.data.errorMessages);
-              }
-              if (error.data.warningMessages && error.data.warningMessages.length > 0) {
-              vm.warnings = vm.warnings.concat(error.data.warningMessages);
-              }
-              }
-              vm.isSaving = false;
-              });
-            */
-            /*}/* else if (this.options.workType === 'confirm') {
-              $uibModalInstance.close(this.listing);
-              } else {
-              $log.info('Cannot save; no work type found');
-              }*/
         }
     },
 }

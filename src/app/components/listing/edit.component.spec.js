@@ -44,7 +44,6 @@
                 });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
-                    $delegate.updateCP = jasmine.createSpy('updateCP');
                     return $delegate;
                 });
                 $provide.decorator('utilService', $delegate => {
@@ -61,7 +60,6 @@
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
-                networkService.updateCP.and.returnValue($q.when(mock));
                 utilService = _utilService_;
                 utilService.extendSelect.and.returnValue([]);
 
@@ -334,53 +332,6 @@
                 ];
                 ctrl.save();
                 expect(ctrl.listing.certificationEvents[0].eventDate).toBe(dateValue);
-            });
-
-            describe('that is active', () => {
-                it('should set a "saving" flag save', () => {
-                    ctrl.save();
-                    expect(ctrl.isSaving).toBe(true);
-                });
-
-                it('should report errors and turn off the saving flag', () => {
-                    networkService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
-                    ctrl.save();
-                    scope.$digest();
-                    expect(ctrl.errors).toEqual(['an error']);
-                    expect(ctrl.isSaving).toBe(false);
-                });
-
-                it('should report errors on server data.error', () => {
-                    networkService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
-                    ctrl.save();
-                    scope.$digest();
-                    expect(ctrl.errors).toEqual(['an error']);
-                    expect(ctrl.isSaving).toBe(false);
-                });
-
-                it('should report errors on server data.errorMessages', () => {
-                    networkService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
-                    ctrl.save();
-                    scope.$digest();
-                    expect(ctrl.errors).toEqual(['an error2']);
-                    expect(ctrl.isSaving).toBe(false);
-                });
-
-                it('should report errors on server data.warningMessages', () => {
-                    networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
-                    ctrl.save();
-                    scope.$digest();
-                    expect(ctrl.warnings).toEqual(['an error3']);
-                    expect(ctrl.isSaving).toBe(false);
-                });
-
-                it('should report no errors if none were returned', () => {
-                    networkService.updateCP.and.returnValue($q.reject({}));
-                    ctrl.save();
-                    scope.$digest();
-                    expect(ctrl.errors).toEqual([]);
-                    expect(ctrl.isSaving).toBe(false);
-                });
             });
 
             describe('that is pending', () => {
