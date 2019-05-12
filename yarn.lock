@@ -1306,11 +1306,6 @@ angular-file-saver@^1.1.3:
     blob-tmp "^1.0.0"
     file-saver "^1.3.3"
 
-angular-file-upload@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/angular-file-upload/-/angular-file-upload-2.5.0.tgz#0f53c93fbc70ed8ba8340a9a289ba64b680e2167"
-  integrity sha1-D1PJP7xw7YuoNAqaKJumS2gOIWc=
-
 angular-google-chart@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/angular-google-chart/-/angular-google-chart-0.1.0.tgz#ccfcee5aeb8e02f230730fd75f996f5410ca19d0"
@@ -8098,6 +8093,11 @@ ng-csv@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/ng-csv/-/ng-csv-0.3.6.tgz#a89cf02e4c3fa2a5b24d5c19984443dda7f275d8"
   integrity sha1-qJzwLkw/oqWyTVwZmERD3afyddg=
+
+ng-file-upload@^12.2.13:
+  version "12.2.13"
+  resolved "https://registry.yarnpkg.com/ng-file-upload/-/ng-file-upload-12.2.13.tgz#01800f3872e526f95310f8477e99e4f12d0d8d14"
+  integrity sha1-AYAPOHLlJvlTEPhHfpnk8S0NjRQ=
 
 ng-idle@^1.3.2:
   version "1.3.2"

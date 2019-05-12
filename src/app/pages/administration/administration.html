@@ -5,10 +5,9 @@
         <h1>CHPL Administration</h1>
       </div>
     </div>
-    <div class="main-content row" id="main-content" tabindex="-1" ng-if="$ctrl.hasAnyRole()">
+    <div class="main-content row" id="main-content" tabindex="-1">
       <div class="col-sm-12">
         <ui-view></ui-view>
-        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN']) && $ctrl.DEVELOPER_MODE" feature-flag-overrides></div>
       </div>
     </div>
   </span>

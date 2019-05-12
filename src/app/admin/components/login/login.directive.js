@@ -1,4 +1,4 @@
-//import zxcvbn from 'zxcvbn';
+/* global DEVELOPER_MODE */
 
 (function () {
     'use strict';
@@ -40,6 +40,7 @@
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
         vm.stopImpersonating = stopImpersonating;
+        vm.DEVELOPER_MODE = DEVELOPER_MODE;
 
         vm.activityEnum = {
             LOGIN: 1,

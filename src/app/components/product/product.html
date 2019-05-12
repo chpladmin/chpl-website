@@ -17,7 +17,7 @@
     </span>
     <span ng-if="$ctrl.showFull">
       <h2>Product</h2>
-      {{ $ctrl.product.name }} <em class="pull-right">Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em>
+      {{ $ctrl.product.name }} <em class="pull-right" ng-if="!$ctrl.isSplitting">Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em>
       <div ng-if="$ctrl.isSplitting"><strong>New Product Code:</strong> {{ $ctrl.product.newProductCode }}</div>
       <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0 && !$ctrl.isSplitting" class="table table-condensed">
         <thead>
@@ -28,7 +28,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="owner in $ctrl.product.ownerHistory | orderBy : '-transferDate'">
-            <td>{{ owner.developer.name }}<span ng-if="$first"> (current)</span></td>
+            <td>{{ owner.developer.name }}</td>
             <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
         </tbody>

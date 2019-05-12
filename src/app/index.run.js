@@ -1,5 +1,6 @@
-/* global DEVELOPER_MODE ENABLE_LOGGING */
 import { Visualizer } from '@uirouter/visualizer';
+import { states as listingStates } from './pages/listing/listing.state.js';
+import { states as organizationsStates } from './pages/organizations/organizations.state.js';
 
 (function () {
     'use strict';
@@ -56,10 +57,25 @@ import { Visualizer } from '@uirouter/visualizer';
                         $state.reload();
                     }
                 });
+
+        // load states dependent on features
+        if (featureFlags.isOn('listing-edit')) {
+            listingStates['listing-edit-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else {
+            listingStates['listing-edit-off'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+        if (featureFlags.isOn('developer-page')) {
+            organizationsStates.forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
         }
 
         // Display ui-router state changes
-        if (DEVELOPER_MODE && ENABLE_LOGGING) {
+        if (featureFlags.isOn('states')) {
             $uiRouter.plugin(Visualizer);
         }
     }

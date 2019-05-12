@@ -39,7 +39,7 @@
 
             it('should generate a mainSearch', function () {
                 var results = service.translate('bannedDevelopers', Mock.decertifiedDevelopers);
-                expect(results[0].mainSearch).toEqual('Greenway Health, LLC');
+                expect(results[0].mainSearch).toEqual('Cerner Corporation');
             });
         });
 

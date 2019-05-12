@@ -73,7 +73,6 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN']) && vm.DEVELOPER_MODE"><a ui-sref="administration.features()">Feature Flags</a></li>
           </ul>
         </li>
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" ng-class="{'active': vm.isActive('/users') }"><a href="#/admin/userManagement">Users</a></li>
@@ -91,8 +90,8 @@
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
             <li><a ui-sref="reports.listings({productId: null})">Listings</a></li>
             <li><a ui-sref="reports.developers()">Developers</a></li>
-            <li><a href="#/admin/reports/acb">ONC-ACBs</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/atl">ONC-ATLs</a></li>
+            <li><a ui-sref="reports.acbs()">ONC-ACBs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()">ONC-ATLs</a></li>
             <li><a href="#/admin/reports/prod">Products</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/announcement">Announcements</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/users">Users</a></li>
