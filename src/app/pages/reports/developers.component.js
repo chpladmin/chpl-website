@@ -1,11 +1,11 @@
 export const ReportsDevelopersComponent = {
-    templateUrl: 'chpl.admin/components/reports/reports.developer.html',
-    controller: class ReportsDevelopers {
-        constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
+    templateUrl: 'chpl.reports/developers.html',
+    controller: class ReportsDevelopersComponent {
+        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
-            this.$uibModal = $uibModal;
+            this.$scope = $scope;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -16,6 +16,8 @@ export const ReportsDevelopersComponent = {
             };
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
+            this.filterText = '';
+            this.tableController = {};
         }
 
         $onChanges () {
@@ -35,6 +37,29 @@ export const ReportsDevelopersComponent = {
             } else {
                 return false;
             }
+        }
+
+        onApplyFilter (filterObj) {
+            let f = angular.fromJson(filterObj);
+            this.activityRange.startDate = new Date(Date.parse(f.startDate));
+            this.activityRange.endDate = new Date(Date.parse(f.endDate));
+            this.filterText = f.dataFilter;
+            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
+            this.search();
+        }
+
+        createFilterDataObject () {
+            let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            filterData.dataFilter = this.filterText;
+            filterData.tableState = {};
+            filterData.tableState = this.tableController.tableState();
+            return filterData;
+        }
+
+        tableStateListener (tableController) {
+            this.tableController = tableController;
         }
 
         parse (meta) {
@@ -150,7 +175,6 @@ export const ReportsDevelopersComponent = {
         }
 
         prepare (results) {
-            this.activeAcbs = [];
             this.displayed = results.map(item => {
                 item.filterText = item.developerName + '|' + item.developerCode + '|' + item.responsibleUser.fullName
                 item.categoriesFilter = '|' + item.categories.join('|') + '|';
@@ -182,5 +206,5 @@ export const ReportsDevelopersComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.reports')
     .component('chplReportsDevelopers', ReportsDevelopersComponent);

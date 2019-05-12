@@ -103,6 +103,8 @@ export const DevelopersComponent = {
                         that.$state.go('organizations.developers', {
                             developerId: response.developerId,
                             action: undefined,
+                        }, {
+                            reload: true,
                         });
                     }
                     that.developer = response;
@@ -147,6 +149,8 @@ export const DevelopersComponent = {
                         that.$state.go('organizations.developers', {
                             developerId: response.oldDeveloper.developerId,
                             action: undefined,
+                        }, {
+                            reload: true,
                         });
                     } else {
                         if (response.data.errorMessages) {

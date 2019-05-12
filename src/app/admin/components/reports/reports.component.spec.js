@@ -11,8 +11,6 @@
                     $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
                     $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
                     $delegate.getVersionActivity = jasmine.createSpy('getVersionActivity');
-                    $delegate.getAcbActivity = jasmine.createSpy('getAcbActivity');
-                    $delegate.getAtlActivity = jasmine.createSpy('getAtlActivity');
                     $delegate.getAnnouncementActivity = jasmine.createSpy('getAnnouncementActivity');
                     $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
                     $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
@@ -32,8 +30,6 @@
                 networkService.getDeveloperActivity.and.returnValue($q.when([]));
                 networkService.getProductActivity.and.returnValue($q.when([]));
                 networkService.getVersionActivity.and.returnValue($q.when([]));
-                networkService.getAcbActivity.and.returnValue($q.when([]));
-                networkService.getAtlActivity.and.returnValue($q.when([]));
                 networkService.getAnnouncementActivity.and.returnValue($q.when([]));
                 networkService.getUserActivity.and.returnValue($q.when([]));
                 networkService.getUserActivities.and.returnValue($q.when([]));
@@ -70,8 +66,6 @@
                 describe('for refreshing', function () {
                     beforeEach(function () {
                         spyOn(ctrl, 'refreshProduct');
-                        spyOn(ctrl, 'refreshAcb');
-                        spyOn(ctrl, 'refreshAtl');
                         spyOn(ctrl, 'refreshAnnouncement');
                         spyOn(ctrl, 'refreshUser');
                         spyOn(ctrl, 'refreshApi');
@@ -82,8 +76,6 @@
                         ctrl.workType = 'dev';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -94,32 +86,6 @@
                         ctrl.workType = 'prod';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshProduct).toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the acb data specifically', function () {
-                        ctrl.workType = 'acb';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the atl data specifically', function () {
-                        ctrl.workType = 'atl';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -130,8 +96,6 @@
                         ctrl.workType = 'announcement';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -142,8 +106,6 @@
                         ctrl.workType = 'users';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -154,8 +116,6 @@
                         ctrl.workType = 'api_key_management';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAcb).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAtl).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).toHaveBeenCalled();

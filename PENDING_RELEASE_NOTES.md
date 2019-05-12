@@ -1,8 +1,12 @@
 
-## Version 10.18.0
+## Version 10.19.0
 _Date TBD_
 
 ### New features
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
 * Restrict / require Users to only be one ROLE
+
+## Bug Fixes
+* Allow upload of files from Edge
 
 ---

@@ -18,7 +18,7 @@
             case 'apiDocumentation':
                 return apiDocumentation(array.results);
             case 'bannedDevelopers':
-                return bannedDevelopers(array.decertifiedDeveloperResults);
+                return bannedDevelopers(array);
             case 'correctiveAction':
                 return correctiveActions(array.results);
             case 'decertifiedProducts':
@@ -70,12 +70,11 @@
                 dev = {
                     acb: [],
                     decertificationDate: array[i].decertificationDate,
-                    developer: array[i].developer.name,
-                    mainSearch: array[i].developer.name,
-                    status: array[i].developer.status.status,
+                    developer: array[i].developerName,
+                    mainSearch: array[i].developerName,
                 }
-                for (var j = 0; j < array[i].certifyingBody.length; j++) {
-                    dev.acb.push(array[i].certifyingBody[j].name);
+                for (var j = 0; j < array[i].acbNames.length; j++) {
+                    dev.acb.push(array[i].acbNames[j]);
                 }
                 ret.push(dev);
             }

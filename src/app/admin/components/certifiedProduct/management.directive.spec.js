@@ -405,41 +405,5 @@
                 expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
-
-        describe('when uploading surveillance activity', function () {
-            it('should tell the user how many activities were uploaded', function () {
-                vm.surveillanceUploadErrors = [2, 1];
-                vm.surveillanceUploadSuccess = false;
-                vm.surveillanceUploader.onSuccessItem({
-                    file: {
-                        name: 'name',
-                    },
-                }, {
-                    pendingSurveillance: [1,2],
-                });
-
-                expect(vm.surveillanceUploadMessage).toBe('File "name" was uploaded successfully. 2 pending surveillance records are ready for confirmation.');
-                expect(vm.surveillanceUploadErrors).toEqual([]);
-                expect(vm.surveillanceUploadSuccess).toBe(true);
-            });
-
-            it('should tell the user that a job was started when a lot of activities were in the file', function () {
-                vm.surveillanceUploadErrors = [2, 1];
-                vm.surveillanceUploadSuccess = false;
-                vm.surveillanceUploader.onSuccessItem({
-                    file: {
-                        name: 'name',
-                    },
-                }, {
-                    user: {
-                        email: 'fake@sample.com',
-                    },
-                });
-
-                expect(vm.surveillanceUploadMessage).toBe('File "name" was uploaded successfully. The file will be processed and an email will be sent to fake@sample.com when processing is complete.');
-                expect(vm.surveillanceUploadErrors).toEqual([]);
-                expect(vm.surveillanceUploadSuccess).toBe(true);
-            });
-        });
     });
 })();

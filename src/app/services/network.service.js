@@ -55,6 +55,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createFilter (filter) {
+        return this.apiPOST('/filters', filter);
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
     }
@@ -69,6 +73,10 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteFilter (filterId) {
+        return this.apiDELETE('/filters/' + filterId);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -95,7 +103,7 @@ export class NetworkService {
     }
 
     getAcbs (editable) {
-        return this.apiGET('/acbs?editable=' + editable);
+        return this.apiGET('/acbs?editable=' + editable, true);
     }
 
     getAccessibilityStandards () {
@@ -105,10 +113,10 @@ export class NetworkService {
     getActivityMetadata (key, activityRange) {
         let call = '/activity/metadata/' + key;
         let params = [];
-        if (activityRange.startDate) {
+        if (activityRange && activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
         }
-        if (activityRange.endDate) {
+        if (activityRange && activityRange.endDate) {
             params.push('end=' + activityRange.endDate.getTime());
         }
         if (params.length > 0) {
@@ -179,7 +187,7 @@ export class NetworkService {
     }
 
     getAtls (editable) {
-        return this.apiGET('/atls?editable=' + editable);
+        return this.apiGET('/atls?editable=' + editable, true);
     }
 
     getCertBodies () {
@@ -216,7 +224,7 @@ export class NetworkService {
         case 'apiDocumentation':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
         case 'bannedDevelopers':
-            return this.apiGET('/decertifications/developers');
+            return this.apiGET('/collections/decertified-developers');
         case 'correctiveAction':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         case 'decertifiedProducts':
@@ -253,6 +261,14 @@ export class NetworkService {
 
     getEducation () {
         return this.apiGET('/data/education_types');
+    }
+
+    getFilters (filterTypeId) {
+        return this.apiGET('/filters?filterTypeId=' + filterTypeId);
+    }
+
+    getFilterTypes () {
+        return this.apiGET('/data/filter_types');
     }
 
     getFuzzyTypes () {
