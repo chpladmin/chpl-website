@@ -79,6 +79,8 @@ export const VersionsComponent = {
                         });
                     }
                     that.version = response;
+                    that.backup.version = angular.copy(response);
+                    that.newVersion = angular.copy(response);
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
@@ -101,7 +103,6 @@ export const VersionsComponent = {
         }
 
         takeAction (action) {
-            this.cancel();
             this.action = action;
         }
 
