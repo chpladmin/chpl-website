@@ -58,7 +58,7 @@ export const VersionsComponent = {
             this.versions = angular.copy(this.backup.versions);
             this.listings = angular.copy(this.backup.listings);
             this.mergingVersions = angular.copy(this.backup.mergingVersions);
-            this.movingVersions = [];
+            this.movingListings = [];
             this.action = undefined;
             this.splitEdit = true;
         }
@@ -114,8 +114,8 @@ export const VersionsComponent = {
             });
         }
 
-        saveSplitEdit (listing) {
-            this.newListing = listing;
+        saveSplitEdit (version) {
+            this.newVersion = version;
             this.splitEdit = false;
         }
 
@@ -123,11 +123,12 @@ export const VersionsComponent = {
             let that = this;
             let splitVersion = {
                 oldVersion: this.version,
-                newVersionName: this.newVersion.name,
+                newVersionVersion: this.newVersion.version,
                 newVersionCode: this.newVersion.newVersionCode,
                 oldListings: this.listings,
                 newListings: this.movingListings,
             };
+            this.$log.info(splitVersion);
             this.errorMessages = [];
             this.networkService.splitVersion(splitVersion)
                 .then(response => {
@@ -198,13 +199,13 @@ export const VersionsComponent = {
             }
         }
 
-        toggleMove (version, toNew) {
+        toggleMove (listing, toNew) {
             if (toNew) {
-                this.movingVersions.push(this.versions.filter(ver => ver.versionId === version.versionId)[0]);
-                this.versions = this.versions.filter(ver => ver.versionId !== version.versionId);
+                this.movingListings.push(this.listings.filter(lst => lst.id === listing.id)[0]);
+                this.listings = this.listings.filter(lst => lst.id !== listing.id);
             } else {
-                this.versions.push(this.movingVersions.filter(ver => ver.versionId === version.versionId)[0]);
-                this.movingVersions = this.movingVersions.filter(ver => ver.versionId !== version.versionId);
+                this.listings.push(this.movingListings.filter(lst => lst.id === listing.id)[0]);
+                this.movingListings = this.movingListings.filter(lst => lst.id !== listing.id);
             }
         }
     },
