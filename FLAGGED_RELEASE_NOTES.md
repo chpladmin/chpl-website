@@ -11,3 +11,6 @@ _developer-page_
   * Includes Edit, Merge, and Split
 * Add support for Version editing on new Organizations - Developer - Product page
   * Includes Edit, and Merge
+
+_listing-edit_
+* Edit Listing in place
