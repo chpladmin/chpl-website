@@ -32,7 +32,7 @@
         describe('for general REST calls', () => {
             it('should return a promise with the data if a GET doesn\'t return an object', function () {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
-                networkService.getProduct('id').then(response => {
+                networkService.getListing('id').then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -44,7 +44,7 @@
 
             it('should return a promise with the data if a GET responds with a failure', () => {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
-                networkService.getProduct('id').then(response => {
+                networkService.getListing('id').then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -744,6 +744,22 @@
             $httpBackend.flush();
         });
 
+        it('should getListing', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
+            networkService.getListing('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListing and force refresh', function () {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
+            networkService.getListing('payload', true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getListingCountStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/listing_count$/).respond(200, {data: 'response'});
             networkService.getListingCountStatistics().then(response => {
@@ -827,22 +843,6 @@
         it('should getPractices', () => {
             $httpBackend.expectGET(/^\/rest\/data\/practice_types$/).respond(200, {data: 'response'});
             networkService.getPractices().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getProduct', () => {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
-            networkService.getProduct('payload').then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getProduct and force refresh', function () {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
-            networkService.getProduct('payload', true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

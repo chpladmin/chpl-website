@@ -15,7 +15,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            networkService.getProduct(id)
+            networkService.getListing(id)
                 .then(function (data) {
                     vm.listing = data;
                 });
