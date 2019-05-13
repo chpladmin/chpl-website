@@ -94,7 +94,7 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()">ONC-ATLs</a></li>
             <li><a href="#/admin/reports/prod">Products</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/announcement">Announcements</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/users">Users</a></li>
+            <li><a ui-sref="reports.users()">Users</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_management">API Keys</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_usage">API Key Usage</a></li>
           </ul>
