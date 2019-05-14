@@ -3,7 +3,7 @@ import {getActivity, getMetadata} from './history.mock';
 (() => {
     'use strict';
 
-    fdescribe('the Reports.Versions component', () => {
+    describe('the Reports.Versions component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
