@@ -8,6 +8,7 @@ import 'ng-file-upload';
         'angular-confirm',
         'chpl.constants',
         'chpl.services',
+        'feature-flags',
         'ngCsv',
         'ngFileUpload',
         'ngIdle',
