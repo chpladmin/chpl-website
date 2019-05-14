@@ -186,10 +186,8 @@
 
             describe('when handling actions', () => {
                 it('should cancel and take action', () => {
-                    spyOn(ctrl, 'cancel').and.callThrough();
                     ctrl.action = 'before';
                     ctrl.takeAction('after');
-                    expect(ctrl.cancel).toHaveBeenCalled();
                     expect(ctrl.action).toBe('after');
                 });
 

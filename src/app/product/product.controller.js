@@ -43,7 +43,7 @@
         }
 
         function loadProduct () {
-            networkService.getProduct(vm.productId)
+            networkService.getListing(vm.productId)
                 .then(function (data) {
                     vm.loading = false;
                     vm.product = data;

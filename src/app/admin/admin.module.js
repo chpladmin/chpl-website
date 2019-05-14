@@ -7,6 +7,7 @@ import 'ng-file-upload';
         'angular-cron-gen',
         'angular-confirm',
         'chpl.constants',
+        'chpl.reports',
         'chpl.services',
         'feature-flags',
         'ngCsv',
