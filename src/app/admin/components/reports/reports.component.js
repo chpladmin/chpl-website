@@ -21,18 +21,6 @@ export const ReportsComponent = {
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            this.activityRange.product = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            this.activityRange.acb = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            this.activityRange.atl = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
             this.activityRange.announcement = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
@@ -77,15 +65,6 @@ export const ReportsComponent = {
 
         refreshActivity () {
             switch (this.workType) {
-            case 'prod':
-                this.refreshProduct();
-                break;
-            case 'acb':
-                this.refreshAcb();
-                break;
-            case 'atl':
-                this.refreshAtl();
-                break;
             case 'announcement':
                 this.refreshAnnouncement();
                 break;
@@ -100,38 +79,6 @@ export const ReportsComponent = {
                 break;
                 // no default
             }
-        }
-
-        refreshProduct () {
-            let ctrl = this;
-            this.networkService.getProductActivity(this.dateAdjust(this.activityRange.product))
-                .then(function (data) {
-                    ctrl.searchedProducts = ctrl.interpretProducts(data);
-                    ctrl.displayedProducts = [].concat(ctrl.searchedProducts);
-                });
-            this.networkService.getVersionActivity(this.dateAdjust(this.activityRange.product))
-                .then(function (data) {
-                    ctrl.searchedVersions = ctrl.interpretVersions(data);
-                    ctrl.displayedVersions = [].concat(ctrl.searchedVersions);
-                });
-        }
-
-        refreshAcb () {
-            let ctrl = this;
-            this.networkService.getAcbActivity(this.dateAdjust(this.activityRange.acb))
-                .then(function (data) {
-                    ctrl.searchedACBs = ctrl.interpretAcbs(data);
-                    ctrl.displayedACBs = [].concat(ctrl.searchedACBs);
-                });
-        }
-
-        refreshAtl () {
-            let ctrl = this;
-            this.networkService.getAtlActivity(this.dateAdjust(this.activityRange.atl))
-                .then(function (data) {
-                    ctrl.searchedATLs = ctrl.interpretAtls(data);
-                    ctrl.displayedATLs = [].concat(ctrl.searchedATLs);
-                });
         }
 
         refreshAnnouncement () {
@@ -229,164 +176,6 @@ export const ReportsComponent = {
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
-
-        interpretProducts (data) {
-            var ret = [];
-            var change;
-
-            var i, j;
-            for (i = 0; i < data.length; i++) {
-                var activity = {
-                    id: data[i].id,
-                    product: data[i].newData.name,
-                    responsibleUser: this.getResponsibleUser(data[i].responsibleUser),
-                    date: data[i].activityDate,
-                };
-                if (data[i].developer) {
-                    activity.developer = data[i].developer.name;
-                } else {
-                    activity.developer = '';
-                }
-                activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
-                var wasChanged = false;
-                if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                    activity.name = data[i].newData.name;
-                    activity.action = 'Update:<ul>';
-                    change = this.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                    if (change) {
-                        activity.action += '<li>' + change + '</li>';
-                        wasChanged = true;
-                    }
-                    change = this.compareItem(data[i].originalData, data[i].newData, 'developerName', 'Developer');
-                    if (change) {
-                        activity.action += '<li>' + change + '</li>';
-                        wasChanged = true;
-                    }
-                    var contactChanges = this.compareContact(data[i].originalData.contact, data[i].newData.contact);
-                    if (contactChanges && contactChanges.length > 0) {
-                        activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
-                        wasChanged = true;
-                    }
-                    if (!angular.equals(data[i].originalData.ownerHistory, data[i].newData.ownerHistory)) {
-                        var action = '<li>Owner history changed. Was:<ul>';
-                        if (data[i].originalData.ownerHistory.length === 0) {
-                            action += '<li>No previous history</li>';
-                        } else {
-                            for (j = 0; j < data[i].originalData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + data[i].originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(data[i].originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
-                            }
-                        }
-                        action += '</ul>Now:<ul>';
-                        if (data[i].newData.ownerHistory.length === 0) {
-                            action += '<li>No new history</li>';
-                        } else {
-                            for (j = 0; j < data[i].newData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + data[i].newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(data[i].newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
-                            }
-                        }
-                        action += '</ul></li>';
-                        activity.action += action;
-                        wasChanged = true;
-                    }
-                    activity.action += '</ul>';
-                } else {
-                    this.interpretNonUpdate(activity, data[i], 'product');
-                    wasChanged = true;
-                }
-                if (wasChanged) {
-                    ret.push(activity);
-                }
-            }
-            return ret;
-        }
-
-        interpretVersions (data) {
-            var ret = [];
-            var change;
-
-            for (var i = 0; i < data.length; i++) {
-                var activity = {date: data[i].activityDate};
-                if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                    activity.product = data[i].newData.productName;
-                    activity.name = data[i].newData.version;
-                    activity.action = 'Update:<ul>';
-                    change = this.compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
-                    if (change) { activity.action += '<li>' + change + '</li>'; }
-                    change = this.compareItem(data[i].originalData, data[i].newData, 'productName', 'Associated Product');
-                    if (change) { activity.action += '<li>' + change + '</li>'; }
-                    activity.action += '</ul>';
-                } else {
-                    if (data[i].newData) {
-                        activity.product = data[i].newData.productName;
-                    } else if (data[i].originalData) {
-                        activity.product = data[i].originalData.productName;
-                    }
-                    this.interpretNonUpdate(activity, data[i], 'version', 'version');
-                }
-                ret.push(activity);
-            }
-            return ret;
-        }
-
-        interpretAcbs (data) {
-            var ret = [];
-            var change;
-
-            for (var i = 0; i < data.length; i++) {
-                var activity = {date: data[i].activityDate};
-                if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                    activity.name = data[i].newData.name;
-                    if (data[i].originalData.deleted !== data[i].newData.deleted) {
-                        activity.action = data[i].newData.deleted ? 'ACB was deleted' : 'ACB was restored';
-                    } else {
-                        activity.action = 'Update:<ul>';
-                        change = this.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = this.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = this.compareAddress(data[i].originalData.address, data[i].newData.address);
-                        if (change && change.length > 0) {
-                            activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
-                        }
-                        activity.action += '</ul>';
-                    }
-                } else {
-                    this.interpretNonUpdate(activity, data[i], 'ACB');
-                }
-                ret.push(activity);
-            }
-            return ret;
-        }
-
-        interpretAtls (data) {
-            var ret = [];
-            var change;
-
-            for (var i = 0; i < data.length; i++) {
-                var activity = {date: data[i].activityDate};
-                if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                    activity.name = data[i].newData.name;
-                    if (data[i].originalData.deleted !== data[i].newData.deleted) {
-                        activity.action = data[i].newData.deleted ? 'ONC-ATL was deleted' : 'ONC-ATL was restored';
-                    } else {
-                        activity.action = 'Update:<ul>';
-                        change = this.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = this.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = this.compareAddress(data[i].originalData.address, data[i].newData.address);
-                        if (change && change.length > 0) {
-                            activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
-                        }
-                        activity.action += '</ul>';
-                    }
-                } else {
-                    this.interpretNonUpdate(activity, data[i], 'ONC-ATL');
-                }
-                ret.push(activity);
-            }
-            return ret;
-        }
 
         interpretAnnouncements (data) {
             var ret = data;
