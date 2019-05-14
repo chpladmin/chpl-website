@@ -3,11 +3,11 @@ import {getActivity, getMetadata} from './history.mock';
 (() => {
     'use strict';
 
-    describe('the Reports.ACBs component', () => {
+    fdescribe('the Reports.ACBs component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
+            angular.mock.module('chpl', 'chpl.reports', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');

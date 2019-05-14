@@ -1,29 +1,28 @@
+import {getActivity, getMetadata} from './history.mock';
+
 (() => {
     'use strict';
 
-    describe('the Reports.Versions component', () => {
-
-        var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
+    fdescribe('the Reports.Versions component', () => {
+        var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
                 $provide.factory('chplFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
+                    $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
-                Mock = _Mock_;
                 networkService = _networkService_;
-
-                networkService.getActivityMetadata.and.returnValue($q.when(Mock.developerReportsMetadata));
-                networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
+                networkService.getActivityMetadata.and.returnValue($q.when(getMetadata('version')));
 
                 scope = $rootScope.$new()
                 el = angular.element('<chpl-reports-versions></chpl-reports-versions>');
@@ -51,6 +50,40 @@
             it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
+
+            describe('when loading', () => {
+                it('should get activity from the network', () => {
+                    expect(networkService.getActivityMetadata).toHaveBeenCalledWith('versions', jasmine.any(Object));
+                    expect(ctrl.results.length).toBe(4);
+                });
+
+                it('should set the friendly date on metadata', () => {
+                    expect(ctrl.results[0].friendlyActivityDate).toBe('2019-05-14');
+                    expect(ctrl.results[1].friendlyActivityDate).toBe('2019-05-14');
+                    expect(ctrl.results[2].friendlyActivityDate).toBe('2019-05-14');
+                    expect(ctrl.results[3].friendlyActivityDate).toBe('2019-05-14');
+                });
+            });
+
+            describe('when parsing', () => {
+                it('should call for details', () => {
+                    ctrl.parse(ctrl.results[0]);
+                    expect(networkService.getActivityById).toHaveBeenCalledWith(ctrl.results[0].id);
+                });
+
+                it('should handle Version creation', () => {
+                    ctrl.parse(ctrl.results[0]);
+                    scope.$digest();
+                    expect(ctrl.results[0].action).toBe('"24-5" has been created');
+                });
+
+                it('should handle Version split', () => {
+                    ctrl.parse(ctrl.results[1]);
+                    scope.$digest();
+                    expect(ctrl.results[1].action).toBe('Version 24 split to become 24 and 24-5');
+                });
+            });
+
             describe('helper functions', () => {
                 describe('for date ranges', () => {
                     beforeEach(() => {
@@ -134,6 +167,7 @@
                     expect(ctrl.activityRange.endDate).toEqual(new Date(Date.parse(filter.endDate)));
                 });
             });
+
             describe('when save filter is clicked', () => {
                 it('should create a filter object for saving', () => {
                     ctrl.activityRange.startDate = new Date(Date.parse('2019-01-01T05:00:00.000Z'));
@@ -145,7 +179,7 @@
                     expect(filter.startDate).toBe(ctrl.activityRange.startDate);
                     expect(filter.endDate).toBe(ctrl.activityRange.endDate);
                     expect(filter.dataFilter).toBe(ctrl.filterText);
-                })
+                });
             });
         });
     });
