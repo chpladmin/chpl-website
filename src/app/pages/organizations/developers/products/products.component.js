@@ -107,6 +107,8 @@ export const ProductsComponent = {
                         });
                     }
                     that.product = response;
+                    that.backup.product = angular.copy(response);
+                    that.newProduct = angular.copy(response);
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
@@ -173,7 +175,6 @@ export const ProductsComponent = {
         }
 
         takeAction (action) {
-            this.cancel();
             this.action = action;
         }
 
