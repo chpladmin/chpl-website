@@ -1,11 +1,26 @@
 let states = {
     'complaints-on': [
         {
+            name: 'administration.upload',
+            abstract: true,
+            url: '/confirm',
+            template: '<ui-view/></div>',
+        },{
+            name: 'administration.upload.listings',
+            url: '/listings',
+            component: 'chplUploadListings',
+            data: { title: 'CHPL Administration - Upload' },
+        },{
             name: 'surveillance',
             abstract: true,
             url: '/surveillance',
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
+        },{
+            name: 'surveillance.upload',
+            url: '/upload',
+            component: 'chplUploadSurveillances',
+            data: { title: 'CHPL Surveillance - Upload' },
         },{
             name: 'surveillance.confirm',
             url: '/confirm',
@@ -20,11 +35,26 @@ let states = {
     ],
     'surveillance-reports-on': [
         {
+            name: 'administration.upload',
+            abstract: true,
+            url: '/confirm',
+            template: '<ui-view/></div>',
+        },{
+            name: 'administration.upload.listings',
+            url: '/listings',
+            component: 'chplUploadListings',
+            data: { title: 'CHPL Administration - Upload' },
+        },{
             name: 'surveillance',
             abstract: true,
             url: '/surveillance',
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
+        },{
+            name: 'surveillance.upload',
+            url: '/upload',
+            component: 'chplUploadSurveillances',
+            data: { title: 'CHPL Surveillance - Upload' },
         },{
             name: 'surveillance.confirm',
             url: '/confirm',
@@ -39,11 +69,26 @@ let states = {
     ],
     'complaints-on-and-surveillance-reports-on': [
         {
+            name: 'administration.upload',
+            abstract: true,
+            url: '/confirm',
+            template: '<ui-view/></div>',
+        },{
+            name: 'administration.upload.listings',
+            url: '/listings',
+            component: 'chplUploadListings',
+            data: { title: 'CHPL Administration - Upload' },
+        },{
             name: 'surveillance',
             abstract: true,
             url: '/surveillance',
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
+        },{
+            name: 'surveillance.upload',
+            url: '/upload',
+            component: 'chplUploadSurveillances',
+            data: { title: 'CHPL Surveillance - Upload' },
         },{
             name: 'surveillance.confirm',
             url: '/confirm',

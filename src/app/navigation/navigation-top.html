@@ -63,8 +63,8 @@
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
           <a href class="dropdown-toggle" id="administration-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.administrationIsOpen">Administration</a>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="administration-toggle" id="administration-dropdown-menu">
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))"><a href="#/admin/dpManagement/upload">Upload Listings</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/upload">Upload</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))"><a ui-sref="administration.upload.listings()">Upload Listings</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/upload">Upload Listings</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings()">Confirm Listings</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance">Confirm Surveillance</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching</a></li>
@@ -103,8 +103,8 @@
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))" class="dropdown" uib-dropdown is-open="vm.surveillanceIsOpen">
           <a href class="dropdown-toggle" id="surveillance-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.surveillanceIsOpen">Surveillance</a>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="surveillance-toggle" id="surveillance-dropdown-menu">
-            <li><a href="#/admin/dpManagement/upload">Upload Surveillance</a></li>
-            <li><a ui-sref="surveillance.confirm()">Confirm Surveillance</a></li>
+            <li><a ui-sref="surveillance.upload()">Upload</a></li>
+            <li><a ui-sref="surveillance.confirm()">Confirm</a></li>
             <li feature-flag="complaints"><a ui-sref="surveillance.complaints()">Complaints</a></li>
             <li feature-flag="surveillance-reporting"><a ui-sref="surveillance.reporting()">Reporting</a></li>
           </ul>
