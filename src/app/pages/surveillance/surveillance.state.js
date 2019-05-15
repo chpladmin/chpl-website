@@ -7,6 +7,11 @@ let states = {
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
         },{
+            name: 'surveillance.confirm',
+            url: '/confirm',
+            component: 'chplConfirmSurveillance',
+            data: { title: 'CHPL Surveillance - Confirmation' },
+        },{
             name: 'surveillance.complaints',
             url: '/complaints',
             component: 'chplSurveillanceComplaints',
@@ -21,6 +26,11 @@ let states = {
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
         },{
+            name: 'surveillance.confirm',
+            url: '/confirm',
+            component: 'chplConfirmSurveillance',
+            data: { title: 'CHPL Surveillance - Confirmation' },
+        },{
             name: 'surveillance.reporting',
             url: '/reporting',
             component: 'chplSurveillanceReporting',
@@ -34,6 +44,11 @@ let states = {
             url: '/surveillance',
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
+        },{
+            name: 'surveillance.confirm',
+            url: '/confirm',
+            component: 'chplConfirmSurveillance',
+            data: { title: 'CHPL Surveillance - Confirmation' },
         },{
             name: 'surveillance.complaints',
             url: '/complaints',

@@ -31,24 +31,18 @@
         vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
-        vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
         vm.hasAnyRole = authService.hasAnyRole;
-        vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
         vm.isProductEditable = isProductEditable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
-        vm.massRejectPendingSurveillance = massRejectPendingSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
-        vm.parseSurveillanceUploadError = parseSurveillanceUploadError;
         vm.refreshDevelopers = refreshDevelopers;
         vm.refreshPending = refreshPending;
-        vm.rejectSurveillance = rejectSurveillance;
         vm.searchForSurveillance = searchForSurveillance;
-        vm.selectAllPendingSurveillance = selectAllPendingSurveillance;
         vm.selectCp = selectCp;
         vm.selectDeveloper = selectDeveloper;
         vm.selectProduct = selectProduct;
@@ -64,7 +58,6 @@
             vm.activeProduct = '';
             vm.activeVersion = '';
             vm.activeCP = '';
-            vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
                 vm.workType = 'manage';
             }
@@ -114,8 +107,7 @@
             }
             networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
-                    vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
-                    vm.pendingSurveillances = vm.uploadingSurveillances.length;
+                    vm.pendingSurveillances = ([].concat(surveillances.pendingSurveillance)).length;
                 })
         }
 
@@ -163,26 +155,6 @@
                     vm.developerMessage = result;
                 }
             });
-        }
-
-        function massRejectPendingSurveillance () {
-            var idsToReject = [];
-            angular.forEach(vm.massRejectSurveillance, function (value, key) {
-                if (value) {
-                    idsToReject.push(parseInt(key));
-                    clearPendingSurveillance(parseInt(key));
-                    delete(vm.massRejectSurveillance[key]);
-                }
-            });
-            networkService.massRejectPendingSurveillance(idsToReject)
-                .then(function () {}, function (error) {
-                    if (error.data.errors && error.data.errors.length > 0) {
-                        vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
-                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"';
-                            return ret;
-                        });
-                    }
-                });
         }
 
         function mergeDevelopers () {
@@ -336,23 +308,6 @@
             });
         }
 
-        function getNumberOfSurveillanceToReject () {
-            var ret = 0;
-            angular.forEach(vm.massRejectSurveillance, function (value) {
-                if (value) {
-                    ret += 1;
-                }
-            });
-            return ret;
-        }
-
-        function selectAllPendingSurveillance () {
-            vm.massRejectSurveillance = {};
-            vm.uploadingSurveillances.forEach(function (surv) {
-                vm.massRejectSurveillance[surv.id] = true;
-            });
-        }
-
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -410,34 +365,6 @@
             });
         }
 
-        function inspectSurveillance (surv) {
-            vm.modalInstance = $uibModal.open({
-                component: 'aiSurveillanceInspect',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    surveillance: function () { return surv; },
-                },
-                size: 'lg',
-            });
-            vm.modalInstance.result.then(function (result) {
-                if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
-                    for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
-                        if (surv.id === vm.uploadingSurveillances[i].id) {
-                            vm.uploadingSurveillances.splice(i,1)
-                            vm.pendingSurveillances = vm.uploadingSurveillances.length;
-                        }
-                    }
-                    if (result.status === 'resolved') {
-                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
-                    }
-                }
-            }, function (result) {
-                $log.info('inspection: ' + result);
-            });
-        }
-
         function isDeveloperEditable (dev) {
             return dev.status.status === 'Active' || vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
         }
@@ -453,15 +380,6 @@
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);
             }
-        }
-
-        function rejectSurveillance (survId) {
-            networkService.rejectPendingSurveillance(survId)
-                .then(function () {
-                    clearPendingSurveillance(survId);
-                }, function (error) {
-                    vm.uploadingSurveillanceMessages = error.data.errorMessages;
-                });
         }
 
         function searchForSurveillance () {
@@ -480,23 +398,6 @@
                         vm.loadSurveillance();
                     }
                 });
-        }
-
-        function parseSurveillanceUploadError (surv) {
-            var ret = '';
-            if (surv.errorMessages.length > 0) {
-                ret += 'Errors:&nbsp;' + surv.errorMessages.length;
-            }
-            if (surv.warningMessages && surv.warningMessages.length > 0) {
-                if (ret.length > 0) {
-                    ret += '<br />';
-                }
-                ret += 'Warnings:&nbsp;' + surv.warningMessages.length;
-            }
-            if (ret.length === 0) {
-                ret = 'OK';
-            }
-            return ret;
         }
 
         function doWork (workType) {
@@ -623,15 +524,6 @@
         }
 
         ////////////////////////////////////////////////////////////////////
-
-        function clearPendingSurveillance (survId) {
-            for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
-                if (survId === vm.uploadingSurveillances[i].id) {
-                    vm.uploadingSurveillances.splice(i,1)
-                    vm.pendingSurveillances = vm.uploadingSurveillances.length;
-                }
-            }
-        }
 
         function getResources () {
             vm.resourcesReady = {
