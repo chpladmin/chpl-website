@@ -17,3 +17,6 @@ _listing-edit_
 
 _better-split_
 * Allow splitting of Versions
+
+_ocd2871_
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)

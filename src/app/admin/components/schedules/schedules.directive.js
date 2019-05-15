@@ -21,7 +21,7 @@
     }
 
     /** @ngInject */
-    function ScheduledJobsController ($log, $uibModal, SPLIT_PRIMARY, networkService) {
+    function ScheduledJobsController ($log, $uibModal, SPLIT_PRIMARY, featureFlags, networkService) {
         var vm = this;
 
         vm.createSimpleTrigger = createSimpleTrigger;
@@ -114,6 +114,16 @@
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
+                handleEditModalResponseBasedOnFeature(result, trigger);
+            });
+        }
+
+        function handleEditModalResponseBasedOnFeature (result, trigger) {
+            if (featureFlags.isOn('ocd2871')) {
+                if (result.status === 'updated' || result.status === 'deleted') {
+                    vm.loadScheduledTriggers();
+                }
+            } else {
                 if (result.status === 'updated') {
                     vm.loadScheduledTriggers();
                 } else if (result.status === 'deleted') {
@@ -123,7 +133,7 @@
                         }
                     }
                 }
-            });
+            }
         }
 
         function loadScheduledTriggers () {
