@@ -7,7 +7,7 @@
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
+                    $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
                     return $delegate;
                 });
@@ -17,7 +17,7 @@
                 $q = _$q_;
                 $log = _$log_;
                 networkService = _networkService_;
-                networkService.getProduct.and.returnValue($q.when({}));
+                networkService.getListing.and.returnValue($q.when({}));
                 networkService.getSurveillanceLookups.and.returnValue($q.when({}));
                 Mock = _Mock_;
                 $uibModal = _$uibModal_;
@@ -152,7 +152,7 @@
             it('should do stuff with the returned data', function () {
                 ctrl.editSurveillance(Mock.surveillances[0]);
                 ctrl.uibModalInstance.close({});
-                expect(networkService.getProduct).toHaveBeenCalled();
+                expect(networkService.getListing).toHaveBeenCalled();
             });
 
             it('should log a non-cancelled modal', function () {
@@ -213,7 +213,7 @@
             it('should do stuff with the returned data', function () {
                 ctrl.initiateSurveillance();
                 ctrl.uibModalInstance.close({});
-                expect(networkService.getProduct).toHaveBeenCalled();
+                expect(networkService.getListing).toHaveBeenCalled();
             });
 
             it('should log a non-cancelled modal', function () {

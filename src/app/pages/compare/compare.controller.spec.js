@@ -24,7 +24,7 @@
                     applicableCqmCriteria: [],
                 }];
 
-                mockCommonService.getProduct = function () {
+                mockCommonService.getListing = function () {
                     var defer = $q.defer();
                     defer.resolve(this.products[0]);
                     return defer.promise;

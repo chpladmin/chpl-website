@@ -110,9 +110,15 @@ export const SurveillanceNonconformityEditComponent = {
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;
-                }, response => {
-                    that.uploadMessage = 'File "' + response.data.fileName + '" was not uploaded successfully.';
-                    that.uploadErrors = response.data.errorMessages;
+                }, error => {
+                    if (error.data.fileName) {
+                        that.uploadMessage = 'File "' + error.data.fileName + '" was not uploaded successfully.';
+                    } else if (error.config.data.file.name) {
+                        that.uploadMessage = 'File "' + error.config.data.file.name + '" was not uploaded successfully.';
+                    } else {
+                        that.uploadMessage = 'File was not uploaded successfully.';
+                    }
+                    that.uploadErrors = error.data.errorMessages;
                     that.uploadSuccess = false;
                     that.file = undefined;
                 }, event => {

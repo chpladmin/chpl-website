@@ -49,7 +49,7 @@
                     $delegate.getEditions = jasmine.createSpy('getEditions');
                     $delegate.getPendingListings = jasmine.createSpy('getPendingListings');
                     $delegate.getPractices = jasmine.createSpy('getPractices');
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
+                    $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getProducts = jasmine.createSpy('getProducts');
                     $delegate.getProductsByDeveloper = jasmine.createSpy('getProductsByDeveloper');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
@@ -93,7 +93,7 @@
                 networkService.getDevelopers.and.returnValue($q.when(mock.developers));
                 networkService.getEditions.and.returnValue($q.when(mock.editions));
                 networkService.getPractices.and.returnValue($q.when(mock.practices));
-                networkService.getProduct.and.returnValue($q.when(mock.products[0]));
+                networkService.getListing.and.returnValue($q.when(mock.products[0]));
                 networkService.getProducts.and.returnValue($q.when(mock.products));
                 networkService.getProductsByDeveloper.and.returnValue($q.when(mock.products));
                 networkService.getQmsStandards.and.returnValue($q.when([]));
