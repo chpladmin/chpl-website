@@ -18,3 +18,8 @@ _listing-edit_
 _ocd2871_
 * Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
 
+_complaints_
+* Add ability to log Surveillance Complaints
+
+_surveillance-reporting_
+* Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports
