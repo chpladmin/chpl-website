@@ -6,6 +6,7 @@ _Date TBD_
 * Updated product and version activity reports to use activity metadata
 * Use new endpoints for better ONC-ACB and ONC-ATL report activity
 * Rearrange text on Overview page
+* Restrict / require Users to only be one ROLE
 
 ## Bug Fixes
 * Allow upload of files from Edge
