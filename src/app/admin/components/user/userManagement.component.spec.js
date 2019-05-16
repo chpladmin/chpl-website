@@ -8,7 +8,7 @@
             users: {
                 data: {
                     users: [
-                        {'subjectName': 'admin','fullName': 'Administrator','friendlyName': 'Administrator','email': 'info@ainq.com','phoneNumber': '(301) 560-6999','title': null,'accountLocked': false,'accountEnabled': true},
+                        {'subjectName': 'admin','fullName': 'Administrator','friendlyName': 'Administrator','email': 'info@ainq.com','phoneNumber': '(301) 560-6999','title': null,'accountLocked': false,'accountEnabled': true, role: 'ROLE_ADMIN'},
                     ],
                 },
             },
