@@ -58,15 +58,6 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.surveillanceType.$touched) && $ctrl.editForm.surveillanceType.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="form-group" ng-if="$ctrl.workType === 'initiate' && $ctrl.authorities.length > 1">
-      <label for="authority" class="col-sm-3">Initiated by <span class="text-danger">*</span></label>
-      <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="$ctrl.surveillance.authority" id="authority" name="authority"
-                ng-options="authority for authority in $ctrl.authorities" required>
-        </select>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.authority.$touched) && $ctrl.editForm.authority.$error.required">Field is required</div>
-      </div>
-    </div>
     <div class="form-group">
       <label for="sites-surveilled" class="col-sm-3">Number of sites surveilled <span class="text-danger" ng-if="$ctrl.surveillance.type.name === 'Randomized'">*</span></label>
       <div class="col-sm-9">
