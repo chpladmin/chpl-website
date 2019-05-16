@@ -17,17 +17,19 @@
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
-  <div class="row form-group form-inline">
-    <div class="col-sm-12">
-      <label for="activity-start-upload" class="control-label">Start Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
-      <label for="activity-end-upload" class="control-label">End Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
-      <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
+  <div ng-if="!$ctrl.productId">
+    <div class="row form-group form-inline">
+      <div class="col-sm-12">
+        <label for="activity-start-upload" class="control-label">Start Date</label>
+        <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
+        <label for="activity-end-upload" class="control-label">End Date</label>
+        <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
+        <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
+      </div>
     </div>
-  </div>
-  <div class="row form-group" ng-if="!$ctrl.validDates()">
-    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
+    <div class="row form-group" ng-if="!$ctrl.validDates()">
+      <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
+    </div>
   </div>
   <div class="row form-group">
     <div class="col-sm-5">
