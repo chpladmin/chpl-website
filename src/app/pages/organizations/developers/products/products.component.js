@@ -105,11 +105,13 @@ export const ProductsComponent = {
                             developerId: that.developer.developerId,
                             productId: response.productId,
                         });
+                    } else {
+                        that.$state.go('organizations.developers.products', {
+                            action: undefined,
+                            developerId: response.owner.developerId,
+                            productId: response.productId,
+                        });
                     }
-                    that.product = response;
-                    that.backup.product = angular.copy(response);
-                    that.newProduct = angular.copy(response);
-                    that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
