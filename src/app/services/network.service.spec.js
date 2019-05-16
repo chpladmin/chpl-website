@@ -148,14 +148,6 @@
             });
         });
 
-        it('should addRole', () => {
-            $httpBackend.expectPOST(/^\/rest\/users\/name\/roles\/role$/).respond(200, {data: 'response'});
-            networkService.addRole({subjectName: 'name', role: 'role'}).then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should authorizeUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/username\/authorize$/, 'payload').respond(200, {data: 'response'});
             networkService.authorizeUser('payload', 'username').then(response => {
@@ -1189,7 +1181,7 @@
 
         it('should impersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
-            networkService.impersonateUser({user: {subjectName: 'name'}}).then(response => {
+            networkService.impersonateUser({subjectName: 'name'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1335,14 +1327,6 @@
         it('should revokeApi', () => {
             $httpBackend.expectDELETE(/^\/rest\/key\/userKey$/).respond(200);
             networkService.revokeApi({key: 'userKey'}).then(response => {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
-        it('should revokeRole', () => {
-            $httpBackend.expectDELETE(/^\/rest\/users\/name\/roles\/role$/).respond(200);
-            networkService.revokeRole({subjectName: 'name', role: 'role'}).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
