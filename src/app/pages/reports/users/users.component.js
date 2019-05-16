@@ -65,15 +65,31 @@ export const ReportsUsersComponent = {
         parse (meta) {
             return this.networkService.getActivityById(meta.id).then(item => {
                 let action = '';
-                if (item.originalData && item.newData === null) {
+                if (this.isActivityRoleChange(item)) {
+                    action = item.description;
+                } else if (this.isActivityDeletedUser(item)) {
                     action = 'User ' + item.originalData.subjectName + ' was deleted.';
-                } else if (item.originalData === null && item.newData) {
+                } else if (this.isActivityNewUser(item)) {
                     action = 'User ' + item.newData.subjectName + ' was created.';
+                } else if (item.originalData && item.newData) {
+
                 }
 
                 meta.action = action;
                 meta.csvDetails = action;
             });
+        }
+
+        isActivityRoleChange (detail) {
+            return detail.description.includes(' role ');
+        }
+
+        isActivityNewUser (detail) {
+            return detail.originalData === null && detail.newData;
+        }
+
+        isActivityDeletedUser (detail) {
+            return detail.originalData && detail.newData === null;
         }
 
         prepare (results) {
