@@ -251,11 +251,11 @@
             const vals = ['chpl'];
             networkService.getUserByUsername(authService.getUsername())
                 .then(function (response) {
-                    if (response.user.subjectName) { vals.push(response.user.subjectName); }
-                    if (response.user.fullName) { vals.push(response.user.fullName); }
-                    if (response.user.friendlyName) { vals.push(response.user.friendlyName); }
-                    if (response.user.email) { vals.push(response.user.email); }
-                    if (response.user.phoneNumber) { vals.push(response.user.phoneNumber); }
+                    if (response.subjectName) { vals.push(response.subjectName); }
+                    if (response.fullName) { vals.push(response.fullName); }
+                    if (response.friendlyName) { vals.push(response.friendlyName); }
+                    if (response.email) { vals.push(response.email); }
+                    if (response.phoneNumber) { vals.push(response.phoneNumber); }
                     vm.extras = vals;
                 });
         }
