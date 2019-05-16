@@ -114,26 +114,10 @@
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
-                handleEditModalResponseBasedOnFeature(result, trigger);
-            });
-        }
-
-        function handleEditModalResponseBasedOnFeature (result, trigger) {
-            if (featureFlags.isOn('ocd2871')) {
                 if (result.status === 'updated' || result.status === 'deleted') {
                     vm.loadScheduledTriggers();
                 }
-            } else {
-                if (result.status === 'updated') {
-                    vm.loadScheduledTriggers();
-                } else if (result.status === 'deleted') {
-                    for (var i = 0; i < vm.scheduledTriggers.length; i++) {
-                        if (trigger.name === vm.scheduledTriggers[i].name) {
-                            vm.scheduledTriggers.splice(i,1);
-                        }
-                    }
-                }
-            }
+            });
         }
 
         function loadScheduledTriggers () {

@@ -8,9 +8,6 @@
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
-                    $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
-                    $delegate.getVersionActivity = jasmine.createSpy('getVersionActivity');
                     $delegate.getAnnouncementActivity = jasmine.createSpy('getAnnouncementActivity');
                     $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
                     $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
@@ -27,9 +24,6 @@
                 $q = _$q_;
 
                 networkService = _networkService_;
-                networkService.getDeveloperActivity.and.returnValue($q.when([]));
-                networkService.getProductActivity.and.returnValue($q.when([]));
-                networkService.getVersionActivity.and.returnValue($q.when([]));
                 networkService.getAnnouncementActivity.and.returnValue($q.when([]));
                 networkService.getUserActivity.and.returnValue($q.when([]));
                 networkService.getUserActivities.and.returnValue($q.when([]));
@@ -65,7 +59,6 @@
             describe('helper functions', function () {
                 describe('for refreshing', function () {
                     beforeEach(function () {
-                        spyOn(ctrl, 'refreshProduct');
                         spyOn(ctrl, 'refreshAnnouncement');
                         spyOn(ctrl, 'refreshUser');
                         spyOn(ctrl, 'refreshApi');
@@ -75,17 +68,6 @@
                     it('should refresh the dev data specifically', function () {
                         ctrl.workType = 'dev';
                         ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the product data specifically', function () {
-                        ctrl.workType = 'prod';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -95,7 +77,6 @@
                     it('should refresh the announcement data specifically', function () {
                         ctrl.workType = 'announcement';
                         ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -105,7 +86,6 @@
                     it('should refresh the users data specifically', function () {
                         ctrl.workType = 'users';
                         ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
@@ -115,7 +95,6 @@
                     it('should refresh the api key management data specifically', function () {
                         ctrl.workType = 'api_key_management';
                         ctrl.refreshActivity();
-                        expect(ctrl.refreshProduct).not.toHaveBeenCalled();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).toHaveBeenCalled();

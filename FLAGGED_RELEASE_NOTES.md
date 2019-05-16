@@ -15,9 +15,6 @@ _developer-page_
 _listing-edit_
 * Edit Listing in place
 
-_ocd2871_
-* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
-
 _complaints_
 * Add ability to log Surveillance Complaints
 
