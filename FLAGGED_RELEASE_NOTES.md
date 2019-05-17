@@ -14,3 +14,9 @@ _developer-page_
 
 _listing-edit_
 * Edit Listing in place
+
+_complaints_
+* Add ability to log Surveillance Complaints
+
+_surveillance-reporting_
+* Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports
