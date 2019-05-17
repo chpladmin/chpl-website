@@ -57,38 +57,7 @@
 
     <div class="row" ng-if="$ctrl.workType === 'users'">
       <div class="col-sm-12">
-        <h3>User Activity</h3>
-        <div>
-          <label for="activity-start-user-activity" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.userActivity.startDate" name="activityStartUserActivity" id="activity-start-user-activity" placeholder="yyyy-MM-dd">
-          </div>
-          <label for="activity-end-user-activity" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.userActivity.endDate" name="activityEndUserActivity" id="activity-end-user-activity" placeholder="yyyy-MM-dd">
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="$ctrl.refreshActivity()" ng-disabled="!$ctrl.validDates('userActivity')">Search <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates('userActivity')">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
-        </div>
-        <table st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.searchedUsers" class="table table-striped">
-          <thead>
-            <tr>
-              <th>Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="$ctrl.displayedUsers.length === 0">
-              <td colspan="2">No activity found</td>
-            </tr>
-            <tr ng-repeat="activity in $ctrl.displayedUsers" ng-if="$ctrl.displayedUsers.length > 0">
-              <td><span ng-bind-html="activity.description"></span></td>
-              <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <chpl-reports-users></chpl-reports-users>
         <h3>User Actions</h3>
         <table st-table="$ctrl.displayedUserActivities" st-safe-src="$ctrl.searchedUserActivities" class="table">
           <thead>
