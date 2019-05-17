@@ -22,7 +22,7 @@ angular.module('chpl.components')
                     }
 
                     promise = $timeout(function () {
-                        tableCtrl.search(value, attr.mhSearch || '');
+                        tableCtrl.search(value, attr.chplSearch || '');
                         promise = null;
                     }, throttle);
                 }

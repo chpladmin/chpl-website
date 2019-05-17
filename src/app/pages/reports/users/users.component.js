@@ -71,8 +71,10 @@ export const ReportsUsersComponent = {
                     action = 'User ' + item.originalData.subjectName + ' was deleted.';
                 } else if (this.isActivityNewUser(item)) {
                     action = 'User ' + item.newData.subjectName + ' was created.';
+                } else if (this.isActivtyConfirmUser(item)) {
+                    action = 'User ' + item.newData.subjectName + ' was confirmed.';
                 } else if (item.originalData && item.newData) {
-
+                    action = 'Need to handle';
                 }
 
                 meta.action = action;
@@ -90,6 +92,11 @@ export const ReportsUsersComponent = {
 
         isActivityDeletedUser (detail) {
             return detail.originalData && detail.newData === null;
+        }
+
+        isActivtyConfirmUser (detail) {
+            return detail.originalData && detail.originalData.signatureDate === null
+                && detail.newData && detail.newData.signatureDate !== null;
         }
 
         prepare (results) {
