@@ -17,3 +17,9 @@ _listing-edit_
 
 _better-split_
 * Display history past split/merge in Listing history popup
+
+_complaints_
+* Add ability to log Surveillance Complaints
+
+_surveillance-reporting_
+* Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports

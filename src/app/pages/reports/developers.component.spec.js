@@ -28,7 +28,7 @@
 
                 scope = $rootScope.$new()
 
-                el = angular.element('<chpl-reports-developers></chpl-reports-developers');
+                el = angular.element('<chpl-reports-developers></chpl-reports-developers>');
 
                 $compile(el)(scope);
                 scope.$digest();
