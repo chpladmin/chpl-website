@@ -60,6 +60,7 @@ import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
 import /* servicesModule from*/ './services/index';
 import /* sharedModule from*/ './shared/index';
+import surveillance from './pages/surveillance/index';
 
 require('./index.constants');
 
@@ -85,6 +86,7 @@ const dependencies = [
     listing.name,
     organizations.name,
     reports.name,
+    surveillance.name,
     'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',
