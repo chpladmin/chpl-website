@@ -18,6 +18,7 @@ export const ProductsComponent = {
             this.backup = {};
             this.splitEdit = true;
             this.movingVersions = [];
+            this.validState = true;
         }
 
         $onInit () {
@@ -50,6 +51,9 @@ export const ProductsComponent = {
             if (changes.versions) {
                 this.versions = angular.copy(changes.versions.currentValue);
                 this.backup.versions = angular.copy(this.versions);
+            }
+            if (this.developer && this.product) {
+                this.validState = this.developer.developerId === this.product.owner.developerId;
             }
         }
 
