@@ -30,7 +30,7 @@ export const ReportsListingsComponent = {
             if (changes.productId && changes.productId.currentValue) {
                 this.productId = angular.copy(changes.productId.currentValue);
             }
-            if (changes.filterToApply && changes.filterToApply.currentValue && changes.filterToApply.currentValue !== changes.filterToApply.previousValue) {
+            if (changes.filterToApply && changes.filterToApply.currentValue) {
                 this.doFilter(changes.filterToApply.currentValue);
                 return;
             }
