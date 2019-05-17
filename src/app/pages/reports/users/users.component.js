@@ -74,7 +74,8 @@ export const ReportsUsersComponent = {
                 } else if (this.isActivtyConfirmUser(item)) {
                     action = 'User ' + item.newData.subjectName + ' was confirmed.';
                 } else if (item.originalData && item.newData) {
-                    action = 'Need to handle';
+                    action = 'User ' + item.newData.subjectName + ' was updated.'
+                    action += this.getUpdateActivity(item);
                 }
 
                 meta.action = action;
@@ -97,6 +98,37 @@ export const ReportsUsersComponent = {
         isActivtyConfirmUser (detail) {
             return detail.originalData && detail.originalData.signatureDate === null
                 && detail.newData && detail.newData.signatureDate !== null;
+        }
+
+        getUpdateActivity (detail) {
+            let action = '<ul>';
+            action += this.getActionDescriptionIfChanged(detail, 'subjectName', 'Subject Name');
+            action += this.getActionDescriptionIfChanged(detail, 'fullName', 'Full Name');
+            action += this.getActionDescriptionIfChanged(detail, 'friendlyName', 'Friendly Name');
+            action += this.getActionDescriptionIfChanged(detail, 'email', 'Email');
+            action += this.getActionDescriptionIfChanged(detail, 'phoneNumber', 'Phone Number');
+            action += this.getActionDescriptionIfChanged(detail, 'title', 'Title');
+            action += this.getActionDescriptionIfChanged(detail, 'signatureDate', 'Confirmation Date');
+            action += this.getActionDescriptionIfChanged(detail, 'failedLoginCount', 'Failed Login Count');
+            action += this.getActionDescriptionIfChanged(detail, 'accountExpired', 'Account Expired');
+            action += this.getActionDescriptionIfChanged(detail, 'accountLocked', 'Account Locked');
+            action += this.getActionDescriptionIfChanged(detail, 'credentialsExpired', 'Credentials Expired');
+            action += this.getActionDescriptionIfChanged(detail, 'accountEnabled', 'Account Enabled');
+            action += this.getActionDescriptionIfChanged(detail, 'passwordResetRequired', 'Password Reset Required');
+            action += this.getActionDescriptionIfChanged(detail, 'enabled', 'Enabled');
+            action += this.getActionDescriptionIfChanged(detail, 'userName', 'User Name');
+            action += '</ul>';
+            return action;
+        }
+
+        getActionDescriptionIfChanged (detailObject, key, display) {
+            let change = this.ReportService.compareItem(detailObject.originalData, detailObject.newData, key, display);
+            if (change) {
+                change = '<li>' + change + '</li>';
+            } else {
+                change = '';
+            }
+            return change;
         }
 
         prepare (results) {
