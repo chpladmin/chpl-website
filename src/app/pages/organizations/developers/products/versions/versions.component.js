@@ -16,6 +16,7 @@ export const VersionsComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.backup = {};
+            this.validState = true;
         }
 
         $onChanges (changes) {
@@ -38,6 +39,9 @@ export const VersionsComponent = {
             }
             if (changes.listings) {
                 this.listings = changes.listings.currentValue.map(l => l);
+            }
+            if (this.mergingVersions && this.version) {
+                this.validState = this.mergingVersions.reduce((acc, v) => acc || v.versionId === this.version.versionId, false);
             }
         }
 
