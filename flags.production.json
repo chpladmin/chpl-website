@@ -1,8 +1,10 @@
 [
+    { "key": "ocd2871", "active": false, "name": "Quartz trigger issue", "description": "Deleting Quartz job associated with ACB sometimes fails" },
     { "key": "adminNav", "active": false, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" },
-    { "key": "ocd2894", "active": false, "name": "Overview nav", "description": "Modifications to the Overview page" },
+    { "key": "complaints", "active": false, "name": "Complaints", "description": "Surveillance Complaints" },
     { "key": "developer-page", "active": false, "name": "Developer Page", "description": "A specific page for Developers" },
-    { "key": "feature-flag", "active": false, "name": "Feature Flag toggle toggler", "description": "Whether or not to display the toggle for feature flags" },
+    { "key": "feature-flag-toggle", "active": false, "name": "Feature Flag toggle toggler", "description": "Whether or not to display the toggle for feature flags" },
     { "key": "listing-edit", "active": false, "name": "Improved editing", "description": "In place editing of Developer, Product, Version, and Listing" },
+    { "key": "surveillance-reporting", "active": false, "name": "Surveillance Reporting", "description": "ONC-ACB Quarterly surveillance reporting workflow" },
     { "key": "states", "active": false, "name": "State transitions", "description": "Display state transitions, and state tree" }
 ]

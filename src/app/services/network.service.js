@@ -13,10 +13,6 @@ export class NetworkService {
         };
     }
 
-    addRole (payload) {
-        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     authorizeUser (userAuthorization, username) {
         return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
@@ -295,6 +291,10 @@ export class NetworkService {
         return this.apiGET('/certified_products/' + id + '/ics_relationships');
     }
 
+    getListing (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+    }
+
     getListingCountStatistics () {
         return this.apiGET('/statistics/listing_count');
     }
@@ -345,10 +345,6 @@ export class NetworkService {
 
     getPractices () {
         return this.apiGET('/data/practice_types');
-    }
-
-    getProduct (productId, forceReload) {
-        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
     }
 
     getProductActivity (activityRange) {
@@ -505,7 +501,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
     }
 
     initiateSurveillance (surveillance) {
@@ -578,10 +574,6 @@ export class NetworkService {
 
     revokeApi (user) {
         return this.apiDELETE('/key/' + user.key);
-    }
-
-    revokeRole (payload) {
-        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
     search (queryObj) {

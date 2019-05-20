@@ -1,6 +1,7 @@
 import { Visualizer } from '@uirouter/visualizer';
 import { states as listingStates } from './pages/listing/listing.state.js';
 import { states as organizationsStates } from './pages/organizations/organizations.state.js';
+import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 
 (function () {
     'use strict';
@@ -51,6 +52,19 @@ import { states as organizationsStates } from './pages/organizations/organizatio
         }
         if (featureFlags.isOn('developer-page')) {
             organizationsStates.forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+        if (featureFlags.isOn('complaints') && featureFlags.isOn('surveillance-reporting')) {
+            surveillanceStates['complaints-on-and-surveillance-reports-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else if (featureFlags.isOn('complaints')) {
+            surveillanceStates['complaints-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else if (featureFlags.isOn('surveillance-reporting')) {
+            surveillanceStates['surveillance-reports-on'].forEach(state => {
                 $uiRouter.stateRegistry.register(state);
             });
         }
