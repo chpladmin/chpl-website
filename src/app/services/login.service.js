@@ -23,19 +23,11 @@
         ////////////////////////////////////////////////////////////////////////
 
         function canImpersonate (target) {
-            let userRoles = parseJwt(getToken()).Authorities;
-            let targetRoles = target.roles;
-            return !isImpersonating() && userRoles.reduce((userAcc, user) => {
-                return userAcc && targetRoles.reduce((targetAcc, target) => {
-                    if (user === 'ROLE_ADMIN') {
-                        return targetAcc && target !== 'ROLE_ADMIN';
-                    }
-                    if (user === 'ROLE_ONC') {
-                        return targetAcc && target !== 'ROLE_ADMIN' && target !== 'ROLE_ONC';
-                    }
-                    return false;
-                }, true);
-            }, true);
+            let userRole = parseJwt(getToken()).Authority;
+            let targetRole = target.role;
+            return !isImpersonating() &&
+                ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
+                 || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
         }
 
         function getApiKey () {
@@ -75,12 +67,12 @@
         function hasAnyRole (roles) {
             var token = getToken();
             if (token) {
-                let userRoles = parseJwt(token).Authorities;
+                let userRole = parseJwt(token).Authority;
                 if (roles) {
-                    if (userRoles) {
-                        return roles.reduce((ret, role) => ret || (userRoles.indexOf(role) > -1), false); // true iff user has at least one role in the required list
+                    if (userRole) {
+                        return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
                     }
-                    return false; // logged in, role(s) required, user has no roles
+                    return false; // logged in, role(s) required, user has no role
                 }
                 return true; // logged in, no role required
             }

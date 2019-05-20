@@ -1,42 +1,46 @@
 export const DevelopersComponent = {
     templateUrl: 'chpl.organizations/developers/developers.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
-        developers: '<',
         products: '<',
     },
     controller: class DevelopersComponent {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.backup = {};
             this.splitEdit = true;
+            this.movingProducts = [];
+        }
+
+        $onInit () {
+            let that = this;
+            if (this.hasAnyRole()) {
+                this.loadAcbs();
+                this.loadDevelopers();
+            }
+            let loggedIn = this.$scope.$on('loggedIn', function () {
+                that.loadAcbs();
+                that.loadDevelopers();
+            })
+            this.$scope.$on('$destroy', loggedIn);
         }
 
         $onChanges (changes) {
             this.action = this.$stateParams.action;
-            if (changes.allowedAcbs) {
-                this.allowedAcbs = (angular.copy(changes.allowedAcbs.currentValue)).acbs;
-            }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
             }
-            if (changes.developers) {
-                this.developers = (angular.copy(changes.developers.currentValue)).developers;
-                this.backup.developers = angular.copy(this.developers);
-                this.mergingDevelopers = [];
-            }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
                 this.backup.products = angular.copy(this.products);
-                this.movingProducts = [];
             }
         }
 
@@ -52,7 +56,7 @@ export const DevelopersComponent = {
             this.newDeveloper = angular.copy(this.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.mergingDevelopers = [];
+            this.mergingDevelopers = angular.copy(this.backup.mergingDevelopers);
             this.movingProducts = [];
             this.action = undefined;
             this.splitEdit = true;
@@ -63,13 +67,33 @@ export const DevelopersComponent = {
             this.splitEdit = false;
         }
 
+        loadAcbs () {
+            let that = this;
+            this.networkService.getAcbs(true).then(response => {
+                that.allowedAcbs = response.acbs;
+            });
+        }
+
+        loadDevelopers () {
+            let that = this;
+            this.networkService.getDevelopers().then(response => {
+                that.developers = response.developers.filter(d => d.developerId !== that.developer.developerId);
+                that.mergingDevelopers = response.developers.filter(d => d.developerId === that.developer.developerId);
+                that.backup.developers = angular.copy(that.developers);
+                that.backup.mergingDevelopers = angular.copy(that.mergingDevelopers);
+            });
+        }
+
         save (developer) {
-            let developerIds = [this.developer.developerId];
+            let developerIds = [];
             if (this.action === 'merge') {
-                developerIds = developerIds.concat(this.mergingDevelopers.map(dev => dev.developerId));
+                developerIds = developerIds.concat(this.mergingDevelopers.map(ver => ver.developerId));
+            } else {
+                developerIds.push(this.developer.developerId);
             }
             let that = this;
             this.developer = developer;
+            this.errorMessages = [];
             this.networkService.updateDeveloper({
                 developer: this.developer,
                 developerIds: developerIds,
@@ -79,15 +103,18 @@ export const DevelopersComponent = {
                         that.$state.go('organizations.developers', {
                             developerId: response.developerId,
                             action: undefined,
+                        }, {
+                            reload: true,
                         });
                     }
                     that.developer = response;
+                    that.backup.developer = angular.copy(response);
+                    that.newDeveloper = angular.copy(response);
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
                     } else if (response.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(response.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
@@ -97,7 +124,6 @@ export const DevelopersComponent = {
                 if (error.data.errorMessages) {
                     that.errorMessages = error.data.errorMessages;
                 } else if (error.data.error) {
-                    that.errorMessages = [];
                     that.errorMessages.push(error.data.error);
                 } else {
                     that.errorMessages = ['An error has occurred.'];
@@ -118,18 +144,20 @@ export const DevelopersComponent = {
                 oldProducts: this.products,
                 newProducts: this.movingProducts,
             };
+            this.errorMessages = [];
             this.networkService.splitDeveloper(splitDeveloper)
                 .then(response => {
                     if (!response.status || response.status === 200) {
                         that.$state.go('organizations.developers', {
                             developerId: response.oldDeveloper.developerId,
                             action: undefined,
+                        }, {
+                            reload: true,
                         });
                     } else {
                         if (response.data.errorMessages) {
                             that.errorMessages = response.data.errorMessages;
                         } else if (response.data.error) {
-                            that.errorMessages = [];
                             that.errorMessages.push(response.data.error);
                         } else {
                             that.errorMessages = ['An error has occurred.'];
@@ -139,7 +167,6 @@ export const DevelopersComponent = {
                     if (error.data.errorMessages) {
                         that.errorMessages = error.data.errorMessages;
                     } else if (error.data.error) {
-                        that.errorMessages = [];
                         that.errorMessages.push(error.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];

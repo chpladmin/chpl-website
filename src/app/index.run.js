@@ -1,5 +1,7 @@
-/* global DEVELOPER_MODE ENABLE_LOGGING */
 import { Visualizer } from '@uirouter/visualizer';
+import { states as listingStates } from './pages/listing/listing.state.js';
+import { states as organizationsStates } from './pages/organizations/organizations.state.js';
+import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 
 (function () {
     'use strict';
@@ -9,7 +11,7 @@ import { Visualizer } from '@uirouter/visualizer';
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window) {
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window, featureFlags) {
 
         // Update page title on state change
         $transitions.onSuccess({}, transition => {
@@ -19,11 +21,11 @@ import { Visualizer } from '@uirouter/visualizer';
                     title = title.call(transition.to(), transition.params());
                 }
                 $window.document.title = title;
+
+                // Set currentPage for internal page links
+                $rootScope.currentPage = $location.path();
             }
         });
-
-        // Set currentPage for internal page links
-        $rootScope.currentPage = $location.path();
 
         // If there's an anchor, scroll to it
         if ($location.hash()) {
@@ -38,8 +40,37 @@ import { Visualizer } from '@uirouter/visualizer';
             });
         }
 
+        // load states dependent on features
+        if (featureFlags.isOn('listing-edit')) {
+            listingStates['listing-edit-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else {
+            listingStates['listing-edit-off'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+        if (featureFlags.isOn('developer-page')) {
+            organizationsStates.forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+        if (featureFlags.isOn('complaints') && featureFlags.isOn('surveillance-reporting')) {
+            surveillanceStates['complaints-on-and-surveillance-reports-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else if (featureFlags.isOn('complaints')) {
+            surveillanceStates['complaints-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else if (featureFlags.isOn('surveillance-reporting')) {
+            surveillanceStates['surveillance-reports-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+
         // Display ui-router state changes
-        if (DEVELOPER_MODE && ENABLE_LOGGING) {
+        if (featureFlags.isOn('states')) {
             $uiRouter.plugin(Visualizer);
         }
     }

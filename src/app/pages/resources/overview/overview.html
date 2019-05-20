@@ -9,11 +9,12 @@
   <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-md-2" role="navigation">
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#{{ currentPage }}#whatIsTheChpl">What is the CHPL</a></li>
-        <li><a href="#{{ currentPage }}#usingTheChplWebsite">Using the CHPL Website</a></li>
-        <li><a href="#{{ currentPage }}#oncCertificationProgram">ONC Certification Program</a></li>
-        <li><a href="#{{ currentPage }}#forEhrDevelopers">For EHR Developers</a></li>
-        <li><a href="#{{ currentPage }}#oncacbAndAtlInformation">ONC-ACB and ONC-ATL information</a></li>
+        <li><a href="#{{ $ctrl.currentPage }}#whatIsTheChpl">What is the CHPL</a></li>
+        <li><a href="#{{ $ctrl.currentPage }}#recommendedWebBrowsers">Recommended Web Browsers</a></li>
+        <li><a href="#{{ $ctrl.currentPage }}#usingTheChplWebsite">Using the CHPL Website</a></li>
+        <li><a href="#{{ $ctrl.currentPage }}#oncCertificationProgram">ONC Certification Program</a></li>
+        <li><a href="#{{ $ctrl.currentPage }}#forEhrDevelopers">For EHR Developers</a></li>
+        <li><a href="#{{ $ctrl.currentPage }}#oncacbAndAtlInformation">ONC-ACB and ONC-ATL information</a></li>
       </ul>
     </div>
     <div class="col-md-8">
@@ -31,6 +32,18 @@
       <p>The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program. All products listed on the CHPL have been tested by an ONC-Authorized Testing Laboratory (ONC-ATL) and certified by an ONC-Authorized Certification Body (ONC-ACB) to meet criteria adopted by the Secretary of the Department of Health and Human Services (HHS).</p>
       <p>For additional information on how to navigate the CHPL, please refer to the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a></p>
       <p>For more information on attesting for Promoting Interoperability under the Centers for Medicare &amp; Medicaid Services (CMS), please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration &amp; Attestation Page</a>.</p>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
+      <span class="anchor-element">
+        <a id="recommendedWebBrowsers" class="page-anchor"></a>
+      </span>
+      <h2>Recommended Web Browsers</h2>
+      <p>The CHPL website supports the following web browsers:</p>
+      <ul>
+        <li>Google Chrome (latest version) [preferred]</li>
+        <li>Apple Safari (two most recent major versions)</li>
+        <li>Microsoft Edge (two most recent major versions)</li>
+        <li>Mozilla Firefox (latest version)</li>
+      </ul>
       <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="usingTheChplWebsite" class="page-anchor"></a>
@@ -74,14 +87,6 @@
         </tbody>
       </table>
       <p>If the ONC-ACB cannot or does not address your issue, please use <a href="https://www.healthit.gov/form/healthit-feedback-form">ONC's Health IT Feedback Form</a>.</p>
-      <h3>Recommended Web Browsers</h3>
-      <p>The CHPL website supports the following web browsers:</p>
-      <ul>
-        <li>Google Chrome (latest version) [preferred]</li>
-        <li>Apple Safari (two most recent major versions)</li>
-        <li>Microsoft Edge (two most recent major versions)</li>
-        <li>Mozilla Firefox (latest version)</li>
-      </ul>
       <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="oncCertificationProgram" class="page-anchor"></a>

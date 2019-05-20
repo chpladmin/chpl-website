@@ -18,23 +18,21 @@
             dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'chpl.product/history/history.html',
-            controller: 'ProductHistoryController',
-            controllerAs: 'vm',
+            component: 'chplListingHistory',
             animation: false,
             backdrop: 'static',
             keyboard: false,
             size: 'lg',
             resolve: {
-                activity: jasmine.any(Function),
+                listing: jasmine.any(Function),
             },
         };
 
         beforeEach(function () {
             angular.mock.module('chpl.product', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
-                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
+                    $delegate.getListing = jasmine.createSpy('getListing');
+                    $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
                     return $delegate;
                 });
             });
@@ -48,8 +46,8 @@
                 });
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getProduct.and.returnValue($q.when(mock.products));
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
+                networkService.getListing.and.returnValue($q.when(mock.products));
+                networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductController', {
@@ -78,24 +76,24 @@
             });
 
             it('should find product details on load', function () {
-                expect(networkService.getProduct).toHaveBeenCalled();
+                expect(networkService.getListing).toHaveBeenCalled();
             });
 
             it('should log an error if the product load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                networkService.getProduct.and.returnValue($q.reject('error message'));
+                networkService.getListing.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);
             });
 
             it('should get product history on load', function () {
-                expect(networkService.getSingleCertifiedProductActivity).toHaveBeenCalled();
+                expect(networkService.getSingleListingActivityMetadata).toHaveBeenCalled();
             });
 
             it('should log an error if the product history load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                networkService.getSingleCertifiedProductActivity.and.returnValue($q.reject('error message'));
+                networkService.getSingleListingActivityMetadata.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);
@@ -126,11 +124,13 @@
             });
 
             it('should create a modal instance when a product history is viewed', function () {
+                let listing = {};
+                vm.product = listing;
                 expect(vm.viewProductHistoryInstance).toBeUndefined();
                 vm.viewProductHistory();
                 expect(vm.viewProductHistoryInstance).toBeDefined();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.activity()).toEqual(mock.activity);
+                expect(actualOptions.resolve.listing()).toEqual(listing);
             });
 
             it('should log that the history was closed', function () {

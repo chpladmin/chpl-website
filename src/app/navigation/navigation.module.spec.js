@@ -17,6 +17,7 @@
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     $delegate.logout = jasmine.createSpy('logout');
                     $delegate.saveToken = jasmine.createSpy('saveToken');
                     return $delegate;
@@ -31,6 +32,7 @@
             authService = _authService_;
             authService.getApiKey.and.returnValue(mock.apiKey);
             authService.getToken.and.returnValue(mock.token);
+            authService.hasAnyRole.and.returnValue(false);
             authService.logout.and.returnValue();
             authService.saveToken.and.returnValue();
         }));
@@ -131,6 +133,22 @@
                         title: 'Update processing',
                         body: 'Your changes may not be reflected immediately in the search results and shortcuts pages. Please contact CHPL admin if you have any concerns',
                     });
+                });
+
+                it('should log the user out if their token is invalid', () => {
+                    let count = authService.logout.calls.count();
+                    let headers = {config: {url: mock.trueApiUrl}, data: '{"stuff":"stuff"}'};
+                    authInterceptor.response(headers);
+                    expect(authService.logout.calls.count()).toBe(count);
+                    headers = {config: {url: mock.trueApiUrl}, data: '{"error":"an error"}'};
+                    authInterceptor.response(headers);
+                    expect(authService.logout.calls.count()).toBe(count);
+                    headers = {config: {url: mock.trueApiUrl}, data: '{"error":"Invalid authentication token."}'};
+                    authInterceptor.response(headers);
+                    expect(authService.logout.calls.count()).toBe(count);
+                    authService.hasAnyRole.and.returnValue(true);
+                    authInterceptor.response(headers);
+                    expect(authService.logout.calls.count()).toBe(count + 1);
                 });
             });
         });

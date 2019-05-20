@@ -1,8 +1,8 @@
 export const DeveloperComponent = {
     templateUrl: 'chpl.components/developer/developer.html',
     bindings: {
-        allowedAcbs: '<',
         developer: '<',
+        allowedAcbs: '<',
         canEdit: '<',
         canMerge: '<',
         canSplit: '<',
@@ -61,6 +61,26 @@ export const DeveloperComponent = {
             }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
+            }
+        }
+
+        /*
+         * Allowed actions
+         */
+        can (action) {
+            if (action === 'edit') {
+                return this.canEdit // allowed by containing component
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+            }
+            if (action === 'merge') {
+                return this.canMerge // allowed by containing component
+                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+            }
+            if (action === 'split') {
+                return this.canSplit // allowed by containing component
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
         }
 
@@ -142,7 +162,7 @@ export const DeveloperComponent = {
 
         isBeingActivatedFromOncInactiveStatus () {
             let orderedStatus = this.developer.statusEvents.sort((a, b) => a.statusDateObject < b.statusDateObject ? 1 : a.statusDateObject > b.statusDateObject ? -1 : 0); // latest first
-            return this.developer.status.status !== 'Active' && orderedStatus[0].status.status === 'Active';
+            return this.developer.status.status !== 'Active' && orderedStatus[0].status && orderedStatus[0].status.status === 'Active';
         }
 
         /*

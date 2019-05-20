@@ -34,7 +34,7 @@
             it('should log the user out if a GET responds with that message', () => {
                 spyOn($rootScope, '$broadcast').and.callFake(() => {});
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, {error: 'Invalid authentication token.'});
-                networkService.getProduct('id').then(() => {
+                networkService.getListing('id').then(() => {
                     expect($rootScope.$broadcast).toHaveBeenCalledWith('badAuthorization');
                 });
                 $httpBackend.flush();
@@ -42,7 +42,7 @@
 
             it('should return a promise with the data if a GET doesn\'t return an object', function () {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
-                networkService.getProduct('id').then(response => {
+                networkService.getListing('id').then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -54,7 +54,7 @@
 
             it('should return a promise with the data if a GET responds with a failure', () => {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
-                networkService.getProduct('id').then(response => {
+                networkService.getListing('id').then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -158,14 +158,6 @@
             });
         });
 
-        it('should addRole', () => {
-            $httpBackend.expectPOST(/^\/rest\/users\/name\/roles\/role$/).respond(200, {data: 'response'});
-            networkService.addRole({subjectName: 'name', role: 'role'}).then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should authorizeUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/username\/authorize$/, 'payload').respond(200, {data: 'response'});
             networkService.authorizeUser('payload', 'username').then(response => {
@@ -243,6 +235,14 @@
             $httpBackend.flush();
         });
 
+        it('should createFilter', () => {
+            $httpBackend.expectPOST(/^\/rest\/filters/).respond(200, {data: 'response'});
+            networkService.createFilter('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should createInvitedUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/create$/).respond(200, {data: 'response'});
             networkService.createInvitedUser('payload').then(response => {
@@ -270,6 +270,14 @@
         it('should deleteAnnouncement', () => {
             $httpBackend.expectDELETE(/^\/rest\/announcements\/1$/).respond(200);
             networkService.deleteAnnouncement(1).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        it('should deleteAnnouncement', () => {
+            $httpBackend.expectDELETE(/^\/rest\/filters\/1$/).respond(200);
+            networkService.deleteFilter(1).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
@@ -589,7 +597,7 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/decertifications\/developers$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/collections\/decertified-developers$/).respond(200, {data: 'response'});
             networkService.getCollection('bannedDevelopers').then(response => {
                 expect(response.data).toEqual('response');
             });
@@ -682,6 +690,22 @@
             $httpBackend.flush();
         });
 
+        it('should getFilters', () => {
+            $httpBackend.expectGET(/^\/rest\/filters\?filterTypeId=1/).respond(200, {data: 'response'});
+            networkService.getFilters(1).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getFilterTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/filter_types$/).respond(200, {data: 'response'});
+            networkService.getFilterTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getFuzzyTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/fuzzy_choices$/).respond(200, {data: 'response'});
             networkService.getFuzzyTypes().then(response => {
@@ -717,6 +741,22 @@
         it('should getIcsFamily', () => {
             $httpBackend.expectGET(/^\/rest\/certified_products\/id\/ics_relationships$/).respond(200, {data: 'response'});
             networkService.getIcsFamily('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListing', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
+            networkService.getListing('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListing and force refresh', function () {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
+            networkService.getListing('payload', true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -786,25 +826,25 @@
             $httpBackend.flush();
         });
 
+        it('should getPendingListings', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/metadata$/).respond(200, {data: 'response'});
+            networkService.getPendingListings().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getPendingListingById', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/id$/).respond(200, {data: 'response'});
+            networkService.getPendingListingById('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getPractices', () => {
             $httpBackend.expectGET(/^\/rest\/data\/practice_types$/).respond(200, {data: 'response'});
             networkService.getPractices().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getProduct', () => {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
-            networkService.getProduct('payload').then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getProduct and force refresh', function () {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
-            networkService.getProduct('payload', true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -898,9 +938,33 @@
             $httpBackend.flush();
         });
 
-        it('should getSingleCertifiedProductActivity', () => {
-            $httpBackend.expectGET(/^\/rest\/activity\/certified_products\/payload$/).respond(200, {data: 'response'});
-            networkService.getSingleCertifiedProductActivity('payload').then(response => {
+        it('should getSingleDeveloperActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/developers\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleDeveloperActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleListingActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleListingActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleProductActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/products\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleProductActivityMetadata('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSingleVersionActivityMetadata', () => {
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/versions\/payload$/).respond(200, {data: 'response'});
+            networkService.getSingleVersionActivityMetadata('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -984,14 +1048,6 @@
         it('should getUcdProcesses', () => {
             $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, {data: 'response'});
             networkService.getUcdProcesses().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getUploadingCps', () => {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/pending$/).respond(200, {data: 'response'});
-            networkService.getUploadingCps().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1135,7 +1191,7 @@
 
         it('should impersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
-            networkService.impersonateUser({user: {subjectName: 'name'}}).then(response => {
+            networkService.impersonateUser({subjectName: 'name'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1281,14 +1337,6 @@
         it('should revokeApi', () => {
             $httpBackend.expectDELETE(/^\/rest\/key\/userKey$/).respond(200);
             networkService.revokeApi({key: 'userKey'}).then(response => {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
-        it('should revokeRole', () => {
-            $httpBackend.expectDELETE(/^\/rest\/users\/name\/roles\/role$/).respond(200);
-            networkService.revokeRole({subjectName: 'name', role: 'role'}).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();

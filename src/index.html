@@ -22,13 +22,20 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="assets/favicons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+    <script>
+      var ua = navigator.userAgent;
+      var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+      if (is_ie) {
+      window.location.replace("unsupported-browser.html")
+      }
+    </script>
   </head>
-  <body ai-cms-widget="" widget="mainWidget">
+  <body ai-cms-widget="" widget="mainWidget" class="{{ bodyClass }}">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KC3FP96" class="hide-google-iframe"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <ai-compare-widget compare-widget="compareWidget">
-      <a href="##mainContent" class="sr-only sr-only-focusable">Skip to main content</a>
+      <a href="#{{ currentPage }}#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
       <ai-navigation-top widget="mainWidget" compare-widget="compareWidget"></ai-navigation-top>
       <toaster-container toaster-options="{'time-out': 0}"></toaster-container>
       <div ui-view=""></div>

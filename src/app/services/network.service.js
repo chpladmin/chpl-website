@@ -13,10 +13,6 @@ export class NetworkService {
         };
     }
 
-    addRole (payload) {
-        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     authorizeUser (userAuthorization, username) {
         return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
@@ -59,6 +55,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createFilter (filter) {
+        return this.apiPOST('/filters', filter);
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
     }
@@ -73,6 +73,10 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteFilter (filterId) {
+        return this.apiDELETE('/filters/' + filterId);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -99,11 +103,30 @@ export class NetworkService {
     }
 
     getAcbs (editable) {
-        return this.apiGET('/acbs?editable=' + editable);
+        return this.apiGET('/acbs?editable=' + editable, true);
     }
 
     getAccessibilityStandards () {
         return this.apiGET('/data/accessibility_standards');
+    }
+
+    getActivityMetadata (key, activityRange) {
+        let call = '/activity/metadata/' + key;
+        let params = [];
+        if (activityRange && activityRange.startDate) {
+            params.push('start=' + activityRange.startDate.getTime());
+        }
+        if (activityRange && activityRange.endDate) {
+            params.push('end=' + activityRange.endDate.getTime());
+        }
+        if (params.length > 0) {
+            call += '?' + params.join('&');
+        }
+        return this.apiGET(call);
+    }
+
+    getActivityById (id) {
+        return this.apiGET('/activity/' + id);
     }
 
     getAgeRanges () {
@@ -164,7 +187,7 @@ export class NetworkService {
     }
 
     getAtls (editable) {
-        return this.apiGET('/atls?editable=' + editable);
+        return this.apiGET('/atls?editable=' + editable, true);
     }
 
     getCertBodies () {
@@ -201,7 +224,7 @@ export class NetworkService {
         case 'apiDocumentation':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
         case 'bannedDevelopers':
-            return this.apiGET('/decertifications/developers');
+            return this.apiGET('/collections/decertified-developers');
         case 'correctiveAction':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         case 'decertifiedProducts':
@@ -240,6 +263,14 @@ export class NetworkService {
         return this.apiGET('/data/education_types');
     }
 
+    getFilters (filterTypeId) {
+        return this.apiGET('/filters?filterTypeId=' + filterTypeId);
+    }
+
+    getFilterTypes () {
+        return this.apiGET('/data/filter_types');
+    }
+
     getFuzzyTypes () {
         return this.apiGET('/data/fuzzy_choices');
     }
@@ -258,6 +289,10 @@ export class NetworkService {
 
     getIcsFamily (id) {
         return this.apiGET('/certified_products/' + id + '/ics_relationships');
+    }
+
+    getListing (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
     }
 
     getListingCountStatistics () {
@@ -300,12 +335,16 @@ export class NetworkService {
         return this.apiGET('/statistics/participant_professional_experience_count');
     }
 
-    getPractices () {
-        return this.apiGET('/data/practice_types');
+    getPendingListings () {
+        return this.apiGET('/certified_products/pending/metadata');
     }
 
-    getProduct (productId, forceReload) {
-        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
+    getPendingListingById (id) {
+        return this.apiGET('/certified_products/pending/' + id);
+    }
+
+    getPractices () {
+        return this.apiGET('/data/practice_types');
     }
 
     getProductActivity (activityRange) {
@@ -341,8 +380,20 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleCertifiedProductActivity (productId) {
-        return this.apiGET('/activity/certified_products/' + productId);
+    getSingleDeveloperActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/developers/' + id);
+    }
+
+    getSingleListingActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/listings/' + id);
+    }
+
+    getSingleProductActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/products/' + id);
+    }
+
+    getSingleVersionActivityMetadata (id) {
+        return this.apiGET('/activity/metadata/versions/' + id);
     }
 
     getSurveillanceLookups () {
@@ -402,10 +453,6 @@ export class NetworkService {
         return this.apiGET('/data/ucd_processes');
     }
 
-    getUploadingCps () {
-        return this.apiGET('/certified_products/pending');
-    }
-
     getUploadingSurveillances () {
         return this.apiGET('/surveillance/pending');
     }
@@ -454,7 +501,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
     }
 
     initiateSurveillance (surveillance) {
@@ -527,10 +574,6 @@ export class NetworkService {
 
     revokeApi (user) {
         return this.apiDELETE('/key/' + user.key);
-    }
-
-    revokeRole (payload) {
-        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
     search (queryObj) {

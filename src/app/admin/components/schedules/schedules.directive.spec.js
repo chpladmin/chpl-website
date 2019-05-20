@@ -145,14 +145,7 @@
                 expect(actualOptions.resolve.trigger()).toEqual(vm.scheduledTriggers[0]);
             });
 
-            it('should remove the trigger if it was deleted', function () {
-                var triggerLength = vm.scheduledTriggers.length;
-                vm.editTrigger(vm.scheduledTriggers[0]);
-                vm.editTriggerInstance.close({status: 'deleted'});
-                expect(vm.scheduledTriggers.length).toBe(triggerLength - 1);
-            });
-
-            it('should refresh the triggers if it was updated', function () {
+            it('should refresh the triggers if it was updated or deleted', function () {
                 var serviceCallCount = networkService.getScheduleTriggers.calls.count();
                 vm.editTrigger(vm.scheduledTriggers[0]);
                 vm.editTriggerInstance.close({status: 'updated'});

@@ -1,5 +1,64 @@
 # Release Notes
 
+## Version 10.19.0
+_20 May 2019_
+
+### New features
+* Updated product and version activity reports to use activity metadata
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
+* Rearrange text on Overview page
+* Restrict / require Users to only be one ROLE
+
+## Bug Fixes
+* Allow upload of files from Edge
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
+* Fix routing to password reset page
+
+---
+
+## Version 10.18.0
+_8 May 2019_
+
+### New Features
+* Use /collections/decertified-developers endpoint instead of deprecated /decertifications/developers.
+* Show "history popup" on all Listings
+* Updated security for edit/split/merge of developers, products, and versions
+* Updated text and column headings on the Decertified Products and Inactive Certificates pages.
+* Updated language on Charts page.
+* Shrink main header navigation on page scroll
+
+### Text changes
+* Tweak text on unsupported browsers page to confirm IE is not supported
+
+---
+
+## Version 10.17.0
+_22 April 2019_
+
+### New features
+* Use new Activity end points
+  * Listing reports
+  * Developer reports
+* Show Developer/Product/Version name changes in Listing history popup
+
+### Bug Fixes
+* Fix behavior of left-side links on the Overview page.
+
+---
+
+## Version 10.16.0
+_8 April 2019_
+
+### New features
+* Use new endpoints for better responsiveness on Listing confirmation page
+* Use new Activity end points for Listing reports
+* Redirect users using unsupported browsers to a page telling them that
+
+### Bug fixes
+* Allow editing of SED Participants
+
+---
+
 ## Version 10.15.0
 _27 March 2019_
 
