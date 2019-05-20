@@ -84,10 +84,11 @@ export const ReportsUserActionsComponent = {
             let that = this;
             this.networkService.getActivityMetadata(metadataType, this.dateAdjust(this.activityRange))
                 .then(results => {
-                    that.results = results;
+                    //that.results = results;
                     that.prepare(results);
                     that.updateUserList(results);
                     that.addActivitiesToList(results);
+                    that.results = that.userActivities;
                 });
         }
 
@@ -97,7 +98,6 @@ export const ReportsUserActionsComponent = {
                     this.userList.push(activity.responsibleUserFullName);
                 }
             });
-            //this.$log.info(this.userList);
         }
 
         addActivitiesToList (activities) {

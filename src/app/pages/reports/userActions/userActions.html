@@ -1,4 +1,4 @@
-<div st-table="$ctrl.results" st-safe-src="$ctrl.userActivitiesArray" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div st-table="$ctrl.results" st-safe-src="$ctrl.userActivities" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
     <div class="col-sm-12">
       <h3>User Actions</h3>
@@ -46,8 +46,8 @@
       <table class="table table-responsive" ng-if="$ctrl.isUserTableVisible[user]">
         <thead>
           <tr>
-              <th class="search-header" st-sort="description" st-skip-natural="true" st-sort-default="reverse">Action</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            <th class="search-header" st-sort="description" st-skip-natural="true" st-sort-default="reverse">Action</th>
+            <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
           </tr>
         </thead>
         <tbody>
