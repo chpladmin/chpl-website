@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 10.19.0
+_20 May 2019_
+
+### New features
+* Updated product and version activity reports to use activity metadata
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
+* Rearrange text on Overview page
+* Restrict / require Users to only be one ROLE
+
+## Bug Fixes
+* Allow upload of files from Edge
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
+* Fix routing to password reset page
+
+---
+
 ## Version 10.18.0
 _8 May 2019_
 
