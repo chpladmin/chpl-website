@@ -22,9 +22,11 @@ function reportsStateConfig ($stateProvider) {
             component: 'chplReportsListings',
             params: {
                 productId: {squash: true, value: null},
+                filterToApply: {squash: true, value: null},
             },
             resolve: {
                 productId: $transition$ => $transition$.params().productId,
+                filterToApply: $transition$ => $transition$.params().filterToApply,
             },
             data: { title: 'CHPL Reports - Listings' },
         })
