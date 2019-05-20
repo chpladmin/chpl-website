@@ -59,7 +59,7 @@ export const ReportsUserActionsComponent = {
 
         prepare (results) {
             this.displayed = results.map(item => {
-                item.filterText = item.email + '|' + item.subjectName + '|' + item.description;
+                item.filterText = item.responsibleUser.fullName + '|' + item.description;
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
                 item.responsibleUserFullName = item.responsibleUser.fullName;
                 return item;

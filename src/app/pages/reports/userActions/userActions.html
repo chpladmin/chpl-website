@@ -10,7 +10,6 @@
     <div class="col-sm-6">
       <chpl-filter feature-flag="adminNav" filter-type-name="User Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
-
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
@@ -24,9 +23,9 @@
   <div class="row form-group form-inline">
     <div class="col-sm-12">
       <label for="activity-start-upload" class="control-label">Start Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartDate" id="activity-start-upload" placeholder="yyyy-MM-dd">
       <label for="activity-end-upload" class="control-label">End Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndDate" id="activity-end-upload" placeholder="yyyy-MM-dd">
       <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
     </div>
   </div>
@@ -36,7 +35,7 @@
   <div class="row form-group">
     <div class="col-sm-5">
       <label for="activity-end-upload" class="control-label">Filter</label>
-      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on User Name, Email, or Action" class="form-control" type="search">
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on User's Name or Action" class="form-control" type="search">
     </div>
   </div>
 
@@ -47,14 +46,12 @@
       <table class="table table-responsive" ng-if="$ctrl.isUserTableVisible[user]">
         <thead>
           <tr>
-              <th class="search-header" st-sort="responsibleUserFullName" st-skip-natural="true">Responsible User / Email</th>
               <th class="search-header" st-sort="description" st-skip-natural="true" st-sort-default="reverse">Action</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="activity in $ctrl.userActivities | filter: {responsibleUserFullName: user}: true">
-            <td>{{ activity.responsibleUserFullName }} <br/> {{ activity.email }}</td>
             <td>{{ activity.description }}</td>
             <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
           </tr>
@@ -62,34 +59,4 @@
       </table>
     </div>
   </div>
-
-  <!--
-  <div class="row" ng-repeat="acb in $ctrl.activeAcbs | orderBy: 'toString()'">
-    <div class="col-sm-12">
-      <button class="btn btn-default pull-right" ng-click="$ctrl.display[acb] = !$ctrl.display[acb]"><i class="fa" ng-class="$ctrl.display[acb] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
-      <h4>{{ acb }} ({{ $ctrl.acbCount(acb) }})</h4>
-      <p ng-if="$ctrl.display[acb] && $ctrl.acbCount(acb) === 0">No activities found</p>
-
-      <table class="table table-responsive">
-        <thead>
-          <tr>
-              <th class="search-header" st-sort="responsibleUserFullName" st-skip-natural="true">Responsible User / Email</th>
-              <th class="search-header" st-sort="description" st-skip-natural="true" st-sort-default="reverse">Action</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-if="$ctrl.displayed.length === 0">
-              <td colspan="5">No activity found</td>
-          </tr>
-          <tr ng-repeat="activity in $ctrl.displayed">
-            <td>{{ activity.responsibleUserFullName }} <br/> {{ activity.email }}</td>
-            <td>{{ activity.description }}</td>
-            <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
--->
 </div>
