@@ -62,6 +62,7 @@ export const ReportsUserActionsComponent = {
                 item.filterText = item.responsibleUser.fullName + '|' + item.description;
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
                 item.responsibleUserFullName = item.responsibleUser.fullName;
+                item.email = item.responsibleUser.email;
                 return item;
             });
         }

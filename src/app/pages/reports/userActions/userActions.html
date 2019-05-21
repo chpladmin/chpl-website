@@ -10,16 +10,14 @@
     <div class="col-sm-6">
       <chpl-filter feature-flag="adminNav" filter-type-name="User Action Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
-  <!--
+
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
-      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
-      <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
-            ng-csv="$ctrl.displayed" filename="User_{{ $ctrl.filename }}"
-            csv-header="['User', 'Email', 'Responsible User', 'Activity', 'Activity Date']"
-            csv-column-order="['subjectName', 'email', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
+      <button class="btn btn-ai-success pull-right" ng-csv="$ctrl.results" filename="User_{{ $ctrl.filename }}"
+            csv-header="['User Name', 'Email', 'Activity', 'Activity Date']"
+            csv-column-order="['responsibleUserFullName', 'email', 'description', 'friendlyActivityDate']">
       <i class="fa fa-cloud-download"></i> Download</button>
     </div>
-  -->
+
   </div>
   <div class="row form-group form-inline">
     <div class="col-sm-12">
