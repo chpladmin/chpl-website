@@ -3,6 +3,7 @@ export const FilterComponent = {
     bindings: {
         filterTypeName: '@',
         onApplyFilter: '&',
+        onClearFilter: '&',
         getFilterData: '&',
     },
     controller: class FilterComponent {
@@ -44,6 +45,9 @@ export const FilterComponent = {
             this.onApplyFilter(filter);
         }
 
+        clearFilter () {
+            this.onClearFilter();
+        }
         saveFilter () {
             let that = this;
             let filter = {};
