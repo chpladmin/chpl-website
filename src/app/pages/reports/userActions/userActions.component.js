@@ -84,7 +84,6 @@ export const ReportsUserActionsComponent = {
             let that = this;
             this.networkService.getActivityMetadata(metadataType, this.dateAdjust(this.activityRange))
                 .then(results => {
-                    //that.results = results;
                     that.prepare(results);
                     that.updateUserList(results);
                     that.addActivitiesToList(results);
@@ -106,10 +105,6 @@ export const ReportsUserActionsComponent = {
 
         validDates () {
             return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
-        }
-
-        getActivityCountForUser (userName) {
-            return this.userActivities.filter(item => item.responsibleUserFullName === userName).length;
         }
     },
 }

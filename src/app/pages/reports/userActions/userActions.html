@@ -6,10 +6,11 @@
   </div>
 
   <div class="row">
-    <!--
+
     <div class="col-sm-6">
-      <chpl-filter feature-flag="adminNav" filter-type-name="User Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
+      <chpl-filter feature-flag="adminNav" filter-type-name="User Action Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
+  <!--
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
@@ -42,7 +43,7 @@
   <div class="row" ng-repeat="user in $ctrl.userList">
     <div class="col-sm-12">
       <button class="btn btn-default pull-right" ng-click="$ctrl.isUserTableVisible[user] = !$ctrl.isUserTableVisible[user]"><i class="fa" ng-class="$ctrl.isUserTableVisible[user] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
-      <h4>{{ user }} ({{ $ctrl.getActivityCountForUser(user) }})</h4>
+      <h4>{{ user }} ({{($ctrl.results | filter: {responsibleUserFullName: user}: true).length}})</h4>
       <table class="table table-responsive" ng-if="$ctrl.isUserTableVisible[user]">
         <thead>
           <tr>
@@ -51,7 +52,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="activity in $ctrl.userActivities | filter: {responsibleUserFullName: user}: true">
+          <tr ng-repeat="activity in $ctrl.results | filter: {responsibleUserFullName: user}: true">
             <td>{{ activity.description }}</td>
             <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
           </tr>
