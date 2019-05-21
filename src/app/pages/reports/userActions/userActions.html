@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <div class="row" ng-repeat="user in $ctrl.userList">
+  <div class="row" ng-repeat="user in $ctrl.userList | orderBy">
     <div class="col-sm-12">
       <button class="btn btn-default pull-right" ng-click="$ctrl.isUserTableVisible[user] = !$ctrl.isUserTableVisible[user]"><i class="fa" ng-class="$ctrl.isUserTableVisible[user] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
       <h4>{{ user }} ({{($ctrl.results | filter: {responsibleUserFullName: user}: true).length}})</h4>
