@@ -60,7 +60,6 @@ export const ReportsListingsComponent = {
                 filterData.productId = this.productId;
             }
             filterData.dataFilter = '';
-            //filterData.displayAcbs = this.display;
             filterData.tableState = this.tableController.tableState();
             filterData.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
             filterData.categoriesFilter = '|LISTING|';
