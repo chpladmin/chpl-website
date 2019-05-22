@@ -58,6 +58,7 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         $state.reload();
                     }
                 });
+        }
 
         // load states dependent on features
         if (featureFlags.isOn('listing-edit')) {
