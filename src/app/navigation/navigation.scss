@@ -28,7 +28,10 @@
 
 .navbar-brand img {
     transition: all .4s ease;
-    margin: 10px 40px;
+
+    @media (min-width: 767px) {
+        margin: 10px 40px;
+    }
 }
 
 .navbar-scrolled {
