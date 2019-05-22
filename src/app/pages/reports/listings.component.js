@@ -52,6 +52,24 @@ export const ReportsListingsComponent = {
             });
         }
 
+        onClearFilter () {
+            let filterData = {};
+            filterData.endDate = new Date();
+            filterData.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            if (this.productId) {
+                filterData.productId = this.productId;
+            }
+            filterData.dataFilter = '';
+            filterData.tableState = this.tableController.tableState();
+            filterData.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
+            filterData.categoriesFilter = '|LISTING|';
+
+            this.$state.go('reports.listings', {
+                filterToApply: filterData,
+                productId: filterData.productId,
+            });
+        }
+
         doFilter (filter) {
             let that = this;
             this.display = {};
