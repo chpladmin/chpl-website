@@ -77,6 +77,7 @@ export const ReportsUserActionsComponent = {
             this.callActivityServiceForMetadata('api_keys');
             this.callActivityServiceForMetadata('developers');
             this.callActivityServiceForMetadata('pending_listings');
+            this.callActivityServiceForMetadata('correct_action_plans');
         }
 
         initializeSearch () {
