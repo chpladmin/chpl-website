@@ -15,6 +15,9 @@ _developer-page_
 _listing-edit_
 * Edit Listing in place
 
+_better-split_
+* Display history past split/merge in Listing history popup
+
 _complaints_
 * Add ability to log Surveillance Complaints
 
