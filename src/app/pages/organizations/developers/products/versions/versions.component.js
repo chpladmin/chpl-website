@@ -18,6 +18,7 @@ export const VersionsComponent = {
             this.backup = {};
             this.splitEdit = true;
             this.movingListings = [];
+            this.validState = true;
         }
 
         $onChanges (changes) {
@@ -42,6 +43,9 @@ export const VersionsComponent = {
             if (changes.listings) {
                 this.listings = changes.listings.currentValue.map(l => l);
                 this.backup.listings = angular.copy(this.listings);
+            }
+            if (this.mergingVersions && this.version) {
+                this.validState = this.mergingVersions.reduce((acc, v) => acc || v.versionId === this.version.versionId, false);
             }
         }
 
