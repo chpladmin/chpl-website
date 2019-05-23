@@ -24,7 +24,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $scope, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
+    function LoginController ($log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
@@ -76,9 +76,24 @@
                     }
                     networkService.keepalive()
                         .then(function (response) {
-                            authService.saveToken(response.token);
-                            if (!authService.isImpersonating() && vm.activity === vm.activityEnum.IMPERSONATING) {
-                                vm.activity = vm.activityEnum.NONE;
+                            if (featureFlags.isOn('ocd2820')) {
+                                if (response.error === 'Invalid authentication token.') {
+                                    authService.logout();
+                                    $state.reload();
+                                }
+                            } else {
+                                authService.saveToken(response.token);
+                                if (!authService.isImpersonating() && vm.activity === vm.activityEnum.IMPERSONATING) {
+                                    vm.activity = vm.activityEnum.NONE;
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            if (!featureFlags.isOn('ocd2820')) {
+                                angular.noop;
+                            } else if (error.status === 401) {
+                                authService.logout();
+                                $state.reload();
                             }
                         });
                 } else {
@@ -86,6 +101,7 @@
                     Idle.unwatch();
                 }
             });
+
             $scope.$on('$destroy', keepalive);
 
             var idle = $scope.$on('IdleTimeout', function () {
