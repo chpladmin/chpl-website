@@ -5,9 +5,11 @@ export const VersionComponent = {
         developer: '<',
         canEdit: '<',
         canMerge: '<',
+        canSplit: '<',
         canView: '<',
         isEditing: '<',
         isInvalid: '<',
+        isSplitting: '<',
         onCancel: '&',
         onEdit: '&',
         showFull: '<',
@@ -34,6 +36,9 @@ export const VersionComponent = {
             if (changes.canMerge) {
                 this.canMerge = angular.copy(changes.canMerge.currentValue);
             }
+            if (changes.canSplit) {
+                this.canSplit = angular.copy(changes.canSplit.currentValue);
+            }
             if (changes.canView) {
                 this.canView = angular.copy(changes.canView.currentValue);
             }
@@ -42,6 +47,9 @@ export const VersionComponent = {
             }
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
+            }
+            if (changes.isSplitting) {
+                this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
             if (changes.showFull) {
                 this.showFull = angular.copy(changes.showFull.currentValue);
@@ -52,14 +60,20 @@ export const VersionComponent = {
          * Allowed actions
          */
         can (action) {
-            if (action === 'edit') {
+            switch (action) {
+            case 'edit':
                 return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-            }
-            if (action === 'merge') {
+            case 'merge':
                 return this.canMerge // allowed by containing component
                     && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+            case 'split':
+                return this.canSplit // allowed by containing component
+                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"o
+            default:
+                return false;
             }
         }
 
@@ -76,6 +90,13 @@ export const VersionComponent = {
         merge () {
             this.takeAction({
                 action: 'merge',
+                versionId: this.version.versionId,
+            });
+        }
+
+        split () {
+            this.takeAction({
+                action: 'split',
                 versionId: this.version.versionId,
             });
         }

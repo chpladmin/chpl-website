@@ -91,7 +91,8 @@ export const ProductComponent = {
                 return this.canSplit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"o
-                // no default
+            default:
+                return false;
             }
         }
 

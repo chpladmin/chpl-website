@@ -604,6 +604,10 @@ export class NetworkService {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
+    splitVersion (versionObject) {
+        return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
+    }
+
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
     }
