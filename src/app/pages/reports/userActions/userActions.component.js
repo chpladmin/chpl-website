@@ -76,7 +76,7 @@ export const ReportsUserActionsComponent = {
             this.callActivityServiceForMetadata('announcements');
             this.callActivityServiceForMetadata('developers');
             this.callActivityServiceForMetadata('pending_listings');
-            this.callActivityServiceForMetadata('correct_action_plans');
+            this.callActivityServiceForMetadata('corrective_action_plans');
             this.callActivityServiceForMetadata('pending_surveillances');
         }
 
