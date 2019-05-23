@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <div class="row">
+<div>
+  <div class="row" ng-if="$ctrl.validState">
     <div class="col-sm-12">
       <h1 ng-switch on="$ctrl.action">
         <span ng-switch-when="edit">Edit Version</span>
@@ -8,7 +8,7 @@
       </h1>
     </div>
   </div>
-  <div class="row main-content" id="main-content" tabindex="-1">
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="$ctrl.validState">
     <div class="col-md-3">
       <chpl-developer developer="$ctrl.developer"
                       take-action="$ctrl.takeDeveloperAction()"
@@ -57,5 +57,8 @@
         <div class="clearfix"></div>
       </div>
     </div>
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.validState">
+    <p class="lead">This resource does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
 </div>

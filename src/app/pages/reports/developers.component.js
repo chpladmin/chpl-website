@@ -20,7 +20,7 @@ export const ReportsDevelopersComponent = {
             this.tableController = {};
         }
 
-        $onChanges () {
+        $onInit () {
             this.search();
         }
 
@@ -45,6 +45,14 @@ export const ReportsDevelopersComponent = {
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
             this.filterText = f.dataFilter;
             this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
+            this.search();
+        }
+
+        onClearFilter () {
+            this.activityRange.endDate = new Date();
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.filterText = '';
+            this.tableController.sortBy('date');
             this.search();
         }
 

@@ -11,7 +11,7 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window, featureFlags) {
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $state, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
 
         // Update page title on state change
         $transitions.onSuccess({}, transition => {
@@ -38,6 +38,26 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                     element.focus();
                 }
             });
+        }
+
+        if (authService.hasAnyRole()) {
+            networkService.keepalive()
+                .then(response => {
+                    if (featureFlags.isOn('ocd2820')) {
+                        angular.noop;
+                    } else if (response.error === 'Invalid authentication token.') {
+                        authService.logout();
+                        $state.reload();
+                    }
+                })
+                .catch(error => {
+                    if (!featureFlags.isOn('ocd2820')) {
+                        angular.noop;
+                    } else if (error.status === 401) {
+                        authService.logout();
+                        $state.reload();
+                    }
+                });
         }
 
         // load states dependent on features

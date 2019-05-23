@@ -28,8 +28,8 @@
                 controllerAs: 'vm',
                 data: { title: 'CHPL Administration' },
             })
-            .state('admin.authorizePasswordReset', {
-                url: '/admin/authorizePasswordReset',
+            .state('authorizePasswordReset', {
+                url: '/admin/authorizePasswordReset?token',
                 template: require('./admin/admin.html'),
                 controller: 'AdminController',
                 controllerAs: 'vm',

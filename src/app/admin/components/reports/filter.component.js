@@ -3,13 +3,15 @@ export const FilterComponent = {
     bindings: {
         filterTypeName: '@',
         onApplyFilter: '&',
+        onClearFilter: '&',
         getFilterData: '&',
     },
     controller: class FilterComponent {
-        constructor ($filter, $log, networkService, utilService) {
+        constructor ($filter, $log, $scope, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.$scope = $scope;
             this.networkService = networkService;
             this.utilService = utilService;
         }
@@ -22,6 +24,12 @@ export const FilterComponent = {
                     that.filterTypeId = response.data.find(item => item.name === that.filterTypeName).id;
                     that.refreshFilterList();
                 });
+
+            //Handle unimpersonate
+            var unimpersonating = this.$scope.$on('unimpersonating', function () {
+                that.refreshFilterList();
+            });
+            this.$scope.$on('$destroy', unimpersonating);
         }
 
         refreshFilterList () {
@@ -37,6 +45,9 @@ export const FilterComponent = {
             this.onApplyFilter(filter);
         }
 
+        clearFilter () {
+            this.onClearFilter();
+        }
         saveFilter () {
             let that = this;
             let filter = {};
