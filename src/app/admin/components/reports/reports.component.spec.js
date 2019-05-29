@@ -9,8 +9,6 @@
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAnnouncementActivity = jasmine.createSpy('getAnnouncementActivity');
-                    $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
-                    $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
                     $delegate.getApiUserActivity = jasmine.createSpy('getApiUserActivity');
                     $delegate.getApiActivity = jasmine.createSpy('getApiActivity');
                     $delegate.getApiUsers = jasmine.createSpy('getApiUsers');
@@ -25,8 +23,6 @@
 
                 networkService = _networkService_;
                 networkService.getAnnouncementActivity.and.returnValue($q.when([]));
-                networkService.getUserActivity.and.returnValue($q.when([]));
-                networkService.getUserActivities.and.returnValue($q.when([]));
                 networkService.getApiUserActivity.and.returnValue($q.when([]));
                 networkService.getApiActivity.and.returnValue($q.when([]));
                 networkService.getApiUsers.and.returnValue($q.when([]));
@@ -60,7 +56,6 @@
                 describe('for refreshing', function () {
                     beforeEach(function () {
                         spyOn(ctrl, 'refreshAnnouncement');
-                        spyOn(ctrl, 'refreshUser');
                         spyOn(ctrl, 'refreshApi');
                         spyOn(ctrl, 'refreshApiKeyUsage');
                     });
@@ -69,7 +64,6 @@
                         ctrl.workType = 'dev';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
                         expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
                     });
@@ -78,7 +72,6 @@
                         ctrl.workType = 'announcement';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshAnnouncement).toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
                         expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
                     });
@@ -87,7 +80,6 @@
                         ctrl.workType = 'users';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).toHaveBeenCalled();
                         expect(ctrl.refreshApi).not.toHaveBeenCalled();
                         expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
                     });
@@ -96,7 +88,6 @@
                         ctrl.workType = 'api_key_management';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
                         expect(ctrl.refreshApi).toHaveBeenCalled();
                         expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
                     });
