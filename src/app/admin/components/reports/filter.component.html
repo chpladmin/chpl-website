@@ -8,6 +8,7 @@
       <div class="dropdown-menu filter-dropdown" uib-dropdown-menu role="menu" aria-labelledby="single-button">
         <div class="row form-group">
           <div class="col-sm-12">
+            <button ng-click="$ctrl.clearFilter()" class="btn btn-link pull-right">Clear Filter</button>
             <label for="filter-name" class="control-label">Save Filter As</label>
             <input type="text" ng-model="$ctrl.filterName" placeholder="Filter name" class="input-sm form-control" name="filterName" id="filter-name">
           </div>

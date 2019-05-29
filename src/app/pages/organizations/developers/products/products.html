@@ -52,6 +52,7 @@
                       developer="$ctrl.developer"
                       can-edit="$ctrl.can('edit')"
                       can-merge="$ctrl.can('merge') && $ctrl.versions.length > 1"
+                      can-split="$ctrl.can('split-version')"
                       take-action="$ctrl.takeVersionAction(action, versionId)"
                       ></chpl-version>
       </div>
