@@ -68,9 +68,6 @@ export const ReportsComponent = {
             case 'announcement':
                 this.refreshAnnouncement();
                 break;
-            case 'users':
-                this.refreshUser();
-                break;
             case 'api_key_management':
                 this.refreshApi();
                 break;
@@ -87,20 +84,6 @@ export const ReportsComponent = {
                 .then(function (data) {
                     ctrl.searchedAnnouncements = ctrl.interpretAnnouncements(data);
                     ctrl.displayedAnnouncements = [].concat(ctrl.searchedAnnouncements);
-                });
-        }
-
-        refreshUser () {
-            let ctrl = this;
-            this.networkService.getUserActivity(this.dateAdjust(this.activityRange.userActivity))
-                .then(function (data) {
-                    ctrl.searchedUsers = ctrl.interpretUsers(data);
-                    ctrl.displayedUsers = [].concat(ctrl.searchedUsers);
-                });
-            this.networkService.getUserActivities(this.dateAdjust(this.activityRange.userActivity))
-                .then(function (data) {
-                    ctrl.searchedUserActivities = ctrl.interpretUserActivities(data);
-                    ctrl.displayedUserActivities = [].concat(ctrl.searchedUserActivities);
                 });
         }
 
@@ -178,16 +161,6 @@ export const ReportsComponent = {
         // Helper functions
 
         interpretAnnouncements (data) {
-            var ret = data;
-            return ret;
-        }
-
-        interpretUsers (data) {
-            var ret = data;
-            return ret;
-        }
-
-        interpretUserActivities (data) {
             var ret = data;
             return ret;
         }
