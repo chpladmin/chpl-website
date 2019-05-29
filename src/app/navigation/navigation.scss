@@ -52,12 +52,26 @@
 .navbar-admin {
     background: #fff;
 
-    .navbar-nav > li > a {
-        color: #000;
-    }
+    .navbar-nav {
 
-    .btn-link {
-        color: #000;
+        >li {
+
+            .btn-link {
+                color: #000;
+            }
+
+            &.admin-active {
+                background-color: #012a68;
+
+                .btn-link {
+                    color: #fff;
+                }
+            }
+
+            >a {
+                color: #000;
+            }
+        }
     }
 }
 
