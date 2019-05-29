@@ -19,8 +19,8 @@ export const ReportsUserActionsComponent = {
             this.filterText = '';
             this.tableController = {};
             this.userActivities = [];
-            this.isUserTableVisible = []
-            this.userList = []
+            this.isUserTableVisible = [];
+            this.userList = [];
         }
 
         $onInit () {
