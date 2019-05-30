@@ -1,6 +1,7 @@
 [
     { "key": "ocd2871", "active": true, "name": "Quartz trigger issue", "description": "Deleting Quartz job associated with ACB sometimes fails" },
     { "key": "adminNav", "active": true, "name": "New Admin Navigation", "description": "Administrator navigation rework; moves to a top nav bar, and out of the footer" },
+    { "key": "better-split", "active": true, "name": "Better Split", "description": "Add Split of Version, display more history in eye" },
     { "key": "ocd2820", "active": true, "name": "Phantom Log In Bug", "description": "Stop listening for 200 - invalid authentication" },
     { "key": "complaints", "active": true, "name": "Complaints", "description": "Surveillance Complaints" },
     { "key": "developer-page", "active": true, "name": "Developer Page", "description": "A specific page for Developers" },

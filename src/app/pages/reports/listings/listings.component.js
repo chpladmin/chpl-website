@@ -1,5 +1,5 @@
 export const ReportsListingsComponent = {
-    templateUrl: 'chpl.reports/listings.html',
+    templateUrl: 'chpl.reports/listings/listings.html',
     bindings: {
         productId: '<?',
         filterToApply: '<?',
