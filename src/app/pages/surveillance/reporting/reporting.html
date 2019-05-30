@@ -1,6 +1,13 @@
 <div class="container-fluid">
   <div class="row main-content" id="main-content" tabindex="-1">
-    Reporting "smart component"
-    <chpl-surveillance-report></chpl-surveillance-report>
+    <div class="col-md-12">
+      Reporting "smart component"
+      <div ng-if="$ctrl.surveillanceReporting || $ctrl.surveillanceReporting.length === 0">
+        No Quarterly Surveillance Reports are available
+      </div>
+      <div ng-repeat="report in $ctrl.surveillanceReporting">
+        <chpl-surveillance-report report="report"></chpl-surveillance-report>
+      </div>
+    </div>
   </div>
 </div>

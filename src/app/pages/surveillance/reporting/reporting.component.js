@@ -7,6 +7,12 @@ export const SurveillanceReportingComponent = {
             this.$log = $log;
             this.networkService = networkService;
         }
+
+        $onInit () {
+            let that = this;
+            this.networkService.getSurveillanceReporting()
+                .then(response => that.surveillanceReporting = response);
+        }
     },
 }
 

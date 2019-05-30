@@ -441,6 +441,10 @@ export class NetworkService {
         return data;
     }
 
+    getSurveillanceReporting () {
+        return this.apiGET('/surveillance-report/quarterly');
+    }
+
     getTargetedUsers () {
         return this.apiGET('/data/targeted_users');
     }
