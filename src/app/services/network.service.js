@@ -75,6 +75,10 @@ export class NetworkService {
         return this.apiDELETE('/announcements/' + announcementId);
     }
 
+    deleteComplaint (complaintId) {
+        return this.apiDELETE('/complaints/' + complaintId);
+    }
+
     deleteFilter (filterId) {
         return this.apiDELETE('/filters/' + filterId);
     }
@@ -201,6 +205,18 @@ export class NetworkService {
     getCertifiedProductActivity (activityRange) {
         var call = '/activity/certified_products';
         return this.getActivity(call, activityRange);
+    }
+
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint_status_types');
+    }
+
+    getComplaintTypes () {
+        return this.apiGET('/data/complaint_types');
     }
 
     getCriterionProductStatistics () {

@@ -1,6 +1,13 @@
 <div class="container-fluid">
   <div class="row main-content" id="main-content" tabindex="-1">
-    Complaints "smart component"
-    <chpl-surveillance-complaint></chpl-surveillance-complaint>
+    <chpl-surveillance-complaint
+        mode="$ctrl.currentMode"
+        complaints="$ctrl.complaints"
+        complaint="$ctrl.complaint"
+        complaint-types="$ctrl.complaintTypes"
+        complaint-status-types="$ctrl.complaintStatusTypes"
+        on-delete="$ctrl.deleteComplaint(complaint)"
+        on-select="$ctrl.selectComplaint(complaint)" >
+    </chpl-surveillance-complaint>
   </div>
 </div>
