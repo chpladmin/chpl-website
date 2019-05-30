@@ -83,7 +83,7 @@ export const ReportsUserActionsComponent = {
         initializeSearch () {
             this.userList = [];
             this.userActivities = [];
-            this.isUserTableVisible = []
+            this.isUserTableVisible = [];
         }
 
         callActivityServiceForMetadata (metadataType) {
