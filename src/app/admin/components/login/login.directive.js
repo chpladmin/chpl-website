@@ -76,22 +76,13 @@
                     }
                     networkService.keepalive()
                         .then(function (response) {
-                            if (featureFlags.isOn('ocd2820')) {
-                                if (response.error === 'Invalid authentication token.') {
-                                    authService.logout();
-                                    $state.reload();
-                                }
-                            } else {
-                                authService.saveToken(response.token);
-                                if (!authService.isImpersonating() && vm.activity === vm.activityEnum.IMPERSONATING) {
-                                    vm.activity = vm.activityEnum.NONE;
-                                }
+                            if (response.error === 'Invalid authentication token.') {
+                                authService.logout();
+                                $state.reload();
                             }
                         })
                         .catch(error => {
-                            if (!featureFlags.isOn('ocd2820')) {
-                                angular.noop;
-                            } else if (error.status === 401) {
+                            if (error.status === 401) {
                                 authService.logout();
                                 $state.reload();
                             }
