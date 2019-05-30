@@ -987,6 +987,14 @@
             });
         });
 
+        fit('should getSurveillanceReporting', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.getSurveillanceReporting().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getTargetedUsers', () => {
             $httpBackend.expectGET(/^\/rest\/data\/targeted_users$/).respond(200, {data: 'response'});
             networkService.getTargetedUsers().then(response => {

@@ -1,14 +1,24 @@
 (() => {
     'use strict';
 
-    describe('the Reporting component', () => {
-        var $compile, $log, ctrl, el, scope;
+    fdescribe('the Reporting component', () => {
+        var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.surveillance');
-            inject((_$compile_, _$log_, $rootScope) => {
+            angular.mock.module('chpl.surveillance', $provide => {
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getSurveillanceReporting = jasmine.createSpy('getSurveillanceReporting');
+
+                    return $delegate;
+                });
+            });
+
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                networkService = _networkService_;
+                networkService.getSurveillanceReporting.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
 
@@ -37,6 +47,12 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
+            });
+
+            describe('on load', () => {
+                it('should get surveillance reporting', () => {
+                    expect(networkService.getSurveillanceReporting).toHaveBeenCalled();
+                });
             });
         });
     });
