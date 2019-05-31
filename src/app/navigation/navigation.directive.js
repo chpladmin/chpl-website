@@ -109,6 +109,12 @@
                 vm.loadOrganizations();
             })
             $scope.$on('$destroy', unimpersonating);
+
+            var flags = $rootScope.$on('flags loaded', function () {
+                vm.loadOrganizations();
+                vm.toggleNav();
+            });
+            $scope.$on('$destroy', flags);
         }
 
         function clear () {
