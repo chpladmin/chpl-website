@@ -1,6 +1,7 @@
 import { Visualizer } from '@uirouter/visualizer';
 import { states as listingStates } from './pages/listing/listing.state.js';
 import { states as organizationsStates } from './pages/organizations/organizations.state.js';
+import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 
 (function () {
     'use strict';
@@ -10,7 +11,7 @@ import { states as organizationsStates } from './pages/organizations/organizatio
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window, featureFlags) {
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $state, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
 
         // Update page title on state change
         $transitions.onSuccess({}, transition => {
@@ -39,6 +40,26 @@ import { states as organizationsStates } from './pages/organizations/organizatio
             });
         }
 
+        if (authService.hasAnyRole()) {
+            networkService.keepalive()
+                .then(response => {
+                    if (featureFlags.isOn('ocd2820')) {
+                        angular.noop;
+                    } else if (response.error === 'Invalid authentication token.') {
+                        authService.logout();
+                        $state.reload();
+                    }
+                })
+                .catch(error => {
+                    if (!featureFlags.isOn('ocd2820')) {
+                        angular.noop;
+                    } else if (error.status === 401) {
+                        authService.logout();
+                        $state.reload();
+                    }
+                });
+        }
+
         // load states dependent on features
         if (featureFlags.isOn('listing-edit')) {
             listingStates['listing-edit-on'].forEach(state => {
@@ -51,6 +72,19 @@ import { states as organizationsStates } from './pages/organizations/organizatio
         }
         if (featureFlags.isOn('developer-page')) {
             organizationsStates.forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        }
+        if (featureFlags.isOn('complaints') && featureFlags.isOn('surveillance-reporting')) {
+            surveillanceStates['complaints-on-and-surveillance-reports-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else if (featureFlags.isOn('complaints')) {
+            surveillanceStates['complaints-on'].forEach(state => {
+                $uiRouter.stateRegistry.register(state);
+            });
+        } else if (featureFlags.isOn('surveillance-reporting')) {
+            surveillanceStates['surveillance-reports-on'].forEach(state => {
                 $uiRouter.stateRegistry.register(state);
             });
         }

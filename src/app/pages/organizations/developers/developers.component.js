@@ -108,6 +108,8 @@ export const DevelopersComponent = {
                         });
                     }
                     that.developer = response;
+                    that.backup.developer = angular.copy(response);
+                    that.newDeveloper = angular.copy(response);
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
@@ -173,7 +175,6 @@ export const DevelopersComponent = {
         }
 
         takeAction (action) {
-            this.cancel();
             this.action = action;
         }
 

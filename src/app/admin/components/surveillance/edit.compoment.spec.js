@@ -86,8 +86,9 @@
 
             describe('during activation', () => {
                 it('should provide authorities', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC';}, false)); // user is ONC
                     // base line
-                    expect(ctrl.authorities).toEqual([]);
+                    expect(ctrl.authority).toBeUndefined();
                     expect(typeof(ctrl.surveillance.startDateObject)).toBe('object');
                     expect(typeof(ctrl.surveillance.endDateObject)).toBe('undefined');
                     expect(ctrl.surveillance.type).toBeDefined();
@@ -106,14 +107,14 @@
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
-                    expect(ctrl.authorities).toEqual(['ROLE_ACB', 'ROLE_ONC']);
+                    expect(ctrl.authority).toEqual('ROLE_ONC');
                     expect(typeof(ctrl.surveillance.startDateObject)).toBe('undefined');
                     expect(typeof(ctrl.surveillance.endDateObject)).toBe('object');
                     expect(ctrl.surveillance.type).toBeUndefined();
                 });
 
                 describe('on initiation', () => {
-                    it('should set authority if only one role', () => {
+                    it('should set authority', () => {
                         authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
                         scope.resolve = {
                             surveillance: {},
@@ -124,23 +125,8 @@
                         $compile(el)(scope);
                         scope.$digest();
                         ctrl = el.isolateScope().$ctrl;
-                        expect(ctrl.authorities).toEqual(['ROLE_ACB']);
+                        expect(ctrl.authority).toBe('ROLE_ACB');
                         expect(ctrl.surveillance.authority).toBe('ROLE_ACB');
-                    });
-
-                    it('should not set authority if more than one role', () => {
-                        authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB' || param === 'ROLE_ONC';}, false)); // user is ACB & ONC
-                        scope.resolve = {
-                            surveillance: {},
-                            surveillanceTypes: Mock.surveillanceData,
-                            workType: 'initiate',
-                        };
-                        el = angular.element('<ai-surveillance-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-edit>');
-                        $compile(el)(scope);
-                        scope.$digest();
-                        ctrl = el.isolateScope().$ctrl;
-                        expect(ctrl.authorities).toEqual(['ROLE_ACB', 'ROLE_ONC']);
-                        expect(ctrl.surveillance.authority).toBeUndefined();
                     });
                 });
             });

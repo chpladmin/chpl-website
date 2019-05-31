@@ -17,8 +17,8 @@
         </div>
       </div>
       <div class="row" ng-if="vm.isCreateAccountMode()">
-        <div class="col-md-8 col-md-offset-2">
-            <p class="alert alert-danger" ng-repeat="err in vm.message.value">{{ err }}</p>
+        <div class="col-md-8 col-md-offset-2" ng-if="vm.message.value">
+          <p class="alert alert-danger">{{ vm.message.value }}</p>
         </div>
         <div class="col-md-12 form-horizontal" ng-form="vm.createUserForm">
           <p>Create a new account</p>
@@ -69,7 +69,7 @@
           <button class="btn btn-default btn-block"
                   ng-mouseover="vm.showFormErrors = true; vm.setExtras()"
                   ng-click="vm.createUser()" ng-disabled="vm.createUserForm.$invalid && vm.showFormErrors">Create account</button>
-          <p>Or <button class="btn btn-link" ng-click="vm.changeDisplayMode('SIGN-IN')">sign into your existing account</button></p>
+          <p>Or <button class="btn btn-link" ng-click="vm.changeDisplayMode('SIGN-IN')">sign in to your existing account</button></p>
           <p>If you require accessibility assistance please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a></p>
         </div>
       </div>
@@ -82,6 +82,9 @@
           <input type="password" id="authorize-password" ng-model="vm.authorizeDetails.password" class="form-control" required />
           <button class="btn btn-default btn-block" ng-click="vm.authorizeUser()" ng-disabled="vm.authorizeUserForm.$invalid">Sign into your account</button>
           <p>Or <button class="btn btn-link" ng-click="vm.changeDisplayMode('CREATE-ACCOUNT')">create a new account</button></p>
+        </div>
+        <div class="col-md-8 col-md-offset-2" ng-if="vm.message.value">
+          <p class="alert alert-danger">{{ vm.message.value }}</p>
         </div>
       </div>
     </div>

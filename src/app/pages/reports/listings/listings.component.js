@@ -1,7 +1,8 @@
 export const ReportsListingsComponent = {
-    templateUrl: 'chpl.reports/listings.html',
+    templateUrl: 'chpl.reports/listings/listings.html',
     bindings: {
         productId: '<?',
+        filterToApply: '<?',
     },
     controller: class ReportsListings {
         constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
@@ -29,6 +30,11 @@ export const ReportsListingsComponent = {
             if (changes.productId && changes.productId.currentValue) {
                 this.productId = angular.copy(changes.productId.currentValue);
             }
+            if (changes.filterToApply && changes.filterToApply.currentValue) {
+                this.doFilter(changes.filterToApply.currentValue);
+                return;
+            }
+
             this.search();
         }
 
@@ -41,9 +47,27 @@ export const ReportsListingsComponent = {
             }
 
             this.$state.go('reports.listings', {
-                listingId: f.productId,
-            })
-                .then(() => this.doFilter(f));
+                filterToApply: f,
+                productId: f.productId,
+            });
+        }
+
+        onClearFilter () {
+            let filterData = {};
+            filterData.endDate = new Date();
+            filterData.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            if (this.productId) {
+                filterData.productId = this.productId;
+            }
+            filterData.dataFilter = '';
+            filterData.tableState = this.tableController.tableState();
+            filterData.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
+            filterData.categoriesFilter = '|LISTING|';
+
+            this.$state.go('reports.listings', {
+                filterToApply: filterData,
+                productId: filterData.productId,
+            });
         }
 
         doFilter (filter) {
@@ -55,7 +79,13 @@ export const ReportsListingsComponent = {
                 .then( () => {
                     that.display = filter.displayAcbs;
                     that.filterText = filter.dataFilter;
-                    that.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
+                    if (filter.tableState.search.predicateObject.categoriesFilter) {
+                        that.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
+                        that.categoriesFilter = filter.categoriesFilter;
+                    } else {
+                        that.tableController.search('|LISTING|', 'categoriesFilter');
+                        that.categoriesFilter = '|LISTING|';
+                    }
                     that.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
                 });
         }
@@ -70,6 +100,7 @@ export const ReportsListingsComponent = {
             filterData.dataFilter = this.filterText;
             filterData.displayAcbs = this.display;
             filterData.tableState = this.tableController.tableState();
+            filterData.categoriesFilter = this.categoriesFilter;
             return filterData;
         }
 

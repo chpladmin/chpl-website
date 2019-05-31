@@ -13,9 +13,8 @@
     background-image: url("../../assets/images/CHPL_Header.png");
     background-repeat: no-repeat;
     background-size: cover;
-    border-bottom: 20px solid #0070c9;
     box-shadow: none;
-    min-height: 160px;
+    min-height: 140px;
 }
 
 .navbar-inverse .navbar-nav>.active>a,
@@ -28,7 +27,15 @@
 
 .navbar-brand img {
     transition: all .4s ease;
-    margin: 10px 40px;
+
+    @media (min-width: 767px) {
+        margin: 10px 40px;
+    }
+}
+
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.open>a {
+    box-shadow: none;
 }
 
 .navbar-scrolled {
@@ -42,9 +49,30 @@
     }
 }
 
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.open>a {
-    box-shadow: none;
+.navbar-admin {
+    background: #fff;
+
+    .navbar-nav {
+
+        >li {
+
+            .btn-link {
+                color: #000;
+            }
+
+            &.admin-active {
+                background-color: #012a68;
+
+                .btn-link {
+                    color: #fff;
+                }
+            }
+
+            >a {
+                color: #000;
+            }
+        }
+    }
 }
 
 @media (max-width: 767px) {
@@ -115,9 +143,11 @@
 .toggle-navigation-closed {
     position: relative;
     top: 0;
-    background-color: #0070c9;
+    background-color: #012a68;
 
-    .btn-link {
+    .btn-link,
+    .btn-link:focus,
+    .btn-link:hover {
         color: #fff;
     }
 }

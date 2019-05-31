@@ -13,10 +13,6 @@ export class NetworkService {
         };
     }
 
-    addRole (payload) {
-        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     authorizeUser (userAuthorization, username) {
         return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
@@ -295,6 +291,10 @@ export class NetworkService {
         return this.apiGET('/certified_products/' + id + '/ics_relationships');
     }
 
+    getListing (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+    }
+
     getListingCountStatistics () {
         return this.apiGET('/statistics/listing_count');
     }
@@ -347,10 +347,6 @@ export class NetworkService {
         return this.apiGET('/data/practice_types');
     }
 
-    getProduct (productId, forceReload) {
-        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
-    }
-
     getProductActivity (activityRange) {
         var call = '/activity/products';
         return this.getActivity(call, activityRange);
@@ -384,20 +380,36 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleDeveloperActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/developers/' + id);
+    getSingleDeveloperActivityMetadata (id, options) {
+        let url = '/activity/metadata/developers/' + id
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleListingActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/listings/' + id);
+    getSingleListingActivityMetadata (id, options) {
+        let url = '/activity/metadata/listings/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleProductActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/products/' + id);
+    getSingleProductActivityMetadata (id, options) {
+        let url = '/activity/metadata/products/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleVersionActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/versions/' + id);
+    getSingleVersionActivityMetadata (id, options) {
+        let url = '/activity/metadata/versions/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
     getSurveillanceLookups () {
@@ -505,7 +517,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
     }
 
     initiateSurveillance (surveillance) {
@@ -580,10 +592,6 @@ export class NetworkService {
         return this.apiDELETE('/key/' + user.key);
     }
 
-    revokeRole (payload) {
-        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     search (queryObj) {
         return this.apiPOST('/search', queryObj);
     }
@@ -594,6 +602,10 @@ export class NetworkService {
 
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
+    }
+
+    splitVersion (versionObject) {
+        return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
     }
 
     unimpersonateUser () {
@@ -648,26 +660,20 @@ export class NetworkService {
             return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         } else {
             return this.$http.get(this.API + endpoint)
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         }
     }
 
