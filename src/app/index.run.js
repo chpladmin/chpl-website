@@ -14,7 +14,7 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
     function runBlock ($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
 
         // get flag state from API
-        featureFlags.set($http.get('/rest/feature_flags'))
+        featureFlags.set($http.get('/rest/feature-flags'))
             .then(() => {
                 let needsReload = false;
                 // load states dependent on features
