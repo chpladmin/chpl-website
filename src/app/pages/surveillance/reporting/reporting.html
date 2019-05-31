@@ -2,10 +2,10 @@
   <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-md-12">
       Reporting "smart component"
-      <div ng-if="$ctrl.surveillanceReporting || $ctrl.surveillanceReporting.length === 0">
+      <div ng-if="$ctrl.reports || $ctrl.reports.length === 0">
         No Quarterly Surveillance Reports are available
       </div>
-      <div ng-repeat="report in $ctrl.surveillanceReporting">
+      <div ng-repeat="report in $ctrl.reports">
         <chpl-surveillance-report report="report"></chpl-surveillance-report>
       </div>
     </div>

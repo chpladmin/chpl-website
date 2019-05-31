@@ -1,6 +1,8 @@
 export const SurveillanceReportingComponent = {
     templateUrl: 'chpl.surveillance/reporting/reporting.html',
-    bindings: { },
+    bindings: {
+        reports: '<',
+    },
     controller: class SurveillanceReportingComponent {
         constructor ($log, networkService) {
             'ngInject'
@@ -8,10 +10,10 @@ export const SurveillanceReportingComponent = {
             this.networkService = networkService;
         }
 
-        $onInit () {
-            let that = this;
-            this.networkService.getSurveillanceReporting()
-                .then(response => that.surveillanceReporting = response);
+        $onChanges (changes) {
+            if (changes.reports) {
+                this.reports = angular.copy(changes.reports.currentValue);
+            }
         }
     },
 }

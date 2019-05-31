@@ -48,12 +48,6 @@
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
-
-            describe('on load', () => {
-                it('should get surveillance reporting', () => {
-                    expect(networkService.getSurveillanceReporting).toHaveBeenCalled();
-                });
-            });
         });
     });
 })();

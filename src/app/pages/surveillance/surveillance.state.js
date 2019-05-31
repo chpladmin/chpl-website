@@ -64,6 +64,12 @@ let states = {
             name: 'surveillance.reporting',
             url: '/reporting',
             component: 'chplSurveillanceReporting',
+            resolve: {
+                reports: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceReporting();
+                },
+            },
             data: { title: 'CHPL Surveillance - Reporting' },
         },
     ],
@@ -103,6 +109,12 @@ let states = {
             name: 'surveillance.reporting',
             url: '/reporting',
             component: 'chplSurveillanceReporting',
+            resolve: {
+                reports: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceReporting();
+                },
+            },
             data: { title: 'CHPL Surveillance - Reporting' },
         },
     ],
