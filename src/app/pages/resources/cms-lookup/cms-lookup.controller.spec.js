@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.cms_lookup', function () {
+    describe('the CMS Lookup component', function () {
 
         var $localStorage, $log, $q, mock, networkService, scope, utilService, vm;
 

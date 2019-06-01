@@ -17,6 +17,7 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
         featureFlags.set($http.get('/rest/feature-flags'))
             .then(() => {
                 let needsReload = false;
+                let needsRedirect = false;
                 // load states dependent on features
                 if (featureFlags.isOn('listing-edit')) {
                     listingStates['listing-edit-on'].forEach(state => {
@@ -26,7 +27,15 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         $uiRouter.stateRegistry.register(state);
                         needsReload = needsReload || $state.$current.name === state.name;
                     });
+                } else {
+                    listingStates['listing-edit-on'].forEach(state => {
+                        if ($uiRouter.stateRegistry.get(state.name)) {
+                            $uiRouter.stateRegistry.deregister(state.name);
+                        }
+                        needsRedirect = needsRedirect || $state.$current.name === state.name;
+                    });
                 }
+
                 if (featureFlags.isOn('developer-page')) {
                     organizationsStates['enabled'].forEach(state => {
                         if ($uiRouter.stateRegistry.get(state.name)) {
@@ -35,12 +44,25 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         $uiRouter.stateRegistry.register(state);
                         needsReload = needsReload || $state.$current.name === state.name;
                     });
+                } else {
+                    organizationsStates['enabled'].forEach(state => {
+                        if ($uiRouter.stateRegistry.get(state.name)) {
+                            $uiRouter.stateRegistry.deregister(state.name);
+                        }
+                        needsRedirect = needsRedirect || $state.$current.name === state.name;
+                    });
                 }
+
                 if (featureFlags.isOn('complaints')) {
                     surveillanceStates['complaints-on'].forEach(state => {
                         $uiRouter.stateRegistry.deregister(state.name);
                         $uiRouter.stateRegistry.register(state);
                         needsReload = needsReload || $state.$current.name === state.name;
+                    });
+                } else {
+                    surveillanceStates['complaints-on'].forEach(state => {
+                        $uiRouter.stateRegistry.deregister(state.name);
+                        needsRedirect = needsRedirect || $state.$current.name === state.name;
                     });
                 }
                 if (featureFlags.isOn('surveillance-reporting')) {
@@ -48,6 +70,11 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         $uiRouter.stateRegistry.deregister(state.name);
                         $uiRouter.stateRegistry.register(state);
                         needsReload = needsReload || $state.$current.name === state.name;
+                    });
+                } else {
+                    surveillanceStates['surveillance-reports-on'].forEach(state => {
+                        $uiRouter.stateRegistry.deregister(state.name);
+                        needsRedirect = needsRedirect || $state.$current.name === state.name;
                     });
                 }
 
@@ -57,9 +84,10 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                 }
 
                 $rootScope.$broadcast('flags loaded');
-                if (needsReload) {
+                if (needsRedirect) {
+                    $state.go('search');
+                } else if (needsReload) {
                     $state.go($state.$current.name, $stateParams, {reload: true});
-                    //$state.reload();
                 }
             });
 

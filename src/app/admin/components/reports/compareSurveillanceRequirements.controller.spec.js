@@ -13,7 +13,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl', 'chpl.mock');
+            angular.mock.module('chpl.admin', 'chpl.mock');
 
             inject(function ($controller, _$log_, $rootScope, _Mock_) {
                 $log = _$log_;
