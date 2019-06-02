@@ -33,8 +33,16 @@ let states = {
             },
         },
     ],
-    'listing-edit-off': [
+    'base': [
         {
+            name: 'listing',
+            url: '/listing/{id}/{initialPanel}',
+            params: {
+                initialPanel: {squash: true, value: null},
+            },
+            template: '<div>Coming soon</div>',
+            data: { title: 'CHPL Product Details' },
+        },{
             name: 'product',
             url: '/product/{id}/{initialPanel}',
             params: {
@@ -51,11 +59,11 @@ let states = {
 /**
  * This config can only be used when the listing-edit flag is set to true and/or removed when listing-edit is fully deployed
  */
-function listingStateConfig ($stateProvider) {
+function listingStatesConfig ($stateProvider) {
     'ngInject'
-    states['listing-edit-on'].forEach(state => {
+    states['base'].forEach(state => {
         $stateProvider.state(state);
     });
 }
 
-export { listingStateConfig, states };
+export { listingStatesConfig, states };
