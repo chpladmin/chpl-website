@@ -103,9 +103,13 @@ export const DevelopersComponent = {
                         that.$state.go('organizations.developers', {
                             developerId: response.developerId,
                             action: undefined,
+                        }, {
+                            reload: true,
                         });
                     }
                     that.developer = response;
+                    that.backup.developer = angular.copy(response);
+                    that.newDeveloper = angular.copy(response);
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
@@ -147,6 +151,8 @@ export const DevelopersComponent = {
                         that.$state.go('organizations.developers', {
                             developerId: response.oldDeveloper.developerId,
                             action: undefined,
+                        }, {
+                            reload: true,
                         });
                     } else {
                         if (response.data.errorMessages) {
@@ -169,7 +175,6 @@ export const DevelopersComponent = {
         }
 
         takeAction (action) {
-            this.cancel();
             this.action = action;
         }
 

@@ -1,4 +1,4 @@
-//import zxcvbn from 'zxcvbn';
+/* global DEVELOPER_MODE */
 
 (function () {
     'use strict';
@@ -40,6 +40,7 @@
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
         vm.stopImpersonating = stopImpersonating;
+        vm.DEVELOPER_MODE = DEVELOPER_MODE;
 
         vm.activityEnum = {
             LOGIN: 1,
@@ -86,11 +87,6 @@
                 }
             });
             $scope.$on('$destroy', keepalive);
-
-            var badAuthorization = $scope.$on('badAuthorization', function () {
-                vm.activity = vm.activityEnum.LOGIN;
-            })
-            $scope.$on('$destroy', badAuthorization);
 
             var idle = $scope.$on('IdleTimeout', function () {
                 $log.info('IdleTimeout - being logged out.');
@@ -240,6 +236,7 @@
                 .then(token => {
                     authService.saveToken(token.token);
                     vm.clear();
+                    $rootScope.$broadcast('unimpersonating');
                 });
         }
 
@@ -249,11 +246,11 @@
             const vals = ['chpl'];
             networkService.getUserByUsername(authService.getUsername())
                 .then(function (response) {
-                    if (response.user.subjectName) { vals.push(response.user.subjectName); }
-                    if (response.user.fullName) { vals.push(response.user.fullName); }
-                    if (response.user.friendlyName) { vals.push(response.user.friendlyName); }
-                    if (response.user.email) { vals.push(response.user.email); }
-                    if (response.user.phoneNumber) { vals.push(response.user.phoneNumber); }
+                    if (response.subjectName) { vals.push(response.subjectName); }
+                    if (response.fullName) { vals.push(response.fullName); }
+                    if (response.friendlyName) { vals.push(response.friendlyName); }
+                    if (response.email) { vals.push(response.email); }
+                    if (response.phoneNumber) { vals.push(response.phoneNumber); }
                     vm.extras = vals;
                 });
         }

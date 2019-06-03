@@ -1,5 +1,46 @@
 # Release Notes
 
+## Version 10.20.0
+_3 June 2019_
+
+### New features
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
+* Add link to FF4j admin console for ROLE_ADMIN
+
+---
+
+## Version 10.19.0
+_20 May 2019_
+
+### New features
+* Updated product and version activity reports to use activity metadata
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
+* Rearrange text on Overview page
+* Restrict / require Users to only be one ROLE
+
+### Bug Fixes
+* Allow upload of files from Edge
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
+* Fix routing to password reset page
+
+---
+
+## Version 10.18.0
+_8 May 2019_
+
+### New Features
+* Use /collections/decertified-developers endpoint instead of deprecated /decertifications/developers
+* Show "history popup" on all Listings
+* Updated security for edit/split/merge of developers, products, and versions
+* Updated text and column headings on the Decertified Products and Inactive Certificates pages
+* Updated language on Charts page
+* Shrink main header navigation on page scroll
+
+### Text changes
+* Tweak text on unsupported browsers page to confirm IE is not supported
+
+---
+
 ## Version 10.17.0
 _22 April 2019_
 
@@ -10,7 +51,7 @@ _22 April 2019_
 * Show Developer/Product/Version name changes in Listing history popup
 
 ### Bug Fixes
-* Fix behavior of left-side links on the Overview page.
+* Fix behavior of left-side links on the Overview page
 
 ---
 
@@ -64,7 +105,7 @@ _11 March 2019_
 _25 February 2019_
 
 ### New features
-* Update the language on the Overview page.
+* Update the language on the Overview page
 * Tweak CMS download workflow to reduce unnecessary network calls
 
 ### Bug fixes
@@ -136,7 +177,7 @@ _3 December 2018_
 _19 November 2018_
 
 ### New features
-* Updated ONC contact information.
+* Updated ONC contact information
 * Cache three network calls for varying timeouts
   * /collections/certified_products for five minutes
   * /certified_products/{productId}/details for fifteen minutes
@@ -168,7 +209,7 @@ _22 October 2018_
 * Updated the collection pages to refresh data automatically on a timer
 
 ### Bugs Fixed
-* Display 'Other Certified Product Activity' when only one thing has been changed.
+* Display 'Other Certified Product Activity' when only one thing has been changed
 
 ---
 
@@ -190,7 +231,7 @@ _24 September 2018_
 * Add informative popups to Certification Criteria attributes
 * Add info for 2014 cms id widget
 * Display change of CHPL Product Number in Details History popup
-* Tweak scheduled job modal to work with triggers that default to weekly.
+* Tweak scheduled job modal to work with triggers that default to weekly
 * Display change of CHPL Product Number in Details History popup
 
 ---
@@ -1030,7 +1071,7 @@ _30 June 2016_
 * Changed CQM percentages to show only for 2014 certification in widget
 * Simplified Cert ID Lookup results table formatting
 * Added button for CSV download of Cert ID Lookup results
-* Added notice text that additional certification criteria may be required with Cert ID.
+* Added notice text that additional certification criteria may be required with Cert ID
 * Added Details button to Cert ID Lookup results
 
 ### Bugs Fixed

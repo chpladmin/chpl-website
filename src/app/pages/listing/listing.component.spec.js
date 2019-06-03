@@ -31,8 +31,20 @@
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.listing', $provide => {
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
+                    $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
+                    $delegate.getAtls = jasmine.createSpy('getAtls');
+                    $delegate.getListing = jasmine.createSpy('getListing');
+                    $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
+                    $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
+                    $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
+                    $delegate.getTestData = jasmine.createSpy('getTestData');
+                    $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
+                    $delegate.getTestProcedures = jasmine.createSpy('getTestProcedures');
+                    $delegate.getTestStandards = jasmine.createSpy('getTestStandards');
+                    $delegate.getTestTools = jasmine.createSpy('getTestTools');
+                    $delegate.getUcdProcesses = jasmine.createSpy('getUcdProcesses');
+                    $delegate.updateCP = jasmine.createSpy('updateCP');
                     return $delegate;
                 });
             });
@@ -47,8 +59,20 @@
                     return mock.fakeModal;
                 });
                 networkService = _networkService_;
-                networkService.getProduct.and.returnValue($q.when(mock.products));
+                networkService.getAccessibilityStandards.and.returnValue($q.when({}));
+                networkService.getAtls.and.returnValue($q.when({}));
+                networkService.getListing.and.returnValue($q.when(mock.products));
+                networkService.getQmsStandards.and.returnValue($q.when({}));
+                networkService.getSearchOptions.and.returnValue($q.when({}));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));
+                networkService.getTargetedUsers.and.returnValue($q.when({}));
+                networkService.getTestData.and.returnValue($q.when({}));
+                networkService.getTestFunctionality.and.returnValue($q.when({}));
+                networkService.getTestProcedures.and.returnValue($q.when({}));
+                networkService.getTestStandards.and.returnValue($q.when({}));
+                networkService.getTestTools.and.returnValue($q.when({}));
+                networkService.getUcdProcesses.and.returnValue($q.when({}));
+                networkService.updateCP.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 $stateParams.id = mock.productId;
@@ -75,15 +99,11 @@
 
             describe('when loading', () => {
                 it('should know what the product id is', () => {
-                    expect(ctrl.productId).toEqual(mock.productId);
+                    expect(ctrl.listingId).toEqual(mock.productId);
                 });
 
                 it('should find product details on load', () => {
-                    expect(networkService.getProduct).toHaveBeenCalled();
-                });
-
-                it('should get product history on load', () => {
-                    expect(networkService.getSingleListingActivityMetadata).toHaveBeenCalled();
+                    expect(networkService.getListing).toHaveBeenCalled();
                 });
 
                 it('should be loading', () => {
@@ -92,7 +112,6 @@
 
                 it('shouldn\'t have data immediately', () => {
                     expect(ctrl.product).toBeUndefined();
-                    expect(ctrl.activity).toBeUndefined();
                 });
 
                 describe('after getting data', () => {
@@ -105,11 +124,7 @@
                     });
 
                     it('should load product data', () => {
-                        expect(ctrl.product).toEqual(mock.products);
-                    });
-
-                    it('should load product activity', () => {
-                        expect(ctrl.activity).toEqual(mock.activity);
+                        expect(ctrl.listing).toEqual(mock.products);
                     });
                 });
             });
@@ -129,16 +144,70 @@
                     expect(ctrl.initialPanel).toBe('surveillance');
                 });
             });
+
+            describe('when handling a save', () => {
+                let listing;
+                beforeEach(() => {
+                    listing = {
+                        id: 'fake',
+                    };
+                });
+
+                it('should set a "saving" flag', () => {
+                    ctrl.saveEdit(listing, 'reason')
+                    expect(ctrl.isSaving).toBe(true);
+                });
+
+                it('should report errors and turn off the saving flag', () => {
+                    networkService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
+                    ctrl.saveEdit(listing, 'reason')
+                    scope.$digest();
+                    expect(ctrl.saveErrors.errors).toEqual(['an error']);
+                    expect(ctrl.isSaving).toBe(false);
+                });
+
+                it('should report errors on server data.error', () => {
+                    networkService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
+                    ctrl.saveEdit(listing, 'reason')
+                    scope.$digest();
+                    expect(ctrl.saveErrors.errors).toEqual(['an error']);
+                    expect(ctrl.isSaving).toBe(false);
+                });
+
+                it('should report errors on server data.errorMessages', () => {
+                    networkService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
+                    ctrl.saveEdit(listing, 'reason')
+                    scope.$digest();
+                    expect(ctrl.saveErrors.errors).toEqual(['an error2']);
+                    expect(ctrl.isSaving).toBe(false);
+                });
+
+                it('should report errors on server data.warningMessages', () => {
+                    networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
+                    ctrl.saveEdit(listing, 'reason')
+                    scope.$digest();
+                    expect(ctrl.saveErrors.warnings).toEqual(['an error3']);
+                    expect(ctrl.isSaving).toBe(false);
+                });
+
+                it('should report no errors if none were returned', () => {
+                    networkService.updateCP.and.returnValue($q.reject({}));
+                    ctrl.saveEdit(listing, 'reason')
+                    scope.$digest();
+                    expect(ctrl.saveErrors.errors).toEqual([]);
+                    expect(ctrl.isSaving).toBe(false);
+                });
+            });
         });
 
         describe('viewing product history', () => {
             it('should have a function to view product history', () => {
-                expect(ctrl.viewProductHistory).toBeDefined();
+                expect(ctrl.viewListingHistory).toBeDefined();
             });
 
             it('should resolve modal stuff when product history is viewed', () => {
-                ctrl.product = mock.products[0];
-                ctrl.viewProductHistory();
+                ctrl.listing = mock.products[0];
+                ctrl.viewListingHistory();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
                 expect(actualOptions.resolve.listing()).toEqual(mock.products[0]);
             });

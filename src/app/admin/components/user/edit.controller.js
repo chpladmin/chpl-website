@@ -23,11 +23,11 @@
             vm.action = action;
             vm.acbId = acbId;
             vm.atlId = atlId;
-            vm.userInvitation = {permissions: []};
+            vm.userInvitation = {role: ''};
             vm.message = '';
             vm.loadRoles();
             if (vm.roles.length === 1) {
-                vm.userInvitation.permissions.push(vm.roles[0]);
+                vm.userInvitation.role = vm.roles[0];
             }
         }
 
@@ -40,7 +40,7 @@
             if (vm.acbId) {
                 userObject = {
                     acbId: vm.acbId,
-                    userId: vm.user.user.userId,
+                    userId: vm.user.userId,
                 };
                 networkService.removeUserFromAcb(userObject.userId, userObject.acbId)
                     .then(function (response) {
@@ -49,13 +49,13 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             } else if (vm.atlId) {
                 userObject = {
                     atlId: vm.atlId,
-                    userId: vm.user.user.userId,
+                    userId: vm.user.userId,
                 };
                 networkService.removeUserFromAtl(userObject.userId, userObject.atlId)
                     .then(function (response) {
@@ -64,18 +64,18 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             } else {
-                networkService.deleteUser(vm.user.user.userId)
+                networkService.deleteUser(vm.user.userId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close('deleted');
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             }
@@ -83,12 +83,12 @@
 
         function invite () {
             if (vm.acbId) {
-                vm.userInvitation.acbId = vm.acbId;
+                vm.userInvitation.permissionObjectId = vm.acbId;
             }
             if (vm.atlId) {
-                vm.userInvitation.testingLabId = vm.atlId;
+                vm.userInvitation.permissionObjectId = vm.atlId;
             }
-            if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.permissions.length > 0) {
+            if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.role && vm.userInvitation.role.length > 0) {
                 networkService.inviteUser(vm.userInvitation)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
@@ -96,7 +96,7 @@
                         } else {
                             errorMessage(response);
                         }
-                    },function (error) {
+                    }, function (error) {
                         errorMessage(error.data.error);
                     });
             }
@@ -108,41 +108,28 @@
                 if (authService.hasAnyRole(['ROLE_ADMIN'])) {
                     vm.roles.push('ROLE_ADMIN');
                 }
-                vm.roles.push('ROLE_ONC');
-                vm.roles.push('ROLE_CMS_STAFF');
-            }
-            if (!vm.atlId) {
+                if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                    vm.roles.push('ROLE_ONC');
+                }
+                if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])) {
+                    vm.roles.push('ROLE_CMS_STAFF');
+                }
+            } else if (vm.acbId && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 vm.roles.push('ROLE_ACB');
-            }
-            if (!vm.acbId) {
+            } else if (vm.atlId && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])) {
                 vm.roles.push('ROLE_ATL');
             }
         }
 
         function save () {
-            if (!vm.user.roles) {
-                vm.user.roles = [];
-            }
-
-            var roleObject = {subjectName: vm.user.user.subjectName};
-            for (var i = 0; i < vm.roles.length; i++) {
-                var payload = angular.copy(roleObject);
-                payload.role = vm.roles[i];
-                if (vm.user.roles.indexOf(payload.role) > -1) {
-                    networkService.addRole(payload);
-                } else if (!vm.acbId && !vm.atlId) {
-                    networkService.revokeRole(payload);
-                }
-            }
-
-            networkService.updateUser(vm.user.user)
+            networkService.updateUser(vm.user)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
                     } else {
                         errorMessage(response);
                     }
-                },function (error) {
+                }, function (error) {
                     errorMessage(error.data.error);
                 });
         }

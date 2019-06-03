@@ -23,15 +23,14 @@ export const SurveillanceEditComponent = {
             this.data = angular.copy(this.resolve.surveillanceTypes);
 
             this.showFormErrors = false;
-            this.authorities = [];
             if (this.hasAnyRole(['ROLE_ACB'])) {
-                this.authorities.push('ROLE_ACB');
+                this.authority = 'ROLE_ACB';
             }
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-                this.authorities.push('ROLE_ONC');
+                this.authority = 'ROLE_ONC';
             }
-            if (this.workType === 'initiate' && this.authorities.length === 1) {
-                this.surveillance.authority = this.authorities[0];
+            if (this.workType === 'initiate') {
+                this.surveillance.authority = this.authority;
             }
             if (this.surveillance.startDate) {
                 this.surveillance.startDateObject = new Date(this.surveillance.startDate);

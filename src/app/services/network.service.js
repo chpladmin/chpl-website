@@ -13,10 +13,6 @@ export class NetworkService {
         };
     }
 
-    addRole (payload) {
-        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     authorizeUser (userAuthorization, username) {
         return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
@@ -59,6 +55,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createFilter (filter) {
+        return this.apiPOST('/filters', filter);
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
     }
@@ -73,6 +73,10 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteFilter (filterId) {
+        return this.apiDELETE('/filters/' + filterId);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -99,7 +103,7 @@ export class NetworkService {
     }
 
     getAcbs (editable) {
-        return this.apiGET('/acbs?editable=' + editable);
+        return this.apiGET('/acbs?editable=' + editable, true);
     }
 
     getAccessibilityStandards () {
@@ -109,10 +113,10 @@ export class NetworkService {
     getActivityMetadata (key, activityRange) {
         let call = '/activity/metadata/' + key;
         let params = [];
-        if (activityRange.startDate) {
+        if (activityRange && activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
         }
-        if (activityRange.endDate) {
+        if (activityRange && activityRange.endDate) {
             params.push('end=' + activityRange.endDate.getTime());
         }
         if (params.length > 0) {
@@ -183,7 +187,7 @@ export class NetworkService {
     }
 
     getAtls (editable) {
-        return this.apiGET('/atls?editable=' + editable);
+        return this.apiGET('/atls?editable=' + editable, true);
     }
 
     getCertBodies () {
@@ -220,7 +224,7 @@ export class NetworkService {
         case 'apiDocumentation':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
         case 'bannedDevelopers':
-            return this.apiGET('/decertifications/developers');
+            return this.apiGET('/collections/decertified-developers');
         case 'correctiveAction':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         case 'decertifiedProducts':
@@ -259,6 +263,14 @@ export class NetworkService {
         return this.apiGET('/data/education_types');
     }
 
+    getFilters (filterTypeId) {
+        return this.apiGET('/filters?filterTypeId=' + filterTypeId);
+    }
+
+    getFilterTypes () {
+        return this.apiGET('/data/filter_types');
+    }
+
     getFuzzyTypes () {
         return this.apiGET('/data/fuzzy_choices');
     }
@@ -277,6 +289,10 @@ export class NetworkService {
 
     getIcsFamily (id) {
         return this.apiGET('/certified_products/' + id + '/ics_relationships');
+    }
+
+    getListing (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
     }
 
     getListingCountStatistics () {
@@ -331,10 +347,6 @@ export class NetworkService {
         return this.apiGET('/data/practice_types');
     }
 
-    getProduct (productId, forceReload) {
-        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
-    }
-
     getProductActivity (activityRange) {
         var call = '/activity/products';
         return this.getActivity(call, activityRange);
@@ -368,20 +380,36 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleDeveloperActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/developers/' + id);
+    getSingleDeveloperActivityMetadata (id, options) {
+        let url = '/activity/metadata/developers/' + id
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleListingActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/listings/' + id);
+    getSingleListingActivityMetadata (id, options) {
+        let url = '/activity/metadata/listings/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleProductActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/products/' + id);
+    getSingleProductActivityMetadata (id, options) {
+        let url = '/activity/metadata/products/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleVersionActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/versions/' + id);
+    getSingleVersionActivityMetadata (id, options) {
+        let url = '/activity/metadata/versions/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
     getSurveillanceLookups () {
@@ -489,7 +517,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
     }
 
     initiateSurveillance (surveillance) {
@@ -564,10 +592,6 @@ export class NetworkService {
         return this.apiDELETE('/key/' + user.key);
     }
 
-    revokeRole (payload) {
-        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     search (queryObj) {
         return this.apiPOST('/search', queryObj);
     }
@@ -578,6 +602,10 @@ export class NetworkService {
 
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
+    }
+
+    splitVersion (versionObject) {
+        return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
     }
 
     unimpersonateUser () {
@@ -632,26 +660,20 @@ export class NetworkService {
             return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         } else {
             return this.$http.get(this.API + endpoint)
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         }
     }
 

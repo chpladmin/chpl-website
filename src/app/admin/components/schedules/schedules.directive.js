@@ -21,7 +21,7 @@
     }
 
     /** @ngInject */
-    function ScheduledJobsController ($log, $uibModal, SPLIT_PRIMARY, networkService) {
+    function ScheduledJobsController ($log, $uibModal, SPLIT_PRIMARY, featureFlags, networkService) {
         var vm = this;
 
         vm.createSimpleTrigger = createSimpleTrigger;
@@ -114,14 +114,8 @@
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
-                if (result.status === 'updated') {
+                if (result.status === 'updated' || result.status === 'deleted') {
                     vm.loadScheduledTriggers();
-                } else if (result.status === 'deleted') {
-                    for (var i = 0; i < vm.scheduledTriggers.length; i++) {
-                        if (trigger.name === vm.scheduledTriggers[i].name) {
-                            vm.scheduledTriggers.splice(i,1);
-                        }
-                    }
                 }
             });
         }

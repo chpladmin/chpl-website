@@ -7,6 +7,7 @@
     /** @ngInject */
     function utilService ($filter, $log, Blob, FileSaver) {
         var service = {
+            addDays: addDays,
             addNewValue: addNewValue,
             addressRequired: addressRequired,
             arrayCompare: arrayCompare,
@@ -32,6 +33,12 @@
         return service;
 
         ////////////////////////////////////////////////////////////////////
+
+        function addDays (date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
 
         function addNewValue (array, object) {
             if (!array) {

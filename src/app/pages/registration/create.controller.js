@@ -47,8 +47,14 @@ window.zxcvbn = zxcvbn;
                     .then(function () {
                         $location.path('/admin');
                     }, function (error) {
-                        vm.message.value = error.data.error;
-                        vm.authorizeDetails = {};
+                        if (error.status === 401) {
+                            vm.message.value = 'A user may not have more than one role, or your username / password are incorrect';
+                        } else {
+                            vm.message.value = error.data.error;
+                        }
+                        vm.authorizeDetails = {
+                            hash: $stateParams.hash,
+                        };
                         vm.authorizeUserForm.$setPristine();
                         vm.authorizeUserForm.$setUntouched();
                         vm.message.success = false;

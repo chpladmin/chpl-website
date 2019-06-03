@@ -1,6 +1,6 @@
-<div class="container-fluid">
-  <ui-view></ui-view>
-  <div class="row" ng-if="!$ctrl.$stateParams.versionId">
+<div>
+  <ui-view ng-if="$ctrl.validState"></ui-view>
+  <div class="row" ng-if="!$ctrl.$stateParams.versionId && $ctrl.validState">
     <div class="col-sm-12">
       <h1 ng-switch on="$ctrl.action">
         <span ng-switch-when="edit">Edit Product</span>
@@ -10,7 +10,7 @@
       </h1>
     </div>
   </div>
-  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.$stateParams.versionId">
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.$stateParams.versionId && $ctrl.validState">
     <div class="col-md-4">
       <chpl-developer developer="$ctrl.developer"
                       take-action="$ctrl.takeDeveloperAction()"
@@ -52,6 +52,7 @@
                       developer="$ctrl.developer"
                       can-edit="$ctrl.can('edit')"
                       can-merge="$ctrl.can('merge') && $ctrl.versions.length > 1"
+                      can-split="$ctrl.can('split-version')"
                       take-action="$ctrl.takeVersionAction(action, versionId)"
                       ></chpl-version>
       </div>
@@ -91,5 +92,8 @@
       <button class="btn btn-ai-success btn-small pull-right" id="products-component-save-{{ $ctrl.product.productId }}" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingVersions.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
       <button class="btn btn-warning btn-small" id="products-component-cancel-{{ $ctrl.product.productId }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
     </div>
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.validState">
+    <p class="lead">This resource does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
 </div>
