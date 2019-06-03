@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 10.20.0
+_3 June 2019_
+
+### New features
+* Use new endpoints for better ONC-ACB and ONC-ATL report activity
+* Add link to FF4j admin console for ROLE_ADMIN
+
+---
+
 ## Version 10.19.0
 _20 May 2019_
 
