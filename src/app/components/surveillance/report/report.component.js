@@ -5,13 +5,45 @@ export const SurveillanceReportComponent = {
         isEditing: '<',
         onCancel: '&?',
         onSave: '&?',
+        takeAction: '&?',
     },
     controller: class SurveillanceReportComponent {
-        constructor ($filter, $log, authService) {
+        constructor ($log, networkService) {
             'ngInject'
-            this.$filter = $filter;
             this.$log = $log;
-            this.hasAnyRole = authService.hasAnyRole;
+            this.networkService = networkService;
+            this.backup = {};
+        }
+
+        $onChanges (changes) {
+            if (changes.report) {
+                this.report = angular.copy(changes.report.currentValue);
+                this.backup.report = angular.copy(this.report);
+            }
+            if (changes.isEditing) {
+                this.isEditing = angular.copy(changes.isEditing.currentValue);
+            }
+        }
+
+        save () {
+            this.onSave({report: this.report});
+        }
+
+        cancel () {
+            this.report = angular.copy(this.backup.report);
+            this.onCancel();
+        }
+
+        download () {
+            this.networkService.downloadQuarterlySurveillanceReport(this.report.id);
+        }
+
+        edit () {
+            this.takeAction({report: this.report, action: 'edit'});
+        }
+
+        delete () {
+            this.takeAction({report: this.report, action: 'delete'});
         }
     },
 }

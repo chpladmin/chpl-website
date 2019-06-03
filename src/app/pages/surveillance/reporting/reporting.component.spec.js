@@ -2,7 +2,12 @@
     'use strict';
 
     fdescribe('the Reporting component', () => {
-        var $compile, $log, $q, ctrl, el, networkService, scope;
+        let $compile, $log, $q, ctrl, el, mock, networkService, scope;
+
+        mock = {
+            acbs: [],
+            reports: [],
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
@@ -21,8 +26,10 @@
                 networkService.getSurveillanceReporting.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
+                scope.acbs = mock.acbs;
+                scope.reports = mock.reports;
 
-                el = angular.element('<chpl-surveillance-reporting></chpl-surveillance-reporting>');
+                el = angular.element('<chpl-surveillance-reporting acbs="acbs" reports="reports"></chpl-surveillance-reporting>');
 
                 $compile(el)(scope);
                 scope.$digest();

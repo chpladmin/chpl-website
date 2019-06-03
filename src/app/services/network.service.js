@@ -63,6 +63,10 @@ export class NetworkService {
         return this.apiPOST('/users/create', contactDetails);
     }
 
+    createQuarterlySurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/quarterly', report);
+    }
+
     createScheduleOneTimeTrigger (trigger) {
         return this.apiPOST('/schedules/triggers/one_time', trigger);
     }
@@ -77,6 +81,10 @@ export class NetworkService {
 
     deleteFilter (filterId) {
         return this.apiDELETE('/filters/' + filterId);
+    }
+
+    deleteQuarterlySurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/quarterly/' + id);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -95,6 +103,10 @@ export class NetworkService {
 
     deleteUser (userId) {
         return this.apiDELETE('/users/' + userId);
+    }
+
+    downloadQuarterlySurveillanceReport (id) {
+        return this.apiGET('/surveillance-report/export/quarterly/' + id);
     }
 
     getAcbActivity (activityRange) {
@@ -362,6 +374,10 @@ export class NetworkService {
 
     getQmsStandards () {
         return this.apiGET('/data/qms_standards');
+    }
+
+    getQuarterlySurveillanceQuarters () {
+        return this.apiGET('/data/quarters');
     }
 
     getRelatedListings (productId) {
@@ -634,6 +650,10 @@ export class NetworkService {
 
     updateProduct (productObject) {
         return this.apiPUT('/products', productObject);
+    }
+
+    updateQuarterlySurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/quarterly', report);
     }
 
     updateScheduleTrigger (trigger) {

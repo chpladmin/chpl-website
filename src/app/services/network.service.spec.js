@@ -241,6 +241,14 @@
             $httpBackend.flush();
         });
 
+        fit('should createQuarterlySurveillanceReport', () => {
+            $httpBackend.expectPOST(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.createQuarterlySurveillanceReport('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should createScheduleOneTimeTrigger', () => {
             $httpBackend.expectPOST(/^\/rest\/schedules\/triggers\/one_time$/).respond(200, {data: 'response'});
             networkService.createScheduleOneTimeTrigger('payload').then(response => {
@@ -268,6 +276,14 @@
         it('should deleteAnnouncement', () => {
             $httpBackend.expectDELETE(/^\/rest\/filters\/1$/).respond(200);
             networkService.deleteFilter(1).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should deleteQuarterlySurveillanceReport', () => {
+            $httpBackend.expectDELETE(/^\/rest\/surveillance-report\/quarterly\/id$/).respond(200);
+            networkService.deleteQuarterlySurveillanceReport('id').then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
@@ -304,6 +320,14 @@
             $httpBackend.expectDELETE(/^\/rest\/users\/1$/).respond(200);
             networkService.deleteUser(1).then(response => {
                 expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should downloadQuarterlySurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/export\/quarterly\/id$/).respond(200, {data: 'response'});
+            networkService.downloadQuarterlySurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
@@ -888,6 +912,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getQuarterlySurveillanceQuarters', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/quarters$/).respond(200, {data: 'response'});
+            networkService.getQuarterlySurveillanceQuarters().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getRelatedListings', () => {
             $httpBackend.expectGET(/^\/rest\/products\/payload\/listings$/).respond(200, {data: 'response'});
             networkService.getRelatedListings('payload').then(response => {
@@ -1399,6 +1431,14 @@
         it('should updateJob', () => {
             $httpBackend.expectPUT(/^\/rest\/schedules\/jobs$/).respond(200, {data: 'response'});
             networkService.updateJob('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should updateQuarterlySurveillanceReport', () => {
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.updateQuarterlySurveillanceReport('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

@@ -13,6 +13,14 @@ let states = {
             url: '/reporting',
             component: 'chplSurveillanceReporting',
             resolve: {
+                acbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                availableQuarters: networkService => {
+                    'ngInject'
+                    return networkService.getQuarterlySurveillanceQuarters();
+                },
                 reports: networkService => {
                     'ngInject'
                     return networkService.getSurveillanceReporting();
