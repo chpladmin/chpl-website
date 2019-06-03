@@ -51,7 +51,12 @@
       </div>
       <button class="btn btn-ai-success btn-small pull-right" id="quarterly-surveillance-save" ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
       <button class="btn btn-warning btn-small" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
-      <button class="btn btn-danger btn-small" id="quarterly-suveillance-delete" ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
+      <button class="btn btn-danger btn-small" id="quarterly-suveillance-delete"
+              confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
     </div>
   </div>
 </div>
