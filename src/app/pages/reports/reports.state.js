@@ -22,6 +22,11 @@ function reportsStateConfig ($stateProvider) {
             component: 'chplReportsApiKeys',
             data: { title: 'CHPL Reports - Api Key Management' },
         })
+        .state('reports.api-key-usage', {
+            url: '/api-key-usage',
+            component: 'chplReportsApiKeyUsage',
+            data: { title: 'CHPL Reports - Api Key Usage' },
+        })
         .state('reports.atls', {
             url: '/onc-atls',
             component: 'chplReportsAtls',

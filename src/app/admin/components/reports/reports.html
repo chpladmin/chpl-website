@@ -87,67 +87,8 @@
       <chpl-reports-api-keys></chpl-reports-api-keys>
     </div>
 
-    <div class="row" ng-if="$ctrl.workType === 'api_key_usage'">
-      <div class="col-sm-12">
-        <h3>API Key Usage</h3>
-        <div class="form-horizontal">
-          <div>
-            <label for="api-key-start-date" class="col-sm-2 control-label">Start Date</label>
-            <div class="col-sm-3">
-              <input type="date" class="form-control" ng-model="$ctrl.apiKey.startDate" name="apiKeyStartDate" id="api-key-start-date">
-            </div>
-            <label for="api-key-end-date" class="col-sm-2 control-label">End Date</label>
-            <div class="col-sm-3">
-              <input type="date" class="form-control" ng-model="$ctrl.apiKey.endDate" name="apiKeyEndDate" id="api-key-end-date">
-            </div>
-            <div class="col-sm-2">
-              <button class="btn btn-primary" ng-click="$ctrl.refreshApiKeyUsage()">Search <i class="fa fa-search"></i></button>
-            </div>
-          </div>
-          <div>
-            <label for="api-key-date-ascending" class="col-sm-2 control-label">Oldest first</label>
-            <div class="col-sm-2">
-              <input type="checkbox" ng-model="$ctrl.apiKey.dateAscending" name="apiKeyDateAscending" id="api-key-date-ascending" ng-change="$ctrl.refreshApiKeyUsage()">
-            </div>
-            <label for="api-key-filter" class="col-sm-3 control-label">Show <a ng-click="$ctrl.apiKey.showOnly = !$ctrl.apiKey.showOnly; $ctrl.refreshApiKeyUsage()">{{ $ctrl.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
-            <div class="col-sm-5">
-              <select class="form-control" ng-model="$ctrl.apiKey.filter" name="apiKeyFilter" id="api-key-filter" ng-change="$ctrl.refreshApiKeyUsage()"
-                      ng-options="key.key as (key.name + ' (' + key.email + ')') for key in $ctrl.apiKeys | orderBy:'name' track by key.key">
-                <option value=""></option>
-              </select>
-            </div>
-          </div>
-          <div class="col-sm-12"><a href ng-click="$ctrl.clearApiKeyFilter(); $ctrl.refreshApiKeyUsage();">Clear all filters</a></div>
-        </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>API Key</th>
-              <th scope="col">Email</th>
-              <th scope="col">Name</th>
-              <th scope="col">API Call Path</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <td colspan="5" class="text-center">
-              <pager ng-model="$ctrl.apiKey.visiblePage" ng-change="$ctrl.refreshApiKeyUsage()" class="pagination-sm" total-items="20000"></pager>
-            </td>
-          </tfoot>
-          <tbody>
-            <tr ng-if="$ctrl.searchedApi.length === 0">
-              <td colspan="5">No activity found</td>
-            </tr>
-            <tr ng-repeat="activity in $ctrl.searchedApi" ng-if="$ctrl.searchedApi.length > 0">
-              <td>{{ activity.apiKey }}</td>
-              <td>{{ activity.email }}</td>
-              <td>{{ activity.name }}</td>
-              <td>{{ activity.apiCallPath }}</td>
-              <td>{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div ng-if="$ctrl.workType === 'api_key_usage'">
+      <chpl-reports-api-key-usage></chpl-reports-api-key-usage>
     </div>
   </div>
 </section>

@@ -18,58 +18,25 @@
     <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
   </div>
 
-  <table class="table table-responsive">
-    <thead>
-      <tr>
-        <th class="search-header" st-sort="name" st-skip-natural="true">Activity</th>
-        <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-if="$ctrl.displayed.length === 0">
-        <td colspan="2">No activity found</td>
-      </tr>
-      <tr ng-repeat="activity in $ctrl.displayed">
-        <td>{{ activity.description }}</td>
-        <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!--    <div class="row" ng-if="$ctrl.workType === 'api_key_management'">
-      <div class="col-sm-12">
-        <h3>API Key Management Activity</h3>
-        <div>
-          <label for="activity-start-api-key" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.api_key.startDate" name="activityStartAPIKey" id="activity-start-api-key" placeholder="yyyy-MM-dd">
-          </div>
-          <label for="activity-end-api-key" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.api_key.endDate" name="activityEndAPIKey" id="activity-end-api-key" placeholder="yyyy-MM-dd">
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="$ctrl.refreshActivity()" ng-disabled="!$ctrl.validDates('api_key')">Search <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates('api_key')">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
-        </div>
-        <table st-table="$ctrl.displayedApiActivity" st-safe-src="$ctrl.searchedApiActivity" class="table table-striped">
-          <thead>
-            <tr>
-              <th>Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="$ctrl.displayedApiActivity.length === 0">
-              <td colspan="2">No activity found</td>
-            </tr>
-            <tr ng-repeat="activity in $ctrl.displayedApiActivity" ng-if="$ctrl.displayedApiActivity.length > 0">
-              <td><span ng-bind-html="activity.description"></span></td>
-              <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-responsive">
+        <thead>
+          <tr>
+            <th class="search-header" st-sort="name" st-skip-natural="true">Activity</th>
+            <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="$ctrl.displayed.length === 0">
+            <td colspan="2">No activity found</td>
+          </tr>
+          <tr ng-repeat="activity in $ctrl.displayed">
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
--->
+  </div>
+</div>

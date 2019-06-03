@@ -25,12 +25,6 @@ export const ReportsComponent = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
             };
-            this.apiKey = {
-                visiblePage: 1,
-                pageSize: 100,
-                startDate: angular.copy(this.activityRange.startDate),
-                endDate: angular.copy(this.activityRange.endDate),
-            };
             this.refreshActivity();
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
@@ -55,9 +49,6 @@ export const ReportsComponent = {
             case 'users':
                 this.refreshUser();
                 break;
-            case 'api_key_usage':
-                this.refreshApiKeyUsage();
-                break;
                 // no default
             }
         }
@@ -74,49 +65,6 @@ export const ReportsComponent = {
                     ctrl.searchedUserActivities = ctrl.interpretUserActivities(data);
                     ctrl.displayedUserActivities = [].concat(ctrl.searchedUserActivities);
                 });
-        }
-
-        refreshApiKeyUsage () {
-            if (!this.apiKeys) {
-                this.loadApiKeys();
-            }
-            let ctrl = this;
-            this.apiKey.pageNumber = this.apiKey.visiblePage - 1;
-            this.networkService.getApiActivity(this.dateAdjust(this.apiKey))
-                .then(function (data) {
-                    ctrl.searchedApi = data;
-                });
-        }
-
-        clearApiKeyFilter () {
-            this.apiKey = {
-                visiblePage: 1,
-                pageSize: 100,
-                startDate: angular.copy(this.activityRange.startDate),
-                endDate: angular.copy(this.activityRange.endDate),
-            };
-        }
-
-        compareSurveillances (oldS, newS) {
-            this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
-                controller: 'CompareSurveillanceRequirementsController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    newSurveillance: function () { return newS; },
-                    oldSurveillance: function () { return oldS; },
-                },
-                size: 'lg',
-            });
-        }
-
-        loadApiKeys () {
-            let ctrl = this;
-            this.networkService.getApiUsers()
-                .then(result => ctrl.apiKeys = result);
         }
 
         validDates (key) {

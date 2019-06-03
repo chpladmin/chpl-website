@@ -10,8 +10,6 @@
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
                     $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
-                    $delegate.getApiActivity = jasmine.createSpy('getApiActivity');
-                    $delegate.getApiUsers = jasmine.createSpy('getApiUsers');
                     return $delegate;
                 });
             });
@@ -24,8 +22,6 @@
                 networkService = _networkService_;
                 networkService.getUserActivity.and.returnValue($q.when([]));
                 networkService.getUserActivities.and.returnValue($q.when([]));
-                networkService.getApiActivity.and.returnValue($q.when([]));
-                networkService.getApiUsers.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()
 
@@ -56,40 +52,18 @@
                 describe('for refreshing', function () {
                     beforeEach(function () {
                         spyOn(ctrl, 'refreshUser');
-                        spyOn(ctrl, 'refreshApiKeyUsage');
                     });
 
                     it('should refresh the dev data specifically', function () {
                         ctrl.workType = 'dev';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
                     });
 
                     it('should refresh the users data specifically', function () {
                         ctrl.workType = 'users';
                         ctrl.refreshActivity();
                         expect(ctrl.refreshUser).toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-                });
-
-                it('should clear the API Key filter object', function () {
-                    var aDate = new Date();
-                    ctrl.activityRange.startDate = aDate;
-                    ctrl.activityRange.endDate = aDate;
-                    ctrl.apiKey = {
-                        visiblePage: 34,
-                        pageSize: 2,
-                        startDate: new Date('1/1/2000'),
-                        endDate: new Date('1/1/2000'),
-                    };
-                    ctrl.clearApiKeyFilter();
-                    expect(ctrl.apiKey).toEqual({
-                        visiblePage: 1,
-                        pageSize: 100,
-                        startDate: aDate,
-                        endDate: aDate,
                     });
                 });
 
