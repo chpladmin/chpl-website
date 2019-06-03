@@ -18,41 +18,8 @@
     <div ng-if="$ctrl.workType === 'atl'">
       <chpl-reports-atls></chpl-reports-atls>
     </div>
-    <div class="row" ng-if="$ctrl.workType === 'announcement'">
-      <div class="col-sm-12">
-        <h3>Announcement Activity</h3>
-        <div>
-          <label for="activity-start-announcement" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.announcement.startDate" name="activityStartAnnouncement" id="activity-start-announcement" placeholder="yyyy-MM-dd">
-          </div>
-          <label for="activity-end-announcement" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="$ctrl.activityRange.announcement.endDate" name="activityEndAnnouncement" id="activity-end-announcement" placeholder="yyyy-MM-dd">
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="$ctrl.refreshActivity()" ng-disabled="!$ctrl.validDates('announcement')">Search <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-sm-12 text-danger" ng-if="!$ctrl.validDates('announcement')">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
-        </div>
-        <table st-table="$ctrl.displayedAnnouncements" st-safe-src="$ctrl.searchedAnnouncements" class="table table-striped">
-          <thead>
-            <tr>
-              <th class="search-header" st-sort="name" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="$ctrl.displayedAnnouncements.length === 0">
-              <td colspan="2">No activity found</td>
-            </tr>
-            <tr ng-repeat="activity in $ctrl.displayedAnnouncements" ng-if="$ctrl.displayedAnnouncements.length > 0">
-              <td>{{ activity.description }}</td>
-              <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div ng-if="$ctrl.workType === 'announcement'">
+      <chpl-reports-announcements></chpl-reports-announcements>
     </div>
 
     <div class="row" ng-if="$ctrl.workType === 'users'">

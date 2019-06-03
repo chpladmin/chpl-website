@@ -21,10 +21,6 @@ export const ReportsComponent = {
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            this.activityRange.announcement = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
             this.activityRange.userActivity = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
@@ -65,9 +61,6 @@ export const ReportsComponent = {
 
         refreshActivity () {
             switch (this.workType) {
-            case 'announcement':
-                this.refreshAnnouncement();
-                break;
             case 'users':
                 this.refreshUser();
                 break;
@@ -79,15 +72,6 @@ export const ReportsComponent = {
                 break;
                 // no default
             }
-        }
-
-        refreshAnnouncement () {
-            let ctrl = this;
-            this.networkService.getAnnouncementActivity(this.dateAdjust(this.activityRange.announcement))
-                .then(function (data) {
-                    ctrl.searchedAnnouncements = ctrl.interpretAnnouncements(data);
-                    ctrl.displayedAnnouncements = [].concat(ctrl.searchedAnnouncements);
-                });
         }
 
         refreshUser () {
@@ -176,11 +160,6 @@ export const ReportsComponent = {
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
-
-        interpretAnnouncements (data) {
-            var ret = data;
-            return ret;
-        }
 
         interpretUsers (data) {
             var ret = data;
