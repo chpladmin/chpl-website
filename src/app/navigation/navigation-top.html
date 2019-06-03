@@ -100,9 +100,9 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i>ONC-ATLs</a></li>
             <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i>Products</a></li>
             <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i>Versions</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i>Announcements</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i>Announcements</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/users">Users</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_management">API Keys</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-keys()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-keys')"></i>API Keys</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_usage">API Key Usage</a></li>
           </ul>
         </li>

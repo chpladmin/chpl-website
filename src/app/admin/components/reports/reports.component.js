@@ -25,10 +25,6 @@ export const ReportsComponent = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
             };
-            this.activityRange.api_key = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
             this.apiKey = {
                 visiblePage: 1,
                 pageSize: 100,
@@ -41,17 +37,12 @@ export const ReportsComponent = {
 
         $onChanges (changes) {
             if (!changes.workType.isFirstChange()) {
-                let causeRefresh = false;
                 if (changes.workType) {
                     this.workType = angular.copy(changes.workType.currentValue);
-                    causeRefresh = true;
+                    this.refreshActivity();
                 }
                 if (changes.productId) {
                     this.productId = angular.copy(changes.productId.currentValue);
-                    causeRefresh = true;
-                }
-                if (causeRefresh) {
-                    this.refreshActivity();
                 }
             }
         }
@@ -63,9 +54,6 @@ export const ReportsComponent = {
             switch (this.workType) {
             case 'users':
                 this.refreshUser();
-                break;
-            case 'api_key_management':
-                this.refreshApi();
                 break;
             case 'api_key_usage':
                 this.refreshApiKeyUsage();
@@ -85,15 +73,6 @@ export const ReportsComponent = {
                 .then(function (data) {
                     ctrl.searchedUserActivities = ctrl.interpretUserActivities(data);
                     ctrl.displayedUserActivities = [].concat(ctrl.searchedUserActivities);
-                });
-        }
-
-        refreshApi () {
-            let ctrl = this;
-            this.networkService.getApiUserActivity(this.dateAdjust(this.activityRange.api_key))
-                .then(function (data) {
-                    ctrl.searchedApiActivity = data;
-                    ctrl.displayedApiActivity = [].concat(ctrl.searchedApiActivity);
                 });
         }
 

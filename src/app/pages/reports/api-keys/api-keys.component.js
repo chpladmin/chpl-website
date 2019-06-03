@@ -1,7 +1,7 @@
-export const ReportsAnnouncementsComponent = {
-    templateUrl: 'chpl.reports/announcements/announcements.html',
+export const ReportsApiKeysComponent = {
+    templateUrl: 'chpl.reports/api-keys/api-keys.html',
     bindings: { },
-    controller: class ReportsAnnouncementsComponent {
+    controller: class ReportsApiKeyComponent {
         constructor ($log, ReportService, networkService, utilService) {
             'ngInject'
             this.$log = $log;
@@ -33,7 +33,7 @@ export const ReportsAnnouncementsComponent = {
 
         search () {
             let that = this;
-            this.networkService.getAnnouncementActivity(this.dateAdjust(this.activityRange))
+            this.networkService.getApiUserActivity(this.dateAdjust(this.activityRange))
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results);
@@ -47,4 +47,4 @@ export const ReportsAnnouncementsComponent = {
 }
 
 angular.module('chpl.reports')
-    .component('chplReportsAnnouncements', ReportsAnnouncementsComponent);
+    .component('chplReportsApiKeys', ReportsApiKeysComponent);
