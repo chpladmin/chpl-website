@@ -92,18 +92,8 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(response => {
-                    if (featureFlags.isOn('ocd2820')) {
-                        angular.noop;
-                    } else if (response.error === 'Invalid authentication token.') {
-                        authService.logout();
-                        $state.reload();
-                    }
-                })
                 .catch(error => {
-                    if (!featureFlags.isOn('ocd2820')) {
-                        angular.noop;
-                    } else if (error.status === 401) {
+                    if (error.status === 401) {
                         authService.logout();
                         $state.reload();
                     }
