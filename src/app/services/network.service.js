@@ -55,6 +55,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createComplaint (complaint) {
+        return this.apiPOST('/complaints', complaint);
+    }
+
     createFilter (filter) {
         return this.apiPOST('/filters', filter);
     }
@@ -626,6 +630,10 @@ export class NetworkService {
 
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
+    }
+
+    updateComplaint (complaint) {
+        return this.apiPUT('/complaints/' + complaint.id, complaint)
     }
 
     updateCP (cpObject) {

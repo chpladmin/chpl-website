@@ -17,15 +17,27 @@
           <td>{{ complaint.complaintType.name }}</td>
           <td>{{ complaint.complaintStatusType.name }}</td>
           <td>{{ complaint.oncComplaintId }}</td>
-          <td>{{ complaint.receivedDate }}</td>
+          <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' : 'UTC' }}</td>
           <td>
-            <a ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-pencil"></i><span class="sr-only">Edit complaint</span></a>
+            <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div ng-if="$ctrl.mode === $ctrl.modes.EDIT">
+  <div ng-if="$ctrl.mode === $ctrl.modes.EDIT || $ctrl.mode === $ctrl.modes.ADD">
+    <div class="form-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+      <label class="control-label" for="certificationBody">ONC-ACB</label>
+      <div ng-if="$ctrl.mode === $ctrl.modes.EDIT" name="certificationBody">
+        {{ $ctrl.complaint.certificationBody.name }}
+      </div>
+      <div ng-if="$ctrl.mode === $ctrl.modes.ADD">
+        <select ng-model="$ctrl.complaint.certificationBody"
+          id="certification-body" name="certificationBody" class="input-sm form-control"
+          ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' | filter: {retired: false} track by acb.id">
+        </select>
+      </div>
+    </div>
     <div class="form-group">
       <label class="control-label" for="complaintType">Complaint Type<span class="text-danger">*</span></label>
       <div>
@@ -35,7 +47,7 @@
         </select>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="$ctrl.mode === $ctrl.modes.EDIT">
       <label class="control-label" for="complaintStatusType">Complaint Status Type<span class="text-danger">*</span></label>
       <div>
         <select ng-model="$ctrl.complaint.complaintStatusType"
@@ -53,7 +65,7 @@
     <div class="form-group">
       <label class="control-label" for="receivedDate">Received Date<span class="text-danger">*</span></label>
       <div>
-          <input type="date" class="input-sm form-control" ng-model="$ctrl.complaint.receivedDate" name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"></input>
+          <input type="date" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate" name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"></input>
       </div>
     </div>
     <div class="form-group">
@@ -84,8 +96,10 @@
       </label>
     </div>
     <div>
-      <button class="btn btn-ai-success btn-small pull-right" ng-click="" ><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-      <button class="btn btn-ai-success btn-small pull-right"
+      <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.saveComplaint($ctrl.complaint)" ><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+      <button class="btn btn-danger btn-small"
+          ng-if="$ctrl.mode === $ctrl.modes.EDIT"
           ng-click="$ctrl.deleteComplaint($ctrl.complaint)"
           confirm="Are you sure you wish to delete this complaint?"
           confirm-ok="Yes"
@@ -93,7 +107,7 @@
           confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
         <i class="fa fa-trash"></i><span class="sr-only"> Delete</span>
       </button>
-      <button class="btn btn-warning btn-small" ng-click=""><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
     </div>
   </div>
+
 </div>

@@ -1,13 +1,25 @@
 <div class="container-fluid">
-  <div class="row main-content" id="main-content" tabindex="-1">
+  <div class="main-content" id="main-content" tabindex="-1">
+    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" >Edit Complaint</h2>
+    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD" >Add Complaint</h2>
+    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.SELECT" >All Complaints</h2>
+
+    <button class="btn btn-link" ng-if="$ctrl.currentMode === $ctrl.modes.SELECT" ng-click="$ctrl.displayAddComplaint()">
+      <i class="fa fa-plus-circle"></i>
+      Add New Complaint
+    </button>
+
     <chpl-surveillance-complaint
-        mode="$ctrl.currentMode"
-        complaints="$ctrl.complaints"
-        complaint="$ctrl.complaint"
-        complaint-types="$ctrl.complaintTypes"
-        complaint-status-types="$ctrl.complaintStatusTypes"
-        on-delete="$ctrl.deleteComplaint(complaint)"
-        on-select="$ctrl.selectComplaint(complaint)" >
+      mode="$ctrl.currentMode"
+      complaints="$ctrl.complaints"
+      complaint="$ctrl.complaint"
+      complaint-types="$ctrl.complaintTypes"
+      complaint-status-types="$ctrl.complaintStatusTypes"
+      certification_bodies="$ctrl.certificationBodies"
+      on-delete="$ctrl.deleteComplaint(complaint)"
+      on-select="$ctrl.selectComplaint(complaint)"
+      on-save="$ctrl.saveComplaint(complaint)"
+      on-cancel="$ctrl.cancelEdit()" >
     </chpl-surveillance-complaint>
   </div>
 </div>

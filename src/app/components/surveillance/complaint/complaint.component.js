@@ -6,6 +6,7 @@ export const SurveillanceComplaintComponent = {
         mode: '<',
         complaintTypes: '<',
         complaintStatusTypes: '<',
+        certificationBodies: '<',
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
@@ -20,6 +21,7 @@ export const SurveillanceComplaintComponent = {
             this.modes = {
                 SELECT: 'select',
                 EDIT: 'edit',
+                ADD: 'add',
             }
         }
 
@@ -32,6 +34,18 @@ export const SurveillanceComplaintComponent = {
         selectComplaint (complaint) {
             if (this.onSelect) {
                 this.onSelect({complaint: complaint});
+            }
+        }
+
+        saveComplaint (complaint) {
+            if (this.onSave) {
+                this.onSave({complaint: complaint});
+            }
+        }
+
+        cancelEdit () {
+            if (this.onCancel) {
+                this.onCancel();
             }
         }
     },
