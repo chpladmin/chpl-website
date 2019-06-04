@@ -7,7 +7,7 @@
         var stateKey = 'test';
 
         beforeEach(function () {
-            angular.mock.module('chpl');
+            angular.mock.module('chpl.components');
 
             inject(function (_$analytics_, _$compile_, $controller, _$localStorage_, _$log_, $rootScope) {
                 $analytics = _$analytics_;

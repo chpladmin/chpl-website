@@ -12,7 +12,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.navigation', 'chpl', function (_$httpProvider_, $provide) {
+            angular.mock.module('chpl.navigation', function (_$httpProvider_, $provide) {
                 $httpProvider = _$httpProvider_;
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');

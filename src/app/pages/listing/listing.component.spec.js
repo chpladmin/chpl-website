@@ -29,7 +29,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.listing', $provide => {
+            angular.mock.module('chpl.listing', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
                     $delegate.getAtls = jasmine.createSpy('getAtls');

@@ -5,7 +5,7 @@
         var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
