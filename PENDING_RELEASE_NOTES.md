@@ -4,5 +4,6 @@ _Date TBD_
 
 ### New features
 * Updated user and user action activity reports to use activity metadata
+* Add ability to view/add/edit surveillance complaints for quarterly reports
 
 ---
