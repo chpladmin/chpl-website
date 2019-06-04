@@ -1,5 +1,6 @@
 export const ReportsProductsComponent = {
     templateUrl: 'chpl.reports/products/products.html',
+    bindings: { },
     controller: class ReportsProductsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
@@ -56,6 +57,14 @@ export const ReportsProductsComponent = {
             filterData.tableState = {};
             filterData.tableState = this.tableController.tableState();
             return filterData;
+        }
+
+        onClearFilter () {
+            this.activityRange.endDate = new Date();
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.filterText = '';
+            this.tableController.sortBy('date');
+            this.search();
         }
 
         tableStateListener (tableController) {

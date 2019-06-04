@@ -1,19 +1,13 @@
 (function () {
     'use strict';
 
-    describe('the Admin Reports component', function () {
+    fdescribe('the Admin Reports component', function () {
 
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getAnnouncementActivity = jasmine.createSpy('getAnnouncementActivity');
-                    $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
-                    $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
-                    $delegate.getApiUserActivity = jasmine.createSpy('getApiUserActivity');
-                    $delegate.getApiActivity = jasmine.createSpy('getApiActivity');
-                    $delegate.getApiUsers = jasmine.createSpy('getApiUsers');
                     return $delegate;
                 });
             });
@@ -24,13 +18,6 @@
                 $q = _$q_;
 
                 networkService = _networkService_;
-                networkService.getAnnouncementActivity.and.returnValue($q.when([]));
-                networkService.getUserActivity.and.returnValue($q.when([]));
-                networkService.getUserActivities.and.returnValue($q.when([]));
-                networkService.getApiUserActivity.and.returnValue($q.when([]));
-                networkService.getApiActivity.and.returnValue($q.when([]));
-                networkService.getApiUsers.and.returnValue($q.when([]));
-
                 scope = $rootScope.$new()
 
                 el = angular.element('<ai-reports></ai-reports');
@@ -58,66 +45,7 @@
         describe('controller', function () {
             describe('helper functions', function () {
                 describe('for refreshing', function () {
-                    beforeEach(function () {
-                        spyOn(ctrl, 'refreshAnnouncement');
-                        spyOn(ctrl, 'refreshUser');
-                        spyOn(ctrl, 'refreshApi');
-                        spyOn(ctrl, 'refreshApiKeyUsage');
-                    });
 
-                    it('should refresh the dev data specifically', function () {
-                        ctrl.workType = 'dev';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the announcement data specifically', function () {
-                        ctrl.workType = 'announcement';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshAnnouncement).toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the users data specifically', function () {
-                        ctrl.workType = 'users';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).toHaveBeenCalled();
-                        expect(ctrl.refreshApi).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the api key management data specifically', function () {
-                        ctrl.workType = 'api_key_management';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshAnnouncement).not.toHaveBeenCalled();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                        expect(ctrl.refreshApi).toHaveBeenCalled();
-                        expect(ctrl.refreshApiKeyUsage).not.toHaveBeenCalled();
-                    });
-                });
-
-                it('should clear the API Key filter object', function () {
-                    var aDate = new Date();
-                    ctrl.activityRange.startDate = aDate;
-                    ctrl.activityRange.endDate = aDate;
-                    ctrl.apiKey = {
-                        visiblePage: 34,
-                        pageSize: 2,
-                        startDate: new Date('1/1/2000'),
-                        endDate: new Date('1/1/2000'),
-                    };
-                    ctrl.clearApiKeyFilter();
-                    expect(ctrl.apiKey).toEqual({
-                        visiblePage: 1,
-                        pageSize: 100,
-                        startDate: aDate,
-                        endDate: aDate,
                     });
                 });
 

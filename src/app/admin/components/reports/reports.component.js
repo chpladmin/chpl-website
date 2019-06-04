@@ -21,23 +21,9 @@ export const ReportsComponent = {
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            this.activityRange.announcement = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
             this.activityRange.userActivity = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
-            };
-            this.activityRange.api_key = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            this.apiKey = {
-                visiblePage: 1,
-                pageSize: 100,
-                startDate: angular.copy(this.activityRange.startDate),
-                endDate: angular.copy(this.activityRange.endDate),
             };
             this.refreshActivity();
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
@@ -45,17 +31,12 @@ export const ReportsComponent = {
 
         $onChanges (changes) {
             if (!changes.workType.isFirstChange()) {
-                let causeRefresh = false;
                 if (changes.workType) {
                     this.workType = angular.copy(changes.workType.currentValue);
-                    causeRefresh = true;
+                    this.refreshActivity();
                 }
                 if (changes.productId) {
                     this.productId = angular.copy(changes.productId.currentValue);
-                    causeRefresh = true;
-                }
-                if (causeRefresh) {
-                    this.refreshActivity();
                 }
             }
         }
@@ -65,95 +46,10 @@ export const ReportsComponent = {
 
         refreshActivity () {
             switch (this.workType) {
-            case 'announcement':
-                this.refreshAnnouncement();
-                break;
-            case 'users':
-                this.refreshUser();
-                break;
-            case 'api_key_management':
-                this.refreshApi();
-                break;
-            case 'api_key_usage':
-                this.refreshApiKeyUsage();
+
                 break;
                 // no default
             }
-        }
-
-        refreshAnnouncement () {
-            let ctrl = this;
-            this.networkService.getAnnouncementActivity(this.dateAdjust(this.activityRange.announcement))
-                .then(function (data) {
-                    ctrl.searchedAnnouncements = ctrl.interpretAnnouncements(data);
-                    ctrl.displayedAnnouncements = [].concat(ctrl.searchedAnnouncements);
-                });
-        }
-
-        refreshUser () {
-            let ctrl = this;
-            this.networkService.getUserActivity(this.dateAdjust(this.activityRange.userActivity))
-                .then(function (data) {
-                    ctrl.searchedUsers = ctrl.interpretUsers(data);
-                    ctrl.displayedUsers = [].concat(ctrl.searchedUsers);
-                });
-            this.networkService.getUserActivities(this.dateAdjust(this.activityRange.userActivity))
-                .then(function (data) {
-                    ctrl.searchedUserActivities = ctrl.interpretUserActivities(data);
-                    ctrl.displayedUserActivities = [].concat(ctrl.searchedUserActivities);
-                });
-        }
-
-        refreshApi () {
-            let ctrl = this;
-            this.networkService.getApiUserActivity(this.dateAdjust(this.activityRange.api_key))
-                .then(function (data) {
-                    ctrl.searchedApiActivity = data;
-                    ctrl.displayedApiActivity = [].concat(ctrl.searchedApiActivity);
-                });
-        }
-
-        refreshApiKeyUsage () {
-            if (!this.apiKeys) {
-                this.loadApiKeys();
-            }
-            let ctrl = this;
-            this.apiKey.pageNumber = this.apiKey.visiblePage - 1;
-            this.networkService.getApiActivity(this.dateAdjust(this.apiKey))
-                .then(function (data) {
-                    ctrl.searchedApi = data;
-                });
-        }
-
-        clearApiKeyFilter () {
-            this.apiKey = {
-                visiblePage: 1,
-                pageSize: 100,
-                startDate: angular.copy(this.activityRange.startDate),
-                endDate: angular.copy(this.activityRange.endDate),
-            };
-        }
-
-        compareSurveillances (oldS, newS) {
-            this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
-                controller: 'CompareSurveillanceRequirementsController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    newSurveillance: function () { return newS; },
-                    oldSurveillance: function () { return oldS; },
-                },
-                size: 'lg',
-            });
-        }
-
-        loadApiKeys () {
-            let ctrl = this;
-            this.networkService.getApiUsers()
-                .then(result => ctrl.apiKeys = result);
         }
 
         validDates (key) {
@@ -176,21 +72,6 @@ export const ReportsComponent = {
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
-
-        interpretAnnouncements (data) {
-            var ret = data;
-            return ret;
-        }
-
-        interpretUsers (data) {
-            var ret = data;
-            return ret;
-        }
-
-        interpretUserActivities (data) {
-            var ret = data;
-            return ret;
-        }
 
         interpretNonUpdate (activity, data, text, key) {
             if (!key) { key = 'name'; }

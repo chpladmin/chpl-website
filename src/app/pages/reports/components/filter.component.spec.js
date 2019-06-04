@@ -1,12 +1,12 @@
 (() => {
     'use strict';
 
-    describe('the Filter component', () => {
+    fdescribe('the Reports.Filter component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.reports', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getFilters = jasmine.createSpy('getFilters');
                     $delegate.createFilter = jasmine.createSpy('createFilter');

@@ -9,7 +9,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.navigation', 'chpl', function ($provide) {
+            angular.mock.module('chpl.navigation', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getFullname = jasmine.createSpy('getFullname');
                     $delegate.getUsername = jasmine.createSpy('getUsername');

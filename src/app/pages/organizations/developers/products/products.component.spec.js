@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    xdescribe('the Products component', () => {
+    describe('the Products component', () => {
         var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -31,7 +31,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.organizations', $provide => {
+            angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     return $delegate;

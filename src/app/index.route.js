@@ -1,3 +1,7 @@
+import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
+import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
+import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
+
 (function () {
     'use strict';
 
@@ -11,8 +15,11 @@
         .config(routeConfig)
         .config(administrationState)
         .config(collectionsState)
+        .config(listingStates)
+        .config(organizationsStates)
         .config(reportsState)
-        .config(resourcesState);
+        .config(resourcesState)
+        .config(surveillanceStates);
 
     function routeConfig ($stateProvider, $urlRouterProvider) {
         $stateProvider
