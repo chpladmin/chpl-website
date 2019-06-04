@@ -105,10 +105,6 @@ export class NetworkService {
         return this.apiDELETE('/users/' + userId);
     }
 
-    downloadQuarterlySurveillanceReport (id) {
-        return this.apiGET('/surveillance-report/export/quarterly/' + id);
-    }
-
     getAcbActivity (activityRange) {
         var call = '/activity/acbs';
         return this.getActivity(call, activityRange);

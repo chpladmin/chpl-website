@@ -8,17 +8,20 @@ export const SurveillanceReportComponent = {
         takeAction: '&?',
     },
     controller: class SurveillanceReportComponent {
-        constructor ($log, networkService) {
+        constructor ($log, API, authService) {
             'ngInject'
             this.$log = $log;
-            this.networkService = networkService;
+            this.API = API;
             this.backup = {};
+            this.API_KEY = authService.getApiKey();
+            this.getToken = authService.getToken;
         }
 
         $onChanges (changes) {
             if (changes.report) {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
+                this.downloadUrl = this.API + '/surveillance-report/export/quarterly/' + this.report.id + '?api_key=' + this.API_KEY + '&authorization=Bearer%20' + this.getToken();
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
@@ -32,10 +35,6 @@ export const SurveillanceReportComponent = {
         cancel () {
             this.report = angular.copy(this.backup.report);
             this.onCancel();
-        }
-
-        download () {
-            this.networkService.downloadQuarterlySurveillanceReport(this.report.id);
         }
 
         edit () {
