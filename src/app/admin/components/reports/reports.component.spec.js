@@ -8,8 +8,6 @@
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
-                    $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
                     return $delegate;
                 });
             });
@@ -20,9 +18,6 @@
                 $q = _$q_;
 
                 networkService = _networkService_;
-                networkService.getUserActivity.and.returnValue($q.when([]));
-                networkService.getUserActivities.and.returnValue($q.when([]));
-
                 scope = $rootScope.$new()
 
                 el = angular.element('<ai-reports></ai-reports');
@@ -50,20 +45,7 @@
         describe('controller', function () {
             describe('helper functions', function () {
                 describe('for refreshing', function () {
-                    beforeEach(function () {
-                        spyOn(ctrl, 'refreshUser');
-                    });
 
-                    it('should refresh the dev data specifically', function () {
-                        ctrl.workType = 'dev';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshUser).not.toHaveBeenCalled();
-                    });
-
-                    it('should refresh the users data specifically', function () {
-                        ctrl.workType = 'users';
-                        ctrl.refreshActivity();
-                        expect(ctrl.refreshUser).toHaveBeenCalled();
                     });
                 });
 

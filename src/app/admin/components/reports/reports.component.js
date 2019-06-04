@@ -46,25 +46,10 @@ export const ReportsComponent = {
 
         refreshActivity () {
             switch (this.workType) {
-            case 'users':
-                this.refreshUser();
+
                 break;
                 // no default
             }
-        }
-
-        refreshUser () {
-            let ctrl = this;
-            this.networkService.getUserActivity(this.dateAdjust(this.activityRange.userActivity))
-                .then(function (data) {
-                    ctrl.searchedUsers = ctrl.interpretUsers(data);
-                    ctrl.displayedUsers = [].concat(ctrl.searchedUsers);
-                });
-            this.networkService.getUserActivities(this.dateAdjust(this.activityRange.userActivity))
-                .then(function (data) {
-                    ctrl.searchedUserActivities = ctrl.interpretUserActivities(data);
-                    ctrl.displayedUserActivities = [].concat(ctrl.searchedUserActivities);
-                });
         }
 
         validDates (key) {
@@ -87,16 +72,6 @@ export const ReportsComponent = {
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
-
-        interpretUsers (data) {
-            var ret = data;
-            return ret;
-        }
-
-        interpretUserActivities (data) {
-            var ret = data;
-            return ret;
-        }
 
         interpretNonUpdate (activity, data, text, key) {
             if (!key) { key = 'name'; }
