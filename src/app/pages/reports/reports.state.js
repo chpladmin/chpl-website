@@ -40,6 +40,16 @@ function reportsStateConfig ($stateProvider) {
             component: 'chplReportsProducts',
             data: { title: 'CHPL Reports - Products' },
         })
+        .state('reports.userActions', {
+            url: '/user-actions',
+            component: 'chplReportsUserActions',
+            data: { title: 'CHPL Reports - User Actions' },
+        })
+        .state('reports.users', {
+            url: '/users',
+            component: 'chplReportsUsers',
+            data: { title: 'CHPL Reports - Users' },
+        })
         .state('reports.versions', {
             url: '/versions',
             component: 'chplReportsVersions',
