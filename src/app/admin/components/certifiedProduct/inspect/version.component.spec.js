@@ -28,7 +28,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', ($provide) => {
+            angular.mock.module('chpl.admin', ($provide) => {
                 $provide.decorator('networkService', ($delegate) => {
                     $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
                     $delegate.getVersion = jasmine.createSpy('getVersion');

@@ -9,7 +9,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl');
+            angular.mock.module('chpl.mock', 'chpl.components');
 
             inject(function (_$analytics_, _$compile_, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $analytics = _$analytics_;

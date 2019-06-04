@@ -5,7 +5,7 @@
         var $log, $q, $uibModal, Mock, actualOptions, ctrl, el, networkService, scope;
 
         beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl', function ($provide) {
+            angular.mock.module('chpl.components', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');

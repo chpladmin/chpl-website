@@ -28,7 +28,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.organizations', $provide => {
+            angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
