@@ -15,6 +15,14 @@ let states = {
             data: { title: 'CHPL Surveillance - Reporting' },
         },
     ],
+    'ocd-1277-on': [
+        {
+            name: 'surveillance.manage',
+            url: '/manage',
+            component: 'chplSurveillanceManagement',
+            data: { title: 'CHPL Surveillance - Manage' },
+        },
+    ],
     'base': [
         {
             name: 'administration.upload',
@@ -35,7 +43,7 @@ let states = {
         },{
             name: 'surveillance.upload',
             url: '/upload',
-            component: 'chplUploadSurveillances',
+            component: 'chplUploadSurveillance',
             data: { title: 'CHPL Surveillance - Upload' },
         },{
             name: 'surveillance.confirm',
@@ -47,6 +55,11 @@ let states = {
             url: '/complaints',
             template: '<div>Coming soon</div>',
             data: { title: 'CHPL Surveillance - Complaints' },
+        },{
+            name: 'surveillance.manage',
+            url: '/manage',
+            template: '<div>Coming soon</div>',
+            data: { title: 'CHPL Surveillance - Manage' },
         },{
             name: 'surveillance.reporting',
             url: '/reporting',

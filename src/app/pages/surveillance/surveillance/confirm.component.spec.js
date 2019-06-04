@@ -9,7 +9,7 @@
         mock.uploadingSurveillances = {pendingSurveillance: []};
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.surveillance', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
 

@@ -1,0 +1,99 @@
+<div class="container-fluid">
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <div class="col-sm-12">
+      <h3>Manage Surveillance Activity</h3>
+      <label for="surveillance-search" class="control-label sr-only">Search by ACB or CHPL ID</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="surveillance-search" placeholder="Search by ACB or CHPL ID" ng-model="$ctrl.surveillanceSearch.query"
+               ng-keyup="$event.keyCode === 13 && $ctrl.search()">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-ai" id="surveillance-search-button" ng-click="$ctrl.search()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
+        </span>
+      </div>
+      <div ng-if="$ctrl.surveillanceSearch.results">
+        <div ng-if="$ctrl.surveillanceSearch.results.length === 0">
+          No results found
+        </div>
+        <div ng-if="$ctrl.surveillanceSearch.results.length > 1">
+          <a href ng-click="$ctrl.surveillanceSearch.results = null" class="pull-right">Clear results</a>
+          {{ $ctrl.surveillanceSearch.results.length }} results found. Select the product you want:
+          <table class="table table-condensed" id="surveillance-search-results">
+            <thead>
+              <tr>
+                <th scope="col">CHPL Product Number</th>
+                <th scope="col">Developer</th>
+                <th scope="col">Product</th>
+                <th scope="col">Version</th>
+                <th scope="col">ONC-ACB</th>
+                <th scope="col">Certification Edition</th>
+                <th scope="col">Certification Date</th>
+                <th scope="col">Certification Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="res in $ctrl.surveillanceSearch.results">
+                <td><button class="btn btn-default" ng-click="$ctrl.productId = res.id; $ctrl.surveillanceSearch.results = null; $ctrl.loadSurveillance()">{{ res.chplProductNumber }}</button></td>
+                <td>{{ res.developer }}</td>
+                <td>{{ res.product }}</td>
+                <td>{{ res.product }}</td>
+                <td>{{ res.acb }}</td>
+                <td>{{ res.edition }}</td>
+                <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td>{{ res.certificationStatus }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div ng-if="$ctrl.surveillanceProduct">
+        <span class="pull-right">
+          <a href="#/product/{{ $ctrl.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
+        </span>
+        <table class="table" id="surveillance-search-single-result">
+          <thead class="sr-only">
+            <tr>
+              <th scope="col">Surveillance Listing Data Type</th>
+              <th scope="col">Surveillance Listing Data Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">CHPL Product Number</th>
+              <td>{{ $ctrl.surveillanceProduct.chplProductNumber }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Status</th>
+              <td>{{ $ctrl.certificationStatus($ctrl.surveillanceProduct) }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Developer</th>
+              <td>{{ $ctrl.surveillanceProduct.developer.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Product</th>
+              <td>{{ $ctrl.surveillanceProduct.product.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Version</th>
+              <td>{{ $ctrl.surveillanceProduct.version.version }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Edition</th>
+              <td>{{ $ctrl.surveillanceProduct.certificationEdition.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certifying Body</th>
+              <td>{{ $ctrl.surveillanceProduct.certifyingBody.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Date</th>
+              <td>{{ $ctrl.surveillanceProduct.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <ai-surveillance allow-editing="true"
+                         certified-product="$ctrl.surveillanceProduct"></ai-surveillance>
+      </div>
+    </div>
+  </div>
+</div>

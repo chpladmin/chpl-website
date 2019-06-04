@@ -1,9 +1,9 @@
-export const UploadSurveillancesComponent = {
-    templateUrl: 'chpl.admin/components/certifiedProduct/upload-surveillances.html',
+export const UploadSurveillanceComponent = {
+    templateUrl: 'chpl.surveillance/surveillance/upload.html',
     bindings: {
         onChange: '&',
     },
-    controller: class UploadSurveillancesComponent {
+    controller: class UploadSurveillanceComponent {
         constructor ($filter, $log, API, Upload, authService, networkService) {
             'ngInject'
             this.$filter = $filter;
@@ -21,6 +21,7 @@ export const UploadSurveillancesComponent = {
 
         upload () {
             let item = angular.copy(this.item);
+            this.showConfirmLink = false;
             if (this.file) {
                 item.data = {
                     file: this.file,
@@ -29,6 +30,7 @@ export const UploadSurveillancesComponent = {
                 this.Upload.upload(item).then(response => {
                     if (response.data.pendingSurveillance) {
                         that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
+                        that.showConfirmLink = true;
                     } else {
                         that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.data.user.email + ' when processing is complete.';
                     }
@@ -50,5 +52,5 @@ export const UploadSurveillancesComponent = {
     },
 }
 
-angular.module('chpl.admin')
-    .component('chplUploadSurveillances', UploadSurveillancesComponent);
+angular.module('chpl.surveillance')
+    .component('chplUploadSurveillance', UploadSurveillanceComponent);

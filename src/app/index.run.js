@@ -77,6 +77,18 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         needsRedirect = needsRedirect || $state.$current.name === state.name;
                     });
                 }
+                if (featureFlags.isOn('ocd1277')) {
+                    surveillanceStates['ocd-1277-on'].forEach(state => {
+                        $uiRouter.stateRegistry.deregister(state.name);
+                        $uiRouter.stateRegistry.register(state);
+                        needsReload = needsReload || $state.$current.name === state.name;
+                    });
+                } else {
+                    surveillanceStates['ocd-1277-on'].forEach(state => {
+                        $uiRouter.stateRegistry.deregister(state.name);
+                        needsRedirect = needsRedirect || $state.$current.name === state.name;
+                    });
+                }
 
                 // Display ui-router state changes
                 if (featureFlags.isOn('states')) {
