@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Listing component', () => {
+    fdescribe('the Reports.Listing component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 
@@ -72,9 +72,7 @@
                     var modalOptions, newS, oldS;
                     beforeEach(() => {
                         modalOptions = {
-                            templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
-                            controller: 'CompareSurveillanceRequirementsController',
-                            controllerAs: 'vm',
+                            component: 'chplCompareSurveillances',
                             animation: false,
                             backdrop: 'static',
                             keyboard: false,
@@ -86,12 +84,6 @@
                         };
                         newS = {id: 1};
                         oldS = {id: 2};
-                    });
-
-                    it('should create a modal instance', () => {
-                        expect(ctrl.modalInstance).toBeUndefined();
-                        ctrl.compareSurveillances(oldS, newS);
-                        expect(ctrl.modalInstance).toBeDefined();
                     });
 
                     it('should resolve elements', () => {

@@ -1,5 +1,5 @@
 export const FilterComponent = {
-    templateUrl: 'chpl.admin/components/reports/filter.component.html',
+    templateUrl: 'chpl.reports/components/filter.component.html',
     bindings: {
         filterTypeName: '@',
         onApplyFilter: '&',
@@ -26,7 +26,7 @@ export const FilterComponent = {
                 });
 
             //Handle unimpersonate
-            var unimpersonating = this.$scope.$on('unimpersonating', function () {
+            let unimpersonating = this.$scope.$on('unimpersonating', () => {
                 that.refreshFilterList();
             });
             this.$scope.$on('$destroy', unimpersonating);
@@ -71,6 +71,5 @@ export const FilterComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.reports')
     .component('chplFilter', FilterComponent);
-
