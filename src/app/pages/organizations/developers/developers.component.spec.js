@@ -2,7 +2,7 @@
     'use strict';
 
     xdescribe('the Developers component', () => {
-        var $compile, $log, ctrl, el, mock, scope;
+        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
             acbs: [
@@ -25,15 +25,22 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.organizations', $provide => {
+            angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('chplDevelopersDirective', $delegate => {
                     $delegate[0].terminal = true;
                     return $delegate;
                 });
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
+                    return $delegate;
+                });
             });
-            inject((_$compile_, _$log_, $rootScope) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                networkService = _networkService_;
+                networkService.getAcbs.and.returnValue($q.when({acbs: mock.acbs}));
 
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};

@@ -21,8 +21,8 @@ describe('the search results download component,', () => {
     };
 
     beforeEach(() => {
-        angular.mock.module('chpl.mock', 'chpl', ($provide) => {
-            $provide.decorator('utilService', ($delegate) => {
+        angular.mock.module('chpl.mock', 'chpl.search', $provide => {
+            $provide.decorator('utilService', $delegate => {
                 $delegate.makeCsv = jasmine.createSpy('makeCsv');
                 return $delegate;
             });

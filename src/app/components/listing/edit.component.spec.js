@@ -37,7 +37,7 @@
         mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.components', $provide => {
+            angular.mock.module('chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;

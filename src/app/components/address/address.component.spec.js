@@ -5,7 +5,7 @@
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.components');
+            angular.mock.module('chpl.components');
 
             inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;

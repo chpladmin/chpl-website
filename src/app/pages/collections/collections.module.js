@@ -5,5 +5,6 @@
         'ngStorage',
         'chpl.services',
         'chpl.constants',
+        'ui.bootstrap',
     ]);
 })();
