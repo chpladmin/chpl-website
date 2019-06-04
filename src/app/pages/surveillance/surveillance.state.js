@@ -1,32 +1,6 @@
 let states = {
     'complaints-on': [
         {
-            name: 'administration.upload',
-            abstract: true,
-            url: '/confirm',
-            template: '<ui-view/></div>',
-        },{
-            name: 'administration.upload.listings',
-            url: '/listings',
-            component: 'chplUploadListings',
-            data: { title: 'CHPL Administration - Upload' },
-        },{
-            name: 'surveillance',
-            abstract: true,
-            url: '/surveillance',
-            component: 'chplSurveillance',
-            data: { title: 'CHPL Surveillance' },
-        },{
-            name: 'surveillance.upload',
-            url: '/upload',
-            component: 'chplUploadSurveillances',
-            data: { title: 'CHPL Surveillance - Upload' },
-        },{
-            name: 'surveillance.confirm',
-            url: '/confirm',
-            component: 'chplConfirmSurveillance',
-            data: { title: 'CHPL Surveillance - Confirmation' },
-        },{
             name: 'surveillance.complaints',
             url: '/complaints',
             component: 'chplSurveillanceComplaints',
@@ -35,44 +9,18 @@ let states = {
     ],
     'surveillance-reports-on': [
         {
-            name: 'administration.upload',
-            abstract: true,
-            url: '/confirm',
-            template: '<ui-view/></div>',
-        },{
-            name: 'administration.upload.listings',
-            url: '/listings',
-            component: 'chplUploadListings',
-            data: { title: 'CHPL Administration - Upload' },
-        },{
-            name: 'surveillance',
-            abstract: true,
-            url: '/surveillance',
-            component: 'chplSurveillance',
-            data: { title: 'CHPL Surveillance' },
-        },{
-            name: 'surveillance.upload',
-            url: '/upload',
-            component: 'chplUploadSurveillances',
-            data: { title: 'CHPL Surveillance - Upload' },
-        },{
-            name: 'surveillance.confirm',
-            url: '/confirm',
-            component: 'chplConfirmSurveillance',
-            data: { title: 'CHPL Surveillance - Confirmation' },
-        },{
             name: 'surveillance.reporting',
             url: '/reporting',
             component: 'chplSurveillanceReporting',
             data: { title: 'CHPL Surveillance - Reporting' },
         },
     ],
-    'complaints-on-and-surveillance-reports-on': [
+    'base': [
         {
             name: 'administration.upload',
             abstract: true,
             url: '/confirm',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         },{
             name: 'administration.upload.listings',
             url: '/listings',
@@ -97,12 +45,12 @@ let states = {
         },{
             name: 'surveillance.complaints',
             url: '/complaints',
-            component: 'chplSurveillanceComplaints',
+            template: '<div>Coming soon</div>',
             data: { title: 'CHPL Surveillance - Complaints' },
         },{
             name: 'surveillance.reporting',
             url: '/reporting',
-            component: 'chplSurveillanceReporting',
+            template: '<div>Coming soon</div>',
             data: { title: 'CHPL Surveillance - Reporting' },
         },
     ],
@@ -111,11 +59,11 @@ let states = {
 /**
  * This config can only be used when the both flags are set to true, or both are removed when fully deployed
  */
-function surveillanceStateConfig ($stateProvider) {
+function surveillanceStatesConfig ($stateProvider) {
     'ngInject'
-    states['complaints-on-and-surveillance-reports-on'].forEach(state => {
+    states['base'].forEach(state => {
         $stateProvider.state(state);
     });
 }
 
-export { surveillanceStateConfig, states };
+export { surveillanceStatesConfig, states };

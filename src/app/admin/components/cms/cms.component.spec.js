@@ -22,7 +22,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.admin', $provide => {
+            angular.mock.module('chpl.admin', $provide => {
                 $provide.decorator('$location', $delegate => {
                     $delegate.url = jasmine.createSpy('url');
                     return $delegate;

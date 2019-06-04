@@ -36,7 +36,7 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, featureFlags, networkService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags, networkService) {
         var vm = this;
 
         vm.clear = clear;
@@ -109,6 +109,12 @@
                 vm.loadOrganizations();
             })
             $scope.$on('$destroy', unimpersonating);
+
+            var flags = $rootScope.$on('flags loaded', function () {
+                vm.loadOrganizations();
+                vm.toggleNav();
+            });
+            $scope.$on('$destroy', flags);
         }
 
         function clear () {
@@ -117,10 +123,8 @@
             $location.url('/search');
         }
 
-        function isActive (route) {
-            var paths = $location.path().split('/')
-            var routes = route.split('/');
-            return (route === $location.path() || (paths[1] === routes[1] && routes.length === 2));
+        function isActive (state) {
+            return $state.$current.name.startsWith(state);
         }
 
         function loadAnnouncements () {

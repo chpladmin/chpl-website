@@ -6,7 +6,7 @@
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getFilters = jasmine.createSpy('getFilters');
                     $delegate.createFilter = jasmine.createSpy('createFilter');
