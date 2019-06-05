@@ -20,6 +20,16 @@ let states = {
             name: 'surveillance.manage',
             url: '/manage',
             component: 'chplSurveillanceManagement',
+            resolve: {
+                allowedAcbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                listings: networkService => {
+                    'ngInject'
+                    return networkService.getCollection('correctiveAction');
+                },
+            },
             data: { title: 'CHPL Surveillance - Manage' },
         },
     ],

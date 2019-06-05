@@ -1,99 +1,127 @@
 <div class="container-fluid">
-  <div class="row main-content" id="main-content" tabindex="-1">
-    <div class="col-sm-12">
-      <h3>Manage Surveillance Activity</h3>
-      <label for="surveillance-search" class="control-label sr-only">Search by ACB or CHPL ID</label>
-      <div class="input-group">
-        <input type="text" class="form-control" id="surveillance-search" placeholder="Search by ACB or CHPL ID" ng-model="$ctrl.surveillanceSearch.query"
-               ng-keyup="$event.keyCode === 13 && $ctrl.search()">
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-ai" id="surveillance-search-button" ng-click="$ctrl.search()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
-        </span>
-      </div>
-      <div ng-if="$ctrl.surveillanceSearch.results">
-        <div ng-if="$ctrl.surveillanceSearch.results.length === 0">
-          No results found
+  <div class="main-content" id="main-content" tabindex="-1" st-table="$ctrl.displayedListings" st-safe-src="$ctrl.availableListings">
+    <st-manage register-search="vm.registerSearch(search)"></st-manage>
+    <div class="form-horizontal" ng-form="$ctrl.form" aria-live="polite">
+
+      <div class="form-group" id="filters">
+        <div class="col-sm-4">
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input type="text" class="form-control input-sm" id="generalFilter" placeholder="Search by Developer, Product, Version, or CHPL Product Number"
+                   ai-enhanced-text predicate="mainSearch" register-clear-filter="$ctrl.registerClearFilter(clearFilter)">
+            <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL Product Number</span></label>
+          </div>
         </div>
-        <div ng-if="$ctrl.surveillanceSearch.results.length > 1">
-          <a href ng-click="$ctrl.surveillanceSearch.results = null" class="pull-right">Clear results</a>
-          {{ $ctrl.surveillanceSearch.results.length }} results found. Select the product you want:
-          <table class="table table-condensed" id="surveillance-search-results">
+      </div> <!-- #filters -->
+    </div><!-- filter form -->
+
+    <div ng-if="!$ctrl.surveillanceProduct" class="row">
+      <div aria-live="polite">
+        <div class="col-md-12 table-responsive">
+          <table class="table table-responsive">
             <thead>
               <tr>
-                <th scope="col">CHPL Product Number</th>
-                <th scope="col">Developer</th>
-                <th scope="col">Product</th>
-                <th scope="col">Version</th>
-                <th scope="col">ONC-ACB</th>
-                <th scope="col">Certification Edition</th>
-                <th scope="col">Certification Date</th>
-                <th scope="col">Certification Status</th>
+                <td colspan="9" class="text-center">
+                  <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
+                </td>
+              </tr>
+              <tr ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
+                <th scope="col" class="search-header" ai-multi-sort="chplProductNumber">CHPL Product Number</th>
+                <th scope="col" class="search-header" ai-multi-sort="developer">Developer</th>
+                <th scope="col" class="search-header" ai-multi-sort="product">Product</th>
+                <th scope="col" class="search-header" ai-multi-sort="version">Version</th>
+                <th scope="col" class="search-header" ai-multi-sort="acb">ONC-ACB</th>
+                <th scope="col" class="search-header" ai-multi-sort="edition">Certification Edition</th>
+                <th scope="col" class="search-header" ai-multi-sort="certificationStatus">Certification Status</th>
+                <th scope="col" class="search-header" ai-multi-sort="surveillanceCount" st-descending-first="true"># Surveillances</th>
+                <th scope="col" class="search-header" ai-multi-sort="openNonconformityCount" st-descending-first="true" st-sort-default="['-openNonconformityCount', '-edition', 'developer']"># Open NCs</th>
+                <th scope="col" class="search-header" ai-multi-sort="closedNonconformityCount" st-descending-first="true"># Closed NCs</th>
               </tr>
             </thead>
+            <tfoot ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
+              <tr>
+                <td colspan="9" class="text-center">
+                  <div class="text-right" ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
+                    <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                    Showing up to&nbsp;
+                    <select ng-model="$ctrl.filterItems.pageSize" id="pageSizeTop"
+                            ng-options="v as v for v in [50,100,250]">
+                    </select>
+                    &nbsp;results per page
+                  </div>
+                  <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
+                </td>
+              </tr>
+            </tfoot>
             <tbody>
-              <tr ng-repeat="res in $ctrl.surveillanceSearch.results">
-                <td><button class="btn btn-default" ng-click="$ctrl.productId = res.id; $ctrl.surveillanceSearch.results = null; $ctrl.loadSurveillance()">{{ res.chplProductNumber }}</button></td>
-                <td>{{ res.developer }}</td>
-                <td>{{ res.product }}</td>
-                <td>{{ res.product }}</td>
-                <td>{{ res.acb }}</td>
-                <td>{{ res.edition }}</td>
-                <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                <td>{{ res.certificationStatus }}</td>
+              <tr ng-repeat="listing in $ctrl.displayedListings">
+                <td><button class="btn btn-default" ng-click="$ctrl.productId = listing.id; $ctrl.loadSurveillance()">{{ listing.chplProductNumber }}</button></td>
+                <td>{{ listing.developer }}</td>
+                <td>{{ listing.product }}</td>
+                <td>{{ listing.version }}</td>
+                <td>{{ listing.acb }}</td>
+                <td>{{ listing.edition }}</td>
+                <td>{{ listing.certificationStatus }}</td>
+                <td>{{ listing.surveillanceCount }}</td>
+                <td>{{ listing.openNonconformityCount }}</td>
+                <td>{{ listing.closedNonconformityCount }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div ng-if="$ctrl.surveillanceProduct">
-        <span class="pull-right">
-          <a href="#/product/{{ $ctrl.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
-        </span>
-        <table class="table" id="surveillance-search-single-result">
-          <thead class="sr-only">
-            <tr>
-              <th scope="col">Surveillance Listing Data Type</th>
-              <th scope="col">Surveillance Listing Data Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">CHPL Product Number</th>
-              <td>{{ $ctrl.surveillanceProduct.chplProductNumber }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Certification Status</th>
-              <td>{{ $ctrl.certificationStatus($ctrl.surveillanceProduct) }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Developer</th>
-              <td>{{ $ctrl.surveillanceProduct.developer.name }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Product</th>
-              <td>{{ $ctrl.surveillanceProduct.product.name }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Version</th>
-              <td>{{ $ctrl.surveillanceProduct.version.version }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Certification Edition</th>
-              <td>{{ $ctrl.surveillanceProduct.certificationEdition.name }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Certifying Body</th>
-              <td>{{ $ctrl.surveillanceProduct.certifyingBody.name }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Certification Date</th>
-              <td>{{ $ctrl.surveillanceProduct.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <ai-surveillance allow-editing="true"
-                         certified-product="$ctrl.surveillanceProduct"></ai-surveillance>
-      </div>
+    </div>
+
+    <div ng-if="$ctrl.surveillanceProduct">
+      <span class="pull-right">
+        <button class="btn btn-link" ng-click="$ctrl.productId = undefined; $ctrl.surveillanceProduct = undefined"><i class="fa fa-close"></i> Return to search</button>
+        |
+        <a href="#/product/{{ $ctrl.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
+      </span>
+      <table class="table" id="surveillance-search-single-result">
+        <thead class="sr-only">
+          <tr>
+            <th scope="col">Surveillance Listing Data Type</th>
+            <th scope="col">Surveillance Listing Data Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">CHPL Product Number</th>
+            <td>{{ $ctrl.surveillanceProduct.chplProductNumber }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Certification Status</th>
+            <td>{{ $ctrl.certificationStatus($ctrl.surveillanceProduct) }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Developer</th>
+            <td>{{ $ctrl.surveillanceProduct.developer.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Product</th>
+            <td>{{ $ctrl.surveillanceProduct.product.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Version</th>
+            <td>{{ $ctrl.surveillanceProduct.version.version }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Certification Edition</th>
+            <td>{{ $ctrl.surveillanceProduct.certificationEdition.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Certifying Body</th>
+            <td>{{ $ctrl.surveillanceProduct.certifyingBody.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Certification Date</th>
+            <td>{{ $ctrl.surveillanceProduct.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <ai-surveillance allow-editing="true"
+                       certified-product="$ctrl.surveillanceProduct"></ai-surveillance>
     </div>
   </div>
 </div>
