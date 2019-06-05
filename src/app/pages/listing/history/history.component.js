@@ -265,7 +265,7 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
-            } else if (activity.description.startsWith('Split ') && this.featureFlags.isOn('better-split')) {
+            } else if (activity.description.startsWith('Split ')) {
                 activity.change.push('Developer ' + prev.name + ' split to become Developers ' + curr[0].name + ' and ' + curr[1].name);
                 if (this.interpretedActivity.developers.indexOf(prev.id) === -1) {
                     let that = this;
@@ -308,7 +308,7 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
-            } else if (activity.description.startsWith('Split ') && this.featureFlags.isOn('better-split')) {
+            } else if (activity.description.startsWith('Split ')) {
                 activity.change.push('Product ' + prev.name + ' split to become Products ' + curr[0].name + ' and ' + curr[1].name);
                 if (this.interpretedActivity.products.indexOf(prev.id) === -1) {
                     let that = this;
@@ -351,7 +351,7 @@ export const ListingHistoryComponent = {
                             });
                     });
                 });
-            } else if (activity.description.startsWith('Split ') && this.featureFlags.isOn('better-split')) {
+            } else if (activity.description.startsWith('Split ')) {
                 activity.change.push('Version ' + prev.version + ' split to become Versions ' + curr[0].version + ' and ' + curr[1].version);
                 if (this.interpretedActivity.versions.indexOf(prev.id) === -1) {
                     let that = this;
