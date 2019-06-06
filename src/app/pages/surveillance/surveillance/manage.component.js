@@ -5,16 +5,40 @@ export const SurveillanceManagementComponent = {
         listings: '<',
     },
     controller: class SurveillanceManagementComponent {
-        constructor ($log, networkService) {
+        constructor ($log, $stateParams, networkService, utilService) {
             'ngInject'
             this.$log = $log;
+            this.$stateParams = $stateParams;
             this.networkService = networkService;
+            this.certificationStatus = utilService.certificationStatus;
             this.surveillanceProduct = null;
             this.filterItems = {
                 pageSize: 50,
+                editionItems: [
+                    { value: '2011', selected: false },
+                    { value: '2014', selected: true },
+                    { value: '2015', selected: true },
+                ],
+                statusItems: [
+                    { value: 'Active', selected: true },
+                    { value: 'Suspended by ONC', selected: true },
+                    { value: 'Suspended by ONC-ACB', selected: true },
+                    { value: 'Retired', selected: false },
+                    { value: 'Withdrawn by Developer', selected: false },
+                    { value: 'Withdrawn by Developer Under Surveillance/Review', selected: false },
+                    { value: 'Withdrawn by ONC-ACB', selected: false },
+                    { value: 'Terminated by ONC', selected: false },
+                ],
             };
             this.clearFilterHs = [];
             this.availableListings = [];
+        }
+
+        $onInit () {
+            this.listingId = this.$stateParams.listingId;
+            if (this.listingId) {
+                this.load();
+            }
         }
 
         $onChanges (changes) {
@@ -30,10 +54,12 @@ export const SurveillanceManagementComponent = {
         }
 
         parse () {
-            this.availableListings = this.listings.filter(l => this.hasPermission(l))
+            this.availableListings = this.listings
+                .filter(l => this.hasPermission(l))
                 .map(l => {
                     l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
-                    l.nonconformities = angular.toJson({
+                    l.surveillance = angular.toJson({
+                        surveillanceCount: l.surveillanceCount,
                         openNonconformityCount: l.openNonconformityCount,
                         closedNonconformityCount: l.closedNonconformityCount,
                     });
@@ -45,9 +71,9 @@ export const SurveillanceManagementComponent = {
             return this.allowedAcbs.reduce((acc, acb) => acc || acb.name === listing.acb, false);
         }
 
-        loadSurveillance () {
+        load () {
             let that = this;
-            this.networkService.getListing(this.productId, true)
+            this.networkService.getListing(this.listingId, true)
                 .then(result => that.surveillanceProduct = result);
         }
 
@@ -74,6 +100,12 @@ export const SurveillanceManagementComponent = {
                 that.tableSearchHs = that.tableSearchHs.filter(h => h !== handler);
             };
             return removeHandler;
+        }
+
+        isCategoryChanged () {
+            let changed = false;
+            angular.forEach(this.categoryChanged, v => changed = changed || v);
+            return changed;
         }
     },
 }

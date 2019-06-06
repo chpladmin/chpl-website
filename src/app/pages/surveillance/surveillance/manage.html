@@ -1,6 +1,6 @@
-<div class="container-fluid">
-  <div class="main-content" id="main-content" tabindex="-1" st-table="$ctrl.displayedListings" st-safe-src="$ctrl.availableListings">
-    <st-manage register-search="vm.registerSearch(search)"></st-manage>
+<div class="container-fluid surveillance-management-page">
+  <div class="main-content" id="main-content" tabindex="-1" st-table="$ctrl.displayedListings" st-safe-src="$ctrl.availableListings" st-set-filter="customFilter">
+    <st-manage register-search="$ctrl.registerSearch(search)"></st-manage>
     <div class="form-horizontal" ng-form="$ctrl.form" aria-live="polite">
 
       <div class="form-group" id="filters">
@@ -11,6 +11,62 @@
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="$ctrl.registerClearFilter(clearFilter)">
             <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL Product Number</span></label>
           </div>
+        </div>
+        <div class="col-sm-8">
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="$ctrl.allowedAcbs && $ctrl.allowedAcbs.length !== 1">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acb" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="$ctrl.categoryChanged['acb']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              ONC-ACB <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-acb" uib-dropdown-menu>
+                <st-list-multiple
+                   collection="$ctrl.availableListings"
+                   predicate="acb"
+                   has-changes="$ctrl.categoryChanged['acb']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="$ctrl.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              Certification Edition <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
+                <st-list-multiple
+                   collection="$ctrl.availableListings"
+                   predicate="edition"
+                   fixed-items="$ctrl.filterItems.editionItems"
+                   has-changes="$ctrl.categoryChanged['edition']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationStatus" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="$ctrl.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              Certification Status <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-certificationStatus" uib-dropdown-menu>
+                <st-list-multiple
+                   collection="$ctrl.availableListings"
+                   predicate="certificationStatus"
+                   fixed-items="$ctrl.filterItems.statusItems"
+                   has-changes="$ctrl.categoryChanged['certificationStatus']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+                   match-full="true"></st-list-multiple>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-surveillance" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="$ctrl.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              Surveillance Activity <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-surveillance" uib-dropdown-menu>
+              <ai-surveillance-filter
+                 has-changes="$ctrl.categoryChanged['surveillance']"
+                 register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></ai-surveillance-filter>
+            </ul>
+          </div>
+          <button class="btn btn-link" ng-click="$ctrl.triggerClearFilters()" ng-if="$ctrl.isCategoryChanged()">Clear Filters</button>
         </div>
       </div> <!-- #filters -->
     </div><!-- filter form -->
@@ -55,7 +111,7 @@
             </tfoot>
             <tbody>
               <tr ng-repeat="listing in $ctrl.displayedListings">
-                <td><button class="btn btn-default" ng-click="$ctrl.productId = listing.id; $ctrl.loadSurveillance()">{{ listing.chplProductNumber }}</button></td>
+                <td><button class="btn btn-default" ng-click="$ctrl.listingId = listing.id; $ctrl.load()">{{ listing.chplProductNumber }}</button></td>
                 <td>{{ listing.developer }}</td>
                 <td>{{ listing.product }}</td>
                 <td>{{ listing.version }}</td>
@@ -74,9 +130,9 @@
 
     <div ng-if="$ctrl.surveillanceProduct">
       <span class="pull-right">
-        <button class="btn btn-link" ng-click="$ctrl.productId = undefined; $ctrl.surveillanceProduct = undefined"><i class="fa fa-close"></i> Return to search</button>
+        <button class="btn btn-link" ng-click="$ctrl.listingId = undefined; $ctrl.surveillanceProduct = undefined"><i class="fa fa-close"></i> Return to search</button>
         |
-        <a href="#/product/{{ $ctrl.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
+        <a ui-sref="listing({id: $ctrl.surveillanceProduct.id})"><i class="fa fa-eye"></i> View Product Listing</a>
       </span>
       <table class="table" id="surveillance-search-single-result">
         <thead class="sr-only">

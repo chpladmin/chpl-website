@@ -7,14 +7,14 @@
         mock = {
             listings: [
                 {
-                    acb: 'one', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn',
-                    openNonconformityCount: 3, closedNonconformityCount: 5,
+                    acb: 'one', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
+                    surveillanceCount: 10, openNonconformityCount: 3, closedNonconformityCount: 5,
                 },{
-                    acb: 'two', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn',
-                    openNonconformityCount: 3, closedNonconformityCount: 5,
+                    acb: 'two', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
+                    surveillanceCount: 10, openNonconformityCount: 3, closedNonconformityCount: 5,
                 },{
-                    acb: 'three', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn',
-                    openNonconformityCount: 3, closedNonconformityCount: 5,
+                    acb: 'three', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
+                    surveillanceCount: 10, openNonconformityCount: 3, closedNonconformityCount: 5,
                 },
             ],
             acbs: [{ name: 'two' }],
@@ -80,9 +80,21 @@
                     ctrl.parse();
                     let expected = [Object.assign({}, mock.listings[0], {
                         mainSearch: 'developer|product|version|cpn',
-                        nonconformities: '{"openNonconformityCount":3,"closedNonconformityCount":5}',
+                        surveillance: '{"surveillanceCount":10,"openNonconformityCount":3,"closedNonconformityCount":5}',
                     })];
                     expect(ctrl.availableListings).toEqual(expected);
+                });
+            });
+
+            describe('with respect to filters', () => {
+                it('should know when any filter has changed', () => {
+                    ctrl.categoryChanged = {
+                        cat1: false,
+                        cat2: false,
+                    };
+                    expect(ctrl.isCategoryChanged()).toBe(false);
+                    ctrl.categoryChanged.cat2 = true;
+                    expect(ctrl.isCategoryChanged()).toBe(true);
                 });
             });
         });

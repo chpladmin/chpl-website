@@ -40,7 +40,7 @@ let states = {
             params: {
                 initialPanel: {squash: true, value: null},
             },
-            template: '<div>Coming soon</div>',
+            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Product Details' },
         },{
             name: 'product',

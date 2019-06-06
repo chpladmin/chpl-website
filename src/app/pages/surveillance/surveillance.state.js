@@ -19,6 +19,9 @@ let states = {
         {
             name: 'surveillance.manage',
             url: '/manage',
+            params: {
+                listingId: {squash: true, value: null},
+            },
             component: 'chplSurveillanceManagement',
             resolve: {
                 allowedAcbs: networkService => {
@@ -63,17 +66,17 @@ let states = {
         },{
             name: 'surveillance.complaints',
             url: '/complaints',
-            template: '<div>Coming soon</div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Surveillance - Complaints' },
         },{
             name: 'surveillance.manage',
             url: '/manage',
-            template: '<div>Coming soon</div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Surveillance - Manage' },
         },{
             name: 'surveillance.reporting',
             url: '/reporting',
-            template: '<div>Coming soon</div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Surveillance - Reporting' },
         },
     ],
