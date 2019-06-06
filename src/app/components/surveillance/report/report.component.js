@@ -13,6 +13,7 @@ export const SurveillanceReportComponent = {
             this.$log = $log;
             this.API = API;
             this.backup = {};
+            this.hasAnyRole = authService.hasAnyRole;
             this.API_KEY = authService.getApiKey();
             this.getToken = authService.getToken;
         }

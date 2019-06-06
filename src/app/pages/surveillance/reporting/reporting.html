@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6" ng-form="$ctrl.form">
+      <div class="col-md-6" ng-form="$ctrl.form" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ACB'])">
         <h2>Initiate surveillance reporting</h2>
         <div class="form-horizontal">
           <div class="form-group">

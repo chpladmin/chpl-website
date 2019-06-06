@@ -6,9 +6,10 @@ export const SurveillanceReportingComponent = {
         reports: '<',
     },
     controller: class SurveillanceReportingComponent {
-        constructor ($log, networkService) {
+        constructor ($log, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.mode = 'view';
         }
