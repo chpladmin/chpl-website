@@ -2,9 +2,10 @@ export const SurveillanceComplaintsComponent = {
     templateUrl: 'chpl.surveillance/complaints/complaints.html',
     bindings: { },
     controller: class SurveillanceComplaintsComponent {
-        constructor ($log, networkService) {
+        constructor ($log, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.authService = authService;
             this.networkService = networkService;
             this.modes = {
                 SELECT: 'select',
@@ -16,6 +17,7 @@ export const SurveillanceComplaintsComponent = {
             this.complaint = {};
             this.complaintTypes = [];
             this.certificationBodies = [];
+            this.errorMessages = [];
         }
 
         $onInit () {
@@ -26,6 +28,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         deleteComplaint (complaint) {
+            this.clearErrorMessages();
             this.networkService.deleteComplaint(complaint.id).then(() => {
                 this.complaint = {};
                 this.currentMode = this.modes.SELECT;
@@ -34,6 +37,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         selectComplaint (complaint) {
+            this.clearErrorMessages();
             this.currentMode = this.modes.EDIT;
             this.complaint = complaint;
         }
@@ -50,17 +54,33 @@ export const SurveillanceComplaintsComponent = {
         }
 
         updateComplaint (complaint) {
-            this.networkService.updateComplaint(complaint).then(() => {
-                this.refreshComplaints();
-                this.currentMode = this.modes.SELECT;
-            });
+            this.clearErrorMessages();
+            this.networkService.updateComplaint(complaint)
+                .then(() => {
+                    this.refreshComplaints();
+                    this.currentMode = this.modes.SELECT;
+                })
+                .catch(error => {
+                    if (error.status === 400) {
+                        this.errorMessages = error.data.errorMessages;
+                    }
+                });
         }
 
         createComplaint (complaint) {
-            this.networkService.createComplaint(complaint).then(() => {
-                this.refreshComplaints();
-                this.currentMode = this.modes.SELECT;
-            });
+            this.clearErrorMessages();
+            // default the status to Open
+            complaint.complaintStatusType = this.getComplaintStatusType('Open');
+            this.networkService.createComplaint(complaint)
+                .then(() => {
+                    this.refreshComplaints();
+                    this.currentMode = this.modes.SELECT;
+                })
+                .catch(error => {
+                    if (error.status === 400) {
+                        this.errorMessages = error.data.errorMessages;
+                    }
+                });
         }
 
         cancelEdit () {
@@ -76,7 +96,11 @@ export const SurveillanceComplaintsComponent = {
             this.networkService.getComplaints().then(response => {
                 this.complaints = response.results;
                 this.complaints.forEach(complaint => {
-                    complaint.formattedReceivedDate = new Date(complaint.receivedDate);
+                    if (complaint.receivedDate) {
+                        complaint.formattedReceivedDate = new Date(complaint.receivedDate);
+                    } else {
+                        complaint.formattedReceivedDate = null;
+                    }
                 });
             });
         }
@@ -94,9 +118,18 @@ export const SurveillanceComplaintsComponent = {
         }
 
         refreshCertificationBodies () {
+            //get all acbs
             this.networkService.getCertBodies().then(response => {
                 this.certificationBodies = response;
             });
+        }
+
+        clearErrorMessages () {
+            this.errorMesssages = [];
+        }
+
+        getComplaintStatusType (name) {
+            return this.complaintStatusTypes.find(cst => cst.name === name);
         }
     },
 }

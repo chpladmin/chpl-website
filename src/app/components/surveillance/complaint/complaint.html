@@ -27,19 +27,21 @@
   </div>
   <div ng-if="$ctrl.mode === $ctrl.modes.EDIT || $ctrl.mode === $ctrl.modes.ADD">
     <div class="form-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
-      <label class="control-label" for="certificationBody">ONC-ACB</label>
+      <label class="control-label" for="certificationBody">ONC-ACB<span class="text-danger">*</span></label>
       <div ng-if="$ctrl.mode === $ctrl.modes.EDIT" name="certificationBody">
         {{ $ctrl.complaint.certificationBody.name }}
       </div>
       <div ng-if="$ctrl.mode === $ctrl.modes.ADD">
         <select ng-model="$ctrl.complaint.certificationBody"
           id="certification-body" name="certificationBody" class="input-sm form-control"
-          ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' | filter: {retired: false} track by acb.id">
+          ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' | filter: {retired: false} track by acb.id"
+          ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')">
         </select>
+        <div class="text-danger" ng-if="$ctrl.form.certificationBody.$touched && $ctrl.form.certificationBody.$error.required">ONC-ACB is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="complaintType">Complaint Type<span class="text-danger">*</span></label>
+      <label class="control-label" for="complaintType">Complaint Type</label>
       <div>
         <select ng-model="$ctrl.complaint.complaintType"
           id="complaint-type" name="complaintType" class="input-sm form-control"
@@ -48,7 +50,7 @@
       </div>
     </div>
     <div class="form-group" ng-if="$ctrl.mode === $ctrl.modes.EDIT">
-      <label class="control-label" for="complaintStatusType">Complaint Status Type<span class="text-danger">*</span></label>
+      <label class="control-label" for="complaintStatusType">Complaint Status Type</label>
       <div>
         <select ng-model="$ctrl.complaint.complaintStatusType"
           id="complaint-status-type" name="complaintStatusType" class="input-sm form-control"
@@ -57,25 +59,25 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="oncComplaintId">ONC Complaint Id<span class="text-danger">*</span></label>
+      <label class="control-label" for="oncComplaintId">ONC Complaint Id</label>
       <div>
-        <input class="input-sm form-control" type="text" required ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id" name="oncComplaintId" ></input>
+        <input class="input-sm form-control" type="text"  ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id" name="oncComplaintId" ></input>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="receivedDate">Received Date<span class="text-danger">*</span></label>
+      <label class="control-label" for="receivedDate">Received Date</label>
       <div>
           <input type="date" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate" name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"></input>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="summary">Summary<span class="text-danger">*</span></label>
+      <label class="control-label" for="summary">Summary</label>
       <div>
           <textarea class="input-sm form-control" ng-model="$ctrl.complaint.summary" name="summary" id="summary"></textarea>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="actions">Actions/Response<span class="text-danger">*</span></label>
+      <label class="control-label" for="actions">Actions/Response</label>
       <div>
           <textarea class="input-sm form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
       </div>
@@ -95,8 +97,26 @@
         <input type="checkbox" id="onc-atl-contacted" name="oncAtlContacted" ng-model="$ctrl.complaint.oncAtlContacted"> ONC-ATL Contacted?
       </label>
     </div>
+    <div class="text-danger text-left" ng-if="$ctrl.form.$invalid && $ctrl.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="$ctrl.form.certificationBody.$error.required">ONC-ACB is required</li>
+        <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
+      </ul>
+    </div>
+    <div class="text-danger text-left" ng-if="$ctrl.errorMessages.length > 0">
+        The following error(s) must be fixed:
+        <ul>
+          <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
+        </ul>
+      </div>
     <div>
-      <button class="btn btn-ai-success btn-small pull-right" ng-click="$ctrl.saveComplaint($ctrl.complaint)" ><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-ai-success btn-small pull-right"
+          ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+          ng-mouseover="$ctrl.showFormErrors = true"
+          ng-click="$ctrl.saveComplaint($ctrl.complaint)" >
+        <i class="fa fa-save"></i><span class="sr-only"> Save</span>
+      </button>
       <button class="btn btn-warning btn-small" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
       <button class="btn btn-danger btn-small"
           ng-if="$ctrl.mode === $ctrl.modes.EDIT"

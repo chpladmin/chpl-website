@@ -7,16 +7,18 @@ export const SurveillanceComplaintComponent = {
         complaintTypes: '<',
         complaintStatusTypes: '<',
         certificationBodies: '<',
+        errorMessages: '<',
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
         onSelect: '&?',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService) {
+        constructor ($filter, $log, authService, featureFlags) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.featureFlags = featureFlags;
             this.hasAnyRole = authService.hasAnyRole;
             this.modes = {
                 SELECT: 'select',
