@@ -7,6 +7,7 @@
           <th scope="col">Type</th>
           <th scope="col">Status</th>
           <th scope="col">ONC Complaint Id</th>
+          <th scope="col">ONC-ACB Complaint Id</th>
           <th scope="col">Received Date</th>
           <th scope="col">Actions</th>
         </tr>
@@ -17,6 +18,7 @@
           <td>{{ complaint.complaintType.name }}</td>
           <td>{{ complaint.complaintStatusType.name }}</td>
           <td>{{ complaint.oncComplaintId }}</td>
+          <td>{{ complaint.acbComplaintId }}</td>
           <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' : 'UTC' }}</td>
           <td>
             <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
@@ -62,6 +64,12 @@
       <label class="control-label" for="oncComplaintId">ONC Complaint Id</label>
       <div>
         <input class="input-sm form-control" type="text"  ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id" name="oncComplaintId" ></input>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="acbComplaintId">ONC-ACB Complaint Id</label>
+      <div>
+        <input class="input-sm form-control" type="text"  ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id" name="acbComplaintId" ></input>
       </div>
     </div>
     <div class="form-group">

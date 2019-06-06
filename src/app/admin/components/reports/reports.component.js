@@ -45,11 +45,7 @@ export const ReportsComponent = {
         // Functions
 
         refreshActivity () {
-            switch (this.workType) {
 
-                break;
-                // no default
-            }
         }
 
         validDates (key) {
