@@ -25,43 +25,44 @@ export const SurveillanceReportingComponent = {
 
         $onChanges (changes) {
             if (changes.acbs) {
-                this.acbs = angular.copy(changes.acbs.currentValue.acbs);
-                this.newReportAcb = this.acbs && this.acbs.length === 1 ? this.acbs[0] : undefined;
+                this.acbs = angular.copy(changes.acbs.currentValue.acbs.filter(a => !a.retired));
+                if (this.acbs.length === 1) {
+                    this.display = {};
+                    this.display[this.acbs[0].name] = true;
+                }
             }
             if (changes.availableQuarters) {
                 this.availableQuarters = angular.copy(changes.availableQuarters.currentValue);
             }
             if (changes.reports) {
                 this.reports = angular.copy(changes.reports.currentValue);
-                this.prepareReports();
             }
         }
 
-        prepareReports () {
-            this.activeAcbs = [];
-            this.reports.forEach(report => {
-                report.acbName = report.acb.name;
-                if (this.activeAcbs.indexOf(report.acbName) === -1) {
-                    this.activeAcbs.push(report.acbName);
+        findReport (acb, year, quarter) {
+            let report = this.reports
+                .find(report => report.acb.name === acb.name
+                      && report.year === year
+                      && report.quarter === quarter);
+            return report;
+        }
+
+        actOnReport (acb, year, quarter) {
+            let report = this.findReport(acb, year, quarter);
+            if (report) {
+                if (this.activeReport && report.id === this.activeReport.id) {
+                    this.activeReport = undefined;
+                } else {
+                    this.activeReport = report;
                 }
-            });
-            if (this.activeAcbs.length === 1) {
-                this.display = {};
-                this.display[this.activeAcbs[0]] = true;
+            } else {
+                this.activeReport = {
+                    acb: acb,
+                    quarter: quarter,
+                    year: year,
+                };
+                this.mode = 'initiate';
             }
-        }
-
-        acbCount (acb) {
-            return this.reports.reduce((acc, report) => report.acbName === acb ? acc + 1 : acc, 0);
-        }
-
-        initiateReporting () {
-            this.activeReport = {
-                acb: this.newReportAcb,
-                quarter: this.newReportQuarter.name,
-                year: this.newReportYear,
-            };
-            this.mode = 'initiate';
         }
 
         takeAction (report, action) {
@@ -74,8 +75,8 @@ export const SurveillanceReportingComponent = {
                 this.networkService.deleteQuarterlySurveillanceReport(report.id).then(() => {
                     that.networkService.getSurveillanceReporting().then(results => {
                         that.reports = results;
-                        that.prepareReports();
                     });
+                    that.activeReport = undefined;
                     that.cancel();
                 });
             }
@@ -84,18 +85,18 @@ export const SurveillanceReportingComponent = {
         save (report) {
             let that = this;
             if (this.mode === 'initiate') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(() => {
+                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
+                    that.activeReport = results;
                     that.networkService.getSurveillanceReporting().then(results => {
                         that.reports = results;
-                        that.prepareReports();
                     });
                     that.cancel();
                 });
             } else if (this.mode === 'edit') {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(() => {
+                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
+                    that.activeReport = results;
                     that.networkService.getSurveillanceReporting().then(results => {
                         that.reports = results;
-                        that.prepareReports();
                     });
                     that.cancel();
                 });
@@ -104,11 +105,10 @@ export const SurveillanceReportingComponent = {
         }
 
         cancel () {
-            this.newReportAcb = this.acbs && this.acbs.length === 1 ? this.acbs[0] : undefined;
-            this.newReportQuarter = undefined;
-            this.newReportYear = undefined;
+            if (this.mode === 'initiate') {
+                this.activeReport = undefined;
+            }
             this.mode = 'view';
-            this.showFormErrors = false;
         }
     },
 }
