@@ -61,19 +61,19 @@ export const SurveillanceReportingComponent = {
                     quarter: quarter,
                     year: year,
                 };
-                this.mode = 'initiate';
+                this.mode = 'initiateQuarter';
             }
         }
 
         takeQuarterAction (report, action) {
             if (action === 'edit') {
                 this.activeQuarterReport = report;
-                this.mode = 'edit';
+                this.mode = 'editQuarter';
             }
             if (action === 'delete') {
                 let that = this;
                 this.networkService.deleteQuarterlySurveillanceReport(report.id).then(() => {
-                    that.networkService.getSurveillanceReporting().then(results => {
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
                         that.reports = results;
                     });
                     that.activeQuarterReport = undefined;
@@ -84,18 +84,18 @@ export const SurveillanceReportingComponent = {
 
         saveQuarter (report) {
             let that = this;
-            if (this.mode === 'initiate') {
+            if (this.mode === 'initiateQuarter') {
                 this.networkService.createQuarterlySurveillanceReport(report).then(results => {
                     that.activeQuarterReport = results;
-                    that.networkService.getSurveillanceReporting().then(results => {
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
                         that.reports = results;
                     });
                     that.cancelQuarter();
                 });
-            } else if (this.mode === 'edit') {
+            } else if (this.mode === 'editQuarter') {
                 this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
                     that.activeQuarterReport = results;
-                    that.networkService.getSurveillanceReporting().then(results => {
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
                         that.reports = results;
                     });
                     that.cancelQuarter();
@@ -105,7 +105,7 @@ export const SurveillanceReportingComponent = {
         }
 
         cancelQuarter () {
-            if (this.mode === 'initiate') {
+            if (this.mode === 'initiateQuarter') {
                 this.activeQuarterReport = undefined;
             }
             this.mode = 'view';

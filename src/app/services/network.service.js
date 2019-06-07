@@ -376,6 +376,10 @@ export class NetworkService {
         return this.apiGET('/data/quarters');
     }
 
+    getQuarterlySurveillanceReports () {
+        return this.apiGET('/surveillance-report/quarterly');
+    }
+
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
     }
@@ -451,10 +455,6 @@ export class NetworkService {
                 data.nonconformityTypes = response;
             });
         return data;
-    }
-
-    getSurveillanceReporting () {
-        return this.apiGET('/surveillance-report/quarterly');
     }
 
     getTargetedUsers () {

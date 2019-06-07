@@ -912,6 +912,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getQuarterlySurveillanceReports', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.getQuarterlySurveillanceReports().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getRelatedListings', () => {
             $httpBackend.expectGET(/^\/rest\/products\/payload\/listings$/).respond(200, {data: 'response'});
             networkService.getRelatedListings('payload').then(response => {
@@ -1009,14 +1017,6 @@
                 surveillanceRequirements: {data: 'surveillance_requirements'},
                 nonconformityTypes: {data: 'nonconformity_types'},
             });
-        });
-
-        fit('should getSurveillanceReporting', () => {
-            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
-            networkService.getSurveillanceReporting().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
         });
 
         it('should getTargetedUsers', () => {

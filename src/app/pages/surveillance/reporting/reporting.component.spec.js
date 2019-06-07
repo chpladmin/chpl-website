@@ -23,7 +23,7 @@
                 $provide.decorator('networkService', $delegate => {
                     $delegate.createQuarterlySurveillanceReport = jasmine.createSpy('createQuarterlySurveillanceReport');
                     $delegate.deleteQuarterlySurveillanceReport = jasmine.createSpy('deleteQuarterlySurveillanceReport');
-                    $delegate.getSurveillanceReporting = jasmine.createSpy('getSurveillanceReporting');
+                    $delegate.getQuarterlySurveillanceReports = jasmine.createSpy('getQuarterlySurveillanceReports');
                     $delegate.updateQuarterlySurveillanceReport = jasmine.createSpy('updateQuarterlySurveillanceReport');
 
                     return $delegate;
@@ -37,7 +37,7 @@
                 networkService = _networkService_;
                 networkService.createQuarterlySurveillanceReport.and.returnValue($q.when({}));
                 networkService.deleteQuarterlySurveillanceReport.and.returnValue($q.when([]));
-                networkService.getSurveillanceReporting.and.returnValue($q.when([]));
+                networkService.getQuarterlySurveillanceReports.and.returnValue($q.when([]));
                 networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
@@ -127,7 +127,7 @@
                     year: 2019,
                     quarter: 'Q5',
                 });
-                expect(ctrl.mode).toBe('initiate');
+                expect(ctrl.mode).toBe('initiateQuarter');
             });
 
             describe('when handling callbacks', () => {
@@ -141,17 +141,17 @@
                     let report = {id: 'fake'};
                     ctrl.takeQuarterAction(report, 'edit');
                     expect(ctrl.activeQuarterReport).toBe(report);
-                    expect(ctrl.mode).toBe('edit');
+                    expect(ctrl.mode).toBe('editQuarter');
                 });
 
                 it('should handle delete', () => {
                     ctrl.activeQuarterReport = beforeReport;
-                    ctrl.mode = 'edit';
+                    ctrl.mode = 'editQuarter';
                     spyOn(ctrl, 'cancelQuarter');
                     ctrl.takeQuarterAction(beforeReport, 'delete');
                     scope.$digest();
                     expect(networkService.deleteQuarterlySurveillanceReport).toHaveBeenCalledWith(beforeReport.id);
-                    expect(networkService.getSurveillanceReporting).toHaveBeenCalled();
+                    expect(networkService.getQuarterlySurveillanceReports).toHaveBeenCalled();
                     expect(ctrl.activeQuarterReport).toBeUndefined();
                     expect(ctrl.cancelQuarter).toHaveBeenCalled();
                 });
@@ -166,7 +166,7 @@
                 it('should handle edit', () => {
                     networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when(report));
                     ctrl.activeQuarterReport = {};
-                    ctrl.mode = 'edit';
+                    ctrl.mode = 'editQuarter';
                     spyOn(ctrl, 'cancelQuarter');
                     ctrl.saveQuarter(report);
                     expect(ctrl.mode).toBe('view');
@@ -179,7 +179,7 @@
                 it('should handle initiate', () => {
                     networkService.createQuarterlySurveillanceReport.and.returnValue($q.when(report));
                     ctrl.activeQuarterReport = {};
-                    ctrl.mode = 'initiate';
+                    ctrl.mode = 'initiateQuarter';
                     spyOn(ctrl, 'cancelQuarter');
                     ctrl.saveQuarter(report);
                     expect(ctrl.mode).toBe('view');
@@ -198,7 +198,7 @@
                 });
 
                 it('should clear the initiating object', () => {
-                    ctrl.mode = 'initiate';
+                    ctrl.mode = 'initiateQuarter';
                     ctrl.activeQuarterReport = 'fake';
                     ctrl.cancelQuarter();
                     expect(ctrl.activeQuarterReport).toBeUndefined();
