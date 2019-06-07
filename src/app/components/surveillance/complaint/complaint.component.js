@@ -2,8 +2,6 @@ export const SurveillanceComplaintComponent = {
     templateUrl: 'chpl.components/surveillance/complaint/complaint.html',
     bindings: {
         complaint: '<',
-        complaints: '<',
-        mode: '<',
         complaintTypes: '<',
         complaintStatusTypes: '<',
         certificationBodies: '<',
@@ -11,7 +9,6 @@ export const SurveillanceComplaintComponent = {
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
-        onSelect: '&?',
     },
     controller: class SurveillanceComplaintComponent {
         constructor ($filter, $log, authService, featureFlags) {
@@ -21,9 +18,32 @@ export const SurveillanceComplaintComponent = {
             this.featureFlags = featureFlags;
             this.hasAnyRole = authService.hasAnyRole;
             this.modes = {
-                SELECT: 'select',
                 EDIT: 'edit',
                 ADD: 'add',
+            }
+            this.currentMode = '';
+        }
+
+        $onChanges (changes) {
+            if (changes.complaint) {
+                this.complaint = angular.copy(changes.complaint.currentValue);
+                if (this.complaint.id) {
+                    this.currentMode = this.modes.EDIT;
+                } else {
+                    this.currentMode = this.modes.ADD;
+                }
+            }
+            if (changes.complaintTypes) {
+                this.complaintTypes = angular.copy(changes.complaintTypes.currentValue);
+            }
+            if (changes.complaintStatusTypes) {
+                this.complaintStatusTypes = angular.copy(changes.complaintStatusTypes.currentValue);
+            }
+            if (changes.certificationBodies) {
+                this.certificationBodies = angular.copy(changes.certificationBodies.currentValue);
+            }
+            if (changes.errorMessages) {
+                this.errorMessages = angular.copy(changes.errorMessages.currentValue);
             }
         }
 

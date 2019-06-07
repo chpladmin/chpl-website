@@ -1,26 +1,49 @@
 <div class="container-fluid">
   <div class="main-content" id="main-content" tabindex="-1">
-    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" >Edit Complaint</h2>
-    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD" >Add Complaint</h2>
-    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.SELECT" >All Complaints</h2>
-
-    <button class="btn btn-link" ng-if="$ctrl.currentMode === $ctrl.modes.SELECT" ng-click="$ctrl.displayAddComplaint()">
-      <i class="fa fa-plus-circle"></i>
-      Add New Complaint
-    </button>
-
-    <chpl-surveillance-complaint
-      mode="$ctrl.currentMode"
-      complaints="$ctrl.complaints"
-      complaint="$ctrl.complaint"
-      complaint-types="$ctrl.complaintTypes"
-      complaint-status-types="$ctrl.complaintStatusTypes"
-      certification_bodies="$ctrl.certificationBodies"
-      error-messages="$ctrl.errorMessages"
-      on-delete="$ctrl.deleteComplaint(complaint)"
-      on-select="$ctrl.selectComplaint(complaint)"
-      on-save="$ctrl.saveComplaint(complaint)"
-      on-cancel="$ctrl.cancelEdit()" >
-    </chpl-surveillance-complaint>
+    <div ng-if="$ctrl.isEditing === false">
+      <h2>All Complaints</h2>
+      <button class="btn btn-link" ng-click="$ctrl.displayAddComplaint()">
+        <i class="fa fa-plus-circle"></i>
+        Add New Complaint
+      </button>
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col">ONC-ACB</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">ONC Complaint Id</th>
+            <th scope="col">ONC-ACB Complaint Id</th>
+            <th scope="col">Received Date</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="complaint in $ctrl.complaints">
+            <td>{{ complaint.certificationBody.name }}</td>
+            <td>{{ complaint.complaintType.name }}</td>
+            <td>{{ complaint.complaintStatusType.name }}</td>
+            <td>{{ complaint.oncComplaintId }}</td>
+            <td>{{ complaint.acbComplaintId }}</td>
+            <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' : 'UTC' }}</td>
+            <td>
+              <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-if="$ctrl.isEditing === true">
+      <chpl-surveillance-complaint
+        complaint="$ctrl.complaint"
+        complaint-types="$ctrl.complaintTypes"
+        complaint-status-types="$ctrl.complaintStatusTypes"
+        certification_bodies="$ctrl.certificationBodies"
+        error-messages="$ctrl.errorMessages"
+        on-delete="$ctrl.deleteComplaint(complaint)"
+        on-save="$ctrl.saveComplaint(complaint)"
+        on-cancel="$ctrl.cancelEdit()" >
+      </chpl-surveillance-complaint>
+    </div>
   </div>
 </div>

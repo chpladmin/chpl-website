@@ -7,12 +7,7 @@ export const SurveillanceComplaintsComponent = {
             this.$log = $log;
             this.authService = authService;
             this.networkService = networkService;
-            this.modes = {
-                SELECT: 'select',
-                EDIT: 'edit',
-                ADD: 'add',
-            }
-            this.currentMode = this.modes.SELECT;
+            this.isEditing = false;
             this.complaints = [];
             this.complaint = {};
             this.complaintTypes = [];
@@ -28,17 +23,18 @@ export const SurveillanceComplaintsComponent = {
         }
 
         deleteComplaint (complaint) {
+            let that = this;
             this.clearErrorMessages();
             this.networkService.deleteComplaint(complaint.id).then(() => {
-                this.complaint = {};
-                this.currentMode = this.modes.SELECT;
-                this.refreshComplaints();
+                that.complaint = {};
+                that.isEditing = false;
+                that.refreshComplaints();
             });
         }
 
         selectComplaint (complaint) {
             this.clearErrorMessages();
-            this.currentMode = this.modes.EDIT;
+            this.isEditing = true;
             this.complaint = complaint;
         }
 
@@ -46,56 +42,59 @@ export const SurveillanceComplaintsComponent = {
             if (complaint.formattedReceivedDate) {
                 complaint.receivedDate = complaint.formattedReceivedDate.valueOf();
             }
-            if (this.currentMode === this.modes.EDIT) {
+            if (complaint.id) {
                 this.updateComplaint(complaint);
-            } if (this.currentMode === this.modes.ADD) {
+            } else {
                 this.createComplaint(complaint);
             }
         }
 
         updateComplaint (complaint) {
+            let that = this;
             this.clearErrorMessages();
             this.networkService.updateComplaint(complaint)
                 .then(() => {
-                    this.refreshComplaints();
-                    this.currentMode = this.modes.SELECT;
+                    that.refreshComplaints();
+                    that.isEditing = false;
                 })
                 .catch(error => {
                     if (error.status === 400) {
-                        this.errorMessages = error.data.errorMessages;
+                        that.errorMessages = error.data.errorMessages;
                     }
                 });
         }
 
         createComplaint (complaint) {
+            let that = this;
             this.clearErrorMessages();
             // default the status to Open
             complaint.complaintStatusType = this.getComplaintStatusType('Open');
             this.networkService.createComplaint(complaint)
                 .then(() => {
-                    this.refreshComplaints();
-                    this.currentMode = this.modes.SELECT;
+                    that.refreshComplaints();
+                    that.isEditing = false;
                 })
                 .catch(error => {
                     if (error.status === 400) {
-                        this.errorMessages = error.data.errorMessages;
+                        that.errorMessages = error.data.errorMessages;
                     }
                 });
         }
 
         cancelEdit () {
-            this.currentMode = this.modes.SELECT;
+            this.isEditing = false;
         }
 
         displayAddComplaint () {
             this.complaint = {};
-            this.currentMode = this.modes.ADD;
+            this.isEditing = true;
         }
 
         refreshComplaints () {
+            let that = this;
             this.networkService.getComplaints().then(response => {
-                this.complaints = response.results;
-                this.complaints.forEach(complaint => {
+                that.complaints = response.results;
+                that.complaints.forEach(complaint => {
                     if (complaint.receivedDate) {
                         complaint.formattedReceivedDate = new Date(complaint.receivedDate);
                     } else {
@@ -106,21 +105,24 @@ export const SurveillanceComplaintsComponent = {
         }
 
         refreshComplaintTypes () {
+            let that = this;
             this.networkService.getComplaintTypes().then(response => {
-                this.complaintTypes = response.data;
+                that.complaintTypes = response.data;
             });
         }
 
         refreshComplaintStatusTypes () {
+            let that = this;
             this.networkService.getComplaintStatusTypes().then(response => {
-                this.complaintStatusTypes = response.data;
+                that.complaintStatusTypes = response.data;
             });
         }
 
         refreshCertificationBodies () {
+            let that = this;
             //get all acbs
             this.networkService.getCertBodies().then(response => {
-                this.certificationBodies = response;
+                that.certificationBodies = response;
             });
         }
 
