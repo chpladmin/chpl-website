@@ -11,7 +11,7 @@
                 {name: 'name3', retired: false},
             ],
             availableQuarters: [],
-            reports: [
+            quarters: [
                 {acb: {name: 'name1'}, quarter: 'Q1', year: 2019, id: 1},
                 {acb: {name: 'name3'}, quarter: 'Q1', year: 2019, id: 2},
                 {acb: {name: 'name1'}, quarter: 'Q4', year: 2019, id: 3},
@@ -43,9 +43,9 @@
                 scope = $rootScope.$new();
                 scope.acbs = mock.acbs;
                 scope.availableQuarters = mock.availableQuarters;
-                scope.reports = mock.reports;
+                scope.quarters = mock.quarters;
 
-                el = angular.element('<chpl-surveillance-reporting acbs="{acbs: acbs}" available-quarters="availableQuarters" reports="reports"></chpl-surveillance-reporting>');
+                el = angular.element('<chpl-surveillance-reporting acbs="{acbs: acbs}" available-quarters="availableQuarters" quarters="quarters"></chpl-surveillance-reporting>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -89,7 +89,7 @@
                     expect(ctrl.acbs).toBeDefined();
                     expect(ctrl.acbs.length).toBe(2);
                     expect(ctrl.availableQuarters).toBeDefined();
-                    expect(ctrl.reports).toBeDefined();
+                    expect(ctrl.quarters).toBeDefined();
                 });
 
                 it('should set visibility if only one acb', () => {
@@ -102,27 +102,27 @@
                 });
             });
 
-            it('should find reports', () => {
-                expect(ctrl.findReport({name: 'name1'}, 2019, 'Q1')).toEqual(mock.reports[0]);
-                expect(ctrl.findReport({name: 'name1'}, 2019, 'Q2')).toBeUndefined();
-                expect(ctrl.findReport({name: 'name1'}, 2020, 'Q1')).toBeUndefined();
-                expect(ctrl.findReport({name: 'name7'}, 2019, 'Q1')).toBeUndefined();
+            it('should find quarterly reports', () => {
+                expect(ctrl.findQuarterReport({name: 'name1'}, 2019, 'Q1')).toEqual(mock.quarters[0]);
+                expect(ctrl.findQuarterReport({name: 'name1'}, 2019, 'Q2')).toBeUndefined();
+                expect(ctrl.findQuarterReport({name: 'name1'}, 2020, 'Q1')).toBeUndefined();
+                expect(ctrl.findQuarterReport({name: 'name7'}, 2019, 'Q1')).toBeUndefined();
             });
 
             it('should allow viewing of a report', () => {
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q1');
-                expect(ctrl.activeReport).toEqual(mock.reports[0]);
+                ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
+                expect(ctrl.activeQuarterReport).toEqual(mock.quarters[0]);
             });
 
             it('should close the report', () => {
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q1');
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q1');
-                expect(ctrl.activeReport).toBeUndefined
+                ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
+                ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
+                expect(ctrl.activeQuarterReport).toBeUndefined
             });
 
             it('should initiate a report', () => {
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q5');
-                expect(ctrl.activeReport).toEqual({
+                ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q5');
+                expect(ctrl.activeQuarterReport).toEqual({
                     acb: {name: 'name1'},
                     year: 2019,
                     quarter: 'Q5',
@@ -134,26 +134,26 @@
                 let beforeReport;
                 beforeEach(() => {
                     beforeReport = {id: 1};
-                    ctrl.activeReport = beforeReport;
+                    ctrl.activeQuarterReport = beforeReport;
                 });
 
                 it('should handle edit', () => {
                     let report = {id: 'fake'};
-                    ctrl.takeAction(report, 'edit');
-                    expect(ctrl.activeReport).toBe(report);
+                    ctrl.takeQuarterAction(report, 'edit');
+                    expect(ctrl.activeQuarterReport).toBe(report);
                     expect(ctrl.mode).toBe('edit');
                 });
 
                 it('should handle delete', () => {
-                    ctrl.activeReport = beforeReport;
+                    ctrl.activeQuarterReport = beforeReport;
                     ctrl.mode = 'edit';
-                    spyOn(ctrl, 'cancel');
-                    ctrl.takeAction(beforeReport, 'delete');
+                    spyOn(ctrl, 'cancelQuarter');
+                    ctrl.takeQuarterAction(beforeReport, 'delete');
                     scope.$digest();
                     expect(networkService.deleteQuarterlySurveillanceReport).toHaveBeenCalledWith(beforeReport.id);
                     expect(networkService.getSurveillanceReporting).toHaveBeenCalled();
-                    expect(ctrl.activeReport).toBeUndefined();
-                    expect(ctrl.cancel).toHaveBeenCalled();
+                    expect(ctrl.activeQuarterReport).toBeUndefined();
+                    expect(ctrl.cancelQuarter).toHaveBeenCalled();
                 });
             });
 
@@ -165,43 +165,43 @@
 
                 it('should handle edit', () => {
                     networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when(report));
-                    ctrl.activeReport = {};
+                    ctrl.activeQuarterReport = {};
                     ctrl.mode = 'edit';
-                    spyOn(ctrl, 'cancel');
-                    ctrl.save(report);
+                    spyOn(ctrl, 'cancelQuarter');
+                    ctrl.saveQuarter(report);
                     expect(ctrl.mode).toBe('view');
                     scope.$digest();
                     expect(networkService.updateQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
-                    expect(ctrl.activeReport).toBe(report);
-                    expect(ctrl.cancel).toHaveBeenCalled();
+                    expect(ctrl.activeQuarterReport).toBe(report);
+                    expect(ctrl.cancelQuarter).toHaveBeenCalled();
                 });
 
                 it('should handle initiate', () => {
                     networkService.createQuarterlySurveillanceReport.and.returnValue($q.when(report));
-                    ctrl.activeReport = {};
+                    ctrl.activeQuarterReport = {};
                     ctrl.mode = 'initiate';
-                    spyOn(ctrl, 'cancel');
-                    ctrl.save(report);
+                    spyOn(ctrl, 'cancelQuarter');
+                    ctrl.saveQuarter(report);
                     expect(ctrl.mode).toBe('view');
                     scope.$digest();
                     expect(networkService.createQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
-                    expect(ctrl.activeReport).toBe(report);
-                    expect(ctrl.cancel).toHaveBeenCalled();
+                    expect(ctrl.activeQuarterReport).toBe(report);
+                    expect(ctrl.cancelQuarter).toHaveBeenCalled();
                 });
             });
 
             describe('on cancel', () => {
                 it('should set the mode to view', () => {
                     ctrl.mode = 'fake';
-                    ctrl.cancel();
+                    ctrl.cancelQuarter();
                     expect(ctrl.mode).toBe('view');
                 });
 
                 it('should clear the initiating object', () => {
                     ctrl.mode = 'initiate';
-                    ctrl.activeReport = 'fake';
-                    ctrl.cancel();
-                    expect(ctrl.activeReport).toBeUndefined();
+                    ctrl.activeQuarterReport = 'fake';
+                    ctrl.cancelQuarter();
+                    expect(ctrl.activeQuarterReport).toBeUndefined();
                 });
             });
         });

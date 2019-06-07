@@ -1,11 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the Surveillance Report component', () => {
+    fdescribe('the Surveillance Report Quarter component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
-            report: {},
+            report: {id: 1},
         };
 
         beforeEach(() => {
@@ -23,12 +23,12 @@
                 authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
-                scope.report = mock.complaing;
+                scope.report = mock.report;
                 scope.isEditing = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onSave = jasmine.createSpy('onSave');
 
-                el = angular.element('<chpl-surveillance-report report="report" is-editing="isEditing" on-cancel="onCancel()" on-save="onSave(report)"></chpl-surveillance-report>');
+                el = angular.element('<chpl-surveillance-report-quarter report="report" is-editing="isEditing" on-cancel="onCancel()" on-save="onSave(report)"></chpl-surveillance-report-quarter>');
 
                 $compile(el)(scope);
                 scope.$digest();

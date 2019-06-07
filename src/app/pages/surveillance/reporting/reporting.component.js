@@ -3,7 +3,7 @@ export const SurveillanceReportingComponent = {
     bindings: {
         acbs: '<',
         availableQuarters: '<',
-        reports: '<',
+        quarters: '<',
     },
     controller: class SurveillanceReportingComponent {
         constructor ($log, authService, networkService) {
@@ -34,29 +34,29 @@ export const SurveillanceReportingComponent = {
             if (changes.availableQuarters) {
                 this.availableQuarters = angular.copy(changes.availableQuarters.currentValue);
             }
-            if (changes.reports) {
-                this.reports = angular.copy(changes.reports.currentValue);
+            if (changes.quarters) {
+                this.quarters = angular.copy(changes.quarters.currentValue);
             }
         }
 
-        findReport (acb, year, quarter) {
-            let report = this.reports
+        findQuarterReport (acb, year, quarter) {
+            let report = this.quarters
                 .find(report => report.acb.name === acb.name
                       && report.year === year
                       && report.quarter === quarter);
             return report;
         }
 
-        actOnReport (acb, year, quarter) {
-            let report = this.findReport(acb, year, quarter);
+        actOnQuarter (acb, year, quarter) {
+            let report = this.findQuarterReport(acb, year, quarter);
             if (report) {
-                if (this.activeReport && report.id === this.activeReport.id) {
-                    this.activeReport = undefined;
+                if (this.activeQuarterReport && report.id === this.activeQuarterReport.id) {
+                    this.activeQuarterReport = undefined;
                 } else {
-                    this.activeReport = report;
+                    this.activeQuarterReport = report;
                 }
             } else {
-                this.activeReport = {
+                this.activeQuarterReport = {
                     acb: acb,
                     quarter: quarter,
                     year: year,
@@ -65,9 +65,9 @@ export const SurveillanceReportingComponent = {
             }
         }
 
-        takeAction (report, action) {
+        takeQuarterAction (report, action) {
             if (action === 'edit') {
-                this.activeReport = report;
+                this.activeQuarterReport = report;
                 this.mode = 'edit';
             }
             if (action === 'delete') {
@@ -76,37 +76,37 @@ export const SurveillanceReportingComponent = {
                     that.networkService.getSurveillanceReporting().then(results => {
                         that.reports = results;
                     });
-                    that.activeReport = undefined;
-                    that.cancel();
+                    that.activeQuarterReport = undefined;
+                    that.cancelQuarter();
                 });
             }
         }
 
-        save (report) {
+        saveQuarter (report) {
             let that = this;
             if (this.mode === 'initiate') {
                 this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.activeReport = results;
+                    that.activeQuarterReport = results;
                     that.networkService.getSurveillanceReporting().then(results => {
                         that.reports = results;
                     });
-                    that.cancel();
+                    that.cancelQuarter();
                 });
             } else if (this.mode === 'edit') {
                 this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.activeReport = results;
+                    that.activeQuarterReport = results;
                     that.networkService.getSurveillanceReporting().then(results => {
                         that.reports = results;
                     });
-                    that.cancel();
+                    that.cancelQuarter();
                 });
             }
             this.mode = 'view';
         }
 
-        cancel () {
+        cancelQuarter () {
             if (this.mode === 'initiate') {
-                this.activeReport = undefined;
+                this.activeQuarterReport = undefined;
             }
             this.mode = 'view';
         }
