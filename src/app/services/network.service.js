@@ -51,6 +51,10 @@ export class NetworkService {
         return this.apiPOST('/announcements', announcement);
     }
 
+    createAnnualSurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/annual', report);
+    }
+
     createCmsId (ids) {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
@@ -77,6 +81,10 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteAnnualSurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/annual/' + id);
     }
 
     deleteFilter (filterId) {
@@ -156,6 +164,10 @@ export class NetworkService {
 
     getAnnouncements (pending) {
         return this.apiGET('/announcements?future=' + pending);
+    }
+
+    getAnnualSurveillanceReports () {
+        return this.apiGET('/surveillance-report/annual');
     }
 
     getApiActivity (options) {
@@ -626,6 +638,10 @@ export class NetworkService {
 
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
+    }
+
+    updateAnnualSurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/annual', report);
     }
 
     updateCP (cpObject) {

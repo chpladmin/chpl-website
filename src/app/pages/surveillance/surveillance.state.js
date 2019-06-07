@@ -17,6 +17,10 @@ let states = {
                     'ngInject'
                     return networkService.getAcbs(true);
                 },
+                annual: networkService => {
+                    'ngInject'
+                    return networkService.getAnnualSurveillanceReports();
+                },
                 availableQuarters: networkService => {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceQuarters();
