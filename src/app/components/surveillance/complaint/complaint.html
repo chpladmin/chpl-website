@@ -75,9 +75,15 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="receivedDate">Received Date</label>
+      <label class="control-label" for="receivedDate">Received Date<span class="text-danger">*</span></label>
       <div>
-          <input type="date" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate" name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"></input>
+          <input type="date" class="input-sm form-control"
+              ng-model="$ctrl.complaint.formattedReceivedDate"
+              name="receivedDate"
+              id="received-date"
+              placeholder="yyyy-MM-dd"
+              ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')"></input>
+          <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -112,6 +118,7 @@
       <ul>
         <li ng-if="$ctrl.form.certificationBody.$error.required">ONC-ACB is required</li>
         <li ng-if="$ctrl.form.complaintType.$error.required">Contact Type is required</li>
+        <li ng-if="$ctrl.form.complaintType.$error.required">Received Date is required</li>
         <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
       </ul>
     </div>
