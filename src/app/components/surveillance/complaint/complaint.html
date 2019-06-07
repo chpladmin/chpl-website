@@ -43,12 +43,14 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="complaintType">Complaint Type</label>
+      <label class="control-label" for="complaintType">Complaint Type<span class="text-danger">*</span></label>
       <div>
         <select ng-model="$ctrl.complaint.complaintType"
           id="complaint-type" name="complaintType" class="input-sm form-control"
-          ng-options="ct.name for ct in $ctrl.complaintTypes | orderBy: 'name' track by ct.id">
+          ng-options="ct.name for ct in $ctrl.complaintTypes | orderBy: 'name' track by ct.id"
+          ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')">
         </select>
+        <div class="text-danger" ng-if="$ctrl.form.complaintType.$touched && $ctrl.form.complaintType.$error.required">Complaint Type is required</div>
       </div>
     </div>
     <div class="form-group" ng-if="$ctrl.mode === $ctrl.modes.EDIT">
@@ -109,6 +111,7 @@
       The following error(s) must be fixed:
       <ul>
         <li ng-if="$ctrl.form.certificationBody.$error.required">ONC-ACB is required</li>
+        <li ng-if="$ctrl.form.complaintType.$error.required">Contact Type is required</li>
         <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
       </ul>
     </div>
