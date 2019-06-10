@@ -122,7 +122,7 @@ export const SurveillanceComplaintsComponent = {
             let that = this;
             //get all acbs that the user has edit capability of
             this.networkService.getAcbs(true).then(response => {
-                that.certificationBodies = response;
+                that.certificationBodies = response.acbs;
             });
         }
 
