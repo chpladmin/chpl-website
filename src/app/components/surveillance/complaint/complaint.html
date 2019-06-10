@@ -57,11 +57,17 @@
   <div class="form-group">
     <label class="control-label" for="receivedDate">Received Date<span class="text-danger">*</span></label>
     <div>
-      <input type="date" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
+      <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
         name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"
-        ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')"></input>
-      <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">
-        Received Date is required</div>
+        ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')"
+        uib-datepicker-popup="MM/dd/yyyy"
+        is-open="$ctrl.receivedDatePicker"
+        close-text="Close" ></input>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
+      </span>
+      <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
+      <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
     </div>
   </div>
   <div class="form-group">
@@ -103,6 +109,7 @@
       <li ng-if="$ctrl.form.certificationBody.$error.required">ONC-ACB is required</li>
       <li ng-if="$ctrl.form.complaintType.$error.required">Contact Type is required</li>
       <li ng-if="$ctrl.form.receivedDate.$error.required">Received Date is required</li>
+      <li ng-if="$ctrl.form.receivedDate.$error.parse">Received Date is improper format (mm/dd/yyyy)</li>
       <li ng-if="$ctrl.form.acbComplaintId.$error.required">ONC-ACB Complaint ID is required</li>
       <li ng-if="$ctrl.form.summary.$error.required">Summary is required</li>
     </ul>

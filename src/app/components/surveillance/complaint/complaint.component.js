@@ -22,6 +22,7 @@ export const SurveillanceComplaintComponent = {
                 ADD: 'add',
             }
             this.currentMode = '';
+
         }
 
         $onChanges (changes) {

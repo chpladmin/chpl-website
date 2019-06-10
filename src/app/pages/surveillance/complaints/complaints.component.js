@@ -120,8 +120,8 @@ export const SurveillanceComplaintsComponent = {
 
         refreshCertificationBodies () {
             let that = this;
-            //get all acbs
-            this.networkService.getCertBodies().then(response => {
+            //get all acbs that the user has edit capability of
+            this.networkService.getAcbs(true).then(response => {
                 that.certificationBodies = response;
             });
         }
