@@ -58,7 +58,7 @@
         }
     }
     /** @ngInclude */
-    function SurveillanceFullFilterController ($analytics, $localStorage) {
+    function SurveillanceFullFilterController ($analytics, $localStorage, SPLIT_PRIMARY) {
         var vm = this;
 
         vm.activate = activate;
@@ -76,6 +76,7 @@
 
         function allowAll () {
             vm.query = {
+                separator: SPLIT_PRIMARY,
                 NC: {},
                 surveillance: {},
                 dates: {},
@@ -162,6 +163,7 @@
                 vm.query = angular.copy(vm.initialState);
             } else {
                 vm.query = {
+                    separator: SPLIT_PRIMARY,
                     NC: {},
                     surveillance: {},
                     dates: {},

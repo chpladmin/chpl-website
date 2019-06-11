@@ -151,6 +151,37 @@
                                  * fall back to "all", and the original return value
                                  */
                             }
+                            if (expected.dates && surv.surveillanceDates) {
+                                let openAfter = expected.dates.openAfter ? expected.dates.openAfter.getTime() : false;
+                                let openBefore = expected.dates.openBefore ? expected.dates.openBefore.getTime() : false;
+                                let closeAfter = expected.dates.closeAfter ? expected.dates.closeAfter.getTime() : false;
+                                let closeBefore = expected.dates.closeBefore ? expected.dates.closeBefore.getTime() : false;
+                                let passes = {
+                                    oa: !expected.dates.openAfter,
+                                    ob: !expected.dates.openBefore,
+                                    ca: !expected.dates.closeAfter,
+                                    cb: !expected.dates.closeBefore,
+                                };
+                                if (!passes.oa || !passes.ob || !passes.ca || !passes.cb) { // at least one of the dates is defined
+                                    surv.surveillanceDates
+                                        .split(separator)
+                                        .forEach(pair => {
+                                            let pairs = pair.split('&');
+                                            passes.oa = passes.oa || parseInt(pairs[0], 10) > openAfter;
+                                            passes.ob = passes.ob || parseInt(pairs[0], 10) < openBefore;
+                                            passes.ca = passes.ca || (pairs[1] && parseInt(pairs[1], 10) > closeAfter);
+                                            passes.cb = passes.cb || (pairs[1] && parseInt(pairs[1], 10) < closeBefore);
+                                        });
+                                    if (expected.matchAll) {
+                                        ret = ret && passes.oa && passes.ob && passes.ca && passes.cb;
+                                    } else {
+                                        ret = ret && (openAfter && passes.oa ||
+                                                      openBefore && passes.ob ||
+                                                      closeAfter && passes.ca ||
+                                                      closeBefore && passes.cb);
+                                    }
+                                }
+                            }
                         }
                         return ret;
                     }
