@@ -1,7 +1,7 @@
 <div id="chpl-complaint" ng-form="$ctrl.form">
   <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
   <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
-  <div class="form-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+  <div class="form-group">
     <label class="control-label" for="certificationBody">ONC-ACB<span class="text-danger">*</span></label>
     <div ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" name="certificationBody">
       {{ $ctrl.complaint.certificationBody.name }}
