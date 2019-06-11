@@ -87,29 +87,25 @@
   </div>
 
   <div class="form-group">
-    <label class="control-label" for="certifiedProducts">Selected Certified Products</label><br />
+    <label class="control-label" for="listings">Selected Certified Products</label><br />
 
     <div ng-if="!$ctrl.complaint.listings || $ctrl.complaint.listings.length === 0">
       No Certified Products Selected
     </div>
-    <div class="form-group">
-      <button class="btn btn-sm btn-primary" type="button"
-        ng-repeat="listing in $ctrl.complaint.listings"
-        ng-click="$ctrl.removeListing(listing)"
-        confirm="Are you sure you wish to delete this certified product?"
-        confirm-ok="Yes"
-        confirm-cancel="No"
-        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}" >
-          <i class="fa fa-times"></i> {{ listing.chplProductNumber }}
+    <div class="alert alert-success" ng-repeat="listing in $ctrl.complaint.listings">
+      <button class="close" ng-click="$ctrl.removeListing(listing)">
+        <span class="sr-only">Remove item {{ listing.chplProductNumber }}</span>
+        <i class="fa fa-times"></i>
       </button>
+      <strong>{{ listing.chplProductNumber }}</strong>
     </div>
-    <input name="certifiedProducts"
-        id="certified-products"
+    <input name="listings"
+        id="listings"
         type="text"
         class="input-sm form-control"
         placeholder="Start Typing CHPL Product Number"
         ng-model="$ctrl.listing"
-        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.certifiedProducts | orderBy: 'chplProductNumber' | filter:$viewValue | limitTo:10"
+        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:$viewValue | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
   </div>
 

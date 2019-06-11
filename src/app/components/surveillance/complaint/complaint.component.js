@@ -6,7 +6,7 @@ export const SurveillanceComplaintComponent = {
         complaintStatusTypes: '<',
         certificationBodies: '<',
         errorMessages: '<',
-        certifiedProducts: '<',
+        listings: '<',
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
@@ -47,9 +47,9 @@ export const SurveillanceComplaintComponent = {
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);
             }
-            if (changes.certifiedProducts) {
-                this.certifiedProducts = angular.copy(changes.certifiedProducts.currentValue);
-                this.$log.info(this.certifiedProducts);
+            if (changes.listings) {
+                this.listings = angular.copy(changes.listings.currentValue);
+                this.$log.info(this.listings);
             }
         }
 
