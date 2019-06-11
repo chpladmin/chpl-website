@@ -63,6 +63,9 @@
             }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
+                if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
+                    vm.toggleNav(true);
+                }
             });
             $scope.$on('$destroy', showCmsWidget);
 
@@ -73,6 +76,9 @@
 
             var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
+                if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
+                    vm.toggleNav(true);
+                }
             });
             $scope.$on('$destroy', showCompareWidget);
 
@@ -170,9 +176,14 @@
             vm.compareWidgetExpanded = show;
         }
 
-        function toggleNav () {
-            vm.navShown = !vm.navShown;
-            $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
+        function toggleNav (forceOpen) {
+            if (forceOpen) {
+                vm.navShown = true;
+                $rootScope.bodyClass = 'navigation-shown';
+            } else {
+                vm.navShown = !vm.navShown;
+                $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
+            }
         }
     }
 })();
