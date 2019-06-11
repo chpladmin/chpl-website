@@ -27,13 +27,6 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         $uiRouter.stateRegistry.register(state);
                         needsReload = needsReload || $state.$current.name === state.name;
                     });
-                } else {
-                    listingStates['listing-edit-on'].forEach(state => {
-                        if ($uiRouter.stateRegistry.get(state.name)) {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                        }
-                        needsRedirect = needsRedirect || $state.$current.name === state.name;
-                    });
                 }
 
                 if (featureFlags.isOn('developer-page')) {

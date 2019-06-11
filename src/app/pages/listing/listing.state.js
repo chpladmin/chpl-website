@@ -20,8 +20,8 @@ let states = {
                 }
             },
         },{
-            name: 'product_initial_panel',
-            url: '/product/{id}/{initialPanel}',
+            name: 'product.initial-panel',
+            url: '/{initialPanel}',
             redirectTo: trans => {
                 return {
                     state: 'listing',
@@ -36,10 +36,7 @@ let states = {
     'base': [
         {
             name: 'listing',
-            url: '/listing/{id}/{initialPanel}',
-            params: {
-                initialPanel: {squash: true, value: null},
-            },
+            url: '/listing/{id}',
             template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Product Details' },
         },{
@@ -48,7 +45,7 @@ let states = {
             params: {
                 initialPanel: {squash: true, value: null},
             },
-            template: require('../..//product/product.html'),
+            template: require('../../product/product.html'),
             controller: 'ProductController',
             controllerAs: 'vm',
             data: { title: 'CHPL Product Details' },

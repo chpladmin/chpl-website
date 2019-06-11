@@ -1,21 +1,21 @@
 <div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
     <div class="col-sm-12">
-      <h3>Product</h3>
+      <h3>User</h3>
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-6">
-      <chpl-filter feature-flag="adminNav" filter-type-name="Product Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
+      <chpl-filter feature-flag="adminNav" filter-type-name="User Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
-    <div class="col-sm-6">
-      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
-      <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
-              ng-csv="$ctrl.displayed" filename="Product_{{ $ctrl.filename }}"
-              csv-header="['Developer', 'Product', 'Responsible User', 'Activity', 'Activity Date']"
-              csv-column-order="['developerName', 'productName', 'fullName', 'action', 'friendlyActivityDate']">
-        <i class="fa fa-cloud-download"></i> Download</button>
+    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
+    <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
+    <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
+            ng-csv="$ctrl.displayed" filename="User_{{ $ctrl.filename }}"
+            csv-header="['User', 'Email', 'Responsible User', 'Activity', 'Activity Date']"
+            csv-column-order="['subjectName', 'email', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
+      <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
   <div class="row form-group form-inline">
@@ -33,34 +33,35 @@
   <div class="row form-group">
     <div class="col-sm-5">
       <label for="activity-end-upload" class="control-label">Filter</label>
-      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Product, or Responsible User" class="form-control" type="search">
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on User Name or Email" class="form-control" type="search">
     </div>
   </div>
 
   <table class="table table-responsive">
     <thead>
       <tr>
-        <th class="search-header" st-sort="developerName" st-skip-natural="true">Developer</th>
-        <th class="search-header" st-sort="productName" st-skip-natural="true">Product</th>
-        <th class="search-header" st-sort="fullName" st-skip-natural="true">Responsible User</th>
-        <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+          <th class="search-header" st-sort="subjectName" st-skip-natural="true">User Name</th>
+          <th class="search-header" st-sort="email" st-skip-natural="true">Email</th>
+          <th class="search-header" st-sort="responsibleUserFullName" st-skip-natural="true">Responsible User</th>
+          <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-if="$ctrl.displayed.length === 0">
-        <td colspan="5">No activity found</td>
+          <td colspan="5">No activity found</td>
       </tr>
       <tr ng-repeat="activity in $ctrl.displayed">
-        <td>{{ activity.developerName }}</td>
-        <td>{{ activity.productName }}</td>
-        <td>{{ activity.fullName }}</td>
+        <td>{{ activity.subjectName }}</td>
+        <td>{{ activity.email }}</td>
+        <td>{{ activity.responsibleUserFullName }}</td>
         <td>
           <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
           <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
           {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
-          <div ng-if="activity.action && activity.showDetails" ng-bind-html="activity.action"></div>
+          <div ng-if="activity.action && activity.showDetails" ng-bind-html="activity.action">
+          </div>
         </td>
       </tr>
     </tbody>

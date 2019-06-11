@@ -63,6 +63,10 @@ export class NetworkService {
         return this.apiPOST('/users/create', contactDetails);
     }
 
+    createQuarterlySurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/quarterly', report);
+    }
+
     createScheduleOneTimeTrigger (trigger) {
         return this.apiPOST('/schedules/triggers/one_time', trigger);
     }
@@ -77,6 +81,10 @@ export class NetworkService {
 
     deleteFilter (filterId) {
         return this.apiDELETE('/filters/' + filterId);
+    }
+
+    deleteQuarterlySurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/quarterly/' + id);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -366,6 +374,10 @@ export class NetworkService {
         return this.apiGET('/data/qms_standards');
     }
 
+    getQuarterlySurveillanceQuarters () {
+        return this.apiGET('/data/quarters');
+    }
+
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
     }
@@ -441,6 +453,10 @@ export class NetworkService {
                 data.nonconformityTypes = response;
             });
         return data;
+    }
+
+    getSurveillanceReporting () {
+        return this.apiGET('/surveillance-report/quarterly');
     }
 
     getTargetedUsers () {
@@ -632,6 +648,10 @@ export class NetworkService {
 
     updateProduct (productObject) {
         return this.apiPUT('/products', productObject);
+    }
+
+    updateQuarterlySurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/quarterly', report);
     }
 
     updateScheduleTrigger (trigger) {

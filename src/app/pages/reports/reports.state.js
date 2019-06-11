@@ -12,6 +12,21 @@ function reportsStateConfig ($stateProvider) {
             component: 'chplReportsAcbs',
             data: { title: 'CHPL Reports - ONC-ACBs' },
         })
+        .state('reports.announcements', {
+            url: '/announcements',
+            component: 'chplReportsAnnouncements',
+            data: { title: 'CHPL Reports - Announcements' },
+        })
+        .state('reports.api-keys', {
+            url: '/api-keys',
+            component: 'chplReportsApiKeys',
+            data: { title: 'CHPL Reports - Api Key Management' },
+        })
+        .state('reports.api-key-usage', {
+            url: '/api-key-usage',
+            component: 'chplReportsApiKeyUsage',
+            data: { title: 'CHPL Reports - Api Key Usage' },
+        })
         .state('reports.atls', {
             url: '/onc-atls',
             component: 'chplReportsAtls',
@@ -39,6 +54,16 @@ function reportsStateConfig ($stateProvider) {
             url: '/products',
             component: 'chplReportsProducts',
             data: { title: 'CHPL Reports - Products' },
+        })
+        .state('reports.userActions', {
+            url: '/user-actions',
+            component: 'chplReportsUserActions',
+            data: { title: 'CHPL Reports - User Actions' },
+        })
+        .state('reports.users', {
+            url: '/users',
+            component: 'chplReportsUsers',
+            data: { title: 'CHPL Reports - Users' },
         })
         .state('reports.versions', {
             url: '/versions',

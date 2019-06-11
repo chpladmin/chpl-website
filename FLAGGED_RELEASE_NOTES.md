@@ -1,7 +1,5 @@
 _adminNav_
-* Add new Admin navigation bar, including direct pages for:
-  * Listing Reports
-  * Confirmation of Listings
+* Complete revamp of administration navigation
 * Add "Save Search" functionality to admin reports
 
 _developer-page_
@@ -10,14 +8,10 @@ _developer-page_
 * Add support for Product editing on new Organizations - Developer page
   * Includes Edit, Merge, and Split
 * Add support for Version editing on new Organizations - Developer - Product page
-  * Includes Edit, and Merge
+  * Includes Edit, Merge, and Split
 
 _listing-edit_
 * Edit Listing in place
-
-_better-split_
-* Allow splitting of Versions
-* Display history past split/merge in Listing history popup
 
 _complaints_
 * Add ability to log Surveillance Complaints
