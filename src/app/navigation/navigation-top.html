@@ -101,8 +101,8 @@
             <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
             <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i> Announcements</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.users()">Users</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.userActions()">User Actions</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.userActions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.userActions')"></i> User Actions</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-keys()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-keys')"></i> API Keys</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-key-usage()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-key-usage')"></i> API Key Usage</a></li>
           </ul>
