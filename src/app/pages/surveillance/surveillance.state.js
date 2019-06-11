@@ -30,7 +30,7 @@ let states = {
                 },
                 listings: networkService => {
                     'ngInject'
-                    return networkService.getCollection('correctiveAction');
+                    return networkService.getCollection('surveillanceManagement');
                 },
             },
             data: { title: 'CHPL Surveillance - Manage' },

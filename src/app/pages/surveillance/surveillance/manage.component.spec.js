@@ -8,13 +8,13 @@
             listings: [
                 {
                     acb: 'one', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
-                    surveillanceCount: 10, openNonconformityCount: 3, closedNonconformityCount: 5,
+                    openSurveillanceCount: 10, closedSurveillanceCount: 3, openNonconformityCount: 3, closedNonconformityCount: 5, surveillanceDates: 'something',
                 },{
                     acb: 'two', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
-                    surveillanceCount: 10, openNonconformityCount: 3, closedNonconformityCount: 5,
+                    openSurveillanceCount: 10, closedSurveillanceCount: 3, openNonconformityCount: 3, closedNonconformityCount: 5, surveillanceDates: 'something',
                 },{
                     acb: 'three', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
-                    surveillanceCount: 10, openNonconformityCount: 3, closedNonconformityCount: 5,
+                    openSurveillanceCount: 10, closedSurveillanceCount: 3, openNonconformityCount: 3, closedNonconformityCount: 5, surveillanceDates: 'something',
                 },
             ],
             acbs: [{ name: 'two' }],
@@ -80,7 +80,7 @@
                     ctrl.parse();
                     let expected = [Object.assign({}, mock.listings[0], {
                         mainSearch: 'developer|product|version|cpn',
-                        surveillance: '{"surveillanceCount":10,"openNonconformityCount":3,"closedNonconformityCount":5}',
+                        surveillance: '{"openSurveillanceCount":10,"closedSurveillanceCount":3,"openNonconformityCount":3,"closedNonconformityCount":5,"surveillanceDates":"something"}',
                     })];
                     expect(ctrl.availableListings).toEqual(expected);
                 });

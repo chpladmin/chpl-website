@@ -59,9 +59,11 @@ export const SurveillanceManagementComponent = {
                 .map(l => {
                     l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
                     l.surveillance = angular.toJson({
-                        surveillanceCount: l.surveillanceCount,
+                        openSurveillanceCount: l.openSurveillanceCount,
+                        closedSurveillanceCount: l.closedSurveillanceCount,
                         openNonconformityCount: l.openNonconformityCount,
                         closedNonconformityCount: l.closedNonconformityCount,
+                        surveillanceDates: l.surveillanceDates,
                     });
                     return l;
                 });

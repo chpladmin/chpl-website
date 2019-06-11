@@ -234,6 +234,8 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
+        case 'surveillanceManagement':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default
         }
     }

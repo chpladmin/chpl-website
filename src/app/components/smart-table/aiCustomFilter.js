@@ -24,7 +24,7 @@
                 var queryDate;
                 var i,ret;
                 var separator = expected.separator ? expected.separator : '';
-                var closed, closedNC, open, openNC;
+                var closed, closedNC, never, open, openNC, surv;
 
                 if (angular.isObject(expected)) {
                     //exact match
@@ -37,23 +37,88 @@
                     }
 
                     //surveillance match
-                    if (expected.surveillance) {
+                    if (expected.surveillance && typeof expected.surveillance === 'string') {
                         if (!actual) {
                             return false;
                         }
-                        var surv = angular.fromJson(actual);
+                        surv = angular.fromJson(actual);
                         if (expected.surveillance === 'never') {
                             ret = surv.surveillanceCount === 0;
                         } else {
                             ret = surv.surveillanceCount !== 0;
                             if (expected.NC) {
-                                var never = expected.NC.never;
+                                never = expected.NC.never;
                                 open = expected.NC.open;
                                 closed = expected.NC.closed;
                                 openNC = surv.openNonconformityCount > 0;
                                 closedNC = surv.closedNonconformityCount > 0;
                                 /*
                                  * matching one of the posibles
+                                 */
+                                if (never && !open && !closed) {
+                                    ret = ret && !openNC && !closedNC;
+                                } else if (!never && open && !closed) {
+                                    ret = ret && openNC
+                                } else if (!never && !open && closed) {
+                                    ret = ret && closedNC
+                                    /*
+                                     * if matching more than one, need to know if matchAll is true or not
+                                     * if true, only valid "multiple" is !never && open && closed
+                                     */
+                                } else if (expected.matchAll && !never && open && closed) {
+                                    ret = ret && openNC && closedNC;
+                                } else if (expected.matchAll) {
+                                    ret = false;
+                                    /*
+                                     * now matching "matchAny" with multiples
+                                     */
+                                } else if (never && open && !closed) {
+                                    ret = ret && openNC && !closedNC;
+                                } else if (never && !open && closed) {
+                                    ret = ret && !openNC && closedNC;
+                                } else if (!never && open && closed) {
+                                    ret = ret && (openNC || closedNC);
+                                }
+                                /*
+                                 * triple multiples on matchAny
+                                 * never && open && closed
+                                 * !never && !open && !closed
+                                 * fall back to "all", and the original return value
+                                 */
+                            }
+                        }
+                        return ret;
+                    }
+
+                    // expanded surveillance filter
+                    if (expected.surveillance && typeof expected.surveillance === 'object') {
+                        if (!actual) {
+                            return false;
+                        }
+                        surv = angular.fromJson(actual);
+                        if (expected.surveillance.status === 'never') {
+                            ret = surv.openSurveillanceCount === 0 && surv.closedSurveillanceCount === 0;
+                        } else {
+                            ret = surv.openSurveillanceCount !== 0 || surv.closedSurveillanceCount !== 0;
+                            let openSurveillance = expected.surveillance.open;
+                            let closedSurveillance = expected.surveillance.closed;
+                            let openS = surv.openSurveillanceCount > 0;
+                            let closedS = surv.closedSurveillanceCount > 0;
+                            if (openSurveillance && !closedSurveillance) {
+                                ret = ret && openS;
+                            } else if (!openSurveillance && closedSurveillance) {
+                                ret = ret && closedS;
+                            } else if (expected.matchAll && openSurveillance && closedSurveillance) {
+                                ret = ret && openS && closedS;
+                            }
+                            if (expected.NC) {
+                                never = expected.NC.never;
+                                open = expected.NC.open;
+                                closed = expected.NC.closed;
+                                openNC = surv.openNonconformityCount > 0;
+                                closedNC = surv.closedNonconformityCount > 0;
+                                /*
+                                 * matching one of the possibles
                                  */
                                 if (never && !open && !closed) {
                                     ret = ret && !openNC && !closedNC;

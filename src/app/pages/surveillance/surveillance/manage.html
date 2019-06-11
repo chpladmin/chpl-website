@@ -61,9 +61,9 @@
               Surveillance Activity <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-button-surveillance" uib-dropdown-menu>
-              <ai-surveillance-filter
+              <chpl-surveillance-filter
                  has-changes="$ctrl.categoryChanged['surveillance']"
-                 register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></ai-surveillance-filter>
+                 register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></chpl-surveillance-filter>
             </ul>
           </div>
           <button class="btn btn-link" ng-click="$ctrl.triggerClearFilters()" ng-if="$ctrl.isCategoryChanged()">Clear Filters</button>
@@ -73,11 +73,11 @@
 
     <div ng-if="!$ctrl.surveillanceProduct" class="row">
       <div aria-live="polite">
-        <div class="col-md-12 table-responsive">
+        <div class="col-md-12">
           <table class="table table-responsive">
             <thead>
               <tr>
-                <td colspan="9" class="text-center">
+                <td colspan="10" class="text-center">
                   <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
                 </td>
               </tr>
@@ -89,14 +89,15 @@
                 <th scope="col" class="search-header" ai-multi-sort="acb">ONC-ACB</th>
                 <th scope="col" class="search-header" ai-multi-sort="edition">Certification Edition</th>
                 <th scope="col" class="search-header" ai-multi-sort="certificationStatus">Certification Status</th>
-                <th scope="col" class="search-header" ai-multi-sort="surveillanceCount" st-descending-first="true"># Surveillances</th>
+                <th scope="col" class="search-header" ai-multi-sort="openSurveillanceCount" st-descending-first="true"># Open Surveillances</th>
+                <th scope="col" class="search-header" ai-multi-sort="closedSurveillanceCount" st-descending-first="true"># Closed Surveillances</th>
                 <th scope="col" class="search-header" ai-multi-sort="openNonconformityCount" st-descending-first="true" st-sort-default="['-openNonconformityCount', '-edition', 'developer']"># Open NCs</th>
                 <th scope="col" class="search-header" ai-multi-sort="closedNonconformityCount" st-descending-first="true"># Closed NCs</th>
               </tr>
             </thead>
             <tfoot ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
               <tr>
-                <td colspan="9" class="text-center">
+                <td colspan="10" class="text-center">
                   <div class="text-right" ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
                     <label for="pageSizeTop" class="sr-only">Show how many results</label>
                     Showing up to&nbsp;
@@ -118,7 +119,8 @@
                 <td>{{ listing.acb }}</td>
                 <td>{{ listing.edition }}</td>
                 <td>{{ listing.certificationStatus }}</td>
-                <td>{{ listing.surveillanceCount }}</td>
+                <td>{{ listing.openSurveillanceCount }}</td>
+                <td>{{ listing.closedSurveillanceCount }}</td>
                 <td>{{ listing.openNonconformityCount }}</td>
                 <td>{{ listing.closedNonconformityCount }}</td>
               </tr>
