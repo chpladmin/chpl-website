@@ -13,6 +13,7 @@ export const SurveillanceComplaintsComponent = {
             this.complaintTypes = [];
             this.certificationBodies = [];
             this.errorMessages = [];
+            this.listings = [];
         }
 
         $onInit () {
@@ -123,6 +124,16 @@ export const SurveillanceComplaintsComponent = {
             //get all acbs that the user has edit capability of
             this.networkService.getAcbs(true).then(response => {
                 that.certificationBodies = response.acbs;
+                that.refreshListings();
+            });
+        }
+
+        refreshListings () {
+            let that = this;
+            this.networkService.getAll().then(response => {
+                that.listings = response.results.filter(
+                    item => that.certificationBodies.find(
+                        acb => acb.name === item.acb && !acb.retired));
             });
         }
 

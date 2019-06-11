@@ -6,6 +6,7 @@ export const SurveillanceComplaintComponent = {
         complaintStatusTypes: '<',
         certificationBodies: '<',
         errorMessages: '<',
+        certifiedProducts: '<',
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
@@ -22,7 +23,7 @@ export const SurveillanceComplaintComponent = {
                 ADD: 'add',
             }
             this.currentMode = '';
-
+            this.certifiedProduct;
         }
 
         $onChanges (changes) {
@@ -45,6 +46,10 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);
+            }
+            if (changes.certifiedProducts) {
+                this.certifiedProducts = angular.copy(changes.certifiedProducts.currentValue);
+                this.$log.info(this.certifiedProducts);
             }
         }
 
@@ -70,6 +75,23 @@ export const SurveillanceComplaintComponent = {
             if (this.onCancel) {
                 this.onCancel();
             }
+        }
+
+        selectListing ($item) {
+            this.$log.info($item);
+            if (!Array.isArray(this.complaint.listings)) {
+                this.complaint.listings = [];
+            }
+            this.complaint.listings.push({
+                id: $item.id,
+                chplProductNumber: $item.chplProductNumber,
+            });
+            this.listing = '';
+            this.$log.info(this.complaint.listings);
+        }
+
+        removeListing (chplProductNumber) {
+            this.complaint.listings = this.complaint.listings.filter(listing => listing !== chplProductNumber);
         }
     },
 }

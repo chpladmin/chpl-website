@@ -85,6 +85,34 @@
       <textarea class="input-sm form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
     </div>
   </div>
+
+  <div class="form-group">
+    <label class="control-label" for="certifiedProducts">Selected Certified Products</label><br />
+
+    <div ng-if="!$ctrl.complaint.listings || $ctrl.complaint.listings.length === 0">
+      No Certified Products Selected
+    </div>
+    <div class="form-group">
+      <button class="btn btn-sm btn-primary" type="button"
+        ng-repeat="listing in $ctrl.complaint.listings"
+        ng-click="$ctrl.removeListing(listing)"
+        confirm="Are you sure you wish to delete this certified product?"
+        confirm-ok="Yes"
+        confirm-cancel="No"
+        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}" >
+          <i class="fa fa-times"></i> {{ listing.chplProductNumber }}
+      </button>
+    </div>
+    <input name="certifiedProducts"
+        id="certified-products"
+        type="text"
+        class="input-sm form-control"
+        placeholder="Start Typing CHPL Product Number"
+        ng-model="$ctrl.listing"
+        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.certifiedProducts | orderBy: 'chplProductNumber' | filter:$viewValue | limitTo:10"
+        typeahead-on-select="$ctrl.selectListing($item)">
+  </div>
+
   <div class="form-group">
     <label class="checkbox-inline" for="complainantContacted">
       <input type="checkbox" id="complainant-contacted" name="complainantContacted"
