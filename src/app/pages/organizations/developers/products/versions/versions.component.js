@@ -95,11 +95,16 @@ export const VersionsComponent = {
                             productId: that.product.productId,
                             versionId: response.versionId,
                         });
+                    } else {
+                        that.$state.go('organizations.developers.products.versions', {
+                            action: undefined,
+                            developerId: that.developer.developerId,
+                            productId: that.product.productId,
+                            versionId: response.versionId,
+                        }, {
+                            reload: true,
+                        });
                     }
-                    that.version = response;
-                    that.backup.version = angular.copy(response);
-                    that.newVersion = angular.copy(response);
-                    that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
