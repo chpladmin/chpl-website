@@ -85,6 +85,7 @@
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL'])" class="dropdown" uib-dropdown is-open="vm.organizationsIsOpen">
           <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="organizations-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.organizationsIsOpen">Organizations</button>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="organizations-toggle" id="organizations-dropdown-menu">
+            <li><a ui-sref="organizations.developers({developerId: undefined})" ui-sref-opts="{ reload: true }"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.developers')"></i> Developers</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">ONC-ACB<span ng-if="vm.acbs.length !== 1">s</span></li>
             <li ng-repeat="acb in vm.acbs"><a href="#/admin/acbManagement" ng-bind-html="acb.name"></a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])">ONC-ATL<span ng-if="vm.atls.length !== 1">s</span></li>

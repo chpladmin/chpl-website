@@ -10,16 +10,27 @@ let states = {
             url: '/developers/{developerId}/{action}?',
             component: 'chplDevelopers',
             params: {
+                developerId: {squash: true, value: null},
                 action: {squash: true, value: null},
             },
             resolve: {
                 developer: (networkService, $transition$) => {
                     'ngInject'
-                    return networkService.getDeveloper($transition$.params().developerId);
+                    if ($transition$.params().developerId) {
+                        return networkService.getDeveloper($transition$.params().developerId);
+                    }
+                    return {};
+                },
+                developers: networkService => {
+                    'ngInject'
+                    return networkService.getDevelopers();
                 },
                 products: (networkService, $transition$) => {
                     'ngInject'
-                    return networkService.getProductsByDeveloper($transition$.params().developerId);
+                    if ($transition$.params().developerId) {
+                        return networkService.getProductsByDeveloper($transition$.params().developerId);
+                    }
+                    return {};
                 },
             },
             data: { title: 'CHPL Developers' },
