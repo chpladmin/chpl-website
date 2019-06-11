@@ -58,14 +58,14 @@
         describe('controller', () => {
             it('should have isolate scope object with instanciate members', () => {
                 expect(vm).toEqual(jasmine.any(Object));
-                expect(vm.query).toEqual({NC: {}, surveillance: {}});
+                expect(vm.query).toEqual({NC: {}, surveillance: {}, dates: {}});
             });
 
             it('should be able to clear the filter', () => {
                 vm.query = 'before';
                 spyOn(vm, 'filterChanged');
                 vm.clearFilter();
-                expect(vm.query).toEqual({NC: {}, surveillance: {}});
+                expect(vm.query).toEqual({NC: {}, surveillance: {}, dates: {}});
                 expect(vm.filterChanged).toHaveBeenCalled();
             });
 
@@ -73,7 +73,7 @@
                 vm.query = 'fake';
                 spyOn(vm, 'filterChanged');
                 vm.allowAll();
-                expect(vm.query).toEqual({NC: {}, surveillance: {}});
+                expect(vm.query).toEqual({NC: {}, surveillance: {}, dates: {}});
                 expect(vm.filterChanged).toHaveBeenCalled();
             });
 
@@ -99,7 +99,7 @@
                         state = {
                             search: {
                                 predicateObject: {
-                                    surveillance: {NC: {}, surveillance: {}},
+                                    surveillance: {NC: {}, surveillance: {}, dates: {}},
                                 },
                             },
                         };
@@ -133,7 +133,7 @@
                     };
                     spyOn(vm, 'storeState');
                     vm.tableCtrl.tableState.and.returnValue({search: {predicateObject: {}}});
-                    query = {NC: {}, surveillance: {}};
+                    query = {NC: {}, surveillance: {}, dates: {}};
                 });
 
                 describe('and there are no changes', () => {
@@ -224,6 +224,7 @@
                                 open: true,
                                 closed: true,
                             },
+                            dates: {},
                             matchAll: true,
                         };
                     });
@@ -243,6 +244,7 @@
                                     open: false,
                                     closed: false,
                                 },
+                                dates: {},
                                 matchAll: false,
                             }
                             vm.filterChanged();
@@ -254,6 +256,7 @@
                                     open: false,
                                     closed: false,
                                 },
+                                dates: {},
                                 matchAll: false,
                             }
                             vm.query = {
@@ -263,6 +266,7 @@
                                     open: true,
                                     closed: true,
                                 },
+                                dates: {},
                                 matchAll: true,
                             };
                             vm.filterChanged();
@@ -270,10 +274,12 @@
                             vm.initialState = {
                                 surveillance: {},
                                 NC: {},
+                                dates: {},
                             };
                             vm.query = {
                                 NC: {},
                                 surveillance: {},
+                                dates: {},
                             };
                             vm.filterChanged();
                             expect($analytics.eventTrack.calls.count()).toBe(2);
