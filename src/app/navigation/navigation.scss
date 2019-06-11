@@ -60,12 +60,9 @@
                 color: #000;
             }
 
-            &.admin-active {
-                background-color: #012a68;
-
-                .btn-link {
-                    color: #fff;
-                }
+            button.admin-active {
+                border-bottom: #012a68 solid thick;
+                border-radius: 0;
             }
 
             >a {
