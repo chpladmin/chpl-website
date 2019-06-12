@@ -18,3 +18,6 @@ _complaints_
 
 _surveillance-reporting_
 * Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports
+
+_ocd-2749_
+* Improve User Management UI/UX
