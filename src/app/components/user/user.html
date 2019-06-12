@@ -19,9 +19,9 @@
       <p>
         <span ng-if="$ctrl.user.subjectName"><strong>User Name:</strong> {{ $ctrl.user.subjectName }}<br /></span>
         <span ng-if="$ctrl.user.role"><strong>Role:</strong> {{ $ctrl.user.role }}<br /></span>
-        <strong>Account Locked:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.accountLocked, 'fa-square-o': !user.accountLocked }"></i><br />
-        <strong>Account Enabled:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.accountEnabled, 'fa-square-o': !user.accountEnabled }"></i><br />
-        <strong>Password change on next login:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.passwordResetRequired, 'fa-square-o': !user.passwordResetRequired }"></i><br />
+        <strong>Account Locked:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.accountLocked, 'fa-square-o': !$ctrl.user.accountLocked }"></i><br />
+        <strong>Account Enabled:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.accountEnabled, 'fa-square-o': !$ctrl.user.accountEnabled }"></i><br />
+        <strong>Password change on next login:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.passwordResetRequired, 'fa-square-o': !$ctrl.user.passwordResetRequired }"></i><br />
       </p>
     </div>
   </div>
