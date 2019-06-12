@@ -55,6 +55,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createComplaint (complaint) {
+        return this.apiPOST('/complaints', complaint);
+    }
+
     createFilter (filter) {
         return this.apiPOST('/filters', filter);
     }
@@ -77,6 +81,10 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteComplaint (complaintId) {
+        return this.apiDELETE('/complaints/' + complaintId);
     }
 
     deleteFilter (filterId) {
@@ -209,6 +217,18 @@ export class NetworkService {
     getCertifiedProductActivity (activityRange) {
         var call = '/activity/certified_products';
         return this.getActivity(call, activityRange);
+    }
+
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint_status_types');
+    }
+
+    getComplaintTypes () {
+        return this.apiGET('/data/complaint_types');
     }
 
     getCriterionProductStatistics () {
@@ -626,6 +646,10 @@ export class NetworkService {
 
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
+    }
+
+    updateComplaint (complaint) {
+        return this.apiPUT('/complaints/' + complaint.id, complaint)
     }
 
     updateCP (cpObject) {
