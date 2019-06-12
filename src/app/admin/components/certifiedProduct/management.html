@@ -34,7 +34,7 @@
 
     <div class="row" ng-if="vm.workType === 'manageSurveillance'" feature-flag="ocd1277">
       <div class="col-sm-12">
-        <chpl-manage-surveillance></chpl-manage-surveillance>
+        <chpl-surveillance-management allowed-acbs="vm.surveillanceAllowedAcbs" listings="vm.surveillanceListings"></chpl-surveillance-management>
       </div>
     </div> <!-- end of surveillance management -->
 

@@ -9,6 +9,7 @@ import 'ng-file-upload';
         'chpl.constants',
         'chpl.reports',
         'chpl.services',
+        'chpl.surveillance',
         'feature-flags',
         'ngCsv',
         'ngFileUpload',

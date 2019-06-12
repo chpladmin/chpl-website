@@ -42,10 +42,10 @@ export const SurveillanceManagementComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.allowedAcbs) {
+            if (changes.allowedAcbs && changes.allowedAcbs.currentValue && changes.allowedAcbs.currentValue.acbs) {
                 this.allowedAcbs = angular.copy(changes.allowedAcbs.currentValue.acbs);
             }
-            if (changes.listings) {
+            if (changes.listings && changes.listings.currentValue && changes.listings.currentValue.results) {
                 this.listings = angular.copy(changes.listings.currentValue.results);
             }
             if (this.allowedAcbs && this.listings) {
