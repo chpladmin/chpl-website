@@ -2,19 +2,20 @@
     'use strict';
 
     fdescribe('the Surveillance Filter', () => {
-        var $analytics, $compile, $localStorage, $log, el, scope, vm;
+        var $analytics, $compile, $localStorage, $log, SPLIT_PRIMARY, el, scope, vm;
 
         var stateKey = 'testState';
 
         beforeEach(() => {
             angular.mock.module('chpl.components');
 
-            inject((_$analytics_, _$compile_, _$localStorage_, _$log_, $q, $rootScope) => {
+            inject((_$analytics_, _$compile_, _$localStorage_, _$log_, $q, $rootScope, _SPLIT_PRIMARY_) => {
                 $analytics = _$analytics_;
                 $compile = _$compile_;
                 $localStorage = _$localStorage_;
                 delete($localStorage[stateKey]);
                 $log = _$log_;
+                SPLIT_PRIMARY = _SPLIT_PRIMARY_;
 
                 el = angular.element('<chpl-surveillance-filter st-table ' +
                                      'register-clear-filter="cfFun" register-restore-state="rsFun" register-allow-all="aaFun"' +
@@ -58,14 +59,14 @@
         describe('controller', () => {
             it('should have isolate scope object with instanciate members', () => {
                 expect(vm).toEqual(jasmine.any(Object));
-                expect(vm.query).toEqual({NC: {}, surveillance: {}, dates: {}});
+                expect(vm.query).toEqual({separator: SPLIT_PRIMARY, NC: {}, surveillance: {}, dates: {}});
             });
 
             it('should be able to clear the filter', () => {
                 vm.query = 'before';
                 spyOn(vm, 'filterChanged');
                 vm.clearFilter();
-                expect(vm.query).toEqual({NC: {}, surveillance: {}, dates: {}});
+                expect(vm.query).toEqual({separator: SPLIT_PRIMARY, NC: {}, surveillance: {}, dates: {}});
                 expect(vm.filterChanged).toHaveBeenCalled();
             });
 
@@ -73,7 +74,7 @@
                 vm.query = 'fake';
                 spyOn(vm, 'filterChanged');
                 vm.allowAll();
-                expect(vm.query).toEqual({NC: {}, surveillance: {}, dates: {}});
+                expect(vm.query).toEqual({separator: SPLIT_PRIMARY, NC: {}, surveillance: {}, dates: {}});
                 expect(vm.filterChanged).toHaveBeenCalled();
             });
 
@@ -133,7 +134,7 @@
                     };
                     spyOn(vm, 'storeState');
                     vm.tableCtrl.tableState.and.returnValue({search: {predicateObject: {}}});
-                    query = {NC: {}, surveillance: {}, dates: {}};
+                    query = {separator: SPLIT_PRIMARY, NC: {}, surveillance: {}, dates: {}};
                 });
 
                 describe('and there are no changes', () => {
@@ -185,7 +186,7 @@
                             vm.query = query;
                         });
 
-                        it('should track anlytics', () => {
+                        it('should track analytics', () => {
                             spyOn($analytics, 'eventTrack');
                             vm.filterChanged();
                             expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Has had Surveillance'});
@@ -218,6 +219,7 @@
                 describe('and there is an initial state', () => {
                     beforeEach(() => {
                         vm.initialState = {
+                            separator: SPLIT_PRIMARY,
                             surveillance: {status: 'has-had'},
                             NC: {
                                 never: true,
@@ -239,6 +241,7 @@
                             spyOn($analytics, 'eventTrack');
                             vm.query = {
                                 surveillance: {status: 'never'},
+                                separator: SPLIT_PRIMARY,
                                 NC: {
                                     never: false,
                                     open: false,
@@ -251,6 +254,7 @@
                             expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Never Surveilled,Cleared Never had a Nonconformity,Cleared Open Nonconformity,Cleared Closed Nonconformity,Matching Any'});
                             vm.initialState = {
                                 surveillance: {status: 'never'},
+                                separator: SPLIT_PRIMARY,
                                 NC: {
                                     never: false,
                                     open: false,
@@ -261,6 +265,7 @@
                             }
                             vm.query = {
                                 surveillance: {status: 'has-had'},
+                                separator: SPLIT_PRIMARY,
                                 NC: {
                                     never: true,
                                     open: true,
@@ -273,6 +278,7 @@
                             expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Has had Surveillance,Never had a Nonconformity,Open Nonconformity,Closed Nonconformity,Matching All'});
                             vm.initialState = {
                                 surveillance: {},
+                                separator: SPLIT_PRIMARY,
                                 NC: {},
                                 dates: {},
                             };
