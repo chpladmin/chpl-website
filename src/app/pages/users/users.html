@@ -6,8 +6,15 @@
       </div>
     </div>
     <div class="main-content row" id="main-content" tabindex="-1">
-      <div class="col-sm-6" ng-repeat="user in $ctrl.users">
-        <chpl-user user="user"></chpl-user>
+      <div class="col-sm-6 col-sm-offset-3" ng-if="$ctrl.activeUser">
+        <chpl-user user="$ctrl.activeUser" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-user>
+      </div>
+      <div class="col-sm-6" ng-repeat="user in $ctrl.users | orderBy : 'fullName'" ng-if="!$ctrl.activeUser">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <chpl-user user="user" take-action="$ctrl.takeAction(action, data)"></chpl-user>
+          </div>
+        </div>
       </div>
     </div>
   </span>

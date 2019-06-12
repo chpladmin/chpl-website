@@ -2,42 +2,57 @@ export const UserComponent = {
     templateUrl: 'chpl.components/user/user.html',
     bindings: {
         user: '<',
-        onCancel: '&?',
-        onSave: '&?',
+        isEditing: '<',
         takeAction: '&',
     },
     controller: class ProductComponent {
         constructor ($log, authService) {
             'ngInject'
             this.$log = $log;
-            this.hasAnyRole = authService.hasAnyRole;
+            this.canImpersonate = authService.canImpersonate;
         }
 
         $onChanges (changes) {
             if (changes.user) {
                 this.user = angular.copy(changes.user.currentValue);
             }
-        }
-
-        /*
-         * Initiate changes
-         */
-        edit () {
-            this.takeAction({
-                action: 'edit',
-                userId: this.user.userId,
-            });
-        }
-
-        /*
-         * Resolve changes
-         */
-        save () {
-            this.onSave({user: this.user});
+            if (changes.isEditing) {
+                this.isEditing = angular.copy(changes.isEditing.currentValue);
+            }
         }
 
         cancel () {
-            this.onCancel();
+            this.takeAction({
+                action: 'cancel',
+            });
+        }
+
+        delete () {
+            this.takeAction({
+                action: 'delete',
+                data: this.user.userId,
+            });
+        }
+
+        edit () {
+            this.takeAction({
+                action: 'edit',
+                data: this.user,
+            });
+        }
+
+        impersonate () {
+            this.takeAction({
+                action: 'impersonate',
+                data: this.user,
+            });
+        }
+
+        save () {
+            this.takeAction({
+                action: 'save',
+                data: this.user,
+            });
         }
     },
 }

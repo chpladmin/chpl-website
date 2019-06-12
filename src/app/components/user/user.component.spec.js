@@ -73,7 +73,7 @@
             describe('when using callbacks', () => {
                 it('should send back data on edit', () => {
                     ctrl.edit();
-                    expect(scope.takeAction).toHaveBeenCalledWith('edit', 43);
+                    expect(scope.takeAction).toHaveBeenCalledWith('edit', mock.user);
                 });
             });
 
