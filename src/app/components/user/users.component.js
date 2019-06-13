@@ -1,28 +1,30 @@
 export const UsersComponent = {
-    templateUrl: 'chpl.users/users.html',
+    templateUrl: 'chpl.components/user/users.html',
     bindings: {
         users: '<',
+        takeAction: '&',
     },
     controller: class UsersComponent {
-        constructor ($log, authService, networkService) {
+        constructor ($log, $rootScope, authService, networkService) {
             'ngInject'
             this.$log = $log;
-            this.hasAnyRole = authService.hasAnyRole;
+            this.$rootScope = $rootScope;
+            this.authService = authService;
+            this.canImpersonate = authService.canImpersonate;
             this.networkService = networkService;
         }
 
         $onChanges (changes) {
             if (changes.users.currentValue) {
-                this.users = angular.copy(changes.users.currentValue.users);
+                this.users = angular.copy(changes.users.currentValue);
             }
         }
 
-        takeAction (action, data) {
+        act (action, data) {
             let that = this;
             switch (action) {
             case 'delete':
-                this.networkService.deleteUser(data)
-                    .then(() => that.networkService.getUsers().then(response => that.users = response.users));
+                this.takeAction({action: 'delete', data: data});
                 this.activeUser = undefined;
                 break;
             case 'edit':
@@ -30,7 +32,9 @@ export const UsersComponent = {
                 break;
             case 'save':
                 this.networkService.updateUser(data)
-                    .then(() => that.networkService.getUsers().then(response => that.users = response.users));
+                    .then(() => {
+                        that.takeAction({action: 'refresh'});
+                    });
                 this.activeUser = undefined;
                 break;
             case 'cancel':
@@ -41,6 +45,7 @@ export const UsersComponent = {
                     .then(token => {
                         that.authService.saveToken(token.token);
                         that.$rootScope.$broadcast('impersonating');
+                        that.takeAction({action: 'reload'});
                     });
                 break;
                 //no default
@@ -49,5 +54,5 @@ export const UsersComponent = {
     },
 }
 
-angular.module('chpl.users')
+angular.module('chpl.components')
     .component('chplUsers', UsersComponent);

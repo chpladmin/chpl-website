@@ -3,11 +3,15 @@ let states = {
         {
             name: 'users',
             url: '/users',
-            component: 'chplUsers',
+            component: 'chplUserManagement',
             resolve: {
-                users: networkService => {
+                users: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getUsers();
+                    if (authService.hasAnyRole()) {
+                        return networkService.getUsers();
+                    } else {
+                        return [];
+                    }
                 },
             },
             data: { title: 'CHPL Users' },

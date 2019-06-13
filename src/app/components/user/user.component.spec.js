@@ -13,7 +13,7 @@
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
-                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    $delegate.canImpersonate = jasmine.createSpy('canImpersonate');
                     return $delegate;
                 });
             });
@@ -22,15 +22,14 @@
                 $compile = _$compile_;
                 $log = _$log_;
                 authService = _authService_;
-                authService.hasAnyRole.and.returnValue(true);
+                authService.canImpersonate.and.returnValue(true);
 
                 scope = $rootScope.$new();
                 scope.user = mock.user;
-                scope.onCancel = jasmine.createSpy('onCancel');
-                scope.onSave = jasmine.createSpy('onSave');
+                scope.isEditing = true;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-user user="user" on-cancel="onCancel()" on-save="onSave(user)" take-action="takeAction(action, userId)"></chpl-user>');
+                el = angular.element('<chpl-user user="user" is-editing="isEditing" take-action="takeAction(action, data)"></chpl-user>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -75,17 +74,25 @@
                     ctrl.edit();
                     expect(scope.takeAction).toHaveBeenCalledWith('edit', mock.user);
                 });
-            });
 
-            describe('when handling edits', () => {
-                it('should handle save when not splitting', () => {
+                it('should handle save', () => {
                     ctrl.save();
-                    expect(scope.onSave).toHaveBeenCalled();
+                    expect(scope.takeAction).toHaveBeenCalledWith('save', mock.user);
                 });
 
                 it('should handle cancel', () => {
                     ctrl.cancel();
-                    expect(scope.onCancel).toHaveBeenCalled();
+                    expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
+                });
+
+                it('should handle delete', () => {
+                    ctrl.delete();
+                    expect(scope.takeAction).toHaveBeenCalledWith('delete', 43);
+                });
+
+                it('should handle impersonate', () => {
+                    ctrl.impersonate();
+                    expect(scope.takeAction).toHaveBeenCalledWith('impersonate', mock.user);
                 });
             });
         });

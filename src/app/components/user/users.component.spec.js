@@ -2,12 +2,18 @@
     'use strict';
 
     fdescribe('the Users component', () => {
-        var $compile, $log, authService, ctrl, el, scope;
+        var $compile, $log, authService, ctrl, el, mock, scope;
+
+        mock = {
+            users: [
+                {userId: 3},
+            ],
+        };
 
         beforeEach(() => {
-            angular.mock.module('chpl.users', $provide => {
+            angular.mock.module('chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
-                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    $delegate.canImpersonate = jasmine.createSpy('canImpersonate');
 
                     return $delegate;
                 });
@@ -17,10 +23,11 @@
                 $compile = _$compile_;
                 $log = _$log_;
                 authService = _authService_;
-                authService.hasAnyRole.and.returnValue(true);
+                authService.canImpersonate.and.returnValue(true);
 
                 scope = $rootScope.$new();
-                el = angular.element('<chpl-users></chpl-users>');
+                scope.users = mock.users;
+                el = angular.element('<chpl-users users="users"></chpl-users>');
 
                 $compile(el)(scope);
                 scope.$digest();

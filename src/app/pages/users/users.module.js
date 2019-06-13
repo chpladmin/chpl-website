@@ -3,4 +3,5 @@ export default angular
         'chpl.components',
         'chpl.services',
         'ui.bootstrap',
+        'ui.router',
     ]);
