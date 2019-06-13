@@ -58,6 +58,14 @@ export const ReportsUsersComponent = {
             return filterData;
         }
 
+        onClearFilter () {
+            this.activityRange.endDate = new Date();
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.filterText = '';
+            this.tableController.sortBy('date');
+            this.search();
+        }
+
         tableStateListener (tableController) {
             this.tableController = tableController;
         }
