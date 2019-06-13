@@ -5,17 +5,24 @@ export const AtlManagementComponent = {
         onChange: '&',
     },
     controller: class AtlManagementController {
-        constructor ($log, $uibModal, authService) {
+        constructor ($log, $state, $uibModal, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$state = $state;
             this.$uibModal = $uibModal;
             this.authService = authService;
+            this.networkService = networkService;
         }
 
         $onChanges (changes) {
             if (changes.atl) {
                 this.atl = angular.copy(changes.atl.currentValue);
                 this.workType = 'atl';
+            }
+            if (this.atl) {
+                let that = this;
+                this.networkService.getUsersAtAtl(this.atl.id)
+                    .then(response => that.users = response.users);
             }
         }
 
@@ -64,6 +71,23 @@ export const AtlManagementComponent = {
                 this.atl = angular.copy(result);
                 this.onChange({ atl: this.atl});
             });
+        }
+
+        takeAction (action, data) {
+            let that = this;
+            switch (action) {
+            case 'delete':
+                this.networkService.removeUserFromAtl(data, that.atl.id)
+                    .then(() => that.networkService.getUsersAtAtl(that.atl.id).then(response => that.users = response.users));
+                break;
+            case 'refresh':
+                this.networkService.getUsersAtAtl(this.atl.id).then(response => that.users = response.users);
+                break;
+            case 'reload':
+                this.$state.reload();
+                break;
+                //no default
+            }
         }
     },
 }
