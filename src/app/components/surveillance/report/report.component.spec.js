@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Surveillance Report component', () => {
+    fdescribe('the Surveillance Report component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
@@ -23,7 +23,7 @@
                 authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
-                scope.report = mock.complaing;
+                scope.report = mock.report;
                 scope.isEditing = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onSave = jasmine.createSpy('onSave');

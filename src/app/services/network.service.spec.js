@@ -249,7 +249,7 @@
             $httpBackend.flush();
         });
 
-        fit('should createQuarterlySurveillanceReport', () => {
+        it('should createQuarterlySurveillanceReport', () => {
             $httpBackend.expectPOST(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
             networkService.createQuarterlySurveillanceReport('payload').then(response => {
                 expect(response.data).toEqual('response');
@@ -944,7 +944,7 @@
             $httpBackend.flush();
         });
 
-        fit('should getQuarterlySurveillanceQuarters', () => {
+        it('should getQuarterlySurveillanceQuarters', () => {
             $httpBackend.expectGET(/^\/rest\/data\/quarters$/).respond(200, {data: 'response'});
             networkService.getQuarterlySurveillanceQuarters().then(response => {
                 expect(response.data).toEqual('response');
@@ -1051,7 +1051,7 @@
             });
         });
 
-        fit('should getSurveillanceReporting', () => {
+        it('should getSurveillanceReporting', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
             networkService.getSurveillanceReporting().then(response => {
                 expect(response.data).toEqual('response');
@@ -1476,7 +1476,7 @@
             $httpBackend.flush();
         });
 
-        fit('should updateQuarterlySurveillanceReport', () => {
+        it('should updateQuarterlySurveillanceReport', () => {
             $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
             networkService.updateQuarterlySurveillanceReport('payload').then(response => {
                 expect(response.data).toEqual('response');

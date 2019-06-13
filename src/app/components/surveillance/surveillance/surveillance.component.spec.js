@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the surveillance component', function () {
+    fdescribe('the surveillance component', function () {
         var $log, $q, $uibModal, Mock, actualOptions, ctrl, el, networkService, scope;
 
         beforeEach(function () {

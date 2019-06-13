@@ -36,7 +36,7 @@
                     $delegate.getComplaints = jasmine.createSpy('getComplaints');
                     $delegate.getComplaintTypes = jasmine.createSpy('getComplaintTypes');
                     $delegate.getComplaintStatusTypes = jasmine.createSpy('getComplaintStatusTypes');
-                    $delegate.getCertBodies = jasmine.createSpy('getCertBodies');
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.deleteComplaint = jasmine.createSpy('deleteComplaint');
                     $delegate.updateComplaint = jasmine.createSpy('updateComplaint');
                     $delegate.createComplaint = jasmine.createSpy('createComplaint');
@@ -52,7 +52,7 @@
                 networkService.getComplaints.and.returnValue($q.when(complaints));
                 networkService.getComplaintTypes.and.returnValue($q.when(complaintTypes));
                 networkService.getComplaintStatusTypes.and.returnValue($q.when(complaintStatusTypes));
-                networkService.getCertBodies.and.returnValue($q.when(certBodies));
+                networkService.getAcbs.and.returnValue($q.when(certBodies));
                 networkService.deleteComplaint.and.returnValue($q.when({status: 200}));
                 networkService.updateComplaint.and.returnValue($q.when(complaints[0]));
                 networkService.createComplaint.and.returnValue($q.when(complaints[0]));
@@ -91,43 +91,43 @@
                 ctrl.deleteComplaint(complaint);
                 expect(networkService.deleteComplaint).toHaveBeenCalled();
                 expect(ctrl.complaint).toEqual({});
-                expect(ctrl.currentMode).toBe(ctrl.modes.SELECT);
+                expect(ctrl.isEditing).toBe(false);
             });
 
             it('should select a complaint', () => {
                 let complaint = {id: 1};
                 ctrl.selectComplaint(complaint);
-                expect(ctrl.currentMode).toBe(ctrl.modes.EDIT);
+                expect(ctrl.isEditing).toBe(true);
                 expect(ctrl.complaint).toEqual(complaint);
             });
 
             it('should save/update a complaint', () => {
                 let complaint = {id: 1, formattedReceivedDate: new Date('2019-06-04')};
-                ctrl.currentMode = ctrl.modes.EDIT;
+                ctrl.isEditing = true;
                 ctrl.saveComplaint(complaint);
                 expect(complaint.receivedDate).toBeDefined();
                 expect(networkService.updateComplaint).toHaveBeenCalledWith(complaint);
             });
 
             it('should save/create a complaint', () => {
-                let complaint = {id: 1, formattedReceivedDate: new Date('2019-06-04')};
-                ctrl.currentMode = ctrl.modes.ADD;
+                let complaint = {formattedReceivedDate: new Date('2019-06-04')};
+                ctrl.isEditing = true;
                 ctrl.saveComplaint(complaint);
                 expect(complaint.receivedDate).toBeDefined();
                 expect(networkService.createComplaint).toHaveBeenCalledWith(complaint);
             });
 
             it('should cancel current editing and go to select mode', () => {
-                ctrl.currentMode = ctrl.modes.EDIT;
+                ctrl.isEditing = true;
                 ctrl.cancelEdit();
-                expect(ctrl.currentMode).toEqual(ctrl.modes.SELECT);
+                expect(ctrl.isEditing).toEqual(false);
             });
 
             it('should allow for adding a new complaint', () => {
                 ctrl.complaint = {id: 5};
                 ctrl.displayAddComplaint();
                 expect(ctrl.complaint).toEqual({});
-                expect(ctrl.currentMode).toEqual(ctrl.modes.ADD);
+                expect(ctrl.isEditing).toEqual(true);
             });
 
             it('should be able to fetch all "relevant" complaints', () => {
