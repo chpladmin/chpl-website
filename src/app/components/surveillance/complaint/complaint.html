@@ -10,7 +10,7 @@
       <select ng-model="$ctrl.complaint.certificationBody" id="certification-body" name="certificationBody"
         class="input-sm form-control"
         ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' track by acb.id"
-        ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')">
+        ng-required="$ctrl.isOn('complaints-ui-validation')">
       </select>
       <div class="text-danger"
         ng-if="$ctrl.form.certificationBody.$touched && $ctrl.form.certificationBody.$error.required">ONC-ACB is
@@ -23,7 +23,7 @@
       <select ng-model="$ctrl.complaint.complaintType" id="complaint-type" name="complaintType"
         class="input-sm form-control"
         ng-options="ct.name for ct in $ctrl.complaintTypes | orderBy: 'name' track by ct.id"
-        ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')">
+        ng-required="$ctrl.isOn('complaints-ui-validation')">
       </select>
       <div class="text-danger" ng-if="$ctrl.form.complaintType.$touched && $ctrl.form.complaintType.$error.required">
         Complaint Type is required</div>
@@ -49,7 +49,7 @@
     <label class="control-label" for="acb-complaint-id">ONC-ACB Complaint ID<span class="text-danger">*</span></label>
     <div>
       <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id"
-        name="acbComplaintId" ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')"></input>
+        name="acbComplaintId" ng-required="$ctrl.isOn('complaints-ui-validation')"></input>
       <div class="text-danger" ng-if="$ctrl.form.acbComplaintId.$touched && $ctrl.form.acbComplaintId.$error.required">
         ONC-ACB Complaint ID is required</div>
     </div>
@@ -59,7 +59,7 @@
     <div>
       <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
         name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"
-        ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')"
+        ng-required="$ctrl.isOn('complaints-ui-validation')"
         uib-datepicker-popup="MM/dd/yyyy"
         is-open="$ctrl.receivedDatePicker"
         close-text="Close" ></input>
@@ -74,7 +74,7 @@
     <label class="control-label" for="summary">Summary<span class="text-danger">*</span></label>
     <div>
       <textarea class="input-sm form-control" ng-model="$ctrl.complaint.summary" name="summary" id="summary"
-        ng-required="$ctrl.featureFlags.isOn('complaints-ui-validation')"></textarea>
+        ng-required="$ctrl.isOn('complaints-ui-validation')"></textarea>
       <div class="text-danger" ng-if="$ctrl.form.summary.$touched && $ctrl.form.summary.$error.required">Summary is
         required</div>
     </div>

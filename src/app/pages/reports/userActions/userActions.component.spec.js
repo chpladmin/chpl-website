@@ -1,9 +1,9 @@
 (() => {
     'use strict';
 
-    describe('the Reports.UserActionss component', () => {
+    fdescribe('the Reports.UserActions component', () => {
 
-        var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
+        var $compile, $httpBackend, $log, $q, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl', 'chpl.mock', 'chpl.reports', $provide => {
@@ -14,14 +14,17 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
+            inject((_$compile_, _$httpBackend_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
                 $compile = _$compile_;
+                $httpBackend = _$httpBackend_;
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
                 networkService = _networkService_;
 
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.productReportsMetadata));
+
+                $httpBackend.whenGET(/feature-flags/).respond({});
 
                 scope = $rootScope.$new()
                 el = angular.element('<chpl-reports-user-actions></chpl-reports-user-actions>');

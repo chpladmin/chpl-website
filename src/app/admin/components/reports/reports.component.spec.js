@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Admin Reports component', function () {
+    describe('the Admin Reports component', function () {
 
         var $compile, $log, ctrl, el, scope;
 

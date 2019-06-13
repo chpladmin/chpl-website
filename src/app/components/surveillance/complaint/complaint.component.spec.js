@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Surveillance Complaint component', () => {
+    fdescribe('the Surveillance Complaint component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
@@ -20,6 +20,7 @@
                 $compile = _$compile_;
                 $log = _$log_;
                 authService = _authService_;
+
                 authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
@@ -29,6 +30,8 @@
                 scope.onSave = jasmine.createSpy('onSave');
                 scope.onSelect = jasmine.createSpy('onSelect');
                 scope.onDelete = jasmine.createSpy('onDelete');
+                scope.isOn = jasmine.createSpy('isOn');
+                scope.isOn.and.returnValue(true);
 
                 el = angular.element('<chpl-surveillance-complaint complaints="complaints" complaint="complaint" mode="select" complaint-types="complaintTypes" complaint-status-types="complaintStatusTypes" certification-bodies="certificationBodies" on-cancel="onCancel()" on-save="onSave(complaint)" on-delete="onDelete(complaint)" on-select="onSelect(complaint)"></chpl-surveillance-complaint>');
 
@@ -72,12 +75,6 @@
                 let complaint = {id: 1};
                 ctrl.deleteComplaint(complaint);
                 expect(scope.onDelete).toHaveBeenCalledWith(complaint);
-            });
-
-            it('should send data back on select ', () => {
-                let complaint = {id: 1};
-                ctrl.selectComplaint(complaint);
-                expect(scope.onSelect).toHaveBeenCalledWith(complaint);
             });
         });
     });
