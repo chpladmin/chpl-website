@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="main-content row" id="main-content" tabindex="-1">
-      <chpl-users users="$ctrl.users" take-action="$ctrl.takeAction(action, data)"></chpl-users>
+      <chpl-users users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
     </div>
   </span>
   <div class="main-content row splash-row" id="main-content" tabindex="-1" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">

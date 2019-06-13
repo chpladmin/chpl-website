@@ -20,7 +20,7 @@
           <label class="control-label col-sm-4" for="new-role">User Role <span class="text-danger">*</span></label>
           <div class="col-sm-8">
             <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
-                    ng-options="role as role for role in $ctrl.roles"></select>
+                    ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
             <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
           </div>
         </div>
