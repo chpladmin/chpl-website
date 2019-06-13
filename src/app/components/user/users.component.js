@@ -2,6 +2,7 @@ export const UsersComponent = {
     templateUrl: 'chpl.components/user/users.html',
     bindings: {
         users: '<',
+        roles: '<',
         takeAction: '&',
     },
     controller: class UsersComponent {
@@ -17,6 +18,12 @@ export const UsersComponent = {
         $onChanges (changes) {
             if (changes.users.currentValue) {
                 this.users = angular.copy(changes.users.currentValue);
+            }
+            if (changes.roles.currentValue) {
+                this.roles = angular.copy(changes.roles.currentValue);
+                if (this.roles && this.roles.length === 1) {
+                    this.newRole = this.roles[0];
+                }
             }
         }
 
@@ -50,6 +57,22 @@ export const UsersComponent = {
                 break;
                 //no default
             }
+        }
+
+        inviteUser () {
+            let invitation = {
+                email: this.inviteEmail,
+                role: this.newRole,
+            };
+            this.takeAction({action: 'invite', data: invitation});
+            this.inviteEmail = undefined;
+            if (this.roles && this.roles.length === 1) {
+                this.newRole = this.roles[0];
+            } else {
+                this.newRole = undefined;
+            }
+            this.form.$setPristine();
+            this.form.$setUntouched();
         }
     },
 }
