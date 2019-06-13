@@ -5,13 +5,14 @@ export const AcbManagementComponent = {
         onChange: '&',
     },
     controller: class AcbManagementController {
-        constructor ($log, $state, $uibModal, authService, networkService) {
+        constructor ($log, $state, $uibModal, authService, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.$state = $state;
             this.$uibModal = $uibModal;
             this.authService = authService;
             this.networkService = networkService;
+            this.toaster = toaster;
         }
 
         $onChanges (changes) {
@@ -75,10 +76,23 @@ export const AcbManagementComponent = {
 
         takeAction (action, data) {
             let that = this;
+            let invitation = {
+                role: 'ROLE_ACB',
+                emailAddress: data.email,
+                permissionObjectId: this.acb.id,
+            };
             switch (action) {
             case 'delete':
                 this.networkService.removeUserFromAcb(data, that.acb.id)
                     .then(() => that.networkService.getUsersAtAcb(that.acb.id).then(response => that.users = response.users));
+                break;
+            case 'invite':
+                this.networkService.inviteUser(invitation)
+                    .then(() => that.toaster.pop({
+                        type: 'success',
+                        title: 'Email sent',
+                        body: 'Email sent successfully to ' + data.email,
+                    }));
                 break;
             case 'refresh':
                 this.networkService.getUsersAtAcb(this.acb.id).then(response => that.users = response.users);
