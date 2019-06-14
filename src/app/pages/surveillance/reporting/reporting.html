@@ -12,18 +12,28 @@
                 <thead>
                   <th scope="col">Year</th>
                   <th scope="col" ng-repeat="quarter in $ctrl.availableQuarters">{{ quarter.name }}</th>
+                  <th scope="col">Annual</th>
                 </thead>
                 <tbody>
                   <tr ng-repeat="year in $ctrl.availableYears | orderBy :'toString()' : true">
                     <td>{{ year }}</td>
                     <td ng-repeat="quarter in $ctrl.availableQuarters">
-                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnReport(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
-                        <span ng-if="$ctrl.findReport(acb, year, quarter.name) && $ctrl.findReport(acb, year, quarter.name).id !== $ctrl.activeReport.id">View</span>
-                        <span ng-if="$ctrl.findReport(acb, year, quarter.name) && $ctrl.findReport(acb, year, quarter.name).id === $ctrl.activeReport.id">Close</span>
-                        <span ng-if="!$ctrl.findReport(acb, year, quarter.name)">Initiate</span>
+                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
+                        <span ng-if="$ctrl.findQuarterReport(acb, year, quarter.name) && !$ctrl.isQuarterOpen(acb, year, quarter.name)">View</span>
+                        <span ng-if="$ctrl.isQuarterOpen(acb, year, quarter.name)">Close</span>
+                        <span ng-if="!$ctrl.findQuarterReport(acb, year, quarter.name)">Initiate</span>
                       </button>
-                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnReport(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findReport(acb, year, quarter.name)">View</button>
-                      <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findReport(acb, year, quarter.name)">N/A</span>
+                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
+                      <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
+                        <span ng-if="$ctrl.findAnnualReport(acb, year) && !$ctrl.isAnnualOpen(acb, year)">View</span>
+                        <span ng-if="$ctrl.isAnnualOpen(acb, year)">Close</span>
+                        <span ng-if="!$ctrl.findAnnualReport(acb, year)">Initiate</span>
+                      </button>
+                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findAnnualReport(acb, year)">View</button>
+                      <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
                     </td>
                   </tr>
                 </tbody>
@@ -33,14 +43,29 @@
         </div>
       </div>
     </span>
-    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeReport">
-      <h2>View report</h2>
-      <chpl-surveillance-report report="$ctrl.activeReport" take-action="$ctrl.takeAction($ctrl.activeReport, action)"></chpl-surveillance-report>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeQuarterReport">
+      <h2>Quarter report</h2>
+      <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" take-action="$ctrl.takeQuarterAction($ctrl.activeQuarterReport, action)"></chpl-surveillance-report-quarter>
     </div>
-    <div class="col-md-12" ng-if="$ctrl.mode !== 'view'">
-      <h2 ng-if="$ctrl.mode === 'initiate'">Initiate surveillance reporting</h2>
-      <h2 ng-if="$ctrl.mode === 'edit'">Edit surveillance reporting</h2>
-      <chpl-surveillance-report report="$ctrl.activeReport" is-editing="true" on-save="$ctrl.save(report)" on-cancel="$ctrl.cancel()" take-action="$ctrl.takeAction(report, action)"></chpl-surveillance-report>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
+      <h2>Annual report</h2>
+      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" take-action="$ctrl.takeAnnualAction($ctrl.activeAnnualReport, action)"></chpl-surveillance-report-annual>
+    </div>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'initiateQuarter'">
+      <h2>Initiate surveillance reporting</h2>
+      <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" is-editing="true" on-save="$ctrl.saveQuarter(report)" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action)"></chpl-surveillance-report-quarter>
+    </div>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'editQuarter'">
+      <h2>Edit surveillance reporting</h2>
+      <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" is-editing="true" on-save="$ctrl.saveQuarter(report)" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action)"></chpl-surveillance-report-quarter>
+    </div>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'initiateAnnual'">
+      <h2>Initiate surveillance reporting</h2>
+      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" is-editing="true" on-save="$ctrl.saveAnnual(report)" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
+    </div>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'editAnnual'">
+      <h2>Edit surveillance reporting</h2>
+      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" is-editing="true" on-save="$ctrl.saveAnnual(report)" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
     </div>
   </div>
 </div>

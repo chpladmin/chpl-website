@@ -1,5 +1,5 @@
-export const SurveillanceReportComponent = {
-    templateUrl: 'chpl.components/surveillance/report/report.html',
+export const SurveillanceReportQuarterComponent = {
+    templateUrl: 'chpl.components/surveillance/reporting/quarter.html',
     bindings: {
         report: '<',
         isEditing: '<',
@@ -7,7 +7,7 @@ export const SurveillanceReportComponent = {
         onSave: '&?',
         takeAction: '&?',
     },
-    controller: class SurveillanceReportComponent {
+    controller: class SurveillanceReportQuarterComponent {
         constructor ($log, API, authService) {
             'ngInject'
             this.$log = $log;
@@ -49,4 +49,4 @@ export const SurveillanceReportComponent = {
 }
 
 angular.module('chpl.components')
-    .component('chplSurveillanceReport', SurveillanceReportComponent);
+    .component('chplSurveillanceReportQuarter', SurveillanceReportQuarterComponent);
