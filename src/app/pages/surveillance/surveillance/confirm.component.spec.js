@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Confirm Surveillance component', () => {
+    fdescribe('the Confirm Surveillance component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, mock, networkService, scope;
 
         mock = {};
@@ -9,7 +9,7 @@
         mock.uploadingSurveillances = {pendingSurveillance: []};
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.surveillance', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
 

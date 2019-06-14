@@ -1,17 +1,14 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Report component', () => {
-        var $compile, $log, authService, ctrl, el, mock, scope;
-
-        mock = {
-            report: {},
-        };
+    fdescribe('the User Management component', () => {
+        var $compile, $log, authService, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.services', 'chpl.components', $provide => {
+            angular.mock.module('chpl.users', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+
                     return $delegate;
                 });
             });
@@ -23,12 +20,7 @@
                 authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
-                scope.report = mock.report;
-                scope.isEditing = false;
-                scope.onCancel = jasmine.createSpy('onCancel');
-                scope.onSave = jasmine.createSpy('onSave');
-
-                el = angular.element('<chpl-surveillance-report report="report" is-editing="isEditing" on-cancel="onCancel()" on-save="onSave(report)"></chpl-surveillance-report>');
+                el = angular.element('<chpl-user-management></chpl-user-management>');
 
                 $compile(el)(scope);
                 scope.$digest();

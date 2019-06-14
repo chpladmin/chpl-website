@@ -23,3 +23,6 @@ _ocd1277_
 * Updated Surveillance Management workflow
   * New navigation for upload, confirm, manage
   * Added "view all surveillance" capability
+
+_ocd-2749_
+* Improve User Management UI/UX
