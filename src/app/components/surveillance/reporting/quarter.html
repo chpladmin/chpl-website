@@ -68,10 +68,15 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <div ng-repeat="listing in $ctrl.report.relevantListings">
-        <strong>{{ listing.chplProductNumber }}</strong> ({{ listing.edition }} Edition) <br />
-        <span class="pull-right">Last modified: {{ listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span>
-        Certification Date: {{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}
+      <div ng-repeat="listing in $ctrl.report.relevantListings | orderBy : 'chplProductNumber'" class="panel panel-default">
+        <div class="panel-heading">
+          <span class="pull-right">Last modified: {{ listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span>
+          <div class="panel-title">{{ listing.chplProductNumber }}</div>
+        </div>
+        <div class="panel-body">
+          <span class="pull-right">Edition: {{ listing.edition }}</span>
+          Certification Date: {{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}
+        </div>
       </div>
     </div>
   </div>
