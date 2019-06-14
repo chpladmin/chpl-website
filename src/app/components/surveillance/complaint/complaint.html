@@ -107,7 +107,7 @@
         class="input-sm form-control"
         placeholder="Start Typing CHPL Product Number"
         ng-model="$ctrl.listing"
-        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:$viewValue | limitTo:10"
+        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue} | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
   </div>
 

@@ -83,7 +83,7 @@ export const SurveillanceComplaintComponent = {
                 this.complaint.listings = [];
             }
             this.complaint.listings.push({
-                id: $item.id,
+                certifiedProductId: $item.id,
                 chplProductNumber: $item.chplProductNumber,
             });
             this.listing = '';
