@@ -182,26 +182,22 @@
                         networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when(report));
                         ctrl.activeQuarterReport = {};
                         ctrl.mode = 'editQuarter';
-                        spyOn(ctrl, 'cancelQuarter');
                         ctrl.saveQuarter(report);
                         expect(ctrl.mode).toBe('view');
                         scope.$digest();
                         expect(networkService.updateQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
                         expect(ctrl.activeQuarterReport).toBe(report);
-                        expect(ctrl.cancelQuarter).toHaveBeenCalled();
                     });
 
                     it('should handle initiate', () => {
                         networkService.createQuarterlySurveillanceReport.and.returnValue($q.when(report));
                         ctrl.activeQuarterReport = {};
                         ctrl.mode = 'initiateQuarter';
-                        spyOn(ctrl, 'cancelQuarter');
                         ctrl.saveQuarter(report);
                         expect(ctrl.mode).toBe('view');
                         scope.$digest();
                         expect(networkService.createQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
                         expect(ctrl.activeQuarterReport).toBe(report);
-                        expect(ctrl.cancelQuarter).toHaveBeenCalled();
                     });
                 });
 
