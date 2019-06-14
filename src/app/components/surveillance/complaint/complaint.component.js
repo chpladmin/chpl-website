@@ -16,7 +16,7 @@ export const SurveillanceComplaintComponent = {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
-            this.featureFlags = featureFlags;
+            this.isOn = featureFlags.isOn;
             this.hasAnyRole = authService.hasAnyRole;
             this.modes = {
                 EDIT: 'edit',
@@ -29,7 +29,7 @@ export const SurveillanceComplaintComponent = {
         $onChanges (changes) {
             if (changes.complaint) {
                 this.complaint = angular.copy(changes.complaint.currentValue);
-                if (this.complaint.id) {
+                if (this.complaint && this.complaint.id) {
                     this.currentMode = this.modes.EDIT;
                 } else {
                     this.currentMode = this.modes.ADD;
