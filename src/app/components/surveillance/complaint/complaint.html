@@ -29,7 +29,7 @@
         Complaint Type is required</div>
     </div>
   </div>
-  <div class="form-group" ng-if="$ctrl.mode === $ctrl.modes.EDIT">
+  <div class="form-group" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
     <label class="control-label" for="complaint-status-type">Complaint Status Type</label>
     <div>
       <select ng-model="$ctrl.complaint.complaintStatusType" id="complaint-status-type" name="complaintStatusType"
@@ -133,7 +133,7 @@
     </button>
     <button class="btn btn-warning btn-small" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i><span
         class="sr-only"> Cancel</span></button>
-    <button class="btn btn-danger btn-small" ng-if="$ctrl.mode === $ctrl.modes.EDIT"
+    <button class="btn btn-danger btn-small" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT"
       ng-click="$ctrl.deleteComplaint($ctrl.complaint)" confirm="Are you sure you wish to delete this complaint?"
       confirm-ok="Yes" confirm-cancel="No" confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
       <i class="fa fa-trash"></i><span class="sr-only"> Delete</span>
