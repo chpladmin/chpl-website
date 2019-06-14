@@ -1,5 +1,5 @@
-export const SurveillanceReportComponent = {
-    templateUrl: 'chpl.components/surveillance/report/report.html',
+export const SurveillanceReportAnnualComponent = {
+    templateUrl: 'chpl.components/surveillance/reporting/annual.html',
     bindings: {
         report: '<',
         isEditing: '<',
@@ -7,7 +7,7 @@ export const SurveillanceReportComponent = {
         onSave: '&?',
         takeAction: '&?',
     },
-    controller: class SurveillanceReportComponent {
+    controller: class SurveillanceReportAnnualComponent {
         constructor ($log, API, authService) {
             'ngInject'
             this.$log = $log;
@@ -22,9 +22,7 @@ export const SurveillanceReportComponent = {
             if (changes.report) {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
-                if (this.report) {
-                    this.downloadUrl = this.API + '/surveillance-report/export/quarterly/' + this.report.id + '?api_key=' + this.API_KEY + '&authorization=Bearer%20' + this.getToken();
-                }
+                this.downloadUrl = this.API + '/surveillance-report/export/annual/' + this.report.id + '?api_key=' + this.API_KEY + '&authorization=Bearer%20' + this.getToken();
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
@@ -51,4 +49,4 @@ export const SurveillanceReportComponent = {
 }
 
 angular.module('chpl.components')
-    .component('chplSurveillanceReport', SurveillanceReportComponent);
+    .component('chplSurveillanceReportAnnual', SurveillanceReportAnnualComponent);
