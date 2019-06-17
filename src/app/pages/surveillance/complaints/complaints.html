@@ -21,7 +21,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="complaint in $ctrl.complaints">
+              <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
                 <td>{{ complaint.certificationBody.name }}</td>
                 <td>{{ complaint.complaintType.name }}</td>
                 <td>{{ complaint.complaintStatusType.name }}</td>
