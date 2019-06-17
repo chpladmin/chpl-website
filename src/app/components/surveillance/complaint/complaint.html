@@ -94,7 +94,7 @@
     <div ng-if="!$ctrl.complaint.listings || $ctrl.complaint.listings.length === 0">
       No Certified Products Selected
     </div>
-    <div class="alert alert-success" ng-repeat="listing in $ctrl.complaint.listings">
+    <div class="alert alert-success" ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
       <button class="close" ng-click="$ctrl.removeListing(listing)">
         <span class="sr-only">Remove item {{ listing.chplProductNumber }}</span>
         <i class="fa fa-times"></i>
@@ -107,7 +107,7 @@
         class="input-sm form-control"
         placeholder="Start Typing CHPL Product Number"
         ng-model="$ctrl.listing"
-        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue} | limitTo:10"
+        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
   </div>
 

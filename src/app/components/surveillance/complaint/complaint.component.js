@@ -93,6 +93,10 @@ export const SurveillanceComplaintComponent = {
         removeListing (chplProductNumber) {
             this.complaint.listings = this.complaint.listings.filter(listing => listing !== chplProductNumber);
         }
+
+        startsWith (valueToCheck, viewValue) {
+            return valueToCheck.substr(0, viewValue.length).toLowerCase() == viewValue.toLowerCase();
+        }
     },
 }
 
