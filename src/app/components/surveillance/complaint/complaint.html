@@ -29,7 +29,7 @@
         Complaint Type is required</div>
     </div>
   </div>
-  <div class="form-group" ng-if="$ctrl.mode === $ctrl.modes.EDIT">
+  <div class="form-group" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
     <label class="control-label" for="complaint-status-type">Complaint Status Type</label>
     <div>
       <select ng-model="$ctrl.complaint.complaintStatusType" id="complaint-status-type" name="complaintStatusType"
@@ -57,17 +57,19 @@
   <div class="form-group">
     <label class="control-label" for="received-date">Received Date<span class="text-danger">*</span></label>
     <div>
-      <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
-        name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"
-        ng-required="$ctrl.isOn('complaints-ui-validation')"
-        uib-datepicker-popup="MM/dd/yyyy"
-        is-open="$ctrl.receivedDatePicker"
-        close-text="Close" ></input>
-      <span class="input-group-btn">
-        <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
-      </span>
-      <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
-      <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
+      <div class="input-group">
+        <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
+          name="receivedDate" id="received-date" placeholder="yyyy-MM-dd"
+          ng-required="$ctrl.isOn('complaints-ui-validation')"
+          uib-datepicker-popup="MM/dd/yyyy"
+          is-open="$ctrl.receivedDatePicker"
+          close-text="Close" ></input>
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
+        </div>
+        <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
+        <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
+      </div>
     </div>
   </div>
   <div class="form-group">
@@ -133,7 +135,7 @@
     </button>
     <button class="btn btn-warning btn-small" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i><span
         class="sr-only"> Cancel</span></button>
-    <button class="btn btn-danger btn-small" ng-if="$ctrl.mode === $ctrl.modes.EDIT"
+    <button class="btn btn-danger btn-small" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT"
       ng-click="$ctrl.deleteComplaint($ctrl.complaint)" confirm="Are you sure you wish to delete this complaint?"
       confirm-ok="Yes" confirm-cancel="No" confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
       <i class="fa fa-trash"></i><span class="sr-only"> Delete</span>
