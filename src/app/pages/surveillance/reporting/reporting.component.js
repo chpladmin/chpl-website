@@ -2,8 +2,9 @@ export const SurveillanceReportingComponent = {
     templateUrl: 'chpl.surveillance/reporting/reporting.html',
     bindings: {
         acbs: '<',
+        annual: '<',
         availableQuarters: '<',
-        reports: '<',
+        quarters: '<',
     },
     controller: class SurveillanceReportingComponent {
         constructor ($log, authService, networkService) {
@@ -31,82 +32,165 @@ export const SurveillanceReportingComponent = {
                     this.display[this.acbs[0].name] = true;
                 }
             }
+            if (changes.annual) {
+                this.annuals = angular.copy(changes.annual.currentValue);
+            }
             if (changes.availableQuarters) {
                 this.availableQuarters = angular.copy(changes.availableQuarters.currentValue);
             }
-            if (changes.reports) {
-                this.reports = angular.copy(changes.reports.currentValue);
+            if (changes.quarters) {
+                this.quarters = angular.copy(changes.quarters.currentValue);
             }
         }
 
-        findReport (acb, year, quarter) {
-            let report = this.reports
+        findAnnualReport (acb, year) {
+            let report = this.annual
+                .find(report => report.acb.name === acb.name
+                      && report.year === year);
+            return report;
+        }
+
+        findQuarterReport (acb, year, quarter) {
+            let report = this.quarters
                 .find(report => report.acb.name === acb.name
                       && report.year === year
                       && report.quarter === quarter);
             return report;
         }
 
-        actOnReport (acb, year, quarter) {
-            let report = this.findReport(acb, year, quarter);
+        isAnnualOpen (acb, year) {
+            let report = this.findAnnualReport(acb, year);
+            return this.activeAnnualReport && this.activeAnnualReport.id === report.id;
+        }
+
+        isQuarterOpen (acb, year, quarter) {
+            let report = this.findQuarterReport(acb, year, quarter);
+            return this.activeQuarterReport && this.activeQuarterReport.id === report.id;
+        }
+
+        actOnAnnual (acb, year) {
+            let report = this.findAnnualReport(acb, year);
             if (report) {
-                if (this.activeReport && report.id === this.activeReport.id) {
-                    this.activeReport = undefined;
+                if (this.isAnnualOpen(acb, year)) {
+                    this.activeAnnualReport = undefined;
                 } else {
-                    this.activeReport = report;
+                    this.activeAnnualReport = report;
                 }
             } else {
-                this.activeReport = {
+                this.activeAnnualReport = {
+                    acb: acb,
+                    year: year,
+                };
+                this.mode = 'initiateAnnual';
+            }
+        }
+
+        actOnQuarter (acb, year, quarter) {
+            let report = this.findQuarterReport(acb, year, quarter);
+            if (report) {
+                if (this.isQuarterOpen(acb, year, quarter)) {
+                    this.activeQuarterReport = undefined;
+                } else {
+                    this.activeQuarterReport = report;
+                }
+            } else {
+                this.activeQuarterReport = {
                     acb: acb,
                     quarter: quarter,
                     year: year,
                 };
-                this.mode = 'initiate';
+                this.mode = 'initiateQuarter';
             }
         }
 
-        takeAction (report, action) {
+        takeAnnualAction (report, action) {
             if (action === 'edit') {
-                this.activeReport = report;
-                this.mode = 'edit';
+                this.activeAnnualReport = report;
+                this.mode = 'editAnnual';
+            }
+            if (action === 'delete') {
+                let that = this;
+                this.networkService.deleteAnnualSurveillanceReport(report.id).then(() => {
+                    that.networkService.getAnnualSurveillanceReports().then(results => {
+                        that.annual = results;
+                    });
+                    that.activeAnnualReport = undefined;
+                    that.cancelAnnual();
+                });
+            }
+        }
+
+        takeQuarterAction (report, action) {
+            if (action === 'edit') {
+                this.activeQuarterReport = report;
+                this.mode = 'editQuarter';
             }
             if (action === 'delete') {
                 let that = this;
                 this.networkService.deleteQuarterlySurveillanceReport(report.id).then(() => {
-                    that.networkService.getSurveillanceReporting().then(results => {
-                        that.reports = results;
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
+                        that.quarters = results;
                     });
-                    that.activeReport = undefined;
-                    that.cancel();
+                    that.activeQuarterReport = undefined;
+                    that.cancelQuarter();
                 });
             }
         }
 
-        save (report) {
+        saveAnnual (report) {
             let that = this;
-            if (this.mode === 'initiate') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.activeReport = results;
-                    that.networkService.getSurveillanceReporting().then(results => {
-                        that.reports = results;
+            if (this.mode === 'initiateAnnual') {
+                this.networkService.createAnnualSurveillanceReport(report).then(results => {
+                    that.activeAnnualReport = results;
+                    that.networkService.getAnnualSurveillanceReports().then(results => {
+                        that.annual = results;
                     });
-                    that.cancel();
+                    that.cancelAnnual();
                 });
-            } else if (this.mode === 'edit') {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.activeReport = results;
-                    that.networkService.getSurveillanceReporting().then(results => {
-                        that.reports = results;
+            } else if (this.mode === 'editAnnual') {
+                this.networkService.updateAnnualSurveillanceReport(report).then(results => {
+                    that.activeAnnualReport = results;
+                    that.networkService.getAnnualSurveillanceReports().then(results => {
+                        that.annual = results;
                     });
-                    that.cancel();
+                    that.cancelAnnual();
                 });
             }
             this.mode = 'view';
         }
 
-        cancel () {
-            if (this.mode === 'initiate') {
-                this.activeReport = undefined;
+        saveQuarter (report) {
+            let that = this;
+            if (this.mode === 'initiateQuarter') {
+                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
+                    that.activeQuarterReport = results;
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
+                        that.quarters = results;
+                    });
+                    that.cancelQuarter();
+                });
+            } else if (this.mode === 'editQuarter') {
+                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
+                    that.activeQuarterReport = results;
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
+                        that.quarters = results;
+                    });
+                    that.cancelQuarter();
+                });
+            }
+            this.mode = 'view';
+        }
+
+        cancelAnnual () {
+            if (this.mode === 'initiateAnnual') {
+                this.activeAnnualReport = undefined;
+            }
+            this.mode = 'view';
+        }
+
+        cancelQuarter () {
+            if (this.mode === 'initiateQuarter') {
+                this.activeQuarterReport = undefined;
             }
             this.mode = 'view';
         }

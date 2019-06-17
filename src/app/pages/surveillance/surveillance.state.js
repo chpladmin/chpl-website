@@ -17,13 +17,17 @@ let states = {
                     'ngInject'
                     return networkService.getAcbs(true);
                 },
+                annual: networkService => {
+                    'ngInject'
+                    return networkService.getAnnualSurveillanceReports();
+                },
                 availableQuarters: networkService => {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceQuarters();
                 },
-                reports: networkService => {
+                quarters: networkService => {
                     'ngInject'
-                    return networkService.getSurveillanceReporting();
+                    return networkService.getQuarterlySurveillanceReports();
                 },
             },
             data: { title: 'CHPL Surveillance - Reporting' },

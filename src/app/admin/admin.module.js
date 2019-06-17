@@ -15,6 +15,7 @@ import 'ng-file-upload';
         'ngIdle',
         'ngSanitize',
         'smart-table',
+        'toaster',
         'ui.bootstrap',
         'zxcvbn',
     ]);

@@ -1,6 +1,7 @@
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
+import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
 
 (function () {
     'use strict';
@@ -19,7 +20,8 @@ import { surveillanceStatesConfig as surveillanceStates } from './pages/surveill
         .config(organizationsStates)
         .config(reportsState)
         .config(resourcesState)
-        .config(surveillanceStates);
+        .config(surveillanceStates)
+        .config(usersStates);
 
     function routeConfig ($stateProvider, $urlRouterProvider) {
         $stateProvider

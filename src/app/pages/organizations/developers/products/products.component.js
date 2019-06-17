@@ -114,6 +114,8 @@ export const ProductsComponent = {
                             action: undefined,
                             developerId: response.owner.developerId,
                             productId: response.productId,
+                        }, {
+                            reload: true,
                         });
                     }
                 } else {
