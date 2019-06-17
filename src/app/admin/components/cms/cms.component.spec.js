@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the cms component', () => {
-        var $compile, $location, $log, $q, authService, ctrl, el, networkService, scope;
+        var $compile, $location, $log, $q, Upload, authService, ctrl, el, networkService, scope;
 
         var mock = {};
         mock.muuAccurateAsOfDate = new Date('2017-01-13');
@@ -10,11 +10,25 @@
         mock.results = [
             { id: 'fake', created: 1411117127000, products: '1;2;3'},
         ];
+        mock.baseData = {
+            url: '/rest/meaningful_use/upload',
+            headers: {
+                Authorization: 'Bearer token',
+                'API-Key': 'api-key',
+            },
+            data: {
+                file: 'file',
+            },
+        };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.admin', $provide => {
-                $provide.decorator('networkService', $delegate => {
-                    $delegate.getCmsDownload = jasmine.createSpy('getCmsDownload');
+            angular.mock.module('chpl.admin', $provide => {
+                $provide.decorator('$location', $delegate => {
+                    $delegate.url = jasmine.createSpy('url');
+                    return $delegate;
+                });
+                $provide.decorator('Upload', $delegate => {
+                    $delegate.upload = jasmine.createSpy('upload');
                     return $delegate;
                 });
                 $provide.decorator('authService', $delegate => {
@@ -23,24 +37,26 @@
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     return $delegate;
                 });
-                $provide.decorator('$location', $delegate => {
-                    $delegate.url = jasmine.createSpy('url');
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getCmsDownload = jasmine.createSpy('getCmsDownload');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$location_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
+            inject((_$compile_, _$location_, _$log_, _$q_, $rootScope, _Upload_, _authService_, _networkService_) => {
                 $compile = _$compile_;
                 $q = _$q_;
                 $location = _$location_;
                 $location.url.and.returnValue({});
                 $log = _$log_;
-                networkService = _networkService_;
-                networkService.getCmsDownload.and.returnValue($q.when(mock.results));
+                Upload = _Upload_;
+                Upload.upload.and.returnValue($q.when({}));
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
                 authService.getToken.and.returnValue('token');
                 authService.getApiKey.and.returnValue('api-key');
+                networkService = _networkService_;
+                networkService.getCmsDownload.and.returnValue($q.when(mock.results));
 
                 el = angular.element('<ai-cms-management></ai-cms-management>');
 
@@ -68,37 +84,6 @@
         describe('controller', () => {
             it('should have isolate scope object with instanciate members', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
-            });
-
-            describe('when concerned with the accurate as of date', () => {
-                let item;
-                let upload;
-                let dte;
-                beforeEach(() => {
-                    upload = jasmine.createSpy('upload');
-                    dte = 1550066637444;
-                    ctrl.muuAccurateAsOfDateObject = new Date(dte);
-                    item = {
-                        upload: upload,
-                        url: 'url',
-                    };
-                });
-
-                it('should set the uploader url', () => {
-                    ctrl.uploader.url = 'url';
-                    ctrl.setAccurateDate(item);
-                    expect(ctrl.uploader.url).toBe('url?accurate_as_of=1550066637444');
-                });
-
-                it('should set the item url', () => {
-                    ctrl.setAccurateDate(item);
-                    expect(item.url).toBe('url?accurate_as_of=1550066637444');
-                });
-
-                it('should call the item upload function', () => {
-                    ctrl.setAccurateDate(item);
-                    expect(upload).toHaveBeenCalled();
-                });
             });
 
             describe('when getting the download file', () => {
@@ -143,19 +128,84 @@
                 });
             });
 
-            describe('when using the file uploader', () => {
-                it('should display errors on failure', () => {
-                    const fileItem = { file: { name: 'filename' } };
-                    const response = { errorMessages: 'messages' };
-                    ctrl.uploader.onErrorItem(fileItem, response);
-                    expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
-                    expect(ctrl.uploadErrors).toBe('messages');
-                    expect(ctrl.uploadSuccess).toBe(false);
+            describe('when uploading', () => {
+                it('should not do anything without both a file and a date', () => {
+                    ctrl.file = undefined;
+                    ctrl.muuAccurateAsOfDateObject = undefined;
+                    ctrl.upload();
+                    expect(Upload.upload).not.toHaveBeenCalled();
+                    ctrl.muuAccurateAsOfDateObject = 3;
+                    ctrl.upload();
+                    expect(Upload.upload).not.toHaveBeenCalled();
+                    ctrl.file = 'file';
+                    ctrl.upload();
+                    expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
                 });
 
-                it('should redirect to jobs management on success', () => {
-                    ctrl.uploader.onSuccessItem();
-                    expect($location.url).toHaveBeenCalledWith('/admin/jobsManagement');
+                describe('when the date is valid', () => {
+                    let data;
+                    beforeEach(() => {
+                        data = angular.copy(mock.baseData);
+                        ctrl.file = 'file';
+                    });
+
+                    it('should handle objects', () => {
+                        ctrl.muuAccurateAsOfDateObject = new Date(33);
+                        data.url = data.url + '?accurate_as_of=33';
+                        ctrl.upload();
+                        expect(Upload.upload).toHaveBeenCalledWith(data);
+                    });
+
+                    it('should handle strings', () => {
+                        ctrl.muuAccurateAsOfDateObject = '2018-11-28';
+                        data.url = data.url + '?accurate_as_of=1543363200000';
+                        ctrl.upload();
+                        expect(Upload.upload).toHaveBeenCalledWith(data);
+                    });
+                });
+
+                xdescribe('in response to the upload', () => {
+                    let response;
+                    beforeEach(() => {
+                        ctrl.file = {
+                            name: 'name',
+                        };
+                        ctrl.muuAccurateAsOfDateObject = '2018-11-28';
+                        response = {
+                            data: {
+                                error: undefined,
+                                errorMessages: undefined,
+                            },
+                            config: { data: { file: 'filename' }},
+                        };
+                    });
+
+                    it('should handle success', () => {
+                        Upload.upload.and.returnValue($q.when(response));
+                        ctrl.upload();
+                        scope.$digest();
+                        expect($location.url).toHaveBeenCalledWith('/admin/jobsManagement');
+                    });
+
+                    it('should handle failure', () => {
+                        response.data.errorMessages = [1];
+                        Upload.upload.and.returnValue($q.reject(response));
+                        ctrl.upload();
+                        scope.$digest();
+                        expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
+                        expect(ctrl.uploadErrors).toEqual([1]);
+                        expect(ctrl.uploadSuccess).toBe(false);
+                    });
+
+                    it('should handle failure', () => {
+                        response.data.error = 'an error';
+                        Upload.upload.and.returnValue($q.reject(response));
+                        ctrl.upload();
+                        scope.$digest();
+                        expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
+                        expect(ctrl.uploadErrors).toEqual(['an error']);
+                        expect(ctrl.uploadSuccess).toBe(false);
+                    });
                 });
             });
         });

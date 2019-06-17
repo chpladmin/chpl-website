@@ -66,5 +66,5 @@
   <p class="vm.pClass" ng-if="vm.activity === vm.activityEnum.EXPIRED">You must change or reset your password before you can log in</p>
   <p ng-class="vm.messageClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>
   <p ng-if="vm.activity === vm.activityEnum.LOGIN" class="text-center"><small>This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.</small></p>
-  <div ng-if="vm.hasAnyRole(['ROLE_ADMIN']) && vm.DEVELOPER_MODE" feature-flag-overrides></div>
+  <a ng-if="vm.hasAnyRole(['ROLE_ADMIN']) && vm.DEVELOPER_MODE" href="rest/ff4j-console/home">FF4j</a>
 </div>

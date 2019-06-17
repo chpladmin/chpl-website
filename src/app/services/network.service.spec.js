@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Network service', () => {
-        var $httpBackend, $log, $rootScope, mock, networkService;
+        var $httpBackend, $log, mock, networkService;
 
         mock = {};
         mock.editions = ['Edition 1', 'Edition 2'];
@@ -10,10 +10,9 @@
         beforeEach(() => {
             angular.mock.module('chpl.services');
 
-            inject((_$httpBackend_, _$log_, _$rootScope_, _networkService_) => {
+            inject((_$httpBackend_, _$log_, _networkService_) => {
                 $httpBackend = _$httpBackend_;
                 $log = _$log_;
-                $rootScope = _$rootScope_;
                 networkService = _networkService_;
 
                 $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
@@ -31,18 +30,9 @@
         });
 
         describe('for general REST calls', () => {
-            it('should log the user out if a GET responds with that message', () => {
-                spyOn($rootScope, '$broadcast').and.callFake(() => {});
-                $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, {error: 'Invalid authentication token.'});
-                networkService.getProduct('id').then(() => {
-                    expect($rootScope.$broadcast).toHaveBeenCalledWith('badAuthorization');
-                });
-                $httpBackend.flush();
-            });
-
             it('should return a promise with the data if a GET doesn\'t return an object', function () {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
-                networkService.getProduct('id').then(response => {
+                networkService.getListing('id').then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -54,7 +44,7 @@
 
             it('should return a promise with the data if a GET responds with a failure', () => {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
-                networkService.getProduct('id').then(response => {
+                networkService.getListing('id').then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -158,14 +148,6 @@
             });
         });
 
-        it('should addRole', () => {
-            $httpBackend.expectPOST(/^\/rest\/users\/name\/roles\/role$/).respond(200, {data: 'response'});
-            networkService.addRole({subjectName: 'name', role: 'role'}).then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should authorizeUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/username\/authorize$/, 'payload').respond(200, {data: 'response'});
             networkService.authorizeUser('payload', 'username').then(response => {
@@ -243,9 +225,33 @@
             $httpBackend.flush();
         });
 
+        it('should createComplaint', () => {
+            $httpBackend.expectPOST(/^\/rest\/complaints/).respond(200, {data: 'response'});
+            networkService.createComplaint('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should createFilter', () => {
+            $httpBackend.expectPOST(/^\/rest\/filters/).respond(200, {data: 'response'});
+            networkService.createFilter('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should createInvitedUser', () => {
             $httpBackend.expectPOST(/^\/rest\/users\/create$/).respond(200, {data: 'response'});
             networkService.createInvitedUser('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should createQuarterlySurveillanceReport', () => {
+            $httpBackend.expectPOST(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.createQuarterlySurveillanceReport('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -270,6 +276,30 @@
         it('should deleteAnnouncement', () => {
             $httpBackend.expectDELETE(/^\/rest\/announcements\/1$/).respond(200);
             networkService.deleteAnnouncement(1).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        it('should deleteAnnouncement', () => {
+            $httpBackend.expectDELETE(/^\/rest\/filters\/1$/).respond(200);
+            networkService.deleteFilter(1).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        it('should deleteComplaint', () => {
+            $httpBackend.expectDELETE(/^\/rest\/complaints\/1$/).respond(200);
+            networkService.deleteComplaint(1).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        it('should deleteQuarterlySurveillanceReport', () => {
+            $httpBackend.expectDELETE(/^\/rest\/surveillance-report\/quarterly\/id$/).respond(200);
+            networkService.deleteQuarterlySurveillanceReport('id').then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
@@ -559,6 +589,30 @@
             $httpBackend.flush();
         });
 
+        it('should getComplaints', () => {
+            $httpBackend.expectGET(/^\/rest\/complaints$/).respond(200, {data: 'response'});
+            networkService.getComplaints().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getComplaintStatusTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/complaint_status_types$/).respond(200, {data: 'response'});
+            networkService.getComplaintStatusTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getComplaintTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/complaint_types$/).respond(200, {data: 'response'});
+            networkService.getComplaintTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCmsIds', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids\/search\?ids=ids$/).respond(200, {data: 'response'});
             networkService.getCmsIds('ids').then(response => {
@@ -682,6 +736,22 @@
             $httpBackend.flush();
         });
 
+        it('should getFilters', () => {
+            $httpBackend.expectGET(/^\/rest\/filters\?filterTypeId=1/).respond(200, {data: 'response'});
+            networkService.getFilters(1).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getFilterTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/filter_types$/).respond(200, {data: 'response'});
+            networkService.getFilterTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getFuzzyTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/fuzzy_choices$/).respond(200, {data: 'response'});
             networkService.getFuzzyTypes().then(response => {
@@ -717,6 +787,22 @@
         it('should getIcsFamily', () => {
             $httpBackend.expectGET(/^\/rest\/certified_products\/id\/ics_relationships$/).respond(200, {data: 'response'});
             networkService.getIcsFamily('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListing', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
+            networkService.getListing('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListing and force refresh', function () {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
+            networkService.getListing('payload', true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -810,22 +896,6 @@
             $httpBackend.flush();
         });
 
-        it('should getProduct', () => {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
-            networkService.getProduct('payload').then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getProduct and force refresh', function () {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
-            networkService.getProduct('payload', true).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should getProductActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/products$/).respond(200, {data: 'response'});
@@ -869,6 +939,14 @@
         it('should getQmsStandards', () => {
             $httpBackend.expectGET(/^\/rest\/data\/qms_standards$/).respond(200, {data: 'response'});
             networkService.getQmsStandards().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getQuarterlySurveillanceQuarters', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/quarters$/).respond(200, {data: 'response'});
+            networkService.getQuarterlySurveillanceQuarters().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -971,6 +1049,14 @@
                 surveillanceRequirements: {data: 'surveillance_requirements'},
                 nonconformityTypes: {data: 'nonconformity_types'},
             });
+        });
+
+        it('should getSurveillanceReporting', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.getSurveillanceReporting().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
         });
 
         it('should getTargetedUsers', () => {
@@ -1167,7 +1253,7 @@
 
         it('should impersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
-            networkService.impersonateUser({user: {subjectName: 'name'}}).then(response => {
+            networkService.impersonateUser({subjectName: 'name'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1318,14 +1404,6 @@
             $httpBackend.flush();
         });
 
-        it('should revokeRole', () => {
-            $httpBackend.expectDELETE(/^\/rest\/users\/name\/roles\/role$/).respond(200);
-            networkService.revokeRole({subjectName: 'name', role: 'role'}).then(response => {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
         it('should search', () => {
             $httpBackend.expectPOST(/^\/rest\/search$/).respond(200, {data: 'response'});
             networkService.search('payload').then(response => {
@@ -1342,9 +1420,25 @@
             $httpBackend.flush();
         });
 
+        it('should splitVersion', () => {
+            $httpBackend.expectPOST(/^\/rest\/versions\/1\/split$/).respond(200, {data: 'response'});
+            networkService.splitVersion({oldVersion: {versionId: 1}}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should unimpersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/unimpersonate$/).respond(200, {data: 'response'});
             networkService.unimpersonateUser().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateComplaint', () => {
+            $httpBackend.expectPUT(/^\/rest\/complaints\/1$/).respond(200, {data: 'response'});
+            networkService.updateComplaint({id: 1}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1377,6 +1471,14 @@
         it('should updateJob', () => {
             $httpBackend.expectPUT(/^\/rest\/schedules\/jobs$/).respond(200, {data: 'response'});
             networkService.updateJob('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateQuarterlySurveillanceReport', () => {
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
+            networkService.updateQuarterlySurveillanceReport('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

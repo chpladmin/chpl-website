@@ -1,3 +1,8 @@
+import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
+import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
+import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
+import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
+
 (function () {
     'use strict';
 
@@ -11,8 +16,12 @@
         .config(routeConfig)
         .config(administrationState)
         .config(collectionsState)
+        .config(listingStates)
+        .config(organizationsStates)
         .config(reportsState)
-        .config(resourcesState);
+        .config(resourcesState)
+        .config(surveillanceStates)
+        .config(usersStates);
 
     function routeConfig ($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -28,8 +37,8 @@
                 controllerAs: 'vm',
                 data: { title: 'CHPL Administration' },
             })
-            .state('admin.authorizePasswordReset', {
-                url: '/admin/authorizePasswordReset',
+            .state('authorizePasswordReset', {
+                url: '/admin/authorizePasswordReset?token',
                 template: require('./admin/admin.html'),
                 controller: 'AdminController',
                 controllerAs: 'vm',

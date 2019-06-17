@@ -8,13 +8,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href ng-click="vm.clear()"><img src="../../assets/images/CHPL_Logo_03.png" alt="Certified Health IT Product List"></img></a>
+        <a class="navbar-brand" href ng-click="vm.clear()"><img src="../../assets/images/CHPL_Logo_03.png" alt="Certified Health IT Product List" class="img-responsive"></img></a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right nav-main">
-          <li ng-class="{'active': vm.isActive('/search') }"><a href="#/search">Search CHPL <i class="fa fa-search"></i></a></li>
+          <li><a href="#/search">Search CHPL <i class="fa fa-search"></i></a></li>
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-right'"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="widget-toggle" id="widget-dropdown">
@@ -56,16 +56,17 @@
     </div><!-- /.container-fluid -->
     <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole()" feature-flag="adminNav"><button class="btn btn-link" ng-click="vm.toggleNav()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
-  <nav class="navbar navbar-default" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'" feature-flag="adminNav">
+  <nav class="navbar navbar-default navbar-admin" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'" feature-flag="adminNav">
     <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown"><button class="btn btn-link" ng-click="vm.toggleNav()">Show navigation <i class="fa fa-caret-down"></i></button></div>
     <div class="container-fluid">
       <ul class="nav navbar-nav"> <!-- admin-nav -->
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
-          <a href class="dropdown-toggle" id="administration-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.administrationIsOpen">Administration</a>
+          <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="administration-toggle" ng-class="{'admin-active' : vm.isActive('administration')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.administrationIsOpen">Administration</button>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="administration-toggle" id="administration-dropdown-menu">
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/upload">Upload</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings()">Confirm Listings</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/confirmSurveillance">Confirm Surveillance</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))"><a ui-sref="administration.upload.listings()"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.upload.listings')"></i>Upload Listings</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/upload">Upload Listings</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.confirm.listings')"></i> Confirm Listings</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance">Confirm Surveillance</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/scheduledJobs">Scheduled Jobs</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Background Jobs</a></li>
@@ -75,10 +76,17 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
           </ul>
         </li>
-        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" ng-class="{'active': vm.isActive('/users') }"><a href="#/admin/userManagement">Users</a></li>
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="dropdown" uib-dropdown is-open="vm.usersIsOpen">
+          <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="users-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.usersIsOpen">Users</button>
+          <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="users-toggle" id="users-dropdown-menu">
+            <li ng-if="!vm.isOn('ocd2749')"><a href="#/admin/userManagement">User Management</a></li>
+            <li ng-if="vm.isOn('ocd2749')"><a ui-sref="users"><i class="fa fa-caret-right" ng-if="vm.isActive('users')"></i> User Management</a></li>
+          </ul>
+        </li>
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL'])" class="dropdown" uib-dropdown is-open="vm.organizationsIsOpen">
-          <a href class="dropdown-toggle" id="organizations-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.organizationsIsOpen">Organizations</a>
+          <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="organizations-toggle" ng-class="{'admin-active' : vm.isActive('organizations')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.organizationsIsOpen">Organizations</button>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="organizations-toggle" id="organizations-dropdown-menu">
+            <li><a ui-sref="organizations.developers({developerId: undefined})" ui-sref-opts="{ reload: true }"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.developers')"></i> Developers</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">ONC-ACB<span ng-if="vm.acbs.length !== 1">s</span></li>
             <li ng-repeat="acb in vm.acbs"><a href="#/admin/acbManagement" ng-bind-html="acb.name"></a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])">ONC-ATL<span ng-if="vm.atls.length !== 1">s</span></li>
@@ -86,23 +94,34 @@
           </ul>
         </li>
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
-          <a href class="dropdown-toggle" id="reports-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.reportsIsOpen">Reports</a>
+          <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="reports-toggle" ng-class="{'admin-active' : vm.isActive('reports')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.reportsIsOpen">Reports</button>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
-            <li><a ui-sref="reports.listings({productId: null})">Listings</a></li>
-            <li><a ui-sref="reports.developers()">Developers</a></li>
-            <li><a href="#/admin/reports/acb">ONC-ACBs</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/atl">ONC-ATLs</a></li>
-            <li><a href="#/admin/reports/prod">Products</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/announcement">Announcements</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/users">Users</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_management">API Keys</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/reports/api_key_usage">API Key Usage</a></li>
+            <li><a ui-sref="reports.listings()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.listings')"></i> Listings</a></li>
+            <li><a ui-sref="reports.developers()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.developers')"></i> Developers</a></li>
+            <li><a ui-sref="reports.acbs()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.acbs')"></i> ONC-ACBs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i> ONC-ATLs</a></li>
+            <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
+            <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i> Announcements</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.userActions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.userActions')"></i> User Actions</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-keys()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-keys')"></i> API Keys</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-key-usage()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-key-usage')"></i> API Key Usage</a></li>
+          </ul>
+        </li>
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))" class="dropdown" uib-dropdown is-open="vm.surveillanceIsOpen">
+          <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="surveillance-toggle" ng-class="{'admin-active' : vm.isActive('surveillance')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.surveillanceIsOpen">Surveillance</button>
+          <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="surveillance-toggle" id="surveillance-dropdown-menu">
+            <li><a ui-sref="surveillance.upload()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.upload')"></i> Upload</a></li>
+            <li><a ui-sref="surveillance.confirm()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.confirm')"></i> Confirm</a></li>
+            <li feature-flag="complaints"><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i> Complaints</a></li>
+            <li feature-flag="surveillance-reporting"><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i> Reporting</a></li>
           </ul>
         </li>
       </ul><!-- /admin nav -->
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
-          <button href class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getFullname()">Administrator Login</span>{{ vm.getFullname() }} <span class="fa" ng-class="vm.adminLoginIsOpen ? 'fa-caret-up' : 'fa-caret-right'"></span></button>
+          <button class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getFullname()">Administrator Login</span>{{ vm.getFullname() }} <span class="fa" ng-class="vm.adminLoginIsOpen ? 'fa-caret-up' : 'fa-caret-right'"></span></button>
           <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
             <li>
               <ai-login form-class="navbar-form"

@@ -34,7 +34,7 @@
                 vm.compareIds = compareString.split('&');
 
                 for (var i = 0; i < vm.compareIds.length; i++) {
-                    networkService.getProduct(vm.compareIds[i])
+                    networkService.getListing(vm.compareIds[i])
                         .then(function (product) {
                             vm.updateProductList(product);
                             vm.updateCerts(product);

@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <span ng-if="$ctrl.mode === 'view'">
+      <div class="col-md-12">
+        <h2>Available reports</h2>
+        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'toString()'">
+          <div class="col-sm-12">
+            <button class="btn btn-default pull-right" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]"><i class="fa" ng-class="$ctrl.display[acb.name] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
+            <h4>{{ acb.name }}</h4>
+            <div ng-if="$ctrl.display[acb.name]">
+              <table class="table table-condensed">
+                <thead>
+                  <th scope="col">Year</th>
+                  <th scope="col" ng-repeat="quarter in $ctrl.availableQuarters">{{ quarter.name }}</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="year in $ctrl.availableYears | orderBy :'toString()' : true">
+                    <td>{{ year }}</td>
+                    <td ng-repeat="quarter in $ctrl.availableQuarters">
+                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnReport(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
+                        <span ng-if="$ctrl.findReport(acb, year, quarter.name) && $ctrl.findReport(acb, year, quarter.name).id !== $ctrl.activeReport.id">View</span>
+                        <span ng-if="$ctrl.findReport(acb, year, quarter.name) && $ctrl.findReport(acb, year, quarter.name).id === $ctrl.activeReport.id">Close</span>
+                        <span ng-if="!$ctrl.findReport(acb, year, quarter.name)">Initiate</span>
+                      </button>
+                      <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnReport(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findReport(acb, year, quarter.name)">View</button>
+                      <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findReport(acb, year, quarter.name)">N/A</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeReport">
+      <h2>View report</h2>
+      <chpl-surveillance-report report="$ctrl.activeReport" take-action="$ctrl.takeAction($ctrl.activeReport, action)"></chpl-surveillance-report>
+    </div>
+    <div class="col-md-12" ng-if="$ctrl.mode !== 'view'">
+      <h2 ng-if="$ctrl.mode === 'initiate'">Initiate surveillance reporting</h2>
+      <h2 ng-if="$ctrl.mode === 'edit'">Edit surveillance reporting</h2>
+      <chpl-surveillance-report report="$ctrl.activeReport" is-editing="true" on-save="$ctrl.save(report)" on-cancel="$ctrl.cancel()" take-action="$ctrl.takeAction(report, action)"></chpl-surveillance-report>
+    </div>
+  </div>
+</div>

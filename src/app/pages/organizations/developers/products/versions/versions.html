@@ -1,14 +1,15 @@
-<div class="container-fluid">
-  <div class="row">
+<div>
+  <div class="row" ng-if="$ctrl.validState">
     <div class="col-sm-12">
       <h1 ng-switch on="$ctrl.action">
         <span ng-switch-when="edit">Edit Version</span>
         <span ng-switch-when="merge">Merge Versions</span>
+        <span ng-switch-when="split">Split a Version</span>
         <span ng-switch-default>View Version</span>
       </h1>
     </div>
   </div>
-  <div class="row main-content" id="main-content" tabindex="-1">
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="$ctrl.validState">
     <div class="col-md-3">
       <chpl-developer developer="$ctrl.developer"
                       take-action="$ctrl.takeDeveloperAction()"
@@ -28,6 +29,7 @@
                     developer="$ctrl.developer"
                     can-edit="$ctrl.can('edit')"
                     can-merge="$ctrl.can('merge') && $ctrl.versions.length > 0"
+                    can-split="$ctrl.can('split-version')"
                     is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
                     is-invalid="$ctrl.action === 'merge' && $ctrl.mergingVersions.length < 2"
                     on-cancel="$ctrl.cancel()"
@@ -35,6 +37,15 @@
                     show-full="true"
                     take-action="$ctrl.takeAction(action)"
                     ></chpl-version>
+      <div ng-if="$ctrl.action === 'split'">
+        <h3>Listings staying with original Version</h3>
+        <div class="bg-danger" ng-if="$ctrl.listings.length === 0">At least one Listing must remain</div>
+        <div ng-repeat="listing in $ctrl.listings | orderBy: 'listing'">
+          {{ listing.chplProductNumber }}
+          <button class="btn btn-default btn-small pull-right" id="versions-listing-move-new-{{ listing.id }}" ng-click="$ctrl.toggleMove(listing, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
     </div>
     <div class="col-md-3" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
       <h2>Listings</h2>
@@ -57,5 +68,29 @@
         <div class="clearfix"></div>
       </div>
     </div>
+    <div class="col-md-3" ng-if="$ctrl.action === 'split'">
+      <h2>New Version</h2>
+      <chpl-version version="$ctrl.newVersion"
+                    product="$ctrl.product"
+                    developer="$ctrl.developer"
+                    can-edit="$ctrl.can('edit')"
+                    is-editing="$ctrl.splitEdit"
+                    is-splitting="true"
+                    on-cancel="$ctrl.cancelSplitEdit()"
+                    on-edit="$ctrl.saveSplitEdit(version)"
+                    show-full="true"
+                    take-action="$ctrl.takeSplitAction()"></chpl-version>
+      <h3>Listings moving to new Version</h3>
+      <div class="bg-danger" ng-if="$ctrl.movingListings.length === 0">At least one Listing must be selected to move</div>
+      <div ng-repeat="listing in $ctrl.movingListings | orderBy: 'chplProductNumber'">
+        <button class="btn btn-default btn-small" id="versions-listing-move-old-{{ listing.id }}" ng-click="$ctrl.toggleMove(listing, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ listing.chplProductNumber }}
+      </div>
+      <button class="btn btn-ai-success btn-small pull-right" id="versions-component-save-{{ $ctrl.version.versionId }}" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingListings.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" id="versions-component-cancel-{{ $ctrl.version.versionId }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    </div>
+
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.validState">
+    <p class="lead">This resource does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
 </div>

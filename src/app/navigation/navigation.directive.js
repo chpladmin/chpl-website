@@ -36,7 +36,7 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, featureFlags, networkService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags, networkService) {
         var vm = this;
 
         vm.clear = clear;
@@ -63,6 +63,9 @@
             }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
+                if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
+                    vm.toggleNav(true);
+                }
             });
             $scope.$on('$destroy', showCmsWidget);
 
@@ -73,6 +76,9 @@
 
             var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
+                if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
+                    vm.toggleNav(true);
+                }
             });
             $scope.$on('$destroy', showCompareWidget);
 
@@ -109,6 +115,14 @@
                 vm.loadOrganizations();
             })
             $scope.$on('$destroy', unimpersonating);
+
+            var flags = $rootScope.$on('flags loaded', function () {
+                if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
+                    vm.loadOrganizations();
+                    vm.toggleNav();
+                }
+            });
+            $scope.$on('$destroy', flags);
         }
 
         function clear () {
@@ -117,10 +131,8 @@
             $location.url('/search');
         }
 
-        function isActive (route) {
-            var paths = $location.path().split('/')
-            var routes = route.split('/');
-            return (route === $location.path() || (paths[1] === routes[1] && routes.length === 2));
+        function isActive (state) {
+            return $state.$current.name.startsWith(state);
         }
 
         function loadAnnouncements () {
@@ -166,9 +178,14 @@
             vm.compareWidgetExpanded = show;
         }
 
-        function toggleNav () {
-            vm.navShown = !vm.navShown;
-            $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
+        function toggleNav (forceOpen) {
+            if (forceOpen) {
+                vm.navShown = true;
+                $rootScope.bodyClass = 'navigation-shown';
+            } else {
+                vm.navShown = !vm.navShown;
+                $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
+            }
         }
     }
 })();

@@ -18,6 +18,7 @@ export const ProductsComponent = {
             this.backup = {};
             this.splitEdit = true;
             this.movingVersions = [];
+            this.validState = true;
         }
 
         $onInit () {
@@ -50,6 +51,9 @@ export const ProductsComponent = {
             if (changes.versions) {
                 this.versions = angular.copy(changes.versions.currentValue);
                 this.backup.versions = angular.copy(this.versions);
+            }
+            if (this.developer && this.product) {
+                this.validState = this.developer.developerId === this.product.owner.developerId;
             }
         }
 
@@ -105,9 +109,15 @@ export const ProductsComponent = {
                             developerId: that.developer.developerId,
                             productId: response.productId,
                         });
+                    } else {
+                        that.$state.go('organizations.developers.products', {
+                            action: undefined,
+                            developerId: response.owner.developerId,
+                            productId: response.productId,
+                        }, {
+                            reload: true,
+                        });
                     }
-                    that.product = response;
-                    that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
@@ -173,7 +183,6 @@ export const ProductsComponent = {
         }
 
         takeAction (action) {
-            this.cancel();
             this.action = action;
         }
 

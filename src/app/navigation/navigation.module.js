@@ -1,7 +1,13 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.navigation', ['chpl.services', 'chpl.constants', 'toaster'])
+    angular.module('chpl.navigation', [
+        'chpl.services',
+        'chpl.constants',
+        'feature-flags',
+        'toaster',
+        'ui.router',
+    ])
         .factory('authInterceptor', authInterceptor)
         .config(function ($httpProvider) {
             $httpProvider.interceptors.push('authInterceptor');

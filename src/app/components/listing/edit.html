@@ -1,0 +1,443 @@
+<div id="listing-edit-{{ $ctrl.listing.listingId }}" ng-form="$ctrl.form">
+  <div ng-if="$ctrl.idFields">
+    <div class="form-inline">
+      <span class="form-control-static">
+        <strong>CHPL Product Number:</strong>{{ $ctrl.idFields.prefix }}
+      </span>
+      <div class="form-group">
+        <label for="id-prod" class="sr-only">Product Code:</label>
+        <input type="text" id="id-prod" name="idProd" ng-model="$ctrl.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required>
+      </div>
+      <div class="form-group">
+        <label for="id-ver" class="sr-only">Version Code:</label>
+        <input type="text" id="id-ver" name="idVer" ng-model="$ctrl.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required>
+      </div>
+      <div class="form-group">
+        <label for="id-ics" class="sr-only">ICS Code:</label>
+        <input type="text" id="id-ics" name="idIcs" ng-model="$ctrl.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required>
+      </div>
+      <span class="form-control-static">
+        {{ $ctrl.idFields.suffix }}
+      </span>
+    </div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idProd.$touched) && $ctrl.form.idProd.$error.required">Product Code is required</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idProd.$touched) && !$ctrl.form.idProd.$error.required && !$ctrl.form.idProd.$valid">Product Code must consist of letters, numbers and/or "_", and be 4 characters long</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idVer.$touched) && $ctrl.form.idVer.$error.required">Version Code is required</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idVer.$touched) && !$ctrl.form.idVer.$error.required && !$ctrl.form.idVer.$valid">Version Code must consist of letters, numbers and/or "_", and be 2 characters long</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idIcs.$touched) && $ctrl.form.idIcs.$error.required">ICS Code is required</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idIcs.$touched) && !$ctrl.form.idIcs.$error.required && !$ctrl.form.idIcs.$valid">ICS Code must be a two digit single number from 00 to 99</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.idIcs.$touched) && $ctrl.listing.ics.inherits && $ctrl.idFields.ics !== $ctrl.requiredIcsCode() && $ctrl.requiredIcsCode() > 0 && $ctrl.listing.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ $ctrl.requiredIcsCode() }}"</div>
+  </div>
+  <div ng-if="!$ctrl.idFields">
+    <strong>CHPL Product Number:</strong> {{ $ctrl.listing.chplProductNumber }}
+  </div>
+  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+    <label for="cp-practice">Practice Type</label>
+    <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"
+            ng-options="practice as practice.name for practice in $ctrl.resources.practices" required>
+    </select>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpPractice.$touched) && $ctrl.form.cpPractice.$error.required">Field is required</div>
+  </div>
+  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+    <label for="cp-classification">Classification Type</label>
+    <select class="input-sm form-control" ng-model="$ctrl.listing.classificationType" id="cp-classification" name="cpClassification"
+            ng-options="classification as classification.name for classification in $ctrl.resources.classifications" required>
+    </select>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpClassification.$touched) && $ctrl.form.cpClassification.$error.required">Field is required</div>
+  </div>
+  <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <br />
+  <div ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} </div>
+  <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="form-group">
+    <label for="cp-body">Certification Body</label>
+    <select class="input-sm form-control" ng-model="$ctrl.listing.certifyingBody" id="cp-body" name="cpBody"
+            ng-options="body as body.name for body in $ctrl.resources.bodies" required>
+    </select>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpBody.$touched) && $ctrl.form.cpBody.$error.required">Field is required</div>
+  </div>
+  <div class="form-group">
+    <label for="cp-cert-date">Certification Date</label>
+    <div class="input-group">
+      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.certDate" is-open="$ctrl.listing.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.required">Field is required</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
+  </div>
+  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2011' || ($ctrl.listing.certificationEdition.name === '2014' && $ctrl.listing.chplProductNumber.startsWith('CHP-'))">
+    <label for="cp-additional-software">Product wide Relied Upon Software</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software">
+  </div>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th scope="col">Status History</th>
+        <th scope="col">Effective date</th>
+        <th scope="col">Reason for status change</th>
+        <th scope="col"><span class="sr-only">Event Actions</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="$ctrl.addPreviousStatus()"><i class="fa fa-plus"></i><span class="sr-only"> Add status</span></button></td>
+      </tr>
+      <tr ng-repeat="statusEvent in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
+        <td>
+          <div class="form-group">
+            <label><span class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></span>
+              <select ng-model="statusEvent.status" required
+                      ng-options="status as status.name disable when $ctrl.disabledStatus(status.name) for status in $ctrl.resources.statuses | orderBy:'name'"
+                      name="certificationStatus{{ $index }}" class="input-sm form-control">
+              </select>
+            </label>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['certificationStatus' + $index].$touched) && $ctrl.form['certificationStatus' + $index].$error.required">Certification Status is required</div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['certificationStatus' + $index].$touched) && $ctrl.matchesPreviousStatus(statusEvent)">Certification Status must differ from previous Status</div>
+            <div class="text-danger" ng-if="$first && $ctrl.mayCauseSuspension($ctrl.certificationStatus($ctrl.listing, {editing: true}))">Setting this product to this status may trigger a ban by ONC</div>
+            <div class="text-danger" ng-if="$first && $ctrl.certificationStatus($ctrl.listing, {editing: true}) === 'Terminated by ONC'">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
+            <div class="text-danger" ng-if="$first && $ctrl.certificationStatus($ctrl.listing, {editing: true}) === 'Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
+            <div class="text-danger" ng-if="$first && $ctrl.certificationStatus($ctrl.listing, {editing: true}) === 'Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
+            <div class="text-danger" ng-if="$last && $ctrl.improperFirstStatus()">The earliest status of this product must be "Active"</div>
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <label><span class="sr-only">Change Date <span class="text-danger">*</span></span>
+              <div class="input-group">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="statusEvent.statusDateObject" is-open="statusEvent.statusDatePicker" close-text="Close" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+            </label>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.form['statusDate' + $index].$error.required">Change date is required</div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousDate(statusEvent)">Only one change of status allowed per day</div>
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <label><span class="sr-only">Reason for Change</span>
+              <input class="input-sm form-control" type="text" ng-model="statusEvent.reason"
+                     ng-maxlength="500" name="reasonForChange{{ $index }}">
+            </label>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['reasonForChange' + $index].$touched) && $ctrl.form['reasonForChange' + $index].$error.maxlength">Field is too long</div>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-block btn-danger" ng-click="$ctrl.removePreviousStatus(statusEvent.statusDateObject)"><i class="fa fa-trash"></i><span class="sr-only"> Remove status</span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <label for="cp-acb-cert-id">ACB Certification Id</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
+  </div>
+  <div class="form-group">
+    <label for="cp-other-acb">Other ACB</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.otherAcb" id="cp-other-acb">
+  </div>
+  <div class="form-group">
+    <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
+  </div>
+  <div class="form-group">
+    <label for="cp-ics">Inherited Certification Status</label>
+    <input type="checkbox" ng-model="$ctrl.listing.ics.inherits" id="cp-ics">
+  </div>
+  <div ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.listing.ics.inherits">
+    Inherited Certification Management
+    <ul class="list-unstyled text-right">
+      <li ng-repeat="parent in $ctrl.listing.ics.parents track by $index">
+        <strong>Inherits from:</strong> {{ parent.chplProductNumber }} <span ng-if="parent.certificationDate">( {{ parent.certificationDate | date : 'mediumDate' : 'UTC' }} )</span>
+        <button class="btn btn-sm btn-danger" ng-click="$ctrl.listing.ics.parents.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button>
+        <div class="clearfix"></div>
+      </li>
+    </ul>
+    <div class="form-horizontal">
+      <div class="form-group form-group-sm">
+        <label class="col-sm-6 control-label" for="new-ics-parent">ICS Source Listings (Same Product)</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="$ctrl.newIcsParent.chplProductNumber" id="new-ics-parent"
+                    ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') disable when $ctrl.disabledParent(listing) for listing in $ctrl.relatedListings | orderBy:'certificationDate'">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.ics.parents, $ctrl.newIcsParent); $ctrl.newIcsParent = ''" ng-disabled="!$ctrl.newIcsParent"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+          </div>
+        </div>
+        <label class="col-sm-6 control-label" for="new-ics-parent-other">ICS Source Listings (Other - Enter CHPL ID)</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="$ctrl.newIcsParentOther.chplProductNumber" id="new-ics-parent-other" name="newIcsParentOther"
+                   ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/">
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.ics.parents, $ctrl.newIcsParentOther); $ctrl.newIcsParentOther = ''" ng-disabled="!$ctrl.newIcsParentOther || $ctrl.form.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+          </div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newIcsParentOther.$touched) && $ctrl.form.newIcsParentOther.$error.pattern">Improper format</div>
+        </div>
+      </div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.$dirty) && $ctrl.missingIcsSource()">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</div>
+    </div>
+  </div>
+  <div>
+    QMS Testing
+    <div class="form-horizontal">
+      <div class="form-group form-group-sm" ng-repeat="qms in $ctrl.listing.qmsStandards track by $index">
+        <label class="col-sm-6 control-label" for="qms-standard-{{ qms.id }}">QMS Standard</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="qms.qmsStandardName" id="qms-standard-{{ qms.id }}"
+                    ng-options="option.name as option.name for option in $ctrl.resources.qmsStandards.data | orderBy:'name'"
+                    ng-change="qms.qmsStandardId = option.id">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.qmsStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+          </div>
+        </div>
+        <label class="col-sm-6 control-label" for="qms-modification-{{ qms.id }}">QMS Modification</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="qms.qmsModification" id="qms-modification-{{ qms.id }}">
+        </div>
+        <label class="col-sm-6 control-label" for="qms-applicable-criteria-{{ qms.id }}">QMS Applicable Criteria</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qms-applicable-criteria-{{ qms.id }}">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-6 control-label" for="new-qms-standard-item">New QMS Standard</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="$ctrl.newQmsStandard.qmsStandardName" id="new-qms-standard-item"
+                    ng-options="option.name as option.name for option in $ctrl.resources.qmsStandards.data">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.qmsStandards, $ctrl.newQmsStandard); $ctrl.newQmsStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+          </div>
+        </div>
+        <label class="col-sm-6 control-label" for="new-qms-standard-expandable-name">Add new QMS Standard to available options</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="$ctrl.newQmsStandard.expandableName" id="new-qms-standard-expandable-name" name="newQmsStandardExpandableName" ng-change="$ctrl.extendSelect($ctrl.resources.qmsStandards.data, $ctrl.newQmsStandard.expandableName); $ctrl.newQmsStandard.qmsStandardName = $ctrl.newQmsStandard.expandableName" ng-maxlength="255">
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newQmsStandardExpandableName.$touched) && $ctrl.form.newQmsStandardExpandableName.$error.maxlength">Field is too long</div>
+        </div>
+        <label class="col-sm-6 control-label" for="new-qms-standard-modification">QMS Modification</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="$ctrl.newQmsStandard.qmsModification" id="new-qms-standard-modification">
+        </div>
+        <label class="col-sm-6 control-label" for="new-qms-standard-applicable-criteria">QMS Applicable Criteria</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="$ctrl.newQmsStandard.applicableCriteria" id="new-qms-standard-applicable-criteria">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="cp-report-file-loc">Report File Location</label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.certificationEdition.name === '2014'">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.required">Field is required</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.maxlength">Field is too long</div>
+  </div>
+  <div class="form-group">
+    Testing Lab
+    <div class="form-horizontal">
+      <div class="form-group form-group-sm" ng-repeat="item in $ctrl.listing.testingLabs track by $index">
+        <label class="col-sm-6 control-label" for="testing-lab-{{ item.id }}">Testing lab</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="item.testingLabName" id="testing-lab-{{ item.id }}"
+                    ng-options="option.name as option.name for option in $ctrl.resources.testingLabs | orderBy:'name'">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.testingLabs.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-6 control-label" for="new-testing-lab-item">New Testing Lab</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="$ctrl.newTestingLab.testingLabName" id="new-testing-lab-item"
+                    ng-options="option.name as option.name for option in $ctrl.resources.testingLabs">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.testingLabs, $ctrl.newTestingLab); $ctrl.newTestingLab = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    Accessibility Standards
+    <div class="form-horizontal">
+      <div class="form-group form-group-sm" ng-repeat="item in $ctrl.listing.accessibilityStandards track by $index">
+        <label class="col-sm-6 control-label" for="accessibility-standard-{{ item.id }}">Accessibility Standard</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="item.accessibilityStandardName" id="accessibility-standard-{{ item.id }}"
+                    ng-options="option.name as option.name for option in $ctrl.resources.accessibilityStandards.data | orderBy:'name'"
+                    ng-change="item.accessibilityStandardId = option.id">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.accessibilityStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-6 control-label" for="new-accessibility-standard-item">New Accessibility Standard</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="$ctrl.newAccessibilityStandard.accessibilityStandardName" id="new-accessibility-standard-item"
+                    ng-options="option.name as option.name for option in $ctrl.resources.accessibilityStandards.data">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.accessibilityStandards, $ctrl.newAccessibilityStandard); $ctrl.newAccessibilityStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+          </div>
+        </div>
+        <label class="col-sm-6 control-label" for="new-accessibility-standard-expandable-name">Add new Accessibility Standard to available options</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="$ctrl.newAccessibilityStandard.expandableName" id="new-accessibility-standard-expandable-name" ng-change="$ctrl.extendSelect($ctrl.accessibilityStandards.data, $ctrl.newAccessibilityStandard.expandableName); $ctrl.newAccessibilityStandard.accessibilityStandardName = $ctrl.newAccessibilityStandard.expandableName" ng-maxlength="500">
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newAccessibilityStandardExpandableName.$touched) && $ctrl.form.newAccessibilityStandardExpandableName.$error.maxlength">Field is too long</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    Targeted Users
+    <div class="form-horizontal">
+      <div class="form-group form-group-sm" ng-repeat="item in $ctrl.listing.targetedUsers track by $index">
+        <label class="col-sm-6 control-label" for="targeted-user-{{ item.id }}">Targeted User</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="item.targetedUserName" id="targeted-user-{{ item.id }}"
+                    ng-options="option.name as option.name for option in $ctrl.resources.targetedUsers.data | orderBy:'name'"
+                    ng-change="item.targetedUserId = option.id">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.targetedUsers.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-6 control-label" for="new-targeted-user-item">New Targeted User</label>
+        <div class="col-sm-6">
+          <div class="input-group">
+            <select class="form-control" ng-model="$ctrl.newTargetedUser.targetedUserName" id="new-targeted-user-item"
+                    ng-options="option.name as option.name for option in $ctrl.resources.targetedUsers.data">
+            </select>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.targetedUsers, $ctrl.newTargetedUser); $ctrl.newTargetedUser = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+          </div>
+        </div>
+        <label class="col-sm-6 control-label" for="new-targeted-user-expandable-name">Add new Targeted User to available options</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" ng-model="$ctrl.newTargetedUser.expandableName" id="new-targeted-user-expandable-name" ng-change="$ctrl.extendSelect($ctrl.targetedUsers.data, $ctrl.newTargetedUser.expandableName); $ctrl.newTargetedUser.targetedUserName = $ctrl.newTargetedUser.expandableName">
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th scope="col">Estimated Number of Meaningful Use Users History</th>
+        <th scope="col">Effective date</th>
+        <th scope="col"><span class="sr-only">Event Actions</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="$ctrl.addPreviousMuu()"><i class="fa fa-plus"></i><span class="sr-only"> Add value</span></button></td>
+      </tr>
+      <tr ng-repeat="muu in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
+        <td>
+          <div class="form-group">
+            <label><span class="sr-only"><span ng-if="$first">Current </span>Value</span>
+              <input type="number" ng-model="muu.muuCount" name="muuCount{{ $index }}" class="input-sm form-control">
+                </input>
+            </label>
+          </div>
+        </td>
+        <td>
+          <div class="form-group">
+            <label><span class="sr-only">Effective Date</span>
+              <div class="input-group">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="muu.muuDateObject" is-open="muu.muuDatePicker" close-text="Close" name="muuDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="muu.muuDatePicker = true"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+            </label>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousMuuDate(muu)">Only one value allowed per day</div>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-block btn-danger" ng-click="$ctrl.removePreviousMuu(muu.muuDateObject)"><i class="fa fa-trash"></i><span class="sr-only"> Remove value</span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <ai-certs default-all="true"
+            edit-mode="true"
+            is-confirming="$ctrl.workType === 'confirm'"
+            is-editing="true"
+            product="$ctrl.listing"
+            resources="$ctrl.resources">
+  </ai-certs>
+  <div class="form-group">
+    <label for="reason-for-change">Reason for Change</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.reason" id="reason-for-change" name="reasonForChange">
+    If changes are made in any of the following ways, a Reason for Change is required:
+    <ul>
+      <li>Clinical Quality Measure Removed</li>
+      <li>Certification Criteria Removed</li>
+      <li>Editing of a 2011 Edition Certified Product</li>
+      <li>Certification Status Changed from anything to "Active"</li>
+    </ul>
+  </div>
+  <div class="text-left text-danger"
+       ng-if="$ctrl.showFormErrors && ($ctrl.form.$invalid || ($ctrl.idFields.ics !== $ctrl.requiredIcsCode() && $ctrl.requiredIcsCode() > 0 && $ctrl.listing.ics.parents.length > 0) || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus())">
+    The following error(s) must be fixed:
+    <ul>
+      <li ng-if="$ctrl.form.idProd && !$ctrl.form.idProd.$error.required && !$ctrl.form.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_", and be 4 characters long</li>
+      <li ng-if="$ctrl.form.idProd.$error.required">CHPL Product Number Product Code is required</li>
+      <li ng-if="$ctrl.form.idVer && !$ctrl.form.idVer.$error.required && !$ctrl.form.idVer.$valid">CHPL Product Number Version Code must consist of letters, numbers and/or "_", and be 2 characters long</li>
+      <li ng-if="$ctrl.form.idVer.$error.required">CHPL Product Number Version Code is required</li>
+      <li ng-if="$ctrl.form.idIcs && !$ctrl.form.idIcs.$error.required && !$ctrl.form.idIcs.$valid">CHPL Product Number ICS Code must be a two digit single number from 00 to 99</li>
+      <li ng-if="$ctrl.form.idIcs.$error.required">CHPL Product Number ICS Code is required</li>
+      <li ng-if="$ctrl.form.cpPractice.$error.required">Practice Type is required</li>
+      <li ng-if="$ctrl.form.cpClassification.$error.required">Classification Type is required</li>
+      <li ng-if="$ctrl.form.cpBody.$error.required">Certification Body is required</li>
+      <li ng-if="$ctrl.form.cpCertDate.$error.required">Certification Date is required</li>
+      <li ng-if="$ctrl.form.cpCertDate.$error.date">Certification Date is an invalid format (mm/dd/yyyy)</li>
+      <li ng-if="$ctrl.hasStatusMatches()">Certification status must not repeat</li>
+      <li ng-if="$ctrl.hasDateMatches()">Only one change of certification status allowed per day</li>
+      <li ng-if="$ctrl.form.cpAcbCertId.$error.maxlength">ACB Certification ID is too long</li>
+      <li ng-if="$ctrl.form.cpTransparencyAttUrl.$error.url">Mandatory Disclosures URL is an invalid format (http://www.example.com)</li>
+      <li ng-if="$ctrl.form.cpTransparencyAttUrl.$error.maxlength">Mandatory Disclosures URL is too long</li>
+      <li ng-if="$ctrl.form.cpReportFileLoc.$error.required">Report File Location URL is required</li>
+      <li ng-if="$ctrl.form.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
+      <li ng-if="$ctrl.form.cpReportFileLoc.$error.maxlength">Report File Locaiton URL is too long</li>
+      <li ng-if="$ctrl.idFields.ics !== $ctrl.requiredIcsCode() && $ctrl.requiredIcsCode() > 0 && $ctrl.listing.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ $ctrl.requiredIcsCode() }}"</li>
+      <li ng-if="$ctrl.missingIcsSource()">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</li>
+      <li ng-if="$ctrl.improperFirstStatus()">The earliest status of this product must be "Active"</li>
+    </ul>
+  </div>
+  <div class="text-left text-warning" ng-if="$ctrl.messages.warnings && $ctrl.messages.warnings.length > 0">
+    The following warning(s) should be fixed:
+    <ul>
+      <li ng-repeat="msg in $ctrl.messages.warnings | orderBy:'toString()' track by $index">{{ msg }}</li>
+    </ul>
+  </div>
+  <div class="text-danger text-left" ng-if="$ctrl.messages.errors">
+    The following error(s) must be fixed:
+    <ul>
+      <li ng-repeat="msg in $ctrl.messages.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
+    </ul>
+  </div>
+  <button ng-disabled="(($ctrl.form.$invalid || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus()) && $ctrl.showFormErrors) || $ctrl.isSaving"
+          id="edit-save"
+          class="btn btn-ai-success pull-right"
+          ng-mouseover="$ctrl.showFormErrors = true"
+          ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
+  <button class="btn btn-warning"
+          ng-click="$ctrl.cancel()"><i class="fa fa-close"></i> Cancel</button>
+</div>

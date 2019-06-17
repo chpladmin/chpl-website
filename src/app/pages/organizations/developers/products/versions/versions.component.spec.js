@@ -28,7 +28,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.organizations', $provide => {
+            angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
@@ -186,10 +186,8 @@
 
             describe('when handling actions', () => {
                 it('should cancel and take action', () => {
-                    spyOn(ctrl, 'cancel').and.callThrough();
                     ctrl.action = 'before';
                     ctrl.takeAction('after');
-                    expect(ctrl.cancel).toHaveBeenCalled();
                     expect(ctrl.action).toBe('after');
                 });
 

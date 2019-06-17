@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "10.18.0",
+  "version": "10.21.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -25,7 +25,6 @@
     "angular-cron-gen": "^0.0.26",
     "angular-feature-flags": "^1.6.1",
     "angular-file-saver": "^1.1.3",
-    "angular-file-upload": "^2.5.0",
     "angular-google-chart": "^0.1.0",
     "angular-loading-bar": "^0.9.0",
     "angular-resource": "^1.7.2",
@@ -44,6 +43,7 @@
     "jspdf": "^1.4.1",
     "jspdf-autotable": "^2.3.4",
     "ng-csv": "^0.3.6",
+    "ng-file-upload": "^12.2.13",
     "ng-idle": "^1.3.2",
     "ngstorage": "^0.3.11",
     "zxcvbn": "^4.4.2"

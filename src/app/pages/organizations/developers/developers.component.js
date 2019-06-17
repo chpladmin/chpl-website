@@ -2,6 +2,7 @@ export const DevelopersComponent = {
     templateUrl: 'chpl.organizations/developers/developers.html',
     bindings: {
         developer: '<',
+        developers: '<',
         products: '<',
     },
     controller: class DevelopersComponent {
@@ -16,17 +17,16 @@ export const DevelopersComponent = {
             this.backup = {};
             this.splitEdit = true;
             this.movingProducts = [];
+            this.activeAcbs = [];
         }
 
         $onInit () {
             let that = this;
             if (this.hasAnyRole()) {
                 this.loadAcbs();
-                this.loadDevelopers();
             }
             let loggedIn = this.$scope.$on('loggedIn', function () {
                 that.loadAcbs();
-                that.loadDevelopers();
             })
             this.$scope.$on('$destroy', loggedIn);
         }
@@ -37,6 +37,23 @@ export const DevelopersComponent = {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
+            }
+            if (changes.developers) {
+                let acbs = {};
+                let devs = changes.developers.currentValue.developers;
+                this.allDevelopers = devs.map(d => {
+                    d.transMap = {};
+                    d.transparencyAttestations.forEach(att => {
+                        d.transMap[att.acbName] = att.attestation;
+                        acbs[att.acbName] = true;
+                    });
+                    return d;
+                });
+                this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
+                this.mergingDevelopers = devs.filter(d => d.developerId === this.developer.developerId);
+                this.backup.developers = angular.copy(this.developers);
+                this.backup.mergingDevelopers = angular.copy(this.mergingDevelopers);
+                angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
             }
             if (changes.products) {
                 this.products = (angular.copy(changes.products.currentValue)).products;
@@ -74,13 +91,10 @@ export const DevelopersComponent = {
             });
         }
 
-        loadDevelopers () {
-            let that = this;
-            this.networkService.getDevelopers().then(response => {
-                that.developers = response.developers.filter(d => d.developerId !== that.developer.developerId);
-                that.mergingDevelopers = response.developers.filter(d => d.developerId === that.developer.developerId);
-                that.backup.developers = angular.copy(that.developers);
-                that.backup.mergingDevelopers = angular.copy(that.mergingDevelopers);
+        loadDeveloper () {
+            this.$state.go('organizations.developers', {
+                developerId: this.developerToLoad.developerId,
+                action: undefined,
             });
         }
 
@@ -108,6 +122,8 @@ export const DevelopersComponent = {
                         });
                     }
                     that.developer = response;
+                    that.backup.developer = angular.copy(response);
+                    that.newDeveloper = angular.copy(response);
                     that.action = undefined;
                 } else {
                     if (response.data.errorMessages) {
@@ -173,7 +189,6 @@ export const DevelopersComponent = {
         }
 
         takeAction (action) {
-            this.cancel();
             this.action = action;
         }
 

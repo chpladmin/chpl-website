@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    describe('chpl', function () {
+    describe('the contact directive', function () {
         var $log, el, vm;
 
         beforeEach(function () {
-            angular.mock.module('chpl');
+            angular.mock.module('chpl.components');
 
             inject(function ($compile, _$log_, $rootScope) {
                 $log = _$log_;

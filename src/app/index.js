@@ -33,7 +33,7 @@ import /* smartTable from*/ 'angular-smart-table';
 import /* toaster from*/ 'angularjs-toaster';
 import /* uiBoostrap from*/ 'angular-ui-bootstrap';
 //import ui.bootstrap.fontawesome from 'ui.bootstrap.fontawesome';
-import /* ngFileUpload from*/ 'angular-file-upload';
+//import /* ngFileUpload from*/ 'angular-file-upload';
 import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
 import 'angular-zxcvbn';
@@ -60,6 +60,8 @@ import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
 import /* servicesModule from*/ './services/index';
 import /* sharedModule from*/ './shared/index';
+import surveillance from './pages/surveillance/index';
+import users from './pages/users/index';
 
 require('./index.constants');
 
@@ -85,6 +87,8 @@ const dependencies = [
     listing.name,
     organizations.name,
     reports.name,
+    surveillance.name,
+    users.name,
     'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',

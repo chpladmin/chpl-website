@@ -190,7 +190,6 @@ module.exports = env => {
         new webpack.DefinePlugin({
             DEVELOPER_MODE: JSON.stringify(env.NODE_ENV === 'development' || env.flags === 'development'),
             ENABLE_LOGGING: JSON.stringify(env.NODE_ENV === 'development' && env.flags === 'development'),
-            FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
             MINUTES_UNTIL_IDLE: env.NODE_ENV === 'development' ? 150 : 50,
             MINUTES_BETWEEN_KEEPALIVE: 1,
         })

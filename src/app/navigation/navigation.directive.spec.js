@@ -2,14 +2,14 @@
     'use strict';
 
     describe('the CHPL Navigation', function () {
-        var $compile, $localStorage, $location, $log, $q, $rootScope, authService, el, mock, networkService, scope, vm;
+        var $compile, $localStorage, $location, $log, $q, $rootScope, $state, authService, el, mock, networkService, scope, vm;
         mock = {
             announcements: [],
             username: 'a user name',
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.navigation', 'chpl', function ($provide) {
+            angular.mock.module('chpl.navigation', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getFullname = jasmine.createSpy('getFullname');
                     $delegate.getUsername = jasmine.createSpy('getUsername');
@@ -25,16 +25,16 @@
                     return $delegate;
                 });
             });
-
         });
 
-        beforeEach(inject(function (_$compile_, $controller, _$localStorage_, _$location_, _$log_, _$q_, _$rootScope_, _authService_, _networkService_) {
+        beforeEach(inject(function (_$compile_, $controller, _$localStorage_, _$location_, _$log_, _$q_, _$rootScope_, _$state_, _authService_, _networkService_) {
             $compile = _$compile_;
             $localStorage = _$localStorage_;
             $location = _$location_;
             $log = _$log_;
             $q = _$q_;
             $rootScope = _$rootScope_;
+            $state = _$state_;
             authService = _authService_;
             authService.getFullname.and.returnValue(mock.username);
             authService.getUsername.and.returnValue(mock.username);
@@ -80,7 +80,7 @@
             });
         });
 
-        describe('controller,', function () {
+        describe('controller', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
             });
@@ -91,10 +91,16 @@
                 expect(authService.getFullname).toHaveBeenCalled();
             });
 
-            it('should know what page is active', function () {
-                spyOn($location,'path').and.returnValue('/admin/userManagement');
-                expect(vm.isActive('/admin')).toBe(true);
-                expect(vm.isActive('resources')).toBe(false);
+            it('should know what root state is active', function () {
+                $state.$current.name = 'reports.listings';
+                expect(vm.isActive('admininstration')).toBe(false);
+                expect(vm.isActive('reports')).toBe(true);
+            });
+
+            it('should know what sub state is active', function () {
+                $state.$current.name = 'reports.listings';
+                expect(vm.isActive('admininstration')).toBe(false);
+                expect(vm.isActive('reports.listings')).toBe(true);
             });
 
             xdescribe('when dealing with $broadcast,', function () {

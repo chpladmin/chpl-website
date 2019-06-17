@@ -5,9 +5,9 @@
         var $log, $q, Mock, networkService, scope, vm;
 
         beforeEach(function () {
-            angular.mock.module('chpl', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.collections', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
+                    $delegate.getListing = jasmine.createSpy('getListing');
 
                     return $delegate;
                 });
@@ -18,7 +18,7 @@
                 Mock = _Mock_;
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getProduct.and.returnValue($q.when({id: 3}));
+                networkService.getListing.and.returnValue($q.when({id: 3}));
 
                 scope = $rootScope.$new();
                 vm = $controller('ViewSedModalController', {
@@ -49,7 +49,7 @@
         });
 
         it('should call the network service to get listing details', function () {
-            expect(networkService.getProduct).toHaveBeenCalledWith(3);
+            expect(networkService.getListing).toHaveBeenCalledWith(3);
         });
 
         it('should have the details as an object', function () {

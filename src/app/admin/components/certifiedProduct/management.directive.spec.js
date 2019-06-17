@@ -49,7 +49,7 @@
                     $delegate.getEditions = jasmine.createSpy('getEditions');
                     $delegate.getPendingListings = jasmine.createSpy('getPendingListings');
                     $delegate.getPractices = jasmine.createSpy('getPractices');
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
+                    $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getProducts = jasmine.createSpy('getProducts');
                     $delegate.getProductsByDeveloper = jasmine.createSpy('getProductsByDeveloper');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
@@ -93,7 +93,7 @@
                 networkService.getDevelopers.and.returnValue($q.when(mock.developers));
                 networkService.getEditions.and.returnValue($q.when(mock.editions));
                 networkService.getPractices.and.returnValue($q.when(mock.practices));
-                networkService.getProduct.and.returnValue($q.when(mock.products[0]));
+                networkService.getListing.and.returnValue($q.when(mock.products[0]));
                 networkService.getProducts.and.returnValue($q.when(mock.products));
                 networkService.getProductsByDeveloper.and.returnValue($q.when(mock.products));
                 networkService.getQmsStandards.and.returnValue($q.when([]));
@@ -296,149 +296,6 @@
                 vm.modalInstance.dismiss('cancelled');
                 vm.modalInstance.dismiss('edit messages');
                 expect(vm.cpMessage).toBe('edit messages');
-            });
-        });
-
-        describe('rejecting pending surveillances', function () {
-            beforeEach(function () {
-                vm.uploadingSurveillances = [{id: 1}, {id: 2}];
-                vm.massRejectSurveillance = {
-                    1: true,
-                    2: false,
-                };
-            });
-
-            it('should call the common service to mass reject surveillances', function () {
-                vm.massRejectPendingSurveillance();
-                el.isolateScope().$digest();
-                expect(networkService.massRejectPendingSurveillance).toHaveBeenCalledWith([1]);
-            });
-
-            it('should reset the pending checkboxes', function () {
-                vm.massRejectPendingSurveillance();
-                expect(vm.massRejectSurveillance).toEqual({2: false});
-            });
-
-            it('should remove the surveillances from the list of surveillances', function () {
-                vm.massRejectPendingSurveillance();
-                expect(vm.uploadingSurveillances).toEqual([{id: 2}]);
-            });
-
-            it('should have error messages if rejection fails', function () {
-                networkService.massRejectPendingSurveillance.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
-                vm.massRejectPendingSurveillance();
-                el.isolateScope().$digest();
-                expect(vm.uploadingSurveillanceMessages.length).toEqual(3);
-            });
-
-            it('should know how many Surveillance are ready to be rejected', function () {
-                expect(vm.getNumberOfSurveillanceToReject()).toBe(1);
-                vm.massRejectSurveillance[2] = true;
-                vm.massRejectSurveillance[3] = true;
-                expect(vm.getNumberOfSurveillanceToReject()).toBe(3);
-                vm.massRejectSurveillance[1] = false;
-                vm.massRejectSurveillance[2] = false;
-                vm.massRejectSurveillance[3] = false;
-                expect(vm.getNumberOfSurveillanceToReject()).toBe(0);
-            });
-        });
-
-        describe('inspecting a pending Surveillance', function () {
-            var surveillanceInspectOptions;
-            beforeEach(function () {
-                vm.uploadingSurveillances = [
-                    {id: 1},
-                    {id: 2},
-                ];
-                surveillanceInspectOptions = {
-                    component: 'aiSurveillanceInspect',
-                    animation: false,
-                    backdrop: 'static',
-                    keyboard: false,
-                    size: 'lg',
-                    resolve: {
-                        surveillance: jasmine.any(Function),
-                    },
-                };
-            });
-
-            it('should create a modal instance when a Listing is to be edited', function () {
-                expect(vm.modalInstance).toBeUndefined();
-                vm.inspectSurveillance({})
-                expect(vm.modalInstance).toBeDefined();
-            });
-
-            it('should resolve elements on inspect', function () {
-                vm.inspectSurveillance({id: 'a surveillance'})
-                expect($uibModal.open).toHaveBeenCalledWith(surveillanceInspectOptions);
-                expect(actualOptions.resolve.surveillance()).toEqual({id: 'a surveillance'});
-                el.isolateScope().$digest();
-            });
-
-            it('should remove the inspected surv on close', function () {
-                var result = {
-                    status: 'confirmed',
-                };
-                vm.inspectSurveillance(vm.uploadingSurveillances[0]);
-                vm.modalInstance.close(result);
-                expect(vm.uploadingSurveillances).toEqual([{id: 2}]);
-            });
-
-            it('should report the user who did something on resolved', function () {
-                var result = {
-                    status: 'resolved',
-                    objectId: 'id',
-                    contact: {
-                        fullName: 'fname',
-                        friendlyName: 'lname',
-                    },
-                };
-                vm.inspectSurveillance(vm.uploadingSurveillances[0]);
-                vm.modalInstance.close(result);
-                expect(vm.uploadingSurveillanceMessages[0]).toEqual('Surveillance with ID: "id" has already been resolved by "fname"');
-            });
-
-            it('should log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.inspectSurveillance({});
-                vm.modalInstance.dismiss('cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-        });
-
-        describe('when uploading surveillance activity', function () {
-            it('should tell the user how many activities were uploaded', function () {
-                vm.surveillanceUploadErrors = [2, 1];
-                vm.surveillanceUploadSuccess = false;
-                vm.surveillanceUploader.onSuccessItem({
-                    file: {
-                        name: 'name',
-                    },
-                }, {
-                    pendingSurveillance: [1,2],
-                });
-
-                expect(vm.surveillanceUploadMessage).toBe('File "name" was uploaded successfully. 2 pending surveillance records are ready for confirmation.');
-                expect(vm.surveillanceUploadErrors).toEqual([]);
-                expect(vm.surveillanceUploadSuccess).toBe(true);
-            });
-
-            it('should tell the user that a job was started when a lot of activities were in the file', function () {
-                vm.surveillanceUploadErrors = [2, 1];
-                vm.surveillanceUploadSuccess = false;
-                vm.surveillanceUploader.onSuccessItem({
-                    file: {
-                        name: 'name',
-                    },
-                }, {
-                    user: {
-                        email: 'fake@sample.com',
-                    },
-                });
-
-                expect(vm.surveillanceUploadMessage).toBe('File "name" was uploaded successfully. The file will be processed and an email will be sent to fake@sample.com when processing is complete.');
-                expect(vm.surveillanceUploadErrors).toEqual([]);
-                expect(vm.surveillanceUploadSuccess).toBe(true);
             });
         });
     });

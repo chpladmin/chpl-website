@@ -21,7 +21,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl');
+            angular.mock.module('chpl.mock', 'chpl.components', 'chpl.shared');
 
             inject(function (_$controller_, _$log_, $rootScope, _Mock_) {
                 $controller = _$controller_;

@@ -13,10 +13,6 @@ export class NetworkService {
         };
     }
 
-    addRole (payload) {
-        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     authorizeUser (userAuthorization, username) {
         return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
@@ -59,8 +55,20 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createComplaint (complaint) {
+        return this.apiPOST('/complaints', complaint);
+    }
+
+    createFilter (filter) {
+        return this.apiPOST('/filters', filter);
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
+    }
+
+    createQuarterlySurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/quarterly', report);
     }
 
     createScheduleOneTimeTrigger (trigger) {
@@ -73,6 +81,18 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteComplaint (complaintId) {
+        return this.apiDELETE('/complaints/' + complaintId);
+    }
+
+    deleteFilter (filterId) {
+        return this.apiDELETE('/filters/' + filterId);
+    }
+
+    deleteQuarterlySurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/quarterly/' + id);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -109,10 +129,10 @@ export class NetworkService {
     getActivityMetadata (key, activityRange) {
         let call = '/activity/metadata/' + key;
         let params = [];
-        if (activityRange.startDate) {
+        if (activityRange && activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
         }
-        if (activityRange.endDate) {
+        if (activityRange && activityRange.endDate) {
             params.push('end=' + activityRange.endDate.getTime());
         }
         if (params.length > 0) {
@@ -199,6 +219,18 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint_status_types');
+    }
+
+    getComplaintTypes () {
+        return this.apiGET('/data/complaint_types');
+    }
+
     getCriterionProductStatistics () {
         return this.apiGET('/statistics/criterion_product');
     }
@@ -259,6 +291,14 @@ export class NetworkService {
         return this.apiGET('/data/education_types');
     }
 
+    getFilters (filterTypeId) {
+        return this.apiGET('/filters?filterTypeId=' + filterTypeId);
+    }
+
+    getFilterTypes () {
+        return this.apiGET('/data/filter_types');
+    }
+
     getFuzzyTypes () {
         return this.apiGET('/data/fuzzy_choices');
     }
@@ -277,6 +317,10 @@ export class NetworkService {
 
     getIcsFamily (id) {
         return this.apiGET('/certified_products/' + id + '/ics_relationships');
+    }
+
+    getListing (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
     }
 
     getListingCountStatistics () {
@@ -331,10 +375,6 @@ export class NetworkService {
         return this.apiGET('/data/practice_types');
     }
 
-    getProduct (productId, forceReload) {
-        return this.apiGET('/certified_products/' + productId + '/details', forceReload);
-    }
-
     getProductActivity (activityRange) {
         var call = '/activity/products';
         return this.getActivity(call, activityRange);
@@ -350,6 +390,10 @@ export class NetworkService {
 
     getQmsStandards () {
         return this.apiGET('/data/qms_standards');
+    }
+
+    getQuarterlySurveillanceQuarters () {
+        return this.apiGET('/data/quarters');
     }
 
     getRelatedListings (productId) {
@@ -368,20 +412,36 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleDeveloperActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/developers/' + id);
+    getSingleDeveloperActivityMetadata (id, options) {
+        let url = '/activity/metadata/developers/' + id
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleListingActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/listings/' + id);
+    getSingleListingActivityMetadata (id, options) {
+        let url = '/activity/metadata/listings/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleProductActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/products/' + id);
+    getSingleProductActivityMetadata (id, options) {
+        let url = '/activity/metadata/products/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleVersionActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/versions/' + id);
+    getSingleVersionActivityMetadata (id, options) {
+        let url = '/activity/metadata/versions/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
     getSurveillanceLookups () {
@@ -411,6 +471,10 @@ export class NetworkService {
                 data.nonconformityTypes = response;
             });
         return data;
+    }
+
+    getSurveillanceReporting () {
+        return this.apiGET('/surveillance-report/quarterly');
     }
 
     getTargetedUsers () {
@@ -489,7 +553,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
     }
 
     initiateSurveillance (surveillance) {
@@ -564,10 +628,6 @@ export class NetworkService {
         return this.apiDELETE('/key/' + user.key);
     }
 
-    revokeRole (payload) {
-        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
-    }
-
     search (queryObj) {
         return this.apiPOST('/search', queryObj);
     }
@@ -580,8 +640,16 @@ export class NetworkService {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
+    splitVersion (versionObject) {
+        return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
+    }
+
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
+    }
+
+    updateComplaint (complaint) {
+        return this.apiPUT('/complaints/' + complaint.id, complaint)
     }
 
     updateCP (cpObject) {
@@ -602,6 +670,10 @@ export class NetworkService {
 
     updateProduct (productObject) {
         return this.apiPUT('/products', productObject);
+    }
+
+    updateQuarterlySurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/quarterly', report);
     }
 
     updateScheduleTrigger (trigger) {
@@ -632,26 +704,20 @@ export class NetworkService {
             return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         } else {
             return this.$http.get(this.API + endpoint)
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         }
     }
 
