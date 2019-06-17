@@ -61,6 +61,13 @@
                     expect(ctrl.triggers.length).toBe(3);
                 });
             });
+
+            describe('with callbacks', () => {
+                it('should call back when editing a job', () => {
+                    ctrl.editTrigger(mock.triggers[1]);
+                    expect(scope.takeAction).toHaveBeenCalledWith('edit', mock.triggers[1]);
+                });
+            });
         });
     });
 })();

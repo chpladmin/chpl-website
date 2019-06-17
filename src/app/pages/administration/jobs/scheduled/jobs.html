@@ -1,0 +1,27 @@
+<span>
+  <h3>Types of Jobs</h3>
+  <table class="table table-condensed" st-table="$ctrl.displayedJobs" st-safe-src="$ctrl.jobs">
+    <thead>
+      <tr>
+        <th scope="col" class="search-header" st-sort="name" st-skip-natural="true" st-sort-default="true">Job Name</th>
+        <th scope="col" class="search-header" st-sort="description" st-skip-natural="true">Description</th>
+        <th scope="col" class="search-header" st-sort="jobDataMap.acbSpecific" st-skip-natural="true" ng-if="!$ctrl.hideAcb">ONC-ACB specific</th>
+        <th scope="col" class="search-header" st-sort="group" st-skip-natural="true" ng-if="$ctrl.showJob">Job Type</th>
+        <th scope="col" ng-if="!$ctrl.hideAcb"><span class="sr-only">Action</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="job in $ctrl.displayedJobs track by $index">
+        <td>{{ job.name }}</td>
+        <td>{{ job.description }}</td>
+        <td ng-if="!$ctrl.hideAcb">{{ job.jobDataMap.acbSpecific ? 'Yes' : 'No' }}</td>
+        <td ng-if="$ctrl.showJob">{{ job.group === 'systemJobs' ? 'System Job' : 'User Job' }}</td>
+        <td>
+          <button class="btn btn-ai-success btn-block" ng-click="$ctrl.editJob(job)" ng-if="job.jobDataMap.editableJobFields"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ job.name }}</span></button>
+          <button class="btn btn-ai-success btn-block" ng-click="$ctrl.scheduleRecurringJob(job)" ng-if="job.group === 'chplJobs'"><i class="fa fa-calendar"></i><span class="sr-only">Create recurring trigger for {{ job.name }}</span></button>
+          <button class="btn btn-ai-success btn-block" ng-click="$ctrl.scheduleOneTimeJob(job)" ng-if="job.group === 'systemJobs'"><i class="fa fa-bolt"></i><span class="sr-only">Create one-time trigger for {{ job.name }}</span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</span>

@@ -5,14 +5,14 @@
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
+            jobs: [
+                {acb: {name: 'name1'}, year: 2019, id: 1},
+                {acb: {name: 'name3'}, year: 2019, id: 2},
+            ],
             triggers: [
                 {name: 'name1', retired: false},
                 {name: 'name2', retired: true},
                 {name: 'name3', retired: false},
-            ],
-            types: [
-                {acb: {name: 'name1'}, year: 2019, id: 1},
-                {acb: {name: 'name3'}, year: 2019, id: 2},
             ],
         };
 
@@ -35,10 +35,10 @@
                 networkService.getScheduleTriggers.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
+                scope.jobs = mock.jobs;
                 scope.triggers = mock.triggers;
-                scope.types = mock.types;
 
-                el = angular.element('<chpl-jobs-scheduled-page triggers="{results: triggers}" types="{results: types}"></chpl-jobs-scheduled-page>');
+                el = angular.element('<chpl-jobs-scheduled-page triggers="{results: triggers}" jobs="{results: jobs}"></chpl-jobs-scheduled-page>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -75,8 +75,50 @@
                 it('should do things $onChanges', () => {
                     expect(ctrl.triggers).toBeDefined();
                     expect(ctrl.triggers.length).toBe(3);
-                    expect(ctrl.types).toBeDefined();
-                    expect(ctrl.types.length).toBe(2);
+                    expect(ctrl.jobs).toBeDefined();
+                    expect(ctrl.jobs.length).toBe(2);
+                });
+            });
+
+            describe('on actions', () => {
+                it('should cancel', () => {
+                    ctrl.activeJob = 'fake';
+                    ctrl.activeTrigger = 'another fake'
+                    ctrl.mode = 'something';
+                    ctrl.cancel();
+                    expect(ctrl.activeJob).toBeUndefined();
+                    expect(ctrl.activeTrigger).toBeUndefined();
+                    expect(ctrl.mode).toBe('view');
+                });
+
+                describe('for jobs', () => {
+                    it('should set an editable job', () => {
+                        ctrl.takeJobAction('edit', mock.jobs[0]);
+                        expect(ctrl.activeJob).toBe(mock.jobs[0]);
+                        expect(ctrl.mode).toBe('editJob');
+                    });
+
+                    it('should handle a one time trigger', () => {
+                        ctrl.takeJobAction('scheduleOneTime', mock.jobs[1]);
+                        expect(ctrl.activeJob).toBe(mock.jobs[1]);
+                        expect(ctrl.mode).toBe('scheduleTrigger');
+                        expect(ctrl.isRecurring).toBe(false);
+                    });
+
+                    it('should handle a recurring trigger', () => {
+                        ctrl.takeJobAction('scheduleRecurring', mock.jobs[1]);
+                        expect(ctrl.activeJob).toBe(mock.jobs[1]);
+                        expect(ctrl.mode).toBe('scheduleTrigger');
+                        expect(ctrl.isRecurring).toBe(true);
+                    });
+                });
+
+                describe('for triggers', () => {
+                    it('should set an editable trigger', () => {
+                        ctrl.takeTriggerAction('edit', mock.triggers[0]);
+                        expect(ctrl.activeTrigger).toBe(mock.triggers[0]);
+                        expect(ctrl.mode).toBe('editTrigger');
+                    });
                 });
             });
         });

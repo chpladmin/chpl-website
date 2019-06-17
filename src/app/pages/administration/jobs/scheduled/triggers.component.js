@@ -17,8 +17,11 @@ export const JobsScheduledTriggersComponent = {
             }
         }
 
-        cancel () {
-            this.takeAction('cancel');
+        editTrigger (trigger) {
+            this.takeAction({
+                action: 'edit',
+                data: trigger,
+            });
         }
     },
 }

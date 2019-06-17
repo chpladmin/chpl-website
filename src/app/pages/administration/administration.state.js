@@ -70,13 +70,17 @@ function administrationStateConfig ($stateProvider) {
             url: '/scheduled',
             component: 'chplJobsScheduledPage',
             resolve: {
+                acbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                jobs: networkService => {
+                    'ngInject'
+                    return networkService.getScheduleJobs();
+                },
                 triggers: networkService => {
                     'ngInject'
                     return networkService.getScheduleTriggers();
-                },
-                types: networkService => {
-                    'ngInject'
-                    return networkService.getScheduleJobs();
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },
