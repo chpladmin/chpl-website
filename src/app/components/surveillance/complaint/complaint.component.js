@@ -49,7 +49,6 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.listings) {
                 this.listings = angular.copy(changes.listings.currentValue);
-                this.$log.info(this.listings);
             }
         }
 
@@ -78,7 +77,6 @@ export const SurveillanceComplaintComponent = {
         }
 
         selectListing ($item) {
-            this.$log.info($item);
             if (!Array.isArray(this.complaint.listings)) {
                 this.complaint.listings = [];
             }
@@ -87,7 +85,6 @@ export const SurveillanceComplaintComponent = {
                 chplProductNumber: $item.chplProductNumber,
             });
             this.listing = '';
-            this.$log.info(this.complaint.listings);
         }
 
         removeListing (chplProductNumber) {
@@ -95,7 +92,7 @@ export const SurveillanceComplaintComponent = {
         }
 
         startsWith (valueToCheck, viewValue) {
-            return valueToCheck.substr(0, viewValue.length).toLowerCase() == viewValue.toLowerCase();
+            return valueToCheck.substr(0, viewValue.length).toLowerCase() === viewValue.toLowerCase();
         }
     },
 }

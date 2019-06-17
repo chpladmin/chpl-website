@@ -131,11 +131,9 @@ export const SurveillanceComplaintsComponent = {
         refreshListings () {
             let that = this;
             this.networkService.getAll().then(response => {
-                that.$log.info(response);
                 that.listings = response.results.filter(
                     item => that.certificationBodies.find(
                         acb => acb.name === item.acb && !acb.retired));
-                that.$log.info(that.listings);
             });
         }
 
