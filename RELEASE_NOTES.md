@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 10.21.0
+_17 June 2019_
+
+### New features
+* Updated user and user action activity reports to use activity metadata
+* Allow splitting of Versions
+* Display history past split/merge in Listing history popup
+
+---
+
 ## Version 10.20.0
 _3 June 2019_
 
