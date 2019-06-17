@@ -68,7 +68,7 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.confirm.listings')"></i> Confirm Listings</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance">Confirm Surveillance</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/scheduledJobs">Scheduled Jobs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.scheduled">Scheduled Jobs</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Background Jobs</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement">CMS</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>

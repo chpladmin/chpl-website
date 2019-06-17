@@ -68,12 +68,16 @@ function administrationStateConfig ($stateProvider) {
         })
         .state('administration.jobs.scheduled', {
             url: '/scheduled',
-            component: 'chplJobsScheduled',
+            component: 'chplJobsScheduledPage',
             resolve: {
-                /*developers: networkService => {
+                triggers: networkService => {
                     'ngInject'
-                    return networkService.getDevelopers().then(response => response.developers);
-                },*/
+                    return networkService.getScheduleTriggers();
+                },
+                types: networkService => {
+                    'ngInject'
+                    return networkService.getScheduleJobs();
+                },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },
         })

@@ -1,0 +1,26 @@
+<span>
+  <h3>Types of Jobs</h3>
+  <table class="table table-condensed" st-table="$ctrl.displayedTypes" st-safe-src="$ctrl.types">
+    <thead>
+      <tr>
+        <th scope="col" class="search-header" st-sort="name" st-skip-natural="true" st-sort-default="true">Job Name</th>
+        <th scope="col" class="search-header" st-sort="description" st-skip-natural="true">Description</th>
+        <th scope="col" class="search-header" st-sort="jobDataMap.acbSpecific" st-skip-natural="true" ng-if="!$ctrl.hideAcb">ONC-ACB specific</th>
+        <th scope="col" class="search-header" st-sort="group" st-skip-natural="true" ng-if="$ctrl.showType">Job Type</th>
+        <th scope="col"><span class="sr-only">Action</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="type in $ctrl.displayedTypes track by $index">
+          <td>{{ type.name }}</td>
+          <td>{{ type.description }}</td>
+          <td ng-if="!$ctrl.hideAcb">{{ type.jobDataMap.acbSpecific ? 'Yes' : 'No' }}</td>
+          <td ng-if="$ctrl.showType">{{ type.group === 'systemJobs' ? 'System Job' : 'User Job' }}</td>
+          <td>
+            <button class="btn btn-ai-success" ng-click="vm.editType(type)" ng-if="type.jobDataMap.editableJobFields"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ type.name }}</span></button>
+            <button class="btn btn-ai-success" ng-click="vm.createSimpleType(type)" ng-if="type.group === 'systemJobs'"><i class="fa fa-bolt"></i><span class="sr-only">Create job for {{ type.name }}</span></button>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</span>

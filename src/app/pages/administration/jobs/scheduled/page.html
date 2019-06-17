@@ -1,0 +1,12 @@
+<span ng-if="$ctrl.mode === 'view'">
+  <div class="row">
+    <div class="col-sm-12">
+      <chpl-jobs-scheduled-triggers triggers="$ctrl.triggers" take-action="$ctrl.takeTriggerAction(action, data)"></chpl-jobs-scheduled-triggers>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <chpl-jobs-scheduled-types types="$ctrl.types" take-action="$ctrl.takeTypeAction(action, data)"></chpl-jobs-scheduled-types>
+    </div>
+  </div>
+</span>
