@@ -87,7 +87,6 @@
       <textarea class="input-sm form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
     </div>
   </div>
-
   <div class="form-group">
     <label class="control-label" for="listings">Selected Certified Products</label><br />
 
@@ -110,7 +109,6 @@
         uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
   </div>
-
   <div class="form-group">
     <label class="checkbox-inline" for="complainant-contacted">
       <input type="checkbox" id="complainant-contacted" name="complainantContacted"
