@@ -23,7 +23,6 @@ export const SurveillanceComplaintComponent = {
                 ADD: 'add',
             }
             this.currentMode = '';
-            this.certifiedProduct;
         }
 
         $onChanges (changes) {
@@ -88,8 +87,8 @@ export const SurveillanceComplaintComponent = {
             this.listing = '';
         }
 
-        removeListing (chplProductNumber) {
-            this.complaint.listings = this.complaint.listings.filter(listing => listing !== chplProductNumber);
+        removeListing (listingToRemove) {
+            this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
         }
 
         startsWith (valueToCheck, viewValue) {
@@ -101,11 +100,10 @@ export const SurveillanceComplaintComponent = {
         }
 
         filterListingsBasedOnSelectedAcb () {
-            let that = this;
             if (this.complaint.certificationBody && this.complaint.certificationBody.name) {
                 // Filter the available listings based on the selected acb
                 this.filteredListings = this.listings.filter(item => {
-                    return item.acb === that.complaint.certificationBody.name;
+                    return item.acb === this.complaint.certificationBody.name;
                 });
             }
         }
