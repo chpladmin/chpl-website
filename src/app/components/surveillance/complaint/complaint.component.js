@@ -49,6 +49,7 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.listings) {
                 this.listings = angular.copy(changes.listings.currentValue);
+                this.filterListingsBasedOnSelectedAcb();
             }
         }
 
@@ -93,6 +94,20 @@ export const SurveillanceComplaintComponent = {
 
         startsWith (valueToCheck, viewValue) {
             return valueToCheck.substr(0, viewValue.length).toLowerCase() === viewValue.toLowerCase();
+        }
+
+        changeAcb () {
+            this.filterListingsBasedOnSelectedAcb();
+        }
+
+        filterListingsBasedOnSelectedAcb () {
+            let that = this;
+            if (that.complaint.certificationBody && that.complaint.certificationBody.name) {
+                // Filter the available listings based on the selected acb
+                this.filteredListings = this.listings.filter(item => {
+                    return item.acb === that.complaint.certificationBody.name;
+                });
+            }
         }
     },
 }
