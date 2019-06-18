@@ -661,7 +661,7 @@
             $httpBackend.flush();
         });
 
-        it('should getCollection', () => {
+        fit('should getCollection', () => {
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl$/).respond(200, {data: 'response'});
             networkService.getCollection('apiDocumentation').then(response => {
                 expect(response.data).toEqual('response');
@@ -694,6 +694,11 @@
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/developers$/).respond(200, {data: 'response'});
             networkService.getCollection('transparencyAttestations').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates$/).respond(200, {data: 'response'});
+            networkService.getCollection('surveillanceManagement').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Upload Surveillance component', () => {
+    fdescribe('the Upload Surveillance component', () => {
         var $compile, $log, $q, Upload, authService, ctrl, el, mock, scope;
 
         mock = {
@@ -18,7 +18,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.surveillance', $provide => {
                 $provide.decorator('Upload', $delegate => {
                     $delegate.upload = jasmine.createSpy('upload');
                     return $delegate;
@@ -42,7 +42,7 @@
 
                 scope = $rootScope.$new();
                 scope.onChange = jasmine.createSpy('onChange');
-                el = angular.element('<chpl-upload-surveillances on-change="onChange()"></chpl-upload-surveillances>');
+                el = angular.element('<chpl-upload-surveillance on-change="onChange()"></chpl-upload-surveillance>');
 
                 $compile(el)(scope);
                 scope.$digest();

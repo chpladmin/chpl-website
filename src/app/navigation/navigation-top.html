@@ -109,13 +109,14 @@
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-key-usage()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-key-usage')"></i> API Key Usage</a></li>
           </ul>
         </li>
-        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))" class="dropdown" uib-dropdown is-open="vm.surveillanceIsOpen">
+        <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting') || vm.isOn('ocd1277'))" class="dropdown" uib-dropdown is-open="vm.surveillanceIsOpen">
           <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="surveillance-toggle" ng-class="{'admin-active' : vm.isActive('surveillance')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.surveillanceIsOpen">Surveillance</button>
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="surveillance-toggle" id="surveillance-dropdown-menu">
-            <li><a ui-sref="surveillance.upload()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.upload')"></i> Upload</a></li>
-            <li><a ui-sref="surveillance.confirm()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.confirm')"></i> Confirm</a></li>
-            <li feature-flag="complaints"><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i> Complaints</a></li>
-            <li feature-flag="surveillance-reporting"><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i> Reporting</a></li>
+            <li><a ui-sref="surveillance.upload()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.upload')"></i>Upload</a></li>
+            <li><a ui-sref="surveillance.confirm()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.confirm')"></i>Confirm</a></li>
+            <li feature-flag="ocd1277"><a ui-sref="surveillance.manage()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.manage')"></i> Manage</a></li>
+            <li feature-flag="complaints"><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i>Complaints</a></li>
+            <li feature-flag="surveillance-reporting"><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
           </ul>
         </li>
       </ul><!-- /admin nav -->
