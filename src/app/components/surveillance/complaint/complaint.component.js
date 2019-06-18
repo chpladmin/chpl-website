@@ -102,7 +102,7 @@ export const SurveillanceComplaintComponent = {
 
         filterListingsBasedOnSelectedAcb () {
             let that = this;
-            if (that.complaint.certificationBody && that.complaint.certificationBody.name) {
+            if (this.complaint.certificationBody && this.complaint.certificationBody.name) {
                 // Filter the available listings based on the selected acb
                 this.filteredListings = this.listings.filter(item => {
                     return item.acb === that.complaint.certificationBody.name;
