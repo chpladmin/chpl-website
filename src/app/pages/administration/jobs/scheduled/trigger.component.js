@@ -1,11 +1,12 @@
 export const JobsScheduledTriggerComponent = {
     templateUrl: 'chpl.administration/jobs/scheduled/trigger.html',
     bindings: {
-        job: '<',
         trigger: '<',
+        acbs: '<',
         recurring: '<',
         onSave: '&',
         onCancel: '&',
+        onDelete: '&',
     },
     controller: class JobsScheduledJobComponent {
         constructor ($interval, $log, SPLIT_PRIMARY) {
@@ -27,11 +28,11 @@ export const JobsScheduledTriggerComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.job) {
-                this.job = angular.copy(changes.job.currentValue);
-            }
             if (changes.trigger) {
                 this.trigger = angular.copy(changes.trigger.currentValue);
+            }
+            if (changes.acbs) {
+                this.acbs = angular.copy(changes.acbs.currentValue);
             }
             if (changes.recurring) {
                 this.recurring = angular.copy(changes.recurring.currentValue);
@@ -43,34 +44,41 @@ export const JobsScheduledTriggerComponent = {
                 if (this.trigger.acb) {
                     this.selectedAcb = this.trigger.acb.split(this.SPLIT_PRIMARY).map(acb => ({name: acb}));
                 }
-                if (!this.job && this.trigger.job) {
-                    this.job = this.trigger.job;
-                }
-            }
-            if (this.job) {
-                if (this.job.jobDataMap.parameters) {
-                    this.parameters = JSON.parse(this.job.jobDataMap.parameters);
+                if (this.trigger.job.jobDataMap.parameters) {
+                    this.parameters = JSON.parse(this.trigger.job.jobDataMap.parameters);
                 }
                 this.schConfig = this._getScheduleConfig();
+            }
+            if (this.acbs && !this.selectedAcb) {
+                this.selectedAcb = this.acbs;
             }
         }
 
         save () {
-            let trigger = {
-                job: this.job,
+            let toSave = {
+                job: this.trigger.job,
             };
             if (this.recurring) {
-                trigger.trigger = this.trigger;
+                toSave.trigger = this.trigger;
+                if (this.trigger.job.jobDataMap.acbSpecific) {
+                    toSave.trigger.acb = this.selectedAcb.map(acb => acb.name).join(this.SPLIT_PRIMARY);
+                }
             } else {
-                trigger.runDateMillis = this.selectedDateTime.getTime();
+                toSave.runDateMillis = this.selectedDateTime.getTime();
             }
             this.onSave({
-                trigger: trigger,
+                trigger: toSave,
             });
         }
 
         cancel () {
             this.onCancel();
+        }
+
+        delete () {
+            this.onDelete({
+                trigger: this.trigger,
+            });
         }
 
         _getDefaultCron () {
@@ -100,7 +108,7 @@ export const JobsScheduledTriggerComponent = {
 
         _getScheduleConfig () {
             return Object.assign(
-                this._getTimingRestrictions(this.job),
+                this._getTimingRestrictions(this.trigger.job),
                 {
                     formInputClass: '',
                     formSelectClass: '',

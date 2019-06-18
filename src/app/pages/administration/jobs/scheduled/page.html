@@ -21,14 +21,7 @@
 <span ng-if="$ctrl.mode === 'editTrigger'">
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
-      <chpl-jobs-scheduled-trigger trigger="$ctrl.activeTrigger" recurring="true" acbs="$ctrl.acbs" on-save="$ctrl.saveTrigger(trigger)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-trigger>
-    </div>
-  </div>
-</span>
-<span ng-if="$ctrl.mode === 'scheduleTrigger'">
-  <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-      <chpl-jobs-scheduled-trigger trigger="$ctrl.activeTrigger" job="$ctrl.activeJob" recurring="$ctrl.isRecurring" acbs="$ctrl.acbs" on-save="$ctrl.saveTrigger(trigger)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-trigger>
+      <chpl-jobs-scheduled-trigger trigger="$ctrl.activeTrigger" recurring="$ctrl.isRecurring" acbs="$ctrl.acbs" on-save="$ctrl.saveTrigger(trigger)" on-delete="$ctrl.deleteTrigger(trigger)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-trigger>
     </div>
   </div>
 </span>

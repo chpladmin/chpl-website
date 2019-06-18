@@ -6,9 +6,9 @@
 
         mock = {
             triggers: [
-                {name: 'name1', retired: false},
-                {name: 'name2', retired: true},
-                {name: 'name3', retired: false},
+                {name: 'name1', retired: false, job: {name: 'name'}},
+                {name: 'name2', retired: true, job: {name: 'name'}},
+                {name: 'name3', retired: false, job: {name: 'name'}},
             ],
         };
 

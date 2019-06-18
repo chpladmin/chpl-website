@@ -5,11 +5,8 @@
         let $compile, $log, ctrl, el, mock, scope;
 
         mock = {
-            jobs: [
-                {description: 'Send email to API key holders where a warning email has been sent, after x days of inactivity, and delete the key', group: 'systemJobs', name: 'apiKeyDeleteJob', frequency: null, jobDataMap: {}},
-                {description: 'Sends an error report for all Listings breaking ICS rules', group: 'chplJobs', name: 'ONC Inherited Certification Status Errors Report', frequency: 'DAILY', jobDataMap: {authorities: 'ROLE_ADMIN;ROLE_ONC', frequency: 'DAILY'}},
-                {description: 'Sends an error report for all Listings breaking Surveillance rules within the last day, by specific ACB', group: 'chplJobs', name: 'ONC-ACB Overnight Broken Surveillance Rules Report', frequency: 'DAILY', jobDataMap: {acbSpecific: true, type: 'Overnight', authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ACB', frequency: 'DAILY'}},
-            ],
+            trigger: {job: {description: 'Sends an error report for all Listings breaking Surveillance rules within the last day, by specific ACB', group: 'chplJobs', name: 'ONC-ACB Overnight Broken Surveillance Rules Report', frequency: 'DAILY', jobDataMap: {acbSpecific: true, type: 'Overnight', authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ACB', frequency: 'DAILY'}}},
+            acbs: [{id: 3}],
         };
 
         beforeEach(() => {
@@ -20,11 +17,13 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-                scope.jobs = mock.jobs;
+                scope.trigger = mock.trigger;
+                scope.acbs = mock.acbs;
+                scope.recurring = false;
                 scope.onSave = jasmine.createSpy('onSave');
                 scope.onCancel = jasmine.createSpy('onCancel');
 
-                el = angular.element('<chpl-jobs-scheduled-trigger jobs="jobs" on-save="onSave(trigger)" on-cancel="onCancel()"></chpl-jobs-scheduled-trigger>');
+                el = angular.element('<chpl-jobs-scheduled-trigger trigger="trigger" acbs="acbs" recurring="recurring" on-save="onSave(trigger)" on-cancel="onCancel()"></chpl-jobs-scheduled-trigger>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -51,12 +50,18 @@
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
 
+            it('should do things $onChanges', () => {
+                expect(ctrl.trigger).toBeDefined();
+                expect(ctrl.acbs).toBeDefined();
+                expect(ctrl.acbs.length).toBe(1);
+                expect(ctrl.recurring).toBeDefined();
+            });
+
             it('should call the save callback', () => {
                 ctrl.selectedDateTime = new Date('2019-06-17');
-                ctrl.job = angular.copy(mock.jobs[0]);
                 ctrl.save();
                 expect(scope.onSave).toHaveBeenCalledWith({
-                    job: mock.jobs[0],
+                    job: mock.trigger.job,
                     runDateMillis: 1560729600000,
                 });
             });

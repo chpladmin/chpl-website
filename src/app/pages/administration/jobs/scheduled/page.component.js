@@ -6,10 +6,11 @@ export const JobsScheduledPageComponent = {
         triggers: '<',
     },
     controller: class JobsScheduledPageComponent {
-        constructor ($log, networkService) {
+        constructor ($log, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.networkService = networkService;
+            this.toaster = toaster;
             this.mode = 'view';
         }
 
@@ -28,6 +29,7 @@ export const JobsScheduledPageComponent = {
         takeTriggerAction (action, data) {
             this.activeTrigger = data;
             this.mode = 'editTrigger';
+            this.isRecurring = true;
         }
 
         takeJobAction (action, data) {
@@ -37,14 +39,17 @@ export const JobsScheduledPageComponent = {
                 this.mode = 'editJob';
                 break;
             case 'scheduleOneTime':
-                this.activeJob = data;
-                this.mode = 'scheduleTrigger';
+                this.activeTrigger = {
+                    job: data,
+                }
+                this.mode = 'editTrigger';
                 this.isRecurring = false;
                 break;
             case 'scheduleRecurring':
-                this.activeJob = data;
-                this.activeTrigger = {};
-                this.mode = 'scheduleTrigger';
+                this.activeTrigger = {
+                    job: data,
+                };
+                this.mode = 'editTrigger';
                 this.isRecurring = true;
                 break;
                 //no default
@@ -58,11 +63,80 @@ export const JobsScheduledPageComponent = {
         }
 
         saveJob (job) {
-            this.$log.info('saveJob', job);
+            let that = this;
+            this.networkService.updateJob(job)
+                .then(() => {
+                    that.toaster.pop({
+                        type: 'success',
+                        title: 'Job updated',
+                        body: 'Job has been updated',
+                    });
+                    that.refreshJobs();
+                    that.cancel();
+                });
         }
 
         saveTrigger (trigger) {
-            this.$log.info('saveTrigger', trigger);
+            let that = this;
+            if (this.isRecurring) {
+                if (trigger.trigger.name) {
+                    this.networkService.updateScheduleTrigger(trigger.trigger)
+                        .then(() => {
+                            that.toaster.pop({
+                                type: 'success',
+                                title: 'Job updated',
+                                body: 'Recurring job updated',
+                            });
+                            that.cancel();
+                            that.refreshTriggers();
+                        });
+                } else {
+                    this.networkService.createScheduleTrigger(trigger.trigger)
+                        .then(() => {
+                            that.toaster.pop({
+                                type: 'success',
+                                title: 'Job created',
+                                body: 'Recurring job scheduled',
+                            });
+                            that.cancel();
+                            that.refreshTriggers();
+                        });
+                }
+            } else {
+                this.networkService.createScheduleOneTimeTrigger(trigger)
+                    .then(() => {
+                        that.toaster.pop({
+                            type: 'success',
+                            title: 'Job created',
+                            body: 'One time job scheduled',
+                        });
+                        that.cancel();
+                    });
+            }
+        }
+
+        deleteTrigger (trigger) {
+            let that = this;
+            this.networkService.deleteScheduleTrigger(trigger)
+                .then(() => {
+                    that.toaster.pop({
+                        type: 'success',
+                        title: 'Job deleted',
+                        body: 'Recurring job deleted',
+                    });
+                    that.cancel();
+                    that.refreshTriggers();
+                });
+        }
+
+        refreshJobs () {
+            let that = this;
+            this.networkService.getScheduleJobs().then(results => that.jobs = results.results);
+        }
+
+        refreshTriggers () {
+            let that = this;
+            this.networkService.getScheduleTriggers().then(results => that.triggers = results.results);
         }
     },
 }

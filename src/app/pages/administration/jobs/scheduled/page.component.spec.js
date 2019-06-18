@@ -18,6 +18,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.administration', $provide => {
+                $provide.factory('chplJobsScheduledTriggersDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getScheduleJobs = jasmine.createSpy('getScheduleJobs');
                     $delegate.getScheduleTriggers = jasmine.createSpy('getScheduleTriggers');
@@ -100,15 +101,15 @@
 
                     it('should handle a one time trigger', () => {
                         ctrl.takeJobAction('scheduleOneTime', mock.jobs[1]);
-                        expect(ctrl.activeJob).toBe(mock.jobs[1]);
-                        expect(ctrl.mode).toBe('scheduleTrigger');
+                        expect(ctrl.activeTrigger).toEqual({job: mock.jobs[1]});
+                        expect(ctrl.mode).toBe('editTrigger');
                         expect(ctrl.isRecurring).toBe(false);
                     });
 
                     it('should handle a recurring trigger', () => {
                         ctrl.takeJobAction('scheduleRecurring', mock.jobs[1]);
-                        expect(ctrl.activeJob).toBe(mock.jobs[1]);
-                        expect(ctrl.mode).toBe('scheduleTrigger');
+                        expect(ctrl.activeTrigger).toEqual({job: mock.jobs[1]});
+                        expect(ctrl.mode).toBe('editTrigger');
                         expect(ctrl.isRecurring).toBe(true);
                     });
                 });
