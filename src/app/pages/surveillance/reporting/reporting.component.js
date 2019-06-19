@@ -170,25 +170,22 @@ export const SurveillanceReportingComponent = {
 
         saveQuarter (report) {
             let that = this;
+            let action;
             if (this.mode === 'initiateQuarter') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.networkService.getRelevantListings(results)
-                        .then(listings => {
-                            results.relevantListings = listings;
-                            that.activeQuarterReport = results;
-                        });
-                    that.networkService.getQuarterlySurveillanceReports().then(results => {
-                        that.quarters = results;
-                    });
-                });
-            } else if (this.mode === 'editQuarter') {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.activeQuarterReport = results;
-                    that.networkService.getQuarterlySurveillanceReports().then(results => {
-                        that.quarters = results;
-                    });
-                });
+                action = this.networkService.createQuarterlySurveillanceReport;
+            } else {
+                action = this.networkService.updateQuarterlySurveillanceReport;
             }
+            action.call(this, report).then(results => {
+                that.networkService.getRelevantListings(results)
+                    .then(listings => {
+                        results.relevantListings = listings;
+                        that.activeQuarterReport = results;
+                    });
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
+                });
+            });
             this.mode = 'view';
         }
 
