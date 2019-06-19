@@ -30,6 +30,12 @@
             ],
         };
 
+        let allCps = [
+            {'id': 296,'chplProductNumber': 'CHP-022218','acb': 'UL LLC'},
+            {'id': 4708,'chplProductNumber': 'CHP-022844','acb': 'Drummond Group'},
+            {'id': 470,'chplProductNumber': 'CHP-026059','acb': 'UL LLC'},
+        ];
+
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
                 $provide.decorator('networkService', $delegate => {
@@ -40,6 +46,7 @@
                     $delegate.deleteComplaint = jasmine.createSpy('deleteComplaint');
                     $delegate.updateComplaint = jasmine.createSpy('updateComplaint');
                     $delegate.createComplaint = jasmine.createSpy('createComplaint');
+                    $delegate.getCollection = jasmine.createSpy('getCollection');
                     return $delegate;
                 });
             });
@@ -56,6 +63,7 @@
                 networkService.deleteComplaint.and.returnValue($q.when({status: 200}));
                 networkService.updateComplaint.and.returnValue($q.when(complaints[0]));
                 networkService.createComplaint.and.returnValue($q.when(complaints[0]));
+                networkService.getCollection.and.returnValue($q.when({'results': angular.copy(allCps)}));
 
                 scope = $rootScope.$new();
 
@@ -146,6 +154,12 @@
                 ctrl.refreshComplaintStatusTypes();
                 expect(networkService.getComplaintStatusTypes).toHaveBeenCalled();
                 expect(ctrl.complaintStatusTypes.length).toBe(2);
+            });
+
+            it('should be able to fetch all listings', () => {
+                ctrl.refreshListings();
+                expect(networkService.getCollection).toHaveBeenCalled();
+                expect(ctrl.listings.length).toBe(3);
             });
         });
     });

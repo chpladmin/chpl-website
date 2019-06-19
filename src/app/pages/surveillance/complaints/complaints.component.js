@@ -13,6 +13,7 @@ export const SurveillanceComplaintsComponent = {
             this.complaintTypes = [];
             this.certificationBodies = [];
             this.errorMessages = [];
+            this.listings = [];
         }
 
         $onInit () {
@@ -20,6 +21,7 @@ export const SurveillanceComplaintsComponent = {
             this.refreshComplaintTypes();
             this.refreshComplaintStatusTypes();
             this.refreshCertificationBodies();
+            this.refreshListings();
         }
 
         deleteComplaint (complaint) {
@@ -124,6 +126,13 @@ export const SurveillanceComplaintsComponent = {
             //get all acbs that the user has edit capability of
             this.networkService.getAcbs(true).then(response => {
                 that.certificationBodies = response.acbs;
+            });
+        }
+
+        refreshListings () {
+            let that = this;
+            this.networkService.getCollection('complaintListings').then(response => {
+                that.listings = response.results;
             });
         }
 

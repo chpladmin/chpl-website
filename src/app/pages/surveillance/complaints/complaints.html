@@ -21,7 +21,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="complaint in $ctrl.complaints">
+              <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
                 <td>{{ complaint.certificationBody.name }}</td>
                 <td>{{ complaint.complaintType.name }}</td>
                 <td>{{ complaint.complaintStatusType.name }}</td>
@@ -42,6 +42,7 @@
             complaint-status-types="$ctrl.complaintStatusTypes"
             certification-bodies="$ctrl.certificationBodies"
             error-messages="$ctrl.errorMessages"
+            listings="$ctrl.listings"
             on-delete="$ctrl.deleteComplaint(complaint)"
             on-save="$ctrl.saveComplaint(complaint)"
             on-cancel="$ctrl.cancelEdit()" >
