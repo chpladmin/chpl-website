@@ -1,0 +1,89 @@
+<div class="form-horizontal" ng-form="$ctrl.form">
+  <div class="row">
+    <div class="col-md-12">
+      <strong>Job Name</strong><br />
+      <p>{{ $ctrl.trigger.job.name }}</p>
+      <strong>Description</strong><br />
+      <p>{{ $ctrl.trigger.job.description }}</p>
+    </div>
+  </div>
+  <div class="row" ng-repeat="param in $ctrl.parameters">
+    <div class="col-md-3">
+      <label for="{{ param.key }}" >{{ param.label }}</label>
+    </div>
+    <div class="col-md-6">
+      <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required>
+    </div>
+  </div>
+  <span ng-if="!$ctrl.recurring">
+    <div class="row">
+      <div class="col-md-3">
+        <label for="selectedDate" >Date <span class="text-danger">*</span></label>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.selectedDateTime" is-open="$ctrl.datePickerOpen" close-text="Close" id="selectedDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.datePickerOpen = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="selectedTime">Time <span class="text-danger">*</span></label>
+      </div>
+      <div class="col-md-6" >
+        <div uib-timepicker ng-model="$ctrl.selectedDateTime" show-meridian="true" id="selectedTime"></div>
+      </div>
+    </div>
+  </span>
+  <span ng-if="$ctrl.recurring">
+    <div class="row">
+      <div class="col-md-3">
+        <label for="email">Recipient email <span class="text-danger">*</span></label>
+      </div>
+      <div class="col-md-6">
+        <input class="input-sm form-control" type="email" ng-model="$ctrl.trigger.email" id="email" name="email" ng-disabled="$ctrl.trigger.name" required />
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.required">Email is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.email">Email format is invalid</div>
+      </div>
+    </div>
+    <div class="row" ng-if="$ctrl.trigger.job.jobDataMap.acbSpecific">
+      <div class="col-md-3">
+        <label for="acb">ONC-ACB <span class="text-danger">*</span></label>
+      </div>
+      <div class="col-md-6">
+        <button id="clear-selection-acbs" class="btn btn-small btn-link pull-right" ng-click="$ctrl.selectedAcb=[];" ng-if="$ctrl.selectedAcb && $ctrl.selectedAcb.length !== 0">Clear Selection<span class="sr-only"> of ONC-ACBs</span></button>
+        <select multiple required data-ng-attr-size="{{ $ctrl.acbs.length }}" class="form-control"
+                id="acb" name="acb" ng-model="$ctrl.selectedAcb"
+                ng-options="acb as acb.name for acb in $ctrl.acbs | orderBy: 'name' track by acb.name">
+        </select>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.acb.$touched) && $ctrl.form.acb.$error.required">ONC-ACB is required</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        Set the time at which you would like to receive the report. Please note this is in UTC time, which is currently {{ $ctrl.now | date : 'mediumTime' : 'UTC' }}
+        <cron-gen ng-model="$ctrl.trigger.cronSchedule" options="$ctrl.schConfig"></cron-gen>
+        <p><strong>Schedule, in cron format: {{ $ctrl.trigger.cronSchedule }}</strong></p>
+      </div>
+    </div>
+  </span>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+              ng-mouseover="$ctrl.showFormErrors = true"
+              class="btn btn-ai-success btn-small pull-right" id="edit-job-save" ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" id="edit-job-cancel" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+      <button class="btn btn-danger btn-small" id="edit-job-delete"
+              confirm="Are you sure you wish to delete this Scheduled Job?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-if="$ctrl.trigger.name"
+              ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
+    </div>
+  </div>
+</div>
