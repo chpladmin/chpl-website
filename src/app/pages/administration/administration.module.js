@@ -12,6 +12,7 @@ export default angular
         'ngIdle',
         'ngSanitize',
         'smart-table',
+        'toaster',
         'ui.bootstrap',
         'zxcvbn',
     ]).config((IdleProvider, KeepaliveProvider) => {

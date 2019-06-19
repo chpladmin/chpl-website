@@ -1,5 +1,4 @@
-function getResources ($q, networkService) {
-    'ngInject'
+let getResources = ($q, networkService) => {
     let promises = [
         networkService.getSearchOptions()
             .then(response => ({
@@ -61,6 +60,30 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Reports - Listings' },
+        })
+        .state('administration.jobs', {
+            abstract: true,
+            url: '/jobs',
+            template: '<ui-view/></div>',
+        })
+        .state('administration.jobs.scheduled', {
+            url: '/scheduled',
+            component: 'chplJobsScheduledPage',
+            resolve: {
+                acbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                jobs: networkService => {
+                    'ngInject'
+                    return networkService.getScheduleJobs();
+                },
+                triggers: networkService => {
+                    'ngInject'
+                    return networkService.getScheduleTriggers();
+                },
+            },
+            data: { title: 'CHPL Administration - Jobs - Scheduled' },
         })
     ;
 }

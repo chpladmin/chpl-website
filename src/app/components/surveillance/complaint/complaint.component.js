@@ -6,6 +6,7 @@ export const SurveillanceComplaintComponent = {
         complaintStatusTypes: '<',
         certificationBodies: '<',
         errorMessages: '<',
+        listings: '<',
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
@@ -22,7 +23,6 @@ export const SurveillanceComplaintComponent = {
                 ADD: 'add',
             }
             this.currentMode = '';
-
         }
 
         $onChanges (changes) {
@@ -45,6 +45,10 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);
+            }
+            if (changes.listings) {
+                this.listings = angular.copy(changes.listings.currentValue);
+                this.filterListingsBasedOnSelectedAcb();
             }
         }
 
@@ -69,6 +73,38 @@ export const SurveillanceComplaintComponent = {
         cancelEdit () {
             if (this.onCancel) {
                 this.onCancel();
+            }
+        }
+
+        selectListing ($item) {
+            if (!Array.isArray(this.complaint.listings)) {
+                this.complaint.listings = [];
+            }
+            this.complaint.listings.push({
+                listingId: $item.id,
+                chplProductNumber: $item.chplProductNumber,
+            });
+            this.listing = '';
+        }
+
+        removeListing (listingToRemove) {
+            this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
+        }
+
+        startsWith (valueToCheck, viewValue) {
+            return valueToCheck.substr(0, viewValue.length).toLowerCase() === viewValue.toLowerCase();
+        }
+
+        changeAcb () {
+            this.filterListingsBasedOnSelectedAcb();
+        }
+
+        filterListingsBasedOnSelectedAcb () {
+            if (this.complaint.certificationBody && this.complaint.certificationBody.name) {
+                // Filter the available listings based on the selected acb
+                this.filteredListings = this.listings.filter(item => {
+                    return item.acb === this.complaint.certificationBody.name;
+                });
             }
         }
     },

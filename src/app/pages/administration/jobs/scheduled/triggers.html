@@ -1,0 +1,26 @@
+<span>
+  <h3>Scheduled Jobs</h3>
+  <p ng-if="!$ctrl.triggers || $ctrl.triggers.length === 0">
+    No Jobs are scheduled
+  </p>
+  <table class="table table-condensed" st-table="$ctrl.displayedTriggers" st-safe-src="$ctrl.triggers" ng-if="$ctrl.triggers && $ctrl.triggers.length > 0">
+    <thead>
+      <tr>
+        <th scope="col" class="search-header" st-sort="email" st-skip-natural="true" st-sort-default="true">Email</th>
+        <th scope="col">Job details</th>
+        <th scope="col"><span class="sr-only">Actions</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="trigger in $ctrl.displayedTriggers track by $index">
+        <td>{{ trigger.email }}</td>
+        <td>
+          <ul class="list-unstyled">
+            <li ng-repeat="detail in trigger.details | orderBy:'detail'">{{ detail }}</li>
+          </ul>
+        </td>
+        <td><button class="btn btn-ai-success" ng-click="$ctrl.editTrigger(trigger)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ trigger.email }}</span></button></td>
+      </tr>
+    </tbody>
+  </table>
+</span>
