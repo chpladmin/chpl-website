@@ -356,6 +356,14 @@
             $httpBackend.flush();
         });
 
+        fit('should generateAnnualSurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/export\/annual\/id$/).respond(200, {data: 'response'});
+            networkService.generateAnnualSurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getAcbActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/acbs$/).respond(200, {data: 'response'});

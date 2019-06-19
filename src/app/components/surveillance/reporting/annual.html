@@ -1,7 +1,7 @@
 <div id="chpl-report" ng-form="$ctrl.form">
   <span class="pull-right" ng-if="!$ctrl.isEditing">
     <button class="btn btn-link btn-small" id="surveillance-report-edit-{{ $ctrl.report.id }}" ng-click="$ctrl.edit()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Annual Surveillance Report</span></button>
-    <a class="btn btn-link btn-small" id="surveillance-report-download-{{ $ctrl.report.id }}" href="{{ $ctrl.downloadUrl }}"><i class="fa fa-download"></i><span class="sr-only"> Download Annual Surveillance Report</span></a>
+    <button class="btn btn-link btn-small" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()"><i class="fa fa-download"></i><span class="sr-only"> Generate Annual Surveillance Report</span></button>
   </span>
   <p><strong>{{ $ctrl.report.acb.name }} Annual Surveillance Reporting</strong></p>
   <p>{{ $ctrl.report.year }}</p>

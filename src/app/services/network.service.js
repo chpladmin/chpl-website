@@ -121,6 +121,10 @@ export class NetworkService {
         return this.apiDELETE('/users/' + userId);
     }
 
+    generateAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/annual/' + reportId);
+    }
+
     getAcbActivity (activityRange) {
         var call = '/activity/acbs';
         return this.getActivity(call, activityRange);

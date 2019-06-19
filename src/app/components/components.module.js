@@ -9,6 +9,7 @@
         'ngResource',
         'ngStorage',
         'smart-table',
+        'toaster',
         'ui.bootstrap',
     ]);
 })();
