@@ -3,7 +3,7 @@
     <div class="col-sm-12">
       <span class="pull-right" ng-if="!$ctrl.isEditing">
         <button class="btn btn-link btn-small" id="surveillance-report-edit-{{ $ctrl.report.id }}" ng-click="$ctrl.edit()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Quarterly Surveillance</span></button>
-        <a class="btn btn-link btn-small" id="surveillance-report-download-{{ $ctrl.report.id }}" href="{{ $ctrl.downloadUrl }}"><i class="fa fa-download"></i><span class="sr-only"> Download Quarterly Surveillance</span></a>
+        <button class="btn btn-link btn-small" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()"><i class="fa fa-download"></i><span class="sr-only"> Download Quarterly Surveillance Report</span></button>
       </span>
       <p><strong>{{ $ctrl.report.acb.name }} Quarterly Surveillance Reporting</strong></p>
       <p>{{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}</p>

@@ -125,6 +125,10 @@ export class NetworkService {
         return this.apiGET('/surveillance-report/export/annual/' + reportId);
     }
 
+    generateQuarterlySurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/quarterly/' + reportId);
+    }
+
     getAcbActivity (activityRange) {
         var call = '/activity/acbs';
         return this.getActivity(call, activityRange);

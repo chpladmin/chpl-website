@@ -364,6 +364,14 @@
             $httpBackend.flush();
         });
 
+        fit('should generateQuarterlySurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/export\/quarterly\/id$/).respond(200, {data: 'response'});
+            networkService.generateQuarterlySurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getAcbActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/acbs$/).respond(200, {data: 'response'});
