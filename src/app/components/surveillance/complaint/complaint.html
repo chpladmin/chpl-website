@@ -17,18 +17,6 @@
         required</div>
     </div>
   </div>
-  <div class="form-group">
-    <label class="control-label" for="complaint-type">Complaint Type<span class="text-danger">*</span></label>
-    <div>
-      <select ng-model="$ctrl.complaint.complaintType" id="complaint-type" name="complaintType"
-        class="input-sm form-control"
-        ng-options="ct.name for ct in $ctrl.complaintTypes | orderBy: 'name' track by ct.id"
-        ng-required="$ctrl.isOn('complaints-ui-validation')">
-      </select>
-      <div class="text-danger" ng-if="$ctrl.form.complaintType.$touched && $ctrl.form.complaintType.$error.required">
-        Complaint Type is required</div>
-    </div>
-  </div>
   <div class="form-group" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
     <label class="control-label" for="complaint-status-type">Complaint Status Type</label>
     <div>
@@ -36,22 +24,6 @@
         class="input-sm form-control"
         ng-options="cst.name for cst in $ctrl.complaintStatusTypes | orderBy: 'name' track by cst.id">
       </select>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label" for="onc-complaint-id">ONC Complaint ID</label>
-    <div>
-      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id"
-        name="oncComplaintId"></input>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label" for="acb-complaint-id">ONC-ACB Complaint ID<span class="text-danger">*</span></label>
-    <div>
-      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id"
-        name="acbComplaintId" ng-required="$ctrl.isOn('complaints-ui-validation')"></input>
-      <div class="text-danger" ng-if="$ctrl.form.acbComplaintId.$touched && $ctrl.form.acbComplaintId.$error.required">
-        ONC-ACB Complaint ID is required</div>
     </div>
   </div>
   <div class="form-group">
@@ -70,6 +42,34 @@
       </div>
       <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
       <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="acb-complaint-id">ONC-ACB Complaint ID<span class="text-danger">*</span></label>
+    <div>
+      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id"
+        name="acbComplaintId" ng-required="$ctrl.isOn('complaints-ui-validation')"></input>
+      <div class="text-danger" ng-if="$ctrl.form.acbComplaintId.$touched && $ctrl.form.acbComplaintId.$error.required">
+        ONC-ACB Complaint ID is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="onc-complaint-id">ONC Complaint ID</label>
+    <div>
+      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id"
+        name="oncComplaintId"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="complaint-type">Complaint Type<span class="text-danger">*</span></label>
+    <div>
+      <select ng-model="$ctrl.complaint.complaintType" id="complaint-type" name="complaintType"
+        class="input-sm form-control"
+        ng-options="ct.name for ct in $ctrl.complaintTypes | orderBy: 'name' track by ct.id"
+        ng-required="$ctrl.isOn('complaints-ui-validation')">
+      </select>
+      <div class="text-danger" ng-if="$ctrl.form.complaintType.$touched && $ctrl.form.complaintType.$error.required">
+        Complaint Type is required</div>
     </div>
   </div>
   <div class="form-group">
