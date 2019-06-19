@@ -243,6 +243,10 @@ export class NetworkService {
         return this.apiGET('/data/complaint_types');
     }
 
+    getCriteria () {
+        return this.apiGET('/data/certification_criteria');
+    }
+
     getCriterionProductStatistics () {
         return this.apiGET('/statistics/criterion_product');
     }

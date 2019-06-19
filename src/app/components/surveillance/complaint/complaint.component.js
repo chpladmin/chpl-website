@@ -5,6 +5,8 @@ export const SurveillanceComplaintComponent = {
         complaintTypes: '<',
         complaintStatusTypes: '<',
         certificationBodies: '<',
+        criteria: '<',
+        editions: '<',
         errorMessages: '<',
         listings: '<',
         onCancel: '&?',
@@ -23,6 +25,8 @@ export const SurveillanceComplaintComponent = {
                 ADD: 'add',
             }
             this.currentMode = '';
+            this.edition = {};
+            this.isEditionDropdownOpen = false;
         }
 
         $onChanges (changes) {
@@ -49,6 +53,14 @@ export const SurveillanceComplaintComponent = {
             if (changes.listings) {
                 this.listings = angular.copy(changes.listings.currentValue);
                 this.filterListingsBasedOnSelectedAcb();
+            }
+            if (changes.editions) {
+                this.editions = angular.copy(changes.editions.currentValue);
+                this.edition = this.getDefaultEdition();
+            }
+            if (changes.criteria) {
+                this.criteria = angular.copy(changes.criteria.currentValue);
+                this.filterCriteriaBasedOnSelectedEdition();
             }
         }
 
@@ -106,6 +118,30 @@ export const SurveillanceComplaintComponent = {
                     return item.acb === this.complaint.certificationBody.name;
                 });
             }
+        }
+
+        getDefaultEdition () {
+            return this.editions.find(item => item.name === '2015');
+        }
+
+        selectEdition (edition) {
+            this.edition = edition;
+            this.filterCriteriaBasedOnSelectedEdition();
+        }
+
+        filterCriteriaBasedOnSelectedEdition () {
+            this.filteredCriteria = this.criteria.filter(item => item.certificationEditionId === this.edition.id);
+            this.$log.info(this.filteredCriteria);
+        }
+
+        selectCriteria () {
+            if (!Array.isArray(this.complaint.criteria)) {
+                this.complaint.criteria = [];
+            }
+            this.$log.info(this.criterion);
+            this.complaint.criteria.push(this.criterion);
+            this.criterion = {};
+            this.$log.info(this.complaint.criteria);
         }
     },
 }
