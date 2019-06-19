@@ -53,6 +53,12 @@ export const SurveillanceReportQuarterComponent = {
                     body: 'QuarterlySurveillance report is being generated, and will be emailed when ready.',
                 }));
         }
+
+        saveRelevantListing (listing) {
+            this.report.relevantListings = this.report.relevantListings.filter(l => l.id !== listing.id);
+            this.report.relevantListings.push(listing);
+            this.$log.info(listing);
+        }
     },
 }
 
