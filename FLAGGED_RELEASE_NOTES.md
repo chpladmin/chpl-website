@@ -18,3 +18,11 @@ _complaints_
 
 _surveillance-reporting_
 * Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports
+
+_ocd1277_
+* Updated Surveillance Management workflow
+  * New navigation for upload, confirm, manage
+  * Added "view all surveillance" capability
+
+_ocd-2749_
+* Improve User Management UI/UX

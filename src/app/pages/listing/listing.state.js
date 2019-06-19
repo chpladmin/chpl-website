@@ -37,26 +37,8 @@ let states = {
         {
             name: 'listing',
             url: '/listing/{id}',
-            redirectTo: trans => {
-                return {
-                    state: 'product',
-                    params: {
-                        id: trans.params().id,
-                    },
-                }
-            },
-        },{
-            name: 'listing.initial-panel',
-            url: '/{initialPanel}',
-            redirectTo: trans => {
-                return {
-                    state: 'product',
-                    params: {
-                        id: trans.params().id,
-                        initialPanel: trans.params().initialPanel,
-                    },
-                }
-            },
+            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL Product Details' },
         },{
             name: 'product',
             url: '/product/{id}/{initialPanel}',

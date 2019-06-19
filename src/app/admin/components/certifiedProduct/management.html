@@ -32,7 +32,13 @@
       </div>
     </div> <!-- end of upload process table -->
 
-    <div class="row" ng-if="vm.workType === 'manageSurveillance'">
+    <div class="row" ng-if="vm.workType === 'manageSurveillance'" feature-flag="ocd1277">
+      <div class="col-sm-12">
+        <chpl-surveillance-management allowed-acbs="vm.surveillanceAllowedAcbs" listings="vm.surveillanceListings"></chpl-surveillance-management>
+      </div>
+    </div> <!-- end of surveillance management -->
+
+    <div class="row" ng-if="vm.workType === 'manageSurveillance'" feature-flag="ocd1277" feature-flag-hide>
       <div class="col-sm-12">
         <h3>Manage Surveillance Activity</h3>
         <label for="surveillance-search" class="control-label sr-only">Search by ACB or CHPL ID</label>

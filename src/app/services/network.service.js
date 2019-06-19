@@ -59,6 +59,10 @@ export class NetworkService {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
 
+    createComplaint (complaint) {
+        return this.apiPOST('/complaints', complaint);
+    }
+
     createFilter (filter) {
         return this.apiPOST('/filters', filter);
     }
@@ -85,6 +89,10 @@ export class NetworkService {
 
     deleteAnnualSurveillanceReport (id) {
         return this.apiDELETE('/surveillance-report/annual/' + id);
+    }
+
+    deleteComplaint (complaintId) {
+        return this.apiDELETE('/complaints/' + complaintId);
     }
 
     deleteFilter (filterId) {
@@ -223,6 +231,18 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint_status_types');
+    }
+
+    getComplaintTypes () {
+        return this.apiGET('/data/complaint_types');
+    }
+
     getCriterionProductStatistics () {
         return this.apiGET('/statistics/criterion_product');
     }
@@ -254,6 +274,8 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
+        case 'surveillanceManagement':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default
         }
     }
@@ -642,6 +664,10 @@ export class NetworkService {
 
     updateAnnualSurveillanceReport (report) {
         return this.apiPUT('/surveillance-report/annual', report);
+    }
+
+    updateComplaint (complaint) {
+        return this.apiPUT('/complaints/' + complaint.id, complaint)
     }
 
     updateCP (cpObject) {

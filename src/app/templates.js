@@ -18,6 +18,7 @@ ctxs.push({module: 'chpl.reports', ctx: require.context('./pages/reports/', true
 ctxs.push({module: 'chpl.search', ctx: require.context('./pages/search/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.services', ctx: require.context('./services/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.surveillance', ctx: require.context('./pages/surveillance/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.users', ctx: require.context('./pages/users/', true, /.*\.html$/)});
 
 ctxs.forEach(obj => {
     angular.module(obj.module).run([
