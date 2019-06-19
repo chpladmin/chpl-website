@@ -27,7 +27,7 @@
                 <td>{{ complaint.complaintStatusType.name }}</td>
                 <td>{{ complaint.oncComplaintId }}</td>
                 <td>{{ complaint.acbComplaintId }}</td>
-                <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' : 'UTC' }}</td>
+                <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' }}</td>
                 <td>
                   <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
                 </td>

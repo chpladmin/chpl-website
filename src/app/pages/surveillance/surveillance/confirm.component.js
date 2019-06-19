@@ -1,5 +1,5 @@
 export const ConfirmSurveillanceComponent = {
-    templateUrl: 'chpl.surveillance/confirm/surveillance.html',
+    templateUrl: 'chpl.surveillance/surveillance/confirm.html',
     bindings: {
         onChange: '&',
     },

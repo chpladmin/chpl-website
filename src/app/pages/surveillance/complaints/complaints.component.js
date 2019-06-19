@@ -88,6 +88,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         displayAddComplaint () {
+            this.clearErrorMessages();
             this.complaint = {};
             this.isEditing = true;
         }
@@ -136,7 +137,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         clearErrorMessages () {
-            this.errorMesssages = [];
+            this.errorMessages = [];
         }
 
         getComplaintStatusType (name) {
