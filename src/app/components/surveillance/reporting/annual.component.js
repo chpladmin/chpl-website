@@ -22,10 +22,12 @@ export const SurveillanceReportAnnualComponent = {
             if (changes.report) {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
-                this.downloadUrl = this.API + '/surveillance-report/export/annual/' + this.report.id + '?api_key=' + this.API_KEY + '&authorization=Bearer%20' + this.getToken();
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
+            }
+            if (this.report) {
+                this.downloadUrl = this.API + '/surveillance-report/export/annual/' + this.report.id + '?api_key=' + this.API_KEY + '&authorization=Bearer%20' + this.getToken();
             }
         }
 

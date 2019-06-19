@@ -418,6 +418,10 @@ export class NetworkService {
         return this.apiGET('/products/' + productId + '/listings');
     }
 
+    getRelevantListings (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/listings');
+    }
+
     getSearchOptions () {
         return this.apiGET('/data/search_options');
     }

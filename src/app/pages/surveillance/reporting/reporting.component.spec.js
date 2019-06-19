@@ -16,9 +16,9 @@
             ],
             availableQuarters: [],
             quarters: [
-                {acb: {name: 'name1'}, quarter: 'Q1', year: 2019, id: 1},
-                {acb: {name: 'name3'}, quarter: 'Q1', year: 2019, id: 2},
-                {acb: {name: 'name1'}, quarter: 'Q4', year: 2019, id: 3},
+                {acb: {name: 'name1'}, quarter: 'Q1', year: 2019, id: 1, relevantListings: []},
+                {acb: {name: 'name3'}, quarter: 'Q1', year: 2019, id: 2, relevantListings: []},
+                {acb: {name: 'name1'}, quarter: 'Q4', year: 2019, id: 3, relevantListings: []},
             ],
         };
 
@@ -31,6 +31,7 @@
                     $delegate.deleteQuarterlySurveillanceReport = jasmine.createSpy('deleteQuarterlySurveillanceReport');
                     $delegate.getAnnualSurveillanceReports = jasmine.createSpy('getAnnualSurveillanceReports');
                     $delegate.getQuarterlySurveillanceReports = jasmine.createSpy('getQuarterlySurveillanceReports');
+                    $delegate.getRelevantListings = jasmine.createSpy('getRelevantListings');
                     $delegate.updateAnnualSurveillanceReport = jasmine.createSpy('updateAnnualSurveillanceReport');
                     $delegate.updateQuarterlySurveillanceReport = jasmine.createSpy('updateQuarterlySurveillanceReport');
 
@@ -49,6 +50,7 @@
                 networkService.deleteQuarterlySurveillanceReport.and.returnValue($q.when([]));
                 networkService.getAnnualSurveillanceReports.and.returnValue($q.when([]));
                 networkService.getQuarterlySurveillanceReports.and.returnValue($q.when([]));
+                networkService.getRelevantListings.and.returnValue($q.when([]));
                 networkService.updateAnnualSurveillanceReport.and.returnValue($q.when({}));
                 networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when({}));
 

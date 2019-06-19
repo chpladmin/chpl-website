@@ -997,6 +997,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getRelevantListings', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly\/id\/listings$/).respond(200, {data: 'response'});
+            networkService.getRelevantListings({id: 'id'}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSearchOptions', () => {
             $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {data: 'response'});
             networkService.getSearchOptions().then(response => {
