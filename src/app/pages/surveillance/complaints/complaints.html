@@ -12,22 +12,22 @@
             <thead>
               <tr>
                 <th scope="col">ONC-ACB</th>
-                <th scope="col">Type</th>
                 <th scope="col">Status</th>
-                <th scope="col">ONC Complaint Id</th>
-                <th scope="col">ONC-ACB Complaint Id</th>
                 <th scope="col">Received Date</th>
+                <th scope="col">ONC-ACB Complaint Id</th>
+                <th scope="col">ONC Complaint Id</th>
+                <th scope="col">Type</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
                 <td>{{ complaint.certificationBody.name }}</td>
-                <td>{{ complaint.complaintType.name }}</td>
                 <td>{{ complaint.complaintStatusType.name }}</td>
-                <td>{{ complaint.oncComplaintId }}</td>
-                <td>{{ complaint.acbComplaintId }}</td>
                 <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' }}</td>
+                <td>{{ complaint.acbComplaintId }}</td>
+                <td>{{ complaint.oncComplaintId }}</td>
+                <td>{{ complaint.complaintType.name }}</td>
                 <td>
                   <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
                 </td>
