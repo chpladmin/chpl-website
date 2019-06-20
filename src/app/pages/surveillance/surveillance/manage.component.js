@@ -49,6 +49,21 @@ export const SurveillanceManagementComponent = {
                 this.listings = angular.copy(changes.listings.currentValue.results);
             }
             if (this.allowedAcbs && this.listings) {
+                this.filterItems.acbItems = this.allowedAcbs
+                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                    .map(a => {
+                        let ret = {
+                            value: a.name,
+                        };
+                        if (a.retired) {
+                            ret.display = a.name + ' (Retired)';
+                            ret.retired = true;
+                            ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                        } else {
+                            ret.selected = true;
+                        }
+                        return ret;
+                    });
                 this.parse();
             }
         }
