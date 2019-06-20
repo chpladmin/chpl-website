@@ -11,11 +11,21 @@
             clear: both;
         }
 
+        li>div {
+            padding: 3px 20px;
+            clear: both;
+        }
+
         li select {
             display: block;
             padding: 3px 20px;
             margin: 3px 20px;
             clear: both;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0;
+            margin-right: 0;
         }
     }
 
