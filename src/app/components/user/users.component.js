@@ -18,6 +18,7 @@ export const UsersComponent = {
         $onChanges (changes) {
             if (changes.users.currentValue) {
                 this.users = angular.copy(changes.users.currentValue);
+                this.filteredUsers = angular.copy(this.users);
             }
             if (changes.roles.currentValue) {
                 this.roles = angular.copy(changes.roles.currentValue);
@@ -74,6 +75,23 @@ export const UsersComponent = {
             this.form.$setPristine();
             this.form.$setUntouched();
             this.showFormErrors = false;
+        }
+
+        filter () {
+            this.filteredUsers = this.users.filter(user => {
+                let found = false;
+                if (this.searchText) {
+                    let regex = new RegExp(this.searchText, 'i');
+                    found = found || regex.test(user.fullName);
+                    found = found || regex.test(user.friendlyName);
+                    found = found || regex.test(user.title);
+                    found = found || regex.test(user.email);
+                    found = found || regex.test(user.subjectName);
+                } else {
+                    found = true;
+                }
+                return found;
+            });
         }
     },
 }
