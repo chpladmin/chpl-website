@@ -116,11 +116,11 @@
       No Criteria Selected
     </div>
     <div class="alert alert-success" ng-repeat="criterion in $ctrl.complaint.criteria | orderBy: 'number'">
-      <button class="close" ng-click="">
-        <span class="sr-only">Remove item {{ criterion.certificationEdition }} - {{ criterion.number }}</span>
+      <button class="close"  ng-click="$ctrl.removeCriterion(criterion)">
+        <span class="sr-only">Remove item {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}</span>
         <i class="fa fa-times"></i>
       </button>
-      <strong><small>{{ criterion.certificationEdition }} - {{ criterion.number }}</small></strong>
+      <strong>{{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}</strong>
     </div>
     <div class="input-group">
       <div class="input-group-btn" uib-dropdown >

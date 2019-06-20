@@ -131,17 +131,22 @@ export const SurveillanceComplaintComponent = {
 
         filterCriteriaBasedOnSelectedEdition () {
             this.filteredCriteria = this.criteria.filter(item => item.certificationEditionId === this.edition.id);
-            this.$log.info(this.filteredCriteria);
         }
 
         selectCriteria () {
             if (!Array.isArray(this.complaint.criteria)) {
                 this.complaint.criteria = [];
             }
-            this.$log.info(this.criterion);
-            this.complaint.criteria.push(this.criterion);
+            this.complaint.criteria.push({
+                complaintId: this.complaint.id,
+                certificationCriterionId: this.criterion.id,
+                certificationCriterion: this.criterion,
+            });
             this.criterion = {};
-            this.$log.info(this.complaint.criteria);
+        }
+
+        removeCriterion (criterionToRemove) {
+            this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterionId !== criterionToRemove.certificationCriterionId);
         }
     },
 }
