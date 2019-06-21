@@ -1,0 +1,40 @@
+<div class="form-horizontal" ng-form="$ctrl.form">
+  <div class="row">
+    <div class="col-md-12">
+      <strong>Job Name</strong><br />
+      <p>{{ $ctrl.job.name }}</p>
+      <strong>Description</strong><br />
+      <p>{{ $ctrl.job.description }}</p>
+    </div>
+  </div>
+  <div class="row" ng-repeat="item in $ctrl.job.jobDataMap.editableJobFields.split(';')">
+    <div class="col-md-3">
+      {{ item.split('-')[1] }}
+    </div>
+    <div class="col-md-6">
+      <span ng-if="!$ctrl.job.jobDataMap[item.split('-')[0]].split($ctrl.SPLIT_PRIMARY)">No data entered</span>
+      <ul>
+        <li ng-repeat="value in $ctrl.job.jobDataMap[item.split('-')[0]].split($ctrl.SPLIT_PRIMARY)">
+          {{ value }}
+          <button class="btn btn-warning pull-right" ng-click="$ctrl.removeItem(item, value)"><i class="fa fa-trash"></i><span class="sr-only">Remove</span></button>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+      <label for="new-item"><span class="sr-only">Add new item</span></label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="new-item" ng-model="$ctrl.newItem[item]">
+        <span class="input-group-btn">
+          <button class="btn btn-default" ng-click="$ctrl.addNewItem(item)"><i class="fa fa-plus"></i><span class="sr-only">Add</span></button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+              ng-mouseover="$ctrl.showFormErrors = true"
+              class="btn btn-ai-success btn-small pull-right" id="edit-job-save" ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" id="edit-job-cancel" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    </div>
+  </div>
+</div>

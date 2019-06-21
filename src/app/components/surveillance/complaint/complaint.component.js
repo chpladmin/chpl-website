@@ -2,7 +2,7 @@ export const SurveillanceComplaintComponent = {
     templateUrl: 'chpl.components/surveillance/complaint/complaint.html',
     bindings: {
         complaint: '<',
-        complaintTypes: '<',
+        complainantTypes: '<',
         complaintStatusTypes: '<',
         certificationBodies: '<',
         criteria: '<',
@@ -38,8 +38,8 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
             }
-            if (changes.complaintTypes) {
-                this.complaintTypes = angular.copy(changes.complaintTypes.currentValue);
+            if (changes.complainantTypes) {
+                this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
             }
             if (changes.complaintStatusTypes) {
                 this.complaintStatusTypes = angular.copy(changes.complaintStatusTypes.currentValue);
