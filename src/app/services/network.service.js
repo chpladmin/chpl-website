@@ -239,8 +239,8 @@ export class NetworkService {
         return this.apiGET('/data/complaint_status_types');
     }
 
-    getComplaintTypes () {
-        return this.apiGET('/data/complaint_types');
+    getComplainantTypes () {
+        return this.apiGET('/data/complainant_types');
     }
 
     getCriterionProductStatistics () {

@@ -62,15 +62,24 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label" for="complaint-type">Complaint Type<span class="text-danger">*</span></label>
+    <label class="control-label" for="complainant-type">Complainant Type<span class="text-danger">*</span></label>
     <div>
-      <select ng-model="$ctrl.complaint.complaintType" id="complaint-type" name="complaintType"
+      <select ng-model="$ctrl.complaint.complainantType" id="complainant-type" name="complainantType"
         class="input-sm form-control"
-        ng-options="ct.name for ct in $ctrl.complaintTypes | orderBy: 'name' track by ct.id"
+        ng-options="ct.name for ct in $ctrl.complainantTypes | orderBy: 'name' track by ct.id"
         ng-required="$ctrl.isOn('complaints-ui-validation')">
       </select>
-      <div class="text-danger" ng-if="$ctrl.form.complaintType.$touched && $ctrl.form.complaintType.$error.required">
-        Complaint Type is required</div>
+      <div class="text-danger" ng-if="$ctrl.form.complainantType.$touched && $ctrl.form.complainantType.$error.required">
+        Complainant Type is required</div>
+    </div>
+  </div>
+  <div class="form-group" ng-if="$ctrl.complaint.complainantType.name === 'Other - [Please Describe]'">
+    <label class="control-label" for="complainant-type-other">Complainant Type - Other Description<span class="text-danger">*</span></label>
+    <div>
+      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.complainantTypeOther" id="complainant-type-other"
+        name="complainantTypeOther" ng-required="$ctrl.isOn('complaints-ui-validation')"></input>
+      <div class="text-danger" ng-if="$ctrl.form.complainantTypeOther.$touched && $ctrl.form.complainantTypeOther.$error.required">
+        Complainant Type - Other Description is required</div>
     </div>
   </div>
   <div class="form-group">

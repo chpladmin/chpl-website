@@ -10,7 +10,7 @@ export const SurveillanceComplaintsComponent = {
             this.isEditing = false;
             this.complaints = [];
             this.complaint = {};
-            this.complaintTypes = [];
+            this.complainantTypes = [];
             this.certificationBodies = [];
             this.errorMessages = [];
             this.listings = [];
@@ -18,7 +18,7 @@ export const SurveillanceComplaintsComponent = {
 
         $onInit () {
             this.refreshComplaints();
-            this.refreshComplaintTypes();
+            this.refreshComplainantTypes();
             this.refreshComplaintStatusTypes();
             this.refreshCertificationBodies();
             this.refreshListings();
@@ -107,10 +107,10 @@ export const SurveillanceComplaintsComponent = {
             });
         }
 
-        refreshComplaintTypes () {
+        refreshComplainantTypes () {
             let that = this;
-            this.networkService.getComplaintTypes().then(response => {
-                that.complaintTypes = response.data;
+            this.networkService.getComplainantTypes().then(response => {
+                that.complainantTypes = response.data;
             });
         }
 
