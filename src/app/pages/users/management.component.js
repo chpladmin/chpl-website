@@ -21,6 +21,12 @@ export const UserManagementComponent = {
             this.handleRole();
         }
 
+        $onChanges (changes) {
+            if (changes.users.currentValue) {
+                this.users = angular.copy(changes.users.currentValue.users);
+            }
+        }
+
         handleRole () {
             if (this.hasAnyRole() && !this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                 this.$state.go('search');
@@ -31,33 +37,26 @@ export const UserManagementComponent = {
             }
         }
 
-        $onChanges (changes) {
-            if (changes.users.currentValue) {
-                this.users = angular.copy(changes.users.currentValue.users);
-            }
-        }
-
         takeAction (action, data) {
             let that = this;
-            let invitation = {
-                role: data.role,
-                emailAddress: data.email,
-            };
             switch (action) {
             case 'delete':
                 this.networkService.deleteUser(data)
                     .then(() => that.networkService.getUsers().then(response => that.users = response.users));
                 break;
             case 'invite':
-                this.networkService.inviteUser(invitation)
-                    .then(() => that.toaster.pop({
-                        type: 'success',
-                        title: 'Email sent',
-                        body: 'Email sent successfully to ' + data.email,
-                    }));
+                this.networkService.inviteUser({
+                    role: data.role,
+                    emailAddress: data.email,
+                }).then(() => that.toaster.pop({
+                    type: 'success',
+                    title: 'Email sent',
+                    body: 'Email sent successfully to ' + data.email,
+                }));
                 break;
             case 'refresh':
-                this.networkService.getUsers().then(response => this.users = response.users);
+                this.networkService.getUsers()
+                    .then(response => that.users = response.users);
                 break;
             case 'reload':
                 this.$state.reload();
