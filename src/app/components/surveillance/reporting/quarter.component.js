@@ -55,9 +55,7 @@ export const SurveillanceReportQuarterComponent = {
         }
 
         saveRelevantListing (listing) {
-            this.report.relevantListings = this.report.relevantListings.filter(l => l.id !== listing.id);
-            this.report.relevantListings.push(listing);
-            this.$log.info(listing);
+            this.takeAction({report: this.report, listing: listing, action: 'saveRelevantListing'});
         }
     },
 }

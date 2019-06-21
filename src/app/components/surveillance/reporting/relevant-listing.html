@@ -12,7 +12,7 @@
           Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}<br />
           <span ng-if="!$ctrl.isEditing">
             <i class="fa" ng-class="$ctrl.listing.excluded ? 'fa-check-square-o' : 'fa-square-o'"></i> Excluded from Randomized Surveillance<br />
-            <span ng-if="$ctrl.listing.exclusionReason"><strong>Reason for exclusion:</strong> {{ $ctrl.listing.exclusionReason }}</span>
+            <span ng-if="$ctrl.listing.reason"><strong>Reason for exclusion:</strong> {{ $ctrl.listing.reason }}</span>
           </span>
         </div>
         <div class="col-sm-6">
@@ -30,7 +30,7 @@
         <div class="form-group" ng-if="$ctrl.listing.excluded">
           <label class="col-sm-6 control-label" for="reason-for-exclusion">Reason for exclusion from randomized surveillance</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion" ng-model="$ctrl.listing.exclusionReason" required></input>
+            <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion" ng-model="$ctrl.listing.reason" required></input>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">Field is required</div>
           </div>
         </div>

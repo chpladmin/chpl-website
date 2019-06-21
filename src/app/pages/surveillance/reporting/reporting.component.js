@@ -129,7 +129,7 @@ export const SurveillanceReportingComponent = {
             }
         }
 
-        takeQuarterAction (report, action) {
+        takeQuarterAction (report, action, listing) {
             if (action === 'edit') {
                 this.activeQuarterReport = report;
                 this.mode = 'editQuarter';
@@ -142,6 +142,18 @@ export const SurveillanceReportingComponent = {
                     });
                     that.activeQuarterReport = undefined;
                     that.cancelQuarter();
+                });
+            }
+            if (action === 'saveRelevantListing') {
+                let that = this;
+                this.networkService.updateRelevantListing(report.id, listing).then(() => {
+                    that.networkService.getRelevantListings(report.report).then(results => {
+                        that.quarters.forEach(q => {
+                            if (q.id === report.id) {
+                                q.relevantListings = results;
+                            }
+                        });
+                    });
                 });
             }
         }

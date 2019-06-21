@@ -24,7 +24,7 @@ export const SurveillanceReportRelevantListingComponent = {
 
         save () {
             if (!this.listing.excluded) {
-                this.listing.exclusionReason = undefined;
+                this.listing.reason = undefined;
             }
             this.onSave({listing: this.listing});
         }
