@@ -236,11 +236,11 @@ export class NetworkService {
     }
 
     getComplaintStatusTypes () {
-        return this.apiGET('/data/complaint_status_types');
+        return this.apiGET('/data/complaint-status-types');
     }
 
     getComplainantTypes () {
-        return this.apiGET('/data/complainant_types');
+        return this.apiGET('/data/complainant-types');
     }
 
     getCriterionProductStatistics () {
