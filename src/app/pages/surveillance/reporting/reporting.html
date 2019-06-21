@@ -52,7 +52,7 @@
     </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
       <h2>Annual report</h2>
-      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualActionreport, action)"></chpl-surveillance-report-annual>
+      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
     </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'initiateQuarter'">
       <h2>Initiate surveillance reporting</h2>
