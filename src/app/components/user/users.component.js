@@ -20,7 +20,7 @@ export const UsersComponent = {
                 this.users = angular.copy(changes.users.currentValue);
                 this.filteredUsers = angular.copy(this.users);
             }
-            if (changes.roles.currentValue) {
+            if (changes.roles && changes.roles.currentValue) {
                 this.roles = angular.copy(changes.roles.currentValue);
                 if (this.roles && this.roles.length === 1) {
                     this.newRole = this.roles[0];
