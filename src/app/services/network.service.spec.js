@@ -622,7 +622,7 @@
         });
 
         it('should getComplaintStatusTypes', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/complaint_status_types$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/data\/complaint-status-types$/).respond(200, {data: 'response'});
             networkService.getComplaintStatusTypes().then(response => {
                 expect(response.data).toEqual('response');
             });
@@ -630,7 +630,7 @@
         });
 
         it('should getComplainantTypes', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/complainant_types$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/data\/complainant-types$/).respond(200, {data: 'response'});
             networkService.getComplainantTypes().then(response => {
                 expect(response.data).toEqual('response');
             });
