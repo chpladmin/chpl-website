@@ -4,7 +4,7 @@
     fdescribe('the Complaints component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
-        let complaintTypes = {
+        let complainantTypes = {
             data: [
                 { id: 1, name: 'developer'},
                 { id: 2, name: 'provider'},
@@ -40,7 +40,7 @@
             angular.mock.module('chpl.surveillance', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getComplaints = jasmine.createSpy('getComplaints');
-                    $delegate.getComplaintTypes = jasmine.createSpy('getComplaintTypes');
+                    $delegate.getComplainantTypes = jasmine.createSpy('getComplainantTypes');
                     $delegate.getComplaintStatusTypes = jasmine.createSpy('getComplaintStatusTypes');
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.deleteComplaint = jasmine.createSpy('deleteComplaint');
@@ -57,7 +57,7 @@
                 networkService = _networkService_;
 
                 networkService.getComplaints.and.returnValue($q.when(complaints));
-                networkService.getComplaintTypes.and.returnValue($q.when(complaintTypes));
+                networkService.getComplainantTypes.and.returnValue($q.when(complainantTypes));
                 networkService.getComplaintStatusTypes.and.returnValue($q.when(complaintStatusTypes));
                 networkService.getAcbs.and.returnValue($q.when(certBodies));
                 networkService.deleteComplaint.and.returnValue($q.when({status: 200}));
@@ -144,10 +144,10 @@
                 expect(ctrl.complaints.length).toBe(2);
             });
 
-            it('should be able to fetch all complaint types', () => {
-                ctrl.refreshComplaintTypes();
-                expect(networkService.getComplaintTypes).toHaveBeenCalled();
-                expect(ctrl.complaintTypes.length).toBe(2);
+            it('should be able to fetch all complainant types', () => {
+                ctrl.refreshComplainantTypes();
+                expect(networkService.getComplainantTypes).toHaveBeenCalled();
+                expect(ctrl.complainantTypes.length).toBe(2);
             });
 
             it('should be able to fetch all complaint status types', () => {

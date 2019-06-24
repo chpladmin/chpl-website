@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Network service', () => {
+    fdescribe('the Network service', () => {
         var $httpBackend, $log, mock, networkService;
 
         mock = {};
@@ -638,16 +638,16 @@
         });
 
         it('should getComplaintStatusTypes', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/complaint_status_types$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/data\/complaint-status-types$/).respond(200, {data: 'response'});
             networkService.getComplaintStatusTypes().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
-        it('should getComplaintTypes', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/complaint_types$/).respond(200, {data: 'response'});
-            networkService.getComplaintTypes().then(response => {
+        it('should getComplainantTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/complainant-types$/).respond(200, {data: 'response'});
+            networkService.getComplainantTypes().then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
