@@ -709,7 +709,7 @@ export class NetworkService {
     }
 
     updateRelevantListing (reportId, listing) {
-        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/exclusion/' + listing.id, listing);
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
     }
 
     updateScheduleTrigger (trigger) {

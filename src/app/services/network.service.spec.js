@@ -1554,7 +1554,7 @@
         });
 
         fit('should updateRelevantListing', () => {
-            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/exclusion\/lid$/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/listings\/lid$/).respond(200, {data: 'response'});
             networkService.updateRelevantListing('qid', {id: 'lid'}).then(response => {
                 expect(response.data).toEqual('response');
             });
