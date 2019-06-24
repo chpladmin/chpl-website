@@ -252,7 +252,7 @@ export class NetworkService {
     }
 
     getCriteria () {
-        return this.apiGET('/data/certification_criteria');
+        return this.apiGET('/data/certification-criteria');
     }
 
     getCriterionProductStatistics () {

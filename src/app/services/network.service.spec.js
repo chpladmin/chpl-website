@@ -661,6 +661,14 @@
             $httpBackend.flush();
         });
 
+        it('should getCriteria', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/certification-criteria$/).respond(200, {data: 'response'});
+            networkService.getCriteria().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCriterionProductStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/criterion_product$/).respond(200, {data: 'response'});
             networkService.getCriterionProductStatistics().then(response => {
