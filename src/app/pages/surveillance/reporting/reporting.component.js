@@ -147,10 +147,10 @@ export const SurveillanceReportingComponent = {
             if (action === 'saveRelevantListing') {
                 let that = this;
                 this.networkService.updateRelevantListing(report.id, listing).then(() => {
-                    that.networkService.getRelevantListings(report.report).then(results => {
+                    that.networkService.getRelevantListings(report).then(results => {
                         that.quarters.forEach(q => {
                             if (q.id === report.id) {
-                                q.relevantListings = results;
+                                report.relevantListings = results;
                             }
                         });
                     });
