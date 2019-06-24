@@ -121,6 +121,14 @@ export class NetworkService {
         return this.apiDELETE('/users/' + userId);
     }
 
+    generateAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/annual/' + reportId);
+    }
+
+    generateQuarterlySurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/quarterly/' + reportId);
+    }
+
     getAcbActivity (activityRange) {
         var call = '/activity/acbs';
         return this.getActivity(call, activityRange);
@@ -422,6 +430,10 @@ export class NetworkService {
 
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
+    }
+
+    getRelevantListings (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/listings');
     }
 
     getSearchOptions () {

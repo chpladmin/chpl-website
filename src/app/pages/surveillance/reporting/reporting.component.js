@@ -60,12 +60,12 @@ export const SurveillanceReportingComponent = {
 
         isAnnualOpen (acb, year) {
             let report = this.findAnnualReport(acb, year);
-            return this.activeAnnualReport && this.activeAnnualReport.id === report.id;
+            return this.activeAnnualReport && report && this.activeAnnualReport.id === report.id;
         }
 
         isQuarterOpen (acb, year, quarter) {
             let report = this.findQuarterReport(acb, year, quarter);
-            return this.activeQuarterReport && this.activeQuarterReport.id === report.id;
+            return this.activeQuarterReport && report && this.activeQuarterReport.id === report.id;
         }
 
         actOnAnnual (acb, year) {
@@ -91,7 +91,16 @@ export const SurveillanceReportingComponent = {
                 if (this.isQuarterOpen(acb, year, quarter)) {
                     this.activeQuarterReport = undefined;
                 } else {
-                    this.activeQuarterReport = report;
+                    if (!report.relevantListings) {
+                        let that = this;
+                        this.networkService.getRelevantListings(report)
+                            .then(results => {
+                                report.relevantListings = results;
+                                that.activeQuarterReport = report;
+                            });
+                    } else {
+                        this.activeQuarterReport = report;
+                    }
                 }
             } else {
                 this.activeQuarterReport = {
@@ -161,23 +170,22 @@ export const SurveillanceReportingComponent = {
 
         saveQuarter (report) {
             let that = this;
+            let action;
             if (this.mode === 'initiateQuarter') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.activeQuarterReport = results;
-                    that.networkService.getQuarterlySurveillanceReports().then(results => {
-                        that.quarters = results;
-                    });
-                    that.cancelQuarter();
-                });
-            } else if (this.mode === 'editQuarter') {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.activeQuarterReport = results;
-                    that.networkService.getQuarterlySurveillanceReports().then(results => {
-                        that.quarters = results;
-                    });
-                    that.cancelQuarter();
-                });
+                action = this.networkService.createQuarterlySurveillanceReport;
+            } else {
+                action = this.networkService.updateQuarterlySurveillanceReport;
             }
+            action.call(this, report).then(results => {
+                that.networkService.getRelevantListings(results)
+                    .then(listings => {
+                        results.relevantListings = listings;
+                        that.activeQuarterReport = results;
+                    });
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
+                });
+            });
             this.mode = 'view';
         }
 

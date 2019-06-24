@@ -8,21 +8,19 @@ export const SurveillanceReportAnnualComponent = {
         takeAction: '&?',
     },
     controller: class SurveillanceReportAnnualComponent {
-        constructor ($log, API, authService) {
+        constructor ($log, authService, networkService, toaster) {
             'ngInject'
             this.$log = $log;
-            this.API = API;
             this.backup = {};
             this.hasAnyRole = authService.hasAnyRole;
-            this.API_KEY = authService.getApiKey();
-            this.getToken = authService.getToken;
+            this.networkService = networkService;
+            this.toaster = toaster;
         }
 
         $onChanges (changes) {
             if (changes.report) {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
-                this.downloadUrl = this.API + '/surveillance-report/export/annual/' + this.report.id + '?api_key=' + this.API_KEY + '&authorization=Bearer%20' + this.getToken();
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
@@ -44,6 +42,16 @@ export const SurveillanceReportAnnualComponent = {
 
         delete () {
             this.takeAction({report: this.report, action: 'delete'});
+        }
+
+        generateReport () {
+            let that = this;
+            this.networkService.generateAnnualSurveillanceReport(this.report.id)
+                .then(() => that.toaster.pop({
+                    type: 'success',
+                    title: 'Report is being generated',
+                    body: 'Annual Surveillance report is being generated, and will be emailed when ready.',
+                }));
         }
     },
 }
