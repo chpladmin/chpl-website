@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <span ng-if="!$ctrl.acb.name">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>ONC-ACBs</h1>
+      </div>
+    </div>
+    <div class="row main-content" id="main-content" tabindex="-1">
+      <div class="col-md-12">
+        <div ng-repeat="acb in $ctrl.acbs">
+          <pre>{{ acb | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </span>
+  <span ng-if="$ctrl.acb.name">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>{{ $ctrl.acb.name }}</h1>
+      </div>
+    </div>
+    <div class="row main-content" id="main-content" tabindex="-1">
+      <div class="col-md-12">
+        <pre>{{ $ctrl.acb | json }}</pre>
+      </div>
+    </div>
+  </span>
+</div>

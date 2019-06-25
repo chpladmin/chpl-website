@@ -134,6 +134,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getAcb (id) {
+        return this.apiGET('/acbs/' + id);
+    }
+
     getAcbs (editable) {
         return this.apiGET('/acbs?editable=' + editable, true);
     }
