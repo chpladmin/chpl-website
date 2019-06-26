@@ -118,13 +118,12 @@
         uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.filteredListings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
   </div>
-
   <div class="form-group">
     <label class="control-label" for="criteria">Selected Criteria</label><br />
     <div ng-if="!$ctrl.complaint.criteria || $ctrl.complaint.criteria.length === 0">
       No Criteria Selected
     </div>
-    <div class="alert alert-success" ng-repeat="criterion in $ctrl.complaint.criteria | orderBy: 'number'">
+    <div class="alert alert-success" ng-repeat="criterion in $ctrl.complaint.criteria ">
       <button class="close"  ng-click="$ctrl.removeCriterion(criterion)">
         <span class="sr-only">Remove item {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}</span>
         <i class="fa fa-times"></i>
@@ -142,7 +141,7 @@
       </div>
       <select  id="criteria" name="criteria" class="input-sm form-control"
         ng-model="$ctrl.criterion"
-        ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: 'number' track by criteria.id"
+        ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
         ng-change="$ctrl.selectCriteria()">
       </select>
     </div>
