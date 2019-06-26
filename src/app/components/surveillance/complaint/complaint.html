@@ -36,6 +36,7 @@
           ng-required="$ctrl.isOn('complaints-ui-validation')"
           uib-datepicker-popup="MM/dd/yyyy"
           is-open="$ctrl.receivedDatePicker"
+          ng-model-options="{ timezone: 'UTC' }"
           close-text="Close" ></input>
         <div class="input-group-btn">
           <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
