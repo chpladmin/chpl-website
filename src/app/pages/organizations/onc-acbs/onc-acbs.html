@@ -1,28 +1,24 @@
 <div class="container-fluid">
-  <span ng-if="!$ctrl.acb.name">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>ONC-ACBs</h1>
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>ONC-ACBs</h1>
     </div>
-    <div class="row main-content" id="main-content" tabindex="-1">
-      <div class="col-md-12">
-        <div ng-repeat="acb in $ctrl.acbs">
-          <pre>{{ acb | json }}</pre>
+  </div>
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <span ng-if="!$ctrl.activeAcb">
+      <div class="col-sm-6" ng-repeat="acb in $ctrl.acbs | orderBy : 'name'">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <chpl-onc-organization organization="acb" type="ONC-ACB" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+          </div>
         </div>
       </div>
-    </div>
-  </span>
-  <span ng-if="$ctrl.acb.name">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>{{ $ctrl.acb.name }}</h1>
+    </span>
+    <span ng-if="$ctrl.activeAcb">
+      <div class="col-md-6 col-md-offset-3">
+        <chpl-onc-organization organization="acb" type="ONC-ACB" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+        <div class="clearfix"></div>
       </div>
-    </div>
-    <div class="row main-content" id="main-content" tabindex="-1">
-      <div class="col-md-12">
-        <pre>{{ $ctrl.acb | json }}</pre>
-      </div>
-    </div>
-  </span>
+    </span>
+  </div>
 </div>

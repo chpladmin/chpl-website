@@ -1,0 +1,118 @@
+<div id="chpl-organization-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-form="$ctrl.form" class="row">
+  <div class="col-sm-12">
+    <span ng-if="!$ctrl.isEditing">
+      <span class="pull-right">
+        <button class="btn btn-link btn-small" id="chpl-organization-edit-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit {{ $ctrl.type }}</span></button>
+      </span>
+      <h1>{{ $ctrl.organization.name }}</h1>
+      <p><strong>{{ $ctrl.type }} Code: {{ $ctrl.organization.code }}</strong></p>
+      <p ng-if="$ctrl.organization.website"><a ai-a href="{{ $ctrl.organization.website }}">{{ $ctrl.organization.website }}</a></p>
+      <p ng-if="$ctrl.organization.retired">Retired, effective {{ $ctrl.organization.retirementDate | date : 'mediumDate' : 'UTC' }}</p>
+      <span ng-if="$ctrl.organization.address">
+        <h3>Address</h3>
+        <chpl-address address="$ctrl.organization.address"></chpl-address>
+      </span>
+    </span> <!-- end view -->
+
+    <span ng-if="$ctrl.isEditing">
+      <div class="form-group">
+        <label class="control-label" for="developerName">Developer name <span class="text-danger">*</span></label>
+        <div>
+          <input class="input-sm form-control" type="text" required ng-model="$ctrl.organization.name" id="developer-name" name="developerName" ng-maxlength="300"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="developerWebsite">Developer website</label>
+        <div>
+          <input class="input-sm form-control" type="url" ng-model="$ctrl.organization.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
+        </div>
+      </div>
+      <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+        <strong>Developer Status</strong>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th scope="col">Status History</th>
+              <th scope="col">Effective date</th>
+              <th scope="col">Reason for status change</th>
+              <th scope="col"><span class="sr-only">Event Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="$ctrl.addStatus()"><i class="fa fa-plus"></i><span class="sr-only"> Add status</span></button></td>
+            </tr>
+            <tr ng-if="!$ctrl.organization.statusEvents || $ctrl.organization.statusEvents.length === 0">
+              <td colspan="4">
+                <div class="text-danger">Developer Status is required</div>
+              </td>
+            </tr>
+            <tr ng-repeat="status in $ctrl.organization.statusEvents | orderBy:'-statusDateObject' track by $index">
+              <td>
+                <div class="form-group">
+                  <label for="developer-status-{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Developer Status <span class="text-danger">*</span></label>
+                  <select ng-model="status.status.status" required id="developer-status-{{ $index }}" name="developerStatus{{ $index }}" class="input-sm form-control">
+                    <option value="Active">Active</option>
+                    <option value="Suspended by ONC">Suspended by ONC</option>
+                    <option value="Under certification ban by ONC">Under certification ban by ONC</option>
+                  </select>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['developerStatus' + $index].$touched) && $ctrl.form['developerStatus' + $index].$error.required">Developer Status is required</div>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['developerStatus' + $index].$touched) && $ctrl.matchesPreviousStatus(status)">Developer Status must differ from previous Status</div>
+                </div>
+              </td>
+              <td>
+                <div class="form-group">
+                  <label for="status-date-{{ $index }}" class="sr-only">Change Date <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDateObject" is-open="status.statusDatePicker" close-text="Close" id="status-date-{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-ai btn-sm" ng-click="status.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+                    </span>
+                  </div>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.form['statusDate' + $index].$error.required">Change date is required</div>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousDate(status)">Only one change of status allowed per day</div>
+                </div>
+              </td>
+              <td>
+                <label for="status-reason-{{ $index }}" class="sr-only">Reason</label>
+                <input class="input-sm form-control" type="text" ng-model="status.reason" ng-maxlength="500" id="status-reason-{{ $index }}" name="statusReason{{ $index }}" ng-required="!status.reason && status.status.status === 'Under certification ban by ONC'">
+                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusReason' + $index].$touched) && $ctrl.form['statusReason' + $index].$error.required">Field is required</div>
+                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusReason' + $index].$touched) && $ctrl.form['statusReason' + $index].$error.maxlength">Field is too long</div>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-block btn-danger" ng-click="$ctrl.removeStatus($ctrl.organization.statusEvents.indexOf(status))"><i class="fa fa-trash"></i><span class="sr-only"> Remove status</span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="bg-info" ng-if="$ctrl.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
+      </span>
+      <span ng-if="$ctrl.hasAnyRole(['ROLE_ACB'])">
+        <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
+          <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
+          <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name]" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
+            <option value="Negative">Negative</option>
+            <option value="Affirmative">Affirmative</option>
+            <option value="N/A">N/A</option>
+          </select>
+        </div>
+      </span>
+      <h3>Address</h3>
+      <chpl-address address="$ctrl.organization.address" is-editing="$ctrl.isEditing" is-required="$ctrl.isSplitting" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+      <h3>Contact information</h3>
+      <chpl-contact contact="$ctrl.organization.contact" is-editing="$ctrl.isEditing" is-required="true" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+    </span> <!-- end edit -->
+
+    <div ng-if="$ctrl.canEdit">
+      <button class="btn btn-ai-success btn-small pull-right" id="chpl-organization-save-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" id="chpl-organization-cancel-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    </div>
+  </div>
+</div>

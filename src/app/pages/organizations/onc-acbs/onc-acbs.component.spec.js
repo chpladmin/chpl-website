@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the ONC-ACBs component', () => {
+    xdescribe('the ONC-ACBs component', () => {
         var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope;
 
         mock = {

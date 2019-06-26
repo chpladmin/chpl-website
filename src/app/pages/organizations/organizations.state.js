@@ -117,7 +117,7 @@ let states = {
         },{
             name: 'organizations.onc-acbs',
             url: '/onc-acbs',
-            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL ONC-ACBs' },
         },
     ],
