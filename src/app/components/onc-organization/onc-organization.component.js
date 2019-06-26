@@ -20,7 +20,6 @@ export const OncOrganizationComponent = {
         $onChanges (changes) {
             if (changes.organization) {
                 this.organization = angular.copy(changes.organization.currentValue);
-                this.organization.code = this.organization.acbCode;
                 this.backup.organization = angular.copy(this.organization);
             }
             if (changes.isEditing) {
@@ -52,6 +51,10 @@ export const OncOrganizationComponent = {
         editAddress (address, errors, validForm) {
             this.organization.address = angular.copy(address);
             this.valid.address = validForm;
+        }
+
+        getCode () {
+            return this.organization.acbCode;
         }
     },
 }

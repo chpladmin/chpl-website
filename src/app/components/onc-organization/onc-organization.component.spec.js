@@ -17,10 +17,10 @@
                     city: 'San Luis Obispo',
                     state: 'CA',
                     zipcode: '93401',
-                    country: 'USA'
+                    country: 'USA',
                 },
                 retired: false,
-                retirementDate: null
+                retirementDate: null,
             },
         };
 
@@ -40,9 +40,10 @@
 
                 scope = $rootScope.$new();
                 scope.organization = mock.organization;
+                scope.isEditing = false;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-onc-organization organization="organization" type="\'ONC-ACB\'" take-action="takeAction(action, data)"></chpl-onc-organization>');
+                el = angular.element('<chpl-onc-organization organization="organization" type="ONC-ACB" is-editing="isEditing" take-action="takeAction(action, data)"></chpl-onc-organization>');
 
                 $compile(el)(scope);
                 scope.$digest();
