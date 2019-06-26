@@ -43,7 +43,6 @@ export const SurveillanceComplaintsComponent = {
         saveComplaint (complaint) {
             if (complaint.formattedReceivedDate) {
                 complaint.receivedDate = this.convertToUTC(complaint.formattedReceivedDate).valueOf();
-                this.$log.info(complaint.receivedDate);
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);
