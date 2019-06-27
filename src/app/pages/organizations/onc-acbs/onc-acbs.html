@@ -4,23 +4,16 @@
       <h1>ONC-ACBs</h1>
     </div>
   </div>
-  <div class="row main-content" id="main-content" tabindex="-1">
-    <span ng-if="!$ctrl.activeAcb">
-      <span ng-repeat="acb in $ctrl.acbs | orderBy : 'name'">
-        <div ng-class-even="'row'">
-          <div class="col-sm-6">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <chpl-onc-organization organization="acb" type="ONC-ACB" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
-              </div>
+  <div class="main-content row" id="main-content" tabindex="-1">
+    <span ng-repeat="acb in $ctrl.allAcbs | filter : $ctrl.showAcb | orderBy : 'name'">
+      <div ng-class-even="'row'">
+        <div ng-class="$ctrl.activeAcb ? 'col-sm-6 col-sm-offset-3' : 'col-sm-6'">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <chpl-onc-organization organization="acb" type="ONC-ACB" can-edit="$ctrl.canEdit(acb)" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
             </div>
           </div>
         </div>
-      </span>
-    </span>
-    <span ng-if="$ctrl.activeAcb">
-      <div class="col-md-6 col-md-offset-3">
-        <chpl-onc-organization organization="acb" type="ONC-ACB" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
       </div>
     </span>
   </div>

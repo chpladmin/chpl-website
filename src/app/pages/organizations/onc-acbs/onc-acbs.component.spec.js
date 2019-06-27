@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    xdescribe('the ONC-ACBs component', () => {
+    fdescribe('the ONC-ACBs component', () => {
         var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -14,7 +14,7 @@
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('authService', $delegate => {
-                    $delegate.getAcbs = jasmine.createSpy('hasAnyRole');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', $delegate => {
@@ -36,8 +36,9 @@
 
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};
+                scope.editableAcbs = [];
 
-                el = angular.element('<chpl-onc-acbs acbs="acbs"></chpl-onc-acbs>');
+                el = angular.element('<chpl-onc-acbs all-acbs="acbs" editable-acbs="editableAcbs"></chpl-onc-acbs>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -65,7 +66,7 @@
             });
 
             it('should have data', () => {
-                expect(ctrl.acbs.length).toBe(2);
+                expect(ctrl.allAcbs.length).toBe(2);
             });
         });
     });

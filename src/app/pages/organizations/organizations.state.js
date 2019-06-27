@@ -83,11 +83,15 @@ let states = {
                     if ($transition$.params().oncAcbId) {
                         return networkService.getAcb($transition$.params().oncAcbId);
                     }
-                    return {};
+                    return undefined;
                 },
-                acbs: (authService, networkService) => {
+                allAcbs: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getAcbs(authService.hasAnyRole());
+                    return networkService.getAcbs(false);
+                },
+                editableAcbs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
                 },
             },
             data: { title: 'CHPL ONC-ACBs' },

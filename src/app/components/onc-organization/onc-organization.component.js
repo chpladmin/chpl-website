@@ -2,7 +2,7 @@ export const OncOrganizationComponent = {
     templateUrl: 'chpl.components/onc-organization/onc-organization.html',
     bindings: {
         organization: '<',
-        isEditing: '<',
+        canEdit: '<',
         type: '@',
         takeAction: '&',
     },
@@ -22,8 +22,8 @@ export const OncOrganizationComponent = {
                 this.organization = angular.copy(changes.organization.currentValue);
                 this.backup.organization = angular.copy(this.organization);
             }
-            if (changes.isEditing) {
-                this.isEditing = changes.isEditing.currentValue;
+            if (changes.canEdit) {
+                this.canEdit = changes.canEdit.currentValue;
             }
         }
 
@@ -32,13 +32,20 @@ export const OncOrganizationComponent = {
                 action: 'edit',
                 data: this.organization,
             });
+            this.isEditing = true;
         }
 
         save () {
+            if (this.organization.retired) {
+                this.organization.retirementDate = this.organization.retirementDateObject.getTime();
+            } else {
+                this.organization.retirementDate = undefined;
+            }
             this.takeAction({
                 action: 'save',
                 data: this.organization,
             });
+            this.isEditing = false;
         }
 
         cancel () {
@@ -46,6 +53,7 @@ export const OncOrganizationComponent = {
                 action: 'cancel',
             });
             this.organization = angular.copy(this.backup.organization);
+            this.isEditing = false;
         }
 
         editAddress (address, errors, validForm) {
