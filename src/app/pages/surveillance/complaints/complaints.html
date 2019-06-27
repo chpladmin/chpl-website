@@ -25,7 +25,7 @@
                 <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
                   <td>{{ complaint.certificationBody.name }}</td>
                   <td>{{ complaint.complaintStatusType.name }}</td>
-                  <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' }}</td>
+                  <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td>{{ complaint.acbComplaintId }}</td>
                   <td>{{ complaint.oncComplaintId }}</td>
                   <td>
