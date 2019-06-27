@@ -12,6 +12,8 @@ export const SurveillanceComplaintsComponent = {
             this.complaint = {};
             this.complainantTypes = [];
             this.certificationBodies = [];
+            this.criteria = [];
+            this.editions = [];
             this.errorMessages = [];
             this.listings = [];
         }
@@ -22,6 +24,8 @@ export const SurveillanceComplaintsComponent = {
             this.refreshComplaintStatusTypes();
             this.refreshCertificationBodies();
             this.refreshListings();
+            this.refreshEditions();
+            this.refreshCriteria();
         }
 
         deleteComplaint (complaint) {
@@ -133,6 +137,20 @@ export const SurveillanceComplaintsComponent = {
             let that = this;
             this.networkService.getCollection('complaintListings').then(response => {
                 that.listings = response.results;
+            });
+        }
+
+        refreshEditions () {
+            let that = this;
+            this.networkService.getEditions().then(response => {
+                that.editions = response;
+            });
+        }
+
+        refreshCriteria () {
+            let that = this;
+            this.networkService.getCriteria().then(response => {
+                that.criteria = response.criteria;
             });
         }
 

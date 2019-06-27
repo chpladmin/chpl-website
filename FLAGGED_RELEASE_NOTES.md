@@ -16,6 +16,7 @@ _listing-edit_
 _complaints_
 * Add ability to log Surveillance Complaints
   * Add ability to associate one or more listings to a complaint
+  * Add ability to associate one or more criteria to a complaint
 
 _surveillance-reporting_
 * Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports

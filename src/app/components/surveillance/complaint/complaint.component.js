@@ -5,6 +5,8 @@ export const SurveillanceComplaintComponent = {
         complainantTypes: '<',
         complaintStatusTypes: '<',
         certificationBodies: '<',
+        criteria: '<',
+        editions: '<',
         errorMessages: '<',
         listings: '<',
         onCancel: '&?',
@@ -12,7 +14,7 @@ export const SurveillanceComplaintComponent = {
         onDelete: '&?',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService, featureFlags) {
+        constructor ($filter, $log, authService, featureFlags, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
@@ -23,6 +25,10 @@ export const SurveillanceComplaintComponent = {
                 ADD: 'add',
             }
             this.currentMode = '';
+            this.edition = {};
+            this.isEditionDropdownOpen = false;
+            this.utilService = utilService;
+            this.sortCert = utilService.sortCert;
         }
 
         $onChanges (changes) {
@@ -33,6 +39,7 @@ export const SurveillanceComplaintComponent = {
                 } else {
                     this.currentMode = this.modes.ADD;
                 }
+                this.sortCertifications(this.complaint);
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -49,6 +56,14 @@ export const SurveillanceComplaintComponent = {
             if (changes.listings) {
                 this.listings = angular.copy(changes.listings.currentValue);
                 this.filterListingsBasedOnSelectedAcb();
+            }
+            if (changes.editions) {
+                this.editions = angular.copy(changes.editions.currentValue);
+                this.edition = this.getDefaultEdition();
+            }
+            if (changes.criteria) {
+                this.criteria = angular.copy(changes.criteria.currentValue);
+                this.filterCriteriaBasedOnSelectedEdition();
             }
         }
 
@@ -106,6 +121,41 @@ export const SurveillanceComplaintComponent = {
                     return item.acb === this.complaint.certificationBody.name;
                 });
             }
+        }
+
+        getDefaultEdition () {
+            return this.editions.find(item => item.name === '2015');
+        }
+
+        selectEdition (edition) {
+            this.edition = edition;
+            this.filterCriteriaBasedOnSelectedEdition();
+        }
+
+        filterCriteriaBasedOnSelectedEdition () {
+            this.filteredCriteria = this.criteria.filter(item => item.certificationEditionId === this.edition.id);
+        }
+
+        selectCriteria () {
+            if (!Array.isArray(this.complaint.criteria)) {
+                this.complaint.criteria = [];
+            }
+            this.complaint.criteria.push({
+                complaintId: this.complaint.id,
+                certificationCriterion: this.criterion,
+            });
+            this.sortCertifications(this.complaint);
+            this.criterion = {};
+        }
+
+        removeCriterion (criterionToRemove) {
+            this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterionId !== criterionToRemove.certificationCriterionId);
+        }
+
+        sortCertifications (complaint) {
+            complaint.criteria.sort((a, b) => {
+                return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
+            });
         }
     },
 }
