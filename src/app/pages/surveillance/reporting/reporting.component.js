@@ -129,7 +129,7 @@ export const SurveillanceReportingComponent = {
             }
         }
 
-        takeQuarterAction (report, action) {
+        takeQuarterAction (report, action, listing) {
             if (action === 'edit') {
                 this.activeQuarterReport = report;
                 this.mode = 'editQuarter';
@@ -142,6 +142,18 @@ export const SurveillanceReportingComponent = {
                     });
                     that.activeQuarterReport = undefined;
                     that.cancelQuarter();
+                });
+            }
+            if (action === 'saveRelevantListing') {
+                let that = this;
+                this.networkService.updateRelevantListing(report.id, listing).then(() => {
+                    that.networkService.getRelevantListings(report).then(results => {
+                        that.quarters.forEach(q => {
+                            if (q.id === report.id) {
+                                report.relevantListings = results;
+                            }
+                        });
+                    });
                 });
             }
         }
@@ -170,7 +182,6 @@ export const SurveillanceReportingComponent = {
 
         saveQuarter (report) {
             let that = this;
-
             if (this.mode === 'initiateQuarter') {
                 this.networkService.createQuarterlySurveillanceReport(report).then(results => {
                     that.networkService.getRelevantListings(results)
@@ -198,16 +209,12 @@ export const SurveillanceReportingComponent = {
         }
 
         cancelAnnual () {
-            if (this.mode === 'initiateAnnual') {
-                this.activeAnnualReport = undefined;
-            }
+            this.activeAnnualReport = undefined;
             this.mode = 'view';
         }
 
         cancelQuarter () {
-            if (this.mode === 'initiateQuarter') {
-                this.activeQuarterReport = undefined;
-            }
+            this.activeQuarterReport = undefined;
             this.mode = 'view';
         }
     },

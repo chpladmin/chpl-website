@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-sm-12">
       <span class="pull-right" ng-if="!$ctrl.isEditing">
+        <button class="btn btn-link btn-small" id="surveillance-report-cancel-{{ $ctrl.report.id }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Close Quarterly Surveillance Report</span></button>
         <button class="btn btn-link btn-small" id="surveillance-report-edit-{{ $ctrl.report.id }}" ng-click="$ctrl.edit()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Quarterly Surveillance</span></button>
         <button class="btn btn-link btn-small" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()"><i class="fa fa-download"></i><span class="sr-only"> Download Quarterly Surveillance Report</span></button>
       </span>
@@ -68,15 +69,8 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <div ng-repeat="listing in $ctrl.report.relevantListings | orderBy : 'chplProductNumber'" class="panel panel-default">
-        <div class="panel-heading">
-          <span class="pull-right">Last modified: {{ listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span>
-          <div class="panel-title">{{ listing.chplProductNumber }}</div>
-        </div>
-        <div class="panel-body">
-          <span class="pull-right">Edition: {{ listing.edition }}</span>
-          Certification Date: {{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}
-        </div>
+      <div ng-repeat="listing in $ctrl.report.relevantListings | orderBy : 'chplProductNumber'">
+        <chpl-surveillance-report-relevant-listing listing="listing" on-save="$ctrl.saveRelevantListing(listing)"></chpl-surveillance-report-relevant-listing>
       </div>
     </div>
   </div>
