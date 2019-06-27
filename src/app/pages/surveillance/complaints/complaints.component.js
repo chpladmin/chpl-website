@@ -42,7 +42,7 @@ export const SurveillanceComplaintsComponent = {
 
         saveComplaint (complaint) {
             if (complaint.formattedReceivedDate) {
-                complaint.receivedDate = complaint.formattedReceivedDate.valueOf();
+                complaint.receivedDate = complaint.formattedReceivedDate.getTime();
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);
