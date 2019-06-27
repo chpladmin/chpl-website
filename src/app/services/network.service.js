@@ -617,7 +617,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
+        return this.apiPUT('/acbs/' + acb.id, acb);
     }
 
     modifyATL (atl) {

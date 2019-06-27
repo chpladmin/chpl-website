@@ -47,17 +47,18 @@ export const OncAcbsComponent = {
 
         loadAcbs () {
             let that = this;
-            this.networkService.getAcbs(this.hasAnyRole()).then(response => that.editableAcbs = angular.copy(response.acbs));
+            this.networkService.getAcbs(true).then(response => that.editableAcbs = angular.copy(response.acbs));
         }
 
         takeAction (action, data) {
+            let that = this;
             if (!this.acb) {
                 switch (action) {
                 case 'edit':
                     this.activeAcb = data.id;
                     break;
                 case 'save':
-                    this.$log.info('saving', data);
+                    this.networkService.modifyACB(data).then(() => that.networkService.getAcbs(false).then(response => that.allAcbs = response.acbs));
                     this.activeAcb = undefined;
                     break;
                 case 'cancel':
@@ -66,7 +67,7 @@ export const OncAcbsComponent = {
                     //no default
                 }
             } else if (action === 'save') {
-                this.$log.info('saving', data);
+                this.networkService.modifyACB(data).then(() => that.networkService.getAcbs(false).then(response => that.allAcbs = response.acbs));
             }
         }
     },

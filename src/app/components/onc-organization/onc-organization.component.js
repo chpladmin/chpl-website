@@ -39,7 +39,7 @@ export const OncOrganizationComponent = {
             if (this.organization.retired) {
                 this.organization.retirementDate = this.organization.retirementDateObject.getTime();
             } else {
-                this.organization.retirementDate = undefined;
+                this.organization.retirementDate = null;
             }
             this.takeAction({
                 action: 'save',
