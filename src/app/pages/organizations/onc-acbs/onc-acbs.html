@@ -1,18 +1,21 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
-      <h1>ONC-ACBs</h1>
+      <h1>ONC-ACB<span ng-if="!$ctrl.activeAcb">s</span></h1>
     </div>
   </div>
   <div class="main-content row" id="main-content" tabindex="-1">
     <span ng-repeat="acb in $ctrl.allAcbs | filter : $ctrl.showAcb | orderBy : 'name'">
       <div ng-class-even="'row'">
-        <div ng-class="$ctrl.activeAcb ? 'col-sm-6 col-sm-offset-3' : 'col-sm-6'">
+        <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-6' : 'col-sm-6 col-sm-offset-3'">
           <div class="panel panel-default">
             <div class="panel-body">
               <chpl-onc-organization organization="acb" type="ONC-ACB" can-edit="$ctrl.canEdit(acb)" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
             </div>
           </div>
+        </div>
+        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && $ctrl.activeAcb" class="col-sm-6">
+          <chpl-users users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
         </div>
       </div>
     </span>
