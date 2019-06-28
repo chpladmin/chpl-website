@@ -2,8 +2,8 @@
   <div class="row">
     <div class="col-sm-12">
       <span class="pull-right">
-        <button class="btn btn-link btn-small" id="user-component-impersonate-{{ $ctrl.user.userId }}" ng-if="!$ctrl.isEditing && $ctrl.canImpersonate($ctrl.user)" ng-click="$ctrl.impersonate()"><i class="fa fa-bullseye"></i><span class="sr-only"> Impersonate User {{ $ctrl.user.fullName }}</span></button>
-        <button class="btn btn-link btn-small" id="user-component-edit-{{ $ctrl.user.userId }}" ng-if="!$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit User {{ $ctrl.user.fullName }}</span></button>
+        <button class="btn btn-link btn-small" id="user-component-impersonate-{{ $ctrl.user.userId }}" ng-if="!$ctrl.isEditing && $ctrl.canImpersonate($ctrl.user)" ng-click="$ctrl.impersonate()" uib-tooltip="Impersonate {{ $ctrl.user.fullName }}" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-bullseye"></i><span class="sr-only"> Impersonate {{ $ctrl.user.fullName }}</span></button>
+        <button class="btn btn-link btn-small" id="user-component-edit-{{ $ctrl.user.userId }}" ng-if="!$ctrl.isEditing" ng-click="$ctrl.edit()" uib-tooltip="Edit {{ $ctrl.user.fullName }}" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit {{ $ctrl.user.fullName }}</span></button>
       </span>
       <h2>{{ $ctrl.user.fullName }}<small ng-if="$ctrl.user.friendlyName"> ({{ $ctrl.user.friendlyName }})</small></h2>
     </div>
@@ -89,18 +89,18 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-ai-success btn-small pull-right" id="user-component-save-{{ $ctrl.user.userId }}"
+        <button class="btn btn-ai-success btn-small pull-right" id="user-component-save-{{ $ctrl.user.userId }}" uib-tooltip="Save" tooltip-trigger="'mouseenter focus click'"
                 ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
                 ng-mouseover="$ctrl.showFormErrors = true"
                 ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-        <button class="btn btn-warning btn-small" id="user-component-cancel-{{ $ctrl.user.userId }}"
+        <button class="btn btn-warning btn-small" id="user-component-cancel-{{ $ctrl.user.userId }}" uib-tooltip="Cancel" tooltip-trigger="'mouseenter focus click'"
                 ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
-        <button class="btn btn-danger btn-small" id="user-component-delete-{{ $ctrl.user.userId }}"
+        <button class="btn btn-danger btn-small" id="user-component-delete-{{ $ctrl.user.userId }}" uib-tooltip="Delete" tooltip-trigger="'mouseenter focus click'"
                 confirm="Are you sure you wish to delete this User? This action is permanent."
                 confirm-ok="Yes"
                 confirm-cancel="No"
                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Cancel</span></button>
+                ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
       </div>
     </div>
   </span>
