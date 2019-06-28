@@ -8,35 +8,37 @@
             <i class="fa fa-plus-circle"></i>
             Add New Complaint
           </button>
-          <table class="table table-condensed">
-            <thead>
-              <tr>
-                <th scope="col">ONC-ACB</th>
-                <th scope="col">Status</th>
-                <th scope="col">Received Date</th>
-                <th scope="col">ONC-ACB Complaint Id</th>
-                <th scope="col">ONC Complaint Id</th>
-                <th scope="col">Complainant Type</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
-                <td>{{ complaint.certificationBody.name }}</td>
-                <td>{{ complaint.complaintStatusType.name }}</td>
-                <td>{{ complaint.formattedReceivedDate | date : 'MMM d, y' }}</td>
-                <td>{{ complaint.acbComplaintId }}</td>
-                <td>{{ complaint.oncComplaintId }}</td>
-                <td>
-                  {{ complaint.complainantType.name }}
-                  <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
-                </td>
-                <td>
-                  <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th scope="col">ONC-ACB</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Received Date</th>
+                  <th scope="col">ONC-ACB Complaint Id</th>
+                  <th scope="col">ONC Complaint Id</th>
+                  <th scope="col">Complainant Type</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
+                  <td>{{ complaint.certificationBody.name }}</td>
+                  <td>{{ complaint.complaintStatusType.name }}</td>
+                  <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td>{{ complaint.acbComplaintId }}</td>
+                  <td>{{ complaint.oncComplaintId }}</td>
+                  <td>
+                    {{ complaint.complainantType.name }}
+                    <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div ng-if="$ctrl.isEditing === true">
           <chpl-surveillance-complaint

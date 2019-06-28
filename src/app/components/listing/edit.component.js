@@ -17,6 +17,7 @@ export const ListingEditComponent = {
             this.$timeout = $timeout;
             this.addNewValue = utilService.addNewValue;
             this.certificationStatus = utilService.certificationStatus;
+            this.extendSelect = utilService.extendSelect;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.utilService = utilService;

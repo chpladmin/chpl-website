@@ -14,7 +14,7 @@ export const SurveillanceComplaintComponent = {
         onDelete: '&?',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService, featureFlags) {
+        constructor ($filter, $log, authService, featureFlags, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
@@ -27,6 +27,8 @@ export const SurveillanceComplaintComponent = {
             this.currentMode = '';
             this.edition = {};
             this.isEditionDropdownOpen = false;
+            this.utilService = utilService;
+            this.sortCert = utilService.sortCert;
         }
 
         $onChanges (changes) {
@@ -37,6 +39,7 @@ export const SurveillanceComplaintComponent = {
                 } else {
                     this.currentMode = this.modes.ADD;
                 }
+                this.sortCertifications(this.complaint);
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -139,14 +142,20 @@ export const SurveillanceComplaintComponent = {
             }
             this.complaint.criteria.push({
                 complaintId: this.complaint.id,
-                certificationCriterionId: this.criterion.id,
                 certificationCriterion: this.criterion,
             });
+            this.sortCertifications(this.complaint);
             this.criterion = {};
         }
 
         removeCriterion (criterionToRemove) {
             this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterionId !== criterionToRemove.certificationCriterionId);
+        }
+
+        sortCertifications (complaint) {
+            complaint.criteria.sort((a, b) => {
+                return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
+            });
         }
     },
 }

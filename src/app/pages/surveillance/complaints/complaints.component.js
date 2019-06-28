@@ -48,7 +48,8 @@ export const SurveillanceComplaintsComponent = {
 
         saveComplaint (complaint) {
             if (complaint.formattedReceivedDate) {
-                complaint.receivedDate = complaint.formattedReceivedDate.valueOf();
+                let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
+                complaint.receivedDate = utcReceievedDate.getTime();
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);
@@ -111,6 +112,11 @@ export const SurveillanceComplaintsComponent = {
                     }
                 });
             });
+        }
+
+        toUTCDate (date) {
+            let _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            return _utc;
         }
 
         refreshComplainantTypes () {
