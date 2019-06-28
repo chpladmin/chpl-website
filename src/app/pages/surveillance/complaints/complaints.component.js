@@ -16,6 +16,7 @@ export const SurveillanceComplaintsComponent = {
             this.editions = [];
             this.errorMessages = [];
             this.listings = [];
+            this.surveillances = [];
         }
 
         $onInit () {
@@ -39,6 +40,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         selectComplaint (complaint) {
+            this.refreshSurveillances(complaint);
             this.clearErrorMessages();
             this.isEditing = true;
             this.complaint = complaint;
@@ -152,6 +154,28 @@ export const SurveillanceComplaintsComponent = {
             this.networkService.getCriteria().then(response => {
                 that.criteria = response.criteria;
             });
+        }
+
+        refreshSurveillances (complaint) {
+            let that = this;
+            this.surveillances = [];
+            if (Array.isArray(complaint.listings)) {
+                complaint.listings.forEach(listing => {
+                    this.networkService.getListingBasic(listing.listingId).then(response => {
+                        if (Array.isArray(response.surveillance)) {
+                            response.surveillance.forEach(surv => {
+                                that.surveillances.push({
+                                    surveillanceId: surv.id,
+                                    friendlyId: surv.friendlyId,
+                                    listingId: response.id,
+                                    chplProductNumber: response.chplProductNumber,
+                                });
+                                that.$log.info(that.surveillances);
+                            });
+                        }
+                    })
+                })
+            }
         }
 
         clearErrorMessages () {
