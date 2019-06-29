@@ -55,15 +55,13 @@
       </div>
     </div>
   </div>
-  <span ng-repeat="user in $ctrl.filteredUsers | orderBy : 'fullName'">
-    <div ng-class-even="'row'">
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <chpl-user user="user" take-action="$ctrl.act(action, data)"></chpl-user>
-          </div>
+  <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)">
+    <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+      <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
+        <div class="panel-body">
+          <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
         </div>
       </div>
     </div>
-  </span>
+  </div>
 </span>
