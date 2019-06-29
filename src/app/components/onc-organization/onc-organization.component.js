@@ -3,6 +3,7 @@ export const OncOrganizationComponent = {
     bindings: {
         organization: '<',
         canEdit: '<',
+        isEditing: '<',
         type: '@',
         takeAction: '&',
     },
@@ -25,6 +26,9 @@ export const OncOrganizationComponent = {
             if (changes.canEdit) {
                 this.canEdit = changes.canEdit.currentValue;
             }
+            if (changes.isEditing) {
+                this.isEditing = changes.isEditing.currentValue;
+            }
         }
 
         edit () {
@@ -41,10 +45,17 @@ export const OncOrganizationComponent = {
             } else {
                 this.organization.retirementDate = null;
             }
-            this.takeAction({
-                action: 'save',
-                data: this.organization,
-            });
+            if (this.organization.id) {
+                this.takeAction({
+                    action: 'save',
+                    data: this.organization,
+                });
+            } else {
+                this.takeAction({
+                    action: 'create',
+                    data: this.organization,
+                });
+            }
             this.isEditing = false;
         }
 
@@ -57,6 +68,9 @@ export const OncOrganizationComponent = {
         }
 
         editAddress (address, errors, validForm) {
+            if (!this.organization) {
+                this.organization = {};
+            }
             this.organization.address = angular.copy(address);
             this.valid.address = validForm;
         }

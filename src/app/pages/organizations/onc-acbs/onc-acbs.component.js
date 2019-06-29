@@ -6,20 +6,20 @@ export const OncAcbsComponent = {
         editableAcbs: '<',
     },
     controller: class OncAcbsComponent {
-        constructor ($log, $scope, $state, authService, networkService, toaster) {
+        constructor ($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster, utilService) {
             'ngInject'
+            this.$anchorScroll = $anchorScroll;
             this.$log = $log;
+            this.$q = $q;
             this.$scope = $scope;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
+            this.range = utilService.range;
+            this.rangeCol = utilService.rangeCol;
             this.roles = ['ROLE_ACB'];
-
-            this.showAcb = acb => {
-                let ret = !this.activeAcb || this.activeAcb === acb.id;
-                return ret;
-            }
+            this.columnCount = 2;
         }
 
         $onInit () {
@@ -39,8 +39,11 @@ export const OncAcbsComponent = {
                 this.editableAcbs = angular.copy(changes.editableAcbs.currentValue.acbs);
             }
             if (this.acb) {
-                this.activeAcb = this.acb.id;
+                this.activeAcb = this.acb;
                 this.loadUsers();
+            }
+            if (this.allAcbs) {
+                this.prepAcbs();
             }
         }
 
@@ -54,7 +57,11 @@ export const OncAcbsComponent = {
         }
 
         loadUsers () {
-            this.networkService.getUsersAtAcb(this.activeAcb).then(results => this.users = results.users);
+            this.networkService.getUsersAtAcb(this.activeAcb.id).then(results => this.users = results.users);
+        }
+
+        prepAcbs () {
+            this.allAcbs = this.allAcbs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
         }
 
         takeAction (action, data) {
@@ -62,20 +69,44 @@ export const OncAcbsComponent = {
             if (!this.acb) {
                 switch (action) {
                 case 'edit':
-                    this.activeAcb = data.id;
+                    this.activeAcb = data;
+                    this.isEditing = true;
                     this.loadUsers();
+                    this.$anchorScroll();
                     break;
                 case 'save':
-                    this.networkService.modifyACB(data).then(() => that.networkService.getAcbs(false).then(response => that.allAcbs = response.acbs));
+                    this.networkService.modifyACB(data).then(() => that.networkService.getAcbs(false).then(response => {
+                        that.allAcbs = response.acbs;
+                        that.prepAcbs();
+                    }));
+                    this.isEditing = false;
                     this.activeAcb = undefined;
                     break;
                 case 'cancel':
+                    this.isEditing = false;
                     this.activeAcb = undefined;
+                    this.isCreating = false;
+                    break;
+                case 'create':
+                    this.networkService.createACB(data).then(() => {
+                        let promises = [
+                            that.networkService.getAcbs(false).then(response => {
+                                that.allAcbs = response.acbs;
+                                that.prepAcbs();
+                            }),
+                            that.networkService.getAcbs(true).then(response => that.editableAcbs = response.acbs),
+                        ];
+                        that.$q.all(promises);
+                    });
+                    this.isCreating = false;
                     break;
                     //no default
                 }
             } else if (action === 'save') {
-                this.networkService.modifyACB(data).then(() => that.networkService.getAcbs(false).then(response => that.allAcbs = response.acbs));
+                this.networkService.modifyACB(data).then(() => that.networkService.getAcbs(false).then(response => {
+                    that.allAcbs = response.acbs;
+                    that.prepAcbs();
+                }));
             }
         }
 
@@ -83,14 +114,14 @@ export const OncAcbsComponent = {
             let that = this;
             switch (action) {
             case 'delete':
-                this.networkService.removeUserFromAcb(data, this.activeAcb)
+                this.networkService.removeUserFromAcb(data, this.activeAcb.id)
                     .then(() => that.loadUsers());
                 break;
             case 'invite':
                 this.networkService.inviteUser({
                     role: data.role,
                     emailAddress: data.email,
-                    permissionObjectId: this.activeAcb,
+                    permissionObjectId: this.activeAcb.id,
                 }).then(() => that.toaster.pop({
                     type: 'success',
                     title: 'Email sent',

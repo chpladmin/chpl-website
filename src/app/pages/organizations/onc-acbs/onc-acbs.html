@@ -5,17 +5,41 @@
     </div>
   </div>
   <div class="main-content row" id="main-content" tabindex="-1">
-    <span ng-repeat="acb in $ctrl.allAcbs | filter : $ctrl.showAcb | orderBy : 'name'">
-      <div ng-class-even="'row'">
-        <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-6' : 'col-sm-6 col-sm-offset-3'">
-          <div class="panel panel-default">
+    <span ng-if="$ctrl.activeAcb">
+      <div class="row">
+        <div ng-class="$ctrl.canEdit($ctrl.activeAcb) ? 'col-sm-6' : 'col-sm-6 col-sm-offset-3'">
+          <chpl-onc-organization organization="$ctrl.activeAcb" type="ONC-ACB" can-edit="$ctrl.canEdit($ctrl.activeAcb)" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+        </div>
+        <div ng-if="$ctrl.canEdit($ctrl.activeAcb)" class="col-sm-6">
+          <chpl-users column-count="1" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
+        </div>
+      </div>
+    </span>
+    <span ng-if="!$ctrl.activeAcb">
+      <div class="row" ng-repeat="idx in $ctrl.range($ctrl.allAcbs.length, $ctrl.columnCount)" ng-if="!$ctrl.isCreating">
+        <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+          <div class="panel panel-default" ng-if="$ctrl.allAcbs[idx + col]">
             <div class="panel-body">
-              <chpl-onc-organization organization="acb" type="ONC-ACB" can-edit="$ctrl.canEdit(acb)" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+              <chpl-onc-organization organization="$ctrl.allAcbs[idx + col]" type="ONC-ACB" can-edit="$ctrl.canEdit($ctrl.allAcbs[idx + col])" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
             </div>
           </div>
         </div>
-        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && $ctrl.activeAcb" class="col-sm-6">
-          <chpl-users users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
+      </div>
+      <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+        <div ng-class="$ctrl.isCreating ? 'col-sm-6 col-sm-offset-3' : 'col-sm-6'">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2>Create an ONC-ACB</h2>
+            </div>
+            <div class="panel-body">
+              <span ng-if="$ctrl.isCreating">
+                <chpl-onc-organization type="ONC-ACB" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+              </span>
+              <span ng-if="!$ctrl.isCreating">
+                <button type="button" class="btn btn-default" ng-click="$ctrl.isCreating = true; $ctrl.anchorScroll()">Create</button>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </span>
