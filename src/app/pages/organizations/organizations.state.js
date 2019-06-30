@@ -72,19 +72,9 @@ let states = {
             data: { title: 'CHPL Product Versions' },
         },{
             name: 'organizations.onc-acbs',
-            url: '/onc-acbs/{oncAcbId}?',
+            url: '/onc-acbs',
             component: 'chplOncAcbs',
-            params: {
-                oncAcbId: {squash: true, value: null},
-            },
             resolve: {
-                acb: (networkService, $transition$) => {
-                    'ngInject'
-                    if ($transition$.params().oncAcbId) {
-                        return networkService.getAcb($transition$.params().oncAcbId);
-                    }
-                    return undefined;
-                },
                 allAcbs: (authService, networkService) => {
                     'ngInject'
                     return networkService.getAcbs(false);
@@ -120,7 +110,7 @@ let states = {
             data: { title: 'CHPL Product Versions' },
         },{
             name: 'organizations.onc-acbs',
-            url: '/onc-acbs/{oncAcbId}',
+            url: '/onc-acbs',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             params: {
                 oncAcbId: {squash: true, value: null},

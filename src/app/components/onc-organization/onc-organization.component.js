@@ -3,6 +3,7 @@ export const OncOrganizationComponent = {
     bindings: {
         organization: '<',
         canEdit: '<',
+        isActive: '<',
         isEditing: '<',
         type: '@',
         takeAction: '&',
@@ -26,9 +27,19 @@ export const OncOrganizationComponent = {
             if (changes.canEdit) {
                 this.canEdit = changes.canEdit.currentValue;
             }
+            if (changes.isActive) {
+                this.isActive = changes.isActive.currentValue;
+            }
             if (changes.isEditing) {
                 this.isEditing = changes.isEditing.currentValue;
             }
+        }
+
+        view () {
+            this.takeAction({
+                action: 'view',
+                data: this.organization,
+            });
         }
 
         edit () {

@@ -1,7 +1,6 @@
 export const OncAcbsComponent = {
     templateUrl: 'chpl.organizations/onc-acbs/onc-acbs.html',
     bindings: {
-        acb: '<',
         allAcbs: '<',
         editableAcbs: '<',
     },
@@ -29,18 +28,11 @@ export const OncAcbsComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.acb) {
-                this.acb = angular.copy(changes.acb.currentValue);
-            }
             if (changes.allAcbs && changes.allAcbs.currentValue) {
                 this.allAcbs = angular.copy(changes.allAcbs.currentValue.acbs);
             }
             if (changes.editableAcbs && changes.editableAcbs.currentValue) {
                 this.editableAcbs = angular.copy(changes.editableAcbs.currentValue.acbs);
-            }
-            if (this.acb) {
-                this.activeAcb = this.acb;
-                this.loadUsers();
             }
             if (this.allAcbs) {
                 this.prepAcbs();
@@ -57,7 +49,9 @@ export const OncAcbsComponent = {
         }
 
         loadUsers () {
-            this.networkService.getUsersAtAcb(this.activeAcb.id).then(results => this.users = results.users);
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                this.networkService.getUsersAtAcb(this.activeAcb.id).then(results => this.users = results.users);
+            }
         }
 
         prepAcbs () {
@@ -68,6 +62,12 @@ export const OncAcbsComponent = {
             let that = this;
             if (!this.acb) {
                 switch (action) {
+                case 'view':
+                    this.activeAcb = data;
+                    this.isActive = true;
+                    this.loadUsers();
+                    this.$anchorScroll();
+                    break;
                 case 'edit':
                     this.activeAcb = data;
                     this.isEditing = true;
@@ -80,11 +80,20 @@ export const OncAcbsComponent = {
                         that.prepAcbs();
                     }));
                     this.isEditing = false;
-                    this.activeAcb = undefined;
+                    if (!this.isActive) {
+                        this.activeAcb = undefined;
+                    }
                     break;
                 case 'cancel':
-                    this.isEditing = false;
-                    this.activeAcb = undefined;
+                    if (this.isActive && this.isEditing) {
+                        this.isEditing = false;
+                    } else if (this.isActive) {
+                        this.isActive = false;
+                        this.activeAcb = undefined;
+                    } else if (this.isEditing) {
+                        this.isEditing = false;
+                        this.activeAcb = undefined;
+                    }
                     this.isCreating = false;
                     break;
                 case 'create':
