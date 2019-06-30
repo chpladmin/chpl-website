@@ -87,7 +87,11 @@ export const OncOrganizationComponent = {
         }
 
         getCode () {
-            return this.organization.acbCode;
+            if (this.type === 'ONC-ACB') {
+                return this.organization.acbCode;
+            } else if (this.type === 'ONC-ATL') {
+                return this.organization.atlCode;
+            }
         }
     },
 }

@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>ONC-ATL<span ng-if="!$ctrl.activeAtl">s</span></h1>
+    </div>
+  </div>
+  <div class="main-content row" id="main-content" tabindex="-1">
+    <span ng-if="$ctrl.activeAtl">
+      <div class="row">
+        <div ng-class="$ctrl.canEdit($ctrl.activeAtl) ? 'col-sm-6' : 'col-sm-6 col-sm-offset-3'">
+          <chpl-onc-organization organization="$ctrl.activeAtl" type="ONC-ATL" can-edit="$ctrl.canEdit($ctrl.activeAtl)" is-active="true" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+        </div>
+        <div ng-if="$ctrl.canEdit($ctrl.activeAtl)" class="col-sm-6">
+          <chpl-users column-count="1" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
+        </div>
+      </div>
+    </span>
+    <span ng-if="!$ctrl.activeAtl">
+      <div class="row" ng-repeat="idx in $ctrl.range($ctrl.allAtls.length, $ctrl.columnCount)" ng-if="!$ctrl.isCreating">
+        <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+          <div class="panel panel-default" ng-if="$ctrl.allAtls[idx + col]">
+            <div class="panel-body">
+              <chpl-onc-organization organization="$ctrl.allAtls[idx + col]" type="ONC-ATL" can-edit="$ctrl.canEdit($ctrl.allAtls[idx + col])" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+        <div ng-class="$ctrl.isCreating ? 'col-sm-6 col-sm-offset-3' : 'col-sm-6'">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Create an ONC-ATL</h2>
+            </div>
+            <div class="panel-body">
+              <span ng-if="$ctrl.isCreating">
+                <chpl-onc-organization type="ONC-ATL" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+              </span>
+              <span ng-if="!$ctrl.isCreating">
+                <button type="button" class="btn btn-default" ng-click="$ctrl.isCreating = true; $ctrl.anchorScroll()">Create</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>

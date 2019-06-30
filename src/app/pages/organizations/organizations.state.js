@@ -85,6 +85,21 @@ let states = {
                 },
             },
             data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-atls',
+            url: '/onc-atls',
+            component: 'chplOncAtls',
+            resolve: {
+                allAtls: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAtls(false);
+                },
+                editableAtls: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAtls(true);
+                },
+            },
+            data: { title: 'CHPL ONC-ATLs' },
         },
     ],
     'base': [
@@ -116,6 +131,14 @@ let states = {
                 oncAcbId: {squash: true, value: null},
             },
             data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-atls',
+            url: '/onc-atls',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            params: {
+                oncAtlId: {squash: true, value: null},
+            },
+            data: { title: 'CHPL ONC-ATLs' },
         },
     ],
 };

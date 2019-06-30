@@ -88,7 +88,7 @@
           <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="organizations-toggle" id="organizations-dropdown-menu">
             <li><a ui-sref="organizations.developers({developerId: undefined})"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.developers')"></i> Developers</a></li>
             <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="organizations.onc-acbs"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-acbs')"></i> ONC-ACBs</a></li>
-            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a href="#/admin/atlManagement">ONC-ATLs</a></li>
+            <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a ui-sref="organizations.onc-atls"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-atls')"></i> ONC-ATLs</a></li>
           </ul>
         </li>
         <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
