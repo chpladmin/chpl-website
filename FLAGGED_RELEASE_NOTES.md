@@ -1,6 +1,7 @@
 _adminNav_
 * Complete revamp of administration navigation
 * Add "Save Search" functionality to admin reports
+* Complete change / upgrade of ONC-ACB and ONC-ATL management screens
 
 _developer-page_
 * Add new Organizations - Developer page
@@ -25,5 +26,5 @@ _ocd1277_
   * New navigation for upload, confirm, manage
   * Added "view all surveillance" capability
 
-_ocd-2749_
+_ocd-2749_ (& adminNav)
 * Improve User Management UI/UX
