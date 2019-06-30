@@ -73,31 +73,51 @@ let states = {
         },{
             name: 'organizations.onc-acbs',
             url: '/onc-acbs',
-            component: 'chplOncAcbs',
+            component: 'chplOncOrganizations',
             resolve: {
-                allAcbs: (authService, networkService) => {
+                allOrgs: (authService, networkService) => {
                     'ngInject'
                     return networkService.getAcbs(false);
                 },
-                editableAcbs: (authService, networkService) => {
+                editableOrgs: (authService, networkService) => {
                     'ngInject'
                     return networkService.getAcbs(true);
                 },
+                roles: () => ['ROLE_ACB'],
+                key: () => 'acbs',
+                type: () => 'ONC-ACB',
+                functions: () => ({
+                    get: 'getAcbs',
+                    getUsers: 'getUsersAtAcb',
+                    modify: 'modifyACB',
+                    create: 'createACB',
+                    removeUser: 'removeUserFromAcb',
+                }),
             },
             data: { title: 'CHPL ONC-ACBs' },
         },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
-            component: 'chplOncAtls',
+            component: 'chplOncOrganizations',
             resolve: {
-                allAtls: (authService, networkService) => {
+                allOrgs: (authService, networkService) => {
                     'ngInject'
                     return networkService.getAtls(false);
                 },
-                editableAtls: (authService, networkService) => {
+                editableOrgs: (authService, networkService) => {
                     'ngInject'
                     return networkService.getAtls(true);
                 },
+                roles: () => ['ROLE_ATL'],
+                key: () => 'atls',
+                type: () => 'ONC-ATL',
+                functions: () => ({
+                    get: 'getAtls',
+                    getUsers: 'getUsersAtAtl',
+                    modify: 'modifyATL',
+                    create: 'createATL',
+                    removeUser: 'removeUserFromAtl',
+                }),
             },
             data: { title: 'CHPL ONC-ATLs' },
         },

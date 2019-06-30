@@ -1,10 +1,14 @@
-export const OncAtlsComponent = {
-    templateUrl: 'chpl.organizations/onc-atls/onc-atls.html',
+export const OncOrganizationsComponent = {
+    templateUrl: 'chpl.organizations/onc-organizations/onc-organizations.html',
     bindings: {
-        allAtls: '<',
-        editableAtls: '<',
+        allOrgs: '<',
+        editableOrgs: '<',
+        roles: '<',
+        key: '@',
+        type: '@',
+        functions: '<',
     },
-    controller: class OncAtlsComponent {
+    controller: class OncOrganizationsComponent {
         constructor ($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster, utilService) {
             'ngInject'
             this.$anchorScroll = $anchorScroll;
@@ -17,71 +21,78 @@ export const OncAtlsComponent = {
             this.toaster = toaster;
             this.range = utilService.range;
             this.rangeCol = utilService.rangeCol;
-            this.roles = ['ROLE_ATL'];
             this.columnCount = 2;
         }
 
         $onInit () {
             let that = this;
-            let loggedIn = this.$scope.$on('loggedIn', () => that.loadAtls());
+            let loggedIn = this.$scope.$on('loggedIn', () => that.loadOrgs());
             this.$scope.$on('$destroy', loggedIn);
         }
 
         $onChanges (changes) {
-            if (changes.allAtls && changes.allAtls.currentValue) {
-                this.allAtls = angular.copy(changes.allAtls.currentValue.atls);
+            if (changes.allOrgs && changes.allOrgs.currentValue) {
+                this.allOrgs = angular.copy(changes.allOrgs.currentValue[this.key]);
             }
-            if (changes.editableAtls && changes.editableAtls.currentValue) {
-                this.editableAtls = angular.copy(changes.editableAtls.currentValue.atls);
+            if (changes.editableOrgs && changes.editableOrgs.currentValue) {
+                this.editableOrgs = angular.copy(changes.editableOrgs.currentValue[this.key]);
             }
-            if (this.allAtls) {
-                this.prepAtls();
+            if (changes.roles && changes.roles.currentValue) {
+                this.roles = angular.copy(changes.roles.currentValue);
+            }
+            if (changes.functions && changes.functions.currentValue) {
+                this.functions = angular.copy(changes.functions.currentValue);
+            }
+            if (this.allOrgs) {
+                this.prepOrgs();
             }
         }
 
-        canEdit (atl) {
-            return this.editableAtls && this.editableAtls.reduce((acc, cur) => acc || cur.id === atl.id, false);
+        canEdit (org) {
+            return this.editableOrgs && this.editableOrgs.reduce((acc, cur) => acc || cur.id === org.id, false);
         }
 
-        loadAtls () {
+        loadOrgs () {
             let that = this;
-            this.networkService.getAtls(true).then(response => that.editableAtls = angular.copy(response.atls));
+            this.networkService[this.functions.get](true).then(response => that.editableOrgs = angular.copy(response[that.key]));
         }
 
         loadUsers () {
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])) {
-                this.networkService.getUsersAtAtl(this.activeAtl.id).then(results => this.users = results.users);
+            let allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC'];
+            allowedRoles.push(this.roles[0]);
+            if (this.hasAnyRole(allowedRoles)) {
+                this.networkService[this.functions.getUsers](this.activeOrg.id).then(results => this.users = results.users);
             }
         }
 
-        prepAtls () {
-            this.allAtls = this.allAtls.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+        prepOrgs () {
+            this.allOrgs = this.allOrgs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
         }
 
         takeAction (action, data) {
             let that = this;
-            if (!this.atl) {
+            if (!this.org) {
                 switch (action) {
                 case 'view':
-                    this.activeAtl = data;
+                    this.activeOrg = data;
                     this.isActive = true;
                     this.loadUsers();
                     this.$anchorScroll();
                     break;
                 case 'edit':
-                    this.activeAtl = data;
+                    this.activeOrg = data;
                     this.isEditing = true;
                     this.loadUsers();
                     this.$anchorScroll();
                     break;
                 case 'save':
-                    this.networkService.modifyATL(data).then(() => that.networkService.getAtls(false).then(response => {
-                        that.allAtls = response.atls;
-                        that.prepAtls();
+                    this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then(response => {
+                        that.allOrgs = response[that.key];
+                        that.prepOrgs();
                     }));
                     this.isEditing = false;
                     if (!this.isActive) {
-                        this.activeAtl = undefined;
+                        this.activeOrg = undefined;
                     }
                     break;
                 case 'cancel':
@@ -89,21 +100,21 @@ export const OncAtlsComponent = {
                         this.isEditing = false;
                     } else if (this.isActive) {
                         this.isActive = false;
-                        this.activeAtl = undefined;
+                        this.activeOrg = undefined;
                     } else if (this.isEditing) {
                         this.isEditing = false;
-                        this.activeAtl = undefined;
+                        this.activeOrg = undefined;
                     }
                     this.isCreating = false;
                     break;
                 case 'create':
-                    this.networkService.createATL(data).then(() => {
+                    this.networkService[this.functions.create](data).then(() => {
                         let promises = [
-                            that.networkService.getAtls(false).then(response => {
-                                that.allAtls = response.atls;
-                                that.prepAtls();
+                            that.networkService[that.functions.get](false).then(response => {
+                                that.allOrgs = response[that.key];
+                                that.prepOrgs();
                             }),
-                            that.networkService.getAtls(true).then(response => that.editableAtls = response.atls),
+                            that.networkService[that.functions.get](true).then(response => that.editableOrgs = response[that.key]),
                         ];
                         that.$q.all(promises);
                     });
@@ -112,9 +123,9 @@ export const OncAtlsComponent = {
                     //no default
                 }
             } else if (action === 'save') {
-                this.networkService.modifyATL(data).then(() => that.networkService.getAtls(false).then(response => {
-                    that.allAtls = response.atls;
-                    that.prepAtls();
+                this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then(response => {
+                    that.allOrgs = response[that.key];
+                    that.prepOrgs();
                 }));
             }
         }
@@ -123,14 +134,14 @@ export const OncAtlsComponent = {
             let that = this;
             switch (action) {
             case 'delete':
-                this.networkService.removeUserFromAtl(data, this.activeAtl.id)
+                this.networkService[this.functions.removeUser](data, this.activeOrg.id)
                     .then(() => that.loadUsers());
                 break;
             case 'invite':
                 this.networkService.inviteUser({
                     role: data.role,
                     emailAddress: data.email,
-                    permissionObjectId: this.activeAtl.id,
+                    permissionObjectId: this.activeOrg.id,
                 }).then(() => that.toaster.pop({
                     type: 'success',
                     title: 'Email sent',
@@ -150,4 +161,4 @@ export const OncAtlsComponent = {
 }
 
 angular.module('chpl.organizations')
-    .component('chplOncAtls', OncAtlsComponent);
+    .component('chplOncOrganizations', OncOrganizationsComponent);

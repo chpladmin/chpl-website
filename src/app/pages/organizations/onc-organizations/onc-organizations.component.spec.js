@@ -1,13 +1,13 @@
 (() => {
     'use strict';
 
-    fdescribe('the ONC-ATLs component', () => {
+    fdescribe('the ONC-Organizations component', () => {
         var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
-            atls: [
-                { name: 'an atl' },
-                { name: 'another atl' },
+            orgs: [
+                { name: 'an org' },
+                { name: 'another org' },
             ],
         };
 
@@ -18,8 +18,8 @@
                     return $delegate;
                 });
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.getAtl = jasmine.createSpy('getAtl');
-                    $delegate.getAtls = jasmine.createSpy('getAtls');
+                    $delegate.getOrg = jasmine.createSpy('getOrg');
+                    $delegate.getOrgs = jasmine.createSpy('getOrgs');
                     return $delegate;
                 });
             });
@@ -31,14 +31,14 @@
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
-                networkService.getAtl.and.returnValue($q.when(mock.atls[0]));
-                networkService.getAtls.and.returnValue($q.when({atls: mock.atls}));
+                networkService.getOrg.and.returnValue($q.when(mock.orgs[0]));
+                networkService.getOrgs.and.returnValue($q.when({orgs: mock.orgs}));
 
                 scope = $rootScope.$new();
-                scope.atls = {atls: mock.atls};
-                scope.editableAtls = [];
+                scope.orgs = {orgs: mock.orgs};
+                scope.editableOrgs = [];
 
-                el = angular.element('<chpl-onc-atls all-atls="atls" editable-atls="editableAtls"></chpl-onc-atls>');
+                el = angular.element('<chpl-onc-organizations all-orgs="orgs" key="\'orgs\'" editable-orgs="editableOrgs"></chpl-onc-organizations>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -63,10 +63,6 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
-            });
-
-            it('should have data', () => {
-                expect(ctrl.allAtls.length).toBe(2);
             });
         });
     });
