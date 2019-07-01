@@ -255,6 +255,10 @@ export class NetworkService {
         return this.apiGET('/data/complainant-types');
     }
 
+    getCriteria () {
+        return this.apiGET('/data/certification-criteria');
+    }
+
     getCriterionProductStatistics () {
         return this.apiGET('/statistics/criterion_product');
     }
@@ -710,6 +714,10 @@ export class NetworkService {
 
     updateQuarterlySurveillanceReport (report) {
         return this.apiPUT('/surveillance-report/quarterly', report);
+    }
+
+    updateRelevantListing (reportId, listing) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
     }
 
     updateScheduleTrigger (trigger) {

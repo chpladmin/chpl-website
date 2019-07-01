@@ -12,6 +12,8 @@ export const SurveillanceComplaintsComponent = {
             this.complaint = {};
             this.complainantTypes = [];
             this.certificationBodies = [];
+            this.criteria = [];
+            this.editions = [];
             this.errorMessages = [];
             this.listings = [];
         }
@@ -22,6 +24,8 @@ export const SurveillanceComplaintsComponent = {
             this.refreshComplaintStatusTypes();
             this.refreshCertificationBodies();
             this.refreshListings();
+            this.refreshEditions();
+            this.refreshCriteria();
         }
 
         deleteComplaint (complaint) {
@@ -42,7 +46,8 @@ export const SurveillanceComplaintsComponent = {
 
         saveComplaint (complaint) {
             if (complaint.formattedReceivedDate) {
-                complaint.receivedDate = complaint.formattedReceivedDate.valueOf();
+                let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
+                complaint.receivedDate = utcReceievedDate.getTime();
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);
@@ -107,6 +112,11 @@ export const SurveillanceComplaintsComponent = {
             });
         }
 
+        toUTCDate (date) {
+            let _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+            return _utc;
+        }
+
         refreshComplainantTypes () {
             let that = this;
             this.networkService.getComplainantTypes().then(response => {
@@ -133,6 +143,20 @@ export const SurveillanceComplaintsComponent = {
             let that = this;
             this.networkService.getCollection('complaintListings').then(response => {
                 that.listings = response.results;
+            });
+        }
+
+        refreshEditions () {
+            let that = this;
+            this.networkService.getEditions().then(response => {
+                that.editions = response;
+            });
+        }
+
+        refreshCriteria () {
+            let that = this;
+            this.networkService.getCriteria().then(response => {
+                that.criteria = response.criteria;
             });
         }
 

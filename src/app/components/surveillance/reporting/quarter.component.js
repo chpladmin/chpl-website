@@ -47,11 +47,19 @@ export const SurveillanceReportQuarterComponent = {
         generateReport () {
             let that = this;
             this.networkService.generateQuarterlySurveillanceReport(this.report.id)
-                .then(() => that.toaster.pop({
-                    type: 'success',
-                    title: 'Report is being generated',
-                    body: 'QuarterlySurveillance report is being generated, and will be emailed when ready.',
-                }));
+                .then(results => {
+                    let name = results.user.friendlyName ? results.user.friendlyName : results.user.fullName;
+                    let email = results.user.email;
+                    that.toaster.pop({
+                        type: 'success',
+                        title: 'Report is being generated',
+                        body: `Quarterly Surveillance report is being generated, and will be emailed to ${name} at ${email} when ready.`,
+                    });
+                });
+        }
+
+        saveRelevantListing (listing) {
+            this.takeAction({report: this.report, listing: listing, action: 'saveRelevantListing'});
         }
     },
 }

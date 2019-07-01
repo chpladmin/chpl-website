@@ -30,7 +30,7 @@
   <div class="form-group">
     <label class="control-label" for="received-date">Received Date<span class="text-danger">*</span></label>
     <div>
-      <div class="input-group">
+      <div class="input-group" ng-model-options="{ timezone: 'UTC' }">
         <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
           name="receivedDate" id="received-date" placeholder="MM/dd/yyyy"
           ng-required="$ctrl.isOn('complaints-ui-validation')"
@@ -118,6 +118,36 @@
         ng-model="$ctrl.listing"
         uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.filteredListings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="criteria">Selected Criteria</label><br />
+    <div ng-if="!$ctrl.complaint.criteria || $ctrl.complaint.criteria.length === 0">
+      No Criteria Selected
+    </div>
+    <div class="alert alert-success" ng-repeat="criterion in $ctrl.complaint.criteria ">
+      <button class="close" ng-click="$ctrl.removeCriterion(criterion)">
+        <span class="sr-only">Remove item {{ criterion.certificationCriterion.certificationEdition }} -
+          {{ criterion.certificationCriterion.number }}</span>
+        <i class="fa fa-times"></i>
+      </button>
+      <strong>{{ criterion.certificationCriterion.certificationEdition }} -
+        {{ criterion.certificationCriterion.number }}</strong>
+    </div>
+    <div class="input-group">
+      <div class="input-group-btn" uib-dropdown>
+        <button type="button" id="select-edition" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
+          {{ $ctrl.edition.name }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="select-edition">
+          <li ng-repeat="edition in $ctrl.editions | orderBy: 'name' : reverse"><a
+              ng-click="$ctrl.selectEdition(edition)"> {{ edition.name }}</a></li>
+        </ul>
+      </div>
+      <select id="criteria" name="criteria" class="input-sm form-control" ng-model="$ctrl.criterion"
+        ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
+        ng-change="$ctrl.selectCriteria()">
+      </select>
+    </div>
   </div>
   <div class="form-group">
     <label class="checkbox-inline" for="complainant-contacted">

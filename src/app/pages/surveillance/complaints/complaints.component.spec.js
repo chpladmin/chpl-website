@@ -31,10 +31,26 @@
         };
 
         let allCps = [
-            {'id': 296,'chplProductNumber': 'CHP-022218','acb': 'UL LLC'},
-            {'id': 4708,'chplProductNumber': 'CHP-022844','acb': 'Drummond Group'},
-            {'id': 470,'chplProductNumber': 'CHP-026059','acb': 'UL LLC'},
+            {id: 296,chplProductNumber: 'CHP-022218',acb: 'UL LLC'},
+            {id: 4708,chplProductNumber: 'CHP-022844',acb: 'Drummond Group'},
+            {id: 470,chplProductNumber: 'CHP-026059',acb: 'UL LLC'},
         ];
+
+        let editions = [
+            {id: 3,name: '2015',description: null},
+            {id: 2,name: '2014',description: null},
+            {id: 1,name: '2011',description: null},
+        ];
+
+        let criteria = {
+            criteria: [
+                {id: 14,number: '170.315 (a)(14)',title: 'Implantable Device List',certificationEditionId: 3,certificationEdition: '2015',description: null},
+                {id: 39,number: '170.315 (d)(11)',title: 'Accounting of Disclosures',certificationEditionId: 3,certificationEdition: '2015',description: null},
+                {id: 104,number: '170.314 (e)(2)',title: 'Ambulatory setting only -clinical summary',certificationEditionId: 2,certificationEdition: '2014',description: null},
+                {id: 153,number: '170.304 (i)',title: 'Exchange clinical information and patient summary record',certificationEditionId: 1,certificationEdition: '2011',description: null},
+                {id: 96,number: '170.314 (d)(3)',title: 'Audit report(s)',certificationEditionId: 2,certificationEdition: '2014',description: null},
+            ],
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
@@ -47,6 +63,8 @@
                     $delegate.updateComplaint = jasmine.createSpy('updateComplaint');
                     $delegate.createComplaint = jasmine.createSpy('createComplaint');
                     $delegate.getCollection = jasmine.createSpy('getCollection');
+                    $delegate.getEditions = jasmine.createSpy('getEditions');
+                    $delegate.getCriteria = jasmine.createSpy('getCriteria');
                     return $delegate;
                 });
             });
@@ -60,10 +78,13 @@
                 networkService.getComplainantTypes.and.returnValue($q.when(complainantTypes));
                 networkService.getComplaintStatusTypes.and.returnValue($q.when(complaintStatusTypes));
                 networkService.getAcbs.and.returnValue($q.when(certBodies));
+                networkService.getEditions.and.returnValue($q.when(editions));
+                networkService.getCriteria.and.returnValue($q.when(criteria));
                 networkService.deleteComplaint.and.returnValue($q.when({status: 200}));
                 networkService.updateComplaint.and.returnValue($q.when(complaints[0]));
                 networkService.createComplaint.and.returnValue($q.when(complaints[0]));
                 networkService.getCollection.and.returnValue($q.when({'results': angular.copy(allCps)}));
+                networkService.createComplaint.and.returnValue($q.when(complaints[0]));
 
                 scope = $rootScope.$new();
 
@@ -160,6 +181,16 @@
                 ctrl.refreshListings();
                 expect(networkService.getCollection).toHaveBeenCalled();
                 expect(ctrl.listings.length).toBe(3);
+            });
+            it('should be able to fetch all certification editions', () => {
+                ctrl.refreshListings();
+                expect(networkService.getEditions).toHaveBeenCalled();
+                expect(ctrl.editions.length).toBe(3);
+            });
+            it('should be able to fetch all criteria', () => {
+                ctrl.refreshCriteria();
+                expect(networkService.getCriteria).toHaveBeenCalled();
+                expect(ctrl.criteria.length).toBe(5);
             });
         });
     });

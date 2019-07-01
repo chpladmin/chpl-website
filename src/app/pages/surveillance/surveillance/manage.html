@@ -1,185 +1,149 @@
 <div class="container-fluid surveillance-management-page" st-table="$ctrl.displayedListings" st-safe-src="$ctrl.availableListings" st-set-filter="customFilter">
-  <st-manage register-search="$ctrl.registerSearch(search)"></st-manage>
-  <h3>Manage Surveillance Activity</h3>
-  <div class="form-horizontal" ng-form="$ctrl.form" aria-live="polite">
+  <uib-tabset active="$ctrl.activeTab">
+    <uib-tab index="0" heading="Manage Surveillance Activity">
+      <st-manage register-search="$ctrl.registerSearch(search)"></st-manage>
+      <h3>Manage Surveillance Activity</h3>
+      <div class="form-horizontal" ng-form="$ctrl.form" aria-live="polite">
+        <div class="form-group" id="filters">
+          <div class="col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control input-sm" id="generalFilter" placeholder="Search by Developer, Product, Version, or CHPL Product Number"
+                     ai-enhanced-text predicate="mainSearch" register-clear-filter="$ctrl.registerClearFilter(clearFilter)">
+              <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL Product Number</span></label>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="$ctrl.allowedAcbs && $ctrl.allowedAcbs.length !== 1">
+              <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acb" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+                <a ng-if="$ctrl.categoryChanged['acb']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+                ONC-ACB <i class="fa fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labeledby="filter-button-acb" uib-dropdown-menu>
+                <st-list-multiple
+                   collection="$ctrl.availableListings"
+                   predicate="acb"
+                   fixed-items="$ctrl.filterItems.acbItems"
+                   has-changes="$ctrl.categoryChanged['acb']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
+              </ul>
+            </div>
+            <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+              <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+                <a ng-if="$ctrl.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+                Certification Edition <i class="fa fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
+                <st-list-multiple
+                   collection="$ctrl.availableListings"
+                   predicate="edition"
+                   fixed-items="$ctrl.filterItems.editionItems"
+                   has-changes="$ctrl.categoryChanged['edition']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
+              </ul>
+            </div>
+            <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+              <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationStatus" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+                <a ng-if="$ctrl.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+                Certification Status <i class="fa fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labeledby="filter-button-certificationStatus" uib-dropdown-menu>
+                <st-list-multiple
+                   collection="$ctrl.availableListings"
+                   predicate="certificationStatus"
+                   fixed-items="$ctrl.filterItems.statusItems"
+                   has-changes="$ctrl.categoryChanged['certificationStatus']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+                   match-full="true"></st-list-multiple>
+              </ul>
+            </div>
+            <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+              <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-surveillance" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+                <a ng-if="$ctrl.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+                Surveillance Activity <i class="fa fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labeledby="filter-button-surveillance" uib-dropdown-menu>
+                <chpl-surveillance-filter
+                   has-changes="$ctrl.categoryChanged['surveillance']"
+                   register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></chpl-surveillance-filter>
+              </ul>
+            </div>
+            <button class="btn btn-link" ng-click="$ctrl.triggerClearFilters()" ng-if="$ctrl.isCategoryChanged()">Clear Filters</button>
+          </div>
+        </div> <!-- #filters -->
+      </div><!-- filter form -->
 
-    <div class="form-group" id="filters">
-      <div class="col-sm-4">
-        <div class="input-group">
-          <div class="input-group-addon"><i class="fa fa-search"></i></div>
-          <input type="text" class="form-control input-sm" id="generalFilter" placeholder="Search by Developer, Product, Version, or CHPL Product Number"
-                 ai-enhanced-text predicate="mainSearch" register-clear-filter="$ctrl.registerClearFilter(clearFilter)">
-          <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL Product Number</span></label>
+      <div class="row">
+        <div aria-live="polite">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td colspan="10" class="text-center">
+                      <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
+                    </td>
+                  </tr>
+                  <tr ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0" class="highlighted-header">
+                    <th scope="col" class="search-header" ai-multi-sort="chplProductNumber">CHPL Product Number</th>
+                    <th scope="col" class="search-header" ai-multi-sort="developer">Developer</th>
+                    <th scope="col" class="search-header" ai-multi-sort="product">Product</th>
+                    <th scope="col" class="search-header" ai-multi-sort="version">Version</th>
+                    <th scope="col" class="search-header" ai-multi-sort="acb">ONC-ACB</th>
+                    <th scope="col" class="search-header" ai-multi-sort="edition">Certification Edition</th>
+                    <th scope="col" class="search-header" ai-multi-sort="certificationStatus">Certification Status</th>
+                    <th scope="col" class="search-header" ai-multi-sort="openSurveillanceCount" st-descending-first="true"># Open Surveillances</th>
+                    <th scope="col" class="search-header" ai-multi-sort="closedSurveillanceCount" st-descending-first="true"># Closed Surveillances</th>
+                    <th scope="col" class="search-header" ai-multi-sort="openNonconformityCount" st-descending-first="true" st-sort-default="['-openNonconformityCount', '-edition', 'developer']"># Open NCs</th>
+                    <th scope="col" class="search-header" ai-multi-sort="closedNonconformityCount" st-descending-first="true"># Closed NCs</th>
+                  </tr>
+                </thead>
+                <tfoot ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
+                  <tr>
+                    <td colspan="10" class="text-center">
+                      <div class="text-right" ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
+                        <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                        Showing up to&nbsp;
+                        <select ng-model="$ctrl.filterItems.pageSize" id="pageSizeTop"
+                                ng-options="v as v for v in [50,100,250]">
+                        </select>
+                        &nbsp;results per page
+                      </div>
+                      <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
+                    </td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr ng-repeat="listing in $ctrl.displayedListings">
+                    <td><button class="btn btn-default" ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }}</button></td>
+                    <td>{{ listing.developer }}</td>
+                    <td>{{ listing.product }}</td>
+                    <td>{{ listing.version }}</td>
+                    <td>{{ listing.acb }}</td>
+                    <td>{{ listing.edition }}</td>
+                    <td>{{ listing.certificationStatus }}</td>
+                    <td>{{ listing.openSurveillanceCount }}</td>
+                    <td>{{ listing.closedSurveillanceCount }}</td>
+                    <td>{{ listing.openNonconformityCount }}</td>
+                    <td>{{ listing.closedNonconformityCount }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-sm-8">
-        <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="$ctrl.allowedAcbs && $ctrl.allowedAcbs.length !== 1">
-          <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acb" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            <a ng-if="$ctrl.categoryChanged['acb']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-            ONC-ACB <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-button-acb" uib-dropdown-menu>
-            <st-list-multiple
-               collection="$ctrl.availableListings"
-               predicate="acb"
-               fixed-items="$ctrl.filterItems.acbItems"
-               has-changes="$ctrl.categoryChanged['acb']"
-               register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
-          </ul>
-        </div>
-        <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
-          <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            <a ng-if="$ctrl.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-            Certification Edition <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
-            <st-list-multiple
-               collection="$ctrl.availableListings"
-               predicate="edition"
-               fixed-items="$ctrl.filterItems.editionItems"
-               has-changes="$ctrl.categoryChanged['edition']"
-               register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
-          </ul>
-        </div>
-        <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
-          <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationStatus" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            <a ng-if="$ctrl.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-            Certification Status <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-button-certificationStatus" uib-dropdown-menu>
-            <st-list-multiple
-               collection="$ctrl.availableListings"
-               predicate="certificationStatus"
-               fixed-items="$ctrl.filterItems.statusItems"
-               has-changes="$ctrl.categoryChanged['certificationStatus']"
-               register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-               match-full="true"></st-list-multiple>
-          </ul>
-        </div>
-        <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
-          <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-surveillance" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            <a ng-if="$ctrl.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-            Surveillance Activity <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-button-surveillance" uib-dropdown-menu>
-            <chpl-surveillance-filter
-               has-changes="$ctrl.categoryChanged['surveillance']"
-               register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></chpl-surveillance-filter>
-          </ul>
-        </div>
-        <button class="btn btn-link" ng-click="$ctrl.triggerClearFilters()" ng-if="$ctrl.isCategoryChanged()">Clear Filters</button>
-      </div>
-    </div> <!-- #filters -->
-  </div><!-- filter form -->
-
-  <div ng-if="!$ctrl.surveillanceProduct" class="row">
-    <div aria-live="polite">
-      <div class="col-md-12">
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <td colspan="10" class="text-center">
-                <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
-              </td>
-            </tr>
-            <tr ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
-              <th scope="col" class="search-header" ai-multi-sort="chplProductNumber">CHPL Product Number</th>
-              <th scope="col" class="search-header" ai-multi-sort="developer">Developer</th>
-              <th scope="col" class="search-header" ai-multi-sort="product">Product</th>
-              <th scope="col" class="search-header" ai-multi-sort="version">Version</th>
-              <th scope="col" class="search-header" ai-multi-sort="acb">ONC-ACB</th>
-              <th scope="col" class="search-header" ai-multi-sort="edition">Certification Edition</th>
-              <th scope="col" class="search-header" ai-multi-sort="certificationStatus">Certification Status</th>
-              <th scope="col" class="search-header" ai-multi-sort="openSurveillanceCount" st-descending-first="true"># Open Surveillances</th>
-              <th scope="col" class="search-header" ai-multi-sort="closedSurveillanceCount" st-descending-first="true"># Closed Surveillances</th>
-              <th scope="col" class="search-header" ai-multi-sort="openNonconformityCount" st-descending-first="true" st-sort-default="['-openNonconformityCount', '-edition', 'developer']"># Open NCs</th>
-              <th scope="col" class="search-header" ai-multi-sort="closedNonconformityCount" st-descending-first="true"># Closed NCs</th>
-            </tr>
-          </thead>
-          <tfoot ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
-            <tr>
-              <td colspan="10" class="text-center">
-                <div class="text-right" ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
-                  <label for="pageSizeTop" class="sr-only">Show how many results</label>
-                  Showing up to&nbsp;
-                  <select ng-model="$ctrl.filterItems.pageSize" id="pageSizeTop"
-                          ng-options="v as v for v in [50,100,250]">
-                  </select>
-                  &nbsp;results per page
-                </div>
-                <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
-              </td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr ng-repeat="listing in $ctrl.displayedListings">
-              <td><button class="btn btn-default" ng-click="$ctrl.listingId = listing.id; $ctrl.load()">{{ listing.chplProductNumber }}</button></td>
-              <td>{{ listing.developer }}</td>
-              <td>{{ listing.product }}</td>
-              <td>{{ listing.version }}</td>
-              <td>{{ listing.acb }}</td>
-              <td>{{ listing.edition }}</td>
-              <td>{{ listing.certificationStatus }}</td>
-              <td>{{ listing.openSurveillanceCount }}</td>
-              <td>{{ listing.closedSurveillanceCount }}</td>
-              <td>{{ listing.openNonconformityCount }}</td>
-              <td>{{ listing.closedNonconformityCount }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div ng-if="$ctrl.surveillanceProduct">
-    <span class="pull-right">
-      <button class="btn btn-link" ng-click="$ctrl.listingId = undefined; $ctrl.surveillanceProduct = undefined"><i class="fa fa-close"></i> Return to search</button>
-      |
-      <a ui-sref="listing({id: $ctrl.surveillanceProduct.id})"><i class="fa fa-eye"></i> View Product Listing</a>
-    </span>
-    <table class="table" id="surveillance-search-single-result">
-      <thead class="sr-only">
-        <tr>
-          <th scope="col">Surveillance Listing Data Type</th>
-          <th scope="col">Surveillance Listing Data Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">CHPL Product Number</th>
-          <td>{{ $ctrl.surveillanceProduct.chplProductNumber }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Certification Status</th>
-          <td>{{ $ctrl.certificationStatus($ctrl.surveillanceProduct) }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Developer</th>
-          <td>{{ $ctrl.surveillanceProduct.developer.name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Product</th>
-          <td>{{ $ctrl.surveillanceProduct.product.name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Version</th>
-          <td>{{ $ctrl.surveillanceProduct.version.version }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Certification Edition</th>
-          <td>{{ $ctrl.surveillanceProduct.certificationEdition.name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Certifying Body</th>
-          <td>{{ $ctrl.surveillanceProduct.certifyingBody.name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Certification Date</th>
-          <td>{{ $ctrl.surveillanceProduct.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <ai-surveillance allow-editing="true"
-                     certified-product="$ctrl.surveillanceProduct"></ai-surveillance>
-  </div>
+    </uib-tab>
+    <uib-tab index="tab.id" ng-repeat="tab in $ctrl.tabs">
+      <uib-tab-heading>
+        {{ tab.chplProductNumber }} <span ng-if="!tab.listing"><i class="fa fa-spin fa-spinner"></i></span>
+      </uib-tab-heading>
+      <span ng-if="tab.listing">
+        <chpl-surveillance-management-view listing="tab.listing" take-action="$ctrl.takeTabAction(action, data)"></chpl-surveillance-management-view>
+      </span>
+      <span ng-if="!tab.listing">
+        <i class="fa fa-spin fa-spinner"></i>
+      </span>
+    </uib-tab>
+  </uib-tabset>
 </div>

@@ -6,8 +6,9 @@ export const JobsScheduledPageComponent = {
         triggers: '<',
     },
     controller: class JobsScheduledPageComponent {
-        constructor ($log, networkService, toaster) {
+        constructor ($anchorScroll, $log, networkService, toaster) {
             'ngInject'
+            this.$anchorScroll = $anchorScroll;
             this.$log = $log;
             this.networkService = networkService;
             this.toaster = toaster;
@@ -58,6 +59,7 @@ export const JobsScheduledPageComponent = {
 
         cancel () {
             this.mode = 'view';
+            this.errorMessage = undefined;
             this.activeJob = undefined;
             this.activeTrigger = undefined;
         }
@@ -73,6 +75,9 @@ export const JobsScheduledPageComponent = {
                     });
                     that.refreshJobs();
                     that.cancel();
+                }, error => {
+                    that.errorMessage = error.data.error;
+                    that.$anchorScroll();
                 });
         }
 
@@ -89,6 +94,9 @@ export const JobsScheduledPageComponent = {
                             });
                             that.cancel();
                             that.refreshTriggers();
+                        }, error => {
+                            that.errorMessage = error.data.error;
+                            that.$anchorScroll();
                         });
                 } else {
                     this.networkService.createScheduleTrigger(trigger.trigger)
@@ -100,6 +108,9 @@ export const JobsScheduledPageComponent = {
                             });
                             that.cancel();
                             that.refreshTriggers();
+                        }, error => {
+                            that.errorMessage = error.data.error;
+                            that.$anchorScroll();
                         });
                 }
             } else {
@@ -109,8 +120,11 @@ export const JobsScheduledPageComponent = {
                             type: 'success',
                             title: 'Job created',
                             body: 'One time job scheduled',
-                        });
+                        })
                         that.cancel();
+                    }, error => {
+                        that.errorMessage = error.data.error;
+                        that.$anchorScroll();
                     });
             }
         }
@@ -126,6 +140,9 @@ export const JobsScheduledPageComponent = {
                     });
                     that.cancel();
                     that.refreshTriggers();
+                }, error => {
+                    that.errorMessage = error.data.error;
+                    that.$anchorScroll();
                 });
         }
 

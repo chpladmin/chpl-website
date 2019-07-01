@@ -669,6 +669,14 @@
             $httpBackend.flush();
         });
 
+        it('should getCriteria', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/certification-criteria$/).respond(200, {data: 'response'});
+            networkService.getCriteria().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCriterionProductStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/criterion_product$/).respond(200, {data: 'response'});
             networkService.getCriterionProductStatistics().then(response => {
@@ -1556,6 +1564,14 @@
         it('should updateProduct', () => {
             $httpBackend.expectPUT(/^\/rest\/products$/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should updateRelevantListing', () => {
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/listings\/lid$/).respond(200, {data: 'response'});
+            networkService.updateRelevantListing('qid', {id: 'lid'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
