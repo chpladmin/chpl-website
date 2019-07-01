@@ -1,12 +1,13 @@
 export const UsersComponent = {
     templateUrl: 'chpl.components/user/users.html',
     bindings: {
+        columnCount: '@',
         users: '<',
         roles: '<',
         takeAction: '&',
     },
     controller: class UsersComponent {
-        constructor ($anchorScroll, $log, $rootScope, authService, networkService) {
+        constructor ($anchorScroll, $log, $rootScope, authService, networkService, utilService) {
             'ngInject'
             this.$anchorScroll = $anchorScroll;
             this.$log = $log;
@@ -14,6 +15,12 @@ export const UsersComponent = {
             this.authService = authService;
             this.canImpersonate = authService.canImpersonate;
             this.networkService = networkService;
+            this.range = utilService.range;
+            this.rangeCol = utilService.rangeCol;
+        }
+
+        $onInit () {
+            this.columnCount = this.columnCount || 2;
         }
 
         $onChanges (changes) {
@@ -94,7 +101,7 @@ export const UsersComponent = {
                     found = true;
                 }
                 return found;
-            });
+            }).sort((a, b) => a.fullName < b.fullName ? -1 : a.fullName > b.fullName ? 1 : 0);
         }
     },
 }

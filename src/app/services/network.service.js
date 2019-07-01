@@ -134,6 +134,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getAcb (id) {
+        return this.apiGET('/acbs/' + id);
+    }
+
     getAcbs (editable) {
         return this.apiGET('/acbs?editable=' + editable, true);
     }
@@ -617,7 +621,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
+        return this.apiPUT('/acbs/' + acb.id, acb);
     }
 
     modifyATL (atl) {

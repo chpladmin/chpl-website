@@ -396,6 +396,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getAcb', () => {
+            $httpBackend.expectGET(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
+            networkService.getAcb('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getAcbs', () => {
             $httpBackend.expectGET(/^\/rest\/acbs\?editable=false$/).respond(200, {data: 'response'});
             networkService.getAcbs(false).then(response => {
