@@ -157,9 +157,11 @@ export const SurveillanceComplaintComponent = {
         }
 
         sortCertifications (complaint) {
-            complaint.criteria.sort((a, b) => {
-                return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
-            });
+            if (Array.isArray(complaint.criteria)) {
+                complaint.criteria.sort((a, b) => {
+                    return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
+                });
+            }
         }
 
         selectSurveillance () {

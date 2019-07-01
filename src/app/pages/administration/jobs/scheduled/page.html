@@ -14,6 +14,7 @@
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
       <h3>Edit Job: {{ $ctrl.activeJob.name }}</h3>
+      <p class="lead bg-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</p>
       <chpl-jobs-scheduled-job job="$ctrl.activeJob" on-save="$ctrl.saveJob(job)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-job>
     </div>
   </div>
@@ -21,6 +22,7 @@
 <span ng-if="$ctrl.mode === 'editTrigger'">
   <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
+      <p class="lead bg-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</p>
       <chpl-jobs-scheduled-trigger trigger="$ctrl.activeTrigger" recurring="$ctrl.isRecurring" acbs="$ctrl.acbs" on-save="$ctrl.saveTrigger(trigger)" on-delete="$ctrl.deleteTrigger(trigger)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-trigger>
     </div>
   </div>

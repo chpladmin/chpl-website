@@ -716,6 +716,10 @@ export class NetworkService {
         return this.apiPUT('/surveillance-report/quarterly', report);
     }
 
+    updateRelevantListing (reportId, listing) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
+    }
+
     updateScheduleTrigger (trigger) {
         return this.apiPUT('/schedules/triggers', trigger);
     }

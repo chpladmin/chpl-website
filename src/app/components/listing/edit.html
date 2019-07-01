@@ -294,7 +294,7 @@
         </div>
         <label class="col-sm-6 control-label" for="new-accessibility-standard-expandable-name">Add new Accessibility Standard to available options</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" ng-model="$ctrl.newAccessibilityStandard.expandableName" id="new-accessibility-standard-expandable-name" ng-change="$ctrl.extendSelect($ctrl.accessibilityStandards.data, $ctrl.newAccessibilityStandard.expandableName); $ctrl.newAccessibilityStandard.accessibilityStandardName = $ctrl.newAccessibilityStandard.expandableName" ng-maxlength="500">
+          <input type="text" class="form-control" ng-model="$ctrl.newAccessibilityStandard.expandableName" id="new-accessibility-standard-expandable-name" ng-change="$ctrl.extendSelect($ctrl.resources.accessibilityStandards.data, $ctrl.newAccessibilityStandard.expandableName); $ctrl.newAccessibilityStandard.accessibilityStandardName = $ctrl.newAccessibilityStandard.expandableName" ng-maxlength="500">
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newAccessibilityStandardExpandableName.$touched) && $ctrl.form.newAccessibilityStandardExpandableName.$error.maxlength">Field is too long</div>
         </div>
       </div>
@@ -327,7 +327,7 @@
         </div>
         <label class="col-sm-6 control-label" for="new-targeted-user-expandable-name">Add new Targeted User to available options</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" ng-model="$ctrl.newTargetedUser.expandableName" id="new-targeted-user-expandable-name" ng-change="$ctrl.extendSelect($ctrl.targetedUsers.data, $ctrl.newTargetedUser.expandableName); $ctrl.newTargetedUser.targetedUserName = $ctrl.newTargetedUser.expandableName">
+          <input type="text" class="form-control" ng-model="$ctrl.newTargetedUser.expandableName" id="new-targeted-user-expandable-name" ng-change="$ctrl.extendSelect($ctrl.resources.targetedUsers.data, $ctrl.newTargetedUser.expandableName); $ctrl.newTargetedUser.targetedUserName = $ctrl.newTargetedUser.expandableName">
         </div>
       </div>
     </div>

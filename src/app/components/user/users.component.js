@@ -6,8 +6,9 @@ export const UsersComponent = {
         takeAction: '&',
     },
     controller: class UsersComponent {
-        constructor ($log, $rootScope, authService, networkService) {
+        constructor ($anchorScroll, $log, $rootScope, authService, networkService) {
             'ngInject'
+            this.$anchorScroll = $anchorScroll;
             this.$log = $log;
             this.$rootScope = $rootScope;
             this.authService = authService;
@@ -38,6 +39,7 @@ export const UsersComponent = {
                 break;
             case 'edit':
                 this.activeUser = data;
+                this.$anchorScroll();
                 break;
             case 'save':
                 this.networkService.updateUser(data)
