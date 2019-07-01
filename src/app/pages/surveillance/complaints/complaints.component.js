@@ -40,7 +40,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         selectComplaint (complaint) {
-            this.refreshSurveillances(complaint);
+            //this.refreshSurveillances(complaint);
             this.clearErrorMessages();
             this.isEditing = true;
             this.complaint = complaint;
