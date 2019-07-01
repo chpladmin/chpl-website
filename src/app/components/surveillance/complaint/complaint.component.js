@@ -9,6 +9,7 @@ export const SurveillanceComplaintComponent = {
         editions: '<',
         errorMessages: '<',
         listings: '<',
+        surveillances: '<',
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
@@ -64,6 +65,9 @@ export const SurveillanceComplaintComponent = {
             if (changes.criteria) {
                 this.criteria = angular.copy(changes.criteria.currentValue);
                 this.filterCriteriaBasedOnSelectedEdition();
+            }
+            if (changes.surveillances) {
+                this.surveillances = angular.copy(changes.surveillances.currentValue);
             }
         }
 
@@ -156,6 +160,21 @@ export const SurveillanceComplaintComponent = {
             complaint.criteria.sort((a, b) => {
                 return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
             });
+        }
+
+        selectSurveillance () {
+            if (!Array.isArray(this.complaint.surveillances)) {
+                this.complaint.surveillances = [];
+            }
+            this.complaint.surveillances.push({
+                complaintId: this.complaint.id,
+                surveillance: this.surveillance,
+            });
+            this.surveillance = {};
+        }
+
+        removeSurveillance (surveillanceToRemove) {
+            this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillanceId !== surveillanceToRemove.surveillanceId);
         }
     },
 }

@@ -171,16 +171,16 @@ export const SurveillanceComplaintsComponent = {
                         if (Array.isArray(response.surveillance)) {
                             response.surveillance.forEach(surv => {
                                 that.surveillances.push({
-                                    surveillanceId: surv.id,
+                                    id: surv.id,
                                     friendlyId: surv.friendlyId,
                                     listingId: response.id,
                                     chplProductNumber: response.chplProductNumber,
                                 });
-                                that.$log.info(that.surveillances);
+                                that.surveillances = angular.copy(that.surveillances);
                             });
                         }
-                    })
-                })
+                    });
+                });
             }
         }
 
