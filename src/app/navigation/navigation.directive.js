@@ -132,7 +132,7 @@
         }
 
         function isActive (state) {
-            return $state.$current.name === state;
+            return $state.$current.name.startsWith(state);
         }
 
         function loadAnnouncements () {

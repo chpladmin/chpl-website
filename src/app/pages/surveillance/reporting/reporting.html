@@ -3,7 +3,7 @@
     <span ng-if="$ctrl.mode === 'view' && !$ctrl.activeQuarterReport && !$ctrl.activeAnnualReport">
       <div class="col-md-12">
         <h2>Available reports</h2>
-        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'toString()'">
+        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
           <div class="col-sm-12">
             <div class="panel panel-primary">
               <div class="panel-heading clickable" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]">
