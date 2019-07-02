@@ -869,6 +869,14 @@
             $httpBackend.flush();
         });
 
+        it('should getListingBasic', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload$/).respond(200, { data: 'response' });
+            networkService.getListing('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getListingCountStatistics', () => {
             $httpBackend.expectGET(/^\/rest\/statistics\/listing_count$/).respond(200, {data: 'response'});
             networkService.getListingCountStatistics().then(response => {
