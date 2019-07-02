@@ -105,7 +105,7 @@
     <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
       <button class="btn btn-primary btn-xs"
         ng-click="$ctrl.removeListing(listing)">
-        <span class="sr-only">Remove item {{ listing.chplProductNumber }}</span>
+        <span class="sr-only">Remove item </span>
         {{ listing.chplProductNumber }}
         <i class="fa fa-times"></i>
       </button>
@@ -127,8 +127,7 @@
     </div>
     <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
       <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeSurveillance(surveillance)">
-        <span class="sr-only">Remove item {{ surveillance.surveillance.chplProductNumber }} -
-          {{ surveillance.surveillance.friendlyId }}</span>
+        <span class="sr-only">Remove </span>
         {{ surveillance.surveillance.chplProductNumber }} - {{ surveillance.surveillance.friendlyId }}
         <i class="fa fa-times"></i>
       </button>
@@ -145,8 +144,7 @@
     </div>
     <span ng-repeat="criterion in $ctrl.complaint.criteria">
       <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeCriterion(criterion)">
-        <span class="sr-only">Remove item {{ criterion.certificationCriterion.certificationEdition }} -
-        {{ criterion.certificationCriterion.number }}</span>
+        <span class="sr-only">Remove </span>
         {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
         <i class="fa fa-times"></i>
       </button>
