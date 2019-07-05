@@ -27,7 +27,7 @@
                   <td>{{ complaint.complaintStatusType.name }}</td>
                   <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td>{{ complaint.acbComplaintId }}</td>
-                  <td>{{ complaint.oncComplaintId }}</td>
+                  <td>{{ complaint.oncComplaintId ? complaint.oncComplaintId : 'N/A' }}</td>
                   <td>
                     {{ complaint.complainantType.name }}
                     <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
