@@ -4,6 +4,7 @@ export const SurveillanceReportingComponent = {
         acbs: '<',
         annual: '<',
         availableQuarters: '<',
+        complaints: '<',
         quarters: '<',
     },
     controller: class SurveillanceReportingComponent {
@@ -40,6 +41,9 @@ export const SurveillanceReportingComponent = {
             }
             if (changes.quarters) {
                 this.quarters = angular.copy(changes.quarters.currentValue);
+            }
+            if (changes.complaints && changes.complaints.currentValue) {
+                this.complaints = angular.copy(changes.complaints.currentValue.results);
             }
         }
 
@@ -96,9 +100,11 @@ export const SurveillanceReportingComponent = {
                         this.networkService.getRelevantListings(report)
                             .then(results => {
                                 report.relevantListings = results;
+                                report.relevantComplaints = that.getRelevantComplaints(acb, year, quarter);
                                 that.activeQuarterReport = report;
                             });
                     } else {
+                        report.relevantComplaints = this.getRelevantComplaints(acb, year, quarter);
                         this.activeQuarterReport = report;
                     }
                 }
@@ -107,6 +113,7 @@ export const SurveillanceReportingComponent = {
                     acb: acb,
                     quarter: quarter,
                     year: year,
+                    relevantComplaints: this.getRelevantComplaints(acb, year, quarter),
                 };
                 this.mode = 'initiateQuarter';
             }
@@ -216,6 +223,37 @@ export const SurveillanceReportingComponent = {
         cancelQuarter () {
             this.activeQuarterReport = undefined;
             this.mode = 'view';
+        }
+
+        getRelevantComplaints (acb, year, quarter) {
+            let quarterStart;
+            let quarterEnd;
+            switch (quarter) {
+            case 'Q1':
+                quarterStart = year + '-01-01';
+                quarterEnd = year + '-04-01';
+                break;
+            case 'Q2':
+                quarterStart = year + '-04-01';
+                quarterEnd = year + '-07-01';
+                break;
+            case 'Q3':
+                quarterStart = year + '-07-01';
+                quarterEnd = year + '-10-01';
+                break;
+            case 'Q4':
+                quarterStart = year + '-10-01';
+                quarterEnd = year + '-12-31T23.59.59';
+                break;
+                // no default
+            }
+            let startDate = new Date(quarterStart);
+            let endDate = new Date(quarterEnd);
+            return this.complaints.filter(c => {
+                return acb.id === c.certificationBody.id                      // matching ACB
+                    && new Date(c.receivedDate) < endDate                     // received before end of quarter
+                    && (!c.closedDate || new Date(c.closedDate) > startDate); // closed? if not, closed after start of quarter
+            });
         }
     },
 }

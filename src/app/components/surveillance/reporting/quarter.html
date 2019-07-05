@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <div ng-if="!$ctrl.isEditing">
         <div class="row" ng-if="$ctrl.report.surveillanceActivitiesAndOutcomes">
           <div class="col-sm-4">Surveillance Activities and Outcomes</div>
@@ -68,9 +68,16 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <div ng-repeat="listing in $ctrl.report.relevantListings | orderBy : 'chplProductNumber'">
         <chpl-surveillance-report-relevant-listing listing="listing" on-save="$ctrl.saveRelevantListing(listing)"></chpl-surveillance-report-relevant-listing>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div ng-repeat="complaint in $ctrl.report.relevantComplaints | orderBy : 'id'">
+        <chpl-surveillance-complaint
+           complaint="complaint">
+        </chpl-surveillance-complaint>
       </div>
     </div>
   </div>

@@ -25,7 +25,9 @@
                           <span ng-if="$ctrl.isQuarterOpen(acb, year, quarter.name)">Close</span>
                           <span ng-if="!$ctrl.findQuarterReport(acb, year, quarter.name)">Initiate</span>
                         </button>
-                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findQuarterReport(acb, year, quarter.name)">
+                          View
+                        </button>
                         <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
                       </td>
                       <td>
@@ -34,7 +36,9 @@
                           <span ng-if="$ctrl.isAnnualOpen(acb, year)">Close</span>
                           <span ng-if="!$ctrl.findAnnualReport(acb, year)">Initiate</span>
                         </button>
-                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findAnnualReport(acb, year)">View</button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findAnnualReport(acb, year)">
+                          View
+                        </button>
                         <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
                       </td>
                     </tr>
@@ -50,10 +54,6 @@
       <h2>Quarter report</h2>
       <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action, listing)"></chpl-surveillance-report-quarter>
     </div>
-    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
-      <h2>Annual report</h2>
-      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
-    </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'initiateQuarter'">
       <h2>Initiate surveillance reporting</h2>
       <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" is-editing="true" on-save="$ctrl.saveQuarter(report)" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action)"></chpl-surveillance-report-quarter>
@@ -61,6 +61,10 @@
     <div class="col-md-12" ng-if="$ctrl.mode === 'editQuarter'">
       <h2>Edit surveillance reporting</h2>
       <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" is-editing="true" on-save="$ctrl.saveQuarter(report)" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action)"></chpl-surveillance-report-quarter>
+    </div>
+    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
+      <h2>Annual report</h2>
+      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
     </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'initiateAnnual'">
       <h2>Initiate surveillance reporting</h2>

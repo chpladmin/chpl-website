@@ -27,9 +27,7 @@ export const SurveillanceComplaintComponent = {
             }
             this.currentMode = '';
             this.edition = {};
-            this.isEditionDropdownOpen = false;
-            this.utilService = utilService;
-            this.sortCert = utilService.sortCert;
+            this.sortCertActual = utilService.sortCertActual;
         }
 
         $onChanges (changes) {
@@ -120,10 +118,7 @@ export const SurveillanceComplaintComponent = {
 
         filterListingsBasedOnSelectedAcb () {
             if (this.complaint.certificationBody && this.complaint.certificationBody.name) {
-                // Filter the available listings based on the selected acb
-                this.filteredListings = this.listings.filter(item => {
-                    return item.acb === this.complaint.certificationBody.name;
-                });
+                this.filteredListings = this.listings.filter(item => item.acb === this.complaint.certificationBody.name);
             }
         }
 
@@ -159,7 +154,7 @@ export const SurveillanceComplaintComponent = {
         sortCertifications (complaint) {
             if (Array.isArray(complaint.criteria)) {
                 complaint.criteria.sort((a, b) => {
-                    return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
+                    return this.sortCertActual(a.certificationCriterion, b.certificationCriterion);
                 });
             }
         }
