@@ -8,6 +8,7 @@ export const SurveillanceComplaintComponent = {
         criteria: '<',
         editions: '<',
         errorMessages: '<',
+        isEditing: '<',
         listings: '<',
         surveillances: '<',
         onCancel: '&?',
@@ -21,11 +22,6 @@ export const SurveillanceComplaintComponent = {
             this.$log = $log;
             this.isOn = featureFlags.isOn;
             this.hasAnyRole = authService.hasAnyRole;
-            this.modes = {
-                EDIT: 'edit',
-                ADD: 'add',
-            }
-            this.currentMode = '';
             this.edition = {};
             this.sortCertActual = utilService.sortCertActual;
         }
@@ -33,11 +29,6 @@ export const SurveillanceComplaintComponent = {
         $onChanges (changes) {
             if (changes.complaint) {
                 this.complaint = angular.copy(changes.complaint.currentValue);
-                if (this.complaint && this.complaint.id) {
-                    this.currentMode = this.modes.EDIT;
-                } else {
-                    this.currentMode = this.modes.ADD;
-                }
                 this.sortCertifications(this.complaint);
             }
             if (changes.complainantTypes) {
@@ -51,6 +42,9 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);
+            }
+            if (changes.isEditing) {
+                this.isediting = angular.copy(changes.isEditing.currentValue);
             }
             if (changes.listings) {
                 this.listings = angular.copy(changes.listings.currentValue);
