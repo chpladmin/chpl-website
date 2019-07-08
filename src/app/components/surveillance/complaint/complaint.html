@@ -102,22 +102,24 @@
     <div ng-if="!$ctrl.complaint.listings || $ctrl.complaint.listings.length === 0">
       No Certified Products Selected
     </div>
-    <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
-      <button class="btn btn-primary btn-xs"
-        ng-click="$ctrl.removeListing(listing)">
-        <span class="sr-only">Remove item </span>
-        {{ listing.chplProductNumber }}
-        <i class="fa fa-times"></i>
-      </button>
-      &nbsp;
-    </span>
+    <div class="selected-items-container" ng-if="$ctrl.complaint.listings">
+      <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
+        <button class="btn btn-primary btn-xs"
+          ng-click="$ctrl.removeListing(listing)">
+          <span class="sr-only">Remove item </span>
+          {{ listing.chplProductNumber }}
+          <i class="fa fa-times"></i>
+        </button>
+        &nbsp;
+      </span>
+    </div>
     <input name="listings"
         id="listings"
         type="text"
         class="input-sm form-control"
         placeholder="Start Typing CHPL Product Number"
         ng-model="$ctrl.listing"
-        uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.filteredListings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
+        uib-typeahead="listing.chplProductNumber for listing in $ctrl.filteredListings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
   </div>
   <div class="form-group">
@@ -125,13 +127,16 @@
     <div ng-if="!$ctrl.complaint.surveillances || $ctrl.complaint.surveillances.length === 0">
       No Surveillances Selected
     </div>
-    <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
-      <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeSurveillance(surveillance)">
-        <span class="sr-only">Remove </span>
-        {{ surveillance.surveillance.chplProductNumber }} - {{ surveillance.surveillance.friendlyId }}
-        <i class="fa fa-times"></i>
-      </button>
-    </span>
+    <div class="selected-items-container" ng-if="$ctrl.complaint.surveillances">
+      <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
+        <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeSurveillance(surveillance)">
+          <span class="sr-only">Remove </span>
+          {{ surveillance.surveillance.chplProductNumber }} - {{ surveillance.surveillance.friendlyId }}
+          <i class="fa fa-times"></i>
+        </button>
+      </span>
+      &nbsp;
+    </div>
     <select id="surveilances" name="surveillances" class="input-sm form-control" ng-model="$ctrl.surveillance"
       ng-options="(surveillance.friendlyId + ' - ' + surveillance.chplProductNumber ) for surveillance in $ctrl.surveillances | orderBy: ['chplProductNumber', 'friendlyId'] track by surveillance.id"
       ng-change="$ctrl.selectSurveillance()">
@@ -142,14 +147,16 @@
     <div ng-if="!$ctrl.complaint.criteria || $ctrl.complaint.criteria.length === 0">
       No Criteria Selected
     </div>
-    <span ng-repeat="criterion in $ctrl.complaint.criteria">
-      <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeCriterion(criterion)">
-        <span class="sr-only">Remove </span>
-        {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
-        <i class="fa fa-times"></i>
-      </button>
-      &nbsp;
-    </span>
+    <div class="selected-items-container" ng-if="$ctrl.complaint.criteria">
+      <span ng-repeat="criterion in $ctrl.complaint.criteria">
+        <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeCriterion(criterion)">
+          <span class="sr-only">Remove </span>
+          {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
+          <i class="fa fa-times"></i>
+        </button>
+        &nbsp;
+      </span>
+    </div>
     <div class="input-group">
       <div class="input-group-btn" uib-dropdown>
         <button type="button" id="select-edition" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
