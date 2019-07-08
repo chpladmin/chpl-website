@@ -6,7 +6,6 @@ export const ReportsAnnouncementsComponent = {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
-            this.$scope = $scope;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
