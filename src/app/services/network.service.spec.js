@@ -396,6 +396,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getAcb', () => {
+            $httpBackend.expectGET(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
+            networkService.getAcb('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getAcbs', () => {
             $httpBackend.expectGET(/^\/rest\/acbs\?editable=false$/).respond(200, {data: 'response'});
             networkService.getAcbs(false).then(response => {
@@ -856,6 +864,14 @@
         it('should getListing and force refresh', function () {
             $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
             networkService.getListing('payload', true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListingBasic', () => {
+            $httpBackend.expectGET(/^\/rest\/certified_products\/payload$/).respond(200, { data: 'response' });
+            networkService.getListing('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1556,6 +1572,14 @@
         it('should updateProduct', () => {
             $httpBackend.expectPUT(/^\/rest\/products$/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should updateRelevantListing', () => {
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/listings\/lid$/).respond(200, {data: 'response'});
+            networkService.updateRelevantListing('qid', {id: 'lid'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

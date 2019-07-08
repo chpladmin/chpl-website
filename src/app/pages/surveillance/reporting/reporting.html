@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <div class="row main-content" id="main-content" tabindex="-1">
-    <span ng-if="$ctrl.mode === 'view'">
+    <span ng-if="$ctrl.mode === 'view' && !$ctrl.activeQuarterReport && !$ctrl.activeAnnualReport">
       <div class="col-md-12">
         <h2>Available reports</h2>
-        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'toString()'">
+        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
           <div class="col-sm-12">
             <div class="panel panel-primary">
               <div class="panel-heading clickable" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]">
@@ -48,11 +48,11 @@
     </span>
     <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeQuarterReport">
       <h2>Quarter report</h2>
-      <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" take-action="$ctrl.takeQuarterAction($ctrl.activeQuarterReport, action)"></chpl-surveillance-report-quarter>
+      <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action, listing)"></chpl-surveillance-report-quarter>
     </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
       <h2>Annual report</h2>
-      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" take-action="$ctrl.takeAnnualAction($ctrl.activeAnnualReport, action)"></chpl-surveillance-report-annual>
+      <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
     </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'initiateQuarter'">
       <h2>Initiate surveillance reporting</h2>

@@ -70,6 +70,56 @@ let states = {
                 },
             },
             data: { title: 'CHPL Product Versions' },
+        },{
+            name: 'organizations.onc-acbs',
+            url: '/onc-acbs',
+            component: 'chplOncOrganizations',
+            resolve: {
+                allOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAcbs(false);
+                },
+                editableOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                roles: () => ['ROLE_ACB'],
+                key: () => 'acbs',
+                type: () => 'ONC-ACB',
+                functions: () => ({
+                    get: 'getAcbs',
+                    getUsers: 'getUsersAtAcb',
+                    modify: 'modifyACB',
+                    create: 'createACB',
+                    removeUser: 'removeUserFromAcb',
+                }),
+            },
+            data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-atls',
+            url: '/onc-atls',
+            component: 'chplOncOrganizations',
+            resolve: {
+                allOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAtls(false);
+                },
+                editableOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAtls(true);
+                },
+                roles: () => ['ROLE_ATL'],
+                key: () => 'atls',
+                type: () => 'ONC-ATL',
+                functions: () => ({
+                    get: 'getAtls',
+                    getUsers: 'getUsersAtAtl',
+                    modify: 'modifyATL',
+                    create: 'createATL',
+                    removeUser: 'removeUserFromAtl',
+                }),
+            },
+            data: { title: 'CHPL ONC-ATLs' },
         },
     ],
     'base': [
@@ -81,18 +131,34 @@ let states = {
         },{
             name: 'organizations.developers',
             url: '/developers/{developerId}/{action}?',
-            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Developers' },
         },{
             name: 'organizations.developers.products',
             url: '/products/{productId}/{action}?',
-            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Products' },
         },{
             name: 'organizations.developers.products.versions',
             url: '/versions/{versionId}/{action}?',
-            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Product Versions' },
+        },{
+            name: 'organizations.onc-acbs',
+            url: '/onc-acbs',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            params: {
+                oncAcbId: {squash: true, value: null},
+            },
+            data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-atls',
+            url: '/onc-atls',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            params: {
+                oncAtlId: {squash: true, value: null},
+            },
+            data: { title: 'CHPL ONC-ATLs' },
         },
     ],
 };

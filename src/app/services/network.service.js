@@ -134,6 +134,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getAcb (id) {
+        return this.apiGET('/acbs/' + id);
+    }
+
     getAcbs (editable) {
         return this.apiGET('/acbs?editable=' + editable, true);
     }
@@ -349,6 +353,10 @@ export class NetworkService {
 
     getListing (listingId, forceReload) {
         return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+    }
+
+    getListingBasic (listingId) {
+        return this.apiGET('/certified_products/' + listingId);
     }
 
     getListingCountStatistics () {
@@ -617,7 +625,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
+        return this.apiPUT('/acbs/' + acb.id, acb);
     }
 
     modifyATL (atl) {
@@ -710,6 +718,10 @@ export class NetworkService {
 
     updateQuarterlySurveillanceReport (report) {
         return this.apiPUT('/surveillance-report/quarterly', report);
+    }
+
+    updateRelevantListing (reportId, listing) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
     }
 
     updateScheduleTrigger (trigger) {

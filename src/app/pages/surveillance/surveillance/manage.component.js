@@ -11,7 +11,6 @@ export const SurveillanceManagementComponent = {
             this.$stateParams = $stateParams;
             this.networkService = networkService;
             this.certificationStatus = utilService.certificationStatus;
-            this.surveillanceProduct = null;
             this.filterItems = {
                 pageSize: 50,
                 editionItems: [
@@ -32,12 +31,14 @@ export const SurveillanceManagementComponent = {
             };
             this.clearFilterHs = [];
             this.availableListings = [];
+            this.tabs = [];
+            this.activeTab = 0;
         }
 
         $onInit () {
-            this.listingId = this.$stateParams.listingId;
-            if (this.listingId) {
-                this.load();
+            if (this.$stateParams.listingId) {
+                this.load({id: this.$stateParams.listingId});
+                this.activeTab = this.$stateParams.listingId;
             }
         }
 
@@ -88,10 +89,25 @@ export const SurveillanceManagementComponent = {
             return this.allowedAcbs.reduce((acc, acb) => acc || acb.name === listing.acb, false);
         }
 
-        load () {
+        load (listing) {
+            this.tabs.push({
+                id: listing.id,
+                chplProductNumber: listing.chplProductNumber,
+            });
             let that = this;
-            this.networkService.getListing(this.listingId, true)
-                .then(result => that.surveillanceProduct = result);
+            this.networkService.getListing(listing.id, true)
+                .then(result => that.tabs.forEach(t => {
+                    if (t.id === listing.id) {
+                        t.listing = result;
+                        t.chplProductNumber = result.chplProductNumber;
+                    }
+                }))
+        }
+
+        takeTabAction (action, data) {
+            if (action === 'close') {
+                this.tabs = this.tabs.filter(t => t.id !== data.id);
+            }
         }
 
         registerClearFilter (handler) {
