@@ -69,16 +69,20 @@ export const OncOrganizationsComponent = {
             this.allOrgs = this.allOrgs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
         }
 
+        showOrg (org) {
+            this.activeOrg = org;
+            this.loadUsers();
+            this.$anchorScroll();
+        }
+
+        create () {
+            this.isCreating = true;
+        }
+
         takeAction (action, data) {
             let that = this;
             if (!this.org) {
                 switch (action) {
-                case 'view':
-                    this.activeOrg = data;
-                    this.isActive = true;
-                    this.loadUsers();
-                    this.$anchorScroll();
-                    break;
                 case 'edit':
                     this.activeOrg = data;
                     this.isEditing = true;
@@ -91,20 +95,9 @@ export const OncOrganizationsComponent = {
                         that.prepOrgs();
                     }));
                     this.isEditing = false;
-                    if (!this.isActive) {
-                        this.activeOrg = undefined;
-                    }
                     break;
                 case 'cancel':
-                    if (this.isActive && this.isEditing) {
-                        this.isEditing = false;
-                    } else if (this.isActive) {
-                        this.isActive = false;
-                        this.activeOrg = undefined;
-                    } else if (this.isEditing) {
-                        this.isEditing = false;
-                        this.activeOrg = undefined;
-                    }
+                    this.isEditing = false;
                     this.isCreating = false;
                     break;
                 case 'create':
