@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-12">
       <div ng-if="!$ctrl.isEditing">
         <div class="row" ng-if="$ctrl.report.obstacleSummary">
           <div class="col-sm-4">Obstacle Summary</div>
@@ -28,6 +28,7 @@
             <label class="col-sm-4 control-label" for="obstacle">Obstacle Summary</label>
             <div class="col-sm-8">
               <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary"></textarea>
+              <p class="form-control-static">Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.</p>
             </div>
           </div>
           <div class="form-group">
