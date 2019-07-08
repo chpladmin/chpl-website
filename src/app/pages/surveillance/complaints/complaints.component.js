@@ -48,6 +48,13 @@ export const SurveillanceComplaintsComponent = {
             if (complaint.formattedReceivedDate) {
                 let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
                 complaint.receivedDate = utcReceievedDate.getTime();
+
+                if (complaint.formattedClosedDate) {
+                    let utcClosedDate = this.toUTCDate(complaint.formattedClosedDate);
+                    complaint.closedDate = utcClosedDate.getTime();
+                } else {
+                    complaint.closedDate = null;
+                }
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);
@@ -107,6 +114,11 @@ export const SurveillanceComplaintsComponent = {
                         complaint.formattedReceivedDate = new Date(complaint.receivedDate);
                     } else {
                         complaint.formattedReceivedDate = null;
+                    }
+                    if (complaint.closedDate) {
+                        complaint.formattedClosedDate = new Date(complaint.closedDate);
+                    } else {
+                        complaint.formattedClosedDate = null;
                     }
                 });
             });
