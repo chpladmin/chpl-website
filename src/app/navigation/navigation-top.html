@@ -111,7 +111,7 @@
               <li><a ui-sref="reports.developers()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.developers')"></i> Developers</a></li>
               <li><a ui-sref="reports.products()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
               <li><a ui-sref="reports.versions()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>
-              <li><a ui-sref="reports.acbs()"ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.acbs')"></i> ONC-ACBs</a></li>
+              <li><a ui-sref="reports.acbs()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.acbs')"></i> ONC-ACBs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i> ONC-ATLs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i> Announcements</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.users()" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
