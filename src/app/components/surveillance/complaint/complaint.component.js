@@ -105,10 +105,6 @@ export const SurveillanceComplaintComponent = {
                     listingId: $item.id,
                     chplProductNumber: $item.chplProductNumber,
                 });
-                this.toaster.pop({
-                    type: 'success',
-                    body: $item.chplProductNumber + ' successfully added',
-                });
             } else {
                 this.toaster.pop({
                     type: 'warning',
@@ -125,10 +121,6 @@ export const SurveillanceComplaintComponent = {
 
         removeListing (listingToRemove) {
             this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
-            this.toaster.pop({
-                type: 'success',
-                body: listingToRemove.chplProductNumber + ' successfully removed',
-            });
         }
 
         disableListing (listing) {
@@ -175,10 +167,6 @@ export const SurveillanceComplaintComponent = {
                     complaintId: this.complaint.id,
                     certificationCriterion: this.criterion,
                 });
-                this.toaster.pop({
-                    type: 'success',
-                    body: this.criterion.number + ' successfully added',
-                });
                 this.sortCertifications(this.complaint);
             } else {
                 this.toaster.pop({
@@ -196,10 +184,6 @@ export const SurveillanceComplaintComponent = {
 
         removeCriterion (criterionToRemove) {
             this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterionId !== criterionToRemove.certificationCriterionId);
-            this.toaster.pop({
-                type: 'success',
-                body: criterionToRemove.certificationCriterion.number + ' successfully removed',
-            });
         }
 
         sortCertifications (complaint) {
@@ -219,10 +203,6 @@ export const SurveillanceComplaintComponent = {
                     complaintId: this.complaint.id,
                     surveillance: this.surveillance,
                 });
-                this.toaster.pop({
-                    type: 'success',
-                    body: this.surveillance.friendlyId + ' successfully added',
-                });
             } else {
                 this.toaster.pop({
                     type: 'warning',
@@ -239,10 +219,6 @@ export const SurveillanceComplaintComponent = {
 
         removeSurveillance (surveillanceToRemove) {
             this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillanceId !== surveillanceToRemove.surveillanceId);
-            this.toaster.pop({
-                type: 'success',
-                body: surveillanceToRemove.surveillance.friendlyId + ' successfully removed',
-            });
         }
     },
 }
