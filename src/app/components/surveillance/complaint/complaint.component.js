@@ -183,7 +183,7 @@ export const SurveillanceComplaintComponent = {
         }
 
         removeCriterion (criterionToRemove) {
-            this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterionId !== criterionToRemove.certificationCriterionId);
+            this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterion.id !== criterionToRemove.certificationCriterion.id);
         }
 
         sortCertifications (complaint) {
