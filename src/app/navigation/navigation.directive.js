@@ -143,10 +143,10 @@
         }
 
         function loadOrganizations () {
-            /*if (!featureFlags.isOn('adminNav')) {
+            if (!featureFlags.isOn('adminNav')) {
                 return;
-            }*/
-            /*networkService.getAcbs(true)
+            }
+            networkService.getAcbs(true)
                 .then(data => {
                     vm.acbs = data.acbs
                         .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
@@ -168,7 +168,6 @@
                             return a;
                         });
                 });
-                */
         }
 
         function showCmsWidget (show) {
