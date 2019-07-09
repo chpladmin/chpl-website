@@ -27,6 +27,7 @@ export const SurveillanceComplaintsComponent = {
             this.refreshListings();
             this.refreshEditions();
             this.refreshCriteria();
+            this.refreshSurveillances();
         }
 
         deleteComplaint (complaint) {
@@ -40,7 +41,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         selectComplaint (complaint) {
-            //this.refreshSurveillances(complaint);
+            this.refreshSurveillances(complaint);
             this.clearErrorMessages();
             this.isEditing = true;
             this.complaint = complaint;
@@ -177,7 +178,7 @@ export const SurveillanceComplaintsComponent = {
         refreshSurveillances (complaint) {
             let that = this;
             this.surveillances = [];
-            if (Array.isArray(complaint.listings)) {
+            if (complaint && Array.isArray(complaint.listings)) {
                 complaint.listings.forEach(listing => {
                     this.networkService.getListingBasic(listing.listingId).then(response => {
                         if (Array.isArray(response.surveillance)) {
