@@ -99,7 +99,7 @@
 
     .navbar-fixed-top .nav-main {
         position: absolute;
-        bottom: 0;
+        bottom: 15px;
         right: 15px;
     }
 }
@@ -110,7 +110,7 @@
     }
 
     @media (min-width: 767px) {
-        margin-top: 170px;
+        margin-top: 140px;
     }
 }
 
