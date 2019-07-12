@@ -7,9 +7,6 @@ let states = {
             data: {
                 title: 'CHPL Surveillance - Complaints',
             },
-            resolve: {
-                complaintList: function () { return 'ALL'; },
-            },
         },
     ],
     'surveillance-reports-on': [

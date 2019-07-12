@@ -10,13 +10,11 @@ export const SurveillanceReportRelevantListingComponent = {
             'ngInject'
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
-            //this.backup = {};
         }
 
         $onChanges (changes) {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
-                //this.backup.listing = angular.copy(this.listing);
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
