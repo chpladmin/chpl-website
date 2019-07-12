@@ -98,7 +98,6 @@ export const SurveillanceComplaintComponent = {
         }
 
         selectListing ($item) {
-            this.$log.info('In Listing selected?');
             if (!Array.isArray(this.complaint.listings)) {
                 this.complaint.listings = [];
             }
@@ -107,9 +106,7 @@ export const SurveillanceComplaintComponent = {
                     listingId: $item.id,
                     chplProductNumber: $item.chplProductNumber,
                 });
-                this.$log.info('Listing selected?');
                 if (this.onListingSelected) {
-                    this.$log.info('Yes!');
                     this.onListingSelected({ complaint: this.complaint });
                 }
             } else {

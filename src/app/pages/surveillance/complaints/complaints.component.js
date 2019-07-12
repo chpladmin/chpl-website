@@ -48,8 +48,6 @@ export const SurveillanceComplaintsComponent = {
         }
 
         selectListing (complaint) {
-            this.$log.info('Refreshing the surveillances');
-            this.$log.info(complaint);
             this.refreshSurveillances(complaint);
         }
 
