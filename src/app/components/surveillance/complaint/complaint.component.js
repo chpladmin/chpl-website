@@ -15,6 +15,7 @@ export const SurveillanceComplaintComponent = {
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
+        onListingSelected: '&?',
     },
     controller: class SurveillanceComplaintComponent {
         constructor ($filter, $log, authService, featureFlags, toaster, utilService) {
@@ -107,6 +108,9 @@ export const SurveillanceComplaintComponent = {
                     listingId: $item.id,
                     chplProductNumber: $item.chplProductNumber,
                 });
+                if (this.onListingSelected) {
+                    this.onListingSelected({ complaint: this.complaint });
+                }
             } else {
                 this.toaster.pop({
                     type: 'warning',

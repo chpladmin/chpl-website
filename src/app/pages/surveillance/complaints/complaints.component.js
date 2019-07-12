@@ -63,6 +63,10 @@ export const SurveillanceComplaintsComponent = {
             this.complaint = complaint;
         }
 
+        selectListing (complaint) {
+            this.refreshSurveillances(complaint);
+        }
+
         saveComplaint (complaint) {
             if (complaint.formattedReceivedDate) {
                 let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
