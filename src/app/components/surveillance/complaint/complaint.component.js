@@ -43,6 +43,8 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
                 this.sortCertifications(this.complaint);
+                this.$log.info(this.complaint.receivedDate);
+                this.$log.info(this.complaint.closedDate);
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -86,6 +88,8 @@ export const SurveillanceComplaintComponent = {
         }
 
         saveComplaint (complaint) {
+            this.$log.info(this.complaint.formattedReceivedDate);
+            this.$log.info(this.complaint.formattedClosedDate);
             if (this.onSave) {
                 this.onSave({complaint: complaint});
             }

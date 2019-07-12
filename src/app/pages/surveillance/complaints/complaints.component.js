@@ -52,17 +52,20 @@ export const SurveillanceComplaintsComponent = {
         }
 
         saveComplaint (complaint) {
-            if (complaint.formattedReceivedDate) {
-                let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
-                complaint.receivedDate = utcReceievedDate.getTime();
+            this.$log.info('In complaints.saveComplaint()');
+            this.$log.info(complaint.formattedReceivedDate);
+            this.$log.info(complaint.formattedClosedDate);
 
-                if (complaint.formattedClosedDate) {
-                    let utcClosedDate = this.toUTCDate(complaint.formattedClosedDate);
-                    complaint.closedDate = utcClosedDate.getTime();
-                } else {
-                    complaint.closedDate = null;
-                }
+            complaint.receivedDate = complaint.formattedReceivedDate.getTime();
+            if (complaint.formattedClosedDate) {
+                complaint.closedDate = complaint.formattedClosedDate.getTime();
+            } else {
+                complaint.closedDate = null;
             }
+
+            this.$log.info(complaint.receivedDate);
+            this.$log.info(complaint.closedDate);
+
             if (complaint.id) {
                 this.updateComplaint(complaint);
             } else {
@@ -129,11 +132,6 @@ export const SurveillanceComplaintsComponent = {
                     }
                 });
             });
-        }
-
-        toUTCDate (date) {
-            let _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-            return _utc;
         }
 
         refreshComplainantTypes () {
