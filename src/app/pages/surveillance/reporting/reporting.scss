@@ -1,8 +1,4 @@
-.complaints-wrapper {
-
-    .selected-items-container {
-        margin-bottom: 5px;
-    }
+.quarter-report-wrapper {
 
     label {
         color: #888888;
@@ -40,35 +36,6 @@
 
     textarea.form-control {
         height: 100px !important;
-    }
-
-    .input-group-btn-adjust {
-        border-radius: 0 !important;
-        height: 50px !important;
-    }
-
-    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #cccccc !important;
-        opacity: 1  !important; /* Firefox */
-        font-weight: normal !important;
-    }
-
-    :-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: #cccccc !important;
-        font-weight: normal !important;
-    }
-
-    ::-ms-input-placeholder { /* Microsoft Edge */
-        color: #cccccc !important;
-        font-weight: normal !important;
-    }
-
-    .badge-success {
-        background-color: #468847;
-    }
-
-    .badge-success:hover {
-        background-color: #356635;
     }
 
     .badge-error {

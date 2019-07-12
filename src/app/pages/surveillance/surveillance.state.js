@@ -4,7 +4,12 @@ let states = {
             name: 'surveillance.complaints',
             url: '/complaints',
             component: 'chplSurveillanceComplaints',
-            data: { title: 'CHPL Surveillance - Complaints' },
+            data: {
+                title: 'CHPL Surveillance - Complaints',
+            },
+            resolve: {
+                complaintList: function () { return 'ALL'; },
+            },
         },
     ],
     'surveillance-reports-on': [
@@ -109,5 +114,4 @@ function surveillanceStatesConfig ($stateProvider) {
         $stateProvider.state(state);
     });
 }
-
 export { surveillanceStatesConfig, states };

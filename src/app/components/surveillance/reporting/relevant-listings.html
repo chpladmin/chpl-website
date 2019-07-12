@@ -1,0 +1,65 @@
+<div class="container-fluid complaints-wrapper">
+  <div class="main-content" id="main-content" tabindex="-1">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive" st-table="$ctrl.listings" st-safe-src="$ctrl.safeListings">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">CHPL Product Number</th>
+                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">Certification Edition</th>
+                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">Certification Date</th>
+                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">Last Modified Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="listing in $ctrl.listings" ng-class="listing.excluded ? 'text-danger' : ''">
+                <td>
+                  {{ listing.chplProductNumber }}
+                  <div class="text-danger" ng-if="listing.excluded">
+                    <span class="badge badge-error">
+                      EXCLUDED
+                    </span>
+                    {{ listing.reason }}
+                  </div>
+                </td>
+                <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.edition }}</td>
+                <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td ng-if="$ctrl.listingBeingEdited !== listing.id">
+                  <button class="btn btn-link" title="Exclude Listing" ng-click="$ctrl.listingBeingEdited = listing.id" ng-if="!listing.excluded">
+                    <i class="fa fa-ban"></i><span class="sr-only">Exclude listing</span>
+                  </button>
+                  <button class="btn btn-link" title="Undo Exclude" ng-click="$ctrl.undoExcludedListing(listing)" ng-if="listing.excluded">
+                    <i class="fa fa-undo"></i><span class="sr-only">Undo exclude</span>
+                  </button>
+                  <!--
+                  <button class="btn btn-danger btn-link" title="Delete Complaint"
+                      ng-click="$ctrl.deleteComplaint(complaint)"
+                      confirm="Are you sure you wish to delete this complaint?"
+                      confirm-ok="Delete Complaint" confirm-cancel="Cancel"
+                      confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                      <span class="text-danger"><i class="fa fa-trash"></i><span class="sr-only">
+                              Delete</span></span>
+                  </button>
+                  --->
+
+                </td>
+                <td ng-if="$ctrl.listingBeingEdited === listing.id" colspan="4">
+                  <div>
+                    <chpl-surveillance-report-relevant-listing
+                      listing="listing"
+                      on-cancel="$ctrl.cancelEdit()"
+                      on-save="$ctrl.excludeRelevantListing(listing)">
+                    </chpl-surveillance-report-relevant-listing>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

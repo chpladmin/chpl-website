@@ -1,6 +1,9 @@
 export const SurveillanceComplaintsComponent = {
     templateUrl: 'chpl.surveillance/complaints/complaints.html',
-    bindings: { },
+    bindings: {
+        displayHeader: '<',
+        complaintListType: '@?',
+    },
     controller: class SurveillanceComplaintsComponent {
         constructor ($log, authService, networkService) {
             'ngInject'
@@ -17,6 +20,7 @@ export const SurveillanceComplaintsComponent = {
             this.errorMessages = [];
             this.listings = [];
             this.surveillances = [];
+            this.safeComplaints = [];
         }
 
         $onInit () {
@@ -28,6 +32,18 @@ export const SurveillanceComplaintsComponent = {
             this.refreshEditions();
             this.refreshCriteria();
             this.refreshSurveillances();
+        }
+
+        $onChanges (changes) {
+            if (changes.complaintListType !== undefined && changes.complaintListType.currentValue === '') {
+                this.complaintListType = 'ALL';
+            }
+            if (changes.displayAdd !== undefined && changes.displayAdd.currentValue === undefined) {
+                this.displayAdd = true;
+            }
+            if (changes.displayHeader !== undefined && changes.displayHeader.currentValue === undefined) {
+                this.displayHeader = true;
+            }
         }
 
         deleteComplaint (complaint) {
@@ -110,7 +126,7 @@ export const SurveillanceComplaintsComponent = {
 
         refreshComplaints () {
             let that = this;
-            this.networkService.getComplaints().then(response => {
+            this.getComplaintsPromise().then(response => {
                 that.complaints = response.results;
                 that.complaints.forEach(complaint => {
                     if (complaint.receivedDate) {
@@ -123,8 +139,22 @@ export const SurveillanceComplaintsComponent = {
                     } else {
                         complaint.formattedClosedDate = null;
                     }
+                    complaint.complaintStatusTypeName = complaint.complaintStatusType.name;
+                    complaint.acbName = complaint.certificationBody.name;
+                    complaint.complainantTypeName = complaint.complainantType.name;
                 });
+                that.safeComplaints = angular.copy(that.complaints);
             });
+        }
+
+        getComplaintsPromise () {
+            if (this.complaintListType === 'ALL') {
+                this.$log.info('Using ALL complaints');
+                return this.networkService.getComplaints();
+            } else if (this.complaintListType === 'RELEVANT') {
+                this.$log.info('Using RELEVANT complaints');
+                return this.networkService.getComplaints();
+            }
         }
 
         toUTCDate (date) {

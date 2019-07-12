@@ -6,6 +6,8 @@ export const SurveillanceComplaintComponent = {
         complaintStatusTypes: '<',
         certificationBodies: '<',
         criteria: '<',
+        displayHeader: '<',
+        displayAdd: '<',
         editions: '<',
         errorMessages: '<',
         listings: '<',

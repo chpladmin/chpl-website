@@ -3,19 +3,20 @@ export const SurveillanceReportRelevantListingComponent = {
     bindings: {
         listing: '<',
         onSave: '&',
+        onCancel: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
         constructor ($log, authService) {
             'ngInject'
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
-            this.backup = {};
+            //this.backup = {};
         }
 
         $onChanges (changes) {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
-                this.backup.listing = angular.copy(this.listing);
+                //this.backup.listing = angular.copy(this.listing);
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
@@ -23,15 +24,14 @@ export const SurveillanceReportRelevantListingComponent = {
         }
 
         save () {
-            if (!this.listing.excluded) {
-                this.listing.reason = undefined;
-            }
+            this.listing.excluded = true;
             this.onSave({listing: this.listing});
         }
 
         cancel () {
-            this.listing = angular.copy(this.backup.listing);
-            this.isEditing = false;
+            if (this.onCancel) {
+                this.onCancel();
+            }
         }
 
         edit () {

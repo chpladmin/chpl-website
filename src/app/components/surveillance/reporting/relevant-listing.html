@@ -1,4 +1,23 @@
-<div id="chpl-report" ng-form="$ctrl.form" class="form-horizontal">
+<div ng-form="$ctrl.form" class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label" for="reason-for-exclusion">Reason for exclusion </label>
+    <div>
+      <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion"
+        ng-model="$ctrl.listing.reason" required></input>
+      <div class="text-danger"
+        ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">
+        Reason is required
+      </div>
+    </div>
+  </div>
+  <div class="pull-right">
+    <button class="btn " ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+      ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()">
+      Exclude Listing
+    </button>
+    <button class="btn btn-link" ng-click="$ctrl.cancel()">Cancel</button>
+  </div>
+  <!--
   <div class="panel panel-default">
     <div class="panel-heading">
       <span class="pull-right">
@@ -46,4 +65,6 @@
       </span>
     </div>
   </div>
+  -->
 </div>
+
