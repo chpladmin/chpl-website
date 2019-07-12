@@ -38,7 +38,9 @@
             </div>
           </div>
           <div class="panel-body" uib-collapse="$ctrl.areListingsCollapsed">
-            <chpl-surveillance-report-relevant-listings listings="$ctrl.report.relevantListings">
+            <chpl-surveillance-report-relevant-listings
+              listings="$ctrl.report.relevantListings"
+              on-save="$ctrl.saveRelevantListing(listing)">
             </chpl-surveillance-report-relevant-listings>
           </div>
         </div>

@@ -15,7 +15,6 @@ export const SurveillanceReportQuarterComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
-            this.complaintList = 'RELEVANT';
             this.areComplaintsCollapsed = true;
             this.areListingsCollapsed = true;
         }
@@ -28,8 +27,6 @@ export const SurveillanceReportQuarterComponent = {
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
             }
-            this.$log.info('Report object in Quarter');
-            this.$log.info(this.report);
         }
 
         save () {

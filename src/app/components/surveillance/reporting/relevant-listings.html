@@ -6,10 +6,10 @@
           <table class="table table-condensed">
             <thead>
               <tr>
-                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">CHPL Product Number</th>
-                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">Certification Edition</th>
-                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">Certification Date</th>
-                <th scope="col" class="search-header" st-sort="" st-skip-natural="true">Last Modified Date</th>
+                <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+                <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
+                <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+                <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -34,17 +34,6 @@
                   <button class="btn btn-link" title="Undo Exclude" ng-click="$ctrl.undoExcludedListing(listing)" ng-if="listing.excluded">
                     <i class="fa fa-undo"></i><span class="sr-only">Undo exclude</span>
                   </button>
-                  <!--
-                  <button class="btn btn-danger btn-link" title="Delete Complaint"
-                      ng-click="$ctrl.deleteComplaint(complaint)"
-                      confirm="Are you sure you wish to delete this complaint?"
-                      confirm-ok="Delete Complaint" confirm-cancel="Cancel"
-                      confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
-                      <span class="text-danger"><i class="fa fa-trash"></i><span class="sr-only">
-                              Delete</span></span>
-                  </button>
-                  --->
-
                 </td>
                 <td ng-if="$ctrl.listingBeingEdited === listing.id" colspan="4">
                   <div>
