@@ -31,10 +31,11 @@
     <label class="control-label" for="received-date">Received Date<span class="text-danger">*</span></label>
     <div>
       <div class="input-group" >
-        <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
+        <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate "
           name="receivedDate" id="received-date" placeholder="MM/dd/yyyy"
           ng-required="$ctrl.isOn('complaints-ui-validation')"
           uib-datepicker-popup="MM/dd/yyyy"
+          popup-placement="bottom-left"
           is-open="$ctrl.receivedDatePicker"
           close-text="Close" ></input>
         <div class="input-group-btn">
@@ -52,6 +53,7 @@
         <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedClosedDate"
           name="closedDate" id="closed-date" placeholder="MM/dd/yyyy"
           uib-datepicker-popup="MM/dd/yyyy"
+          popup-placement="bottom-left"
           is-open="$ctrl.closedDatePicker" close-text="Close"></input>
         <div class="input-group-btn">
           <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.closedDatePicker = true"><i class="fa fa-calendar"></i></button>
