@@ -88,8 +88,6 @@ export const SurveillanceComplaintComponent = {
         }
 
         saveComplaint (complaint) {
-            this.$log.info(this.complaint.formattedReceivedDate);
-            this.$log.info(this.complaint.formattedClosedDate);
             if (this.onSave) {
                 this.onSave({complaint: complaint});
             }

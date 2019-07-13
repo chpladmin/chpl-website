@@ -52,20 +52,12 @@ export const SurveillanceComplaintsComponent = {
         }
 
         saveComplaint (complaint) {
-            this.$log.info('In complaints.saveComplaint()');
-            this.$log.info(complaint.formattedReceivedDate);
-            this.$log.info(complaint.formattedClosedDate);
-
             complaint.receivedDate = complaint.formattedReceivedDate.getTime();
             if (complaint.formattedClosedDate) {
                 complaint.closedDate = complaint.formattedClosedDate.getTime();
             } else {
                 complaint.closedDate = null;
             }
-
-            this.$log.info(complaint.receivedDate);
-            this.$log.info(complaint.closedDate);
-
             if (complaint.id) {
                 this.updateComplaint(complaint);
             } else {
