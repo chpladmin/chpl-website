@@ -109,6 +109,8 @@ export const SurveillanceReportingComponent = {
                     if (promises && promises.length > 0) {
                         this.$q.all(promises)
                             .then(() => that.activeQuarterReport = report);
+                    } else {
+                        this.activeQuarterReport = report;
                     }
                 }
             } else {
@@ -192,23 +194,29 @@ export const SurveillanceReportingComponent = {
         saveQuarter (report) {
             let that = this;
             if (this.mode === 'initiateQuarter') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.networkService.getRelevantListings(results)
-                        .then(listings => {
-                            results.relevantListings = listings;
-                            that.activeQuarterReport = results;
-                        });
+                this.networkService.createQuarterlySurveillanceReport(report).then(result => {
+                    let promises = [
+                        this.networkService.getRelevantListings(result)
+                            .then(listings => result.relevantListings = listings),
+                        this.networkService.getRelevantComplaints(result)
+                            .then(complaints => result.relevantComplaints = complaints),
+                    ];
+                    this.$q.all(promises)
+                        .then(() => that.activeQuarterReport = result);
                     that.networkService.getQuarterlySurveillanceReports().then(results => {
                         that.quarters = results;
                     });
                 });
             } else {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.networkService.getRelevantListings(results)
-                        .then(listings => {
-                            results.relevantListings = listings;
-                            that.activeQuarterReport = results;
-                        });
+                this.networkService.updateQuarterlySurveillanceReport(report).then(result => {
+                    let promises = [
+                        this.networkService.getRelevantListings(result)
+                            .then(listings => result.relevantListings = listings),
+                        this.networkService.getRelevantComplaints(result)
+                            .then(complaints => result.relevantComplaints = complaints),
+                    ];
+                    this.$q.all(promises)
+                        .then(() => that.activeQuarterReport = result);
                     that.networkService.getQuarterlySurveillanceReports().then(results => {
                         that.quarters = results;
                     });
