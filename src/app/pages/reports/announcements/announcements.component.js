@@ -2,7 +2,7 @@ export const ReportsAnnouncementsComponent = {
     templateUrl: 'chpl.reports/announcements/announcements.html',
     bindings: { },
     controller: class ReportsAnnouncementsComponent {
-        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+        constructor ($filter, $log, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
