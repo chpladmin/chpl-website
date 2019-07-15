@@ -27,6 +27,7 @@ export const SurveillanceComplaintsComponent = {
             this.refreshListings();
             this.refreshEditions();
             this.refreshCriteria();
+            this.refreshSurveillances();
         }
 
         deleteComplaint (complaint) {
@@ -40,16 +41,22 @@ export const SurveillanceComplaintsComponent = {
         }
 
         selectComplaint (complaint) {
-            //this.refreshSurveillances(complaint);
+            this.refreshSurveillances(complaint);
             this.clearErrorMessages();
             this.isEditing = true;
             this.complaint = complaint;
         }
 
+        selectListing (complaint) {
+            this.refreshSurveillances(complaint);
+        }
+
         saveComplaint (complaint) {
-            if (complaint.formattedReceivedDate) {
-                let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
-                complaint.receivedDate = utcReceievedDate.getTime();
+            complaint.receivedDate = complaint.formattedReceivedDate.getTime();
+            if (complaint.formattedClosedDate) {
+                complaint.closedDate = complaint.formattedClosedDate.getTime();
+            } else {
+                complaint.closedDate = null;
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);
@@ -110,13 +117,13 @@ export const SurveillanceComplaintsComponent = {
                     } else {
                         complaint.formattedReceivedDate = null;
                     }
+                    if (complaint.closedDate) {
+                        complaint.formattedClosedDate = new Date(complaint.closedDate);
+                    } else {
+                        complaint.formattedClosedDate = null;
+                    }
                 });
             });
-        }
-
-        toUTCDate (date) {
-            let _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-            return _utc;
         }
 
         refreshComplainantTypes () {
@@ -165,7 +172,7 @@ export const SurveillanceComplaintsComponent = {
         refreshSurveillances (complaint) {
             let that = this;
             this.surveillances = [];
-            if (Array.isArray(complaint.listings)) {
+            if (complaint && Array.isArray(complaint.listings)) {
                 complaint.listings.forEach(listing => {
                     this.networkService.getListingBasic(listing.listingId).then(response => {
                         if (Array.isArray(response.surveillance)) {

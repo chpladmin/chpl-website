@@ -124,8 +124,9 @@
     <div class="form-group">
       <label class="control-label" for="received-date">Received Date <span class="text-danger">*</span></label>
       <div>
-        <div class="input-group" ng-model-options="{ timezone: 'UTC' }">
+        <div class="input-group">
           <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
+                 ng-model-options="{timezone: 'UTC'}"
                  name="receivedDate" id="received-date" placeholder="MM/dd/yyyy"
                  ng-required="$ctrl.isOn('complaints-ui-validation')"
                  uib-datepicker-popup="MM/dd/yyyy"
@@ -137,6 +138,23 @@
         </div>
         <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
         <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="closed-date">Closed Date</label>
+      <div>
+        <div class="input-group" >
+          <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedClosedDate"
+                 name="closedDate" id="closed-date" placeholder="MM/dd/yyyy"
+                 ng-model-options="{ timezone: 'UTC' }"
+                 uib-datepicker-popup="MM/dd/yyyy"
+                 popup-placement="bottom-left"
+                 is-open="$ctrl.closedDatePicker" close-text="Close"></input>
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.closedDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </div>
+        </div>
+        <div class="text-danger" ng-if="$ctrl.form.closedDate.$touched && $ctrl.form.closedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">

@@ -5,47 +5,36 @@
     </div>
   </div>
   <div class="main-content row" id="main-content" tabindex="-1">
-    <span ng-if="$ctrl.activeOrg">
-      <div class="row">
-        <div ng-class="$ctrl.canEdit($ctrl.activeOrg) ? 'col-sm-6' : 'col-sm-6 col-sm-offset-3'">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <chpl-onc-organization organization="$ctrl.activeOrg" type="{{ $ctrl.type }}" can-edit="$ctrl.canEdit($ctrl.activeOrg)" is-active="true" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+    <div class="row">
+      <div class="col-md-3">
+        <div ng-repeat="org in $ctrl.allOrgs">
+          <div class="pull-right">
+            <span class="badge" ng-if="org.retired">Retired</span>
+            <span ng-if="org.id === $ctrl.activeOrg.id && !$ctrl.isCreating"><i class="fa fa-caret-right"></i></span>
+          </div>
+          <button type="button" class="btn btn-link" ng-click="$ctrl.showOrg(org)">{{ org.name }}</button>
+        </div>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isCreating">Create</button>
+      </div>
+      <div class="col-md-9" ng-if="$ctrl.isCreating">
+        <chpl-onc-organization type="{{ $ctrl.type }}" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+      </div>
+      <div class="col-md-9" ng-if="$ctrl.activeOrg && !$ctrl.isCreating">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <chpl-onc-organization organization="$ctrl.activeOrg" type="{{ $ctrl.type }}" can-edit="$ctrl.canEdit($ctrl.activeOrg)" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+              </div>
             </div>
           </div>
         </div>
-        <div ng-if="$ctrl.canEdit($ctrl.activeOrg)" class="col-sm-6">
-          <chpl-users column-count="1" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
-        </div>
-      </div>
-    </span>
-    <span ng-if="!$ctrl.activeOrg">
-      <div class="row" ng-repeat="idx in $ctrl.range($ctrl.allOrgs.length, $ctrl.columnCount)" ng-if="!$ctrl.isCreating">
-        <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
-          <div class="panel panel-default" ng-if="$ctrl.allOrgs[idx + col]">
-            <div class="panel-body">
-              <chpl-onc-organization organization="$ctrl.allOrgs[idx + col]" type="{{ $ctrl.type }}" can-edit="$ctrl.canEdit($ctrl.allOrgs[idx + col])" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
-            </div>
+        <div class="row" ng-if="$ctrl.canEdit($ctrl.activeOrg)">
+          <div class="col-md-12">
+            <chpl-users column-count="2" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
           </div>
         </div>
       </div>
-      <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
-        <div ng-class="$ctrl.isCreating ? 'col-sm-6 col-sm-offset-3' : 'col-sm-6'">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h2 class="panel-title">Create an {{ $ctrl.type }}</h2>
-            </div>
-            <div class="panel-body">
-              <span ng-if="$ctrl.isCreating">
-                <chpl-onc-organization type="{{ $ctrl.type }}" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
-              </span>
-              <span ng-if="!$ctrl.isCreating">
-                <button type="button" class="btn btn-default" ng-click="$ctrl.isCreating = true; $ctrl.anchorScroll()">Create</button>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </span>
+    </div>
   </div>
 </div>

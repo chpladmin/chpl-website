@@ -3,8 +3,6 @@
     <span ng-if="!$ctrl.isEditing">
       <h1>{{ $ctrl.organization.name }}</h1>
       <span class="pull-right">
-        <button class="btn btn-link btn-small" id="chpl-organization-cancel-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="$ctrl.isActive && !$ctrl.isEditing" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Close {{ $ctrl.type }} {{ $ctrl.organization.name }}</span></button>
-        <button class="btn btn-link btn-small" id="chpl-organization-view-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="!$ctrl.isActive && !$ctrl.isEditing" ng-click="$ctrl.view()"><i class="fa fa-eye"></i><span class="sr-only"> View {{ $ctrl.type }} {{ $ctrl.organization.name }}</span></button>
         <button class="btn btn-link btn-small" id="chpl-organization-edit-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit {{ $ctrl.type }} {{ $ctrl.organization.name }}</span></button>
       </span>
       <p><strong>{{ $ctrl.type }} Code: {{ $ctrl.getCode() }}</strong></p>

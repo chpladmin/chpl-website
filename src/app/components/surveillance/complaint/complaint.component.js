@@ -14,22 +14,27 @@ export const SurveillanceComplaintComponent = {
         onCancel: '&?',
         onSave: '&?',
         onDelete: '&?',
+        onListingSelected: '&?',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService, featureFlags, utilService) {
+        constructor ($filter, $log, authService, featureFlags, toaster, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.isOn = featureFlags.isOn;
             this.hasAnyRole = authService.hasAnyRole;
             this.edition = {};
+            this.sortCert = utilService.sortCert;
             this.sortCertActual = utilService.sortCertActual;
+            this.toaster = toaster;
         }
 
         $onChanges (changes) {
             if (changes.complaint) {
                 this.complaint = angular.copy(changes.complaint.currentValue);
                 this.sortCertifications(this.complaint);
+                this.$log.info(this.complaint.receivedDate);
+                this.$log.info(this.complaint.closedDate);
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -91,15 +96,35 @@ export const SurveillanceComplaintComponent = {
             if (!Array.isArray(this.complaint.listings)) {
                 this.complaint.listings = [];
             }
-            this.complaint.listings.push({
-                listingId: $item.id,
-                chplProductNumber: $item.chplProductNumber,
-            });
+            if (!this.isListingAlreadyAssociatedToComplaint($item)) {
+                this.complaint.listings.push({
+                    listingId: $item.id,
+                    chplProductNumber: $item.chplProductNumber,
+                });
+                if (this.onListingSelected) {
+                    this.onListingSelected({ complaint: this.complaint });
+                }
+            } else {
+                this.toaster.pop({
+                    type: 'warning',
+                    body: $item.chplProductNumber + ' already exists',
+                });
+            }
             this.listing = '';
+        }
+
+        isListingAlreadyAssociatedToComplaint (listing) {
+            let found = this.complaint.listings.find(item => item.chplProductNumber === listing.chplProductNumber);
+            return found !== undefined;
         }
 
         removeListing (listingToRemove) {
             this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
+        }
+
+        disableListing (listing) {
+            this.$log.info(listing);
+            return true;
         }
 
         startsWith (valueToCheck, viewValue) {
@@ -133,16 +158,28 @@ export const SurveillanceComplaintComponent = {
             if (!Array.isArray(this.complaint.criteria)) {
                 this.complaint.criteria = [];
             }
-            this.complaint.criteria.push({
-                complaintId: this.complaint.id,
-                certificationCriterion: this.criterion,
-            });
-            this.sortCertifications(this.complaint);
+            if (!this.isCriterionAlreadyAssociatedToComplaint(this.criterion)) {
+                this.complaint.criteria.push({
+                    complaintId: this.complaint.id,
+                    certificationCriterion: this.criterion,
+                });
+                this.sortCertifications(this.complaint);
+            } else {
+                this.toaster.pop({
+                    type: 'warning',
+                    body: this.criterion.number + ' already exists',
+                });
+            }
             this.criterion = {};
         }
 
+        isCriterionAlreadyAssociatedToComplaint (criterion) {
+            let found = this.complaint.criteria.find(item => item.certificationCriterion.number === criterion.number);
+            return found !== undefined;
+        }
+
         removeCriterion (criterionToRemove) {
-            this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterionId !== criterionToRemove.certificationCriterionId);
+            this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterion.id !== criterionToRemove.certificationCriterion.id);
         }
 
         sortCertifications (complaint) {
@@ -157,11 +194,23 @@ export const SurveillanceComplaintComponent = {
             if (!Array.isArray(this.complaint.surveillances)) {
                 this.complaint.surveillances = [];
             }
-            this.complaint.surveillances.push({
-                complaintId: this.complaint.id,
-                surveillance: this.surveillance,
-            });
+            if (!this.isSurveillanceAlreadyAssociatedToComplaint(this.surveillance)) {
+                this.complaint.surveillances.push({
+                    complaintId: this.complaint.id,
+                    surveillance: this.surveillance,
+                });
+            } else {
+                this.toaster.pop({
+                    type: 'warning',
+                    body: this.surveillance.friendlyId + ' already exists',
+                });
+            }
             this.surveillance = {};
+        }
+
+        isSurveillanceAlreadyAssociatedToComplaint (surveillance) {
+            let found = this.complaint.surveillances.find(item => item.surveillance.id === surveillance.id);
+            return found !== undefined;
         }
 
         removeSurveillance (surveillanceToRemove) {

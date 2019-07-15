@@ -33,7 +33,7 @@
                     <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" ><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
                   </td>
                 </tr>
               </tbody>
@@ -54,7 +54,8 @@
              surveillances="$ctrl.surveillances"
              on-delete="$ctrl.deleteComplaint(complaint)"
              on-save="$ctrl.saveComplaint(complaint)"
-             on-cancel="$ctrl.cancelEdit()">
+             on-cancel="$ctrl.cancelEdit()"
+             on-listing-selected="$ctrl.selectListing(complaint)">
           </chpl-surveillance-complaint>
         </div>
       </div>
