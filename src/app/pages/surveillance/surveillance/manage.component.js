@@ -92,6 +92,7 @@ export const SurveillanceManagementComponent = {
         load (listing) {
             this.tabs.push({
                 id: listing.id,
+                product: listing.product,
                 chplProductNumber: listing.chplProductNumber,
             });
             let that = this;
