@@ -79,15 +79,16 @@
     </div>
     <div class="col-sm-4">
       <h3>Relevant Listings</h3>
+      <p ng-if="!$ctrl.report.relevantListings || $ctrl.report.relevantListings.length === 0">No relevant Listings for this quarter</p>
       <div ng-repeat="listing in $ctrl.report.relevantListings | orderBy : 'chplProductNumber'">
         <chpl-surveillance-report-relevant-listing listing="listing" on-save="$ctrl.saveRelevantListing(listing)"></chpl-surveillance-report-relevant-listing>
       </div>
     </div>
     <div class="col-sm-4">
       <h3>Relevant Complaints</h3>
+      <p ng-if="!$ctrl.report.relevantComplaints || $ctrl.report.relevantComplaints.length === 0">No relevant Complaints for this quarter</p>
       <div ng-repeat="complaint in $ctrl.report.relevantComplaints | orderBy : 'id'">
-        <chpl-surveillance-complaint
-           complaint="complaint">
+        <chpl-surveillance-complaint complaint="complaint">
         </chpl-surveillance-complaint>
       </div>
     </div>

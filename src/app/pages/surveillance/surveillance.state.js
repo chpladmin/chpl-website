@@ -25,10 +25,6 @@ let states = {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceQuarters();
                 },
-                complaints: networkService => {
-                    'ngInject'
-                    return networkService.getComplaints();
-                },
                 quarters: networkService => {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReports();
