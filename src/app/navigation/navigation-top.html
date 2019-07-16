@@ -80,7 +80,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance" ng-click="vm.adminNavCollapsed = true">Confirm Surveillance</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement" ng-click="vm.adminNavCollapsed = true">Fuzzy Matching</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.scheduled" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.scheduled')"></i>Scheduled Jobs</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement" ng-click="vm.adminNavCollapsed = true">Background Jobs</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.background" ng-click="vm.adminNavCollapsed = true"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.background')"></i>Background Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement" ng-click="vm.adminNavCollapsed = true">CMS</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement" ng-click="vm.adminNavCollapsed = true">API Key Management</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement" ng-click="vm.adminNavCollapsed = true">API Documentation Management</a></li>
