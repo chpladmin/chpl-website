@@ -30,7 +30,7 @@ let getResources = ($q, networkService) => {
             .then(response => ({ targetedUsers: response })),
     ];
     return $q.all(promises)
-        .then(response => response[0]);
+        .then(response => response);
 }
 
 function administrationStateConfig ($stateProvider) {
