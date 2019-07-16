@@ -1,7 +1,7 @@
 .quarter-report-wrapper {
 
     label {
-        color: #888888;
+        color: #303030;
         font-weight: normal;
     }
 
@@ -44,5 +44,13 @@
 
     .badge-error:hover {
         background-color: #953b39;
+    }
+
+    .badge-success {
+        background-color: #468847;
+    }
+
+    .badge-success:hover {
+        background-color: #356635;
     }
 }

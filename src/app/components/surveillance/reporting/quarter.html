@@ -28,6 +28,13 @@
           <label class="control-label" for="transparency-disclosure">Transparency Disclosure Summary</label>
           <textarea class="form-control" id="transparency-disclosure" name="transparencyDisclosure" ng-model="$ctrl.report.transparencyDisclosureSummary"></textarea>
         </div>
+        <div class="clearfix">
+          <div class="pull-right">
+            <button class="btn" id="quarterly-surveillance-save" ng-click="$ctrl.save()">Save Quarterly Report </button>
+            <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
+          </div>
+        </div>
+        <hr />
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-title">
@@ -38,12 +45,12 @@
             </div>
           </div>
           <div class="panel-body" uib-collapse="$ctrl.areListingsCollapsed">
-            <chpl-surveillance-report-relevant-listings
-              listings="$ctrl.report.relevantListings"
+            <chpl-surveillance-report-relevant-listings listings="$ctrl.report.relevantListings"
               on-save="$ctrl.saveRelevantListing(listing)">
             </chpl-surveillance-report-relevant-listings>
           </div>
         </div>
+        <hr />
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-title">
@@ -60,10 +67,6 @@
                 display-header="false">
             </chpl-surveillance-complaints>
           </div>
-        </div>
-        <div class="pull-right">
-          <button class="btn" id="quarterly-surveillance-save" ng-click="$ctrl.save()">Save Quarterly Report </button>
-          <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
         </div>
         <!--
           <button class="btn btn-danger btn-small" id="quarterly-suveillance-delete"
