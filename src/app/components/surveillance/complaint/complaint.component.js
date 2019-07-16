@@ -224,7 +224,12 @@ export const SurveillanceComplaintComponent = {
         }
 
         removeSurveillance (surveillanceToRemove) {
-            this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillanceId !== surveillanceToRemove.surveillanceId);
+            this.$log.info('Surveillances');
+            this.$log.info(this.complaint.surveillances);
+            this.$log.info('SurveillanceToRemove');
+            this.$log.info(surveillanceToRemove);
+
+            this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillance.id !== surveillanceToRemove.surveillance.id);
         }
     },
 }
