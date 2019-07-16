@@ -6,8 +6,8 @@
 
         mock = {
             jobs: [
-                {id: 1, type: { name: 'a name'}, user: { fullName: 'Bob'}, status: { percentComplete: 40 }},
-                {id: 2, type: { name: 'a name'}, user: { fullName: 'Bob'}, status: { percentComplete: 40 }},
+                {id: 1, type: { name: 'a name'}, user: { fullName: 'Bob'}},
+                {id: 2, type: { name: 'a name'}, user: { fullName: 'Bob'}},
             ],
         };
 

@@ -14,7 +14,6 @@ export const JobsBackgroundJobsComponent = {
                 this.jobs = changes.jobs.currentValue.map(job => {
                     job.jobName = job.type.name;
                     job.fullName = job.user.fullName;
-                    job.complete = job.status.percentComplete;
                     return job;
                 });
             }
