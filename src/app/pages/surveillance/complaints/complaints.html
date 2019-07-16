@@ -33,7 +33,7 @@
                     <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" ><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                    <button class="btn btn-primary" ng-click="$ctrl.selectComplaint(complaint)" uib-tooltip="Edit Complaint" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
                   </td>
                 </tr>
               </tbody>
