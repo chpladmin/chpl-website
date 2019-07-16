@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <div class="col-md-12">
+      <h2>Fuzzy Matching Management</h2>
+      <span ng-repeat="fuzz in $ctrl.fuzzy">
+        <span ng-show="fuzz.id === $ctrl.activeFuzz.id">
+          <chpl-fuzzy-matching fuzzy="fuzz" take-action="$ctrl.takeAction(data, action)"></chpl-fuzzy-matching>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
