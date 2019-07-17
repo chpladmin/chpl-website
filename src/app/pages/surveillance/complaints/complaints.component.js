@@ -74,16 +74,11 @@ export const SurveillanceComplaintsComponent = {
         }
 
         saveComplaint (complaint) {
-            if (complaint.formattedReceivedDate) {
-                let utcReceievedDate = this.toUTCDate(complaint.formattedReceivedDate);
-                complaint.receivedDate = utcReceievedDate.getTime();
-
-                if (complaint.formattedClosedDate) {
-                    let utcClosedDate = this.toUTCDate(complaint.formattedClosedDate);
-                    complaint.closedDate = utcClosedDate.getTime();
-                } else {
-                    complaint.closedDate = null;
-                }
+            complaint.receivedDate = complaint.formattedReceivedDate.getTime();
+            if (complaint.formattedClosedDate) {
+                complaint.closedDate = complaint.formattedClosedDate.getTime();
+            } else {
+                complaint.closedDate = null;
             }
             if (complaint.id) {
                 this.updateComplaint(complaint);

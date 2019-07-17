@@ -6,12 +6,13 @@ export const ListingHistoryComponent = {
         dismiss: '&',
     },
     controller: class ListingHistoryComponent {
-        constructor ($filter, $location, $log, $q, featureFlags, networkService, utilService) {
+        constructor ($filter, $log, $q, $state, featureFlags, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
-            this.$location = $location;
-            this.$q = $q;
             this.$log = $log;
+            this.$q = $q;
+            this.$state = $state;
+            this.hasAnyRole = authService.hasAnyRole;
             this.featureFlags = featureFlags;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -77,7 +78,14 @@ export const ListingHistoryComponent = {
         }
 
         goToApi () {
-            this.$location.path('/resources/chpl-api');
+            this.$state.go('resources.chpl_api');
+            this.cancel();
+        }
+
+        goToHistory () {
+            this.$state.go('reports.listings', {
+                productId: this.listing.id,
+            });
             this.cancel();
         }
 

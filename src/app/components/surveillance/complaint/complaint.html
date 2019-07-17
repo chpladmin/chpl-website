@@ -45,8 +45,10 @@
       <div class="input-group" >
         <input type="text" class="form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
           name="receivedDate" id="received-date" placeholder="MM/dd/yyyy"
+          ng-model-options="{timezone: 'UTC'}"
           ng-required="$ctrl.isOn('complaints-ui-validation')"
           uib-datepicker-popup="MM/dd/yyyy"
+          popup-placement="bottom-left"
           is-open="$ctrl.receivedDatePicker"
           close-text="Close" ></input>
         <div class="input-group-btn">
@@ -63,7 +65,9 @@
       <div class="input-group" >
         <input type="text" class="form-control" ng-model="$ctrl.complaint.formattedClosedDate"
           name="closedDate" id="closed-date" placeholder="MM/dd/yyyy"
+          ng-model-options="{ timezone: 'UTC' }"
           uib-datepicker-popup="MM/dd/yyyy"
+          popup-placement="bottom-left"
           is-open="$ctrl.closedDatePicker" close-text="Close"></input>
         <div class="input-group-btn">
           <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.closedDatePicker = true"><i class="fa fa-calendar"></i></button>

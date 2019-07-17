@@ -22,12 +22,20 @@ export const ConfirmListingsComponent = {
             });
         }
 
-        $onChange (changes) {
+        $onChanges (changes) {
             if (changes.developers) {
                 this.developers = angular.copy(changes.developers.currentValue);
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
+                if (Array.isArray(this.resources)) {
+                    let resObj = {};
+                    this.resources.forEach(item => {
+                        Object.assign(resObj, item);
+                    });
+                    this.resources = resObj;
+                    this.$log.info(this.resources);
+                }
             }
         }
 

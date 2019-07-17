@@ -44,6 +44,8 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
                 this.sortCertifications(this.complaint);
+                this.$log.info(this.complaint.receivedDate);
+                this.$log.info(this.complaint.closedDate);
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);

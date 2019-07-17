@@ -2,7 +2,7 @@ export const ReportsAnnouncementsComponent = {
     templateUrl: 'chpl.reports/announcements/announcements.html',
     bindings: { },
     controller: class ReportsAnnouncementsComponent {
-        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+        constructor ($filter, $log, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
@@ -99,14 +99,15 @@ export const ReportsAnnouncementsComponent = {
             let action = '<ul>';
             action += this.getActionDescriptionIfChanged(detail, 'title', 'Title');
             action += this.getActionDescriptionIfChanged(detail, 'text', 'Text');
-            action += this.getActionDescriptionIfChanged(detail, 'startDate', 'Start Date');
-            action += this.getActionDescriptionIfChanged(detail, 'endDate', 'End Date');
+            action += this.getActionDescriptionIfChanged(detail, 'startDate', 'Start Date', 'date');
+            action += this.getActionDescriptionIfChanged(detail, 'endDate', 'End Date', 'date');
+            action += this.getActionDescriptionIfChanged(detail, 'isPublic', 'Public');
             action += '</ul>';
             return action;
         }
 
-        getActionDescriptionIfChanged (detailObject, key, display) {
-            let change = this.ReportService.compareItem(detailObject.originalData, detailObject.newData, key, display);
+        getActionDescriptionIfChanged (detailObject, key, display, filter) {
+            let change = this.ReportService.compareItem(detailObject.originalData, detailObject.newData, key, display, filter);
             if (change) {
                 change = '<li>' + change + '</li>';
             } else {
