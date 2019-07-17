@@ -1,8 +1,10 @@
 export const SurveillanceComplaintsComponent = {
     templateUrl: 'chpl.surveillance/complaints/complaints.html',
     bindings: {
+        displayAdd: '<',
         displayHeader: '<',
         complaintListType: '@?',
+        quarterlyReport: '<',
     },
     controller: class SurveillanceComplaintsComponent {
         constructor ($log, authService, networkService) {
@@ -24,17 +26,16 @@ export const SurveillanceComplaintsComponent = {
         }
 
         $onInit () {
-            this.refreshComplaints();
             this.refreshComplainantTypes();
             this.refreshComplaintStatusTypes();
             this.refreshCertificationBodies();
             this.refreshListings();
             this.refreshEditions();
             this.refreshCriteria();
-            this.refreshSurveillances();
         }
 
         $onChanges (changes) {
+            this.$log.info(changes);
             if (changes.complaintListType !== undefined && changes.complaintListType.currentValue === '') {
                 this.complaintListType = 'ALL';
             }
@@ -44,6 +45,11 @@ export const SurveillanceComplaintsComponent = {
             if (changes.displayHeader !== undefined && changes.displayHeader.currentValue === undefined) {
                 this.displayHeader = true;
             }
+            if (changes.quarterlyReport !== undefined && changes.quarterlyReport.currentValue) {
+                this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
+                this.$log.info(this.quarterlyReport);
+            }
+            this.refreshComplaints();
         }
 
         deleteComplaint (complaint) {
@@ -153,11 +159,11 @@ export const SurveillanceComplaintsComponent = {
 
         getComplaintsPromise () {
             if (this.complaintListType === 'ALL') {
-                this.$log.info('Using ALL complaints');
                 return this.networkService.getComplaints();
             } else if (this.complaintListType === 'RELEVANT') {
-                this.$log.info('Using RELEVANT complaints');
-                return this.networkService.getComplaints();
+                this.$log.info('this.quarterlyReportId');
+                this.$log.info(this.quarterlyReport);
+                return this.networkService.getRelevantComplaints(this.quarterlyReport);
             }
         }
 

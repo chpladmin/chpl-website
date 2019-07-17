@@ -45,12 +45,6 @@ export const SurveillanceReportRelevantListingsComponent = {
             }
             this.safeListings = angular.copy(this.listings);
         }
-
-        save (listing) {
-            if (this.onSave) {
-                this.onSave({listing: listing});
-            }
-        }
     },
 }
 

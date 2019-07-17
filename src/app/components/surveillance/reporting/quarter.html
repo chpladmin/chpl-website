@@ -63,29 +63,13 @@
           <div class="panel-body" uib-collapse="$ctrl.areComplaintsCollapsed">
             <chpl-surveillance-complaints
                 complaint-list-type="RELEVANT"
+                quarterly-report="$ctrl.report"
                 display-add="false"
                 display-header="false">
             </chpl-surveillance-complaints>
           </div>
         </div>
-        <!--
-          <button class="btn btn-danger btn-small" id="quarterly-suveillance-delete"
-                confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
-                confirm-ok="Yes"
-                confirm-cancel="No"
-                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                ng-if="$ctrl.report.id"
-                ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
-        -->
       </div>
     </div>
   </div>
 </div>
-    <!--
-    <div class="col-sm-6">
-      <div ng-repeat="listing in $ctrl.report.relevantListings | orderBy : 'chplProductNumber'">
-        <chpl-surveillance-report-relevant-listing listing="listing" on-save="$ctrl.saveRelevantListing(listing)"></chpl-surveillance-report-relevant-listing>
-      </div>
-    </div>
-  </div>
-    -->

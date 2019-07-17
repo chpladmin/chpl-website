@@ -440,6 +440,10 @@ export class NetworkService {
         return this.apiGET('/products/' + productId + '/listings');
     }
 
+    getRelevantComplaints (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/complaints');
+    }
+
     getRelevantListings (report) {
         return this.apiGET('/surveillance-report/quarterly/' + report.id + '/listings');
     }
