@@ -331,8 +331,8 @@ export class NetworkService {
         return this.apiGET('/data/filter_types');
     }
 
-    getFuzzyTypes () {
-        return this.apiGET('/data/fuzzy_choices');
+    getFuzzyTypes (forceReload) {
+        return this.apiGET('/data/fuzzy_choices', forceReload);
     }
 
     getIncumbentDevelopersStatistics () {
