@@ -77,6 +77,17 @@ function administrationStateConfig ($stateProvider) {
             url: '/jobs',
             template: '<ui-view/></div>',
         })
+        .state('administration.jobs.background', {
+            url: '/background',
+            component: 'chplJobsBackgroundPage',
+            resolve: {
+                types: networkService => {
+                    'ngInject'
+                    return networkService.getJobTypes();
+                },
+            },
+            data: { title: 'CHPL Administration - Jobs - Background' },
+        })
         .state('administration.jobs.scheduled', {
             url: '/scheduled',
             component: 'chplJobsScheduledPage',
