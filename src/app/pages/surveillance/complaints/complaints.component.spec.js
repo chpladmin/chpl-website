@@ -23,13 +23,6 @@
             { id: 2, name: 'SLI' },
         ];
 
-        let complaints = {
-            results: [
-                { id: 1, receivedDate: 1490631434315 },
-                { id: 2, receivedDate: 1490631434315 },
-            ],
-        };
-
         let allCps = [
             { id: 296, chplProductNumber: 'CHP-022218', acb: 'UL LLC' },
             { id: 4708, chplProductNumber: 'CHP-022844', acb: 'Drummond Group' },
@@ -68,6 +61,55 @@
             ],
         };
 
+        let allComplaints = {
+            results: [
+                {
+                    id: 52,
+                    certificationBody: {
+                        id: 3,
+                        acbCode: '04',
+                        name: 'Drummond Group',
+                        website: 'http://www.drummondgroup.com',
+                        address: {
+                            addressId: 2,
+                            line1: '13359 North Hwy. 183',
+                            line2: 'Suite B 406-238',
+                            city: 'Austin',
+                            state: 'Texas',
+                            zipcode: '78750',
+                            country: 'USA',
+                        },
+                        retired: false,
+                        retirementDate: null,
+                    },
+                    complainantType: {
+                        id: 4,
+                        name: 'Government Entity',
+                        description: null,
+                    },
+                    complainantTypeOther: null,
+                    complaintStatusType: {
+                        id: 1,
+                        name: 'Open',
+                        description: null,
+                    },
+                    oncComplaintId: null,
+                    acbComplaintId: '456654',
+                    receivedDate: 1562630400000,
+                    summary: 'test',
+                    actions: null,
+                    complainantContacted: false,
+                    developerContacted: false,
+                    oncAtlContacted: false,
+                    flagForOncReview: false,
+                    closedDate: null,
+                    listings: [],
+                    criteria: [],
+                    surveillances: [],
+                },
+            ],
+        };
+
         let editions = [
             { id: 3, name: '2015', description: null },
             { id: 2, name: '2014', description: null },
@@ -87,7 +129,6 @@
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.getComplaints = jasmine.createSpy('getComplaints');
                     $delegate.getComplainantTypes = jasmine.createSpy('getComplainantTypes');
                     $delegate.getComplaintStatusTypes = jasmine.createSpy('getComplaintStatusTypes');
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
@@ -98,6 +139,7 @@
                     $delegate.getEditions = jasmine.createSpy('getEditions');
                     $delegate.getCriteria = jasmine.createSpy('getCriteria');
                     $delegate.getListingBasic = jasmine.createSpy('getListingBasic');
+                    $delegate.getComplaints = jasmine.createSpy('getComplaints');
                     return $delegate;
                 });
             });
@@ -107,22 +149,22 @@
                 $q = _$q_;
                 networkService = _networkService_;
 
-                networkService.getComplaints.and.returnValue($q.when(complaints));
                 networkService.getComplainantTypes.and.returnValue($q.when(complainantTypes));
                 networkService.getComplaintStatusTypes.and.returnValue($q.when(complaintStatusTypes));
                 networkService.getAcbs.and.returnValue($q.when(certBodies));
                 networkService.getEditions.and.returnValue($q.when(editions));
                 networkService.getCriteria.and.returnValue($q.when(criteria));
                 networkService.deleteComplaint.and.returnValue($q.when({ status: 200 }));
-                networkService.updateComplaint.and.returnValue($q.when(complaints[0]));
-                networkService.createComplaint.and.returnValue($q.when(complaints[0]));
+                networkService.updateComplaint.and.returnValue($q.when(allComplaints[0]));
+                networkService.createComplaint.and.returnValue($q.when(allComplaints[0]));
                 networkService.getCollection.and.returnValue($q.when({ 'results': angular.copy(allCps) }));
-                networkService.createComplaint.and.returnValue($q.when(complaints[0]));
+                networkService.createComplaint.and.returnValue($q.when(allComplaints[0]));
                 networkService.getListingBasic.and.returnValue($q.when(listingWithSurveillance));
+                networkService.getComplaints.and.returnValue($q.when(allComplaints));
 
                 scope = $rootScope.$new();
 
-                el = angular.element('<chpl-surveillance-complaints></chpl-surveillance-complaints>');
+                el = angular.element('<chpl-surveillance-complaints display-header="true" complaint-list-type="ALL"></chpl-surveillance-complaints>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -202,7 +244,7 @@
             it('should be able to fetch all relevant complaints', () => {
                 ctrl.refreshComplaints();
                 expect(networkService.getComplaints).toHaveBeenCalled();
-                expect(ctrl.complaints.length).toBe(2);
+                expect(ctrl.complaints.length).toBe(1);
             });
 
             it('should be able to fetch all complainant types', () => {

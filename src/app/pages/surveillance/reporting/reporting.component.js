@@ -88,17 +88,30 @@ export const SurveillanceReportingComponent = {
         actOnQuarter (acb, year, quarter) {
             let report = this.findQuarterReport(acb, year, quarter);
             if (report) {
+                console.log('Report was found');
                 if (this.isQuarterOpen(acb, year, quarter)) {
+                    console.log('Report is open');
                     this.activeQuarterReport = undefined;
                 } else {
+                    console.log('Report is NOT open');
+                    console.log(report);
                     let that = this;
+                    console.log('that = this');
                     this.networkService.getRelevantListings(report)
                         .then(results => {
+                            console.log('Got Results');
                             report.relevantListings = results;
                             that.activeQuarterReport = report;
-                        });
+                        })
+                        .catch(error => {
+                            console.log('Got Error');
+                            console.log(error);
+                        });;
+                    console.log('Done getting RelevantListings');
+                    console.log(this.activeAnnualReport);
                 }
             } else {
+                console.log('Report was NOT found');
                 this.activeQuarterReport = {
                     acb: acb,
                     quarter: quarter,
