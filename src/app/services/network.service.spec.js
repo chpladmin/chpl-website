@@ -1045,6 +1045,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getRelevantComplaints', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly\/id\/complaints$/).respond(200, { data: 'response' });
+            networkService.getRelevantComplaints({ id: 'id' }).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSearchOptions', () => {
             $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {data: 'response'});
             networkService.getSearchOptions().then(response => {
