@@ -7,7 +7,6 @@ export const SurveillanceComplaintComponent = {
         certificationBodies: '<',
         criteria: '<',
         displayHeader: '<',
-        displayAdd: '<',
         editions: '<',
         errorMessages: '<',
         listings: '<',
