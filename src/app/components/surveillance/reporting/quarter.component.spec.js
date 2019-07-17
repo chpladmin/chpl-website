@@ -15,7 +15,6 @@
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
-
             });
 
             inject((_$compile_, _$log_, $rootScope, _authService_) => {

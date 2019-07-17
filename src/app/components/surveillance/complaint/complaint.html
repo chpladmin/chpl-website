@@ -3,8 +3,8 @@
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
     <ol class="breadcrumb">
-      <li><a href="" ng-click="$ctrl.cancelEdit()">Surveillance</a></li>
-      <li><a href="" ng-click="$ctrl.cancelEdit()">Complaints</a></li>
+      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Surveillance</button></li>
+      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Complaints</button></li>
       <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
         Edit
       </li>
