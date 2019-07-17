@@ -8,7 +8,6 @@ export const SurveillanceReportRelevantListingsComponent = {
         constructor ($log) {
             'ngInject'
             this.$log = $log;
-            this.safeListings = [];
         }
 
         $onChanges (changes) {
@@ -21,7 +20,6 @@ export const SurveillanceReportRelevantListingsComponent = {
                         listing.formattedLastModifiedDate = new Date(listing.lastModifiedDate);
                     })
                 }
-                this.safeListings = angular.copy(this.listings);
             }
         }
 
@@ -34,7 +32,6 @@ export const SurveillanceReportRelevantListingsComponent = {
                 this.onSave({ listing: relevantListing })
             }
             this.listingBeingEdited = undefined;
-            this.safeListings = angular.copy(this.listings);
         }
 
         undoExcludedListing (relevantListing) {
@@ -43,7 +40,6 @@ export const SurveillanceReportRelevantListingsComponent = {
             if (this.onSave) {
                 this.onSave({ listing: relevantListing })
             }
-            this.safeListings = angular.copy(this.listings);
         }
     },
 }

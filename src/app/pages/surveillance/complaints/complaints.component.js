@@ -1,9 +1,9 @@
 export const SurveillanceComplaintsComponent = {
     templateUrl: 'chpl.surveillance/complaints/complaints.html',
     bindings: {
+        complaintListType: '@?',
         displayAdd: '<',
         displayHeader: '<',
-        complaintListType: '@?',
         quarterlyReport: '<',
     },
     controller: class SurveillanceComplaintsComponent {
@@ -22,7 +22,6 @@ export const SurveillanceComplaintsComponent = {
             this.errorMessages = [];
             this.listings = [];
             this.surveillances = [];
-            this.safeComplaints = [];
         }
 
         $onInit () {
@@ -35,7 +34,6 @@ export const SurveillanceComplaintsComponent = {
         }
 
         $onChanges (changes) {
-            this.$log.info(changes);
             if (changes.complaintListType !== undefined && changes.complaintListType.currentValue === '') {
                 this.complaintListType = 'ALL';
             }
@@ -47,7 +45,6 @@ export const SurveillanceComplaintsComponent = {
             }
             if (changes.quarterlyReport !== undefined && changes.quarterlyReport.currentValue) {
                 this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
-                this.$log.info(this.quarterlyReport);
             }
             this.refreshComplaints();
         }
@@ -148,7 +145,6 @@ export const SurveillanceComplaintsComponent = {
                     complaint.acbName = complaint.certificationBody.name;
                     complaint.complainantTypeName = complaint.complainantType.name;
                 });
-                that.safeComplaints = angular.copy(that.complaints);
             });
         }
 
@@ -156,8 +152,6 @@ export const SurveillanceComplaintsComponent = {
             if (this.complaintListType === 'ALL') {
                 return this.networkService.getComplaints();
             } else if (this.complaintListType === 'RELEVANT') {
-                this.$log.info('this.quarterlyReportId');
-                this.$log.info(this.quarterlyReport);
                 return this.networkService.getRelevantComplaints(this.quarterlyReport);
             }
         }

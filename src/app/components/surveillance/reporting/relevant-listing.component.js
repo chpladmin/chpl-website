@@ -2,8 +2,8 @@ export const SurveillanceReportRelevantListingComponent = {
     templateUrl: 'chpl.components/surveillance/reporting/relevant-listing.html',
     bindings: {
         listing: '<',
-        onSave: '&',
         onCancel: '&',
+        onSave: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
         constructor ($log, authService) {
@@ -27,9 +27,7 @@ export const SurveillanceReportRelevantListingComponent = {
         }
 
         cancel () {
-            if (this.onCancel) {
-                this.onCancel();
-            }
+            this.onCancel();
         }
 
         edit () {

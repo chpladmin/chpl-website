@@ -10,11 +10,11 @@ export const SurveillanceComplaintComponent = {
         editions: '<',
         errorMessages: '<',
         listings: '<',
-        surveillances: '<',
         onCancel: '&?',
-        onSave: '&?',
         onDelete: '&?',
         onListingSelected: '&?',
+        onSave: '&?',
+        surveillances: '<',
     },
     controller: class SurveillanceComplaintComponent {
         constructor ($filter, $log, authService, featureFlags, toaster, utilService) {

@@ -2,21 +2,21 @@
   <div class="main-content" id="main-content" tabindex="-1">
     <div class="row">
       <div class="col-md-12">
-        <div class="table-responsive" st-table="$ctrl.listings" st-safe-src="$ctrl.safeListings">
+        <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.listings">
           <table class="table table-condensed">
             <thead>
               <tr>
                 <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
                 <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
-                <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
-                <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
+                <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true" st-sort-default="reverse">Certification Date</th>
+                <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true" st-sort-default="reverse">Last Modified Date</th>
                 <th scope="col" class="search-header" st-sort="excluded" st-skip-natural="true">On Report?</th>
                 <th scope="col" class="search-header" st-sort="reason" st-skip-natural="true">Exclude Reson</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="listing in $ctrl.listings" ng-class="listing.excluded ? 'text-danger' : ''">
+              <tr ng-repeat="listing in $ctrl.displayListings" ng-class="listing.excluded ? 'text-danger' : ''">
                 <td> {{ listing.chplProductNumber }} </td>
                 <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.edition }}</td>
                 <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>

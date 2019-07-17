@@ -49,9 +49,9 @@
     <div class="col-md-12 quarter-report-wrapper" ng-if="$ctrl.mode === 'view' && $ctrl.activeQuarterReport">
       <h2>Quarterly Report</h2>
       <ol class="breadcrumb">
-        <li><button class="btn btn-link">Surveillance</a></li>
-        <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()" >Quarterly Report</a></li>
-        <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()">{{ $ctrl.activeQuarterReport.acb.name }}</a></li>
+        <li><button class="btn btn-link">Surveillance</button></li>
+        <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()">Quarterly Report</button></li>
+        <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()">{{ $ctrl.activeQuarterReport.acb.name }}</button></li>
         <li class="active" >
            {{ $ctrl.activeQuarterReport.year }} - {{ $ctrl.activeQuarterReport.quarter }}
         </li>
