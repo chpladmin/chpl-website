@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Fuzzy Managmenet component', () => {
+    fdescribe('the Fuzzy Matching component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -31,7 +31,7 @@
                 scope = $rootScope.$new();
                 scope.fuzzyTypes = mock.fuzzyTypes;
 
-                el = angular.element('<chpl-fuzzy-management fuzzy-types="fuzzyTypes"></chpl-fuzzy-management>');
+                el = angular.element('<chpl-fuzzy-matching fuzzy-types="fuzzyTypes"></chpl-fuzzy-matching>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -65,7 +65,7 @@
 
                 it('should do things $onChanges', () => {
                     expect(ctrl.fuzzyTypes).toBeDefined();
-                    expect(ctrl.fuzzyTypes.length).toBe(2);
+                    expect(ctrl.fuzzyTypes.length).toBe(3);
                 });
             });
         });

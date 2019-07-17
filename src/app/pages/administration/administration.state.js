@@ -62,15 +62,15 @@ function administrationStateConfig ($stateProvider) {
             data: { title: 'CHPL Reports - Listings' },
         })
         .state('administration.fuzzy', {
-            url: '/fuzzy',
-            component: 'chplFuzzyManagement',
+            url: '/fuzzy-matching',
+            component: 'chplFuzzyMatching',
             resolve: {
                 fuzzyTypes: networkService => {
                     'ngInject'
                     return networkService.getFuzzyTypes();
                 },
             },
-            data: { title: 'CHPL Administration - Fuzzy Management' },
+            data: { title: 'CHPL Administration - Fuzzy Matching' },
         })
         .state('administration.jobs', {
             abstract: true,
