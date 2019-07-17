@@ -97,23 +97,40 @@ export const ReportsAnnouncementsComponent = {
 
         getUpdateActivity (detail) {
             let action = '<ul>';
-            action += this.getActionDescriptionIfChanged(detail, 'title', 'Title');
-            action += this.getActionDescriptionIfChanged(detail, 'text', 'Text');
-            action += this.getActionDescriptionIfChanged(detail, 'startDate', 'Start Date', 'date');
-            action += this.getActionDescriptionIfChanged(detail, 'endDate', 'End Date', 'date');
-            action += this.getActionDescriptionIfChanged(detail, 'isPublic', 'Public');
+            action += this.wrapActioninLi(this.compareItem(detail, 'title', 'Title'));
+            action += this.wrapActioninLi(this.compareItem(detail, 'text', 'Text'));
+            action += this.wrapActioninLi(this.compareItem(detail, 'startDate', 'Start Date', 'date'));
+            action += this.wrapActioninLi(this.compareItem(detail, 'endDate', 'End Date', 'date'));
+            action += this.wrapActioninLi(this.compareBooleanItem(detail, 'isPublic', 'Public'));
             action += '</ul>';
             return action;
         }
 
-        getActionDescriptionIfChanged (detailObject, key, display, filter) {
-            let change = this.ReportService.compareItem(detailObject.originalData, detailObject.newData, key, display, filter);
+        wrapActioninLi (change) {
             if (change) {
                 change = '<li>' + change + '</li>';
             } else {
                 change = '';
             }
             return change;
+        }
+
+        compareItem (detailObject, key, display, filter) {
+            return this.ReportService.compareItem(detailObject.originalData, detailObject.newData, key, display, filter);
+
+        }
+
+        compareBooleanItem (detailObject, key, display) {
+            if (detailObject.originalData && detailObject.newData) {
+                if (detailObject.originalData[key] && !detailObject.newData[key]) {
+                    //changed to false
+                    return display + ' changed from true to false';
+                } else if (!detailObject.originalData[key] && detailObject.newData[key]) {
+                    //chnaged to true
+                    return display + ' changed from false to true';
+                }
+            }
+            return '';
         }
 
         prepare (results) {
