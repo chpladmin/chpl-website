@@ -1,30 +1,41 @@
-<div class="container-fluid">
+<div class="container-fluid complaints-wrapper">
   <div class="main-content" id="main-content" tabindex="-1">
     <div class="row">
       <div class="col-md-12">
-        <div ng-if="$ctrl.isEditing === false">
-          <h2>All Complaints</h2>
-          <button class="btn btn-link" ng-click="$ctrl.displayAddComplaint()">
-            <i class="fa fa-plus-circle"></i>
-            Add New Complaint
-          </button>
-          <div class="table-responsive">
+        <div ng-if="!$ctrl.isEditing">
+          <div ng-if="$ctrl.displayHeader">
+            <h2>Complaints</h2>
+            <ol class="breadcrumb">
+              <li><button class="btn btn-link">Surveillance</button></li>
+              <li class="active">Complaints</li>
+            </ol>
+          </div>
+          <div class="clearfix" ng-if="$ctrl.displayAdd">
+            <button class="btn pull-right" ng-click="$ctrl.displayAddComplaint()">
+              Add New Complaint
+            </button>
+          </div>
+          <div class="table-responsive" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints">
             <table class="table table-condensed">
               <thead>
                 <tr>
-                  <th scope="col">ONC-ACB</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Received Date</th>
-                  <th scope="col">ONC-ACB Complaint Id</th>
-                  <th scope="col">ONC Complaint Id</th>
-                  <th scope="col">Complainant Type</th>
+                  <th scope="col" class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
+                  <th scope="col" class="search-header" st-sort="complaintStatusTypeName" st-skip-natural="true">Status</th>
+                  <th scope="col" class="search-header" st-sort="receivedDate" st-skip-natural="true" st-sort-default="reverse">Received Date</th>
+                  <th scope="col" class="search-header" st-sort="acbComplaintId" st-skip-natural="true">ONC-ACB Complaint Id</th>
+                  <th scope="col" class="search-header" st-sort="oncComplaintId" st-skip-natural="true">ONC Complaint Id</th>
+                  <th scope="col" class="search-header" st-sort="complaintanStatusTypeName" st-skip-natural="true">Complainant Type</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
+                <tr ng-repeat="complaint in $ctrl.displayedComplaints">
                   <td>{{ complaint.certificationBody.name }}</td>
-                  <td>{{ complaint.complaintStatusType.name }}</td>
+                  <td>
+                    <span class="badge" ng-class="{ 'badge-success': complaint.complaintStatusType.name === 'Open' }">
+                      {{ complaint.complaintStatusType.name }}
+                    </span>
+                  </td>
                   <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td>{{ complaint.acbComplaintId }}</td>
                   <td>{{ complaint.oncComplaintId }}</td>
@@ -33,7 +44,16 @@
                     <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-primary" ng-click="$ctrl.selectComplaint(complaint)" uib-tooltip="Edit Complaint" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" ><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                    <button class="btn btn-danger btn-link"
+                      title="Delete Complaint"
+                      ng-click="$ctrl.deleteComplaint(complaint)"
+                      confirm="Are you sure you wish to delete this complaint?"
+                      confirm-ok="Delete Complaint"
+                      confirm-cancel="Cancel"
+                      confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                      <span class="text-danger"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></span>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -47,6 +67,7 @@
             complaint-status-types="$ctrl.complaintStatusTypes"
             certification-bodies="$ctrl.certificationBodies"
             criteria="$ctrl.criteria"
+            display-header="$ctrl.displayHeader"
             editions="$ctrl.editions"
             error-messages="$ctrl.errorMessages"
             listings="$ctrl.listings"
