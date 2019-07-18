@@ -41,6 +41,17 @@ function administrationStateConfig ($stateProvider) {
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })
+        .state('administration.api-keys', {
+            url: '/api-keys',
+            component: 'chplApiKeys',
+            resolve: {
+                apiKeys: networkService => {
+                    'ngInject'
+                    return networkService.getApiUsers();
+                },
+            },
+            data: { title: 'CHPL Administration - API Keys' },
+        })
         .state('administration.confirm', {
             abstract: true,
             url: '/confirm',
