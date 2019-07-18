@@ -15,6 +15,8 @@ export const SurveillanceReportQuarterComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
+            this.areComplaintsCollapsed = true;
+            this.areListingsCollapsed = true;
         }
 
         $onChanges (changes) {
