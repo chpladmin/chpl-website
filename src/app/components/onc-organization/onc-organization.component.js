@@ -2,7 +2,6 @@ export const OncOrganizationComponent = {
     templateUrl: 'chpl.components/onc-organization/onc-organization.html',
     bindings: {
         organization: '<',
-        canEdit: '<',
         isEditing: '<',
         type: '@',
         takeAction: '&',
@@ -22,9 +21,6 @@ export const OncOrganizationComponent = {
             if (changes.organization) {
                 this.organization = angular.copy(changes.organization.currentValue);
                 this.backup.organization = angular.copy(this.organization);
-            }
-            if (changes.canEdit) {
-                this.canEdit = changes.canEdit.currentValue;
             }
             if (changes.isEditing) {
                 this.isEditing = changes.isEditing.currentValue;

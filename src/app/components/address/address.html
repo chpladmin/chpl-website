@@ -1,12 +1,12 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
     <address>
-      Line 1: {{ $ctrl.address.line1 }}<br />
-      <span ng-if="$ctrl.address.line2">Line 2: {{ $ctrl.address.line2 }}<br /></span>
-      City: {{ $ctrl.address.city }}<br />
-      State: {{ $ctrl.address.state }}<br />
-      Zip: {{ $ctrl.address.zipcode }}<br />
-      Country: {{ $ctrl.address.country }}<br />
+      {{ $ctrl.address.line1 }}<br />
+      <span ng-if="$ctrl.address.line2">{{ $ctrl.address.line2 }}<br /></span>
+      {{ $ctrl.address.city }}<span ng-if="$ctrl.address.city && ($ctrl.address.state || $ctrl.address.zipcode || $ctrl.address.country)">, </span>
+      {{ $ctrl.address.state }}
+      {{ $ctrl.address.zipcode }}
+      <span ng-if="($ctrl.address.state || $ctrl.address.zipcode) && $ctrl.address.country">, </span>{{ $ctrl.address.country }}
     </address>
   </span>
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
