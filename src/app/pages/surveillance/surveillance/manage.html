@@ -136,7 +136,7 @@
     </uib-tab>
     <uib-tab index="tab.id" ng-repeat="tab in $ctrl.tabs">
       <uib-tab-heading>
-        {{ tab.chplProductNumber }} <span ng-if="!tab.listing"><i class="fa fa-spin fa-spinner"></i></span>
+        {{ tab.product }} <span ng-if="!tab.listing"><i class="fa fa-spin fa-spinner"></i></span>
       </uib-tab-heading>
       <span ng-if="tab.listing">
         <chpl-surveillance-management-view listing="tab.listing" take-action="$ctrl.takeTabAction(action, data)"></chpl-surveillance-management-view>

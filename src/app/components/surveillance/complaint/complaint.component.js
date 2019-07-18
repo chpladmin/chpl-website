@@ -6,14 +6,15 @@ export const SurveillanceComplaintComponent = {
         complaintStatusTypes: '<',
         certificationBodies: '<',
         criteria: '<',
+        displayHeader: '<',
         editions: '<',
         errorMessages: '<',
         listings: '<',
-        surveillances: '<',
         onCancel: '&?',
-        onSave: '&?',
         onDelete: '&?',
         onListingSelected: '&?',
+        onSave: '&?',
+        surveillances: '<',
     },
     controller: class SurveillanceComplaintComponent {
         constructor ($filter, $log, authService, featureFlags, toaster, utilService) {

@@ -1,8 +1,4 @@
-.complaints-wrapper {
-
-    .selected-items-container {
-        margin-bottom: 5px;
-    }
+.quarter-report-wrapper {
 
     label {
         color: #303030;
@@ -42,25 +38,12 @@
         height: 100px !important;
     }
 
-    .input-group-btn-adjust {
-        border-radius: 0 !important;
-        height: 50px !important;
+    .badge-error {
+        background-color: #b94a48;
     }
 
-    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #cccccc !important;
-        opacity: 1  !important; /* Firefox */
-        font-weight: normal !important;
-    }
-
-    :-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: #cccccc !important;
-        font-weight: normal !important;
-    }
-
-    ::-ms-input-placeholder { /* Microsoft Edge */
-        color: #cccccc !important;
-        font-weight: normal !important;
+    .badge-error:hover {
+        background-color: #953b39;
     }
 
     .badge-success {
@@ -69,13 +52,5 @@
 
     .badge-success:hover {
         background-color: #356635;
-    }
-
-    .badge-error {
-        background-color: #b94a48;
-    }
-
-    .badge-error:hover {
-        background-color: #953b39;
     }
 }

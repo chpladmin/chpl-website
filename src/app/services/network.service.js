@@ -331,8 +331,8 @@ export class NetworkService {
         return this.apiGET('/data/filter_types');
     }
 
-    getFuzzyTypes () {
-        return this.apiGET('/data/fuzzy_choices');
+    getFuzzyTypes (forceReload) {
+        return this.apiGET('/data/fuzzy_choices', forceReload);
     }
 
     getIncumbentDevelopersStatistics () {
@@ -438,6 +438,10 @@ export class NetworkService {
 
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
+    }
+
+    getRelevantComplaints (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/complaints');
     }
 
     getRelevantListings (report) {
