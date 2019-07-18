@@ -41,6 +41,11 @@ function administrationStateConfig ($stateProvider) {
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })
+        .state('administration.cms', {
+            url: '/cms',
+            component: 'chplCms',
+            data: { title: 'CHPL Administration - CMS' },
+        })
         .state('administration.confirm', {
             abstract: true,
             url: '/confirm',
@@ -106,6 +111,11 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },
+        })
+        .state('administration.upload', {
+            url: '/upload',
+            component: 'chplUpload',
+            data: { title: 'CHPL Administration - Upload' },
         })
     ;
 }
