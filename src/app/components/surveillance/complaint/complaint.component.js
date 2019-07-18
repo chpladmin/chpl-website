@@ -44,8 +44,6 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
                 this.sortCertifications(this.complaint);
-                this.$log.info(this.complaint.receivedDate);
-                this.$log.info(this.complaint.closedDate);
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -128,6 +126,19 @@ export const SurveillanceComplaintComponent = {
 
         removeListing (listingToRemove) {
             this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
+            //Remove any surveillances related to the removed listing
+            let surveillances = angular.copy(this.complaint.surveillances);
+            surveillances.forEach(surveillance => {
+                if (surveillance.surveillance.listingId === listingToRemove.listingId) {
+                    this.removeSurveillance(surveillance);
+                    this.toaster.pop({
+                        type: 'success',
+                        body: surveillance.surveillance.friendlyId + ' was removed because associated listing ' + listingToRemove.chplProductNumber + ' was removed',
+                    });
+                }
+            });
+
+            this.onListingSelected({ complaint: this.complaint });
         }
 
         disableListing (listing) {
