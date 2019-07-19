@@ -1,17 +1,25 @@
 <div id="chpl-organization-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-form="$ctrl.form" class="row">
   <div class="col-sm-12">
     <span ng-if="!$ctrl.isEditing">
-      <h1>{{ $ctrl.organization.name }}</h1>
-      <span class="pull-right">
-        <button class="btn btn-link btn-small" id="chpl-organization-edit-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-if="$ctrl.canEdit && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit {{ $ctrl.type }} {{ $ctrl.organization.name }}</span></button>
-      </span>
-      <p><strong>{{ $ctrl.type }} Code: {{ $ctrl.getCode() }}</strong></p>
-      <p ng-if="$ctrl.organization.website"><a ai-a href="{{ $ctrl.organization.website }}">{{ $ctrl.organization.website }}</a></p>
-      <p ng-if="$ctrl.organization.retired">Retired, effective {{ $ctrl.organization.retirementDate | date : 'mediumDate' : 'UTC' }}</p>
-      <span ng-if="$ctrl.organization.address">
-        <h3>Address</h3>
-        <chpl-address address="$ctrl.organization.address"></chpl-address>
-      </span>
+      <div class="row">
+        <div class="col-sm-4">
+          <p><strong>{{ $ctrl.organization.name }}</strong></p>
+          <p ng-if="$ctrl.organization.website"><a ai-a href="{{ $ctrl.organization.website }}">{{ $ctrl.organization.website }}</a></p>
+        </div>
+        <div class="col-sm-4">
+          <p>Code: <strong>{{ $ctrl.getCode() }}</strong></p>
+        </div>
+        <div class="col-sm-4">
+          <p ng-if="$ctrl.organization.retired">Retired: <strong>Yes, effective {{ $ctrl.organization.retirementDate | date : 'mediumDate' : 'UTC' }}</strong></p>
+          <p ng-if="!$ctrl.organization.retired">Retired: <strong>No</strong></p>
+        </div>
+      </div>
+      <div class="row" ng-if="$ctrl.organization.address">
+        <div class="col-sm-12">
+          <p>Address</p>
+          <chpl-address address="$ctrl.organization.address"></chpl-address>
+        </div>
+      </div>
     </span> <!-- end view -->
 
     <span ng-if="$ctrl.isEditing">
