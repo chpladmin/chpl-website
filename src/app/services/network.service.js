@@ -182,8 +182,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAnnouncements (pending) {
-        return this.apiGET('/announcements?future=' + pending);
+    getAnnouncements (pending, forceReload) {
+        return this.apiGET('/announcements?future=' + pending, forceReload);
     }
 
     getAnnualSurveillanceReports () {
@@ -438,6 +438,10 @@ export class NetworkService {
 
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
+    }
+
+    getRelevantComplaints (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/complaints');
     }
 
     getRelevantListings (report) {

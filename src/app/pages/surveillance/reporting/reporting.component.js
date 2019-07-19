@@ -91,16 +91,12 @@ export const SurveillanceReportingComponent = {
                 if (this.isQuarterOpen(acb, year, quarter)) {
                     this.activeQuarterReport = undefined;
                 } else {
-                    if (!report.relevantListings) {
-                        let that = this;
-                        this.networkService.getRelevantListings(report)
-                            .then(results => {
-                                report.relevantListings = results;
-                                that.activeQuarterReport = report;
-                            });
-                    } else {
-                        this.activeQuarterReport = report;
-                    }
+                    let that = this;
+                    this.networkService.getRelevantListings(report)
+                        .then(results => {
+                            report.relevantListings = results;
+                            that.activeQuarterReport = report;
+                        });
                 }
             } else {
                 this.activeQuarterReport = {
@@ -205,6 +201,7 @@ export const SurveillanceReportingComponent = {
                     });
                 });
             }
+            this.activeAnnualReport = undefined;
             this.mode = 'view';
         }
 

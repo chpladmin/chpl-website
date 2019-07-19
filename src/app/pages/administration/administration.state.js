@@ -41,6 +41,17 @@ function administrationStateConfig ($stateProvider) {
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })
+        .state('administration.announcements', {
+            url: '/announcements',
+            component: 'chplAnnouncements',
+            resolve: {
+                announcements: networkService => {
+                    'ngInject'
+                    return networkService.getAnnouncements(true);
+                },
+            },
+            data: { title: 'CHPL Administration - Announcements' },
+        })
         .state('administration.cms', {
             url: '/cms',
             component: 'chplCms',

@@ -46,9 +46,22 @@
         </div>
       </div>
     </span>
-    <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeQuarterReport">
-      <h2>Quarter report</h2>
-      <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" on-cancel="$ctrl.cancelQuarter()" take-action="$ctrl.takeQuarterAction(report, action, listing)"></chpl-surveillance-report-quarter>
+    <div class="col-md-12 quarter-report-wrapper" ng-if="$ctrl.mode === 'view' && $ctrl.activeQuarterReport">
+      <h2>Quarterly Report</h2>
+      <ol class="breadcrumb">
+        <li><button class="btn btn-link">Surveillance</button></li>
+        <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()">Quarterly Report</button></li>
+        <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()">{{ $ctrl.activeQuarterReport.acb.name }}</button></li>
+        <li class="active" >
+           {{ $ctrl.activeQuarterReport.year }} - {{ $ctrl.activeQuarterReport.quarter }}
+        </li>
+      </ol>
+      <chpl-surveillance-report-quarter
+        report="$ctrl.activeQuarterReport"
+        on-cancel="$ctrl.cancelQuarter()"
+        on-save="$ctrl.saveQuarter(report)"
+        take-action="$ctrl.takeQuarterAction(report, action, listing)">
+      </chpl-surveillance-report-quarter>
     </div>
     <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
       <h2>Annual report</h2>

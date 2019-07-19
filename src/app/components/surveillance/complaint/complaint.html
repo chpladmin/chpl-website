@@ -1,14 +1,26 @@
 <div id="chpl-complaint" ng-form="$ctrl.form">
-  <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
-  <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
+  <div ng-if="$ctrl.displayHeader">
+    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
+    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
+    <ol class="breadcrumb">
+      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Surveillance</button></li>
+      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Complaints</button></li>
+      <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
+        Edit
+      </li>
+      <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.ADD">
+        Add
+      </li>
+    </ol>
+  </div>
   <div class="form-group">
     <label class="control-label" for="certification-body">ONC-ACB<span class="text-danger">*</span></label>
-    <div ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" name="certificationBody">
+    <div ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" name="certificationBody" class="read-only-data">
       {{ $ctrl.complaint.certificationBody.name }}
     </div>
     <div ng-if="$ctrl.currentMode === $ctrl.modes.ADD">
       <select ng-model="$ctrl.complaint.certificationBody" id="certification-body" name="certificationBody"
-        class="input-sm form-control"
+        class="form-control"
         ng-change="$ctrl.changeAcb()"
         ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' track by acb.id"
         ng-required="$ctrl.isOn('complaints-ui-validation')">
@@ -22,7 +34,7 @@
     <label class="control-label" for="complaint-status-type">Complaint Status Type</label>
     <div>
       <select ng-model="$ctrl.complaint.complaintStatusType" id="complaint-status-type" name="complaintStatusType"
-        class="input-sm form-control"
+        class="form-control"
         ng-options="cst.name for cst in $ctrl.complaintStatusTypes | orderBy: 'name' track by cst.id">
       </select>
     </div>
@@ -31,7 +43,7 @@
     <label class="control-label" for="received-date">Received Date<span class="text-danger">*</span></label>
     <div>
       <div class="input-group" >
-        <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedReceivedDate "
+        <input type="text" class="form-control" ng-model="$ctrl.complaint.formattedReceivedDate"
           name="receivedDate" id="received-date" placeholder="MM/dd/yyyy"
           ng-model-options="{timezone: 'UTC'}"
           ng-required="$ctrl.isOn('complaints-ui-validation')"
@@ -40,7 +52,7 @@
           is-open="$ctrl.receivedDatePicker"
           close-text="Close" ></input>
         <div class="input-group-btn">
-          <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
         </div>
       </div>
       <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.required">Received Date is required</div>
@@ -51,14 +63,14 @@
     <label class="control-label" for="closed-date">Closed Date</label>
     <div>
       <div class="input-group" >
-        <input type="text" class="input-sm form-control" ng-model="$ctrl.complaint.formattedClosedDate"
+        <input type="text" class="form-control" ng-model="$ctrl.complaint.formattedClosedDate"
           name="closedDate" id="closed-date" placeholder="MM/dd/yyyy"
           ng-model-options="{ timezone: 'UTC' }"
           uib-datepicker-popup="MM/dd/yyyy"
           popup-placement="bottom-left"
           is-open="$ctrl.closedDatePicker" close-text="Close"></input>
         <div class="input-group-btn">
-          <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.closedDatePicker = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.closedDatePicker = true"><i class="fa fa-calendar"></i></button>
         </div>
       </div>
       <div class="text-danger" ng-if="$ctrl.form.closedDate.$touched && $ctrl.form.closedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
@@ -67,7 +79,7 @@
   <div class="form-group">
     <label class="control-label" for="acb-complaint-id">ONC-ACB Complaint ID<span class="text-danger">*</span></label>
     <div>
-      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id"
+      <input class="form-control" type="text" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id"
         name="acbComplaintId" ng-required="$ctrl.isOn('complaints-ui-validation')"></input>
       <div class="text-danger" ng-if="$ctrl.form.acbComplaintId.$touched && $ctrl.form.acbComplaintId.$error.required">
         ONC-ACB Complaint ID is required</div>
@@ -76,7 +88,7 @@
   <div class="form-group">
     <label class="control-label" for="onc-complaint-id">ONC Complaint ID</label>
     <div>
-      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id"
+      <input class="form-control" type="text" ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id"
         name="oncComplaintId"></input>
     </div>
   </div>
@@ -84,7 +96,7 @@
     <label class="control-label" for="complainant-type">Complainant Type<span class="text-danger">*</span></label>
     <div>
       <select ng-model="$ctrl.complaint.complainantType" id="complainant-type" name="complainantType"
-        class="input-sm form-control"
+        class="form-control"
         ng-options="ct.name for ct in $ctrl.complainantTypes | orderBy: 'name' track by ct.id"
         ng-required="$ctrl.isOn('complaints-ui-validation')">
       </select>
@@ -95,7 +107,7 @@
   <div class="form-group" ng-if="$ctrl.complaint.complainantType.name === 'Other - [Please Describe]'">
     <label class="control-label" for="complainant-type-other">Complainant Type - Other Description<span class="text-danger">*</span></label>
     <div>
-      <input class="input-sm form-control" type="text" ng-model="$ctrl.complaint.complainantTypeOther" id="complainant-type-other"
+      <input class="form-control" type="text" ng-model="$ctrl.complaint.complainantTypeOther" id="complainant-type-other"
         name="complainantTypeOther" ng-required="$ctrl.isOn('complaints-ui-validation')"></input>
       <div class="text-danger" ng-if="$ctrl.form.complainantTypeOther.$touched && $ctrl.form.complainantTypeOther.$error.required">
         Complainant Type - Other Description is required</div>
@@ -104,7 +116,7 @@
   <div class="form-group">
     <label class="control-label" for="summary">Summary<span class="text-danger">*</span></label>
     <div>
-      <textarea class="input-sm form-control" ng-model="$ctrl.complaint.summary" name="summary" id="summary"
+      <textarea class="form-control" ng-model="$ctrl.complaint.summary" name="summary" id="summary"
         ng-required="$ctrl.isOn('complaints-ui-validation')"></textarea>
       <div class="text-danger" ng-if="$ctrl.form.summary.$touched && $ctrl.form.summary.$error.required">Summary is
         required</div>
@@ -113,17 +125,17 @@
   <div class="form-group">
     <label class="control-label" for="actions">Actions/Response</label>
     <div>
-      <textarea class="input-sm form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
+      <textarea class="form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label" for="listings">Selected Certified Products</label><br />
+    <label class="control-label" for="listings">Selected Certified Products</label>
     <div ng-if="!$ctrl.complaint.listings || $ctrl.complaint.listings.length === 0">
       No Certified Products Selected
     </div>
     <div class="selected-items-container" ng-if="$ctrl.complaint.listings">
       <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
-        <button class="btn btn-primary btn-xs"
+        <button class="btn btn-primary btn-sm"
           ng-click="$ctrl.removeListing(listing)">
           <span class="sr-only">Remove item </span>
           {{ listing.chplProductNumber }}
@@ -135,8 +147,9 @@
     <input name="listings"
         id="listings"
         type="text"
-        class="input-sm form-control"
+        class="form-control"
         placeholder="Start Typing CHPL Product Number"
+        autocomplete="off"
         ng-model="$ctrl.listing"
         uib-typeahead="listing.chplProductNumber for listing in $ctrl.filteredListings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
         typeahead-on-select="$ctrl.selectListing($item)">
@@ -156,7 +169,7 @@
       </span>
       &nbsp;
     </div>
-    <select id="surveilances" name="surveillances" class="input-sm form-control" ng-model="$ctrl.surveillance"
+    <select id="surveilances" name="surveillances" class="form-control" ng-model="$ctrl.surveillance"
       ng-options="(surveillance.friendlyId + ' - ' + surveillance.chplProductNumber ) for surveillance in $ctrl.surveillances | orderBy: ['chplProductNumber', 'friendlyId'] track by surveillance.id"
       ng-change="$ctrl.selectSurveillance()">
     </select>
@@ -168,7 +181,7 @@
     </div>
     <div class="selected-items-container" ng-if="$ctrl.complaint.criteria">
       <span ng-repeat="criterion in $ctrl.complaint.criteria">
-        <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeCriterion(criterion)">
+        <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeCriterion(criterion)">
           <span class="sr-only">Remove </span>
           {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
           <i class="fa fa-times"></i>
@@ -178,7 +191,7 @@
     </div>
     <div class="input-group">
       <div class="input-group-btn" uib-dropdown>
-        <button type="button" id="select-edition" class="btn btn-default btn-sm dropdown-toggle" uib-dropdown-toggle>
+        <button type="button" id="select-edition" class="btn btn-default input-group-btn-adjust dropdown-toggle" uib-dropdown-toggle>
           {{ $ctrl.edition.name }} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="select-edition">
@@ -186,7 +199,7 @@
               ng-click="$ctrl.selectEdition(edition)"> {{ edition.name }}</a></li>
         </ul>
       </div>
-      <select id="criteria" name="criteria" class="input-sm form-control" ng-model="$ctrl.criterion"
+      <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.criterion"
         ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
         ng-change="$ctrl.selectCriteria()">
       </select>
@@ -234,17 +247,11 @@
       <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
     </ul>
   </div>
-  <div>
-    <button class="btn btn-ai-success btn-small pull-right" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+  <div class="pull-right">
+    <button class="btn" id="save-complaint" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
       ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.saveComplaint($ctrl.complaint)">
-      <i class="fa fa-save"></i><span class="sr-only"> Save</span>
+      Save Complaint
     </button>
-    <button class="btn btn-warning btn-small" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i><span
-        class="sr-only"> Cancel</span></button>
-    <button class="btn btn-danger btn-small" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT"
-      ng-click="$ctrl.deleteComplaint($ctrl.complaint)" confirm="Are you sure you wish to delete this complaint?"
-      confirm-ok="Yes" confirm-cancel="No" confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
-      <i class="fa fa-trash"></i><span class="sr-only"> Delete</span>
-    </button>
+    <button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Cancel</button>
   </div>
 </div>

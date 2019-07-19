@@ -7,30 +7,45 @@
   <div class="main-content row" id="main-content" tabindex="-1">
     <div class="row">
       <div class="col-md-3">
+        {{ $ctrl.type }} Management
         <div ng-repeat="org in $ctrl.allOrgs">
-          <div class="pull-right">
-            <span class="badge" ng-if="org.retired">Retired</span>
-            <span ng-if="org.id === $ctrl.activeOrg.id && !$ctrl.isCreating"><i class="fa fa-caret-right"></i></span>
-          </div>
           <button type="button" class="btn btn-link" ng-click="$ctrl.showOrg(org)">{{ org.name }}</button>
+          <span class="badge" ng-if="org.retired">Retired</span>
+          <span ng-if="org.id === $ctrl.activeOrg.id && !$ctrl.isCreating"><i class="fa fa-caret-right"></i></span>
         </div>
-        <button type="button" class="btn btn-default" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isCreating">Create</button>
+        <button type="button" class="btn btn-primary btn-block" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isCreating">Create New {{ $ctrl.type }}</button>
       </div>
       <div class="col-md-9" ng-if="$ctrl.isCreating">
-        <chpl-onc-organization type="{{ $ctrl.type }}" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
-      </div>
-      <div class="col-md-9" ng-if="$ctrl.activeOrg && !$ctrl.isCreating">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <chpl-onc-organization organization="$ctrl.activeOrg" type="{{ $ctrl.type }}" can-edit="$ctrl.canEdit($ctrl.activeOrg)" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
-              </div>
-            </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title">General Information</h2>
+          </div>
+          <div class="panel-body">
+            <chpl-onc-organization type="{{ $ctrl.type }}" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
           </div>
         </div>
-        <div class="row" ng-if="$ctrl.canEdit($ctrl.activeOrg)">
-          <div class="col-md-12">
+      </div>
+      <div class="col-md-9" ng-if="$ctrl.activeOrg && !$ctrl.isCreating">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="pull-right">
+              <span ng-if="$ctrl.canEdit($ctrl.activeOrg) && !$ctrl.isEditing"><button class="btn btn-link" ng-click="$ctrl.edit()">Edit</button></span>
+              <span ng-if="!$ctrl.isEditing"><button class="btn btn-link" ng-click="$ctrl.generalCollapsed = !$ctrl.generalCollapsed"><i class="fa" ng-class="$ctrl.generalCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></i></button></span>
+            </span>
+            <h2 class="panel-title">General Information</h2>
+          </div>
+          <div class="panel-body" ng-if="!$ctrl.generalCollapsed">
+            <chpl-onc-organization organization="$ctrl.activeOrg" type="{{ $ctrl.type }}" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+          </div>
+        </div>
+        <div class="panel panel-default" ng-if="$ctrl.canEdit($ctrl.activeOrg)">
+          <div class="panel-heading">
+            <span class="pull-right">
+              <button class="btn btn-link" ng-click="$ctrl.usersCollapsed = !$ctrl.usersCollapsed"><i class="fa" ng-class="$ctrl.usersCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></i></button>
+            </span>
+            <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
+          </div>
+          <div class="panel-body" ng-if="!$ctrl.usersCollapsed">
             <chpl-users column-count="2" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
           </div>
         </div>

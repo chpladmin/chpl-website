@@ -52,6 +52,13 @@ export const OncOrganizationsComponent = {
             return this.editableOrgs && this.editableOrgs.reduce((acc, cur) => acc || cur.id === org.id, false);
         }
 
+        edit () {
+            this.isEditing = true;
+            this.generalCollapsed = false;
+            this.loadUsers();
+            this.$anchorScroll();
+        }
+
         loadOrgs () {
             let that = this;
             this.networkService[this.functions.get](true).then(response => that.editableOrgs = angular.copy(response[that.key]));
@@ -83,12 +90,6 @@ export const OncOrganizationsComponent = {
             let that = this;
             if (!this.org) {
                 switch (action) {
-                case 'edit':
-                    this.activeOrg = data;
-                    this.isEditing = true;
-                    this.loadUsers();
-                    this.$anchorScroll();
-                    break;
                 case 'save':
                     this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then(response => {
                         that.allOrgs = response[that.key];
@@ -99,6 +100,7 @@ export const OncOrganizationsComponent = {
                 case 'cancel':
                     this.isEditing = false;
                     this.isCreating = false;
+                    this.$anchorScroll();
                     break;
                 case 'create':
                     this.networkService[this.functions.create](data).then(() => {

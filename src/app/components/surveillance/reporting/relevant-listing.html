@@ -1,49 +1,20 @@
-<div id="chpl-report" ng-form="$ctrl.form" class="form-horizontal">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <span class="pull-right">
-        <button class="btn btn-link btn-small" id="relevant-listing-edit-{{ $ctrl.listing.id }}" ng-click="$ctrl.edit()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.isEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Relevant Listing</span></button>
-      </span>
-      <div class="panel-title">{{ $ctrl.listing.chplProductNumber }}</div>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-6">
-          Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}<br />
-          <span ng-if="!$ctrl.isEditing">
-            <i class="fa" ng-class="$ctrl.listing.excluded ? 'fa-check-square-o' : 'fa-square-o'"></i> Excluded from Randomized Surveillance<br />
-            <span ng-if="$ctrl.listing.reason"><strong>Reason for exclusion:</strong> {{ $ctrl.listing.reason }}</span>
-          </span>
-        </div>
-        <div class="col-sm-6">
-          Last modified: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}<br />
-          Edition: {{ $ctrl.listing.edition }}
-        </div>
+<div ng-form="$ctrl.form" class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label" for="reason-for-exclusion">Reason for exclusion </label>
+    <div>
+      <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion"
+        ng-model="$ctrl.listing.reason" required></input>
+      <div class="text-danger"
+        ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">
+        Reason is required
       </div>
-      <span ng-if="$ctrl.isEditing">
-        <div class="form-group">
-          <label class="col-sm-6 control-label" for="excluded">Excluded from randomized surveillance</label>
-          <div class="col-sm-6">
-            <input type="checkbox" class="form-control" id="excluded" name="excluded" ng-model="$ctrl.listing.excluded"></input>
-          </div>
-        </div>
-        <div class="form-group" ng-if="$ctrl.listing.excluded">
-          <label class="col-sm-6 control-label" for="reason-for-exclusion">Reason for exclusion from randomized surveillance</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion" ng-model="$ctrl.listing.reason" required></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">Field is required</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <button class="btn btn-ai-success btn-small pull-right" id="relevant-listing-save"
-                    ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-                    ng-mouseover="$ctrl.showFormErrors = true"
-                    ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-            <button class="btn btn-warning btn-small" id="relevant-listing-cancel" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
-          </div>
-        </div>
-      </span>
     </div>
+  </div>
+  <div class="pull-right">
+    <button class="btn " ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+      ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()">
+      Exclude Listing
+    </button>
+    <button class="btn btn-link" ng-click="$ctrl.cancel()">Cancel</button>
   </div>
 </div>
