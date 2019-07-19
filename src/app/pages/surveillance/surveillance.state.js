@@ -58,16 +58,6 @@ let states = {
     ],
     'base': [
         {
-            name: 'administration.upload',
-            abstract: true,
-            url: '/confirm',
-            template: '<ui-view/>',
-        },{
-            name: 'administration.upload.listings',
-            url: '/listings',
-            component: 'chplUploadListings',
-            data: { title: 'CHPL Administration - Upload' },
-        },{
             name: 'surveillance',
             abstract: true,
             url: '/surveillance',

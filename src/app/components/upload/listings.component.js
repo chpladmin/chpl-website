@@ -1,5 +1,5 @@
 export const UploadListingsComponent = {
-    templateUrl: 'chpl.admin/components/certifiedProduct/upload-listings.html',
+    templateUrl: 'chpl.components/upload/listings.html',
     bindings: {
         onChange: '&',
     },
@@ -64,5 +64,5 @@ export const UploadListingsComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.components')
     .component('chplUploadListings', UploadListingsComponent);

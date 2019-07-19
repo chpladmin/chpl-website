@@ -41,6 +41,17 @@ function administrationStateConfig ($stateProvider) {
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })
+        .state('administration.announcements', {
+            url: '/announcements',
+            component: 'chplAnnouncements',
+            resolve: {
+                announcements: networkService => {
+                    'ngInject'
+                    return networkService.getAnnouncements(true);
+                },
+            },
+            data: { title: 'CHPL Administration - Announcements' },
+        })
         .state('administration.api-keys', {
             url: '/api-keys',
             component: 'chplApiKeys',
@@ -51,6 +62,11 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - API Keys' },
+        })
+        .state('administration.cms', {
+            url: '/cms',
+            component: 'chplCms',
+            data: { title: 'CHPL Administration - CMS' },
         })
         .state('administration.confirm', {
             abstract: true,
@@ -117,6 +133,11 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },
+        })
+        .state('administration.upload', {
+            url: '/upload',
+            component: 'chplUpload',
+            data: { title: 'CHPL Administration - Upload' },
         })
     ;
 }

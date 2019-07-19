@@ -10,7 +10,7 @@ export const JobsBackgroundJobsComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.jobs) {
+            if (changes.jobs && changes.jobs.currentValue) {
                 this.jobs = changes.jobs.currentValue.map(job => {
                     job.jobName = job.type.name;
                     job.fullName = job.user.fullName;

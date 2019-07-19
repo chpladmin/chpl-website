@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <div class="col-md-12">
+      <h2>Announcements</h2>
+      <table class="table table-condensed" st-table="$ctrl.displayedAnnouncements" st-safe-src="$ctrl.announcements" ng-if="!$ctrl.activeAnnouncement">
+        <thead>
+          <tr>
+            <th scope="col" class="search-header" st-sort="title" st-skip-natural="true">Title</th>
+            <th scope="col" class="search-header" st-sort="text" st-skip-natural="true">Announcement</th>
+            <th scope="col" class="search-header" st-sort="startDate" st-skip-natural="true" st-sort-default="true">Start Date</th>
+            <th scope="col" class="search-header" st-sort="endDate" st-skip-natural="true">End Date</th>
+            <th scope="col" class="search-header" st-sort="isPublic" st-skip-natural="true">Public</th>
+            <th scope="col"><span class="sr-only">Action</span></th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td colspan="5">&nbsp;</td>
+            <td><button class="btn btn-default btn-block" ng-click="$ctrl.create()">Add</button></td>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr ng-repeat="announcement in $ctrl.displayedAnnouncements">
+            <td>{{ announcement.title }}</td>
+            <td>{{ announcement.text }}</td>
+            <td>{{ announcement.startDate | date : 'MM/dd/yyyy' : 'UTC'}}</td>
+            <td>{{ announcement.endDate | date : 'MM/dd/yyyy' : 'UTC'}}</td>
+            <td>{{ announcement.isPublic ? 'Yes' : 'No' }}</td>
+            <td><button class="btn btn-default btn-block" ng-click="$ctrl.edit(announcement)">Edit</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <span ng-if="$ctrl.activeAnnouncement">
+        <chpl-announcement announcement="$ctrl.activeAnnouncement" take-action="$ctrl.takeAction(data, action)"></chpl-announcement>
+      </span>
+    </div>
+  </div>
+</div>
