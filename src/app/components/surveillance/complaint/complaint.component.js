@@ -17,8 +17,9 @@ export const SurveillanceComplaintComponent = {
         surveillances: '<',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService, featureFlags, toaster, utilService) {
+        constructor ($anchorScroll, $filter, $log, authService, featureFlags, toaster, utilService) {
             'ngInject'
+            this.$anchorScroll = $anchorScroll;
             this.$filter = $filter;
             this.$log = $log;
             this.isOn = featureFlags.isOn;
@@ -44,8 +45,7 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
                 this.sortCertifications(this.complaint);
-                this.$log.info(this.complaint.receivedDate);
-                this.$log.info(this.complaint.closedDate);
+                this.$anchorScroll();
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
