@@ -25,6 +25,16 @@
         padding-left: 0;
     }
 
+    .breadcrumb a {
+        text-decoration: none;
+    }
+
+    .breadcrumb button {
+        text-decoration: none;
+        padding: 0;
+        margin-bottom: 2px;
+    }
+
     .read-only-data {
         font-size: 16px;
         font-weight: bold;

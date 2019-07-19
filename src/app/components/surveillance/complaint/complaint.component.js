@@ -55,6 +55,9 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.certificationBodies) {
                 this.certificationBodies = angular.copy(changes.certificationBodies.currentValue);
+                this.certificationBodies.forEach(acb => {
+                    acb.displayValue = acb.name + (acb.retired ? ' [Retired]' : '');
+                });
             }
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);

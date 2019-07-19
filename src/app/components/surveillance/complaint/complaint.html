@@ -3,7 +3,7 @@
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
     <ol class="breadcrumb">
-      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Surveillance</button></li>
+      <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
       <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Complaints</button></li>
       <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
         Edit
@@ -22,7 +22,7 @@
       <select ng-model="$ctrl.complaint.certificationBody" id="certification-body" name="certificationBody"
         class="form-control"
         ng-change="$ctrl.changeAcb()"
-        ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' track by acb.id"
+        ng-options="acb.displayValue for acb in $ctrl.certificationBodies | orderBy: 'displayValue' track by acb.id"
         ng-required="$ctrl.isOn('complaints-ui-validation')">
       </select>
       <div class="text-danger"
