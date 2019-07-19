@@ -1,12 +1,12 @@
 (() => {
     'use strict';
 
-    describe('the Upload Listing component', () => {
-        var $compile, $log, $q, Upload, authService, ctrl, el, mock, networkService, scope;
+    fdescribe('the Upload Surveillance component', () => {
+        var $compile, $log, $q, Upload, authService, ctrl, el, mock, scope;
 
         mock = {
             baseData: {
-                url: '/rest/certified_products/upload',
+                url: '/rest/surveillance/upload',
                 headers: {
                     Authorization: 'Bearer token',
                     'API-Key': 'api-key',
@@ -18,7 +18,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('Upload', $delegate => {
                     $delegate.upload = jasmine.createSpy('upload');
                     return $delegate;
@@ -28,13 +28,9 @@
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     return $delegate;
                 });
-                $provide.decorator('networkService', $delegate => {
-                    $delegate.getUploadTemplateVersions = jasmine.createSpy('getUploadTemplateVersions');
-                    return $delegate;
-                });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
@@ -43,12 +39,10 @@
                 authService = _authService_;
                 authService.getToken.and.returnValue('token');
                 authService.getApiKey.and.returnValue('api-key');
-                networkService = _networkService_;
-                networkService.getUploadTemplateVersions.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 scope.onChange = jasmine.createSpy('onChange');
-                el = angular.element('<chpl-upload-listings on-change="onChange()"></chpl-upload-listings>');
+                el = angular.element('<chpl-upload-surveillance on-change="onChange()"></chpl-upload-surveillance>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -92,41 +86,40 @@
                             name: 'name',
                         };
                         response = {
-                            data: {
-                                errorMessages: undefined,
-                            },
+                            data: { },
                             config: { data: { file: { name: 'filename' }}},
-                            headers: {},
                         };
                     });
 
-                    it('should handle success', () => {
-                        response.data.pendingCertifiedProducts = [1, 2]
+                    it('should handle success of a small file', () => {
+                        response.data.pendingSurveillance = [1, 2];
                         Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully. 2 pending products are ready for confirmation.');
+                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully. 2 pending surveillance records are ready for confirmation.');
                         expect(ctrl.uploadErrors).toEqual([]);
                         expect(ctrl.uploadSuccess).toBe(true);
                         expect(scope.onChange).toHaveBeenCalled();
                     });
 
-                    it('should handle a deprecated template', () => {
-                        response.headers.warning = '299 - "Deprecated upload template"';
-                        response.data.pendingCertifiedProducts = [1, 2]
+                    it('should handle success of a large file', () => {
+                        response.data.user = { email: 'fake@sample.com'};
                         Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect(ctrl.uploadWarnings[0]).toEqual('The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.');
+                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully. The file will be processed and an email will be sent to fake@sample.com when processing is complete.');
+                        expect(ctrl.uploadErrors).toEqual([]);
+                        expect(ctrl.uploadSuccess).toBe(true);
+                        expect(scope.onChange).toHaveBeenCalled();
                     });
 
                     it('should handle failure', () => {
-                        response.data.errorMessages = ['An error is here'];
+                        response.data.errorMessages = [1];
                         Upload.upload.and.returnValue($q.reject(response));
                         ctrl.upload();
                         scope.$digest();
                         expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
-                        expect(ctrl.uploadErrors).toEqual(['An error is here']);
+                        expect(ctrl.uploadErrors).toEqual([1]);
                         expect(ctrl.uploadSuccess).toBe(false);
                         expect(scope.onChange).not.toHaveBeenCalled();
                     });

@@ -1,5 +1,5 @@
 export const UploadSurveillanceComponent = {
-    templateUrl: 'chpl.surveillance/surveillance/upload.html',
+    templateUrl: 'chpl.components/upload/surveillance.html',
     bindings: {
         onChange: '&',
     },
@@ -52,5 +52,5 @@ export const UploadSurveillanceComponent = {
     },
 }
 
-angular.module('chpl.surveillance')
+angular.module('chpl.components')
     .component('chplUploadSurveillance', UploadSurveillanceComponent);

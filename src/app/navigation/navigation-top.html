@@ -74,16 +74,14 @@
           <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="administration-toggle" ng-class="{'admin-active' : vm.isActive('administration')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.administrationIsOpen">Administration</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="administration-toggle" id="administration-dropdown-menu">
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && (vm.isOn('complaints') || vm.isOn('surveillance-reporting'))"><a ui-sref="administration.upload.listings()"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.upload.listings')"></i> Upload Listings</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/upload">Upload</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.upload"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.upload')"></i> Upload</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.confirm.listings')"></i> Confirm Listings</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance">Confirm Surveillance</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance"> Confirm Surveillance</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.fuzzy"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.fuzzy')"></i> Fuzzy Matching</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.scheduled"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.scheduled')"></i> Scheduled Jobs</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.background"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.background')"></i>Background Jobs</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement">CMS</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.background"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.background')"></i> Background Jobs</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.announcements"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.announcements')"></i> Announcements</a></li>
             </ul>
           </li>
