@@ -81,7 +81,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.scheduled"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.scheduled')"></i> Scheduled Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.background"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.background')"></i> Background Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.api-keys"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.api-keys')"></i> API Keys</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.announcements"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.announcements')"></i> Announcements</a></li>
             </ul>
           </li>

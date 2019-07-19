@@ -52,6 +52,17 @@ function administrationStateConfig ($stateProvider) {
             },
             data: { title: 'CHPL Administration - Announcements' },
         })
+        .state('administration.api-keys', {
+            url: '/api-keys',
+            component: 'chplApiKeys',
+            resolve: {
+                apiKeys: networkService => {
+                    'ngInject'
+                    return networkService.getApiUsers();
+                },
+            },
+            data: { title: 'CHPL Administration - API Keys' },
+        })
         .state('administration.cms', {
             url: '/cms',
             component: 'chplCms',
