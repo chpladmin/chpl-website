@@ -182,8 +182,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAnnouncements (pending) {
-        return this.apiGET('/announcements?future=' + pending);
+    getAnnouncements (pending, forceReload) {
+        return this.apiGET('/announcements?future=' + pending, forceReload);
     }
 
     getAnnualSurveillanceReports () {
