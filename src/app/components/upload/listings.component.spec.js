@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Upload Listing component', () => {
+    fdescribe('the Upload Listing component', () => {
         var $compile, $log, $q, Upload, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
