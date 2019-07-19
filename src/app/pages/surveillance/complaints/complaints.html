@@ -11,12 +11,12 @@
             </ol>
           </div>
           <div class="clearfix" ng-if="$ctrl.displayAdd">
-            <button class="btn pull-right" ng-click="$ctrl.displayAddComplaint()">
+            <button class="btn pull-right" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
               Add New Complaint
             </button>
           </div>
           <div class="table-responsive" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints">
-            <table class="table table-condensed">
+            <table class="table table-condensed" id="complaints-table">
               <thead>
                 <tr>
                   <th scope="col" class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
@@ -44,9 +44,10 @@
                     <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" ><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" id="edit-complaint-{{ complaint.id }}"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
                     <button class="btn btn-danger btn-link"
                       title="Delete Complaint"
+                      id="delete-complaint-{{ complaint.id }}"
                       ng-click="$ctrl.deleteComplaint(complaint)"
                       confirm="Are you sure you wish to delete this complaint?"
                       confirm-ok="Delete Complaint"
