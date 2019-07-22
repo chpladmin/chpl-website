@@ -1,6 +1,63 @@
 <div class="container-fluid">
-  <div class="row main-content" id="main-content" tabindex="-1">
-    Complaints "smart component"
-    <chpl-surveillance-complaint></chpl-surveillance-complaint>
+  <div class="main-content" id="main-content" tabindex="-1">
+    <div class="row">
+      <div class="col-md-12">
+        <div ng-if="$ctrl.isEditing === false">
+          <h2>All Complaints</h2>
+          <button class="btn btn-link" ng-click="$ctrl.displayAddComplaint()">
+            <i class="fa fa-plus-circle"></i>
+            Add New Complaint
+          </button>
+          <div class="table-responsive">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th scope="col">ONC-ACB</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Received Date</th>
+                  <th scope="col">ONC-ACB Complaint Id</th>
+                  <th scope="col">ONC Complaint Id</th>
+                  <th scope="col">Complainant Type</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="complaint in $ctrl.complaints | orderBy: 'id'">
+                  <td>{{ complaint.certificationBody.name }}</td>
+                  <td>{{ complaint.complaintStatusType.name }}</td>
+                  <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td>{{ complaint.acbComplaintId }}</td>
+                  <td>{{ complaint.oncComplaintId }}</td>
+                  <td>
+                    {{ complaint.complainantType.name }}
+                    <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-primary" ng-click="$ctrl.selectComplaint(complaint)" uib-tooltip="Edit Complaint" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div ng-if="$ctrl.isEditing === true">
+          <chpl-surveillance-complaint
+            complaint="$ctrl.complaint"
+            complainant-types="$ctrl.complainantTypes"
+            complaint-status-types="$ctrl.complaintStatusTypes"
+            certification-bodies="$ctrl.certificationBodies"
+            criteria="$ctrl.criteria"
+            editions="$ctrl.editions"
+            error-messages="$ctrl.errorMessages"
+            listings="$ctrl.listings"
+            surveillances="$ctrl.surveillances"
+            on-delete="$ctrl.deleteComplaint(complaint)"
+            on-save="$ctrl.saveComplaint(complaint)"
+            on-cancel="$ctrl.cancelEdit()"
+            on-listing-selected="$ctrl.selectListing(complaint)">
+          </chpl-surveillance-complaint>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

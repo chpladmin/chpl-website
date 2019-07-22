@@ -3,10 +3,18 @@ export const SurveillanceComponent = {
     bindings: {
     },
     controller: class SurveillanceComponent {
-        constructor ($log, authService) {
+        constructor ($log, $scope, $state, authService) {
             'ngInject'
             this.$log = $log;
+            this.$scope = $scope;
+            this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
+        }
+
+        $onInit () {
+            let that = this;
+            let loggedIn = this.$scope.$on('loggedIn', () => that.$state.reload());
+            this.$scope.$on('$destroy', loggedIn);
         }
     },
 }

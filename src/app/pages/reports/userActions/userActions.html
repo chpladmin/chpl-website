@@ -1,0 +1,61 @@
+<div st-table="$ctrl.results" st-safe-src="$ctrl.userActivities" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>User Actions</h3>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-sm-6">
+      <chpl-filter feature-flag="adminNav" filter-type-name="User Action Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()" on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
+    </div>
+
+    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
+      <button class="btn btn-ai-success pull-right" ng-csv="$ctrl.results" filename="User_{{ $ctrl.filename }}"
+            csv-header="['User Name', 'Email', 'Activity', 'Activity Date']"
+            csv-column-order="['responsibleUserFullName', 'email', 'description', 'friendlyActivityDate']">
+      <i class="fa fa-cloud-download"></i> Download</button>
+    </div>
+
+  </div>
+  <div class="row form-group form-inline">
+    <div class="col-sm-12">
+      <label for="activity-start-upload" class="control-label">Start Date</label>
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartDate" id="activity-start-upload" placeholder="yyyy-MM-dd">
+      <label for="activity-end-upload" class="control-label">End Date</label>
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndDate" id="activity-end-upload" placeholder="yyyy-MM-dd">
+      <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
+    </div>
+  </div>
+  <div class="row form-group" ng-if="!$ctrl.validDates()">
+    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-5">
+      <label for="activity-end-upload" class="control-label">Filter</label>
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on User's Name or Action" class="form-control" type="search">
+    </div>
+  </div>
+
+  <div class="row" ng-repeat="user in $ctrl.userList | orderBy">
+    <div class="col-sm-12">
+      <button class="btn btn-default pull-right" ng-click="$ctrl.isUserTableVisible[user] = !$ctrl.isUserTableVisible[user]"><i class="fa" ng-class="$ctrl.isUserTableVisible[user] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
+      <h4>{{ user }} ({{($ctrl.results | filter: {responsibleUserFullName: user}: true).length}})</h4>
+      <table class="table table-responsive" ng-if="$ctrl.isUserTableVisible[user]">
+        <thead>
+          <tr>
+            <th class="search-header" st-sort="description" st-skip-natural="true" st-sort-default="reverse">Action</th>
+            <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="activity in $ctrl.results | filter: {responsibleUserFullName: user}: true">
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

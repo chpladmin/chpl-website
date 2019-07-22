@@ -13,9 +13,8 @@
     background-image: url("../../assets/images/CHPL_Header.png");
     background-repeat: no-repeat;
     background-size: cover;
-    border-bottom: 20px solid #0070c9;
     box-shadow: none;
-    min-height: 160px;
+    min-height: 140px;
 }
 
 .navbar-inverse .navbar-nav>.active>a,
@@ -34,6 +33,11 @@
     }
 }
 
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.open>a {
+    box-shadow: none;
+}
+
 .navbar-scrolled {
     @media (min-width: 767px) {
         min-height: 0 !important;
@@ -45,9 +49,27 @@
     }
 }
 
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.open>a {
-    box-shadow: none;
+.navbar-admin {
+    background: #fff;
+
+    .navbar-nav {
+
+        >li {
+
+            .btn-link {
+                color: #000;
+            }
+
+            button.admin-active {
+                border-bottom: #012a68 solid thick;
+                border-radius: 0;
+            }
+
+            >a {
+                color: #000;
+            }
+        }
+    }
 }
 
 @media (max-width: 767px) {
@@ -88,7 +110,7 @@
     }
 
     @media (min-width: 767px) {
-        margin-top: 170px;
+        margin-top: 140px;
     }
 }
 
@@ -98,7 +120,7 @@
     }
 
     @media (min-width: 767px) {
-        margin-top: 70px;
+        margin-top: 100px;
     }
 }
 
@@ -118,9 +140,11 @@
 .toggle-navigation-closed {
     position: relative;
     top: 0;
-    background-color: #0070c9;
+    background-color: #012a68;
 
-    .btn-link {
+    .btn-link,
+    .btn-link:focus,
+    .btn-link:hover {
         color: #fff;
     }
 }

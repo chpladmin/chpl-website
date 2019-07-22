@@ -1,5 +1,4 @@
-function getResources ($q, networkService) {
-    'ngInject'
+let getResources = ($q, networkService) => {
     let promises = [
         networkService.getSearchOptions()
             .then(response => ({
@@ -31,7 +30,7 @@ function getResources ($q, networkService) {
             .then(response => ({ targetedUsers: response })),
     ];
     return $q.all(promises)
-        .then(response => response[0]);
+        .then(response => response);
 }
 
 function administrationStateConfig ($stateProvider) {
@@ -61,6 +60,52 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Reports - Listings' },
+        })
+        .state('administration.fuzzy', {
+            url: '/fuzzy-matching',
+            component: 'chplFuzzyMatching',
+            resolve: {
+                fuzzyTypes: networkService => {
+                    'ngInject'
+                    return networkService.getFuzzyTypes();
+                },
+            },
+            data: { title: 'CHPL Administration - Fuzzy Matching' },
+        })
+        .state('administration.jobs', {
+            abstract: true,
+            url: '/jobs',
+            template: '<ui-view/></div>',
+        })
+        .state('administration.jobs.background', {
+            url: '/background',
+            component: 'chplJobsBackgroundPage',
+            resolve: {
+                types: networkService => {
+                    'ngInject'
+                    return networkService.getJobTypes();
+                },
+            },
+            data: { title: 'CHPL Administration - Jobs - Background' },
+        })
+        .state('administration.jobs.scheduled', {
+            url: '/scheduled',
+            component: 'chplJobsScheduledPage',
+            resolve: {
+                acbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                jobs: networkService => {
+                    'ngInject'
+                    return networkService.getScheduleJobs();
+                },
+                triggers: networkService => {
+                    'ngInject'
+                    return networkService.getScheduleTriggers();
+                },
+            },
+            data: { title: 'CHPL Administration - Jobs - Scheduled' },
         })
     ;
 }

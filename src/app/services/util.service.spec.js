@@ -468,5 +468,31 @@
                 expect(util.muuCount(angular.copy(meaningfulUseUserHistory))).toEqual(meaningfulUseUserHistory[1]);
             });
         });
+
+        fdescribe('when getting ranges', () => {
+            it('should get every one if no step specified', () => {
+                expect(util.range(6)).toEqual([0, 1, 2, 3, 4, 5]);
+            });
+
+            it('should get every other one if stepped by 2', () => {
+                expect(util.range(6, '2')).toEqual([0, 2, 4]);
+            });
+
+            it('should handle col count for 1 column', () => {
+                expect(util.rangeCol(1)).toBe('col-sm-12');
+            });
+
+            it('should handle col count for 2 column2', () => {
+                expect(util.rangeCol(2)).toBe('col-sm-6');
+            });
+
+            it('should handle col count for 3 columns', () => {
+                expect(util.rangeCol('3')).toBe('col-sm-4');
+            });
+
+            it('should handle default columns', () => {
+                expect(util.rangeCol(undefined)).toBe('col-sm-12');
+            });
+        });
     });
 })();

@@ -51,8 +51,16 @@ export class NetworkService {
         return this.apiPOST('/announcements', announcement);
     }
 
+    createAnnualSurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/annual', report);
+    }
+
     createCmsId (ids) {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
+    }
+
+    createComplaint (complaint) {
+        return this.apiPOST('/complaints', complaint);
     }
 
     createFilter (filter) {
@@ -61,6 +69,10 @@ export class NetworkService {
 
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
+    }
+
+    createQuarterlySurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/quarterly', report);
     }
 
     createScheduleOneTimeTrigger (trigger) {
@@ -75,8 +87,20 @@ export class NetworkService {
         return this.apiDELETE('/announcements/' + announcementId);
     }
 
+    deleteAnnualSurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/annual/' + id);
+    }
+
+    deleteComplaint (complaintId) {
+        return this.apiDELETE('/complaints/' + complaintId);
+    }
+
     deleteFilter (filterId) {
         return this.apiDELETE('/filters/' + filterId);
+    }
+
+    deleteQuarterlySurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/quarterly/' + id);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -97,9 +121,21 @@ export class NetworkService {
         return this.apiDELETE('/users/' + userId);
     }
 
+    generateAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/annual/' + reportId);
+    }
+
+    generateQuarterlySurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/quarterly/' + reportId);
+    }
+
     getAcbActivity (activityRange) {
         var call = '/activity/acbs';
         return this.getActivity(call, activityRange);
+    }
+
+    getAcb (id) {
+        return this.apiGET('/acbs/' + id);
     }
 
     getAcbs (editable) {
@@ -148,6 +184,10 @@ export class NetworkService {
 
     getAnnouncements (pending) {
         return this.apiGET('/announcements?future=' + pending);
+    }
+
+    getAnnualSurveillanceReports () {
+        return this.apiGET('/surveillance-report/annual');
     }
 
     getApiActivity (options) {
@@ -203,6 +243,22 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint-status-types');
+    }
+
+    getComplainantTypes () {
+        return this.apiGET('/data/complainant-types');
+    }
+
+    getCriteria () {
+        return this.apiGET('/data/certification-criteria');
+    }
+
     getCriterionProductStatistics () {
         return this.apiGET('/statistics/criterion_product');
     }
@@ -234,6 +290,10 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
+        case 'complaintListings':
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber');
+        case 'surveillanceManagement':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default
         }
     }
@@ -271,8 +331,8 @@ export class NetworkService {
         return this.apiGET('/data/filter_types');
     }
 
-    getFuzzyTypes () {
-        return this.apiGET('/data/fuzzy_choices');
+    getFuzzyTypes (forceReload) {
+        return this.apiGET('/data/fuzzy_choices', forceReload);
     }
 
     getIncumbentDevelopersStatistics () {
@@ -293,6 +353,10 @@ export class NetworkService {
 
     getListing (listingId, forceReload) {
         return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+    }
+
+    getListingBasic (listingId) {
+        return this.apiGET('/certified_products/' + listingId);
     }
 
     getListingCountStatistics () {
@@ -364,8 +428,20 @@ export class NetworkService {
         return this.apiGET('/data/qms_standards');
     }
 
+    getQuarterlySurveillanceQuarters () {
+        return this.apiGET('/data/quarters');
+    }
+
+    getQuarterlySurveillanceReports () {
+        return this.apiGET('/surveillance-report/quarterly');
+    }
+
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
+    }
+
+    getRelevantListings (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/listings');
     }
 
     getSearchOptions () {
@@ -380,20 +456,36 @@ export class NetworkService {
         return this.apiGET('/products/' + productId);
     }
 
-    getSingleDeveloperActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/developers/' + id);
+    getSingleDeveloperActivityMetadata (id, options) {
+        let url = '/activity/metadata/developers/' + id
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleListingActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/listings/' + id);
+    getSingleListingActivityMetadata (id, options) {
+        let url = '/activity/metadata/listings/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleProductActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/products/' + id);
+    getSingleProductActivityMetadata (id, options) {
+        let url = '/activity/metadata/products/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
-    getSingleVersionActivityMetadata (id) {
-        return this.apiGET('/activity/metadata/versions/' + id);
+    getSingleVersionActivityMetadata (id, options) {
+        let url = '/activity/metadata/versions/' + id;
+        if (options && options.end) {
+            url += '?end=' + options.end;
+        }
+        return this.apiGET(url);
     }
 
     getSurveillanceLookups () {
@@ -533,7 +625,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
+        return this.apiPUT('/acbs/' + acb.id, acb);
     }
 
     modifyATL (atl) {
@@ -588,8 +680,20 @@ export class NetworkService {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
+    splitVersion (versionObject) {
+        return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
+    }
+
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
+    }
+
+    updateAnnualSurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/annual', report);
+    }
+
+    updateComplaint (complaint) {
+        return this.apiPUT('/complaints/' + complaint.id, complaint)
     }
 
     updateCP (cpObject) {
@@ -610,6 +714,14 @@ export class NetworkService {
 
     updateProduct (productObject) {
         return this.apiPUT('/products', productObject);
+    }
+
+    updateQuarterlySurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/quarterly', report);
+    }
+
+    updateRelevantListing (reportId, listing) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
     }
 
     updateScheduleTrigger (trigger) {
@@ -640,26 +752,20 @@ export class NetworkService {
             return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         } else {
             return this.$http.get(this.API + endpoint)
                 .then(response => {
                     if (angular.isObject(response.data)) {
-                        if (response.data.error === 'Invalid authentication token.') {
-                            this.$rootScope.$broadcast('badAuthorization');
-                        }
                         return response.data;
                     } else {
                         return this.$q.reject(response.data);
                     }
-                }, response => this.$q.reject(response.data));
+                }, error => this.$q.reject(error));
         }
     }
 

@@ -1,28 +1,35 @@
 (function () {
     'use strict';
 
-    describe('the ACB Management component', function () {
-        var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
+    fdescribe('the ACB Management component', function () {
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
+                $provide.decorator('networkService', function ($delegate) {
+                    $delegate.getUsersAtAcb = jasmine.createSpy('getUserAtAcb');
+                    return $delegate;
+                });
             });
 
-            inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                Mock = _Mock_;
+                $q = _$q_;
                 $uibModal = _$uibModal_;
+                Mock = _Mock_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
+                networkService = _networkService_;
+                networkService.getUsersAtAcb.and.returnValue($q.when({users: []}));
 
                 scope = $rootScope.$new();
                 scope.acb = {};

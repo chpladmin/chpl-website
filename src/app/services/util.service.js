@@ -7,6 +7,7 @@
     /** @ngInject */
     function utilService ($filter, $log, Blob, FileSaver) {
         var service = {
+            addDays: addDays,
             addNewValue: addNewValue,
             addressRequired: addressRequired,
             arrayCompare: arrayCompare,
@@ -18,6 +19,8 @@
             muuCount: muuCount,
             passwordClass: passwordClass,
             passwordTitle: passwordTitle,
+            range: range,
+            rangeCol: rangeCol,
             sortCert: sortCert,
             sortCertActual: sortCertActual,
             sortCertArray: sortCertArray,
@@ -32,6 +35,12 @@
         return service;
 
         ////////////////////////////////////////////////////////////////////
+
+        function addDays (date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
 
         function addNewValue (array, object) {
             if (!array) {
@@ -198,6 +207,40 @@
                 return 'Excellent';
             default:
                 return '';
+            }
+        }
+
+        function range (max, step) {
+            step = parseInt(step, 10) || 1;
+            let ret = [];
+            for (let i = 0; i < max; i += step) {
+                ret.push(i);
+            }
+            return ret;
+        }
+
+        function rangeCol (count) {
+            switch (parseInt(count, 10)) {
+            case 1:
+                return 'col-sm-12';
+            case 2:
+                return 'col-sm-6';
+            case 3:
+                return 'col-sm-4';
+            case 4:
+            case 5:
+                return 'col-sm-3';
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+                return 'col-sm-2';
+            case 12:
+                return 'col-sm-1';
+            default:
+                return 'col-sm-12';
             }
         }
 

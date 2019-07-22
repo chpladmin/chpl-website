@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.chpl_api', function () {
+    describe('the CHPL API component', function () {
 
         var $log, scope, vm;
 

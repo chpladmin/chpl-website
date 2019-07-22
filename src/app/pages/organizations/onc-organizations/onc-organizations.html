@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{ $ctrl.type }}<span ng-if="!$ctrl.activeOrg">s</span></h1>
+    </div>
+  </div>
+  <div class="main-content row" id="main-content" tabindex="-1">
+    <div class="row">
+      <div class="col-md-3">
+        <div ng-repeat="org in $ctrl.allOrgs">
+          <div class="pull-right">
+            <span class="badge" ng-if="org.retired">Retired</span>
+            <span ng-if="org.id === $ctrl.activeOrg.id && !$ctrl.isCreating"><i class="fa fa-caret-right"></i></span>
+          </div>
+          <button type="button" class="btn btn-link" ng-click="$ctrl.showOrg(org)">{{ org.name }}</button>
+        </div>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isCreating">Create</button>
+      </div>
+      <div class="col-md-9" ng-if="$ctrl.isCreating">
+        <chpl-onc-organization type="{{ $ctrl.type }}" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+      </div>
+      <div class="col-md-9" ng-if="$ctrl.activeOrg && !$ctrl.isCreating">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <chpl-onc-organization organization="$ctrl.activeOrg" type="{{ $ctrl.type }}" can-edit="$ctrl.canEdit($ctrl.activeOrg)" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-if="$ctrl.canEdit($ctrl.activeOrg)">
+          <div class="col-md-12">
+            <chpl-users column-count="2" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
