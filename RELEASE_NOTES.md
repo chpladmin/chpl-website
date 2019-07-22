@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 10.22.0
+_22 July 2019_
+
+### New Features
+* Updated announcement activity reports to use announcement metadata
+
+---
+
 ## Version 10.21.0
 _17 June 2019_
 

@@ -17,8 +17,9 @@ export const SurveillanceComplaintComponent = {
         surveillances: '<',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService, featureFlags, toaster, utilService) {
+        constructor ($anchorScroll, $filter, $log, authService, featureFlags, toaster, utilService) {
             'ngInject'
+            this.$anchorScroll = $anchorScroll;
             this.$filter = $filter;
             this.$log = $log;
             this.isOn = featureFlags.isOn;
@@ -44,6 +45,7 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
                 this.sortCertifications(this.complaint);
+                this.$anchorScroll();
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -53,6 +55,9 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.certificationBodies) {
                 this.certificationBodies = angular.copy(changes.certificationBodies.currentValue);
+                this.certificationBodies.forEach(acb => {
+                    acb.displayValue = acb.name + (acb.retired ? ' (Retired)' : '');
+                });
             }
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);
