@@ -209,13 +209,14 @@ export const SurveillanceComplaintsComponent = {
             this.surveillances = [];
             if (complaint && Array.isArray(complaint.listings)) {
                 complaint.listings.forEach(listing => {
-                    this.networkService.getListingBasic(listing.listingId).then(response => {
+                    this.networkService.getListingBasic(listing.listingId, true).then(response => {
                         if (Array.isArray(response.surveillance)) {
                             response.surveillance.forEach(surv => {
                                 that.surveillances.push({
                                     id: surv.id,
                                     friendlyId: surv.friendlyId,
                                     listingId: response.id,
+                                    certifiedProductId: response.id,
                                     chplProductNumber: response.chplProductNumber,
                                 });
                                 that.surveillances = angular.copy(that.surveillances);
