@@ -1,0 +1,84 @@
+<div ng-form="$ctrl.form">
+  <div class="form-group">
+    <label class="control-label" for="surveillanceOutcome">Surveillance Outcome</label>
+    <div>
+      <input type="text" class="form-control" id="surveillance-outcome" name="surveillanceOutcome" ng-model="$ctrl.surveillance.surveillanceOutcome"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="surveillanceProcessType">Surveillance Process Type</label>
+    <div>
+      <input type="text" class="form-control" id="surveillance-process-type" name="surveillanceProcessType" ng-model="$ctrl.surveillance.surveillanceProcessType"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="k1Reviewed">K1 Reviewed</label>
+    <div>
+      <input type="text" class="form-control" id="k1-reviewed" name="k1Reviewed" ng-model="$ctrl.surveillance.k1Reviewed"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="groundsForInitiating">Grounds For Initiating</label>
+    <div>
+      <input type="text" class="form-control" id="grounds-for-initiating" name="groundsForInitiating" ng-model="$ctrl.surveillance.groundsForInitiating"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="nonconformityCauses">Nonconformity Causes</label>
+    <div>
+      <input type="text" class="form-control" id="nonconformity-causes" name="nonconformityCauses" ng-model="$ctrl.surveillance.nonconformityCauses"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="nonconformityNature">Nonconformity Nature</label>
+    <div>
+      <input type="text" class="form-control" id="nonconformity-nature" name="nonconformityNature" ng-model="$ctrl.surveillance.nonconformityNature"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="stepsToSurveil">Steps To Surveil</label>
+    <div>
+      <input type="text" class="form-control" id="steps-to-surveil" name="stepsToSurveil" ng-model="$ctrl.surveillance.stepsToSurveil"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="stepsToEngage">Steps To Engage</label>
+    <div>
+      <input type="text" class="form-control" id="steps-to-engage" name="stepsToEngage" ng-model="$ctrl.surveillance.stepsToEngage"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="additionalCostsEvaluation">Additional Costs Evaluation</label>
+    <div>
+      <input type="text" class="form-control" id="additional-costs-evaluation" name="additionalCostsEvaluation" ng-model="$ctrl.surveillance.additionalCostsEvaluation"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="limitationsEvaluation">Limitations Evaluation</label>
+    <div>
+      <input type="text" class="form-control" id="limitations-evaluation" name="limitationsEvaluation" ng-model="$ctrl.surveillance.limitationsEvaluation"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="nondisclosureEvaluation">Nondisclosure Evaluation</label>
+    <div>
+      <input type="text" class="form-control" id="nondisclosure-evaluation" name="nondisclosureEvaluation" ng-model="$ctrl.surveillance.nondisclosureEvaluation"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="directionDeveloperResolution">Direction Developer Resolution</label>
+    <div>
+      <input type="text" class="form-control" id="direction-developer-resolution" name="directionDeveloperResolution" ng-model="$ctrl.surveillance.directionDeveloperResolution"></input>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="completedCapVerification">Completed Cap Verification</label>
+    <div>
+      <input type="text" class="form-control" id="completed-cap-verification" name="completedCapVerification" ng-model="$ctrl.surveillance.completedCapVerification"></input>
+    </div>
+  </div>
+  <div class="pull-right">
+    <button class="btn btn-default" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()">Save Surveillance Data</button>
+    <button class="btn btn-link" ng-click="$ctrl.cancel()">Cancel</button>
+  </div>
+</div>

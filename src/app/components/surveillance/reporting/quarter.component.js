@@ -15,8 +15,6 @@ export const SurveillanceReportQuarterComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
-            this.areComplaintsCollapsed = true;
-            this.areListingsCollapsed = true;
         }
 
         $onChanges (changes) {
@@ -27,6 +25,10 @@ export const SurveillanceReportQuarterComponent = {
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
             }
+            if (this.report) {
+                this.excludedListings = this.report.relevantListings.filter(() => true);
+                this.relevantListings = this.report.relevantListings.filter(l => l.surveillances && l.surveillances.length > 0);
+            }
         }
 
         save () {
@@ -35,6 +37,8 @@ export const SurveillanceReportQuarterComponent = {
 
         cancel () {
             this.report = angular.copy(this.backup.report);
+            this.excludedListings = this.report.relevantListings.filter(() => true);
+            this.relevantListings = this.report.relevantListings.filter(l => l.surveillances && l.surveillances.length > 0);
             this.onCancel();
         }
 

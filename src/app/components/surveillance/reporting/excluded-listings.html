@@ -1,0 +1,62 @@
+<div class="row" ng-form="$ctrl.form">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label class="control-label" for="listing">Listing exclude from randomized surveillance </label>
+      <input name="listing"
+             id="listing"
+             type="text"
+             class="form-control"
+             placeholder="Enter CHPL Product Number"
+             autocomplete="off"
+             ng-model="$ctrl.listing"
+             uib-typeahead="listing as listing.chplProductNumber for listing in $ctrl.listings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
+             typeahead-on-select="$ctrl.selectListing($item)">
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="reason-for-exclusion">Reason for exclusion </label>
+      <div>
+        <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion"
+               ng-model="$ctrl.listing.reason" required></input>
+        <div class="text-danger"
+             ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">
+          Reason is required
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-default " ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+            ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.excludeListing()">
+      Exclude Listing
+    </button>
+    <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.excludedListings">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+            <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
+            <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true" st-sort-default="reverse">Certification Date</th>
+            <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
+            <th scope="col" class="search-header" st-sort="reason" st-skip-natural="true">Exclusion Reason</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="listing in $ctrl.displayListings | filter : {excluded: true}">
+            <td>{{ listing.chplProductNumber }}</td>
+            <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.edition }}</td>
+            <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td ng-if="$ctrl.listingBeingEdited !== listing.id">{{ listing.reason }}</td>
+            <td ng-if="$ctrl.listingBeingEdited !== listing.id">
+              <button class="btn btn-link" uib-tooltip="Undo Exclude" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.undoExcludedListing(listing)">
+                <i class="fa fa-undo"></i><span class="sr-only">Undo exclude</span>
+              </button>
+              <button class="btn btn-link" uib-tooltip="Edit Exclusion Reason" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.listing = listing">
+                <i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit exclusion reason</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -110,8 +110,12 @@ import { states as usersStates } from './pages/users/users.state.js';
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(loadFlags())
-                .catch(error => {
+                .then(response => {
+                    if (response.status === 401) {
+                        authService.logout();
+                    }
+                    loadFlags();
+                }).catch(error => {
                     if (error.status === 401) {
                         authService.logout();
                         $state.reload();

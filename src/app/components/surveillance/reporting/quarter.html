@@ -30,37 +30,47 @@
         </div>
         <div class="clearfix">
           <div class="pull-right">
-            <button class="btn" id="quarterly-surveillance-save" ng-click="$ctrl.save()">Save Quarterly Report </button>
+            <button class="btn btn-default" id="quarterly-surveillance-save" ng-click="$ctrl.save()">Save Quarterly Report </button>
             <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
           </div>
         </div>
         <hr />
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading clickable" ng-click="$ctrl.areExcludedShown = !$ctrl.areExcludedShown">
             <div class="panel-title">
-              Listings for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
-              <a class="pull-right" ng-click="$ctrl.areListingsCollapsed = !$ctrl.areListingsCollapsed">
-                <span class="fa" ng-class="$ctrl.areListingsCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></span>
-              </a>
+              <i class="fa pull-right" ng-class="$ctrl.areExcludedShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
+              Listings excluded from randomized surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
             </div>
           </div>
-          <div class="panel-body" uib-collapse="$ctrl.areListingsCollapsed">
-            <chpl-surveillance-report-relevant-listings listings="$ctrl.report.relevantListings"
+          <div class="panel-body" ng-if="$ctrl.areExcludedShown">
+            <chpl-surveillance-report-excluded-listings listings="$ctrl.excludedListings"
+              on-save="$ctrl.saveRelevantListing(listing)">
+            </chpl-surveillance-report-excluded-listings>
+          </div>
+        </div>
+        <hr />
+        <div class="panel panel-default">
+          <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown">
+            <div class="panel-title">
+              <i class="fa pull-right" ng-class="$ctrl.areListingsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
+              Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
+            </div>
+          </div>
+          <div class="panel-body" ng-if="$ctrl.areListingsShown">
+            <chpl-surveillance-report-relevant-listings listings="$ctrl.relevantListings"
               on-save="$ctrl.saveRelevantListing(listing)">
             </chpl-surveillance-report-relevant-listings>
           </div>
         </div>
         <hr />
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading clickable" ng-click="$ctrl.areComplaintsShown = !$ctrl.areComplaintsShown">
             <div class="panel-title">
+              <i class="fa pull-right" ng-class="$ctrl.areComplaintsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
               Complaints for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
-              <a class="pull-right" ng-click="$ctrl.areComplaintsCollapsed = !$ctrl.areComplaintsCollapsed">
-                <span class="fa" ng-class="$ctrl.areComplaintsCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></span>
-              </a>
             </div>
           </div>
-          <div class="panel-body" uib-collapse="$ctrl.areComplaintsCollapsed">
+          <div class="panel-body" ng-if="$ctrl.areComplaintsShown">
             <chpl-surveillance-complaints
                 complaint-list-type="RELEVANT"
                 quarterly-report="$ctrl.report"
