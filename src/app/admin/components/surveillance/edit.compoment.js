@@ -6,13 +6,14 @@ export const SurveillanceEditComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceEditController {
-        constructor ($log, $uibModal, authService, networkService, utilService) {
+        constructor ($log, $uibModal, authService, networkService, toaster, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal
             this.authService = authService;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.toaster = toaster;
             this.utilService = utilService;
             this.sortRequirements = utilService.sortRequirements;
         }
@@ -84,18 +85,58 @@ export const SurveillanceEditComponent = {
         }
 
         deleteSurveillance () {
+            let that = this;
             if (this.reason) {
-                this.networkService.deleteSurveillance(this.surveillance.id, this.reason)
-                    .then(response => {
-                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                            this.close({$value: response});
-                        } else {
-                            this.errorMessages = [response];
-                        }
-                    },error => {
-                        this.errorMessages = [error.statusText];
-                    });
+                let complaints = [];
+                this.getAssociatedComplaints().then(results => {
+                    this.$log.info(results);
+                    complaints = results;
+                    if (Array.isArray(complaints) && complaints.length > 0) {
+                        let complaintsString = complaints.map(complaint => {
+                            return complaint.acbComplaintId;
+                        }).join(', ');
+
+                        that.toaster.pop({
+                            type: 'success',
+                            body: 'Surveillance has been removed from the following complaints: ' + complaintsString,
+                        });
+                    }
+
+                    that.networkService.deleteSurveillance(that.surveillance.id, that.reason)
+                        .then(response => {
+                            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                                that.close({ $value: response });
+                            } else {
+                                that.errorMessages = [response];
+                            }
+                        }, error => {
+                            that.errorMessages = [error.statusText];
+                        });
+                });
             }
+        }
+
+        getAssociatedComplaints () {
+            let that = this;
+            let complaintsProimise = new Promise(resolve => {
+                let complaints = [];
+                this.networkService.getComplaints().then(response => {
+                    if (Array.isArray(response.results)) {
+                        response.results.forEach(complaint => {
+                            if (Array.isArray(complaint.surveillances)) {
+                                for (let complaintSurveillance of complaint.surveillances) {
+                                    if (complaintSurveillance.surveillance.id === that.surveillance.id) {
+                                        complaints.push(complaint);
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    resolve(complaints);
+                });
+            });
+            return complaintsProimise;
         }
 
         editRequirement (req) {
