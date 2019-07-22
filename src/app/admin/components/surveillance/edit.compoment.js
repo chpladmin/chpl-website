@@ -87,10 +87,7 @@ export const SurveillanceEditComponent = {
         deleteSurveillance () {
             let that = this;
             if (this.reason) {
-                let complaints = [];
-                this.getAssociatedComplaints().then(results => {
-                    this.$log.info(results);
-                    complaints = results;
+                this.getAssociatedComplaints().then(complaints => {
                     if (Array.isArray(complaints) && complaints.length > 0) {
                         let complaintsString = complaints.map(complaint => {
                             return complaint.acbComplaintId;
@@ -118,7 +115,7 @@ export const SurveillanceEditComponent = {
 
         getAssociatedComplaints () {
             let that = this;
-            let complaintsProimise = new Promise(resolve => {
+            let complaintsPromise = new Promise(resolve => {
                 let complaints = [];
                 this.networkService.getComplaints().then(response => {
                     if (Array.isArray(response.results)) {
@@ -136,7 +133,7 @@ export const SurveillanceEditComponent = {
                     resolve(complaints);
                 });
             });
-            return complaintsProimise;
+            return complaintsPromise;
         }
 
         editRequirement (req) {

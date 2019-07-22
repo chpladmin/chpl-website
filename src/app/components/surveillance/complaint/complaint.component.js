@@ -127,16 +127,28 @@ export const SurveillanceComplaintComponent = {
         removeListing (listingToRemove) {
             this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
             //Remove any surveillances related to the removed listing
+            let friendlyIds = [];
             let surveillances = angular.copy(this.complaint.surveillances);
+            this.$log.info('Listing Id: ' + listingToRemove.listingId);
+            this.$log.info(surveillances);
             surveillances.forEach(surveillance => {
-                if (surveillance.surveillance.listingId === listingToRemove.listingId) {
+                this.$log.info('Surv Listing Id: ' + surveillance.surveillance.certifiedProductId);
+                if (surveillance.surveillance.certifiedProductId === listingToRemove.listingId) {
+                    this.$log.info('Found a surveillance');
+                    friendlyIds.push(surveillance.surveillance.friendlyId);
                     this.removeSurveillance(surveillance);
-                    this.toaster.pop({
-                        type: 'success',
-                        body: surveillance.surveillance.friendlyId + ' was removed because associated listing ' + listingToRemove.chplProductNumber + ' was removed',
-                    });
                 }
             });
+            this.$log.info(friendlyIds);
+            //If there were any surveillances remove, show them
+            if (friendlyIds.length > 0) {
+                let surveillancesString = friendlyIds.join(', ');
+                this.$log.info(surveillancesString);
+                this.toaster.pop({
+                    type: 'success',
+                    body: 'The following surveillances are associated with the listing and have been removed: ' + surveillancesString,
+                });
+            }
 
             this.onListingSelected({ complaint: this.complaint });
         }

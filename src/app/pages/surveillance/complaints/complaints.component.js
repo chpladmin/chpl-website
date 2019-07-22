@@ -216,6 +216,7 @@ export const SurveillanceComplaintsComponent = {
                                     id: surv.id,
                                     friendlyId: surv.friendlyId,
                                     listingId: response.id,
+                                    certifiedProductId: response.id,
                                     chplProductNumber: response.chplProductNumber,
                                 });
                                 that.surveillances = angular.copy(that.surveillances);
