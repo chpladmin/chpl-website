@@ -26,13 +26,13 @@
     }
 
     .breadcrumb a {
-        text-decoration: none;
+        text-decoration: underline;
     }
 
     .breadcrumb button {
-        text-decoration: none;
         padding: 0;
         margin-bottom: 2px;
+        text-decoration: underline;
     }
 
     .read-only-data {
