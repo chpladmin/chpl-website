@@ -11,7 +11,7 @@ export const SurveillanceComplaintsComponent = {
             'ngInject'
             this.$log = $log;
             this.authService = authService;
-            this.featureFlags = featureFlags;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.isEditing = false;
             this.complaints = [];
@@ -72,7 +72,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         saveComplaint (complaint) {
-            if (this.featureFlags.isOn('complaints-ui-validation')) {
+            if (this.isOn('complaints-ui-validation')) {
                 complaint.receivedDate = complaint.formattedReceivedDate.getTime();
             } else {
                 //This is only necesary if the front end validation is turned off via
