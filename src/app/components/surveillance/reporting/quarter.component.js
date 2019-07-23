@@ -27,7 +27,10 @@ export const SurveillanceReportQuarterComponent = {
             }
             if (this.report) {
                 this.excludedListings = this.report.relevantListings.filter(() => true);
-                this.relevantListings = this.report.relevantListings.filter(l => l.surveillances && l.surveillances.length > 0);
+                this.relevantListings = this.report.relevantListings.map(l => {
+                    l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
+                    return l;
+                }).filter(l => l.surveillances && l.surveillances.length > 0);
             }
         }
 
@@ -38,7 +41,10 @@ export const SurveillanceReportQuarterComponent = {
         cancel () {
             this.report = angular.copy(this.backup.report);
             this.excludedListings = this.report.relevantListings.filter(() => true);
-            this.relevantListings = this.report.relevantListings.filter(l => l.surveillances && l.surveillances.length > 0);
+            this.relevantListings = this.report.relevantListings.map(l => {
+                l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
+                return l;
+            }).filter(l => l.surveillances && l.surveillances.length > 0);
             this.onCancel();
         }
 
@@ -66,6 +72,15 @@ export const SurveillanceReportQuarterComponent = {
 
         saveRelevantListing (listing) {
             this.takeAction({report: this.report, listing: listing, action: 'saveRelevantListing'});
+        }
+
+        isRelevantSurveillance (surveillance) {
+            let reportStart = new Date(this.report.startDate);
+            let reportEnd = new Date(this.report.endDate);
+            let surveillanceStart = new Date(surveillance.startDate);
+            let surveillanceEnd = surveillance.endDate ? new Date(surveillance.endDate) : false;
+            return surveillanceStart <= reportEnd &&
+                (!surveillanceEnd || surveillanceEnd >= reportStart);
         }
     },
 }

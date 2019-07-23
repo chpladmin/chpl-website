@@ -1593,6 +1593,14 @@
             $httpBackend.flush();
         });
 
+        fit('should updateRelevantSurveillance', () => {
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/surveillance\/sid$/).respond(200, {data: 'response'});
+            networkService.updateRelevantSurveillance('qid', {id: 'sid'}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should updateScheduleTrigger', () => {
             $httpBackend.expectPUT(/^\/rest\/schedules\/triggers$/).respond(200, {data: 'response'});
             networkService.updateScheduleTrigger({name: 'something'}).then(response => {

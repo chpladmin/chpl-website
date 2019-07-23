@@ -42,9 +42,10 @@
               Listings excluded from randomized surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
             </div>
           </div>
-          <div class="panel-body" ng-if="$ctrl.areExcludedShown">
-            <chpl-surveillance-report-excluded-listings listings="$ctrl.excludedListings"
-              on-save="$ctrl.saveRelevantListing(listing)">
+          <div class="panel-body" ng-show="$ctrl.areExcludedShown">
+            <chpl-surveillance-report-excluded-listings
+               listings="$ctrl.excludedListings"
+               on-save="$ctrl.saveRelevantListing(listing)">
             </chpl-surveillance-report-excluded-listings>
           </div>
         </div>
@@ -53,12 +54,14 @@
           <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown">
             <div class="panel-title">
               <i class="fa pull-right" ng-class="$ctrl.areListingsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
-              Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
+              Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }} ({{ $ctrl.relevantListings.length }})
             </div>
           </div>
-          <div class="panel-body" ng-if="$ctrl.areListingsShown">
-            <chpl-surveillance-report-relevant-listings listings="$ctrl.relevantListings"
-              on-save="$ctrl.saveRelevantListing(listing)">
+          <div class="panel-body" ng-show="$ctrl.areListingsShown">
+            <chpl-surveillance-report-relevant-listings
+               listings="$ctrl.relevantListings"
+               quarterly-report="$ctrl.report"
+               on-save="$ctrl.saveRelevantListing(listing)">
             </chpl-surveillance-report-relevant-listings>
           </div>
         </div>
@@ -70,12 +73,12 @@
               Complaints for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
             </div>
           </div>
-          <div class="panel-body" ng-if="$ctrl.areComplaintsShown">
+          <div class="panel-body" ng-show="$ctrl.areComplaintsShown">
             <chpl-surveillance-complaints
-                complaint-list-type="RELEVANT"
-                quarterly-report="$ctrl.report"
-                display-add="false"
-                display-header="false">
+               complaint-list-type="RELEVANT"
+               quarterly-report="$ctrl.report"
+               display-add="false"
+               display-header="false">
             </chpl-surveillance-complaints>
           </div>
         </div>

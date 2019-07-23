@@ -728,6 +728,10 @@ export class NetworkService {
         return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
     }
 
+    updateRelevantSurveillance (reportId, surveillance) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/surveillance/' + surveillance.id, surveillance);
+    }
+
     updateScheduleTrigger (trigger) {
         return this.apiPUT('/schedules/triggers', trigger);
     }

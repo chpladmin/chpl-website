@@ -2,19 +2,23 @@ export const SurveillanceReportRelevantListingComponent = {
     templateUrl: 'chpl.components/surveillance/reporting/relevant-listing.html',
     bindings: {
         listing: '<',
+        quarterlyReport: '<',
         onSave: '&',
         onCancel: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
-        constructor ($log, authService) {
+        constructor ($log, networkService) {
             'ngInject'
             this.$log = $log;
-            this.hasAnyRole = authService.hasAnyRole;
+            this.networkService = networkService;
         }
 
         $onChanges (changes) {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
+            }
+            if (changes.quarterlyReport) {
+                this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
             }
         }
 
@@ -23,10 +27,13 @@ export const SurveillanceReportRelevantListingComponent = {
         }
 
         save (surveillance) {
-            this.listing.surveillances = this.listing.surveillances.filter(s => s.id !== surveillance.id);
-            this.listing.surveillances.push(surveillance);
-            this.onSave({ listing: this.listing })
-            this.activeSurveillance = undefined;
+            let that = this;
+            this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(response => {
+                that.listing.surveillances = that.listing.surveillances.filter(s => s.id !== response.id);
+                that.listing.surveillances.push(response);
+                that.onSave({ listing: that.listing })
+                this.activeSurveillance = undefined;
+            });
         }
 
         cancel () {

@@ -2,6 +2,7 @@ export const SurveillanceReportRelevantListingsComponent = {
     templateUrl: 'chpl.components/surveillance/reporting/relevant-listings.html',
     bindings: {
         listings: '<',
+        quarterlyReport: '<',
         onSave: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
@@ -20,6 +21,9 @@ export const SurveillanceReportRelevantListingsComponent = {
                         listing.formattedLastModifiedDate = new Date(listing.lastModifiedDate);
                     });
                 }
+            }
+            if (changes.quarterlyReport) {
+                this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
             }
         }
 
