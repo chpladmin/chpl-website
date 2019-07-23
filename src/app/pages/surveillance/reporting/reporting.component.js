@@ -5,6 +5,8 @@ export const SurveillanceReportingComponent = {
         annual: '<',
         availableQuarters: '<',
         quarters: '<',
+        surveillanceOutcomes: '<',
+        surveillanceProcessTypes: '<',
     },
     controller: class SurveillanceReportingComponent {
         constructor ($log, authService, networkService) {
@@ -40,6 +42,12 @@ export const SurveillanceReportingComponent = {
             }
             if (changes.quarters) {
                 this.quarters = angular.copy(changes.quarters.currentValue);
+            }
+            if (changes.surveillanceOutcomes) {
+                this.surveillanceOutcomes = angular.copy(changes.surveillanceOutcomes.currentValue);
+            }
+            if (changes.surveillanceProcessTypes) {
+                this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
             }
         }
 

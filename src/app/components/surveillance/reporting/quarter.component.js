@@ -3,6 +3,8 @@ export const SurveillanceReportQuarterComponent = {
     bindings: {
         report: '<',
         isEditing: '<',
+        surveillanceOutcomes: '<',
+        surveillanceProcessTypes: '<',
         onCancel: '&?',
         onSave: '&?',
         takeAction: '&?',
@@ -31,6 +33,12 @@ export const SurveillanceReportQuarterComponent = {
                     l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
                     return l;
                 }).filter(l => l.surveillances && l.surveillances.length > 0);
+            }
+            if (changes.surveillanceOutcomes) {
+                this.surveillanceOutcomes = angular.copy(changes.surveillanceOutcomes.currentValue);
+            }
+            if (changes.surveillanceProcessTypes) {
+                this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
             }
         }
 

@@ -2,19 +2,21 @@
   <div class="form-group">
     <label class="control-label" for="surveillanceOutcome">Surveillance Outcome</label>
     <div>
-      <input type="text" class="form-control" id="surveillance-outcome" name="surveillanceOutcome" ng-model="$ctrl.surveillance.surveillanceOutcome"></input>
+      <select class="form-control" id="surveillance-outcome" name="surveillanceOutcome" ng-model="$ctrl.surveillance.surveillanceOutcome"
+              ng-options="outcome as outcome.name for outcome in $ctrl.surveillanceOutcomes track by outcome.id"></select>
     </div>
   </div>
   <div class="form-group">
     <label class="control-label" for="surveillanceProcessType">Surveillance Process Type</label>
     <div>
-      <input type="text" class="form-control" id="surveillance-process-type" name="surveillanceProcessType" ng-model="$ctrl.surveillance.surveillanceProcessType"></input>
+      <select class="form-control" id="surveillance-process-type" name="surveillanceProcessType" ng-model="$ctrl.surveillance.surveillanceProcessType"
+              ng-options="type as type.name for type in $ctrl.surveillanceProcessTypes track by type.id"></select>
     </div>
   </div>
   <div class="form-group">
     <label class="control-label" for="k1Reviewed">K1 Reviewed</label>
     <div>
-      <input type="text" class="form-control" id="k1-reviewed" name="k1Reviewed" ng-model="$ctrl.surveillance.k1Reviewed"></input>
+      <input type="checkbox" class="form-control" id="k1-reviewed" name="k1Reviewed" ng-model="$ctrl.surveillance.k1Reviewed"></input>
     </div>
   </div>
   <div class="form-group">

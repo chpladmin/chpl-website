@@ -54,14 +54,16 @@
           <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown">
             <div class="panel-title">
               <i class="fa pull-right" ng-class="$ctrl.areListingsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
-              Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }} ({{ $ctrl.relevantListings.length }})
+              Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
             </div>
           </div>
           <div class="panel-body" ng-show="$ctrl.areListingsShown">
             <chpl-surveillance-report-relevant-listings
                listings="$ctrl.relevantListings"
                quarterly-report="$ctrl.report"
-               on-save="$ctrl.saveRelevantListing(listing)">
+               on-save="$ctrl.saveRelevantListing(listing)"
+               surveillance-outcomes="$ctrl.surveillanceOutcomes"
+               surveillance-process-types="$ctrl.surveillanceProcessTypes">
             </chpl-surveillance-report-relevant-listings>
           </div>
         </div>

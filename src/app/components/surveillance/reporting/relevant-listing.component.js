@@ -3,6 +3,8 @@ export const SurveillanceReportRelevantListingComponent = {
     bindings: {
         listing: '<',
         quarterlyReport: '<',
+        surveillanceOutcomes: '<',
+        surveillanceProcessTypes: '<',
         onSave: '&',
         onCancel: '&',
     },
@@ -19,6 +21,12 @@ export const SurveillanceReportRelevantListingComponent = {
             }
             if (changes.quarterlyReport) {
                 this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
+            }
+            if (changes.surveillanceOutcomes) {
+                this.surveillanceOutcomes = angular.copy(changes.surveillanceOutcomes.currentValue);
+            }
+            if (changes.surveillanceProcessTypes) {
+                this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
             }
         }
 

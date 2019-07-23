@@ -521,6 +521,14 @@ export class NetworkService {
         return data;
     }
 
+    getSurveillanceOutcomes () {
+        return this.apiGET('/data/surveillance-outcomes');
+    }
+
+    getSurveillanceProcessTypes () {
+        return this.apiGET('/data/surveillance-process-types');
+    }
+
     getTargetedUsers () {
         return this.apiGET('/data/targeted_users');
     }

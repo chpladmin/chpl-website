@@ -1144,6 +1144,22 @@
             });
         });
 
+        fit('should getSurveillanceOutcomes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/surveillance-outcomes$/).respond(200, {data: 'response'});
+            networkService.getSurveillanceOutcomes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should getSurveillanceProcessTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/surveillance-process-types$/).respond(200, {data: 'response'});
+            networkService.getSurveillanceProcessTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getTargetedUsers', () => {
             $httpBackend.expectGET(/^\/rest\/data\/targeted_users$/).respond(200, {data: 'response'});
             networkService.getTargetedUsers().then(response => {

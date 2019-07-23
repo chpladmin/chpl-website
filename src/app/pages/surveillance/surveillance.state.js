@@ -31,6 +31,14 @@ let states = {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReports();
                 },
+                surveillanceOutcomes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceOutcomes();
+                },
+                surveillanceProcessTypes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceProcessTypes();
+                },
             },
             data: { title: 'CHPL Surveillance - Reporting' },
         },

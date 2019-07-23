@@ -3,6 +3,8 @@
     <strong>{{ $ctrl.listing.chplProductNumber }}</strong>
     <chpl-surveillance-report-relevant-surveillance
        surveillance="$ctrl.activeSurveillance"
+       surveillance-outcomes="$ctrl.surveillanceOutcomes"
+       surveillance-process-types="$ctrl.surveillanceProcessTypes"
        on-cancel="$ctrl.cancelEdit()"
        on-save="$ctrl.save(surveillance)"
        ng-if="$ctrl.activeSurveillance">
