@@ -1,11 +1,8 @@
 <div class="row" ng-form="$ctrl.form">
   <div class="col-md-12">
     <div class="form-group">
-      <label class="control-label" for="listing">Listing exclude from randomized surveillance </label>
-      <input name="listing"
-             id="listing"
-             type="text"
-             class="form-control"
+      <label class="control-label" for="listing">Listing excluded from randomized surveillance <span class="text-danger">*</span></label>
+      <input name="listing" id="listing" type="text" class="form-control" required
              placeholder="Enter CHPL Product Number"
              autocomplete="off"
              ng-model="$ctrl.listing"
@@ -13,7 +10,7 @@
              typeahead-on-select="$ctrl.selectListing($item)">
     </div>
     <div class="form-group">
-      <label class="control-label" for="reason-for-exclusion">Reason for exclusion </label>
+      <label class="control-label" for="reason-for-exclusion">Reason for exclusion <span class="text-danger">*</span></label>
       <div>
         <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion"
                ng-model="$ctrl.listing.reason" required></input>

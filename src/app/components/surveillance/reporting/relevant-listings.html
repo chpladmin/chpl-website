@@ -6,7 +6,6 @@
        surveillance-outcomes="$ctrl.surveillanceOutcomes"
        surveillance-process-types="$ctrl.surveillanceProcessTypes"
        on-cancel="$ctrl.cancelEdit()"
-       on-save="$ctrl.save(listing)"
        ng-if="$ctrl.activeListing">
     </chpl-surveillance-report-relevant-listing>
     <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.listings" ng-if="!$ctrl.activeListing">

@@ -6,11 +6,25 @@
               ng-options="outcome as outcome.name for outcome in $ctrl.surveillanceOutcomes track by outcome.id"></select>
     </div>
   </div>
+  <div class="form-group" ng-if="$ctrl.surveillance.surveillanceOutcome.name === 'Non-conformity substantiated - Unresolved - Other - [Please describe]'">
+    <label class="control-label" for="surveillance-outcome-other">Surveillance Outcome - Other <span class="text-danger">*</span></label>
+    <div>
+      <input type="text" class="form-control" id="surveillance-outcome-other" name="surveillanceOutcomeOther" ng-model="$ctrl.surveillance.surveillanceOutcomeOther" required></input>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.surveillanceOutcomeOther.$touched) && $ctrl.form.surveillanceOutcomeOther.$error.required">Value is required</div>
+    </div>
+  </div>
   <div class="form-group">
     <label class="control-label" for="surveillanceProcessType">Surveillance Process Type</label>
     <div>
       <select class="form-control" id="surveillance-process-type" name="surveillanceProcessType" ng-model="$ctrl.surveillance.surveillanceProcessType"
               ng-options="type as type.name for type in $ctrl.surveillanceProcessTypes track by type.id"></select>
+    </div>
+  </div>
+  <div class="form-group" ng-if="$ctrl.surveillance.surveillanceProcessType.name === 'Other - [Please describe]'">
+    <label class="control-label" for="surveillance-process-type-other">Surveillance Process Type - Other <span class="text-danger">*</span></label>
+    <div>
+      <input type="text" class="form-control" id="surveillance-process-type-other" name="surveillanceProcessTypeOther" ng-model="$ctrl.surveillance.surveillanceProcessTypeOther" required></input>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.surveillanceProcessTypeOther.$touched) && $ctrl.form.surveillanceProcessTypeOther.$error.required">Value is required</div>
     </div>
   </div>
   <div class="form-group">

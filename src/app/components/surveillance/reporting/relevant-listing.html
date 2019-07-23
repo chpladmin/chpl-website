@@ -9,7 +9,7 @@
        on-save="$ctrl.save(surveillance)"
        ng-if="$ctrl.activeSurveillance">
     </chpl-surveillance-report-relevant-surveillance>
-    <div class="table-responsive" st-table="$ctrl.displaySurveillances" st-safe-src="$ctrl.listing.surveillances" ng-if="!$ctrl.activeSurveillance">
+    <div class="table-responsive" st-table="$ctrl.displaySurveillances" st-safe-src="$ctrl.surveillances" ng-show="!$ctrl.activeSurveillance">
       <table class="table table-condensed">
         <thead>
           <tr>

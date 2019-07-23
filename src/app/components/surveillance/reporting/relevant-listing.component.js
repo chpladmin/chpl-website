@@ -5,7 +5,6 @@ export const SurveillanceReportRelevantListingComponent = {
         quarterlyReport: '<',
         surveillanceOutcomes: '<',
         surveillanceProcessTypes: '<',
-        onSave: '&',
         onCancel: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
@@ -28,6 +27,9 @@ export const SurveillanceReportRelevantListingComponent = {
             if (changes.surveillanceProcessTypes) {
                 this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
             }
+            if (this.listing.surveillances) {
+                this.surveillances = angular.copy(this.listing.surveillances);
+            }
         }
 
         cancelEdit () {
@@ -37,10 +39,9 @@ export const SurveillanceReportRelevantListingComponent = {
         save (surveillance) {
             let that = this;
             this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(response => {
-                that.listing.surveillances = that.listing.surveillances.filter(s => s.id !== response.id);
-                that.listing.surveillances.push(response);
-                that.onSave({ listing: that.listing })
-                this.activeSurveillance = undefined;
+                that.surveillances = that.surveillances.filter(s => s.id !== response.id);
+                that.surveillances.push(response);
+                that.activeSurveillance = undefined;
             });
         }
 
