@@ -71,7 +71,11 @@ export const SurveillanceComplaintsComponent = {
         }
 
         saveComplaint (complaint) {
-            complaint.receivedDate = complaint.formattedReceivedDate.getTime();
+            if (complaint.formattedReceivedDate) {
+                complaint.receivedDate = complaint.formattedReceivedDate.getTime();
+            } else {
+                complaint.receivedDate = null;
+            }
             if (complaint.formattedClosedDate) {
                 complaint.closedDate = complaint.formattedClosedDate.getTime();
             } else {
