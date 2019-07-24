@@ -88,7 +88,7 @@ function administrationStateConfig ($stateProvider) {
             },
             data: { title: 'CHPL Reports - Listings' },
         })
-        .state('administration.fuzzy', {
+        .state('administration.fuzzy-matching', {
             url: '/fuzzy-matching',
             component: 'chplFuzzyMatching',
             resolve: {
