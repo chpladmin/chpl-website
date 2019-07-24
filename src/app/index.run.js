@@ -31,7 +31,7 @@ import { states as usersStates } from './pages/users/users.state.js';
                         });
                     }
 
-                    if (featureFlags.isOn('developer-page')) {
+                    if (featureFlags.isOn('organizations')) {
                         organizationsStates['enabled'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);

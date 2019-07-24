@@ -17,8 +17,9 @@ export const SurveillanceComplaintComponent = {
         surveillances: '<',
     },
     controller: class SurveillanceComplaintComponent {
-        constructor ($filter, $log, authService, featureFlags, toaster, utilService) {
+        constructor ($anchorScroll, $filter, $log, authService, featureFlags, toaster, utilService) {
             'ngInject'
+            this.$anchorScroll = $anchorScroll;
             this.$filter = $filter;
             this.$log = $log;
             this.isOn = featureFlags.isOn;
@@ -44,8 +45,7 @@ export const SurveillanceComplaintComponent = {
                     this.currentMode = this.modes.ADD;
                 }
                 this.sortCertifications(this.complaint);
-                this.$log.info(this.complaint.receivedDate);
-                this.$log.info(this.complaint.closedDate);
+                this.$anchorScroll();
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
@@ -55,6 +55,9 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.certificationBodies) {
                 this.certificationBodies = angular.copy(changes.certificationBodies.currentValue);
+                this.certificationBodies.forEach(acb => {
+                    acb.displayValue = acb.name + (acb.retired ? ' (Retired)' : '');
+                });
             }
             if (changes.errorMessages) {
                 this.errorMessages = angular.copy(changes.errorMessages.currentValue);
@@ -128,6 +131,25 @@ export const SurveillanceComplaintComponent = {
 
         removeListing (listingToRemove) {
             this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
+            //Remove any surveillances related to the removed listing
+            let friendlyIds = [];
+            let surveillances = angular.copy(this.complaint.surveillances);
+            surveillances.forEach(surveillance => {
+                if (surveillance.surveillance.certifiedProductId === listingToRemove.listingId) {
+                    friendlyIds.push(surveillance.surveillance.friendlyId);
+                    this.removeSurveillance(surveillance);
+                }
+            });
+            //If there were any surveillances remove, show them
+            if (friendlyIds.length > 0) {
+                let surveillancesString = friendlyIds.join(', ');
+                this.toaster.pop({
+                    type: 'success',
+                    body: 'The following surveillances are associated with the listing and have been removed: ' + surveillancesString,
+                });
+            }
+
+            this.onListingSelected({ complaint: this.complaint });
         }
 
         disableListing (listing) {
@@ -225,7 +247,7 @@ export const SurveillanceComplaintComponent = {
         }
 
         removeSurveillance (surveillanceToRemove) {
-            this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillanceId !== surveillanceToRemove.surveillanceId);
+            this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillance.id !== surveillanceToRemove.surveillance.id);
         }
     },
 }

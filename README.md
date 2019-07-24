@@ -50,7 +50,7 @@ yarn install
 Usable on `yarn build` and `yarn start`, these parameters control configuration of some properties
 
 * `--env.NODE_ENV=production` or `--env.NODE_ENV=development` to indicate whether to build for development or production environments. Defaults to `development` if not provided
-* `--env.flags=production` or `--env.flags=development` to indicate what set of feature flags to use. Defaults to NODE_ENV value if not provided
+* `--env.style` to create a a style guide page at url/style.html. Defaults to "don't create" if not provided
 
 #### Linting
 

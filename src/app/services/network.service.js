@@ -355,8 +355,8 @@ export class NetworkService {
         return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
     }
 
-    getListingBasic (listingId) {
-        return this.apiGET('/certified_products/' + listingId);
+    getListingBasic (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId, forceReload);
     }
 
     getListingCountStatistics () {

@@ -18,7 +18,16 @@
 
     .breadcrumb {
         background-color: transparent;
-        padding-left: 0;
+    }
+
+    .breadcrumb a {
+        text-decoration: underline;
+    }
+
+    .breadcrumb button {
+        padding: 0;
+        margin-bottom: 2px;
+        text-decoration: underline;
     }
 
     .read-only-data {

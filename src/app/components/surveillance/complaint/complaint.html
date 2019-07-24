@@ -1,9 +1,9 @@
-<div id="chpl-complaint" ng-form="$ctrl.form">
+<div id="chpl-complaint" class="container-fluid" ng-form="$ctrl.form">
   <div ng-if="$ctrl.displayHeader">
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
     <ol class="breadcrumb">
-      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Surveillance</button></li>
+      <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
       <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Complaints</button></li>
       <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
         Edit
@@ -22,7 +22,7 @@
       <select ng-model="$ctrl.complaint.certificationBody" id="certification-body" name="certificationBody"
               class="form-control"
               ng-change="$ctrl.changeAcb()"
-              ng-options="acb.name for acb in $ctrl.certificationBodies | orderBy: 'name' track by acb.id"
+              ng-options="acb.displayValue for acb in $ctrl.certificationBodies | orderBy: 'displayValue' track by acb.id"
               ng-required="$ctrl.isOn('complaints-ui-validation')">
       </select>
       <div class="text-danger"
@@ -131,12 +131,11 @@
   <div class="form-group">
     <label class="control-label" for="listings">Selected Certified Products</label>
     <div ng-if="!$ctrl.complaint.listings || $ctrl.complaint.listings.length === 0">
-      No Certified Products Selected
+      <em>No Certified Products Selected</em>
     </div>
-    <div class="selected-items-container" ng-if="$ctrl.complaint.listings">
+    <div class="selected-items-container" ng-if="$ctrl.complaint.listings && $ctrl.complaint.listings !== 0">
       <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
-        <button class="btn btn-primary btn-sm"
-                ng-click="$ctrl.removeListing(listing)">
+        <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeListing(listing)">
           <span class="sr-only">Remove item </span>
           {{ listing.chplProductNumber }}
           <i class="fa fa-times"></i>
@@ -155,11 +154,11 @@
            typeahead-on-select="$ctrl.selectListing($item)">
   </div>
   <div class="form-group">
-    <label class="control-label" for="surveillances">Selected Surveillances</label><br />
+    <label class="control-label" for="surveillances">Selected Surveillances</label>
     <div ng-if="!$ctrl.complaint.surveillances || $ctrl.complaint.surveillances.length === 0">
-      No Surveillances Selected
+      <em>No Surveillances Selected</em>
     </div>
-    <div class="selected-items-container" ng-if="$ctrl.complaint.surveillances">
+    <div class="selected-items-container" ng-if="$ctrl.complaint.surveillances && $ctrl.complaint.surveillances.length !== 0">
       <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
         <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeSurveillance(surveillance)">
           <span class="sr-only">Remove </span>
@@ -177,9 +176,9 @@
   <div class="form-group">
     <label class="control-label" for="criteria">Selected Criteria</label><br />
     <div ng-if="!$ctrl.complaint.criteria || $ctrl.complaint.criteria.length === 0">
-      No Criteria Selected
+      <em>No Criteria Selected</em>
     </div>
-    <div class="selected-items-container" ng-if="$ctrl.complaint.criteria">
+    <div class="selected-items-container" ng-if="$ctrl.complaint.criteria && $ctrl.complaint.criteria.length !== 0">
       <span ng-repeat="criterion in $ctrl.complaint.criteria">
         <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeCriterion(criterion)">
           <span class="sr-only">Remove </span>
@@ -205,29 +204,41 @@
       </select>
     </div>
   </div>
-  <div class="form-group">
-    <label class="checkbox-inline" for="complainant-contacted">
-      <input type="checkbox" id="complainant-contacted" name="complainantContacted"
-             ng-model="$ctrl.complaint.complainantContacted"> Complainant Contacted?
-    </label>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="checkbox-inline" for="complainant-contacted">
+          <input type="checkbox" id="complainant-contacted" name="complainantContacted"
+                 ng-model="$ctrl.complaint.complainantContacted"> Complainant Contacted?
+        </label>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="checkbox-inline" for="developer-contacted">
+          <input type="checkbox" id="developer-contacted" name="developerContacted"
+                 ng-model="$ctrl.complaint.developerContacted"> Developer Contacted?
+        </label>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <label class="checkbox-inline" for="developer-contacted">
-      <input type="checkbox" id="developer-contacted" name="developerContacted"
-             ng-model="$ctrl.complaint.developerContacted"> Developer Contacted?
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="checkbox-inline" for="onc-atl-contacted">
-      <input type="checkbox" id="onc-atl-contacted" name="oncAtlContacted" ng-model="$ctrl.complaint.oncAtlContacted">
-      ONC-ATL Contacted?
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="checkbox-inline" for="flag-for-oncreview">
-      <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-model="$ctrl.complaint.flagForOncReview">
-      Flag for ONC Review?
-    </label>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="checkbox-inline" for="onc-atl-contacted">
+          <input type="checkbox" id="onc-atl-contacted" name="oncAtlContacted" ng-model="$ctrl.complaint.oncAtlContacted">
+          ONC-ATL Contacted?
+        </label>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label class="checkbox-inline" for="flag-for-oncreview">
+          <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-model="$ctrl.complaint.flagForOncReview">
+          Flag for ONC Review?
+        </label>
+      </div>
+    </div>
   </div>
   <div class="text-danger text-left" ng-if="$ctrl.form.$invalid && $ctrl.showFormErrors">
     The following error(s) must be fixed:
