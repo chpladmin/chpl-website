@@ -25,6 +25,7 @@ export const SurveillanceReportAnnualComponent = {
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
             }
+            this.isEditing = true;
         }
 
         save () {

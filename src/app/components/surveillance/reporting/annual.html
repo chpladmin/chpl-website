@@ -1,6 +1,8 @@
 <div id="chpl-report" ng-form="$ctrl.form">
   <div class="row">
     <div class="col-sm-12">
+      <h2>Annual report</h2>
+      <div ncy-breadcrumb></div>
       <span class="pull-right" ng-if="!$ctrl.isEditing">
         <button class="btn btn-link btn-small" id="surveillance-report-cancel-{{ $ctrl.report.id }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Close Annual Surveillance Report</span></button>
         <button class="btn btn-link btn-small" id="surveillance-report-edit-{{ $ctrl.report.id }}" ng-click="$ctrl.edit()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Annual Surveillance Report</span></button>

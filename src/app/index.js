@@ -12,6 +12,7 @@ importAll(
 );
 
 import angular from 'angular';
+import 'angular-breadcrumb';
 import /* angularConfirm from*/ 'angular-confirm';
 import /* angularCronGen from*/ 'angular-cron-gen';
 import /* angularLoadingBar from*/ 'angular-loading-bar';
@@ -71,6 +72,7 @@ const dependencies = [
     'angulartics.google.tagmanager',
     'feature-flags',
     'googlechart',
+    'ncy-angular-breadcrumb',
     'ngAnimate',
     'ngAria',
     'ngCytoscape',

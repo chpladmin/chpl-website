@@ -9,9 +9,10 @@ export const SurveillanceReportingComponent = {
         surveillanceProcessTypes: '<',
     },
     controller: class SurveillanceReportingComponent {
-        constructor ($log, authService, networkService) {
+        constructor ($log, $state, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.mode = 'view';
@@ -82,7 +83,10 @@ export const SurveillanceReportingComponent = {
                 if (this.isAnnualOpen(acb, year)) {
                     this.activeAnnualReport = undefined;
                 } else {
-                    this.activeAnnualReport = report;
+                    this.$state.go('.annual', {
+                        reportId: report.id,
+                    });
+                    //this.activeAnnualReport = report;
                 }
             } else {
                 let report = {
@@ -160,10 +164,12 @@ export const SurveillanceReportingComponent = {
 
         createAnnual (report) {
             let that = this;
-            this.networkService.createAnnualSurveillanceReport(report).then(results => {
-                that.activeAnnualReport = results;
+            this.networkService.createAnnualSurveillanceReport(report).then(createdReport => {
                 that.networkService.getAnnualSurveillanceReports().then(results => {
                     that.annual = results;
+                    that.$state.go('.annual', {
+                        reportId: createdReport.id,
+                    });
                 });
             });
         }
@@ -208,8 +214,9 @@ export const SurveillanceReportingComponent = {
         }
 
         cancelAnnual () {
-            this.activeAnnualReport = undefined;
-            this.mode = 'view';
+            this.$state.go('surveillance.reporting', {}, {
+                reload: true,
+            });
         }
 
         cancelQuarter () {

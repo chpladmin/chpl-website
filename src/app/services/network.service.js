@@ -190,6 +190,10 @@ export class NetworkService {
         return this.apiGET('/surveillance-report/annual');
     }
 
+    getAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/annual/' + reportId);
+    }
+
     getApiActivity (options) {
         var params = [];
         var queryParams = '';

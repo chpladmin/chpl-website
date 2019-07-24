@@ -75,7 +75,9 @@ import { states as usersStates } from './pages/users/users.state.js';
 
                     if (featureFlags.isOn('surveillance-reporting')) {
                         surveillanceStates['surveillance-reports-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
@@ -112,10 +114,12 @@ import { states as usersStates } from './pages/users/users.state.js';
             networkService.keepalive()
                 .then(response => {
                     if (response.status === 401) {
+                        $log.info('response', response);
                         authService.logout();
                     }
                     loadFlags();
                 }).catch(error => {
+                    $log.info('error', error);
                     if (error.status === 401) {
                         authService.logout();
                         $state.reload();

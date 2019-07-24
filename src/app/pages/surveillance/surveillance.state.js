@@ -7,6 +7,9 @@ let states = {
             data: {
                 title: 'CHPL Surveillance - Complaints',
             },
+            ncyBreadcrumb: {
+                label: 'Complaints',
+            },
         },
     ],
     'surveillance-reports-on': [
@@ -41,6 +44,23 @@ let states = {
                 },
             },
             data: { title: 'CHPL Surveillance - Reporting' },
+            ncyBreadcrumb: {
+                label: 'Reporting',
+            },
+        },{
+            name: 'surveillance.reporting.annual',
+            url: '/annual/{reportId}',
+            component: 'chplSurveillanceReportAnnual',
+            resolve: {
+                report: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAnnualSurveillanceReport($transition$.params().reportId);
+                },
+            },
+            data: { title: 'CHPL Surveillance - Reporting - Annual' },
+            ncyBreadcrumb: {
+                label: 'Annual',
+            },
         },
     ],
     'ocd-1277-on': [
@@ -63,6 +83,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Surveillance - Manage' },
+            ncyBreadcrumb: {
+                label: 'Manage',
+            },
         },
     ],
     'base': [
@@ -72,16 +95,25 @@ let states = {
             url: '/surveillance',
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
+            ncyBreadcrumb: {
+                label: 'Surveillance',
+            },
         },{
             name: 'surveillance.upload',
             url: '/upload',
             component: 'chplUploadSurveillance',
             data: { title: 'CHPL Surveillance - Upload' },
+            ncyBreadcrumb: {
+                label: 'Upload',
+            },
         },{
             name: 'surveillance.confirm',
             url: '/confirm',
             component: 'chplConfirmSurveillance',
             data: { title: 'CHPL Surveillance - Confirmation' },
+            ncyBreadcrumb: {
+                label: 'Confirm',
+            },
         },{
             name: 'surveillance.complaints',
             url: '/complaints',
@@ -97,6 +129,11 @@ let states = {
             url: '/reporting',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Surveillance - Reporting' },
+        },{
+            name: 'surveillance.reporting.annual',
+            url: '/annual/{reportId}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL Surveillance - Reporting - Annual' },
         },
     ],
 }

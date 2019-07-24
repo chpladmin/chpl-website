@@ -476,6 +476,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getAnnualSurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/annual\/id$/).respond(200, {data: 'response'});
+            networkService.getAnnualSurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         fit('should getAnnualSurveillanceReports', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/annual$/).respond(200, {data: 'response'});
             networkService.getAnnualSurveillanceReports().then(response => {
