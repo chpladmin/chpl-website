@@ -49,6 +49,7 @@ let states = {
             url: '/manage',
             params: {
                 listingId: {squash: true, value: null},
+                product: {squash: true, value: null},
             },
             component: 'chplSurveillanceManagement',
             resolve: {
