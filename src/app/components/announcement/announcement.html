@@ -32,8 +32,9 @@
     <div class="text-danger" ng-if="($ctrl.form.startDate.$touched && $ctrl.form.endDate.$touched || $ctrl.showFormErrors) && !$ctrl.validDates()">Start Date must be before End Date</div>
   </div>
   <div class="form-group">
-    <label class="control-label" for="is-public">Is this public </label>
-    <input class="form-control" type="checkbox" ng-model="$ctrl.announcement.isPublic" id="is-public" name="isPublic" ng-disabled="$ctrl.announcement.isDeleted"></input>
+    <label class="control-label" for="is-public">Is this public
+      <input type="checkbox" ng-model="$ctrl.announcement.isPublic" id="is-public" name="isPublic" ng-disabled="$ctrl.announcement.isDeleted"></input>
+    </label>
   </div>
   <div class="row">
     <div class="col-md-12">

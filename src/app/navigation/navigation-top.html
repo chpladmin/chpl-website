@@ -77,7 +77,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.upload"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.upload')"></i> Upload</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.confirm.listings')"></i> Confirm Listings</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance"> Confirm Surveillance</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.fuzzy"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.fuzzy')"></i> Fuzzy Matching</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.fuzzy-matching"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.fuzzy-matching')"></i> Fuzzy Matching</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.scheduled"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.scheduled')"></i> Scheduled Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.background"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.background')"></i> Background Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>

@@ -4,9 +4,10 @@ export const AnnouncementsComponent = {
         announcements: '<',
     },
     controller: class AnnouncementsComponent {
-        constructor ($log, networkService) {
+        constructor ($log, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
         }
 
