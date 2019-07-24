@@ -89,8 +89,7 @@ export const SurveillanceReportingComponent = {
                     acb: acb,
                     year: year,
                 };
-                this.mode = 'initiateAnnual';
-                this.saveAnnual(report);
+                this.createAnnual(report);
             }
         }
 
@@ -113,8 +112,7 @@ export const SurveillanceReportingComponent = {
                     quarter: quarter,
                     year: year,
                 };
-                this.mode = 'initiateQuarter';
-                this.saveQuarter(report);
+                this.createQuarter(report);
             }
         }
 
@@ -160,54 +158,53 @@ export const SurveillanceReportingComponent = {
             }
         }
 
+        createAnnual (report) {
+            let that = this;
+            this.networkService.createAnnualSurveillanceReport(report).then(results => {
+                that.activeAnnualReport = results;
+                that.networkService.getAnnualSurveillanceReports().then(results => {
+                    that.annual = results;
+                });
+            });
+        }
+
         saveAnnual (report) {
             let that = this;
-            if (this.mode === 'initiateAnnual') {
-                this.networkService.createAnnualSurveillanceReport(report).then(results => {
-                    that.activeAnnualReport = results;
-                    that.networkService.getAnnualSurveillanceReports().then(results => {
-                        that.annual = results;
-                    });
+            this.networkService.updateAnnualSurveillanceReport(report).then(results => {
+                that.activeAnnualReport = results;
+                that.networkService.getAnnualSurveillanceReports().then(results => {
+                    that.annual = results;
                 });
-            } else if (this.mode === 'editAnnual') {
-                this.networkService.updateAnnualSurveillanceReport(report).then(results => {
-                    that.activeAnnualReport = results;
-                    that.networkService.getAnnualSurveillanceReports().then(results => {
-                        that.annual = results;
+                that.cancelAnnual();
+            });
+        }
+
+        createQuarter (report) {
+            let that = this;
+            this.networkService.createQuarterlySurveillanceReport(report).then(results => {
+                that.networkService.getRelevantListings(results)
+                    .then(listings => {
+                        results.relevantListings = listings;
+                        that.activeQuarterReport = results;
                     });
-                    that.cancelAnnual();
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
                 });
-            }
-            this.mode = 'view';
+            });
         }
 
         saveQuarter (report) {
             let that = this;
-            if (this.mode === 'initiateQuarter') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.networkService.getRelevantListings(results)
-                        .then(listings => {
-                            results.relevantListings = listings;
-                            that.activeQuarterReport = results;
-                        });
-                    that.networkService.getQuarterlySurveillanceReports().then(results => {
-                        that.quarters = results;
+            this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
+                that.networkService.getRelevantListings(results)
+                    .then(listings => {
+                        results.relevantListings = listings;
+                        that.activeQuarterReport = results;
                     });
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
                 });
-            } else {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.networkService.getRelevantListings(results)
-                        .then(listings => {
-                            results.relevantListings = listings;
-                            that.activeQuarterReport = results;
-                        });
-                    that.networkService.getQuarterlySurveillanceReports().then(results => {
-                        that.quarters = results;
-                    });
-                });
-            }
-            this.activeAnnualReport = undefined;
-            this.mode = 'view';
+            });
         }
 
         cancelAnnual () {
