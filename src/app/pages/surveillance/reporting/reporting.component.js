@@ -85,11 +85,12 @@ export const SurveillanceReportingComponent = {
                     this.activeAnnualReport = report;
                 }
             } else {
-                this.activeAnnualReport = {
+                let report = {
                     acb: acb,
                     year: year,
                 };
                 this.mode = 'initiateAnnual';
+                this.saveAnnual(report);
             }
         }
 
@@ -107,12 +108,13 @@ export const SurveillanceReportingComponent = {
                         });
                 }
             } else {
-                this.activeQuarterReport = {
+                let report = {
                     acb: acb,
                     quarter: quarter,
                     year: year,
                 };
                 this.mode = 'initiateQuarter';
+                this.saveQuarter(report);
             }
         }
 
@@ -134,10 +136,6 @@ export const SurveillanceReportingComponent = {
         }
 
         takeQuarterAction (report, action, listing) {
-            if (action === 'edit') {
-                this.activeQuarterReport = report;
-                this.mode = 'editQuarter';
-            }
             if (action === 'delete') {
                 let that = this;
                 this.networkService.deleteQuarterlySurveillanceReport(report.id).then(() => {
@@ -170,7 +168,6 @@ export const SurveillanceReportingComponent = {
                     that.networkService.getAnnualSurveillanceReports().then(results => {
                         that.annual = results;
                     });
-                    that.cancelAnnual();
                 });
             } else if (this.mode === 'editAnnual') {
                 this.networkService.updateAnnualSurveillanceReport(report).then(results => {
