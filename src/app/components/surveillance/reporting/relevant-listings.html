@@ -16,6 +16,7 @@
             <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
             <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true" st-sort-default="reverse">Certification Date</th>
             <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
+            <th scope="col" class="search-header" st-sort="surveillanceCount" st-skip-natural="true"># Relevant Surveillances</th>
             <th scope="col"><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
@@ -25,9 +26,10 @@
             <td>{{ listing.edition }}</td>
             <td>{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ listing.surveillanceCount }}</td>
             <td>
-              <button class="btn btn-link" uib-tooltip="Edit Listing Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeListing = listing">
-                <i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit listing surveillance data</span>
+              <button class="btn btn-link" uib-tooltip="View Listing Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeListing = listing">
+                <i class="fa fa-eye"></i><span class="sr-only">View listing surveillance data</span>
               </button>
             </td>
           </tr>

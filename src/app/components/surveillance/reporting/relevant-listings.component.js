@@ -21,6 +21,7 @@ export const SurveillanceReportRelevantListingsComponent = {
                         listing.formattedCertificationDate = new Date(listing.certificationDate);
                         listing.lastModifiedDate = parseInt(listing.lastModifiedDate, 10);
                         listing.formattedLastModifiedDate = new Date(listing.lastModifiedDate);
+                        listing.surveillanceCount = listing.surveillances.length;
                     });
                 }
             }
