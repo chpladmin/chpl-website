@@ -52,11 +52,19 @@ export const OncOrganizationsComponent = {
             return this.editableOrgs && this.editableOrgs.reduce((acc, cur) => acc || cur.id === org.id, false);
         }
 
-        edit () {
+        edit ($event) {
             this.isEditing = true;
             this.generalCollapsed = false;
             this.loadUsers();
             this.$anchorScroll();
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+
+        toggleGeneral () {
+            if (!this.isEditing) {
+                this.generalCollapsed = !this.generalCollapsed;
+            }
         }
 
         loadOrgs () {

@@ -4,7 +4,10 @@ let states = {
             name: 'organizations',
             abstract: true,
             url: '/organizations',
-            template: '<ui-view />',
+            component: 'chplOrganizations',
+            ncyBreadcrumb: {
+                label: 'Organizations',
+            },
         },{
             name: 'organizations.developers',
             url: '/developers/{developerId}/{action}?',
@@ -34,6 +37,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Developers' },
+            ncyBreadcrumb: {
+                label: 'Developer',
+            },
         },{
             name: 'organizations.developers.products',
             url: '/products/{productId}/{action}?',
@@ -52,6 +58,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Products' },
+            ncyBreadcrumb: {
+                label: 'Product',
+            },
         },{
             name: 'organizations.developers.products.versions',
             url: '/versions/{versionId}/{action}?',
@@ -70,6 +79,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Product Versions' },
+            ncyBreadcrumb: {
+                label: 'Version',
+            },
         },{
             name: 'organizations.onc-acbs',
             url: '/onc-acbs',
@@ -95,6 +107,9 @@ let states = {
                 }),
             },
             data: { title: 'CHPL ONC-ACBs' },
+            ncyBreadcrumb: {
+                label: 'ONC-ACBs',
+            },
         },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
@@ -120,6 +135,9 @@ let states = {
                 }),
             },
             data: { title: 'CHPL ONC-ATLs' },
+            ncyBreadcrumb: {
+                label: 'ONC-ATLs',
+            },
         },
     ],
     'base': [
