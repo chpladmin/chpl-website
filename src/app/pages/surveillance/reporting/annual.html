@@ -1,0 +1,47 @@
+<div id="chpl-report" ng-form="$ctrl.form">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Annual Report</h2>
+      <div ncy-breadcrumb></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <span class="pull-right">
+        <button class="btn" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()">
+          <i class="fa fa-download"></i> Download Annual Surveillance Report
+        </button>
+      </span>
+      <p><strong>{{ $ctrl.report.acb.name }} Annual Surveillance Reporting</strong></p>
+      <p>{{ $ctrl.report.year }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label class="control-label" for="obstacle">Obstacle Summary</label>
+        <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary"></textarea>
+        <p class="form-control-static">Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.</p>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="priority">Priority Changes From Findings Summary</label>
+        <textarea class="form-control" id="priority" name="priority" ng-model="$ctrl.report.priorityChangesFromFindingsSummary"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <span class="pull-right">
+        <button class="btn btn-default" id="annual-surveillance-save" ng-click="$ctrl.save()">Save Quarterly Report </button>
+        <button class="btn btn-link" id="annual-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
+        <button class="btn btn-danger" id="annual-suveillance-delete"
+                confirm="Are you sure you wish to delete this Annual Surveillance Report?"
+                confirm-ok="Yes"
+                confirm-cancel="No"
+                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                ng-if="$ctrl.report.id"
+                ng-click="$ctrl.delete()">Delete</button>
+      </span>
+    </div>
+  </div>
+</div>

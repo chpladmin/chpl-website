@@ -1283,6 +1283,11 @@ angular-aria@^1.7.2:
   resolved "https://registry.yarnpkg.com/angular-aria/-/angular-aria-1.7.8.tgz#3954250ef516b57cdd3cdf41ff4ee6fcfdc84ceb"
   integrity sha512-facq/111sZKL2wUUqRA1GnGt+lZ8KAcX9Aw04cNA+OyEkoaoRC77NY4VSOTQxghlSd0OPAdLeFnmETnuiWrpLg==
 
+angular-breadcrumb@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/angular-breadcrumb/-/angular-breadcrumb-0.5.0.tgz#058abe6984f1b82ff6ac37888ef9afccbc8f63b2"
+  integrity sha1-BYq+aYTxuC/2rDeIjvmvzLyPY7I=
+
 angular-confirm@1.2:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/angular-confirm/-/angular-confirm-1.2.6.tgz#7988e5ee0bd7929142e6f6219f5baccc28b5199b"
