@@ -5,9 +5,10 @@ export const SurveillanceReportExcludedListingsComponent = {
         onSave: '&',
     },
     controller: class SurveillanceReportExcludedListingComponent {
-        constructor ($log) {
+        constructor ($log, authService) {
             'ngInject'
             this.$log = $log;
+            this.hasAnyRole = authService.hasAnyRole;
             this.backup = {};
         }
 
