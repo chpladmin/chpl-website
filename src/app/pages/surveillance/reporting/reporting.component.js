@@ -87,14 +87,6 @@ export const SurveillanceReportingComponent = {
                 this.$state.go('.quarterly', {
                     reportId: report.id,
                 });
-                /*
-                  let that = this;
-                  this.networkService.getRelevantListings(report)
-                  .then(results => {
-                  report.relevantListings = results;
-                  that.activeQuarterReport = report;
-                  });
-                */
             } else {
                 let report = {
                     acb: acb,
@@ -214,11 +206,6 @@ export const SurveillanceReportingComponent = {
                 reload: true,
             });
         }
-
-        /*cancelQuarter () {
-          this.activeQuarterReport = undefined;
-          this.mode = 'view';
-          }*/
     },
 }
 

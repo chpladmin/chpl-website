@@ -119,7 +119,7 @@ let states = {
         },{
             name: 'surveillance.upload',
             url: '/upload',
-            component: 'chplUploadSurveillance',
+            component: 'chplUploadSurveillances',
             data: { title: 'CHPL Surveillance - Upload' },
             ncyBreadcrumb: {
                 label: 'Upload',
