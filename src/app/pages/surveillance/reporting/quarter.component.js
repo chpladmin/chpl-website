@@ -1,13 +1,13 @@
 export const SurveillanceReportQuarterComponent = {
-    templateUrl: 'chpl.components/surveillance/reporting/quarter.html',
+    templateUrl: 'chpl.surveillance/reporting/quarter.html',
     bindings: {
         report: '<',
-        isEditing: '<',
+        relevantListings: '<',
         surveillanceOutcomes: '<',
         surveillanceProcessTypes: '<',
-        onCancel: '&?',
-        onSave: '&?',
-        takeAction: '&?',
+        onCancel: '&',
+        onSave: '&',
+        takeAction: '&',
     },
     controller: class SurveillanceReportQuarterComponent {
         constructor ($log, authService, networkService, toaster) {
@@ -24,12 +24,13 @@ export const SurveillanceReportQuarterComponent = {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
             }
-            if (changes.isEditing) {
-                this.isEditing = angular.copy(changes.isEditing.currentValue);
+            if (changes.relevantListings) {
+                this.relevantListings = angular.copy(changes.relevantListings.currentValue);
+                this.backup.relevantListings = angular.copy(this.relevantListings);
             }
-            if (this.report) {
-                this.excludedListings = this.report.relevantListings.filter(() => true);
-                this.relevantListings = this.report.relevantListings.map(l => {
+            if (this.relevantListings) {
+                this.excludedListings = this.relevantListings.filter(() => true);
+                this.relevantListings = this.relevantListings.map(l => {
                     l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
                     return l;
                 }).filter(l => l.surveillances && l.surveillances.length > 0);
@@ -48,16 +49,12 @@ export const SurveillanceReportQuarterComponent = {
 
         cancel () {
             this.report = angular.copy(this.backup.report);
-            this.excludedListings = this.report.relevantListings.filter(() => true);
-            this.relevantListings = this.report.relevantListings.map(l => {
+            this.excludedListings = this.backup.relevantListings.filter(() => true);
+            this.relevantListings = this.backup.relevantListings.map(l => {
                 l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
                 return l;
             }).filter(l => l.surveillances && l.surveillances.length > 0);
             this.onCancel();
-        }
-
-        edit () {
-            this.takeAction({report: this.report, action: 'edit'});
         }
 
         delete () {
@@ -93,5 +90,5 @@ export const SurveillanceReportQuarterComponent = {
     },
 }
 
-angular.module('chpl.components')
+angular.module('chpl.surveillance')
     .component('chplSurveillanceReportQuarter', SurveillanceReportQuarterComponent);

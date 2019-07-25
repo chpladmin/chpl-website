@@ -1,11 +1,10 @@
 export const SurveillanceReportAnnualComponent = {
-    templateUrl: 'chpl.components/surveillance/reporting/annual.html',
+    templateUrl: 'chpl.surveillance/reporting/annual.html',
     bindings: {
         report: '<',
-        isEditing: '<',
-        onCancel: '&?',
-        onSave: '&?',
-        takeAction: '&?',
+        onCancel: '&',
+        onSave: '&',
+        takeAction: '&',
     },
     controller: class SurveillanceReportAnnualComponent {
         constructor ($log, authService, networkService, toaster) {
@@ -22,10 +21,6 @@ export const SurveillanceReportAnnualComponent = {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
             }
-            if (changes.isEditing) {
-                this.isEditing = angular.copy(changes.isEditing.currentValue);
-            }
-            this.isEditing = true;
         }
 
         save () {
@@ -35,10 +30,6 @@ export const SurveillanceReportAnnualComponent = {
         cancel () {
             this.report = angular.copy(this.backup.report);
             this.onCancel();
-        }
-
-        edit () {
-            this.takeAction({report: this.report, action: 'edit'});
         }
 
         delete () {
@@ -61,5 +52,5 @@ export const SurveillanceReportAnnualComponent = {
     },
 }
 
-angular.module('chpl.components')
+angular.module('chpl.surveillance')
     .component('chplSurveillanceReportAnnual', SurveillanceReportAnnualComponent);

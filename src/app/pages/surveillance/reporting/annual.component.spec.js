@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Report Quarter component', () => {
+    fdescribe('the Surveillance Report Annual component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
@@ -9,8 +9,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.services', 'chpl.components', $provide => {
-                $provide.factory('chplSurveillanceComplaints', () => ({}));
+            angular.mock.module('chpl.services', 'chpl.surveillance', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
@@ -29,7 +28,7 @@
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onSave = jasmine.createSpy('onSave');
 
-                el = angular.element('<chpl-surveillance-report-quarter report="report" is-editing="isEditing" on-cancel="onCancel()" on-save="onSave(report)"></chpl-surveillance-report-quarter>');
+                el = angular.element('<chpl-surveillance-report-annual report="report" is-editing="isEditing" on-cancel="onCancel()" on-save="onSave(report)"></chpl-surveillance-report-annual>');
 
                 $compile(el)(scope);
                 scope.$digest();

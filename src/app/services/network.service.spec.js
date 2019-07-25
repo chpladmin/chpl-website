@@ -1029,6 +1029,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getQuarterlySurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly\/id$/).respond(200, {data: 'response'});
+            networkService.getQuarterlySurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         fit('should getQuarterlySurveillanceReports', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
             networkService.getQuarterlySurveillanceReports().then(response => {
@@ -1047,7 +1055,7 @@
 
         fit('should getRelevantListings', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly\/id\/listings$/).respond(200, {data: 'response'});
-            networkService.getRelevantListings({id: 'id'}).then(response => {
+            networkService.getRelevantListings('id').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

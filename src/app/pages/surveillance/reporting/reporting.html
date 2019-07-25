@@ -1,84 +1,60 @@
 <div class="container-fluid">
   <div class="row main-content" id="main-content" tabindex="-1">
-    <ui-view on-save="$ctrl.saveAnnual(report)" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)">
-      <span ng-if="$ctrl.mode === 'view' && !$ctrl.activeQuarterReport && !$ctrl.activeAnnualReport">
-        <div class="col-md-12">
-          <h2>Available reports</h2>
-          <div ncy-breadcrumb></div>
-          <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
-            <div class="col-sm-12">
-              <div class="panel panel-primary">
-                <div class="panel-heading clickable" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]">
-                  <h4 class="panel-title"><i class="fa" ng-class="$ctrl.display[acb.name] ? 'fa-caret-up' : 'fa-caret-down'"></i> {{ acb.name }}</h4>
-                </div>
-                <div class="panel-body" ng-if="$ctrl.display[acb.name]">
-                  <table class="table table-condensed">
-                    <thead>
-                      <th scope="col">Year</th>
-                      <th scope="col" ng-repeat="quarter in $ctrl.availableQuarters">{{ quarter.name }}</th>
-                      <th scope="col">Annual</th>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="year in $ctrl.availableYears | orderBy :'toString()' : true">
-                        <td>{{ year }}</td>
-                        <td ng-repeat="quarter in $ctrl.availableQuarters">
-                          <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && $ctrl.findQuarterReport(acb, year, quarter.name)">
-                            <span ng-if="!$ctrl.isQuarterOpen(acb, year, quarter.name)">View</span>
-                            <span ng-if="$ctrl.isQuarterOpen(acb, year, quarter.name)">Close</span>
-                          </button>
-                          <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findQuarterReport(acb, year, quarter.name)"
-                                  confirm="Are you sure you wish to initiate quarterly surveillance reporting for quarter {{ quarter.name }} of year {{ year }}?"
-                                  confirm-ok="Yes"
-                                  confirm-cancel="No"
-                                  confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
-                            Initiate
-                          </button>
-                          <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
-                          <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && $ctrl.findAnnualReport(acb, year)">
-                            <span ng-if="!$ctrl.isAnnualOpen(acb, year)">View</span>
-                            <span ng-if="$ctrl.isAnnualOpen(acb, year)">Close</span>
-                          </button>
-                          <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findAnnualReport(acb, year)"
-                                  confirm="Are you sure you wish to initiate annual surveillance reporting for year {{ year }}?"
-                                  confirm-ok="Yes"
-                                  confirm-cancel="No"
-                                  confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
-                            Initiate
-                          </button>
-                          <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findAnnualReport(acb, year)">View</button>
-                          <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+    <!--<ui-view on-save="$ctrl.saveAnnual(report)" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)">-->
+    <ui-view on-save="$ctrl.save(report)" on-cancel="$ctrl.cancel()" take-action="$ctrl.takeAction(report, action)">
+      <div class="col-md-12">
+        <h2>Available reports</h2>
+        <div ncy-breadcrumb></div>
+        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
+          <div class="col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-heading clickable" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]">
+                <h3 class="panel-title">
+                  <i class="fa pull-right" ng-class="$ctrl.display[acb.name] ? 'fa-caret-down' : 'fa-caret-up'"></i>
+                  {{ acb.name }}
+                </h3>
+              </div>
+              <div class="panel-body" ng-show="$ctrl.display[acb.name]">
+                <table class="table table-condensed">
+                  <thead>
+                    <th scope="col">Year</th>
+                    <th scope="col" ng-repeat="quarter in $ctrl.availableQuarters">{{ quarter.name }}</th>
+                    <th scope="col">Annual</th>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="year in $ctrl.availableYears | orderBy :'toString()' : true">
+                      <td>{{ year }}</td>
+                      <td ng-repeat="quarter in $ctrl.availableQuarters">
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findQuarterReport(acb, year, quarter.name)"
+                                confirm="Are you sure you wish to initiate quarterly surveillance reporting for quarter {{ quarter.name }} of year {{ year }}?"
+                                confirm-ok="Yes"
+                                confirm-cancel="No"
+                                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                          Initiate
+                        </button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
+                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && $ctrl.findAnnualReport(acb, year)">View</button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findAnnualReport(acb, year)"
+                                confirm="Are you sure you wish to initiate annual surveillance reporting for year {{ year }}?"
+                                confirm-ok="Yes"
+                                confirm-cancel="No"
+                                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                          Initiate
+                        </button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findAnnualReport(acb, year)">View</button>
+                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
-      </span>
-      <div class="col-md-12 quarter-report-wrapper" ng-if="$ctrl.mode === 'view' && $ctrl.activeQuarterReport">
-        <h2>Quarterly Report</h2>
-        <ol class="breadcrumb">
-          <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
-          <li><button class="btn btn-link" ng-click="$ctrl.cancelQuarter()">{{ $ctrl.activeQuarterReport.acb.name }} Quarterly Report</button></li>
-          <li class="active">
-            {{ $ctrl.activeQuarterReport.year }} - {{ $ctrl.activeQuarterReport.quarter }}
-          </li>
-        </ol>
-        <chpl-surveillance-report-quarter report="$ctrl.activeQuarterReport" on-cancel="$ctrl.cancelQuarter()" on-save="$ctrl.saveQuarter(report)" take-action="$ctrl.takeQuarterAction(report, action, listing)" surveillance-outcomes="$ctrl.surveillanceOutcomes" surveillance-process-types="$ctrl.surveillanceProcessTypes"></chpl-surveillance-report-quarter>
-      </div>
-      <div class="col-md-12" ng-if="$ctrl.mode === 'view' && $ctrl.activeAnnualReport">
-        <h2>Annual report</h2>
-        <div ncy-breadcrumb></div>
-        <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
-      </div>
-      <div class="col-md-12" ng-if="$ctrl.mode === 'editAnnual'">
-        <h2>Edit surveillance reporting</h2>
-        <chpl-surveillance-report-annual report="$ctrl.activeAnnualReport" is-editing="true" on-save="$ctrl.saveAnnual(report)" on-cancel="$ctrl.cancelAnnual()" take-action="$ctrl.takeAnnualAction(report, action)"></chpl-surveillance-report-annual>
       </div>
     </ui-view>
   </div>

@@ -15,7 +15,6 @@ export const SurveillanceReportingComponent = {
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
-            this.mode = 'view';
         }
 
         $onInit () {
@@ -67,27 +66,12 @@ export const SurveillanceReportingComponent = {
             return report;
         }
 
-        isAnnualOpen (acb, year) {
-            let report = this.findAnnualReport(acb, year);
-            return this.activeAnnualReport && report && this.activeAnnualReport.id === report.id;
-        }
-
-        isQuarterOpen (acb, year, quarter) {
-            let report = this.findQuarterReport(acb, year, quarter);
-            return this.activeQuarterReport && report && this.activeQuarterReport.id === report.id;
-        }
-
         actOnAnnual (acb, year) {
             let report = this.findAnnualReport(acb, year);
             if (report) {
-                if (this.isAnnualOpen(acb, year)) {
-                    this.activeAnnualReport = undefined;
-                } else {
-                    this.$state.go('.annual', {
-                        reportId: report.id,
-                    });
-                    //this.activeAnnualReport = report;
-                }
+                this.$state.go('.annual', {
+                    reportId: report.id,
+                });
             } else {
                 let report = {
                     acb: acb,
@@ -100,16 +84,17 @@ export const SurveillanceReportingComponent = {
         actOnQuarter (acb, year, quarter) {
             let report = this.findQuarterReport(acb, year, quarter);
             if (report) {
-                if (this.isQuarterOpen(acb, year, quarter)) {
-                    this.activeQuarterReport = undefined;
-                } else {
-                    let that = this;
-                    this.networkService.getRelevantListings(report)
-                        .then(results => {
-                            report.relevantListings = results;
-                            that.activeQuarterReport = report;
-                        });
-                }
+                this.$state.go('.quarterly', {
+                    reportId: report.id,
+                });
+                /*
+                  let that = this;
+                  this.networkService.getRelevantListings(report)
+                  .then(results => {
+                  report.relevantListings = results;
+                  that.activeQuarterReport = report;
+                  });
+                */
             } else {
                 let report = {
                     acb: acb,
@@ -120,19 +105,26 @@ export const SurveillanceReportingComponent = {
             }
         }
 
-        takeAnnualAction (report, action) {
-            if (action === 'edit') {
-                this.activeAnnualReport = report;
-                this.mode = 'editAnnual';
+        takeAction (report, action) {
+            switch (this.$state.current.name) {
+            case 'surveillance.reporting.annual':
+                this.takeAnnualAction(report, action);
+                break;
+            case 'surveillance.reporting.quarterly':
+                this.takeQuarterAction(report, action);
+                break;
+                //no default
             }
+        }
+
+        takeAnnualAction (report, action) {
             if (action === 'delete') {
                 let that = this;
                 this.networkService.deleteAnnualSurveillanceReport(report.id).then(() => {
                     that.networkService.getAnnualSurveillanceReports().then(results => {
                         that.annual = results;
                     });
-                    that.activeAnnualReport = undefined;
-                    that.cancelAnnual();
+                    that.cancel();
                 });
             }
         }
@@ -144,8 +136,7 @@ export const SurveillanceReportingComponent = {
                     that.networkService.getQuarterlySurveillanceReports().then(results => {
                         that.quarters = results;
                     });
-                    that.activeQuarterReport = undefined;
-                    that.cancelQuarter();
+                    that.cancel();
                 });
             }
             if (action === 'saveRelevantListing') {
@@ -162,6 +153,38 @@ export const SurveillanceReportingComponent = {
             }
         }
 
+        save (report) {
+            switch (this.$state.current.name) {
+            case 'surveillance.reporting.annual':
+                this.saveAnnual(report);
+                break;
+            case 'surveillance.reporting.quarterly':
+                this.saveQuarter(report);
+                break;
+                //no default
+            }
+        }
+
+        saveAnnual (report) {
+            let that = this;
+            this.networkService.updateAnnualSurveillanceReport(report).then(() => {
+                that.networkService.getAnnualSurveillanceReports().then(results => {
+                    that.annual = results;
+                });
+                that.cancel();
+            });
+        }
+
+        saveQuarter (report) {
+            let that = this;
+            this.networkService.updateQuarterlySurveillanceReport(report).then(() => {
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
+                });
+                that.cancel();
+            });
+        }
+
         createAnnual (report) {
             let that = this;
             this.networkService.createAnnualSurveillanceReport(report).then(createdReport => {
@@ -174,55 +197,28 @@ export const SurveillanceReportingComponent = {
             });
         }
 
-        saveAnnual (report) {
-            let that = this;
-            this.networkService.updateAnnualSurveillanceReport(report).then(results => {
-                that.activeAnnualReport = results;
-                that.networkService.getAnnualSurveillanceReports().then(results => {
-                    that.annual = results;
-                });
-                that.cancelAnnual();
-            });
-        }
-
         createQuarter (report) {
             let that = this;
-            this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                that.networkService.getRelevantListings(results)
-                    .then(listings => {
-                        results.relevantListings = listings;
-                        that.activeQuarterReport = results;
-                    });
+            this.networkService.createQuarterlySurveillanceReport(report).then(createdReport => {
                 that.networkService.getQuarterlySurveillanceReports().then(results => {
                     that.quarters = results;
+                    this.$state.go('.quarterly', {
+                        reportId: createdReport.id,
+                    });
                 });
             });
         }
 
-        saveQuarter (report) {
-            let that = this;
-            this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                that.networkService.getRelevantListings(results)
-                    .then(listings => {
-                        results.relevantListings = listings;
-                        that.activeQuarterReport = results;
-                    });
-                that.networkService.getQuarterlySurveillanceReports().then(results => {
-                    that.quarters = results;
-                });
-            });
-        }
-
-        cancelAnnual () {
+        cancel () {
             this.$state.go('surveillance.reporting', {}, {
                 reload: true,
             });
         }
 
-        cancelQuarter () {
-            this.activeQuarterReport = undefined;
-            this.mode = 'view';
-        }
+        /*cancelQuarter () {
+          this.activeQuarterReport = undefined;
+          this.mode = 'view';
+          }*/
     },
 }
 
