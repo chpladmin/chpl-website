@@ -121,7 +121,7 @@ export const SurveillanceReportingComponent = {
             }
         }
 
-        takeQuarterAction (report, action, listing) {
+        takeQuarterAction (report, action) {
             if (action === 'delete') {
                 let that = this;
                 this.networkService.deleteQuarterlySurveillanceReport(report.id).then(() => {
@@ -129,18 +129,6 @@ export const SurveillanceReportingComponent = {
                         that.quarters = results;
                     });
                     that.cancel();
-                });
-            }
-            if (action === 'saveRelevantListing') {
-                let that = this;
-                this.networkService.updateRelevantListing(report.id, listing).then(() => {
-                    that.networkService.getRelevantListings(report).then(results => {
-                        that.quarters.forEach(q => {
-                            if (q.id === report.id) {
-                                report.relevantListings = results;
-                            }
-                        });
-                    });
                 });
             }
         }

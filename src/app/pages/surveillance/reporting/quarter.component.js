@@ -29,11 +29,7 @@ export const SurveillanceReportQuarterComponent = {
                 this.backup.relevantListings = angular.copy(this.relevantListings);
             }
             if (this.relevantListings) {
-                this.excludedListings = this.relevantListings.filter(() => true);
-                this.relevantListings = this.relevantListings.map(l => {
-                    l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
-                    return l;
-                }).filter(l => l.surveillances && l.surveillances.length > 0);
+                this.parseRelevantListings(this.relevantListings);
             }
             if (changes.surveillanceOutcomes) {
                 this.surveillanceOutcomes = angular.copy(changes.surveillanceOutcomes.currentValue);
@@ -49,11 +45,7 @@ export const SurveillanceReportQuarterComponent = {
 
         cancel () {
             this.report = angular.copy(this.backup.report);
-            this.excludedListings = this.backup.relevantListings.filter(() => true);
-            this.relevantListings = this.backup.relevantListings.map(l => {
-                l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
-                return l;
-            }).filter(l => l.surveillances && l.surveillances.length > 0);
+            this.parseRelevantListings(this.backup.relevantListings);
             this.onCancel();
         }
 
@@ -76,7 +68,20 @@ export const SurveillanceReportQuarterComponent = {
         }
 
         saveRelevantListing (listing) {
-            this.takeAction({report: this.report, listing: listing, action: 'saveRelevantListing'});
+            let that = this;
+            this.networkService.updateRelevantListing(this.report.id, listing).then(() => {
+                that.networkService.getRelevantListings(that.report.id).then(results => {
+                    that.relevantListings = results;
+                    that.backup.relevantListings = angular.copy(results);
+                    that.parseRelevantListings(that.relevantListings);
+                });
+            }, () => {
+                that.networkService.getRelevantListings(that.report.id).then(results => {
+                    that.relevantListings = results;
+                    that.backup.relevantListings = angular.copy(results);
+                    that.parseRelevantListings(that.relevantListings);
+                });
+            });
         }
 
         isRelevantSurveillance (surveillance) {
@@ -86,6 +91,14 @@ export const SurveillanceReportQuarterComponent = {
             let surveillanceEnd = surveillance.endDate ? new Date(surveillance.endDate) : false;
             return surveillanceStart <= reportEnd &&
                 (!surveillanceEnd || surveillanceEnd >= reportStart);
+        }
+
+        parseRelevantListings (listings) {
+            this.excludedListings = angular.copy(listings);
+            this.relevantListings = listings.map(l => {
+                l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
+                return l;
+            }).filter(l => l.surveillances && l.surveillances.length > 0);
         }
     },
 }

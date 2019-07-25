@@ -8,6 +8,7 @@ export const SurveillanceReportExcludedListingsComponent = {
         constructor ($log) {
             'ngInject'
             this.$log = $log;
+            this.backup = {};
         }
 
         $onChanges (changes) {
@@ -23,24 +24,37 @@ export const SurveillanceReportExcludedListingsComponent = {
                             this.excludedListings.push(listing);
                         }
                     });
+                    this.backup.excludedListings = angular.copy(this.excludedListings);
                 }
             }
-        }
-
-        cancelEdit () {
-            this.listingBeingEdited = undefined;
         }
 
         excludeListing () {
             this.listing.excluded = true;
             this.onSave({ listing: this.listing });
-            this.listing = undefined;
+            this.restoreForm();
         }
 
         undoExcludedListing (excludedListing) {
             excludedListing.excluded = false;
             excludedListing.reason = undefined;
             this.onSave({ listing: excludedListing });
+        }
+
+        edit (listing) {
+            this.listing = angular.copy(listing);
+        }
+
+        cancelEdit () {
+            this.excludedListings = angular.copy(this.backup.excludedListings);
+            this.listing = undefined;
+            this.restoreForm();
+        }
+
+        restoreForm () {
+            this.form.$setPristine();
+            this.form.$setUntouched();
+            this.showFormErrors = false;
         }
     },
 }
