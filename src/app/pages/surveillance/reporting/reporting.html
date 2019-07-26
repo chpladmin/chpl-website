@@ -24,7 +24,10 @@
                     <tr ng-repeat="year in $ctrl.availableYears | orderBy :'toString()' : true">
                       <td>{{ year }}</td>
                       <td ng-repeat="quarter in $ctrl.availableQuarters">
-                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.findQuarterReport(acb, year, quarter.name)">
+                          <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Edit</span>
+                          <span ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">View</span>
+                        </button>
                         <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findQuarterReport(acb, year, quarter.name)"
                                 confirm="Are you sure you wish to initiate quarterly surveillance reporting for quarter {{ quarter.name }} of year {{ year }}?"
                                 confirm-ok="Yes"
@@ -32,11 +35,13 @@
                                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
                           Initiate
                         </button>
-                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findQuarterReport(acb, year, quarter.name)">View</button>
                         <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
                       </td>
                       <td>
-                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && $ctrl.findAnnualReport(acb, year)">View</button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.findAnnualReport(acb, year)">
+                          <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Edit</span>
+                          <span ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">View</span>
+                        </button>
                         <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findAnnualReport(acb, year)"
                                 confirm="Are you sure you wish to initiate annual surveillance reporting for year {{ year }}?"
                                 confirm-ok="Yes"
@@ -44,7 +49,6 @@
                                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
                           Initiate
                         </button>
-                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && $ctrl.findAnnualReport(acb, year)">View</button>
                         <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
                       </td>
                     </tr>

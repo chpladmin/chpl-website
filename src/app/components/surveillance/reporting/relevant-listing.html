@@ -32,8 +32,8 @@
             <td>{{ surveillance.startDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ surveillance.endDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>
-              <button class="btn btn-link" uib-tooltip="Edit Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeSurveillance = surveillance">
-                <i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit surveillance data</span>
+              <button class="btn btn-link" uib-tooltip="{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeSurveillance = surveillance">
+                <i class="fa" ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ?  'fa-pencil-square-o' : 'fa-eye'"></i><span class="sr-only">{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} surveillance data</span>
               </button>
             </td>
           </tr>

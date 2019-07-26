@@ -1,6 +1,6 @@
 <div class="row" ng-form="$ctrl.form">
   <div class="col-md-12">
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
       <div class="panel-heading">
         <h3 class="panel-title">Manage listings excluded from randomized surveillance</h3>
       </div>
@@ -35,7 +35,7 @@
         </span>
       </div>
     </div>
-    <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.excludedListings" ng-show="true || !$ctrl.listing.id">
+    <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.excludedListings">
       <table class="table table-condensed">
         <thead>
           <tr>
@@ -44,7 +44,7 @@
             <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true" st-sort-default="reverse">Certification Date</th>
             <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
             <th scope="col" class="search-header" st-sort="reason" st-skip-natural="true">Exclusion Reason</th>
-            <th scope="col"><span class="sr-only">Actions</span></th>
+            <th scope="col" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +54,7 @@
             <td>{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ listing.reason }}</td>
-            <td>
+            <td ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
               <button class="btn btn-link" uib-tooltip="Undo Exclude" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.undoExcludedListing(listing)">
                 <i class="fa fa-undo"></i><span class="sr-only">Undo exclude</span>
               </button>
