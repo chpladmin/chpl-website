@@ -225,6 +225,10 @@ export class NetworkService {
         return this.apiGET('/key');
     }
 
+    getAtl (id) {
+        return this.apiGET('/atls/' + id);
+    }
+
     getAtlActivity (activityRange) {
         var call = '/activity/atls';
         return this.getActivity(call, activityRange);

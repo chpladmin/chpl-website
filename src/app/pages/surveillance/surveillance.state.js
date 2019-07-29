@@ -59,7 +59,7 @@ let states = {
             },
             data: { title: 'CHPL Surveillance - Reporting - Annual' },
             ncyBreadcrumb: {
-                label: 'Annual',
+                label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }}',
             },
         },{
             name: 'surveillance.reporting.quarterly',
@@ -77,7 +77,7 @@ let states = {
             },
             data: { title: 'CHPL Surveillance - Reporting - Quarterly' },
             ncyBreadcrumb: {
-                label: 'Quarterly',
+                label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }} - {{ $resolve.report.quarter }}',
             },
         },
     ],

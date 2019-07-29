@@ -9,7 +9,7 @@
     <div ng-repeat="org in $ctrl.allOrgs">
       <button type="button" class="btn btn-link" ng-click="$ctrl.showOrg(org)">{{ org.name }}</button>
       <span class="badge" ng-if="org.retired">Retired</span>
-      <span ng-if="org.id === $ctrl.activeOrg.id && !$ctrl.isCreating"><i class="fa fa-caret-right"></i></span>
+      <span ng-if="org.id.toString() === $ctrl.$state.params.id && !$ctrl.isCreating"><i class="fa fa-caret-right"></i></span>
     </div>
     <button type="button" class="btn btn-primary btn-block" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isCreating">Create New {{ $ctrl.type }}</button>
   </div>
@@ -23,11 +23,11 @@
       </div>
     </div>
   </div>
-  <div class="col-md-9" ng-if="$ctrl.activeOrg && !$ctrl.isCreating">
+  <div class="col-md-9" ng-if="$ctrl.$state.params.id && !$ctrl.isCreating">
     <div class="panel panel-default">
       <div class="panel-heading" ng-click="$ctrl.generalCollapsed = !$ctrl.generalCollapsed">
         <span class="pull-right">
-          <span ng-if="$ctrl.canEdit($ctrl.activeOrg) && !$ctrl.isEditing"><button class="btn btn-link" ng-click="$ctrl.edit($event)">Edit</button></span>
+          <span ng-if="$ctrl.canEdit($ctrl.$state.params.id) && !$ctrl.isEditing"><button class="btn btn-link" ng-click="$ctrl.edit($event)">Edit</button></span>
         </span>
         <h3 class="panel-title">
           General Information
@@ -35,10 +35,10 @@
         </h3>
       </div>
       <div class="panel-body" ng-show="!$ctrl.generalCollapsed">
-        <chpl-onc-organization organization="$ctrl.activeOrg" type="{{ $ctrl.type }}" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
+        <ui-view type="{{ $ctrl.type }}" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></ui-view>
       </div>
     </div>
-    <div class="panel panel-default" ng-if="$ctrl.canEdit($ctrl.activeOrg) && !$ctrl.isEditing">
+    <div class="panel panel-default" ng-if="$ctrl.canEdit($ctrl.$state.params.id) && !$ctrl.isEditing">
       <div class="panel-heading clickable" ng-click="$ctrl.usersCollapsed = !$ctrl.usersCollapsed">
         <h3 class="panel-title">Manage Users ({{ $ctrl.users.length }}) <i class="fa pull-right" ng-class="$ctrl.usersCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></i></h3>
       </div>
