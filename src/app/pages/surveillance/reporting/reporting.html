@@ -1,6 +1,64 @@
 <div class="container-fluid">
   <div class="row main-content" id="main-content" tabindex="-1">
-    Reporting "smart component"
-    <chpl-surveillance-report></chpl-surveillance-report>
+    <ui-view on-save="$ctrl.save(report)" on-cancel="$ctrl.cancel()" take-action="$ctrl.takeAction(report, action)">
+      <div class="col-md-12">
+        <h2>Available reports</h2>
+        <div ncy-breadcrumb></div>
+        <div class="row" ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
+          <div class="col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-heading clickable" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]">
+                <h3 class="panel-title">
+                  <i class="fa pull-right" ng-class="$ctrl.display[acb.name] ? 'fa-caret-down' : 'fa-caret-up'"></i>
+                  {{ acb.name }}
+                </h3>
+              </div>
+              <div class="panel-body" ng-show="$ctrl.display[acb.name]">
+                <table class="table table-condensed">
+                  <thead>
+                    <th scope="col">Year</th>
+                    <th scope="col" ng-repeat="quarter in $ctrl.availableQuarters">{{ quarter.name }}</th>
+                    <th scope="col">Annual</th>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="year in $ctrl.availableYears | orderBy :'toString()' : true">
+                      <td>{{ year }}</td>
+                      <td ng-repeat="quarter in $ctrl.availableQuarters">
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.findQuarterReport(acb, year, quarter.name)">
+                          <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Edit</span>
+                          <span ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">View</span>
+                        </button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnQuarter(acb, year, quarter.name)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findQuarterReport(acb, year, quarter.name)"
+                                confirm="Are you sure you wish to initiate quarterly surveillance reporting for quarter {{ quarter.name }} of year {{ year }}?"
+                                confirm-ok="Yes"
+                                confirm-cancel="No"
+                                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                          Initiate
+                        </button>
+                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.findAnnualReport(acb, year)">
+                          <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Edit</span>
+                          <span ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">View</span>
+                        </button>
+                        <button class="btn btn-sm btn-default" ng-click="$ctrl.actOnAnnual(acb, year)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.findAnnualReport(acb, year)"
+                                confirm="Are you sure you wish to initiate annual surveillance reporting for year {{ year }}?"
+                                confirm-ok="Yes"
+                                confirm-cancel="No"
+                                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                          Initiate
+                        </button>
+                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ui-view>
   </div>
 </div>

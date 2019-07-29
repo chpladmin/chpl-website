@@ -1,0 +1,11 @@
+<div class="container-fluid">
+  <div class="row main-content" id="main-content" tabindex="-1">
+    <div class="col-md-12">
+      <h2>Upload</h2>
+      <chpl-upload-listings ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-listings>
+      <chpl-upload-surveillance></chpl-upload-surveillance>
+      <chpl-upload-meaningful-use ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-meaningful-use>
+      <chpl-upload-api-documentation ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-api-documentation>
+    </div>
+  </div>
+</div>

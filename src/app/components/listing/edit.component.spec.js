@@ -37,7 +37,7 @@
         mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
 
         beforeEach(() => {
-            angular.mock.module('chpl', 'chpl.components', $provide => {
+            angular.mock.module('chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
@@ -47,6 +47,7 @@
                     return $delegate;
                 });
                 $provide.decorator('utilService', $delegate => {
+                    $delegate.certificationStatus = jasmine.createSpy('certificationStatus');
                     $delegate.extendSelect = jasmine.createSpy('extendSelect');
                     return $delegate;
                 });
@@ -61,6 +62,7 @@
                 networkService = _networkService_;
                 networkService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
                 utilService = _utilService_;
+                utilService.certificationStatus.and.returnValue('Active');
                 utilService.extendSelect.and.returnValue([]);
 
                 scope = $rootScope.$new();
@@ -377,6 +379,13 @@
                 ctrl.workType = 'confirm';
                 ctrl.listing.certificationEvents = [];
                 expect(ctrl.improperFirstStatus()).toBe(false);
+            });
+
+            it('should leverage the util service to get the status', () => {
+                let count = utilService.certificationStatus.calls.count();
+                let status = ctrl.certificationStatus(mock.listing, {editing: true});
+                expect(status).toBe('Active');
+                expect(utilService.certificationStatus.calls.count()).toBe(count + 1);
             });
         });
 

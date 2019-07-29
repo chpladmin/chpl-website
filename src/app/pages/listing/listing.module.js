@@ -4,4 +4,5 @@ export default angular
         'feature-flags',
         'ngSanitize',
         'ui.bootstrap',
+        'ui.router',
     ]);

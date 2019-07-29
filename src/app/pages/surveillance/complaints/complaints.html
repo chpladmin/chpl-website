@@ -1,6 +1,85 @@
-<div class="container-fluid">
-  <div class="row main-content" id="main-content" tabindex="-1">
-    Complaints "smart component"
-    <chpl-surveillance-complaint></chpl-surveillance-complaint>
+<div class="container-fluid complaints-wrapper">
+  <div class="main-content" id="main-content" tabindex="-1">
+    <div class="row">
+      <div class="col-md-12">
+        <div ng-if="!$ctrl.isEditing">
+          <div ng-if="$ctrl.displayHeader">
+            <h2>Complaints</h2>
+            <ol class="breadcrumb">
+              <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
+              <li class="active">Complaints</li>
+            </ol>
+          </div>
+          <div class="clearfix" ng-if="$ctrl.displayAdd">
+            <button class="btn pull-right" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
+              Add New Complaint
+            </button>
+          </div>
+          <div class="table-responsive" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints">
+            <table class="table table-condensed" id="complaints-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
+                  <th scope="col" class="search-header" st-sort="complaintStatusTypeName" st-skip-natural="true">Status</th>
+                  <th scope="col" class="search-header" st-sort="receivedDate" st-skip-natural="true" st-sort-default="reverse">Received Date</th>
+                  <th scope="col" class="search-header" st-sort="acbComplaintId" st-skip-natural="true">ONC-ACB Complaint Id</th>
+                  <th scope="col" class="search-header" st-sort="oncComplaintId" st-skip-natural="true">ONC Complaint Id</th>
+                  <th scope="col" class="search-header" st-sort="complaintanStatusTypeName" st-skip-natural="true">Complainant Type</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="complaint in $ctrl.displayedComplaints">
+                  <td>{{ complaint.certificationBody.name }}</td>
+                  <td>
+                    <span class="badge" ng-class="{ 'badge-success': complaint.complaintStatusType.name === 'Open' }">
+                      {{ complaint.complaintStatusType.name }}
+                    </span>
+                  </td>
+                  <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td>{{ complaint.acbComplaintId }}</td>
+                  <td>{{ complaint.oncComplaintId }}</td>
+                  <td>
+                    {{ complaint.complainantType.name }}
+                    <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" id="edit-complaint-{{ complaint.id }}"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                    <button class="btn btn-danger btn-link"
+                      title="Delete Complaint"
+                      id="delete-complaint-{{ complaint.id }}"
+                      ng-click="$ctrl.deleteComplaint(complaint)"
+                      confirm="Are you sure you wish to delete this complaint?"
+                      confirm-ok="Delete Complaint"
+                      confirm-cancel="Cancel"
+                      confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                      <span class="text-danger"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div ng-if="$ctrl.isEditing === true">
+          <chpl-surveillance-complaint
+            complaint="$ctrl.complaint"
+            complainant-types="$ctrl.complainantTypes"
+            complaint-status-types="$ctrl.complaintStatusTypes"
+            certification-bodies="$ctrl.certificationBodies"
+            criteria="$ctrl.criteria"
+            display-header="$ctrl.displayHeader"
+            editions="$ctrl.editions"
+            error-messages="$ctrl.errorMessages"
+            listings="$ctrl.listings"
+            surveillances="$ctrl.surveillances"
+            on-delete="$ctrl.deleteComplaint(complaint)"
+            on-save="$ctrl.saveComplaint(complaint)"
+            on-cancel="$ctrl.cancelEdit()"
+            on-listing-selected="$ctrl.selectListing(complaint)">
+          </chpl-surveillance-complaint>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -459,6 +459,18 @@ export const ReportsListingsComponent = {
         }
 
         compareSurveillances (oldS, newS) {
+            this.$uibModal.open({
+                component: 'chplCompareSurveillances',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    oldSurveillance: () => oldS,
+                    newSurveillance: () => newS,
+                },
+            });
+            /*
             this.modalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
                 controller: 'CompareSurveillanceRequirementsController',
@@ -472,6 +484,7 @@ export const ReportsListingsComponent = {
                 },
                 size: 'lg',
             });
+            */
         }
 
         compareTestStuff (prev, curr) {

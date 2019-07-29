@@ -1,5 +1,4 @@
-function getResources ($q, networkService) {
-    'ngInject'
+let getResources = ($q, networkService) => {
     let promises = [
         networkService.getSearchOptions()
             .then(response => ({
@@ -31,7 +30,7 @@ function getResources ($q, networkService) {
             .then(response => ({ targetedUsers: response })),
     ];
     return $q.all(promises)
-        .then(response => response[0]);
+        .then(response => response);
 }
 
 function administrationStateConfig ($stateProvider) {
@@ -41,6 +40,39 @@ function administrationStateConfig ($stateProvider) {
             url: '/administration',
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
+        })
+        .state('administration.announcements', {
+            url: '/announcements',
+            component: 'chplAnnouncements',
+            resolve: {
+                announcements: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole()) {
+                        return networkService.getAnnouncements(true);
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - Announcements' },
+        })
+        .state('administration.api-keys', {
+            url: '/api-keys',
+            component: 'chplApiKeys',
+            resolve: {
+                apiKeys: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole()) {
+                        return networkService.getApiUsers();
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - API Keys' },
+        })
+        .state('administration.cms', {
+            url: '/cms',
+            component: 'chplCms',
+            data: { title: 'CHPL Administration - CMS' },
         })
         .state('administration.confirm', {
             abstract: true,
@@ -61,6 +93,66 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Reports - Listings' },
+        })
+        .state('administration.fuzzy-matching', {
+            url: '/fuzzy-matching',
+            component: 'chplFuzzyMatching',
+            resolve: {
+                fuzzyTypes: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole()) {
+                        return networkService.getFuzzyTypes();
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - Fuzzy Matching' },
+        })
+        .state('administration.jobs', {
+            abstract: true,
+            url: '/jobs',
+            template: '<ui-view/></div>',
+        })
+        .state('administration.jobs.background', {
+            url: '/background',
+            component: 'chplJobsBackgroundPage',
+            resolve: {
+                types: networkService => {
+                    'ngInject'
+                    return networkService.getJobTypes();
+                },
+            },
+            data: { title: 'CHPL Administration - Jobs - Background' },
+        })
+        .state('administration.jobs.scheduled', {
+            url: '/scheduled',
+            component: 'chplJobsScheduledPage',
+            resolve: {
+                acbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                jobs: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole()) {
+                        return networkService.getScheduleJobs();
+                    }
+                    return [];
+                },
+                triggers: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole()) {
+                        return networkService.getScheduleTriggers();
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - Jobs - Scheduled' },
+        })
+        .state('administration.upload', {
+            url: '/upload',
+            component: 'chplUpload',
+            data: { title: 'CHPL Administration - Upload' },
         })
     ;
 }

@@ -1,0 +1,93 @@
+<div id="chpl-user-{{ $ctrl.user.userId }}" ng-form="$ctrl.form">
+  <span ng-if="!$ctrl.isEditing">
+    <div class="row">
+      <div class="col-sm-12">
+        <span class="pull-right">
+          <button class="btn btn-link btn-small" id="user-component-impersonate-{{ $ctrl.user.userId }}" ng-if="!$ctrl.isEditing && $ctrl.canImpersonate($ctrl.user)" ng-click="$ctrl.impersonate()" uib-tooltip="Impersonate {{ $ctrl.user.fullName }}" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-user-secret"></i><span class="sr-only"> Impersonate {{ $ctrl.user.fullName }}</span></button>
+          <button class="btn btn-link btn-small" id="user-component-edit-{{ $ctrl.user.userId }}" ng-if="!$ctrl.isEditing" ng-click="$ctrl.edit()" uib-tooltip="Edit {{ $ctrl.user.fullName }}" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit {{ $ctrl.user.fullName }}</span></button>
+        </span>
+        <h2>{{ $ctrl.user.fullName }}<small ng-if="$ctrl.user.friendlyName"> ({{ $ctrl.user.friendlyName }})</small></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <p>
+          <span ng-if="$ctrl.user.title"><strong>Title:</strong> {{ $ctrl.user.title }}<br /></span>
+          <span ng-if="$ctrl.user.phoneNumber"><strong>Phone Number:</strong> {{ $ctrl.user.phoneNumber }}<br /></span>
+          <span ng-if="$ctrl.user.email"><strong>Email:</strong> {{ $ctrl.user.email }}<br /></span>
+          <span ng-if="$ctrl.user.subjectName"><strong>User Name:</strong> {{ $ctrl.user.subjectName }}<br /></span>
+          <span ng-if="$ctrl.user.role"><strong>Role:</strong> {{ $ctrl.user.role }}<br /></span>
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <p>
+          <strong>Account Locked:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.accountLocked, 'fa-square-o': !$ctrl.user.accountLocked }"></i><span class="sr-only">{{ user.accountLocked ? 'Locked' : 'Unlocked' }}</span><br />
+          <strong>Account Enabled:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.accountEnabled, 'fa-square-o': !$ctrl.user.accountEnabled }"></i><span class="sr-only">{{ user.accountEnabled ? 'Enabled' : 'Disabled' }}</span><br />
+          <strong>Password change on next login:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.passwordResetRequired, 'fa-square-o': !$ctrl.user.passwordResetRequired }"></i><span class="sr-only">{{ user.passwordResetRequired ? 'Reset required' : 'Reset not required' }}</span><br />
+        </p>
+      </div>
+    </div>
+  </span>
+  <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="control-label" for="user-full">Full Name <span class="text-danger">*</span></label>
+          <input class="input-sm form-control" type="text" required ng-model="$ctrl.user.fullName" id="user-full" name="userFull" ng-maxlength="500"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userFull.$touched) && $ctrl.form.userFull.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userFull.$touched) && $ctrl.form.userFull.$error.maxlength">Field is too long</div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="user-friendly">Friendly Name</label>
+          <input class="input-sm form-control" type="text" ng-model="$ctrl.user.friendlyName" id="user-friendly" name="userFriendly" ng-maxlength="250"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userFriendly.$touched) && $ctrl.form.userFriendly.$error.maxlength">Field is too long</div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="user-title">Title</label>
+          <input class="input-sm form-control" type="text" ng-model="$ctrl.user.title" id="user-title" name="userTitle" ng-change="updateErrors()" ng-maxlength="250"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userTitle.$touched) && $ctrl.form.userTitle.$error.maxlength">Field is too long</div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="user-email">Email <span class="text-danger">*</span></label>
+          <input class="input-sm form-control" type="text" required ng-model="$ctrl.user.email" id="user-email" name="userEmail" ng-maxlength="250"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userEmail.$touched) && $ctrl.form.userEmail.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userEmail.$touched) && $ctrl.form.userEmail.$error.maxlength">Field is too long</div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="user-phone-number">Phone <span class="text-danger">*</span></label>
+          <input class="input-sm form-control" type="text" required ng-model="$ctrl.user.phoneNumber" id="user-phone-number" name="userPhoneNumber" ng-maxlength="100"></input>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userPhoneNumber.$touched) && $ctrl.form.userPhoneNumber.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.userPhoneNumber.$touched) && $ctrl.form.userPhoneNumber.$error.maxlength">Field is too long</div>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" ng-model="$ctrl.user.accountLocked" id="is-locked"></input>
+          <label class="control-label" for="is-locked">Locked</label>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" ng-model="$ctrl.user.accountEnabled" id="is-enabled"></input>
+          <label class="control-label" for="is-enabled">Enabled</label>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" ng-model="$ctrl.user.passwordResetRequired" id="is-pwchange"></input>
+          <label class="control-label" for="is-pwchange">Password change on next login</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="btn btn-ai-success btn-small pull-right" id="user-component-save-{{ $ctrl.user.userId }}" uib-tooltip="Save" tooltip-trigger="'mouseenter focus click'"
+                ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+                ng-mouseover="$ctrl.showFormErrors = true"
+                ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+        <button class="btn btn-warning btn-small" id="user-component-cancel-{{ $ctrl.user.userId }}" uib-tooltip="Cancel" tooltip-trigger="'mouseenter focus click'"
+                ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+        <button class="btn btn-danger btn-small" id="user-component-delete-{{ $ctrl.user.userId }}" uib-tooltip="Delete" tooltip-trigger="'mouseenter focus click'"
+                confirm="Are you sure you wish to delete this User? This action is permanent."
+                confirm-ok="Yes"
+                confirm-cancel="No"
+                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
+      </div>
+    </div>
+  </span>
+</div>

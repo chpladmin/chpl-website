@@ -14,7 +14,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl', 'chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAgeRanges = jasmine.createSpy('getAgeRanges');
                     $delegate.getEducation = jasmine.createSpy('getEducation');

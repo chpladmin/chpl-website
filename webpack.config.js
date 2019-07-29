@@ -14,9 +14,6 @@ module.exports = env => {
     if (!env.NODE_ENV) {
         env.NODE_ENV =  'development'; // default to development if not provided
     }
-    if (!env.flags) {
-        env.flags =  env.NODE_ENV; // defaults to environment if not provided
-    }
     let config = {
         mode: env.NODE_ENV,
         entry: {
@@ -188,9 +185,8 @@ module.exports = env => {
 
     config.plugins.push(
         new webpack.DefinePlugin({
-            DEVELOPER_MODE: JSON.stringify(env.NODE_ENV === 'development' || env.flags === 'development'),
-            ENABLE_LOGGING: JSON.stringify(env.NODE_ENV === 'development' && env.flags === 'development'),
-            FEATURE_FLAGS: JSON.stringify(require('./flags.' + env.flags + '.json')),
+            DEVELOPER_MODE: JSON.stringify(env.NODE_ENV === 'development'),
+            ENABLE_LOGGING: JSON.stringify(env.NODE_ENV === 'development'),
             MINUTES_UNTIL_IDLE: env.NODE_ENV === 'development' ? 150 : 50,
             MINUTES_BETWEEN_KEEPALIVE: 1,
         })
@@ -222,7 +218,9 @@ module.exports = env => {
         config.plugins.push(new webpack.HashedModuleIdsPlugin());
     };
     if (env.NODE_ENV === 'development') {
-        config.devtool = 'inline-source-map',
+        config.devtool = 'inline-source-map';
+    };
+    if (env.style ) {
         config.plugins.push(
             new HtmlWebpackPlugin({
                 filename: 'style.html',

@@ -101,6 +101,7 @@ export const ListingComponent = {
             }).then(response => {
                 if (!response.status || response.status === 200) {
                     that.isEditing = false;
+                    that.isSaving = false;
                     that.listing = response;
                 } else {
                     that.saveErrors = { errors: [response.error]};

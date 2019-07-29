@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.admin.listing.management.directive', function () {
+    fdescribe('chpl.admin.listing.management.directive', function () {
         var $log, $q, $uibModal, Mock, actualOptions, authService, el, mock, networkService, vm;
 
         mock = {};
@@ -42,9 +42,11 @@
 
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
                     $delegate.getCertBodies = jasmine.createSpy('getCertBodies');
                     $delegate.getCertificationStatuses = jasmine.createSpy('getCertificationStatuses');
+                    $delegate.getCollection = jasmine.createSpy('getCollection');
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.getEditions = jasmine.createSpy('getEditions');
                     $delegate.getPendingListings = jasmine.createSpy('getPendingListings');
@@ -87,9 +89,11 @@
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.getAccessibilityStandards.and.returnValue($q.when([]));
+                networkService.getAcbs.and.returnValue($q.when({}));
                 networkService.getAtls.and.returnValue($q.when(mock.testingLabs));
                 networkService.getCertBodies.and.returnValue($q.when(mock.certBodies));
                 networkService.getCertificationStatuses.and.returnValue($q.when(mock.certificationStatuses));
+                networkService.getCollection.and.returnValue($q.when([]));
                 networkService.getDevelopers.and.returnValue($q.when(mock.developers));
                 networkService.getEditions.and.returnValue($q.when(mock.editions));
                 networkService.getPractices.and.returnValue($q.when(mock.practices));

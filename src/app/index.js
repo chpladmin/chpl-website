@@ -12,6 +12,7 @@ importAll(
 );
 
 import angular from 'angular';
+import 'angular-breadcrumb';
 import /* angularConfirm from*/ 'angular-confirm';
 import /* angularCronGen from*/ 'angular-cron-gen';
 import /* angularLoadingBar from*/ 'angular-loading-bar';
@@ -61,6 +62,7 @@ import /* searchModule from*/ './pages/search/index';
 import /* servicesModule from*/ './services/index';
 import /* sharedModule from*/ './shared/index';
 import surveillance from './pages/surveillance/index';
+import users from './pages/users/index';
 
 require('./index.constants');
 
@@ -70,6 +72,7 @@ const dependencies = [
     'angulartics.google.tagmanager',
     'feature-flags',
     'googlechart',
+    'ncy-angular-breadcrumb',
     'ngAnimate',
     'ngAria',
     'ngCytoscape',
@@ -87,6 +90,7 @@ const dependencies = [
     organizations.name,
     reports.name,
     surveillance.name,
+    users.name,
     'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',

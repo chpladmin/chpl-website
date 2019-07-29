@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "10.20.0",
+  "version": "10.23.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -21,6 +21,7 @@
     "angular": "^1.7.2",
     "angular-animate": "^1.7.2",
     "angular-aria": "^1.7.2",
+    "angular-breadcrumb": "^0.5.0",
     "angular-confirm": "1.2",
     "angular-cron-gen": "^0.0.26",
     "angular-feature-flags": "^1.6.1",

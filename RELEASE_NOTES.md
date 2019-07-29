@@ -1,4 +1,30 @@
 # Release Notes
+## Version 10.23.0
+_TBD_
+
+### Flagged Features
+* update administrator's navigation ability
+
+---
+
+
+## Version 10.22.0
+_22 July 2019_
+
+### New Features
+* Updated announcement activity reports to use announcement metadata
+
+---
+
+## Version 10.21.0
+_17 June 2019_
+
+### New features
+* Updated user and user action activity reports to use activity metadata
+* Allow splitting of Versions
+* Display history past split/merge in Listing history popup
+
+---
 
 ## Version 10.20.0
 _3 June 2019_

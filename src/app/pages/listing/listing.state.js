@@ -20,8 +20,8 @@ let states = {
                 }
             },
         },{
-            name: 'product_initial_panel',
-            url: '/product/{id}/{initialPanel}',
+            name: 'product.initial-panel',
+            url: '/{initialPanel}',
             redirectTo: trans => {
                 return {
                     state: 'listing',
@@ -33,14 +33,19 @@ let states = {
             },
         },
     ],
-    'listing-edit-off': [
+    'base': [
         {
+            name: 'listing',
+            url: '/listing/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL Product Details' },
+        },{
             name: 'product',
             url: '/product/{id}/{initialPanel}',
             params: {
                 initialPanel: {squash: true, value: null},
             },
-            template: require('../..//product/product.html'),
+            template: require('../../product/product.html'),
             controller: 'ProductController',
             controllerAs: 'vm',
             data: { title: 'CHPL Product Details' },
@@ -51,11 +56,11 @@ let states = {
 /**
  * This config can only be used when the listing-edit flag is set to true and/or removed when listing-edit is fully deployed
  */
-function listingStateConfig ($stateProvider) {
+function listingStatesConfig ($stateProvider) {
     'ngInject'
-    states['listing-edit-on'].forEach(state => {
+    states['base'].forEach(state => {
         $stateProvider.state(state);
     });
 }
 
-export { listingStateConfig, states };
+export { listingStatesConfig, states };

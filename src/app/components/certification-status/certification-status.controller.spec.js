@@ -11,7 +11,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl', function ($provide) {
+            angular.mock.module('chpl.components', function ($provide) {
                 $provide.decorator('utilService', function ($delegate) {
                     $delegate.statusFont = jasmine.createSpy('statusFont');
                     return $delegate;
