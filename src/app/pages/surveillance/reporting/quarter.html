@@ -35,17 +35,19 @@
         <textarea class="form-control" id="transparency-disclosure" name="transparencyDisclosure" ng-model="$ctrl.report.transparencyDisclosureSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="row">
-        <span class="pull-right">
-          <button class="btn btn-default" id="quarterly-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
-          <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
-          <button class="btn btn-danger" id="quarterly-suveillance-delete"
-                  confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
-                  confirm-ok="Yes"
-                  confirm-cancel="No"
-                  confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                  ng-if="$ctrl.report.id && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
-                  ng-click="$ctrl.delete()">Delete</button>
-        </span>
+        <div class="col-sm-12">
+          <span class="pull-right">
+            <button class="btn btn-default" id="quarterly-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
+            <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-danger" id="quarterly-suveillance-delete"
+                    confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
+                    confirm-ok="Yes"
+                    confirm-cancel="No"
+                    confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                    ng-if="$ctrl.report.id && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
+                    ng-click="$ctrl.delete()">Delete</button>
+          </span>
+        </div>
       </div>
       <hr />
       <div class="panel panel-default">
