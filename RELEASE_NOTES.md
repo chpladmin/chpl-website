@@ -1,4 +1,12 @@
 # Release Notes
+## Version 10.23.0
+_TBD_
+
+### Flagged Features
+* update administrator's navigation ability
+
+---
+
 
 ## Version 10.22.0
 _22 July 2019_
