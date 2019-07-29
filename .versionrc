@@ -5,11 +5,11 @@
         {"type": "chore", "hidden": true},
         {"type": "docs", "hidden": true},
         {"type": "style", "hidden": true},
-        {"type": "refactor", "hidden": true},
+        {"type": "refactor", "section": "Todd"},
         {"type": "perf", "hidden": true},
         {"type": "test", "hidden": true},
         {"type": "feat-flag", "section": "Flagged Features"},
-        {"type": "fix-flag", "section": "Flagged Fixes"},
+        {"type": "fix-flag", "section": "Flagged Fixes" },
         {"type": "flag", "hidden": true}
     ]   
 }
