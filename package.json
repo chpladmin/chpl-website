@@ -13,7 +13,8 @@
     "test:auto": "karma start",
     "test:ahrq": "karma start --single-run --ahrq",
     "test:ci": "karma start --single-run --no-colors"
-  },
+    "release": "standard-version"
+ },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
     "@babel/register": "^7.4.0",
@@ -102,6 +103,7 @@
     "protractor-cucumber-framework": "^3.1.0",
     "puppeteer": "^1.8.0",
     "sass-loader": "^7.0.3",
+    "standard-version": "^6.0.1",
     "style-loader": "^0.21.0",
     "stylelint": "^9.5.0",
     "stylelint-scss": "^1.4.4",
