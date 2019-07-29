@@ -560,6 +560,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getAtl', () => {
+            $httpBackend.expectGET(/^\/rest\/atls\/id$/).respond(200, {data: 'response'});
+            networkService.getAtl('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getAtlActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/atls$/).respond(200, {data: 'response'});

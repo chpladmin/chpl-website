@@ -152,6 +152,20 @@ let states = {
             ncyBreadcrumb: {
                 label: 'ONC-ATLs',
             },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAtl($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ATL' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
         },
     ],
     'base': [
