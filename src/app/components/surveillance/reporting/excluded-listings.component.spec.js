@@ -2,29 +2,20 @@
     'use strict';
 
     fdescribe('the ExcludedListings component', () => {
-        var $compile, $log, $q, ctrl, el, scope;
-
-        let mock = {
-            listings: [
-                { 'id': 3056, 'chplProductNumber': 'CHP-024046', 'lastModifiedDate': '1532467621312', 'edition': '2014', 'certificationDate': 1410408000000, 'reason': 'This is my Reason', 'excluded': true },
-                { 'id': 3136, 'chplProductNumber': 'CHP-024900', 'lastModifiedDate': '1532466539550', 'edition': '2014', 'certificationDate': 1418878800000, 'reason': null, 'excluded': false },
-                { 'id': 3264, 'chplProductNumber': 'CHP-024205', 'lastModifiedDate': '1533944258873', 'edition': '2014', 'certificationDate': 1411617600000, 'reason': 'Whatever', 'excluded': true },
-            ],
-        };
+        var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
                 $provide.factory('chplRelevantListingDirective', () => ({}));
             });
-            inject((_$compile_, _$log_, _$q_, $rootScope, ) => {
+            inject((_$compile_, _$log_, $rootScope, ) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
 
                 scope = $rootScope.$new();
                 scope.onSave = jasmine.createSpy('onSave');
 
-                el = angular.element('<chpl-surveillance-report-excluded-listings listings="listings" on-save="onSave()"></chpl-surveillance-report-excluded-listings>');
+                el = angular.element('<chpl-surveillance-report-excluded-listings listings="listings" on-save="onSave(listing)"></chpl-surveillance-report-excluded-listings>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -52,24 +43,24 @@
             });
 
             it('should cancel edit of a listing', () => {
-                ctrl.listingBeingEdited = {id: 1};
+                ctrl.listing = {id: 1};
                 ctrl.cancelEdit();
-                expect(ctrl.listingBeingEdited).toBe(undefined);
+                expect(ctrl.listing).toBe(undefined);
             });
 
             it('should exclude the listing', () => {
-                let listing = { id: 1 };
-                ctrl.listingBeingEdited = listing;
-                ctrl.excludeExcludedListing(listing)
-                expect(scope.onSave).toHaveBeenCalled();
-                expect(ctrl.listingBeingEdited).toBe(undefined);
+                let given = { id: 1, reason: 'a reason' };
+                let expected = { id: 1, reason: 'a reason', excluded: true };
+                ctrl.listing = given;
+                ctrl.excludeListing()
+                expect(scope.onSave).toHaveBeenCalledWith((expected));
             });
 
             it('should undo the exclude of the listing', () => {
-                let listing = { id: 1 };
-                ctrl.listingBeingEdited = listing;
-                ctrl.excludeExcludedListing(listing)
-                expect(scope.onSave).toHaveBeenCalled();
+                let given = { id: 1 };
+                let expected = { id: 1, reason: undefined, excluded: false };
+                ctrl.undoExcludedListing(given)
+                expect(scope.onSave).toHaveBeenCalledWith((expected));
             });
         });
     });
