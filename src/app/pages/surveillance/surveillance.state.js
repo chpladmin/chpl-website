@@ -34,14 +34,14 @@ let states = {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReports();
                 },
-                /*surveillanceOutcomes: networkService => {
-                  'ngInject'
-                  return networkService.getSurveillanceOutcomes();
-                  },
-                  surveillanceProcessTypes: networkService => {
-                  'ngInject'
-                  return networkService.getSurveillanceProcessTypes();
-                  },*/
+                surveillanceOutcomes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceOutcomes().catch(() => angular.noop); // remove catch when API has this endpoint
+                },
+                surveillanceProcessTypes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceProcessTypes().catch(() => angular.noop); // remove catch when API has this endpoint
+                },
             },
             data: { title: 'CHPL Surveillance - Reporting' },
             ncyBreadcrumb: {
