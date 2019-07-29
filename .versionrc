@@ -7,6 +7,9 @@
         {"type": "style", "hidden": true},
         {"type": "refactor", "hidden": true},
         {"type": "perf", "hidden": true},
-        {"type": "test", "hidden": true}
+        {"type": "test", "hidden": true},
+        {"type": "feat-flag", "section": "Flagged Features"},
+        {"type": "fix-flag", "section": "Flagged Fixes"},
+        {"type": "flag", "hidden": true}
     ]   
 }
