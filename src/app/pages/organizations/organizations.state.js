@@ -111,6 +111,20 @@ let states = {
                 label: 'ONC-ACBs',
             },
         },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAcb($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ACB' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
+        },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
             component: 'chplOncOrganizations',

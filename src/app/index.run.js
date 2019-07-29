@@ -112,19 +112,12 @@ import { states as usersStates } from './pages/users/users.state.js';
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(response => {
-                    $log.info('response', response);
-                    if (response.status === 401) {
-                        authService.logout();
-                    }
+                .then(() => {
                     loadFlags();
                 }).catch(error => {
                     $log.info('error', error);
-                    if (error.status === 401) {
-                        $log.info('equals', error.status === 401);
-                        authService.logout();
-                        $state.reload();
-                    }
+                    authService.logout();
+                    loadFlags();
                 });
         } else {
             loadFlags();
