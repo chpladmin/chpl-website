@@ -6,9 +6,9 @@
 
         mock = {
             announcements: [
-                {name: 'name1', retired: false},
-                {name: 'name2', retired: true},
-                {name: 'name3', retired: false},
+                {name: 'name1'},
+                {name: 'name2'},
+                {name: 'name3'},
             ],
         };
 
@@ -29,7 +29,7 @@
                 networkService.createAnnualSurveillanceReport.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
-                scope.fuzzyTypes = mock.fuzzyTypes;
+                scope.announcements = mock.announcements;
 
                 el = angular.element('<chpl-announcements announcements="{announcements: announcements}"></chpl-announcements>');
 
