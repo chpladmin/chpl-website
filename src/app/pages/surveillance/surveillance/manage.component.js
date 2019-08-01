@@ -36,10 +36,10 @@ export const SurveillanceManagementComponent = {
         }
 
         $onInit () {
-            if (this.$stateParams.listingId && this.$stateParams.product) {
+            if (this.$stateParams.listingId && this.$stateParams.chplProductNumber) {
                 this.load({
                     id: this.$stateParams.listingId,
-                    product: this.$stateParams.product,
+                    chplProductNumber: this.$stateParams.chplProductNumber,
                 });
                 this.activeTab = this.$stateParams.listingId;
             }
@@ -95,7 +95,7 @@ export const SurveillanceManagementComponent = {
         load (listing) {
             this.tabs.push({
                 id: listing.id,
-                product: listing.product,
+                chplProductNumber: listing.chplProductNumber,
             });
             let that = this;
             this.networkService.getListing(listing.id, true)
