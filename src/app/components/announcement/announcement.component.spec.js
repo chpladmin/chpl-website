@@ -6,8 +6,7 @@
 
         mock = {
             announcement: {
-                fuzzyType: 'a type',
-                choices: [1, 2, 3],
+                name: 'a name',
             },
         };
 
@@ -79,8 +78,13 @@
                 });
 
                 it('should send back data on create', () => {
-                    ctrl.cancel();
+                    ctrl.create();
                     expect(scope.takeAction).toHaveBeenCalledWith(mock.announcement, 'create');
+                });
+
+                it('should send back data on delete', () => {
+                    ctrl.delete();
+                    expect(scope.takeAction).toHaveBeenCalledWith(mock.announcement, 'delete');
                 });
             });
         });

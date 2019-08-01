@@ -8,7 +8,7 @@
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
+    function config ($analyticsProvider, $breadcrumbProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
@@ -22,6 +22,11 @@
             });
         }
         */
+
+        $breadcrumbProvider.setOptions({
+            includeAbstract: true,
+        });
+
         $locationProvider.hashPrefix('');
 
         // Enable log

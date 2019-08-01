@@ -476,6 +476,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getAnnualSurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/annual\/id$/).respond(200, {data: 'response'});
+            networkService.getAnnualSurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         fit('should getAnnualSurveillanceReports', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/annual$/).respond(200, {data: 'response'});
             networkService.getAnnualSurveillanceReports().then(response => {
@@ -547,6 +555,14 @@
         it('should getApiUsers', () => {
             $httpBackend.expectGET(/^\/rest\/key$/).respond(200, {data: 'response'});
             networkService.getApiUsers().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should getAtl', () => {
+            $httpBackend.expectGET(/^\/rest\/atls\/id$/).respond(200, {data: 'response'});
+            networkService.getAtl('id').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1021,6 +1037,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getQuarterlySurveillanceReport', () => {
+            $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly\/id$/).respond(200, {data: 'response'});
+            networkService.getQuarterlySurveillanceReport('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         fit('should getQuarterlySurveillanceReports', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly$/).respond(200, {data: 'response'});
             networkService.getQuarterlySurveillanceReports().then(response => {
@@ -1039,7 +1063,7 @@
 
         fit('should getRelevantListings', () => {
             $httpBackend.expectGET(/^\/rest\/surveillance-report\/quarterly\/id\/listings$/).respond(200, {data: 'response'});
-            networkService.getRelevantListings({id: 'id'}).then(response => {
+            networkService.getRelevantListings('id').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1142,6 +1166,22 @@
                 surveillanceRequirements: {data: 'surveillance_requirements'},
                 nonconformityTypes: {data: 'nonconformity_types'},
             });
+        });
+
+        fit('should getSurveillanceOutcomes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/surveillance-outcomes$/).respond(200, {data: 'response'});
+            networkService.getSurveillanceOutcomes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should getSurveillanceProcessTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/surveillance-process-types$/).respond(200, {data: 'response'});
+            networkService.getSurveillanceProcessTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
         });
 
         it('should getTargetedUsers', () => {
@@ -1588,6 +1628,14 @@
         fit('should updateRelevantListing', () => {
             $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/listings\/lid$/).respond(200, {data: 'response'});
             networkService.updateRelevantListing('qid', {id: 'lid'}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should updateRelevantSurveillance', () => {
+            $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/surveillance\/sid$/).respond(200, {data: 'response'});
+            networkService.updateRelevantSurveillance('qid', {id: 'sid'}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

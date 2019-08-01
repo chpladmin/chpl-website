@@ -37,7 +37,7 @@ let states = {
         {
             name: 'listing',
             url: '/listing/{id}',
-            template: '<div>><i class="fa fa-spin fa-spinner"></i></div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Product Details' },
         },{
             name: 'product',

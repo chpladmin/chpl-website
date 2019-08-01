@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the RelevantListings component', () => {
+    fdescribe('the ExcludedListings component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
@@ -15,7 +15,7 @@
                 scope = $rootScope.$new();
                 scope.onSave = jasmine.createSpy('onSave');
 
-                el = angular.element('<chpl-surveillance-report-relevant-listings listings="listings" on-save="onSave(listing)"></chpl-surveillance-report-relevant-listings>');
+                el = angular.element('<chpl-surveillance-report-excluded-listings listings="listings" on-save="onSave(listing)"></chpl-surveillance-report-excluded-listings>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -43,17 +43,24 @@
             });
 
             it('should cancel edit of a listing', () => {
-                ctrl.activeListing = {id: 1};
+                ctrl.listing = {id: 1};
                 ctrl.cancelEdit();
-                expect(ctrl.activeListing).toBe(undefined);
+                expect(ctrl.listing).toBe(undefined);
             });
 
-            it('should save the listing', () => {
+            it('should exclude the listing', () => {
+                let given = { id: 1, reason: 'a reason' };
+                let expected = { id: 1, reason: 'a reason', excluded: true };
+                ctrl.listing = given;
+                ctrl.excludeListing()
+                expect(scope.onSave).toHaveBeenCalledWith((expected));
+            });
+
+            it('should undo the exclude of the listing', () => {
                 let given = { id: 1 };
-                ctrl.activeListing = given;
-                ctrl.save(given)
-                expect(scope.onSave).toHaveBeenCalledWith((given));
-                expect(ctrl.activeListing).toBe(undefined);
+                let expected = { id: 1, reason: undefined, excluded: false };
+                ctrl.undoExcludedListing(given)
+                expect(scope.onSave).toHaveBeenCalledWith((expected));
             });
         });
     });

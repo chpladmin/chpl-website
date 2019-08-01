@@ -7,6 +7,9 @@ let states = {
             data: {
                 title: 'CHPL Surveillance - Complaints',
             },
+            ncyBreadcrumb: {
+                label: 'Complaints',
+            },
         },
     ],
     'surveillance-reports-on': [
@@ -31,8 +34,51 @@ let states = {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReports();
                 },
+                surveillanceOutcomes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceOutcomes().catch(() => angular.noop); // remove catch when API has this endpoint
+                },
+                surveillanceProcessTypes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceProcessTypes().catch(() => angular.noop); // remove catch when API has this endpoint
+                },
             },
             data: { title: 'CHPL Surveillance - Reporting' },
+            ncyBreadcrumb: {
+                label: 'Reporting',
+            },
+        },{
+            name: 'surveillance.reporting.annual',
+            url: '/annual/{reportId}',
+            component: 'chplSurveillanceReportAnnual',
+            resolve: {
+                report: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAnnualSurveillanceReport($transition$.params().reportId);
+                },
+            },
+            data: { title: 'CHPL Surveillance - Reporting - Annual' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }}',
+            },
+        },{
+            name: 'surveillance.reporting.quarterly',
+            url: '/quarterly/{reportId}',
+            component: 'chplSurveillanceReportQuarter',
+            resolve: {
+                report: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getQuarterlySurveillanceReport($transition$.params().reportId);
+                },
+                relevantListings: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getRelevantListings($transition$.params().reportId);
+                },
+            },
+            data: { title: 'CHPL Surveillance - Reporting - Quarterly' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }} - {{ $resolve.report.quarter }}',
+            },
         },
     ],
     'ocd-1277-on': [
@@ -41,6 +87,7 @@ let states = {
             url: '/manage',
             params: {
                 listingId: {squash: true, value: null},
+                product: {squash: true, value: null},
             },
             component: 'chplSurveillanceManagement',
             resolve: {
@@ -54,6 +101,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Surveillance - Manage' },
+            ncyBreadcrumb: {
+                label: 'Manage',
+            },
         },
     ],
     'base': [
@@ -63,16 +113,25 @@ let states = {
             url: '/surveillance',
             component: 'chplSurveillance',
             data: { title: 'CHPL Surveillance' },
+            ncyBreadcrumb: {
+                label: 'Surveillance',
+            },
         },{
             name: 'surveillance.upload',
             url: '/upload',
-            component: 'chplUploadSurveillance',
+            component: 'chplUploadSurveillances',
             data: { title: 'CHPL Surveillance - Upload' },
+            ncyBreadcrumb: {
+                label: 'Upload',
+            },
         },{
             name: 'surveillance.confirm',
             url: '/confirm',
             component: 'chplConfirmSurveillance',
             data: { title: 'CHPL Surveillance - Confirmation' },
+            ncyBreadcrumb: {
+                label: 'Confirm',
+            },
         },{
             name: 'surveillance.complaints',
             url: '/complaints',
@@ -88,6 +147,16 @@ let states = {
             url: '/reporting',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Surveillance - Reporting' },
+        },{
+            name: 'surveillance.reporting.annual',
+            url: '/annual/{reportId}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL Surveillance - Reporting - Annual' },
+        },{
+            name: 'surveillance.reporting.quarterly',
+            url: '/quarterly/{reportId}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL Surveillance - Reporting - Quarterly' },
         },
     ],
 }

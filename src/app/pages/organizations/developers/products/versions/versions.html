@@ -1,15 +1,16 @@
 <div>
   <div class="row" ng-if="$ctrl.validState">
     <div class="col-sm-12">
-      <h1 ng-switch on="$ctrl.action">
+      <h2 ng-switch on="$ctrl.action">
         <span ng-switch-when="edit">Edit Version</span>
         <span ng-switch-when="merge">Merge Versions</span>
         <span ng-switch-when="split">Split a Version</span>
         <span ng-switch-default>View Version</span>
-      </h1>
+      </h2>
+      <div ncy-breadcrumb></div>
     </div>
   </div>
-  <div class="row main-content" id="main-content" tabindex="-1" ng-if="$ctrl.validState">
+  <div class="row" ng-if="$ctrl.validState">
     <div class="col-md-3">
       <chpl-developer developer="$ctrl.developer"
                       take-action="$ctrl.takeDeveloperAction()"
@@ -38,7 +39,7 @@
                     take-action="$ctrl.takeAction(action)"
                     ></chpl-version>
       <div ng-if="$ctrl.action === 'split'">
-        <h3>Listings staying with original Version</h3>
+        <h4>Listings staying with original Version</h4>
         <div class="bg-danger" ng-if="$ctrl.listings.length === 0">At least one Listing must remain</div>
         <div ng-repeat="listing in $ctrl.listings | orderBy: 'listing'">
           {{ listing.chplProductNumber }}
@@ -48,20 +49,20 @@
       </div>
     </div>
     <div class="col-md-3" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
-      <h2>Listings</h2>
+      <h3>Listings</h3>
       <div ng-repeat="listing in $ctrl.listings | orderBy: 'chplProductNumber'">
         <a ui-sref="listing({id: listing.id})">{{ listing.chplProductNumber }}</a>
       </div>
     </div>
     <div class="col-md-3" ng-if="$ctrl.action === 'merge'">
-      <h2>Versions to merge</h2>
+      <h3>Versions to merge</h3>
       <div class="bg-danger" ng-if="$ctrl.mergingVersions.length < 2">At least one other Version must be selected to merge</div>
       <div ng-repeat="version in $ctrl.mergingVersions | orderBy: 'version'">
         {{ version.version }}
         <button class="btn btn-warning btn-small pull-right" id="versions-version-no-merge-{{ version.versionId }}" ng-click="$ctrl.toggleMerge(version, false)" ng-disabled="version.versionId === $ctrl.version.versionId"><i class="fa" ng-class="version.versionId === $ctrl.version.versionId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
         <div class="clearfix"></div>
       </div>
-      <h2>Versions not merging</h2>
+      <h3>Versions not merging</h3>
       <div ng-repeat="version in $ctrl.versions | orderBy: 'version'">
         {{ version.version }}
         <button class="btn btn-ai-success btn-small pull-right" id="versions-version-can-merge-{{ version.versionId }}" ng-click="$ctrl.toggleMerge(version, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
@@ -69,7 +70,7 @@
       </div>
     </div>
     <div class="col-md-3" ng-if="$ctrl.action === 'split'">
-      <h2>New Version</h2>
+      <h3>New Version</h3>
       <chpl-version version="$ctrl.newVersion"
                     product="$ctrl.product"
                     developer="$ctrl.developer"
@@ -80,7 +81,7 @@
                     on-edit="$ctrl.saveSplitEdit(version)"
                     show-full="true"
                     take-action="$ctrl.takeSplitAction()"></chpl-version>
-      <h3>Listings moving to new Version</h3>
+      <h4>Listings moving to new Version</h4>
       <div class="bg-danger" ng-if="$ctrl.movingListings.length === 0">At least one Listing must be selected to move</div>
       <div ng-repeat="listing in $ctrl.movingListings | orderBy: 'chplProductNumber'">
         <button class="btn btn-default btn-small" id="versions-listing-move-old-{{ listing.id }}" ng-click="$ctrl.toggleMove(listing, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ listing.chplProductNumber }}
@@ -88,9 +89,8 @@
       <button class="btn btn-ai-success btn-small pull-right" id="versions-component-save-{{ $ctrl.version.versionId }}" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingListings.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
       <button class="btn btn-warning btn-small" id="versions-component-cancel-{{ $ctrl.version.versionId }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
     </div>
-
   </div>
-  <div class="row main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.validState">
+  <div class="row" ng-if="!$ctrl.validState">
     <p class="lead">This resource does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
 </div>

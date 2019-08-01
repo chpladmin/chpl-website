@@ -190,6 +190,10 @@ export class NetworkService {
         return this.apiGET('/surveillance-report/annual');
     }
 
+    getAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/annual/' + reportId);
+    }
+
     getApiActivity (options) {
         var params = [];
         var queryParams = '';
@@ -219,6 +223,10 @@ export class NetworkService {
 
     getApiUsers () {
         return this.apiGET('/key');
+    }
+
+    getAtl (id) {
+        return this.apiGET('/atls/' + id);
     }
 
     getAtlActivity (activityRange) {
@@ -291,7 +299,7 @@ export class NetworkService {
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
         case 'complaintListings':
-            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber');
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'surveillanceManagement':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default
@@ -432,6 +440,10 @@ export class NetworkService {
         return this.apiGET('/data/quarters');
     }
 
+    getQuarterlySurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/quarterly/' + reportId);
+    }
+
     getQuarterlySurveillanceReports () {
         return this.apiGET('/surveillance-report/quarterly');
     }
@@ -444,8 +456,8 @@ export class NetworkService {
         return this.apiGET('/surveillance-report/quarterly/' + report.id + '/complaints');
     }
 
-    getRelevantListings (report) {
-        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/listings');
+    getRelevantListings (reportId) {
+        return this.apiGET('/surveillance-report/quarterly/' + reportId + '/listings');
     }
 
     getSearchOptions () {
@@ -519,6 +531,14 @@ export class NetworkService {
                 data.nonconformityTypes = response;
             });
         return data;
+    }
+
+    getSurveillanceOutcomes () {
+        return this.apiGET('/data/surveillance-outcomes');
+    }
+
+    getSurveillanceProcessTypes () {
+        return this.apiGET('/data/surveillance-process-types');
     }
 
     getTargetedUsers () {
@@ -726,6 +746,10 @@ export class NetworkService {
 
     updateRelevantListing (reportId, listing) {
         return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
+    }
+
+    updateRelevantSurveillance (reportId, surveillance) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/surveillance/' + surveillance.id, surveillance);
     }
 
     updateScheduleTrigger (trigger) {

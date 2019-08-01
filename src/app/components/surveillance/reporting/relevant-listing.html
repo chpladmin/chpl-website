@@ -1,20 +1,44 @@
-<div ng-form="$ctrl.form" class="form-horizontal">
-  <div class="form-group">
-    <label class="control-label" for="reason-for-exclusion">Reason for exclusion </label>
-    <div>
-      <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion"
-        ng-model="$ctrl.listing.reason" required></input>
-      <div class="text-danger"
-        ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">
-        Reason is required
-      </div>
+<div class="row">
+  <div class="col-md-12">
+    <strong>{{ $ctrl.listing.chplProductNumber }}</strong>
+    <chpl-surveillance-report-relevant-surveillance
+       surveillance="$ctrl.activeSurveillance"
+       surveillance-outcomes="$ctrl.surveillanceOutcomes"
+       surveillance-process-types="$ctrl.surveillanceProcessTypes"
+       on-cancel="$ctrl.cancelEdit()"
+       on-save="$ctrl.save(surveillance)"
+       ng-if="$ctrl.activeSurveillance">
+    </chpl-surveillance-report-relevant-surveillance>
+    <div class="table-responsive" st-table="$ctrl.displaySurveillances" st-safe-src="$ctrl.surveillances" ng-show="!$ctrl.activeSurveillance">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col" class="search-header" st-sort="friendlyId" st-skip-natural="true">Friendly ID</th>
+            <th scope="col" class="search-header" st-sort="startDate" st-skip-natural="true" st-sort-default="reverse">Start Date</th>
+            <th scope="col" class="search-header" st-sort="endDate" st-skip-natural="true">End Date</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th colspan="4">
+              <button class="btn btn-link pull-right" ng-click="$ctrl.cancel()">Cancel</button>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr ng-repeat="surveillance in $ctrl.displaySurveillances">
+            <td>{{ surveillance.friendlyId }}</td>
+            <td>{{ surveillance.startDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ surveillance.endDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>
+              <button class="btn btn-link" uib-tooltip="{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeSurveillance = surveillance">
+                <i class="fa" ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ?  'fa-pencil-square-o' : 'fa-eye'"></i><span class="sr-only">{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} surveillance data</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="pull-right">
-    <button class="btn " ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-      ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()">
-      Exclude Listing
-    </button>
-    <button class="btn btn-link" ng-click="$ctrl.cancel()">Cancel</button>
   </div>
 </div>

@@ -45,9 +45,12 @@ function administrationStateConfig ($stateProvider) {
             url: '/announcements',
             component: 'chplAnnouncements',
             resolve: {
-                announcements: networkService => {
+                announcements: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getAnnouncements(true);
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                        return networkService.getAnnouncements(true);
+                    }
+                    return [];
                 },
             },
             data: { title: 'CHPL Administration - Announcements' },
@@ -56,9 +59,12 @@ function administrationStateConfig ($stateProvider) {
             url: '/api-keys',
             component: 'chplApiKeys',
             resolve: {
-                apiKeys: networkService => {
+                apiKeys: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getApiUsers();
+                    if (authService.hasAnyRole()) {
+                        return networkService.getApiUsers(['ROLE_ADMIN', 'ROLE_ONC']);
+                    }
+                    return [];
                 },
             },
             data: { title: 'CHPL Administration - API Keys' },
@@ -88,13 +94,16 @@ function administrationStateConfig ($stateProvider) {
             },
             data: { title: 'CHPL Reports - Listings' },
         })
-        .state('administration.fuzzy', {
+        .state('administration.fuzzy-matching', {
             url: '/fuzzy-matching',
             component: 'chplFuzzyMatching',
             resolve: {
-                fuzzyTypes: networkService => {
+                fuzzyTypes: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getFuzzyTypes();
+                    if (authService.hasAnyRole()) {
+                        return networkService.getFuzzyTypes();
+                    }
+                    return [];
                 },
             },
             data: { title: 'CHPL Administration - Fuzzy Matching' },
@@ -123,13 +132,19 @@ function administrationStateConfig ($stateProvider) {
                     'ngInject'
                     return networkService.getAcbs(true);
                 },
-                jobs: networkService => {
+                jobs: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getScheduleJobs();
+                    if (authService.hasAnyRole()) {
+                        return networkService.getScheduleJobs();
+                    }
+                    return [];
                 },
-                triggers: networkService => {
+                triggers: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getScheduleTriggers();
+                    if (authService.hasAnyRole()) {
+                        return networkService.getScheduleTriggers();
+                    }
+                    return [];
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },

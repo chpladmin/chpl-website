@@ -4,7 +4,10 @@ let states = {
             name: 'organizations',
             abstract: true,
             url: '/organizations',
-            template: '<ui-view />',
+            component: 'chplOrganizations',
+            ncyBreadcrumb: {
+                label: 'Organizations',
+            },
         },{
             name: 'organizations.developers',
             url: '/developers/{developerId}/{action}?',
@@ -34,6 +37,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Developers' },
+            ncyBreadcrumb: {
+                label: 'Developer',
+            },
         },{
             name: 'organizations.developers.products',
             url: '/products/{productId}/{action}?',
@@ -52,6 +58,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Products' },
+            ncyBreadcrumb: {
+                label: 'Product',
+            },
         },{
             name: 'organizations.developers.products.versions',
             url: '/versions/{versionId}/{action}?',
@@ -70,6 +79,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Product Versions' },
+            ncyBreadcrumb: {
+                label: 'Version',
+            },
         },{
             name: 'organizations.onc-acbs',
             url: '/onc-acbs',
@@ -95,6 +107,23 @@ let states = {
                 }),
             },
             data: { title: 'CHPL ONC-ACBs' },
+            ncyBreadcrumb: {
+                label: 'ONC-ACBs',
+            },
+        },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAcb($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ACB' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
         },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
@@ -120,6 +149,23 @@ let states = {
                 }),
             },
             data: { title: 'CHPL ONC-ATLs' },
+            ncyBreadcrumb: {
+                label: 'ONC-ATLs',
+            },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAtl($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ATL' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
         },
     ],
     'base': [

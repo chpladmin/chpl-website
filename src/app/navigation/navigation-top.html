@@ -14,7 +14,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right nav-main">
-          <li><a href="#/search">Search CHPL <i class="fa fa-search"></i></a></li>
+          <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-right'"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="widget-toggle" id="widget-dropdown">
@@ -30,25 +30,25 @@
           <li class="dropdown" uib-dropdown is-open="vm.resourcesIsOpen">
             <a href class="dropdown-toggle" id="resource-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.resourcesIsOpen">CHPL Resources <span class="fa" ng-class="vm.resourcesIsOpen ? 'fa-caret-down' : 'fa-caret-right'"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="resource-toggle" id="resource-dropdown-menu">
-              <li><a href="#/resources/overview">Overview</a></li>
+              <li><a ui-sref="resources.overview">Overview</a></li>
               <li><a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide <i class="fa fa-download text-right"></i></a></li>
-              <li><a href="#/resources/cms-lookup">CMS ID Reverse Lookup</a></li>
-              <li><a href="#/resources/download">Download the CHPL</a></li>
-              <li><a href="#/resources/chpl-api">CHPL API</a></li>
+              <li><a ui-sref="resources.cms-lookup">CMS ID Reverse Lookup</a></li>
+              <li><a ui-sref="resources.download">Download the CHPL</a></li>
+              <li><a ui-sref="resources.chpl-api">CHPL API</a></li>
               <li><a href="https://www.healthit.gov/form/healthit-feedback-form">Contact Us</a></li>
             </ul>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.collectionsIsOpen">
             <a href class="dropdown-toggle" id="shortcut-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.collectionsIsOpen">Shortcuts <span class="fa" ng-class="vm.collectionsIsOpen ? 'fa-caret-down' : 'fa-caret-right'"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="shortcut-toggle" id="shortcut-dropdown-menu">
-              <li><a href="#/collections/api-documentation">API Info for 2015 Ed. Products</a></li>
-              <li><a href="#/collections/developers">Banned Developers</a></li>
-              <li><a href="#/charts">Charts</a></li>
-              <li><a href="#/collections/products">Decertified Products</a></li>
-              <li><a href="#/collections/inactive">Inactive Certificates</a></li>
-              <li><a href="#/collections/corrective-action">Products: Corrective Action</a></li>
-              <li><a href="#/collections/sed">SED Info for 2015 Ed. Products</a></li>
-              <li><a href="#/collections/transparency-attestations">Transparency Attestations</a></li>
+              <li><a ui-sref="collections.api-documentation">API Info for 2015 Ed. Products</a></li>
+              <li><a ui-sref="collections.developers">Banned Developers</a></li>
+              <li><a ui-sref="charts">Charts</a></li>
+              <li><a ui-sref="collections.products">Decertified Products</a></li>
+              <li><a ui-sref="collections.inactive">Inactive Certificates</a></li>
+              <li><a ui-sref="collections.corrective-action">Products: Corrective Action</a></li>
+              <li><a ui-sref="collections.sed">SED Info for 2015 Ed. Products</a></li>
+              <li><a ui-sref="collections.transparency-attestations">Transparency Attestations</a></li>
             </ul>
           </li>
         </ul>
@@ -77,7 +77,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.upload"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.upload')"></i> Upload</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="administration.confirm.listings"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.confirm.listings')"></i> Confirm Listings</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !vm.isOn('complaints') && !vm.isOn('surveillance-reporting')"><a href="#/admin/dpManagement/confirmSurveillance"> Confirm Surveillance</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.fuzzy"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.fuzzy')"></i> Fuzzy Matching</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.fuzzy-matching"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.fuzzy-matching')"></i> Fuzzy Matching</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.scheduled"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.scheduled')"></i> Scheduled Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.jobs.background"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs.background')"></i> Background Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>
@@ -86,7 +86,7 @@
             </ul>
           </li>
           <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="dropdown" uib-dropdown is-open="vm.usersIsOpen">
-            <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="users-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.usersIsOpen">Users</button>
+            <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="users-toggle" ng-class="{'admin-active': vm.isActive('users')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.usersIsOpen">Users</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="users-toggle" id="users-dropdown-menu">
               <li ng-if="!vm.isOn('ocd2749')"><a href="#/admin/userManagement">User Management</a></li>
               <li ng-if="vm.isOn('ocd2749')"><a ui-sref="users"><i class="fa fa-caret-right" ng-if="vm.isActive('users')"></i> User Management</a></li>
