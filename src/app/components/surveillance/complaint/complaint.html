@@ -213,12 +213,19 @@
             ng-change="$ctrl.selectSurveillance()">
     </select>
   </div>
+  <div class="form-group">
+    <label class="checkbox-inline" for="flag-for-oncreview">
+      <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-model="$ctrl.complaint.flagForOncReview">
+      Flag for ONC Review
+    </label>
+  </div>
+  <h3>Parties Contacted</h3>
   <div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <label class="checkbox-inline" for="complainant-contacted">
           <input type="checkbox" id="complainant-contacted" name="complainantContacted"
-                 ng-model="$ctrl.complaint.complainantContacted"> Complainant Contacted?
+                 ng-model="$ctrl.complaint.complainantContacted"> Complainant Contacted
         </label>
       </div>
     </div>
@@ -226,7 +233,7 @@
       <div class="form-group">
         <label class="checkbox-inline" for="developer-contacted">
           <input type="checkbox" id="developer-contacted" name="developerContacted"
-                 ng-model="$ctrl.complaint.developerContacted"> Developer Contacted?
+                 ng-model="$ctrl.complaint.developerContacted"> Developer Contacted
         </label>
       </div>
     </div>
@@ -236,15 +243,7 @@
       <div class="form-group">
         <label class="checkbox-inline" for="onc-atl-contacted">
           <input type="checkbox" id="onc-atl-contacted" name="oncAtlContacted" ng-model="$ctrl.complaint.oncAtlContacted">
-          ONC-ATL Contacted?
-        </label>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label class="checkbox-inline" for="flag-for-oncreview">
-          <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-model="$ctrl.complaint.flagForOncReview">
-          Flag for ONC Review?
+          ONC-ATL Contacted
         </label>
       </div>
     </div>
