@@ -123,6 +123,38 @@
     </div>
   </div>
   <div class="form-group">
+    <label class="control-label" for="criteria">Associated Criteria</label><br />
+    <div ng-if="!$ctrl.complaint.criteria || $ctrl.complaint.criteria.length === 0">
+      <em>No Criteria Selected</em>
+    </div>
+    <div class="selected-items-container" ng-if="$ctrl.complaint.criteria && $ctrl.complaint.criteria.length !== 0">
+      <span ng-repeat="criterion in $ctrl.complaint.criteria">
+        <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeCriterion(criterion)">
+          <span class="sr-only">Remove </span>
+          {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
+          <i class="fa fa-times"></i>
+        </button>
+        &nbsp;
+      </span>
+    </div>
+    <div class="input-group">
+      <div class="input-group-btn" uib-dropdown>
+        <button type="button" id="select-edition" class="btn btn-default input-group-btn-adjust dropdown-toggle"
+          uib-dropdown-toggle>
+          {{ $ctrl.edition.name }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="select-edition">
+          <li ng-repeat="edition in $ctrl.editions | orderBy: 'name' : reverse"><a
+              ng-click="$ctrl.selectEdition(edition)"> {{ edition.name }}</a></li>
+        </ul>
+      </div>
+      <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.criterion"
+        ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
+        ng-change="$ctrl.selectCriteria()">
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
     <label class="control-label" for="actions">Actions/Response</label>
     <div>
       <textarea class="form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
@@ -180,37 +212,6 @@
             ng-options="(surveillance.friendlyId + ' - ' + surveillance.chplProductNumber ) for surveillance in $ctrl.surveillances | orderBy: ['chplProductNumber', 'friendlyId'] track by surveillance.id"
             ng-change="$ctrl.selectSurveillance()">
     </select>
-  </div>
-  <div class="form-group">
-    <label class="control-label" for="criteria">Associated Criteria</label><br />
-    <div ng-if="!$ctrl.complaint.criteria || $ctrl.complaint.criteria.length === 0">
-      <em>No Criteria Selected</em>
-    </div>
-    <div class="selected-items-container" ng-if="$ctrl.complaint.criteria && $ctrl.complaint.criteria.length !== 0">
-      <span ng-repeat="criterion in $ctrl.complaint.criteria">
-        <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeCriterion(criterion)">
-          <span class="sr-only">Remove </span>
-          {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
-          <i class="fa fa-times"></i>
-        </button>
-        &nbsp;
-      </span>
-    </div>
-    <div class="input-group">
-      <div class="input-group-btn" uib-dropdown>
-        <button type="button" id="select-edition" class="btn btn-default input-group-btn-adjust dropdown-toggle" uib-dropdown-toggle>
-          {{ $ctrl.edition.name }} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="select-edition">
-          <li ng-repeat="edition in $ctrl.editions | orderBy: 'name' : reverse"><a
-                                                                                   ng-click="$ctrl.selectEdition(edition)"> {{ edition.name }}</a></li>
-        </ul>
-      </div>
-      <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.criterion"
-              ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
-              ng-change="$ctrl.selectCriteria()">
-      </select>
-    </div>
   </div>
   <div class="row">
     <div class="col-md-3">
