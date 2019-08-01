@@ -106,9 +106,13 @@ export const SurveillanceManagementComponent = {
                 }))
         }
 
-        takeTabAction (action, data) {
+        takeTabAction (action, data, $event) {
             if (action === 'close') {
                 this.tabs = this.tabs.filter(t => t.id !== data.id);
+            }
+            if ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
             }
         }
 
