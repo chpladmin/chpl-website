@@ -1,13 +1,13 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    <address>
+    <b class="address">
       {{ $ctrl.address.line1 }}<br />
       <span ng-if="$ctrl.address.line2">{{ $ctrl.address.line2 }}<br /></span>
       {{ $ctrl.address.city }}<span ng-if="$ctrl.address.city && ($ctrl.address.state || $ctrl.address.zipcode || $ctrl.address.country)">, </span>
       {{ $ctrl.address.state }}
       {{ $ctrl.address.zipcode }}
       <span ng-if="($ctrl.address.state || $ctrl.address.zipcode) && $ctrl.address.country">, </span>{{ $ctrl.address.country }}
-    </address>
+    </b>
   </span>
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
     <div class="form-group">
