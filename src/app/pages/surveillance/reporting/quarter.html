@@ -13,7 +13,7 @@
         </button>
       </span>
       <p><strong>{{ $ctrl.report.acb.name }} Quarterly Surveillance Reporting</strong></p>
-      <p>{{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}</p>
+      <p><strong>{{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}</strong></p>
     </div>
   </div>
   <div class="row">
@@ -51,7 +51,7 @@
       </div>
       <hr />
       <div class="panel panel-default">
-        <div class="panel-heading clickable" ng-click="$ctrl.areExcludedShown = !$ctrl.areExcludedShown">
+        <div class="panel-heading clickable" ng-click="$ctrl.areExcludedShown = !$ctrl.areExcludedShown" id="excluded-listings-header">
           <div class="panel-title">
             <i class="fa pull-right" ng-class="$ctrl.areExcludedShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
             Listings excluded from randomized surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
@@ -66,7 +66,7 @@
       </div>
       <hr />
       <div class="panel panel-default">
-        <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown">
+        <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown" id="relevant-listings-header">
           <div class="panel-title">
             <i class="fa pull-right" ng-class="$ctrl.areListingsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
             Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
@@ -84,7 +84,7 @@
       </div>
       <hr />
       <div class="panel panel-default">
-        <div class="panel-heading clickable" ng-click="$ctrl.areComplaintsShown = !$ctrl.areComplaintsShown">
+        <div class="panel-heading clickable" ng-click="$ctrl.areComplaintsShown = !$ctrl.areComplaintsShown" id="complaints-header">
           <div class="panel-title">
             <i class="fa pull-right" ng-class="$ctrl.areComplaintsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
             Complaints for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
