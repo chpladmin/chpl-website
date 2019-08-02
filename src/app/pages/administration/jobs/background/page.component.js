@@ -4,12 +4,13 @@ export const JobsBackgroundPageComponent = {
         types: '<',
     },
     controller: class JobsBackgroundPageComponent {
-        constructor ($log, $scope, $timeout, networkService) {
+        constructor ($log, $scope, $timeout, authService, networkService) {
             'ngInject'
             this.$log = $log;
             this.$scope = $scope;
             this.$timeout = $timeout;
             this.networkService = networkService;
+            this.hasAnyRole = authService.hasAnyRole;
             this.JOB_REFRESH_TIMEOUT_INACTIVE = 30; // seconds
             this.JOB_REFRESH_TIMEOUT_ACTIVE = 5; // seconds
         }

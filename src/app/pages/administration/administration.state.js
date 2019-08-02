@@ -61,8 +61,8 @@ function administrationStateConfig ($stateProvider) {
             resolve: {
                 apiKeys: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
-                        return networkService.getApiUsers(['ROLE_ADMIN', 'ROLE_ONC']);
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'] )) {
+                        return networkService.getApiUsers();
                     }
                     return [];
                 },
