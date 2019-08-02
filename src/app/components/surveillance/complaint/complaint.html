@@ -210,8 +210,8 @@
             ng-change="$ctrl.selectSurveillance()">
     </select>
   </div>
-  <div class="form-group">
-    <label class="checkbox-inline" for="flag-for-oncreview">
+  <div class="form-group" feature-flag="complaints-flag-for-onc-review">
+    <label class="checkbox-inline" for="flag-for-onc-review">
       <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-model="$ctrl.complaint.flagForOncReview">
       Flag for ONC Review
     </label>
