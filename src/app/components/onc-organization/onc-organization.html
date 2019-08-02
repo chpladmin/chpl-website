@@ -14,7 +14,7 @@
           <p ng-if="!$ctrl.organization.retired">Retired: <strong>No</strong></p>
         </div>
       </div>
-      <div class="row" ng-if="$ctrl.organization.address">
+      <div class="row spaced-out" ng-if="$ctrl.organization.address">
         <div class="col-sm-12">
           <p>Address</p>
           <chpl-address address="$ctrl.organization.address"></chpl-address>
@@ -60,7 +60,7 @@
       <h3>Address</h3>
       <chpl-address address="$ctrl.organization.address" is-editing="$ctrl.isEditing" is-required="!$ctrl.organization.retired" is-disabled="$ctrl.organization.retired" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
       <div class="pull-right">
-        <button class="btn" id="chpl-organization-save-{{ $ctrl.type }}-{{ $ctrl.organization.id }}"
+        <button class="btn btn-default" id="chpl-organization-save-{{ $ctrl.type }}-{{ $ctrl.organization.id }}"
                 ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && $ctrl.form.$invalid"
                 ng-mouseover="$ctrl.showFormErrors = true">Save {{ $ctrl.type }}</button>
         <button class="btn btn-link" id="chpl-organization-cancel-{{ $ctrl.type }}-{{ $ctrl.organization.id }}"

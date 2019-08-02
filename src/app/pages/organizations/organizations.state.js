@@ -193,18 +193,22 @@ let states = {
             name: 'organizations.onc-acbs',
             url: '/onc-acbs',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-            params: {
-                oncAcbId: {squash: true, value: null},
-            },
             data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ACB' },
         },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-            params: {
-                oncAtlId: {squash: true, value: null},
-            },
             data: { title: 'CHPL ONC-ATLs' },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ATL' },
         },
     ],
 };
