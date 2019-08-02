@@ -59,8 +59,8 @@
       </div>
     </div>
   </div>
-  <div class="row table-responsive" feature-flag="ocd2749-table" st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.filteredUsers">
-    <div class="col-md-12">
+  <div class="row" feature-flag="ocd2749-table" st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.filteredUsers">
+    <div class="col-md-12 table-responsive">
       <table class="table table-condensed">
         <thead>
           <tr>
@@ -90,10 +90,10 @@
             <td><i class="fa fa-lg" ng-class="user.accountEnabled ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.accountEnabled ? 'Enabled' : 'Disabled' }}</span></td>
             <td><i class="fa fa-lg" ng-class="user.passwordResetRequired ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.passwordResetRequired ? 'Reset required' : 'Reset not required' }}</span></td>
             <td>
-              <button class="btn btn-default btn-block"
+              <button class="btn btn-link"
                       uib-tooltip="Edit {{ user.fullName }}" tooltip-trigger="'mouseenter focus click'"
                       ng-click="$ctrl.act('edit', user)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit user {{ user.fullName }}</span></button>
-              <button class="btn btn-default btn-block"
+              <button class="btn btn-link"
                       uib-tooltip="Impersonate {{ user.fullName }}" tooltip-trigger="'mouseenter focus click'"
                       ng-click="$ctrl.act('impersonate', user)" ng-if="$ctrl.canImpersonate(user)"><i class="fa fa-user-secret"></i><span class="sr-only">Impersonate user {{ user.fullName }}</span></button>
             </td>
