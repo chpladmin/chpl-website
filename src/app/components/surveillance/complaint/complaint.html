@@ -129,7 +129,9 @@
     </div>
     <div class="selected-items-container" ng-if="$ctrl.complaint.criteria && $ctrl.complaint.criteria.length !== 0">
       <span ng-repeat="criterion in $ctrl.complaint.criteria">
-        <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeCriterion(criterion)">
+        <button class="btn btn-primary btn-sm"
+          ng-click="$ctrl.removeCriterion(criterion)"
+          id="remove-criteria-{{ criterion.certificationCriterion.id }}">
           <span class="sr-only">Remove </span>
           {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
           <i class="fa fa-times"></i>
@@ -167,7 +169,9 @@
     </div>
     <div class="selected-items-container" ng-if="$ctrl.complaint.listings && $ctrl.complaint.listings !== 0">
       <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
-        <button class="btn btn-primary btn-sm" ng-click="$ctrl.removeListing(listing)">
+        <button class="btn btn-primary btn-sm"
+          ng-click="$ctrl.removeListing(listing)"
+          id="remove-listing-{{ listing.listingId }}">
           <span class="sr-only">Remove item </span>
           {{ listing.chplProductNumber }}
           <i class="fa fa-times"></i>
@@ -200,7 +204,9 @@
     </div>
     <div class="selected-items-container" ng-if="$ctrl.complaint.surveillances && $ctrl.complaint.surveillances.length !== 0">
       <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
-        <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeSurveillance(surveillance)">
+        <button class="btn btn-primary btn-xs"
+          ng-click="$ctrl.removeSurveillance(surveillance)"
+          id="remove-listing-{{ surveillance.surveillance.id }}">
           <span class="sr-only">Remove </span>
           {{ surveillance.surveillance.chplProductNumber }} - {{ surveillance.surveillance.friendlyId }}
           <i class="fa fa-times"></i>
