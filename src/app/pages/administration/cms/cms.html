@@ -1,8 +1,14 @@
-<div class="container-fluid">
-  <div class="row main-content" id="main-content" tabindex="-1">
-    <div class="col-md-12">
-      <h2>CMS Management</h2>
-      <chpl-cms-management></chpl-cms-management>
-    </div>
+<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])">
+  <div class="col-md-12">
+    <h2>CMS Management</h2>
+    <chpl-cms-management></chpl-cms-management>
+  </div>
+</div>
+<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])">
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <ai-login form-class=""
+              p-class="bg-success lead"
+              p-class-fail="bg-danger lead">
+    </ai-login>
   </div>
 </div>
