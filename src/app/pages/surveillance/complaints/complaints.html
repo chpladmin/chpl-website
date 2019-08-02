@@ -5,10 +5,7 @@
         <div ng-if="!$ctrl.isEditing">
           <div ng-if="$ctrl.displayHeader">
             <h2>Complaints</h2>
-            <ol class="breadcrumb">
-              <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
-              <li class="active">Complaints</li>
-            </ol>
+            <div ncy-breadcrumb></div>
           </div>
           <div class="clearfix" ng-if="$ctrl.displayAdd">
             <button class="btn pull-right" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">

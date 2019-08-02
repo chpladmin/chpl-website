@@ -2,16 +2,7 @@
   <div ng-if="$ctrl.displayHeader">
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
     <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
-    <ol class="breadcrumb">
-      <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
-      <li><button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Complaints</button></li>
-      <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
-        Edit
-      </li>
-      <li class="active" ng-if="$ctrl.currentMode === $ctrl.modes.ADD">
-        Add
-      </li>
-    </ol>
+    <div ncy-breadcrumb></div>
   </div>
   <div class="form-group">
     <label class="control-label" for="certification-body">ONC-ACB<span class="text-danger">*</span></label>
