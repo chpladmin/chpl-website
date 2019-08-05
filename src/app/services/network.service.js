@@ -299,7 +299,7 @@ export class NetworkService {
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
         case 'complaintListings':
-            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber');
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'surveillanceManagement':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default

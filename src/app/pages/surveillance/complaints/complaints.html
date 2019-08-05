@@ -5,10 +5,7 @@
         <div ng-if="!$ctrl.isEditing">
           <div ng-if="$ctrl.displayHeader">
             <h2>Complaints</h2>
-            <ol class="breadcrumb">
-              <li><a ui-sref="surveillance.manage()">Surveillance</a></li>
-              <li class="active">Complaints</li>
-            </ol>
+            <div ncy-breadcrumb></div>
           </div>
           <div class="clearfix" ng-if="$ctrl.displayAdd">
             <button class="btn pull-right" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
@@ -24,7 +21,7 @@
                   <th scope="col" class="search-header" st-sort="receivedDate" st-skip-natural="true" st-sort-default="reverse">Received Date</th>
                   <th scope="col" class="search-header" st-sort="acbComplaintId" st-skip-natural="true">ONC-ACB Complaint Id</th>
                   <th scope="col" class="search-header" st-sort="oncComplaintId" st-skip-natural="true">ONC Complaint Id</th>
-                  <th scope="col" class="search-header" st-sort="complaintanStatusTypeName" st-skip-natural="true">Complainant Type</th>
+                  <th scope="col" class="search-header" st-sort="complainantTypeName" st-skip-natural="true">Complainant Type</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
