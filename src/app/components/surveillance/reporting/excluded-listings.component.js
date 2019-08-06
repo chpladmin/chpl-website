@@ -32,7 +32,8 @@ export const SurveillanceReportExcludedListingsComponent = {
 
         excludeListing () {
             this.listing.excluded = true;
-            this.onSave({ listing: this.listing });
+            this.onSave({ listing: angular.copy(this.listing) });
+            this.listing = undefined;
             this.restoreForm();
         }
 
