@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <span ng-if="$ctrl.hasAnyRole()">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>CHPL Dashboard</h1>
+      </div>
+    </div>
+    <div class="main-content" id="main-content" tabindex="-1">
+      <div class="row">
+        <div class="col-md-6">
+          <chpl-developer developer="$ctrl.developer"></chpl-developer>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
+        </div>
+      </div>
+    </div>
+  </span>
+  <div class="main-content row splash-row" id="main-content" tabindex="-1" ng-if="!$ctrl.hasAnyRole()">
+    <div class="col-md-6 col-md-offset-3 jumbotron">
+      <ai-login form-class=""
+                p-class="bg-success lead"
+                p-class-fail="bg-danger lead">
+      </ai-login>
+    </div>
+  </div>
+</div>
