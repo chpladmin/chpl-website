@@ -109,7 +109,7 @@
     <div>
       <textarea class="form-control" ng-model="$ctrl.complaint.summary" name="summary" id="summary"
                 ng-required="$ctrl.isOn('complaints-ui-validation')"></textarea>
-      <div class="text-danger" ng-if="$ctrl.form.summary.$touched && $ctrl.form.summary.$error.required">Summary is
+      <div class="text-danger" ng-if="$ctrl.form.summary.$touched && $ctrl.form.summary.$error.required">Complaint Summary is
         required</div>
     </div>
   </div>
@@ -255,7 +255,7 @@
       <li ng-if="$ctrl.form.receivedDate.$error.parse">Received Date is improper format (mm/dd/yyyy)</li>
       <li ng-if="$ctrl.form.closedDate.$error.parse">Closed Date is improper format (mm/dd/yyyy)</li>
       <li ng-if="$ctrl.form.acbComplaintId.$error.required">ONC-ACB Complaint ID is required</li>
-      <li ng-if="$ctrl.form.summary.$error.required">Summary is required</li>
+      <li ng-if="$ctrl.form.summary.$error.required">Complaint Summary is required</li>
     </ul>
   </div>
   <div class="text-danger text-left" ng-if="$ctrl.errorMessages.length > 0">
