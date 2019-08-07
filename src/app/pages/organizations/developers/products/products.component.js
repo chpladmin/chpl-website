@@ -23,7 +23,7 @@ export const ProductsComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole()) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 this.loadDevelopers();
             }
             let loggedIn = this.$scope.$on('loggedIn', function () {

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    xdescribe('the Developers component', () => {
+    fdescribe('the Developers component', () => {
         var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -17,7 +17,7 @@
                 status: {id: 1, status: 'Active'},
             },
             developers: [
-                { name: 'a developer' },
+                { name: 'a developer', transparencyAttestations: [] },
             ],
             products: [
                 { name: 'a product' },
@@ -26,10 +26,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
-                $provide.decorator('chplDevelopersDirective', $delegate => {
-                    $delegate[0].terminal = true;
-                    return $delegate;
-                });
+                $provide.factory('chplProductsDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     return $delegate;
@@ -45,8 +42,8 @@
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
-                scope.developers = mock.developers;
-                scope.products = mock.products;
+                scope.developers = {developers: mock.developers};
+                scope.products = {products: mock.products};
 
                 el = angular.element('<chpl-developers allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers>');
 
