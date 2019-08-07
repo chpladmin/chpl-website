@@ -92,18 +92,24 @@ export const SurveillanceManagementComponent = {
             return this.allowedAcbs.reduce((acc, acb) => acc || acb.name === listing.acb, false);
         }
 
+        isLoaded (listing) {
+            return this.tabs.reduce((acc, tab) => acc || tab.id === listing.id, false);
+        }
+
         load (listing) {
-            this.tabs.push({
-                id: listing.id,
-                chplProductNumber: listing.chplProductNumber,
-            });
-            let that = this;
-            this.networkService.getListing(listing.id, true)
-                .then(result => that.tabs.forEach(t => {
-                    if (t.id === listing.id) {
-                        t.listing = result;
-                    }
-                }))
+            if (!this.isLoaded(listing)) {
+                this.tabs.push({
+                    id: listing.id,
+                    chplProductNumber: listing.chplProductNumber,
+                });
+                let that = this;
+                this.networkService.getListing(listing.id, true)
+                    .then(result => that.tabs.forEach(t => {
+                        if (t.id === listing.id) {
+                            t.listing = result;
+                        }
+                    }))
+            }
         }
 
         takeTabAction (action, data, $event) {

@@ -1,4 +1,4 @@
-<div id="announcement-{{ $ctrl.announcement.id }}" ng-form="$ctrl.form">
+<div id="announcement-edit-form" ng-form="$ctrl.form">
   <div class="form-group">
     <label class="control-label" for="title">Title <span class="text-danger">*</span></label>
     <input class="input-sm form-control" type="text" required ng-model="$ctrl.announcement.title" id="title" name="title" ng-disabled="$ctrl.announcement.isDeleted"></input>
@@ -57,12 +57,12 @@
               ng-disabled="($ctrl.form.$invalid || !$ctrl.validDates()) && $ctrl.showFormErrors"
               ng-mouseover="$ctrl.showFormErrors = true"
               ng-click="$ctrl.create()"><i class="fa fa-save"></i><span class="sr-only"> Create</span></button>
-      <button class="btn btn-ai-success btn-small pull-right" id="announcement-{{ $ctrl.announcement.id }}-save"
+      <button class="btn btn-ai-success btn-small pull-right" id="announcement-save"
               ng-disabled="($ctrl.form.$invalid || !$ctrl.validDates()) && $ctrl.showFormErrors"
               ng-mouseover="$ctrl.showFormErrors = true"
               ng-if="$ctrl.announcement.id"
               ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-      <button class="btn btn-danger btn-small" id="announcement-{{ $ctrl.announcement.id }}-delete"
+      <button class="btn btn-danger btn-small" id="announcement-delete"
               ng-if="$ctrl.announcement.id"
               confirm="Are you sure you wish to delete this announcement?"
               confirm-ok="Yes"
