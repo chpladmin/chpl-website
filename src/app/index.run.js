@@ -47,18 +47,6 @@ import { states as usersStates } from './pages/users/users.state.js';
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
-                    if (featureFlags.isOn('ocd1277')) {
-                        surveillanceStates['ocd-1277-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        surveillanceStates['ocd-1277-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
 
                     if (featureFlags.isOn('complaints')) {
                         surveillanceStates['complaints-on'].forEach(state => {

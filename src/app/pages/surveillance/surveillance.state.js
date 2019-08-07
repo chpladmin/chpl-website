@@ -81,31 +81,6 @@ let states = {
             },
         },
     ],
-    'ocd-1277-on': [
-        {
-            name: 'surveillance.manage',
-            url: '/manage',
-            params: {
-                listingId: {squash: true, value: null},
-                chplProductNumber: {squash: true, value: null},
-            },
-            component: 'chplSurveillanceManagement',
-            resolve: {
-                allowedAcbs: networkService => {
-                    'ngInject'
-                    return networkService.getAcbs(true);
-                },
-                listings: networkService => {
-                    'ngInject'
-                    return networkService.getCollection('surveillanceManagement');
-                },
-            },
-            data: { title: 'CHPL Surveillance - Manage' },
-            ncyBreadcrumb: {
-                label: 'Manage',
-            },
-        },
-    ],
     'base': [
         {
             name: 'surveillance',
@@ -140,8 +115,25 @@ let states = {
         },{
             name: 'surveillance.manage',
             url: '/manage',
-            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            params: {
+                listingId: {squash: true, value: null},
+                chplProductNumber: {squash: true, value: null},
+            },
+            component: 'chplSurveillanceManagement',
+            resolve: {
+                allowedAcbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                listings: networkService => {
+                    'ngInject'
+                    return networkService.getCollection('surveillanceManagement');
+                },
+            },
             data: { title: 'CHPL Surveillance - Manage' },
+            ncyBreadcrumb: {
+                label: 'Manage',
+            },
         },{
             name: 'surveillance.reporting',
             url: '/reporting',
