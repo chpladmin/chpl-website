@@ -8,7 +8,7 @@ window.zxcvbn = zxcvbn;
         .controller('CreateController', CreateController);
 
     /** @ngInject */
-    function CreateController ($location, $log, $stateParams, authService, networkService, utilService) {
+    function CreateController ($location, $log, $stateParams, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
@@ -40,12 +40,15 @@ window.zxcvbn = zxcvbn;
         }
 
         function authorizeUser () {
-            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || authService.hasAnyRole()
-                && vm.authorizeDetails.hash) {
+            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || authService.hasAnyRole() && vm.authorizeDetails.hash) {
                 const username = vm.authorizeDetails.userName || authService.getUsername();
                 networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
-                        $location.path('/admin');
+                        if (featureFlags.isOn('adminNav')) {
+                            $location.path('/administration');
+                        } else {
+                            $location.path('/admin');
+                        }
                     }, function (error) {
                         if (error.status === 401) {
                             vm.message.value = 'A user may not have more than one role, or your username / password are incorrect';
