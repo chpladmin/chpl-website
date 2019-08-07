@@ -28,9 +28,6 @@ export const UserManagementComponent = {
         }
 
         handleRole () {
-            if (this.hasAnyRole() && !this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-                this.$state.go('search');
-            }
             this.roles = ['ROLE_ONC', 'ROLE_CMS_STAFF'];
             if (this.hasAnyRole(['ROLE_ADMIN'])) {
                 this.roles.push('ROLE_ADMIN');
