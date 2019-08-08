@@ -33,8 +33,8 @@ export const DashboardComponent = {
 
         loadData () {
             let that = this;
-            this.networkService.getUsers().then(response => that.users = response.users);
             if (this.developerId) {
+                this.networkService.getUsersAtDeveloper(this.developerId).then(response => that.users = response.users);
                 this.networkService.getDeveloper(this.developerId).then(response => that.developer = response);
             }
         }
@@ -44,7 +44,7 @@ export const DashboardComponent = {
             switch (action) {
             case 'delete':
                 this.networkService.removeUserFromDeveloper(data)
-                    .then(() => that.networkService.getUsers().then(response => that.users = response.users));
+                    .then(() => that.networkService.getUsersAtDeveloper(this.developerId).then(response => that.users = response.users));
                 break;
             case 'invite':
                 this.networkService.inviteUser({
@@ -58,7 +58,7 @@ export const DashboardComponent = {
                 }));
                 break;
             case 'refresh':
-                this.networkService.getUsers()
+                this.networkService.getUsersAtDeveloper(this.developerId)
                     .then(response => that.users = response.users);
                 break;
             case 'reload':

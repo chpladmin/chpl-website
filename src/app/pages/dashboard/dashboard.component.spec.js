@@ -20,7 +20,7 @@
                 });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
-                    $delegate.getUsers = jasmine.createSpy('getUsers');
+                    $delegate.getUsersAtDeveloper = jasmine.createSpy('getUsersAtDeveloper');
 
                     return $delegate;
                 });
@@ -35,7 +35,7 @@
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.getDeveloper.and.returnValue($q.when(mock.developer));
-                networkService.getUsers.and.returnValue($q.when({users: mock.users}));
+                networkService.getUsersAtDeveloper.and.returnValue($q.when({users: mock.users}));
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
@@ -75,7 +75,8 @@
                 it('should get data', () => {
                     expect(networkService.getDeveloper).toHaveBeenCalledWith(22);
                     expect(networkService.getDeveloper.calls.count()).toBe(1);
-                    expect(networkService.getUsers.calls.count()).toBe(1);
+                    expect(networkService.getUsersAtDeveloper).toHaveBeenCalledWith(22);
+                    expect(networkService.getUsersAtDeveloper.calls.count()).toBe(1);
                 });
             });
 
@@ -83,11 +84,11 @@
                 it('should refresh data', () => {
                     let initCount = {
                         developer: networkService.getDeveloper.calls.count(),
-                        users: networkService.getUsers.calls.count(),
+                        users: networkService.getUsersAtDeveloper.calls.count(),
                     }
                     $rootScope.$broadcast('loggedIn');
                     expect(networkService.getDeveloper.calls.count()).toBe(initCount.developer + 1);
-                    expect(networkService.getUsers.calls.count()).toBe(initCount.users + 1);
+                    expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount.users + 1);
                 });
             });
 
@@ -95,12 +96,12 @@
                 it('should clean up hooks', () => {
                     let initCount = {
                         developer: networkService.getDeveloper.calls.count(),
-                        users: networkService.getUsers.calls.count(),
+                        users: networkService.getUsersAtDeveloper.calls.count(),
                     }
                     ctrl.$onDestroy()
                     $rootScope.$broadcast('loggedIn');
                     expect(networkService.getDeveloper.calls.count()).toBe(initCount.developer);
-                    expect(networkService.getUsers.calls.count()).toBe(initCount.users);
+                    expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount.users);
                 });
             });
         });

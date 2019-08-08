@@ -1336,6 +1336,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getUsersAtDeveloper', () => {
+            $httpBackend.expectGET(/^\/rest\/developers\/payload\/users$/).respond(200, {data: 'response'});
+            networkService.getUsersAtDeveloper('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getVersion', () => {
             $httpBackend.expectGET(/^\/rest\/versions\/payload$/).respond(200, {data: 'response'});
             networkService.getVersion('payload').then(response => {

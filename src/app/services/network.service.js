@@ -603,6 +603,10 @@ export class NetworkService {
         return this.apiGET('/atls/' + atlId + '/users');
     }
 
+    getUsersAtDeveloper (developerId) {
+        return this.apiGET('/developers/' + developerId + '/users');
+    }
+
     getVersion (versionId) {
         return this.apiGET('/versions/' + versionId);
     }
