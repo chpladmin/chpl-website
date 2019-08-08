@@ -2,7 +2,7 @@
     'use strict';
 
     fdescribe('the Dashboard component', () => {
-        var $compile, $log, authService, ctrl, el, mock, scope;
+        var $compile, $log, $q, $rootScope, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
             developer: {id: 1},
@@ -18,18 +18,29 @@
 
                     return $delegate;
                 });
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
+                    $delegate.getUsers = jasmine.createSpy('getUsers');
+
+                    return $delegate;
+                });
             });
 
-            inject((_$compile_, _$log_, $rootScope, _authService_) => {
+            inject((_$compile_, _$log_, _$q_, _$rootScope_, _authService_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                $rootScope = _$rootScope_;
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
+                networkService = _networkService_;
+                networkService.getDeveloper.and.returnValue($q.when(mock.developer));
+                networkService.getUsers.and.returnValue($q.when({users: mock.users}));
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
                 scope.users = {users: mock.users};
-                el = angular.element('<chpl-dashboard developer="developer" users="users"></chpl-dashboard>');
+                el = angular.element('<chpl-dashboard developer-id="22"></chpl-dashboard>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -57,11 +68,39 @@
             });
 
             describe('during initialization', () => {
-                it('should copy its parameters', () => {
-                    expect(ctrl.developer).not.toBe(mock.developer);
-                    expect(ctrl.developer).toEqual(mock.developer);
-                    expect(ctrl.users).not.toBe(mock.users);
-                    expect(ctrl.users).toEqual(mock.users);
+                it('should have parameters', () => {
+                    expect(ctrl.developerId).toBe(22)
+                });
+
+                it('should get data', () => {
+                    expect(networkService.getDeveloper).toHaveBeenCalledWith(22);
+                    expect(networkService.getDeveloper.calls.count()).toBe(1);
+                    expect(networkService.getUsers.calls.count()).toBe(1);
+                });
+            });
+
+            describe('on log in', () => {
+                it('should refresh data', () => {
+                    let initCount = {
+                        developer: networkService.getDeveloper.calls.count(),
+                        users: networkService.getUsers.calls.count(),
+                    }
+                    $rootScope.$broadcast('loggedIn');
+                    expect(networkService.getDeveloper.calls.count()).toBe(initCount.developer + 1);
+                    expect(networkService.getUsers.calls.count()).toBe(initCount.users + 1);
+                });
+            });
+
+            describe('when cleaning up', () => {
+                it('should clean up hooks', () => {
+                    let initCount = {
+                        developer: networkService.getDeveloper.calls.count(),
+                        users: networkService.getUsers.calls.count(),
+                    }
+                    ctrl.$onDestroy()
+                    $rootScope.$broadcast('loggedIn');
+                    expect(networkService.getDeveloper.calls.count()).toBe(initCount.developer);
+                    expect(networkService.getUsers.calls.count()).toBe(initCount.users);
                 });
             });
         });

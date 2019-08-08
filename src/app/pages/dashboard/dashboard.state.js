@@ -5,21 +5,11 @@ let states = {
             url: '/dashboard',
             component: 'chplDashboard',
             resolve: {
-                developer: (authService, networkService) => {
+                developerId: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
-                        //return networkService.getDeveloper(networkService.getUserByUsername(authService.getUsername()).organizationId);
-                        return networkService.getDeveloper(222);
-                    } else {
-                        return {};
-                    }
-                },
-                users: (authService, networkService) => {
-                    'ngInject'
-                    if (authService.hasAnyRole()) {
-                        return networkService.getUsers();
-                    } else {
-                        return [];
+                    let username = authService.getUsername();
+                    if (username) {
+                        return networkService.getUserByUsername(username).organizationId || 222; // hard coded dev id until organizationId exists
                     }
                 },
             },

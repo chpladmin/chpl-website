@@ -1,8 +1,7 @@
 export const DashboardComponent = {
     templateUrl: 'chpl.dashboard/dashboard.html',
     bindings: {
-        developer: '<',
-        users: '<',
+        developerId: '<',
     },
     controller: class DashboardComponent {
         constructor ($log, $scope, $state, authService, networkService, toaster) {
@@ -16,12 +15,27 @@ export const DashboardComponent = {
             this.roles = ['ROLE_DEVELOPER'];
         }
 
+        $onInit () {
+            let that = this;
+            this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
+        }
+
         $onChanges (changes) {
-            if (changes.developer.currentValue) {
-                this.developer = angular.copy(changes.developer.currentValue);
+            if (changes.developerId.currentValue) {
+                this.developerId = changes.developerId.currentValue;
             }
-            if (changes.users.currentValue) {
-                this.users = angular.copy(changes.users.currentValue.users);
+            this.loadData();
+        }
+
+        $onDestroy () {
+            this.loggedIn();
+        }
+
+        loadData () {
+            let that = this;
+            this.networkService.getUsers().then(response => that.users = response.users);
+            if (this.developerId) {
+                this.networkService.getDeveloper(this.developerId).then(response => that.developer = response);
             }
         }
 
