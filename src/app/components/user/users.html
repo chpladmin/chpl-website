@@ -50,15 +50,17 @@
       </div>
     </div>
   </div>
-  <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)" feature-flag="ocd2749-table" feature-flag-hide>
-    <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
-      <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
-        <div class="panel-body">
-          <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+  <span feature-flag="ocd2749-table" feature-flag-hide>
+    <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)">
+      <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+        <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
+          <div class="panel-body">
+            <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </span>
   <div class="row" feature-flag="ocd2749-table" st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.filteredUsers">
     <div class="col-md-12 table-responsive">
       <table class="table table-condensed">
