@@ -13,7 +13,7 @@
         </button>
       </span>
       <p><strong>{{ $ctrl.report.acb.name }} Annual Surveillance Reporting</strong></p>
-      <p>{{ $ctrl.report.year }}</p>
+      <p><strong>{{ $ctrl.report.year }}</strong></p>
     </div>
   </div>
   <div class="row">
@@ -32,7 +32,7 @@
   <div class="row">
     <div class="col-sm-12">
       <span class="pull-right">
-        <button class="btn btn-default" id="annual-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
+        <button class="btn" id="annual-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Annual Report</button>
         <button class="btn btn-link" id="annual-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
         <button class="btn btn-danger" id="annual-suveillance-delete"
                 confirm="Are you sure you wish to delete this Annual Surveillance Report?"

@@ -47,18 +47,6 @@ import { states as usersStates } from './pages/users/users.state.js';
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
-                    if (featureFlags.isOn('ocd1277')) {
-                        surveillanceStates['ocd-1277-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        surveillanceStates['ocd-1277-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
 
                     if (featureFlags.isOn('complaints')) {
                         surveillanceStates['complaints-on'].forEach(state => {
@@ -112,19 +100,12 @@ import { states as usersStates } from './pages/users/users.state.js';
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(response => {
-                    $log.info('response', response);
-                    if (response.status === 401) {
-                        authService.logout();
-                    }
+                .then(() => {
                     loadFlags();
                 }).catch(error => {
                     $log.info('error', error);
-                    if (error.status === 401) {
-                        $log.info('equals', error.status === 401);
-                        authService.logout();
-                        $state.reload();
-                    }
+                    authService.logout();
+                    loadFlags();
                 });
         } else {
             loadFlags();

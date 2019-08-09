@@ -45,7 +45,7 @@ export const SurveillanceReportQuarterComponent = {
 
         cancel () {
             this.report = angular.copy(this.backup.report);
-            this.parseRelevantListings(this.backup.relevantListings);
+            //this.parseRelevantListings(this.backup.relevantListings);
             this.onCancel();
         }
 

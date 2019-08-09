@@ -122,7 +122,10 @@
                     </tfoot>
                     <tbody>
                       <tr ng-repeat="listing in $ctrl.displayedListings">
-                        <td><button class="btn btn-default" ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }}</button></td>
+                        <td>
+                          <button class="btn btn-default" ng-class="{'loaded-tab': $ctrl.isLoaded(listing)}"
+                                  ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }} <i class="fa fa-info-circle"></i></button>
+                        </td>
                         <td>{{ listing.developer }}</td>
                         <td>{{ listing.product }}</td>
                         <td>{{ listing.version }}</td>
@@ -143,7 +146,7 @@
         </uib-tab>
         <uib-tab index="tab.id" ng-repeat="tab in $ctrl.tabs">
           <uib-tab-heading>
-            {{ tab.product }} <span ng-if="!tab.listing"><i class="fa fa-spin fa-spinner"></i></span>
+            <span ng-if="!tab.listing"><i class="fa fa-spin fa-spinner"></i></span> {{ tab.chplProductNumber }} <button class="btn btn-default" ng-click="$ctrl.takeTabAction('close', {id: tab.id}, $event)"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
           </uib-tab-heading>
           <span ng-if="tab.listing">
             <chpl-surveillance-management-view listing="tab.listing" take-action="$ctrl.takeTabAction(action, data)"></chpl-surveillance-management-view>

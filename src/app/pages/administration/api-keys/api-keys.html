@@ -1,34 +1,40 @@
-<div class="container-fluid">
-  <div class="row main-content" id="main-content" tabindex="-1">
-    <div class="col-md-12">
-      <h2>API Keys</h2>
-      <table class="table table-condensed" st-table="$ctrl.displayedApiKeys" st-safe-src="$ctrl.apiKeys">
-        <thead>
-          <tr>
-            <th scope="col" class="search-header" st-sort="name" st-skip-natural="true">User</th>
-            <th scope="col" class="search-header" st-sort="email" st-skip-natural="true">Email</th>
-            <th scope="col" class="search-header" st-sort="key" st-skip-natural="true">API Key</th>
-            <th scope="col" class="search-header" st-sort="lastUsedDate" st-skip-natural="true" st-sort-default="reverse">Last&nbsp;Used</th>
-            <th scope="col" class="search-header" st-sort="deleteWarningSentDate" st-skip-natural="true">Warning&nbsp;Sent</th>
-            <th scope="col"><span class="sr-only">Action</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="key in $ctrl.displayedApiKeys track by $index">
-            <td>{{ key.name }}</td>
-            <td>{{ key.email }}</td>
-            <td>{{ key.key }}</td>
-            <td>{{ key.lastUsedDate | date : 'medium' }}</td>
-            <td>{{ (key.deleteWarningSentDate | date : 'medium') || 'N/A' }}</td>
-            <td><button class="btn btn-danger btn-block"
-                        confirm="Are you sure you wish to revoke {{ key.name }}'s API Key?"
-                        confirm-ok="Yes"
-                        confirm-cancel="No"
-                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="$ctrl.revoke(key)"><i class="fa fa-trash-o"></i><span class="sr-only"> Revoke Key</span></button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+  <div class="col-md-12">
+    <h2>API Keys</h2>
+    <table class="table table-condensed" st-table="$ctrl.displayedApiKeys" st-safe-src="$ctrl.apiKeys">
+      <thead>
+        <tr>
+          <th scope="col" class="search-header" st-sort="name" st-skip-natural="true">User</th>
+          <th scope="col" class="search-header" st-sort="email" st-skip-natural="true">Email</th>
+          <th scope="col" class="search-header" st-sort="key" st-skip-natural="true">API Key</th>
+          <th scope="col" class="search-header" st-sort="lastUsedDate" st-skip-natural="true" st-sort-default="reverse">Last&nbsp;Used</th>
+          <th scope="col" class="search-header" st-sort="deleteWarningSentDate" st-skip-natural="true">Warning&nbsp;Sent</th>
+          <th scope="col"><span class="sr-only">Action</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="key in $ctrl.displayedApiKeys track by $index">
+          <td>{{ key.name }}</td>
+          <td>{{ key.email }}</td>
+          <td>{{ key.key }}</td>
+          <td>{{ key.lastUsedDate | date : 'medium' }}</td>
+          <td>{{ (key.deleteWarningSentDate | date : 'medium') || 'N/A' }}</td>
+          <td><button class="btn btn-danger btn-block"
+                      confirm="Are you sure you wish to revoke {{ key.name }}'s API Key?"
+                      confirm-ok="Yes"
+                      confirm-cancel="No"
+                      confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                      ng-click="$ctrl.revoke(key)"><i class="fa fa-trash-o"></i><span class="sr-only"> Revoke Key</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <ai-login form-class=""
+              p-class="bg-success lead"
+              p-class-fail="bg-danger lead">
+    </ai-login>
   </div>
 </div>

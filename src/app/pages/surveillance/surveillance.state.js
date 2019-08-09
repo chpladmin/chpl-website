@@ -34,14 +34,14 @@ let states = {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReports();
                 },
-                /*surveillanceOutcomes: networkService => {
-                  'ngInject'
-                  return networkService.getSurveillanceOutcomes();
-                  },
-                  surveillanceProcessTypes: networkService => {
-                  'ngInject'
-                  return networkService.getSurveillanceProcessTypes();
-                  },*/
+                surveillanceOutcomes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceOutcomes().catch(() => angular.noop); // remove catch when API has this endpoint
+                },
+                surveillanceProcessTypes: networkService => {
+                    'ngInject'
+                    return networkService.getSurveillanceProcessTypes().catch(() => angular.noop); // remove catch when API has this endpoint
+                },
             },
             data: { title: 'CHPL Surveillance - Reporting' },
             ncyBreadcrumb: {
@@ -59,7 +59,7 @@ let states = {
             },
             data: { title: 'CHPL Surveillance - Reporting - Annual' },
             ncyBreadcrumb: {
-                label: 'Annual',
+                label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }}',
             },
         },{
             name: 'surveillance.reporting.quarterly',
@@ -77,32 +77,7 @@ let states = {
             },
             data: { title: 'CHPL Surveillance - Reporting - Quarterly' },
             ncyBreadcrumb: {
-                label: 'Quarterly',
-            },
-        },
-    ],
-    'ocd-1277-on': [
-        {
-            name: 'surveillance.manage',
-            url: '/manage',
-            params: {
-                listingId: {squash: true, value: null},
-                product: {squash: true, value: null},
-            },
-            component: 'chplSurveillanceManagement',
-            resolve: {
-                allowedAcbs: networkService => {
-                    'ngInject'
-                    return networkService.getAcbs(true);
-                },
-                listings: networkService => {
-                    'ngInject'
-                    return networkService.getCollection('surveillanceManagement');
-                },
-            },
-            data: { title: 'CHPL Surveillance - Manage' },
-            ncyBreadcrumb: {
-                label: 'Manage',
+                label: '{{ $resolve.report.acb.name }} - {{ $resolve.report.year }} - {{ $resolve.report.quarter }}',
             },
         },
     ],
@@ -140,8 +115,25 @@ let states = {
         },{
             name: 'surveillance.manage',
             url: '/manage',
-            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            params: {
+                listingId: {squash: true, value: null},
+                chplProductNumber: {squash: true, value: null},
+            },
+            component: 'chplSurveillanceManagement',
+            resolve: {
+                allowedAcbs: networkService => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                listings: networkService => {
+                    'ngInject'
+                    return networkService.getCollection('surveillanceManagement');
+                },
+            },
             data: { title: 'CHPL Surveillance - Manage' },
+            ncyBreadcrumb: {
+                label: 'Manage',
+            },
         },{
             name: 'surveillance.reporting',
             url: '/reporting',

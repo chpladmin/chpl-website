@@ -225,6 +225,10 @@ export class NetworkService {
         return this.apiGET('/key');
     }
 
+    getAtl (id) {
+        return this.apiGET('/atls/' + id);
+    }
+
     getAtlActivity (activityRange) {
         var call = '/activity/atls';
         return this.getActivity(call, activityRange);
@@ -295,7 +299,7 @@ export class NetworkService {
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
         case 'complaintListings':
-            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber');
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'surveillanceManagement':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default

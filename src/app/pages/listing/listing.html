@@ -19,8 +19,7 @@
           <p>Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <button class="btn btn-default btn-sm" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i><span class="sr-only">View Details</span></button></p>
           <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])" feature-flag="listing-edit" feature-flag-hide><a ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
           <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])" feature-flag="listing-edit"><button class="btn btn-link" ng-click="$ctrl.isEditing = true"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button></p>
-          <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])" feature-flag="ocd1277"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, product: $ctrl.listing.product.name})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
-          <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])" feature-flag="ocd1277" feature-flag-hide><a ng-href="#/admin/dpManagement/manageSurveillance/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
+          <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
           <div class="btn-group">
             <div class="btn-group" ng-if="$ctrl.certificationStatus($ctrl.listing) !== 'Retired'">
               <ai-cms-widget-button product-id="{{ $ctrl.listing.id }}" product-name="{{ $ctrl.listing.product.name }}"></ai-cms-widget-button>

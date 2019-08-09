@@ -1,29 +1,44 @@
-<span ng-if="$ctrl.mode === 'view'">
+<span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
   <div class="row">
     <div class="col-sm-12">
-      <chpl-jobs-scheduled-triggers triggers="$ctrl.triggers" take-action="$ctrl.takeTriggerAction(action, data)"></chpl-jobs-scheduled-triggers>
+      <h2>Scheduled Jobs</h2>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <chpl-jobs-scheduled-jobs jobs="$ctrl.jobs" take-action="$ctrl.takeJobAction(action, data)"></chpl-jobs-scheduled-jobs>
+  <span ng-if="$ctrl.mode === 'view'">
+    <div class="row">
+      <div class="col-sm-12">
+        <chpl-jobs-scheduled-triggers triggers="$ctrl.triggers" take-action="$ctrl.takeTriggerAction(action, data)"></chpl-jobs-scheduled-triggers>
+      </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <chpl-jobs-scheduled-jobs jobs="$ctrl.jobs" take-action="$ctrl.takeJobAction(action, data)"></chpl-jobs-scheduled-jobs>
+      </div>
+    </div>
+  </span>
+  <span ng-if="$ctrl.mode === 'editJob'">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <h3>Edit Job: {{ $ctrl.activeJob.name }}</h3>
+        <p class="lead bg-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</p>
+        <chpl-jobs-scheduled-job job="$ctrl.activeJob" on-save="$ctrl.saveJob(job)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-job>
+      </div>
+    </div>
+  </span>
+  <span ng-if="$ctrl.mode === 'editTrigger'">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <p class="lead bg-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</p>
+        <chpl-jobs-scheduled-trigger trigger="$ctrl.activeTrigger" recurring="$ctrl.isRecurring" acbs="$ctrl.acbs" on-save="$ctrl.saveTrigger(trigger)" on-delete="$ctrl.deleteTrigger(trigger)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-trigger>
+      </div>
+    </div>
+  </span>
 </span>
-<span ng-if="$ctrl.mode === 'editJob'">
-  <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-      <h3>Edit Job: {{ $ctrl.activeJob.name }}</h3>
-      <p class="lead bg-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</p>
-      <chpl-jobs-scheduled-job job="$ctrl.activeJob" on-save="$ctrl.saveJob(job)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-job>
-    </div>
+<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <ai-login form-class=""
+              p-class="bg-success lead"
+              p-class-fail="bg-danger lead">
+    </ai-login>
   </div>
-</span>
-<span ng-if="$ctrl.mode === 'editTrigger'">
-  <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-      <p class="lead bg-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</p>
-      <chpl-jobs-scheduled-trigger trigger="$ctrl.activeTrigger" recurring="$ctrl.isRecurring" acbs="$ctrl.acbs" on-save="$ctrl.saveTrigger(trigger)" on-delete="$ctrl.deleteTrigger(trigger)" on-cancel="$ctrl.cancel()"></chpl-jobs-scheduled-trigger>
-    </div>
-  </div>
-</span>
+</div>

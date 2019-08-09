@@ -3,6 +3,7 @@ export const SurveillanceComplaintsComponent = {
     bindings: {
         complaintListType: '@?',
         displayAdd: '<',
+        displayDelete: '<',
         displayHeader: '<',
         quarterlyReport: '<',
     },
@@ -40,6 +41,9 @@ export const SurveillanceComplaintsComponent = {
             }
             if (changes.displayAdd !== undefined && changes.displayAdd.currentValue === undefined) {
                 this.displayAdd = true;
+            }
+            if (changes.displayDelete !== undefined && changes.displayDelete.currentValue === undefined) {
+                this.displayDelete = true;
             }
             if (changes.displayHeader !== undefined && changes.displayHeader.currentValue === undefined) {
                 this.displayHeader = true;
