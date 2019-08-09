@@ -67,13 +67,17 @@ import { states as usersStates } from './pages/users/users.state.js';
 
                     if (featureFlags.isOn('complaints')) {
                         surveillanceStates['complaints-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
                     } else {
                         surveillanceStates['complaints-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
@@ -88,14 +92,18 @@ import { states as usersStates } from './pages/users/users.state.js';
                         });
                     } else {
                         surveillanceStates['surveillance-reports-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
 
                     if (featureFlags.isOn('ocd2749')) {
                         usersStates['ocd2749-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
