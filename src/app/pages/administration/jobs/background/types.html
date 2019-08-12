@@ -1,0 +1,17 @@
+<span>
+  <h3>Types of Job</h3>
+  <table class="table table-condensed" st-table="$ctrl.displayedTypes" st-safe-src="$ctrl.types">
+    <thead>
+      <tr>
+        <th scope="col" class="search-header" st-sort="name" st-skip-natural="true" st-sort-default="true">Type Name</th>
+        <th scope="col" class="search-header" st-sort="description" st-skip-natural="true">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="type in $ctrl.displayedTypes track by $index">
+        <td>{{ type.name }}</td>
+        <td>{{ type.description }}</td>
+      </tr>
+    </tbody>
+  </table>
+</span>

@@ -1,5 +1,33 @@
 # Release Notes
 
+## Version 10.24.0
+_TBD_
+
+### Features
+* Improve Surveillance Management UX
+  * New navigation for upload, confirm, manage
+  * Added "view all surveillance" capability
+
+---
+
+
+## Version 10.23.0
+_TBD_
+
+### Flagged Features
+* update administrator's navigation ability
+
+---
+
+
+## Version 10.22.0
+_22 July 2019_
+
+### New Features
+* Updated announcement activity reports to use announcement metadata
+
+---
+
 ## Version 10.21.0
 _17 June 2019_
 

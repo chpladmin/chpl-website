@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-12">
+    <chpl-surveillance-report-relevant-listing
+       listing="$ctrl.activeListing"
+       quarterly-report="$ctrl.quarterlyReport"
+       surveillance-outcomes="$ctrl.surveillanceOutcomes"
+       surveillance-process-types="$ctrl.surveillanceProcessTypes"
+       on-cancel="$ctrl.cancelEdit()"
+       ng-if="$ctrl.activeListing">
+    </chpl-surveillance-report-relevant-listing>
+    <div class="table-responsive" st-table="$ctrl.displayListings" st-safe-src="$ctrl.listings" ng-if="!$ctrl.activeListing">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+            <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
+            <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true" st-sort-default="reverse">Certification Date</th>
+            <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
+            <th scope="col" class="search-header" st-sort="surveillanceCount" st-skip-natural="true"># Relevant Surveillances</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="listing in $ctrl.displayListings">
+            <td>{{ listing.chplProductNumber }}</td>
+            <td>{{ listing.edition }}</td>
+            <td>{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ listing.surveillanceCount }}</td>
+            <td>
+              <button class="btn btn-link" uib-tooltip="View Listing Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeListing = listing">
+                <i class="fa fa-eye"></i><span class="sr-only">View listing surveillance data</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

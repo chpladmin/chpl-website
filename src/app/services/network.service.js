@@ -51,6 +51,10 @@ export class NetworkService {
         return this.apiPOST('/announcements', announcement);
     }
 
+    createAnnualSurveillanceReport (report) {
+        return this.apiPOST('/surveillance-report/annual', report);
+    }
+
     createCmsId (ids) {
         return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
     }
@@ -83,6 +87,10 @@ export class NetworkService {
         return this.apiDELETE('/announcements/' + announcementId);
     }
 
+    deleteAnnualSurveillanceReport (id) {
+        return this.apiDELETE('/surveillance-report/annual/' + id);
+    }
+
     deleteComplaint (complaintId) {
         return this.apiDELETE('/complaints/' + complaintId);
     }
@@ -113,9 +121,21 @@ export class NetworkService {
         return this.apiDELETE('/users/' + userId);
     }
 
+    generateAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/annual/' + reportId);
+    }
+
+    generateQuarterlySurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/export/quarterly/' + reportId);
+    }
+
     getAcbActivity (activityRange) {
         var call = '/activity/acbs';
         return this.getActivity(call, activityRange);
+    }
+
+    getAcb (id) {
+        return this.apiGET('/acbs/' + id);
     }
 
     getAcbs (editable) {
@@ -162,8 +182,16 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAnnouncements (pending) {
-        return this.apiGET('/announcements?future=' + pending);
+    getAnnouncements (pending, forceReload) {
+        return this.apiGET('/announcements?future=' + pending, forceReload);
+    }
+
+    getAnnualSurveillanceReports () {
+        return this.apiGET('/surveillance-report/annual');
+    }
+
+    getAnnualSurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/annual/' + reportId);
     }
 
     getApiActivity (options) {
@@ -197,6 +225,10 @@ export class NetworkService {
         return this.apiGET('/key');
     }
 
+    getAtl (id) {
+        return this.apiGET('/atls/' + id);
+    }
+
     getAtlActivity (activityRange) {
         var call = '/activity/atls';
         return this.getActivity(call, activityRange);
@@ -224,11 +256,15 @@ export class NetworkService {
     }
 
     getComplaintStatusTypes () {
-        return this.apiGET('/data/complaint_status_types');
+        return this.apiGET('/data/complaint-status-types');
     }
 
-    getComplaintTypes () {
-        return this.apiGET('/data/complaint_types');
+    getComplainantTypes () {
+        return this.apiGET('/data/complainant-types');
+    }
+
+    getCriteria () {
+        return this.apiGET('/data/certification-criteria');
     }
 
     getCriterionProductStatistics () {
@@ -262,6 +298,10 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
+        case 'complaintListings':
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
+        case 'surveillanceManagement':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default
         }
     }
@@ -299,8 +339,8 @@ export class NetworkService {
         return this.apiGET('/data/filter_types');
     }
 
-    getFuzzyTypes () {
-        return this.apiGET('/data/fuzzy_choices');
+    getFuzzyTypes (forceReload) {
+        return this.apiGET('/data/fuzzy_choices', forceReload);
     }
 
     getIncumbentDevelopersStatistics () {
@@ -321,6 +361,10 @@ export class NetworkService {
 
     getListing (listingId, forceReload) {
         return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+    }
+
+    getListingBasic (listingId, forceReload) {
+        return this.apiGET('/certified_products/' + listingId, forceReload);
     }
 
     getListingCountStatistics () {
@@ -396,8 +440,24 @@ export class NetworkService {
         return this.apiGET('/data/quarters');
     }
 
+    getQuarterlySurveillanceReport (reportId) {
+        return this.apiGET('/surveillance-report/quarterly/' + reportId);
+    }
+
+    getQuarterlySurveillanceReports () {
+        return this.apiGET('/surveillance-report/quarterly');
+    }
+
     getRelatedListings (productId) {
         return this.apiGET('/products/' + productId + '/listings');
+    }
+
+    getRelevantComplaints (report) {
+        return this.apiGET('/surveillance-report/quarterly/' + report.id + '/complaints');
+    }
+
+    getRelevantListings (reportId) {
+        return this.apiGET('/surveillance-report/quarterly/' + reportId + '/listings');
     }
 
     getSearchOptions () {
@@ -473,8 +533,12 @@ export class NetworkService {
         return data;
     }
 
-    getSurveillanceReporting () {
-        return this.apiGET('/surveillance-report/quarterly');
+    getSurveillanceOutcomes () {
+        return this.apiGET('/data/surveillance-outcomes');
+    }
+
+    getSurveillanceProcessTypes () {
+        return this.apiGET('/data/surveillance-process-types');
     }
 
     getTargetedUsers () {
@@ -585,7 +649,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
+        return this.apiPUT('/acbs/' + acb.id, acb);
     }
 
     modifyATL (atl) {
@@ -648,6 +712,10 @@ export class NetworkService {
         return this.apiGET('/auth/unimpersonate');
     }
 
+    updateAnnualSurveillanceReport (report) {
+        return this.apiPUT('/surveillance-report/annual', report);
+    }
+
     updateComplaint (complaint) {
         return this.apiPUT('/complaints/' + complaint.id, complaint)
     }
@@ -674,6 +742,14 @@ export class NetworkService {
 
     updateQuarterlySurveillanceReport (report) {
         return this.apiPUT('/surveillance-report/quarterly', report);
+    }
+
+    updateRelevantListing (reportId, listing) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/listings/' + listing.id, listing);
+    }
+
+    updateRelevantSurveillance (reportId, surveillance) {
+        return this.apiPUT('/surveillance-report/quarterly/' + reportId + '/surveillance/' + surveillance.id, surveillance);
     }
 
     updateScheduleTrigger (trigger) {

@@ -1,0 +1,25 @@
+<span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Background Jobs</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <chpl-jobs-background-types types="$ctrl.types"></chpl-jobs-background-types>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <chpl-jobs-background-jobs jobs="$ctrl.jobs"></chpl-jobs-background-jobs>
+    </div>
+  </div>
+</span>
+<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <ai-login form-class=""
+              p-class="bg-success lead"
+              p-class-fail="bg-danger lead">
+    </ai-login>
+  </div>
+</div>

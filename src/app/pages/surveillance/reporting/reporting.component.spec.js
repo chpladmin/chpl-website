@@ -2,7 +2,7 @@
     'use strict';
 
     fdescribe('the Reporting component', () => {
-        let $compile, $log, $q, ctrl, el, mock, networkService, scope;
+        let $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
 
         mock = {
             acbs: [
@@ -10,42 +10,65 @@
                 {name: 'name2', retired: true},
                 {name: 'name3', retired: false},
             ],
+            annual: [
+                {acb: {name: 'name1'}, year: 2019, id: 1},
+                {acb: {name: 'name3'}, year: 2019, id: 2},
+            ],
             availableQuarters: [],
-            reports: [
-                {acb: {name: 'name1'}, quarter: 'Q1', year: 2019, id: 1},
-                {acb: {name: 'name3'}, quarter: 'Q1', year: 2019, id: 2},
-                {acb: {name: 'name1'}, quarter: 'Q4', year: 2019, id: 3},
+            quarters: [
+                {acb: {name: 'name1'}, quarter: 'Q1', year: 2019, id: 1, relevantListings: []},
+                {acb: {name: 'name3'}, quarter: 'Q1', year: 2019, id: 2, relevantListings: []},
+                {acb: {name: 'name1'}, quarter: 'Q4', year: 2019, id: 3, relevantListings: []},
+            ],
+            listings: [
+                { 'id': 3056, 'chplProductNumber': 'CHP-024046', 'lastModifiedDate': '1532467621312', 'edition': '2014', 'certificationDate': 1410408000000, 'reason': 'This is my Reason', 'excluded': true },
+                { 'id': 3136, 'chplProductNumber': 'CHP-024900', 'lastModifiedDate': '1532466539550', 'edition': '2014', 'certificationDate': 1418878800000, 'reason': null, 'excluded': false },
+                { 'id': 3264, 'chplProductNumber': 'CHP-024205', 'lastModifiedDate': '1533944258873', 'edition': '2014', 'certificationDate': 1411617600000, 'reason': 'Whatever', 'excluded': true },
             ],
         };
 
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
+                $provide.factory('chplSurveillanceReportQuarterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
+                    $delegate.createAnnualSurveillanceReport = jasmine.createSpy('createAnnualSurveillanceReport');
                     $delegate.createQuarterlySurveillanceReport = jasmine.createSpy('createQuarterlySurveillanceReport');
+                    $delegate.deleteAnnualSurveillanceReport = jasmine.createSpy('deleteAnnualSurveillanceReport');
                     $delegate.deleteQuarterlySurveillanceReport = jasmine.createSpy('deleteQuarterlySurveillanceReport');
-                    $delegate.getSurveillanceReporting = jasmine.createSpy('getSurveillanceReporting');
+                    $delegate.getAnnualSurveillanceReports = jasmine.createSpy('getAnnualSurveillanceReports');
+                    $delegate.getQuarterlySurveillanceReports = jasmine.createSpy('getQuarterlySurveillanceReports');
+                    $delegate.getRelevantListings = jasmine.createSpy('getRelevantListings');
+                    $delegate.updateAnnualSurveillanceReport = jasmine.createSpy('updateAnnualSurveillanceReport');
                     $delegate.updateQuarterlySurveillanceReport = jasmine.createSpy('updateQuarterlySurveillanceReport');
 
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                $state = _$state_;
+                $state.go = jasmine.createSpy('go');
                 networkService = _networkService_;
+                networkService.createAnnualSurveillanceReport.and.returnValue($q.when({}));
                 networkService.createQuarterlySurveillanceReport.and.returnValue($q.when({}));
+                networkService.deleteAnnualSurveillanceReport.and.returnValue($q.when([]));
                 networkService.deleteQuarterlySurveillanceReport.and.returnValue($q.when([]));
-                networkService.getSurveillanceReporting.and.returnValue($q.when([]));
+                networkService.getAnnualSurveillanceReports.and.returnValue($q.when([]));
+                networkService.getQuarterlySurveillanceReports.and.returnValue($q.when([]));
+                networkService.getRelevantListings.and.returnValue($q.when(mock.listings));
+                networkService.updateAnnualSurveillanceReport.and.returnValue($q.when({}));
                 networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 scope.acbs = mock.acbs;
+                scope.annual = mock.annual;
                 scope.availableQuarters = mock.availableQuarters;
-                scope.reports = mock.reports;
+                scope.quarters = mock.quarters;
 
-                el = angular.element('<chpl-surveillance-reporting acbs="{acbs: acbs}" available-quarters="availableQuarters" reports="reports"></chpl-surveillance-reporting>');
+                el = angular.element('<chpl-surveillance-reporting acbs="{acbs: acbs}" annual="annual" available-quarters="availableQuarters" quarters="quarters"></chpl-surveillance-reporting>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -77,7 +100,6 @@
                     expect(ctrl.$log).toBeDefined();
                     expect(ctrl.hasAnyRole).toBeDefined();
                     expect(ctrl.networkService).toBeDefined();
-                    expect(ctrl.mode).toBe('view');
                 });
 
                 it('should do things $onInit', () => {
@@ -89,7 +111,8 @@
                     expect(ctrl.acbs).toBeDefined();
                     expect(ctrl.acbs.length).toBe(2);
                     expect(ctrl.availableQuarters).toBeDefined();
-                    expect(ctrl.reports).toBeDefined();
+                    expect(ctrl.quarters).toBeDefined();
+                    expect(ctrl.annual).toBeDefined();
                 });
 
                 it('should set visibility if only one acb', () => {
@@ -102,106 +125,118 @@
                 });
             });
 
-            it('should find reports', () => {
-                expect(ctrl.findReport({name: 'name1'}, 2019, 'Q1')).toEqual(mock.reports[0]);
-                expect(ctrl.findReport({name: 'name1'}, 2019, 'Q2')).toBeUndefined();
-                expect(ctrl.findReport({name: 'name1'}, 2020, 'Q1')).toBeUndefined();
-                expect(ctrl.findReport({name: 'name7'}, 2019, 'Q1')).toBeUndefined();
-            });
-
-            it('should allow viewing of a report', () => {
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q1');
-                expect(ctrl.activeReport).toEqual(mock.reports[0]);
-            });
-
-            it('should close the report', () => {
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q1');
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q1');
-                expect(ctrl.activeReport).toBeUndefined
-            });
-
-            it('should initiate a report', () => {
-                ctrl.actOnReport({name: 'name1'}, 2019, 'Q5');
-                expect(ctrl.activeReport).toEqual({
-                    acb: {name: 'name1'},
-                    year: 2019,
-                    quarter: 'Q5',
-                });
-                expect(ctrl.mode).toBe('initiate');
-            });
-
-            describe('when handling callbacks', () => {
-                let beforeReport;
-                beforeEach(() => {
-                    beforeReport = {id: 1};
-                    ctrl.activeReport = beforeReport;
+            describe('for quarters', () => {
+                it('should find quarterly reports', () => {
+                    expect(ctrl.findQuarterReport({name: 'name1'}, 2019, 'Q1')).toEqual(mock.quarters[0]);
+                    expect(ctrl.findQuarterReport({name: 'name1'}, 2019, 'Q2')).toBeUndefined();
+                    expect(ctrl.findQuarterReport({name: 'name1'}, 2020, 'Q1')).toBeUndefined();
+                    expect(ctrl.findQuarterReport({name: 'name7'}, 2019, 'Q1')).toBeUndefined();
                 });
 
-                it('should handle edit', () => {
-                    let report = {id: 'fake'};
-                    ctrl.takeAction(report, 'edit');
-                    expect(ctrl.activeReport).toBe(report);
-                    expect(ctrl.mode).toBe('edit');
+                it('should close the report', () => {
+                    ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
+                    ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
+                    expect(ctrl.activeQuarterReport).toBeUndefined
                 });
 
-                it('should handle delete', () => {
-                    ctrl.activeReport = beforeReport;
-                    ctrl.mode = 'edit';
-                    spyOn(ctrl, 'cancel');
-                    ctrl.takeAction(beforeReport, 'delete');
-                    scope.$digest();
-                    expect(networkService.deleteQuarterlySurveillanceReport).toHaveBeenCalledWith(beforeReport.id);
-                    expect(networkService.getSurveillanceReporting).toHaveBeenCalled();
-                    expect(ctrl.activeReport).toBeUndefined();
-                    expect(ctrl.cancel).toHaveBeenCalled();
-                });
-            });
+                describe('when handling callbacks', () => {
+                    let beforeReport;
+                    beforeEach(() => {
+                        beforeReport = {id: 1};
+                    });
 
-            describe('on save', () => {
-                let report;
-                beforeEach(() => {
-                    report = {id: 1};
+                    it('should handle delete', () => {
+                        spyOn(ctrl, 'cancel');
+                        ctrl.takeQuarterAction(beforeReport, 'delete');
+                        scope.$digest();
+                        expect(networkService.deleteQuarterlySurveillanceReport).toHaveBeenCalledWith(beforeReport.id);
+                        expect(networkService.getQuarterlySurveillanceReports).toHaveBeenCalled();
+                        expect(ctrl.cancel).toHaveBeenCalled();
+                    });
                 });
 
-                it('should handle edit', () => {
-                    networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when(report));
-                    ctrl.activeReport = {};
-                    ctrl.mode = 'edit';
-                    spyOn(ctrl, 'cancel');
-                    ctrl.save(report);
-                    expect(ctrl.mode).toBe('view');
-                    scope.$digest();
-                    expect(networkService.updateQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
-                    expect(ctrl.activeReport).toBe(report);
-                    expect(ctrl.cancel).toHaveBeenCalled();
+                describe('on save', () => {
+                    let report;
+                    beforeEach(() => {
+                        report = {id: 1};
+                    });
+
+                    it('should handle edit', () => {
+                        networkService.updateQuarterlySurveillanceReport.and.returnValue($q.when(report));
+                        ctrl.saveQuarter(report);
+                        scope.$digest();
+                        expect(networkService.updateQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
+                    });
+
+                    it('should handle initiate', () => {
+                        networkService.createQuarterlySurveillanceReport.and.returnValue($q.when(report));
+                        ctrl.createQuarter(report);
+                        scope.$digest();
+                        expect(networkService.createQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
+                    });
                 });
 
-                it('should handle initiate', () => {
-                    networkService.createQuarterlySurveillanceReport.and.returnValue($q.when(report));
-                    ctrl.activeReport = {};
-                    ctrl.mode = 'initiate';
-                    spyOn(ctrl, 'cancel');
-                    ctrl.save(report);
-                    expect(ctrl.mode).toBe('view');
-                    scope.$digest();
-                    expect(networkService.createQuarterlySurveillanceReport).toHaveBeenCalledWith(report);
-                    expect(ctrl.activeReport).toBe(report);
-                    expect(ctrl.cancel).toHaveBeenCalled();
+                describe('on cancel', () => {
+                    it('should refresh the state', () => {
+                        ctrl.cancel();
+                        expect($state.go).toHaveBeenCalledWith('surveillance.reporting', {}, {reload: true});
+                    });
                 });
             });
 
-            describe('on cancel', () => {
-                it('should set the mode to view', () => {
-                    ctrl.mode = 'fake';
-                    ctrl.cancel();
-                    expect(ctrl.mode).toBe('view');
+            describe('for the year', () => {
+                it('should find annual reports', () => {
+                    expect(ctrl.findAnnualReport({name: 'name1'}, 2019)).toEqual(mock.annual[0]);
+                    expect(ctrl.findAnnualReport({name: 'name1'}, 2020)).toBeUndefined();
+                    expect(ctrl.findAnnualReport({name: 'name7'}, 2019)).toBeUndefined();
                 });
 
-                it('should clear the initiating object', () => {
-                    ctrl.mode = 'initiate';
-                    ctrl.activeReport = 'fake';
-                    ctrl.cancel();
-                    expect(ctrl.activeReport).toBeUndefined();
+                describe('when handling callbacks', () => {
+                    let beforeReport;
+                    beforeEach(() => {
+                        beforeReport = {id: 1};
+                        ctrl.activeAnnualReport = beforeReport;
+                    });
+
+                    it('should handle delete', () => {
+                        spyOn(ctrl, 'cancel');
+                        ctrl.takeAnnualAction(beforeReport, 'delete');
+                        scope.$digest();
+                        expect(networkService.deleteAnnualSurveillanceReport).toHaveBeenCalledWith(beforeReport.id);
+                        expect(networkService.getAnnualSurveillanceReports).toHaveBeenCalled();
+                        expect(ctrl.cancel).toHaveBeenCalled();
+                    });
+                });
+
+                describe('on save', () => {
+                    let report;
+                    beforeEach(() => {
+                        report = {id: 1};
+                    });
+
+                    it('should handle edit', () => {
+                        networkService.updateAnnualSurveillanceReport.and.returnValue($q.when(report));
+                        spyOn(ctrl, 'cancel');
+                        ctrl.saveAnnual(report);
+                        scope.$digest();
+                        expect(networkService.updateAnnualSurveillanceReport).toHaveBeenCalledWith(report);
+                        expect(ctrl.cancel).toHaveBeenCalled();
+                    });
+
+                    it('should handle initiate', () => {
+                        networkService.createAnnualSurveillanceReport.and.returnValue($q.when(report));
+                        ctrl.createAnnual(report);
+                        scope.$digest();
+                        expect(networkService.createAnnualSurveillanceReport).toHaveBeenCalledWith(report);
+                        expect($state.go).toHaveBeenCalledWith('.annual', {reportId: report.id});
+                    });
+                });
+
+                describe('on cancel', () => {
+                    it('should refresh the state', () => {
+                        ctrl.cancel()
+                        expect($state.go).toHaveBeenCalledWith('surveillance.reporting', {}, {reload: true});
+                    });
                 });
             });
         });

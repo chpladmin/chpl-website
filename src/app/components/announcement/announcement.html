@@ -1,0 +1,76 @@
+<div id="announcement-edit-form" ng-form="$ctrl.form">
+  <div class="form-group">
+    <label class="control-label" for="title">Title <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.announcement.title" id="title" name="title" ng-disabled="$ctrl.announcement.isDeleted"></input>
+    <div class="text-danger" ng-if="$ctrl.form.title.$touched && $ctrl.form.title.$error.required">Title is required</div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="announcement-text">Announcement Text </label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.announcement.text" id="announcement-text" name="announcement_text" ng-disabled="$ctrl.announcement.isDeleted"></input>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="start-date">Start Date <span class="text-danger">*</span></label>
+    <div class="input-group">
+      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.announcement.startDate" is-open="$ctrl.announcement.startDatePicker" close-text="Close" id="start-date" name="startDate" ng-model-options="{ timezone: 'UTC' }"  ng-disabled="$ctrl.announcement.isDeleted" required>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.announcement.startDatePicker = true"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+    <div class="text-danger" ng-if="$ctrl.form.startDate.$touched && $ctrl.form.startDate.$error.required">Start Date is required</div>
+    <div class="text-danger" ng-if="$ctrl.form.startDate.$touched && $ctrl.form.startDate.$error.date">Start Date is invalid</div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="end-date">End Date <span class="text-danger">*</span></label>
+    <div class="input-group">
+      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.announcement.endDate" is-open="$ctrl.announcement.endDatePicker" close-text="Close" id="end-date" name="endDate" ng-model-options="{ timezone: 'UTC' }"  ng-disabled="$ctrl.announcement.isDeleted" required>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.announcement.endDatePicker = true"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+    <div class="text-danger" ng-if="$ctrl.form.endDate.$touched && $ctrl.form.endDate.$error.required">End Date is required</div>
+    <div class="text-danger" ng-if="$ctrl.form.endDate.$touched && $ctrl.form.endDate.$error.date">End Date is invalid</div>
+    <div class="text-danger" ng-if="($ctrl.form.startDate.$touched && $ctrl.form.endDate.$touched || $ctrl.showFormErrors) && !$ctrl.validDates()">Start Date must be before End Date</div>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="is-public">Is this public
+      <input type="checkbox" ng-model="$ctrl.announcement.isPublic" id="is-public" name="isPublic" ng-disabled="$ctrl.announcement.isDeleted"></input>
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-danger text-left" ng-if="($ctrl.form.$invalid || !$ctrl.validDates()) && $ctrl.showFormErrors">
+        The following error(s) must be fixed:
+        <ul>
+          <li ng-if="$ctrl.form.title.$error.required">Title is required</li>
+          <li ng-if="$ctrl.form.startDate.$error.required">Start Date is required</li>
+          <li ng-if="$ctrl.form.startDate.$error.date">Start Date is invalid</li>
+          <li ng-if="$ctrl.form.endDate.$error.required">End Date is required</li>
+          <li ng-if="$ctrl.form.endDate.$error.date">End Date is invalid</li>
+          <li ng-if="!$ctrl.validDates()">Start Date must be before End Date</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-ai-success btn-small pull-right" ng-if="!$ctrl.announcement.id" id="announcement-create"
+              ng-disabled="($ctrl.form.$invalid || !$ctrl.validDates()) && $ctrl.showFormErrors"
+              ng-mouseover="$ctrl.showFormErrors = true"
+              ng-click="$ctrl.create()"><i class="fa fa-save"></i><span class="sr-only"> Create</span></button>
+      <button class="btn btn-ai-success btn-small pull-right" id="announcement-save"
+              ng-disabled="($ctrl.form.$invalid || !$ctrl.validDates()) && $ctrl.showFormErrors"
+              ng-mouseover="$ctrl.showFormErrors = true"
+              ng-if="$ctrl.announcement.id"
+              ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-danger btn-small" id="announcement-delete"
+              ng-if="$ctrl.announcement.id"
+              confirm="Are you sure you wish to delete this announcement?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="$ctrl.delete()"><i class="fa fa-trash-o"></i><span class="sr-only"> Delete</span></button>
+      <button class="btn btn-warning btn-small" id="announcement-cancel"
+              ng-click=" $ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    </div>
+  </div>
+</div>

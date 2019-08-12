@@ -2,16 +2,19 @@ export const SurveillanceReportingComponent = {
     templateUrl: 'chpl.surveillance/reporting/reporting.html',
     bindings: {
         acbs: '<',
+        annual: '<',
         availableQuarters: '<',
-        reports: '<',
+        quarters: '<',
+        surveillanceOutcomes: '<',
+        surveillanceProcessTypes: '<',
     },
     controller: class SurveillanceReportingComponent {
-        constructor ($log, authService, networkService) {
+        constructor ($log, $state, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
-            this.mode = 'view';
         }
 
         $onInit () {
@@ -31,84 +34,165 @@ export const SurveillanceReportingComponent = {
                     this.display[this.acbs[0].name] = true;
                 }
             }
+            if (changes.annual) {
+                this.annuals = angular.copy(changes.annual.currentValue);
+            }
             if (changes.availableQuarters) {
                 this.availableQuarters = angular.copy(changes.availableQuarters.currentValue);
             }
-            if (changes.reports) {
-                this.reports = angular.copy(changes.reports.currentValue);
+            if (changes.quarters) {
+                this.quarters = angular.copy(changes.quarters.currentValue);
+            }
+            if (changes.surveillanceOutcomes) {
+                this.surveillanceOutcomes = angular.copy(changes.surveillanceOutcomes.currentValue);
+            }
+            if (changes.surveillanceProcessTypes) {
+                this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
             }
         }
 
-        findReport (acb, year, quarter) {
-            let report = this.reports
+        findAnnualReport (acb, year) {
+            let report = this.annual
+                .find(report => report.acb.name === acb.name
+                      && report.year === year);
+            return report;
+        }
+
+        findQuarterReport (acb, year, quarter) {
+            let report = this.quarters
                 .find(report => report.acb.name === acb.name
                       && report.year === year
                       && report.quarter === quarter);
             return report;
         }
 
-        actOnReport (acb, year, quarter) {
-            let report = this.findReport(acb, year, quarter);
+        actOnAnnual (acb, year) {
+            let report = this.findAnnualReport(acb, year);
             if (report) {
-                if (this.activeReport && report.id === this.activeReport.id) {
-                    this.activeReport = undefined;
-                } else {
-                    this.activeReport = report;
-                }
+                this.$state.go('.annual', {
+                    reportId: report.id,
+                });
             } else {
-                this.activeReport = {
+                let report = {
+                    acb: acb,
+                    year: year,
+                };
+                this.createAnnual(report);
+            }
+        }
+
+        actOnQuarter (acb, year, quarter) {
+            let report = this.findQuarterReport(acb, year, quarter);
+            if (report) {
+                this.$state.go('.quarterly', {
+                    reportId: report.id,
+                });
+            } else {
+                let report = {
                     acb: acb,
                     quarter: quarter,
                     year: year,
                 };
-                this.mode = 'initiate';
+                this.createQuarter(report);
             }
         }
 
         takeAction (report, action) {
-            if (action === 'edit') {
-                this.activeReport = report;
-                this.mode = 'edit';
+            switch (this.$state.current.name) {
+            case 'surveillance.reporting.annual':
+                this.takeAnnualAction(report, action);
+                break;
+            case 'surveillance.reporting.quarterly':
+                this.takeQuarterAction(report, action);
+                break;
+                //no default
             }
+        }
+
+        takeAnnualAction (report, action) {
+            if (action === 'delete') {
+                let that = this;
+                this.networkService.deleteAnnualSurveillanceReport(report.id).then(() => {
+                    that.networkService.getAnnualSurveillanceReports().then(results => {
+                        that.annual = results;
+                    });
+                    that.cancel();
+                });
+            }
+        }
+
+        takeQuarterAction (report, action) {
             if (action === 'delete') {
                 let that = this;
                 this.networkService.deleteQuarterlySurveillanceReport(report.id).then(() => {
-                    that.networkService.getSurveillanceReporting().then(results => {
-                        that.reports = results;
+                    that.networkService.getQuarterlySurveillanceReports().then(results => {
+                        that.quarters = results;
                     });
-                    that.activeReport = undefined;
                     that.cancel();
                 });
             }
         }
 
         save (report) {
-            let that = this;
-            if (this.mode === 'initiate') {
-                this.networkService.createQuarterlySurveillanceReport(report).then(results => {
-                    that.activeReport = results;
-                    that.networkService.getSurveillanceReporting().then(results => {
-                        that.reports = results;
-                    });
-                    that.cancel();
-                });
-            } else if (this.mode === 'edit') {
-                this.networkService.updateQuarterlySurveillanceReport(report).then(results => {
-                    that.activeReport = results;
-                    that.networkService.getSurveillanceReporting().then(results => {
-                        that.reports = results;
-                    });
-                    that.cancel();
-                });
+            switch (this.$state.current.name) {
+            case 'surveillance.reporting.annual':
+                this.saveAnnual(report);
+                break;
+            case 'surveillance.reporting.quarterly':
+                this.saveQuarter(report);
+                break;
+                //no default
             }
-            this.mode = 'view';
+        }
+
+        saveAnnual (report) {
+            let that = this;
+            this.networkService.updateAnnualSurveillanceReport(report).then(() => {
+                that.networkService.getAnnualSurveillanceReports().then(results => {
+                    that.annual = results;
+                });
+                that.cancel();
+            });
+        }
+
+        saveQuarter (report) {
+            let that = this;
+            this.networkService.updateQuarterlySurveillanceReport(report).then(() => {
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
+                });
+                that.cancel();
+            });
+        }
+
+        createAnnual (report) {
+            let that = this;
+            this.networkService.createAnnualSurveillanceReport(report).then(createdReport => {
+                that.networkService.getAnnualSurveillanceReports().then(results => {
+                    that.annual = results;
+                    that.$state.go('.annual', {
+                        reportId: createdReport.id,
+                    });
+                });
+            });
+        }
+
+        createQuarter (report) {
+            let that = this;
+            this.networkService.createQuarterlySurveillanceReport(report).then(createdReport => {
+                that.networkService.getQuarterlySurveillanceReports().then(results => {
+                    that.quarters = results;
+                    this.$state.go('.quarterly', {
+                        reportId: createdReport.id,
+                    });
+                });
+            });
         }
 
         cancel () {
-            if (this.mode === 'initiate') {
-                this.activeReport = undefined;
-            }
-            this.mode = 'view';
+            this.$state.go('surveillance.reporting', {}, {
+                reload: true,
+            });
         }
     },
 }

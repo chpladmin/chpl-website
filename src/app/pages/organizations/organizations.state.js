@@ -4,7 +4,10 @@ let states = {
             name: 'organizations',
             abstract: true,
             url: '/organizations',
-            template: '<ui-view />',
+            component: 'chplOrganizations',
+            ncyBreadcrumb: {
+                label: 'Organizations',
+            },
         },{
             name: 'organizations.developers',
             url: '/developers/{developerId}/{action}?',
@@ -34,6 +37,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Developers' },
+            ncyBreadcrumb: {
+                label: 'Developer',
+            },
         },{
             name: 'organizations.developers.products',
             url: '/products/{productId}/{action}?',
@@ -52,6 +58,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Products' },
+            ncyBreadcrumb: {
+                label: 'Product',
+            },
         },{
             name: 'organizations.developers.products.versions',
             url: '/versions/{versionId}/{action}?',
@@ -70,6 +79,93 @@ let states = {
                 },
             },
             data: { title: 'CHPL Product Versions' },
+            ncyBreadcrumb: {
+                label: 'Version',
+            },
+        },{
+            name: 'organizations.onc-acbs',
+            url: '/onc-acbs',
+            component: 'chplOncOrganizations',
+            resolve: {
+                allOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAcbs(false);
+                },
+                editableOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAcbs(true);
+                },
+                roles: () => ['ROLE_ACB'],
+                key: () => 'acbs',
+                type: () => 'ONC-ACB',
+                functions: () => ({
+                    get: 'getAcbs',
+                    getUsers: 'getUsersAtAcb',
+                    modify: 'modifyACB',
+                    create: 'createACB',
+                    removeUser: 'removeUserFromAcb',
+                }),
+            },
+            data: { title: 'CHPL ONC-ACBs' },
+            ncyBreadcrumb: {
+                label: 'ONC-ACBs',
+            },
+        },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAcb($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ACB' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
+        },{
+            name: 'organizations.onc-atls',
+            url: '/onc-atls',
+            component: 'chplOncOrganizations',
+            resolve: {
+                allOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAtls(false);
+                },
+                editableOrgs: (authService, networkService) => {
+                    'ngInject'
+                    return networkService.getAtls(true);
+                },
+                roles: () => ['ROLE_ATL'],
+                key: () => 'atls',
+                type: () => 'ONC-ATL',
+                functions: () => ({
+                    get: 'getAtls',
+                    getUsers: 'getUsersAtAtl',
+                    modify: 'modifyATL',
+                    create: 'createATL',
+                    removeUser: 'removeUserFromAtl',
+                }),
+            },
+            data: { title: 'CHPL ONC-ATLs' },
+            ncyBreadcrumb: {
+                label: 'ONC-ATLs',
+            },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAtl($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ATL' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
         },
     ],
     'base': [
@@ -81,18 +177,38 @@ let states = {
         },{
             name: 'organizations.developers',
             url: '/developers/{developerId}/{action}?',
-            template: '<div>Coming soon</div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Developers' },
         },{
             name: 'organizations.developers.products',
             url: '/products/{productId}/{action}?',
-            template: '<div>Coming soon</div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Products' },
         },{
             name: 'organizations.developers.products.versions',
             url: '/versions/{versionId}/{action}?',
-            template: '<div>Coming soon</div>',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL Product Versions' },
+        },{
+            name: 'organizations.onc-acbs',
+            url: '/onc-acbs',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ACB' },
+        },{
+            name: 'organizations.onc-atls',
+            url: '/onc-atls',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ATLs' },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ATL' },
         },
     ],
 };

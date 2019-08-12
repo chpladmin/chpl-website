@@ -1,45 +1,105 @@
-<div class="col-sm-6 col-sm-offset-3" ng-if="$ctrl.activeUser">
-  <chpl-user user="$ctrl.activeUser" is-editing="true" take-action="$ctrl.act(action, data)"></chpl-user>
+<div class="row" ng-if="$ctrl.activeUser">
+  <div class="col-md-6 col-md-offset-3">
+    <h2>Edit user</h2>
+    <chpl-user user="$ctrl.activeUser" is-editing="true" take-action="$ctrl.act(action, data)"></chpl-user>
+  </div>
 </div>
 <span ng-if="!$ctrl.activeUser">
-  <div class="col-sm-6">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h2 class="panel-title">Invite a User</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Search for a User</h3>
+        </div>
+        <div class="panel-body" ng-form="$ctrl.search">
+          <div class="form-group">
+            <label class="control-label" for="search">Filter on:</label>
+            <input class="form-control input-sm" type="input" ng-model="$ctrl.searchText" id="search" name="search" ng-change="$ctrl.filter()" />
+            <p>Full Name, Friendly Name, Title, Email, or User Name</p>
+          </div>
+        </div>
       </div>
-      <div class="panel-body form-horizontal" ng-form="$ctrl.form">
-        <div class="form-group">
-          <label class="control-label col-sm-4" for="invite-email">Email <span class="text-danger">*</span></label>
-          <div class="col-sm-8">
-            <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail"/>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Invite a User</h3>
+        </div>
+        <div class="panel-body" ng-form="$ctrl.form">
+          <div class="form-group">
+            <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
+            <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
             <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
             <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
           </div>
-        </div>
-        <div class="form-group" ng-if="$ctrl.roles.length > 1">
-          <label class="control-label col-sm-4" for="new-role">User Role <span class="text-danger">*</span></label>
-          <div class="col-sm-8">
+          <div class="form-group" ng-if="$ctrl.roles.length > 1">
+            <label class="control-label" for="new-role">User Role <span class="text-danger">*</span></label>
             <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
                     ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
             <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
-                    ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-                    ng-mouseover="$ctrl.showFormErrors = true"
-                    ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
+                      ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+                      ng-mouseover="$ctrl.showFormErrors = true"
+                      ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-sm-6" ng-repeat="user in $ctrl.users | orderBy : 'fullName'">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <chpl-user user="user" take-action="$ctrl.act(action, data)"></chpl-user>
+  <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)" feature-flag="ocd2749-table" feature-flag-hide>
+    <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+      <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
+        <div class="panel-body">
+          <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="row" feature-flag="ocd2749-table" st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.filteredUsers">
+    <div class="col-md-12 table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col" class="search-header" st-sort="fullName" st-skip-natural="true" st-sort-default="true">Full Name</th>
+            <th scope="col" class="search-header" st-sort="friendlyName" st-skip-natural="true">Friendly<br />Name</th>
+            <th scope="col" class="search-header" st-sort="title" st-skip-natural="true">Title</th>
+            <th scope="col" class="search-header" st-sort="phoneNumber" st-skip-natural="true">Phone Number</th>
+            <th scope="col" class="search-header" st-sort="email" st-skip-natural="true">Email</th>
+            <th scope="col" class="search-header" st-sort="subjectName" st-skip-natural="true">User Name</th>
+            <th scope="col" class="search-header" st-sort="role" st-skip-natural="true">Role</th>
+            <th scope="col" class="search-header" st-sort="accountLocked" st-skip-natural="true">Account<br />Locked</th>
+            <th scope="col" class="search-header" st-sort="accountEnabled" st-skip-natural="true">Account<br />Enabled</th>
+            <th scope="col" class="search-header" st-sort="passwordResetRequired" st-skip-natural="true">Password<br />Reset<br />Required</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in $ctrl.displayedUsers">
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.friendlyName }}</td>
+            <td>{{ user.title }}</td>
+            <td>{{ user.phoneNumber }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.subjectName }}</td>
+            <td>{{ user.role }}</td>
+            <td><i class="fa fa-lg" ng-class="user.accountLocked ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.accountLocked ? 'Locked' : 'Unlocked' }}</span></td>
+            <td><i class="fa fa-lg" ng-class="user.accountEnabled ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.accountEnabled ? 'Enabled' : 'Disabled' }}</span></td>
+            <td><i class="fa fa-lg" ng-class="user.passwordResetRequired ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.passwordResetRequired ? 'Reset required' : 'Reset not required' }}</span></td>
+            <td>
+              <button class="btn btn-link"
+                      uib-tooltip="Edit {{ user.fullName }}" tooltip-trigger="'mouseenter focus click'"
+                      ng-click="$ctrl.act('edit', user)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit user {{ user.fullName }}</span></button>
+              <button class="btn btn-link"
+                      uib-tooltip="Impersonate {{ user.fullName }}" tooltip-trigger="'mouseenter focus click'"
+                      ng-click="$ctrl.act('impersonate', user)" ng-if="$ctrl.canImpersonate(user)"><i class="fa fa-user-secret"></i><span class="sr-only">Impersonate user {{ user.fullName }}</span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </span>

@@ -6,9 +6,12 @@
         'chpl.services',
         'feature-flags',
         'ngCytoscape',
+        'ngFileUpload',
         'ngResource',
         'ngStorage',
         'smart-table',
+        'toaster',
         'ui.bootstrap',
+        'ui.router',
     ]);
 })();

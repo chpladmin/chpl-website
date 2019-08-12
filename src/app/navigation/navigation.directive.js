@@ -45,7 +45,6 @@
         vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;
-        vm.loadOrganizations = loadOrganizations;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
         vm.toggleNav = toggleNav;
@@ -58,7 +57,6 @@
             $rootScope.bodyClass = 'navigation-shown';
 
             if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
-                vm.loadOrganizations();
                 vm.toggleNav();
             }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
@@ -89,7 +87,6 @@
 
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
-                vm.loadOrganizations();
                 if (vm.navShown && featureFlags.isOn('adminNav')) {
                     vm.toggleNav();
                 }
@@ -106,19 +103,16 @@
 
             var impersonating = $scope.$on('impersonating', function () {
                 vm.loadAnnouncements();
-                vm.loadOrganizations();
             })
             $scope.$on('$destroy', impersonating);
 
             var unimpersonating = $scope.$on('unimpersonating', function () {
                 vm.loadAnnouncements();
-                vm.loadOrganizations();
             })
             $scope.$on('$destroy', unimpersonating);
 
             var flags = $rootScope.$on('flags loaded', function () {
                 if (vm.hasAnyRole() && featureFlags.isOn('adminNav')) {
-                    vm.loadOrganizations();
                     vm.toggleNav();
                 }
             });
@@ -139,34 +133,6 @@
             networkService.getAnnouncements(false)
                 .then(function (result) {
                     vm.announcements = result.announcements;
-                });
-        }
-
-        function loadOrganizations () {
-            if (!featureFlags.isOn('adminNav')) {
-                return;
-            }
-            networkService.getAcbs(true)
-                .then(data => {
-                    vm.acbs = data.acbs
-                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-                        .map(a => {
-                            if (a.retired) {
-                                a.name += '<span class="pull-right">&lt;retired&gt;</span>';
-                            }
-                            return a;
-                        });
-                });
-            networkService.getAtls(true)
-                .then(data => {
-                    vm.atls = data.atls
-                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-                        .map(a => {
-                            if (a.retired) {
-                                a.name += '<span class="pull-right">&lt;retired&gt;</span>';
-                            }
-                            return a;
-                        });
                 });
         }
 

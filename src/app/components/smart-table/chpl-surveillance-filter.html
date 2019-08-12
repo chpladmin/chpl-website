@@ -1,0 +1,93 @@
+<li>
+  <label for="filter-has-never-had-surveillance">
+    <input type="radio" ng-model="vm.query.surveillance.status" id="filter-has-never-had-surveillance" name="surveillance" value="never" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis': vm.query.surveillance.status === 'never' }">Has never had a surveillance activity</span>
+  </label>
+</li>
+<li>
+  <label for="filter-has-had-surveillance">
+    <input type="radio" ng-model="vm.query.surveillance.status" id="filter-has-had-surveillance" name="surveillance" value="has-had" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis': vm.query.surveillance.status === 'has-had' }">Has had a surveillance activity <i class="fa" ng-class="vm.query.surveillance.status === 'has-had' ? 'fa-caret-down' : 'fa-caret-right'"></i></span>
+  </label>
+</li>
+<span ng-if="vm.query.surveillance.status === 'has-had'" class="form-horizontal" ng-form="vm.form">
+  <li class="text-center">
+    <label ng-class="{ 'emphasis' : vm.query.matchAll }">
+      <input type="checkbox" ng-model="vm.query.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
+      Matching <u>{{ vm.query.matchAll ? 'all' : 'any' }}</u>
+    </label>
+  </li>
+  <li>
+    <label for="filter-open-surveillance">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.surveillance.open" id="filter-open-surveillance" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.surveillance.open }">Open Surveillance</span>
+    </label>
+  </li>
+  <li>
+    <label for="filter-closed-surveillance">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.surveillance.closed" id="filter-closed-surveillance" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.surveillance.closed }">Closed Surveillance</span>
+    </label>
+  </li>
+  <li>
+    <label for="filter-never-nonconformity">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.NC.never" id="filter-never-nonconformity" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.NC.never }">Never had a Nonconformity</span>
+    </label>
+  </li>
+  <li>
+    <label for="filter-open-nonconformity">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.NC.open" id="filter-open-nonconformity" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.NC.open }">Open Nonconformity</span>
+    </label>
+  </li>
+  <li>
+    <label for="filter-closed-nonconformity">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.NC.closed" id="filter-closed-nonconformity" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.NC.closed }">Closed Nonconformity</span>
+    </label>
+  </li>
+  <li>
+    <div class="form-group">
+      <label class="col-sm-5" for="open-after" ng-class="{ 'emphasis' : after }">Opened After</label>
+      <div class="input-group col-sm-6">
+        <input type="date" class="form-control input-sm" id="open-after" name="openAfter" ng-model="vm.query.dates.openAfter" placeholder="yyyy-MM-dd" ng-model-options="{timezone:'UTC'}" ng-change="vm.filterChanged()">
+        <div class="text-danger" ng-if="vm.form.openAfter.$touched && vm.form.openAfter.$error.date">Can not parse date format</div>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div class="form-group">
+      <label class="col-sm-5" for="open-before" ng-class="{ 'emphasis' : before }">Opened Before</label>
+      <div class="input-group col-sm-6">
+        <input type="date" class="form-control input-sm" id="open-before" name="openBefore" ng-model="vm.query.dates.openBefore" placeholder="yyyy-MM-dd" ng-model-options="{timezone:'UTC'}" ng-change="vm.filterChanged()">
+        <div class="text-danger" ng-if="vm.form.openBefore.$touched && vm.form.openBefore.$error.date">Can not parse date format</div>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div class="form-group">
+      <label class="col-sm-5" for="close-after" ng-class="{ 'emphasis' : after }">Closed After</label>
+      <div class="input-group col-sm-6">
+        <input type="date" class="form-control input-sm" id="close-after" name="closeAfter" ng-model="vm.query.dates.closeAfter" placeholder="yyyy-MM-dd" ng-model-options="{timezone:'UTC'}" ng-change="vm.filterChanged()">
+        <div class="text-danger" ng-if="vm.form.closeAfter.$touched && vm.form.closeAfter.$error.date">Can not parse date format</div>
+      </div>
+    </div>
+  </li>
+  <li>
+    <div class="form-group">
+      <label class="col-sm-5" for="close-before" ng-class="{ 'emphasis' : before }">Closed Before</label>
+      <div class="input-group col-sm-6">
+        <input type="date" class="form-control input-sm" id="close-before" name="closeBefore" ng-model="vm.query.dates.closeBefore" placeholder="yyyy-MM-dd" ng-model-options="{timezone:'UTC'}" ng-change="vm.filterChanged()">
+        <div class="text-danger" ng-if="vm.form.closeBefore.$touched && vm.form.closeBefore.$error.date">Can not parse date format</div>
+      </div>
+    </div>
+  </li>
+</span>
+<li class="text-center" ng-if="vm.query.surveillance.status">
+  <span>
+    <a href ng-click="vm.clearFilter(); $event.stopPropagation();">
+      Clear Surveillance Activity Filter
+    </a>
+  </span>
+</li>

@@ -1,0 +1,50 @@
+<div>
+  <span class="pull-right">
+    <a ui-sref="listing({id: $ctrl.listing.id})"><i class="fa fa-eye"></i> View Product Listing</a>
+  </span>
+  <table class="table" id="surveillance-search-single-result">
+    <thead class="sr-only">
+      <tr>
+        <th scope="col">Surveillance Listing Data Type</th>
+        <th scope="col">Surveillance Listing Data Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">CHPL Product Number</th>
+        <td>{{ $ctrl.listing.chplProductNumber }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Certification Status</th>
+        <td>{{ $ctrl.certificationStatus($ctrl.listing) }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Developer</th>
+        <td>{{ $ctrl.listing.developer.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Product</th>
+        <td>{{ $ctrl.listing.product.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Version</th>
+        <td>{{ $ctrl.listing.version.version }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Certification Edition</th>
+        <td>{{ $ctrl.listing.certificationEdition.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Certifying Body</th>
+        <td>{{ $ctrl.listing.certifyingBody.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Certification Date</th>
+        <td>{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Surveillance</h3>
+  <ai-surveillance allow-editing="true"
+                   certified-product="$ctrl.listing"></ai-surveillance>
+</div>
