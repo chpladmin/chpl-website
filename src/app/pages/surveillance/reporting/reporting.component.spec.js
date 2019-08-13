@@ -239,6 +239,13 @@
                     });
                 });
             });
+
+            describe('validation', () => {
+                it('should know when annual can be initiated', () => {
+                    expect(ctrl.canInitiateAnnual({name: 'name1'}, 2019)).toBe(true);
+                    expect(ctrl.canInitiateAnnual({name: 'name1'}, 2020)).toBe(false);
+                });
+            });
         });
     });
 })();
