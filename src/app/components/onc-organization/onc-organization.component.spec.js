@@ -75,6 +75,22 @@
                     expect(ctrl.organization).not.toBe(mock.organization);
                     expect(ctrl.organization).toEqual(mock.organization);
                 });
+
+                it('should make a retirement date object if required', () => {
+                    // default organization is not retired; shouldn't have retirement object
+                    expect(ctrl.organization.retirementDateObject).toBeUndefined();
+
+                    // arrange; set organzation to have a retirement date
+                    let retired = angular.copy(mock.organization);
+                    retired.retirementDate = 1565695367097;
+                    scope.organization = retired;
+
+                    // act; $digest cycle needed to trigger $onChanges
+                    scope.$digest();
+
+                    // assert; retired organization needs retirement date object for ng-model
+                    expect(ctrl.organization.retirementDateObject).not.toBeUndefined();
+                });
             });
 
             describe('when using callbacks', () => {
