@@ -53,8 +53,8 @@
               <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.organization.retirementDatePicker = true"><i class="fa fa-calendar"></i></button>
             </div>
           </div>
-          <div class="text-danger" ng-if="$ctrl.form.retirementDate.$touched && $ctrl.form.retirementDate.$error.required">Retirement Date is required</div>
-          <div class="text-danger" ng-if="$ctrl.form.retirementDate.$touched && $ctrl.form.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.retirementDate.$touched) && $ctrl.form.retirementDate.$error.required">Retirement Date is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.retirementDate.$touched) && $ctrl.form.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>
         </div>
       </span>
       <h3>Address</h3>
