@@ -1,18 +1,20 @@
 # Release Notes
 
 ## Version 10.24.0
-_TBD_
+_12 August 2019_
 
 ### Features
 * Improve Surveillance Management UX
   * New navigation for upload, confirm, manage
   * Added "view all surveillance" capability
 
+### Flagged Features
+* Support entry and edit of complaints
+
 ---
 
-
 ## Version 10.23.0
-_TBD_
+_29 July 2019_
 
 ### Flagged Features
 * update administrator's navigation ability
