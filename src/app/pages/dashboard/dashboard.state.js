@@ -9,7 +9,7 @@ let states = {
                     'ngInject'
                     let username = authService.getUsername();
                     if (username) {
-                        return networkService.getUserByUsername(username).organizationId || 222; // hard coded dev id until organizationId exists
+                        return networkService.getUserByUsername(username).organizationId || 448; // hard coded dev id until organizationId exists
                     }
                 },
             },

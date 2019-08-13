@@ -32,10 +32,10 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Jobs Management</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching Management</a></li>
               <li>
-                <ai-login form-class="navbar-form"
+                <chpl-login form-class="navbar-form"
                           p-class="navbar-text"
                           p-class-fail="navbar-text">
-                </ai-login>
+                </chpl-login>
               </li>
             </ul>
           </li>
