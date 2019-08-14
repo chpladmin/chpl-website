@@ -59,7 +59,11 @@ export const UserManagementComponent = {
                     .then(response => that.users = response.users);
                 break;
             case 'impersonate':
-                this.$state.reload();
+                if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+                    this.$state.go('dashboard');
+                } else {
+                    this.$state.reload();
+                }
                 break;
                 //no default
             }
