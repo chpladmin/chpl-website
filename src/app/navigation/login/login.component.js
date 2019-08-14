@@ -6,11 +6,12 @@ export const LoginComponent = {
         pClassFail: '@',
     },
     controller: class LoginComponent {
-        constructor ($log, $rootScope, $scope, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
+        constructor ($log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
+            this.$state = $state;
             this.$stateParams = $stateParams;
             this.Idle = Idle;
             this.Keepalive = Keepalive;
@@ -172,7 +173,14 @@ export const LoginComponent = {
                     that.clear();
                     that._updateExtras();
                     that.broadcastLogin();
-                }, (error) => {
+                    if (that.hasAnyRole(['ROLE_DEVELOPER'])) {
+                        if (that.$state.includes('dashboard')) {
+                            that.$state.reload();
+                        } else {
+                            that.$state.go('dashboard');
+                        }
+                    }
+                }, error => {
                     const expired = new RegExp('The user is required to change their password on next log in\\.');
                     if (expired.test(error.data.error)) {
                         that.activity = that.activityEnum.EXPIRED;

@@ -2,7 +2,7 @@
     'use strict';
 
     fdescribe('the Login Component', () => {
-        var $compile, $log, $q, Idle, Keepalive, authService, ctrl, el, mock, networkService, scope;
+        var $compile, $log, $q, $state, Idle, Keepalive, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
             response: {
@@ -38,15 +38,20 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Idle_, _Keepalive_, _authService_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _Idle_, _Keepalive_, _authService_, _networkService_) => {
                 $compile = _$compile_;
                 $q = _$q_;
                 $log = _$log_;
                 Idle = _Idle_;
                 Keepalive = _Keepalive_;
 
+                $state = _$state_;
+                $state.includes = jasmine.createSpy('includes');
+                $state.includes.and.returnValue(false); // assume we're never in a state, unless otherwise set up
+
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
+                authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_ADMIN') > -1)
                 authService.hasAnyRole.and.returnValue(true);
                 authService.isImpersonating.and.returnValue(false);
                 authService.saveToken.and.returnValue({});
@@ -77,14 +82,14 @@
             }
         });
 
-        describe('directive', () => {
+        describe('view', () => {
             it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });
         });
 
         describe('controller', () => {
-            it('should have isolate scope object with instanciate members', () => {
+            it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
 
@@ -345,6 +350,35 @@
                         ctrl.login();
                         scope.$digest();
                         expect(ctrl.activity).toBe(ctrl.activityEnum.EXPIRED);
+                    });
+                });
+
+                describe('with respect to ROLE_DEVELOPER', () => {
+                    it('should not redirect to the dashboard state if not ROLE_DEVELOPER', () => {
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') === -1)
+                        spyOn($state, 'go');
+                        ctrl.login();
+                        scope.$digest();
+                        expect($state.go).not.toHaveBeenCalled();
+                    });
+
+                    it('should redirect to the dashboard state if ROLE_DEVELOPER', () => {
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0)
+                        spyOn($state, 'go');
+                        ctrl.login();
+                        scope.$digest();
+                        expect($state.go).toHaveBeenCalledWith('dashboard');
+                    });
+
+                    it('should reload state ROLE_DEVELOPER and already on dashboard', () => {
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0)
+                        $state.includes.and.callFake(state => state === 'dashboard');
+                        spyOn($state, 'go');
+                        spyOn($state, 'reload');
+                        ctrl.login();
+                        scope.$digest();
+                        expect($state.go).not.toHaveBeenCalled();
+                        expect($state.reload).toHaveBeenCalled();
                     });
                 });
             });
