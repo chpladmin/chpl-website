@@ -14,6 +14,9 @@ let states = {
                 },
             },
             data: { title: 'CHPL Dashboard' },
+            ncyBreadcrumb: {
+                label: 'Dashboard',
+            },
         },
     ],
     'base': [
