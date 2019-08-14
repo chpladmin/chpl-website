@@ -43,8 +43,8 @@ export const DashboardComponent = {
             let that = this;
             switch (action) {
             case 'delete':
-                this.networkService.removeUserFromDeveloper(data)
-                    .then(() => that.networkService.getUsersAtDeveloper(this.developerId).then(response => that.users = response.users));
+                this.networkService.removeUserFromDeveloper(data, this.developerId)
+                    .then(() => that.networkService.getUsersAtDeveloper(that.developerId).then(response => that.users = response.users));
                 break;
             case 'invite':
                 this.networkService.inviteUser({

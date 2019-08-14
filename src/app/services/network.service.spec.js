@@ -1513,6 +1513,14 @@
             $httpBackend.flush();
         });
 
+        fit('should removeUserFromDeveloper', () => {
+            $httpBackend.expectDELETE(/^\/rest\/developers\/2\/users\/1$/).respond(200);
+            networkService.removeUserFromDeveloper(1, 2).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
         it('should resetPassword', () => {
             $httpBackend.expectPOST(/^\/rest\/auth\/reset_password_request$/).respond(200, {data: 'response'});
             networkService.resetPassword('payload').then(response => {

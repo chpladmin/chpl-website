@@ -684,6 +684,10 @@ export class NetworkService {
         return this.apiDELETE('/atls/' + atlId + '/users/' + userId);
     }
 
+    removeUserFromDeveloper (userId, developerId) {
+        return this.apiDELETE('/developers/' + developerId + '/users/' + userId);
+    }
+
     resetPassword (userObj) {
         return this.apiPOST('/auth/reset_password_request', userObj);
     }
