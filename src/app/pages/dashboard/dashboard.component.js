@@ -61,7 +61,7 @@ export const DashboardComponent = {
                 this.networkService.getUsersAtDeveloper(this.developerId)
                     .then(response => that.users = response.users);
                 break;
-            case 'reload':
+            case 'impersonate':
                 this.$state.reload();
                 break;
                 //no default

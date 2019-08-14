@@ -63,7 +63,7 @@ export const UsersComponent = {
                     .then(token => {
                         that.authService.saveToken(token.token);
                         that.$rootScope.$broadcast('impersonating');
-                        that.takeAction({action: 'reload'});
+                        that.takeAction({action: 'impersonate'});
                     });
                 break;
                 //no default

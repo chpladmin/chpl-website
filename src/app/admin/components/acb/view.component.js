@@ -97,7 +97,7 @@ export const AcbManagementComponent = {
             case 'refresh':
                 this.networkService.getUsersAtAcb(this.acb.id).then(response => that.users = response.users);
                 break;
-            case 'reload':
+            case 'impersonate':
                 this.$state.reload();
                 break;
                 //no default
