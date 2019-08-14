@@ -95,7 +95,7 @@
                     expect(toaster.pop).toHaveBeenCalledWith({
                         type: 'error',
                         title: 'Report could not be generated',
-                        body: response.error,
+                        body: response.data.error,
                     });
                 });
             });
