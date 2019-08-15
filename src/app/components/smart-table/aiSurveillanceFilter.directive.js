@@ -122,10 +122,10 @@
                 if (vm.query.surveillance && vm.query.surveillance === 'never') { events.push('Never Surveilled'); }
                 else {
                     if (vm.query.surveillance && vm.query.surveillance === 'has-had') { events.push('Has had Surveillance'); }
-                    if (vm.query.NC.never) { events.push('Never had a Nonconformity'); }
-                    if (vm.query.NC.open) { events.push('Open Nonconformity'); }
-                    if (vm.query.NC.closed) { events.push('Closed Nonconformity'); }
-                    if (vm.query.NC.matchAll) { events.push('Matching All'); }
+                    if (vm.query.NC && vm.query.NC.never) { events.push('Never had a Nonconformity'); }
+                    if (vm.query.NC && vm.query.NC.open) { events.push('Open Nonconformity'); }
+                    if (vm.query.NC && vm.query.NC.closed) { events.push('Closed Nonconformity'); }
+                    if (vm.query.NC && vm.query.NC.matchAll) { events.push('Matching All'); }
                 }
             }
             if (vm.hasChanges) {
