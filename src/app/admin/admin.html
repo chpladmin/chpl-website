@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row splash-row" ng-if="!vm.hasAnyRole()">
+  <div class="row splash-row" ng-if="!vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])">
     <div class="col-md-6 col-md-offset-3 jumbotron">
       <chpl-login form-class=""
                   p-class="bg-success lead"
@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <section ng-if="vm.hasAnyRole()">
+  <section ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])">
     <div class="row">
       <div class="col-md-12">
         <h1>Welcome, {{ vm.getFullname() }}</h1>

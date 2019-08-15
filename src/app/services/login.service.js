@@ -35,7 +35,7 @@
         }
 
         function getFullname () {
-            if (hasAnyRole()) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 if (identity.length === 3) {
@@ -54,7 +54,7 @@
         }
 
         function getUsername () {
-            if (hasAnyRole()) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 return identity[1];
@@ -65,6 +65,9 @@
         }
 
         function hasAnyRole (roles) {
+            if (!roles || roles.length === 0) {
+                return false;
+            }
             var token = getToken();
             if (token) {
                 let userRole = parseJwt(token).Authority;

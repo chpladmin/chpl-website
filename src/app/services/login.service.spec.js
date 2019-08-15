@@ -1,11 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the Authorization service', () => {
+    fdescribe('the Authorization service', () => {
         var $localStorage, $log, $window, auth, mock;
         mock = {
             user: {
-                Authority: undefined,
+                Authority: 'ROLE_ONC',
                 Identity: [31, 'username', 'Full Name'],
             },
             impersonating: {
@@ -85,13 +85,19 @@
             let user;
             beforeEach(() => {
                 user = angular.copy(mock.user);
-                user.Authority = undefined;
+                user.Authority = 'ROLE_ONC';
+            });
+
+            it('should require one or more roles', () => {
+                auth.saveToken(buildToken(user));
+                expect(auth.hasAnyRole()).toBe(false);
+                expect(auth.hasAnyRole([])).toBe(false);
             });
 
             it('should handle no roles', () => {
-                expect(auth.hasAnyRole()).toBe(false);
+                expect(auth.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])).toBe(false);
                 auth.saveToken(buildToken(user));
-                expect(auth.hasAnyRole()).toBe(true);
+                expect(auth.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])).toBe(true);
             });
 
             it('should handle a role', () => {

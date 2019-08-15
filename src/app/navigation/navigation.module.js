@@ -41,7 +41,7 @@
                 if (response.config.url.indexOf(API) === 0) {
                     response.data = parseToken(response.data);
                 }
-                if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole()) {
+                if (response.data && response.data.error === 'Invalid authentication token.' && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                     authService.logout();
                 }
                 return response;

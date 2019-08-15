@@ -33,7 +33,7 @@ export const LoginComponent = {
         $onInit () {
             let that = this;
             this.clear();
-            if (this.hasAnyRole()) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 this.Idle.watch();
                 this._updateExtras();
                 if (this.authService.isImpersonating()) {
@@ -47,7 +47,7 @@ export const LoginComponent = {
 
             let keepalive = this.$scope.$on('Keepalive', () => {
                 this.$log.info('Keepalive');
-                if (this.hasAnyRole()) {
+                if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                     if (this.activity === this.activityEnum.RESET || this.activity === this.activityEnum.LOGIN) {
                         this.activity = this.activityEnum.NONE;
                     }
@@ -142,7 +142,7 @@ export const LoginComponent = {
         }
 
         clear () {
-            if (this.hasAnyRole()) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 this.activity = this.activityEnum.NONE;
             } else {
                 this.activity = this.activityEnum.LOGIN;
