@@ -24,7 +24,7 @@
       </div>
       <div class="col-sm-6">
         <p>
-          <strong>Last Log In:</strong> {{ $ctrl.user.lastLoggedInDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}<br />
+          <strong>Last Login:</strong> {{ $ctrl.user.lastLoggedInDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}<br />
           <strong>Account Locked:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.accountLocked, 'fa-square-o': !$ctrl.user.accountLocked }"></i><span class="sr-only">{{ user.accountLocked ? 'Locked' : 'Unlocked' }}</span><br />
           <strong>Account Enabled:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.accountEnabled, 'fa-square-o': !$ctrl.user.accountEnabled }"></i><span class="sr-only">{{ user.accountEnabled ? 'Enabled' : 'Disabled' }}</span><br />
           <strong>Password change on next login:</strong> <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': $ctrl.user.passwordResetRequired, 'fa-square-o': !$ctrl.user.passwordResetRequired }"></i><span class="sr-only">{{ user.passwordResetRequired ? 'Reset required' : 'Reset not required' }}</span><br />
