@@ -7,7 +7,7 @@ let states = {
             resolve: {
                 users: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getUsers();
                     } else {
                         return [];
