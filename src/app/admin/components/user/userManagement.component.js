@@ -96,3 +96,4 @@ export const UserManagementComponent = {
 angular
     .module('chpl.admin')
     .component('aiUserManagement', UserManagementComponent);
+// remove entire component when adminNav flag removed
