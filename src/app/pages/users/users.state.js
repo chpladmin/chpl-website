@@ -17,7 +17,6 @@ let states = [
     },
 ];
 
-
 function usersStatesConfig ($stateProvider) {
     'ngInject'
     states.forEach(state => {
