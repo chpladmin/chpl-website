@@ -1,28 +1,28 @@
-export const OncOrganizationComponent = {
-    templateUrl: 'chpl.components/onc-organization/onc-organization.html',
+export const OncOrganizationEditComponent = {
+    templateUrl: 'chpl.components/onc-organization/onc-organization-edit.html',
     bindings: {
         organization: '<',
         type: '@',
         takeAction: '&',
     },
-    controller: class OncOrganizationComponent {
-        constructor ($log, $state) {
+    controller: class OncOrganizationEditComponent {
+        constructor ($log, authService) {
             'ngInject'
             this.$log = $log;
-            this.$state = $state;
+            this.hasAnyRole = authService.hasAnyRole;
+            this.backup = {};
+            this.valid = {
+                address: true,
+            }
         }
 
         $onChanges (changes) {
             if (changes.organization) {
                 this.organization = angular.copy(changes.organization.currentValue);
-            }
-            if (this.organization && this.organization.name) {
-                if (this.$state.includes('**.edit')) {
-                    this.$state.$current.parent.ncyBreadcrumb.label = this.organization.name;
-                } else {
-                    this.$log.debug(this.$state.current);
-                    this.$state.current.ncyBreadcrumb.label = this.organization.name;
+                if (this.organization && this.organization.retirementDate) {
+                    this.organization.retirementDateObject = new Date(this.organization.retirementDate);
                 }
+                this.backup.organization = angular.copy(this.organization);
             }
         }
 
@@ -43,30 +43,21 @@ export const OncOrganizationComponent = {
                     data: this.organization,
                 });
             }
-            this.isEditing = false;
         }
 
         cancel () {
             this.takeAction({
                 action: 'cancel',
             });
+            this.organization = angular.copy(this.backup.organization);
         }
 
-        takeEditAction (action, data) {
-            switch (action) {
-            case 'save':
-                this.organization = data;
-                this.save();
-                break;
-            case 'create':
-                this.organization = data;
-                this.save();
-                break;
-            case 'cancel':
-                this.cancel()
-                break;
-                //no default
+        editAddress (address, errors, validForm) {
+            if (!this.organization) {
+                this.organization = {};
             }
+            this.organization.address = angular.copy(address);
+            this.valid.address = validForm;
         }
 
         getCode () {
@@ -80,4 +71,4 @@ export const OncOrganizationComponent = {
 }
 
 angular.module('chpl.components')
-    .component('chplOncOrganization', OncOrganizationComponent);
+    .component('chplOncOrganizationEdit', OncOrganizationEditComponent);
