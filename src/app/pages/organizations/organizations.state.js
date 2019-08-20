@@ -170,7 +170,7 @@ let states = {
             },
         },{
             name: 'organizations.onc-atls.organization',
-            url: '/{id}',
+            url: '/organization/{id}',
             component: 'chplOncOrganization',
             resolve: {
                 organization: ($transition$, networkService) => {
@@ -180,7 +180,23 @@ let states = {
             },
             data: { title: 'CHPL ONC-ATL' },
             ncyBreadcrumb: {
-                label: '{{ $resolve.organization.name }}',
+                label: undefined, // must be filled in $onChanges in relevant component
+            },
+        },{
+            name: 'organizations.onc-atls.organization.edit',
+            url: '/edit',
+            component: 'chplOncOrganizationEdit',
+            data: { title: 'CHPL ONC-ATL' },
+            ncyBreadcrumb: {
+                label: 'Edit',
+            },
+        },{
+            name: 'organizations.onc-atls.create',
+            url: '/create',
+            component: 'chplOncOrganizationEdit',
+            data: { title: 'CHPL ONC-ATL' },
+            ncyBreadcrumb: {
+                label: 'Create',
             },
         },
     ],
@@ -231,8 +247,18 @@ let states = {
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL ONC-ATLs' },
         },{
+            name: 'organizations.onc-atls.create',
+            url: '/create',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ATL' },
+        },{
             name: 'organizations.onc-atls.organization',
-            url: '/{id}',
+            url: '/organization/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ATL' },
+        },{
+            name: 'organizations.onc-atls.organization.edit',
+            url: '/edit',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
             data: { title: 'CHPL ONC-ATL' },
         },
