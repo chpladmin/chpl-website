@@ -26,6 +26,17 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
+                $provide.provider('$state', () => ({
+                    $get: () => ({
+                        current: {
+                            ncyBreadcrumb: {
+                                label: undefined,
+                            },
+                        },
+                        get: () => ({}),
+                        includes: jasmine.createSpy('includes'),
+                    }),
+                }));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAcb = jasmine.createSpy('getAcb');
                     return $delegate;
@@ -37,24 +48,13 @@
                 $log = _$log_;
                 $q = _$q_;
                 $state = _$state_;
-                /*                $state = {
-                  includes: jasmine.createSpy('includes'),
-                  current: {
-                  ncyBreadcrumb: {
-                  label: undefined,
-                  },
-                  },
-                  };
-                  $state.includes.and.returnValue(false);*/
+                $state.includes.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.getAcb.and.returnValue($q.when(mock.organization));
 
                 scope = $rootScope.$new();
                 scope.organization = mock.organization;
                 scope.takeAction = jasmine.createSpy('takeAction');
-
-                $state.go('organizations.onc-acbs.organization', {id: 1});
-                scope.$digest();
 
                 el = angular.element('<chpl-onc-organization organization="organization" type="ONC-ACB" take-action="takeAction(action, data)"></chpl-onc-organization>');
 

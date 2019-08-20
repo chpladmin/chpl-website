@@ -20,7 +20,6 @@ export const OncOrganizationComponent = {
                 if (this.$state.includes('**.edit')) {
                     this.$state.$current.parent.ncyBreadcrumb.label = this.organization.name;
                 } else {
-                    this.$log.debug(this.$state.current);
                     this.$state.current.ncyBreadcrumb.label = this.organization.name;
                 }
             }
