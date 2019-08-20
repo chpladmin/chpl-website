@@ -5,10 +5,10 @@ let states = {
             url: '/complaints',
             component: 'chplSurveillanceComplaints',
             data: {
-                title: 'CHPL Surveillance - Complaints',
+                title: 'CHPL Surveillance - Complaints Reporting',
             },
             ncyBreadcrumb: {
-                label: 'Complaints',
+                label: 'Complaints Reporting',
             },
         },
     ],
