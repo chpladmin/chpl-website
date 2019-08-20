@@ -63,11 +63,7 @@ export const OncOrganizationsComponent = {
         }
 
         edit ($event) {
-            this.$state.go('.edit');/*
-            this.generalCollapsed = false;
-            this.loadUsers();
-            this.$anchorScroll();
-            */
+            this.$state.go('.edit');
             $event.preventDefault();
             $event.stopPropagation();
         }
@@ -144,7 +140,6 @@ export const OncOrganizationsComponent = {
                 this.$anchorScroll();
                 break;
             case 'create':
-                this.$log.info('create', data);
                 this.networkService[this.functions.create](data).then(newOrg => {
                     let promises = [
                         that.networkService[that.functions.get](false).then(allOrgs => {

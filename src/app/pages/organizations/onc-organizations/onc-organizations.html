@@ -37,40 +37,4 @@
       </div>
     </div>
   </div>
-<!--
-  <div class="col-md-9" ng-if="$ctrl.isCreating">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">General Information</h3>
-      </div>
-      <div class="panel-body">
-        <chpl-onc-organization type="{{ $ctrl.type }}" can-edit="true" is-editing="true" take-action="$ctrl.takeAction(action, data)"></chpl-onc-organization>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-9" ng-if="$ctrl.$state.params.id && !$ctrl.isCreating">
-    <div class="panel panel-default">
-      <div class="panel-heading" ng-click="$ctrl.generalCollapsed = !$ctrl.generalCollapsed">
-        <h3 class="panel-title">
-          General Information
-          <span class="pull-right">
-            <span ng-if="$ctrl.canEdit($ctrl.$state.params.id) && !$ctrl.isEditing"><button class="btn btn-link" ng-click="$ctrl.edit($event)">Edit</button></span>
-            <i class="fa" ng-class="$ctrl.generalCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></i>
-          </span>
-        </h3>
-      </div>
-      <div class="panel-body" ng-show="!$ctrl.generalCollapsed">
-        <ui-view type="{{ $ctrl.type }}" is-editing="$ctrl.isEditing" take-action="$ctrl.takeAction(action, data)"></ui-view>
-      </div>
-    </div>
-    <div class="panel panel-default" ng-if="$ctrl.canEdit($ctrl.$state.params.id) && !$ctrl.isEditing">
-      <div class="panel-heading clickable" ng-click="$ctrl.usersCollapsed = !$ctrl.usersCollapsed">
-        <h3 class="panel-title">Manage Users ({{ $ctrl.users.length }}) <i class="fa pull-right" ng-class="$ctrl.usersCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></i></h3>
-      </div>
-      <div class="panel-body" ng-show="!$ctrl.usersCollapsed">
-        <chpl-users column-count="2" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
-      </div>
-    </div>
-  </div>
-  -->
 </div>
