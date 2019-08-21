@@ -8,8 +8,8 @@ let states = {
                 developerId: (authService, networkService) => {
                     'ngInject'
                     let username = authService.getUsername();
-                    if (username) {
-                        return networkService.getUserByUsername(username).organizationId || 448; // hard coded dev id until organizationId exists
+                    if (username && authService.hasAnyRole(['ROLE_DEVELOPER'])) {
+                        return networkService.getUserByUsername(username).organizations[0].id || 448; // hard coded dev id until organizationId exists
                     }
                 },
             },
