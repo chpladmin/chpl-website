@@ -47,6 +47,89 @@
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
+
+            describe('when determining completeness', () => {
+                let surv;
+                beforeEach(() => {
+                    surv = {
+                        surveillanceOutcome: null,
+                        surveillanceProcessType: null,
+                        k1Reviewed: null,
+                        groundsForInitiating: null,
+                        nonconformityCauses: null,
+                        nonconformityNature: null,
+                        stepsToSurveil: null,
+                        stepsToEngage: null,
+                        additionalCostsEvaluation: null,
+                        limitationsEvaluation: null,
+                        nondisclosureEvaluation: null,
+                        directionDeveloperResolution: null,
+                        completedCapVerification: null,
+                    };
+                });
+
+                it('should handle nulls', () => {
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+                });
+
+                it('should handle undefined', () => {
+                    surv.surveillanceOutcome = undefined;
+                    surv.surveillanceProcessType = undefined;
+                    surv.k1Reviewed = undefined;
+                    surv.groundsForInitiating = undefined;
+                    surv.nonconformityCauses = undefined;
+                    surv.nonconformityNature = undefined;
+                    surv.stepsToSurveil = undefined;
+                    surv.stepsToEngage = undefined;
+                    surv.additionalCostsEvaluation = undefined;
+                    surv.limitationsEvaluation = undefined;
+                    surv.nondisclosureEvaluation = undefined;
+                    surv.directionDeveloperResolution = undefined;
+                    surv.completedCapVerification = undefined;
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+                });
+
+                it('should handle empty strings', () => {
+                    surv.surveillanceOutcome = '';
+                    surv.surveillanceProcessType = '';
+                    surv.groundsForInitiating = '';
+                    surv.nonconformityCauses = '';
+                    surv.nonconformityNature = '';
+                    surv.stepsToSurveil = '';
+                    surv.stepsToEngage = '';
+                    surv.additionalCostsEvaluation = '';
+                    surv.limitationsEvaluation = '';
+                    surv.nondisclosureEvaluation = '';
+                    surv.directionDeveloperResolution = '';
+                    surv.completedCapVerification = '';
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+                });
+
+                it('should know when it\'s complete', () => {
+                    surv.surveillanceOutcome = 'Something';
+                    surv.surveillanceProcessType = 'Something';
+                    surv.k1Reviewed = true;
+                    surv.groundsForInitiating = 'Something';
+                    surv.nonconformityCauses = 'Something';
+                    surv.nonconformityNature = 'Something';
+                    surv.stepsToSurveil = 'Something';
+                    surv.stepsToEngage = 'Something';
+                    surv.additionalCostsEvaluation = 'Something';
+                    surv.limitationsEvaluation = 'Something';
+                    surv.nondisclosureEvaluation = 'Something';
+                    surv.directionDeveloperResolution = 'Something';
+                    surv.completedCapVerification = 'Something';
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(100);
+                });
+
+                it('should handle k1', () => {
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+                    surv.k1Reviewed = true;
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(8);
+                    surv.k1Reviewed = false;
+                    expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+                });
+            });
         });
     });
 })();
