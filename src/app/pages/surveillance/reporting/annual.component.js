@@ -47,6 +47,13 @@ export const SurveillanceReportAnnualComponent = {
                         title: 'Report is being generated',
                         body: `Annual Surveillance report is being generated, and will be emailed to ${name} at ${email} when ready.`,
                     });
+                }, error => {
+                    let message = error.data.error;
+                    that.toaster.pop({
+                        type: 'error',
+                        title: 'Report could not be generated',
+                        body: message,
+                    });
                 });
         }
     },

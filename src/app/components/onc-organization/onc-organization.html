@@ -40,12 +40,12 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.organizationWebsite.$touched) && $ctrl.form.organizationWebsite.$error.url">Improper format (http://www.example.com)</div>
         </div>
       </div>
-      <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+      <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && $ctrl.organization.id">
         <div class="form-group">
           <label class="control-label" for="organization-retired">Retired</label>
           <input class="input-sm" type="checkbox" ng-model="$ctrl.organization.retired" id="organization-retired" name="retired" ng-change="$ctrl.update()"></input>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="$ctrl.organization.id">
           <label for="retirement-date">Retirement Date <span class="text-danger" ng-if="$ctrl.organization.retired">*</span></label>
           <div class="input-group">
             <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.organization.retirementDateObject" is-open="$ctrl.organization.retirementDatePicker" close-text="Close" id="retirement-date" name="retirementDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.organization.retired" ng-disabled="!$ctrl.organization.retired" ng-change="$ctrl.update()">
@@ -53,8 +53,8 @@
               <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.organization.retirementDatePicker = true"><i class="fa fa-calendar"></i></button>
             </div>
           </div>
-          <div class="text-danger" ng-if="$ctrl.form.retirementDate.$touched && $ctrl.form.retirementDate.$error.required">Retirement Date is required</div>
-          <div class="text-danger" ng-if="$ctrl.form.retirementDate.$touched && $ctrl.form.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.retirementDate.$touched) && $ctrl.form.retirementDate.$error.required">Retirement Date is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.retirementDate.$touched) && $ctrl.form.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>
         </div>
       </span>
       <h3>Address</h3>

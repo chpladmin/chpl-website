@@ -28,7 +28,7 @@
   <div class="modal-footer">
     <span class="pull-right">
       <button class="btn btn-primary" ng-click="$ctrl.goToApi()">Go to API</button>
-      <span ng-if="$ctrl.hasAnyRole()"><br /><button class="btn btn-default" ng-click="$ctrl.goToHistory()">Go to full history</button></span>
+      <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><br /><button class="btn btn-default" ng-click="$ctrl.goToHistory()">Go to full history</button></span>
     </span>
     This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the <code>/activity/certified_products/{{ $ctrl.listing.id }}</code> API call described on the CHPL API page.
   </div>
