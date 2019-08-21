@@ -553,7 +553,7 @@
         });
 
         fit('should getApiUsers', () => {
-            $httpBackend.expectGET(/^\/rest\/key$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/key\?includeDeleted=true$/).respond(200, {data: 'response'});
             networkService.getApiUsers(true).then(response => {
                 expect(response.data).toEqual('response');
             });
