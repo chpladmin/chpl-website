@@ -31,6 +31,7 @@
         vm.checkQmsBoolean = checkQmsBoolean;
 
         vm.certificationStatus = utilService.certificationStatus;
+        vm.isBlank = utilService.isBlank;
 
         activate();
 
@@ -64,6 +65,8 @@
             if (!vm.cp.developer.country) {
                 vm.cp.developer.country = 'USA';
             }
+
+            vm.isDevUpdated = false;
         }
 
         function loadDev () {
@@ -101,6 +104,7 @@
             networkService.updateDeveloper(dev)
                 .then(function () {
                     vm.loadDev();
+                    vm.isDevUpdated = true;
                 });
         }
 
@@ -213,7 +217,8 @@
         function isDisabled () {
             switch (vm.stage) {
             case 'dev':
-                return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId);
+                return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId)
+                  || (!isSystemDevContactInfoValid() && !vm.isDevUpdated);
             case 'prd':
                 return (vm.productChoice === 'choose' && !vm.cp.product.productId);
             case 'ver':
@@ -221,6 +226,15 @@
             default:
                 return true;
             }
+        }
+
+        function isSystemDevContactInfoValid () {
+            return (vm.developer && !vm.isBlank(vm.developer.name) && !vm.isBlank(vm.developer.website))
+                && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email)
+                && !vm.isBlank(vm.developer.contact.phoneNumber))
+                && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city)
+                && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
+                && (vm.developer.transparencyAttestations && !vm.isBlank(vm.developer.transparencyAttestations[0].attestation));
         }
 
         function cancel () {

@@ -31,6 +31,7 @@
             sortRequirements: sortRequirements,
             statusFont: statusFont,
             ternaryFilter: ternaryFilter,
+            isBlank: isBlank,
         }
         return service;
 
@@ -354,6 +355,10 @@
             } else {
                 return field ? 'True' : 'False';
             }
+        }
+
+        function isBlank (str) {
+            return !str || str.trim().length === 0;
         }
     }
 })();
