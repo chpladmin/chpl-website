@@ -494,5 +494,33 @@
                 expect(util.rangeCol(undefined)).toBe('col-sm-12');
             });
         });
+
+        fdescribe('when providing a string', () => {
+            const shouldReturnTrue = 'should return true';
+
+            it('which has no characters ' + shouldReturnTrue, () => {
+                let emptyString = '';
+                let isBlank = util.isBlank(emptyString);
+                expect(isBlank).toBe(true);
+            });
+
+            it('which has whitespace character only ' + shouldReturnTrue, () => {
+                let stringWithOneWhiteSpaceCharacterOnly = ' ';
+                let isBlank = util.isBlank(stringWithOneWhiteSpaceCharacterOnly);
+                expect(isBlank).toBe(true);
+            });
+
+            it('which has two whitespace characters ' + shouldReturnTrue, () => {
+                let stringWithTwoWhiteSpaceCharacters = '  ';
+                let isBlank = util.isBlank(stringWithTwoWhiteSpaceCharacters);
+                expect(isBlank).toBe(true);
+            });
+
+            it('which has at least some characters other than whitespace should return false', () => {
+                let stringWithData = 'some data!';
+                let isBlank = util.isBlank(stringWithData);
+                expect(isBlank).toBe(false);
+            });
+        });
     });
 })();
