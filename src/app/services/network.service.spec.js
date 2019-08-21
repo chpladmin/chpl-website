@@ -552,9 +552,9 @@
             $httpBackend.flush();
         });
 
-        it('should getApiUsers', () => {
+        fit('should getApiUsers', () => {
             $httpBackend.expectGET(/^\/rest\/key$/).respond(200, {data: 'response'});
-            networkService.getApiUsers().then(response => {
+            networkService.getApiUsers(true).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

@@ -221,8 +221,12 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getApiUsers () {
-        return this.apiGET('/key');
+    getApiUsers (includeDeleted) {
+        if (includeDeleted) {
+            return this.apiGET('/key?includeDeleted=true');
+        } else {
+            return this.apiGET('/key?includeDeleted=false');
+        }
     }
 
     getAtl (id) {
