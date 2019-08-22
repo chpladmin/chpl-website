@@ -46,89 +46,8 @@
             });
 
             describe('on init', () => {
-                describe('as ROLE_ADMIN', () => {
-                    beforeEach(() => {
-                        authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') > -1);
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {},
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState.screen).toBe('dpManagement');
-                        expect(vm.navState.dpManagement).toBe('manage');
-                    });
-                });
-
-                describe('as ROLE_ONC', () => {
-                    beforeEach(() => {
-                        authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1);
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {},
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState.screen).toBe('dpManagement');
-                        expect(vm.navState.dpManagement).toBe('manage');
-                    });
-                });
-
-                describe('as ROLE_ACB', () => {
-                    beforeEach(() => {
-                        authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1);
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {},
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState.screen).toBe('dpManagement');
-                        expect(vm.navState.dpManagement).toBe('upload');
-                    });
-                });
-
-                describe('as ROLE_ATL', () => {
-                    beforeEach(() => {
-                        authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') > -1);
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {},
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState.screen).toBe('userManagement');
-                        expect(vm.navState.dpManagement).toBe('upload');
-                    });
-                });
-
-                describe('as ROLE_CMS_STAFF', () => {
-                    beforeEach(() => {
-                        authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_CMS_STAFF') > -1);
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {},
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState.screen).toBeUndefined();
-                        expect(vm.navState.dpManagement).toBe('upload');
-                    });
+                it('should have state', () => {
+                    expect(vm.navState).toBe('manage');
                 });
 
                 describe('when deep linking to a listing', () => {
@@ -145,27 +64,8 @@
                     });
 
                     it('should have state', () => {
-                        expect(vm.navState.screen).toBe('dpManagement');
+                        expect(vm.navState).toBe('manage');
                         expect(vm.productId).toBe(3);
-                    });
-                });
-
-                describe('when deep linking to a non reports subsection', () => {
-                    beforeEach(() => {
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {
-                                section: 'dpManagement',
-                                subSection: 'upload',
-                            },
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState.screen).toBe('dpManagement');
-                        expect(vm.navState.dpManagement).toBe('upload');
                     });
                 });
             });

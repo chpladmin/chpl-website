@@ -5,7 +5,7 @@
         .controller('AdminController', AdminController);
 
     /** @ngInclude */
-    function AdminController ($filter, $log, $stateParams, authService) {
+    function AdminController ($log, $stateParams, authService) {
         var vm = this;
 
         vm.getFullname = authService.getFullname;
