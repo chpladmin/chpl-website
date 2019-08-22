@@ -35,7 +35,15 @@ export const LoginComponent = {
             this.clear();
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 this.Idle.watch();
-                this._updateExtras();
+                if (this.authService.getCurrentUser()) {
+                    this._updateExtras();
+                } else {
+                    this.networkService.getUserByUsername(this.authService.getUsername())
+                        .then(user => {
+                            that.authService.saveCurrentUser(user);
+                            that._updateExtras();
+                        });
+                }
                 if (this.authService.isImpersonating()) {
                     this.activity = this.activityEnum.IMPERSONATING;
                 }
@@ -168,18 +176,22 @@ export const LoginComponent = {
             this.message = '';
             this.networkService.login({userName: this.userName, password: this.password})
                 .then(() => {
-                    that.Idle.watch();
-                    that.Keepalive.ping();
-                    that.clear();
-                    that._updateExtras();
-                    that.broadcastLogin();
-                    if (that.hasAnyRole(['ROLE_DEVELOPER'])) {
-                        if (that.$state.includes('dashboard')) {
-                            that.$state.reload();
-                        } else {
-                            that.$state.go('dashboard');
-                        }
-                    }
+                    that.networkService.getUserByUsername(that.authService.getUsername())
+                        .then(user => {
+                            that.authService.saveCurrentUser(user);
+                            that.Idle.watch();
+                            that.Keepalive.ping();
+                            that.clear();
+                            that._updateExtras();
+                            that.broadcastLogin();
+                            if (that.hasAnyRole(['ROLE_DEVELOPER'])) {
+                                if (that.$state.includes('dashboard')) {
+                                    that.$state.reload();
+                                } else {
+                                    that.$state.go('dashboard');
+                                }
+                            }
+                        });
                 }, error => {
                     const expired = new RegExp('The user is required to change their password on next log in\\.');
                     if (expired.test(error.data.error)) {
@@ -225,7 +237,11 @@ export const LoginComponent = {
                 .then(token => {
                     that.authService.saveToken(token.token);
                     that.clear();
-                    that.$rootScope.$broadcast('unimpersonating');
+                    that.networkService.getUserByUsername(that.authService.getUsername())
+                        .then(user => {
+                            that.authService.saveCurrentUser(user);
+                            that.$rootScope.$broadcast('unimpersonating');
+                        });
                 });
         }
 
@@ -233,16 +249,13 @@ export const LoginComponent = {
 
         _updateExtras () {
             const vals = ['chpl'];
-            let that = this;
-            this.networkService.getUserByUsername(this.authService.getUsername())
-                .then(response => {
-                    if (response.subjectName) { vals.push(response.subjectName); }
-                    if (response.fullName) { vals.push(response.fullName); }
-                    if (response.friendlyName) { vals.push(response.friendlyName); }
-                    if (response.email) { vals.push(response.email); }
-                    if (response.phoneNumber) { vals.push(response.phoneNumber); }
-                    that.extras = vals;
-                });
+            let user = this.authService.getCurrentUser();
+            if (user.subjectName) { vals.push(user.subjectName); }
+            if (user.fullName) { vals.push(user.fullName); }
+            if (user.friendlyName) { vals.push(user.friendlyName); }
+            if (user.email) { vals.push(user.email); }
+            if (user.phoneNumber) { vals.push(user.phoneNumber); }
+            this.extras = vals;
         }
     },
 }

@@ -9,6 +9,7 @@
         var service = {
             canImpersonate: canImpersonate,
             getApiKey: getApiKey,
+            getCurrentUser: getCurrentUser,
             getFullname: getFullname,
             getToken: getToken,
             getUsername: getUsername,
@@ -16,6 +17,7 @@
             isImpersonating: isImpersonating,
             logout: logout,
             parseJwt: parseJwt,
+            saveCurrentUser: saveCurrentUser,
             saveToken: saveToken,
         }
         return service;
@@ -47,6 +49,10 @@
                 logout();
                 return '';
             }
+        }
+
+        function getCurrentUser () {
+            return $localStorage.currentUser;
         }
 
         function getToken () {
@@ -90,6 +96,7 @@
 
         function logout () {
             delete $localStorage.jwtToken;
+            delete $localStorage.currentUser;
         }
 
         function parseJwt (token) {
@@ -101,6 +108,10 @@
                 }
                 return {};
             }
+        }
+
+        function saveCurrentUser (user) {
+            $localStorage.currentUser = user;
         }
 
         function saveToken (token) {

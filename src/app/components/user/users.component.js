@@ -62,8 +62,12 @@ export const UsersComponent = {
                 this.networkService.impersonateUser(data)
                     .then(token => {
                         that.authService.saveToken(token.token);
-                        that.$rootScope.$broadcast('impersonating');
-                        that.takeAction({action: 'impersonate'});
+                        that.networkService.getUserByUsername(that.authService.getUsername())
+                            .then(user => {
+                                that.authService.saveCurrentUser(user);
+                                that.$rootScope.$broadcast('impersonating');
+                                that.takeAction({action: 'impersonate'});
+                            });
                     });
                 break;
                 //no default
