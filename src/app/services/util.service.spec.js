@@ -495,31 +495,76 @@
             });
         });
 
-        fdescribe('when providing a string', () => {
+        fdescribe('when providing', () => {
             const shouldReturnTrue = 'should return true';
+            const shouldReturnFalse = 'should return false';
 
-            it('which has no characters ' + shouldReturnTrue, () => {
-                let emptyString = '';
-                let isBlank = util.isBlank(emptyString);
-                expect(isBlank).toBe(true);
+            fdescribe('a string', () => {
+                it('which has no characters ' + shouldReturnTrue, () => {
+                    let emptyString = '';
+                    let isBlank = util.isBlank(emptyString);
+                    expect(isBlank).toBe(true);
+                });
+
+                it('which has whitespace character only ' + shouldReturnTrue, () => {
+                    let stringWithOneWhiteSpaceCharacterOnly = ' ';
+                    let isBlank = util.isBlank(stringWithOneWhiteSpaceCharacterOnly);
+                    expect(isBlank).toBe(true);
+                });
+
+                it('which has two whitespace characters ' + shouldReturnTrue, () => {
+                    let stringWithTwoWhiteSpaceCharacters = '  ';
+                    let isBlank = util.isBlank(stringWithTwoWhiteSpaceCharacters);
+                    expect(isBlank).toBe(true);
+                });
+
+                it('which has at least some characters other than whitespace ' + shouldReturnFalse, () => {
+                    let stringWithData = 'some data!';
+                    let isBlank = util.isBlank(stringWithData);
+                    expect(isBlank).toBe(false);
+                });
             });
 
-            it('which has whitespace character only ' + shouldReturnTrue, () => {
-                let stringWithOneWhiteSpaceCharacterOnly = ' ';
-                let isBlank = util.isBlank(stringWithOneWhiteSpaceCharacterOnly);
-                expect(isBlank).toBe(true);
+            fdescribe('a variable', () => {
+                it('which is null ' + shouldReturnTrue, () => {
+                    let nullVariable = null;
+                    let isBlank = util.isBlank(nullVariable);
+                    expect(isBlank).toBe(true);
+                });
+
+                it('which is undefined ' + shouldReturnTrue, () => {
+                    let undefinedVariable;
+                    let isBlank = util.isBlank(undefinedVariable);
+                    expect(isBlank).toBe(true);
+                });
             });
 
-            it('which has two whitespace characters ' + shouldReturnTrue, () => {
-                let stringWithTwoWhiteSpaceCharacters = '  ';
-                let isBlank = util.isBlank(stringWithTwoWhiteSpaceCharacters);
-                expect(isBlank).toBe(true);
+            fdescribe('an empty', () => {
+                it('array ' + shouldReturnTrue, () => {
+                    let emptyArray = [];
+                    let isBlank = util.isBlank(emptyArray);
+                    expect(isBlank).toBe(true);
+                });
+
+                it('object ' + shouldReturnTrue, () => {
+                    let emptyObject = {};
+                    let isBlank = util.isBlank(emptyObject);
+                    expect(isBlank).toBe(true);
+                });
             });
 
-            it('which has at least some characters other than whitespace should return false', () => {
-                let stringWithData = 'some data!';
-                let isBlank = util.isBlank(stringWithData);
-                expect(isBlank).toBe(false);
+            fdescribe('a populated', () => {
+                it('array ' + shouldReturnFalse, () => {
+                    let populatedArray = [5, 6, 7];
+                    let isBlank = util.isBlank(populatedArray);
+                    expect(isBlank).toBe(false);
+                });
+
+                it('object ' + shouldReturnFalse, () => {
+                    let populatedObject = {id: 10};
+                    let isBlank = util.isBlank(populatedObject);
+                    expect(isBlank).toBe(false);
+                });
             });
         });
     });
