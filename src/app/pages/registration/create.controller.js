@@ -44,11 +44,7 @@ window.zxcvbn = zxcvbn;
                 const username = vm.authorizeDetails.userName || authService.getUsername();
                 networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
-                        if (featureFlags.isOn('adminNav')) {
-                            $location.path('/administration');
-                        } else {
-                            $location.path('/admin');
-                        }
+                        $location.path('/administration');
                     }, function (error) {
                         if (error.status === 401) {
                             vm.message.value = 'A user may not have more than one role, or your username / password are incorrect';
