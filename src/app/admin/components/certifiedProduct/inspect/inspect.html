@@ -63,7 +63,7 @@
               Zip: {{ vm.developer.address.zipcode }}<br />
               Country: {{ vm.developer.address.country }}<br />
               Website: {{ vm.developer.website }}<br />
-              Transparency Attestation: {{ vm.developer.transparencyAttestations[0].attestation }}<br />
+              Transparency Attestation: {{ vm.getAttestationStringForCurrentSystemDeveloper() }}<br />
               <strong>Contact information</strong><br />
               <ai-contact contact="vm.developer.contact"></ai-contact>
               <br />
