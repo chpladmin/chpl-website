@@ -16,25 +16,10 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.navState = {};
-            // base case
-            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-                vm.navState.screen = 'dpManagement';
-            } else if (vm.hasAnyRole(['ROLE_ATL'])) {
-                vm.navState.screen = 'userManagement';
-            }
-            if (!vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-                vm.navState.dpManagement = 'upload';
-            } else {
-                vm.navState.dpManagement = 'manage';
-            }
+            vm.navState = 'manage';
 
-            // chosen section
-            if ($stateParams.section) {
-                vm.navState.screen = $stateParams.section;
-            }
             if ($stateParams.subSection) {
-                vm.navState[vm.navState.screen] = $stateParams.subSection;
+                vm.navState = $stateParams.subSection;
             }
             if ($stateParams.productId) {
                 vm.productId = $stateParams.productId;

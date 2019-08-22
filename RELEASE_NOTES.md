@@ -17,10 +17,10 @@ _12 August 2019_
 _29 July 2019_
 
 ### Flagged Features
-* update administrator's navigation ability
+* Complete revamp of administration navigation
+* Add "Save Search" functionality to admin reports
 
 ---
-
 
 ## Version 10.22.0
 _22 July 2019_
