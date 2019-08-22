@@ -47,7 +47,8 @@
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
-        vm.toggleNav = toggleNav;
+        vm.toggleNavClosed = toggleNavClosed;
+        vm.toggleNavOpen = toggleNavOpen;
 
         ////////////////////////////////////////////////////////////////////
 
@@ -57,12 +58,12 @@
             $rootScope.bodyClass = 'navigation-shown';
 
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])) {
-                vm.toggleNav();
+                vm.toggleNavClosed();
             }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
                 if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])) {
-                    vm.toggleNav(true);
+                    vm.toggleNavOpen();
                 }
             });
             $scope.$on('$destroy', showCmsWidget);
@@ -75,7 +76,7 @@
             var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
                 if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])) {
-                    vm.toggleNav(true);
+                    vm.toggleNavOpen();
                 }
             });
             $scope.$on('$destroy', showCompareWidget);
@@ -88,7 +89,7 @@
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
                 if (vm.navShown) {
-                    vm.toggleNav();
+                    vm.toggleNavClosed();
                 }
             })
             $scope.$on('$destroy', loggedIn);
@@ -96,7 +97,7 @@
             var loggedOut = $scope.$on('loggedOut', function () {
                 vm.loadAnnouncements();
                 if (!vm.navShown) {
-                    vm.toggleNav();
+                    vm.toggleNavOpen();
                 }
             })
             $scope.$on('$destroy', loggedOut);
@@ -113,7 +114,7 @@
 
             var flags = $rootScope.$on('flags loaded', function () {
                 if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])) {
-                    vm.toggleNav();
+                    vm.toggleNavOpen();
                 }
             });
             $scope.$on('$destroy', flags);
@@ -144,14 +145,14 @@
             vm.compareWidgetExpanded = show;
         }
 
-        function toggleNav (forceOpen) {
-            if (forceOpen) {
-                vm.navShown = true;
-                $rootScope.bodyClass = 'navigation-shown';
-            } else {
-                vm.navShown = !vm.navShown;
-                $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
-            }
+        function toggleNavOpen () {
+            vm.navShown = true;
+            $rootScope.bodyClass = 'navigation-shown';
+        }
+
+        function toggleNavClosed () {
+            vm.navShown = false
+            $rootScope.bodyClass = 'navigation-hidden';
         }
     }
 })();
