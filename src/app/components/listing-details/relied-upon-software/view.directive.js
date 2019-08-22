@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.admin')
+    angular.module('chpl.components')
         .controller('AdditionalSoftwareController', AdditionalSoftwareController)
         .directive('aiAdditionalSoftware', function () {
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'chpl.admin/components/reliedUponSoftware/view.html',
+                templateUrl: 'chpl.components/listing-details/relied-upon-software/view.html',
                 bindToController: {
                     additionalSoftware: '=?',
                     isEditing: '=?',
@@ -36,7 +36,7 @@
 
         function addItem () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/reliedUponSoftware/edit.html',
+                templateUrl: 'chpl.components/listing-details/relied-upon-software/edit.html',
                 controller: 'EditAdditionalSoftwareController',
                 controllerAs: 'vm',
                 animation: false,
@@ -79,7 +79,7 @@
 
         function editItem (sw, index) {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/reliedUponSoftware/edit.html',
+                templateUrl: 'chpl.components/listing-details/relied-upon-software/edit.html',
                 controller: 'EditAdditionalSoftwareController',
                 controllerAs: 'vm',
                 animation: false,

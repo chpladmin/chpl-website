@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.admin')
+    angular.module('chpl.components')
         .controller('EditAdditionalSoftwareController', EditAdditionalSoftwareController);
 
     /** @ngInject */

@@ -92,7 +92,7 @@
                 it('should not put the third column in for CMS users', () => {
                     expect(ctrl.csvHeader.length).toBe(3);
                     authService.hasAnyRole.and.returnValue(false);
-                    el = angular.element('<ai-cms-management></ai-cms-management>');
+                    el = angular.element('<chpl-cms-management></chpl-cms-management>');
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;

@@ -1,12 +1,12 @@
 (function () {
     'use strict';
 
-    describe('admin.additionalSoftware', function () {
+    fdescribe('the Relied Upon Software view component', function () {
         var $log, $uibModal, Mock, actualOptions, el, mock, vm;
 
         mock = {};
         mock.fakeModalOptions = {
-            templateUrl: 'chpl.admin/components/reliedUponSoftware/edit.html',
+            templateUrl: 'chpl.components/listing-details/relied-upon-software/edit.html',
             controller: 'EditAdditionalSoftwareController',
             controllerAs: 'vm',
             animation: false,
@@ -18,7 +18,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.admin');
+            angular.mock.module('chpl.mock', 'chpl.components');
 
             inject(function ($compile, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $log = _$log_;

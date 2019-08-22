@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    describe('admin.EditAdditionalSoftwareController.controller', function () {
+    fdescribe('the Relied Upon Software edit component', function () {
         var $log, Mock, scope, vm;
 
         beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.admin');
+            angular.mock.module('chpl.mock', 'chpl.components');
 
             inject(function ($controller, _$log_, $rootScope, _Mock_) {
                 $log = _$log_;
