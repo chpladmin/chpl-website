@@ -10,7 +10,7 @@
         var directive = {
             restrict: 'E',
             replace: true,
-            templateUrl: 'chpl.components/listing-details/details.html',
+            templateUrl: 'chpl.components/listing/details/details.html',
             bindToController: {
                 editMode: '=?',
                 initialPanel: '@?',
@@ -177,7 +177,7 @@
             function viewIcsFamily () {
                 networkService.getIcsFamily(vm.product.id).then(function (family) {
                     vm.uibModalInstance = $uibModal.open({
-                        templateUrl: 'chpl.components/listing-details/ics-family/ics-family-modal.html',
+                        templateUrl: 'chpl.components/listing/details/ics-family/ics-family-modal.html',
                         controller: 'IcsFamilyController',
                         controllerAs: 'vm',
                         animation: false,

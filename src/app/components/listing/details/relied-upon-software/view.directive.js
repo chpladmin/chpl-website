@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'chpl.components/listing-details/relied-upon-software/view.html',
+                templateUrl: 'chpl.components/listing/details/relied-upon-software/view.html',
                 bindToController: {
                     additionalSoftware: '=?',
                     isEditing: '=?',
@@ -36,7 +36,7 @@
 
         function addItem () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing-details/relied-upon-software/edit.html',
+                templateUrl: 'chpl.components/listing/details/relied-upon-software/edit.html',
                 controller: 'EditAdditionalSoftwareController',
                 controllerAs: 'vm',
                 animation: false,
@@ -79,7 +79,7 @@
 
         function editItem (sw, index) {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing-details/relied-upon-software/edit.html',
+                templateUrl: 'chpl.components/listing/details/relied-upon-software/edit.html',
                 controller: 'EditAdditionalSoftwareController',
                 controllerAs: 'vm',
                 animation: false,

@@ -1,5 +1,5 @@
 export const G1G2DetailsComponent = {
-    templateUrl: 'chpl.components/listing-details/g1g2.html',
+    templateUrl: 'chpl.components/listing/details/g1g2.html',
     bindings: {
         listing: '<',
     },

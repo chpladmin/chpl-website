@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the SED View Participants Modal controller', function () {
+    fdescribe('the SED View Participants Modal controller', function () {
         var $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {
@@ -81,7 +81,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/sed/editParticipant.html',
+                    templateUrl: 'chpl.components/listing/details/sed/edit-participant.html',
                     controller: 'EditSedParticipantController',
                     controllerAs: 'vm',
                     animation: false,
@@ -142,7 +142,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/sed/editParticipant.html',
+                    templateUrl: 'chpl.components/listing/details/sed/edit-participant.html',
                     controller: 'EditSedParticipantController',
                     controllerAs: 'vm',
                     animation: false,

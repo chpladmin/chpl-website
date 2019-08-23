@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the SED Details Edit controller', function () {
+    fdescribe('the SED Details Edit controller', function () {
         var $controller, $log, Mock, mock, scope, vm;
 
         mock = {
@@ -11,7 +11,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.admin', 'chpl.mock');
+            angular.mock.module('chpl.components', 'chpl.mock');
 
             inject(function (_$controller_, _$log_, $rootScope, _Mock_) {
                 $controller = _$controller_;
@@ -89,12 +89,12 @@
                 expect(vm.listing.sedTestingEndDate).toBeUndefined();
             });
 
-            /*it('should convert a string end date', function () {
+            it('should convert a string end date', function () {
                 vm.sedDate = '02/18/1989';
                 vm.listing.sedTestingEndDate = 23;
                 vm.save();
                 expect(vm.listing.sedTestingEndDate).toBe(603781200000);
-            });*/
+            });
 
             it('should close the modal with the listing and the ucd processes', function () {
                 var anObj = {id: 3, sedTestingEndDate: new Date()};

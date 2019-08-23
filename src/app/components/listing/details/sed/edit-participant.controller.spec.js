@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the SED Participant Modal controller', function () {
+    fdescribe('the SED Participant Modal controller', function () {
         var $controller, $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
@@ -14,7 +14,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.components', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAgeRanges = jasmine.createSpy('getAgeRanges');
                     $delegate.getEducation = jasmine.createSpy('getEducation');

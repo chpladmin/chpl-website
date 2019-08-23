@@ -97,7 +97,7 @@
                 var node = cy.cyTarget;
                 $log.info('click', cy, node.data());
                 vm.uibModalInstance = $uibModal.open({
-                    templateUrl: 'chpl.components/listing-details/ics-family/ics-family-detail.html',
+                    templateUrl: 'chpl.components/listing/details/ics-family/ics-family-detail.html',
                     controller: 'IcsFamilyDetailController',
                     controllerAs: 'vm',
                     animation: false,

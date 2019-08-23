@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.admin')
+    angular.module('chpl.components')
         .controller('EditSedTaskController', EditSedTaskController);
 
     /** @ngInject */
@@ -45,7 +45,7 @@
 
         function viewParticipants () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing-details/sed/participants-modal.html',
+                templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
                 controller: 'ViewSedParticipantsController',
                 controllerAs: 'vm',
                 animation: false,

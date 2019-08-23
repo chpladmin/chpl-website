@@ -6,7 +6,7 @@
 
         mock = {};
         mock.fakeModalOptions = {
-            templateUrl: 'chpl.components/listing-details/relied-upon-software/edit.html',
+            templateUrl: 'chpl.components/listing/details/relied-upon-software/edit.html',
             controller: 'EditAdditionalSoftwareController',
             controllerAs: 'vm',
             animation: false,

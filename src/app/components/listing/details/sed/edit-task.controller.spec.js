@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    describe('the Edit SED Task Modal controller', function () {
+    fdescribe('the Edit SED Task Modal controller', function () {
         var $controller, $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {
-            angular.mock.module('chpl.admin', 'chpl.mock');
+            angular.mock.module('chpl.components', 'chpl.mock');
 
             inject(function (_$controller_, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $controller = _$controller_;
@@ -106,7 +106,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.components/listing-details/sed/participants-modal.html',
+                    templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
                     controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,

@@ -40,7 +40,7 @@
 
         function editTask () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/sed/editTask.html',
+                templateUrl: 'chpl.components/listing/details/sed/edit-task.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -72,7 +72,7 @@
 
         function viewParticipants () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing-details/sed/participants-modal.html',
+                templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
                 controller: 'ViewSedParticipantsController',
                 controllerAs: 'vm',
                 animation: false,

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the SED Display', function () {
+    fdescribe('the SED Display', function () {
         var $compile, $log, $uibModal, Mock, actualOptions, el, mock, scope, utilService, vm;
 
         /* eslint-disable quotes, key-spacing */
@@ -274,7 +274,7 @@
             var modalOptions, participants, task;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.components/listing-details/sed/task-modal.html',
+                    templateUrl: 'chpl.components/listing/details/sed/task-modal.html',
                     controller: 'ViewSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -341,7 +341,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/sed/editTask.html',
+                    templateUrl: 'chpl.components/listing/details/sed/edit-task.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -390,7 +390,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.components/listing-details/sed/participants-modal.html',
+                    templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
                     controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,
@@ -455,7 +455,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/sed/editDetails.html',
+                    templateUrl: 'chpl.components/listing/details/sed/edit-details.html',
                     controller: 'EditSedDetailsController',
                     controllerAs: 'vm',
                     animation: false,

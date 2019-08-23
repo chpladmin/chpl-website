@@ -32,7 +32,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'chpl.components/listing-details/sed/sed.html',
+            templateUrl: 'chpl.components/listing/details/sed/sed.html',
         };
         return directive;
     }
@@ -58,7 +58,7 @@
 
         function addTask () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/sed/editTask.html',
+                templateUrl: 'chpl.components/listing/details/sed/edit-task.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -81,7 +81,7 @@
         function editDetails () {
             _analyzeSed();
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/sed/editDetails.html',
+                templateUrl: 'chpl.components/listing/details/sed/edit-details.html',
                 controller: 'EditSedDetailsController',
                 controllerAs: 'vm',
                 animation: false,
@@ -117,7 +117,7 @@
 
         function viewParticipants (task) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing-details/sed/participants-modal.html',
+                templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
                 controller: 'ViewSedParticipantsController',
                 controllerAs: 'vm',
                 animation: false,
@@ -142,7 +142,7 @@
 
         function viewTask (task) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.components/listing-details/sed/task-modal.html',
+                templateUrl: 'chpl.components/listing/details/sed/task-modal.html',
                 controller: 'ViewSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
