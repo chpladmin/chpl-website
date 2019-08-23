@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the surveillance nonconformity edit component', () => {
+    fdescribe('the surveillance nonconformity edit component', () => {
         var $compile, $log, $q, Upload, authService, ctrl, el, mock, networkService, scope;
 
         beforeEach(() => {
@@ -18,7 +18,7 @@
                 },
             };
 
-            angular.mock.module('chpl.admin', $provide => {
+            angular.mock.module('chpl.components', $provide => {
                 $provide.decorator('Upload', $delegate => {
                     $delegate.upload = jasmine.createSpy('upload');
                     return $delegate;

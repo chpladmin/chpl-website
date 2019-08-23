@@ -1,11 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the surveillance requirement edit component', () => {
+    fdescribe('the surveillance requirement edit component', () => {
         var $compile, $log, $uibModal, Mock, actualOptions, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin');
+            angular.mock.module('chpl.mock', 'chpl.components');
 
             inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_) => {
                 $compile = _$compile_;

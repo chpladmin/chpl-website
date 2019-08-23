@@ -1,5 +1,5 @@
 export const SurveillanceRequirementEditComponent = {
-    templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
+    templateUrl: 'chpl.components/listing/details/surveillance/requirement/edit.html',
     bindings: {
         resolve: '<',
         close: '&',
@@ -121,5 +121,5 @@ export const SurveillanceRequirementEditComponent = {
 }
 
 angular
-    .module('chpl.admin')
+    .module('chpl.components')
     .component('aiSurveillanceRequirementEdit', SurveillanceRequirementEditComponent);

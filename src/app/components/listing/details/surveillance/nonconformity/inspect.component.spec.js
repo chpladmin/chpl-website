@@ -1,11 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the surveillance nonconformity component', () => {
+    fdescribe('the surveillance nonconformity component', () => {
         var $log, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.admin');
+            angular.mock.module('chpl.components');
 
             inject(function ($compile, _$log_, $rootScope) {
                 $log = _$log_;

@@ -1,11 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the surveillance inspection component', () => {
+    fdescribe('the surveillance inspection component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, ctrl, el, networkService, scope, utilService;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.confirmPendingSurveillance = jasmine.createSpy('confirmPendingSurveillance');
                     $delegate.rejectPendingSurveillance = jasmine.createSpy('rejectPendingSurveillance');

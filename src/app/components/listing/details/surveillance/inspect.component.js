@@ -1,5 +1,5 @@
 export const SurveillanceInspectComponent = {
-    templateUrl: 'chpl.admin/components/surveillance/inspect.html',
+    templateUrl: 'chpl.components/listing/details/surveillance/inspect.html',
     bindings: {
         resolve: '<',
         close: '&',
@@ -112,5 +112,5 @@ export const SurveillanceInspectComponent = {
 }
 
 angular
-    .module('chpl.admin')
+    .module('chpl.components')
     .component('aiSurveillanceInspect', SurveillanceInspectComponent);

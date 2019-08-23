@@ -1,11 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the surveillance edit component', () => {
+    fdescribe('the surveillance edit component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope, utilService;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;

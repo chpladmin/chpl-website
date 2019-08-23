@@ -1,5 +1,5 @@
 export const SurveillanceComponent = {
-    templateUrl: 'chpl.components/surveillance/surveillance/view.html',
+    templateUrl: 'chpl.components/listing/details/surveillance/view.html',
     bindings: {
         allowEditing: '<',
         certifiedProduct: '<',
