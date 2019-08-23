@@ -205,7 +205,7 @@
                 });
             });
 
-            describe('when deleting the surveillance', () => {
+            xdescribe('when deleting the surveillance', () => {
                 beforeEach(() => {
                     ctrl.reason = 'a reason';
                 });
