@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Listing Inspection controller', function () {
+    fdescribe('the Listing Inspection controller', function () {
         var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
@@ -20,7 +20,7 @@
         }
 
         beforeEach(function () {
-            angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.components', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');

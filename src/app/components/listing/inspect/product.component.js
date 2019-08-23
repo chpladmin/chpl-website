@@ -1,5 +1,5 @@
 export const InspectProductComponent = {
-    templateUrl: 'chpl.admin/components/certifiedProduct/inspect/product.html',
+    templateUrl: 'chpl.components/listing/inspect/product.html',
     bindings: {
         onSelect: '&',
         pendingProduct: '<',
@@ -46,5 +46,5 @@ export const InspectProductComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.components')
     .component('aiInspectProduct', InspectProductComponent);

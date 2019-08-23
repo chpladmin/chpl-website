@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Confirm Listing component', () => {
+    fdescribe('the Confirm Listing component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -104,7 +104,7 @@
                     let resources = ctrl.resources;
 
                     // make changes
-                    ctrl.$onChange({});
+                    ctrl.$onChanges({});
 
                     //assert
                     expect(developers).toBe(ctrl.developers);
@@ -175,7 +175,7 @@
                         {id: 2},
                     ];
                     listingInspectOptions = {
-                        templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
+                        templateUrl: 'chpl.components/listing/inspect/inspect.html',
                         controller: 'InspectController',
                         controllerAs: 'vm',
                         animation: false,

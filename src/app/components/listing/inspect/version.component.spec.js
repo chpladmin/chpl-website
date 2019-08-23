@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the version inspection component', () => {
+    fdescribe('the version inspection component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -28,7 +28,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.admin', ($provide) => {
+            angular.mock.module('chpl.components', ($provide) => {
                 $provide.decorator('networkService', ($delegate) => {
                     $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
                     $delegate.getVersion = jasmine.createSpy('getVersion');

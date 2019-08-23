@@ -1,5 +1,5 @@
 export const InspectVersionComponent = {
-    templateUrl: 'chpl.admin/components/certifiedProduct/inspect/version.html',
+    templateUrl: 'chpl.components/listing/inspect/version.html',
     bindings: {
         onSelect: '&',
         pendingVersion: '<',
@@ -46,5 +46,5 @@ export const InspectVersionComponent = {
     },
 }
 
-angular.module('chpl.admin')
+angular.module('chpl.components')
     .component('aiInspectVersion', InspectVersionComponent);
