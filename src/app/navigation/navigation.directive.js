@@ -36,13 +36,12 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags, networkService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, networkService) {
         var vm = this;
 
         vm.clear = clear;
         vm.getFullname = authService.getFullname;
         vm.isActive = isActive;
-        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;

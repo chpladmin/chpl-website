@@ -73,7 +73,8 @@
             <td>{{ activity.edition }}</td>
             <td>
               <a href="#/product/{{ activity.objectId }}">{{ activity.chplProductNumber }}</a>
-              <a href="#/admin/dpManagement/manage/{{ activity.objectId }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
+              <a ui-sref="listing({id: activity.objectId })" class="pull-right" feature-flag="listing-edit"><i class="fa fa-pencil-square-o"></i></a>
+              <a href="#/admin/dpManagement/manage/{{ activity.objectId }}" class="pull-right" feature-flag="listing-edit" feature-flag-hide><i class="fa fa-pencil-square-o"></i></a>
             </td>
             <td>
               {{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}
