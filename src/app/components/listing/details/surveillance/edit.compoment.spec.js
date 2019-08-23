@@ -12,6 +12,7 @@
                 });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.deleteSurveillance = jasmine.createSpy('deleteSurveillance');
+                    $delegate.getComplaints = jasmine.createSpy('getComplaints');
                     $delegate.initiateSurveillance = jasmine.createSpy('initiateSurveillance');
                     $delegate.updateSurveillance = jasmine.createSpy('updateSurveillance');
                     return $delegate;
@@ -31,6 +32,7 @@
                 authService.hasAnyRole.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.deleteSurveillance.and.returnValue($q.when({}));
+                networkService.getComplaints.and.returnValue($q.when([]));
                 networkService.initiateSurveillance.and.returnValue($q.when({}));
                 networkService.updateSurveillance.and.returnValue($q.when({}));
                 utilService = _utilService_;
