@@ -3,11 +3,12 @@
 _TBD_
 
 ### User Interface Updates
-* Change title of Complaints page 
-* Turn off EDGE's telephone number detection "feature" 
+* Change title of Complaints page
+* Turn off EDGE's telephone number detection "feature"
 
 ### Bug Fixes
-* Limit access to pages / features with explicit ROLE lists 
-* Update surveillance filter to work correctly when navigating back to search 
+* Limit access to pages / features with explicit ROLE lists
+* Update surveillance filter to work correctly when navigating back to search
+* Use correct link on Manage Surveillance page based on active flag
 
 ---
