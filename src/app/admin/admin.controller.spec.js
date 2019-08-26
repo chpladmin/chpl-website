@@ -3,7 +3,7 @@
 
     fdescribe('the CHPL Admin Management', function () {
 
-        var $controller, $log, $rootScope, authService, scope, vm;
+        var $controller, $log, $q, $rootScope, authService, networkService, scope, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.admin', function ($provide) {
@@ -12,20 +12,29 @@
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
+                $provide.decorator('networkService', function ($delegate) {
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
+                    $delegate.getAtls = jasmine.createSpy('getAtls');
+                    return $delegate;
+                });
             });
 
-            inject(function (_$controller_, _$log_, _$rootScope_, _authService_) {
+            inject(function (_$controller_, _$log_, _$q_, _$rootScope_, _authService_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
+                $q = _$q_;
                 $rootScope = _$rootScope_;
                 authService = _authService_;
                 authService.getFullname.and.returnValue('fake');
-                authService.hasAnyRole.and.returnValue(true);
-
+                authService.hasAnyRole.and.returnValue(false);
+                networkService = _networkService_;
+                networkService.getAcbs.and.returnValue($q.when({acbs: [{id: 0}]}));
+                networkService.getAtls.and.returnValue($q.when({atls: [{id: 0}]}));
                 scope = $rootScope.$new();
                 vm = $controller('AdminController', {
                     $stateParams: {},
                     authService: authService,
+                    networkService: networkService,
                 });
                 scope.$digest();
             });
@@ -43,31 +52,6 @@
 
             it('should exist', function () {
                 expect(vm).toBeDefined();
-            });
-
-            describe('on init', () => {
-                it('should have state', () => {
-                    expect(vm.navState).toBe('manage');
-                });
-
-                describe('when deep linking to a listing', () => {
-                    beforeEach(() => {
-                        scope = $rootScope.$new();
-                        vm = $controller('AdminController', {
-                            $stateParams: {
-                                section: 'dpManagement',
-                                productId: 3,
-                            },
-                            authService: authService,
-                        });
-                        scope.$digest();
-                    });
-
-                    it('should have state', () => {
-                        expect(vm.navState).toBe('manage');
-                        expect(vm.productId).toBe(3);
-                    });
-                });
             });
         });
     });
