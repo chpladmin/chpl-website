@@ -46,6 +46,14 @@ import { states as usersStates } from './pages/users/users.state.js';
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
+                    } else {
+                        listingStates['listing-edit-off'].forEach(state => {
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
+                            $uiRouter.stateRegistry.register(state);
+                            needsReload = needsReload || $state.$current.name === state.name;
+                        });
                     }
 
                     if (featureFlags.isOn('organizations')) {
