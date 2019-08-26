@@ -108,7 +108,7 @@
     </div>
   </div>
   <div class="pull-right">
-    <button class="btn btn-default" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()"
+    <button class="btn" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()"
             ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Surveillance Data</button>
     <button class="btn btn-link" ng-click="$ctrl.cancel()">Cancel</button>
   </div>

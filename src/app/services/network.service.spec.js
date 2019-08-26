@@ -560,6 +560,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getAtl', () => {
+            $httpBackend.expectGET(/^\/rest\/atls\/id$/).respond(200, {data: 'response'});
+            networkService.getAtl('id').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getAtlActivity', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/atls$/).respond(200, {data: 'response'});
@@ -1323,6 +1331,14 @@
         it('should getUsersAtAtl', () => {
             $httpBackend.expectGET(/^\/rest\/atls\/payload\/users$/).respond(200, {data: 'response'});
             networkService.getUsersAtAtl('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should getUsersAtDeveloper', () => {
+            $httpBackend.expectGET(/^\/rest\/developers\/payload\/users$/).respond(200, {data: 'response'});
+            networkService.getUsersAtDeveloper('payload').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

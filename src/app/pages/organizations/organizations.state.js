@@ -111,6 +111,20 @@ let states = {
                 label: 'ONC-ACBs',
             },
         },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAcb($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ACB' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
+            },
+        },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
             component: 'chplOncOrganizations',
@@ -137,6 +151,20 @@ let states = {
             data: { title: 'CHPL ONC-ATLs' },
             ncyBreadcrumb: {
                 label: 'ONC-ATLs',
+            },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            component: 'chplOncOrganization',
+            resolve: {
+                organization: ($transition$, networkService) => {
+                    'ngInject'
+                    return networkService.getAtl($transition$.params().id);
+                },
+            },
+            data: { title: 'CHPL ONC-ATL' },
+            ncyBreadcrumb: {
+                label: '{{ $resolve.organization.name }}',
             },
         },
     ],
@@ -165,18 +193,22 @@ let states = {
             name: 'organizations.onc-acbs',
             url: '/onc-acbs',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-            params: {
-                oncAcbId: {squash: true, value: null},
-            },
             data: { title: 'CHPL ONC-ACBs' },
+        },{
+            name: 'organizations.onc-acbs.organization',
+            url: '/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ACB' },
         },{
             name: 'organizations.onc-atls',
             url: '/onc-atls',
             template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-            params: {
-                oncAtlId: {squash: true, value: null},
-            },
             data: { title: 'CHPL ONC-ATLs' },
+        },{
+            name: 'organizations.onc-atls.organization',
+            url: '/{id}',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL ONC-ATL' },
         },
     ],
 };

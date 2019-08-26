@@ -1,12 +1,39 @@
 # Release Notes
+
+## Version 10.24.1
+_26 August 2019_
+
+### User Interface Updates
+* Change title of Complaints page
+* Turn off EDGE's telephone number detection "feature"
+
+### Bug Fixes
+* Limit access to pages / features with explicit ROLE lists
+* Update surveillance filter to work correctly when navigating back to search
+* Use correct link on Manage Surveillance page based on active flag
+
+---
+
+## Version 10.24.0
+_12 August 2019_
+
+### Features
+* Improve Surveillance Management UX
+  * New navigation for upload, confirm, manage
+  * Added "view all surveillance" capability
+
+### Flagged Features
+* Support entry and edit of complaints
+
+---
+
 ## Version 10.23.0
-_TBD_
+_29 July 2019_
 
 ### Flagged Features
 * update administrator's navigation ability
 
 ---
-
 
 ## Version 10.22.0
 _22 July 2019_

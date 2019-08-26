@@ -47,7 +47,7 @@ function administrationStateConfig ($stateProvider) {
             resolve: {
                 announcements: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getAnnouncements(true);
                     }
                     return [];
@@ -61,7 +61,7 @@ function administrationStateConfig ($stateProvider) {
             resolve: {
                 apiKeys: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'] )) {
                         return networkService.getApiUsers();
                     }
                     return [];
@@ -100,7 +100,7 @@ function administrationStateConfig ($stateProvider) {
             resolve: {
                 fuzzyTypes: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getFuzzyTypes();
                     }
                     return [];
@@ -134,14 +134,14 @@ function administrationStateConfig ($stateProvider) {
                 },
                 jobs: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                         return networkService.getScheduleJobs();
                     }
                     return [];
                 },
                 triggers: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                         return networkService.getScheduleTriggers();
                     }
                     return [];

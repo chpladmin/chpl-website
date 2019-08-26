@@ -13,7 +13,7 @@
         </button>
       </span>
       <p><strong>{{ $ctrl.report.acb.name }} Quarterly Surveillance Reporting</strong></p>
-      <p>{{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}</p>
+      <p><strong>{{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}</strong></p>
     </div>
   </div>
   <div class="row">
@@ -35,21 +35,23 @@
         <textarea class="form-control" id="transparency-disclosure" name="transparencyDisclosure" ng-model="$ctrl.report.transparencyDisclosureSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="row">
-        <span class="pull-right">
-          <button class="btn btn-default" id="quarterly-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
-          <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
-          <button class="btn btn-danger" id="quarterly-suveillance-delete"
-                  confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
-                  confirm-ok="Yes"
-                  confirm-cancel="No"
-                  confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                  ng-if="$ctrl.report.id && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
-                  ng-click="$ctrl.delete()">Delete</button>
-        </span>
+        <div class="col-sm-12">
+          <span class="pull-right">
+            <button class="btn" id="quarterly-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
+            <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-danger" id="quarterly-suveillance-delete"
+                    confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
+                    confirm-ok="Yes"
+                    confirm-cancel="No"
+                    confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                    ng-if="$ctrl.report.id && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
+                    ng-click="$ctrl.delete()">Delete</button>
+          </span>
+        </div>
       </div>
       <hr />
       <div class="panel panel-default">
-        <div class="panel-heading clickable" ng-click="$ctrl.areExcludedShown = !$ctrl.areExcludedShown">
+        <div class="panel-heading clickable" ng-click="$ctrl.areExcludedShown = !$ctrl.areExcludedShown" id="excluded-listings-header">
           <div class="panel-title">
             <i class="fa pull-right" ng-class="$ctrl.areExcludedShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
             Listings excluded from randomized surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
@@ -64,7 +66,7 @@
       </div>
       <hr />
       <div class="panel panel-default">
-        <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown">
+        <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown" id="relevant-listings-header">
           <div class="panel-title">
             <i class="fa pull-right" ng-class="$ctrl.areListingsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
             Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
@@ -82,7 +84,7 @@
       </div>
       <hr />
       <div class="panel panel-default">
-        <div class="panel-heading clickable" ng-click="$ctrl.areComplaintsShown = !$ctrl.areComplaintsShown">
+        <div class="panel-heading clickable" ng-click="$ctrl.areComplaintsShown = !$ctrl.areComplaintsShown" id="complaints-header">
           <div class="panel-title">
             <i class="fa pull-right" ng-class="$ctrl.areComplaintsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
             Complaints for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
@@ -93,6 +95,7 @@
              complaint-list-type="RELEVANT"
              quarterly-report="$ctrl.report"
              display-add="false"
+             display-delete="false"
              display-header="false">
           </chpl-surveillance-complaints>
         </div>

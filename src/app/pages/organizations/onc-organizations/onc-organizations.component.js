@@ -28,6 +28,9 @@ export const OncOrganizationsComponent = {
             let that = this;
             let loggedIn = this.$scope.$on('loggedIn', () => that.loadOrgs());
             this.$scope.$on('$destroy', loggedIn);
+            if (this.$state.params.id) {
+                this.loadUsers();
+            }
         }
 
         $onChanges (changes) {
@@ -49,7 +52,7 @@ export const OncOrganizationsComponent = {
         }
 
         canEdit (org) {
-            return this.editableOrgs && this.editableOrgs.reduce((acc, cur) => acc || cur.id === org.id, false);
+            return this.editableOrgs && this.editableOrgs.reduce((acc, cur) => acc || cur.id.toString() === org, false);
         }
 
         edit ($event) {
@@ -72,11 +75,14 @@ export const OncOrganizationsComponent = {
             this.networkService[this.functions.get](true).then(response => that.editableOrgs = angular.copy(response[that.key]));
         }
 
-        loadUsers () {
+        loadUsers (id) {
+            if (!id) {
+                id = this.$state.params.id;
+            }
             let allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC'];
             allowedRoles.push(this.roles[0]);
             if (this.hasAnyRole(allowedRoles)) {
-                this.networkService[this.functions.getUsers](this.activeOrg.id).then(results => this.users = results.users);
+                this.networkService[this.functions.getUsers](id).then(results => this.users = results.users);
             }
         }
 
@@ -85,8 +91,18 @@ export const OncOrganizationsComponent = {
         }
 
         showOrg (org) {
-            this.activeOrg = org;
-            this.loadUsers();
+            if (this.$state.includes('**.organization')) {
+                this.$state.go('^.organization', {
+                    id: org.id,
+                    name: org.name,
+                });
+            } else {
+                this.$state.go('.organization', {
+                    id: org.id,
+                    name: org.name,
+                });
+            }
+            this.loadUsers(org.id);
             this.$anchorScroll();
         }
 
@@ -96,40 +112,36 @@ export const OncOrganizationsComponent = {
 
         takeAction (action, data) {
             let that = this;
-            if (!this.org) {
-                switch (action) {
-                case 'save':
-                    this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then(response => {
-                        that.allOrgs = response[that.key];
-                        that.prepOrgs();
-                    }));
-                    this.isEditing = false;
-                    break;
-                case 'cancel':
-                    this.isEditing = false;
-                    this.isCreating = false;
-                    this.$anchorScroll();
-                    break;
-                case 'create':
-                    this.networkService[this.functions.create](data).then(() => {
-                        let promises = [
-                            that.networkService[that.functions.get](false).then(response => {
-                                that.allOrgs = response[that.key];
-                                that.prepOrgs();
-                            }),
-                            that.networkService[that.functions.get](true).then(response => that.editableOrgs = response[that.key]),
-                        ];
-                        that.$q.all(promises);
-                    });
-                    this.isCreating = false;
-                    break;
-                    //no default
-                }
-            } else if (action === 'save') {
+            switch (action) {
+            case 'save':
                 this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then(response => {
                     that.allOrgs = response[that.key];
                     that.prepOrgs();
+                    that.$state.reload();
                 }));
+                this.isEditing = false;
+                this.$anchorScroll();
+                break;
+            case 'cancel':
+                this.isEditing = false;
+                this.isCreating = false;
+                this.$anchorScroll();
+                break;
+            case 'create':
+                this.networkService[this.functions.create](data).then(newOrg => {
+                    let promises = [
+                        that.networkService[that.functions.get](false).then(allOrgs => {
+                            that.allOrgs = allOrgs[that.key];
+                            that.prepOrgs();
+                        }),
+                        that.networkService[that.functions.get](true).then(editableOrgs => that.editableOrgs = editableOrgs[that.key]),
+                    ];
+                    that.$q.all(promises);
+                    that.showOrg(newOrg);
+                });
+                this.isCreating = false;
+                break;
+                //no default
             }
         }
 
@@ -137,14 +149,14 @@ export const OncOrganizationsComponent = {
             let that = this;
             switch (action) {
             case 'delete':
-                this.networkService[this.functions.removeUser](data, this.activeOrg.id)
+                this.networkService[this.functions.removeUser](data, this.$state.params.id)
                     .then(() => that.loadUsers());
                 break;
             case 'invite':
                 this.networkService.inviteUser({
                     role: data.role,
                     emailAddress: data.email,
-                    permissionObjectId: this.activeOrg.id,
+                    permissionObjectId: this.$state.params.id,
                 }).then(() => that.toaster.pop({
                     type: 'success',
                     title: 'Email sent',

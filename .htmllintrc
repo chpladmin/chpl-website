@@ -15,7 +15,7 @@
     "line-no-trailing-whitespace": true,
     "spec-char-escape": false,
     "table-req-header": true,
-    "tag-bans": ["style", "b"],
+    "tag-bans": ["style"],
     "tag-name-lowercase": true,
     "tag-name-match": true
 }

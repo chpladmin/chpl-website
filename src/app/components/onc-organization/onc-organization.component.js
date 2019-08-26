@@ -20,6 +20,9 @@ export const OncOrganizationComponent = {
         $onChanges (changes) {
             if (changes.organization) {
                 this.organization = angular.copy(changes.organization.currentValue);
+                if (this.organization && this.organization.retirementDate) {
+                    this.organization.retirementDateObject = new Date(this.organization.retirementDate);
+                }
                 this.backup.organization = angular.copy(this.organization);
             }
             if (changes.isEditing) {
@@ -43,12 +46,12 @@ export const OncOrganizationComponent = {
         }
 
         save () {
-            if (this.organization.retired) {
-                this.organization.retirementDate = this.organization.retirementDateObject.getTime();
-            } else {
-                this.organization.retirementDate = null;
-            }
             if (this.organization.id) {
+                if (this.organization.retired) {
+                    this.organization.retirementDate = this.organization.retirementDateObject.getTime();
+                } else {
+                    this.organization.retirementDate = null;
+                }
                 this.takeAction({
                     action: 'save',
                     data: this.organization,

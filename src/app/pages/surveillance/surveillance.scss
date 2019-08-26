@@ -20,12 +20,6 @@
         background-color: transparent;
     }
 
-    /*
-    .breadcrumb a {
-        text-decoration: underline;
-    }
-   */
-
     .breadcrumb button {
         padding: 0;
         margin-bottom: 2px;
@@ -153,5 +147,23 @@
 
     .highlighted-header {
         background-color: #f1f1f1;
+    }
+
+    uib-tab-heading {
+
+        button {
+            padding: 0 6px;
+            border: 0;
+            background-color: transparent;
+        }
+    }
+
+    .btn-default:hover {
+        border-color: blue;
+    }
+
+    .loaded-tab {
+        color: #333;
+        background-color: #e6e6e6;
     }
 }

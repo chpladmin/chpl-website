@@ -1,5 +1,6 @@
 <div class="row" ng-if="$ctrl.activeUser">
   <div class="col-md-6 col-md-offset-3">
+    <h2>Edit user</h2>
     <chpl-user user="$ctrl.activeUser" is-editing="true" take-action="$ctrl.act(action, data)"></chpl-user>
   </div>
 </div>
@@ -10,13 +11,11 @@
         <div class="panel-heading">
           <h3 class="panel-title">Search for a User</h3>
         </div>
-        <div class="panel-body form-horizontal" ng-form="$ctrl.search">
+        <div class="panel-body" ng-form="$ctrl.search">
           <div class="form-group">
-            <label class="control-label col-md-4" for="search">Filter on:</label>
-            <div class="col-md-8">
-              <input class="form-control input-sm" type="input" ng-model="$ctrl.searchText" id="search" name="search" ng-change="$ctrl.filter()" />
-              <p>Full Name, Friendly Name, Title, Email, or User Name</p>
-            </div>
+            <label class="control-label" for="search">Filter on:</label>
+            <input class="form-control input-sm" type="input" ng-model="$ctrl.searchText" id="search" name="search" ng-change="$ctrl.filter()" />
+            <p>Full Name, Friendly Name, Title, Email, or User Name</p>
           </div>
         </div>
       </div>
@@ -26,22 +25,18 @@
         <div class="panel-heading">
           <h3 class="panel-title">Invite a User</h3>
         </div>
-        <div class="panel-body form-horizontal" ng-form="$ctrl.form">
+        <div class="panel-body" ng-form="$ctrl.form">
           <div class="form-group">
-            <label class="control-label col-md-4" for="invite-email">Email <span class="text-danger">*</span></label>
-            <div class="col-md-8">
-              <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
-              <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
-              <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
-            </div>
+            <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
+            <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
+            <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
+            <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
           </div>
           <div class="form-group" ng-if="$ctrl.roles.length > 1">
-            <label class="control-label col-md-4" for="new-role">User Role <span class="text-danger">*</span></label>
-            <div class="col-md-8">
-              <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
-                      ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
-              <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
-            </div>
+            <label class="control-label" for="new-role">User Role <span class="text-danger">*</span></label>
+            <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
+                    ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
+            <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -55,17 +50,19 @@
       </div>
     </div>
   </div>
-  <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)" feature-flag="ocd2749-table" feature-flag-hide>
-    <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
-      <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
-        <div class="panel-body">
-          <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+  <span feature-flag="ocd2749-table" feature-flag-hide>
+    <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)">
+      <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+        <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
+          <div class="panel-body">
+            <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row table-responsive" feature-flag="ocd2749-table" st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.filteredUsers">
-    <div class="col-md-12">
+  </span>
+  <div class="row" feature-flag="ocd2749-table" st-table="$ctrl.displayedUsers" st-safe-src="$ctrl.filteredUsers">
+    <div class="col-md-12 table-responsive">
       <table class="table table-condensed">
         <thead>
           <tr>
@@ -95,8 +92,12 @@
             <td><i class="fa fa-lg" ng-class="user.accountEnabled ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.accountEnabled ? 'Enabled' : 'Disabled' }}</span></td>
             <td><i class="fa fa-lg" ng-class="user.passwordResetRequired ? 'fa-check-square-o' : 'fa-square-o'"></i><span class="sr-only">{{ user.passwordResetRequired ? 'Reset required' : 'Reset not required' }}</span></td>
             <td>
-              <button class="btn btn-default btn-block" ng-click="$ctrl.act('edit', user)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit user {{ user.fullName }}</span></button>
-              <button class="btn btn-default btn-block" ng-click="$ctrl.act('impersonate', user)" ng-if="$ctrl.canImpersonate(user)"><i class="fa fa-user-secret"></i><span class="sr-only">Impersonate user {{ user.fullName }}</span></button>
+              <button class="btn btn-link"
+                      uib-tooltip="Edit {{ user.fullName }}" tooltip-trigger="'mouseenter focus click'"
+                      ng-click="$ctrl.act('edit', user)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit user {{ user.fullName }}</span></button>
+              <button class="btn btn-link"
+                      uib-tooltip="Impersonate {{ user.fullName }}" tooltip-trigger="'mouseenter focus click'"
+                      ng-click="$ctrl.act('impersonate', user)" ng-if="$ctrl.canImpersonate(user)"><i class="fa fa-user-secret"></i><span class="sr-only">Impersonate user {{ user.fullName }}</span></button>
             </td>
           </tr>
         </tbody>
