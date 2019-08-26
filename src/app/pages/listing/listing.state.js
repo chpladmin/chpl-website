@@ -33,6 +33,32 @@ let states = {
             },
         },
     ],
+    'listing-edit-off': [
+        {
+            name: 'listing',
+            url: '/listing/{id}',
+            redirectTo: trans => {
+                return {
+                    state: 'product',
+                    params: {
+                        id: trans.params().id,
+                    },
+                }
+            },
+        },{
+            name: 'listing.initial-panel',
+            url: '/{initialPanel}',
+            redirectTo: trans => {
+                return {
+                    state: 'product',
+                    params: {
+                        id: trans.params().id,
+                        initialPanel: trans.params().initialPanel,
+                    },
+                }
+            },
+        },
+    ],
     'base': [
         {
             name: 'listing',
