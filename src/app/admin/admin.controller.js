@@ -21,11 +21,13 @@
             if (authService.hasAnyRole(['ROLE_ATL'])) {
                 vm.navState = 'atlManagement';
             } else {
-                vm.navState = $stateParams.section;
+                vm.navState = $stateParams.section || 'manage';
             }
 
             if ($stateParams.subSection) {
                 vm.navState = $stateParams.subSection;
+            } else if (vm.navState === 'dpManagement') {
+                vm.navState = 'manage';
             }
             if ($stateParams.productId) {
                 if (featureFlags.isOn('listing-edit')) {
