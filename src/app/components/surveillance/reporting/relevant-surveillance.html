@@ -92,8 +92,8 @@
     <p class="form-control-static">If an approved Corrective Action Plan was received and completed, how did ONC-ACB verify that the developer has completed all requirements specified in the Plan?</p>
   </div>
   <div class="pull-right">
-    <button class="btn" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()"
+    <button class="btn" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()" id="save-surveillance-data"
             ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Surveillance Data</button>
-    <button class="btn btn-link" ng-click="$ctrl.cancel()">Cancel</button>
+    <button class="btn btn-link" ng-click="$ctrl.cancel()" id="cancel-surveillance-data-edit">Cancel</button>
   </div>
 </div>
