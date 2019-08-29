@@ -29,12 +29,7 @@
       </div>
     </div>
     <div class="row" ng-if="$ctrl.workType === 'user'">
-      <div class="col-md-10 col-md-offset-1" feature-flag="ocd2749" feature-flag-hide>
-        <ai-user-management
-           acb-id="{{ $ctrl.acb.id }}">
-        </ai-user-management>
-      </div>
-      <div class="col-md-10 col-md-offset-1" feature-flag="ocd2749">
+      <div class="col-md-10 col-md-offset-1">
         <chpl-users users="$ctrl.users" take-action="$ctrl.takeAction(action, data)"></chpl-users>
       </div>
     </div>

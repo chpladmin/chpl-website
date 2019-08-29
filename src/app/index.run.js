@@ -3,7 +3,6 @@ import { states as dashboardStates } from './pages/dashboard/dashboard.state.js'
 import { states as listingStates } from './pages/listing/listing.state.js';
 import { states as organizationsStates } from './pages/organizations/organizations.state.js';
 import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
-import { states as usersStates } from './pages/users/users.state.js';
 
 (() => {
     'use strict';
@@ -40,6 +39,14 @@ import { states as usersStates } from './pages/users/users.state.js';
 
                     if (featureFlags.isOn('listing-edit')) {
                         listingStates['listing-edit-on'].forEach(state => {
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
+                            $uiRouter.stateRegistry.register(state);
+                            needsReload = needsReload || $state.$current.name === state.name;
+                        });
+                    } else {
+                        listingStates['listing-edit-off'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);
                             }
@@ -96,16 +103,6 @@ import { states as usersStates } from './pages/users/users.state.js';
                                 $uiRouter.stateRegistry.deregister(state.name);
                             }
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
-
-                    if (featureFlags.isOn('ocd2749')) {
-                        usersStates['ocd2749-on'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
                         });
                     }
 
