@@ -1,6 +1,24 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-4">
     <strong>{{ $ctrl.listing.chplProductNumber }}</strong>
+  </div>
+  <span ng-if="$ctrl.activeSurveillance">
+    <div class="col-md-2">
+      <strong>Began Date</strong>: {{ $ctrl.activeSurveillance.startDate | date : 'mediumDate' : 'UTC' }}
+    </div>
+    <div class="col-md-2">
+      <strong>Ended Date</strong>: {{ $ctrl.activeSurveillance.endDate | date : 'mediumDate' : 'UTC' }}
+    </div>
+    <div class="col-md-2">
+      <strong>Open Non-Conformities</strong>: {{ $ctrl.activeSurveillance.numOpenNonconformities }}
+    </div>
+    <div class="col-md-2">
+      <strong>Closed Non-Conformities</strong>: {{ $ctrl.activeSurveillance.numClosedNonconformities }}
+    </div>
+  </span>
+</div>
+<div class="row spaced-out">
+  <div class="col-md-12">
     <chpl-surveillance-report-relevant-surveillance
        surveillance="$ctrl.activeSurveillance"
        surveillance-outcomes="$ctrl.surveillanceOutcomes"
