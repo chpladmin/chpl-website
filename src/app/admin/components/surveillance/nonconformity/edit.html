@@ -161,6 +161,7 @@
                         confirm-cancel="No"
                         confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
                         ng-click="$ctrl.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
+                <span ng-if="!doc.id">N/A</span>
               </td>
             </tr>
           </tbody>
