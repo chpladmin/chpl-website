@@ -12,6 +12,13 @@
           on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"
           on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
     </div>
+    <div class="col-sm-6" ng-if="$ctrl.searchedApi.length > 0">
+      <button class="btn btn-ai-success pull-right"
+              ng-csv="$ctrl.searchedApi" filename="API-Key-Usage_{{ $ctrl.filename }}"
+              csv-header="['API Key', 'Email', 'Name', 'API Call Path', 'Date']"
+              csv-column-order="['apiKey', 'email', 'name', 'apiCallPath', 'friendlyCreationDate']">
+        <i class="fa fa-cloud-download"></i> Download</button>
+    </div>
   </div>
   <div class="row form-group form-inline">
     <div class="col-sm-12">
