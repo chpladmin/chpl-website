@@ -2,12 +2,14 @@ export const ReportsApiKeyUsageComponent = {
     templateUrl: 'chpl.reports/api-key-usage/api-key-usage.html',
     bindings: { },
     controller: class ReportsApiKeyUsageComponent {
-        constructor ($log, ReportService, networkService, utilService) {
+        constructor ($filter, $log, ReportService, networkService, utilService) {
             'ngInject'
+            this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
         $onInit () {
@@ -52,7 +54,10 @@ export const ReportsApiKeyUsageComponent = {
             this.apiKeyReport.pageNumber = this.apiKeyReport.visiblePage - 1;
             this.networkService.getApiActivity(this.dateAdjust(this.apiKeyReport))
                 .then(data => {
-                    ctrl.searchedApi = data;
+                    ctrl.searchedApi = data.map(item => {
+                        item.friendlyCreationDate = this.$filter('date')(item.creationDate, 'MMM d, y H:mm:ss')
+                        return item;
+                    });
                     //We are calculating this since we don't know how many "total items" there really
                     //are.  This only doesn't work for the edge case where there would be a multiple
                     //of 100 for the actual total number of search results.  In that case, the system
