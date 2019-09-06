@@ -18,7 +18,7 @@
           <span ng-if="$ctrl.user.subjectName"><strong>User Name:</strong> {{ $ctrl.user.subjectName }}<br /></span>
           <span ng-if="$ctrl.user.role"><strong>Role:</strong> {{ $ctrl.user.role }}<br /></span>
           <span ng-if="$ctrl.user.organizations"><strong>Organization(s):</strong>
-            <span ng-repeat="org in $ctrl.user.organizations"> {{ org.name }}{{$last ? '' : ', '}} </span><br />
+            <span ng-repeat="org in $ctrl.user.organizations | orderBy: 'name'"> {{ org.name }}{{$last ? '' : ', '}} </span><br />
           </span>
         </p>
       </div>
