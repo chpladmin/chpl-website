@@ -1,6 +1,6 @@
 export const ReportsApiKeyUsageComponent = {
     templateUrl: 'chpl.reports/api-key-usage/api-key-usage.html',
-    bindings: { },
+    bindings: {},
     controller: class ReportsApiKeyUsageComponent {
         constructor ($filter, $log, ReportService, networkService, utilService) {
             'ngInject'
@@ -24,6 +24,7 @@ export const ReportsApiKeyUsageComponent = {
                 pageSize: 100,
                 startDate: new Date(),
                 endDate: new Date(),
+                filterText: '',
             };
             this.apiKeyReport.startDate.setDate(this.apiKeyReport.endDate.getDate() - this.apiKeyReport.range + 1); // offset to account for inclusion of endDate in range
         }
@@ -56,6 +57,7 @@ export const ReportsApiKeyUsageComponent = {
                 .then(data => {
                     ctrl.searchedApi = data.map(item => {
                         item.friendlyCreationDate = this.$filter('date')(item.creationDate, 'MMM d, y H:mm:ss')
+                        item.filterText = item.apiKey + '|' + item.name + '|' + item.email + '|' + item.apiCallPath;
                         return item;
                     });
                     //We are calculating this since we don't know how many "total items" there really
@@ -77,6 +79,7 @@ export const ReportsApiKeyUsageComponent = {
             this.apiKeyReport.dateAscending = f.dateAscending;
             this.apiKeyReport.filter = f.apiKeyFilter;
             this.apiKeyReport.showOnly = f.showOnly;
+            this.apiKeyReport.filterText = f.filterText;
             this.search(1);
         }
 
@@ -87,6 +90,7 @@ export const ReportsApiKeyUsageComponent = {
             filterData.dateAscending = this.apiKeyReport.dateAscending;
             filterData.apiKeyFilter = this.apiKeyReport.filter;
             filterData.showOnly = this.apiKeyReport.showOnly;
+            filterData.filterText = this.apiKeyReport.filterText;
             return filterData;
         }
 
@@ -94,6 +98,7 @@ export const ReportsApiKeyUsageComponent = {
             this.apiKeyReport.endDate = new Date();
             this.apiKeyReport.startDate = this.utilService.addDays(this.apiKeyReport.endDate, (this.apiKeyReport.range * -1) + 1)
             this.apiKeyReport.filter = undefined;
+            this.apiKeyReport.filterText = '';
             this.search(1);
         }
 

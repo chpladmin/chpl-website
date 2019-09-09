@@ -1,89 +1,96 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results">
-
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.searchedApi">
   <div class="row">
     <div class="col-sm-12">
       <h3>API Key Usage</h3>
     </div>
   </div>
-
   <div class="row">
     <div class="col-sm-6">
       <chpl-filter feature-flag="adminNav" filter-type-name="API Key Usage Report"
-          on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"
-          on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
+                   on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"
+                   on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
     </div>
-    <div class="col-sm-6" ng-if="$ctrl.searchedApi.length > 0">
+    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right"
-              ng-csv="$ctrl.searchedApi" filename="API-Key-Usage_{{ $ctrl.filename }}"
+              ng-csv="$ctrl.displayed" filename="API-Key-Usage_{{ $ctrl.filename }}"
               csv-header="['API Key', 'Email', 'Name', 'API Call Path', 'Date']"
               csv-column-order="['apiKey', 'email', 'name', 'apiCallPath', 'friendlyCreationDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
-  <div class="row form-group form-inline">
+  <div class="row">
     <div class="col-sm-12">
-      <label for="activity-start-upload" class="control-label">Start Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.apiKeyReport.startDate" name="activityStartDate"
-        id="activity-start-upload" placeholder="yyyy-MM-dd">
-      <label for="activity-end-upload" class="control-label">End Date</label>
-      <input type="date" class="form-control" ng-model="$ctrl.apiKeyReport.endDate" name="activityEndDate"
-        id="activity-end-upload" placeholder="yyyy-MM-dd">
-      <button class="btn btn-primary " ng-click="$ctrl.search(1)" ng-disabled="!$ctrl.validDates()"><i
-          class="fa fa-search"></i> Search</button>
+      <div class="form-group form-inline">
+        <label for="activity-start-upload" class="control-label">Start Date</label>
+        <input type="date" class="form-control" ng-model="$ctrl.apiKeyReport.startDate" name="activityStartDate" id="activity-start-upload" placeholder="yyyy-MM-dd">
+        <label for="activity-end-upload" class="control-label">End Date</label>
+        <input type="date" class="form-control" ng-model="$ctrl.apiKeyReport.endDate" name="activityEndDate" id="activity-end-upload" placeholder="yyyy-MM-dd">
+        <button class="btn btn-primary " ng-click="$ctrl.search(1)" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
+      </div>
     </div>
   </div>
-  <div class="row form-group" ng-if="!$ctrl.validDates()">
-    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than
-      {{ $ctrl.apiKeyReport.range }} days apart</div>
+  <div class="row" ng-if="!$ctrl.validDates()">
+    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.apiKeyReport.range }} days apart</div>
   </div>
-  <div class="row form-group">
+  <div class="row">
     <div class="col-sm-5">
-      <label for="api-key-date-ascending" class="checkbox-inline control-label">
-        <input type="checkbox" ng-model="$ctrl.apiKeyReport.dateAscending" name="apiKeyDateAscending" id="api-key-date-ascending"
-          ng-change="$ctrl.search(1)">
-        Oldest first
-      </label>
+      <div class="form-group">
+        <label for="api-key-date-ascending" class="checkbox-inline control-label">
+          <input type="checkbox" ng-model="$ctrl.apiKeyReport.dateAscending" name="apiKeyDateAscending" id="api-key-date-ascending"> Oldest first
+        </label>
+      </div>
     </div>
   </div>
-  <div class="row form-group">
+  <div class="row">
     <div class="col-sm-5">
-      <label for="api-key-filter" class="control-label">Show <a
-          ng-click="$ctrl.apiKeyReport.showOnly = !$ctrl.apiKeyReport.showOnly; $ctrl.search(1)">{{ $ctrl.apiKeyReport.showOnly ? 'only' : 'all but'}}</a>
-        usage by API-Key</label>
-      <select class="form-control" ng-model="$ctrl.apiKeyReport.filter" name="apiKeyFilter" id="api-key-filter" ng-change="$ctrl.search(1)"
-        ng-options="key.key as (key.name + ' (' + key.email + ')') for key in $ctrl.apiKeys | orderBy:'name' track by key.key">
-        <option value=""></option>
-      </select>
+      <div class="form-group">
+        <label for="api-key-filter" class="control-label">Show <a ng-click="$ctrl.apiKeyReport.showOnly = !$ctrl.apiKeyReport.showOnly; $ctrl.search(1)">{{ $ctrl.apiKeyReport.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
+        <select class="form-control" ng-model="$ctrl.apiKeyReport.filter" name="apiKeyFilter" id="api-key-filter"
+                ng-options="key as (key.name + ' (' + key.email + ')' + ' [' + key.key.substring(0, 4) + '...]') for key in $ctrl.apiKeys | orderBy:'name' track by key.key">
+          <option value=""></option>
+        </select>
+      </div>
     </div>
   </div>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>API Key</th>
-          <th scope="col">Email</th>
-          <th scope="col">Name</th>
-          <th scope="col">API Call Path</th>
-          <th scope="col">Date</th>
-        </tr>
-      </thead>
-      <tfoot>
-        <td colspan="5" class="text-center">
-          <ul uib-pager ng-model="$ctrl.apiKeyReport.visiblePage" ng-change="$ctrl.getData()" items-per-page="100" total-items="$ctrl.apiKeyReport.totalItems"></ul>
-        </td>
-      </tfoot>
-      <tbody>
-        <tr ng-if="$ctrl.searchedApi.length === 0">
-          <td colspan="5">No activity found</td>
-        </tr>
-        <tr ng-repeat="activity in $ctrl.searchedApi" ng-if="$ctrl.searchedApi.length > 0">
-          <td>{{ activity.apiKey }}</td>
-          <td>{{ activity.email }}</td>
-          <td>{{ activity.name }}</td>
-          <td>{{ activity.apiCallPath }}</td>
-          <td>{{ activity.creationDate | date : 'MMM d, y H:mm:ss' }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-group">
+        <label for="data-filter" class="control-label">Filter</label>
+        <input chpl-search="filterText" name="dataFilter" id="data-filter" class="form-control" type="search"
+               ng-model="$ctrl.apiKeyReport.filterText" placeholder="Filter on API Key, Email, Name, or API Call Path">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>API Key</th>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col">API Call Path</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <td colspan="5" class="text-center">
+            <ul uib-pager ng-model="$ctrl.apiKeyReport.visiblePage" ng-change="$ctrl.getData()" items-per-page="100" total-items="$ctrl.apiKeyReport.totalItems"></ul>
+          </td>
+        </tfoot>
+        <tbody>
+          <tr ng-if="$ctrl.displayed.length === 0">
+            <td colspan="5">No activity found</td>
+          </tr>
+          <tr ng-repeat="activity in $ctrl.displayed" ng-if="$ctrl.displayed.length > 0">
+            <td>{{ activity.apiKey }}</td>
+            <td>{{ activity.email }}</td>
+            <td>{{ activity.name }}</td>
+            <td>{{ activity.apiCallPath }}</td>
+            <td>{{ activity.creationDate | date : 'MMM d, y H:mm:ss' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
