@@ -46,7 +46,7 @@
       <div class="form-group">
         <label for="api-key-filter" class="control-label">Show <a ng-click="$ctrl.apiKeyReport.showOnly = !$ctrl.apiKeyReport.showOnly; $ctrl.search(1)">{{ $ctrl.apiKeyReport.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
         <select class="form-control" ng-model="$ctrl.apiKeyReport.filter" name="apiKeyFilter" id="api-key-filter"
-                ng-options="key as (key.name + ' (' + key.email + ')' + ' [' + key.key.substring(0, 4) + '...]') for key in $ctrl.apiKeys | orderBy:'name' track by key.key">
+                ng-options="key as (key.name + ' (' + key.email + ')' + ' [...' + key.key.slice(-4) + ']') for key in $ctrl.apiKeys | orderBy:'name' track by key.key">
           <option value=""></option>
         </select>
       </div>
