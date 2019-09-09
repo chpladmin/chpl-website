@@ -34,7 +34,9 @@
         </tfoot>
         <tbody>
           <tr ng-repeat="surveillance in $ctrl.displaySurveillances">
-            <td>{{ surveillance.friendlyId }}</td>
+            <td>
+              <a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})">{{ surveillance.friendlyId }}</a>
+            </td>
             <td>{{ surveillance.startDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ surveillance.endDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ surveillance.numOpenNonconformities }}</td>
