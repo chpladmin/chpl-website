@@ -36,8 +36,11 @@ export const SurveillanceManagementComponent = {
         }
 
         $onInit () {
-            if (this.$stateParams.listingId) {
-                this.load({id: this.$stateParams.listingId});
+            if (this.$stateParams.listingId && this.$stateParams.chplProductNumber) {
+                this.load({
+                    id: this.$stateParams.listingId,
+                    chplProductNumber: this.$stateParams.chplProductNumber,
+                });
                 this.activeTab = this.$stateParams.listingId;
             }
         }
@@ -89,25 +92,33 @@ export const SurveillanceManagementComponent = {
             return this.allowedAcbs.reduce((acc, acb) => acc || acb.name === listing.acb, false);
         }
 
-        load (listing) {
-            this.tabs.push({
-                id: listing.id,
-                product: listing.product,
-                chplProductNumber: listing.chplProductNumber,
-            });
-            let that = this;
-            this.networkService.getListing(listing.id, true)
-                .then(result => that.tabs.forEach(t => {
-                    if (t.id === listing.id) {
-                        t.listing = result;
-                        t.chplProductNumber = result.chplProductNumber;
-                    }
-                }))
+        isLoaded (listing) {
+            return this.tabs.reduce((acc, tab) => acc || tab.id === listing.id, false);
         }
 
-        takeTabAction (action, data) {
+        load (listing) {
+            if (!this.isLoaded(listing)) {
+                this.tabs.push({
+                    id: listing.id,
+                    chplProductNumber: listing.chplProductNumber,
+                });
+                let that = this;
+                this.networkService.getListing(listing.id, true)
+                    .then(result => that.tabs.forEach(t => {
+                        if (t.id === listing.id) {
+                            t.listing = result;
+                        }
+                    }))
+            }
+        }
+
+        takeTabAction (action, data, $event) {
             if (action === 'close') {
                 this.tabs = this.tabs.filter(t => t.id !== data.id);
+            }
+            if ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
             }
         }
 

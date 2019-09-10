@@ -1,5 +1,6 @@
-import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
+import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
+import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
 
@@ -16,6 +17,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(routeConfig)
         .config(administrationState)
         .config(collectionsState)
+        .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
         .config(reportsState)

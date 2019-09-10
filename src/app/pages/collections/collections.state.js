@@ -6,14 +6,14 @@ function collectionsStateConfig ($stateProvider) {
             url: '/collections',
             template: '<ui-view/>',
         })
-        .state('collections.apiDocumentation', {
+        .state('collections.api-documentation', {
             url: '/api-documentation',
             controller: 'ApiDocumentationController',
             controllerAs: 'vm',
             template: require('./api-documentation/api-documentation.html'),
             data: { title: 'API Information for 2015 Edition Products' },
         })
-        .state('collections.correctiveAction', {
+        .state('collections.corrective-action', {
             url: '/corrective-action',
             controller: 'CorrectiveActionController',
             controllerAs: 'vm',
@@ -48,7 +48,7 @@ function collectionsStateConfig ($stateProvider) {
             template: require('./sed/sed.html'),
             data: { title: 'SED Information for 2014 &amp; 2015 Edition Products' },
         })
-        .state('collections.transparencyAttestations', {
+        .state('collections.transparency-attestations', {
             url: '/transparency-attestations',
             controller: 'TransparencyAttestationsController',
             controllerAs: 'vm',

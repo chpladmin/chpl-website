@@ -6,11 +6,12 @@ export const JobsScheduledPageComponent = {
         triggers: '<',
     },
     controller: class JobsScheduledPageComponent {
-        constructor ($anchorScroll, $log, networkService, toaster) {
+        constructor ($anchorScroll, $log, authService, networkService, toaster) {
             'ngInject'
             this.$anchorScroll = $anchorScroll;
             this.$log = $log;
             this.networkService = networkService;
+            this.hasAnyRole = authService.hasAnyRole;
             this.toaster = toaster;
             this.mode = 'view';
         }

@@ -78,7 +78,7 @@ export const ListingHistoryComponent = {
         }
 
         goToApi () {
-            this.$state.go('resources.chpl_api');
+            this.$state.go('resources.chpl-api');
             this.cancel();
         }
 

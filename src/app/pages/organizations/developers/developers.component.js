@@ -22,7 +22,7 @@ export const DevelopersComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole()) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 this.loadAcbs();
             }
             let loggedIn = this.$scope.$on('loggedIn', function () {

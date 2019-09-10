@@ -1,49 +1,62 @@
-<div id="chpl-report" ng-form="$ctrl.form" class="form-horizontal">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <span class="pull-right">
-        <button class="btn btn-link btn-small" id="relevant-listing-edit-{{ $ctrl.listing.id }}" ng-click="$ctrl.edit()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && !$ctrl.isEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Relevant Listing</span></button>
-      </span>
-      <div class="panel-title">{{ $ctrl.listing.chplProductNumber }}</div>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-6">
-          Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}<br />
-          <span ng-if="!$ctrl.isEditing">
-            <i class="fa" ng-class="$ctrl.listing.excluded ? 'fa-check-square-o' : 'fa-square-o'"></i> Excluded from Randomized Surveillance<br />
-            <span ng-if="$ctrl.listing.reason"><strong>Reason for exclusion:</strong> {{ $ctrl.listing.reason }}</span>
-          </span>
-        </div>
-        <div class="col-sm-6">
-          Last modified: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}<br />
-          Edition: {{ $ctrl.listing.edition }}
-        </div>
-      </div>
-      <span ng-if="$ctrl.isEditing">
-        <div class="form-group">
-          <label class="col-sm-6 control-label" for="excluded">Excluded from randomized surveillance</label>
-          <div class="col-sm-6">
-            <input type="checkbox" class="form-control" id="excluded" name="excluded" ng-model="$ctrl.listing.excluded"></input>
-          </div>
-        </div>
-        <div class="form-group" ng-if="$ctrl.listing.excluded">
-          <label class="col-sm-6 control-label" for="reason-for-exclusion">Reason for exclusion from randomized surveillance</label>
-          <div class="col-sm-6">
-            <input type="text" class="form-control" id="reason-for-exclusion" name="reasonForExclusion" ng-model="$ctrl.listing.reason" required></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.reasonForExclusion.$touched) && $ctrl.form.reasonForExclusion.$error.required">Field is required</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <button class="btn btn-ai-success btn-small pull-right" id="relevant-listing-save"
-                    ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-                    ng-mouseover="$ctrl.showFormErrors = true"
-                    ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-            <button class="btn btn-warning btn-small" id="relevant-listing-cancel" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
-          </div>
-        </div>
-      </span>
+<div class="row">
+  <div class="col-md-12">
+    <strong>{{ $ctrl.listing.chplProductNumber }}</strong>
+  </div>
+</div>
+<div class="row spaced-out">
+  <div class="col-md-12">
+    <chpl-surveillance-report-relevant-surveillance
+       surveillance="$ctrl.activeSurveillance"
+       surveillance-outcomes="$ctrl.surveillanceOutcomes"
+       surveillance-process-types="$ctrl.surveillanceProcessTypes"
+       on-cancel="$ctrl.cancelEdit()"
+       on-save="$ctrl.save(surveillance)"
+       ng-if="$ctrl.activeSurveillance">
+    </chpl-surveillance-report-relevant-surveillance>
+    <div class="table-responsive" st-table="$ctrl.displaySurveillances" st-safe-src="$ctrl.surveillances" ng-show="!$ctrl.activeSurveillance">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th scope="col" class="search-header" st-sort="friendlyId" st-skip-natural="true">Surveillance ID</th>
+            <th scope="col" class="search-header" st-sort="startDate" st-skip-natural="true" st-sort-default="reverse">Began Date</th>
+            <th scope="col" class="search-header" st-sort="endDate" st-skip-natural="true">Ended Date</th>
+            <th scope="col" class="search-header" st-sort="numOpenNonconformities" st-skip-natural="true">Open Non-Conformities</th>
+            <th scope="col" class="search-header" st-sort="numClosedNonconformities" st-skip-natural="true">Closed Non-Conformities</th>
+            <th scope="col" class="search-header" st-sort="completed" st-skip-natural="true">Surveillance Data</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th colspan="6">
+              <button class="btn btn-link pull-right" ng-click="$ctrl.cancel()">Back</button>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr ng-repeat="surveillance in $ctrl.displaySurveillances">
+            <td>
+              <a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})">{{ surveillance.friendlyId }}</a>
+            </td>
+            <td>{{ surveillance.startDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ surveillance.endDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ surveillance.numOpenNonconformities }}</td>
+            <td>{{ surveillance.numClosedNonconformities }}</td>
+            <td class="row">
+              <span class="col-sm-2">
+                <button class="btn btn-link" id="edit-surveillance-data-{{ surveillance.friendlyId }}"
+                        uib-tooltip="{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeSurveillance = surveillance">
+                  <i class="fa" ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ?  'fa-pencil-square-o' : 'fa-eye'"></i><span class="sr-only">{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} surveillance data</span>
+                </button>
+              </span>
+              <span class="col-sm-10">
+                <uib-progressbar max="100" value="surveillance.completed" type="success" title="{{ surveillance.completed }}% Complete">
+                  {{ surveillance.completed }}% Complete
+                </uib-progressbar>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

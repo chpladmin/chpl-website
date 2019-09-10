@@ -1,0 +1,109 @@
+<div id="chpl-report" ng-form="$ctrl.form">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Quarterly Report</h2>
+      <div ncy-breadcrumb></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <span class="pull-right">
+        <button class="btn" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()">
+          <i class="fa fa-download"></i> Download Quarterly Surveillance Report
+        </button>
+      </span>
+      <p><strong>{{ $ctrl.report.acb.name }} Quarterly Surveillance Reporting</strong></p>
+      <p><strong>{{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}</strong></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label class="control-label" for="surveillance-activities">Surveillance Activities and Outcomes</label>
+        <p class="form-control-static">The ONC-ACB used the following selection method to make its random selection of certified Complete EHRs and certified Health IT Modules for surveillance initiated during the reporting period.</p>
+        <textarea class="form-control" id="surveillance-activities" name="surveillanceActivities" ng-model="$ctrl.report.surveillanceActivitiesAndOutcomes" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="reactive">Reactive Summary</label>
+        <p class="form-control-static">In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Complete EHR or certified Health IT Module.</p>
+        <textarea class="form-control" id="reactive" name="reactive" ng-model="$ctrl.report.reactiveSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="prioritized-element">Prioritized Element Summary</label>
+        <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to evaluate and address the prioritized elements of surveillance referred to in Program Policy Guidance #15-01A (November 2015).</p>
+        <textarea class="form-control" id="prioritized-element" name="prioritizedElement" ng-model="$ctrl.report.prioritizedElementSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="transparency-disclosure">Transparency Disclosure Summary</label>
+        <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to transparency and disclosure requirements, as required of the ONC-ACB under 45 CFR &sect; 170.523(k):</p>
+        <textarea class="form-control" id="transparency-disclosure" name="transparencyDisclosure" ng-model="$ctrl.report.transparencyDisclosureSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <span class="pull-right">
+            <button class="btn" id="quarterly-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
+            <button class="btn btn-link" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-danger" id="quarterly-suveillance-delete"
+                    confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
+                    confirm-ok="Yes"
+                    confirm-cancel="No"
+                    confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                    ng-if="$ctrl.report.id && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
+                    ng-click="$ctrl.delete()">Delete</button>
+          </span>
+        </div>
+      </div>
+      <hr />
+      <div class="panel panel-default">
+        <div class="panel-heading clickable" ng-click="$ctrl.areExcludedShown = !$ctrl.areExcludedShown" id="excluded-listings-header">
+          <div class="panel-title">
+            <i class="fa pull-right" ng-class="$ctrl.areExcludedShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
+            Listings excluded from randomized surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
+          </div>
+        </div>
+        <div class="panel-body" ng-show="$ctrl.areExcludedShown">
+          <chpl-surveillance-report-excluded-listings
+             listings="$ctrl.excludedListings"
+             on-save="$ctrl.saveRelevantListing(listing)">
+          </chpl-surveillance-report-excluded-listings>
+        </div>
+      </div>
+      <hr />
+      <div class="panel panel-default">
+        <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown" id="relevant-listings-header">
+          <div class="panel-title">
+            <i class="fa pull-right" ng-class="$ctrl.areListingsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
+            Listings with relevant surveillance for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
+          </div>
+        </div>
+        <div class="panel-body" ng-show="$ctrl.areListingsShown">
+          <chpl-surveillance-report-relevant-listings
+             listings="$ctrl.relevantListings"
+             quarterly-report="$ctrl.report"
+             on-save="$ctrl.saveRelevantListing(listing)"
+             surveillance-outcomes="$ctrl.surveillanceOutcomes"
+             surveillance-process-types="$ctrl.surveillanceProcessTypes">
+          </chpl-surveillance-report-relevant-listings>
+        </div>
+      </div>
+      <hr />
+      <div class="panel panel-default">
+        <div class="panel-heading clickable" ng-click="$ctrl.areComplaintsShown = !$ctrl.areComplaintsShown" id="complaints-header">
+          <div class="panel-title">
+            <i class="fa pull-right" ng-class="$ctrl.areComplaintsShown ? 'fa-caret-down' : 'fa-caret-up'"></i>
+            Complaints for {{ $ctrl.report.year }} - {{ $ctrl.report.quarter }}
+          </div>
+        </div>
+        <div class="panel-body" ng-show="$ctrl.areComplaintsShown">
+          <chpl-surveillance-complaints
+             complaint-list-type="RELEVANT"
+             quarterly-report="$ctrl.report"
+             display-add="false"
+             display-delete="false"
+             display-header="false">
+          </chpl-surveillance-complaints>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

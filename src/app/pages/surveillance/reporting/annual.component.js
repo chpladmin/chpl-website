@@ -1,13 +1,12 @@
-export const SurveillanceReportQuarterComponent = {
-    templateUrl: 'chpl.components/surveillance/reporting/quarter.html',
+export const SurveillanceReportAnnualComponent = {
+    templateUrl: 'chpl.surveillance/reporting/annual.html',
     bindings: {
         report: '<',
-        isEditing: '<',
-        onCancel: '&?',
-        onSave: '&?',
-        takeAction: '&?',
+        onCancel: '&',
+        onSave: '&',
+        takeAction: '&',
     },
-    controller: class SurveillanceReportQuarterComponent {
+    controller: class SurveillanceReportAnnualComponent {
         constructor ($log, authService, networkService, toaster) {
             'ngInject'
             this.$log = $log;
@@ -22,9 +21,6 @@ export const SurveillanceReportQuarterComponent = {
                 this.report = angular.copy(changes.report.currentValue);
                 this.backup.report = angular.copy(this.report);
             }
-            if (changes.isEditing) {
-                this.isEditing = angular.copy(changes.isEditing.currentValue);
-            }
         }
 
         save () {
@@ -36,33 +32,32 @@ export const SurveillanceReportQuarterComponent = {
             this.onCancel();
         }
 
-        edit () {
-            this.takeAction({report: this.report, action: 'edit'});
-        }
-
         delete () {
             this.takeAction({report: this.report, action: 'delete'});
         }
 
         generateReport () {
             let that = this;
-            this.networkService.generateQuarterlySurveillanceReport(this.report.id)
+            this.networkService.generateAnnualSurveillanceReport(this.report.id)
                 .then(results => {
                     let name = results.user.friendlyName ? results.user.friendlyName : results.user.fullName;
                     let email = results.user.email;
                     that.toaster.pop({
                         type: 'success',
                         title: 'Report is being generated',
-                        body: `Quarterly Surveillance report is being generated, and will be emailed to ${name} at ${email} when ready.`,
+                        body: `Annual Surveillance report is being generated, and will be emailed to ${name} at ${email} when ready.`,
+                    });
+                }, error => {
+                    let message = error.data.error;
+                    that.toaster.pop({
+                        type: 'error',
+                        title: 'Report could not be generated',
+                        body: message,
                     });
                 });
-        }
-
-        saveRelevantListing (listing) {
-            this.takeAction({report: this.report, listing: listing, action: 'saveRelevantListing'});
         }
     },
 }
 
-angular.module('chpl.components')
-    .component('chplSurveillanceReportQuarter', SurveillanceReportQuarterComponent);
+angular.module('chpl.surveillance')
+    .component('chplSurveillanceReportAnnual', SurveillanceReportAnnualComponent);

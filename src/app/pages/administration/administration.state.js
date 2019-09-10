@@ -41,10 +41,43 @@ function administrationStateConfig ($stateProvider) {
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })
+        .state('administration.announcements', {
+            url: '/announcements',
+            component: 'chplAnnouncements',
+            resolve: {
+                announcements: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                        return networkService.getAnnouncements(true);
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - Announcements' },
+        })
+        .state('administration.api-keys', {
+            url: '/api-keys',
+            component: 'chplApiKeys',
+            resolve: {
+                apiKeys: (authService, networkService) => {
+                    'ngInject'
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'] )) {
+                        return networkService.getApiUsers();
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - API Keys' },
+        })
+        .state('administration.cms', {
+            url: '/cms',
+            component: 'chplCms',
+            data: { title: 'CHPL Administration - CMS' },
+        })
         .state('administration.confirm', {
             abstract: true,
             url: '/confirm',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         })
         .state('administration.confirm.listings', {
             url: '/listings',
@@ -61,13 +94,16 @@ function administrationStateConfig ($stateProvider) {
             },
             data: { title: 'CHPL Reports - Listings' },
         })
-        .state('administration.fuzzy', {
+        .state('administration.fuzzy-matching', {
             url: '/fuzzy-matching',
             component: 'chplFuzzyMatching',
             resolve: {
-                fuzzyTypes: networkService => {
+                fuzzyTypes: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getFuzzyTypes();
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                        return networkService.getFuzzyTypes();
+                    }
+                    return [];
                 },
             },
             data: { title: 'CHPL Administration - Fuzzy Matching' },
@@ -75,7 +111,7 @@ function administrationStateConfig ($stateProvider) {
         .state('administration.jobs', {
             abstract: true,
             url: '/jobs',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         })
         .state('administration.jobs.background', {
             url: '/background',
@@ -96,16 +132,27 @@ function administrationStateConfig ($stateProvider) {
                     'ngInject'
                     return networkService.getAcbs(true);
                 },
-                jobs: networkService => {
+                jobs: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getScheduleJobs();
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                        return networkService.getScheduleJobs();
+                    }
+                    return [];
                 },
-                triggers: networkService => {
+                triggers: (authService, networkService) => {
                     'ngInject'
-                    return networkService.getScheduleTriggers();
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                        return networkService.getScheduleTriggers();
+                    }
+                    return [];
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },
+        })
+        .state('administration.upload', {
+            url: '/upload',
+            component: 'chplUpload',
+            data: { title: 'CHPL Administration - Upload' },
         })
     ;
 }

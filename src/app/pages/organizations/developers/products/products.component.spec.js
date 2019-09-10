@@ -1,8 +1,8 @@
 (() => {
     'use strict';
 
-    describe('the Products component', () => {
-        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    fdescribe('the Products component', () => {
+        var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
             developer: {
@@ -32,19 +32,22 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
+                $provide.factory('chplVersionsDirective', () => ({}));
+                $provide.decorator('authService', $delegate => {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     return $delegate;
                 });
-                $provide.decorator('chplProductsDirective', $delegate => {
-                    $delegate[0].terminal = true;
-                    return $delegate;
-                });
             });
-            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.getDevelopers.and.returnValue($q.when(mock.developers));
 
@@ -80,6 +83,36 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
+            });
+
+            describe('on initialization', () => {
+                it('should load developers if ADMIN, ONC, or ACB', () => {
+                    spyOn(ctrl, 'loadDevelopers');
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(0);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') >= 0)
+                    ctrl.$onInit();
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(1);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') >= 0)
+                    ctrl.$onInit();
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(2);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0)
+                    ctrl.$onInit();
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(3);
+                });
+
+                it('should not load developers if ATL, CMS_STAFF, or DEVELOPER', () => {
+                    spyOn(ctrl, 'loadDevelopers');
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(0);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') >= 0)
+                    ctrl.$onInit();
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(0);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_CMS_STAFF') >= 0)
+                    ctrl.$onInit();
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(0);
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_DEVELOPER') >= 0)
+                    ctrl.$onInit();
+                    expect(ctrl.loadDevelopers.calls.count()).toBe(0);
+                });
             });
         });
     });

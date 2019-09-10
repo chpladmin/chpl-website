@@ -1,34 +1,21 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Report Annual component', () => {
-        var $compile, $log, authService, ctrl, el, mock, scope;
-
-        mock = {
-            report: {id: 1},
-        };
+    fdescribe('the RelevantListings component', () => {
+        var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.services', 'chpl.components', $provide => {
-                $provide.decorator('authService', $delegate => {
-                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-                    return $delegate;
-                });
+            angular.mock.module('chpl.surveillance', $provide => {
+                $provide.factory('chplRelevantListingDirective', () => ({}));
             });
-
-            inject((_$compile_, _$log_, $rootScope, _authService_) => {
+            inject((_$compile_, _$log_, $rootScope, ) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                authService = _authService_;
-                authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
-                scope.report = mock.report;
-                scope.isEditing = false;
-                scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onSave = jasmine.createSpy('onSave');
 
-                el = angular.element('<chpl-surveillance-report-annual report="report" is-editing="isEditing" on-cancel="onCancel()" on-save="onSave(report)"></chpl-surveillance-report-annual>');
+                el = angular.element('<chpl-surveillance-report-relevant-listings listings="listings" on-save="onSave(listing)"></chpl-surveillance-report-relevant-listings>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -53,6 +40,20 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
+            });
+
+            it('should cancel edit of a listing', () => {
+                ctrl.activeListing = {id: 1};
+                ctrl.cancelEdit();
+                expect(ctrl.activeListing).toBe(undefined);
+            });
+
+            it('should save the listing', () => {
+                let given = { id: 1 };
+                ctrl.activeListing = given;
+                ctrl.save(given)
+                expect(scope.onSave).toHaveBeenCalledWith((given));
+                expect(ctrl.activeListing).toBe(undefined);
             });
         });
     });

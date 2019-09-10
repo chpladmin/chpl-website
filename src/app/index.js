@@ -12,6 +12,7 @@ importAll(
 );
 
 import angular from 'angular';
+import 'angular-breadcrumb';
 import /* angularConfirm from*/ 'angular-confirm';
 import /* angularCronGen from*/ 'angular-cron-gen';
 import /* angularLoadingBar from*/ 'angular-loading-bar';
@@ -49,6 +50,7 @@ import /* cmsLookupModule from*/ './pages/resources/cms-lookup/index';
 import /* collectionsModule from*/ './pages/collections/index';
 import /* compareModule from*/ './pages/compare/index';
 import /* componentsModule from*/ './components/index';
+import dashboard from './pages/dashboard/index';
 import /* downloadModule from*/ './pages/resources/download/index';
 import listing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
@@ -71,6 +73,7 @@ const dependencies = [
     'angulartics.google.tagmanager',
     'feature-flags',
     'googlechart',
+    'ncy-angular-breadcrumb',
     'ngAnimate',
     'ngAria',
     'ngCytoscape',
@@ -84,6 +87,7 @@ const dependencies = [
     'ui.router',
     'zxcvbn',
     administration.name,
+    dashboard.name,
     listing.name,
     organizations.name,
     reports.name,

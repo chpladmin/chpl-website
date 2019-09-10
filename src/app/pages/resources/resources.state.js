@@ -6,14 +6,18 @@ function resourcesStateConfig ($stateProvider) {
             url: '/resources',
             template: '<ui-view/>',
         })
-        .state('resources.chpl_api', {
+        .state('resources.chpl-api', {
             url: '/chpl-api',
             template: require('./chpl-api/chpl-api.html'),
             controller: 'ChplApiController',
             controllerAs: 'vm',
             data: { title: 'CHPL API' },
         })
-        .state('resources.cms_lookup', {
+        .state('resources.chpl_api', { // state is a result of OCD-2964; should be removed when API is updated
+            url: '/chpl_api',
+            redirectTo: 'resources.chpl-api',
+        })
+        .state('resources.cms-lookup', {
             url: '/cms-lookup',
             template: require('./cms-lookup/cms-lookup.html'),
             controller: 'CmsLookupController',

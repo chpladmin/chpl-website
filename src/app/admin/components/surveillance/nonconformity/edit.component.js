@@ -105,8 +105,11 @@ export const SurveillanceNonconformityEditComponent = {
                 };
                 let that = this;
                 this.Upload.upload(this.item).then(response => {
-                    that.nonconformity.documents.push({fileName: response.data.fileName + ' is pending'});
-                    that.uploadMessage = 'File "' + response.data.fileName + '" was uploaded successfully.';
+                    that.nonconformity.documents.push({
+                        fileName: response.config.data.file.name + ' is pending',
+                        fileType: response.config.data.file.type,
+                    });
+                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully.';
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;

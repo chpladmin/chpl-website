@@ -1,8 +1,8 @@
 import { Visualizer } from '@uirouter/visualizer';
+import { states as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { states as listingStates } from './pages/listing/listing.state.js';
 import { states as organizationsStates } from './pages/organizations/organizations.state.js';
 import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
-import { states as usersStates } from './pages/users/users.state.js';
 
 (() => {
     'use strict';
@@ -20,7 +20,23 @@ import { states as usersStates } from './pages/users/users.state.js';
                 .then(() => {
                     let needsReload = false;
                     let needsRedirect = false;
+
                     // load states dependent on features
+                    if (featureFlags.isOn('role-developer')) {
+                        dashboardStates['role-developer'].forEach(state => {
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
+                            $uiRouter.stateRegistry.register(state);
+                            needsReload = needsReload || $state.$current.name === state.name;
+                        });
+                    } else {
+                        dashboardStates['role-developer'].forEach(state => {
+                            $uiRouter.stateRegistry.deregister(state.name);
+                            needsRedirect = needsRedirect || $state.$current.name === state.name;
+                        });
+                    }
+
                     if (featureFlags.isOn('listing-edit')) {
                         listingStates['listing-edit-on'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
@@ -29,9 +45,17 @@ import { states as usersStates } from './pages/users/users.state.js';
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
+                    } else {
+                        listingStates['listing-edit-off'].forEach(state => {
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
+                            $uiRouter.stateRegistry.register(state);
+                            needsReload = needsReload || $state.$current.name === state.name;
+                        });
                     }
 
-                    if (featureFlags.isOn('developer-page')) {
+                    if (featureFlags.isOn('organizations')) {
                         organizationsStates['enabled'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);
@@ -44,53 +68,41 @@ import { states as usersStates } from './pages/users/users.state.js';
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);
                             }
-                            needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
-                    if (featureFlags.isOn('ocd1277')) {
-                        surveillanceStates['ocd-1277-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        surveillanceStates['ocd-1277-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
 
                     if (featureFlags.isOn('complaints')) {
                         surveillanceStates['complaints-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
                     } else {
                         surveillanceStates['complaints-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
 
                     if (featureFlags.isOn('surveillance-reporting')) {
                         surveillanceStates['surveillance-reports-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
                         });
                     } else {
                         surveillanceStates['surveillance-reports-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
-
-                    if (featureFlags.isOn('ocd2749')) {
-                        usersStates['ocd2749-on'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
                         });
                     }
 
@@ -110,12 +122,12 @@ import { states as usersStates } from './pages/users/users.state.js';
 
         if (authService.hasAnyRole()) {
             networkService.keepalive()
-                .then(loadFlags())
-                .catch(error => {
-                    if (error.status === 401) {
-                        authService.logout();
-                        $state.reload();
-                    }
+                .then(() => {
+                    loadFlags();
+                }).catch(error => {
+                    $log.info('error', error);
+                    authService.logout();
+                    loadFlags();
                 });
         } else {
             loadFlags();

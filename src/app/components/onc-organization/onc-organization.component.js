@@ -2,57 +2,36 @@ export const OncOrganizationComponent = {
     templateUrl: 'chpl.components/onc-organization/onc-organization.html',
     bindings: {
         organization: '<',
-        canEdit: '<',
-        isEditing: '<',
         type: '@',
         takeAction: '&',
     },
     controller: class OncOrganizationComponent {
-        constructor ($log, authService) {
+        constructor ($log, $state) {
             'ngInject'
             this.$log = $log;
-            this.hasAnyRole = authService.hasAnyRole;
-            this.backup = {};
-            this.valid = {
-                address: true,
-            }
+            this.$state = $state;
         }
 
         $onChanges (changes) {
             if (changes.organization) {
                 this.organization = angular.copy(changes.organization.currentValue);
-                this.backup.organization = angular.copy(this.organization);
             }
-            if (changes.canEdit) {
-                this.canEdit = changes.canEdit.currentValue;
+            if (this.organization && this.organization.name) {
+                if (this.$state.includes('**.edit')) {
+                    this.$state.$current.parent.ncyBreadcrumb.label = this.organization.name;
+                } else {
+                    this.$state.current.ncyBreadcrumb.label = this.organization.name;
+                }
             }
-            if (changes.isEditing) {
-                this.isEditing = changes.isEditing.currentValue;
-            }
-        }
-
-        view () {
-            this.takeAction({
-                action: 'view',
-                data: this.organization,
-            });
-        }
-
-        edit () {
-            this.takeAction({
-                action: 'edit',
-                data: this.organization,
-            });
-            this.isEditing = true;
         }
 
         save () {
-            if (this.organization.retired) {
-                this.organization.retirementDate = this.organization.retirementDateObject.getTime();
-            } else {
-                this.organization.retirementDate = null;
-            }
             if (this.organization.id) {
+                if (this.organization.retired) {
+                    this.organization.retirementDate = this.organization.retirementDateObject.getTime();
+                } else {
+                    this.organization.retirementDate = null;
+                }
                 this.takeAction({
                     action: 'save',
                     data: this.organization,
@@ -70,16 +49,23 @@ export const OncOrganizationComponent = {
             this.takeAction({
                 action: 'cancel',
             });
-            this.organization = angular.copy(this.backup.organization);
-            this.isEditing = false;
         }
 
-        editAddress (address, errors, validForm) {
-            if (!this.organization) {
-                this.organization = {};
+        takeEditAction (action, data) {
+            switch (action) {
+            case 'save':
+                this.organization = data;
+                this.save();
+                break;
+            case 'create':
+                this.organization = data;
+                this.save();
+                break;
+            case 'cancel':
+                this.cancel()
+                break;
+                //no default
             }
-            this.organization.address = angular.copy(address);
-            this.valid.address = validForm;
         }
 
         getCode () {

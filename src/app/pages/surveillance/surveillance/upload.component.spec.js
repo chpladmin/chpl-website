@@ -1,48 +1,18 @@
 (() => {
     'use strict';
 
-    fdescribe('the Upload Surveillance component', () => {
-        var $compile, $log, $q, Upload, authService, ctrl, el, mock, scope;
-
-        mock = {
-            baseData: {
-                url: '/rest/surveillance/upload',
-                headers: {
-                    Authorization: 'Bearer token',
-                    'API-Key': 'api-key',
-                },
-                data: {
-                    file: 'file',
-                },
-            },
-        };
+    fdescribe('the Upload Surveillances component', () => {
+        var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.surveillance', $provide => {
-                $provide.decorator('Upload', $delegate => {
-                    $delegate.upload = jasmine.createSpy('upload');
-                    return $delegate;
-                });
-                $provide.decorator('authService', $delegate => {
-                    $delegate.getToken = jasmine.createSpy('getToken');
-                    $delegate.getApiKey = jasmine.createSpy('getApiKey');
-                    return $delegate;
-                });
-            });
+            angular.mock.module('chpl.surveillance');
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_) => {
+            inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
-                Upload = _Upload_;
-                Upload.upload.and.returnValue($q.when({}));
-                authService = _authService_;
-                authService.getToken.and.returnValue('token');
-                authService.getApiKey.and.returnValue('api-key');
 
                 scope = $rootScope.$new();
-                scope.onChange = jasmine.createSpy('onChange');
-                el = angular.element('<chpl-upload-surveillance on-change="onChange()"></chpl-upload-surveillance>');
+                el = angular.element('<chpl-upload-surveillances></chpl-upload-surveillances>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -67,63 +37,6 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
-            });
-
-            describe('when uploading', () => {
-                it('should not do anything without a file', () => {
-                    ctrl.file = undefined;
-                    ctrl.upload();
-                    expect(Upload.upload).not.toHaveBeenCalled();
-                    ctrl.file = 'file';
-                    ctrl.upload();
-                    expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
-                });
-
-                describe('in response to the upload', () => {
-                    let response;
-                    beforeEach(() => {
-                        ctrl.file = {
-                            name: 'name',
-                        };
-                        response = {
-                            data: { },
-                            config: { data: { file: { name: 'filename' }}},
-                        };
-                    });
-
-                    it('should handle success of a small file', () => {
-                        response.data.pendingSurveillance = [1, 2];
-                        Upload.upload.and.returnValue($q.when(response));
-                        ctrl.upload();
-                        scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully. 2 pending surveillance records are ready for confirmation.');
-                        expect(ctrl.uploadErrors).toEqual([]);
-                        expect(ctrl.uploadSuccess).toBe(true);
-                        expect(scope.onChange).toHaveBeenCalled();
-                    });
-
-                    it('should handle success of a large file', () => {
-                        response.data.user = { email: 'fake@sample.com'};
-                        Upload.upload.and.returnValue($q.when(response));
-                        ctrl.upload();
-                        scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully. The file will be processed and an email will be sent to fake@sample.com when processing is complete.');
-                        expect(ctrl.uploadErrors).toEqual([]);
-                        expect(ctrl.uploadSuccess).toBe(true);
-                        expect(scope.onChange).toHaveBeenCalled();
-                    });
-
-                    it('should handle failure', () => {
-                        response.data.errorMessages = [1];
-                        Upload.upload.and.returnValue($q.reject(response));
-                        ctrl.upload();
-                        scope.$digest();
-                        expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
-                        expect(ctrl.uploadErrors).toEqual([1]);
-                        expect(ctrl.uploadSuccess).toBe(false);
-                        expect(scope.onChange).not.toHaveBeenCalled();
-                    });
-                });
             });
         });
     });
