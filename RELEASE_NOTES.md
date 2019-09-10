@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 10.25.0
+_10 September 2019_
+
+### Features
+* Update user information to include
+  * Last Logged In Date
+  * Organization(s) user is associated with
+* Update the API Key Usage report UI to be consistent with other reports
+* Provide new UI/UX for user management
+
+---
+
 ## Version 10.24.1
 _26 August 2019_
 
