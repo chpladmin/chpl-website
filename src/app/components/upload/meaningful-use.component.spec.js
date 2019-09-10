@@ -134,7 +134,7 @@
                         Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect($state.go).toHaveBeenCalledWith('/admin/jobsManagement');
+                        expect($state.go).toHaveBeenCalledWith('administration.jobs.background');
                     });
 
                     it('should handle failure', () => {

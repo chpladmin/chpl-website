@@ -1,67 +1,66 @@
 <div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
-    <div class="row">
-        <div class="col-sm-12">
-          <h3>Version</h3>
-        </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Version</h3>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <chpl-filter feature-flag="adminNav" filter-type-name="Version Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
-      </div>
-      <div class="col-sm-6">
-        <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
-        <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <chpl-filter filter-type-name="Version Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
+    </div>
+    <div class="col-sm-6">
+      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
+      <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Version_{{ $ctrl.filename }}"
               csv-header="['Product', 'Version', 'Responsible User', 'Activity', 'Activity Date']"
               csv-column-order="['productName', 'version', 'fullName', 'action', 'friendlyActivityDate']">
-          <i class="fa fa-cloud-download"></i> Download</button>
-      </div>
+        <i class="fa fa-cloud-download"></i> Download</button>
     </div>
-    <div class="row form-group form-inline">
-      <div class="col-sm-12">
-        <label for="activity-start-upload" class="control-label">Start Date</label>
-        <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
-        <label for="activity-end-upload" class="control-label">End Date</label>
-        <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
-        <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
-      </div>
-    </div>
-    <div class="row form-group" ng-if="!$ctrl.validDates()">
-      <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-5">
-        <label for="activity-end-upload" class="control-label">Filter</label>
-        <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Product, Version, or Responsible User" class="form-control" type="search">
-      </div>
-    </div>
-    <table class="table table-responsive">
-      <thead>
-        <tr>
-          <th class="search-header" st-sort="productName" st-skip-natural="true">Product</th>
-          <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
-          <th class="search-header" st-sort="fullName" st-skip-natural="true">Responsible User</th>
-          <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-if="$ctrl.displayed.length === 0">
-          <td colspan="5">No activity found</td>
-        </tr>
-        <tr ng-repeat="activity in $ctrl.displayed">
-          <td>{{ activity.productName }}</td>
-          <td>{{ activity.version }}</td>
-          <td>{{ activity.fullName }}</td>
-          <td>
-            <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
-            <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
-            <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
-            <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
-            {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
-            <div ng-if="activity.action && activity.showDetails" ng-bind-html="activity.action"></div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
   </div>
+  <div class="row form-group form-inline">
+    <div class="col-sm-12">
+      <label for="activity-start-upload" class="control-label">Start Date</label>
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
+      <label for="activity-end-upload" class="control-label">End Date</label>
+      <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
+      <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
+    </div>
+  </div>
+  <div class="row form-group" ng-if="!$ctrl.validDates()">
+    <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-5">
+      <label for="activity-end-upload" class="control-label">Filter</label>
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Product, Version, or Responsible User" class="form-control" type="search">
+    </div>
+  </div>
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th class="search-header" st-sort="productName" st-skip-natural="true">Product</th>
+        <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+        <th class="search-header" st-sort="fullName" st-skip-natural="true">Responsible User</th>
+        <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-if="$ctrl.displayed.length === 0">
+        <td colspan="5">No activity found</td>
+      </tr>
+      <tr ng-repeat="activity in $ctrl.displayed">
+        <td>{{ activity.productName }}</td>
+        <td>{{ activity.version }}</td>
+        <td>{{ activity.fullName }}</td>
+        <td>
+          <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
+          <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
+          <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
+          <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
+          {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
+          <div ng-if="activity.action && activity.showDetails" ng-bind-html="activity.action"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

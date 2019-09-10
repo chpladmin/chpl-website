@@ -329,7 +329,7 @@
               <div class="panel-heading">
                 <span>Active Listing</span>
                 <span class="pull-right" ng-if="vm.activeCP.id">
-                  <a href="#/admin/reports/listings/{{ vm.activeCP.id}}"><i class="fa fa-calendar"></i> View Listing History</a> |
+                  <a ui-sref="reports.listings({ productId: vm.activeCP.id })"><i class="fa fa-calendar"></i> View Listing History</a> |
                   <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
                   <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>

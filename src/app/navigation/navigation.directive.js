@@ -36,33 +36,34 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags, networkService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, networkService) {
         var vm = this;
 
         vm.clear = clear;
         vm.getFullname = authService.getFullname;
         vm.isActive = isActive;
-        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
-        vm.toggleNav = toggleNav;
+        vm.toggleNavClosed = toggleNavClosed;
+        vm.toggleNavOpen = toggleNavOpen;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.loadAnnouncements();
-            vm.navShown = true;
             $rootScope.bodyClass = 'navigation-shown';
 
-            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && featureFlags.isOn('adminNav')) {
-                vm.toggleNav();
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+                vm.toggleNavClosed();
+            } else {
+                vm.toggleNavOpen();
             }
             var showCmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget(true);
-                if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && featureFlags.isOn('adminNav')) {
-                    vm.toggleNav(true);
+                if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+                    vm.toggleNavOpen();
                 }
             });
             $scope.$on('$destroy', showCmsWidget);
@@ -74,8 +75,8 @@
 
             var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
-                if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && featureFlags.isOn('adminNav')) {
-                    vm.toggleNav(true);
+                if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+                    vm.toggleNavOpen();
                 }
             });
             $scope.$on('$destroy', showCompareWidget);
@@ -87,8 +88,8 @@
 
             var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
-                if (vm.navShown && featureFlags.isOn('adminNav')) {
-                    vm.toggleNav();
+                if (vm.navShown) {
+                    vm.toggleNavClosed();
                 }
             })
             $scope.$on('$destroy', loggedIn);
@@ -96,7 +97,7 @@
             var loggedOut = $scope.$on('loggedOut', function () {
                 vm.loadAnnouncements();
                 if (!vm.navShown) {
-                    vm.toggleNav();
+                    vm.toggleNavOpen();
                 }
             })
             $scope.$on('$destroy', loggedOut);
@@ -112,8 +113,8 @@
             $scope.$on('$destroy', unimpersonating);
 
             var flags = $rootScope.$on('flags loaded', function () {
-                if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && featureFlags.isOn('adminNav')) {
-                    vm.toggleNav();
+                if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+                    vm.toggleNavClosed();
                 }
             });
             $scope.$on('$destroy', flags);
@@ -144,14 +145,14 @@
             vm.compareWidgetExpanded = show;
         }
 
-        function toggleNav (forceOpen) {
-            if (forceOpen) {
-                vm.navShown = true;
-                $rootScope.bodyClass = 'navigation-shown';
-            } else {
-                vm.navShown = !vm.navShown;
-                $rootScope.bodyClass = vm.navShown ? 'navigation-shown' : 'navigation-hidden';
-            }
+        function toggleNavClosed () {
+            vm.navShown = false
+            $rootScope.bodyClass = 'navigation-hidden';
+        }
+
+        function toggleNavOpen () {
+            vm.navShown = true;
+            $rootScope.bodyClass = 'navigation-shown';
         }
     }
 })();
