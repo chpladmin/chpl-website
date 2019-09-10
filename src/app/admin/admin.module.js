@@ -6,6 +6,7 @@ import 'ng-file-upload';
     angular.module('chpl.admin', [
         'angular-cron-gen',
         'angular-confirm',
+        'chpl.components',
         'chpl.constants',
         'chpl.reports',
         'chpl.services',

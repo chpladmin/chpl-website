@@ -2,7 +2,7 @@
     'use strict';
 
     fdescribe('the User Management component', () => {
-        var $compile, $log, authService, ctrl, el, scope;
+        var $compile, $log, $state, authService, ctrl, el, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl.users', $provide => {
@@ -13,9 +13,10 @@
                 });
             });
 
-            inject((_$compile_, _$log_, $rootScope, _authService_) => {
+            inject((_$compile_, _$log_, $rootScope, _$state_, _authService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $state = _$state_;
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
 
@@ -45,6 +46,24 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
+            });
+
+            describe('for callbacks', () => {
+                describe('impersonation', () => {
+                    it('should redirect to dashboard for ROLE_DEVELOPER', () => {
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0)
+                        spyOn($state, 'go');
+                        ctrl.takeAction('impersonate');
+                        expect($state.go).toHaveBeenCalledWith('dashboard');
+                    });
+
+                    it('should not redirect to dashboard for non ROLE_DEVELOPER', () => {
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') === -1)
+                        spyOn($state, 'go');
+                        ctrl.takeAction('impersonate');
+                        expect($state.go).not.toHaveBeenCalled();
+                    });
+                });
             });
         });
     });

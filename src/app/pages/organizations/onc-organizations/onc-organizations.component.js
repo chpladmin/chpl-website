@@ -178,7 +178,7 @@ export const OncOrganizationsComponent = {
             case 'refresh':
                 that.loadUsers();
                 break;
-            case 'reload':
+            case 'impersonate':
                 this.$state.reload();
                 break;
                 //no default
