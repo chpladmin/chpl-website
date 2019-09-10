@@ -36,8 +36,19 @@ let getResources = ($q, networkService) => {
 function administrationStateConfig ($stateProvider) {
     'ngInject'
     $stateProvider
+        .state('authorizePasswordReset', {
+            url: '/admin/authorizePasswordReset?token',
+            redirectTo: trans => {
+                return {
+                    state: 'administration',
+                    params: {
+                        token: trans.params().token,
+                    },
+                }
+            },
+        })
         .state('administration', {
-            url: '/administration',
+            url: '/administration?token',
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })

@@ -1,20 +1,20 @@
 <div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
-      <div class="col-sm-12">
-        <h3>Developer</h3>
-      </div>
+    <div class="col-sm-12">
+      <h3>Developer</h3>
+    </div>
   </div>
 
   <div class="row">
     <div class="col-sm-6">
-      <chpl-filter feature-flag="adminNav" filter-type-name="Developer Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
+      <chpl-filter filter-type-name="Developer Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
-            ng-csv="$ctrl.displayed" filename="Developer_{{ $ctrl.filename }}"
-            csv-header="['Developer', 'Developer Code', 'Responsible User', 'Activity', 'Activity Date']"
-            csv-column-order="['developerName', 'developerCode', 'fullName', 'csvDetails', 'friendlyActivityDate']">
+              ng-csv="$ctrl.displayed" filename="Developer_{{ $ctrl.filename }}"
+              csv-header="['Developer', 'Developer Code', 'Responsible User', 'Activity', 'Activity Date']"
+              csv-column-order="['developerName', 'developerCode', 'fullName', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
