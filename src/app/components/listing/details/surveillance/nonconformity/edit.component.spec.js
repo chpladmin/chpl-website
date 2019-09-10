@@ -166,6 +166,13 @@
                                 fileName: 'filename',
                                 errorMessages: undefined,
                             },
+                            config: {
+                                data: {
+                                    file: {
+                                        name: 'filename',
+                                    },
+                                },
+                            },
                         };
                     });
 
@@ -173,7 +180,10 @@
                         Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
-                        expect(ctrl.nonconformity.documents[0]).toEqual({fileName: 'filename is pending'});
+                        expect(ctrl.nonconformity.documents[0]).toEqual({
+                            fileName: 'filename is pending',
+                            fileType: undefined,
+                        });
                     });
 
                     it('should handle success', () => {
