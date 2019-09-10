@@ -93,12 +93,9 @@
           <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL'])" class="dropdown" uib-dropdown is-open="vm.organizationsIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="organizations-toggle" ng-class="{'admin-active' : vm.isActive('organizations')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.organizationsIsOpen">Organizations</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="organizations-toggle" id="organizations-dropdown-menu">
-              <li feature-flag="organizations"><a ui-sref="organizations.developers({developerId: undefined})" ui-sref-opts="{ reload: true }"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.developers')"></i> Developers</a></li>
-              <li feature-flag="organizations" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="organizations.onc-acbs"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-acbs')"></i> ONC-ACBs</a></li>
-              <li feature-flag="organizations" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a ui-sref="organizations.onc-atls"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-atls')"></i> ONC-ATLs</a></li>
-              <li feature-flag="organizations" feature-flag-hide><a href="#/admin/dpManagement"> Developers</a></li>
-              <li feature-flag="organizations" feature-flag-hide ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/acbManagement"> ONC-ACBs</a></li>
-              <li feature-flag="organizations" feature-flag-hide ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a href="#/admin/atlManagement"> ONC-ATLs</a></li>
+              <li><a ui-sref="organizations.developers({developerId: undefined})" ui-sref-opts="{ reload: true }"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.developers')"></i> Developers</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="organizations.onc-acbs"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-acbs')"></i> ONC-ACBs</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a ui-sref="organizations.onc-atls"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-atls')"></i> ONC-ATLs</a></li>
             </ul>
           </li>
           <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
