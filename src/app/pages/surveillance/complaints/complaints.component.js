@@ -76,19 +76,7 @@ export const SurveillanceComplaintsComponent = {
         }
 
         saveComplaint (complaint) {
-            if (this.isOn('complaints-ui-validation')) {
-                complaint.receivedDate = complaint.formattedReceivedDate.getTime();
-            } else {
-                //This is only necesary if the front end validation is turned off via
-                //the 'complaints-ui-validation' flag.  When the flag is removed, this
-                //block can be removed.
-                if (complaint.formattedReceivedDate) {
-                    complaint.receivedDate = complaint.formattedReceivedDate.getTime();
-                } else {
-                    complaint.receivedDate = null;
-                }
-            }
-
+            complaint.receivedDate = complaint.formattedReceivedDate.getTime();
             if (complaint.formattedClosedDate) {
                 complaint.closedDate = complaint.formattedClosedDate.getTime();
             } else {

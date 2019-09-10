@@ -1,13 +1,12 @@
 
-## Version 10.24.1
-_TBD_
+## Version 10.25.0
+_Date TBD_
 
-### User Interface Updates
-* Change title of Complaints page 
-* Turn off EDGE's telephone number detection "feature" 
-
-### Bug Fixes
-* Limit access to pages / features with explicit ROLE lists 
-* Update surveillance filter to work correctly when navigating back to search 
+### Features
+* Update user information to include
+  * Last Logged In Date
+  * Organization(s) user is associated with
+* Update the API Key Usage report UI to be consistent with other reports
+* Provide new UI/UX for user management
 
 ---

@@ -20,8 +20,8 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label class="control-label" for="obstacle">Obstacle Summary</label>
-        <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
         <p class="form-control-static">Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.</p>
+        <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="priority">Priority Changes From Findings Summary</label>

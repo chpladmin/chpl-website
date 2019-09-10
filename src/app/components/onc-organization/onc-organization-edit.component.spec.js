@@ -1,8 +1,8 @@
 (() => {
     'use strict';
 
-    fdescribe('the ONC Organization component', () => {
-        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
+    fdescribe('the ONC Organization Edit component', () => {
+        var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {
             organization: {
@@ -26,37 +26,23 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
-                $provide.provider('$state', () => ({
-                    $get: () => ({
-                        current: {
-                            ncyBreadcrumb: {
-                                label: undefined,
-                            },
-                        },
-                        get: () => ({}),
-                        includes: jasmine.createSpy('includes'),
-                    }),
-                }));
-                $provide.decorator('networkService', $delegate => {
-                    $delegate.getAcb = jasmine.createSpy('getAcb');
+                $provide.decorator('authService', $delegate => {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
+            inject((_$compile_, _$log_, $rootScope, _authService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
-                $state = _$state_;
-                $state.includes.and.returnValue(false);
-                networkService = _networkService_;
-                networkService.getAcb.and.returnValue($q.when(mock.organization));
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
                 scope.organization = mock.organization;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-onc-organization organization="organization" type="ONC-ACB" take-action="takeAction(action, data)"></chpl-onc-organization>');
+                el = angular.element('<chpl-onc-organization-edit organization="organization" type="ONC-ACB" take-action="takeAction(action, data)"></chpl-onc-organization-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -88,6 +74,22 @@
                     expect(ctrl.organization).not.toBe(mock.organization);
                     expect(ctrl.organization).toEqual(mock.organization);
                 });
+
+                it('should make a retirement date object if required', () => {
+                    // default organization is not retired; shouldn't have retirement object
+                    expect(ctrl.organization.retirementDateObject).toBeUndefined();
+
+                    // arrange; set organzation to have a retirement date
+                    let retired = angular.copy(mock.organization);
+                    retired.retirementDate = 1565695367097;
+                    scope.organization = retired;
+
+                    // act; $digest cycle needed to trigger $onChanges
+                    scope.$digest();
+
+                    // assert; retired organization needs retirement date object for ng-model
+                    expect(ctrl.organization.retirementDateObject).not.toBeUndefined();
+                });
             });
 
             describe('when using callbacks', () => {
@@ -100,6 +102,16 @@
                 it('should handle cancel', () => {
                     ctrl.cancel();
                     expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
+                });
+            });
+
+            describe('when handling callbacks', () => {
+                it('should handle the address', () => {
+                    ctrl.organization.address = undefined;
+                    ctrl.valid.address = undefined;
+                    ctrl.editAddress({city: 'a name'}, [], true);
+                    expect(ctrl.organization.address.city).toBe('a name');
+                    expect(ctrl.valid.address).toBe(true);
                 });
             });
         });

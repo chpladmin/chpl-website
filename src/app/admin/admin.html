@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row splash-row" ng-if="!vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL'])">
+  <div class="row splash-row" ng-if="!vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
     <div class="col-md-6 col-md-offset-3 jumbotron">
       <ai-login form-class=""
                 p-class="bg-success lead"
@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <section ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL'])">
+  <section ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
     <div class="row">
       <div class="col-md-12">
         <h1>Welcome, {{ vm.getFullname() }}</h1>
@@ -21,12 +21,6 @@
             <li ng-class="{'active': vm.navState === 'manage' || vm.navState === 'merge'}" id="admin-nav.dpManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState === 'manage'}" id="admin-nav.dpManagement.manage" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/manage">Manage Developers &amp; Products</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState === 'merge'}" id="admin-nav.dpManagement.merge" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/dpManagement/merge">Merge Developers &amp; Products</a></li>
-
-            <li ng-class="{'active': vm.navState === 'acbManagement'}" id="admin-nav.acbManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.acb === acb}" ng-if="vm.navState === 'acbManagement'" id="admin-nav.acbManagement.{{ acb.id}}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" ng-click="vm.acb = acb">{{ acb.name }}<span ng-if="acb.retired" class="pull-right">&lt;retired&gt;</span></a></li>
-
-            <li ng-class="{'active': vm.navState === 'atlManagement'}" id="admin-nav.atlManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.atl === atl}" ng-if="vm.navState === 'atlManagement'" id="admin-nav.atlManagement.{{ atl.id}}" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" ng-click="vm.atl = atl">{{ atl.name }}<span ng-if="atl.retired" class="pull-right">&lt;retired&gt;</span></a></li>
           </ul>
         </div>
       </div>
@@ -34,12 +28,6 @@
         <ai-vp-management ng-if="vm.navState === 'manage' || vm.navState === 'merge'"
                           work-type="vm.navState"
                           product-id="vm.productId"></ai-vp-management>
-        <ai-acb-management ng-if="vm.navState === 'acbManagement'"
-                           on-change="vm.handleAcb(acb)"
-                           acb="vm.acb"></ai-acb-management>
-        <ai-atl-management ng-if="vm.navState === 'atlManagement'"
-                           on-change="vm.handleAtl(atl)"
-                           atl="vm.atl"></ai-atl-management>
       </div>
     </div>
   </section> <!-- end authenticated user section -->

@@ -34,7 +34,6 @@ export const ReportsListingsComponent = {
                 this.doFilter(changes.filterToApply.currentValue);
                 return;
             }
-
             this.search();
         }
 

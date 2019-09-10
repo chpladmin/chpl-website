@@ -155,7 +155,7 @@
         }
 
         function editCertifiedProduct () {
-            // if listing-edit is off, use this modal. If it's on, we'll need a new thing (also relates to adminNav)
+            // if listing-edit is off, use this modal. If it's on, we'll need a new thing
             vm.editModalInstance = $uibModal.open({
                 templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',

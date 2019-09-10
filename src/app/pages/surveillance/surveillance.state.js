@@ -36,11 +36,11 @@ let states = {
                 },
                 surveillanceOutcomes: networkService => {
                     'ngInject'
-                    return networkService.getSurveillanceOutcomes().catch(() => angular.noop); // remove catch when API has this endpoint
+                    return networkService.getSurveillanceOutcomes();
                 },
                 surveillanceProcessTypes: networkService => {
                     'ngInject'
-                    return networkService.getSurveillanceProcessTypes().catch(() => angular.noop); // remove catch when API has this endpoint
+                    return networkService.getSurveillanceProcessTypes();
                 },
             },
             data: { title: 'CHPL Surveillance - Reporting' },

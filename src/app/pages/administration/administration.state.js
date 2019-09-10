@@ -88,7 +88,7 @@ function administrationStateConfig ($stateProvider) {
         .state('administration.confirm', {
             abstract: true,
             url: '/confirm',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         })
         .state('administration.confirm.listings', {
             url: '/listings',
@@ -122,7 +122,7 @@ function administrationStateConfig ($stateProvider) {
         .state('administration.jobs', {
             abstract: true,
             url: '/jobs',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         })
         .state('administration.jobs.background', {
             url: '/background',
