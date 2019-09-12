@@ -17,8 +17,8 @@
           <span ng-if="$ctrl.user.email"><strong>Email:</strong> {{ $ctrl.user.email }}<br /></span>
           <span ng-if="$ctrl.user.subjectName"><strong>User Name:</strong> {{ $ctrl.user.subjectName }}<br /></span>
           <span ng-if="$ctrl.user.role"><strong>Role:</strong> {{ $ctrl.user.role }}<br /></span>
-          <span ng-if="$ctrl.user.organizations"><strong>Organization(s):</strong>
-            <span ng-repeat="org in $ctrl.user.organizations | orderBy: 'name'"> {{ org.name }}{{$last ? '' : ', '}} </span><br />
+          <span ng-if="$ctrl.user.organizations && $ctrl.user.organizations.length > 0"><strong>Organization<span ng-if="$ctrl.user.organizations.length > 1">s</span>:</strong>
+            <span ng-repeat="org in $ctrl.user.organizations | orderBy: 'name'">{{ org.name + ($last ? '' : '; ') }}</span><br />
           </span>
         </p>
       </div>
