@@ -35,7 +35,7 @@
         <tbody>
           <tr ng-repeat="surveillance in $ctrl.displaySurveillances">
             <td>
-              <a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})">{{ surveillance.friendlyId }}</a>
+              <button class="btn btn-link" ng-click="$ctrl.editSurveillance(surveillance)">{{ surveillance.friendlyId }}</button>
             </td>
             <td>{{ surveillance.startDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ surveillance.endDate | date : 'mediumDate' : 'UTC' }}</td>
