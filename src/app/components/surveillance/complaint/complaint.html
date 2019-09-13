@@ -179,7 +179,7 @@
     </div>
     <div class="selected-items-container" ng-if="$ctrl.complaint.surveillances && $ctrl.complaint.surveillances.length !== 0">
       <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
-        <button class="btn btn-primary btn-xs"
+        <button class="btn btn-primary btn-sm"
           ng-click="$ctrl.removeSurveillance(surveillance)"
           id="remove-listing-{{ surveillance.surveillance.id }}">
           <span class="sr-only">Remove </span>
