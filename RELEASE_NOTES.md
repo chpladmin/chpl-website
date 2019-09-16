@@ -10,6 +10,9 @@ _10 September 2019_
 * Update the API Key Usage report UI to be consistent with other reports
 * Provide new UI/UX for user management
 
+### Display changes
+* Use correct title for ONC-ATL
+
 ---
 
 ## Version 10.24.1
