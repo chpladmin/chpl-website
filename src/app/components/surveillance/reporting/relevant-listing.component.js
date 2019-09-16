@@ -8,11 +8,18 @@ export const SurveillanceReportRelevantListingComponent = {
         onCancel: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
-        constructor ($log, authService, networkService) {
+        constructor ($log, $state, $stateParams, $uibModal, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$state = $state;
+            this.$stateParams = $stateParams;
+            this.$uibModal = $uibModal;
             this.networkService = networkService;
             this.hasAnyRole = authService.hasAnyRole;
+        }
+
+        $onInit () {
+            this.surveillanceTypes = this.networkService.getSurveillanceLookups();
         }
 
         $onChanges (changes) {
@@ -44,6 +51,44 @@ export const SurveillanceReportRelevantListingComponent = {
                 that.surveillances.push(that.calculateCompletion(response));
                 that.activeSurveillance = undefined;
             });
+        }
+
+        editSurveillance (relevantSurveillance) {
+            let that = this;
+            this._fixRequirementOptions();
+            this.networkService.getListing(this.listing.id, true).then(listing => {
+                let surveillance = listing.surveillance.find(s => s.id === relevantSurveillance.id);
+                that.uibModalInstance = that.$uibModal.open({
+                    component: 'aiSurveillanceEdit',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        surveillance: () => { return surveillance; },
+                        surveillanceTypes: () => { return that.surveillanceTypes; },
+                        workType: () => { return 'edit'; },
+                    },
+                });
+                that.uibModalInstance.result.then(() => {
+                    let currentState = {
+                        relevantListing: that.listing.id,
+                    };
+                    that.$state.go(
+                        that.$state.current,
+                        {...that.$stateParams, ...currentState},
+                        {reload: true},
+                    );
+                });
+            });
+        }
+
+        _fixRequirementOptions () {
+            if (this.listing.edition === '2015') {
+                this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
+            } else if (this.listing.edition === '2014') {
+                this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
+            }
         }
 
         cancel () {

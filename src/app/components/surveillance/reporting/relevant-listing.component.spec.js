@@ -2,18 +2,26 @@
     'use strict';
 
     fdescribe('the Surveillance Report Relevent Listing component', () => {
-        var $compile, $log, ctrl, el, mock, scope;
+        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
             listing: {id: 7706, chplProductNumber: '14.02.02.2646.A001.01.00.1.160412', lastModifiedDate: 1528178797574, edition: '2014', certificationDate: 1460433600000},
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.components');
+            angular.mock.module('chpl.components', 'chpl.services', $provide => {
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
+                    return $delegate;
+                });
+            });
 
-            inject((_$compile_, _$log_, $rootScope) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                networkService = _networkService_;
+                networkService.getSurveillanceLookups.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 scope.listing = mock.listing;

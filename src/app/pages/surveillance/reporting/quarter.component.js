@@ -2,6 +2,7 @@ export const SurveillanceReportQuarterComponent = {
     templateUrl: 'chpl.surveillance/reporting/quarter.html',
     bindings: {
         report: '<',
+        relevantListing: '<',
         relevantListings: '<',
         surveillanceOutcomes: '<',
         surveillanceProcessTypes: '<',
@@ -45,7 +46,6 @@ export const SurveillanceReportQuarterComponent = {
 
         cancel () {
             this.report = angular.copy(this.backup.report);
-            //this.parseRelevantListings(this.backup.relevantListings);
             this.onCancel();
         }
 
@@ -99,6 +99,10 @@ export const SurveillanceReportQuarterComponent = {
                 l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
                 return l;
             }).filter(l => l.surveillances && l.surveillances.length > 0);
+            if (this.relevantListing) {
+                this.areListingsShown = true;
+                this.relevantListing = this.relevantListings.find(l => l.id === this.relevantListing);
+            }
         }
     },
 }
