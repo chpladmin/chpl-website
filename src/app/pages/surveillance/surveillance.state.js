@@ -64,11 +64,18 @@ let states = {
         },{
             name: 'surveillance.reporting.quarterly',
             url: '/quarterly/{reportId}',
+            params: {
+                relevantListing: {squash: true, value: null},
+            },
             component: 'chplSurveillanceReportQuarter',
             resolve: {
                 report: ($transition$, networkService) => {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReport($transition$.params().reportId);
+                },
+                relevantListing: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().relevantListing;
                 },
                 relevantListings: ($transition$, networkService) => {
                     'ngInject'

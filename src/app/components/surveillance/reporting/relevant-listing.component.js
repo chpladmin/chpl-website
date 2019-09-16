@@ -8,10 +8,11 @@ export const SurveillanceReportRelevantListingComponent = {
         onCancel: '&',
     },
     controller: class SurveillanceReportRelevantListingComponent {
-        constructor ($log, $state, $uibModal, authService, networkService) {
+        constructor ($log, $state, $stateParams, $uibModal, authService, networkService) {
             'ngInject'
             this.$log = $log;
             this.$state = $state;
+            this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.networkService = networkService;
             this.hasAnyRole = authService.hasAnyRole;
@@ -70,7 +71,14 @@ export const SurveillanceReportRelevantListingComponent = {
                     },
                 });
                 that.uibModalInstance.result.then(() => {
-                    that.$state.reload();
+                    let currentState = {
+                        relevantListing: that.listing.id,
+                    };
+                    that.$state.go(
+                        that.$state.current,
+                        {...that.$stateParams, ...currentState},
+                        {reload: true},
+                    );
                 });
             });
         }
