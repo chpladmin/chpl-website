@@ -46,10 +46,15 @@ export const SurveillanceReportRelevantListingComponent = {
 
         save (surveillance) {
             let that = this;
-            this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(response => {
-                that.surveillances = that.surveillances.filter(s => s.id !== response.id);
-                that.surveillances.push(that.calculateCompletion(response));
-                that.activeSurveillance = undefined;
+            this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(() => {
+                let currentState = {
+                    relevantListing: that.listing.id,
+                };
+                that.$state.go(
+                    that.$state.current,
+                    {...that.$stateParams, ...currentState},
+                    {reload: true},
+                );
             });
         }
 

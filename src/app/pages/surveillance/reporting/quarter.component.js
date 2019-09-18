@@ -27,7 +27,6 @@ export const SurveillanceReportQuarterComponent = {
             }
             if (changes.relevantListings) {
                 this.relevantListings = angular.copy(changes.relevantListings.currentValue);
-                this.backup.relevantListings = angular.copy(this.relevantListings);
             }
             if (this.relevantListings) {
                 this.parseRelevantListings(this.relevantListings);
@@ -72,13 +71,11 @@ export const SurveillanceReportQuarterComponent = {
             this.networkService.updateRelevantListing(this.report.id, listing).then(() => {
                 that.networkService.getRelevantListings(that.report.id).then(results => {
                     that.relevantListings = results;
-                    that.backup.relevantListings = angular.copy(results);
                     that.parseRelevantListings(that.relevantListings);
                 });
             }, () => {
                 that.networkService.getRelevantListings(that.report.id).then(results => {
                     that.relevantListings = results;
-                    that.backup.relevantListings = angular.copy(results);
                     that.parseRelevantListings(that.relevantListings);
                 });
             });
