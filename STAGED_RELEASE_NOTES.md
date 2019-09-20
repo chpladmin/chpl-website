@@ -12,7 +12,6 @@ _Date TBD_
   * Add support for Version editing on new Organizations - Developer - Product page
   * Includes Edit, Merge, and Split
 
-
 ### User Interface Updates
 * Standardize button display on complaints
 * Improve display of User Organizations
