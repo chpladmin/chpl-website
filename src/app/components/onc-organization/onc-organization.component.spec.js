@@ -2,7 +2,7 @@
     'use strict';
 
     fdescribe('the ONC Organization component', () => {
-        var $compile, $log, authService, ctrl, el, mock, scope;
+        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
 
         mock = {
             organization: {
@@ -26,24 +26,37 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
-                $provide.decorator('authService', $delegate => {
-                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                $provide.provider('$state', () => ({
+                    $get: () => ({
+                        current: {
+                            ncyBreadcrumb: {
+                                label: undefined,
+                            },
+                        },
+                        get: () => ({}),
+                        includes: jasmine.createSpy('includes'),
+                    }),
+                }));
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getAcb = jasmine.createSpy('getAcb');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, $rootScope, _authService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                authService = _authService_;
-                authService.hasAnyRole.and.returnValue(true);
+                $q = _$q_;
+                $state = _$state_;
+                $state.includes.and.returnValue(false);
+                networkService = _networkService_;
+                networkService.getAcb.and.returnValue($q.when(mock.organization));
 
                 scope = $rootScope.$new();
                 scope.organization = mock.organization;
-                scope.isEditing = false;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-onc-organization organization="organization" type="ONC-ACB" is-editing="isEditing" take-action="takeAction(action, data)"></chpl-onc-organization>');
+                el = angular.element('<chpl-onc-organization organization="organization" type="ONC-ACB" take-action="takeAction(action, data)"></chpl-onc-organization>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -78,11 +91,6 @@
             });
 
             describe('when using callbacks', () => {
-                it('should send back data on edit', () => {
-                    ctrl.edit();
-                    expect(scope.takeAction).toHaveBeenCalledWith('edit', mock.organization);
-                });
-
                 it('should handle save', () => {
                     let savedObject = angular.copy(mock.organization);
                     ctrl.save();
@@ -92,16 +100,6 @@
                 it('should handle cancel', () => {
                     ctrl.cancel();
                     expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
-                });
-            });
-
-            describe('when handling callbacks', () => {
-                it('should handle the address', () => {
-                    ctrl.organization.address = undefined;
-                    ctrl.valid.address = undefined;
-                    ctrl.editAddress({city: 'a name'}, [], true);
-                    expect(ctrl.organization.address.city).toBe('a name');
-                    expect(ctrl.valid.address).toBe(true);
                 });
             });
         });

@@ -5,10 +5,10 @@ let states = {
             url: '/complaints',
             component: 'chplSurveillanceComplaints',
             data: {
-                title: 'CHPL Surveillance - Complaints',
+                title: 'CHPL Surveillance - Complaints Reporting',
             },
             ncyBreadcrumb: {
-                label: 'Complaints',
+                label: 'Complaints Reporting',
             },
         },
     ],
@@ -36,11 +36,11 @@ let states = {
                 },
                 surveillanceOutcomes: networkService => {
                     'ngInject'
-                    return networkService.getSurveillanceOutcomes().catch(() => angular.noop); // remove catch when API has this endpoint
+                    return networkService.getSurveillanceOutcomes();
                 },
                 surveillanceProcessTypes: networkService => {
                     'ngInject'
-                    return networkService.getSurveillanceProcessTypes().catch(() => angular.noop); // remove catch when API has this endpoint
+                    return networkService.getSurveillanceProcessTypes();
                 },
             },
             data: { title: 'CHPL Surveillance - Reporting' },
@@ -64,11 +64,18 @@ let states = {
         },{
             name: 'surveillance.reporting.quarterly',
             url: '/quarterly/{reportId}',
+            params: {
+                relevantListing: {squash: true, value: null},
+            },
             component: 'chplSurveillanceReportQuarter',
             resolve: {
                 report: ($transition$, networkService) => {
                     'ngInject'
                     return networkService.getQuarterlySurveillanceReport($transition$.params().reportId);
+                },
+                relevantListing: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().relevantListing;
                 },
                 relevantListings: ($transition$, networkService) => {
                     'ngInject'

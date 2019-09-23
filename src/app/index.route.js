@@ -1,5 +1,6 @@
-import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
+import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
+import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
 
@@ -16,6 +17,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(routeConfig)
         .config(administrationState)
         .config(collectionsState)
+        .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
         .config(reportsState)
@@ -37,13 +39,6 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
                 controllerAs: 'vm',
                 data: { title: 'CHPL Administration' },
             })
-            .state('authorizePasswordReset', {
-                url: '/admin/authorizePasswordReset?token',
-                template: require('./admin/admin.html'),
-                controller: 'AdminController',
-                controllerAs: 'vm',
-                data: { title: 'Password Reset' },
-            })
             .state('charts', {
                 url: '/charts',
                 controller: 'ChartsController',
@@ -63,14 +58,14 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
                 url: '/registration',
                 template: '<ui-view/>',
             })
-            .state('registration.create-user}', {
+            .state('registration.create-user', {
                 url: '/create-user/{hash}',
                 template: require('./pages/registration/create-user.html'),
                 controller: 'CreateController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Registration' },
             })
-            .state('registration.confirm-user}', {
+            .state('registration.confirm-user', {
                 url: '/confirm-user/{hash}',
                 template: require('./pages/registration/confirm-user.html'),
                 controller: 'ConfirmController',

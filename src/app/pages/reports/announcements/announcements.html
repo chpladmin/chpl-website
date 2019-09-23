@@ -1,5 +1,5 @@
 <div st-table="$ctrl.displayed" st-safe-src="$ctrl.results"
-  chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+     chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
     <div class="col-sm-12">
       <h3>Announcements</h3>
@@ -7,16 +7,16 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <chpl-filter feature-flag="adminNav" filter-type-name="Announcement Report" on-apply-filter="$ctrl.onApplyFilter(filter)"
-        get-filter-data="$ctrl.createFilterDataObject()" on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
+      <chpl-filter filter-type-name="Announcement Report" on-apply-filter="$ctrl.onApplyFilter(filter)"
+                   get-filter-data="$ctrl.createFilterDataObject()" on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
     </div>
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i
-          class="fa fa-bolt"></i> Prepare download</button>
+                                                                                                                         class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()" ng-csv="$ctrl.displayed"
-        filename="Announcement_{{ $ctrl.filename }}"
-        csv-header="['Description', 'Responsible User', 'Activity', 'Activity Date']"
-        csv-column-order="['description', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
+              filename="Announcement_{{ $ctrl.filename }}"
+              csv-header="['Description', 'Responsible User', 'Activity', 'Activity Date']"
+              csv-column-order="['description', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
@@ -24,12 +24,12 @@
     <div class="col-sm-12">
       <label for="activity-start-upload" class="control-label">Start Date</label>
       <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload"
-        id="activity-start-upload" placeholder="yyyy-MM-dd">
+             id="activity-start-upload" placeholder="yyyy-MM-dd">
       <label for="activity-end-upload" class="control-label">End Date</label>
       <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload"
-        id="activity-end-upload" placeholder="yyyy-MM-dd">
+             id="activity-end-upload" placeholder="yyyy-MM-dd">
       <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i
-          class="fa fa-search"></i> Search</button>
+                                                                                                      class="fa fa-search"></i> Search</button>
     </div>
   </div>
   <div class="row form-group" ng-if="!$ctrl.validDates()">
@@ -40,7 +40,7 @@
     <div class="col-sm-5">
       <label for="activity-end-upload" class="control-label">Filter</label>
       <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter"
-        placeholder="Filter on description or responsible user" class="form-control" type="search">
+             placeholder="Filter on description or responsible user" class="form-control" type="search">
     </div>
   </div>
 
@@ -61,13 +61,12 @@
         <td>{{ activity.responsibleUserFullName }}</td>
         <td>
           <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails"
-            ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
+                  ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails"
-            ng-click="activity.showDetails = true">Details</button>
+                  ng-click="activity.showDetails = true">Details</button>
           <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails"
-            ng-click="activity.showDetails = false">Hide Details</button>
-          <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i
-              class="fa fa-spin fa-spinner"></i> Processing</button>
+                  ng-click="activity.showDetails = false">Hide Details</button>
+          <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
           {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
           <div ng-if="activity.action && activity.showDetails" ng-bind-html="activity.action">
           </div>

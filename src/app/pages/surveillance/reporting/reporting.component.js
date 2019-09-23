@@ -51,6 +51,10 @@ export const SurveillanceReportingComponent = {
             }
         }
 
+        canInitiateAnnual (acb, year) {
+            return this.quarters.reduce((acc, q) => acc || (q.acb.name === acb.name && q.year === year), false);
+        }
+
         findAnnualReport (acb, year) {
             let report = this.annual
                 .find(report => report.acb.name === acb.name

@@ -34,7 +34,6 @@ export const ConfirmListingsComponent = {
                         Object.assign(resObj, item);
                     });
                     this.resources = resObj;
-                    this.$log.info(this.resources);
                 }
             }
         }
@@ -53,7 +52,7 @@ export const ConfirmListingsComponent = {
             let that = this;
 
             this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
+                templateUrl: 'chpl.components/listing/inspect/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,

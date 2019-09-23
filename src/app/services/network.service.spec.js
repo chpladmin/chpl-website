@@ -552,9 +552,9 @@
             $httpBackend.flush();
         });
 
-        it('should getApiUsers', () => {
-            $httpBackend.expectGET(/^\/rest\/key$/).respond(200, {data: 'response'});
-            networkService.getApiUsers().then(response => {
+        fit('should getApiUsers', () => {
+            $httpBackend.expectGET(/^\/rest\/key\?includeDeleted=true$/).respond(200, {data: 'response'});
+            networkService.getApiUsers(true).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1336,6 +1336,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getUsersAtDeveloper', () => {
+            $httpBackend.expectGET(/^\/rest\/developers\/payload\/users$/).respond(200, {data: 'response'});
+            networkService.getUsersAtDeveloper('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getVersion', () => {
             $httpBackend.expectGET(/^\/rest\/versions\/payload$/).respond(200, {data: 'response'});
             networkService.getVersion('payload').then(response => {
@@ -1500,6 +1508,14 @@
         it('should removeUserFromAtl', () => {
             $httpBackend.expectDELETE(/^\/rest\/atls\/2\/users\/1$/).respond(200);
             networkService.removeUserFromAtl(1, 2).then(response => {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should removeUserFromDeveloper', () => {
+            $httpBackend.expectDELETE(/^\/rest\/developers\/2\/users\/1$/).respond(200);
+            networkService.removeUserFromDeveloper(1, 2).then(response => {
                 expect(response.status).toEqual(200);
             });
             $httpBackend.flush();

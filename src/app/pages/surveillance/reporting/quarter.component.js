@@ -2,6 +2,7 @@ export const SurveillanceReportQuarterComponent = {
     templateUrl: 'chpl.surveillance/reporting/quarter.html',
     bindings: {
         report: '<',
+        relevantListing: '<',
         relevantListings: '<',
         surveillanceOutcomes: '<',
         surveillanceProcessTypes: '<',
@@ -26,7 +27,6 @@ export const SurveillanceReportQuarterComponent = {
             }
             if (changes.relevantListings) {
                 this.relevantListings = angular.copy(changes.relevantListings.currentValue);
-                this.backup.relevantListings = angular.copy(this.relevantListings);
             }
             if (this.relevantListings) {
                 this.parseRelevantListings(this.relevantListings);
@@ -45,7 +45,6 @@ export const SurveillanceReportQuarterComponent = {
 
         cancel () {
             this.report = angular.copy(this.backup.report);
-            //this.parseRelevantListings(this.backup.relevantListings);
             this.onCancel();
         }
 
@@ -72,13 +71,11 @@ export const SurveillanceReportQuarterComponent = {
             this.networkService.updateRelevantListing(this.report.id, listing).then(() => {
                 that.networkService.getRelevantListings(that.report.id).then(results => {
                     that.relevantListings = results;
-                    that.backup.relevantListings = angular.copy(results);
                     that.parseRelevantListings(that.relevantListings);
                 });
             }, () => {
                 that.networkService.getRelevantListings(that.report.id).then(results => {
                     that.relevantListings = results;
-                    that.backup.relevantListings = angular.copy(results);
                     that.parseRelevantListings(that.relevantListings);
                 });
             });
@@ -99,6 +96,10 @@ export const SurveillanceReportQuarterComponent = {
                 l.surveillances = l.surveillances.filter(s => this.isRelevantSurveillance(s));
                 return l;
             }).filter(l => l.surveillances && l.surveillances.length > 0);
+            if (this.relevantListing) {
+                this.areListingsShown = true;
+                this.relevantListing = this.relevantListings.find(l => l.id === this.relevantListing);
+            }
         }
     },
 }

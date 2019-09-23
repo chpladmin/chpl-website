@@ -76,7 +76,7 @@
             <p>{{ $ctrl.listing.certifyingBody.name }}</p>
           </div>
           <div class="product-element" ng-if="$ctrl.listing.testingLabs && $ctrl.listing.testingLabs.length !== 0" id="listing-information-onc-accredited-testing-laboratory">
-            <h2 class="product-heading">ONC-Accredited Testing Laborator{{ $ctrl.listing.testingLabs.length === 1 ? 'y' : 'ies' }}</h2>
+            <h2 class="product-heading">ONC-Authorized Testing Laborator{{ $ctrl.listing.testingLabs.length === 1 ? 'y' : 'ies' }}</h2>
             <p ng-repeat="atl in $ctrl.listing.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</p>
           </div>
           <div class="product-element" ng-if="$ctrl.listing.productAdditionalSoftware" id="listing-information-relied-upon-software">

@@ -36,8 +36,19 @@ let getResources = ($q, networkService) => {
 function administrationStateConfig ($stateProvider) {
     'ngInject'
     $stateProvider
+        .state('authorizePasswordReset', {
+            url: '/admin/authorizePasswordReset?token',
+            redirectTo: trans => {
+                return {
+                    state: 'administration',
+                    params: {
+                        token: trans.params().token,
+                    },
+                }
+            },
+        })
         .state('administration', {
-            url: '/administration',
+            url: '/administration?token',
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
         })
@@ -77,7 +88,7 @@ function administrationStateConfig ($stateProvider) {
         .state('administration.confirm', {
             abstract: true,
             url: '/confirm',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         })
         .state('administration.confirm.listings', {
             url: '/listings',
@@ -100,7 +111,7 @@ function administrationStateConfig ($stateProvider) {
             resolve: {
                 fuzzyTypes: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getFuzzyTypes();
                     }
                     return [];
@@ -111,7 +122,7 @@ function administrationStateConfig ($stateProvider) {
         .state('administration.jobs', {
             abstract: true,
             url: '/jobs',
-            template: '<ui-view/></div>',
+            template: '<ui-view/>',
         })
         .state('administration.jobs.background', {
             url: '/background',
@@ -134,14 +145,14 @@ function administrationStateConfig ($stateProvider) {
                 },
                 jobs: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                         return networkService.getScheduleJobs();
                     }
                     return [];
                 },
                 triggers: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole()) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                         return networkService.getScheduleTriggers();
                     }
                     return [];
