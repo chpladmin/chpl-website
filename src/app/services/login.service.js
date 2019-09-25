@@ -9,6 +9,7 @@
         var service = {
             canImpersonate: canImpersonate,
             getApiKey: getApiKey,
+            getCurrentUser: getCurrentUser,
             getFullname: getFullname,
             getToken: getToken,
             getUsername: getUsername,
@@ -16,6 +17,7 @@
             isImpersonating: isImpersonating,
             logout: logout,
             parseJwt: parseJwt,
+            saveCurrentUser: saveCurrentUser,
             saveToken: saveToken,
         }
         return service;
@@ -35,7 +37,7 @@
         }
 
         function getFullname () {
-            if (hasAnyRole()) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 if (identity.length === 3) {
@@ -49,12 +51,16 @@
             }
         }
 
+        function getCurrentUser () {
+            return $localStorage.currentUser;
+        }
+
         function getToken () {
             return $localStorage.jwtToken;
         }
 
         function getUsername () {
-            if (hasAnyRole()) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 return identity[1];
@@ -65,6 +71,9 @@
         }
 
         function hasAnyRole (roles) {
+            if (!roles || roles.length === 0) {
+                return false;
+            }
             var token = getToken();
             if (token) {
                 let userRole = parseJwt(token).Authority;
@@ -87,6 +96,7 @@
 
         function logout () {
             delete $localStorage.jwtToken;
+            delete $localStorage.currentUser;
         }
 
         function parseJwt (token) {
@@ -98,6 +108,10 @@
                 }
                 return {};
             }
+        }
+
+        function saveCurrentUser (user) {
+            $localStorage.currentUser = user;
         }
 
         function saveToken (token) {

@@ -7,15 +7,15 @@
 
   <div class="row">
     <div class="col-sm-6">
-      <chpl-filter feature-flag="adminNav" filter-type-name="User Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()" on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
+      <chpl-filter filter-type-name="User Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()" on-clear-filter="$ctrl.onClearFilter()"></chpl-filter>
     </div>
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
-    <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
-    <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
-            ng-csv="$ctrl.displayed" filename="User_{{ $ctrl.filename }}"
-            csv-header="['User', 'Email', 'Responsible User', 'Activity', 'Activity Date']"
-            csv-column-order="['subjectName', 'email', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
-      <i class="fa fa-cloud-download"></i> Download</button>
+      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
+      <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
+              ng-csv="$ctrl.displayed" filename="User_{{ $ctrl.filename }}"
+              csv-header="['User', 'Email', 'Responsible User', 'Activity', 'Activity Date']"
+              csv-column-order="['subjectName', 'email', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
+        <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
   <div class="row form-group form-inline">
@@ -40,15 +40,15 @@
   <table class="table table-responsive">
     <thead>
       <tr>
-          <th class="search-header" st-sort="subjectName" st-skip-natural="true">User Name</th>
-          <th class="search-header" st-sort="email" st-skip-natural="true">Email</th>
-          <th class="search-header" st-sort="responsibleUserFullName" st-skip-natural="true">Responsible User</th>
-          <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+        <th class="search-header" st-sort="subjectName" st-skip-natural="true">User Name</th>
+        <th class="search-header" st-sort="email" st-skip-natural="true">Email</th>
+        <th class="search-header" st-sort="responsibleUserFullName" st-skip-natural="true">Responsible User</th>
+        <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-if="$ctrl.displayed.length === 0">
-          <td colspan="5">No activity found</td>
+        <td colspan="5">No activity found</td>
       </tr>
       <tr ng-repeat="activity in $ctrl.displayed">
         <td>{{ activity.subjectName }}</td>

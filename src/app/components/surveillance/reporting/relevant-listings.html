@@ -28,7 +28,8 @@
             <td>{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ listing.surveillanceCount }}</td>
             <td>
-              <button class="btn btn-link" uib-tooltip="View Listing Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeListing = listing">
+              <button class="btn btn-link" id="view-listing-data-{{ listing.chplProductNumber }}"
+                      uib-tooltip="View Listing Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeListing = listing">
                 <i class="fa fa-eye"></i><span class="sr-only">View listing surveillance data</span>
               </button>
             </td>

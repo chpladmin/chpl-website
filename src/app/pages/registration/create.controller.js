@@ -32,7 +32,7 @@ window.zxcvbn = zxcvbn;
             vm.userDetails.hash = $stateParams.hash;
             vm.authorizeDetails.hash = $stateParams.hash;
             vm.message = {value: '', success: null};
-            if (authService.hasAnyRole()) {
+            if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 vm.authorizeUser();
             }
             vm.extras = ['chpl'];
@@ -40,15 +40,11 @@ window.zxcvbn = zxcvbn;
         }
 
         function authorizeUser () {
-            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || authService.hasAnyRole() && vm.authorizeDetails.hash) {
+            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && vm.authorizeDetails.hash) {
                 const username = vm.authorizeDetails.userName || authService.getUsername();
                 networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
-                        if (featureFlags.isOn('adminNav')) {
-                            $location.path('/administration');
-                        } else {
-                            $location.path('/admin');
-                        }
+                        $location.path('/administration');
                     }, function (error) {
                         if (error.status === 401) {
                             vm.message.value = 'A user may not have more than one role, or your username / password are incorrect';

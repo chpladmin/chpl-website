@@ -55,8 +55,12 @@ export const UserManagementComponent = {
                 this.networkService.getUsers()
                     .then(response => that.users = response.users);
                 break;
-            case 'reload':
-                this.$state.reload();
+            case 'impersonate':
+                if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+                    this.$state.go('dashboard');
+                } else {
+                    this.$state.reload();
+                }
                 break;
                 //no default
             }

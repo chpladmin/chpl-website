@@ -52,22 +52,24 @@ export const OncOrganizationsComponent = {
         }
 
         canEdit (org) {
-            return this.editableOrgs && this.editableOrgs.reduce((acc, cur) => acc || cur.id.toString() === org, false);
+            return !this.$state.includes('**.edit') // not editing
+                && this.$state.includes('**.organization') // at an organization level
+                && this.editableOrgs // has editable orgs
+                && this.editableOrgs.reduce((acc, cur) => acc || cur.id.toString() === org, false); // can edit specific org
+        }
+
+        hasOrg () {
+            return this.$state.includes('**.organization') || this.$state.includes('**.edit') || this.$state.includes('**.create');
         }
 
         edit ($event) {
-            this.isEditing = true;
-            this.generalCollapsed = false;
-            this.loadUsers();
-            this.$anchorScroll();
+            this.$state.go('.edit');
             $event.preventDefault();
             $event.stopPropagation();
         }
 
         toggleGeneral () {
-            if (!this.isEditing) {
-                this.generalCollapsed = !this.generalCollapsed;
-            }
+            this.generalCollapsed = !this.generalCollapsed;
         }
 
         loadOrgs () {
@@ -91,7 +93,12 @@ export const OncOrganizationsComponent = {
         }
 
         showOrg (org) {
-            if (this.$state.includes('**.organization')) {
+            if (this.$state.includes('**.edit')) {
+                this.$state.go('^.^.organization', {
+                    id: org.id,
+                    name: org.name,
+                });
+            } else if (this.$state.includes('**.organization') || this.$state.includes('**.create')) {
                 this.$state.go('^.organization', {
                     id: org.id,
                     name: org.name,
@@ -107,7 +114,13 @@ export const OncOrganizationsComponent = {
         }
 
         create () {
-            this.isCreating = true;
+            if (this.$state.includes('**.edit')) {
+                this.$state.go('^.^.create');
+            } else if (this.$state.includes('**.organization')) {
+                this.$state.go('^.create');
+            } else {
+                this.$state.go('.create');
+            }
         }
 
         takeAction (action, data) {
@@ -119,12 +132,11 @@ export const OncOrganizationsComponent = {
                     that.prepOrgs();
                     that.$state.reload();
                 }));
-                this.isEditing = false;
+                this.$state.go('^');
                 this.$anchorScroll();
                 break;
             case 'cancel':
-                this.isEditing = false;
-                this.isCreating = false;
+                this.$state.go('^');
                 this.$anchorScroll();
                 break;
             case 'create':
@@ -137,9 +149,9 @@ export const OncOrganizationsComponent = {
                         that.networkService[that.functions.get](true).then(editableOrgs => that.editableOrgs = editableOrgs[that.key]),
                     ];
                     that.$q.all(promises);
+                    this.$state.go('^');
                     that.showOrg(newOrg);
                 });
-                this.isCreating = false;
                 break;
                 //no default
             }
@@ -166,7 +178,7 @@ export const OncOrganizationsComponent = {
             case 'refresh':
                 that.loadUsers();
                 break;
-            case 'reload':
+            case 'impersonate':
                 this.$state.reload();
                 break;
                 //no default

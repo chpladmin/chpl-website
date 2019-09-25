@@ -26,10 +26,6 @@
                 networkService.getApiUserActivity.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()
-
-                el = angular.element('<ai-reports></ai-reports');
-
-                scope = $rootScope.$new()
                 el = angular.element('<chpl-reports-api-keys></chpl-reports-api-keys>');
                 $compile(el)(scope);
                 scope.$digest();

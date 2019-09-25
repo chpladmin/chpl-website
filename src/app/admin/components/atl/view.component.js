@@ -97,7 +97,7 @@ export const AtlManagementComponent = {
             case 'refresh':
                 this.networkService.getUsersAtAtl(this.atl.id).then(response => that.users = response.users);
                 break;
-            case 'reload':
+            case 'impersonate':
                 this.$state.reload();
                 break;
                 //no default

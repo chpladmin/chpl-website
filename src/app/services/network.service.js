@@ -202,10 +202,10 @@ export class NetworkService {
         if (options.startDate) { params.push('start=' + options.startDate.getTime()); }
         if (options.endDate) { params.push('end=' + options.endDate.getTime()); }
         if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
-        if (options.filter) {
+        if (options.filter && options.filter.key) {
             var tmp = 'filter=';
             if (!options.showOnly) { tmp += '!' }
-            tmp += options.filter
+            tmp += options.filter.key;
             params.push(tmp);
         }
         if (params.length > 0) { queryParams = '?' + params.join('&'); }
@@ -221,8 +221,12 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getApiUsers () {
-        return this.apiGET('/key');
+    getApiUsers (includeDeleted) {
+        if (includeDeleted) {
+            return this.apiGET('/key?includeDeleted=true');
+        } else {
+            return this.apiGET('/key?includeDeleted=false');
+        }
     }
 
     getAtl (id) {
@@ -682,6 +686,10 @@ export class NetworkService {
 
     removeUserFromAtl (userId, atlId) {
         return this.apiDELETE('/atls/' + atlId + '/users/' + userId);
+    }
+
+    removeUserFromDeveloper (userId, developerId) {
+        return this.apiDELETE('/developers/' + developerId + '/users/' + userId);
     }
 
     resetPassword (userObj) {

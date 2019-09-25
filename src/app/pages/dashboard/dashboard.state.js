@@ -7,13 +7,23 @@ let states = {
             resolve: {
                 developerId: (authService, networkService) => {
                     'ngInject'
-                    let username = authService.getUsername();
-                    if (username) {
-                        return networkService.getUserByUsername(username).organizationId || 222; // hard coded dev id until organizationId exists
+                    if (authService.hasAnyRole(['ROLE_DEVELOPER'])) {
+                        if (authService.getCurrentUser()) {
+                            return authService.getCurrentUser().organizations[0].id;
+                        } else {
+                            return networkService.getUserByUsername(authService.getUsername())
+                                .then(user => {
+                                    authService.saveCurrentUser(user);
+                                    return user.organizations[0].id;
+                                });
+                        }
                     }
                 },
             },
             data: { title: 'CHPL Dashboard' },
+            ncyBreadcrumb: {
+                label: 'Dashboard',
+            },
         },
     ],
     'base': [

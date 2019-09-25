@@ -20,8 +20,8 @@ export const ReportsListingsComponent = {
                 endDate: new Date(),
             };
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.categoriesFilter = '|LISTING|';
+            this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
             this.tableController = {};
         }
@@ -34,7 +34,6 @@ export const ReportsListingsComponent = {
                 this.doFilter(changes.filterToApply.currentValue);
                 return;
             }
-
             this.search();
         }
 
@@ -470,21 +469,6 @@ export const ReportsListingsComponent = {
                     newSurveillance: () => newS,
                 },
             });
-            /*
-            this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
-                controller: 'CompareSurveillanceRequirementsController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    newSurveillance: function () { return newS; },
-                    oldSurveillance: function () { return oldS; },
-                },
-                size: 'lg',
-            });
-            */
         }
 
         compareTestStuff (prev, curr) {
