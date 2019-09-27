@@ -76,7 +76,11 @@ export const ReportsUsersComponent = {
                 if (this.isActivityRoleChange(item)) {
                     action = item.description;
                 } else if (this.isActivityDeletedUser(item)) {
-                    action = 'User ' + item.originalData.subjectName + ' was deleted.';
+                    action = 'User ' + item.originalData.subjectName + ' was deleted';
+                    let changedOrgDescription = this.getOrganizationActionDescriptionIfChanged(item);
+                    if (changedOrgDescription !== null && changedOrgDescription !== '') {
+                        action += '<ul>' + changedOrgDescription + '</ul>';
+                    }
                 } else if (this.isActivityNewUser(item)) {
                     action = 'User ' + item.newData.subjectName + ' was created.';
                 } else if (this.isActivtyConfirmUser(item)) {
@@ -125,6 +129,7 @@ export const ReportsUsersComponent = {
             action += this.getActionDescriptionIfChanged(detail, 'passwordResetRequired', 'Password Reset Required');
             action += this.getActionDescriptionIfChanged(detail, 'enabled', 'Enabled');
             action += this.getActionDescriptionIfChanged(detail, 'userName', 'User Name');
+            action += this.getOrganizationActionDescriptionIfChanged(detail);
             action += '</ul>';
             return action;
         }
@@ -137,6 +142,26 @@ export const ReportsUsersComponent = {
                 change = '';
             }
             return change;
+        }
+
+        getOrganizationActionDescriptionIfChanged (detailObject) {
+            let action = '';
+            var orgKeys = [{key: 'organizations', display: 'Organizations'}];
+            var origOrgs = (detailObject.originalData === null || detailObject.originalData === undefined
+                            || detailObject.originalData.organizations === null || detailObject.originalData.organizations === undefined) ? [] : detailObject.originalData.organizations;
+            var newOrgs = (detailObject.newData === null || detailObject.newData === undefined
+                            || detailObject.newData.organizations === null || detailObject.newData.organizations === undefined) ? [] : detailObject.newData.organizations;
+            var orgChanges = this.ReportService.compareArray(origOrgs, newOrgs, orgKeys, 'name');
+            if (orgChanges !== null && orgChanges.length > 0) {
+                for (let j = 0; j < orgChanges.length; j++) {
+                    if (orgChanges[j] !== null && orgChanges[j].changes !== null && orgChanges[j].changes.length > 0) {
+                        for (let k = 0; k < orgChanges[j].changes.length; k++) {
+                            action += orgChanges[j].changes[k];
+                        }
+                    }
+                }
+            }
+            return action;
         }
 
         prepare (results) {
