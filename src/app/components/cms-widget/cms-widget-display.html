@@ -52,6 +52,9 @@
       </li>
     </ul>
   </div>
+  <p class="text-center text-danger" ng-if="widget.errorMessage">
+    {{ widget.errorMessage }}
+  </p>
   <p class="text-center" ng-if="widget.createResponse && widget.createResponse.ehrCertificationId">
     Your CMS EHR Certification ID<br />
     <strong>{{ widget.createResponse.ehrCertificationId }}</strong>
