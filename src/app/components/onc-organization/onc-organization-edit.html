@@ -1,4 +1,4 @@
-<div id="chpl-organization-edit-{{ $ctrl.type }}-{{ $ctrl.organization.id }}" ng-form="$ctrl.form" class="row">
+<div id="chpl-organization-edit" ng-form="$ctrl.form" class="row">
   <div class="col-sm-12">
     <div class="form-group">
       <label class="control-label" for="organization-name">{{ $ctrl.type }} <span class="text-danger">*</span></label>
@@ -37,10 +37,10 @@
     <h3>Address</h3>
     <chpl-address address="$ctrl.organization.address" is-editing="true" is-required="!$ctrl.organization.retired" is-disabled="$ctrl.organization.retired" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
     <div class="pull-right">
-      <button class="btn" id="chpl-organization-save-{{ $ctrl.type }}-{{ $ctrl.organization.id }}"
+      <button class="btn" id="chpl-organization-save"
               ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && $ctrl.form.$invalid"
               ng-mouseover="$ctrl.showFormErrors = true">Save {{ $ctrl.type }}</button>
-      <button class="btn btn-link" id="chpl-organization-cancel-{{ $ctrl.type }}-{{ $ctrl.organization.id }}"
+      <button class="btn btn-link" id="chpl-organization-cancel"
               ng-click="$ctrl.cancel()">Cancel</button>
     </div>
   </div>

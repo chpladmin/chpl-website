@@ -19,7 +19,7 @@
         <h3 class="panel-title">
           General Information
           <span class="pull-right">
-            <span ng-if="$ctrl.canEdit($ctrl.$state.params.id)"><button class="btn btn-link" ng-click="$ctrl.edit($event)">Edit</button></span>
+            <span ng-if="$ctrl.canEdit($ctrl.$state.params.id)"><button id="edit-organization" class="btn btn-link" ng-click="$ctrl.edit($event)">Edit</button></span>
             <i class="fa" ng-class="$ctrl.generalCollapsed ? 'fa-caret-down' : 'fa-caret-up'"></i>
           </span>
         </h3>
