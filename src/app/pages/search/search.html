@@ -390,7 +390,10 @@
                       <div class="btn-group">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>
                       </div>
-                      <div class="btn-group" ng-if="cp.certificationStatus !== 'Retired'">
+                      <div class="btn-group" ng-if="cp.edition === '2015'" feature-flag="effective-rule-date">
+                        <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-cms-widget-button>
+                      </div>
+                      <div class="btn-group" ng-if="cp.certificationStatus !== 'Retired'" feature-flag="effective-rule-date" feature-flag-hide>
                         <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-cms-widget-button>
                       </div>
                     </div>
