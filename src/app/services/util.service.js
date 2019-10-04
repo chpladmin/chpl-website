@@ -15,6 +15,7 @@
             certificationStatus: certificationStatus,
             extendSelect: extendSelect,
             findModel: findModel,
+            isBlank: isBlank,
             makeCsv: makeCsv,
             muuCount: muuCount,
             passwordClass: passwordClass,
@@ -31,7 +32,7 @@
             sortRequirements: sortRequirements,
             statusFont: statusFont,
             ternaryFilter: ternaryFilter,
-        }
+        };
         return service;
 
         ////////////////////////////////////////////////////////////////////
@@ -354,6 +355,17 @@
             } else {
                 return field ? 'True' : 'False';
             }
+        }
+
+        function isBlank (x) {
+            if (typeof x === 'string' || x === undefined || x === null) {
+                return !x || x.trim().length === 0;
+            } else if (Array.isArray(x)) {
+                return !x.length;
+            } else if (typeof x === 'object' && x.constructor === Object) {
+                return !Object.keys(x).length;
+            }
+            return false;
         }
     }
 })();
