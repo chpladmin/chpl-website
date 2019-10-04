@@ -46,11 +46,11 @@
                      ng-required="{{ $ctrl.additionalInput2Required }}">
             </div>
           </div>
-          <p class="text-danger" ng-show="{{ $ctrl.identifier }}form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.maxlength">
-            {{ $ctrl.additionalInputLabel2 }} is too long.
+          <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.maxlength">
+            {{ $ctrl.additionalInput2Label }} is too long.
           </p>
           <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.required">
-            {{ $ctrl.additionalInputLabel2 }} is required.
+            {{ $ctrl.additionalInput2Label }} is required.
           </p>
         </div>
       </div>
