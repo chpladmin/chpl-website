@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 10.27.0
+_7 October 2019_
+
+### Features
+* Disable next on developer inspect product page without save or valid system data
+  * Disable next button on developer inspect product page when there is no valid system data loaded, either via default, or via the save button itself
+  * Fix attestation not being displayed for the system developer even if saved in the system
+* Add organizations to user update activity display
+
+### User Interface Updates
+* Update sign up text to support Developers
+
+### Bug Fixes
+* Add Details column and merge, split activity details for Developer Reports
+
+---
+
 ## Version 10.26.0
 _23 September 2019_
 
@@ -12,6 +29,9 @@ _23 September 2019_
   * Includes Edit, Merge, and Split
   * Add support for Version editing on new Organizations - Developer - Product page
   * Includes Edit, Merge, and Split
+
+### Flagged Feature
+* Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports
 
 ### User Interface Updates
 * Standardize button display on complaints

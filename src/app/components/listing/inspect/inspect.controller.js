@@ -31,6 +31,8 @@
         vm.checkQmsBoolean = checkQmsBoolean;
 
         vm.certificationStatus = utilService.certificationStatus;
+        vm.isBlank = utilService.isBlank;
+        vm.getAttestationStringForCurrentSystemDeveloper = getAttestationStringForCurrentSystemDeveloper;
 
         activate();
 
@@ -214,7 +216,7 @@
         function isDisabled () {
             switch (vm.stage) {
             case 'dev':
-                return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId);
+                return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) || !isSystemDevContactInfoValid();
             case 'prd':
                 return (vm.productChoice === 'choose' && !vm.cp.product.productId);
             case 'ver':
@@ -222,6 +224,25 @@
             default:
                 return true;
             }
+        }
+
+        function isSystemDevContactInfoValid () {
+            return (vm.developer && !vm.isBlank(vm.developer.name) && !vm.isBlank(vm.developer.website))
+                && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email)
+                && !vm.isBlank(vm.developer.contact.phoneNumber))
+                && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city)
+                && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
+                && (vm.developer.transparencyAttestations && !vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper()));
+        }
+
+        function getAttestationStringForCurrentSystemDeveloper () {
+            if (vm.developer && vm.developer.transparencyAttestations) {
+                let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
+                    return curAttestationObj.acbName === vm.cp.certifyingBody.name;
+                });
+                return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
+            }
+            return null;
         }
 
         function cancel () {
