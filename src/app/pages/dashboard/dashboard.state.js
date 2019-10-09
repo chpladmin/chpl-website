@@ -5,6 +5,10 @@ let states = {
             url: '/dashboard',
             component: 'chplDashboard',
             resolve: {
+                changeRequests: networkService => {
+                    'ngInject'
+                    return networkService.getChangeRequests();
+                },
                 changeRequestTypes: networkService => {
                     'ngInject'
                     return networkService.getChangeRequestTypes();

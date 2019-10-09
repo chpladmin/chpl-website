@@ -1,23 +1,18 @@
-export const UserComponent = {
-    templateUrl: 'chpl.components/user/user.html',
+export const ChangeRequestComponent = {
+    templateUrl: 'chpl.components/change-request/change-request.html',
     bindings: {
-        user: '<',
-        isEditing: '<',
+        changeRequest: '<',
         takeAction: '&',
     },
-    controller: class UserComponent {
-        constructor ($log, authService) {
+    controller: class ChangeRequestComponent {
+        constructor ($log) {
             'ngInject'
             this.$log = $log;
-            this.canImpersonate = authService.canImpersonate;
         }
 
         $onChanges (changes) {
-            if (changes.user) {
-                this.user = angular.copy(changes.user.currentValue);
-            }
-            if (changes.isEditing) {
-                this.isEditing = angular.copy(changes.isEditing.currentValue);
+            if (changes.changeRequest) {
+                this.changeRequest = angular.copy(changes.changeRequest.currentValue);
             }
         }
 
@@ -30,32 +25,32 @@ export const UserComponent = {
         delete () {
             this.takeAction({
                 action: 'delete',
-                data: this.user.userId,
+                data: this.changeRequest.changeRequestId,
             });
         }
 
         edit () {
             this.takeAction({
                 action: 'edit',
-                data: this.user,
+                data: this.changeRequest,
             });
         }
 
         impersonate () {
             this.takeAction({
                 action: 'impersonate',
-                data: this.user,
+                data: this.changeRequest,
             });
         }
 
         save () {
             this.takeAction({
                 action: 'save',
-                data: this.user,
+                data: this.changeRequest,
             });
         }
     },
 }
 
 angular.module('chpl.components')
-    .component('chplUser', UserComponent);
+    .component('chplChangeRequest', ChangeRequestComponent);

@@ -640,6 +640,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getChangeRequests', () => {
+            $httpBackend.expectGET(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
+            networkService.getChangeRequests().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         fit('should getChangeRequestTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/change-request-types$/).respond(200, {data: 'response'});
             networkService.getChangeRequestTypes().then(response => {

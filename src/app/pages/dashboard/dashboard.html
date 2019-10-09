@@ -18,7 +18,7 @@
                           ></chpl-developer>
         </div>
         <div class="col-md-6" ng-if="$ctrl.action !== 'editDeveloper'">
-          <chpl-change-requests developer="$ctrl.developer" ng-if="$ctrl.developer"></chpl-change-requests>
+          <chpl-change-requests developer="$ctrl.developer" change-requests="$ctrl.changeRequests" ng-if="$ctrl.developer"></chpl-change-requests>
         </div>
       </div>
       <div class="row" ng-if="$ctrl.action !== 'editDeveloper'">

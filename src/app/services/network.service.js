@@ -255,6 +255,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getChangeRequests () {
+        return this.apiGET('/change-requests');
+    }
+
     getChangeRequestTypes () {
         return this.apiGET('/data/change-request-types');
     }
