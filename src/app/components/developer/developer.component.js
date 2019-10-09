@@ -71,7 +71,8 @@ export const DeveloperComponent = {
             if (action === 'edit') {
                 return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active' // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_DEVELOPER']) && this.developer.status.status === 'Active') // allowed for DEVELOPER iff Developer is "Active"
             }
             if (action === 'merge') {
                 return this.canMerge // allowed by containing component

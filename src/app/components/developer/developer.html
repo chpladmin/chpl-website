@@ -1,45 +1,62 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
-    <span class="pull-right">
-      <button class="btn btn-link btn-small" id="developer-component-edit-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i><span class="sr-only"> Edit Developer</span></button>
-      <button class="btn btn-link btn-small" id="developer-component-split-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i><span class="sr-only"> Split Developer</span></button>
-      <button class="btn btn-link btn-small" id="developer-component-merge-{{ $ctrl.developer.developerId }}" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i><span class="sr-only"> Merge Developer</span></button>
-    </span>
-    <h2>Developer</h2>
     <span ng-if="!$ctrl.showFull">
-      <p>
-        <a ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a>
-      </p>
+      <p><a ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a></p>
+      <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
     </span>
-    <span ng-if="$ctrl.showFull">
-      {{ $ctrl.developer.name }} <span ng-if="!$ctrl.isSplitting">(Developer code: {{$ctrl.developer.developerCode }}) <em class="pull-right">Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></span>
-    </span>
-    <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
-    <span ng-if="$ctrl.showFull">
-      <p ng-if="$ctrl.developer.website"><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></p>
-      <table ng-if="$ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="table table-condensed">
-        <thead>
-          <tr>
-            <th scope="col">Status History</th>
-            <th scope="col">Effective date</th>
-            <th scope="col">Reason for status change</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
-            <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
-            <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
-            <td>{{ status.reason || 'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <h3>Transparency Attestations</h3>
-      <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
-      <h3>Address</h3>
-      <chpl-address address="$ctrl.developer.address"></chpl-address>
-      <h3>Contact information</h3>
-      <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
-    </span>
+    <div class="panel panel-default" ng-if="$ctrl.showFull">
+      <div class="panel-heading">
+        Developer
+        <h2 class="panel-title">{{ $ctrl.developer.name }}</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <h3>Developer Details</h3>
+            <span ng-if="!$ctrl.isSplitting">
+              Developer code: {{ $ctrl.developer.developerCode }}<br />
+              Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
+              <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></span>
+            </span>
+            <h3>Address</h3>
+            <chpl-address address="$ctrl.developer.address"></chpl-address>
+          </div>
+          <div class="col-sm-4">
+            <h3>Contact information</h3>
+            <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
+          </div>
+          <div class="col-sm-4">
+            <h3>Transparency Attestations</h3>
+            <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+            <span ng-if="$ctrl.developer.status.status !== 'Active' || $ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+              <h3>Status Information</h3>
+              <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
+              <table ng-if="$ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">Status History</th>
+                    <th scope="col">Effective date</th>
+                    <th scope="col">Reason for status change</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
+                    <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
+                    <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
+                    <td>{{ status.reason || 'N/A' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer text-right">
+        <button class="btn btn-default" id="developer-component-edit" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()"><i class="fa fa-pencil-square-o"></i> Edit</button>
+        <button class="btn btn-default" id="developer-component-split" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i> Split</button>
+        <button class="btn btn-default" id="developer-component-merge" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i> Merge</button>
+      </div>
+    </div>
   </span> <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
