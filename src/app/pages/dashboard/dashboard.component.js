@@ -10,6 +10,7 @@ export const DashboardComponent = {
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
+            this.backup = {};
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
@@ -39,7 +40,10 @@ export const DashboardComponent = {
             let that = this;
             if (this.developerId) {
                 this.networkService.getUsersAtDeveloper(this.developerId).then(response => that.users = response.users);
-                this.networkService.getDeveloper(this.developerId).then(response => that.developer = response);
+                this.networkService.getDeveloper(this.developerId).then(response => {
+                    that.developer = response;
+                    that.backup.developer = angular.copy(response);
+                });
             }
         }
 
@@ -77,6 +81,7 @@ export const DashboardComponent = {
 
         cancel () {
             this.action = '';
+            this.developer = angular.copy(this.backup.developer);
         }
 
         save (developer) {
@@ -93,6 +98,13 @@ export const DashboardComponent = {
                     .then(response => {
                         that.$log.info(response);
                         that.cancel();
+                    }, error => {
+                        that.toaster.pop({
+                            type: 'error',
+                            title: 'Error in submission',
+                            body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
+                            bodyOutputType: 'trustedHtml',
+                        });
                     });
             }
             if (!request.submitted) {
