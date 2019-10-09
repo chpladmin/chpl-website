@@ -640,6 +640,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getChangeRequestTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/change-request-types$/).respond(200, {data: 'response'});
+            networkService.getChangeRequestTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCmsId', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids\/key\?includeCriteria=false$/).respond(200, {data: 'response'});
             networkService.getCmsId('key').then(response => {
@@ -1564,6 +1572,14 @@
         it('should splitVersion', () => {
             $httpBackend.expectPOST(/^\/rest\/versions\/1\/split$/).respond(200, {data: 'response'});
             networkService.splitVersion({oldVersion: {versionId: 1}}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should submitChangeRequest', () => {
+            $httpBackend.expectPOST(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
+            networkService.submitChangeRequest({changeRequestType: {id: 1}}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

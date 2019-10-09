@@ -255,24 +255,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getComplaints () {
-        return this.apiGET('/complaints');
-    }
-
-    getComplaintStatusTypes () {
-        return this.apiGET('/data/complaint-status-types');
-    }
-
-    getComplainantTypes () {
-        return this.apiGET('/data/complainant-types');
-    }
-
-    getCriteria () {
-        return this.apiGET('/data/certification-criteria');
-    }
-
-    getCriterionProductStatistics () {
-        return this.apiGET('/statistics/criterion_product');
+    getChangeRequestTypes () {
+        return this.apiGET('/data/change-request-types');
     }
 
     getCmsDownload () {
@@ -308,6 +292,26 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
             //no default
         }
+    }
+
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint-status-types');
+    }
+
+    getComplainantTypes () {
+        return this.apiGET('/data/complainant-types');
+    }
+
+    getCriteria () {
+        return this.apiGET('/data/certification-criteria');
+    }
+
+    getCriterionProductStatistics () {
+        return this.apiGET('/statistics/criterion_product');
     }
 
     getDeveloper (developerId) {
@@ -718,6 +722,10 @@ export class NetworkService {
 
     splitVersion (versionObject) {
         return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
+    }
+
+    submitChangeRequest (request) {
+        return this.apiPOST('/change-requests', request);
     }
 
     unimpersonateUser () {

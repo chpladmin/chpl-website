@@ -1,6 +1,7 @@
 export const DashboardComponent = {
     templateUrl: 'chpl.dashboard/dashboard.html',
     bindings: {
+        changeRequestTypes: '<',
         developerId: '<',
     },
     controller: class DashboardComponent {
@@ -21,6 +22,9 @@ export const DashboardComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.changeRequestTypes.currentValue) {
+                this.changeRequestTypes = changes.changeRequestTypes.currentValue;
+            }
             if (changes.developerId.currentValue) {
                 this.developerId = changes.developerId.currentValue;
             }
@@ -42,6 +46,9 @@ export const DashboardComponent = {
         takeAction (action, data) {
             let that = this;
             switch (action) {
+            case 'edit':
+                this.action = 'editDeveloper';
+                break;
             case 'delete':
                 this.networkService.removeUserFromDeveloper(data, this.developerId)
                     .then(() => that.networkService.getUsersAtDeveloper(that.developerId).then(response => that.users = response.users));
@@ -65,6 +72,31 @@ export const DashboardComponent = {
                 this.$state.reload();
                 break;
                 //no default
+            }
+        }
+
+        cancel () {
+            this.action = '';
+        }
+
+        save (developer) {
+            let that = this;
+            let request = {
+                developer: this.developer,
+                submitted: false,
+            };
+            if (developer.website !== this.developer.website) {
+                request.changeRequestType = this.changeRequestTypes.data.find(t => t.name === 'Website Change Request');
+                request.details = { website: developer.website };
+                request.submitted = true;
+                this.networkService.submitChangeRequest(request)
+                    .then(response => {
+                        that.$log.info(response);
+                        that.cancel();
+                    });
+            }
+            if (!request.submitted) {
+                this.cancel();
             }
         }
     },

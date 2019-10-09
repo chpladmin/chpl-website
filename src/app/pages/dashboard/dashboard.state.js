@@ -5,6 +5,10 @@ let states = {
             url: '/dashboard',
             component: 'chplDashboard',
             resolve: {
+                changeRequestTypes: networkService => {
+                    'ngInject'
+                    return networkService.getChangeRequestTypes();
+                },
                 developerId: (authService, networkService) => {
                     'ngInject'
                     if (authService.hasAnyRole(['ROLE_DEVELOPER'])) {
