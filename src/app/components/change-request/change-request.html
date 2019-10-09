@@ -1,3 +1,58 @@
-<div>
-  <pre>{{ $ctrl.changeRequest | json }}</pre>
-</div>
+<span ng-switch="$ctrl.activeState">
+  <span ng-switch-when="log">
+    <div class="row">
+      <div class="col-md-12" st-table="$ctrl.displayedHistory" st-safe-src="$ctrl.changeRequest.statuses">
+        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="search-header" st-sort="certificationBody" st-skip-natural="true">Acting Organization</th>
+              <th scope="col" class="search-header" st-sort="statusChangeDate" st-skip-natural="true" st-sort-default="reverse">Date of Status Change</th>
+              <th scope="col" class="search-header" st-sort="changeRequestStatusType.name" st-skip-natural="true">Status</th>
+              <th scope="col">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="status in $ctrl.displayedHistory">
+              <td>{{ status.certificationBody }}</td>
+              <td>{{ status.statusChangeDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ status.changeRequestStatusType.name }}</td>
+              <td>{{ status.comment }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </span>
+  <span ng-switch-when="edit">
+    <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+    Edit
+  </span>
+  <span ng-switch-when="withdraw">
+    <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+    Withdraw
+  </span>
+  <span ng-switch-default>
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Request Type</h3>
+        {{ $ctrl.changeRequest.changeRequestType.name }}
+      </div>
+      <div class="col-sm-4">
+        <h3>Date</h3>
+        {{ $ctrl.changeRequest.currentStatus.statusChangeDate | date : 'mediumDate' : 'UTC' }}
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <h3>Request Status</h3>
+        {{ $ctrl.changeRequest.currentStatus.changeRequestStatusType.name }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        Current website: {{ $ctrl.developer.website }} <br />
+        New website: {{ $ctrl.changeRequest.details.website }}
+      </div>
+    </div>
+  </span>
+</span>

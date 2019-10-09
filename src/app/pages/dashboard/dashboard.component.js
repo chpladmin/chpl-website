@@ -83,6 +83,24 @@ export const DashboardComponent = {
             }
         }
 
+        takeCrAction (action, data) {
+            //let that = this;
+            switch (action) {
+            case 'cancel':
+                this.action = undefined;
+                break;
+            case 'save':
+                this.$info.log('saving change request', data);
+                //this.networkService.removeUserFromDeveloper(data, this.developerId)
+                //.then(() => that.networkService.getUsersAtDeveloper(that.developerId).then(response => that.users = response.users));
+                break;
+            case 'focus':
+                this.action = 'changeRequest';
+                break;
+                //no default
+            }
+        }
+
         cancel () {
             this.action = '';
             this.developer = angular.copy(this.backup.developer);

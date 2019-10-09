@@ -1,16 +1,60 @@
-<div class="panel panel-default">
+<span ng-if="!$ctrl.activeChangeRequest">
   <div class="panel panel-default">
     <div class="panel-heading">
+      <button class="btn btn-default pull-right">Filter</button>
       <h2 class="panel-title">Change Requests</h2>
+    </div>
+    <div class="panel-body" ng-if="!$ctrl.activeChangeRequest">
+      <div class="row">
+        <div class="col-md-12" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="search-header" st-sort="type" st-skip-natural="true">Request Type</th>
+                <th scope="col" class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+                <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Request Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="cr in $ctrl.displayedChangeRequests" ng-click="$ctrl.activeChangeRequest = cr" class="clickable">
+                <td>{{ cr.changeRequestType.name }}</td>
+                <td>{{ cr.currentStatus.statusChangeDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td>{{ cr.currentStatus.changeRequestStatusType.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer text-right">
+      <button class="btn btn-default">Pagination</button>
+    </div>
+  </div>
+</span>
+<span ng-if="$ctrl.activeChangeRequest">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Change Request{{ $ctrl.activity }}</h2>
     </div>
     <div class="panel-body">
       <div class="row">
         <div class="col-md-12">
-          <div ng-repeat="cr in $ctrl.changeRequests">
-            <chpl-change-request change-request="cr"></chpl-change-request>
-          </div>
+          <chpl-change-request change-request="$ctrl.activeChangeRequest" take-action="$ctrl.act(action, data)" active-state="$ctrl.activeState"></chpl-change-request>
         </div>
       </div>
     </div>
+    <div class="panel-footer text-right">
+      <span ng-switch="$ctrl.activeState">
+        <span ng-switch-when="log">
+          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')">Back to Dashboard</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('cancel')">Back to Change Request</button>
+        </span>
+        <span ng-switch-default>
+          <button class="btn btn-default" ng-click="$ctrl.act('edit')">Edit CR</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('statusLog')">Status Log</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('withdraw')">Withdraw CR</button>
+        </span>
+      </span>
+    </div>
   </div>
-</div>
+</span>

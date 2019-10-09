@@ -7,21 +7,24 @@
     </div>
     <div class="main-content" id="main-content" tabindex="-1">
       <div class="row">
-        <div ng-class="$ctrl.action === 'editDeveloper' ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
+        <div ng-if="$ctrl.action !== 'changeRequest'" ng-class="$ctrl.action === 'editDeveloper' ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-developer developer="$ctrl.developer" ng-if="$ctrl.developer"
                           show-full="true"
                           can-edit="true"
-                          take-action="$ctrl.takeAction(action)"
+                          take-action="$ctrl.takeAction(action, data)"
                           is-editing="$ctrl.action === 'editDeveloper'"
                           on-cancel="$ctrl.cancel()"
                           on-edit="$ctrl.save(developer)"
                           ></chpl-developer>
         </div>
-        <div class="col-md-6" ng-if="$ctrl.action !== 'editDeveloper'">
-          <chpl-change-requests developer="$ctrl.developer" change-requests="$ctrl.changeRequests" ng-if="$ctrl.developer"></chpl-change-requests>
+        <div ng-if="$ctrl.action !== 'editDeveloper'" ng-class="$ctrl.action === 'changeRequest' ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
+          <chpl-change-requests developer="$ctrl.developer" ng-if="$ctrl.developer"
+                                change-requests="$ctrl.changeRequests"
+                                take-action="$ctrl.takeCrAction(action, data)"
+                                ></chpl-change-requests>
         </div>
       </div>
-      <div class="row" ng-if="$ctrl.action !== 'editDeveloper'">
+      <div class="row" ng-if="$ctrl.action !== 'editDeveloper' && $ctrl.action !== 'changeRequest'">
         <div class="col-md-12">
           <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
         </div>

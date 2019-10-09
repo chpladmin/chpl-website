@@ -1,6 +1,7 @@
 export const ChangeRequestComponent = {
     templateUrl: 'chpl.components/change-request/change-request.html',
     bindings: {
+        activeState: '<',
         changeRequest: '<',
         takeAction: '&',
     },
@@ -11,6 +12,9 @@ export const ChangeRequestComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.activeState) {
+                this.activeState = angular.copy(changes.activeState.currentValue);
+            }
             if (changes.changeRequest) {
                 this.changeRequest = angular.copy(changes.changeRequest.currentValue);
             }
@@ -19,27 +23,6 @@ export const ChangeRequestComponent = {
         cancel () {
             this.takeAction({
                 action: 'cancel',
-            });
-        }
-
-        delete () {
-            this.takeAction({
-                action: 'delete',
-                data: this.changeRequest.changeRequestId,
-            });
-        }
-
-        edit () {
-            this.takeAction({
-                action: 'edit',
-                data: this.changeRequest,
-            });
-        }
-
-        impersonate () {
-            this.takeAction({
-                action: 'impersonate',
-                data: this.changeRequest,
             });
         }
 
