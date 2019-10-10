@@ -44,6 +44,29 @@ export const DashboardComponent = {
             this.loggedIn();
         }
 
+        cancel () {
+            this.state = undefined;
+            this.developer = angular.copy(this.backup.developer);
+        }
+
+        inState (state) {
+            switch (state) {
+            case 'confirmation':
+                return this.state === 'confirmation';
+            case 'developer':
+                return this.state === 'focusDeveloper' || this.state === undefined;
+            case 'focusDeveloper':
+                return this.state === 'focusDeveloper';
+            case 'changeRequest':
+                return this.state === 'focusChangeRequest' || this.state === undefined;
+            case 'focusChangeRequest':
+                return this.state === 'focusChangeRequest';
+            case 'users':
+                return this.state === 'focusUsers' || this.state === undefined;
+                //no default
+            }
+        }
+
         loadData () {
             let that = this;
             if (this.developerId) {
@@ -55,17 +78,77 @@ export const DashboardComponent = {
             }
         }
 
-        takeAction (action, data) {
+        takeDeveloperAction (action, developer) {
+            let that = this;
+            let request = {
+                developer: this.developer,
+                submitted: false,
+            };
+            switch (action) {
+            case 'edit':
+                this.state = 'focusDeveloper';
+                break;
+            case 'save':
+                if (developer.website !== this.developer.website) {
+                    request.changeRequestType = this.changeRequestTypes.data.find(t => t.name === 'Website Change Request');
+                    request.details = { website: developer.website };
+                    request.submitted = true;
+                    this.networkService.submitChangeRequest(request)
+                        .then(() => {
+                            that.state = 'confirmation';
+                        }, error => {
+                            that.toaster.pop({
+                                type: 'error',
+                                title: 'Error in submission',
+                                body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
+                                bodyOutputType: 'trustedHtml',
+                            });
+                        });
+                }
+                if (!request.submitted) {
+                    this.cancel();
+                }
+                break;
+                //no default
+            }
+        }
+
+        takeCrAction (action, data) {
+            let that = this;
+            switch (action) {
+            case 'cancel':
+                this.state = undefined;
+                break;
+            case 'save':
+                this.networkService.updateChangeRequest(data)
+                    .then(() => that.networkService.getChangeRequests().then(response => {
+                        that.changeRequests = response;
+                        that.state = 'confirmation';
+                    }));
+                break;
+            case 'focus':
+                this.state = 'focusChangeRequest';
+                break;
+                //no default
+            }
+        }
+
+        takeUserAction (action, data) {
             let that = this;
             switch (action) {
             case 'edit':
-                this.action = 'editDeveloper';
+                this.state = 'focusUsers';
+                break;
+            case 'cancel':
+                this.state = undefined;
                 break;
             case 'delete':
+                this.state = undefined;
                 this.networkService.removeUserFromDeveloper(data, this.developerId)
                     .then(() => that.networkService.getUsersAtDeveloper(that.developerId).then(response => that.users = response.users));
                 break;
             case 'invite':
+                this.state = undefined;
                 this.networkService.inviteUser({
                     role: data.role,
                     emailAddress: data.email,
@@ -77,66 +160,15 @@ export const DashboardComponent = {
                 }));
                 break;
             case 'refresh':
+                this.state = undefined;
                 this.networkService.getUsersAtDeveloper(this.developerId)
                     .then(response => that.users = response.users);
                 break;
             case 'impersonate':
+                this.state = undefined;
                 this.$state.reload();
                 break;
                 //no default
-            }
-        }
-
-        takeCrAction (action, data) {
-            let that = this;
-            switch (action) {
-            case 'cancel':
-                this.action = undefined;
-                break;
-            case 'save':
-                this.networkService.updateChangeRequest(data)
-                    .then(() => that.networkService.getChangeRequests().then(response => {
-                        that.changeRequests = response;
-                        that.action = undefined;
-                    }));
-                break;
-            case 'focus':
-                this.action = 'changeRequest';
-                break;
-                //no default
-            }
-        }
-
-        cancel () {
-            this.action = '';
-            this.developer = angular.copy(this.backup.developer);
-        }
-
-        save (developer) {
-            let that = this;
-            let request = {
-                developer: this.developer,
-                submitted: false,
-            };
-            if (developer.website !== this.developer.website) {
-                request.changeRequestType = this.changeRequestTypes.data.find(t => t.name === 'Website Change Request');
-                request.details = { website: developer.website };
-                request.submitted = true;
-                this.networkService.submitChangeRequest(request)
-                    .then(response => {
-                        that.$log.info(response);
-                        that.cancel();
-                    }, error => {
-                        that.toaster.pop({
-                            type: 'error',
-                            title: 'Error in submission',
-                            body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
-                            bodyOutputType: 'trustedHtml',
-                        });
-                    });
-            }
-            if (!request.submitted) {
-                this.cancel();
             }
         }
     },

@@ -7,18 +7,21 @@
     </div>
     <div class="main-content" id="main-content" tabindex="-1">
       <div class="row is-flex">
-        <div ng-if="$ctrl.action !== 'changeRequest'" ng-class="$ctrl.action === 'editDeveloper' ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
+        <div ng-if="$ctrl.inState('confirmation')" class="col-md-10 col-md-offset-1">
+          <chpl-confirmation take-action="$ctrl.cancel()"></chpl-confirmation>
+        </div>
+        <div ng-if="$ctrl.inState('developer')" ng-class="$ctrl.inState('focusDeveloper') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-developer ng-if="$ctrl.developer"
                           developer="$ctrl.developer"
                           show-full="true"
                           can-edit="true"
-                          take-action="$ctrl.takeAction(action, data)"
-                          is-editing="$ctrl.action === 'editDeveloper'"
+                          take-action="$ctrl.takeDeveloperAction(action, data)"
+                          is-editing="$ctrl.inState('focusDeveloper')"
                           on-cancel="$ctrl.cancel()"
-                          on-edit="$ctrl.save(developer)"
+                          on-edit="$ctrl.takeDeveloperAction('save', developer)"
                           ></chpl-developer>
         </div>
-        <div ng-if="$ctrl.action !== 'editDeveloper'" ng-class="$ctrl.action === 'changeRequest' ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
+        <div ng-if="$ctrl.inState('changeRequest')" ng-class="$ctrl.inState('focusChangeRequest') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-change-requests ng-if="$ctrl.developer"
                                 change-requests="$ctrl.changeRequests"
                                 change-request-status-types="$ctrl.changeRequestStatusTypes"
@@ -27,9 +30,13 @@
                                 ></chpl-change-requests>
         </div>
       </div>
-      <div class="row" ng-if="$ctrl.action !== 'editDeveloper' && $ctrl.action !== 'changeRequest'">
+      <div class="row" ng-if="$ctrl.inState('users')">
         <div class="col-md-12">
-          <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
+          <chpl-users column-count="3"
+                      users="$ctrl.users"
+                      roles="$ctrl.roles"
+                      take-action="$ctrl.takeUserAction(action, data)"
+                      ></chpl-users>
         </div>
       </div>
     </div>

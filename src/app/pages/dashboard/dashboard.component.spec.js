@@ -114,7 +114,7 @@
             describe('with respect to callbacks', () => {
                 it('should handle delete', () => {
                     let initCount = networkService.getUsersAtDeveloper.calls.count();
-                    ctrl.takeAction('delete', 3);
+                    ctrl.takeUserAction('delete', 3);
                     scope.$digest();
                     expect(networkService.removeUserFromDeveloper).toHaveBeenCalledWith(3, 22);
                     expect(networkService.getUsersAtDeveloper).toHaveBeenCalledWith(22);
@@ -122,7 +122,7 @@
                 });
 
                 it('should handle invitation', () => {
-                    ctrl.takeAction('invite', {role: 'ROLE_DEVELOPER', email: 'fake'});
+                    ctrl.takeUserAction('invite', {role: 'ROLE_DEVELOPER', email: 'fake'});
                     spyOn(toaster, 'pop');
                     scope.$digest();
                     expect(networkService.inviteUser).toHaveBeenCalledWith({
@@ -139,7 +139,7 @@
 
                 it('should handle refresh', () => {
                     let initCount = networkService.getUsersAtDeveloper.calls.count();
-                    ctrl.takeAction('refresh');
+                    ctrl.takeUserAction('refresh');
                     scope.$digest();
                     expect(networkService.getUsersAtDeveloper).toHaveBeenCalledWith(22);
                     expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount + 1);
@@ -147,7 +147,7 @@
 
                 it('should handle impersonate', () => {
                     spyOn($state, 'reload');
-                    ctrl.takeAction('impersonate');
+                    ctrl.takeUserAction('impersonate');
                     expect($state.reload).toHaveBeenCalled();
                 });
             });
