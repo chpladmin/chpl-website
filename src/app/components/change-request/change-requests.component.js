@@ -51,17 +51,15 @@ export const ChangeRequestsComponent = {
                 break;
             case 'save':
                 if (this.activeState === 'withdraw') {
-                    this.activeChangeRequest.statuses.push({
+                    this.activeChangeRequest.currentStatus = {
                         changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Cancelled by Requester'),
                         comment: this.activeChangeRequest.comment,
-                        statusChangeDate: new Date().getTime(),
-                    });
+                    };
                 } else if (this.activeChangeRequest.currentStatus.name === 'Pending Developer Action') {
-                    this.activeChangeRequest.statuses.push({
+                    this.activeChangeRequest.currentStatus = {
                         changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Pending ONC-ACB Action'),
                         comment: this.activeChangeRequest.comment,
-                        statusChangeDate: new Date().getTime(),
-                    });
+                    };
                 }
                 this.takeAction({
                     action: 'save',

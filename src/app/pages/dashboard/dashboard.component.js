@@ -95,6 +95,7 @@ export const DashboardComponent = {
                     request.submitted = true;
                     this.networkService.submitChangeRequest(request)
                         .then(() => {
+                            that.networkService.getChangeRequests().then(response => that.changeRequests = response);
                             that.state = 'confirmation';
                         }, error => {
                             that.toaster.pop({
