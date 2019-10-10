@@ -87,7 +87,8 @@ export const ReportsProductsComponent = {
                 var change;
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
                     activity.name = item.newData.name;
-                    activity.action = 'Update:<ul>';
+                    activity.type = 'Product has been updated';
+                    activity.action = 'Product has been updated:<ul>';
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'name', 'Name');
                     if (change) {
                         activity.action += '<li>' + change + '</li>';
@@ -101,31 +102,35 @@ export const ReportsProductsComponent = {
                         activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
                     }
                     if (!angular.equals(item.originalData.ownerHistory, item.newData.ownerHistory)) {
-                        var action = '<li>Owner history changed. Was:<ul>';
+                        var ownerHistoryActionDetails = '<li>Owner history changed. Was:<ul>';
                         if (item.originalData.ownerHistory.length === 0) {
-                            action += '<li>No previous history</li>';
+                            ownerHistoryActionDetails += '<li>No previous history</li>';
                         } else {
                             for (j = 0; j < item.originalData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + item.originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                ownerHistoryActionDetails += '<li><strong>' + item.originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
                             }
                         }
-                        action += '</ul>Now:<ul>';
+                        ownerHistoryActionDetails += '</ul>Now:<ul>';
                         if (item.newData.ownerHistory.length === 0) {
-                            action += '<li>No new history</li>';
+                            ownerHistoryActionDetails += '<li>No new history</li>';
                         } else {
                             for (j = 0; j < item.newData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                ownerHistoryActionDetails += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
                             }
                         }
-                        action += '</ul></li>';
-                        activity.action += action;
+                        ownerHistoryActionDetails += '</ul></li>';
+                        activity.action += ownerHistoryActionDetails;
                     }
                     activity.action += '</ul>';
+                    activity.detailsCSV = activity.action;
                 } else {
                     this.ReportService.interpretNonUpdate(activity, item, 'product');
                     activity.action = activity.action[0];
+                    activity.type = activity.action;
                 }
                 meta.action = activity.action;
+                meta.activityType = activity.type;
+                meta.detailsCSV = activity.detailsCSV;
             });
         }
 
