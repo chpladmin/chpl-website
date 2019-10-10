@@ -62,11 +62,6 @@
             });
 
             describe('when using callbacks', () => {
-                it('should send back data on edit', () => {
-                    ctrl.edit();
-                    expect(scope.takeAction).toHaveBeenCalledWith('edit', mock.changeRequest);
-                });
-
                 it('should handle save', () => {
                     ctrl.save();
                     expect(scope.takeAction).toHaveBeenCalledWith('save', mock.changeRequest);
@@ -75,16 +70,6 @@
                 it('should handle cancel', () => {
                     ctrl.cancel();
                     expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
-                });
-
-                it('should handle delete', () => {
-                    ctrl.delete();
-                    expect(scope.takeAction).toHaveBeenCalledWith('delete', 43);
-                });
-
-                it('should handle impersonate', () => {
-                    ctrl.impersonate();
-                    expect(scope.takeAction).toHaveBeenCalledWith('impersonate', mock.changeRequest);
                 });
             });
         });

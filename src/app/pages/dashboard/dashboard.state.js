@@ -9,6 +9,10 @@ let states = {
                     'ngInject'
                     return networkService.getChangeRequests();
                 },
+                changeRequestStatusTypes: networkService => {
+                    'ngInject'
+                    return networkService.getChangeRequestStatusTypes();
+                },
                 changeRequestTypes: networkService => {
                     'ngInject'
                     return networkService.getChangeRequestTypes();

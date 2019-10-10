@@ -259,6 +259,10 @@ export class NetworkService {
         return this.apiGET('/change-requests');
     }
 
+    getChangeRequestStatusTypes () {
+        return this.apiGET('/data/change-request-status-types');
+    }
+
     getChangeRequestTypes () {
         return this.apiGET('/data/change-request-types');
     }
@@ -738,6 +742,10 @@ export class NetworkService {
 
     updateAnnualSurveillanceReport (report) {
         return this.apiPUT('/surveillance-report/annual', report);
+    }
+
+    updateChangeRequest (changeRequest) {
+        return this.apiPUT('/change-requests/1', changeRequest)
     }
 
     updateComplaint (complaint) {

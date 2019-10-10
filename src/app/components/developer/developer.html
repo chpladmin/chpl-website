@@ -69,14 +69,14 @@
         <div class="form-group">
           <div class="row">
             <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
-              <label class="control-label" for="developerName">Developer name <span class="text-danger">*</span></label>
+              <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
               <div>
                 <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300" ng-disabled="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])"></input>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
               </div>
               <div class="form-group">
-                <label class="control-label" for="developerWebsite">Developer website</label>
+                <label class="control-label" for="developer-website">Developer website</label>
                 <div>
                   <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
                   <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>

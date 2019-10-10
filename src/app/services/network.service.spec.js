@@ -648,6 +648,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getChangeRequestStatusTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/change-request-status-types$/).respond(200, {data: 'response'});
+            networkService.getChangeRequestStatusTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         fit('should getChangeRequestTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/change-request-types$/).respond(200, {data: 'response'});
             networkService.getChangeRequestTypes().then(response => {
@@ -1604,6 +1612,14 @@
         fit('should updateAnnualSurveillanceReport', () => {
             $httpBackend.expectPUT(/^\/rest\/surveillance-report\/annual$/).respond(200, {data: 'response'});
             networkService.updateAnnualSurveillanceReport('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should updateChangeRequest', () => {
+            $httpBackend.expectPUT(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
+            networkService.updateChangeRequest({id: 1}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

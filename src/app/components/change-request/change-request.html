@@ -24,13 +24,46 @@
       </div>
     </div>
   </span>
-  <span ng-switch-when="edit">
-    <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
-    Edit
-  </span>
-  <span ng-switch-when="withdraw">
-    <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
-    Withdraw
+  <span ng-switch-when="edit|withdraw" ng-switch-when-separator="|">
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Current Website</h3>
+        <div class="form-group">
+          <label class="control-label" for="current-website">Developer website</label>
+          <div>
+            <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="current-website" name="currentWebsite" disabled></input>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <h3>New Website</h3>
+        <div class="form-group">
+          <label class="control-label" for="new-website">New website</label>
+          <div>
+            <input class="input-sm form-control" type="url" ng-model="$ctrl.changeRequest.details.website" id="new-website" name="newWebsite" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw'" ng-change="$ctrl.update()"></input>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newWebsite.$touched) && $ctrl.form.newWebsite.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newWebsite.$touched) && $ctrl.form.newWebsite.$error.url">Improper format (http://www.example.com)</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <h3>Reason for Change</h3>
+        <div class="form-group">
+          <label class="control-label" for="comment">Reason</label>
+          <div>
+            <textarea class="input-sm form-control" id="comment" name="comment" rows="8" placeholder="Please enter a reason for editing this change request"
+                      ng-model="$ctrl.changeRequest.comment" ng-change="$ctrl.update()"
+                      ng-disabled="$ctrl.activeState === 'edit' && $ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'"></textarea>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.comment.$touched) && $ctrl.form.comment.$error.required">Field is required</div>
+          </div>
+        </div>
+        <h3>Change Status</h3>
+        <p ng-if="$ctrl.activeState === 'withdraw'">You're withdrawing this change request</p>
+        <p ng-if="$ctrl.activeState === 'edit' && $ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'">No status change will happen</p>
+        <p ng-if="$ctrl.activeState === 'edit' && $ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'">Change request will be set to "Pending ONC-ACB Action"</p>
+      </div>
+    </div>
   </span>
   <span ng-switch-default>
     <div class="row">

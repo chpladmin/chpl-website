@@ -2,6 +2,7 @@ export const DashboardComponent = {
     templateUrl: 'chpl.dashboard/dashboard.html',
     bindings: {
         changeRequests: '<',
+        changeRequestStatusTypes: '<',
         changeRequestTypes: '<',
         developerId: '<',
     },
@@ -26,6 +27,9 @@ export const DashboardComponent = {
         $onChanges (changes) {
             if (changes.changeRequests.currentValue) {
                 this.changeRequests = changes.changeRequests.currentValue;
+            }
+            if (changes.changeRequestStatusTypes.currentValue) {
+                this.changeRequestStatusTypes = changes.changeRequestStatusTypes.currentValue;
             }
             if (changes.changeRequestTypes.currentValue) {
                 this.changeRequestTypes = changes.changeRequestTypes.currentValue;
@@ -84,15 +88,17 @@ export const DashboardComponent = {
         }
 
         takeCrAction (action, data) {
-            //let that = this;
+            let that = this;
             switch (action) {
             case 'cancel':
                 this.action = undefined;
                 break;
             case 'save':
-                this.$info.log('saving change request', data);
-                //this.networkService.removeUserFromDeveloper(data, this.developerId)
-                //.then(() => that.networkService.getUsersAtDeveloper(that.developerId).then(response => that.users = response.users));
+                this.networkService.updateChangeRequest(data)
+                    .then(() => that.networkService.getChangeRequests().then(response => {
+                        that.changeRequests = response;
+                        that.action = undefined;
+                    }));
                 break;
             case 'focus':
                 this.action = 'changeRequest';
