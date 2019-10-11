@@ -5,7 +5,12 @@
       <h2 class="panel-title">Change Requests</h2>
     </div>
     <div class="panel-body" ng-if="!$ctrl.activeChangeRequest">
-      <div class="row">
+      <div class="row" ng-if="!$ctrl.changeRequests || $ctrl.changeRequests.length === 0">
+        <div class="col-md-12">
+          No change requests found
+        </div>
+      </div>
+      <div class="row" ng-if="$ctrl.changeRequests && $ctrl.changeRequests.length > 0">
         <div class="col-md-12" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests">
           <table class="table">
             <thead>
