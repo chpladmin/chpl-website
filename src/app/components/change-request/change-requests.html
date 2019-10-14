@@ -1,38 +1,59 @@
-<span ng-if="!$ctrl.activeChangeRequest">
-  <div class="panel panel-default">
+<span ng-show="!$ctrl.activeChangeRequest">
+  <div class="panel panel-default" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests" st-set-filter="customFilter">
     <div class="panel-heading">
-      <button class="btn btn-default pull-right">Filter</button>
+      <div uib-dropdown auto-close="outsideClick" class="btn-group pull-right">
+        <button class="btn btn-default dropdown-toggle" type="button" id="filter-date-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+          <i class="fa fa-calendar"></i> Select a Date Range
+        </button>
+        <ul class="dropdown-menu" aria-labeledby="filter-date-button" uib-dropdown-menu>
+          <ai-date-range
+             predicate="changeDate"
+             ></ai-date-range>
+        </ul>
+      </div>
+      <div uib-dropdown auto-close="outsideClick" class="btn-group pull-right">
+        <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+          <i class="fa fa-filter"></i> Request Status
+        </button>
+        <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+          <st-list-multiple
+             collection="$ctrl.changeRequests"
+             predicate="requestStatus"
+             fixed-items="$ctrl.filterItems.statusItems"
+             ></st-list-multiple>
+        </ul>
+      </div>
       <h2 class="panel-title">Change Requests</h2>
     </div>
     <div class="panel-body" ng-if="!$ctrl.activeChangeRequest">
-      <div class="row" ng-if="!$ctrl.changeRequests || $ctrl.changeRequests.length === 0">
+      <div class="row" ng-if="!$ctrl.displayedChangeRequests || $ctrl.displayedChangeRequests.length === 0">
         <div class="col-md-12">
           No change requests found
         </div>
       </div>
-      <div class="row" ng-if="$ctrl.changeRequests && $ctrl.changeRequests.length > 0">
-        <div class="col-md-12" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests">
+      <div class="row" ng-if="$ctrl.displayedChangeRequests && $ctrl.displayedChangeRequests.length > 0">
+        <div class="col-md-12">
           <table class="table">
             <thead>
               <tr>
-                <th scope="col" class="search-header" st-sort="type" st-skip-natural="true">Request Type</th>
-                <th scope="col" class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
-                <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Request Status</th>
+                <th>Request Type</th>
+                <th scope="col" class="search-header" st-sort="changeDate" st-skip-natural="true" st-sort-default="reverse">Date</th>
+                <th scope="col" class="search-header" st-sort="requestStatus" st-skip-natural="true">Request Status</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="cr in $ctrl.displayedChangeRequests" ng-click="$ctrl.activeChangeRequest = cr" class="clickable">
                 <td>{{ cr.changeRequestType.name }}</td>
-                <td>{{ cr.currentStatus.statusChangeDate | date : 'mediumDate' : 'UTC' }}</td>
-                <td>{{ cr.currentStatus.changeRequestStatusType.name }}</td>
+                <td>{{ cr.changeDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td>{{ cr.requestStatus }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    <div class="panel-footer text-right">
-      <button class="btn btn-default">Pagination</button>
+    <div class="panel-footer text-center">
+      <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
     </div>
   </div>
 </span>

@@ -683,4 +683,22 @@ option[disabled] {
     .spaced-out {
         margin-top: 10px;
     }
+
+    .dropdown-menu {
+        left: auto;
+        right: 0;
+        width: 150%;
+        max-height: 300px;
+        overflow: auto;
+
+        li {
+
+            label {
+                cursor: pointer;
+                display: block;
+                padding: 3px 20px;
+                clear: both;
+            }
+        }
+    }
 }

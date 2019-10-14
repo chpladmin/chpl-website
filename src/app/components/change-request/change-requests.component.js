@@ -11,19 +11,27 @@ export const ChangeRequestsComponent = {
             'ngInject'
             this.$log = $log;
             this.backup = {};
+            this.filterItems = {
+                pageSize: 3,
+            };
         }
 
         $onChanges (changes) {
             if (changes.changeRequests.currentValue) {
                 this.displayedChangeRequests = undefined;
-                this.changeRequests = angular.copy(changes.changeRequests.currentValue);
-                this.backup.changeRequests = angular.copy(changes.changeRequests.currentValue);
+                this.changeRequests = changes.changeRequests.currentValue.map(cr => {
+                    cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
+                    cr.changeDate = cr.currentStatus.statusChangeDate;
+                    return cr;
+                });
+                this.backup.changeRequests = angular.copy(this.changeRequests);
                 this.activeState = undefined;
                 this.activeChangeRequest = undefined;
                 this.activity = undefined;
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
+                this.filterItems.statusItems = this.changeRequestStatusTypes.data.map(crst => ({value: crst.name, selected: true}));
             }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
