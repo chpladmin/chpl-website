@@ -745,7 +745,7 @@ export class NetworkService {
     }
 
     updateChangeRequest (changeRequest) {
-        return this.apiPUT('/change-requests/1', changeRequest)
+        return this.apiPUT('/change-requests', changeRequest)
     }
 
     updateComplaint (complaint) {
