@@ -55,7 +55,7 @@ export const ChangeRequestsComponent = {
                         changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Cancelled by Requester'),
                         comment: this.activeChangeRequest.comment,
                     };
-                } else if (this.activeChangeRequest.currentStatus.name === 'Pending Developer Action') {
+                } else if (this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
                     this.activeChangeRequest.currentStatus = {
                         changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Pending ONC-ACB Action'),
                         comment: this.activeChangeRequest.comment,
