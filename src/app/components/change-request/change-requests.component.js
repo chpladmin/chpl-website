@@ -17,7 +17,7 @@ export const ChangeRequestsComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.changeRequests.currentValue) {
+            if (changes.changeRequests && changes.changeRequests.currentValue) {
                 this.displayedChangeRequests = undefined;
                 this.changeRequests = changes.changeRequests.currentValue.map(cr => {
                     cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
@@ -33,7 +33,7 @@ export const ChangeRequestsComponent = {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
                 this.filterItems.statusItems = this.changeRequestStatusTypes.data.map(crst => ({value: crst.name, selected: true}));
             }
-            if (changes.developer) {
+            if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
             }
         }
