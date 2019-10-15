@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="main-content" id="main-content" tabindex="-1">
-      <div class="row is-flex">
+      <div class="row">
         <div ng-if="$ctrl.inState('confirmation')" class="col-md-10 col-md-offset-1">
           <chpl-confirmation take-action="$ctrl.cancel()"></chpl-confirmation>
         </div>
@@ -21,7 +21,7 @@
                           on-edit="$ctrl.takeDeveloperAction('save', developer)"
                           ></chpl-developer>
         </div>
-        <div ng-if="$ctrl.inState('changeRequest')" ng-class="$ctrl.inState('focusChangeRequest') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
+        <div ng-if="$ctrl.inState('changeRequest') && $ctrl.isOn('change-request')" ng-class="$ctrl.inState('focusChangeRequest') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-change-requests ng-if="$ctrl.developer"
                                 change-requests="$ctrl.changeRequests"
                                 change-request-status-types="$ctrl.changeRequestStatusTypes"

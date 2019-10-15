@@ -5,17 +5,23 @@ let states = {
             url: '/dashboard',
             component: 'chplDashboard',
             resolve: {
-                changeRequests: networkService => {
+                changeRequests: (featureFlags, networkService) => {
                     'ngInject'
-                    return networkService.getChangeRequests();
+                    if (featureFlags.isOn('change-request')) {
+                        return networkService.getChangeRequests();
+                    }
                 },
-                changeRequestStatusTypes: networkService => {
+                changeRequestStatusTypes: (featureFlags, networkService) => {
                     'ngInject'
-                    return networkService.getChangeRequestStatusTypes();
+                    if (featureFlags.isOn('change-request')) {
+                        return networkService.getChangeRequestStatusTypes();
+                    }
                 },
-                changeRequestTypes: networkService => {
+                changeRequestTypes: (featureFlags, networkService) => {
                     'ngInject'
-                    return networkService.getChangeRequestTypes();
+                    if (featureFlags.isOn('change-request')) {
+                        return networkService.getChangeRequestTypes();
+                    }
                 },
                 developerId: (authService, networkService) => {
                     'ngInject'

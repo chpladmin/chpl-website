@@ -7,13 +7,14 @@ export const DashboardComponent = {
         developerId: '<',
     },
     controller: class DashboardComponent {
-        constructor ($log, $scope, $state, authService, networkService, toaster) {
+        constructor ($log, $scope, $state, authService, featureFlags, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
             this.backup = {};
             this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.toaster = toaster;
             this.roles = ['ROLE_DEVELOPER'];
