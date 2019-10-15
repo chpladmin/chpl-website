@@ -19,10 +19,12 @@
                     return $delegate;
                 });
                 $provide.decorator('networkService', $delegate => {
+                    $delegate.getChangeRequests = jasmine.createSpy('getChangeRequests');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
                     $delegate.getUsersAtDeveloper = jasmine.createSpy('getUsersAtDeveloper');
                     $delegate.inviteUser = jasmine.createSpy('inviteUser');
                     $delegate.removeUserFromDeveloper = jasmine.createSpy('removeUserFromDeveloper');
+                    $delegate.updateChangeRequest = jasmine.createSpy('updateChangeRequest');
 
                     return $delegate;
                 });
@@ -37,10 +39,12 @@
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
+                networkService.getChangeRequests.and.returnValue($q.when([]));
                 networkService.getDeveloper.and.returnValue($q.when(mock.developer));
                 networkService.getUsersAtDeveloper.and.returnValue($q.when({users: mock.users}));
                 networkService.inviteUser.and.returnValue($q.when({}));
                 networkService.removeUserFromDeveloper.and.returnValue($q.when({}));
+                networkService.updateChangeRequest.and.returnValue($q.when({}));
                 toaster = _toaster_;
 
                 scope = $rootScope.$new();
@@ -111,7 +115,7 @@
                 });
             });
 
-            describe('with respect to callbacks', () => {
+            describe('with respect to user action callbacks', () => {
                 it('should handle delete', () => {
                     let initCount = networkService.getUsersAtDeveloper.calls.count();
                     ctrl.takeUserAction('delete', 3);
@@ -149,6 +153,38 @@
                     spyOn($state, 'reload');
                     ctrl.takeUserAction('impersonate');
                     expect($state.reload).toHaveBeenCalled();
+                });
+
+                it('should handle edit', () => {
+                    ctrl.takeUserAction('edit');
+                    expect(ctrl.state).toBe('focusUsers');
+                });
+
+                it('should handle cancel', () => {
+                    ctrl.takeUserAction('cancel');
+                    expect(ctrl.state).toBeUndefined();
+                });
+            });
+
+            describe('with respect to change request callbacks', () => {
+                it('should handle cancel', () => {
+                    ctrl.takeCrAction('cancel');
+                    expect(ctrl.state).toBeUndefined();
+                });
+
+                it('should handle save', () => {
+                    let cr = {};
+                    let initCount = networkService.getChangeRequests.calls.count();
+                    ctrl.takeCrAction('save', cr);
+                    scope.$digest();
+                    expect(ctrl.state).toBe('confirmation');
+                    expect(networkService.updateChangeRequest).toHaveBeenCalledWith(cr);
+                    expect(networkService.getChangeRequests.calls.count()).toBe(initCount + 1);
+                });
+
+                it('should handle focus', () => {
+                    ctrl.takeCrAction('focus');
+                    expect(ctrl.state).toBe('focusChangeRequest');
                 });
             });
         });
