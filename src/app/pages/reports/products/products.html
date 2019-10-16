@@ -13,8 +13,8 @@
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Product_{{ $ctrl.filename }}"
-              csv-header="['Developer', 'Product', 'Responsible User', 'Activity', 'Activity Date']"
-              csv-column-order="['developerName', 'productName', 'fullName', 'action', 'friendlyActivityDate']">
+              csv-header="['Developer', 'Product', 'Responsible User', 'Activity', 'Details', 'Activity Date']"
+              csv-column-order="['developerName', 'productName', 'fullName', 'activityType', 'detailsCSV', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
