@@ -39,6 +39,7 @@ require('jspdf-autotable');
         this.$onInit = function () {
             if (hasWidget()) {
                 vm.widget = getWidget();
+                vm.widget.errorMessage = undefined;
             } else {
                 vm.clearProducts();
             }
@@ -66,15 +67,19 @@ require('jspdf-autotable');
         }
 
         function create () {
+            vm.widget.errorMessage = undefined;
             vm.widget.inProgress = true;
             if (vm.widget.searchResult && vm.widget.searchResult.year) {
                 $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
             }
             networkService.createCmsId(vm.widget.productIds)
-                .then((response) => {
+                .then(response => {
                     vm.widget.createResponse = response;
                     vm.widget.inProgress = false;
                     setWidget(vm.widget);
+                }, error => {
+                    vm.widget.inProgress = false;
+                    vm.widget.errorMessage = error.data.error;
                 });
         }
 
