@@ -227,6 +227,9 @@
         }
 
         function isSystemDevContactInfoValid () {
+            if (vm.developerChoice === 'create') {
+                return true;
+            }
             return (vm.developer && !vm.isBlank(vm.developer.name) && !vm.isBlank(vm.developer.website))
                 && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email)
                 && !vm.isBlank(vm.developer.contact.phoneNumber))
