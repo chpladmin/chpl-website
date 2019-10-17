@@ -262,7 +262,7 @@
                     }
                 } else {
                     vm.systemRequirements.push('None of the required developer contact information'
-                            + EXISTS_MSG + PLEASE_SAVE_MSG);
+                        + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
                 if (vm.developer.address) {
                     if (vm.isBlank(vm.developer.address.line1) || vm.isBlank(vm.developer.address.city)
@@ -272,7 +272,7 @@
                     }
                 } else {
                     vm.systemRequirements.push('None of the required developer address information'
-                            + EXISTS_MSG + PLEASE_SAVE_MSG);
+                        + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
                 if (vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper())) {
                     vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
