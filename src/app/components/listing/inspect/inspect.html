@@ -172,8 +172,8 @@
 
   </div>
   <div class="modal-footer">
-    <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) ||
-      (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) || (vm.cp.warningMessages && vm.cp.warningMessages.length !== 0)">
+    <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) || (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) ||
+      (vm.cp.warningMessages && vm.cp.warningMessages.length !== 0) || (vm.systemRequirements && vm.systemRequirements.length !== 0)">
       <div class="col-sm-12 text-left bg-danger">
         <div ng-if="vm.cp.errorMessages && vm.cp.errorMessages.length !== 0">
           Error<span ng-if="vm.cp.errorMessages.length !== 1">s</span> in product upload
