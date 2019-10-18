@@ -12,18 +12,18 @@
       <label for="{{ param.key }}" >{{ param.label }}</label>
     </div>
     <div class="col-md-6">
-      <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type == 'text'">
-      <textarea class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="param.type == 'textarea'"></textarea>
-      <div class="input-group" ng-if="param.type == 'date'">
+      <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'text'">
+      <textarea class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="param.type === 'textarea'"></textarea>
+      <div class="input-group" ng-if="param.type === 'date'">
         <input class="input-sm form-control" id="{{ param.key }}" name="{{ param.key }}" type="text" uib-datepicker-popup="MM/dd/yyyy"
-            ng-model="$ctrl.trigger.job.jobDataMap[param.key]" is-open="$ctrl.PickerOpen"
+            ng-model="$ctrl.trigger.job.jobDataMap[param.key]" is-open="$ctrl.pickerOpen[param.key]"
             close-text="Close" ng-model-options="{ timezone: 'UTC' }" required>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.PickerOpen = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.pickerOpen[param.key] = true"><i class="fa fa-calendar"></i></button>
         </span>
       </div>
       <select ng-model="$ctrl.trigger.job.jobDataMap[param.key]" id="{{ param.key }}" name="{{ param.key }}" class="form-control"
-        ng-options="item.name for item in param.items" required ng-if="param.type == 'select'">
+        ng-options="item.name for item in param.items" required ng-if="param.type === 'select'">
         <option value="" selected disabled>Select</option>
       </select>
     </div>
