@@ -33,6 +33,7 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.isBlank = utilService.isBlank;
         vm.getAttestationStringForCurrentSystemDeveloper = getAttestationStringForCurrentSystemDeveloper;
+        vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
 
         activate();
 
@@ -53,6 +54,7 @@
             vm.versionChoice = 'choose';
 
             vm.errorMessages = [];
+            vm.systemRequirements = [];
             vm.isAcbAdmin = isAcbAdmin;
             vm.isChplAdmin = isChplAdmin;
             vm.resources = resources;
@@ -69,7 +71,7 @@
         }
 
         function loadDev () {
-            if (vm.cp.developer.developerId) {
+            if (vm.cp.developer && vm.cp.developer.developerId) {
                 networkService.getDeveloper(vm.cp.developer.developerId)
                     .then(function (result) {
                         vm.developer = result;
@@ -227,12 +229,55 @@
         }
 
         function isSystemDevContactInfoValid () {
-            return (vm.developer && !vm.isBlank(vm.developer.name) && !vm.isBlank(vm.developer.website))
+            vm.systemRequirements = [];
+            if ((vm.developerChoice === 'create')
+                || ((vm.developer && !vm.isBlank(vm.developer.name) && !vm.isBlank(vm.developer.website))
                 && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email)
                 && !vm.isBlank(vm.developer.contact.phoneNumber))
                 && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city)
                 && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
-                && (vm.developer.transparencyAttestations && !vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper()));
+                && (!vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper())))) {
+                return true;
+            }
+            vm.populateDeveloperSystemRequirements();
+            return false;
+        }
+
+        function populateDeveloperSystemRequirements () {
+            if (vm.developer) {
+                const DOES_NOT_EXIST_MSG = ' does not yet exist in the system.'
+                const EXISTS_MSG = ' exists in the system.'
+                const PLEASE_SAVE_MSG = ' Please select \'Save as Developer Information\' to continue.';
+                if (vm.isBlank(vm.developer.name)) {
+                    vm.systemRequirements.push('A developer name' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                }
+                if (vm.isBlank(vm.developer.website)) {
+                    vm.systemRequirements.push('A developer website' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                }
+                if (vm.developer.contact) {
+                    if (vm.isBlank(vm.developer.contact.fullName) || vm.isBlank(vm.developer.contact.email)
+                        || vm.isBlank(vm.developer.contact.phoneNumber)) {
+                        vm.systemRequirements.push('At least one type of required developer contact information'
+                            + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                    }
+                } else {
+                    vm.systemRequirements.push('None of the required developer contact information'
+                        + EXISTS_MSG + PLEASE_SAVE_MSG);
+                }
+                if (vm.developer.address) {
+                    if (vm.isBlank(vm.developer.address.line1) || vm.isBlank(vm.developer.address.city)
+                        || vm.isBlank(vm.developer.address.state) || vm.isBlank(vm.developer.address.zipcode)) {
+                        vm.systemRequirements.push('At least one type of required developer address information'
+                            + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                    }
+                } else {
+                    vm.systemRequirements.push('None of the required developer address information'
+                        + EXISTS_MSG + PLEASE_SAVE_MSG);
+                }
+                if (vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper())) {
+                    vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                }
+            }
         }
 
         function getAttestationStringForCurrentSystemDeveloper () {
