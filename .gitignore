@@ -11,3 +11,7 @@ test_reports/
 push.sh
 promote.sh
 .vscode/
+generate-release-notes.sh
+ready-for-deployment.sh
+ready-for-test.sh
+reset-qa.sh

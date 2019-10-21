@@ -22,7 +22,22 @@ export const ChangeRequestComponent = {
             }
             if (changes.changeRequest) {
                 this.changeRequest = angular.copy(changes.changeRequest.currentValue);
-                this.backup.changeRequest = angular.copy(changes.changeRequest.currentValue);
+                this.changeRequest.statuses.forEach(s => {
+                    switch (s.userPermission.authority) {
+                    case 'ROLE_ADMIN':
+                    case 'ROLE_ONC':
+                        s.actingOrganization = 'ONC';
+                        break;
+                    case 'ROLE_ACB':
+                        s.actingOrganization = s.certificationBody;
+                        break;
+                    case 'ROLE_DEVELOPER':
+                        s.actingOrganization = this.changeRequest.developer.name;
+                        break;
+                        //no default
+                    }
+                });
+                this.backup.changeRequest = angular.copy(this.changeRequest);
             }
         }
 

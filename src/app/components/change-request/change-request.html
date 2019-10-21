@@ -6,7 +6,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col" class="search-header" st-sort="certificationBody" st-skip-natural="true">Acting Organization</th>
+              <th scope="col" class="search-header" st-sort="actingOrganization" st-skip-natural="true">Acting Organization</th>
               <th scope="col" class="search-header" st-sort="statusChangeDate" st-skip-natural="true" st-sort-default="reverse">Date of Status Change</th>
               <th scope="col" class="search-header" st-sort="changeRequestStatusType.name" st-skip-natural="true">Status</th>
               <th scope="col">Comments</th>
@@ -14,7 +14,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="status in $ctrl.displayedHistory">
-              <td>{{ status.certificationBody }}</td>
+              <td>{{ status.actingOrganization }}</td>
               <td>{{ status.statusChangeDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
               <td>{{ status.changeRequestStatusType.name }}</td>
               <td>{{ status.comment }}</td>

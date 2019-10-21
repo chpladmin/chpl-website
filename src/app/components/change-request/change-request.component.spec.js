@@ -7,6 +7,7 @@
         mock = {
             changeRequest: {
                 changeRequestId: 43,
+                statuses: [],
             },
         };
 
