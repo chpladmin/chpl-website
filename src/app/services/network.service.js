@@ -217,7 +217,7 @@ export class NetworkService {
     }
 
     getApiUserActivity (activityRange) {
-        var call = '/activity/api_keys';
+        var call = '/activity/metadata/api-keys';
         return this.getActivity(call, activityRange);
     }
 
