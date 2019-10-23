@@ -4,7 +4,20 @@
       <h3>Api Key Management</h3>
     </div>
   </div>
-
+  <div class="row">
+    <div class="col-sm-6">
+      <chpl-filter filter-type-name="API Key Management Report"
+                   on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"
+                   on-clear-filter="$ctrl.onClearFilter()" ></chpl-filter>
+    </div>
+    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
+      <button class="btn btn-ai-success pull-right"
+              ng-csv="$ctrl.displayed" filename="API-Key_{{ $ctrl.filename }}"
+              csv-header="['Activity', 'Date']"
+              csv-column-order="['description', 'friendlyCreationDate']">
+        <i class="fa fa-cloud-download"></i> Download</button>
+    </div>
+  </div>
   <div class="row form-group form-inline">
     <div class="col-sm-12">
       <label for="activity-start" class="control-label">Start Date</label>

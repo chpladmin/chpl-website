@@ -2,12 +2,14 @@ export const ReportsApiKeysComponent = {
     templateUrl: 'chpl.reports/api-keys/api-keys.html',
     bindings: { },
     controller: class ReportsApiKeyComponent {
-        constructor ($log, ReportService, networkService, utilService) {
-            'ngInject'
+        constructor ($filter, $log, ReportService, networkService, utilService) {
+            'ngInject';
+            this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.activityRange = {
                 range: 30,
                 startDate: new Date(),
@@ -17,7 +19,17 @@ export const ReportsApiKeysComponent = {
         }
 
         $onInit () {
+            this.clearApiKeyFilter();
             this.search();
+        }
+
+        clearApiKeyFilter () {
+            this.activityRange = {
+                range: 30,
+                startDate: new Date(),
+                endDate: new Date(),
+            };
+            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
         }
 
         dateAdjust (obj) {
@@ -28,7 +40,10 @@ export const ReportsApiKeysComponent = {
         }
 
         prepare (results) {
-            this.displayed = results.map(item => item);
+            this.displayed = results.forEach(item => {
+                item.friendlyCreationDate = this.$filter('date')(item.activityDate, 'MMM d, y H:mm:ss');
+                return item;
+            });
         }
 
         search () {
@@ -42,6 +57,31 @@ export const ReportsApiKeysComponent = {
 
         validDates () {
             return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
+        }
+
+        onApplyFilter (filterObj) {
+            let f = angular.fromJson(filterObj);
+            this.activityRange.startDate = new Date(Date.parse(f.startDate));
+            this.activityRange.endDate = new Date(Date.parse(f.endDate));
+            this.filter = f.apiKeyFilter;
+            this.search();
+        }
+
+        createFilterDataObject () {
+            let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            filterData.dateAscending = this.activityRange.dateAscending;
+            filterData.apiKeyFilter = this.filter;
+            /*filterData.showOnly = this.apiKeyReport.showOnly;
+            filterData.filterText = this.apiKeyReport.filterText;*/
+            return filterData;
+        }
+
+        onClearFilter () {
+            this.activityRange.endDate = new Date();
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.search();
         }
     },
 }
