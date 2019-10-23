@@ -15,6 +15,7 @@ _21 October 2019_
 * Add missing Product activity data to downloadable file
 * Show correct error message when field is too long
 * Display error message on CMS ID gen failure
+* Enable next for new developer and add error reporting
 
 ---
 
@@ -146,7 +147,7 @@ _20 May 2019_
 
 ### Bug Fixes
 * Allow upload of files from Edge
-* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB
 * Fix routing to password reset page
 
 ---
