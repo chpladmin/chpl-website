@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 10.29.0
+_24 October 2019_
+
+### Features
+* Allow jobs to display text, date, and select for additional job data
+
+---
+
 ## Version 10.28.0
 _21 October 2019_
 
