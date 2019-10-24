@@ -32,6 +32,15 @@ export const ReportsApiKeysComponent = {
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
         }
 
+        createFilterDataObject () {
+            let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
+            filterData.dateAscending = this.activityRange.dateAscending;
+            filterData.apiKeyFilter = this.filter;
+            return filterData;
+        }
+
         dateAdjust (obj) {
             var ret = angular.copy(obj);
             ret.startDate = this.ReportService.coerceToMidnight(ret.startDate);
@@ -65,17 +74,6 @@ export const ReportsApiKeysComponent = {
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
             this.filter = f.apiKeyFilter;
             this.search();
-        }
-
-        createFilterDataObject () {
-            let filterData = {};
-            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
-            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
-            filterData.dateAscending = this.activityRange.dateAscending;
-            filterData.apiKeyFilter = this.filter;
-            /*filterData.showOnly = this.apiKeyReport.showOnly;
-            filterData.filterText = this.apiKeyReport.filterText;*/
-            return filterData;
         }
 
         onClearFilter () {
