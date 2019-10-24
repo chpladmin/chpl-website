@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 10.28.0
+_21 October 2019_
+
+### Features
+* Add details to version activity download
+
+### Flagged Features
+* Add ability to edit basic information Certified Products on details page
+* Add ROLE_DEVELOPER User type
+* Allow ROLE_DEVELOPER to create "Change Requests" to change their Organization's website
+
+### Bug Fixes
+* Add missing Product activity data to downloadable file
+* Show correct error message when field is too long
+* Display error message on CMS ID gen failure
+* Enable next for new developer and add error reporting
+
+---
+
 ## Version 10.27.0
 _7 October 2019_
 
@@ -128,7 +147,7 @@ _20 May 2019_
 
 ### Bug Fixes
 * Allow upload of files from Edge
-* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB
 * Fix routing to password reset page
 
 ---
