@@ -3,7 +3,7 @@ export const ReportsApiKeysComponent = {
     bindings: { },
     controller: class ReportsApiKeyComponent {
         constructor ($filter, $log, ReportService, networkService, utilService) {
-            'ngInject';
+            'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
@@ -51,7 +51,6 @@ export const ReportsApiKeysComponent = {
         prepare (results) {
             this.displayed = results.forEach(item => {
                 item.friendlyCreationDate = this.$filter('date')(item.activityDate, 'MMM d, y H:mm:ss');
-                return item;
             });
         }
 
