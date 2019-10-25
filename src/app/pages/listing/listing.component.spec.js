@@ -1,9 +1,9 @@
 (() => {
     'use strict';
 
-    describe('the CHPL Listing component', () => {
+    fdescribe('the CHPL Listing component', () => {
 
-        var $componentController, $log, $q, $stateParams, $uibModal, actualOptions, ctrl, mock, networkService, scope;
+        var $componentController, $log, $q, $stateParams, $uibModal, actualOptions, authService, ctrl, featureFlags, mock, networkService, scope;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -30,6 +30,14 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.listing', $provide => {
+                $provide.decorator('authService', $delegate => {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
+                $provide.decorator('featureFlags', $delegate => {
+                    $delegate.isOn = jasmine.createSpy('isOn');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
@@ -48,7 +56,7 @@
                     return $delegate;
                 });
             });
-            inject((_$componentController_, _$log_, _$q_, $rootScope, _$stateParams_, _$uibModal_, _networkService_) => {
+            inject((_$componentController_, _$log_, _$q_, $rootScope, _$stateParams_, _$uibModal_, _authService_, _featureFlags_, _networkService_) => {
                 $componentController = _$componentController_;
                 $log = _$log_;
                 $q = _$q_;
@@ -58,6 +66,10 @@
                     actualOptions = options;
                     return mock.fakeModal;
                 });
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue(false);
+                featureFlags = _featureFlags_;
+                featureFlags.isOn.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.getAccessibilityStandards.and.returnValue($q.when({}));
                 networkService.getAtls.and.returnValue($q.when({}));
@@ -210,6 +222,74 @@
                 ctrl.viewListingHistory();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
                 expect(actualOptions.resolve.listing()).toEqual(mock.products[0]);
+            });
+        });
+
+        describe('editing', () => {
+            it('should not allow anonymous users to edit', () => {
+                expect(ctrl.canEdit()).toBe(false);
+            });
+
+            it('should allow ADMIN to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') >= 0);
+                expect(ctrl.canEdit()).toBe(true);
+            });
+
+            it('should allow ONC to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') >= 0);
+                expect(ctrl.canEdit()).toBe(true);
+            });
+
+            it('should allow ACB to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0);
+                expect(ctrl.canEdit()).toBe(true);
+            });
+
+            it('should not allow ATL to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') >= 0);
+                expect(ctrl.canEdit()).toBe(false);
+            });
+
+            it('should not allow CMS to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_CMS_STAFF') >= 0);
+                expect(ctrl.canEdit()).toBe(false);
+            });
+
+            it('should not allow DEVELOPER to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_DEVELOPER') >= 0);
+                expect(ctrl.canEdit()).toBe(false);
+            });
+
+            describe('with respect to flag:effective-rule-date+1-week', () => {
+                beforeEach(() => {
+                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date+1-week');
+                    ctrl.listing = {
+                        certificationEdition: {
+                            name: '2014',
+                        },
+                    };
+                });
+
+                it('should allow ADMIN to edit', () => {
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') >= 0);
+                    expect(ctrl.canEdit()).toBe(true);
+                });
+
+                it('should allow ONC to edit', () => {
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') >= 0);
+                    expect(ctrl.canEdit()).toBe(true);
+                });
+
+                it('should not allow ACB to edit 2014 Edition', () => {
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0);
+                    expect(ctrl.canEdit()).toBe(false);
+                });
+
+                it('should allow ACB to edit non-2014 Edition', () => {
+                    ctrl.listing.certificationEdition.name = '2015';
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0);
+                    expect(ctrl.canEdit()).toBe(true);
+                });
             });
         });
     });
