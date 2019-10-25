@@ -1,5 +1,9 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.product', ['ui.bootstrap', 'chpl.services']);
+    angular.module('chpl.product', [
+        'ui.bootstrap',
+        'feature-flags',
+        'chpl.services',
+    ]);
 })();

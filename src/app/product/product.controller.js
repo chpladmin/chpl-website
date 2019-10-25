@@ -5,10 +5,11 @@
         .controller('ProductController', ProductController);
 
     /** @ngInclude */
-    function ProductController ($localStorage, $log, $stateParams, $uibModal, authService, networkService, utilService) {
+    function ProductController ($localStorage, $log, $stateParams, $uibModal, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.certificationStatus = utilService.certificationStatus;
+        vm.canEdit = canEdit;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadProduct = loadProduct;
         vm.viewProductHistory = viewProductHistory;
@@ -40,6 +41,14 @@
             }
 
             vm.loadProduct();
+        }
+
+        function canEdit () {
+            if (featureFlags.isOn('effective-rule-date+1-week') && vm.product.certificationEdition.name === '2014') {
+                return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            } else {
+                return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
+            }
         }
 
         function loadProduct () {

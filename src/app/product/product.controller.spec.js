@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    describe('the CHPL Listing Display Controller', function () {
+    fdescribe('the CHPL Listing Display Controller', function () {
 
-        var $controller, $log, $q, $uibModal, actualOptions, mock, networkService, scope, vm;
+        var $controller, $log, $q, $uibModal, actualOptions, authService, featureFlags, mock, networkService, scope, vm;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -30,13 +30,21 @@
 
         beforeEach(function () {
             angular.mock.module('chpl.product', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
+                $provide.decorator('featureFlags', function ($delegate) {
+                    $delegate.isOn = jasmine.createSpy('isOn');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
                     return $delegate;
                 });
             });
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _featureFlags_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $uibModal = _$uibModal_;
@@ -45,6 +53,10 @@
                     return mock.fakeModal;
                 });
                 $q = _$q_;
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue(false);
+                featureFlags = _featureFlags_;
+                featureFlags.isOn.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.getListing.and.returnValue($q.when(mock.products));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));
@@ -145,6 +157,70 @@
                 vm.viewProductHistory();
                 vm.viewProductHistoryInstance.dismiss('dismissed');
                 expect($log.info.logs.length).toBe(initialCount + 1);
+            });
+        });
+
+        describe('editing', () => {
+            it('should not allow anonymous users to edit', () => {
+                expect(vm.canEdit()).toBe(false);
+            });
+
+            it('should allow ADMIN to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') >= 0);
+                expect(vm.canEdit()).toBe(true);
+            });
+
+            it('should allow ONC to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') >= 0);
+                expect(vm.canEdit()).toBe(true);
+            });
+
+            it('should allow ACB to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0);
+                expect(vm.canEdit()).toBe(true);
+            });
+
+            it('should not allow ATL to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ATL') >= 0);
+                expect(vm.canEdit()).toBe(false);
+            });
+
+            it('should not allow CMS to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_CMS_STAFF') >= 0);
+                expect(vm.canEdit()).toBe(false);
+            });
+
+            it('should not allow DEVELOPER to edit', () => {
+                authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_DEVELOPER') >= 0);
+                expect(vm.canEdit()).toBe(false);
+            });
+
+            describe('with respect to flag:effective-rule-date+1-week', () => {
+                beforeEach(() => {
+                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date+1-week');
+                    vm.product.certificationEdition = {name: '2014'};
+                });
+
+                it('should allow ADMIN to edit', () => {
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ADMIN') >= 0);
+                    expect(vm.canEdit()).toBe(true);
+                });
+
+                it('should allow ONC to edit', () => {
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') >= 0);
+                    expect(vm.canEdit()).toBe(true);
+                });
+
+                it('should not allow ACB to edit 2014 Edition', () => {
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0);
+                    expect(vm.canEdit()).toBe(false);
+                });
+
+                it('should allow ACB to edit non-2014 Edition', () => {
+                    vm.product.certificationEdition.name = '2015';
+                    authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') >= 0);
+                    expect(vm.canEdit()).toBe(true);
+                });
             });
         });
     });
