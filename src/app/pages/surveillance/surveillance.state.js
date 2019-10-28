@@ -1,17 +1,4 @@
 let states = {
-    'complaints-on': [
-        {
-            name: 'surveillance.complaints',
-            url: '/complaints',
-            component: 'chplSurveillanceComplaints',
-            data: {
-                title: 'CHPL Surveillance - Complaints Reporting',
-            },
-            ncyBreadcrumb: {
-                label: 'Complaints Reporting',
-            },
-        },
-    ],
     'surveillance-reports-on': [
         {
             name: 'surveillance.reporting',
@@ -117,8 +104,13 @@ let states = {
         },{
             name: 'surveillance.complaints',
             url: '/complaints',
-            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-            data: { title: 'CHPL Surveillance - Complaints' },
+            component: 'chplSurveillanceComplaints',
+            data: {
+                title: 'CHPL Surveillance - Complaints Reporting',
+            },
+            ncyBreadcrumb: {
+                label: 'Complaints Reporting',
+            },
         },{
             name: 'surveillance.manage',
             url: '/manage',

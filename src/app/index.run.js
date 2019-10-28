@@ -54,23 +54,6 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         });
                     }
 
-                    if (featureFlags.isOn('complaints')) {
-                        surveillanceStates['complaints-on'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        surveillanceStates['complaints-on'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
-
                     if (featureFlags.isOn('surveillance-reporting')) {
                         surveillanceStates['surveillance-reports-on'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
