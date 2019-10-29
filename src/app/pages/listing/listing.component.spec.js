@@ -260,9 +260,9 @@
                 expect(ctrl.canEdit()).toBe(false);
             });
 
-            describe('with respect to flag:effective-rule-date+1-week', () => {
+            describe('with respect to flag:effective-rule-date-plus-one-week', () => {
                 beforeEach(() => {
-                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date+1-week');
+                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date-plus-one-week');
                     ctrl.listing = {
                         certificationEdition: {
                             name: '2014',

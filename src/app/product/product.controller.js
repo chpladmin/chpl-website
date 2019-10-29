@@ -44,7 +44,7 @@
         }
 
         function canEdit () {
-            if (featureFlags.isOn('effective-rule-date+1-week') && vm.product.certificationEdition.name === '2014') {
+            if (featureFlags.isOn('effective-rule-date-plus-one-week') && vm.product.certificationEdition.name === '2014') {
                 return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
             } else {
                 return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);

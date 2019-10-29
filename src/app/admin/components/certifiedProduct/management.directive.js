@@ -376,7 +376,7 @@
         }
 
         function isProductEditable (cp) {
-            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date+1-week') && vm.hasAnyRole(['ROLE_ACB'])) {
+            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
                 return false;
             }
             if (cp.certificationEvents) {
