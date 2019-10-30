@@ -48,18 +48,13 @@ export const ReportsApiKeysComponent = {
             return ret;
         }
 
-        prepare (results) {
-            this.displayed = results.forEach(item => {
-                item.friendlyCreationDate = this.$filter('date')(item.date, 'MMM d, y H:mm:ss');
-            });
-        }
-
         search () {
-            let that = this;
             this.networkService.getApiUserActivity(this.dateAdjust(this.activityRange))
                 .then(results => {
-                    that.results = results;
-                    that.prepare(that.results);
+                    this.displayed = results.map(item => {
+                        item.friendlyCreationDate = this.$filter('date')(item.date, 'MMM d, y H:mm:ss');
+                        return item;
+                    });
                 });
         }
 
