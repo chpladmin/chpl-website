@@ -24,7 +24,7 @@ export const CertificationCriteriaComponent = {
             if (changes.cert) {
                 this.cert = angular.copy(changes.cert.currentValue);
                 // debugging
-                // this.cert.removed = this.cert.id % 5 === 0;
+                // this.cert.criterion.removed = this.cert.id % 5 === 0;
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
@@ -87,7 +87,7 @@ export const CertificationCriteriaComponent = {
 
         toggleCriteria () {
             if (!this.showDetails) {
-                this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: this.cert.number });
+                this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: this.cert.criterion.number });
             }
             this.showDetails = !this.showDetails
         }

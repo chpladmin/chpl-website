@@ -589,6 +589,20 @@ option[disabled] {
     bottom: 25px !important;
 }
 
+.removed {
+    background-color: #ccc;
+
+    .table-striped {
+
+        tbody {
+
+            tr {
+                background-color: transparent;
+            }
+        }
+    }
+}
+
 .new-style {
 
     .selected-items-container {
