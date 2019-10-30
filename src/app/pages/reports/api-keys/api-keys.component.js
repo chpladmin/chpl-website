@@ -50,7 +50,7 @@ export const ReportsApiKeysComponent = {
 
         prepare (results) {
             this.displayed = results.forEach(item => {
-                item.friendlyCreationDate = this.$filter('date')(item.activityDate, 'MMM d, y H:mm:ss');
+                item.friendlyCreationDate = this.$filter('date')(item.date, 'MMM d, y H:mm:ss');
             });
         }
 
