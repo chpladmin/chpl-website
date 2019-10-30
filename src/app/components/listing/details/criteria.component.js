@@ -23,8 +23,6 @@ export const CertificationCriteriaComponent = {
         $onChanges (changes) {
             if (changes.cert) {
                 this.cert = angular.copy(changes.cert.currentValue);
-                // debugging
-                // this.cert.criterion.removed = this.cert.id % 5 === 0;
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
