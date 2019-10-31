@@ -50,6 +50,13 @@
         <div uib-timepicker ng-model="$ctrl.selectedDateTime" show-meridian="true" id="selectedTime"></div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-9">
+        <div class="alert alert-info">
+          The Run Date & Time should the UTC date/time for which the job should be run. The current UTC time is {{ $ctrl.now | date : 'short' : 'UTC' }}
+        </div>
+      </div>
+    </di  v>
   </span>
   <span ng-if="$ctrl.recurring">
     <div class="row">
