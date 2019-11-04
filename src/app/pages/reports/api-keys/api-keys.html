@@ -46,7 +46,7 @@
           </tr>
           <tr ng-repeat="activity in $ctrl.displayed">
             <td>{{ activity.description }}</td>
-            <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <td>{{ activity.date | date : 'MMM d, y H:mm:ss' }}</td>
           </tr>
         </tbody>
       </table>
