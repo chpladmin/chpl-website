@@ -1,3 +1,4 @@
+import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state.js';
 import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
@@ -8,7 +9,6 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
     'use strict';
 
     let administrationState = require('./pages/administration/administration.state.js');
-    let collectionsState = require('./pages/collections/collections.state.js');
     let reportsState = require('./pages/reports/reports.state.js');
     let resourcesState = require('./pages/resources/resources.state.js');
 
@@ -16,7 +16,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .module('chpl')
         .config(routeConfig)
         .config(administrationState)
-        .config(collectionsState)
+        .config(collectionsStates)
         .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
