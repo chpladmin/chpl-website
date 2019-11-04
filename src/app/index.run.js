@@ -1,6 +1,5 @@
 import { Visualizer } from '@uirouter/visualizer';
 import { states as dashboardStates } from './pages/dashboard/dashboard.state.js';
-import { states as listingStates } from './pages/listing/listing.state.js';
 import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 
 (() => {
@@ -33,24 +32,6 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                         dashboardStates['role-developer'].forEach(state => {
                             $uiRouter.stateRegistry.deregister(state.name);
                             needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
-
-                    if (featureFlags.isOn('listing-edit')) {
-                        listingStates['listing-edit-on'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        listingStates['listing-edit-off'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
                         });
                     }
 
