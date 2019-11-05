@@ -404,24 +404,10 @@
         }
 
         function populateSearchOptions () {
-            vm.lookaheadSource = {all: [], developers: [], products: []};
             networkService.getSearchOptions()
-                .then(function (options) {
+                .then(options => {
+                    options.practiceTypes = options.practiceTypeNames.map(ptn => ptn.name);
                     vm.searchOptions = options;
-                    var i;
-                    options.practiceTypes = [];
-                    for (i = 0; i < options.practiceTypeNames.length; i++) {
-                        options.practiceTypes.push(options.practiceTypeNames[i].name);
-                    }
-                    for (i = 0; i < options.developerNames.length; i++) {
-                        vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                        vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                    }
-                    for (i = 0; i < options.productNames.length; i++) {
-                        vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                        vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                    }
-                    $localStorage.lookaheadSource = vm.lookaheadSource;
                     setFilterInfo(vm.defaultRefineModel);
                 });
         }
