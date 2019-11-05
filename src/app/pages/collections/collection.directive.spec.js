@@ -22,7 +22,7 @@
                 CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_
                 Mock = _Mock_;
                 mock = {
-                    searchOptions: angular.copy(Mock.search_options),
+                    searchOptions: angular.copy(Mock.search-options),
                 };
                 mock.searchOptions.certBodyNames[0].retired = true;
                 mock.searchOptions.certBodyNames[0].retirementDate = new Date();
@@ -74,7 +74,7 @@
 
             describe('on load', () => {
                 describe('with no acb filter', () => {
-                    it('should not call for search_options', () => {
+                    it('should not call for search-options', () => {
                         expect(networkService.getSearchOptions).not.toHaveBeenCalled();
                     });
                 });
@@ -89,11 +89,11 @@
                         vm = el.isolateScope().vm;
                     });
 
-                    it('should call for search_options', () => {
+                    it('should call for search-options', () => {
                         expect(networkService.getSearchOptions).toHaveBeenCalled();
                     });
 
-                    it('should set acb filters to results from search_options', () => {
+                    it('should set acb filters to results from search-options', () => {
                         expect(vm.filterItems.acbItems).toBeDefined();
                     });
 
