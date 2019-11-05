@@ -88,7 +88,7 @@
                     return mock.fakeModal;
                 });
                 networkService.getAll.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
-                networkService.getSearchOptions.and.returnValue($q.when(Mock.search-options));
+                networkService.getSearchOptions.and.returnValue($q.when(Mock.searchOptions));
 
                 scope = $rootScope.$new();
                 vm = $controller('SearchController', {
