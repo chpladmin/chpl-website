@@ -65,13 +65,18 @@ export const CertificationCriteriaEditComponent = {
         testDataOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this._testDataRemoveItem(action.item.item);
+                this.cert.testDataUsed = this.cert.testDataUsed.filter(crtd => crtd.testData.id !== action.item.item.id);
                 break;
             case 'Add':
                 this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
                 break;
             case 'Edit':
-                this._testDataEditItem(action.item)
+                this.cert.testDataUsed.forEach(crtd => {
+                    if (crtd.testData.id === action.item.item.id) {
+                        crtd.version = action.item.additionalInputValue;
+                        crtd.alteration = action.item.additionalInput2Value;
+                    }
+                });
                 break;
             default:
             }
@@ -80,7 +85,7 @@ export const CertificationCriteriaEditComponent = {
         testFunctionalityOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this._testFunctionalityRemoveItem(action.item.item);
+                this.cert.testFunctionality = this.cert.testFunctionality.filter(crtf => crtf.testFunctionalityId !== action.item.item.id);
                 break;
             case 'Add':
                 this.cert.testFunctionality.push(new this.CertificationResultTestFunctionality(action.item.item));
@@ -92,13 +97,17 @@ export const CertificationCriteriaEditComponent = {
         testProceduresOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this._testProceduresRemoveItem(action.item.item);
+                this.cert.testProcedures = this.cert.testProcedures.filter(crtp => crtp.testProcedure.id !== action.item.item.id);
                 break;
             case 'Add':
                 this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
                 break;
             case 'Edit':
-                this._testProceduresEditItem(action.item)
+                this.cert.testProcedures.forEach(crtp => {
+                    if (crtp.testProcedure.id === action.item.item.id) {
+                        crtp.testProcedureVersion = action.item.additionalInputValue;
+                    }
+                });
                 break;
             default:
             }
@@ -107,7 +116,7 @@ export const CertificationCriteriaEditComponent = {
         testStandardOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this._testStandardRemoveItem(action.item.item);
+                this.cert.testStandards = this.cert.testStandards.filter(crts => crts.testStandardId !== action.item.item.id);
                 break;
             case 'Add':
                 this.cert.testStandards.push(new this.CertificationResultTestStandard(action.item.item));
@@ -119,13 +128,17 @@ export const CertificationCriteriaEditComponent = {
         testToolsOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this._testToolsRemoveItem(action.item.item);
+                this.cert.testToolsUsed = this.cert.testToolsUsed.filter(crtt => crtt.testToolId !== action.item.item.id);
                 break;
             case 'Add':
                 this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
                 break;
             case 'Edit':
-                this._testToolsEditItem(action.item)
+                this.cert.testToolsUsed.forEach(crtt => {
+                    if (crtt.testToolId === action.item.item.id) {
+                        crtt.testToolVersion = action.item.additionalInputValue;
+                    }
+                });
                 break;
             default:
             }
@@ -151,58 +164,6 @@ export const CertificationCriteriaEditComponent = {
         }
 
         ////////////////////////////////////////////////////////////////////
-
-        // action response helper functions
-
-        // edit
-        _testDataEditItem (testData) {
-            var crtds = this.cert.testDataUsed.filter(function (crtd) {
-                return crtd.testData.id === testData.item.id;
-            });
-            if (crtds && crtds.length > 0) {
-                crtds[0].version = testData.additionalInputValue;
-                crtds[0].alteration = testData.additionalInput2Value;
-            }
-        }
-
-        _testProceduresEditItem (testProcedure) {
-            var crtps = this.cert.testProcedures.filter(function (crtp) {
-                return crtp.testProcedure.id === testProcedure.item.id;
-            });
-            if (crtps && crtps.length > 0) {
-                crtps[0].testProcedureVersion = testProcedure.additionalInputValue;
-            }
-        }
-
-        _testToolsEditItem (testTool) {
-            var crtts = this.cert.testToolsUsed.filter(function (crtt) {
-                return crtt.testToolId === testTool.item.id;
-            });
-            if (crtts && crtts.length > 0) {
-                crtts[0].testToolVersion = testTool.additionalInputValue;
-            }
-        }
-
-        // remove
-        _testDataRemoveItem (testData) {
-            this.cert.testDataUsed = this.cert.testDataUsed.filter(crtd => crtd.testData.id !== testData.id);
-        }
-
-        _testFunctionalityRemoveItem (testFunctionality) {
-            this.cert.testFunctionality = this.cert.testFunctionality.filter(crtf => crtf.testFunctionalityId !== testFunctionality.id);
-        }
-
-        _testProceduresRemoveItem (testProcedure) {
-            this.cert.testProcedures = this.cert.testProcedures.filter(crtp => crtp.testProcedure.id !== testProcedure.id);
-        }
-
-        _testStandardRemoveItem (testStandard) {
-            this.cert.testStandards = this.cert.testStandards.filter(crts => crts.testStandardId !== testStandard.id);
-        }
-
-        _testToolsRemoveItem (testTool) {
-            this.cert.testToolsUsed = this.cert.testToolsUsed.filter(crtt => crtt.testToolId !== testTool.id);
-        }
 
         // setup helper functions
         _getSelectedTestDataKeys () {
