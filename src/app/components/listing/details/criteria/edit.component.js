@@ -41,6 +41,7 @@ export const CertificationCriteriaEditComponent = {
             this.selectedTestStandardKeys = this._getSelectedTestStandardKeys();
             this.selectedTestToolKeys = this._getSelectedTestToolKeys();
             this.sortedTestFunctionalities = this._getSortedTestFunctionalities();
+            this._setAvailableTestValues();
             this._setTestToolDropDownText();
         }
 
@@ -151,74 +152,9 @@ export const CertificationCriteriaEditComponent = {
 
         ////////////////////////////////////////////////////////////////////
 
-        _getSortedTestFunctionalities () {
-            return this.$filter('orderBy')(this.cert.allowedTestFunctionalities, 'name');
-        }
+        // action response helper functions
 
-        _getSelectedTestDataKeys () {
-            let that = this;
-            var tdKeys = [];
-            this.availableTestData = this.resources.testData.data
-                .filter(function (data) {
-                    return data.criteria.number === that.cert.number;
-                });
-            angular.forEach(this.cert.testDataUsed, function (td) {
-                tdKeys.push({
-                    'key': td.testData.id,
-                    'additionalInputValue': td.version,
-                    'additionalInput2Value': td.alteration,
-                });
-            });
-            return tdKeys;
-        }
-
-        _getSelectedTestFunctionalityKeys () {
-            var tfKeys = [];
-            angular.forEach(this.cert.testFunctionality, function (tf) {
-                tfKeys.push({'key': tf.testFunctionalityId});
-            });
-            return tfKeys;
-        }
-
-        _getSelectedTestProcedureKeys () {
-            let that = this;
-            var tpKeys = [];
-            this.availableTestProcedures = this.resources.testProcedures.data
-                .filter(function (procedure) {
-                    return procedure.criteria.number === that.cert.number;
-                });
-
-            angular.forEach(this.cert.testProcedures, function (tp) {
-                tpKeys.push({'key': tp.testProcedure.id, 'additionalInputValue': tp.testProcedureVersion});
-            });
-            return tpKeys;
-        }
-
-        _getSelectedTestStandardKeys () {
-            var tsKeys = [];
-            angular.forEach(this.cert.testStandards, function (ts) {
-                tsKeys.push({'key': ts.testStandardId});
-            });
-            return tsKeys;
-        }
-
-        _getSelectedTestToolKeys () {
-            var ttKeys = [];
-            angular.forEach(this.cert.testToolsUsed, function (tt) {
-                ttKeys.push({'key': tt.testToolId, 'additionalInputValue': tt.testToolVersion});
-            });
-            return ttKeys;
-        }
-
-        _setTestToolDropDownText () {
-            angular.forEach(this.resources.testTools.data, function (tt) {
-                tt.dropDownText = tt.name;
-                if (tt.retired) {
-                    tt.dropDownText += ' (Retired)';
-                }
-            });
-        }
-
+        // edit
         _testDataEditItem (testData) {
             var crtds = this.cert.testDataUsed.filter(function (crtd) {
                 return crtd.testData.id === testData.item.id;
@@ -227,20 +163,6 @@ export const CertificationCriteriaEditComponent = {
                 crtds[0].version = testData.additionalInputValue;
                 crtds[0].alteration = testData.additionalInput2Value;
             }
-        }
-
-        _testDataRemoveItem (testData) {
-            var remaining = this.cert.testDataUsed.filter( function (crtd) {
-                return crtd.testData.id !== testData.id;
-            });
-            this.cert.testDataUsed = remaining;
-        }
-
-        _testFunctionalityRemoveItem (testFunctionality) {
-            var remaining = this.cert.testFunctionality.filter( function (crtf) {
-                return crtf.testFunctionalityId !== testFunctionality.id;
-            });
-            this.cert.testFunctionality = remaining;
         }
 
         _testProceduresEditItem (testProcedure) {
@@ -252,20 +174,6 @@ export const CertificationCriteriaEditComponent = {
             }
         }
 
-        _testProceduresRemoveItem (testProcedure) {
-            var remaining = this.cert.testProcedures.filter( function (crtp) {
-                return crtp.testProcedure.id !== testProcedure.id;
-            });
-            this.cert.testProcedures = remaining;
-        }
-
-        _testStandardRemoveItem (testStandard) {
-            var remaining = this.cert.testStandards.filter( function (crts) {
-                return crts.testStandardId !== testStandard.id;
-            });
-            this.cert.testStandards = remaining;
-        }
-
         _testToolsEditItem (testTool) {
             var crtts = this.cert.testToolsUsed.filter(function (crtt) {
                 return crtt.testToolId === testTool.item.id;
@@ -275,11 +183,87 @@ export const CertificationCriteriaEditComponent = {
             }
         }
 
+        // remove
+        _testDataRemoveItem (testData) {
+            this.cert.testDataUsed = this.cert.testDataUsed.filter(crtd => crtd.testData.id !== testData.id);
+        }
+
+        _testFunctionalityRemoveItem (testFunctionality) {
+            this.cert.testFunctionality = this.cert.testFunctionality.filter(crtf => crtf.testFunctionalityId !== testFunctionality.id);
+        }
+
+        _testProceduresRemoveItem (testProcedure) {
+            this.cert.testProcedures = this.cert.testProcedures.filter(crtp => crtp.testProcedure.id !== testProcedure.id);
+        }
+
+        _testStandardRemoveItem (testStandard) {
+            this.cert.testStandards = this.cert.testStandards.filter(crts => crts.testStandardId !== testStandard.id);
+        }
+
         _testToolsRemoveItem (testTool) {
-            var remaining = this.cert.testToolsUsed.filter( function (crtt) {
-                return crtt.testToolId !== testTool.id;
+            this.cert.testToolsUsed = this.cert.testToolsUsed.filter(crtt => crtt.testToolId !== testTool.id);
+        }
+
+        // setup helper functions
+        _getSelectedTestDataKeys () {
+            if (!this.cert.testDataUsed) {
+                return [];
+            }
+            return this.cert.testDataUsed.map(td => ({
+                key: td.testData.id,
+                additionalInputValue: td.version,
+                additionalInput2Value: td.alteration,
+            }));
+        }
+
+        _getSelectedTestFunctionalityKeys () {
+            if (!this.cert.testFunctionality) {
+                return [];
+            }
+            return this.cert.testFunctionality.map(tf => ({key: tf.testFunctionalityId}));
+        }
+
+        _getSelectedTestProcedureKeys () {
+            if (!this.cert.testProcedures) {
+                return [];
+            }
+            return this.cert.testProcedures.map(tp => ({
+                key: tp.testProcedure.id,
+                additionalInputValue: tp.testProcedureVersion,
+            }));
+        }
+
+        _getSelectedTestStandardKeys () {
+            if (!this.cert.testStandards) {
+                return [];
+            }
+            return this.cert.testStandards.map(ts => ({key: ts.testStandardId}));
+        }
+
+        _getSelectedTestToolKeys () {
+            if (!this.cert.testToolsUsed) {
+                return [];
+            }
+            return this.cert.testToolsUsed.map(tt => ({
+                key: tt.testToolId,
+                additionalInputValue: tt.testToolVersion,
+            }));
+        }
+
+        _getSortedTestFunctionalities () {
+            return this.$filter('orderBy')(this.cert.allowedTestFunctionalities, 'name');
+        }
+
+        _setAvailableTestValues () {
+            let number = this.cert.number
+            this.availableTestData = this.resources.testData.data.filter(item => item.criteria.number === number);
+            this.availableTestProcedures = this.resources.testProcedures.data.filter(item => item.criteria.number === number);
+        }
+
+        _setTestToolDropDownText () {
+            this.resources.testTools.data.forEach(tt => {
+                tt.dropDownText = tt.name + tt.retired ? ' (Retired)' : '';
             });
-            this.cert.testToolsUsed = remaining;
         }
     },
 }
