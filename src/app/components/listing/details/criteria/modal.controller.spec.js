@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Certification Criteria Edit controller', function () {
+    fdescribe('the Certification Criteria Modal controller', function () {
         var $controller, $log, Mock, mock, scope, vm;
 
         mock = {};
@@ -29,7 +29,7 @@
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
-                vm = $controller('EditCertificationCriteriaController', {
+                vm = $controller('CertificationCriteriaModalController', {
                     cert: angular.copy(mock.cert),
                     allowedTestFunctionalities: [
                         {'id': 1, 'name': '(a)(1)(ii)'},
@@ -117,7 +117,7 @@
 
             it('should know when it was met via additional software', function () {
                 var certMet = { additionalSoftware: [1] };
-                vm = $controller('EditCertificationCriteriaController', {
+                vm = $controller('CertificationCriteriaModalController', {
                     cert: certMet,
                     resources: mock.resources,
                     hasIcs: false,

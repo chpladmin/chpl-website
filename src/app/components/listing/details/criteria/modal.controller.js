@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('chpl.components')
-        .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
+        .controller('CertificationCriteriaModalController', CertificationCriteriaModalController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, isConfirming, resources, utilService) {
+    function CertificationCriteriaModalController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, isConfirming, resources, utilService) {
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;

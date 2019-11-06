@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Certification Criteria component', function () {
+    fdescribe('the Certification Criteria View component', function () {
         var $analytics, $compile, $log, $uibModal, Mock, actualOptions, ctrl, el, mock, scope;
 
         mock = {
@@ -28,7 +28,7 @@
                 scope.resources = {};
                 scope.isConfirming = false;
 
-                el = angular.element('<ai-certification-criteria cert="cert" refresh-sed="refreshSed()" resources="resources" is-confirming="isConfirming"></ai-certification-criteria>');
+                el = angular.element('<chpl-certification-criteria cert="cert" refresh-sed="refreshSed()" resources="resources" is-confirming="isConfirming"></chpl-certification-criteria>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -186,8 +186,8 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'chpl.components/listing/details/criteria-modal.html',
-                        controller: 'EditCertificationCriteriaController',
+                        templateUrl: 'chpl.components/listing/details/criteria/modal.html',
+                        controller: 'CertificationCriteriaModalController',
                         controllerAs: 'vm',
                         animation: false,
                         backdrop: 'static',

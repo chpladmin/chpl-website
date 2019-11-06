@@ -15,18 +15,18 @@
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'" id="panel-certification-criteria">
         <div ng-repeat="n in vm.product.certificationResults | orderBy:vm.sortCerts">
-          <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
-                                     accessibility-standards="vm.product.accessibilityStandards"
-                                     cert="n"
-                                     has-ics="vm.product.ics.inherits"
-                                     is-confirming="vm.isConfirming"
-                                     is-editing="vm.isEditing"
-                                     on-change="vm.saveCert(cert)"
-                                     qms-standards="vm.product.qmsStandards"
-                                     refresh-sed="vm.hasEdited()"
-                                     resources="vm.resources"
-                                     view-all="vm.viewAllCerts">
-          </ai-certification-criteria>
+          <chpl-certification-criteria ng-if="vm.viewAllCerts || n.success"
+                                       accessibility-standards="vm.product.accessibilityStandards"
+                                       cert="n"
+                                       has-ics="vm.product.ics.inherits"
+                                       is-confirming="vm.isConfirming"
+                                       is-editing="vm.isEditing"
+                                       on-change="vm.saveCert(cert)"
+                                       qms-standards="vm.product.qmsStandards"
+                                       refresh-sed="vm.hasEdited()"
+                                       resources="vm.resources"
+                                       view-all="vm.viewAllCerts">
+          </chpl-certification-criteria>
         </div>
       </div>
     </div>
