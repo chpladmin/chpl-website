@@ -36,9 +36,7 @@ export const CertificationCriteriaViewComponent = {
             const resources = this.resources;
             const isConfirming = this.isConfirming;
             this.editUibModalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.components/listing/details/criteria/modal.html',
-                controller: 'CertificationCriteriaModalController',
-                controllerAs: 'vm',
+                component: 'chplCertificationCriteriaEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
@@ -50,7 +48,8 @@ export const CertificationCriteriaViewComponent = {
                     resources: () => resources,
                 },
             });
-            this.editUibModalInstance.result.then(() => {
+            this.editUibModalInstance.result.then(response => {
+                this.cert = response;
                 this.onChange({cert: this.cert});
                 this.refreshSed();
             }, () => {
