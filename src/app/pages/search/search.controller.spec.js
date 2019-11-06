@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.search.controller', function () {
+    fdescribe('chpl.search.controller', function () {
 
         var $interval, $location, $log, $q, $uibModal, CACHE_REFRESH_TIMEOUT, Mock, networkService, scope, vm;
 

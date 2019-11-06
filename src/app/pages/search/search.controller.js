@@ -406,7 +406,7 @@
         function populateSearchOptions () {
             networkService.getSearchOptions()
                 .then(options => {
-                    options.practiceTypes = options.practiceTypeNames.map(ptn => ptn.name);
+                    options.practiceTypes = options.practiceTypes.map(ptn => ptn.name);
                     vm.searchOptions = options;
                     setFilterInfo(vm.defaultRefineModel);
                 });
@@ -446,7 +446,7 @@
                 editionItems: [],
                 statusItems: [],
             };
-            vm.filterItems.acbItems = vm.searchOptions.certBodyNames
+            vm.filterItems.acbItems = vm.searchOptions.acbs
                 .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                 .map(a => {
                     let ret = {
@@ -484,15 +484,15 @@
                 }
                 vm.filterItems.statusItems.push(obj);
             }
-            vm.searchOptions.certificationCriterionNumbers = $filter('orderBy')(vm.searchOptions.certificationCriterionNumbers, utilService.sortCert);
-            for (i = 0; i < vm.searchOptions.certificationCriterionNumbers.length; i++) {
-                var crit = vm.searchOptions.certificationCriterionNumbers[i];
+            vm.searchOptions.certificationCriteria = $filter('orderBy')(vm.searchOptions.certificationCriteria, utilService.sortCert);
+            for (i = 0; i < vm.searchOptions.certificationCriteria.length; i++) {
+                var crit = vm.searchOptions.certificationCriteria[i];
                 obj = {
-                    value: crit.name,
+                    value: crit.number,
                     selected: false,
-                    display: crit.name + ': ' + crit.title,
+                    display: crit.number + ': ' + crit.title,
                 };
-                switch (crit.name.substring(4,7)) {
+                switch (crit.number.substring(4,7)) {
                 case '314':
                     vm.filterItems.criteria[2014].push(obj);
                     break;
@@ -505,9 +505,9 @@
                     vm.filterItems.criteria[2011].push(obj);
                 }
             }
-            vm.searchOptions.cqmCriterionNumbers = $filter('orderBy')(vm.searchOptions.cqmCriterionNumbers, utilService.sortCqm);
-            for (i = 0; i < vm.searchOptions.cqmCriterionNumbers.length; i++) {
-                var cqm = vm.searchOptions.cqmCriterionNumbers[i];
+            vm.searchOptions.cqms = $filter('orderBy')(vm.searchOptions.cqms, utilService.sortCqm);
+            for (i = 0; i < vm.searchOptions.cqms.length; i++) {
+                var cqm = vm.searchOptions.cqms[i];
                 obj = {
                     selected: false,
                 };

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Collections', function () {
+    fdescribe('the Collections', function () {
         var $compile, $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, mock, networkService, scope, vm;
 
         beforeEach(function () {
@@ -24,8 +24,8 @@
                 mock = {
                     searchOptions: angular.copy(Mock.searchOptions),
                 };
-                mock.searchOptions.certBodyNames[0].retired = true;
-                mock.searchOptions.certBodyNames[0].retirementDate = new Date();
+                mock.searchOptions.acbs[0].retired = true;
+                mock.searchOptions.acbs[0].retirementDate = new Date();
                 networkService = _networkService_;
                 networkService.getCollection.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
                 networkService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));

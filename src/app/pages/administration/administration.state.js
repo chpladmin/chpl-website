@@ -2,10 +2,10 @@ let getResources = ($q, networkService) => {
     let promises = [
         networkService.getSearchOptions()
             .then(response => ({
-                bodies: response.certBodyNames,
+                bodies: response.acbs,
                 classifications: response.productClassifications,
                 editions: response.editions,
-                practices: response.practiceTypeNames,
+                practices: response.practiceTypes,
                 statuses: response.certificationStatuses,
             })),
         networkService.getAtls(false)
