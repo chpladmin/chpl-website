@@ -1,4 +1,5 @@
 import { Visualizer } from '@uirouter/visualizer';
+import { states as collectionsStates } from './pages/collections/collections.state.js';
 import { states as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { states as listingStates } from './pages/listing/listing.state.js';
 
@@ -45,6 +46,16 @@ import { states as listingStates } from './pages/listing/listing.state.js';
                         });
                     } else {
                         listingStates['listing-edit-off'].forEach(state => {
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
+                            $uiRouter.stateRegistry.register(state);
+                            needsReload = needsReload || $state.$current.name === state.name;
+                        });
+                    }
+
+                    if (featureFlags.isOn('effective-rule-date')) {
+                        collectionsStates['effective-rule-date'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);
                             }
