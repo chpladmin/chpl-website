@@ -490,7 +490,8 @@
                 obj = {
                     value: crit.number,
                     selected: false,
-                    display: crit.number + ': ' + crit.title,
+                    display: crit.number + ': ' + crit.title + crit.removed ? ' (Removed)' : '',
+                    removed: crit.removed,
                 };
                 switch (crit.number.substring(4,7)) {
                 case '314':
