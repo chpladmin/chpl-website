@@ -2,7 +2,6 @@ import { Visualizer } from '@uirouter/visualizer';
 import { states as collectionsStates } from './pages/collections/collections.state.js';
 import { states as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { states as listingStates } from './pages/listing/listing.state.js';
-import { states as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 
 (() => {
     'use strict';
@@ -52,23 +51,6 @@ import { states as surveillanceStates } from './pages/surveillance/surveillance.
                             }
                             $uiRouter.stateRegistry.register(state);
                             needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    }
-
-                    if (featureFlags.isOn('surveillance-reporting')) {
-                        surveillanceStates['surveillance-reports-on'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        surveillanceStates['surveillance-reports-on'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            needsRedirect = needsRedirect || $state.$current.name === state.name;
                         });
                     }
 
