@@ -98,6 +98,7 @@ export const DashboardComponent = {
                         .then(() => {
                             that.networkService.getChangeRequests().then(response => that.changeRequests = response);
                             that.state = 'confirmation';
+                            that.confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.'
                         }, error => {
                             that.toaster.pop({
                                 type: 'error',
@@ -123,10 +124,20 @@ export const DashboardComponent = {
                 break;
             case 'save':
                 this.networkService.updateChangeRequest(data)
-                    .then(() => that.networkService.getChangeRequests().then(response => {
-                        that.changeRequests = response;
-                        that.state = 'confirmation';
-                    }));
+                    .then(() => {
+                        that.networkService.getChangeRequests().then(response => {
+                            that.changeRequests = response;
+                            that.state = 'confirmation';
+                            that.confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.'
+                        })
+                    }, error => {
+                        that.toaster.pop({
+                            type: 'error',
+                            title: 'Error in submission',
+                            body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
+                            bodyOutputType: 'trustedHtml',
+                        });
+                    });
                 break;
             case 'focus':
                 this.state = 'focusChangeRequest';

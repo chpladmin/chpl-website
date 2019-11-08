@@ -2,6 +2,7 @@ export const ConfirmationComponent = {
     templateUrl: 'chpl.components/confirmation/confirmation.html',
     bindings: {
         takeAction: '&',
+        text: '@',
     },
     controller: class ConfirmationComponent {
         constructor ($log) {

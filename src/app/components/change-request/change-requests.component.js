@@ -14,6 +14,7 @@ export const ChangeRequestsComponent = {
             this.filterItems = {
                 pageSize: 3,
             };
+            this.isValid = true;
         }
 
         $onChanges (changes) {
@@ -90,7 +91,8 @@ export const ChangeRequestsComponent = {
                 this.takeAction({action: 'focus'});
                 break;
             case 'update':
-                this.activeChangeRequest = data;
+                this.activeChangeRequest = data.changeRequest;
+                this.isValid = data.validity;
                 break;
                 // no default
             }

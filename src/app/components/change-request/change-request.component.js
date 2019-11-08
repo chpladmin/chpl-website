@@ -5,6 +5,7 @@ export const ChangeRequestComponent = {
         developer: '<',
         changeRequest: '<',
         takeAction: '&',
+        showFormErrors: '<',
     },
     controller: class ChangeRequestComponent {
         constructor ($log) {
@@ -39,6 +40,9 @@ export const ChangeRequestComponent = {
                 });
                 this.backup.changeRequest = angular.copy(this.changeRequest);
             }
+            if (changes.showFormErrors) {
+                this.showFormErrors = changes.showFormErrors.currentValue;
+            }
         }
 
         cancel () {
@@ -51,7 +55,10 @@ export const ChangeRequestComponent = {
         update () {
             this.takeAction({
                 action: 'update',
-                data: this.changeRequest,
+                data: {
+                    changeRequest: this.changeRequest,
+                    validity: this.form.$valid,
+                },
             });
         }
     },

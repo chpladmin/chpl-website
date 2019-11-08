@@ -8,7 +8,7 @@
     <div class="main-content" id="main-content" tabindex="-1">
       <div class="row">
         <div ng-if="$ctrl.inState('confirmation')" class="col-md-10 col-md-offset-1">
-          <chpl-confirmation take-action="$ctrl.cancel()"></chpl-confirmation>
+          <chpl-confirmation take-action="$ctrl.cancel()" text="{{ $ctrl.confirmationText }}"></chpl-confirmation>
         </div>
         <div ng-if="$ctrl.inState('developer')" ng-class="$ctrl.inState('focusDeveloper') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-developer ng-if="$ctrl.developer"

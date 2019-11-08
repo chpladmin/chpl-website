@@ -1,8 +1,13 @@
-<span ng-switch="$ctrl.activeState">
+<span ng-switch="$ctrl.activeState" ng-form="$ctrl.form">
   <span ng-switch-when="log">
     <div class="row">
       <div class="col-md-12" st-table="$ctrl.displayedHistory" st-safe-src="$ctrl.changeRequest.statuses">
-        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <button class="btn btn-default pull-right" aria-label="Cancel"
+                confirm="Are you sure you wish to cancel? Your changes will not be saved."
+                confirm-ok="Yes"
+                confirm-cancel="No"
+                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
         <table class="table">
           <thead>
             <tr>
@@ -36,18 +41,25 @@
         </div>
       </div>
       <div class="col-sm-4">
-        <h3>New Website</h3>
+        <h3>Submitted Website</h3>
         <div class="form-group">
-          <label class="control-label" for="new-website">New website</label>
+          <label class="control-label" for="submitted-website">Submitted website</label>
           <div>
-            <input class="input-sm form-control" type="url" ng-model="$ctrl.changeRequest.details.website" id="new-website" name="newWebsite" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw'" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newWebsite.$touched) && $ctrl.form.newWebsite.$error.maxlength">Field is too long</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newWebsite.$touched) && $ctrl.form.newWebsite.$error.url">Improper format (http://www.example.com)</div>
+            <input class="input-sm form-control" type="url" id="submitted-website" name="submittedWebsite" required
+                   ng-model="$ctrl.changeRequest.details.website" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw'" ng-change="$ctrl.update()"></input>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.required">Field is required</div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.url">Improper format (http://www.example.com)</div>
           </div>
         </div>
       </div>
       <div class="col-sm-4">
-        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <button class="btn btn-default pull-right" aria-label="Cancel"
+                confirm="Are you sure you wish to cancel? Your changes will not be saved."
+                confirm-ok="Yes"
+                confirm-cancel="No"
+                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
         <h3>Reason for Change</h3>
         <div class="form-group">
           <label class="control-label" for="comment">Reason</label>
@@ -84,7 +96,7 @@
     <div class="row">
       <div class="col-sm-12">
         Current website: {{ $ctrl.developer.website }} <br />
-        New website: {{ $ctrl.changeRequest.details.website }}
+        Submitted website: {{ $ctrl.changeRequest.details.website }}
       </div>
     </div>
   </span>
