@@ -75,42 +75,39 @@ export const ReportsVersionsComponent = {
             return this.networkService.getActivityById(meta.id).then(item => {
                 var change;
 
-                //var activity = {};
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, neither an array: update
-                    //activity.product = item.newData.productName;
-                    //activity.name = item.newData.version;
-                    //activity.action = 'Update:<ul>';
                     meta.product = item.newData.productName;
                     meta.name = item.newData.version;
+                    meta.activityType= 'Version has been updated.';
                     meta.action = 'Update:<ul>';
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'version', 'Version');
-                    //if (change) { activity.action += '<li>' + change + '</li>'; }
                     if (change) { meta.action += '<li>' + change + '</li>'; }
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'productName', 'Associated Product');
-                    //if (change) { activity.action += '<li>' + change + '</li>'; }
                     if (change) { meta.action += '<li>' + change + '</li>'; }
-                    //activity.action += '</ul>';
                     meta.action += '</ul>';
-                    //meta.action = activity.action;
+                    meta.detailsCSV = meta.action;
                 } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, original array, final object: merge
                     meta.product = item.newData.productName;
                     meta.name = item.newData.version;
+                    meta.activityType = 'Versions were merged.';
                     meta.action = 'Versions ' + item.originalData.map(ver => ver.version).join(' and ') + ' merged to form ' + item.newData.version;
+                    meta.detailsCSV = meta.action;
                 } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // both exist, original object, final array: split
                     meta.product = item.originalData.productName;
                     meta.name = item.originalData.version;
+                    meta.activityType = 'Versions were split.';
                     meta.action = 'Version ' + item.originalData.version + ' split to become ' + item.newData.map(ver => ver.version).join(' and ');
+                    meta.detailsCSV = meta.action;
                 } else {
                     if (item.newData) {
-                        //activity.product = item.newData.productName;
                         meta.product = item.newData.productName;
                     } else if (item.originalData) {
-                        //activity.product = item.originalData.productName;
                         meta.product = item.originalData.productName;
                     }
                     let activity = {};
                     this.ReportService.interpretNonUpdate(activity, item, 'version', 'version');
                     meta.action = activity.action[0];
+                    meta.activityType = meta.action;
                 }
             });
         }

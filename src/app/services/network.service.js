@@ -285,6 +285,8 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
         case 'bannedDevelopers':
             return this.apiGET('/collections/decertified-developers');
+        case 'complaintListings':
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'correctiveAction':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         case 'decertifiedProducts':
@@ -292,12 +294,10 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
         case 'sed':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
-        case 'transparencyAttestations':
-            return this.apiGET('/collections/developers');
-        case 'complaintListings':
-            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'surveillanceManagement':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
+        case 'transparencyAttestations':
+            return this.apiGET('/collections/developers');
             //no default
         }
     }

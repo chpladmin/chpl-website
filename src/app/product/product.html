@@ -20,7 +20,10 @@
           <p ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ng-href="#/admin/dpManagement/manage/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
           <p ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ui-sref="surveillance.manage({listingId: vm.product.id, chplProductNumber: vm.product.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
           <div class="btn-group">
-            <div class="btn-group" ng-if="vm.certificationStatus(vm.product) !== 'Retired'">
+            <div class="btn-group" ng-if="vm.product.certificationEdition.name === '2015'" feature-flag="effective-rule-date">
+              <ai-cms-widget-button product-id="{{ vm.product.id }}" product-name="{{ vm.product.product.name }}"></ai-cms-widget-button>
+            </div>
+            <div class="btn-group" ng-if="vm.certificationStatus(vm.product) !== 'Retired'" feature-flag="effective-rule-date" feature-flag-hide>
               <ai-cms-widget-button product-id="{{ vm.product.id }}" product-name="{{ vm.product.product.name }}"></ai-cms-widget-button>
             </div>
             <div class="btn-group">
