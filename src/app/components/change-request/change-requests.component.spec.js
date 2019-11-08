@@ -151,11 +151,13 @@
                 });
 
                 describe('to receive an update', () => {
-                    it('should set the active CR', () => {
+                    it('should set the active CR and validity', () => {
                         expect(ctrl.activeChangeRequest).toBeUndefined;
+                        expect(ctrl.isValid).toBe(true);
                         let newCr = {id: 3};
-                        ctrl.act('update', newCr);
+                        ctrl.act('update', { changeRequest: newCr, validity: 3 });
                         expect(ctrl.activeChangeRequest).toBe(newCr);
+                        expect(ctrl.isValid).toBe(3);
                     });
                 });
 

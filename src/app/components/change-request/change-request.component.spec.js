@@ -65,7 +65,10 @@
             describe('when using callbacks', () => {
                 it('should handle update', () => {
                     ctrl.update();
-                    expect(scope.takeAction).toHaveBeenCalledWith('update', mock.changeRequest);
+                    expect(scope.takeAction).toHaveBeenCalledWith('update', {
+                        changeRequest: mock.changeRequest,
+                        validity: true,
+                    });
                 });
 
                 it('should handle cancel', () => {
