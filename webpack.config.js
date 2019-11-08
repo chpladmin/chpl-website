@@ -26,7 +26,6 @@ module.exports = env => {
             listing: path.resolve(__dirname, './src/app/pages/listing/index.js'),
             navigation: path.resolve(__dirname, './src/app/navigation/index.js'),
             organizations: path.resolve(__dirname, './src/app/pages/organizations/index.js'),
-            product: path.resolve(__dirname, './src/app/product/index.js'),
             registration: path.resolve(__dirname, './src/app/pages/registration/index.js'),
             reports: path.resolve(__dirname, './src/app/pages/reports/index.js'),
             search: path.resolve(__dirname, './src/app/pages/search/index.js'),
