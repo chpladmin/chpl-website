@@ -2,13 +2,14 @@ export const ReportsApiKeysComponent = {
     templateUrl: 'chpl.reports/api-keys/api-keys.html',
     bindings: { },
     controller: class ReportsApiKeyComponent {
-        constructor ($filter, $log, ReportService, networkService, utilService) {
+        constructor ($filter, $log, ReportService, networkService, utilService, authService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.hasAnyRole = authService.hasAnyRole;
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.activityRange = {
                 range: 30,
