@@ -2,7 +2,7 @@ export const ReportsApiKeysComponent = {
     templateUrl: 'chpl.reports/api-keys/api-keys.html',
     bindings: { },
     controller: class ReportsApiKeyComponent {
-        constructor (authService, $filter, $log, networkService, ReportService, utilService) {
+        constructor ($filter, $log, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
