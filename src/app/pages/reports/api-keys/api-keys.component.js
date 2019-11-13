@@ -30,6 +30,7 @@ export const ReportsApiKeysComponent = {
                 startDate: new Date(),
                 endDate: new Date(),
             };
+            this.filterText = '';
             this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
         }
 
@@ -39,6 +40,7 @@ export const ReportsApiKeysComponent = {
             filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             filterData.dateAscending = this.activityRange.dateAscending;
             filterData.apiKeyFilter = this.filter;
+            filterData.filterText = this.filterText;
             return filterData;
         }
 
@@ -54,6 +56,7 @@ export const ReportsApiKeysComponent = {
                 .then(results => {
                     this.apiResponse = results.map(item => {
                         item.friendlyCreationDate = this.$filter('date')(item.date, 'MMM d, y H:mm:ss');
+                        item.filterText = item.description;
                         return item;
                     });
                 });
@@ -68,12 +71,14 @@ export const ReportsApiKeysComponent = {
             this.activityRange.startDate = new Date(Date.parse(f.startDate));
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
             this.filter = f.apiKeyFilter;
+            this.filterText = f.filterText;
             this.search();
         }
 
         onClearFilter () {
             this.activityRange.endDate = new Date();
-            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1);
+            this.filterText = '';
             this.search();
         }
     },
