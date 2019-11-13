@@ -35,7 +35,7 @@
       <div class="form-group">
         <label for="data-filter" class="control-label">Filter</label>
         <input chpl-search="filterText" name="dataFilter" id="data-filter" class="form-control" type="search"
-               ng-model="$ctrl.filterText" placeholder="Filter on API Key">
+               ng-model="$ctrl.filterText" placeholder="Filter on Activity">
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
     </div>
   </div>
 </div>
-<div class="main-content row splash-row" id="main-content" tabindex="-1" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+<div class="row splash-row" id="api-key-login-content" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
   <div class="col-md-6 col-md-offset-3 jumbotron">
     <chpl-login form-class=""
                 p-class="bg-success lead"
