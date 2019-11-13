@@ -16,7 +16,7 @@
             <span ng-if="!$ctrl.isSplitting">
               Developer code: {{ $ctrl.developer.developerCode }}<br />
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-              <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></span>
+              <span ng-if="$ctrl.developer.website"><br />Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></span>
             </span>
             <h3>Contact information</h3>
             <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
@@ -62,7 +62,12 @@
   <span ng-if="$ctrl.isEditing">
     <div class="panel panel-default" ng-if="$ctrl.showFull">
       <div class="panel-heading">
-        <button class="btn btn-default btn-small pull-right" id="developer-component-cancel" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+        <button class="btn btn-default btn-small pull-right" id="developer-component-cancel"
+                confirm="Are you sure you wish to cancel? Your changes will not be saved."
+                confirm-ok="Yes"
+                confirm-cancel="No"
+                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
         <h2 class="panel-title">Editing - {{ $ctrl.developer.name }}</h2>
       </div>
       <div class="panel-body">
@@ -70,7 +75,7 @@
           <div class="row">
             <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
               <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
-              <div>
+              <div class="form-group">
                 <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300" ng-disabled="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])"></input>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
@@ -83,12 +88,18 @@
                   <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
                 </div>
               </div>
-              <h3>Contact information</h3>
-              <chpl-contact contact="$ctrl.developer.contact" is-editing="$ctrl.isEditing && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" is-required="true" on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+              <chpl-contact contact="$ctrl.developer.contact"
+                            is-editing="true"
+                            is-required="true"
+                            is-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                            on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
             </div>
             <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
-              <h3>Address</h3>
-              <chpl-address address="$ctrl.developer.address" is-editing="$ctrl.isEditing && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" is-required="$ctrl.isSplitting" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+              <chpl-address address="$ctrl.developer.address"
+                            is-editing="true"
+                            is-required="$ctrl.isSplitting"
+                            is-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                            on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
             </div>
             <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="col-sm-4">
               <span ng-if="$ctrl.hasAnyRole(['ROLE_ACB'])">
