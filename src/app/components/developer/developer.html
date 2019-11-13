@@ -15,8 +15,8 @@
             <h3>Developer Details</h3>
             <span ng-if="!$ctrl.isSplitting">
               Developer code: {{ $ctrl.developer.developerCode }}<br />
+              <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a><br /></span>
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-              <span ng-if="$ctrl.developer.website"><br />Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></span>
             </span>
             <h3>Contact information</h3>
             <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>

@@ -77,17 +77,17 @@ export const ChangeRequestsComponent = {
                 break;
             case 'edit':
                 this.activeState = 'edit';
-                this.activity = ' - Editing';
+                this.activity = 'Editing - ';
                 this.takeAction({action: 'focus'});
                 break;
             case 'statusLog':
                 this.activeState = 'log';
-                this.activity = ' - Status Log';
+                this.activity = 'Status Log - ';
                 this.takeAction({action: 'focus'});
                 break;
             case 'withdraw':
                 this.activeState = 'withdraw';
-                this.activity = ' - Withdraw';
+                this.activity = 'Withdraw - ';
                 this.takeAction({action: 'focus'});
                 break;
             case 'update':

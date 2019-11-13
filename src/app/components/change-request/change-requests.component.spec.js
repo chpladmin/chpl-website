@@ -131,21 +131,21 @@
                     it('should handle edit', () => {
                         ctrl.act('edit');
                         expect(ctrl.activeState).toBe('edit');
-                        expect(ctrl.activity).toBe(' - Editing');
+                        expect(ctrl.activity).toBe('Editing - ');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle statusLog', () => {
                         ctrl.act('statusLog');
                         expect(ctrl.activeState).toBe('log');
-                        expect(ctrl.activity).toBe(' - Status Log');
+                        expect(ctrl.activity).toBe('Status Log - ');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle withdraw', () => {
                         ctrl.act('withdraw');
                         expect(ctrl.activeState).toBe('withdraw');
-                        expect(ctrl.activity).toBe(' - Withdraw');
+                        expect(ctrl.activity).toBe('Withdraw - ');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
                 });
