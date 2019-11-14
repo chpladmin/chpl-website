@@ -39,7 +39,6 @@ export const ReportsApiKeysComponent = {
             filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
             filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             filterData.dateAscending = this.activityRange.dateAscending;
-            filterData.apiKeyFilter = this.filter;
             filterData.filterText = this.filterText;
             return filterData;
         }
@@ -56,7 +55,6 @@ export const ReportsApiKeysComponent = {
                 .then(results => {
                     this.apiResponse = results.map(item => {
                         item.friendlyCreationDate = this.$filter('date')(item.date, 'MMM d, y H:mm:ss');
-                        item.filterText = item.description;
                         return item;
                     });
                 });
@@ -70,7 +68,6 @@ export const ReportsApiKeysComponent = {
             let f = angular.fromJson(filterObj);
             this.activityRange.startDate = new Date(Date.parse(f.startDate));
             this.activityRange.endDate = new Date(Date.parse(f.endDate));
-            this.filter = f.apiKeyFilter;
             this.filterText = f.filterText;
             this.search();
         }
