@@ -57,7 +57,6 @@ import /* navigationModule from*/ './navigation/index';
 import /* overviewModule from*/ './pages/resources/overview/index';
 import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
-import /* productModule from*/ './product/index';
 import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
 import /* servicesModule from*/ './services/index';
@@ -104,7 +103,6 @@ const dependencies = [
     'chpl.download',
     'chpl.navigation',
     'chpl.overview',
-    'chpl.product',
     'chpl.registration',
     'chpl.search',
     'chpl.services',

@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 10.30.0
+_4 November 2019_
+
+### Flagged Feature
+* To be inserted later
+
+---
+
 ## Version 10.29.0
 _24 October 2019_
 
