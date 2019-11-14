@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the G1/G2 listing details component', function () {
+    fdescribe('the G1/G2 listing details component', function () {
 
         var $compile, $log, Mock, ctrl, el, scope;
 
@@ -54,6 +54,7 @@
                         description: 'Required Test 9: Stage 2 Objective 7 and Stage 3 Objective 7 Measure 3',
                         g: 'G2',
                         criteria: ['170.315 (b)(2)'],
+                        removed: undefined,
                         $$hashKey: jasmine.any(String),
                     });
                 });
@@ -64,6 +65,7 @@
                         description: 'Required Test 1: Stage 2 Objective 4 and Stage 3 Objective 2, ACI Transition Objective 2 Measure 1 and ACI Objective 2 Measure 1',
                         g: 'G2',
                         criteria: ['170.315 (a)(10)', '170.315 (b)(3)'],
+                        removed: undefined,
                         $$hashKey: jasmine.any(String),
                     });
                 });
@@ -90,6 +92,7 @@
                         description: 'Required Test 6: Stage 3 Objective 6 Measure 3',
                         g: 'G1',
                         criteria: ['170.315 (e)(3)'],
+                        removed: undefined,
                         $$hashKey: jasmine.any(String),
                     });
                 });
@@ -100,6 +103,7 @@
                         description: 'Required Test 2: Stage 2 Objective 8 Measure 1',
                         g: 'G1',
                         criteria: ['170.315 (e)(1)'],
+                        removed: undefined,
                         $$hashKey: jasmine.any(String),
                     });
                 });
