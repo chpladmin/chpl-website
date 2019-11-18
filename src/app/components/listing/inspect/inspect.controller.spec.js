@@ -25,6 +25,7 @@
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
                     $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
+                    $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
 
                     return $delegate;
                 });
@@ -38,6 +39,7 @@
                 networkService.confirmPendingCp.and.returnValue($q.when({}));
                 networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
                 networkService.rejectPendingCp.and.returnValue($q.when({}));
+                networkService.updateDeveloper.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('InspectController', {
@@ -140,5 +142,168 @@
                 });
             });
         });
-    })
+
+        fdescribe('when on step 1, and,', function () {
+            beforeEach(function () {
+                vm.developer = {
+                    developerId: 999,
+                    name: 'Dude',
+                    website: 'http://www.abcdefgxyz123.com',
+                    address: {
+                        line1: '999 Bowling Way',
+                        city: 'LA',
+                        state: 'CA',
+                        zipcode: '55555',
+                    },
+                    contact: {
+                        fullName: 'The Dude',
+                        email: 'abc@abcdefg.com',
+                        phoneNumber: '999-999-9999',
+                    },
+                    transparencyAttestations: [{
+                        acbId: 3,
+                        acbName: 'Drummond Group',
+                        attestation: 'Affirmative',
+                    }],
+                };
+                vm.cp.developer.developerId = vm.developer.developerId;
+                vm.cp.certifyingBody = {
+                    code: '04',
+                    name: 'Drummond Group',
+                    id: 3,
+                };
+            });
+
+            describe('system developer info', function () {
+                describe('is missing', function () {
+                    function testMissingData (developerObj, propToRemove) {
+                        expect(developerObj[propToRemove]).toBeTruthy();
+                        expect(vm.isDisabled()).toBe(false);
+
+                        developerObj[propToRemove] = '';
+                        expect(developerObj[propToRemove]).toBeFalsy();
+                        expect(vm.isDisabled()).toBe(true);
+                        developerObj[propToRemove] = ' ';
+                        expect(vm.isDisabled()).toBe(true);
+                    }
+
+                    const shouldDisableNextButton = 'then it should disable the next button';
+
+                    it('developer name ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer, 'name');
+                    });
+
+                    it('developer website ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer, 'website');
+                    });
+
+                    it('contact full name ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.contact, 'fullName');
+                    });
+
+                    it('contact email ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.contact, 'email');
+                    });
+
+                    it('contact phone number ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.contact, 'phoneNumber');
+                    });
+
+                    it('address line1 ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.address, 'line1');
+                    });
+
+                    it('address city ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.address, 'city');
+                    });
+
+                    it('address state ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.address, 'state');
+                    });
+
+                    it('address zipcode ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.address, 'zipcode');
+                    });
+
+                    it('transparency attestations ' + shouldDisableNextButton, function () {
+                        testMissingData(vm.developer.transparencyAttestations[0], 'attestation');
+                    });
+                });
+
+                const shouldEnableNextButton = 'should enable the next button';
+
+                it('has all contact info then it ' + shouldEnableNextButton, function () {
+                    expect(vm.developer.name).toBeTruthy();
+                    expect(vm.developer.website).toBeTruthy();
+                    expect(vm.developer.contact.fullName).toBeTruthy();
+                    expect(vm.developer.contact.email).toBeTruthy();
+                    expect(vm.developer.contact.phoneNumber).toBeTruthy();
+                    expect(vm.developer.address.line1).toBeTruthy();
+                    expect(vm.developer.address.city).toBeTruthy();
+                    expect(vm.developer.address.state).toBeTruthy();
+                    expect(vm.developer.address.zipcode).toBeTruthy();
+                    expect(vm.developer.transparencyAttestations[0].attestation).toBeTruthy();
+                    expect(vm.isDisabled()).toBe(false);
+                });
+            });
+
+            describe('save as developer information is clicked which calls saveInspectingDeveloper()', function () {
+                it('should call loadDev()', function () {
+                    vm.cp.developer = angular.copy(vm.developer);
+
+                    spyOn(vm, 'loadDev');
+                    vm.saveInspectingDeveloper();
+                    scope.$digest();
+                    expect(vm.loadDev).toHaveBeenCalled();
+                });
+            });
+
+            describe('viewing the system developer', function () {
+                beforeEach(function () {
+                    vm.cp.certifyingBody = {
+                        code: '04',
+                        name: 'Drummond Group',
+                        id: 3,
+                    };
+                    vm.developer.transparencyAttestations = [{
+                        acbId: 4,
+                        acbName: 'Other Group',
+                        attestation: null,
+                    }, {
+                        acbId: 3,
+                        acbName: 'Drummond Group',
+                        attestation: 'Affirmative',
+                    }, {
+                        acbId: 5,
+                        acbName: 'Some ACB',
+                        attestation: null,
+                    }];
+                });
+
+                it('should display a relevant transparency attestation if available', function () {
+                    let expectedAttestation = vm.developer.transparencyAttestations[1].attestation;
+                    let attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                    expect(attestation).toBe(expectedAttestation);
+                });
+
+                it('should not display a relevant transparency attestation if not available', function () {
+                    vm.developer.transparencyAttestations[1].acbName = 'no acbName matches now';
+                    let attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                    expect(attestation).toBeUndefined();
+                });
+
+                describe('but no developer data is available', function () {
+                    it('should skip the body of getAttestationStringForCurrentSystemDeveloper(), return null, '
+                        + 'and display no system attestation info', function () {
+                        vm.developer.transparencyAttestations = undefined;
+                        let attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                        expect(attestation).toBeNull();
+                        vm.developer = undefined;
+                        attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                        expect(attestation).toBeNull();
+                    });
+                });
+            });
+        });
+    });
 })();

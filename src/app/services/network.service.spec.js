@@ -530,22 +530,22 @@
 
         it('should getApiUserActivity', () => {
             var aDate = new Date();
-            $httpBackend.expectGET(/^\/rest\/activity\/api_keys$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys$/).respond(200, {data: 'response'});
             networkService.getApiUserActivity({}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/activity\/api_keys\?start=\d+$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?start=\d+$/).respond(200, {data: 'response'});
             networkService.getApiUserActivity({startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/activity\/api_keys\?end=\d+$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?end=\d+$/).respond(200, {data: 'response'});
             networkService.getApiUserActivity({endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/activity\/api_keys\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
             networkService.getApiUserActivity({startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
@@ -720,6 +720,11 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
+            $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,acb,chplProductNumber,developer,product$/).respond(200, {data: 'response'});
+            networkService.getCollection('complaintListings').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount$/).respond(200, {data: 'response'});
             networkService.getCollection('correctiveAction').then(response => {
                 expect(response.data).toEqual('response');
@@ -740,13 +745,13 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/collections\/developers$/).respond(200, {data: 'response'});
-            networkService.getCollection('transparencyAttestations').then(response => {
+            $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates$/).respond(200, {data: 'response'});
+            networkService.getCollection('surveillanceManagement').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/^\/rest\/collections\/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates$/).respond(200, {data: 'response'});
-            networkService.getCollection('surveillanceManagement').then(response => {
+            $httpBackend.expectGET(/^\/rest\/collections\/developers$/).respond(200, {data: 'response'});
+            networkService.getCollection('transparencyAttestations').then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

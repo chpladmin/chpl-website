@@ -1,5 +1,65 @@
 # Release Notes
 
+## Version 10.31.0
+_18 November 2019_
+
+### Features
+* Display the API Key Management Report is in the new style
+
+---
+
+## Version 10.30.0
+_4 November 2019_
+
+### Flagged Feature
+* To be inserted later
+
+---
+
+## Version 10.29.0
+_24 October 2019_
+
+### Features
+* Allow jobs to display text, date, and select for additional job data
+
+---
+
+## Version 10.28.0
+_21 October 2019_
+
+### Features
+* Add details to version activity download
+
+### Flagged Features
+* Add ability to edit basic information Certified Products on details page
+* Add ROLE_DEVELOPER User type
+* Allow ROLE_DEVELOPER to create "Change Requests" to change their Organization's website
+
+### Bug Fixes
+* Add missing Product activity data to downloadable file
+* Show correct error message when field is too long
+* Display error message on CMS ID gen failure
+* Enable next for new developer and add error reporting
+
+---
+
+## Version 10.27.0
+_7 October 2019_
+
+### Features
+* Disable next on developer inspect product page without save or valid system data
+  * Disable next button on developer inspect product page when there is no valid system data loaded, either via default, or via the save button itself
+  * Fix attestation not being displayed for the system developer even if saved in the system
+* Add organizations to user update activity display
+
+### User Interface Updates
+* Update sign up text to support Developers
+
+### Bug Fixes
+* Add Details column and merge, split activity details for Developer Reports
+
+---
+
 ## Version 10.26.0
 _23 September 2019_
 
@@ -12,6 +72,9 @@ _23 September 2019_
   * Includes Edit, Merge, and Split
   * Add support for Version editing on new Organizations - Developer - Product page
   * Includes Edit, Merge, and Split
+
+### Flagged Feature
+* Allow ONC-ACBs to generate their required quarterly and annual Surveillance Reports
 
 ### User Interface Updates
 * Standardize button display on complaints
@@ -108,7 +171,7 @@ _20 May 2019_
 
 ### Bug Fixes
 * Allow upload of files from Edge
-* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB (fix)
+* Fix deleting of scheduled jobs when multiple jobs are assigned to the same ACB
 * Fix routing to password reset page
 
 ---

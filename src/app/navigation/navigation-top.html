@@ -48,7 +48,7 @@
               <li><a ui-sref="collections.inactive">Inactive Certificates</a></li>
               <li><a ui-sref="collections.corrective-action">Products: Corrective Action</a></li>
               <li><a ui-sref="collections.sed">SED Info for 2015 Ed. Products</a></li>
-              <li><a ui-sref="collections.transparency-attestations">Transparency Attestations</a></li>
+              <li feature-flag="effective-rule-date" feature-flag-hide><a ui-sref="collections.transparency-attestations">Transparency Attestations</a></li>
             </ul>
           </li>
         </ul>
@@ -109,7 +109,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i> ONC-ATLs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i> Announcements</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.userActions')"></i> User Actions</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.user-actions')"></i> User Actions</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-keys()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-keys')"></i> API Keys</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-key-usage()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-key-usage')"></i> API Key Usage</a></li>
             </ul>
@@ -120,8 +120,8 @@
               <li><a ui-sref="surveillance.upload()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.upload')"></i>Upload</a></li>
               <li><a ui-sref="surveillance.confirm()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.confirm')"></i>Confirm</a></li>
               <li><a ui-sref="surveillance.manage()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.manage')"></i> Manage</a></li>
-              <li feature-flag="complaints"><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i>Complaints Reporting</a></li>
-              <li feature-flag="surveillance-reporting"><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
+              <li><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i>Complaints Reporting</a></li>
+              <li><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
             </ul>
           </li>
         </ul><!-- /admin nav -->
