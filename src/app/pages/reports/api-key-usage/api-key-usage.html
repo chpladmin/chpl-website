@@ -87,7 +87,7 @@
             <td>{{ activity.email }}</td>
             <td>{{ activity.name }}</td>
             <td>{{ activity.apiCallPath }}</td>
-            <td>{{ activity.creationDate | date : 'MMM d, y H:mm:ss' }}</td>
+            <td>{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
           </tr>
         </tbody>
       </table>

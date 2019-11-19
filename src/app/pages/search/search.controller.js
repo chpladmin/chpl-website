@@ -404,24 +404,10 @@
         }
 
         function populateSearchOptions () {
-            vm.lookaheadSource = {all: [], developers: [], products: []};
             networkService.getSearchOptions()
-                .then(function (options) {
+                .then(options => {
+                    options.practiceTypes = options.practiceTypes.map(ptn => ptn.name);
                     vm.searchOptions = options;
-                    var i;
-                    options.practiceTypes = [];
-                    for (i = 0; i < options.practiceTypeNames.length; i++) {
-                        options.practiceTypes.push(options.practiceTypeNames[i].name);
-                    }
-                    for (i = 0; i < options.developerNames.length; i++) {
-                        vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                        vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                    }
-                    for (i = 0; i < options.productNames.length; i++) {
-                        vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                        vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                    }
-                    $localStorage.lookaheadSource = vm.lookaheadSource;
                     setFilterInfo(vm.defaultRefineModel);
                 });
         }
@@ -460,7 +446,7 @@
                 editionItems: [],
                 statusItems: [],
             };
-            vm.filterItems.acbItems = vm.searchOptions.certBodyNames
+            vm.filterItems.acbItems = vm.searchOptions.acbs
                 .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                 .map(a => {
                     let ret = {
@@ -498,15 +484,16 @@
                 }
                 vm.filterItems.statusItems.push(obj);
             }
-            vm.searchOptions.certificationCriterionNumbers = $filter('orderBy')(vm.searchOptions.certificationCriterionNumbers, utilService.sortCert);
-            for (i = 0; i < vm.searchOptions.certificationCriterionNumbers.length; i++) {
-                var crit = vm.searchOptions.certificationCriterionNumbers[i];
+            vm.searchOptions.certificationCriteria = $filter('orderBy')(vm.searchOptions.certificationCriteria, utilService.sortCert);
+            for (i = 0; i < vm.searchOptions.certificationCriteria.length; i++) {
+                var crit = vm.searchOptions.certificationCriteria[i];
                 obj = {
-                    value: crit.name,
+                    value: crit.number,
                     selected: false,
-                    display: crit.name + ': ' + crit.title,
+                    display: crit.number + ': ' + crit.title + (crit.removed ? ' (Removed)' : ''),
+                    removed: crit.removed,
                 };
-                switch (crit.name.substring(4,7)) {
+                switch (crit.number.substring(4,7)) {
                 case '314':
                     vm.filterItems.criteria[2014].push(obj);
                     break;
@@ -519,9 +506,9 @@
                     vm.filterItems.criteria[2011].push(obj);
                 }
             }
-            vm.searchOptions.cqmCriterionNumbers = $filter('orderBy')(vm.searchOptions.cqmCriterionNumbers, utilService.sortCqm);
-            for (i = 0; i < vm.searchOptions.cqmCriterionNumbers.length; i++) {
-                var cqm = vm.searchOptions.cqmCriterionNumbers[i];
+            vm.searchOptions.cqms = $filter('orderBy')(vm.searchOptions.cqms, utilService.sortCqm);
+            for (i = 0; i < vm.searchOptions.cqms.length; i++) {
+                var cqm = vm.searchOptions.cqms[i];
                 obj = {
                     selected: false,
                 };

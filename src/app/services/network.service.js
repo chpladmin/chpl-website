@@ -217,7 +217,7 @@ export class NetworkService {
     }
 
     getApiUserActivity (activityRange) {
-        var call = '/activity/api_keys';
+        var call = '/activity/metadata/api-keys';
         return this.getActivity(call, activityRange);
     }
 
@@ -465,7 +465,7 @@ export class NetworkService {
     }
 
     getSearchOptions () {
-        return this.apiGET('/data/search_options');
+        return this.apiGET('/data/search-options');
     }
 
     getSedParticipantStatisticsCount () {

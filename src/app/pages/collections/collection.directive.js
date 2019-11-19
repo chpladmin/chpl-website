@@ -160,7 +160,7 @@
             if (vm.isFilterActive('acb')) {
                 networkService.getSearchOptions()
                     .then(options => {
-                        vm.filterItems.acbItems = options.certBodyNames
+                        vm.filterItems.acbItems = options.acbs
                             .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                             .map(acb => {
                                 let ret = {
