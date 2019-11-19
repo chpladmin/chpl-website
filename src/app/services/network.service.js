@@ -465,7 +465,7 @@ export class NetworkService {
     }
 
     getSearchOptions () {
-        return this.apiGET('/data/search_options');
+        return this.apiGET('/data/search-options');
     }
 
     getSedParticipantStatisticsCount () {

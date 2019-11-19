@@ -85,7 +85,7 @@ export const CertificationCriteriaComponent = {
 
         toggleCriteria () {
             if (!this.showDetails) {
-                this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: this.cert.number });
+                this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: this.cert.criterion.number });
             }
             this.showDetails = !this.showDetails
         }

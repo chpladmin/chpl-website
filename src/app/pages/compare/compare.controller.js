@@ -114,7 +114,7 @@
             for (var i = 0; i < product.certificationResults.length; i++) {
                 cert = product.certificationResults[i];
                 if (angular.isUndefined(vm.allCerts[cert.number])) {
-                    vm.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
+                    vm.allCerts[cert.number] = {number: cert.criterion.number, title: cert.criterion.title, removed: cert.criterion.removed, values: []};
                 }
                 if (cert.success) {
                     vm.allCerts[cert.number].atLeastOne = true;

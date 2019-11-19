@@ -1083,7 +1083,7 @@
         });
 
         it('should getSearchOptions', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, {data: 'response'});
             networkService.getSearchOptions().then(response => {
                 expect(response.data).toEqual('response');
             });
@@ -1454,7 +1454,7 @@
         });
 
         it('should modifyACB', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {});
+            $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, {});
             $httpBackend.expectPUT(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
             networkService.modifyACB({id: 'id'}).then(response => {
                 expect(response.data).toEqual('response');
