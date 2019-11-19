@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 10.31.0
+_18 November 2019_
+
+### Features
+* Display the API Key Management Report is in the new style
+
+---
+
+## Version 10.30.0
+_4 November 2019_
+
+### Flagged Feature
+* To be inserted later
+
+---
+
 ## Version 10.29.0
 _24 October 2019_
 

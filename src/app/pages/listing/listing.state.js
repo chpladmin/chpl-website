@@ -1,92 +1,41 @@
-let states = {
-    'listing-edit-on': [
-        {
-            name: 'listing',
-            url: '/listing/{id}/{initialPanel}',
+let states = [{
+    name: 'listing',
+    url: '/listing/{id}/{initialPanel}',
+    params: {
+        initialPanel: {squash: true, value: null},
+    },
+    component: 'chplListing',
+    data: { title: 'CHPL Product Details' },
+},{
+    name: 'product',
+    url: '/product/{id}',
+    redirectTo: trans => {
+        return {
+            state: 'listing',
             params: {
-                initialPanel: {squash: true, value: null},
+                id: trans.params().id,
             },
-            component: 'chplListing',
-            data: { title: 'CHPL Product Details' },
-        },{
-            name: 'product',
-            url: '/product/{id}',
-            redirectTo: trans => {
-                return {
-                    state: 'listing',
-                    params: {
-                        id: trans.params().id,
-                    },
-                }
-            },
-        },{
-            name: 'product.initial-panel',
-            url: '/{initialPanel}',
-            redirectTo: trans => {
-                return {
-                    state: 'listing',
-                    params: {
-                        id: trans.params().id,
-                        initialPanel: trans.params().initialPanel,
-                    },
-                }
-            },
-        },
-    ],
-    'listing-edit-off': [
-        {
-            name: 'listing',
-            url: '/listing/{id}',
-            redirectTo: trans => {
-                return {
-                    state: 'product',
-                    params: {
-                        id: trans.params().id,
-                    },
-                }
-            },
-        },{
-            name: 'listing.initial-panel',
-            url: '/{initialPanel}',
-            redirectTo: trans => {
-                return {
-                    state: 'product',
-                    params: {
-                        id: trans.params().id,
-                        initialPanel: trans.params().initialPanel,
-                    },
-                }
-            },
-        },
-    ],
-    'base': [
-        {
-            name: 'listing',
-            url: '/listing/{id}',
-            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-            data: { title: 'CHPL Product Details' },
-        },{
-            name: 'product',
-            url: '/product/{id}/{initialPanel}',
+        }
+    },
+},{
+    name: 'product.initial-panel',
+    url: '/{initialPanel}',
+    redirectTo: trans => {
+        return {
+            state: 'listing',
             params: {
-                initialPanel: {squash: true, value: null},
+                id: trans.params().id,
+                initialPanel: trans.params().initialPanel,
             },
-            template: require('../../product/product.html'),
-            controller: 'ProductController',
-            controllerAs: 'vm',
-            data: { title: 'CHPL Product Details' },
-        },
-    ],
-}
+        }
+    },
+}];
 
-/**
- * This config can only be used when the listing-edit flag is set to true and/or removed when listing-edit is fully deployed
- */
 function listingStatesConfig ($stateProvider) {
     'ngInject'
-    states['base'].forEach(state => {
+    states.forEach(state => {
         $stateProvider.state(state);
     });
 }
 
-export { listingStatesConfig, states };
+export { listingStatesConfig };
