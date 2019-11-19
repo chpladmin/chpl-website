@@ -1,5 +1,5 @@
-export const CertificationCriteriaComponent = {
-    templateUrl: 'chpl.components/listing/details/criteria.html',
+export const CertificationCriteriaViewComponent = {
+    templateUrl: 'chpl.components/listing/details/criteria/view.html',
     bindings: {
         accessibilityStandards: '<',
         cert: '<',
@@ -12,7 +12,7 @@ export const CertificationCriteriaComponent = {
         resources: '<',
         viewAll: '<',
     },
-    controller: class CertificationCriteriaController {
+    controller: class CertificationCriteriaViewController {
         constructor ($analytics, $log, $uibModal) {
             'ngInject'
             this.$analytics = $analytics;
@@ -36,9 +36,7 @@ export const CertificationCriteriaComponent = {
             const resources = this.resources;
             const isConfirming = this.isConfirming;
             this.editUibModalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.components/listing/details/criteria-modal.html',
-                controller: 'EditCertificationCriteriaController',
-                controllerAs: 'vm',
+                component: 'chplCertificationCriteriaEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
@@ -50,7 +48,8 @@ export const CertificationCriteriaComponent = {
                     resources: () => resources,
                 },
             });
-            this.editUibModalInstance.result.then(() => {
+            this.editUibModalInstance.result.then(response => {
+                this.cert = response;
                 this.onChange({cert: this.cert});
                 this.refreshSed();
             }, () => {
@@ -93,4 +92,4 @@ export const CertificationCriteriaComponent = {
 }
 
 angular.module('chpl.components')
-    .component('aiCertificationCriteria', CertificationCriteriaComponent);
+    .component('chplCertificationCriteria', CertificationCriteriaViewComponent);
