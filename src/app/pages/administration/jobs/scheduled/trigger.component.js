@@ -52,8 +52,6 @@ export const JobsScheduledTriggerComponent = {
             if (this.acbs && !this.selectedAcb) {
                 this.selectedAcb = this.acbs;
             }
-            this.$log.info('onChanges');
-            this.$log.info(this.trigger);
         }
 
         save () {
@@ -68,7 +66,6 @@ export const JobsScheduledTriggerComponent = {
             } else {
                 toSave.runDateMillis = this.selectedDateTime.getTime();
             }
-            this.$log.info(toSave);
             this.onSave({
                 trigger: toSave,
             });

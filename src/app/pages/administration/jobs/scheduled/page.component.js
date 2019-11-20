@@ -85,8 +85,6 @@ export const JobsScheduledPageComponent = {
         saveTrigger (trigger) {
             let that = this;
             if (this.isRecurring) {
-                that.$log.info('Just before update');
-                that.$log.info(trigger);
                 if (trigger.trigger.name) {
                     this.networkService.updateScheduleTrigger(trigger.trigger)
                         .then(() => {
