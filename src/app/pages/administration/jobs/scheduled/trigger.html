@@ -13,10 +13,7 @@
     </div>
     <div class="col-md-6">
       <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'text'">
-
-      <input class="input-sm form-control" type="number" step="1" id="{{ param.key }}" name="{{ param.key }}"
-        string-to-number ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'int'">
-
+      <input class="input-sm form-control" type="number" step="1" min="{{ param.min }}" id="{{ param.key }}" name="{{ param.key }}" string-to-number ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'int'">
       <textarea class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="param.type === 'textarea'"></textarea>
       <div class="input-group" ng-if="param.type === 'date'">
         <input class="input-sm form-control" id="{{ param.key }}" name="{{ param.key }}" type="text" uib-datepicker-popup="MM/dd/yyyy"
