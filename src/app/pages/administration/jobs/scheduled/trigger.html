@@ -9,13 +9,13 @@
   </div>
   <div class="row" ng-repeat="param in $ctrl.parameters">
     <div class="col-md-3">
-      <label for="{{ param.key }}" >{{ param.label }}</label>
+      <label for="{{ param.key }}" >{{ param.label }} <span class="text-danger">*</span></label>
     </div>
     <div class="col-md-6">
       <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'text'">
 
       <input class="input-sm form-control" type="number" step="1" id="{{ param.key }}" name="{{ param.key }}"
-        ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'int'">
+        string-to-number ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'int'">
 
       <textarea class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="param.type === 'textarea'"></textarea>
       <div class="input-group" ng-if="param.type === 'date'">
