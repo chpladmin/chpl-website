@@ -66,6 +66,7 @@ export const JobsScheduledTriggerComponent = {
             } else {
                 toSave.runDateMillis = this.selectedDateTime.getTime();
             }
+            this.$log.info(toSave);
             this.onSave({
                 trigger: toSave,
             });
