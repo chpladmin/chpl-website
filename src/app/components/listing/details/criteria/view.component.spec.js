@@ -5,7 +5,12 @@
         var $analytics, $compile, $log, $uibModal, Mock, actualOptions, ctrl, el, mock, scope;
 
         mock = {
-            cert: {id: 1, name: 'initial cert'},
+            cert: {
+                id: 1,
+                criterion: {
+                    number: 'initial cert',
+                },
+            },
         };
 
         beforeEach(function () {
