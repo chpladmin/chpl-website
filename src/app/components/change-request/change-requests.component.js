@@ -7,8 +7,9 @@ export const ChangeRequestsComponent = {
         takeAction: '&',
     },
     controller: class ChangeRequestsComponent {
-        constructor ($log) {
+        constructor ($filter, $log) {
             'ngInject'
+            this.$filter = $filter;
             this.$log = $log;
             this.backup = {};
             this.filterItems = {
@@ -22,13 +23,13 @@ export const ChangeRequestsComponent = {
                 this.displayedChangeRequests = undefined;
                 this.changeRequests = changes.changeRequests.currentValue.map(cr => {
                     cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
-                    cr.changeDate = cr.currentStatus.statusChangeDate;
+                    cr.changeDate = new Date(cr.currentStatus.statusChangeDate);
                     return cr;
                 });
                 this.backup.changeRequests = angular.copy(this.changeRequests);
                 this.activeState = undefined;
                 this.activeChangeRequest = undefined;
-                this.activity = undefined;
+                this.activity = 'Tracking';
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
@@ -42,60 +43,88 @@ export const ChangeRequestsComponent = {
         act (action, data) {
             switch (action) {
             case 'cancel':
-                if (this.activeState) {
-                    this.activeState = undefined;
-                    this.activeChangeRequest = this.backup.changeRequests.find(cr => cr.id === this.activeChangeRequest.id);
-                } else {
-                    this.activeChangeRequest = undefined;
-                    this.changeRequests = angular.copy(this.backup.changeRequests);
-                }
-                this.activity = undefined;
-                this.takeAction({action: 'cancel'});
+                this.cancel();
                 break;
             case 'fullCancel':
-                this.activeChangeRequest = undefined;
-                this.activeState = undefined;
-                this.activity = undefined;
-                this.takeAction({action: 'cancel'});
+                this.fullyCancel();
                 break;
             case 'save':
-                if (this.activeState === 'withdraw') {
-                    this.activeChangeRequest.currentStatus = {
-                        changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Cancelled by Requester'),
-                        comment: this.activeChangeRequest.comment,
-                    };
-                } else if (this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
-                    this.activeChangeRequest.currentStatus = {
-                        changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Pending ONC-ACB Action'),
-                        comment: this.activeChangeRequest.comment,
-                    };
-                }
-                this.takeAction({
-                    action: 'save',
-                    data: this.activeChangeRequest,
-                });
+                this.saveChangeRequest();
                 break;
             case 'edit':
-                this.activeState = 'edit';
-                this.activity = 'Editing - ';
-                this.takeAction({action: 'focus'});
+                this.startEditing();
                 break;
             case 'statusLog':
-                this.activeState = 'log';
-                this.activity = 'Status Log - ';
-                this.takeAction({action: 'focus'});
+                this.viewStatusLog();
                 break;
             case 'withdraw':
-                this.activeState = 'withdraw';
-                this.activity = 'Withdraw - ';
-                this.takeAction({action: 'focus'});
+                this.setUpToWithdrawChangeRequest();
                 break;
             case 'update':
-                this.activeChangeRequest = data.changeRequest;
-                this.isValid = data.validity;
+                this.processChangeRequestUpdate(data);
                 break;
                 // no default
             }
+        }
+
+        cancel () {
+            if (this.activeState) {
+                this.activeState = undefined;
+                this.activeChangeRequest = this.backup.changeRequests.find(cr => cr.id === this.activeChangeRequest.id);
+            } else {
+                this.activeChangeRequest = undefined;
+                this.changeRequests = angular.copy(this.backup.changeRequests);
+            }
+            this.activity = 'Tracking';
+            this.takeAction({action: 'cancel'});
+        }
+
+        fullyCancel () {
+            this.activeChangeRequest = undefined;
+            this.activeState = undefined;
+            this.activity = 'Tracking';
+            this.takeAction({action: 'cancel'});
+        }
+
+        saveChangeRequest () {
+            if (this.activeState === 'withdraw') {
+                this.activeChangeRequest.currentStatus = {
+                    changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Cancelled by Requester'),
+                    comment: this.activeChangeRequest.comment,
+                };
+            } else if (this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
+                this.activeChangeRequest.currentStatus = {
+                    changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Pending ONC-ACB Action'),
+                    comment: this.activeChangeRequest.comment,
+                };
+            }
+            this.takeAction({
+                action: 'save',
+                data: this.activeChangeRequest,
+            });
+        }
+
+        startEditing () {
+            this.activeState = 'edit';
+            this.activity = 'Editing - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
+            this.takeAction({action: 'focus'});
+        }
+
+        viewStatusLog () {
+            this.activeState = 'log';
+            this.activity = 'Status Log - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
+            this.takeAction({action: 'focus'});
+        }
+
+        setUpToWithdrawChangeRequest () {
+            this.activeState = 'withdraw';
+            this.activity = 'Withdraw - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
+            this.takeAction({action: 'focus'});
+        }
+
+        processChangeRequestUpdate (data) {
+            this.activeChangeRequest = data.changeRequest;
+            this.isValid = data.validity;
         }
     },
 }

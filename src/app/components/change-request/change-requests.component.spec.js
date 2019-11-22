@@ -11,8 +11,9 @@
                     changeRequestStatusType: {
                         name: 'Rejected',
                     },
-                    statusChangeDate: new Date(1571148799528),
+                    statusChangeDate: 1571148799528,
                 },
+                submittedDate: 1571148799528,
             }],
             changeRequestStatusTypes: {
                 data: [{
@@ -94,7 +95,7 @@
                     it('should set activity and take action', () => {
                         ctrl.activity = 'something';
                         ctrl.act('cancel');
-                        expect(ctrl.activity).toBeUndefined();
+                        expect(ctrl.activity).toBe('Tracking');
                         expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
                     });
 
@@ -120,7 +121,7 @@
                         ctrl.activeState = 'edit';
                         ctrl.activeChangeRequest = ctrl.changeRequests[0];
                         ctrl.act('fullCancel');
-                        expect(ctrl.activity).toBeUndefined();
+                        expect(ctrl.activity).toBe('Tracking');
                         expect(ctrl.activeState).toBeUndefined();
                         expect(ctrl.activeChangeRequest).toBeUndefined();
                         expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
@@ -128,24 +129,28 @@
                 });
 
                 describe('to switch mode', () => {
+                    beforeEach(() => {
+                        ctrl.activeChangeRequest = ctrl.changeRequests[0];
+                    });
+
                     it('should handle edit', () => {
                         ctrl.act('edit');
                         expect(ctrl.activeState).toBe('edit');
-                        expect(ctrl.activity).toBe('Editing - ');
+                        expect(ctrl.activity).toBe('Editing - Change Request | Submitted on Oct 15, 2019');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle statusLog', () => {
                         ctrl.act('statusLog');
                         expect(ctrl.activeState).toBe('log');
-                        expect(ctrl.activity).toBe('Status Log - ');
+                        expect(ctrl.activity).toBe('Status Log - Change Request | Submitted on Oct 15, 2019');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle withdraw', () => {
                         ctrl.act('withdraw');
                         expect(ctrl.activeState).toBe('withdraw');
-                        expect(ctrl.activity).toBe('Withdraw - ');
+                        expect(ctrl.activity).toBe('Withdraw - Change Request | Submitted on Oct 15, 2019');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
                 });
