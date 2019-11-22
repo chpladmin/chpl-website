@@ -13,7 +13,6 @@ ctxs.push({module: 'chpl.listing', ctx: require.context('./pages/listing/', true
 ctxs.push({module: 'chpl.navigation', ctx: require.context('./navigation/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.overview', ctx: require.context('./pages/resources/overview/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.organizations', ctx: require.context('./pages/organizations/', true, /.*\.html$/)});
-ctxs.push({module: 'chpl.product', ctx: require.context('./product/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.registration', ctx: require.context('./pages/registration/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.reports', ctx: require.context('./pages/reports/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.search', ctx: require.context('./pages/search/', true, /.*\.html$/)});

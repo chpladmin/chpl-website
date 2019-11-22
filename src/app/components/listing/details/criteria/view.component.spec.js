@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Certification Criteria component', function () {
+    fdescribe('the Certification Criteria View component', function () {
         var $analytics, $compile, $log, $uibModal, Mock, actualOptions, ctrl, el, mock, scope;
 
         mock = {
@@ -28,7 +28,7 @@
                 scope.resources = {};
                 scope.isConfirming = false;
 
-                el = angular.element('<ai-certification-criteria cert="cert" refresh-sed="refreshSed()" resources="resources" is-confirming="isConfirming"></ai-certification-criteria>');
+                el = angular.element('<chpl-certification-criteria cert="cert" refresh-sed="refreshSed()" resources="resources" is-confirming="isConfirming"></chpl-certification-criteria>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -186,9 +186,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'chpl.components/listing/details/criteria-modal.html',
-                        controller: 'EditCertificationCriteriaController',
-                        controllerAs: 'vm',
+                        component: 'chplCertificationCriteriaEdit',
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
@@ -230,8 +228,7 @@
                 it('should refresh SED after editing', () => {
                     const initCount = scope.refreshSed.calls.count();
                     ctrl.editCert();
-                    ctrl.cert = {id: 2, name: 'an edited cert'};
-                    ctrl.editUibModalInstance.close();
+                    ctrl.editUibModalInstance.close({id: 2, name: 'an edited cert'});
                     expect(scope.refreshSed.calls.count()).toBe(initCount + 1);
                 });
             });
