@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-6">
       <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'text'">
-      <input class="input-sm form-control" type="number" step="1" min="{{ param.min }}" id="{{ param.key }}" name="{{ param.key }}" string-to-number ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'int'">
+      <input class="input-sm form-control" type="number" step="1" min="{{ param.min }}" max="{{ param.max }}" id="{{ param.key }}" name="{{ param.key }}" string-to-number ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'int'">
       <textarea class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="param.type === 'textarea'"></textarea>
       <div class="input-group" ng-if="param.type === 'date'">
         <input class="input-sm form-control" id="{{ param.key }}" name="{{ param.key }}" type="text" uib-datepicker-popup="MM/dd/yyyy"
@@ -30,6 +30,7 @@
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form[param.key].$touched) && $ctrl.form[param.key].$error.required">{{ param.label }} is required</div>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form[param.key].$touched) && $ctrl.form[param.key].$error.number">{{ param.label }} is not valid</div>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form[param.key].$touched) && $ctrl.form[param.key].$error.min">{{ param.label }} must be greater than or equal to {{ param.min }}</div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form[param.key].$touched) && $ctrl.form[param.key].$error.max">{{ param.label }} must be less than or equal to {{ param.max }}</div>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form[param.key].$touched) && $ctrl.form[param.key].$error.step">{{ param.label }} must be an integer</div>
     </div>
   </div>
