@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="col-md-2" ng-form="$ctrl.form">
-          <button class="btn btn-default pull-right" ng-if="!$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = true"><i class="fa fa-user-plus"></i><span class="sr-only">Invite a User</span></button>
+          <button class="btn btn-default pull-right" ng-if="!$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = true" uib-tooltip="Invite a User" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-user-plus"></i><span class="sr-only">Invite a User</span></button>
           <button class="btn btn-default pull-right" ng-if="$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = false"><i class="fa fa-close"></i><span class="sr-only">Cancel invitation</span></button>
           <h2>Invite a User</h2>
           <span ng-if="$ctrl.showInviteForm">

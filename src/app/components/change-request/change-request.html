@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-md-12" st-table="$ctrl.displayedHistory" st-safe-src="$ctrl.changeRequest.statuses">
         <button class="btn btn-default pull-right" aria-label="Cancel"
+                uib-tooltip="Close" tooltip-trigger="'mouseenter focus click'"
                 ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
         <table class="table">
           <thead>
@@ -55,6 +56,7 @@
                 confirm-ok="Yes"
                 confirm-cancel="No"
                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                uib-tooltip="Cancel and close" tooltip-trigger="'mouseenter focus click'"
                 ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
         <h3>Reason for Change</h3>
         <div class="form-group">
@@ -76,7 +78,7 @@
   <span ng-switch-default>
     <div class="row">
       <div class="col-md-12">
-        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()" uib-tooltip="Close" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
         <table class="table">
           <thead>
             <tr>
