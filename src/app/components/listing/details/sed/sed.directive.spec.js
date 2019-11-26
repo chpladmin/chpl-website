@@ -1,7 +1,7 @@
-(function () {
+(() => {
     'use strict';
 
-    fdescribe('the SED Display', function () {
+    fdescribe('the SED Display', () => {
         var $compile, $log, $uibModal, Mock, actualOptions, el, mock, scope, utilService, vm;
 
         /* eslint-disable quotes, key-spacing, indent */
@@ -30,16 +30,16 @@
             ]}};
         /* eslint-enable quotes, key-spacing, indent */
 
-        beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.components', function ($provide) {
-                $provide.decorator('utilService', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
+                $provide.decorator('utilService', $delegate => {
                     $delegate.makeCsv = jasmine.createSpy('makeCsv');
                     $delegate.sortCertArray = jasmine.createSpy('sortCertArray');
                     return $delegate;
                 });
             });
 
-            inject(function (_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _utilService_) {
+            inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _utilService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 Mock = _Mock_;
@@ -47,7 +47,7 @@
                 utilService.makeCsv.and.returnValue();
                 utilService.sortCertArray.and.callThrough();
                 $uibModal = _$uibModal_;
-                spyOn($uibModal, 'open').and.callFake(function (options) {
+                spyOn($uibModal, 'open').and.callFake(options => {
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
@@ -68,89 +68,89 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        describe('directive', function () {
-            it('should be compiled', function () {
+        describe('directive', () => {
+            it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });
         });
 
-        describe('controller', function () {
-            it('should have isolate scope object with instanciate members', function () {
+        describe('controller', () => {
+            it('should have isolate scope object with instanciate members', () => {
                 expect(vm).toEqual(jasmine.any(Object));
                 expect(vm.listing).toBeDefined();
             });
 
-            describe('should use the util service', function () {
-                it('to enable sorting of tasks', function () {
+            describe('should use the util service', () => {
+                it('to enable sorting of tasks', () => {
                     vm.sortTasks(vm.tasks[0]);
                     expect(utilService.sortCertArray).toHaveBeenCalledWith(['170.315 (a)(1)', '170.315 (a)(2)', '170.315 (a)(3)', '170.315 (a)(4)', '170.315 (a)(5)', '170.315 (a)(6)', '170.315 (a)(7)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(14)', '170.315 (b)(3)']);
                 });
 
-                it('to enable sorting of processes', function () {
+                it('to enable sorting of processes', () => {
                     vm.sortProcesses(vm.tasks[0]);
                     expect(utilService.sortCertArray).toHaveBeenCalledWith(['170.315 (a)(1)', '170.315 (a)(2)', '170.315 (a)(3)', '170.315 (a)(4)', '170.315 (a)(5)', '170.315 (a)(6)', '170.315 (a)(7)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(14)', '170.315 (b)(3)']);
                 });
 
-                it('to make a csv', function () {
+                it('to make a csv', () => {
                     vm.getCsv();
                     expect(utilService.makeCsv).toHaveBeenCalled();
                 });
             });
 
-            describe('during initialization', function () {
-                it('should know how many criteria were sed tested', function () {
+            describe('during initialization', () => {
+                it('should know how many criteria were sed tested', () => {
                     expect(vm.criteriaCount).toBeDefined();
                     expect(vm.criteriaCount).toBe(12);
                 });
 
-                it('should filter out criteria that were not successful or not sed', function () {
+                it('should filter out criteria that were not successful or not sed', () => {
                     expect(vm.sedCriteria.length).toBe(12);
                 });
 
-                describe('with respect to tasks', function () {
-                    it('should have an array of tasks', function () {
+                describe('with respect to tasks', () => {
+                    it('should have an array of tasks', () => {
                         expect(vm.tasks.length).toBe(4);
                     });
 
-                    it('should have the associated criteria attached to the tasks', function () {
+                    it('should have the associated criteria attached to the tasks', () => {
                         expect(vm.tasks[0].criteria[0].number).toEqual('170.315 (b)(3)');
                     });
 
-                    it('should know what the task length is', function () {
+                    it('should know what the task length is', () => {
                         expect(vm.taskCount).toBeDefined();
                         expect(vm.taskCount).toBe(4);
                     });
                 });
 
-                describe('with respect to participants', function () {
-                    it('should have an array of unique participants pulled from the tasks', function () {
+                describe('with respect to participants', () => {
+                    it('should have an array of unique participants pulled from the tasks', () => {
                         expect(vm.allParticipants.length).toBe(15);
                     });
 
-                    it('should have an array of taskIds associated with each participant', function () {
+                    it('should have an array of taskIds associated with each participant', () => {
                         expect(vm.allParticipants[0].tasks).toEqual([1183, 1184, 1184, 1184, 1184, 1184, 1184, 1186, 1186]);
                     });
                 });
 
-                describe('with respect to ucd processes', function () {
-                    it('should have an array of ucd processes that were used', function () {
+                describe('with respect to ucd processes', () => {
+                    it('should have an array of ucd processes that were used', () => {
                         expect(vm.ucdProcesses.length).toBe(2);
                     });
 
-                    it('should associate the UCD Processes with multiple criteria', function () {
+                    it('should associate the UCD Processes with multiple criteria', () => {
                         expect(vm.ucdProcesses[0].criteria[0].number).toBe('170.315 (a)(1)');
                         expect(vm.ucdProcesses[0].criteria.length).toBe(11);
                     });
 
-                    it('should associate criteria with no UCD process with a "None" process', function () {
+                    it('should associate criteria with no UCD process with a "None" process', () => {
                         expect(vm.ucdProcesses[1].name).toBeUndefined();
                         expect(vm.ucdProcesses[1].details).toBeUndefined();
                         expect(vm.ucdProcesses[1].criteria[0].number).toBe('170.315 (b)(2)');
@@ -158,8 +158,8 @@
                     });
                 });
 
-                describe('for the csv download', function () {
-                    it('should create a data object with a name and a header row', function () {
+                describe('for the csv download', () => {
+                    it('should create a data object with a name and a header row', () => {
                         expect(vm.csvData.name).toBe('15.04.04.2891.Alls.17.1.1.170512.sed.csv');
                         expect(vm.csvData.values[0]).toEqual([
                             'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
@@ -168,7 +168,7 @@
                         ]);
                     });
 
-                    it('should have data rows', function () {
+                    it('should have data rows', () => {
                         expect(vm.csvData.values.length).toBe(127);
                         expect(vm.csvData.values[1]).toEqual([
                             '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(1)',
@@ -177,11 +177,11 @@
                         ]);
                     });
 
-                    it('should sort the rows by criteria', function () {
+                    it('should sort the rows by criteria', () => {
                         expect(vm.csvData.values[1][4]).toBe('170.315 (a)(1)');
                     });
 
-                    it('should combine criteria under the same task', function () {
+                    it('should combine criteria under the same task', () => {
                         expect(vm.csvData.values[126]).toEqual([
                             '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
                             'Task for (a)(5)', 'System Usability Scale', 86, 3, 133, 12, 13, 9, 66.12, 8, 12, 3, 7, 4,
@@ -191,13 +191,13 @@
                 });
             });
 
-            describe('while dealing with pending listings', function () {
-                beforeEach(function () {
+            describe('while dealing with pending listings', () => {
+                beforeEach(() => {
                     var sed = angular.copy(mock.sed);
-                    sed.testTasks = sed.testTasks.map(function (task) {
+                    sed.testTasks = sed.testTasks.map(task => {
                         task.uniqueId = task.id;
                         delete task.id;
-                        task.testParticipants = task.testParticipants.map(function (part) {
+                        task.testParticipants = task.testParticipants.map(part => {
                             part.uniqueId = 'id-' + part.id;
                             delete part.id;
                             return part;
@@ -217,56 +217,56 @@
                     scope.vm = vm;
                 });
 
-                describe('during initialization', function () {
-                    it('should know how many criteria were sed tested', function () {
+                describe('during initialization', () => {
+                    it('should know how many criteria were sed tested', () => {
                         expect(vm.criteriaCount).toBe(11);
                     });
 
-                    it('should filter out criteria that were not successful or not sed', function () {
+                    it('should filter out criteria that were not successful or not sed', () => {
                         expect(vm.sedCriteria.length).toBe(11);
                     });
 
-                    describe('with respect to tasks', function () {
-                        it('should have an array of tasks pulled from the criteria', function () {
+                    describe('with respect to tasks', () => {
+                        it('should have an array of tasks pulled from the criteria', () => {
                             expect(vm.tasks.length).toBe(4);
                         });
 
-                        it('should have the associated criteria attached to the tasks', function () {
+                        it('should have the associated criteria attached to the tasks', () => {
                             expect(vm.tasks[0].criteria[0].number).toEqual('170.315 (b)(3)');
                         });
 
-                        it('should know what the task length is', function () {
+                        it('should know what the task length is', () => {
                             expect(vm.taskCount).toBeDefined();
                             expect(vm.taskCount).toBe(4);
                         });
                     });
 
-                    describe('with respect to participants', function () {
-                        it('should have an array of unique participants pulled from the criteria', function () {
+                    describe('with respect to participants', () => {
+                        it('should have an array of unique participants pulled from the criteria', () => {
                             expect(vm.allParticipants.length).toBe(15);
                         });
 
-                        it('should have an array of taskIds associated with each participant', function () {
+                        it('should have an array of taskIds associated with each participant', () => {
                             expect(vm.allParticipants[0].tasks).toEqual([-1, -2, -2, -2, -2, -2, -2, -3, -3, -3, -4]);
                         });
 
-                        it('should set the "id" to be a negative integer', function () {
+                        it('should set the "id" to be a negative integer', () => {
                             expect(vm.allParticipants[0].id).toBeLessThan(0);
                         });
                     });
 
-                    describe('with respect to ucd processes', function () {
-                        it('should have an array of ucd processes that were used', function () {
+                    describe('with respect to ucd processes', () => {
+                        it('should have an array of ucd processes that were used', () => {
                             expect(vm.ucdProcesses.length).toBe(1);
                         });
 
-                        it('should associate the UCD Processes with multiple criteria', function () {
+                        it('should associate the UCD Processes with multiple criteria', () => {
                             expect(vm.ucdProcesses[0].criteria[0].number).toEqual('170.315 (a)(1)');
                         });
                     });
 
-                    describe('for the csv download', function () {
-                        it('should create a data object with a name and a header row', function () {
+                    describe('for the csv download', () => {
+                        it('should create a data object with a name and a header row', () => {
                             expect(vm.csvData.name).toBe('15.07.07.1447.EI97.62.01.1.160402.sed.csv');
                             expect(vm.csvData.values[0]).toEqual([
                                 'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
@@ -275,7 +275,7 @@
                             ]);
                         });
 
-                        it('should have data rows', function () {
+                        it('should have data rows', () => {
                             expect(vm.csvData.values.length).toBe(127);
                             expect(vm.csvData.values[1]).toEqual([
                                 '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(1)',
@@ -284,11 +284,11 @@
                             ]);
                         });
 
-                        it('should sort the rows by criteria', function () {
+                        it('should sort the rows by criteria', () => {
                             expect(vm.csvData.values[1][4]).toBe('170.315 (a)(1)');
                         });
 
-                        it('should combine criteria under the same task', function () {
+                        it('should combine criteria under the same task', () => {
                             expect(vm.csvData.values[126]).toEqual([
                                 '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
                                 'Task for (a)(5)', 'System Usability Scale', 86, 3, 133, 12, 13, 9, 66.12, 8, 12, 3, 7, 4,
@@ -300,9 +300,9 @@
             });
         });
 
-        describe('when viewing Task details', function () {
+        describe('when viewing Task details', () => {
             var modalOptions, participants, task;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     templateUrl: 'chpl.components/listing/details/sed/task-modal.html',
                     controller: 'ViewSedTaskController',
@@ -325,13 +325,13 @@
                 vm.allParticipants = participants;
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.viewTask(task);
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements', function () {
+            it('should resolve elements', () => {
                 vm.editMode = 'on';
                 vm.viewTask(task);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
@@ -341,7 +341,7 @@
                 expect(actualOptions.resolve.task()).toEqual(task);
             });
 
-            it('should replace the active task with an edited one on close', function () {
+            it('should replace the active task with an edited one on close', () => {
                 var newTask = {
                     name: 'fake',
                     id: vm.tasks[1].id,
@@ -355,7 +355,7 @@
                 expect(vm.allParticipants).toEqual([1]);
             });
 
-            it('should remove the active task if it was deleted', function () {
+            it('should remove the active task if it was deleted', () => {
                 var initLength = vm.tasks.length;
                 vm.viewTask(vm.tasks[1]);
                 vm.modalInstance.close({
@@ -367,9 +367,9 @@
             });
         });
 
-        describe('when adding a Task', function () {
+        describe('when adding a Task', () => {
             var modalOptions;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     templateUrl: 'chpl.components/listing/details/sed/edit-task.html',
                     controller: 'EditSedTaskController',
@@ -386,13 +386,13 @@
                 };
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.addTask();
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements', function () {
+            it('should resolve elements', () => {
                 vm.allParticipants = [1,2];
                 vm.addTask();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
@@ -401,14 +401,14 @@
                 expect(actualOptions.resolve.task()).toEqual({});
             });
 
-            it('should add the new task to the list of tasks', function () {
+            it('should add the new task to the list of tasks', () => {
                 vm.tasks = [];
                 vm.addTask();
                 vm.modalInstance.close({task: 'new', participants: [2,3]});
                 expect(vm.tasks).toEqual(['new']);
             });
 
-            it('should update the list of participants', function () {
+            it('should update the list of participants', () => {
                 vm.allParticipants = [1,2];
                 vm.addTask();
                 vm.modalInstance.close({task: 'new', participants: [2,3]});
@@ -416,9 +416,9 @@
             });
         });
 
-        describe('when viewing Task Participants', function () {
+        describe('when viewing Task Participants', () => {
             var modalOptions;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     templateUrl: 'chpl.components/listing/details/sed/participants-modal.html',
                     controller: 'ViewSedParticipantsController',
@@ -445,13 +445,13 @@
                 ];
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.viewParticipants(vm.tasks[1]);
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements', function () {
+            it('should resolve elements', () => {
                 vm.allParticipants = [1,2];
                 vm.editMode = 'on';
                 vm.viewParticipants(vm.tasks[1]);
@@ -461,7 +461,7 @@
                 expect(actualOptions.resolve.participants()).toEqual([3,4]);
             });
 
-            it('should replace the task participant list with an edited one on close', function () {
+            it('should replace the task participant list with an edited one on close', () => {
                 var newParticipants = [1,2,3];
                 vm.viewParticipants(vm.tasks[1]);
                 vm.modalInstance.close({
@@ -470,7 +470,7 @@
                 expect(vm.tasks[1].testParticipants).toEqual(newParticipants);
             });
 
-            it('should replace the "all participants" list with an edited one on close', function () {
+            it('should replace the "all participants" list with an edited one on close', () => {
                 var newParticipants = [1,2,3];
                 vm.allParticipants = [1,2];
                 vm.viewParticipants(vm.tasks[1]);
@@ -481,9 +481,9 @@
             });
         });
 
-        describe('when editing SED details', function () {
+        describe('when editing SED details', () => {
             var modalOptions;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     templateUrl: 'chpl.components/listing/details/sed/edit-details.html',
                     controller: 'EditSedDetailsController',
@@ -500,13 +500,13 @@
                 };
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.editDetails();
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements', function () {
+            it('should resolve elements', () => {
                 vm.resources = 'resources';
                 vm.editDetails();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
@@ -516,7 +516,7 @@
                 expect(actualOptions.resolve.ucdProcesses()).toEqual(vm.ucdProcesses);
             });
 
-            it('should update some of the active listing values with the edited values on close', function () {
+            it('should update some of the active listing values with the edited values on close', () => {
                 var newListing = {
                     sedReportFileLocation: 'new',
                     sedIntendedUserDescription: 'desc',
@@ -536,7 +536,7 @@
                 expect(vm.listing.sedTestingEndDate).toEqual(newListing.sedTestingEndDate);
             });
 
-            it('should replace ucd processes with the new ones', function () {
+            it('should replace ucd processes with the new ones', () => {
                 var newProcesses = [1,2];
                 vm.editDetails();
                 vm.modalInstance.close({
