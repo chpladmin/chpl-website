@@ -9,7 +9,7 @@
   </div>
   <div class="row" ng-repeat="param in $ctrl.parameters">
     <div class="col-md-3">
-      <label for="{{ param.key }}" >{{ param.label }}</label>
+      <label for="{{ param.key }}" >{{ param.label }} <span class="text-danger">*</span></label>
     </div>
     <div class="col-md-6">
       <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="$ctrl.trigger.job.jobDataMap[param.key]" required ng-if="!param.type || param.type === 'text'">
@@ -48,6 +48,13 @@
       </div>
       <div class="col-md-6" >
         <div uib-timepicker ng-model="$ctrl.selectedDateTime" show-meridian="true" id="selectedTime"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <div class="alert alert-info">
+          The Run Date & Time should the UTC date/time for which the job should be run. The current UTC time is {{ $ctrl.now | date : 'short' : 'UTC' }}
+        </div>
       </div>
     </div>
   </span>
