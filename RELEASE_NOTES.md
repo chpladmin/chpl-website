@@ -1,5 +1,33 @@
 # Release Notes
 
+## Version 10.32.0
+_2 December 2019_
+
+### Features
+* Update scheduled jobs to work correctly with UTC time
+
+### User interface changes
+* Indicate when certification criteria have been removed
+* Indicate when Macra Measure(s) have been removed
+
+---
+
+## Version 10.31.0
+_18 November 2019_
+
+### Features
+* Display the API Key Management Report is in the new style
+
+---
+
+## Version 10.30.0
+_4 November 2019_
+
+### Flagged Feature
+* To be inserted later
+
+---
+
 ## Version 10.29.0
 _24 October 2019_
 
