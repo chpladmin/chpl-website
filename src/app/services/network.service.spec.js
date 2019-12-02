@@ -640,6 +640,30 @@
             $httpBackend.flush();
         });
 
+        fit('should getChangeRequests', () => {
+            $httpBackend.expectGET(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
+            networkService.getChangeRequests().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should getChangeRequestStatusTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/change-request-status-types$/).respond(200, {data: 'response'});
+            networkService.getChangeRequestStatusTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should getChangeRequestTypes', () => {
+            $httpBackend.expectGET(/^\/rest\/data\/change-request-types$/).respond(200, {data: 'response'});
+            networkService.getChangeRequestTypes().then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCmsId', () => {
             $httpBackend.expectGET(/^\/rest\/certification_ids\/key\?includeCriteria=false$/).respond(200, {data: 'response'});
             networkService.getCmsId('key').then(response => {
@@ -1574,6 +1598,14 @@
             $httpBackend.flush();
         });
 
+        fit('should submitChangeRequest', () => {
+            $httpBackend.expectPOST(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
+            networkService.submitChangeRequest({changeRequestType: {id: 1}}).then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should unimpersonateUser', () => {
             $httpBackend.expectGET(/^\/rest\/auth\/unimpersonate$/).respond(200, {data: 'response'});
             networkService.unimpersonateUser().then(response => {
@@ -1585,6 +1617,14 @@
         fit('should updateAnnualSurveillanceReport', () => {
             $httpBackend.expectPUT(/^\/rest\/surveillance-report\/annual$/).respond(200, {data: 'response'});
             networkService.updateAnnualSurveillanceReport('payload').then(response => {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        fit('should updateChangeRequest', () => {
+            $httpBackend.expectPUT(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
+            networkService.updateChangeRequest({id: 1}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
