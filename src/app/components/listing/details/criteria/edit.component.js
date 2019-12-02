@@ -223,7 +223,7 @@ export const CertificationCriteriaEditComponent = {
 
         _setTestToolDropDownText () {
             this.resources.testTools.data.forEach(tt => {
-                tt.dropDownText = tt.name + tt.retired ? ' (Retired)' : '';
+                tt.dropDownText = tt.name + (tt.retired ? ' (Retired)' : '');
             });
         }
     },
