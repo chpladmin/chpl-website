@@ -75,6 +75,7 @@
     </div>
     <div class="panel-footer text-center">
       <button class="btn btn-default pull-right" ng-if="$ctrl.administrationMode"
+              ng-disabled="!$ctrl.displayedChangeRequests || $ctrl.displayedChangeRequests.length === 0"
               ng-csv="$ctrl.displayedChangeRequests" filename="Change_Requests_{{ $ctrl.filename }}"
               csv-header="['Developer', 'Request Type', 'Creation Date', 'Request Status', 'Last Status Change']"
               csv-column-order="['developerName', 'requestType', 'friendlyCreationDate', 'requestStatus', 'friendlyChangeDate']">
