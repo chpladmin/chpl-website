@@ -26,8 +26,10 @@
             <chpl-address address="$ctrl.developer.address"></chpl-address>
           </div>
           <div class="col-sm-4">
-            <h3>Transparency Attestations</h3>
-            <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+            <span ng-if="$ctrl.isTransparencyAttestationViewable()">
+              <h3>Transparency Attestations</h3>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+            </span>
             <span ng-if="$ctrl.developer.status.status !== 'Active' || $ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
               <h3>Status Information</h3>
               <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
@@ -103,7 +105,7 @@
                             on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
             </div>
             <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="col-sm-4">
-              <span ng-if="$ctrl.hasAnyRole(['ROLE_ACB'])">
+              <span ng-if="$ctrl.isTransparencyAttestationEditable()">
                 <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
                   <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
                   <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name]" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">

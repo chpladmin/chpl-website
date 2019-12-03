@@ -25,6 +25,7 @@ export const DeveloperComponent = {
                 address: true,
                 contact: true,
             }
+            this.isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
         }
 
         $onChanges (changes) {
@@ -84,6 +85,26 @@ export const DeveloperComponent = {
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
             }
+        }
+
+        isEffectiveRuleDatePlusOneWeekOn () {
+            return this.isOn('effective-rule-date-plus-one-week');
+        }
+
+        isTransparencyAttestationViewable () {
+            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
+                return !this.isAcbAdmin;
+            }
+            // Allows any non-ACB to view if flag is off
+            return true;
+        }
+
+        isTransparencyAttestationEditable () {
+            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
+                return !this.isAcbAdmin;
+            }
+            // Enforces existing contract in this case prior to flag requiring ACB to edit, whereas after flag, only non-ACBs can edit
+            return this.isAcbAdmin;
         }
 
         /*
