@@ -59,7 +59,7 @@
             <tbody>
               <tr ng-repeat="cr in $ctrl.displayedChangeRequests" ng-click="$ctrl.activeChangeRequest = cr" class="clickable">
                 <td ng-if="$ctrl.administrationMode">
-                  <ng-avatar string="{{ cr.developer }}" round-shape="true" auto-color="true"></ng-avatar>
+                  <ng-avatar string="{{ cr.developer }}" round-shape="true" auto-color="true" font-scale="75"></ng-avatar>
                 </td>
                 <td ng-if="$ctrl.administrationMode">{{ cr.developer }}</td>
                 <td>{{ cr.changeRequestType.name }}</td>
