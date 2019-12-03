@@ -63,7 +63,7 @@
               Zip: {{ vm.developer.address.zipcode }}<br />
               Country: {{ vm.developer.address.country }}<br />
               Website: {{ vm.developer.website }}<br />
-              Transparency Attestation: {{ vm.getAttestationStringForCurrentSystemDeveloper() }}<br />
+              <span ng-if="vm.isTransparencyAttestationEditable()">Transparency Attestation: {{ vm.getAttestationStringForCurrentSystemDeveloper() }}<br /></span>
               <strong>Contact information</strong><br />
               <ai-contact contact="vm.developer.contact"></ai-contact>
               <br />
@@ -86,7 +86,7 @@
               Zip: {{ vm.cp.developer.address.zipcode }}<br />
               Country: {{ vm.cp.developer.address.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
-              Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br />
+              <span ng-if="vm.isTransparencyAttestationEditable()">Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br /></span>
               <strong>Contact information</strong><br />
               <ai-contact contact="vm.cp.developer.contact"></ai-contact>
             </div>

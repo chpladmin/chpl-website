@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService, featureFlags) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -34,6 +34,7 @@
         vm.isBlank = utilService.isBlank;
         vm.getAttestationStringForCurrentSystemDeveloper = getAttestationStringForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
+        vm.isTransparencyAttestationEditable = isTransparencyAttestationEditable;
 
         activate();
 
@@ -68,6 +69,7 @@
             if (!vm.cp.developer.country) {
                 vm.cp.developer.country = 'USA';
             }
+            vm.featureFlags = featureFlags;
         }
 
         function loadDev () {
@@ -288,6 +290,13 @@
                 return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
             }
             return null;
+        }
+
+        function isTransparencyAttestationEditable () {
+            if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.isAcbAdmin;
+            }
+            return true;
         }
 
         function cancel () {
