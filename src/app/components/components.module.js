@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module('chpl.components', [
+        'angularMoment',
         'angulartics',
         'chpl.services',
         'feature-flags',
