@@ -62,7 +62,7 @@
                   <ng-avatar string="{{ cr.developerName }}" round-shape="true" auto-color="true" font-scale="75"></ng-avatar>
                 </td>
                 <td ng-if="$ctrl.administrationMode">{{ cr.developerName }}</td>
-                <td>{{ cr.changeRequestType.name }}</td>
+                <td>{{ cr.requestType }}</td>
                 <td ng-if="$ctrl.administrationMode">{{ cr.submittedDate | date : 'mediumDate' : 'UTC' }}</td>
                 <td ng-if="!$ctrl.administrationMode">{{ cr.changeDate | date : 'mediumDate' : 'UTC' }}</td>
                 <td>{{ cr.requestStatus }}</td>
@@ -74,6 +74,11 @@
       </div>
     </div>
     <div class="panel-footer text-center">
+      <button class="btn btn-default pull-right" ng-if="$ctrl.administrationMode"
+              ng-csv="$ctrl.displayedChangeRequests" filename="Change_Requests_{{ $ctrl.filename }}"
+              csv-header="['Developer', 'Request Type', 'Creation Date', 'Request Status', 'Last Status Change']"
+              csv-column-order="['developerName', 'requestType', 'friendlyCreationDate', 'requestStatus', 'friendlyChangeDate']">
+        <i class="fa fa-cloud-download"></i> Download</button>
       <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
     </div>
   </div>

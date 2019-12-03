@@ -13,6 +13,9 @@
                     },
                     statusChangeDate: 1571148799528,
                 },
+                changeRequestType: {
+                    name: 'A change',
+                },
                 developer: {
                     name: 'A name',
                 },
@@ -91,6 +94,9 @@
                     expect(ctrl.changeRequests[0].requestStatus).toBe('Rejected');
                     expect(ctrl.changeRequests[0].changeDate.getTime()).toBe(1571148799528);
                     expect(ctrl.changeRequests[0].developerName).toBe('A name');
+                    expect(ctrl.changeRequests[0].requestType).toBe('A change');
+                    expect(ctrl.changeRequests[0].friendlyCreationDate).toBe('2019-10-15 14:13:19 +0000');
+                    expect(ctrl.changeRequests[0].friendlyChangeDate).toBe('2019-10-15 14:13:19 +0000');
                 });
             });
 

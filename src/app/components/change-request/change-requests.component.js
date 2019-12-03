@@ -14,6 +14,7 @@ export const ChangeRequestsComponent = {
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.backup = {};
+            this.filename = 'Reports_' + $filter('date')(new Date(), 'yyyy-MM-dd_HH-mm-ss') + '.csv';
             this.filterItems = {
                 pageSize: 3,
             };
@@ -25,8 +26,11 @@ export const ChangeRequestsComponent = {
                 this.displayedChangeRequests = undefined;
                 this.changeRequests = changes.changeRequests.currentValue.map(cr => {
                     cr.developerName = cr.developer.name;
+                    cr.requestType = cr.changeRequestType.name;
                     cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
                     cr.changeDate = new Date(cr.currentStatus.statusChangeDate);
+                    cr.friendlyCreationDate = this.$filter('date')(new Date(cr.submittedDate), 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
+                    cr.friendlyChangeDate = this.$filter('date')(cr.changeDate, 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
                     return cr;
                 });
                 this.backup.changeRequests = angular.copy(this.changeRequests);
