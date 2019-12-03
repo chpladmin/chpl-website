@@ -1,27 +1,39 @@
 <span ng-show="!$ctrl.activeChangeRequest">
   <div class="panel panel-default" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests" st-set-filter="customFilter">
     <div class="panel-heading">
-      <div uib-dropdown auto-close="outsideClick" class="btn-group pull-right">
-        <button class="btn btn-default dropdown-toggle" type="button" id="filter-date-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-          <i class="fa fa-calendar"></i> Select a Date Range
-        </button>
-        <ul class="dropdown-menu" aria-labeledby="filter-date-button" uib-dropdown-menu>
-          <ai-date-range
-             predicate="changeDate"
-             ></ai-date-range>
-        </ul>
-      </div>
-      <div uib-dropdown auto-close="outsideClick" class="btn-group pull-right">
-        <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-          <i class="fa fa-filter"></i> Request Status
-        </button>
-        <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-          <st-list-multiple
-             collection="$ctrl.changeRequests"
-             predicate="requestStatus"
-             fixed-items="$ctrl.filterItems.statusItems"
-             ></st-list-multiple>
-        </ul>
+      <div class="pull-right">
+        <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.administrationMode">
+          <button class="btn btn-default dropdown-toggle" type="button" id="filter-developer-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-filter"></i> Developer Name
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="filter-developer-button" uib-dropdown-menu>
+            <label for="developer" class="control-label">Developer</label>
+            <input type="text" class="form-control" id="developer"
+                   ai-enhanced-text predicate="developer"/>
+          </ul>
+        </div>
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="filter-date-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-calendar"></i> Select a Date Range
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="filter-date-button" uib-dropdown-menu>
+            <ai-date-range
+              predicate="changeDate"
+              ></ai-date-range>
+          </ul>
+        </div>
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-filter"></i> Request Status
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+            <st-list-multiple
+              collection="$ctrl.changeRequests"
+              predicate="requestStatus"
+              fixed-items="$ctrl.filterItems.statusItems"
+              ></st-list-multiple>
+          </ul>
+        </div>
       </div>
       <h2 class="panel-title">Tracking</h2>
     </div>
@@ -36,16 +48,22 @@
           <table class="table">
             <thead>
               <tr>
+                <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true" ng-if="$ctrl.administrationMode">Developer</th>
                 <th scope="col">Request Type</th>
-                <th scope="col" class="search-header" st-sort="changeDate" st-skip-natural="true" st-sort-default="reverse">Date</th>
+                <th scope="col" class="search-header" st-sort="submittedDate" st-skip-natural="true" st-sort-default="reverse" ng-if="$ctrl.administrationMode">Creation Date</th>
+                <th scope="col" class="search-header" st-sort="changeDate" st-skip-natural="true" st-sort-default="reverse" ng-if="!$ctrl.administrationMode">Date</th>
                 <th scope="col" class="search-header" st-sort="requestStatus" st-skip-natural="true">Request Status</th>
+                <th scope="col" class="search-header" st-sort="changeDate" st-skip-natural="true" ng-if="$ctrl.administrationMode">Time Since Last Status Change</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="cr in $ctrl.displayedChangeRequests" ng-click="$ctrl.activeChangeRequest = cr" class="clickable">
+                <td ng-if="$ctrl.administrationMode">{{ cr.developer }}</td>
                 <td>{{ cr.changeRequestType.name }}</td>
-                <td>{{ cr.changeDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td ng-if="$ctrl.administrationMode">{{ cr.submittedDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td ng-if="!$ctrl.administrationMode">{{ cr.changeDate | date : 'mediumDate' : 'UTC' }}</td>
                 <td>{{ cr.requestStatus }}</td>
+                <td ng-if="$ctrl.administrationMode">{{ cr.changeDate | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
             </tbody>
           </table>

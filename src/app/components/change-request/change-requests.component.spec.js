@@ -13,6 +13,9 @@
                     },
                     statusChangeDate: 1571148799528,
                 },
+                developer: {
+                    name: 'A name',
+                },
                 submittedDate: 1571148799528,
             }],
             changeRequestStatusTypes: {
@@ -38,7 +41,7 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-                scope.changeRequests = mock.changeRequests;
+                scope.changeRequests = angular.copy(mock.changeRequests);
                 scope.changeRequestStatusTypes = mock.changeRequestStatusTypes;
                 scope.developer = mock.developer;
                 scope.takeAction = jasmine.createSpy('takeAction');
@@ -87,6 +90,7 @@
                 it('should pull up current data', () => {
                     expect(ctrl.changeRequests[0].requestStatus).toBe('Rejected');
                     expect(ctrl.changeRequests[0].changeDate.getTime()).toBe(1571148799528);
+                    expect(ctrl.changeRequests[0].developer).toBe('A name');
                 });
             });
 

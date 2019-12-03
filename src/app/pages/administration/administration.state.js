@@ -40,6 +40,7 @@ let states = {
             url: '/change-requests',
             component: 'chplChangeRequests',
             resolve: {
+                administrationMode: () => true,
                 changeRequests: (featureFlags, networkService) => {
                     'ngInject'
                     if (featureFlags.isOn('change-request')) {

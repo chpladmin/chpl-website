@@ -1,6 +1,7 @@
 export const ChangeRequestsComponent = {
     templateUrl: 'chpl.components/change-request/change-requests.html',
     bindings: {
+        administrationMode: '<',
         changeRequests: '<',
         changeRequestStatusTypes: '<',
         developer: '<',
@@ -22,6 +23,7 @@ export const ChangeRequestsComponent = {
             if (changes.changeRequests && changes.changeRequests.currentValue) {
                 this.displayedChangeRequests = undefined;
                 this.changeRequests = changes.changeRequests.currentValue.map(cr => {
+                    cr.developer = cr.developer.name;
                     cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
                     cr.changeDate = new Date(cr.currentStatus.statusChangeDate);
                     return cr;
