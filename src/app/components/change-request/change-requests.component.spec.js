@@ -90,7 +90,7 @@
                 it('should pull up current data', () => {
                     expect(ctrl.changeRequests[0].requestStatus).toBe('Rejected');
                     expect(ctrl.changeRequests[0].changeDate.getTime()).toBe(1571148799528);
-                    expect(ctrl.changeRequests[0].developer).toBe('A name');
+                    expect(ctrl.changeRequests[0].developerName).toBe('A name');
                 });
             });
 
