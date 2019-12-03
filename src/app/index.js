@@ -12,6 +12,7 @@ importAll(
 );
 
 import angular from 'angular';
+import 'angular-avatar';
 import 'angular-breadcrumb';
 import /* angularConfirm from*/ 'angular-confirm';
 import /* angularCronGen from*/ 'angular-cron-gen';

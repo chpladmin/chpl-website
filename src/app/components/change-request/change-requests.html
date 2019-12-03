@@ -45,10 +45,10 @@
       </div>
       <div class="row" ng-if="$ctrl.displayedChangeRequests && $ctrl.displayedChangeRequests.length > 0">
         <div class="col-md-12">
-          <table class="table">
+          <table class="table table-vertical-align">
             <thead>
               <tr>
-                <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true" ng-if="$ctrl.administrationMode">Developer</th>
+                <th scope="cols" colspan="2" class="search-header" st-sort="developer" st-skip-natural="true" ng-if="$ctrl.administrationMode">Developer</th>
                 <th scope="col">Request Type</th>
                 <th scope="col" class="search-header" st-sort="submittedDate" st-skip-natural="true" st-sort-default="reverse" ng-if="$ctrl.administrationMode">Creation Date</th>
                 <th scope="col" class="search-header" st-sort="changeDate" st-skip-natural="true" st-sort-default="reverse" ng-if="!$ctrl.administrationMode">Date</th>
@@ -58,6 +58,9 @@
             </thead>
             <tbody>
               <tr ng-repeat="cr in $ctrl.displayedChangeRequests" ng-click="$ctrl.activeChangeRequest = cr" class="clickable">
+                <td ng-if="$ctrl.administrationMode">
+                  <ng-avatar string="{{ cr.developer }}" round-shape="true" auto-color="true"></ng-avatar>
+                </td>
                 <td ng-if="$ctrl.administrationMode">{{ cr.developer }}</td>
                 <td>{{ cr.changeRequestType.name }}</td>
                 <td ng-if="$ctrl.administrationMode">{{ cr.submittedDate | date : 'mediumDate' : 'UTC' }}</td>
