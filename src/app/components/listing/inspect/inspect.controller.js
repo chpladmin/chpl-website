@@ -34,7 +34,7 @@
         vm.isBlank = utilService.isBlank;
         vm.getAttestationStringForCurrentSystemDeveloper = getAttestationStringForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
-        vm.isTransparencyAttestationEditable = isTransparencyAttestationEditable;
+        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
 
         activate();
 
@@ -292,7 +292,7 @@
             return null;
         }
 
-        function isTransparencyAttestationEditable () {
+        function isTransparencyAttestationViewable () {
             if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
                 return !vm.isAcbAdmin;
             }

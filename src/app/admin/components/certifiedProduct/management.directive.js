@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -31,10 +31,13 @@
         vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
+        vm.featureFlags = featureFlags;
         vm.hasAnyRole = authService.hasAnyRole;
+        vm.isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
         vm.isProductEditable = isProductEditable;
+        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -382,6 +385,13 @@
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);
             }
+        }
+
+        function isTransparencyAttestationViewable () {
+            if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.isAcbAdmin;
+            }
+            return true;
         }
 
         function searchForSurveillance () {
