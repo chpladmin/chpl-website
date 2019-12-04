@@ -5,22 +5,24 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, networkService, utilService) {
+    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
+        vm.cancel = cancel;
+        vm.featureFlags = featureFlags;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
         vm.isMissingRequiredFields = isMissingRequiredFields;
         vm.isMissingReasonForBan = isMissingReasonForBan;
+        vm.isTransparencyAttestationEditable = isTransparencyAttestationEditable;
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.removePreviousStatus = removePreviousStatus;
         vm.save = save;
-        vm.cancel = cancel;
 
         activate();
 
@@ -40,6 +42,7 @@
 
             vm.showFormErrors = false;
             vm.loadedAsInactiveByOnc = (vm.developer.status.status === 'Suspended by ONC' || vm.developer.status.status === 'Under certification ban by ONC');
+            vm.isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
         }
 
         function addPreviousStatus () {
@@ -95,6 +98,13 @@
                 }
             }
             return false;
+        }
+
+        function isTransparencyAttestationEditable () {
+            if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.isAcbAdmin;
+            }
+            return vm.isAcbAdmin;
         }
 
         function matchesPreviousDate (status) {
