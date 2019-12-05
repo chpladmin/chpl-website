@@ -11,7 +11,7 @@
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
         vm.cancel = cancel;
-        vm.featureFlags = featureFlags;
+        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
@@ -42,7 +42,6 @@
 
             vm.showFormErrors = false;
             vm.loadedAsInactiveByOnc = (vm.developer.status.status === 'Suspended by ONC' || vm.developer.status.status === 'Under certification ban by ONC');
-            vm.isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
         }
 
         function addPreviousStatus () {
@@ -101,10 +100,11 @@
         }
 
         function isTransparencyAttestationEditable () {
-            if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
-                return !vm.isAcbAdmin;
+            let isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !isAcbAdmin;
             }
-            return vm.isAcbAdmin;
+            return isAcbAdmin;
         }
 
         function matchesPreviousDate (status) {

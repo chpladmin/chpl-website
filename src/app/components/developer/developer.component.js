@@ -25,7 +25,6 @@ export const DeveloperComponent = {
                 address: true,
                 contact: true,
             }
-            this.isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
         }
 
         $onChanges (changes) {
@@ -93,18 +92,17 @@ export const DeveloperComponent = {
 
         isTransparencyAttestationViewable () {
             if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return !this.isAcbAdmin;
+                return !this.hasAnyRole(['ROLE_ACB']);
             }
-            // Allows any non-ACB to view if flag is off
             return true;
         }
 
         isTransparencyAttestationEditable () {
+            let isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
             if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return !this.isAcbAdmin;
+                return !isAcbAdmin;
             }
-            // Enforces existing contract in this case prior to flag requiring ACB to edit, whereas after flag, only non-ACBs can edit
-            return this.isAcbAdmin;
+            return isAcbAdmin;
         }
 
         /*

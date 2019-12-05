@@ -31,11 +31,10 @@
         vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
-        vm.featureFlags = featureFlags;
         vm.hasAnyRole = authService.hasAnyRole;
-        vm.isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
+        vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
         vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
@@ -388,8 +387,8 @@
         }
 
         function isTransparencyAttestationViewable () {
-            if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
-                return !vm.isAcbAdmin;
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.hasAnyRole(['ROLE_ACB']);
             }
             return true;
         }

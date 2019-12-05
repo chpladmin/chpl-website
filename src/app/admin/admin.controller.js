@@ -8,6 +8,7 @@
     function AdminController ($filter, $log, $state, $stateParams, authService, featureFlags) {
         var vm = this;
 
+        vm.isOn = featureFlags.isOn;
         vm.getFullname = authService.getFullname;
         vm.hasAnyRole = authService.hasAnyRole;
 
@@ -24,7 +25,7 @@
                 vm.navState = 'manage';
             }
             if ($stateParams.productId) {
-                if (featureFlags.isOn('listing-edit')) {
+                if (vm.isOn('listing-edit')) {
                     $state.go('listing', {id: $stateParams.productId});
                 }
                 vm.productId = $stateParams.productId;

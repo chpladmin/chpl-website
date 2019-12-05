@@ -36,6 +36,8 @@
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
         vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
 
+        vm.isOn = featureFlags.isOn;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
@@ -69,7 +71,6 @@
             if (!vm.cp.developer.country) {
                 vm.cp.developer.country = 'USA';
             }
-            vm.featureFlags = featureFlags;
         }
 
         function loadDev () {
@@ -293,7 +294,7 @@
         }
 
         function isTransparencyAttestationViewable () {
-            if (vm.featureFlags.isOn('effective-rule-date-plus-one-week')) {
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
                 return !vm.isAcbAdmin;
             }
             return true;
