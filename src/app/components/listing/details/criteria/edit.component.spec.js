@@ -1,8 +1,8 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Certification Criteria Edit controller', function () {
-        var $controller, $log, Mock, mock, scope, vm;
+    fdescribe('the Certification Criteria Modal controller', () => {
+        var $compile, $log, ctrl, el, mock, scope;
 
         mock = {};
         mock.cert = {
@@ -20,16 +20,19 @@
             testTools: {'expandable': false,'data': [{'id': 1,'name': 'ePrescribing Validation Tool','description': null,'retired': false},{'id': 15,'name': 'Transport Test Tool','description': null,'retired': true},{'id': 5,'name': 'HL7 v2 Laboratory Results Interface (LRI) Validation Tool','description': null,'retired': false},{'id': 11,'name': 'HL7v2 Syndromic Surveillance Test Suite','description': null,'retired': false},{'id': 9,'name': 'Direct Certificate Discovery Tool','description': null,'retired': false},{'id': 3,'name': 'HL7 v2 Electronic Laboratory Reporting (ELR) Validation Tool','description': null,'retired': false},{'id': 13,'name': 'Electronic Prescribing','description': null,'retired': false},{'id': 16,'name': 'Edge Test Tool','description': null,'retired': false},{'id': 7,'name': 'Transport Testing Tool','description': null,'retired': true},{'id': 17,'name': '2015 Direct Certificate Discovery Tool','description': null,'retired': false},{'id': 10,'name': 'HL7v2 Immunization Test Suite','description': null,'retired': false},{'id': 4,'name': 'HL7 v2 Immunization Information System (IIS) Reporting Validation Tool','description': null,'retired': false},{'id': 12,'name': 'HL7v2 Electronic Laboratory Reporting Validation Tool','description': null,'retired': false},{'id': 20,'name': 'HL7v2 Electronic Laboratory Reporting Validation Tool','description': null,'retired': false},{'id': 6,'name': 'HL7 v2 Syndromic Surveillance Reporting Validation Tool','description': null,'retired': false},{'id': 8,'name': 'Cypress','description': null,'retired': false},{'id': 14,'name': 'HL7 CDA National Health Care Surveys Validator','description': null,'retired': false},{'id': 2,'name': 'HL7 CDA Cancer Registry Reporting Validation Tool','description': null,'retired': false}]},
         };
 
-        beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.components', 'chpl.shared');
+        beforeEach(() => {
+            angular.mock.module('chpl.components', 'chpl.shared');
 
-            inject(function (_$controller_, _$log_, $rootScope, _Mock_) {
-                $controller = _$controller_;
+            inject((_$compile_, _$log_, $rootScope) => {
+                $compile = _$compile_;
                 $log = _$log_;
-                Mock = _Mock_;
+
+                el = angular.element('<chpl-certification-criteria-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></chpl-certification-criteria-edit>');
 
                 scope = $rootScope.$new();
-                vm = $controller('EditCertificationCriteriaController', {
+                scope.close = jasmine.createSpy('close');
+                scope.dismiss = jasmine.createSpy('dismiss');
+                scope.resolve = {
                     cert: angular.copy(mock.cert),
                     allowedTestFunctionalities: [
                         {'id': 1, 'name': '(a)(1)(ii)'},
@@ -39,122 +42,130 @@
                     resources: mock.resources,
                     hasIcs: false,
                     isConfirming: false,
-                    $uibModalInstance: Mock.modalInstance,
-                    $scope: scope,
-                });
-
+                };
+                $compile(el)(scope);
                 scope.$digest();
+                ctrl = el.isolateScope().$ctrl;
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        it('should exist', function () {
-            expect(vm).toBeDefined();
-        });
-
-        it('should have a way to close it\'s own modal', function () {
-            expect(vm.cancel).toBeDefined();
-            vm.cancel();
-            expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-        });
-
-        it('should farm out to utilService for extendSelect', function () {
-            var options = [];
-            vm.extendSelect(options, 'val');
-            expect(options).toEqual([{name: 'val'}]);
-        });
-
-        describe('when concerned with retired tools', function () {
-            it('should have a way of knowing if a tool is unselectable', function () {
-                expect(vm.isToolDisabled).toBeDefined();
-            });
-
-            it('should know when a tool is available', function () {
-                //When isConfirming = false (user is editing listing), all test tool are available
-                expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
-                expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(false);
-
-                vm.hasIcs = true;
-                vm.isConfirming = true;
-                expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
-                expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(false);
-
-                vm.hasIcs = false;
-                vm.isConfirming = true;
-                expect(vm.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
-                expect(vm.isToolDisabled(mock.resources.testTools.data[1])).toBe(true);
+        describe('template', () => {
+            it('should be compiled', () => {
+                expect(el.html()).not.toEqual(null);
             });
         });
 
-        describe('when saving the certification', function () {
-            it('should close the modal', function () {
-                vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalled();
-            });
-        });
-
-        describe('when cancelling edits', function () {
-            it('should restore the cert', function () {
-                var editedCert = {id: 2, name: 'an edited cert'};
-                vm.cert = angular.copy(editedCert);
-                vm.cancel();
-                expect(vm.cert).not.toEqual(editedCert);
-                expect(vm.cert).toEqual(mock.cert);
-            });
-        });
-
-        describe('related to additional software', function () {
-            it('should know when it was not met via additional software', function () {
-                expect(vm.cert.metViaAdditionalSoftware).toBeFalsy();
+        describe('controller', () => {
+            it('should exist', () => {
+                expect(ctrl).toBeDefined();
             });
 
-            it('should know when it was met via additional software', function () {
-                var certMet = { additionalSoftware: [1] };
-                vm = $controller('EditCertificationCriteriaController', {
-                    cert: certMet,
-                    resources: mock.resources,
-                    hasIcs: false,
-                    isConfirming: false,
-                    $uibModalInstance: Mock.modalInstance,
-                    $scope: scope,
+            it('should have a way to close it\'s own modal', () => {
+                expect(ctrl.cancel).toBeDefined();
+                ctrl.cancel();
+                expect(scope.dismiss).toHaveBeenCalled();
+            });
+
+            it('should farm out to utilService for extendSelect', () => {
+                var options = [];
+                ctrl.extendSelect(options, 'val');
+                expect(options).toEqual([{name: 'val'}]);
+            });
+
+            describe('when concerned with retired tools', () => {
+                it('should have a way of knowing if a tool is unselectable', () => {
+                    expect(ctrl.isToolDisabled).toBeDefined();
                 });
-                scope.$digest();
-                expect(vm.cert.metViaAdditionalSoftware).toBe(true);
-            });
-        });
 
-        describe('with relation to test data and test procedures', function () {
-            it('should know how many test data are available to select', function () {
-                expect(vm.availableTestData.length).toBe(2);
+                it('should know when a tool is available', () => {
+                    //When isConfirming = false (user is editing listing), all test tool are available
+                    expect(ctrl.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
+                    expect(ctrl.isToolDisabled(mock.resources.testTools.data[1])).toBe(false);
+
+                    ctrl.hasIcs = true;
+                    ctrl.isConfirming = true;
+                    expect(ctrl.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
+                    expect(ctrl.isToolDisabled(mock.resources.testTools.data[1])).toBe(false);
+
+                    ctrl.hasIcs = false;
+                    ctrl.isConfirming = true;
+                    expect(ctrl.isToolDisabled(mock.resources.testTools.data[0])).toBe(false);
+                    expect(ctrl.isToolDisabled(mock.resources.testTools.data[1])).toBe(true);
+                });
             });
 
-            it('should know how many test procedures are available to select', function () {
-                expect(vm.availableTestProcedures.length).toBe(2);
+            describe('when saving the certification', () => {
+                it('should close the modal', () => {
+                    ctrl.save();
+                    expect(scope.close).toHaveBeenCalled();
+                });
             });
 
-            it('should know how what test data are available to select', function () {
-                expect(vm.availableTestData[0].name).toBe('NCQA eCQM Test Method');
-                expect(vm.availableTestData[1].name).toBe('ONC Test Method');
+            describe('when cancelling edits', () => {
+                it('should restore the cert', () => {
+                    var editedCert = {id: 2, name: 'an edited cert'};
+                    ctrl.cert = editedCert;
+                    ctrl.cancel();
+                    expect(ctrl.cert).not.toEqual(editedCert);
+                });
             });
 
-            it('should know how many test procedures are available to select', function () {
-                expect(vm.availableTestProcedures[0].name).toBe('NCQA eCQM Test Method');
-                expect(vm.availableTestProcedures[1].name).toBe('ONC Test Method');
-            });
-        });
+            describe('related to additional software', () => {
+                it('should know when it was not met via additional software', () => {
+                    expect(ctrl.cert.metViaAdditionalSoftware).toBeFalsy();
+                });
 
-        describe('with relation to test functionality', function () {
-            it('should be sorted by name', function () {
-                expect(vm.sortedTestFunctionalities[0].name).toBe('(a)(1)(i)')
-                expect(vm.sortedTestFunctionalities[1].name).toBe('(a)(1)(ii)')
-                expect(vm.sortedTestFunctionalities[2].name).toBe('(a)(2)(ii)')
+                it('should know when it was met via additional software', () => {
+                    var certMet = { additionalSoftware: [1] };
+                    scope.resolve = {
+                        cert: certMet,
+                        resources: mock.resources,
+                        hasIcs: false,
+                        isConfirming: false,
+                    };
+                    el = angular.element('<chpl-certification-criteria-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></chpl-certification-criteria-edit>');
+                    $compile(el)(scope);
+                    scope.$digest();
+                    ctrl = el.isolateScope().$ctrl;
+
+                    expect(ctrl.cert.metViaAdditionalSoftware).toBe(true);
+                });
+            });
+
+            describe('with relation to test data and test procedures', () => {
+                it('should know how many test data are available to select', () => {
+                    expect(ctrl.availableTestData.length).toBe(2);
+                });
+
+                it('should know how many test procedures are available to select', () => {
+                    expect(ctrl.availableTestProcedures.length).toBe(2);
+                });
+
+                it('should know how what test data are available to select', () => {
+                    expect(ctrl.availableTestData[0].name).toBe('NCQA eCQM Test Method');
+                    expect(ctrl.availableTestData[1].name).toBe('ONC Test Method');
+                });
+
+                it('should know how many test procedures are available to select', () => {
+                    expect(ctrl.availableTestProcedures[0].name).toBe('NCQA eCQM Test Method');
+                    expect(ctrl.availableTestProcedures[1].name).toBe('ONC Test Method');
+                });
+            });
+
+            describe('with relation to test functionality', () => {
+                it('should be sorted by name', () => {
+                    expect(ctrl.sortedTestFunctionalities[0].name).toBe('(a)(1)(i)')
+                    expect(ctrl.sortedTestFunctionalities[1].name).toBe('(a)(1)(ii)')
+                    expect(ctrl.sortedTestFunctionalities[2].name).toBe('(a)(2)(ii)')
+                });
             });
         });
     });

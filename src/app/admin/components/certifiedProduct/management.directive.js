@@ -547,10 +547,10 @@
 
             networkService.getSearchOptions()
                 .then(function (options) {
-                    vm.resources.bodies = options.certBodyNames;
+                    vm.resources.bodies = options.acbs;
                     vm.resources.classifications = options.productClassifications;
                     vm.resources.editions = options.editions;
-                    vm.resources.practices = options.practiceTypeNames;
+                    vm.resources.practices = options.practiceTypes;
                     vm.resources.statuses = options.certificationStatuses;
                     vm.resourcesReady.searchOptions = true;
                 });

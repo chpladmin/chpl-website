@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.search.controller', function () {
+    fdescribe('chpl.search.controller', function () {
 
         var $interval, $location, $log, $q, $uibModal, CACHE_REFRESH_TIMEOUT, Mock, networkService, scope, vm;
 
@@ -88,7 +88,7 @@
                     return mock.fakeModal;
                 });
                 networkService.getAll.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
-                networkService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
+                networkService.getSearchOptions.and.returnValue($q.when(Mock.searchOptions));
 
                 scope = $rootScope.$new();
                 vm = $controller('SearchController', {

@@ -80,10 +80,10 @@ export const ListingComponent = {
             this.$q.all([
                 this.networkService.getSearchOptions()
                     .then(response => {
-                        that.resources.bodies = response.certBodyNames;
+                        that.resources.bodies = response.acbs;
                         that.resources.classifications = response.productClassifications;
                         that.resources.editions = response.editions;
-                        that.resources.practices = response.practiceTypeNames;
+                        that.resources.practices = response.practiceTypes;
                         that.resources.statuses = response.certificationStatuses;
                     }),
                 this.networkService.getAccessibilityStandards().then(response => that.resources.accessibilityStandards = response),

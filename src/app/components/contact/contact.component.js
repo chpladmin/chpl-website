@@ -4,6 +4,7 @@ export const ContactComponent = {
         contact: '<',
         isEditing: '<',
         isRequired: '<',
+        isDisabled: '<',
         onChange: '&',
         showFormErrors: '<',
     },
@@ -23,6 +24,9 @@ export const ContactComponent = {
             }
             if (changes.isRequired) {
                 this.isRequired = angular.copy(changes.isRequired.currentValue);
+            }
+            if (changes.isDisabled) {
+                this.isDisabled = angular.copy(changes.isDisabled.currentValue);
             }
             if (changes.showFormErrors) {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);

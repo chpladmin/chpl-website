@@ -15,11 +15,12 @@ export const DeveloperComponent = {
         takeAction: '&',
     },
     controller: class DeveloperComponent {
-        constructor ($filter, $log, authService) {
+        constructor ($filter, $log, authService, featureFlags) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
             this.valid = {
                 address: true,
                 contact: true,
@@ -71,7 +72,8 @@ export const DeveloperComponent = {
             if (action === 'edit') {
                 return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active' // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_DEVELOPER']) && this.developer.status.status === 'Active' && this.isOn('change-request')) // allowed for DEVELOPER iff Developer is "Active"
             }
             if (action === 'merge') {
                 return this.canMerge // allowed by containing component
