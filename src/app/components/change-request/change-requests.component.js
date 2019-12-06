@@ -28,9 +28,9 @@ export const ChangeRequestsComponent = {
                     cr.developerName = cr.developer.name;
                     cr.requestType = cr.changeRequestType.name;
                     cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
-                    cr.changeDate = new Date(cr.currentStatus.statusChangeDate);
+                    cr.changeDate = cr.currentStatus.statusChangeDate;
                     cr.friendlyCreationDate = this.$filter('date')(new Date(cr.submittedDate), 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
-                    cr.friendlyChangeDate = this.$filter('date')(cr.changeDate, 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
+                    cr.friendlyChangeDate = this.$filter('date')(new Date(cr.changeDate), 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
                     return cr;
                 });
                 this.backup.changeRequests = angular.copy(this.changeRequests);
