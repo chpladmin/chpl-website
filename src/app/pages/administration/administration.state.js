@@ -38,25 +38,37 @@ let states = {
         {
             name: 'administration.change-requests',
             url: '/change-requests',
-            component: 'chplChangeRequests',
+            component: 'chplChangeRequestsManagement',
             resolve: {
                 administrationMode: () => true,
-                changeRequests: (featureFlags, networkService) => {
+                changeRequests: (authService, featureFlags, networkService) => {
                     'ngInject'
                     if (featureFlags.isOn('change-request')) {
-                        return networkService.getChangeRequests();
+                        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                            return networkService.getChangeRequests();
+                        } else {
+                            return [];
+                        }
                     }
                 },
-                changeRequestStatusTypes: (featureFlags, networkService) => {
+                changeRequestStatusTypes: (authService, featureFlags, networkService) => {
                     'ngInject'
                     if (featureFlags.isOn('change-request')) {
-                        return networkService.getChangeRequestStatusTypes();
+                        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                            return networkService.getChangeRequestStatusTypes();
+                        } else {
+                            return [];
+                        }
                     }
                 },
-                changeRequestTypes: (featureFlags, networkService) => {
+                changeRequestTypes: (authService, featureFlags, networkService) => {
                     'ngInject'
                     if (featureFlags.isOn('change-request')) {
-                        return networkService.getChangeRequestTypes();
+                        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                            return networkService.getChangeRequestTypes();
+                        } else {
+                            return [];
+                        }
                     }
                 },
             },
