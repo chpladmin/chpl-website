@@ -23,7 +23,7 @@
       <label for="requirement-capability" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="$ctrl.requirement.requirement" id="requirement-capability" name="requirement"
-                ng-options="type.name as (type.name + (type.removed ? '(Removed)' : ''))  for type in $ctrl.data.surveillanceRequirements.criteriaOptions | orderBy:$ctrl.sortCriteria" required>
+                ng-options="type.number as (type.number + ': ' + type.title + (type.removed ? ' (Removed)' : '')) for type in $ctrl.data.surveillanceRequirements.criteriaOptions | orderBy:$ctrl.sortCriteria" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
       </div>
