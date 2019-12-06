@@ -46,6 +46,12 @@ export const SurveillanceEditComponent = {
         }
 
         addRequirement () {
+            let data = angular.copy(this.data);
+            if (this.hasAnyRole(['ROLE_ACB'])) {
+                data.surveillanceRequirements.criteriaOptions2014 = data.surveillanceRequirements.criteriaOptions2014.filter(option => !option.removed);
+                data.surveillanceRequirements.criteriaOptions2015 = data.surveillanceRequirements.criteriaOptions2015.filter(option => !option.removed);
+                data.nonconformityTypes.data = data.nonconformityTypes.data.filter(option => !option.removed);
+            }
             this.modalInstance = this.$uibModal.open({
                 component: 'aiSurveillanceRequirementEdit',
                 animation: false,
@@ -57,7 +63,7 @@ export const SurveillanceEditComponent = {
                     randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
                     requirement: () => { return {nonconformities: []} },
                     surveillanceId: () => this.surveillance.id,
-                    surveillanceTypes: () => this.data,
+                    surveillanceTypes: () => data,
                     workType: () => 'add',
                 },
                 size: 'lg',
