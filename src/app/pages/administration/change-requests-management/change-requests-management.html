@@ -1,6 +1,9 @@
 <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
   <div class="col-md-12">
-    <chpl-change-requests change-requests="$ctrl.changeRequests" change-request-status-types="$ctrl.changeRequestStatusTypes" change-request-types="$ctrl.changeRequestTypes"></chpl-change-requests>
+    <chpl-change-requests change-requests="$ctrl.changeRequests"
+                          change-request-status-types="$ctrl.changeRequestStatusTypes"
+                          change-request-types="$ctrl.changeRequestTypes"
+                          administration-mode="true"></chpl-change-requests>
   </div>
 </div>
 <div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">

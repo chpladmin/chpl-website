@@ -2,15 +2,14 @@
     'use strict';
 
     fdescribe('the Change Requests Management component', () => {
-        let $compile, $log, $q, ctrl, el, scope;
+        let $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
             angular.mock.module('chpl.administration');
 
-            inject((_$compile_, _$log_, _$q_, $rootScope) => {
+            inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
 
                 scope = $rootScope.$new();
 
