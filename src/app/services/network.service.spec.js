@@ -1183,8 +1183,8 @@
             $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirement_types$/).respond(200, {data: 'surveillance_requirement_types'});
             $httpBackend.expectGET(/^\/rest\/data\/surveillance_result_types$/).respond(200, {data: 'surveillance_result_types'});
             $httpBackend.expectGET(/^\/rest\/data\/nonconformity_status_types$/).respond(200, {data: 'nonconformity_status_types'});
-            $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirements$/).respond(200, {data: 'surveillance_requirements'});
-            $httpBackend.expectGET(/^\/rest\/data\/nonconformity_types$/).respond(200, {data: 'nonconformity_types'});
+            $httpBackend.expectGET(/^\/rest\/data\/surveillance-requirements$/).respond(200, {data: 'surveillance-requirements'});
+            $httpBackend.expectGET(/^\/rest\/data\/nonconformity-types$/).respond(200, {data: 'nonconformity-types'});
             var response = networkService.getSurveillanceLookups();
             $httpBackend.flush();
             expect(response).toEqual({
@@ -1192,8 +1192,8 @@
                 surveillanceRequirementTypes: {data: 'surveillance_requirement_types'},
                 surveillanceResultTypes: {data: 'surveillance_result_types'},
                 nonconformityStatusTypes: {data: 'nonconformity_status_types'},
-                surveillanceRequirements: {data: 'surveillance_requirements'},
-                nonconformityTypes: {data: 'nonconformity_types'},
+                surveillanceRequirements: {data: 'surveillance-requirements'},
+                nonconformityTypes: {data: 'nonconformity-types'},
             });
         });
 
