@@ -197,51 +197,34 @@
                     authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
                     ctrl.data = {
                         surveillanceRequirements: {
-                            criteriaOptions2014: [{removed: false}, {removed: false}, {removed: true}],
+                            criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
                             criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}],
-                        },
-                        nonconformityTypes: {
-                            data: [{removed: false}, {removed: false}, {removed: true}],
                         },
                     };
                     ctrl.addRequirement();
-                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions2014.length).toBe(2);
-                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions2015.length).toBe(2);
-                    expect(actualOptions.resolve.surveillanceTypes().nonconformityTypes.data.length).toBe(2);
+                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions.length).toBe(2);
                 });
 
                 it('should not change base data', () => {
                     authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
                     ctrl.data = {
                         surveillanceRequirements: {
-                            criteriaOptions2014: [{removed: false}, {removed: false}, {removed: true}],
-                            criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}],
-                        },
-                        nonconformityTypes: {
-                            data: [{removed: false}, {removed: false}, {removed: true}],
+                            criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
                         },
                     };
                     ctrl.addRequirement();
-                    expect(ctrl.data.surveillanceRequirements.criteriaOptions2014.length).toBe(3);
-                    expect(ctrl.data.surveillanceRequirements.criteriaOptions2015.length).toBe(3);
-                    expect(ctrl.data.nonconformityTypes.data.length).toBe(3);
+                    expect(ctrl.data.surveillanceRequirements.criteriaOptions.length).toBe(3);
                 });
 
                 it('should not filter out removed criteria when user is ROLE_ACB', () => {
                     authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC';}, false)); // user is ACB
                     ctrl.data = {
                         surveillanceRequirements: {
-                            criteriaOptions2014: [{removed: false}, {removed: false}, {removed: true}],
-                            criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}],
-                        },
-                        nonconformityTypes: {
-                            data: [{removed: false}, {removed: false}, {removed: true}],
+                            criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
                         },
                     };
                     ctrl.addRequirement();
-                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions2014.length).toBe(3);
-                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions2015.length).toBe(3);
-                    expect(actualOptions.resolve.surveillanceTypes().nonconformityTypes.data.length).toBe(3);
+                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions.length).toBe(3);
                 });
             });
 
