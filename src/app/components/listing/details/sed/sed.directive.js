@@ -207,7 +207,7 @@
 
                 vm.sedCriteria = vm.listing.certificationResults
                     .filter(function (cert) { return cert.success && cert.sed; })
-                    .map(function (cert) { cert.name = cert.number; return cert; });
+                    .map(function (cert) { return cert.criterion; });
                 vm.criteriaCount = vm.sedCriteria.length;
                 vm.sedCriteriaNumbers = vm.sedCriteria.map(function (cert) { return cert.number; });
 
