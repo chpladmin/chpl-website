@@ -2,10 +2,14 @@
     'use strict';
 
     fdescribe('the surveillance inspection component', () => {
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, ctrl, el, networkService, scope, utilService;
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope, utilService;
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.components', $provide => {
+                $provide.decorator('authService', $delegate => {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.confirmPendingSurveillance = jasmine.createSpy('confirmPendingSurveillance');
                     $delegate.rejectPendingSurveillance = jasmine.createSpy('rejectPendingSurveillance');
@@ -18,10 +22,12 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _networkService_, _utilService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.confirmPendingSurveillance.and.returnValue($q.when([]));
                 networkService.rejectPendingSurveillance.and.returnValue($q.when([]));
@@ -94,6 +100,9 @@
                             criteriaOptions2014: {},
                             criteriaOptions2015: {},
                         },
+                        nonconformityTypes: {
+                            data: [],
+                        },
                     };
                 });
 
@@ -106,12 +115,16 @@
                 it('should resolve elements on that modal', () => {
                     ctrl.editSurveillance();
                     expect($uibModal.open).toHaveBeenCalledWith(surveillanceEditOptions);
-                    //expect(actualOptions.resolve.surveillance()).toEqual(Mock.surveillances[0]);
-                    expect(actualOptions.resolve.surveillanceTypes()).toEqual({surveillanceRequirements: {
-                        criteriaOptions2014: {},
-                        criteriaOptions2015: {},
-                        criteriaOptions: {},
-                    }});
+                    expect(actualOptions.resolve.surveillanceTypes()).toEqual({
+                        surveillanceRequirements: {
+                            criteriaOptions2014: {},
+                            criteriaOptions2015: {},
+                            criteriaOptions: {},
+                        },
+                        nonconformityTypes: {
+                            data: [],
+                        },
+                    });
                     expect(actualOptions.resolve.workType()).toEqual('confirm');
                 });
 
@@ -137,23 +150,46 @@
                 });
 
                 it('should pass in only the appropriate edition of requirements', () => {
-                    ctrl.surveillanceTypes = {
-                        surveillanceRequirements: {
-                            criteriaOptions2014: [2014],
-                            criteriaOptions2015: [2015],
-                        },
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC';}, false)); // user is ONC
+                    ctrl.surveillanceTypes.surveillanceRequirements = {
+                        criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
+                        criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
+                    };
+                    ctrl.surveillanceTypes.nonconformityTypes = {
+                        data: [{removed: false}, {removed: false}, {removed: true}],
                     };
                     ctrl.surveillance.certifiedProduct.edition = '2011';
                     ctrl.editSurveillance();
-                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions).toEqual();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(0);
+                    expect(ctrl.surveillanceTypes.nonconformityTypes.data.length).toBe(3);
                     ctrl.surveillance.certifiedProduct.edition = '2015';
                     ctrl.editSurveillance();
-                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions).toEqual([2015]);
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(4);
                     ctrl.surveillance.certifiedProduct.edition = '2014';
                     ctrl.editSurveillance();
-                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions).toEqual([2014]);
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(3);
                 });
 
+                it('should filter removed ones out if ROLE_ACB requirements', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    ctrl.surveillanceTypes.surveillanceRequirements = {
+                        criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
+                        criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
+                    };
+                    ctrl.surveillanceTypes.nonconformityTypes = {
+                        data: [{removed: false}, {removed: false}, {removed: true}],
+                    }
+                    ctrl.surveillance.certifiedProduct.edition = '2011';
+                    ctrl.editSurveillance();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(0);
+                    expect(ctrl.surveillanceTypes.nonconformityTypes.data.length).toBe(2);
+                    ctrl.surveillance.certifiedProduct.edition = '2015';
+                    ctrl.editSurveillance();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(2);
+                    ctrl.surveillance.certifiedProduct.edition = '2014';
+                    ctrl.editSurveillance();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(3);
+                });
             });
 
             describe('when confirming or rejecting', () => {
