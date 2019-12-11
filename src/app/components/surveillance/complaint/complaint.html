@@ -17,14 +17,6 @@
       <div class="text-danger" ng-if="$ctrl.form.certificationBody.$touched && $ctrl.form.certificationBody.$error.required">ONC-ACB is required</div>
     </div>
   </div>
-  <div class="form-group" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
-    <label class="control-label" for="complaint-status-type">Complaint Status Type</label>
-    <div>
-      <select ng-model="$ctrl.complaint.complaintStatusType" id="complaint-status-type" name="complaintStatusType" class="form-control"
-              ng-options="cst.name for cst in $ctrl.complaintStatusTypes | orderBy: 'name' track by cst.id">
-      </select>
-    </div>
-  </div>
   <div class="form-group">
     <label class="control-label" for="received-date">Received Date<span class="text-danger">*</span></label>
     <div>

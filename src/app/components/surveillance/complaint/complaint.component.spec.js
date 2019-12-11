@@ -51,7 +51,6 @@
                 scope.criteria = mock.criteria;
                 scope.editions = mock.editions;
                 scope.complaintTypes = [];
-                scope.complaintStatusTypes = [];
                 scope.certificationBodies = [];
                 scope.isEditing = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
@@ -61,7 +60,7 @@
                 scope.isOn = jasmine.createSpy('isOn');
                 scope.isOn.and.returnValue(true);
 
-                el = angular.element('<chpl-surveillance-complaint complaint="complaint" listings="listings" complaint-types="complaintTypes" complaint-status-types="complaintStatusTypes" certification-bodies="certificationBodies" criteria="criteria" editions="editions" on-cancel="onCancel()" on-save="onSave(complaint)" on-delete="onDelete(complaint)" on-select="onSelect(complaint)"></chpl-surveillance-complaint>');
+                el = angular.element('<chpl-surveillance-complaint complaint="complaint" listings="listings" complaint-types="complaintTypes" certification-bodies="certificationBodies" criteria="criteria" editions="editions" on-cancel="onCancel()" on-save="onSave(complaint)" on-delete="onDelete(complaint)" on-select="onSelect(complaint)"></chpl-surveillance-complaint>');
 
                 $compile(el)(scope);
                 scope.$digest();
