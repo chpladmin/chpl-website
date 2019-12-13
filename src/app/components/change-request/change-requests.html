@@ -98,7 +98,7 @@
 <span ng-if="$ctrl.activeChangeRequest">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h2 class="panel-title">{{ $ctrl.activity }}</h2>
+      <h2 class="panel-title">{{ $ctrl.getTitle() }}</h2>
     </div>
     <div class="panel-body">
       <div class="row">
@@ -110,7 +110,8 @@
     <div class="panel-footer text-right">
       <span ng-switch="$ctrl.activeState">
         <span ng-switch-when="log">
-          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')">Back to Dashboard</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')" ng-if="$ctrl.administrationMode">Back to Tracking</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')" ng-if="!$ctrl.administrationMode">Back to Dashboard</button>
           <button class="btn btn-default" ng-click="$ctrl.act('cancel')">Back to Change Request</button>
         </span>
         <span ng-switch-when="edit">
