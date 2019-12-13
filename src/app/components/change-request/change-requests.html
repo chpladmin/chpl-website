@@ -75,12 +75,22 @@
       </div>
     </div>
     <div class="panel-footer text-center">
-      <button class="btn btn-default pull-right" ng-if="$ctrl.administrationMode"
-              ng-disabled="!$ctrl.displayedChangeRequests || $ctrl.displayedChangeRequests.length === 0"
-              ng-csv="$ctrl.displayedChangeRequests" filename="Change_Requests_{{ $ctrl.filename }}"
-              csv-header="['Developer', 'Request Type', 'Creation Date', 'Request Status', 'Last Status Change']"
-              csv-column-order="['developerName', 'requestType', 'friendlyCreationDate', 'requestStatus', 'friendlyChangeDate']">
-        <i class="fa fa-cloud-download"></i> Download</button>
+      <div ng-if="$ctrl.administrationMode">
+        <div class="pull-right">
+          <label for="pageSize" class="sr-only">Show how many results</label>
+          Showing up to&nbsp;
+          <select ng-model="$ctrl.filterItems.pageSize" id="pageSize"
+                  ng-options="v as v for v in [10,50,100,250]">
+          </select>
+          &nbsp;results per page
+        </div>
+        <button class="btn btn-default pull-left"
+                ng-disabled="!$ctrl.displayedChangeRequests || $ctrl.displayedChangeRequests.length === 0"
+                ng-csv="$ctrl.displayedChangeRequests" filename="Change_Requests_{{ $ctrl.filename }}"
+                csv-header="['Developer', 'Request Type', 'Creation Date', 'Request Status', 'Last Status Change']"
+                csv-column-order="['developerName', 'requestType', 'friendlyCreationDate', 'requestStatus', 'friendlyChangeDate']">
+          <i class="fa fa-cloud-download"></i> Download</button>
+      </div>
       <div st-pagination="" st-items-by-page="$ctrl.filterItems.pageSize" st-displayed-pages="10"></div>
     </div>
   </div>

@@ -22,6 +22,9 @@ export const ChangeRequestsComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.administrationMode && changes.administrationMode.currentValue) {
+                this.filterItems.pageSize = 10;
+            }
             if (changes.changeRequests && changes.changeRequests.currentValue) {
                 this.displayedChangeRequests = undefined;
                 this.changeRequests = changes.changeRequests.currentValue.map(cr => {
