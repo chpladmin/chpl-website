@@ -59,6 +59,7 @@ export const SurveillanceNonconformityEditComponent = {
         }
 
         deleteDoc (docId) {
+            let that = this;
             this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
                 .then(() => {
                     for (var i = 0; i < this.nonconformity.documents.length; i++) {
@@ -66,6 +67,9 @@ export const SurveillanceNonconformityEditComponent = {
                             this.nonconformity.documents.splice(i,1);
                         }
                     }
+                }, () => {
+                    that.deleteMessage = 'File was not removed successfully.';
+                    that.deleteSuccess = false;
                 });
         }
 
