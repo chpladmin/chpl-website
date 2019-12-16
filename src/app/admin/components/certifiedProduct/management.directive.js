@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -376,6 +376,9 @@
         }
 
         function isProductEditable (cp) {
+            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
+                return false;
+            }
             if (cp.certificationEvents) {
                 return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
@@ -544,10 +547,10 @@
 
             networkService.getSearchOptions()
                 .then(function (options) {
-                    vm.resources.bodies = options.certBodyNames;
+                    vm.resources.bodies = options.acbs;
                     vm.resources.classifications = options.productClassifications;
                     vm.resources.editions = options.editions;
-                    vm.resources.practices = options.practiceTypeNames;
+                    vm.resources.practices = options.practiceTypes;
                     vm.resources.statuses = options.certificationStatuses;
                     vm.resourcesReady.searchOptions = true;
                 });

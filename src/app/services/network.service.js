@@ -217,7 +217,7 @@ export class NetworkService {
     }
 
     getApiUserActivity (activityRange) {
-        var call = '/activity/api_keys';
+        var call = '/activity/metadata/api-keys';
         return this.getActivity(call, activityRange);
     }
 
@@ -255,24 +255,16 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getComplaints () {
-        return this.apiGET('/complaints');
+    getChangeRequests () {
+        return this.apiGET('/change-requests');
     }
 
-    getComplaintStatusTypes () {
-        return this.apiGET('/data/complaint-status-types');
+    getChangeRequestStatusTypes () {
+        return this.apiGET('/data/change-request-status-types');
     }
 
-    getComplainantTypes () {
-        return this.apiGET('/data/complainant-types');
-    }
-
-    getCriteria () {
-        return this.apiGET('/data/certification-criteria');
-    }
-
-    getCriterionProductStatistics () {
-        return this.apiGET('/statistics/criterion_product');
+    getChangeRequestTypes () {
+        return this.apiGET('/data/change-request-types');
     }
 
     getCmsDownload () {
@@ -293,6 +285,8 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
         case 'bannedDevelopers':
             return this.apiGET('/collections/decertified-developers');
+        case 'complaintListings':
+            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'correctiveAction':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         case 'decertifiedProducts':
@@ -300,14 +294,32 @@ export class NetworkService {
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
         case 'sed':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
-        case 'transparencyAttestations':
-            return this.apiGET('/collections/developers');
-        case 'complaintListings':
-            return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
         case 'surveillanceManagement':
             return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
+        case 'transparencyAttestations':
+            return this.apiGET('/collections/developers');
             //no default
         }
+    }
+
+    getComplaints () {
+        return this.apiGET('/complaints');
+    }
+
+    getComplaintStatusTypes () {
+        return this.apiGET('/data/complaint-status-types');
+    }
+
+    getComplainantTypes () {
+        return this.apiGET('/data/complainant-types');
+    }
+
+    getCriteria () {
+        return this.apiGET('/data/certification-criteria');
+    }
+
+    getCriterionProductStatistics () {
+        return this.apiGET('/statistics/criterion_product');
     }
 
     getDeveloper (developerId) {
@@ -465,7 +477,7 @@ export class NetworkService {
     }
 
     getSearchOptions () {
-        return this.apiGET('/data/search_options');
+        return this.apiGET('/data/search-options');
     }
 
     getSedParticipantStatisticsCount () {
@@ -720,12 +732,20 @@ export class NetworkService {
         return this.apiPOST('/versions/' + versionObject.oldVersion.versionId + '/split', versionObject);
     }
 
+    submitChangeRequest (request) {
+        return this.apiPOST('/change-requests', request);
+    }
+
     unimpersonateUser () {
         return this.apiGET('/auth/unimpersonate');
     }
 
     updateAnnualSurveillanceReport (report) {
         return this.apiPUT('/surveillance-report/annual', report);
+    }
+
+    updateChangeRequest (changeRequest) {
+        return this.apiPUT('/change-requests', changeRequest)
     }
 
     updateComplaint (complaint) {

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Collections', function () {
+    fdescribe('the Collections', function () {
         var $compile, $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, mock, networkService, scope, vm;
 
         beforeEach(function () {
@@ -22,10 +22,10 @@
                 CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_
                 Mock = _Mock_;
                 mock = {
-                    searchOptions: angular.copy(Mock.search_options),
+                    searchOptions: angular.copy(Mock.searchOptions),
                 };
-                mock.searchOptions.certBodyNames[0].retired = true;
-                mock.searchOptions.certBodyNames[0].retirementDate = new Date();
+                mock.searchOptions.acbs[0].retired = true;
+                mock.searchOptions.acbs[0].retirementDate = new Date();
                 networkService = _networkService_;
                 networkService.getCollection.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
                 networkService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));
@@ -74,7 +74,7 @@
 
             describe('on load', () => {
                 describe('with no acb filter', () => {
-                    it('should not call for search_options', () => {
+                    it('should not call for searchOptions', () => {
                         expect(networkService.getSearchOptions).not.toHaveBeenCalled();
                     });
                 });
@@ -89,11 +89,11 @@
                         vm = el.isolateScope().vm;
                     });
 
-                    it('should call for search_options', () => {
+                    it('should call for searchOptions', () => {
                         expect(networkService.getSearchOptions).toHaveBeenCalled();
                     });
 
-                    it('should set acb filters to results from search_options', () => {
+                    it('should set acb filters to results from searchOptions', () => {
                         expect(vm.filterItems.acbItems).toBeDefined();
                     });
 

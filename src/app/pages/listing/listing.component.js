@@ -2,7 +2,7 @@ export const ListingComponent = {
     templateUrl: 'chpl.listing/listing.html',
     bindings: { },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, networkService, utilService) {
+        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, featureFlags, networkService, utilService) {
             'ngInject'
             this.$localStorage = $localStorage;
             this.$log = $log;
@@ -11,6 +11,7 @@ export const ListingComponent = {
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.authService = authService;
+            this.featureFlags = featureFlags;
             this.networkService = networkService;
             this.utilService = utilService;
             this.certificationStatus = utilService.certificationStatus;
@@ -49,6 +50,14 @@ export const ListingComponent = {
             return this.listing.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
         }
 
+        canEdit () {
+            if (this.featureFlags.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            } else {
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
+            }
+        }
+
         cancel () {
             this.listing = angular.copy(this.backupListing);
             this.isEditing = false;
@@ -71,10 +80,10 @@ export const ListingComponent = {
             this.$q.all([
                 this.networkService.getSearchOptions()
                     .then(response => {
-                        that.resources.bodies = response.certBodyNames;
+                        that.resources.bodies = response.acbs;
                         that.resources.classifications = response.productClassifications;
                         that.resources.editions = response.editions;
-                        that.resources.practices = response.practiceTypeNames;
+                        that.resources.practices = response.practiceTypes;
                         that.resources.statuses = response.certificationStatuses;
                     }),
                 this.networkService.getAccessibilityStandards().then(response => that.resources.accessibilityStandards = response),

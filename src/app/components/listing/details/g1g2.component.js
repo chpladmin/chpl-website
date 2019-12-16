@@ -40,6 +40,7 @@ export const G1G2DetailsComponent = {
                                 description: cert.g1MacraMeasures[j].description,
                                 g: 'G1',
                                 criteria: [cert.g1MacraMeasures[j].criteria.number],
+                                removed: cert.g1MacraMeasures[j].removed,
                             });
                         }
                     }
@@ -59,6 +60,7 @@ export const G1G2DetailsComponent = {
                                 description: cert.g2MacraMeasures[j].description,
                                 g: 'G2',
                                 criteria: [cert.g2MacraMeasures[j].criteria.number],
+                                removed: cert.g2MacraMeasures[j].removed,
                             });
                         }
                     }

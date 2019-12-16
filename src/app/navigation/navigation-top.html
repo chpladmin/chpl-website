@@ -48,7 +48,7 @@
               <li><a ui-sref="collections.inactive">Inactive Certificates</a></li>
               <li><a ui-sref="collections.corrective-action">Products: Corrective Action</a></li>
               <li><a ui-sref="collections.sed">SED Info for 2015 Ed. Products</a></li>
-              <li><a ui-sref="collections.transparency-attestations">Transparency Attestations</a></li>
+              <li feature-flag="effective-rule-date" feature-flag-hide><a ui-sref="collections.transparency-attestations">Transparency Attestations</a></li>
             </ul>
           </li>
         </ul>
@@ -121,7 +121,7 @@
               <li><a ui-sref="surveillance.confirm()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.confirm')"></i>Confirm</a></li>
               <li><a ui-sref="surveillance.manage()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.manage')"></i> Manage</a></li>
               <li><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i>Complaints Reporting</a></li>
-              <li feature-flag="surveillance-reporting"><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
+              <li><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
             </ul>
           </li>
         </ul><!-- /admin nav -->
