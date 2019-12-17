@@ -6,11 +6,12 @@ export const SurveillanceInspectComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceInspectController {
-        constructor ($log, $uibModal, authService, networkService, utilService) {
+        constructor ($log, $uibModal, authService, featureFlags, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal
             this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
             this.sortRequirements = utilService.sortRequirements;
@@ -49,7 +50,7 @@ export const SurveillanceInspectComponent = {
 
         editSurveillance () {
             this.fixRequirementOptions();
-            if (this.hasAnyRole(['ROLE_ACB'])) {
+            if (this.hasAnyRole(['ROLE_ACB']) && this.isOn('effective-rule-date-plus-one-week')) {
                 this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter(option => !option.removed);
                 this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter(option => !option.removed);
             }

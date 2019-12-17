@@ -2,12 +2,16 @@
     'use strict';
 
     fdescribe('the surveillance inspection component', () => {
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope, utilService;
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, featureFlags, networkService, scope, utilService;
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
+                $provide.decorator('featureFlags', $delegate => {
+                    $delegate.isOn = jasmine.createSpy('isOn');
                     return $delegate;
                 });
                 $provide.decorator('networkService', $delegate => {
@@ -22,12 +26,14 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _featureFlags_, _networkService_, _utilService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(false);
+                featureFlags = _featureFlags_;
+                featureFlags.isOn.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.confirmPendingSurveillance.and.returnValue($q.when([]));
                 networkService.rejectPendingSurveillance.and.returnValue($q.when([]));
@@ -170,8 +176,9 @@
                     expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(3);
                 });
 
-                it('should filter removed ones out if ROLE_ACB requirements', () => {
+                it('should filter removed ones out if ROLE_ACB and flag is on', () => {
                     authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date-plus-one-week');
                     ctrl.surveillanceTypes.surveillanceRequirements = {
                         criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
                         criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
@@ -186,6 +193,27 @@
                     ctrl.surveillance.certifiedProduct.edition = '2015';
                     ctrl.editSurveillance();
                     expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(2);
+                    ctrl.surveillance.certifiedProduct.edition = '2014';
+                    ctrl.editSurveillance();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(3);
+                });
+
+                it('should not filter removed ones out if ROLE_ACB and flag is off', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    ctrl.surveillanceTypes.surveillanceRequirements = {
+                        criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
+                        criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
+                    };
+                    ctrl.surveillanceTypes.nonconformityTypes = {
+                        data: [{removed: false}, {removed: false}, {removed: true}],
+                    }
+                    ctrl.surveillance.certifiedProduct.edition = '2011';
+                    ctrl.editSurveillance();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(0);
+                    expect(ctrl.surveillanceTypes.nonconformityTypes.data.length).toBe(3);
+                    ctrl.surveillance.certifiedProduct.edition = '2015';
+                    ctrl.editSurveillance();
+                    expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(4);
                     ctrl.surveillance.certifiedProduct.edition = '2014';
                     ctrl.editSurveillance();
                     expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(3);
