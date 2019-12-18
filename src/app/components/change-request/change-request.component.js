@@ -1,6 +1,7 @@
 export const ChangeRequestComponent = {
     templateUrl: 'chpl.components/change-request/change-request.html',
     bindings: {
+        administrationMode: '<',
         activeState: '<',
         developer: '<',
         changeRequest: '<',
