@@ -1,10 +1,10 @@
-export const ReportsListingsComponent = {
-    templateUrl: 'chpl.reports/listings/listings.html',
+export const ReportsListingsLegacyComponent = {
+    templateUrl: 'chpl.reports/listings/listings-legacy.html',
     bindings: {
         productId: '<?',
         filterToApply: '<?',
     },
-    controller: class ReportsListings {
+    controller: class ReportsListingsLegacy {
         constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -806,4 +806,4 @@ export const ReportsListingsComponent = {
 }
 
 angular.module('chpl.reports')
-    .component('chplReportsListings', ReportsListingsComponent);
+    .component('chplReportsListingsLegacy', ReportsListingsLegacyComponent);

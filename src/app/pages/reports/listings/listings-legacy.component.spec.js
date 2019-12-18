@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Reports.Listing component', () => {
+    fdescribe('the Reports.Listing.Legacy component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 
@@ -34,7 +34,7 @@
 
                 scope = $rootScope.$new()
 
-                el = angular.element('<chpl-reports-listings></chpl-reports-listings>');
+                el = angular.element('<chpl-reports-listings-legacy></chpl-reports-listings-legacy>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -59,7 +59,7 @@
         describe('controller', () => {
             it('should set the start date to day 1 of chpl if on a single product', () => {
                 var startDate = new Date('4/1/2016');
-                el = angular.element('<chpl-reports-listings product-id="1"></chpl-reports-listings>');
+                el = angular.element('<chpl-reports-listings-legacy product-id="1"></chpl-reports-listings-legacy>');
 
                 $compile(el)(scope);
                 scope.$digest();
