@@ -93,7 +93,7 @@
                 vm.sedDate = '02/18/1989';
                 vm.listing.sedTestingEndDate = 23;
                 vm.save();
-                expect(vm.listing.sedTestingEndDate).toBe(603781200000);
+                expect(vm.listing.sedTestingEndDate).toBe(new Date('02/18/1989').getTime());
             });
 
             it('should close the modal with the listing and the ucd processes', function () {
