@@ -5,7 +5,7 @@ export const ReportsListingsComponent = {
         filterToApply: '<?',
     },
     controller: class ReportsListings {
-        constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $state, $uibModal, ReportService, featureFlags, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
@@ -565,7 +565,7 @@ export const ReportsListingsComponent = {
         }
 
         parse (meta) {
-            return this.networkService.getActivityById(meta.id).then(item => {
+            this.networkService.getActivityById(meta.id).then(item => {
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
                     {key: 'accessibilityCertified', display: 'Accessibility Certified'},
@@ -766,7 +766,7 @@ export const ReportsListingsComponent = {
 
         searchAllListings () {
             let that = this;
-            return this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
+            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results);
@@ -777,7 +777,7 @@ export const ReportsListingsComponent = {
             let that = this;
             this.activityRange.endDate = new Date();
             this.activityRange.startDate = new Date('4/1/2016');
-            return this.networkService.getSingleListingActivityMetadata(this.productId)
+            this.networkService.getSingleListingActivityMetadata(this.productId)
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results, true);
@@ -786,9 +786,9 @@ export const ReportsListingsComponent = {
 
         search () {
             if (this.productId) {
-                return this.searchSingleProductId();
+                this.searchSingleProductId();
             } else {
-                return this.searchAllListings();
+                this.searchAllListings();
             }
         }
 

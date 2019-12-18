@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Listing component', () => {
+    fdescribe('the Reports.Listing component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 
@@ -162,65 +162,48 @@
             });
 
             describe('when parsing', () => {
-                xit('unknown descriptions should report directly', () => {
+                it('unknown descriptions should report directly', () => {
                     var expectedActivity, rawActivity;
-                    expectedActivity = {
-                        acb: '',
-                        date: 1492429771059,
-                        friendlyActivityDate: '2017-04-17',
-                        newId: 17497,
-                    };
                     rawActivity = angular.copy(Mock.listingActivity[1]);
                     rawActivity.description = 'Something odd with a Listing';
-                    expectedActivity.action = 'Something odd with a Listing';
 
-                    ctrl._interpretCps([rawActivity]);
-                    expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    expectedActivity = angular.copy(rawActivity);
+                    expectedActivity.action = 'Something odd with a Listing';
+                    expectedActivity.details = [];
+                    expectedActivity.csvDetails = '';
+
+                    networkService.getActivityById.and.returnValue($q.when(rawActivity));
+
+                    ctrl.parse(rawActivity);
+                    scope.$digest();
+                    expect(rawActivity).toEqual(expectedActivity);
                 });
 
-                xdescribe('newly created Listings', () => {
+                describe('newly created Listings', () => {
                     var expectedActivity, rawActivity;
 
                     beforeEach(() => {
-                        expectedActivity = {
-                            acb: 'CCHIT',
-                            date: 1492429771059,
-                            certificationDate: 1285819200000,
-                            certificationEdition: '2014',
-                            chplProductNumber: 'CHP-009351',
-                            developer: 'Epic Systems Corporation',
-                            friendlyActivityDate: '2017-04-17',
-                            friendlyCertificationDate: '2010-09-30',
-                            id: 1480,
-                            newId: 17497,
-                            product: 'EpicCare Ambulatory - Core EMR 2',
-                        };
                         rawActivity = angular.copy(Mock.listingActivity[1]);
                     });
 
                     it('should create an upload activity', () => {
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsUpload[0]).toEqual(expectedActivity);
+                        expectedActivity = {
+                            action: 'Created a certified product',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
                 });
 
-                xdescribe('updated Listings', () => {
+                describe('updated Listings', () => {
                     var expectedActivity, rawActivity;
 
                     beforeEach(() => {
-                        expectedActivity = {
-                            acb: 'CCHIT',
-                            date: 1492429771059,
-                            certificationDate: 1285819200000,
-                            certificationEdition: '2014',
-                            chplProductNumber: 'CHP-009351',
-                            developer: 'Epic Systems Corporation',
-                            friendlyActivityDate: '2017-04-17',
-                            friendlyCertificationDate: '2010-09-30',
-                            id: 1480,
-                            newId: 17497,
-                            product: 'EpicCare Ambulatory - Core EMR 2',
-                        };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
 
@@ -229,189 +212,270 @@
                             name: 'Active',
                             id: 1,
                         };
-                        expectedActivity.details = 'Certification Status changed from Retired to Active';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsStatus[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['Certification Status changed from Retired to Active'],
+                            csvDetails: 'Certification Status changed from Retired to Active',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('should interpret basic field changes', () => {
                         rawActivity.newData.productAdditionalSoftware = 'Some new software';
-                        expectedActivity.details = ['Product-wide Relied Upon Software added: Some new software'];
-                        expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['Product-wide Relied Upon Software added: Some new software'],
+                            csvDetails: 'Product-wide Relied Upon Software added: Some new software',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('should interpret nested field changes', () => {
                         rawActivity.originalData.certifyingBody.name = 'ICSA Labs';
-                        expectedActivity.details = ['Certifying Body changed from ICSA Labs to CCHIT'];
-                        expectedActivity.csvDetails = 'Certifying Body changed from ICSA Labs to CCHIT';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['Certifying Body changed from ICSA Labs to CCHIT'],
+                            csvDetails: 'Certifying Body changed from ICSA Labs to CCHIT',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('should handle accessibility standards', () => {
                         rawActivity.originalData.accessibilityStandards = [{accessibilityStandardName: 'a standard'}];
-                        expectedActivity.details = ['Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>'];
-                        expectedActivity.csvDetails = 'Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>'],
+                            csvDetails: 'Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('should handle criteria addition', () => {
                         rawActivity.originalData.certificationResults[0].success = false;
-                        expectedActivity.details = ['Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>'];
-                        expectedActivity.csvDetails = 'Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>'],
+                            csvDetails: 'Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('should handle cqm addition', () => {
                         rawActivity.originalData.cqmResults[0].success = false;
-                        expectedActivity.details = ['CQM "null" changes<ul><li>Success added: true</li></ul>'];
-                        expectedActivity.csvDetails = 'CQM "null" changes<ul><li>Success added: true</li></ul>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['CQM "null" changes<ul><li>Success added: true</li></ul>'],
+                            csvDetails: 'CQM "null" changes<ul><li>Success added: true</li></ul>',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
                 });
 
-                xdescribe('ICS family activity', () => {
+                describe('ICS family activity', () => {
                     var expectedActivity, rawActivity;
 
                     beforeEach(() => {
-                        expectedActivity = {
-                            acb: 'CCHIT',
-                            date: 1492429771059,
-                            certificationDate: 1285819200000,
-                            certificationEdition: '2014',
-                            chplProductNumber: 'CHP-009351',
-                            developer: 'Epic Systems Corporation',
-                            friendlyActivityDate: '2017-04-17',
-                            friendlyCertificationDate: '2010-09-30',
-                            id: 1480,
-                            newId: 17497,
-                            product: 'EpicCare Ambulatory - Core EMR 2',
-                        };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
 
                     it('should recognize added/removed ICS Parents', () => {
                         rawActivity.originalData.ics.parents =[{chplProductNumber: 'ID',certificationDate: 1490194030517,certifiedProductId: 1},{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2}];
                         rawActivity.newData.ics.parents = [{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2},{chplProductNumber: 'ID3',certificationDate: 1490194030517,certifiedProductId: 3}];
-                        expectedActivity.details = ['ICS Parent "ID" changes<ul><li>ID removed</li></ul>', 'ICS Parent "ID3" changes<ul><li>ID3 added</li></ul>'];
-                        expectedActivity.csvDetails = 'ICS Parent "ID" changes<ul><li>ID removed</li></ul>\nICS Parent "ID3" changes<ul><li>ID3 added</li></ul>';
-
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['ICS Parent "ID" changes<ul><li>ID removed</li></ul>', 'ICS Parent "ID3" changes<ul><li>ID3 added</li></ul>'],
+                            csvDetails: 'ICS Parent "ID" changes<ul><li>ID removed</li></ul>\nICS Parent "ID3" changes<ul><li>ID3 added</li></ul>',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('should recognize added/removed ICS Children', () => {
                         rawActivity.originalData.ics.children = [{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2},{chplProductNumber: 'ID3',certificationDate: 1490194030517,certifiedProductId: 3}];
                         rawActivity.newData.ics.children =[{chplProductNumber: 'ID',certificationDate: 1490194030517,certifiedProductId: 1},{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2}];
-                        expectedActivity.details = ['ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>', 'ICS Child "ID" changes<ul><li>ID added</li></ul>'];
-                        expectedActivity.csvDetails = 'ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>\nICS Child "ID" changes<ul><li>ID added</li></ul>';
-
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Updated a certified product',
+                            details: ['ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>', 'ICS Child "ID" changes<ul><li>ID added</li></ul>'],
+                            csvDetails: 'ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>\nICS Child "ID" changes<ul><li>ID added</li></ul>',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
                 });
 
-                xdescribe('Surveillance', () => {
+                describe('Surveillance', () => {
                     var expectedActivity, rawActivity;
 
                     beforeEach(() => {
-                        expectedActivity = {
-                            acb: 'CCHIT',
-                            date: 1492429771059,
-                            details: ['N/A'],
-                            friendlyActivityDate: '2017-04-17',
-                            newId: 17497,
-                        };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
 
                     it('deletion should be recognized', () => {
                         rawActivity.description = 'Surveillance was deleted from CHP-1231';
-                        expectedActivity.action = 'Surveillance was deleted from CHPL Product <a href="#/product/1480">CHP-009351</a>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Surveillance was deleted',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('upload should be recognized', () => {
                         rawActivity.description = 'Surveillance upload';
-                        expectedActivity.action = 'Surveillance was uploaded for CHPL Product <a href="#/product/1480">CHP-009351</a>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Surveillance was uploaded',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('addition shouls be recognized', () => {
                         rawActivity.description = 'Surveillance was added';
-                        expectedActivity.action = 'Surveillance was added for CHPL Product <a href="#/product/1480">CHP-009351</a>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Surveillance was added',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('strangeness should be handled', () => {
                         rawActivity.description = 'Surveillance was changed in a weird way';
-                        expectedActivity.action = 'Surveillance was changed in a weird way<br /><a href="#/product/1480">CHP-009351</a>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Surveillance was changed in a weird way<br />undefined',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('documentation upload should be reported', () => {
                         rawActivity.description = 'Documentation';
-                        expectedActivity.action = 'Documentation was added to a nonconformity for <a href="#/product/1480">CHP-009351</a>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
-
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Documentation was added to a nonconformity',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     it('documentation removal should be reported', () => {
                         rawActivity.description = 'A document was removed';
-                        expectedActivity.action = 'Documentation was removed from a nonconformity for <a href="#/product/1480">CHP-009351</a>';
-                        ctrl._interpretCps([rawActivity]);
-                        expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                        expectedActivity = {
+                            action: 'Documentation was removed from a nonconformity',
+                            details: [],
+                            csvDetails: '',
+                            ...rawActivity,
+                        }
+                        ctrl.parse(rawActivity);
+                        scope.$digest();
+                        expect(rawActivity).toEqual(expectedActivity);
                     });
 
                     describe('update', () => {
                         beforeEach(() => {
-                            expectedActivity = {
-                                acb: 'CCHIT',
-                                date: 1492429771059,
-                                details: [],
-                                friendlyActivityDate: '2017-04-17',
-                                newId: 17497,
-                                action: 'Surveillance was updated for CHPL Product <a href="#/product/1480">CHP-009351</a>',
-                            };
-                            rawActivity = angular.copy(Mock.listingActivity[0]);
                             rawActivity.description = 'Surveillance was updated';
                             rawActivity.originalData.surveillance = [{friendlyId: 'SURV01'}];
                             rawActivity.newData.surveillance = [{friendlyId: 'SURV01'}];
                         });
 
                         it('should punt to user feedback if no specified changes are found', () => {
-                            expectedActivity.source = {
-                                oldS: rawActivity.originalData,
-                                newS: rawActivity.newData,
-                            };
-                            ctrl._interpretCps([rawActivity]);
-                            expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                            networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                            expectedActivity = {
+                                action: 'Surveillance was updated',
+                                details: [],
+                                csvDetails: '',
+                                source: {
+                                    oldS: rawActivity.originalData,
+                                    newS: rawActivity.newData,
+                                },
+                                ...rawActivity,
+                            }
+                            ctrl.parse(rawActivity);
+                            scope.$digest();
+                            expect(rawActivity).toEqual(expectedActivity);
                         });
 
                         it('should parse some simple fields', () => {
                             rawActivity.originalData.surveillance[0].randomizedSitesUsed = 4;
                             rawActivity.newData.surveillance[0].randomizedSitesUsed = 6;
-                            expectedActivity.details = ['SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>']
-                            ctrl._interpretCps([rawActivity]);
-                            expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                            networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                            expectedActivity = {
+                                action: 'Surveillance was updated',
+                                details: ['SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>'],
+                                csvDetails: 'SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>',
+                                ...rawActivity,
+                            }
+                            ctrl.parse(rawActivity);
+                            scope.$digest();
+                            expect(rawActivity).toEqual(expectedActivity);
                         });
 
                         it('should parse nested fields', () => {
                             rawActivity.originalData.surveillance[0].type = { name: 'randomized' };
                             rawActivity.newData.surveillance[0].type = { name: 'reactive' };
-                            expectedActivity.details = ['SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>']
-                            ctrl._interpretCps([rawActivity]);
-                            expect(ctrl.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                            networkService.getActivityById.and.returnValue($q.when(rawActivity));
+                            expectedActivity = {
+                                action: 'Surveillance was updated',
+                                details: ['SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>'],
+                                csvDetails: 'SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>',
+                                ...rawActivity,
+                            }
+                            ctrl.parse(rawActivity);
+                            scope.$digest();
+                            expect(rawActivity).toEqual(expectedActivity);
                         });
                     });
                 });
