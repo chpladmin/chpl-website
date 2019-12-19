@@ -139,7 +139,7 @@ export class NetworkService {
     }
 
     getAcbs (editable) {
-        return this.apiGET('/acbs?editable=' + editable, true);
+        return this.apiGET('/acbs?editable=' + editable, {forceReload: true});
     }
 
     getAccessibilityStandards () {
@@ -183,7 +183,7 @@ export class NetworkService {
     }
 
     getAnnouncements (pending, forceReload) {
-        return this.apiGET('/announcements?future=' + pending, forceReload);
+        return this.apiGET('/announcements?future=' + pending, {forceReload: forceReload});
     }
 
     getAnnualSurveillanceReports () {
@@ -234,7 +234,7 @@ export class NetworkService {
     }
 
     getAtls (editable) {
-        return this.apiGET('/atls?editable=' + editable, true);
+        return this.apiGET('/atls?editable=' + editable, {forceReload: true});
     }
 
     getCertBodies () {
@@ -351,7 +351,7 @@ export class NetworkService {
     }
 
     getFuzzyTypes (forceReload) {
-        return this.apiGET('/data/fuzzy_choices', forceReload);
+        return this.apiGET('/data/fuzzy_choices', {forceReload: forceReload});
     }
 
     getIncumbentDevelopersStatistics () {
@@ -371,11 +371,11 @@ export class NetworkService {
     }
 
     getListing (listingId, forceReload) {
-        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+        return this.apiGET('/certified_products/' + listingId + '/details', {forceReload: forceReload});
     }
 
     getListingBasic (listingId, forceReload) {
-        return this.apiGET('/certified_products/' + listingId, forceReload);
+        return this.apiGET('/certified_products/' + listingId, {forceReload: forceReload});
     }
 
     getListingCountStatistics () {
@@ -802,8 +802,8 @@ export class NetworkService {
             .then(response => response, response => this.$q.reject(response));
     }
 
-    apiGET (endpoint, forceReload) {
-        if (forceReload) {
+    apiGET (endpoint, options) {
+        if (options && options.forceReload) {
             return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
                 .then(response => {
                     if (angular.isObject(response.data)) {

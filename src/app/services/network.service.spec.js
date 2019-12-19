@@ -30,7 +30,7 @@
         });
 
         describe('for general REST calls', () => {
-            it('should return a promise with the data if a GET doesn\'t return an object', function () {
+            it('should return a promise with the data if a GET doesn\'t return an object', () => {
                 $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
                 networkService.getListing('id').then(response => {
                     response.then(reject => {
@@ -50,6 +50,33 @@
                     });
                 }, () => {
                     //noop
+                });
+                $httpBackend.flush();
+            });
+
+            fit('should force a cache refresh when required', () => {
+                $httpBackend.expectGET(/^\/rest\/endpoint$/, headers => headers['Cache-Control'] === 'no-cache' )
+                    .respond(200, {data: 'response'});
+                networkService.apiGET('/endpoint', {forceReload: true}).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            fit('should not force a cache refresh by default', () => {
+                $httpBackend.expectGET(/^\/rest\/endpoint$/, headers => headers['Cache-Control'] === undefined )
+                    .respond(200, {data: 'response'});
+                networkService.apiGET('/endpoint').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            fit('should not force a cache refresh explicitly', () => {
+                $httpBackend.expectGET(/^\/rest\/endpoint$/, headers => headers['Cache-Control'] === undefined )
+                    .respond(200, {data: 'response'});
+                networkService.apiGET('/endpoint', {forceReload: false}).then(response => {
+                    expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
             });
@@ -901,14 +928,6 @@
         it('should getListing', () => {
             $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/).respond(200, {data: 'response'});
             networkService.getListing('payload').then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getListing and force refresh', function () {
-            $httpBackend.expectGET(/^\/rest\/certified_products\/payload\/details$/, headers => { return headers['Cache-Control'] === 'no-cache' }).respond(200, {data: 'response'});
-            networkService.getListing('payload', true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
