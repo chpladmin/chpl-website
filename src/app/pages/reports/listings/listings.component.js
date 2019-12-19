@@ -765,7 +765,7 @@ export const ReportsListingsComponent = {
             let that = this;
             this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
                 .then(results => {
-                    that.results = results;
+                    that.results = results.activities;
                     that.prepare(that.results);
                 });
         }

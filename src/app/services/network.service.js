@@ -1,11 +1,12 @@
 export class NetworkService {
-    constructor ($http, $log, $q, $rootScope, API) {
+    constructor ($http, $log, $q, $rootScope, API, featureFlags) {
         'ngInject';
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
         this.$rootScope = $rootScope;
         this.API = API;
+        this.isOn = featureFlags.isOn;
         this.store = {
             activity: {
                 types: { },
@@ -149,6 +150,10 @@ export class NetworkService {
     getActivityMetadata (key, activityRange) {
         let call = '/activity/metadata/' + key;
         let params = [];
+        let options = {};
+        if (key === 'listings' && this.isOn('enhanced-reports')) {
+            options.endpointVersion = 'application/vnd.chpl.v2+json';
+        }
         if (activityRange && activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
         }
@@ -158,7 +163,7 @@ export class NetworkService {
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
-        return this.apiGET(call);
+        return this.apiGET(call, options);
     }
 
     getActivityById (id) {
@@ -803,25 +808,23 @@ export class NetworkService {
     }
 
     apiGET (endpoint, options) {
-        if (options && options.forceReload) {
-            return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
-                .then(response => {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return this.$q.reject(response.data);
-                    }
-                }, error => this.$q.reject(error));
-        } else {
-            return this.$http.get(this.API + endpoint)
-                .then(response => {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return this.$q.reject(response.data);
-                    }
-                }, error => this.$q.reject(error));
+        let headers = {}
+        if (options) {
+            if (options.forceReload) {
+                headers['Cache-Control'] = 'no-cache';
+            }
+            if (options.endpointVersion) {
+                headers['Content-Type'] = options.endpointVersion;
+            }
         }
+        return this.$http.get(this.API + endpoint, {data: '', headers: headers})
+            .then(response => {
+                if (angular.isObject(response.data)) {
+                    return response.data;
+                } else {
+                    return this.$q.reject(response.data);
+                }
+            }, error => this.$q.reject(error));
     }
 
     apiPOST (endpoint, postObject) {

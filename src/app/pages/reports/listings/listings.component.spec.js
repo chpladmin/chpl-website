@@ -28,7 +28,7 @@
                     return Mock.fakeModal;
                 });
                 networkService = _networkService_;
-                networkService.getActivityMetadata.and.returnValue($q.when(Mock.listingActivityMetadata));
+                networkService.getActivityMetadata.and.returnValue($q.when({activities: Mock.listingActivityMetadata}));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when([]));
 
