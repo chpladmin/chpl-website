@@ -21,6 +21,10 @@ export const ReportsListingsComponent = {
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
             this.tableController = {};
+            this.loadProgress = {
+                total: 0,
+                complete: 0,
+            };
         }
 
         $onChanges (changes) {
@@ -763,10 +767,17 @@ export const ReportsListingsComponent = {
 
         searchAllListings () {
             let that = this;
-            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
+            this.networkService.getActivityMetadata('listings')
                 .then(results => {
                     that.results = results.activities;
                     that.prepare(that.results);
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    for (let i = 1; i < that.loadProgress.total; i++) {
+                        that.networkService.getActivityMetadata('listings', {pageNum: i}).then(() => {
+                            that.loadProgress.complete += 1;
+                            that.loadProgress.percentage = Math.floor(100 * that.loadProgress.complete / that.loadProgress.total);
+                        });
+                    }
                 });
         }
 

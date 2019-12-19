@@ -147,23 +147,26 @@ export class NetworkService {
         return this.apiGET('/data/accessibility_standards');
     }
 
-    getActivityMetadata (key, activityRange) {
+    getActivityMetadata (key, options) {
         let call = '/activity/metadata/' + key;
         let params = [];
-        let options = {};
+        let headerOptions = {};
         if (key === 'listings' && this.isOn('enhanced-reports')) {
-            options.endpointVersion = 'application/vnd.chpl.v2+json';
+            headerOptions.endpointVersion = 'application/vnd.chpl.v2+json';
         }
-        if (activityRange && activityRange.startDate) {
-            params.push('start=' + activityRange.startDate.getTime());
+        if (options && options.startDate) {
+            params.push('start=' + options.startDate.getTime());
         }
-        if (activityRange && activityRange.endDate) {
-            params.push('end=' + activityRange.endDate.getTime());
+        if (options && options.endDate) {
+            params.push('end=' + options.endDate.getTime());
+        }
+        if (options && options.pageNum) {
+            params.push('pageNum=' + options.pageNum);
         }
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
-        return this.apiGET(call, options);
+        return this.apiGET(call, headerOptions);
     }
 
     getActivityById (id) {

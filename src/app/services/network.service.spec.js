@@ -587,6 +587,11 @@
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
+                $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?pageNum=12+$/).respond(200, {data: 'response'});
+                networkService.getActivityMetadata('api-keys', {pageNum: 12}).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
             });
 
             it('should getApiUsers', () => {

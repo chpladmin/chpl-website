@@ -47,7 +47,12 @@
         <option value="|LISTING_UPLOAD|">Upload</option>
         <option value="|LISTING_STATUS_CHANGE|">Status Change</option>
       </select>
-
+    </div>
+    <div class="col-sm-3" ng-if="$ctrl.loadProgress.total > 0">
+      Progress:<br />
+      <uib-progressbar max="100" value="$ctrl.loadProgress.percentage" type="success" title="{{ $ctrl.loadProgress.percentage }}% complete loading">
+        {{ $ctrl.loadProgress.percentage }}% complete loading
+      </uib-progressbar>
     </div>
   </div>
   <div class="row" ng-repeat="acb in $ctrl.activeAcbs | orderBy: 'toString()'">
