@@ -34,7 +34,9 @@
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
+        vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
+        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -385,6 +387,13 @@
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);
             }
+        }
+
+        function isTransparencyAttestationViewable () {
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.hasAnyRole(['ROLE_ACB']);
+            }
+            return true;
         }
 
         function searchForSurveillance () {

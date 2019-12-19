@@ -86,6 +86,25 @@ export const DeveloperComponent = {
             }
         }
 
+        isEffectiveRuleDatePlusOneWeekOn () {
+            return this.isOn('effective-rule-date-plus-one-week');
+        }
+
+        isTransparencyAttestationViewable () {
+            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
+                return !this.hasAnyRole(['ROLE_ACB']);
+            }
+            return true;
+        }
+
+        isTransparencyAttestationEditable () {
+            let isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
+            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
+                return !isAcbAdmin;
+            }
+            return isAcbAdmin;
+        }
+
         /*
          * Initiate changes
          */
