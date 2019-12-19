@@ -67,8 +67,12 @@ export const SurveillanceNonconformityEditComponent = {
                             this.nonconformity.documents.splice(i,1);
                         }
                     }
-                }, () => {
-                    that.deleteMessage = 'File was not removed successfully.';
+                }, (error) => {
+                    if (error.data.error) {
+                        that.deleteMessage = error.data.error;
+                    } else {
+                        that.deleteMessage = 'File was not removed successfully.';
+                    }
                     that.deleteSuccess = false;
                 });
         }
@@ -125,7 +129,11 @@ export const SurveillanceNonconformityEditComponent = {
                     } else {
                         that.uploadMessage = 'File was not uploaded successfully.';
                     }
-                    that.uploadErrors = error.data.errorMessages;
+                    if (error.data.error) {
+                        that.uploadErrors.push(error.data);
+                    } else if (error.data.errorMessages) {
+                        that.uploadErrors.push(error.data.errorMessages);
+                    }
                     that.uploadSuccess = false;
                     that.file = undefined;
                 }, event => {
