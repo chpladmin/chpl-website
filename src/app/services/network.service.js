@@ -216,11 +216,6 @@ export class NetworkService {
         return this.apiGET('/files/api_documentation/details');
     }
 
-    getApiUserActivity (activityRange) {
-        var call = '/activity/metadata/api-keys';
-        return this.getActivity(call, activityRange);
-    }
-
     getApiUsers (includeDeleted) {
         if (includeDeleted) {
             return this.apiGET('/key?includeDeleted=true');

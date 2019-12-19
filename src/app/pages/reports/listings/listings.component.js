@@ -15,11 +15,8 @@ export const ReportsListingsComponent = {
             this.networkService = networkService;
             this.utilService = utilService;
             this.activityRange = {
-                range: 30,
-                startDate: new Date(),
                 endDate: new Date(),
             };
-            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.categoriesFilter = '|LISTING|';
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';

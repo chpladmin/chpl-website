@@ -528,25 +528,25 @@
             $httpBackend.flush();
         });
 
-        it('should getApiUserActivity', () => {
+        fit('should getActivityMetadata', () => {
             var aDate = new Date();
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({}).then(response => {
+            networkService.getActivityMetadata('api-keys', {}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?start=\d+$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({startDate: aDate}).then(response => {
+            networkService.getActivityMetadata('api-keys', {startDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?end=\d+$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({endDate: aDate}).then(response => {
+            networkService.getActivityMetadata('api-keys', {endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
             $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?start=\d+&end=\d+$/).respond(200, {data: 'response'});
-            networkService.getApiUserActivity({startDate: aDate, endDate: aDate}).then(response => {
+            networkService.getActivityMetadata('api-keys', {startDate: aDate, endDate: aDate}).then(response => {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

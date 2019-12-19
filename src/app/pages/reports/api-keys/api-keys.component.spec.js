@@ -10,7 +10,6 @@
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
-                    $delegate.getApiUserActivity = jasmine.createSpy('getApiUserActivity');
                     return $delegate;
                 });
             });
@@ -23,7 +22,6 @@
                 networkService = _networkService_;
                 networkService.getActivityMetadata.and.returnValue($q.when([]));
                 networkService.getActivityById.and.returnValue($q.when({}));
-                networkService.getApiUserActivity.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()
                 el = angular.element('<chpl-reports-api-keys></chpl-reports-api-keys>');
