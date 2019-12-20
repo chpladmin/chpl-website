@@ -53,8 +53,6 @@ export const ReportsListingsComponent = {
 
         onClearFilter () {
             let filterData = {};
-            filterData.endDate = new Date();
-            filterData.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
             if (this.productId) {
                 filterData.productId = this.productId;
             }
@@ -72,8 +70,6 @@ export const ReportsListingsComponent = {
         doFilter (filter) {
             let that = this;
             this.display = {};
-            this.activityRange.startDate = new Date(Date.parse(filter.startDate));
-            this.activityRange.endDate = new Date(Date.parse(filter.endDate));
             this.search()
                 .then( () => {
                     that.display = filter.displayAcbs;
@@ -91,8 +87,6 @@ export const ReportsListingsComponent = {
 
         createFilterDataObject () {
             let filterData = {};
-            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
-            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             if (this.productId) {
                 filterData.productId = this.productId;
             }
@@ -780,8 +774,6 @@ export const ReportsListingsComponent = {
 
         searchSingleProductId () {
             let that = this;
-            this.activityRange.endDate = new Date();
-            this.activityRange.startDate = new Date('4/1/2016');
             this.networkService.getSingleListingActivityMetadata(this.productId)
                 .then(results => {
                     that.results = results
@@ -796,17 +788,6 @@ export const ReportsListingsComponent = {
                 this.searchAllListings();
             }
         }
-
-        validDates () {
-            let ignoreRange;
-            if (this.productId) {
-                ignoreRange = true;
-            } else {
-                ignoreRange = false;
-            }
-            return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, ignoreRange);
-        }
-
     },
 }
 
