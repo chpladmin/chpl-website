@@ -75,22 +75,10 @@ export const ReportsListingsComponent = {
 
         registerClearFilter (handler) {
             this.clearFilterHs.push(handler);
-            /*
-            let that = this;
-            let removeHandler = () => {
-                that.clearFilterHs = that.clearFilterHs.filter(aHandler => aHandler !== handler);
-            };
-            return removeHandler;*/
         }
 
         registerRestoreState (handler) {
             this.restoreStateHs.push(handler);
-            /*
-            let that = this;
-            let removeHandler = () => {
-                that.restoreStateHs = that.restoreStateHs.filter(aHandler => aHandler !== handler);
-            };
-            return removeHandler;*/
         }
 
         createFilterDataObject () {
@@ -763,7 +751,7 @@ export const ReportsListingsComponent = {
                         .map(item => that.prepare(item));
                     that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
                     for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('listings', {pageNum: i}).then(results => {
+                        that.networkService.getActivityMetadata('listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
                             results.activities.forEach(item => that.results.push(that.prepare(item)));
                             that.loadProgress.complete += 1;
                             that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));

@@ -154,6 +154,9 @@ export class NetworkService {
         if (key === 'listings' && this.isOn('enhanced-reports')) {
             headerOptions.endpointVersion = 'application/vnd.chpl.v2+json';
         }
+        if (options && options.ignoreLoadingBar) {
+            headerOptions.ignoreLoadingBar = true;
+        }
         if (options && options.startDate) {
             params.push('start=' + options.startDate.getTime());
         }
@@ -810,17 +813,15 @@ export class NetworkService {
             .then(response => response, response => this.$q.reject(response));
     }
 
-    apiGET (endpoint, options) {
+    apiGET (endpoint, options = {}) {
         let headers = {}
-        if (options) {
-            if (options.forceReload) {
-                headers['Cache-Control'] = 'no-cache';
-            }
-            if (options.endpointVersion) {
-                headers['Content-Type'] = options.endpointVersion;
-            }
+        if (options.forceReload) {
+            headers['Cache-Control'] = 'no-cache';
         }
-        return this.$http.get(this.API + endpoint, {data: '', headers: headers})
+        if (options.endpointVersion) {
+            headers['Content-Type'] = options.endpointVersion;
+        }
+        return this.$http.get(this.API + endpoint, {data: '', headers: headers, ignoreLoadingBar: options.ignoreLoadingBar})
             .then(response => {
                 if (angular.isObject(response.data)) {
                     return response.data;
