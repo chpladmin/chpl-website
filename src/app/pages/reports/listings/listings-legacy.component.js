@@ -565,7 +565,7 @@ export const ReportsListingsLegacyComponent = {
         }
 
         parse (meta) {
-            this.networkService.getActivityById(meta.id).then(item => {
+            return this.networkService.getActivityById(meta.id).then(item => {
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
                     {key: 'accessibilityCertified', display: 'Accessibility Certified'},
@@ -766,7 +766,7 @@ export const ReportsListingsLegacyComponent = {
 
         searchAllListings () {
             let that = this;
-            this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
+            return this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results);
@@ -777,7 +777,7 @@ export const ReportsListingsLegacyComponent = {
             let that = this;
             this.activityRange.endDate = new Date();
             this.activityRange.startDate = new Date('4/1/2016');
-            this.networkService.getSingleListingActivityMetadata(this.productId)
+            return this.networkService.getSingleListingActivityMetadata(this.productId)
                 .then(results => {
                     that.results = results;
                     that.prepare(that.results, true);
@@ -786,9 +786,9 @@ export const ReportsListingsLegacyComponent = {
 
         search () {
             if (this.productId) {
-                this.searchSingleProductId();
+                return this.searchSingleProductId();
             } else {
-                this.searchAllListings();
+                return this.searchAllListings();
             }
         }
 
