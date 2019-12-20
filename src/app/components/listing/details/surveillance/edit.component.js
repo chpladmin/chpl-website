@@ -223,6 +223,8 @@ export const SurveillanceEditComponent = {
                     }, error => {
                         if (error.data.errorMessages && error.data.errorMessages.length > 0) {
                             this.errorMessages = error.data.errorMessages;
+                        } else if (error.data.error) {
+                            this.errorMessages = [error.data.error];
                         } else {
                             this.errorMessages = [error.statusText];
                         }
