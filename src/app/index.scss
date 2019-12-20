@@ -721,6 +721,13 @@ option[disabled] {
         margin-top: 10px;
     }
 
+    .table-vertical-align {
+
+        td {
+            vertical-align: middle;
+        }
+    }
+
     .dropdown-menu {
         left: auto;
         right: 0;

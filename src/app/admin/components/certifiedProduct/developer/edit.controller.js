@@ -5,22 +5,24 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, networkService, utilService) {
+    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
+        vm.cancel = cancel;
+        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
         vm.isMissingRequiredFields = isMissingRequiredFields;
         vm.isMissingReasonForBan = isMissingReasonForBan;
+        vm.isTransparencyAttestationEditable = isTransparencyAttestationEditable;
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.removePreviousStatus = removePreviousStatus;
         vm.save = save;
-        vm.cancel = cancel;
 
         activate();
 
@@ -95,6 +97,14 @@
                 }
             }
             return false;
+        }
+
+        function isTransparencyAttestationEditable () {
+            let isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !isAcbAdmin;
+            }
+            return isAcbAdmin;
         }
 
         function matchesPreviousDate (status) {

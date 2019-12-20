@@ -1,3 +1,4 @@
+import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state.js';
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state.js';
 import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
@@ -9,13 +10,12 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
 (function () {
     'use strict';
 
-    let administrationState = require('./pages/administration/administration.state.js');
     let resourcesState = require('./pages/resources/resources.state.js');
 
     angular
         .module('chpl')
         .config(routeConfig)
-        .config(administrationState)
+        .config(administrationStates)
         .config(collectionsStates)
         .config(dashboardStates)
         .config(listingStates)

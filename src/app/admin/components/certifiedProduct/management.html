@@ -154,10 +154,12 @@
                 Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
                 Country: {{ vm.activeDeveloper.address.country }}<br />
                 Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
-                Transparency Attestation:<br />
-                <ul>
-                  <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
-                </ul>
+                <span ng-if="vm.isTransparencyAttestationViewable()">
+                  Transparency Attestation:<br />
+                  <ul>
+                    <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
+                  </ul>
+                </span>
                 <strong>Contact information</strong><br />
                 <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
               </div>
@@ -350,8 +352,10 @@
                   <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
-                  <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
-                  <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
+                  <span ng-if="vm.isTransparencyAttestationViewable()">
+                    <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
+                    <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
+                  </span>
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
                   <ul>
                     <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
