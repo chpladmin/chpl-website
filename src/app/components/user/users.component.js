@@ -45,6 +45,7 @@ export const UsersComponent = {
                 this.activeUser = undefined;
                 break;
             case 'edit':
+                this.takeAction({action: 'edit'});
                 this.activeUser = data;
                 this.$anchorScroll();
                 break;
@@ -57,6 +58,7 @@ export const UsersComponent = {
                 break;
             case 'cancel':
                 this.activeUser = undefined;
+                this.takeAction({action: 'cancel'});
                 break;
             case 'impersonate':
                 this.networkService.impersonateUser(data)

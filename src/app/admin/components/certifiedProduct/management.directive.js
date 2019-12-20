@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -34,7 +34,9 @@
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
+        vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
+        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -376,12 +378,22 @@
         }
 
         function isProductEditable (cp) {
+            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
+                return false;
+            }
             if (cp.certificationEvents) {
                 return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);
             }
+        }
+
+        function isTransparencyAttestationViewable () {
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.hasAnyRole(['ROLE_ACB']);
+            }
+            return true;
         }
 
         function searchForSurveillance () {

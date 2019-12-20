@@ -2,7 +2,7 @@ export const ListingComponent = {
     templateUrl: 'chpl.listing/listing.html',
     bindings: { },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, networkService, utilService) {
+        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, featureFlags, networkService, utilService) {
             'ngInject'
             this.$localStorage = $localStorage;
             this.$log = $log;
@@ -11,6 +11,7 @@ export const ListingComponent = {
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.authService = authService;
+            this.featureFlags = featureFlags;
             this.networkService = networkService;
             this.utilService = utilService;
             this.certificationStatus = utilService.certificationStatus;
@@ -47,6 +48,14 @@ export const ListingComponent = {
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
             return this.listing.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+        }
+
+        canEdit () {
+            if (this.featureFlags.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            } else {
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
+            }
         }
 
         cancel () {

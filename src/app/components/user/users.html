@@ -5,56 +5,52 @@
   </div>
 </div>
 <span ng-if="!$ctrl.activeUser">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Search for a User</h3>
-        </div>
-        <div class="panel-body" ng-form="$ctrl.search">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-10 form-horizontal">
           <div class="form-group">
-            <label class="control-label" for="search">Filter on:</label>
-            <input class="form-control input-sm" type="input" ng-model="$ctrl.searchText" id="search" name="search" ng-change="$ctrl.filter()" />
-            <p>Full Name, Friendly Name, Title, Email, or User Name</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Invite a User</h3>
-        </div>
-        <div class="panel-body" ng-form="$ctrl.form">
-          <div class="form-group">
-            <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
-            <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
-            <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
-            <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
-          </div>
-          <div class="form-group" ng-if="$ctrl.roles.length > 1">
-            <label class="control-label" for="new-role">User Role <span class="text-danger">*</span></label>
-            <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
-                    ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
-            <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
-                      ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-                      ng-mouseover="$ctrl.showFormErrors = true"
-                      ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
+            <label class="col-sm-2 control-label" for="search">Search for a user</label>
+            <div class="col-sm-10">
+              <input class="form-control input-sm" type="input" ng-model="$ctrl.searchText" id="search" name="search" ng-change="$ctrl.filter()" placeholder="Full Name, Friendly Name, Title, Email, or User Name" />
             </div>
           </div>
         </div>
+        <div class="col-md-2" ng-form="$ctrl.form">
+          <button class="btn btn-default pull-right" ng-if="!$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = true" uib-tooltip="Invite a User" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-user-plus"></i><span class="sr-only">Invite a User</span></button>
+          <button class="btn btn-default pull-right" ng-if="$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = false"><i class="fa fa-close"></i><span class="sr-only">Cancel invitation</span></button>
+          <h2>Invite a User</h2>
+          <span ng-if="$ctrl.showInviteForm">
+            <div class="form-group">
+              <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
+              <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
+              <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
+              <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
+            </div>
+            <div class="form-group" ng-if="$ctrl.roles.length > 1">
+              <label class="control-label" for="new-role">User Role <span class="text-danger">*</span></label>
+              <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
+                      ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
+              <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
+                        ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+                        ng-mouseover="$ctrl.showFormErrors = true"
+                        ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
+              </div>
+            </div>
+          </span>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)">
-    <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
-      <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
-        <div class="panel-body">
-          <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+      <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)">
+        <div ng-class="$ctrl.rangeCol($ctrl.columnCount)" ng-repeat="col in $ctrl.range($ctrl.columnCount)">
+          <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
+            <div class="panel-body">
+              <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
+            </div>
+          </div>
         </div>
       </div>
     </div>
