@@ -44,6 +44,8 @@
       Filter on Activity Date
         <ai-date-range
           predicate="date"
+          register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+          register-restore-state="$ctrl.registerRestoreState(restoreState)"
           ></ai-date-range>
     </div>
   </div>

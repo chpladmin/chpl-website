@@ -2,7 +2,6 @@ export const ReportsListingsComponent = {
     templateUrl: 'chpl.reports/listings/listings.html',
     bindings: {
         productId: '<?',
-        filterToApply: '<?',
     },
     controller: class ReportsListings {
         constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
@@ -17,6 +16,8 @@ export const ReportsListingsComponent = {
             this.activeAcbs = [];
             this.displayed = [];
             this.categoriesFilter = '|LISTING|';
+            this.clearFilterHs = [];
+            this.restoreStateHs = [];
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
             this.tableController = {};
@@ -30,10 +31,6 @@ export const ReportsListingsComponent = {
             if (changes.productId && changes.productId.currentValue) {
                 this.productId = angular.copy(changes.productId.currentValue);
             }
-            if (changes.filterToApply && changes.filterToApply.currentValue) {
-                this.doFilter(changes.filterToApply.currentValue);
-                return;
-            }
             this.search();
         }
 
@@ -44,11 +41,7 @@ export const ReportsListingsComponent = {
             } else {
                 this.productId = undefined;
             }
-
-            this.$state.go('reports.listings', {
-                filterToApply: f,
-                productId: f.productId,
-            });
+            this.doFilter(f);
         }
 
         onClearFilter () {
@@ -59,30 +52,45 @@ export const ReportsListingsComponent = {
             filterData.dataFilter = '';
             filterData.tableState = this.tableController.tableState();
             filterData.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
-            filterData.categoriesFilter = '|LISTING|';
-
-            this.$state.go('reports.listings', {
-                filterToApply: filterData,
-                productId: filterData.productId,
-            });
+            this.clearFilterHs.forEach(handler => handler());
+            this.doFilter(filterData);
         }
 
         doFilter (filter) {
             let that = this;
-            this.display = {};
-            this.search()
-                .then( () => {
-                    that.display = filter.displayAcbs;
-                    that.filterText = filter.dataFilter;
-                    if (filter.tableState.search.predicateObject.categoriesFilter) {
-                        that.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
-                        that.categoriesFilter = filter.categoriesFilter;
-                    } else {
-                        that.tableController.search('|LISTING|', 'categoriesFilter');
-                        that.categoriesFilter = '|LISTING|';
-                    }
-                    that.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
-                });
+            this.filterText = filter.dataFilter;
+            if (filter.tableState.search.predicateObject.categoriesFilter) {
+                this.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
+            } else {
+                this.tableController.search('|LISTING|', 'categoriesFilter');
+            }
+            if (filter.tableState.search.predicateObject.date) {
+                this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
+            } else {
+                this.tableController.search({}, 'date');
+            }
+            this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+            this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+        }
+
+        registerClearFilter (handler) {
+            this.clearFilterHs.push(handler);
+            /*
+            let that = this;
+            let removeHandler = () => {
+                that.clearFilterHs = that.clearFilterHs.filter(aHandler => aHandler !== handler);
+            };
+            return removeHandler;*/
+        }
+
+        registerRestoreState (handler) {
+            this.restoreStateHs.push(handler);
+            /*
+            let that = this;
+            let removeHandler = () => {
+                that.restoreStateHs = that.restoreStateHs.filter(aHandler => aHandler !== handler);
+            };
+            return removeHandler;*/
         }
 
         createFilterDataObject () {
@@ -93,7 +101,6 @@ export const ReportsListingsComponent = {
             filterData.dataFilter = this.filterText;
             filterData.displayAcbs = this.display;
             filterData.tableState = this.tableController.tableState();
-            filterData.categoriesFilter = this.categoriesFilter;
             return filterData;
         }
 
@@ -544,13 +551,6 @@ export const ReportsListingsComponent = {
                     }
                 });
             }
-            return ret;
-        }
-
-        dateAdjust (obj) {
-            var ret = angular.copy(obj);
-            ret.startDate = this.ReportService.coerceToMidnight(ret.startDate);
-            ret.endDate = this.ReportService.coerceToMidnight(ret.endDate, true);
             return ret;
         }
 
