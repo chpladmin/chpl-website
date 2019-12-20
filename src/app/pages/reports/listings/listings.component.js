@@ -14,9 +14,8 @@ export const ReportsListingsComponent = {
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
-            this.activityRange = {
-                endDate: new Date(),
-            };
+            this.activeAcbs = [];
+            this.displayed = [];
             this.categoriesFilter = '|LISTING|';
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
@@ -740,22 +739,19 @@ export const ReportsListingsComponent = {
             });
         }
 
-        prepare (results, full) {
-            this.activeAcbs = [];
-            this.displayed = results.map(item => {
-                item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
-                item.categoriesFilter = '|' + item.categories.join('|') + '|';
-                item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-                item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
-                if (this.activeAcbs.indexOf(item.acbName) === -1) {
-                    this.activeAcbs.push(item.acbName);
-                }
-                if (full) {
-                    this.parse(item);
-                    item.showDetails = true;
-                }
-                return item;
-            });
+        prepare (item, full) {
+            item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
+            item.categoriesFilter = '|' + item.categories.join('|') + '|';
+            item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+            item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
+            if (this.activeAcbs.indexOf(item.acbName) === -1) {
+                this.activeAcbs.push(item.acbName);
+            }
+            if (full) {
+                this.parse(item);
+                item.showDetails = true;
+            }
+            return item;
         }
 
         prepareDownload () {
@@ -769,13 +765,14 @@ export const ReportsListingsComponent = {
             let that = this;
             this.networkService.getActivityMetadata('listings')
                 .then(results => {
-                    that.results = results.activities;
-                    that.prepare(that.results);
+                    that.results = results.activities
+                        .map(item => that.prepare(item));
                     that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
                     for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('listings', {pageNum: i}).then(() => {
+                        that.networkService.getActivityMetadata('listings', {pageNum: i}).then(results => {
+                            results.activities.forEach(item => that.results.push(that.prepare(item)));
                             that.loadProgress.complete += 1;
-                            that.loadProgress.percentage = Math.floor(100 * that.loadProgress.complete / that.loadProgress.total);
+                            that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
                         });
                     }
                 });
@@ -787,8 +784,8 @@ export const ReportsListingsComponent = {
             this.activityRange.startDate = new Date('4/1/2016');
             this.networkService.getSingleListingActivityMetadata(this.productId)
                 .then(results => {
-                    that.results = results;
-                    that.prepare(that.results, true);
+                    that.results = results
+                        .map(item => that.prepare(item, true));
                 });
         }
 
