@@ -81,15 +81,6 @@
                 $httpBackend.flush();
             });
 
-            it('should use a different header to support API endpoint versions', () => {
-                $httpBackend.expectGET(/^\/rest\/endpoint$/, headers => headers['Content-Type'] === 'application/vnd.chpl.v2+json')
-                    .respond(200, {data: 'response'});
-                networkService.apiGET('/endpoint', {endpointVersion: 'application/vnd.chpl.v2+json'}).then(response => {
-                    expect(response.data).toEqual('response');
-                });
-                $httpBackend.flush();
-            });
-
             it('should return a promise with the data if a POST doesn\'t return an object', () => {
                 $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, 'response');
                 networkService.confirmPendingCp({id: 'id'}).then(response => {

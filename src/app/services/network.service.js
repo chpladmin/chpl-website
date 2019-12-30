@@ -1,12 +1,11 @@
 export class NetworkService {
-    constructor ($http, $log, $q, $rootScope, API, featureFlags) {
+    constructor ($http, $log, $q, $rootScope, API) {
         'ngInject';
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
         this.$rootScope = $rootScope;
         this.API = API;
-        this.isOn = featureFlags.isOn;
         this.store = {
             activity: {
                 types: { },
@@ -151,9 +150,6 @@ export class NetworkService {
         let call = '/activity/metadata/' + key;
         let params = [];
         let headerOptions = {};
-        if (key === 'listings' && this.isOn('enhanced-reports')) {
-            headerOptions.endpointVersion = 'application/vnd.chpl.v2+json';
-        }
         if (options && options.ignoreLoadingBar) {
             headerOptions.ignoreLoadingBar = true;
         }
@@ -817,9 +813,6 @@ export class NetworkService {
         let headers = {}
         if (options.forceReload) {
             headers['Cache-Control'] = 'no-cache';
-        }
-        if (options.endpointVersion) {
-            headers['Content-Type'] = options.endpointVersion;
         }
         return this.$http.get(this.API + endpoint, {data: '', headers: headers, ignoreLoadingBar: options.ignoreLoadingBar})
             .then(response => {

@@ -5,7 +5,6 @@
         .module('chpl.services', [
             'cfp.loadingBar',
             'chpl.constants',
-            'feature-flags',
             'ngFileSaver',
             'ngStorage',
         ])

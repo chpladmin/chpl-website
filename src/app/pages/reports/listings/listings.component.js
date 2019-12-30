@@ -745,13 +745,13 @@ export const ReportsListingsComponent = {
 
         searchAllListings () {
             let that = this;
-            this.networkService.getActivityMetadata('listings')
+            this.networkService.getActivityMetadata('beta/listings')
                 .then(results => {
                     that.results = results.activities
                         .map(item => that.prepare(item));
                     that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
                     for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
+                        that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
                             results.activities.forEach(item => that.results.push(that.prepare(item)));
                             that.loadProgress.complete += 1;
                             that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
