@@ -2,177 +2,82 @@ export const ProductComponent = {
     templateUrl: 'chpl.components/product/product.html',
     bindings: {
         product: '<',
-        developer: '<',
-        developers: '<',
-        canEdit: '<',
-        canMerge: '<',
-        canSplit: '<',
-        canView: '<',
-        isEditing: '<',
-        isInvalid: '<',
-        isList: '<',
-        isMerging: '<',
-        isSplitting: '<',
-        onCancel: '&?',
-        onEdit: '&?',
-        takeAction: '&',
+        searchOptions: '<',
     },
     controller: class ProductComponent {
-        constructor ($filter, $log, authService) {
+        constructor ($log, $uibModal, networkService, utilService) {
             'ngInject'
-            this.$filter = $filter;
             this.$log = $log;
-            this.hasAnyRole = authService.hasAnyRole;
-            this.valid = {
-                contact: true,
-            }
+            this.$uibModal = $uibModal;
+            this.networkService = networkService;
+            this.listingsRetrieved = false;
+            this.statusFont = utilService.statusFont;
+            this.defaultRefine = {
+                'Active': true,
+                'Retired': false,
+                'Suspended by ONC-ACB': true,
+                'Withdrawn by Developer': false,
+                'Withdrawn by Developer Under Surveillance/Review': false,
+                'Withdrawn by ONC-ACB': false,
+                'Suspended by ONC': true,
+                'Terminated by ONC': false,
+            };
         }
 
         $onChanges (changes) {
-            if (changes.developer) {
-                this.developer = angular.copy(changes.developer.currentValue);
-            }
+            let that = this;
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
                 this.product.ownerHistory = this.product.ownerHistory.map(o => {
                     o.transferDateObject = new Date(o.transferDate);
                     return o;
                 });
+                this.networkService.getVersionsByProduct(this.product.productId)
+                    .then(versions => {
+                        that.versions = versions
+                            .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
+                        that.activeVersion = that.versions[0];
+                    });
             }
-            if (changes.developers) {
-                this.developers = angular.copy(changes.developers.currentValue);
-            }
-            if (changes.canEdit) {
-                this.canEdit = angular.copy(changes.canEdit.currentValue);
-            }
-            if (changes.canMerge) {
-                this.canMerge = angular.copy(changes.canMerge.currentValue);
-            }
-            if (changes.canSplit) {
-                this.canSplit = angular.copy(changes.canSplit.currentValue);
-            }
-            if (changes.canView) {
-                this.canView = angular.copy(changes.canView.currentValue);
-            }
-            if (changes.isEditing) {
-                this.isEditing = angular.copy(changes.isEditing.currentValue);
-            }
-            if (changes.isInvalid) {
-                this.isInvalid = angular.copy(changes.isInvalid.currentValue);
-            }
-            if (changes.isList) {
-                this.isList = angular.copy(changes.isList.currentValue);
-            }
-            if (changes.isMerging) {
-                this.isMerging = angular.copy(changes.isMerging.currentValue);
-            }
-            if (changes.isSplitting) {
-                this.isSplitting = angular.copy(changes.isSplitting.currentValue);
+            if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {
+                this.statusItems = changes.searchOptions.currentValue.certificationStatuses
+                    .map(cs => {
+                        let status = {
+                            value: cs.name,
+                            selected: that.defaultRefine[cs.name],
+                        }
+                        return status;
+                    })
+                    .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
             }
         }
 
-        /*
-         * Allowed actions
-         */
-        can (action) {
-            switch (action) {
-            case 'edit':
-                return this.canEdit // allowed by containing component
-                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-            case 'merge':
-                return this.canMerge // allowed by containing component
-                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
-            case 'split':
-                return this.canSplit // allowed by containing component
-                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"o
-            default:
-                return false;
+        retrieveListings () {
+            if (!this.listingsRetrieved) {
+                this.listingsRetrieved = true;
+                this.versions = this.versions
+                    .map(v => {
+                        this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings);
+                        return v;
+                    });
             }
         }
 
-        /*
-         * Initiate changes
-         */
-        edit () {
-            this.takeAction({
-                action: 'edit',
-                productId: this.product.productId,
+        viewCertificationStatusLegend () {
+            this.viewCertificationStatusLegendInstance = this.$uibModal.open({
+                templateUrl: 'chpl.components/certification-status/certification-status.html',
+                controller: 'CertificationStatusController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
             });
-        }
-
-        merge () {
-            this.takeAction({
-                action: 'merge',
-                productId: this.product.productId,
+            this.viewCertificationStatusLegendInstance.result.then(() => {
+                angular.noop;
+            }, () => {
+                angular.noop;
             });
-        }
-
-        split () {
-            this.takeAction({
-                action: 'split',
-                productId: this.product.productId,
-            });
-        }
-
-        view () {
-            this.takeAction({
-                productId: this.product.productId,
-            });
-        }
-
-        /*
-         * Resolve changes
-         */
-        save () {
-            if (!this.isSplitting) {
-                this.product.owner = angular.copy(this.developers.filter(d => d.developerId === this.product.owner.developerId)[0]);
-                this.product.ownerHistory = this.product.ownerHistory.map(o => {
-                    o.transferDate = o.transferDateObject.getTime();
-                    return o;
-                });
-            }
-            this.onEdit({product: this.product});
-        }
-
-        cancel () {
-            this.onCancel();
-        }
-
-        /*
-         * Handle callbacks
-         */
-        editContact (contact, errors, validForm) {
-            this.product.contact = angular.copy(contact);
-            this.valid.contact = validForm;
-        }
-
-        /*
-         * Form validation
-         */
-        isValid () {
-            return this.form.$valid // basic form validation
-                && !this.isInvalid // validation from outside
-                && this.valid.contact; // validation from sub-components
-        }
-
-        /*
-         * Form actions
-         */
-        addOwnerHistory () {
-            this.product.ownerHistory.push({transferDateObject: new Date()});
-        }
-
-        changeCurrentOwner (developerId) {
-            this.product.ownerHistory.push({
-                developer: angular.copy(this.developers.filter(d => d.developerId === developerId)[0]),
-                transferDateObject: new Date(),
-            });
-        }
-
-        removeOwnerHistory (idx) {
-            this.product.ownerHistory.splice(idx, 1);
         }
     },
 }

@@ -9,11 +9,10 @@ let states = [
         },
     },{
         name: 'organizations.developers',
-        url: '/developers/{developerId}/{action}?',
+        url: '/developers/{developerId}',
         component: 'chplDevelopers',
         params: {
             developerId: {squash: true, value: null},
-            action: {squash: true, value: null},
         },
         resolve: {
             developer: (networkService, $transition$) => {
@@ -38,48 +37,6 @@ let states = [
         data: { title: 'CHPL Developers' },
         ncyBreadcrumb: {
             label: 'Developer',
-        },
-    },{
-        name: 'organizations.developers.products',
-        url: '/products/{productId}/{action}?',
-        component: 'chplProducts',
-        params: {
-            action: {squash: true, value: null},
-        },
-        resolve: {
-            product: (networkService, $transition$) => {
-                'ngInject'
-                return networkService.getSimpleProduct($transition$.params().productId);
-            },
-            versions: (networkService, $transition$) => {
-                'ngInject'
-                return networkService.getVersionsByProduct($transition$.params().productId);
-            },
-        },
-        data: { title: 'CHPL Products' },
-        ncyBreadcrumb: {
-            label: 'Product',
-        },
-    },{
-        name: 'organizations.developers.products.versions',
-        url: '/versions/{versionId}/{action}?',
-        component: 'chplVersions',
-        params: {
-            action: {squash: true, value: null},
-        },
-        resolve: {
-            version: (networkService, $transition$) => {
-                'ngInject'
-                return networkService.getVersion($transition$.params().versionId);
-            },
-            listings: (networkService, $transition$) => {
-                'ngInject'
-                return networkService.getProductsByVersion($transition$.params().versionId, false);
-            },
-        },
-        data: { title: 'CHPL Product Versions' },
-        ncyBreadcrumb: {
-            label: 'Version',
         },
     },{
         name: 'organizations.onc-acbs',
