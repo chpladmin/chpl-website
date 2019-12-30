@@ -69,7 +69,6 @@
                         is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length < 2"
                         on-cancel="$ctrl.cancel()"
                         on-edit="$ctrl.save(developer)"
-                        show-full="true"
                         take-action="$ctrl.takeAction(action)"
                         ></chpl-developer>
         <div ng-if="$ctrl.action === 'split'">
@@ -126,7 +125,6 @@
                         is-splitting="true"
                         on-cancel="$ctrl.cancelSplitEdit()"
                         on-edit="$ctrl.saveSplitEdit(developer)"
-                        show-full="true"
                         take-action="$ctrl.takeSplitAction()"></chpl-developer>
         <h4>Products moving to new Developer</h4>
         <div class="bg-danger" ng-if="$ctrl.movingProducts.length === 0">At least one Product must be selected to move</div>

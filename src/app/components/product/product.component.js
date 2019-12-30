@@ -15,7 +15,6 @@ export const ProductComponent = {
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
-        showFull: '<',
         takeAction: '&',
     },
     controller: class ProductComponent {
@@ -69,9 +68,6 @@ export const ProductComponent = {
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
-            }
-            if (changes.showFull) {
-                this.showFull = angular.copy(changes.showFull.currentValue);
             }
         }
 

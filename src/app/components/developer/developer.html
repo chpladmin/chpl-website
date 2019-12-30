@@ -1,10 +1,6 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
-    <span ng-if="!$ctrl.showFull">
-      <p><a ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a></p>
-      <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
-    </span>
-    <div class="panel panel-default" ng-if="$ctrl.showFull">
+    <div class="panel panel-default">
       <div class="panel-heading">
         Developer
         <h2 class="panel-title">{{ $ctrl.developer.name }}</h2>
@@ -53,7 +49,7 @@
   </span> <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
-    <div class="panel panel-default" ng-if="$ctrl.showFull">
+    <div class="panel panel-default">
       <div class="panel-heading">
         <button class="btn btn-default btn-small pull-right" id="developer-component-cancel"
                 confirm="Are you sure you wish to cancel? Your changes will not be saved."
