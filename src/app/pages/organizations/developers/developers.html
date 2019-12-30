@@ -1,5 +1,5 @@
 <div ui-view="">
-  <div class="row">
+  <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB'])">
     <div class="col-sm-12">
       <h2 ng-switch on="$ctrl.action">
         <span ng-switch-when="edit">Edit Developer</span>
@@ -7,7 +7,6 @@
         <span ng-switch-when="split">Split a Developer</span>
         <span ng-switch-default>View Developer</span>
       </h2>
-      <div ncy-breadcrumb></div>
     </div>
   </div>
   <div class="row">
@@ -84,17 +83,23 @@
         </div>
       </div>
       <div class="col-md-6" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
-        <h3>Products</h3>
-        <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
-          <chpl-product product="product"
-                        developer="$ctrl.developer"
-                        can-edit="$ctrl.can('edit')"
-                        can-merge="$ctrl.can('merge') && $ctrl.products.length > 1"
-                        can-split="$ctrl.can('split-product')"
-                        can-view="true"
-                        is-list="true"
-                        take-action="$ctrl.takeProductAction(action, productId)"
-                        ></chpl-product>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-title"><h2>Products</h2></div>
+          </div>
+          <div class="panel-body">
+            <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
+              <chpl-product product="product"
+                            developer="$ctrl.developer"
+                            can-edit="$ctrl.can('edit')"
+                            can-merge="$ctrl.can('merge') && $ctrl.products.length > 1"
+                            can-split="$ctrl.can('split-product')"
+                            can-view="true"
+                            is-list="true"
+                            take-action="$ctrl.takeProductAction(action, productId)"
+                            ></chpl-product>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-md-6" ng-if="$ctrl.action === 'merge' && $ctrl.developers && $ctrl.mergingDevelopers">
