@@ -36,7 +36,7 @@
       <div class="text-danger" ng-if="$ctrl.form.receivedDate.$touched && $ctrl.form.receivedDate.$error.parse">Improper format (mm/dd/yyyy)</div>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">
     <label class="control-label" for="closed-date">Closed Date</label>
     <div>
       <div class="input-group">
