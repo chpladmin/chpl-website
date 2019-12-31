@@ -3,7 +3,7 @@
     <div class="well well-sm clickable" ng-click="$ctrl.showFull = !$ctrl.showFull; $ctrl.retrieveListings();" ng-if="!$ctrl.showFull">
       <h3>{{ $ctrl.product.name }}</h3>
     </div>
-    <div ng-if="$ctrl.showFull">
+    <div ng-show="$ctrl.showFull">
       <button class="btn btn-default pull-right" ng-click="$ctrl.showFull = !$ctrl.showFull"><i class="fa fa-times"></i></button>
       <h3>{{ $ctrl.product.name }}</h3>
       <em>(Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</em>
