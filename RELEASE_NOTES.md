@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 10.35.0
+_2 January 2020_
+
+### Features
+* Add logic so admin/onc can edit listing if dev banned on old screen
+* Make Complaint Status Type a result of close date existence
+* Restrict ONC-ACB from creating surveillance with removed criteria
+* Allow larger value to be entered in the test data alteration field
+
+---
+
 ## Version 10.34.0
 _20 December 2019_
 
