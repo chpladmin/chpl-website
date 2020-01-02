@@ -28,7 +28,6 @@ export const SurveillanceComplaintsComponent = {
 
         $onInit () {
             this.refreshComplainantTypes();
-            this.refreshComplaintStatusTypes();
             this.refreshCertificationBodies();
             this.refreshListings();
             this.refreshEditions();
@@ -107,8 +106,6 @@ export const SurveillanceComplaintsComponent = {
         createComplaint (complaint) {
             let that = this;
             this.clearErrorMessages();
-            // default the status to Open
-            complaint.complaintStatusType = this.getComplaintStatusType('Open');
             this.networkService.createComplaint(complaint)
                 .then(() => {
                     that.refreshComplaints();
@@ -146,7 +143,7 @@ export const SurveillanceComplaintsComponent = {
                     } else {
                         complaint.formattedClosedDate = null;
                     }
-                    complaint.complaintStatusTypeName = complaint.complaintStatusType.name;
+                    complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
                     complaint.acbName = complaint.certificationBody.name;
                     complaint.complainantTypeName = complaint.complainantType.name;
                 });
@@ -170,13 +167,6 @@ export const SurveillanceComplaintsComponent = {
             let that = this;
             this.networkService.getComplainantTypes().then(response => {
                 that.complainantTypes = response.data;
-            });
-        }
-
-        refreshComplaintStatusTypes () {
-            let that = this;
-            this.networkService.getComplaintStatusTypes().then(response => {
-                that.complaintStatusTypes = response.data;
             });
         }
 
@@ -234,10 +224,6 @@ export const SurveillanceComplaintsComponent = {
 
         clearErrorMessages () {
             this.errorMessages = [];
-        }
-
-        getComplaintStatusType (name) {
-            return this.complaintStatusTypes.find(cst => cst.name === name);
         }
     },
 }

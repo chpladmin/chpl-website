@@ -288,7 +288,7 @@
         }
 
         function sortNonconformityTypes (type) {
-            if (type.name === 'Other Non-Conformity') {
+            if (type.number === 'Other Non-Conformity') {
                 return Number.MAX_VALUE;
             }
             return sortCert(type);

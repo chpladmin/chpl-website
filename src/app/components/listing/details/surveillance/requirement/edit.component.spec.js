@@ -2,15 +2,28 @@
     'use strict';
 
     fdescribe('the surveillance requirement edit component', () => {
-        var $compile, $log, $uibModal, Mock, actualOptions, ctrl, el, scope;
+        var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, featureFlags, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.components');
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
+                $provide.decorator('authService', $delegate => {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
+                $provide.decorator('featureFlags', $delegate => {
+                    $delegate.isOn = jasmine.createSpy('isOn');
+                    return $delegate;
+                });
+            });
 
-            inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_) => {
+            inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_, _featureFlags_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 Mock = _Mock_;
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue(false);
+                featureFlags = _featureFlags_;
+                featureFlags.isOn.and.returnValue(false);
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(options => {
                     actualOptions = options;
@@ -81,6 +94,11 @@
                             workType: jasmine.any(Function),
                         },
                     };
+                    ctrl.data = {
+                        nonconformityTypes: {
+                            data: [],
+                        },
+                    };
                 });
 
                 it('should create a modal instance', () => {
@@ -120,6 +138,51 @@
                     ctrl.addNonconformity();
                     ctrl.modalInstance.dismiss('dismissed');
                     expect($log.info.logs.length).toBe(logCount + 1);
+                });
+
+                it('should filter out removed criteria when user is ROLE_ACB and flag is on', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date-plus-one-week');
+                    ctrl.data = {
+                        nonconformityTypes: {
+                            data: [{removed: false}, {removed: false}, {removed: true}],
+                        },
+                    };
+                    ctrl.addNonconformity();
+                    expect(actualOptions.resolve.surveillanceTypes().nonconformityTypes.data.length).toBe(2);
+                });
+
+                it('should not filter out removed criteria when user is ROLE_ACB and flag is off', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    ctrl.data = {
+                        nonconformityTypes: {
+                            data: [{removed: false}, {removed: false}, {removed: true}],
+                        },
+                    };
+                    ctrl.addNonconformity();
+                    expect(actualOptions.resolve.surveillanceTypes().nonconformityTypes.data.length).toBe(3);
+                });
+
+                it('should not change base data', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    ctrl.data = {
+                        nonconformityTypes: {
+                            data: [{removed: false}, {removed: false}, {removed: true}],
+                        },
+                    };
+                    ctrl.addNonconformity();
+                    expect(ctrl.data.nonconformityTypes.data.length).toBe(3);
+                });
+
+                it('should not filter out removed criteria when user is ROLE_ACB', () => {
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC';}, false)); // user is ACB
+                    ctrl.data = {
+                        nonconformityTypes: {
+                            data: [{removed: false}, {removed: false}, {removed: true}],
+                        },
+                    };
+                    ctrl.addNonconformity();
+                    expect(actualOptions.resolve.surveillanceTypes().nonconformityTypes.data.length).toBe(3);
                 });
             });
 
