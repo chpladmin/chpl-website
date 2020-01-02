@@ -79,19 +79,28 @@
     <div class="row">
       <div class="col-md-12">
         <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()" uib-tooltip="Close" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
-        <table class="table">
+        <table class="table table-vertical-align">
           <thead>
             <tr>
+              <th scope="cols" colspan="2" ng-if="$ctrl.administrationMode">Developer</th>
               <th scope="col">Request Type</th>
-              <th scope="col">Date</th>
+              <th scope="col" ng-if="$ctrl.administrationMode">Creation Date</th>
+              <th scope="col" ng-if="!$ctrl.administrationMode">Date</th>
               <th scope="col">Request Status</th>
+              <th scope="col" ng-if="$ctrl.administrationMode">Time Since Last Status Change</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td ng-if="$ctrl.administrationMode">
+                <ng-avatar string="{{ $ctrl.changeRequest.developer.name }}" round-shape="true" auto-color="true" font-scale="75"></ng-avatar>
+              </td>
+              <td ng-if="$ctrl.administrationMode">{{ $ctrl.changeRequest.developer.name }}</td>
               <td>{{ $ctrl.changeRequest.changeRequestType.name }}</td>
-              <td>{{ $ctrl.changeRequest.currentStatus.statusChangeDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td ng-if="$ctrl.administrationMode">{{ $ctrl.changeRequest.submittedDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td ng-if="!$ctrl.administrationMode">{{ $ctrl.changeRequest.currentStatus.statusChangeDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ $ctrl.changeRequest.currentStatus.changeRequestStatusType.name }}</td>
+              <td ng-if="$ctrl.administrationMode"><span am-time-ago="$ctrl.changeRequest.currentStatus.statusChangeDate"></span></td>
             </tr>
           </tbody>
         </table>
@@ -99,7 +108,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        Current website: {{ $ctrl.developer.website }} <br />
+        Current website: {{ $ctrl.changeRequest.developer.website }} <br />
         Submitted website: {{ $ctrl.changeRequest.details.website }}
       </div>
     </div>

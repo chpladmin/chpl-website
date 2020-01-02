@@ -13,6 +13,12 @@
                     },
                     statusChangeDate: 1571148799528,
                 },
+                changeRequestType: {
+                    name: 'A change',
+                },
+                developer: {
+                    name: 'A name',
+                },
                 submittedDate: 1571148799528,
             }],
             changeRequestStatusTypes: {
@@ -38,7 +44,7 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-                scope.changeRequests = mock.changeRequests;
+                scope.changeRequests = angular.copy(mock.changeRequests);
                 scope.changeRequestStatusTypes = mock.changeRequestStatusTypes;
                 scope.developer = mock.developer;
                 scope.takeAction = jasmine.createSpy('takeAction');
@@ -86,16 +92,18 @@
 
                 it('should pull up current data', () => {
                     expect(ctrl.changeRequests[0].requestStatus).toBe('Rejected');
-                    expect(ctrl.changeRequests[0].changeDate.getTime()).toBe(1571148799528);
+                    expect(ctrl.changeRequests[0].changeDate).toBe(1571148799528);
+                    expect(ctrl.changeRequests[0].developerName).toBe('A name');
+                    expect(ctrl.changeRequests[0].requestType).toBe('A change');
+                    expect(ctrl.changeRequests[0].friendlyCreationDate).toBe('2019-10-15 14:13:19 +0000');
+                    expect(ctrl.changeRequests[0].friendlyChangeDate).toBe('2019-10-15 14:13:19 +0000');
                 });
             });
 
             describe('when acting', () => {
                 describe('to cancel', () => {
-                    it('should set activity and take action', () => {
-                        ctrl.activity = 'something';
+                    it('should take action', () => {
                         ctrl.act('cancel');
-                        expect(ctrl.activity).toBe('Tracking');
                         expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
                     });
 
@@ -117,11 +125,9 @@
                     });
 
                     it('should be able to do a complete cancellation', () => {
-                        ctrl.activity = 'something';
                         ctrl.activeState = 'edit';
                         ctrl.activeChangeRequest = ctrl.changeRequests[0];
                         ctrl.act('fullCancel');
-                        expect(ctrl.activity).toBe('Tracking');
                         expect(ctrl.activeState).toBeUndefined();
                         expect(ctrl.activeChangeRequest).toBeUndefined();
                         expect(scope.takeAction).toHaveBeenCalledWith('cancel', undefined);
@@ -136,21 +142,18 @@
                     it('should handle edit', () => {
                         ctrl.act('edit');
                         expect(ctrl.activeState).toBe('edit');
-                        expect(ctrl.activity).toBe('Editing - Change Request | Submitted on Oct 15, 2019');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle statusLog', () => {
                         ctrl.act('statusLog');
                         expect(ctrl.activeState).toBe('log');
-                        expect(ctrl.activity).toBe('Status Log - Change Request | Submitted on Oct 15, 2019');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle withdraw', () => {
                         ctrl.act('withdraw');
                         expect(ctrl.activeState).toBe('withdraw');
-                        expect(ctrl.activity).toBe('Withdraw - Change Request | Submitted on Oct 15, 2019');
                         expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
                 });

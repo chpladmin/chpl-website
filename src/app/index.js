@@ -12,6 +12,7 @@ importAll(
 );
 
 import angular from 'angular';
+import 'angular-avatar';
 import 'angular-breadcrumb';
 import /* angularConfirm from*/ 'angular-confirm';
 import /* angularCronGen from*/ 'angular-cron-gen';
@@ -22,6 +23,7 @@ import 'angular-feature-flags';
 import /* googlechart from*/ 'angular-google-chart';
 import /* ngAnimate from*/ 'angular-animate';
 import /* ngAria from*/ 'angular-aria';
+import 'angular-moment';
 import /* ngCsv from*/ 'ng-csv';
 import /* ngIdle from*/ 'ng-idle';
 import /* cytoscape from*/ 'cytoscape';

@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 10.34.0
+_20 December 2019_
+
+### Flagged Features
+* Create Change Request Administration view page
+
+---
+
 ## Version 10.33.0
 _16 December 2019_
 

@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, featureFlags, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -34,6 +34,9 @@
         vm.isBlank = utilService.isBlank;
         vm.getAttestationStringForCurrentSystemDeveloper = getAttestationStringForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
+        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
+
+        vm.isOn = featureFlags.isOn;
 
         activate();
 
@@ -288,6 +291,13 @@
                 return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
             }
             return null;
+        }
+
+        function isTransparencyAttestationViewable () {
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.isAcbAdmin;
+            }
+            return true;
         }
 
         function cancel () {

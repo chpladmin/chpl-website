@@ -1,17 +1,20 @@
 export const ChangeRequestsComponent = {
     templateUrl: 'chpl.components/change-request/change-requests.html',
     bindings: {
+        administrationMode: '<',
         changeRequests: '<',
         changeRequestStatusTypes: '<',
         developer: '<',
         takeAction: '&',
     },
     controller: class ChangeRequestsComponent {
-        constructor ($filter, $log) {
+        constructor ($filter, $log, authService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.hasAnyRole = authService.hasAnyRole;
             this.backup = {};
+            this.filename = 'Reports_' + $filter('date')(new Date(), 'yyyy-MM-dd_HH-mm-ss') + '.csv';
             this.filterItems = {
                 pageSize: 3,
             };
@@ -19,17 +22,22 @@ export const ChangeRequestsComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.administrationMode && changes.administrationMode.currentValue) {
+                this.filterItems.pageSize = 10;
+            }
             if (changes.changeRequests && changes.changeRequests.currentValue) {
                 this.displayedChangeRequests = undefined;
                 this.changeRequests = changes.changeRequests.currentValue.map(cr => {
+                    cr.developerName = cr.developer.name;
+                    cr.requestType = cr.changeRequestType.name;
                     cr.requestStatus = cr.currentStatus.changeRequestStatusType.name;
-                    cr.changeDate = new Date(cr.currentStatus.statusChangeDate);
+                    cr.changeDate = cr.currentStatus.statusChangeDate;
+                    cr.friendlyCreationDate = this.$filter('date')(new Date(cr.submittedDate), 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
+                    cr.friendlyChangeDate = this.$filter('date')(new Date(cr.changeDate), 'yyyy-MM-dd HH:mm:ss Z', 'UTC');
                     return cr;
                 });
                 this.backup.changeRequests = angular.copy(this.changeRequests);
-                this.activeState = undefined;
                 this.activeChangeRequest = undefined;
-                this.activity = 'Tracking';
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
@@ -75,14 +83,12 @@ export const ChangeRequestsComponent = {
                 this.activeChangeRequest = undefined;
                 this.changeRequests = angular.copy(this.backup.changeRequests);
             }
-            this.activity = 'Tracking';
             this.takeAction({action: 'cancel'});
         }
 
         fullyCancel () {
             this.activeChangeRequest = undefined;
             this.activeState = undefined;
-            this.activity = 'Tracking';
             this.takeAction({action: 'cancel'});
         }
 
@@ -106,20 +112,34 @@ export const ChangeRequestsComponent = {
 
         startEditing () {
             this.activeState = 'edit';
-            this.activity = 'Editing - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
             this.takeAction({action: 'focus'});
         }
 
         viewStatusLog () {
             this.activeState = 'log';
-            this.activity = 'Status Log - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
             this.takeAction({action: 'focus'});
         }
 
         setUpToWithdrawChangeRequest () {
             this.activeState = 'withdraw';
-            this.activity = 'Withdraw - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
             this.takeAction({action: 'focus'});
+        }
+
+        getTitle () {
+            switch (this.activeState) {
+            case 'edit':
+                return 'Editing - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
+            case 'log':
+                return 'Status Log - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
+            case 'withdraw':
+                return 'Withdraw - Change Request | Submitted on ' + this.$filter('date')(this.activeChangeRequest.submittedDate, 'mediumDate', 'UTC');
+            default:
+                if (this.administrationMode && this.activeChangeRequest) {
+                    return 'Change Request';
+                } else {
+                    return 'Tracking'
+                }
+            }
         }
 
         processChangeRequestUpdate (data) {

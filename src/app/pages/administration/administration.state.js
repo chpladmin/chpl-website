@@ -33,10 +33,50 @@ let getResources = ($q, networkService) => {
         .then(response => response);
 }
 
-function administrationStateConfig ($stateProvider) {
-    'ngInject'
-    $stateProvider
-        .state('authorizePasswordReset', {
+let states = {
+    'change-request': [
+        {
+            name: 'administration.change-requests',
+            url: '/change-requests',
+            component: 'chplChangeRequestsManagement',
+            resolve: {
+                changeRequests: (authService, featureFlags, networkService) => {
+                    'ngInject'
+                    if (featureFlags.isOn('change-request')) {
+                        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                            return networkService.getChangeRequests();
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                changeRequestStatusTypes: (authService, featureFlags, networkService) => {
+                    'ngInject'
+                    if (featureFlags.isOn('change-request')) {
+                        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                            return networkService.getChangeRequestStatusTypes();
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                changeRequestTypes: (authService, featureFlags, networkService) => {
+                    'ngInject'
+                    if (featureFlags.isOn('change-request')) {
+                        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                            return networkService.getChangeRequestTypes();
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+            },
+            data: { title: 'CHPL Administration - Change Requests' },
+        },
+    ],
+    'base': [
+        {
+            name: 'authorizePasswordReset',
             url: '/admin/authorizePasswordReset?token',
             redirectTo: trans => {
                 return {
@@ -46,13 +86,13 @@ function administrationStateConfig ($stateProvider) {
                     },
                 }
             },
-        })
-        .state('administration', {
+        },{
+            name: 'administration',
             url: '/administration?token',
             component: 'chplAdministration',
             data: { title: 'CHPL Administration' },
-        })
-        .state('administration.announcements', {
+        },{
+            name: 'administration.announcements',
             url: '/announcements',
             component: 'chplAnnouncements',
             resolve: {
@@ -65,8 +105,8 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - Announcements' },
-        })
-        .state('administration.api-keys', {
+        },{
+            name: 'administration.api-keys',
             url: '/api-keys',
             component: 'chplApiKeys',
             resolve: {
@@ -79,18 +119,23 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - API Keys' },
-        })
-        .state('administration.cms', {
+        },{
+            name: 'administration.change-requests',
+            url: '/change-requests',
+            template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
+            data: { title: 'CHPL Administration - Change Requests' },
+        },{
+            name: 'administration.cms',
             url: '/cms',
             component: 'chplCms',
             data: { title: 'CHPL Administration - CMS' },
-        })
-        .state('administration.confirm', {
+        },{
+            name: 'administration.confirm',
             abstract: true,
             url: '/confirm',
             template: '<ui-view/>',
-        })
-        .state('administration.confirm.listings', {
+        },{
+            name: 'administration.confirm.listings',
             url: '/listings',
             component: 'chplConfirmListings',
             resolve: {
@@ -104,8 +149,8 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Reports - Listings' },
-        })
-        .state('administration.fuzzy-matching', {
+        },{
+            name: 'administration.fuzzy-matching',
             url: '/fuzzy-matching',
             component: 'chplFuzzyMatching',
             resolve: {
@@ -118,13 +163,13 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - Fuzzy Matching' },
-        })
-        .state('administration.jobs', {
+        },{
+            name: 'administration.jobs',
             abstract: true,
             url: '/jobs',
             template: '<ui-view/>',
-        })
-        .state('administration.jobs.background', {
+        },{
+            name: 'administration.jobs.background',
             url: '/background',
             component: 'chplJobsBackgroundPage',
             resolve: {
@@ -134,8 +179,8 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Background' },
-        })
-        .state('administration.jobs.scheduled', {
+        },{
+            name: 'administration.jobs.scheduled',
             url: '/scheduled',
             component: 'chplJobsScheduledPage',
             resolve: {
@@ -159,13 +204,20 @@ function administrationStateConfig ($stateProvider) {
                 },
             },
             data: { title: 'CHPL Administration - Jobs - Scheduled' },
-        })
-        .state('administration.upload', {
+        },{
+            name: 'administration.upload',
             url: '/upload',
             component: 'chplUpload',
             data: { title: 'CHPL Administration - Upload' },
-        })
-    ;
+        },
+    ],
 }
 
-module.exports = administrationStateConfig;
+function administrationStatesConfig ($stateProvider) {
+    'ngInject'
+    states['base'].forEach(state => {
+        $stateProvider.state(state);
+    });
+}
+
+export { administrationStatesConfig, states };
