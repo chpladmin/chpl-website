@@ -306,10 +306,6 @@ export class NetworkService {
         return this.apiGET('/complaints');
     }
 
-    getComplaintStatusTypes () {
-        return this.apiGET('/data/complaint-status-types');
-    }
-
     getComplainantTypes () {
         return this.apiGET('/data/complainant-types');
     }

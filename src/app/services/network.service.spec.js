@@ -685,14 +685,6 @@
             $httpBackend.flush();
         });
 
-        it('should getComplaintStatusTypes', () => {
-            $httpBackend.expectGET(/^\/rest\/data\/complaint-status-types$/).respond(200, {data: 'response'});
-            networkService.getComplaintStatusTypes().then(response => {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should getComplainantTypes', () => {
             $httpBackend.expectGET(/^\/rest\/data\/complainant-types$/).respond(200, {data: 'response'});
             networkService.getComplainantTypes().then(response => {
