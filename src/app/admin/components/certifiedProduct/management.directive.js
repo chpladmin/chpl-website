@@ -36,6 +36,7 @@
         vm.isDeveloperMergeable = isDeveloperMergeable;
         vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
+        vm.isDeveloperBanned = isDeveloperBanned;
         vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
@@ -377,15 +378,21 @@
             return dev.status.status === 'Active';
         }
 
+        function isDeveloperBanned (dev) {
+            return dev.status.status === 'Under certification ban by ONC';
+        }
+
         function isProductEditable (cp) {
             if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
                 return false;
             }
             if (cp.certificationEvents) {
-                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
-                    vm.isDeveloperMergeable(vm.activeDeveloper);
+                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
+                    || ((utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC') &&
+                    vm.isDeveloperMergeable(vm.activeDeveloper));
             } else {
-                return vm.isDeveloperMergeable(vm.activeDeveloper);
+                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
+                || vm.isDeveloperMergeable(vm.activeDeveloper);
             }
         }
 
