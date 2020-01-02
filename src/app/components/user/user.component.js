@@ -5,7 +5,7 @@ export const UserComponent = {
         isEditing: '<',
         takeAction: '&',
     },
-    controller: class ProductComponent {
+    controller: class UserComponent {
         constructor ($log, authService) {
             'ngInject'
             this.$log = $log;

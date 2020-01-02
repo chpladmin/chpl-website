@@ -3,7 +3,6 @@ export const SurveillanceComplaintComponent = {
     bindings: {
         complaint: '<',
         complainantTypes: '<',
-        complaintStatusTypes: '<',
         certificationBodies: '<',
         criteria: '<',
         displayHeader: '<',
@@ -49,9 +48,6 @@ export const SurveillanceComplaintComponent = {
             }
             if (changes.complainantTypes) {
                 this.complainantTypes = angular.copy(changes.complainantTypes.currentValue);
-            }
-            if (changes.complaintStatusTypes) {
-                this.complaintStatusTypes = angular.copy(changes.complaintStatusTypes.currentValue);
             }
             if (changes.certificationBodies) {
                 this.certificationBodies = angular.copy(changes.certificationBodies.currentValue);

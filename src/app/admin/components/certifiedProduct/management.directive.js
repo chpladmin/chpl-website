@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -34,7 +34,10 @@
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
+        vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
+        vm.isDeveloperBanned = isDeveloperBanned;
+        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -375,13 +378,29 @@
             return dev.status.status === 'Active';
         }
 
+        function isDeveloperBanned (dev) {
+            return dev.status.status === 'Under certification ban by ONC';
+        }
+
         function isProductEditable (cp) {
-            if (cp.certificationEvents) {
-                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
-                    vm.isDeveloperMergeable(vm.activeDeveloper);
-            } else {
-                return vm.isDeveloperMergeable(vm.activeDeveloper);
+            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
+                return false;
             }
+            if (cp.certificationEvents) {
+                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
+                    || ((utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC') &&
+                    vm.isDeveloperMergeable(vm.activeDeveloper));
+            } else {
+                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
+                || vm.isDeveloperMergeable(vm.activeDeveloper);
+            }
+        }
+
+        function isTransparencyAttestationViewable () {
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                return !vm.hasAnyRole(['ROLE_ACB']);
+            }
+            return true;
         }
 
         function searchForSurveillance () {
@@ -544,10 +563,10 @@
 
             networkService.getSearchOptions()
                 .then(function (options) {
-                    vm.resources.bodies = options.certBodyNames;
+                    vm.resources.bodies = options.acbs;
                     vm.resources.classifications = options.productClassifications;
                     vm.resources.editions = options.editions;
-                    vm.resources.practices = options.practiceTypeNames;
+                    vm.resources.practices = options.practiceTypes;
                     vm.resources.statuses = options.certificationStatuses;
                     vm.resourcesReady.searchOptions = true;
                 });

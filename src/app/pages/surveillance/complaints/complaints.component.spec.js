@@ -11,13 +11,6 @@
             ],
         };
 
-        let complaintStatusTypes = {
-            data: [
-                { id: 1, name: 'open' },
-                { id: 2, name: 'closed' },
-            ],
-        };
-
         let certBodies = [
             { id: 1, name: 'Drummond' },
             { id: 2, name: 'SLI' },
@@ -88,11 +81,6 @@
                         description: null,
                     },
                     complainantTypeOther: null,
-                    complaintStatusType: {
-                        id: 1,
-                        name: 'Open',
-                        description: null,
-                    },
                     oncComplaintId: null,
                     acbComplaintId: '456654',
                     receivedDate: 1562630400000,
@@ -130,7 +118,6 @@
             angular.mock.module('chpl.surveillance', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getComplainantTypes = jasmine.createSpy('getComplainantTypes');
-                    $delegate.getComplaintStatusTypes = jasmine.createSpy('getComplaintStatusTypes');
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.deleteComplaint = jasmine.createSpy('deleteComplaint');
                     $delegate.updateComplaint = jasmine.createSpy('updateComplaint');
@@ -150,7 +137,6 @@
                 networkService = _networkService_;
 
                 networkService.getComplainantTypes.and.returnValue($q.when(complainantTypes));
-                networkService.getComplaintStatusTypes.and.returnValue($q.when(complaintStatusTypes));
                 networkService.getAcbs.and.returnValue($q.when(certBodies));
                 networkService.getEditions.and.returnValue($q.when(editions));
                 networkService.getCriteria.and.returnValue($q.when(criteria));
@@ -251,12 +237,6 @@
                 ctrl.refreshComplainantTypes();
                 expect(networkService.getComplainantTypes).toHaveBeenCalled();
                 expect(ctrl.complainantTypes.length).toBe(2);
-            });
-
-            it('should be able to fetch all complaint status types', () => {
-                ctrl.refreshComplaintStatusTypes();
-                expect(networkService.getComplaintStatusTypes).toHaveBeenCalled();
-                expect(ctrl.complaintStatusTypes.length).toBe(2);
             });
 
             it('should be able to fetch all listings', () => {

@@ -1,5 +1,47 @@
 # Release Notes
 
+## Version 10.35.0
+_2 January 2020_
+
+### Features
+* Add logic so admin/onc can edit listing if dev banned on old screen
+* Make Complaint Status Type a result of close date existence
+* Restrict ONC-ACB from creating surveillance with removed criteria
+* Allow larger value to be entered in the test data alteration field
+
+---
+
+## Version 10.34.0
+_20 December 2019_
+
+### Flagged Features
+* Create Change Request Administration view page
+
+---
+
+## Version 10.33.0
+_16 December 2019_
+
+### Features
+* Support custom parameters for recurring triggers
+
+### Flagged Features
+* Create Developer dashboard
+
+---
+
+## Version 10.32.0
+_2 December 2019_
+
+### Features
+* Update scheduled jobs to work correctly with UTC time
+
+### User interface changes
+* Indicate when certification criteria have been removed
+* Indicate when Macra Measure(s) have been removed
+
+---
+
 ## Version 10.31.0
 _18 November 2019_
 

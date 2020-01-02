@@ -196,7 +196,7 @@
                     });
 
                     it('should handle failure', () => {
-                        response.data.errorMessages = [1];
+                        response.data.errorMessages = 1;
                         Upload.upload.and.returnValue($q.reject(response));
                         ctrl.upload();
                         scope.$digest();
@@ -228,6 +228,14 @@
                     ctrl.deleteDoc(3);
                     scope.$digest();
                     expect(ctrl.nonconformity.documents.length).toBe(2);
+                });
+
+                it('should handle failure', () => {
+                    networkService.deleteSurveillanceDocument.and.returnValue($q.reject({data: {}}));
+                    ctrl.deleteDoc(3);
+                    scope.$digest();
+                    expect(ctrl.deleteMessage).toBe('File was not removed successfully.');
+                    expect(ctrl.deleteSuccess).toBe(false);
                 });
             });
 

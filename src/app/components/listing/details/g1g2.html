@@ -9,8 +9,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="measure in $ctrl.measures | orderBy: ['g', 'name']">
-        <td>{{ measure.name }}</td>
+      <tr ng-repeat="measure in $ctrl.measures | orderBy: ['g', 'name']" ng-class="{ 'removed' : measure.removed }">
+        <td>
+          <button ng-if="measure.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
+          {{ measure.name }}
+          <div ng-if="measure.removed" class="clearfix"></div>
+        </td>
         <td>{{ measure.description }}</td>
         <td>{{ measure.g }}</td>
         <td>{{ measure.criteria.join('; ') }}</td>
