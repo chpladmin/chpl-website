@@ -6,10 +6,12 @@ export const SurveillanceInspectComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceInspectController {
-        constructor ($log, $uibModal, networkService, utilService) {
+        constructor ($log, $uibModal, authService, featureFlags, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal
+            this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
             this.sortRequirements = utilService.sortRequirements;
@@ -48,6 +50,10 @@ export const SurveillanceInspectComponent = {
 
         editSurveillance () {
             this.fixRequirementOptions();
+            if (this.hasAnyRole(['ROLE_ACB']) && this.isOn('effective-rule-date-plus-one-week')) {
+                this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter(option => !option.removed);
+                this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter(option => !option.removed);
+            }
             this.editModalInstance = this.$uibModal.open({
                 component: 'aiSurveillanceEdit',
                 animation: false,
@@ -106,6 +112,8 @@ export const SurveillanceInspectComponent = {
                 this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
             } else if (this.surveillance.certifiedProduct.edition === '2014') {
                 this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
+            } else {
+                this.surveillanceTypes.surveillanceRequirements.criteriaOptions = [];
             }
         }
     },

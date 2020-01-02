@@ -538,11 +538,11 @@ export class NetworkService {
             .then(function (response) {
                 data.nonconformityStatusTypes = response;
             });
-        this.apiGET('/data/surveillance_requirements')
+        this.apiGET('/data/surveillance-requirements')
             .then(function (response) {
                 data.surveillanceRequirements = response;
             });
-        this.apiGET('/data/nonconformity_types')
+        this.apiGET('/data/nonconformity-types')
             .then(function (response) {
                 data.nonconformityTypes = response;
             });
