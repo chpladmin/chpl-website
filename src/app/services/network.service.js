@@ -168,8 +168,8 @@ export class NetworkService {
         return this.apiGET(call, headerOptions);
     }
 
-    getActivityById (id) {
-        return this.apiGET('/activity/' + id);
+    getActivityById (id, options = {}) {
+        return this.apiGET('/activity/' + id, options);
     }
 
     getAgeRanges () {
@@ -651,7 +651,7 @@ export class NetworkService {
     }
 
     keepalive () {
-        return this.apiGET('/auth/keep_alive');
+        return this.apiGET('/auth/keep_alive', {ignoreLoadingBar: true});
     }
 
     login (userObj) {

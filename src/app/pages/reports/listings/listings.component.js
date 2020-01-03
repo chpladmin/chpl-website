@@ -25,6 +25,7 @@ export const ReportsListingsComponent = {
                 total: 0,
                 complete: 0,
             };
+            this.downloadProgress = 0;
         }
 
         $onChanges (changes) {
@@ -547,7 +548,7 @@ export const ReportsListingsComponent = {
         }
 
         parse (meta) {
-            this.networkService.getActivityById(meta.id).then(item => {
+            return this.networkService.getActivityById(meta.id, {ignoreLoadingBar: true}).then(item => {
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
                     {key: 'accessibilityCertified', display: 'Accessibility Certified'},
@@ -736,10 +737,23 @@ export const ReportsListingsComponent = {
             return item;
         }
 
+        canDownload () {
+            return this.displayed
+                .filter(item => !item.action).length < 1000;
+        }
+
         prepareDownload () {
+            let total = this.displayed
+                .filter(item => !item.action).length;
+            let progress = 0;
             this.displayed
                 .filter(item => !item.action)
-                .forEach(item => this.parse(item));
+                .forEach(item => {
+                    this.parse(item).then(() => {
+                        progress += 1;
+                        this.downloadProgress = Math.floor(100 * ((progress + 1) / total));
+                    });
+                });
             //todo, eventually: use the $q.all function as demonstrated in product history eye
         }
 

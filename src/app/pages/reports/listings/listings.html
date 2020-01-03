@@ -9,12 +9,20 @@
       <chpl-filter filter-type-name="Listing Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
-      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
+      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady() && $ctrl.canDownload()"><i class="fa fa-bolt"></i> Prepare download</button>
+      <button class="btn btn-ai-success pull-right" disabled ng-if="!$ctrl.canDownload()"><i class="fa fa-ban"></i> Too many results to download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Certified_Products_{{ $ctrl.filename }}"
               csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Details', 'Activity Date']"
               csv-column-order="['acbName', 'developerName', 'productName', 'edition', 'chplProductNumber', 'friendlyCertificationDate', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
+      <br />
+      <div ng-if="$ctrl.downloadProgress < 100 && $ctrl.downloadProgress > 0">
+        Progress:<br />
+        <uib-progressbar max="100" value="$ctrl.downloadProgress" type="success" title="{{ $ctrl.downloadProgress }}% prepared">
+          {{ $ctrl.downloadProgress }}% prepared
+        </uib-progressbar>
+      </div>
     </div>
   </div>
   <div ng-if="!$ctrl.productId">
