@@ -22,20 +22,27 @@
             <chpl-address address="$ctrl.developer.address"></chpl-address>
           </div>
           <div class="col-sm-4">
-            <h3>Transparency Attestations</h3>
-            <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+            <div feature-flag="effective-rule-date" feature-flag-hide>
+              <h3>Transparency Attestations</h3>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+            </div>
             <h3>Status Information</h3>
             <div class="row well well-sm" ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
               <div class="col-sm-6">
                 <p>Status History:<br /><i ng-if="status.status.status !== 'Active'" class="fa status-bad" ng-class="status.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ status.status.status }}</p>
               </div>
               <div class="col-sm-6">
-                <p>EffectiveDate:<br />{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</p>
+                <p>Effective Date:<br />{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</p>
               </div>
               <div class="col-sm-12">
                 <p class="clickable text-center" ng-click="status.showComments = !status.showComments"><i class="fa" ng-class="status.showComments ? 'fa-caret-up' : 'fa-caret-down'"></i> Comments:</p>
                 <p ng-if="status.showComments">{{ status.reason || 'N/A'}}</p>
               </div>
+            </div>
+            <div class="removed" feature-flag="effective-rule-date">
+              <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This requirement has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
+              <h3>Transparency Attestations</h3>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
             </div>
           </div>
         </div>

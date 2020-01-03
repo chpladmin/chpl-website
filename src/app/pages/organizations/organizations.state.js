@@ -35,9 +35,6 @@ let states = [
             },
         },
         data: { title: 'CHPL Developers' },
-        ncyBreadcrumb: {
-            label: 'Developer',
-        },
     },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',

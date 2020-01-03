@@ -33,7 +33,7 @@
       <div class="pull-right">
         <div uib-dropdown auto-close="outsideClick" class="btn-group" id="filters">
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
-            <i class="fa fa-filter"></i>Certification Status
+            <i class="fa fa-filter"></i> Certification Status
           </button>
           <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
             <st-list-multiple
@@ -56,7 +56,7 @@
         <tbody>
           <tr ng-repeat="listing in $ctrl.activeVersion.displayedListings">
             <td><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></td>
-            <td>{{ listing.certificationStatus }} <a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a></td>
+            <td><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</td>
           </tr>
         </tbody>
       </table>
