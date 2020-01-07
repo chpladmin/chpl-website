@@ -12,7 +12,6 @@ export const VersionComponent = {
         isSplitting: '<',
         onCancel: '&',
         onEdit: '&',
-        showFull: '<',
         takeAction: '&',
     },
     controller: class VersionComponent {
@@ -50,9 +49,6 @@ export const VersionComponent = {
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
-            }
-            if (changes.showFull) {
-                this.showFull = angular.copy(changes.showFull.currentValue);
             }
         }
 

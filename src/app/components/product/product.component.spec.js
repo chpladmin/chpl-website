@@ -71,10 +71,9 @@
                 scope.isSplitting = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onEdit = jasmine.createSpy('onEdit');
-                scope.showFull = true;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-product product="product" developer="developer" developers="developers" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" is-invalid="isInvalid" is-list="isList" is-merging="isMerging" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(product)" show-full="showFull" take-action="takeAction(action, productId)"></chpl-product>');
+                el = angular.element('<chpl-product product="product" developer="developer" developers="developers" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" is-invalid="isInvalid" is-list="isList" is-merging="isMerging" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(product)" take-action="takeAction(action, productId)"></chpl-product>');
 
                 $compile(el)(scope);
                 scope.$digest();
