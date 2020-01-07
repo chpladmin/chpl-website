@@ -1,9 +1,10 @@
-export const ReportsListingsComponent = {
-    templateUrl: 'chpl.reports/listings/listings.html',
+export const ReportsListingsLegacyComponent = {
+    templateUrl: 'chpl.reports/listings/listings-legacy.html',
     bindings: {
         productId: '<?',
+        filterToApply: '<?',
     },
-    controller: class ReportsListings {
+    controller: class ReportsListingsLegacy {
         constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -13,24 +14,25 @@ export const ReportsListingsComponent = {
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
-            this.activeAcbs = [];
-            this.displayed = [];
+            this.activityRange = {
+                range: 30,
+                startDate: new Date(),
+                endDate: new Date(),
+            };
+            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
             this.categoriesFilter = '|LISTING|';
-            this.clearFilterHs = [];
-            this.restoreStateHs = [];
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
             this.tableController = {};
-            this.loadProgress = {
-                total: 0,
-                complete: 0,
-            };
-            this.downloadProgress = 0;
         }
 
         $onChanges (changes) {
             if (changes.productId && changes.productId.currentValue) {
                 this.productId = angular.copy(changes.productId.currentValue);
+            }
+            if (changes.filterToApply && changes.filterToApply.currentValue) {
+                this.doFilter(changes.filterToApply.currentValue);
+                return;
             }
             this.search();
         }
@@ -42,54 +44,62 @@ export const ReportsListingsComponent = {
             } else {
                 this.productId = undefined;
             }
-            this.doFilter(f);
+
+            this.$state.go('reports.listings', {
+                filterToApply: f,
+                productId: f.productId,
+            });
         }
 
         onClearFilter () {
             let filterData = {};
+            filterData.endDate = new Date();
+            filterData.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
             if (this.productId) {
                 filterData.productId = this.productId;
             }
             filterData.dataFilter = '';
             filterData.tableState = this.tableController.tableState();
             filterData.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
-            this.clearFilterHs.forEach(handler => handler());
-            this.doFilter(filterData);
+            filterData.categoriesFilter = '|LISTING|';
+
+            this.$state.go('reports.listings', {
+                filterToApply: filterData,
+                productId: filterData.productId,
+            });
         }
 
         doFilter (filter) {
             let that = this;
-            this.filterText = filter.dataFilter;
-            if (filter.tableState.search.predicateObject.categoriesFilter) {
-                this.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
-            } else {
-                this.tableController.search('|LISTING|', 'categoriesFilter');
-            }
-            if (filter.tableState.search.predicateObject.date) {
-                this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
-            } else {
-                this.tableController.search({}, 'date');
-            }
-            this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
-            this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
-        }
-
-        registerClearFilter (handler) {
-            this.clearFilterHs.push(handler);
-        }
-
-        registerRestoreState (handler) {
-            this.restoreStateHs.push(handler);
+            this.display = {};
+            this.activityRange.startDate = new Date(Date.parse(filter.startDate));
+            this.activityRange.endDate = new Date(Date.parse(filter.endDate));
+            this.search()
+                .then( () => {
+                    that.display = filter.displayAcbs;
+                    that.filterText = filter.dataFilter;
+                    if (filter.tableState.search.predicateObject.categoriesFilter) {
+                        that.tableController.search(filter.tableState.search.predicateObject.categoriesFilter, 'categoriesFilter');
+                        that.categoriesFilter = filter.categoriesFilter;
+                    } else {
+                        that.tableController.search('|LISTING|', 'categoriesFilter');
+                        that.categoriesFilter = '|LISTING|';
+                    }
+                    that.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+                });
         }
 
         createFilterDataObject () {
             let filterData = {};
+            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
+            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             if (this.productId) {
                 filterData.productId = this.productId;
             }
             filterData.dataFilter = this.filterText;
             filterData.displayAcbs = this.display;
             filterData.tableState = this.tableController.tableState();
+            filterData.categoriesFilter = this.categoriesFilter;
             return filterData;
         }
 
@@ -543,12 +553,19 @@ export const ReportsListingsComponent = {
             return ret;
         }
 
+        dateAdjust (obj) {
+            var ret = angular.copy(obj);
+            ret.startDate = this.ReportService.coerceToMidnight(ret.startDate);
+            ret.endDate = this.ReportService.coerceToMidnight(ret.endDate, true);
+            return ret;
+        }
+
         downloadReady () {
             return this.displayed.reduce((acc, activity) => activity.action && acc, true);
         }
 
         parse (meta) {
-            return this.networkService.getActivityById(meta.id, {ignoreLoadingBar: true}).then(item => {
+            return this.networkService.getActivityById(meta.id).then(item => {
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
                     {key: 'accessibilityCertified', display: 'Accessibility Certified'},
@@ -722,76 +739,71 @@ export const ReportsListingsComponent = {
             });
         }
 
-        prepare (item, full) {
-            item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
-            item.categoriesFilter = '|' + item.categories.join('|') + '|';
-            item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-            item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
-            if (this.activeAcbs.indexOf(item.acbName) === -1) {
-                this.activeAcbs.push(item.acbName);
-            }
-            if (full) {
-                this.parse(item);
-                item.showDetails = true;
-            }
-            return item;
-        }
-
-        canDownload () {
-            return this.displayed
-                .filter(item => !item.action).length < 1000;
+        prepare (results, full) {
+            this.activeAcbs = [];
+            this.displayed = results.map(item => {
+                item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
+                item.categoriesFilter = '|' + item.categories.join('|') + '|';
+                item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+                item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
+                if (this.activeAcbs.indexOf(item.acbName) === -1) {
+                    this.activeAcbs.push(item.acbName);
+                }
+                if (full) {
+                    this.parse(item);
+                    item.showDetails = true;
+                }
+                return item;
+            });
         }
 
         prepareDownload () {
-            let total = this.displayed
-                .filter(item => !item.action).length;
-            let progress = 0;
             this.displayed
                 .filter(item => !item.action)
-                .forEach(item => {
-                    this.parse(item).then(() => {
-                        progress += 1;
-                        this.downloadProgress = Math.floor(100 * ((progress + 1) / total));
-                    });
-                });
+                .forEach(item => this.parse(item));
             //todo, eventually: use the $q.all function as demonstrated in product history eye
         }
 
         searchAllListings () {
             let that = this;
-            this.networkService.getActivityMetadata('beta/listings')
+            return this.networkService.getActivityMetadata('listings', this.dateAdjust(this.activityRange))
                 .then(results => {
-                    that.results = results.activities
-                        .map(item => that.prepare(item));
-                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
-                    for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
-                            results.activities.forEach(item => that.results.push(that.prepare(item)));
-                            that.loadProgress.complete += 1;
-                            that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
-                        });
-                    }
+                    that.results = results;
+                    that.prepare(that.results);
                 });
         }
 
         searchSingleProductId () {
             let that = this;
-            this.networkService.getSingleListingActivityMetadata(this.productId)
+            this.activityRange.endDate = new Date();
+            this.activityRange.startDate = new Date('4/1/2016');
+            return this.networkService.getSingleListingActivityMetadata(this.productId)
                 .then(results => {
-                    that.results = results
-                        .map(item => that.prepare(item, true));
+                    that.results = results;
+                    that.prepare(that.results, true);
                 });
         }
 
         search () {
             if (this.productId) {
-                this.searchSingleProductId();
+                return this.searchSingleProductId();
             } else {
-                this.searchAllListings();
+                return this.searchAllListings();
             }
         }
+
+        validDates () {
+            let ignoreRange;
+            if (this.productId) {
+                ignoreRange = true;
+            } else {
+                ignoreRange = false;
+            }
+            return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, ignoreRange);
+        }
+
     },
 }
 
 angular.module('chpl.reports')
-    .component('chplReportsListings', ReportsListingsComponent);
+    .component('chplReportsListingsLegacy', ReportsListingsLegacyComponent);

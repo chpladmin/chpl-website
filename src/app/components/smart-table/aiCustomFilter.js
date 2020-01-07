@@ -4,7 +4,7 @@
         .filter('customFilter', CustomFilter);
 
     /** @ngInject */
-    function CustomFilter ($filter, $log, cfpLoadingBar) {
+    function CustomFilter ($filter/*, $log, cfpLoadingBar*/) {
         var filterFilter = $filter('filter');
         var standardComparator = function standardComparator (obj, text) {
             text = ('' + text).toLowerCase();
@@ -310,9 +310,9 @@
             }
 
             var output;
-            cfpLoadingBar.start();
+            //cfpLoadingBar.start();
             output = filterFilter(array, expression, customComparator);
-            cfpLoadingBar.complete()
+            //cfpLoadingBar.complete();
             return output;
         };
     }
