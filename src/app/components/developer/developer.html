@@ -28,7 +28,7 @@
           <div class="col-sm-4">
             <span ng-if="$ctrl.isTransparencyAttestationViewable()">
               <h3>Transparency Attestations</h3>
-              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
             </span>
             <span ng-if="$ctrl.developer.status.status !== 'Active' || $ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
               <h3>Status Information</h3>
