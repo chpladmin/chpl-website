@@ -29,8 +29,8 @@
                 <tr ng-repeat="complaint in $ctrl.displayedComplaints">
                   <td>{{ complaint.certificationBody.name }}</td>
                   <td>
-                    <span class="badge" ng-class="{ 'badge-success': complaint.complaintStatusType.name === 'Open' }">
-                      {{ complaint.complaintStatusType.name }}
+                    <span class="badge" ng-class="{ 'badge-success': complaint.complaintStatusTypeName === 'Open' }">
+                      {{ complaint.complaintStatusTypeName }}
                     </span>
                   </td>
                   <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
@@ -63,7 +63,6 @@
           <chpl-surveillance-complaint
             complaint="$ctrl.complaint"
             complainant-types="$ctrl.complainantTypes"
-            complaint-status-types="$ctrl.complaintStatusTypes"
             certification-bodies="$ctrl.certificationBodies"
             criteria="$ctrl.criteria"
             display-header="$ctrl.displayHeader"

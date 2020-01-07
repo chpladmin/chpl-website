@@ -175,25 +175,27 @@
                 expect(util.sortRequirements('170.302 (a)')).toBeLessThan(util.sortRequirements(criteria2014));
             });
 
-            it('should be able to sort nonconformity types', () => {
-                var criteria2014_g_4 = { name: '170.314 (g)(4)' };
-                var criteria2014_g_10 = { name: '170.314 (g)(10)' };
-                var criteria2015_d_1 = { name: '170.315 (d)(1)' };
-                var criteria2015_e_1 = { name: '170.315 (e)(1)' };
-                var criteria2015_g_4 = { name: '170.315 (g)(4)' };
-                var criteria2015_g_10 = { name: '170.315 (g)(10)' };
-                var transparency_k_2 = { name: '170.523 (k)(2)' };
-                var other = { name: 'Other Non-Conformity' };
+            fit('should be able to sort nonconformity types', () => {
+                var criteria2014_g_4 = { number: '170.314 (g)(4)' };
+                var criteria2014_g_10 = { number: '170.314 (g)(10)' };
+                var criteria2015_d_1 = { number: '170.315 (d)(1)' };
+                var criteria2015_e_1 = { number: '170.315 (e)(1)' };
+                var criteria2015_e_1_removed = { number: '170.315 (e)(1) (Removed)' };
+                var criteria2015_g_4 = { number: '170.315 (g)(4)' };
+                var criteria2015_g_10 = { number: '170.315 (g)(10)' };
+                var transparency_k_2 = { number: '170.523 (k)(2)' };
+                var other = { number: 'Other Non-Conformity' };
                 expect(util.sortNonconformityTypes(criteria2014_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2014_g_10));
                 expect(util.sortNonconformityTypes(criteria2014_g_10)).toBeLessThan(util.sortNonconformityTypes(criteria2015_d_1));
                 expect(util.sortNonconformityTypes(criteria2015_d_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_e_1));
                 expect(util.sortNonconformityTypes(criteria2015_e_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_4));
+                expect(util.sortNonconformityTypes(criteria2015_e_1)).toBe(util.sortNonconformityTypes(criteria2015_e_1_removed));
                 expect(util.sortNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_10));
                 expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
 
-            it('should be able to sort nonconformity types', () => {
+            fit('should be able to sort nonconformity types', () => {
                 var criteria2014_g_4 = '170.314 (g)(4)';
                 var criteria2014_g_10 = '170.314 (g)(10)';
                 var criteria2015_d_1 = '170.315 (d)(1)';
