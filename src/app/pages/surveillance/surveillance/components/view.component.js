@@ -9,7 +9,7 @@ export const SurveillanceManagementViewComponent = {
             'ngInject'
             this.$log = $log;
             this.certificationStatus = utilService.certificationStatus;
-            this.canEdit = authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            this.hasAnyRole = authService.hasAnyRole;
         }
 
         $onChanges (changes) {
@@ -23,6 +23,11 @@ export const SurveillanceManagementViewComponent = {
                 action: 'close',
                 data: this.listing,
             });
+        }
+
+        canEdit () {
+            return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                || (this.hasAnyRole(['ROLE_ACB']) && this.listing.certificationEdition.name !== '2014');
         }
     },
 }
