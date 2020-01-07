@@ -5,10 +5,11 @@ export const SurveillanceManagementViewComponent = {
         takeAction: '&',
     },
     controller: class SurveillanceManagementViewComponent {
-        constructor ($log, utilService) {
+        constructor ($log, authService, utilService) {
             'ngInject'
             this.$log = $log;
             this.certificationStatus = utilService.certificationStatus;
+            this.canEdit = authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
         }
 
         $onChanges (changes) {
