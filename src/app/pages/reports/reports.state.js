@@ -8,7 +8,10 @@ let states = {
                 productId: {squash: true, value: null},
             },
             resolve: {
-                productId: $transition$ => $transition$.params().productId,
+                productId: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().productId;
+                },
             },
             data: { title: 'CHPL Reports - Listings' },
         },
@@ -54,8 +57,14 @@ let states = {
                 filterToApply: {squash: true, value: null},
             },
             resolve: {
-                productId: $transition$ => $transition$.params().productId,
-                filterToApply: $transition$ => $transition$.params().filterToApply,
+                productId: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().productId;
+                },
+                filterToApply: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().filterToApply;
+                },
             },
             data: { title: 'CHPL Reports - Listings' },
         },{
