@@ -1,7 +1,7 @@
 export const ReportsListingsComponent = {
     templateUrl: 'chpl.reports/listings/listings.html',
     bindings: {
-        productId: '<?',
+        productId: '<',
     },
     controller: class ReportsListings {
         constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {

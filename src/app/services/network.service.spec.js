@@ -520,7 +520,6 @@
                 $httpBackend.flush();
             });
 
-
             xit('should getApiActivity', () => {
                 $httpBackend.expectGET(/^\/rest\/key\/activity$/).respond(200, {data: 'response'});
                 networkService.getApiActivity({}).then(response => {
@@ -714,14 +713,6 @@
             it('should getComplaints', () => {
                 $httpBackend.expectGET(/^\/rest\/complaints$/).respond(200, {data: 'response'});
                 networkService.getComplaints().then(response => {
-                    expect(response.data).toEqual('response');
-                });
-                $httpBackend.flush();
-            });
-
-            it('should getComplaintStatusTypes', () => {
-                $httpBackend.expectGET(/^\/rest\/data\/complaint-status-types$/).respond(200, {data: 'response'});
-                networkService.getComplaintStatusTypes().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1209,8 +1200,8 @@
                 $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirement_types$/).respond(200, {data: 'surveillance_requirement_types'});
                 $httpBackend.expectGET(/^\/rest\/data\/surveillance_result_types$/).respond(200, {data: 'surveillance_result_types'});
                 $httpBackend.expectGET(/^\/rest\/data\/nonconformity_status_types$/).respond(200, {data: 'nonconformity_status_types'});
-                $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirements$/).respond(200, {data: 'surveillance_requirements'});
-                $httpBackend.expectGET(/^\/rest\/data\/nonconformity_types$/).respond(200, {data: 'nonconformity_types'});
+                $httpBackend.expectGET(/^\/rest\/data\/surveillance-requirements$/).respond(200, {data: 'surveillance_requirements'});
+                $httpBackend.expectGET(/^\/rest\/data\/nonconformity-types$/).respond(200, {data: 'nonconformity_types'});
                 var response = networkService.getSurveillanceLookups();
                 $httpBackend.flush();
                 expect(response).toEqual({

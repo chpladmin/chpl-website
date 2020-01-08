@@ -6,11 +6,12 @@ let states = {
             component: 'chplReportsListings',
             params: {
                 productId: {squash: true, value: null},
-                filterToApply: {squash: true, value: null},
             },
             resolve: {
-                productId: $transition$ => $transition$.params().productId,
-                filterToApply: $transition$ => $transition$.params().filterToApply,
+                productId: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().productId;
+                },
             },
             data: { title: 'CHPL Reports - Listings' },
         },
@@ -56,8 +57,14 @@ let states = {
                 filterToApply: {squash: true, value: null},
             },
             resolve: {
-                productId: $transition$ => $transition$.params().productId,
-                filterToApply: $transition$ => $transition$.params().filterToApply,
+                productId: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().productId;
+                },
+                filterToApply: $transition$ => {
+                    'ngInject'
+                    return $transition$.params().filterToApply;
+                },
             },
             data: { title: 'CHPL Reports - Listings' },
         },{
@@ -91,7 +98,6 @@ let states = {
 
 function reportsStatesConfig ($stateProvider) {
     'ngInject'
-    $stateProvider
     states['base'].forEach(state => {
         $stateProvider.state(state);
     });
