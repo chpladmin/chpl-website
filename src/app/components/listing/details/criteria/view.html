@@ -161,6 +161,33 @@
             <td ng-if="$ctrl.cert.apiDocumentation"><a ai-a href="{{ $ctrl.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.apiDocumentation }">{{ $ctrl.cert.apiDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.apiDocumentation">None</td>
           </tr>
+          <tr ng-if="$ctrl.cert.exportDocumentation !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Export_Documentation">
+            <td>
+              Export Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.exportDocumentation"><a ai-a href="{{ $ctrl.cert.exportDocumentation }}" analytics-on="click" analytics-event="Export Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.exportDocumentation }">{{ $ctrl.cert.exportDocumentation }}</a></td>
+            <td ng-if="!$ctrl.cert.exportDocumentation">None</td>
+          </tr>
+          <tr ng-if="$ctrl.cert.attestationAnswer != null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Attestation_Answer">
+            <td>
+              Attestation <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td>{{ $ctrl.cert.attestationAnswer ? 'Yes' : 'No' }}</td>
+          </tr>
+          <tr ng-if="$ctrl.cert.documentationUrl !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url">
+            <td>
+              Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.documentationUrl"><a ai-a href="{{ $ctrl.cert.documentationUrl }}" analytics-on="click" analytics-event="Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.documentationUrl }">{{ $ctrl.cert.documentationUrl }}</a></td>
+            <td ng-if="!$ctrl.cert.documentationUrl">None</td>
+          </tr>
+          <tr ng-if="$ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Use_Cases">
+            <td>
+              Use Case(s) <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.useCases"><a ai-a href="{{ $ctrl.cert.useCases }}" analytics-on="click" analytics-event="Use Cases" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.useCases }">{{ $ctrl.cert.useCases }}</a></td>
+            <td ng-if="!$ctrl.cert.useCases">None</td>
+          </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Privacy_Security_Framework">
             <td>
               Privacy &amp; Security Framework <button class="btn btn-link btn-xs pull-right" uib-tooltip="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). " tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). </span><i class="fa fa-info-circle fa-lg"></i></button>
