@@ -5,10 +5,11 @@ export const SurveillanceManagementViewComponent = {
         takeAction: '&',
     },
     controller: class SurveillanceManagementViewComponent {
-        constructor ($log, utilService) {
+        constructor ($log, authService, utilService) {
             'ngInject'
             this.$log = $log;
             this.certificationStatus = utilService.certificationStatus;
+            this.hasAnyRole = authService.hasAnyRole;
         }
 
         $onChanges (changes) {
@@ -22,6 +23,11 @@ export const SurveillanceManagementViewComponent = {
                 action: 'close',
                 data: this.listing,
             });
+        }
+
+        canEdit () {
+            return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                || (this.hasAnyRole(['ROLE_ACB']) && this.listing.certificationEdition.name !== '2014');
         }
     },
 }
