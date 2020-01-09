@@ -27,12 +27,12 @@
           </div>
           <div class="col-sm-4">
             <span ng-if="$ctrl.isTransparencyAttestationViewable()">
-              <div class="product-element" id="developer-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
+              <div class="product-element" id="developer-transparency-attestation" ng-if="!$ctrl.isTransparencyAttestationRemoved()">
                 <h3>Transparency Attestations</h3>
                 <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
                   <strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
               </div>
-              <div class="product-element removed" id="developer-transparency-attestation" feature-flag="effective-rule-date">
+              <div class="product-element removed" id="developer-transparency-attestation" ng-if="$ctrl.isTransparencyAttestationRemoved()">
                 <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'">
                   <span class="sr-only">
                     This requirement has been removed from the Program.

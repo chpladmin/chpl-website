@@ -106,6 +106,10 @@ export const DeveloperComponent = {
             return isAcbAdmin;
         }
 
+        isTransparencyAttestationRemoved () {
+            return this.developer.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
+        }
+
         /*
          * Initiate changes
          */
