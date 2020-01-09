@@ -38,6 +38,7 @@
         vm.isProductEditable = isProductEditable;
         vm.isDeveloperBanned = isDeveloperBanned;
         vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
+        vm.isTransparencyAttestationRemoved = isTransparencyAttestationRemoved;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -401,6 +402,10 @@
                 return !vm.hasAnyRole(['ROLE_ACB']);
             }
             return true;
+        }
+
+        function isTransparencyAttestationRemoved () {
+            return vm.activeDeveloper.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
         }
 
         function searchForSurveillance () {
