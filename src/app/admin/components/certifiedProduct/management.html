@@ -157,7 +157,7 @@
                 <span ng-if="vm.isTransparencyAttestationViewable()">
                   Transparency Attestation:<br />
                   <ul>
-                    <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
+                    <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation.transparencyAttestation ? trans.attestation.transparencyAttestation : 'None' }}</li>
                   </ul>
                 </span>
                 <strong>Contact information</strong><br />
