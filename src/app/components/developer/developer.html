@@ -29,6 +29,21 @@
             <span ng-if="$ctrl.isTransparencyAttestationViewable()">
               <h3>Transparency Attestations</h3>
               <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+              <div class="product-element" id="developer-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
+                <h3>Transparency Attestations</h3>
+                <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
+                  <strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
+              </div>
+              <div class="product-element removed" id="developer-transparency-attestation" feature-flag="effective-rule-date">
+                <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'">
+                  <span class="sr-only">
+                    This requirement has been removed from the Program.
+                  </span>
+                  <i class="fa fa-info-circle fa-lg"></i>
+                </button>
+                <h3>Transparency Attestations</h3>
+                <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
+              </div>
             </span>
             <span ng-if="$ctrl.developer.status.status !== 'Active' || $ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
               <h3>Status Information</h3>
@@ -108,7 +123,7 @@
               <span ng-if="$ctrl.isTransparencyAttestationEditable()">
                 <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
                   <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
-                  <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name]" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
+                  <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name].transparencyAttestation" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
                     <option value="Negative">Negative</option>
                     <option value="Affirmative">Affirmative</option>
                     <option value="N/A">N/A</option>
