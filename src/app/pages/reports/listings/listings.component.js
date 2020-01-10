@@ -26,6 +26,7 @@ export const ReportsListingsComponent = {
                 complete: 0,
             };
             this.downloadProgress = 0;
+            this.results = [];
         }
 
         $onChanges (changes) {
@@ -757,6 +758,21 @@ export const ReportsListingsComponent = {
             //todo, eventually: use the $q.all function as demonstrated in product history eye
         }
 
+        showLoadingBar () {
+            let tableState = this.tableController.tableState && this.tableController.tableState();
+            let earlyDate = 0;
+            if (tableState && tableState.search.predicateObject.date) {
+                earlyDate = tableState.search.predicateObject.date.after;
+            }
+            let earliestDateOfData = this.results.reduce((acc, cur) => {
+                if (cur && cur.date < acc) {
+                    return cur.date;
+                }
+            }, new Date().getTime());
+            let shouldShow = this.loadProgress.total > 0 && this.loadProgress.percentage < 100 && (!earlyDate || earliestDateOfData > earlyDate);
+            return shouldShow;
+        }
+
         searchAllListings () {
             let that = this;
             this.networkService.getActivityMetadata('beta/listings')
@@ -764,9 +780,17 @@ export const ReportsListingsComponent = {
                     that.results = results.activities
                         .map(item => that.prepare(item));
                     that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    let filter = {};
+                    filter.dataFilter = '';
+                    filter.tableState = this.tableController.tableState();
+                    filter.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
+                    filter.tableState.search.predicateObject.date = {after: new Date().getTime() - 60 * 24 * 60 * 60 * 1000};
+                    that.doFilter(filter);
                     for (let i = 1; i < that.loadProgress.total; i++) {
                         that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
-                            results.activities.forEach(item => that.results.push(that.prepare(item)));
+                            results.activities.forEach(item => {
+                                that.results.push(that.prepare(item));
+                            });
                             that.loadProgress.complete += 1;
                             that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
                         });

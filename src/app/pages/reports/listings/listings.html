@@ -57,7 +57,7 @@
           ></ai-date-range>
     </div>
   </div>
-  <div class="row" ng-if="$ctrl.loadProgress.total > 0 && $ctrl.loadProgress.percentage < 100">
+  <div class="row" ng-if="$ctrl.showLoadingBar()">
     <div class="col-sm-5">
       Progress:<br />
       <uib-progressbar max="100" value="$ctrl.loadProgress.percentage" type="success" title="{{ $ctrl.loadProgress.percentage }}% complete loading">
