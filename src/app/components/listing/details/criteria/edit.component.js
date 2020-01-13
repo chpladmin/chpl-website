@@ -6,13 +6,14 @@ export const CertificationCriteriaEditComponent = {
         dismiss: '&',
     },
     controller: class CertificationCriteriaEditController {
-        constructor ($filter, $log, authService, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+        constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.addNewValue = utilService.addNewValue;
             this.extendSelect = utilService.extendSelect;
+            this.isOn = featureFlags.isOn;
             this.CertificationResultTestData = CertificationResultTestData;
             this.CertificationResultTestFunctionality = CertificationResultTestFunctionality;
             this.CertificationResultTestProcedure = CertificationResultTestProcedure;
@@ -53,7 +54,8 @@ export const CertificationCriteriaEditComponent = {
 
         canEdit () {
             return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
-                || !this.cert.criterion.removed; // ROLE_ACB can only edit when not removed criteria
+                || !this.cert.criterion.removed // ROLE_ACB can only edit when not removed criteria
+                || !this.isOn('effective-rule-date-plus-one-week'); // unless it's the grace period right after RED
         }
 
         isToolDisabled (tool) {
