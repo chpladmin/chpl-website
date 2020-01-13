@@ -13,11 +13,12 @@ export const CertificationCriteriaViewComponent = {
         viewAll: '<',
     },
     controller: class CertificationCriteriaViewController {
-        constructor ($analytics, $log, $uibModal) {
+        constructor ($analytics, $log, $uibModal, authService) {
             'ngInject'
             this.$analytics = $analytics;
             this.$log = $log;
             this.$uibModal = $uibModal;
+            this.hasAnyRole = authService.hasAnyRole;
         }
 
         $onChanges (changes) {
@@ -27,6 +28,13 @@ export const CertificationCriteriaViewComponent = {
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
             }
+        }
+
+        canEdit () {
+            return this.isEditing // in editing mode
+                && (this.cert.success // can always remove success
+                    || this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
+                    || !this.cert.criterion.removed); // ROLE_ACB can only edit when not removed criteria
         }
 
         editCert () {

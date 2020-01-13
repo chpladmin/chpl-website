@@ -6,10 +6,11 @@ export const CertificationCriteriaEditComponent = {
         dismiss: '&',
     },
     controller: class CertificationCriteriaEditController {
-        constructor ($filter, $log, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+        constructor ($filter, $log, authService, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.hasAnyRole = authService.hasAnyRole;
             this.addNewValue = utilService.addNewValue;
             this.extendSelect = utilService.extendSelect;
             this.CertificationResultTestData = CertificationResultTestData;
@@ -48,6 +49,11 @@ export const CertificationCriteriaEditComponent = {
         cancel () {
             this.cert = angular.copy(this.certSave);
             this.dismiss();
+        }
+
+        canEdit () {
+            return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
+                || !this.cert.criterion.removed; // ROLE_ACB can only edit when not removed criteria
         }
 
         isToolDisabled (tool) {
