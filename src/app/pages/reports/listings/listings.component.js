@@ -761,15 +761,14 @@ export const ReportsListingsComponent = {
         showLoadingBar () {
             let tableState = this.tableController.tableState && this.tableController.tableState();
             let earlyDate = 0;
+            let startDate = new Date().getTime();
             if (tableState && tableState.search.predicateObject.date) {
                 earlyDate = tableState.search.predicateObject.date.after;
             }
-            let earliestDateOfData = this.results.reduce((acc, cur) => {
-                if (cur && cur.date < acc) {
-                    return cur.date;
-                }
-            }, new Date().getTime());
-            let shouldShow = this.loadProgress.total > 0 && this.loadProgress.percentage < 100 && (!earlyDate || earliestDateOfData > earlyDate);
+            let earliestDateOfData = this.results
+                .map(evt => evt.date)
+                .reduce((acc, cur) => cur < acc ? cur : acc, startDate);
+            let shouldShow = (this.loadProgress.total > 0) && (this.loadProgress.percentage < 100) && (!earlyDate || earliestDateOfData > earlyDate);
             return shouldShow;
         }
 
