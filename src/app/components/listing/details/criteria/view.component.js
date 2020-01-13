@@ -13,12 +13,13 @@ export const CertificationCriteriaViewComponent = {
         viewAll: '<',
     },
     controller: class CertificationCriteriaViewController {
-        constructor ($analytics, $log, $uibModal, authService) {
+        constructor ($analytics, $log, $uibModal, authService, featureFlags) {
             'ngInject'
             this.$analytics = $analytics;
             this.$log = $log;
             this.$uibModal = $uibModal;
             this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
         }
 
         $onChanges (changes) {
@@ -34,7 +35,8 @@ export const CertificationCriteriaViewComponent = {
             return this.isEditing // in editing mode
                 && (this.cert.success // can always remove success
                     || this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
-                    || !this.cert.criterion.removed); // ROLE_ACB can only edit when not removed criteria
+                    || !this.cert.criterion.removed // ROLE_ACB can only edit when not removed criteria
+                    || !this.isOn('effective-rule-date-plus-one-week')); // unless it's the grace period right after RED
         }
 
         editCert () {
