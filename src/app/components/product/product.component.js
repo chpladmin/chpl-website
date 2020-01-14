@@ -14,13 +14,13 @@ export const ProductComponent = {
             this.statusFont = utilService.statusFont;
             this.defaultRefine = {
                 'Active': true,
-                'Retired': false,
+                'Retired': true,
                 'Suspended by ONC-ACB': true,
-                'Withdrawn by Developer': false,
-                'Withdrawn by Developer Under Surveillance/Review': false,
-                'Withdrawn by ONC-ACB': false,
+                'Withdrawn by Developer': true,
+                'Withdrawn by Developer Under Surveillance/Review': true,
+                'Withdrawn by ONC-ACB': true,
                 'Suspended by ONC': true,
-                'Terminated by ONC': false,
+                'Terminated by ONC': true,
             };
         }
 
