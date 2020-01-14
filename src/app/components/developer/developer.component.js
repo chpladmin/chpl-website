@@ -41,7 +41,6 @@ export const DeveloperComponent = {
                 this.developer.transparencyAttestations.forEach(att => {
                     this.transMap[att.acbName] = att.attestation;
                 });
-                this.$log.info(this.transMap);
             }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
