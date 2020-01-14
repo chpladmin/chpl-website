@@ -31,21 +31,20 @@
               id="active-version" name="activeVersion" class="input-sm form-control"
               ng-options="v as v.version for v in $ctrl.versions">
       </select>
-      <div class="pull-right">
-        <div uib-dropdown auto-close="outsideClick" class="btn-group" id="filters">
-          <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
-            <i class="fa fa-filter"></i> Certification Status
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-            <st-list-multiple
-              collection="$ctrl.activeVersion.listings"
-              fixed-items="$ctrl.statusItems"
-              predicate="certificationStatus"
-              match-full="true"></st-list-multiple>
-          </ul>
-        </div>
-        <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
+      <hr />
+      <div uib-dropdown auto-close="outsideClick" class="btn-group" id="filters">
+        <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
+          <i class="fa fa-filter"></i> Certification Status
+        </button>
+        <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+          <st-list-multiple
+            collection="$ctrl.activeVersion.listings"
+            fixed-items="$ctrl.statusItems"
+            predicate="certificationStatus"
+            match-full="true"></st-list-multiple>
+        </ul>
       </div>
+      <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
       <p ng-if="$ctrl.activeVersion.displayedListings.length === 0">No Listings match the filter</p>
       <table class="table table-condensed" ng-if="$ctrl.activeVersion.displayedListings && $ctrl.activeVersion.displayedListings.length > 0">
         <thead>
