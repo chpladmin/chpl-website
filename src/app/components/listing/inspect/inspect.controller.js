@@ -288,7 +288,7 @@
                 let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
                     return curAttestationObj.acbName === vm.cp.certifyingBody.name;
                 });
-                return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
+                return matchingAttestationObj ? matchingAttestationObj.attestation.transparencyAttestation : undefined;
             }
             return null;
         }
