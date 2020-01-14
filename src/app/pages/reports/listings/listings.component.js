@@ -783,7 +783,10 @@ export const ReportsListingsComponent = {
                     filter.dataFilter = '';
                     filter.tableState = this.tableController.tableState();
                     filter.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
-                    filter.tableState.search.predicateObject.date = {after: new Date().getTime() - 60 * 24 * 60 * 60 * 1000};
+                    filter.tableState.search.predicateObject.date = {
+                        after: new Date().getTime() - 60 * 24 * 60 * 60 * 1000,
+                        before: new Date().getTime(),
+                    };
                     that.doFilter(filter);
                     for (let i = 1; i < that.loadProgress.total; i++) {
                         that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
