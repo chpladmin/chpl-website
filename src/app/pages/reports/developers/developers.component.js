@@ -116,10 +116,18 @@ export const ReportsDevelopersComponent = {
                         activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
                     }
 
-                    var transKeys = [{key: 'transparencyAttestation', display: 'Transparency Attestation'}];
-                    var trans = this.ReportService.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName');
-                    for (j = 0; j < trans.length; j++) {
-                        activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
+                    //Old format where transp attest is just string vs. new format where it is an object
+                    if (this.isTransparencyAttestationObjectFormat(item.newData.transparencyAttestationMappings)) {
+                        let taChanges = this.compareTransparencyAttestations(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings);
+                        if (taChanges && taChanges.length > 0) {
+                            activity.details.push(taChanges.join(''));
+                        }
+                    } else {
+                        var transKeys = [{ key: 'transparencyAttestation', display: 'Transparency Attestation' }];
+                        var trans = this.ReportService.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName', true);
+                        for (j = 0; j < trans.length; j++) {
+                            activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
+                        }
                     }
 
                     var foundEvents = false;
@@ -218,6 +226,40 @@ export const ReportsDevelopersComponent = {
 
         validDates () {
             return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
+        }
+
+        compareTransparencyAttestations (before, after) {
+            let changes = [];
+            //This will get all the changes, since these arrays should alweays have the same number of elements based
+            //on the acbs
+            before.forEach(beforeTA => {
+                let afterTA = after.find(ta => ta.acbId === beforeTA.acbId);
+                if (afterTA) {
+                    changes.push(this.compareTransparencyAttestation(beforeTA, afterTA));
+                }
+            });
+            return changes;
+        }
+
+        compareTransparencyAttestation (before, after) {
+            if (!before.transparencyAttestation && !after.transparencyAttestation) {
+                return '';
+            } else if (!before.transparencyAttestation) {
+                //Transparency attestation was added
+                return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation added: ' + after.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
+            } else if (!after.transparencyAttestation) {
+                //Transparency attestation was removed - not sure this is possible
+                return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation removed. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
+            } else if (before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
+                //Transparency attestation was changed
+                return '<li>Transparency Attestation "' + after.acbName +'" changes<ul><li>Transparency Attestation changed: ' + after.transparencyAttestation.transparencyAttestation + '. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
+            } else {
+                return '';
+            }
+        }
+
+        isTransparencyAttestationObjectFormat (attestationMappings) {
+            return attestationMappings.reduce((acc, curr) => acc || (typeof curr.transparencyAttestation === 'object' && curr.transparencyAttestation !== null) , false);
         }
     },
 }
