@@ -3,13 +3,13 @@ import { collectionsStatesConfig as collectionsStates } from './pages/collection
 import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
+import { reportsStatesConfig as reportsStates } from './pages/reports/reports.state.js';
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
 
 (function () {
     'use strict';
 
-    let reportsState = require('./pages/reports/reports.state.js');
     let resourcesState = require('./pages/resources/resources.state.js');
 
     angular
@@ -20,7 +20,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
-        .config(reportsState)
+        .config(reportsStates)
         .config(resourcesState)
         .config(surveillanceStates)
         .config(usersStates);

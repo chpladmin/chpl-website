@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Listing component', () => {
+    fdescribe('the Reports.Listing.Legacy component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 
@@ -28,13 +28,13 @@
                     return Mock.fakeModal;
                 });
                 networkService = _networkService_;
-                networkService.getActivityMetadata.and.returnValue($q.when({activities: Mock.listingActivityMetadata}));
+                networkService.getActivityMetadata.and.returnValue($q.when(Mock.listingActivityMetadata));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()
 
-                el = angular.element('<chpl-reports-listings></chpl-reports-listings>');
+                el = angular.element('<chpl-reports-listings-legacy></chpl-reports-listings-legacy>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -57,6 +57,16 @@
         });
 
         describe('controller', () => {
+            it('should set the start date to day 1 of chpl if on a single product', () => {
+                var startDate = new Date('4/1/2016');
+                el = angular.element('<chpl-reports-listings-legacy product-id="1"></chpl-reports-listings-legacy>');
+
+                $compile(el)(scope);
+                scope.$digest();
+                ctrl = el.isolateScope().$ctrl;
+                expect(ctrl.activityRange.startDate).toEqual(startDate);
+            });
+
             describe('helper functions', () => {
                 describe('for comparing surveillances', () => {
                     var modalOptions, newS, oldS;
@@ -81,6 +91,72 @@
                         expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                         expect(actualOptions.resolve.newSurveillance()).toEqual(newS);
                         expect(actualOptions.resolve.oldSurveillance()).toEqual(oldS);
+                    });
+                });
+
+                describe('for date ranges', () => {
+                    beforeEach(() => {
+                        ctrl.activityRange = {
+                            range: 60,
+                            startDate: new Date('1/15/2017'),
+                            endDate: new Date('2/15/2017'),
+                        };
+                    });
+
+                    it('should have a function to determine if a date range is okay', () => {
+                        expect(ctrl.validDates).toBeDefined()
+                    });
+
+                    it('should allow dates with less than the range separation', () => {
+                        expect(ctrl.validDates()).toBe(true);
+                    });
+
+                    it('should not allow dates separated by more than the range', () => {
+                        ctrl.activityRange.range = 1;
+                        expect(ctrl.validDates()).toBe(false);
+                    });
+
+                    it('should not allow dates where start is after end', () => {
+                        ctrl.activityRange.startDate = new Date('3/15/2017');
+                        expect(ctrl.validDates()).toBe(false);
+                    });
+
+                    it('should allow "all time" if on a single listing', () => {
+                        ctrl.productId = 1;
+                        expect(ctrl.validDates()).toBe(true);
+                    });
+
+                    it('should not allow dates where start is after end on a single listing', () => {
+                        ctrl.productId = 1;
+                        ctrl.activityRange.startDate = new Date('3/15/2017');
+                        expect(ctrl.validDates()).toBe(false);
+                    });
+
+                    it('should correctly validate dates crossing DST', () => {
+                        ctrl.activityRange = {
+                            range: 60,
+                            startDate: new Date('9/17/2017'),
+                            endDate: new Date('11/16/2017'),
+                        };
+                        expect(ctrl.validDates()).toBe(false);
+                    });
+
+                    it('should correctly validate dates crossing DST', () => {
+                        ctrl.activityRange = {
+                            range: 60,
+                            startDate: new Date('9/06/2017'),
+                            endDate: new Date('11/04/2017'),
+                        };
+                        expect(ctrl.validDates()).toBe(true);
+                    });
+
+                    it('should correctly validate dates crossing DST', () => {
+                        ctrl.activityRange = {
+                            range: 60,
+                            startDate: new Date('9/06/2017'),
+                            endDate: new Date('11/05/2017'),
+                        };
+                        expect(ctrl.validDates()).toBe(false);
                     });
                 });
             });
