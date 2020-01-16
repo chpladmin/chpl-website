@@ -31,6 +31,7 @@
               id="active-version" name="activeVersion" class="input-sm form-control"
               ng-options="v as v.version for v in $ctrl.versions">
       </select>
+      <hr />
       <div uib-dropdown auto-close="outsideClick" class="btn-group" id="filters">
         <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
           <i class="fa fa-filter"></i> Certification Status
