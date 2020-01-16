@@ -1,4 +1,28 @@
 .organizations-wrapper {
+    /* start of official new style code */
+
+    /* Border for individual product */
+
+    .product-border {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 15px;
+    }
+
+    /* Alignment for caret buttons */
+
+    .btn-default {
+
+        &.closed {
+            margin-top: 13px;
+        }
+
+        &.open {
+            margin-right: 9px;
+        }
+    }
+
+    /* end of official new style code */
 
     .selected-items-container {
         margin-bottom: 5px;
