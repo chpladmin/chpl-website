@@ -12,6 +12,7 @@
             <span ng-if="!$ctrl.isSplitting">
               Developer code: {{ $ctrl.developer.developerCode }}<br />
               <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a><br /></span>
+              Self-Developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </span>
             <h3>Contact Information</h3>
@@ -83,6 +84,15 @@
                   <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
                   <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
                   <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="self-developer">Self-developer</label>
+                <div>
+                  <select class="input-sm form-control" ng-model="$ctrl.developer.selfDeveloper" id="self-developer" name="selfDeveloper">
+                    <option ng-value="true">Yes</option>
+                    <option ng-value="false">No</option>
+                  </select>
                 </div>
               </div>
               <chpl-contact contact="$ctrl.developer.contact"

@@ -154,6 +154,7 @@
                 Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
                 Country: {{ vm.activeDeveloper.address.country }}<br />
                 Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
+                Self-developer: {{ vm.activeDeveloper.selfDeveloper ? 'Yes' : 'No' }}<br />
                 <span ng-if="vm.isTransparencyAttestationViewable()">
                   Transparency Attestation:<br />
                   <ul>

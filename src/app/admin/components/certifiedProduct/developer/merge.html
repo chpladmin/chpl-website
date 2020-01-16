@@ -41,6 +41,7 @@
             Zip: {{ developer.address.zipcode }}<br />
             Country: {{ developer.address.country }}<br />
             Website: {{ developer.website }}<br />
+            Self-Developer: {{ developer.selfDeveloper ? 'Yes' : 'No' }}<br />
             <strong>Contact information</strong><br />
             <ai-contact contact="developer.contact"></ai-contact>
             <br />
@@ -146,6 +147,13 @@
               <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="250"></input>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.developerWebsite.$touched) && vm.mergeForm.developerWebsite.$error.url">Website is invalid</div>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.developerWebsite.$touched) && vm.mergeForm.developerWebsite.$error.maxlength">Website is too long</div>
+            </div>
+            <div class="form-group">
+              <label for="self-developer">Self-developer</label>
+              <select class="input-sm form-control" ng-model="vm.developer.selfDeveloper" id="self-developer" name="selfDeveloper">
+                <option ng-value="true">Yes</option>
+                <option ng-value="false">No</option>
+              </select>
             </div>
           </div>
           <div class="col-sm-6">
