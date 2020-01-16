@@ -49,10 +49,9 @@
                 scope.isSplitting = false;
                 scope.onCancel = jasmine.createSpy('onCancel');
                 scope.onEdit = jasmine.createSpy('onEdit');
-                scope.showFull = true;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
-                el = angular.element('<chpl-developer developer="developer" allowed-acbs="acbs" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" is-editing="isEditing" is-invalid="isInvalid" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(developer)" show-full="showFull" take-action="takeAction(action, developerId)"></chpl-developer>');
+                el = angular.element('<chpl-developer developer="developer" allowed-acbs="acbs" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" is-editing="isEditing" is-invalid="isInvalid" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(developer)" take-action="takeAction(action, developerId)"></chpl-developer>');
 
                 $compile(el)(scope);
                 scope.$digest();

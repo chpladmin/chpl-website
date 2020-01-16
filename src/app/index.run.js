@@ -2,6 +2,7 @@ import { Visualizer } from '@uirouter/visualizer';
 import { states as administrationStates } from './pages/administration/administration.state.js';
 import { states as collectionsStates } from './pages/collections/collections.state.js';
 import { states as dashboardStates } from './pages/dashboard/dashboard.state.js';
+import { states as reportsStates } from './pages/reports/reports.state.js';
 
 (() => {
     'use strict';
@@ -48,6 +49,16 @@ import { states as dashboardStates } from './pages/dashboard/dashboard.state.js'
 
                     if (featureFlags.isOn('effective-rule-date')) {
                         collectionsStates['effective-rule-date'].forEach(state => {
+                            if ($uiRouter.stateRegistry.get(state.name)) {
+                                $uiRouter.stateRegistry.deregister(state.name);
+                            }
+                            $uiRouter.stateRegistry.register(state);
+                            needsReload = needsReload || $state.$current.name === state.name;
+                        });
+                    }
+
+                    if (featureFlags.isOn('enhanced-reports')) {
+                        reportsStates['enhanced-reports'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);
                             }

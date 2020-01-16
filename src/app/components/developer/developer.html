@@ -1,10 +1,6 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
-    <span ng-if="!$ctrl.showFull">
-      <p><a ui-sref="organizations.developers({developerId: $ctrl.developer.developerId})">{{ $ctrl.developer.name }}</a></p>
-      <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
-    </span>
-    <div class="panel panel-default" ng-if="$ctrl.showFull">
+    <div class="panel panel-default">
       <div class="panel-heading">
         Developer
         <h2 class="panel-title">{{ $ctrl.developer.name }}</h2>
@@ -18,7 +14,7 @@
               <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a><br /></span>
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </span>
-            <h3>Contact information</h3>
+            <h3>Contact Information</h3>
             <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
           </div>
           <div class="col-sm-4">
@@ -26,49 +22,38 @@
             <chpl-address address="$ctrl.developer.address"></chpl-address>
           </div>
           <div class="col-sm-4">
-            <span ng-if="$ctrl.isTransparencyAttestationViewable()">
+            <div class="product-element" id="developer-transparency-attestation" ng-if="!$ctrl.isTransparencyAttestationRemoved()">
               <h3>Transparency Attestations</h3>
-              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
-              <div class="product-element" id="developer-transparency-attestation" ng-if="!$ctrl.isTransparencyAttestationRemoved()">
-                <h3>Transparency Attestations</h3>
-                <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
-                  <strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
+                <strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
+            </div>
+            <div class="product-element removed" id="developer-transparency-attestation" ng-if="$ctrl.isTransparencyAttestationRemoved()">
+              <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'">
+                <span class="sr-only">
+                  This requirement has been removed from the Program.
+                </span>
+                <i class="fa fa-info-circle fa-lg"></i>
+              </button>
+              <h3>Transparency Attestations</h3>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
+            </div>
+            <h3>Status Information</h3>
+            <div class="row well well-sm" ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
+              <div class="col-sm-6">
+                <p>Status History:<br /><i ng-if="status.status.status !== 'Active'" class="fa status-bad" ng-class="status.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ status.status.status }}</p>
               </div>
-              <div class="product-element removed" id="developer-transparency-attestation" ng-if="$ctrl.isTransparencyAttestationRemoved()">
-                <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'">
-                  <span class="sr-only">
-                    This requirement has been removed from the Program.
-                  </span>
-                  <i class="fa fa-info-circle fa-lg"></i>
-                </button>
-                <h3>Transparency Attestations</h3>
-                <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
+              <div class="col-sm-6">
+                <p>Effective Date:<br />{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</p>
               </div>
-            </span>
-            <span ng-if="$ctrl.developer.status.status !== 'Active' || $ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
-              <h3>Status Information</h3>
-              <p ng-if="$ctrl.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.developer.status.status }}</p>
-              <table ng-if="$ctrl.developer.statusEvents && $ctrl.developer.statusEvents.length > 0 && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th scope="col">Status History</th>
-                    <th scope="col">Effective date</th>
-                    <th scope="col">Reason for status change</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
-                    <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
-                    <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
-                    <td>{{ status.reason || 'N/A' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </span>
+              <div class="col-sm-12">
+                <p class="clickable text-center" ng-click="status.showComments = !status.showComments"><i class="fa" ng-class="status.showComments ? 'fa-caret-up' : 'fa-caret-down'"></i> Comments:</p>
+                <p ng-if="status.showComments">{{ status.reason || 'N/A'}}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="panel-footer text-right">
+      <div class="panel-footer text-right" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB'])">
         <button class="btn btn-default" id="developer-component-edit" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()" uib-tooltip="Edit Developer information" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-pencil-square-o"></i> Edit</button>
         <button class="btn btn-default" id="developer-component-split" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i> Split</button>
         <button class="btn btn-default" id="developer-component-merge" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i> Merge</button>
@@ -77,7 +62,7 @@
   </span> <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
-    <div class="panel panel-default" ng-if="$ctrl.showFull">
+    <div class="panel panel-default">
       <div class="panel-heading">
         <button class="btn btn-default btn-small pull-right" id="developer-component-cancel"
                 confirm="Are you sure you wish to cancel? Your changes will not be saved."

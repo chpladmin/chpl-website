@@ -4,7 +4,7 @@
         .filter('customFilter', CustomFilter);
 
     /** @ngInject */
-    function CustomFilter ($filter, $log, cfpLoadingBar) {
+    function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
         var filterFilter = $filter('filter');
         var standardComparator = function standardComparator (obj, text) {
             text = ('' + text).toLowerCase();
@@ -310,9 +310,9 @@
             }
 
             var output;
-            cfpLoadingBar.start();
+            // if we want the spinny circle on smart-table updates, add this line here: cfpLoadingBar.start();
             output = filterFilter(array, expression, customComparator);
-            cfpLoadingBar.complete()
+            // and this line here: cfpLoadingBar.complete();
             return output;
         };
     }
