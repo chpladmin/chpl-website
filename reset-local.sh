@@ -1,0 +1,1 @@
+../resources/scripts/reset-local.sh
