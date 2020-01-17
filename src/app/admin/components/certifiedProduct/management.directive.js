@@ -405,7 +405,11 @@
         }
 
         function isTransparencyAttestationRemoved () {
-            return vm.activeDeveloper.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
+            if (vm.activeDeveloper.transparencyAttestations || vm.activeDeveloper.transparencyAttestations.length === 0) {
+                return vm.isOn('effective-rule-date');
+            } else {
+                return vm.activeDeveloper.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
+            }
         }
 
         function searchForSurveillance () {

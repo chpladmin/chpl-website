@@ -86,6 +86,10 @@ export const DeveloperComponent = {
             return this.isOn('effective-rule-date-plus-one-week');
         }
 
+        isEffectiveRuleDateOn () {
+            return this.isOn('effective-rule-date');
+        }
+
         isTransparencyAttestationEditable () {
             let isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
             if (this.isEffectiveRuleDatePlusOneWeekOn()) {
@@ -95,7 +99,11 @@ export const DeveloperComponent = {
         }
 
         isTransparencyAttestationRemoved () {
-            return this.developer.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
+            if (this.developer.transparencyAttestations || this.developer.transparencyAttestations.length === 0) {
+                return this.isEffectiveRuleDateOn();
+            } else {
+                return this.developer.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
+            }
         }
 
         /*
