@@ -394,7 +394,7 @@ export class NetworkService {
     }
 
     getScheduledSystemJobs () {
-        return this.apiGET('/schedules/triggers/?jobType=system');
+        return this.apiGET('/schedules/triggers?jobType=system');
     }
 
     getScheduleJobs () {

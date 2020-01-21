@@ -197,7 +197,7 @@ let states = {
                 },
                 scheduledSystemJobs: (authService, networkService) => {
                     'ngInject'
-                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getScheduledSystemJobs();
                     }
                     return [];
