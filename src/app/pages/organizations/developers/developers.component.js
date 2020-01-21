@@ -25,10 +25,12 @@ export const DevelopersComponent = {
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 this.loadAcbs();
             }
-            let loggedIn = this.$scope.$on('loggedIn', function () {
+            let loggedIn = this.$scope.$on('loggedIn', () => {
                 that.loadAcbs();
             })
             this.$scope.$on('$destroy', loggedIn);
+            this.networkService.getSearchOptions()
+                .then(options => that.searchOptions = options);
         }
 
         $onChanges (changes) {

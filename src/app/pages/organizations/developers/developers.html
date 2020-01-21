@@ -1,136 +1,131 @@
-<div ui-view="">
-  <div class="row">
-    <div class="col-sm-12">
-      <h2 ng-switch on="$ctrl.action">
-        <span ng-switch-when="edit">Edit Developer</span>
-        <span ng-switch-when="merge">Merge Developers</span>
-        <span ng-switch-when="split">Split a Developer</span>
-        <span ng-switch-default>View Developer</span>
-      </h2>
-      <div ncy-breadcrumb></div>
+<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB'])">
+  <div class="col-sm-12">
+    <h2 ng-switch on="$ctrl.action">
+      <span ng-switch-when="edit">Edit Developer</span>
+      <span ng-switch-when="merge">Merge Developers</span>
+      <span ng-switch-when="split">Split a Developer</span>
+      <span ng-switch-default>View Developer</span>
+    </h2>
+  </div>
+</div>
+<div class="row">
+  <span ng-if="!$ctrl.$stateParams.developerId">
+    <div class="col-md-12">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <div class="col-sm-3">
+            <label for="developer-select" class="control-label">Developer</label>
+          </div>
+          <div class="col-sm-7">
+            <select ng-model="$ctrl.developerToLoad"
+                    id="developer-select" class="form-control col-sm-8"
+                    ng-options="d.name for d in $ctrl.allDevelopers | orderBy: 'name'">
+              <option value="" selected disabled>Select a developer</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-default form-control" ng-click="$ctrl.loadDeveloper()">Choose</button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <span ng-if="!$ctrl.$stateParams.developerId">
-      <div class="col-md-12">
-        <div class="form-horizontal">
-          <div class="form-group">
-            <div class="col-sm-3">
-              <label for="developer-select" class="control-label">Developer</label>
-            </div>
-            <div class="col-sm-7">
-              <select ng-model="$ctrl.developerToLoad"
-                      id="developer-select" class="form-control col-sm-8"
-                      ng-options="d.name for d in $ctrl.allDevelopers | orderBy: 'name'">
-                <option value="" selected disabled>Select a developer</option>
-              </select>
-            </div>
-            <div class="col-sm-2">
-              <button class="btn btn-default form-control" ng-click="$ctrl.loadDeveloper()">Choose</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-12">
-        <button class="btn btn-ai-success" ng-click="$ctrl.viewDeveloperCodes = !$ctrl.viewDeveloperCodes">{{ $ctrl.viewDeveloperCodes ? 'Hide' : 'Show' }} Developer Codes</button>
-        <table class="table table-striped table-condensed" ng-if="$ctrl.viewDeveloperCodes">
-          <thead>
-            <tr>
-              <th scope="cols">Code</th>
-              <th scope="cols">Name</th>
-              <th scope="cols">Status</th>
-              <th scope="cols" ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ att }}</th>
-              <th scope="cols">Last modified date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="dev in $ctrl.allDevelopers | orderBy: 'name'">
-              <td>{{ dev.developerCode }}</td>
-              <td>{{ dev.name }}</td>
-              <td>{{ dev.status.status }}</td>
-              <td ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
-              <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </span>
-    <span ng-if="$ctrl.$stateParams.developerId">
-      <div class="col-md-6">
-        <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
-          <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
-        </ul>
-        <h3 ng-if="$ctrl.action === 'split'">Original Developer</h3>
-        <chpl-developer developer="$ctrl.developer"
-                        allowed-acbs="$ctrl.allowedAcbs"
-                        can-edit="$ctrl.can('edit')"
-                        can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
-                        can-split="$ctrl.can('split-developer')"
-                        is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
-                        is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length < 2"
-                        on-cancel="$ctrl.cancel()"
-                        on-edit="$ctrl.save(developer)"
-                        show-full="true"
-                        take-action="$ctrl.takeAction(action)"
-                        ></chpl-developer>
-        <div ng-if="$ctrl.action === 'split'">
-          <h4>Products staying with original Developer</h4>
-          <div class="bg-danger" ng-if="$ctrl.products.length === 0">At least one Product must remain</div>
-          <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
-            {{ product.name }}
-            <button class="btn btn-default btn-small pull-right" id="developers-product-move-new-{{ product.productId }}" ng-click="$ctrl.toggleMove(product, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
-        <h3>Products</h3>
+    <div class="col-sm-12">
+      <button class="btn btn-ai-success" ng-click="$ctrl.viewDeveloperCodes = !$ctrl.viewDeveloperCodes">{{ $ctrl.viewDeveloperCodes ? 'Hide' : 'Show' }} Developer Codes</button>
+      <table class="table table-striped table-condensed" ng-if="$ctrl.viewDeveloperCodes">
+        <thead>
+          <tr>
+            <th scope="cols">Code</th>
+            <th scope="cols">Name</th>
+            <th scope="cols">Status</th>
+            <th scope="cols" ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ att }}</th>
+            <th scope="cols">Last modified date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="dev in $ctrl.allDevelopers | orderBy: 'name'">
+            <td>{{ dev.developerCode }}</td>
+            <td>{{ dev.name }}</td>
+            <td>{{ dev.status.status }}</td>
+            <td ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
+            <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </span>
+  <span ng-if="$ctrl.$stateParams.developerId">
+    <div class="col-md-6">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
+        <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
+      </ul>
+      <h3 ng-if="$ctrl.action === 'split'">Original Developer</h3>
+      <chpl-developer developer="$ctrl.developer"
+                      allowed-acbs="$ctrl.allowedAcbs"
+                      can-edit="$ctrl.can('edit')"
+                      can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
+                      can-split="$ctrl.can('split-developer')"
+                      is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
+                      is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length < 2"
+                      on-cancel="$ctrl.cancel()"
+                      on-edit="$ctrl.save(developer)"
+                      take-action="$ctrl.takeAction(action)"
+                      ></chpl-developer>
+      <div ng-if="$ctrl.action === 'split'">
+        <h4>Products staying with original Developer</h4>
+        <div class="bg-danger" ng-if="$ctrl.products.length === 0">At least one Product must remain</div>
         <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
-          <chpl-product product="product"
-                        developer="$ctrl.developer"
-                        can-edit="$ctrl.can('edit')"
-                        can-merge="$ctrl.can('merge') && $ctrl.products.length > 1"
-                        can-split="$ctrl.can('split-product')"
-                        can-view="true"
-                        is-list="true"
-                        take-action="$ctrl.takeProductAction(action, productId)"
-                        ></chpl-product>
-        </div>
-      </div>
-      <div class="col-md-6" ng-if="$ctrl.action === 'merge' && $ctrl.developers && $ctrl.mergingDevelopers">
-        <h3>Developers to merge</h3>
-        <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length < 2">At least one other Developer must be selected to merge</div>
-        <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
-          {{ developer.name }}
-          <button class="btn btn-warning btn-small pull-right" id="developers-developer-no-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, false)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa" ng-class="developer.developerId === $ctrl.developer.developerId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
-          <div class="clearfix"></div>
-        </div>
-        <h3>Developers not merging</h3>
-        <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
-          {{ developer.name }}
-          <button class="btn btn-ai-success btn-small pull-right" id="developers-developer-can-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+          {{ product.name }}
+          <button class="btn btn-default btn-small pull-right" id="developers-product-move-new-{{ product.productId }}" ng-click="$ctrl.toggleMove(product, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
           <div class="clearfix"></div>
         </div>
       </div>
-      <div class="col-md-6" ng-if="$ctrl.action === 'split'">
-        <h3>New Developer</h3>
-        <chpl-developer developer="$ctrl.newDeveloper"
-                        allowed-acbs="$ctrl.allowedAcbs"
-                        can-edit="$ctrl.can('edit')"
-                        is-editing="$ctrl.splitEdit"
-                        is-splitting="true"
-                        on-cancel="$ctrl.cancelSplitEdit()"
-                        on-edit="$ctrl.saveSplitEdit(developer)"
-                        show-full="true"
-                        take-action="$ctrl.takeSplitAction()"></chpl-developer>
-        <h4>Products moving to new Developer</h4>
-        <div class="bg-danger" ng-if="$ctrl.movingProducts.length === 0">At least one Product must be selected to move</div>
-        <div ng-repeat="product in $ctrl.movingProducts | orderBy: 'name'">
-          <button class="btn btn-default btn-small" id="developers-product-move-old-{{ product.productId }}" ng-click="$ctrl.toggleMove(product, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ product.name }}
+    </div>
+    <div class="col-md-6" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title"><h2>Products</h2></div>
         </div>
-        <button class="btn btn-ai-success btn-small pull-right" id="developers-component-save-{{ $ctrl.developer.developerId }}" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingProducts.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-        <button class="btn btn-warning btn-small" id="developers-component-cancel-{{ $ctrl.developer.developerId }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+        <div class="panel-body">
+          <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
+            <chpl-product product="product"
+                          search-options="$ctrl.searchOptions"
+                          ></chpl-product>
+          </div>
+        </div>
       </div>
-    </span>
-  </div>
+    </div>
+    <div class="col-md-6" ng-if="$ctrl.action === 'merge' && $ctrl.developers && $ctrl.mergingDevelopers">
+      <h3>Developers to merge</h3>
+      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length < 2">At least one other Developer must be selected to merge</div>
+      <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-warning btn-small pull-right" id="developers-developer-no-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, false)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa" ng-class="developer.developerId === $ctrl.developer.developerId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
+        <div class="clearfix"></div>
+      </div>
+      <h3>Developers not merging</h3>
+      <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-ai-success btn-small pull-right" id="developers-developer-can-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-6" ng-if="$ctrl.action === 'split'">
+      <h3>New Developer</h3>
+      <chpl-developer developer="$ctrl.newDeveloper"
+                      allowed-acbs="$ctrl.allowedAcbs"
+                      can-edit="$ctrl.can('edit')"
+                      is-editing="$ctrl.splitEdit"
+                      is-splitting="true"
+                      on-cancel="$ctrl.cancelSplitEdit()"
+                      on-edit="$ctrl.saveSplitEdit(developer)"
+                      take-action="$ctrl.takeSplitAction()"></chpl-developer>
+      <h4>Products moving to new Developer</h4>
+      <div class="bg-danger" ng-if="$ctrl.movingProducts.length === 0">At least one Product must be selected to move</div>
+      <div ng-repeat="product in $ctrl.movingProducts | orderBy: 'name'">
+        <button class="btn btn-default btn-small" id="developers-product-move-old-{{ product.productId }}" ng-click="$ctrl.toggleMove(product, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>{{ product.name }}
+      </div>
+      <button class="btn btn-ai-success btn-small pull-right" id="developers-component-save-{{ $ctrl.developer.developerId }}" ng-click="$ctrl.split()" ng-disabled="$ctrl.splitEdit || $ctrl.movingProducts.length === 0"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
+      <button class="btn btn-warning btn-small" id="developers-component-cancel-{{ $ctrl.developer.developerId }}" ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
+    </div>
+  </span>
 </div>

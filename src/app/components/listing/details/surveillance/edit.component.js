@@ -93,20 +93,22 @@ export const SurveillanceEditComponent = {
             let that = this;
             if (this.reason) {
                 this.getAssociatedComplaints().then(complaints => {
+                    let complaintsString;
                     if (Array.isArray(complaints) && complaints.length > 0) {
-                        let complaintsString = complaints.map(complaint => {
+                        complaintsString = complaints.map(complaint => {
                             return complaint.acbComplaintId;
                         }).join(', ');
-
-                        that.toaster.pop({
-                            type: 'success',
-                            body: 'Surveillance has been removed from the following complaints: ' + complaintsString,
-                        });
                     }
 
                     that.networkService.deleteSurveillance(that.surveillance.id, that.reason)
                         .then(response => {
                             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                                if (complaintsString) {
+                                    that.toaster.pop({
+                                        type: 'success',
+                                        body: 'Surveillance has been removed from the following complaints: ' + complaintsString,
+                                    });
+                                }
                                 that.close({ $value: response });
                             } else {
                                 that.errorMessages = [response];

@@ -5,10 +5,12 @@ export const SurveillanceManagementViewComponent = {
         takeAction: '&',
     },
     controller: class SurveillanceManagementViewComponent {
-        constructor ($log, utilService) {
+        constructor ($log, authService, featureFlags, utilService) {
             'ngInject'
             this.$log = $log;
             this.certificationStatus = utilService.certificationStatus;
+            this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
         }
 
         $onChanges (changes) {
@@ -22,6 +24,14 @@ export const SurveillanceManagementViewComponent = {
                 action: 'close',
                 data: this.listing,
             });
+        }
+
+        canEdit () {
+            if (this.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            } else {
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
+            }
         }
     },
 }

@@ -29,6 +29,7 @@
                 $provide.factory('chplProductsDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
+                    $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     return $delegate;
                 });
             });
@@ -38,6 +39,7 @@
                 $q = _$q_;
                 networkService = _networkService_;
                 networkService.getAcbs.and.returnValue($q.when({acbs: mock.acbs}));
+                networkService.getSearchOptions.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};
