@@ -32,10 +32,10 @@
   <table class="table table-condensed" st-table="$ctrl.displayedScheduledSystemJobs" st-safe-src="$ctrl.scheduledSystemJobs" ng-if="$ctrl.scheduledSystemJobs && $ctrl.scheduledSystemJobs.length > 0">
     <thead>
       <tr>
-        <th scope="col" class="search-header" st-sort="name" st-skip-natural="true" st-sort-default="true">Job Name</th>
+        <th scope="col" class="search-header" st-sort="name" st-skip-natural="true">Job Name</th>
         <th scope="col">Description</th>
-        <th scope="col">Next Run Date</th>
-        <th scope="col">Trigger Schedule Type</th>
+        <th scope="col" class="search-header" st-sort="nextRunDate" st-skip-natural="true" st-sort-default="true">Next Run Date</th>
+        <th scope="col"class="search-header" st-sort="triggerScheduleType" st-skip-natural="true">Trigger Schedule Type</th>
       </tr>
     </thead>
     <tbody>
