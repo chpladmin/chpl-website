@@ -12,7 +12,7 @@
             <span ng-if="!$ctrl.isSplitting">
               Developer code: {{ $ctrl.developer.developerCode }}<br />
               <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a><br /></span>
-              Self-Developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
+              Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </span>
             <h3>Contact Information</h3>
