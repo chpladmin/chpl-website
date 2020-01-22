@@ -44,14 +44,17 @@
          *   - 170.315 (g)(7)
          *   - 170.315 (g)(8)
          *   - 170.315 (g)(9)
+         *   - 170.315 (g)(10)
          */
         function apiDocumentation (array) {
             var ret = [];
             var cp;
             for (var i = 0; i < array.length; i ++) {
                 cp = array[i];
-                if (cp.edition === '2015' && (cp.criteriaMet.indexOf('170.315 (g)(7)') > -1 || cp.criteriaMet.indexOf('170.315 (g)(8)') > -1 || cp.criteriaMet.indexOf('170.315 (g)(9)') > -1)) {
-
+                if (cp.edition === '2015' && (cp.criteriaMet.indexOf('170.315 (g)(7)') > -1
+                                              || cp.criteriaMet.indexOf('170.315 (g)(8)') > -1
+                                              || cp.criteriaMet.indexOf('170.315 (g)(9)') > -1
+                                              || cp.criteriaMet.indexOf('170.315 (g)(10)') > -1)) {
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
 
                     ret.push(cp);
