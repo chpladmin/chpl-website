@@ -5,7 +5,7 @@
     {{ $ctrl.cert.criterion.number }}: {{ $ctrl.cert.criterion.title }} <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
     <span class="pull-right">
       <button class="btn btn-link" ng-click="$ctrl.toggleCriteria()" aria-expanded="{{ $ctrl.showDetails }}" ng-if="$ctrl.showViewDetailsLink()" id="criteria_{{ $ctrl.cert.criterion.number }}_details_link">{{ $ctrl.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.cert.criterion.number }}</span></button>
-      <span ng-if="$ctrl.isEditing">
+      <span ng-if="$ctrl.canEdit()">
         <a href uib-tooltip="Criteria has phantom data" tooltip-trigger="'mouseenter focus click'"><span ng-if="!$ctrl.cert.success && ctrl.hasPhantomData()"><i class="fa fa-exclamation-triangle status-warning"></i></span></a>
         <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
       </span>
