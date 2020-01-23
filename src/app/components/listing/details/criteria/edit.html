@@ -222,6 +222,31 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.maxlength">Field is too long</div>
           </td>
         </tr>
+        <tr ng-if="$ctrl.cert.exportDocumentation !== null">
+          <td><label class="control-label" for="data_export{{ $ctrl.cert.number }}">Export Documentation</label></td>
+          <td>
+            <input class="form-control input-sm" type="url" id="data_export{{ $ctrl.cert.number }}" name="data_exportDocumentation" ng-model="$ctrl.cert.exportDocumentation" ng-maxlength="1024"></input>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.maxlength">Field is too long</div>
+          </td>
+        </tr>
+        <tr ng-if="$ctrl.cert.attestationAnswer !== null">
+          <td><label class="control-label" for="data_attestationAnswer{{ $ctrl.cert.number }}">Attestation</label></td>
+          <td><select class="form-control input-sm" id="data_attestationAnswer{{ $ctrl.cert.number }}" name="data_attestationAnswer" ng_model="$ctrl.cert.attestationAnswer" ng-options="b.value as b.name for b in $ctrl.yesNo"></select></td>
+        </tr>
+        <tr ng-if="$ctrl.cert.documentationUrl !== null">
+          <td><label class="control-label" for="data_documentation{{ $ctrl.cert.number }}">Documentation</label></td>
+          <td>
+            <input class="form-control input-sm" type="url" id="data_documentation{{ $ctrl.cert.number }}" name="data_documentationUrl" ng-model="$ctrl.cert.documentationUrl" ng-maxlength="1024"></input>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.maxlength">Field is too long</div>
+          </td>
+        </tr>
+        <tr ng-if="$ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer">
+          <td><label class="control-label" for="data_use{{ $ctrl.cert.number }}">Use Case(s)</label></td>
+          <td>
+            <input class="form-control input-sm" type="url" id="data_use{{ $ctrl.cert.number }}" name="data_useCases" ng-model="$ctrl.cert.useCases" ng-maxlength="1024"></input>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.maxlength">Field is too long</div>
+          </td>
+        </tr>
         <tr ng-if="$ctrl.cert.privacySecurityFramework !== null">
           <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework">

@@ -28,6 +28,10 @@ export const CertificationCriteriaEditComponent = {
                 {name: 'True', value: true},
                 {name: 'False', value: false},
             ];
+            this.yesNo = [
+                {name: 'Yes', value: true},
+                {name: 'No', value: false},
+            ];
             this.allMeasures = [
                 {abbreviation: 'MD'},
                 {abbreviation: 'LP'},
