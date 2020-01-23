@@ -11,7 +11,6 @@ export const DeveloperComponent = {
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
-        showFull: '<',
         takeAction: '&',
     },
     controller: class DeveloperComponent {
@@ -60,9 +59,6 @@ export const DeveloperComponent = {
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
-            if (changes.showFull) {
-                this.showFull = angular.copy(changes.showFull.currentValue);
-            }
         }
 
         /*
@@ -88,13 +84,6 @@ export const DeveloperComponent = {
 
         isEffectiveRuleDatePlusOneWeekOn () {
             return this.isOn('effective-rule-date-plus-one-week');
-        }
-
-        isTransparencyAttestationViewable () {
-            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return !this.hasAnyRole(['ROLE_ACB']);
-            }
-            return true;
         }
 
         isTransparencyAttestationEditable () {
