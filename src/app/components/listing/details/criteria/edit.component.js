@@ -6,12 +6,14 @@ export const CertificationCriteriaEditComponent = {
         dismiss: '&',
     },
     controller: class CertificationCriteriaEditController {
-        constructor ($filter, $log, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+        constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
+            this.hasAnyRole = authService.hasAnyRole;
             this.addNewValue = utilService.addNewValue;
             this.extendSelect = utilService.extendSelect;
+            this.isOn = featureFlags.isOn;
             this.CertificationResultTestData = CertificationResultTestData;
             this.CertificationResultTestFunctionality = CertificationResultTestFunctionality;
             this.CertificationResultTestProcedure = CertificationResultTestProcedure;
@@ -27,6 +29,10 @@ export const CertificationCriteriaEditComponent = {
             this.options = [
                 {name: 'True', value: true},
                 {name: 'False', value: false},
+            ];
+            this.yesNo = [
+                {name: 'Yes', value: true},
+                {name: 'No', value: false},
             ];
             this.allMeasures = [
                 {abbreviation: 'MD'},
@@ -48,6 +54,12 @@ export const CertificationCriteriaEditComponent = {
         cancel () {
             this.cert = angular.copy(this.certSave);
             this.dismiss();
+        }
+
+        canEdit () {
+            return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
+                || !this.cert.criterion.removed // ROLE_ACB can only edit when not removed criteria
+                || !this.isOn('effective-rule-date-plus-one-week'); // unless it's the grace period right after RED
         }
 
         isToolDisabled (tool) {
