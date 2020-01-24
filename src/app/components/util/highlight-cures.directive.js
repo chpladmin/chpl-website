@@ -1,23 +1,20 @@
-(function () {
-    'use strict';
-    angular.module('chpl.components')
-        .directive('chplHighlightCures', chplHighlightCures);
-
-    /** @ngInclude */
-    function chplHighlightCures () {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            replace: true,
-            scope: {
-                ngModel: '=',
-            },
-            link: (scope, element) => {
-                scope.$watch('ngModel', value => {
-                    let html = value.replace('(Cures Update)', '<span class="cures-update">(Cures Update)</span>');
-                    element.html(html);
-                });
-            },
-        }
+class HighlightCuresDirective {
+    constructor () {
+        this.restrict = 'A';
+        this.require = 'ngModel';
+        this.replace = true;
+        this.scope = {
+            ngModel: '=',
+        };
     }
-})();
+
+    link (scope, element) {
+        scope.$watch('ngModel', value => {
+            let html = value.replace('(Cures Update)', '<span class="cures-update">(Cures Update)</span>');
+            element.html(html);
+        });
+    }
+}
+angular
+    .module('chpl.components')
+    .directive('chplHighlightCures', () => new HighlightCuresDirective);
