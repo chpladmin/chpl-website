@@ -14,8 +14,8 @@ export const CompareComponent = {
             this.certificationStatus = utilService.certificationStatus;
             this.sortCerts = utilService.sortCert;
             this.sortCqms = utilService.sortCqm;
-            this.products = [];
-            this.productList = [];
+            this.listings = [];
+            this.listingList = [];
             this.allCerts = {};
             this.allCqms = {};
         }
@@ -29,53 +29,51 @@ export const CompareComponent = {
 
         parse () {
             let that = this;
-            for (var i = 0; i < this.compareIds.length; i++) {
-                this.networkService.getListing(this.compareIds[i])
-                    .then(function (product) {
-                        that.updateProductList(product);
-                        that.updateCerts(product);
-                        that.updateCqms(product);
+            this.compareIds.forEach(id => {
+                this.networkService.getListing(id)
+                    .then(listing => {
+                        that.updateListingList(listing);
+                        that.updateCerts(listing);
+                        that.updateCqms(listing);
                         that.fillInBlanks();
                         that.sortAllCerts();
                         that.sortAllCqms();
-                        that.products.push(product);
-                    }, function (error) {
-                        that.$log.error(error);
+                        that.listings.push(listing);
                     });
-            }
+            });
         }
 
         fillInBlanks () {
-            var cert, i, k, needToAddBlank, product;
-            for (i = 0; i < this.productList.length; i++) {
-                product = this.productList[i];
+            var cert, i, k, listing, needToAddBlank;
+            for (i = 0; i < this.listingList.length; i++) {
+                listing = this.listingList[i];
                 for (cert in this.allCerts) {
                     needToAddBlank = true;
                     for (k = 0; k < this.allCerts[cert].values.length; k++) {
-                        if (this.allCerts[cert].values[k].productId === product.id) {
+                        if (this.allCerts[cert].values[k].listingId === listing.id) {
                             needToAddBlank = false;
                         }
                     }
                     if (needToAddBlank) {
                         this.allCerts[cert].values.push({
-                            productId: product.id,
+                            listingId: listing.id,
                             allowed: false,
-                            certificationDate: product.certificationDate,
+                            certificationDate: listing.certificationDate,
                         });
                     }
                 }
                 for (var cqm in this.allCqms) {
                     needToAddBlank = true;
                     for (k = 0; k < this.allCqms[cqm].values.length; k++) {
-                        if (this.allCqms[cqm].values[k].productId === product.id) {
+                        if (this.allCqms[cqm].values[k].listingId === listing.id) {
                             needToAddBlank = false;
                         }
                     }
                     if (needToAddBlank) {
                         this.allCqms[cqm].values.push({
-                            productId: product.id,
+                            listingId: listing.id,
                             allowed: false,
-                            certificationDate: product.certificationDate,
+                            certificationDate: listing.certificationDate,
                         });
                     }
                 }
@@ -99,62 +97,65 @@ export const CompareComponent = {
             for (var cqm in this.allCqms) {
                 this.sortedCqms.push(cqm);
             }
-            this.sortedCqms = this.$filter('orderBy')(this.sortedCqms,this.sortCqms);
+            this.sortedCqms = this.$filter('orderBy')(this.sortedCqms, this.sortCqms);
         }
 
         toggle (elem) {
             this.openCert = this.openCert === elem ? '' : elem;
         }
 
-        updateCerts (product) {
-            var cert;
-            for (var i = 0; i < product.certificationResults.length; i++) {
-                cert = product.certificationResults[i];
-                if (angular.isUndefined(this.allCerts[cert.number])) {
-                    this.allCerts[cert.number] = {number: cert.criterion.number, title: cert.criterion.title, removed: cert.criterion.removed, values: []};
+        updateCerts (listing) {
+            listing.certificationResults.forEach(cert => {
+                let key = cert.number + '-' + cert.title;
+                if (!this.allCerts[key]) {
+                    this.allCerts[key] = {
+                        number: cert.criterion.number,
+                        title: cert.criterion.title,
+                        removed: cert.criterion.removed,
+                        values: [],
+                    };
                 }
-                if (cert.success) {
-                    this.allCerts[cert.number].atLeastOne = true;
-                }
-                this.allCerts[cert.number].values.push({
-                    productId: product.id,
+                this.allCerts[key].atLeastOne = this.allCerts[key].atLeastOne || cert.success;
+                this.allCerts[key].values.push({
+                    listingId: listing.id,
                     allowed: true,
                     success: cert.success,
-                    certificationDate: product.certificationDate,
+                    certificationDate: listing.certificationDate,
                 });
-            }
+            });
         }
 
-        updateCqms (product) {
-            var cqm;
-            for (var i = 0; i < product.cqmResults.length; i++) {
-                cqm = product.cqmResults[i];
+        updateCqms (listing) {
+            listing.cqmResults.forEach(cqm => {
                 if (cqm.cmsId) {
                     cqm.displayId = cqm.cmsId;
                 } else {
                     cqm.displayId = 'NQF-' + cqm.nqfNumber;
                 }
-                if (angular.isUndefined(this.allCqms[cqm.displayId])) {
-                    this.allCqms[cqm.displayId] = {displayId: cqm.displayId, title: cqm.title, values: []};
+                let key = cqm.displayId;
+                if (!this.allCqms[key]) {
+                    this.allCqms[key] = {
+                        displayId: cqm.displayId,
+                        title: cqm.title,
+                        values: [],
+                    };
                 }
-                if (cqm.success) {
-                    this.allCqms[cqm.displayId].atLeastOne = true;
-                }
-                this.allCqms[cqm.displayId].values.push({
-                    productId: product.id,
+                this.allCqms[key].atLeastOne = this.allCqms[key].atLeastOne || cqm.success;
+                this.allCqms[key].values.push({
+                    listingId: listing.id,
                     allowed: true,
                     success: cqm.success,
-                    certificationDate: product.certificationDate,
+                    certificationDate: listing.certificationDate,
                     successVersions: cqm.successVersions,
                 });
-            }
+            });
         }
 
-        updateProductList (product) {
-            this.hasNon2015 = this.hasNon2015 || product.certificationEdition.name !== '2015';
-            this.productList.push({
-                id: product.id,
-                certificationDate: product.certificationDate,
+        updateListingList (listing) {
+            this.hasNon2015 = this.hasNon2015 || listing.certificationEdition.name !== '2015';
+            this.listingList.push({
+                id: listing.id,
+                certificationDate: listing.certificationDate,
             });
         }
     },

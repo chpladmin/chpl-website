@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Compare component', () => {
+    describe('the Compare component', () => {
         let $compile, $log, $q, $stateParams, ctrl, el, mock, networkService, scope;
 
         mock = {
