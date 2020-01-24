@@ -2,7 +2,7 @@
     'use strict';
 
     fdescribe('the Compare component', () => {
-        let $compile, $log, $q, ctrl, el, mock, networkService, scope;
+        let $compile, $log, $q, $stateParams, ctrl, el, mock, networkService, scope;
 
         mock = {
             listing: {
@@ -24,17 +24,18 @@
                     return $delegate;
                 });
             });
-            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$stateParams_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                $stateParams = _$stateParams_;
                 networkService = _networkService_;
                 networkService.getListing.and.returnValue($q.when(mock.listing));
 
                 scope = $rootScope.$new();
-                scope.compareIds = '123';
+                $stateParams.compareIds = '123';
 
-                el = angular.element('<chpl-compare compare-ids="compareIds"></chpl-compare>');
+                el = angular.element('<chpl-compare></chpl-compare>');
 
                 $compile(el)(scope);
                 scope.$digest();

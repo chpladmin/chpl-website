@@ -1,8 +1,8 @@
 export const CompareComponent = {
     templateUrl: 'chpl.compare/compare.html',
-    bindings: {
-        compareIds: '<',
-    },
+    /*    bindings: {
+      compareIds: '<',
+      },*/
     controller: class CompareComponent {
         constructor ($filter, $log, $scope, $stateParams, networkService, utilService) {
             'ngInject'
@@ -24,15 +24,6 @@ export const CompareComponent = {
             if (this.$stateParams.compareIds) {
                 this.compareIds = this.$stateParams.compareIds.split('&');
                 this.parse();
-            }
-        }
-
-        $onChanges (changes) {
-            if (changes.compareIds) {
-                this.compareIds = changes.compareIds.currentValue.split('&');
-                if (this.compareIds && this.compareIds.length > 0) {
-                    this.parse();
-                }
             }
         }
 
