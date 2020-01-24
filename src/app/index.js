@@ -50,7 +50,7 @@ import /* chartsModule from*/ './pages/charts/index';
 import /* chplApiModule from*/ './pages/resources/chpl-api/index';
 import /* cmsLookupModule from*/ './pages/resources/cms-lookup/index';
 import /* collectionsModule from*/ './pages/collections/index';
-import /* compareModule from*/ './pages/compare/index';
+import compare from './pages/compare/index';
 import /* componentsModule from*/ './components/index';
 import dashboard from './pages/dashboard/index';
 import /* downloadModule from*/ './pages/resources/download/index';
@@ -88,6 +88,7 @@ const dependencies = [
     'ui.router',
     'zxcvbn',
     administration.name,
+    compare.name,
     dashboard.name,
     listing.name,
     organizations.name,
@@ -100,7 +101,6 @@ const dependencies = [
     'chpl.chpl_api',
     'chpl.cms_lookup',
     'chpl.collections',
-    'chpl.compare',
     'chpl.components',
     'chpl.constants',
     'chpl.download',

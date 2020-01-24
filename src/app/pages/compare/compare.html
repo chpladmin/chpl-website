@@ -10,76 +10,76 @@
   <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-sm-12">
       <div class="pull-right">
-        <input type="checkbox" name="showAllPossible" id="showAllPossible" ng-model="vm.showAllPossibles"></input> <label for="showAllPossible" class="control-label">See all Certification Criteria / Clinical Quality Measures</label>
+        <input type="checkbox" name="showAllPossible" id="showAllPossible" ng-model="$ctrl.showAllPossibles"></input> <label for="showAllPossible" class="control-label">See all Certification Criteria / Clinical Quality Measures</label>
       </div>
       <table class="table table-striped" aria-live="polite">
         <thead>
           <tr>
             <th scope="col"><span class="sr-only">Category</span></th>
-            <th scope="col" ng-repeat="product in vm.products | orderBy:'certificationDate'">
+            <th scope="col" ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">
               {{ product.product.name }}<br />
               <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}" ng-if="product.certificationEdition.name === '2015'" feature-flag="effective-rule-date"></ai-cms-widget-button>
-              <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}" ng-if="vm.certificationStatus(product) !== 'Retired'" feature-flag="effective-rule-date" feature-flag-hide></ai-cms-widget-button>
+              <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}" ng-if="$ctrl.certificationStatus(product) !== 'Retired'" feature-flag="effective-rule-date" feature-flag-hide></ai-cms-widget-button>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">Developer</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.developer.name }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.developer.name }}</td>
           </tr>
           <tr>
             <th scope="row">Version</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.version.version }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.version.version }}</td>
           </tr>
           <tr>
             <th scope="row">Certification Edition</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.certificationEdition.name }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.certificationEdition.name }}</td>
           </tr>
           <tr>
             <th scope="row">Certification Status</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ vm.certificationStatus(product) }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ $ctrl.certificationStatus(product) }}</td>
           </tr>
-          <tr ng-if="vm.hasNon2015">
+          <tr ng-if="$ctrl.hasNon2015">
             <th scope="row">Practice Type</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.practiceType.name ? product.practiceType.name : 'N/A' }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.practiceType.name ? product.practiceType.name : 'N/A' }}</td>
           </tr>
           <tr>
             <th scope="row">Certifying Body</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.certifyingBody.name }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.certifyingBody.name }}</td>
           </tr>
           <tr>
             <th scope="row">Certification Date</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
           <tr>
             <th scope="row">CHPL Product Number</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.chplProductNumber }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.chplProductNumber }}</td>
           </tr>
           <tr>
             <th scope="row">Number of Open Non-Conformities</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.countOpenNonconformities }}</td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.countOpenNonconformities }}</td>
           </tr>
           <tr>
-            <th scope="row"><a href ng-click="vm.toggle('certifications')" aria-expanded="{{ vm.isShowing('certifications') }}"><i class="fa fa-lg" ng-class="vm.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ vm.isShowing('certifications') ? 'Collapse' : 'Expand' }}</span> Certification Criteria</a></th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.countCerts }} met</td>
+            <th scope="row"><a href ng-click="$ctrl.toggle('certifications')" aria-expanded="{{ $ctrl.isShowing('certifications') }}"><i class="fa fa-lg" ng-class="$ctrl.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ $ctrl.isShowing('certifications') ? 'Collapse' : 'Expand' }}</span> Certification Criteria</a></th>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.countCerts }} met</td>
           </tr>
-          <tr ng-repeat="cert in vm.sortedCerts" ng-if="vm.isShowing('certifications') && (vm.allCerts[cert].atLeastOne || vm.showAllPossibles)" ng-class="{ 'removed' : vm.allCerts[cert].removed }">
+          <tr ng-repeat="cert in $ctrl.sortedCerts" ng-if="$ctrl.isShowing('certifications') && ($ctrl.allCerts[cert].atLeastOne || $ctrl.showAllPossibles)" ng-class="{ 'removed' : $ctrl.allCerts[cert].removed }">
             <th scope="row" class="compare-rowCert">
-              {{ vm.allCerts[cert].number + ": " + vm.allCerts[cert].title }} <button ng-if="vm.allCerts[cert].removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
+              {{ $ctrl.allCerts[cert].number + ": " + $ctrl.allCerts[cert].title }} <button ng-if="$ctrl.allCerts[cert].removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </th>
-            <td ng-repeat="item in vm.allCerts[cert].values | orderBy:'certificationDate'">
+            <td ng-repeat="item in $ctrl.allCerts[cert].values | orderBy:'certificationDate'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
               <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
             </td>
           </tr>
           <tr>
-            <th scope="row"><a href ng-click="vm.toggle('CQMs')" aria-expanded="{{ vm.isShowing('CQMs') }}"><i class="fa fa-lg" ng-class="vm.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ vm.isShowing('CQMs') ? 'Collapse' : 'Expand' }}</span> Clinical Quality Measures</a></th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.countCqms }} met</td>
+            <th scope="row"><a href ng-click="$ctrl.toggle('CQMs')" aria-expanded="{{ $ctrl.isShowing('CQMs') }}"><i class="fa fa-lg" ng-class="$ctrl.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ $ctrl.isShowing('CQMs') ? 'Collapse' : 'Expand' }}</span> Clinical Quality Measures</a></th>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'">{{ product.countCqms }} met</td>
           </tr>
-          <tr ng-repeat="cqm in vm.sortedCqms" ng-if="vm.isShowing('CQMs') && (vm.allCqms[vm.allCqms[cqm].displayId].atLeastOne || vm.showAllPossibles)">
-            <th scope="row" class="compare-rowCert">{{vm.allCqms[cqm].displayId + ": " + vm.allCqms[cqm].title}}</th>
-            <td ng-repeat="item in vm.allCqms[cqm].values | orderBy:'certificationDate'">
+          <tr ng-repeat="cqm in $ctrl.sortedCqms" ng-if="$ctrl.isShowing('CQMs') && ($ctrl.allCqms[$ctrl.allCqms[cqm].displayId].atLeastOne || $ctrl.showAllPossibles)">
+            <th scope="row" class="compare-rowCert">{{$ctrl.allCqms[cqm].displayId + ": " + $ctrl.allCqms[cqm].title}}</th>
+            <td ng-repeat="item in $ctrl.allCqms[cqm].values | orderBy:'certificationDate'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && item.successVersions.length === 0, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
               <strong ng-if="item.successVersions.length > 0">{{ item.successVersions.join(', ') }}</strong>
               <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
@@ -87,7 +87,7 @@
           </tr>
           <tr>
             <th scope="row">View product details</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'"><a ui-sref="product({id: product.id })">details</a></td>
+            <td ng-repeat="product in $ctrl.products | orderBy:'certificationDate'"><a ui-sref="product({id: product.id })">details</a></td>
           </tr>
         </tbody>
       </table>

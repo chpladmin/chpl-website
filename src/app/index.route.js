@@ -1,5 +1,6 @@
 import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state.js';
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state.js';
+import { compareStatesConfig as compareStates } from './pages/compare/compare.state.js';
 import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
@@ -17,6 +18,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(routeConfig)
         .config(administrationStates)
         .config(collectionsStates)
+        .config(compareStates)
         .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
@@ -45,13 +47,6 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
                 controllerAs: 'vm',
                 template: require('./pages/charts/charts.html'),
                 data: { title: 'CHPL Charts' },
-            })
-            .state('compare', {
-                url: '/compare/{compareIds}',
-                controller: 'CompareController',
-                controllerAs: 'vm',
-                template: require('./pages/compare/compare.html'),
-                data: { title: 'CHPL Product Comparison' },
             })
             .state('registration', {
                 abstract: true,
