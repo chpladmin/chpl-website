@@ -32,7 +32,7 @@
 
         vm.certificationStatus = utilService.certificationStatus;
         vm.isBlank = utilService.isBlank;
-        vm.getAttestationStringForCurrentSystemDeveloper = getAttestationStringForCurrentSystemDeveloper;
+        vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
         vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
 
@@ -239,7 +239,8 @@
                 && !vm.isBlank(vm.developer.contact.phoneNumber))
                 && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city)
                 && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
-                && (!vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper())))) {
+                && (vm.getAttestationForCurrentSystemDeveloper())
+                && (!vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)))) {
                 return true;
             }
             vm.populateDeveloperSystemRequirements();
@@ -277,17 +278,18 @@
                     vm.systemRequirements.push('None of the required developer address information'
                         + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
-                if (vm.isBlank(vm.getAttestationStringForCurrentSystemDeveloper())) {
+                if (!vm.getAttestationForCurrentSystemDeveloper() || vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)) {
                     vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
                 }
             }
         }
 
-        function getAttestationStringForCurrentSystemDeveloper () {
+        function getAttestationForCurrentSystemDeveloper () {
             if (vm.developer && vm.developer.transparencyAttestations) {
                 let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
                     return curAttestationObj.acbName === vm.cp.certifyingBody.name;
                 });
+                $log.info(matchingAttestationObj);
                 return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
             }
             return null;
