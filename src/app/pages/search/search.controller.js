@@ -488,7 +488,7 @@
             for (i = 0; i < vm.searchOptions.certificationCriteria.length; i++) {
                 var crit = vm.searchOptions.certificationCriteria[i];
                 obj = {
-                    value: crit.number,
+                    value: crit.id,
                     selected: false,
                     display: crit.number + ': ' + crit.title + (crit.removed ? ' (Removed)' : ''),
                     removed: crit.removed,
