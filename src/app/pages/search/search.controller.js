@@ -491,7 +491,7 @@
                 obj = {
                     value: crit.id,
                     selected: false,
-                    display: crit.number + ': ' + crit.title + '(' + crit.id + ')' + (crit.removed ? ' (Removed)' : ''),
+                    display: crit.number + ': ' + crit.title + (crit.removed ? ' (Removed)' : ''),
                     removed: crit.removed,
                 };
                 switch (crit.number.substring(4,7)) {

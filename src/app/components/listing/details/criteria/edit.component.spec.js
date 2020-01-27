@@ -15,6 +15,7 @@
             ],
             criterion: {
                 number: '170.315 (c)(4)',
+                name: '170.315 (c)(4): Clinical Quality Measures - Filter',
                 removed: false,
             },
         };
