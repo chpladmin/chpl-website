@@ -399,6 +399,7 @@
                     openNonconformityCount: results[i].openNonconformityCount,
                     closedNonconformityCount: results[i].closedNonconformityCount,
                 });
+                results[i].criteriaMet = SPLIT_PRIMARY + results[i].criteriaMet + SPLIT_PRIMARY;
             }
             return results;
         }
@@ -490,7 +491,7 @@
                 obj = {
                     value: crit.id,
                     selected: false,
-                    display: crit.number + ': ' + crit.title + (crit.removed ? ' (Removed)' : ''),
+                    display: crit.number + ': ' + crit.title + '(' + crit.id + ')' + (crit.removed ? ' (Removed)' : ''),
                     removed: crit.removed,
                 };
                 switch (crit.number.substring(4,7)) {
