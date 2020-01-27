@@ -1,4 +1,4 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
     <div class="col-sm-12">
       <h3>Certified Product</h3>
@@ -9,26 +9,26 @@
       <chpl-filter filter-type-name="Listing Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
     </div>
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
-      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady() && $ctrl.canDownload()"><i class="fa fa-bolt"></i> Prepare download</button>
-      <button class="btn btn-ai-success pull-right" disabled ng-if="!$ctrl.canDownload()"><i class="fa fa-ban"></i> Too many results to download</button>
+      <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Certified_Products_{{ $ctrl.filename }}"
               csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Details', 'Activity Date']"
               csv-column-order="['acbName', 'developerName', 'productName', 'edition', 'chplProductNumber', 'friendlyCertificationDate', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
-      <br />
-      <div ng-if="$ctrl.downloadProgress < 100 && $ctrl.downloadProgress > 0">
-        Progress:<br />
-        <uib-progressbar max="100" value="$ctrl.downloadProgress" type="success" title="{{ $ctrl.downloadProgress }}% prepared">
-          {{ $ctrl.downloadProgress }}% prepared
-        </uib-progressbar>
-      </div>
     </div>
   </div>
   <div ng-if="!$ctrl.productId">
     <div class="row form-group form-inline">
       <div class="col-sm-12">
+        <label for="activity-start-upload" class="control-label">Start Date</label>
+        <input type="date" class="form-control" ng-model="$ctrl.activityRange.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
+        <label for="activity-end-upload" class="control-label">End Date</label>
+        <input type="date" class="form-control" ng-model="$ctrl.activityRange.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
+        <button class="btn btn-primary " ng-click="$ctrl.search()" ng-disabled="!$ctrl.validDates()"><i class="fa fa-search"></i> Search</button>
       </div>
+    </div>
+    <div class="row form-group" ng-if="!$ctrl.validDates()">
+      <div class="col-sm-12 text-danger">Start date must be before end date, and no more than {{ $ctrl.activityRange.range }} days apart</div>
     </div>
   </div>
   <div class="row form-group">
@@ -47,22 +47,7 @@
         <option value="|LISTING_UPLOAD|">Upload</option>
         <option value="|LISTING_STATUS_CHANGE|">Status Change</option>
       </select>
-    </div>
-    <div class="col-sm-3">
-      Filter on Activity Date
-        <ai-date-range
-          predicate="date"
-          register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-          register-restore-state="$ctrl.registerRestoreState(restoreState)"
-          ></ai-date-range>
-    </div>
-  </div>
-  <div class="row" ng-if="$ctrl.showLoadingBar()">
-    <div class="col-sm-5">
-      Progress:<br />
-      <uib-progressbar max="100" value="$ctrl.loadProgress.percentage" type="success" title="{{ $ctrl.loadProgress.percentage }}% complete loading">
-        {{ $ctrl.loadProgress.percentage }}% complete loading
-      </uib-progressbar>
+
     </div>
   </div>
   <div class="row" ng-repeat="acb in $ctrl.activeAcbs | orderBy: 'toString()'">

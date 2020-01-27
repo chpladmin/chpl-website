@@ -59,6 +59,7 @@ export const SurveillanceNonconformityEditComponent = {
         }
 
         deleteDoc (docId) {
+            let that = this;
             this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
                 .then(() => {
                     for (var i = 0; i < this.nonconformity.documents.length; i++) {
@@ -66,6 +67,13 @@ export const SurveillanceNonconformityEditComponent = {
                             this.nonconformity.documents.splice(i,1);
                         }
                     }
+                }, (error) => {
+                    if (error.data.error) {
+                        that.deleteMessage = error.data.error;
+                    } else {
+                        that.deleteMessage = 'File was not removed successfully.';
+                    }
+                    that.deleteSuccess = false;
                 });
         }
 
@@ -104,13 +112,13 @@ export const SurveillanceNonconformityEditComponent = {
                     file: this.file,
                 };
                 let that = this;
+                this.uploadErrors = [];
                 this.Upload.upload(this.item).then(response => {
                     that.nonconformity.documents.push({
                         fileName: response.config.data.file.name + ' is pending',
                         fileType: response.config.data.file.type,
                     });
                     that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully.';
-                    that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;
                 }, error => {
@@ -121,7 +129,11 @@ export const SurveillanceNonconformityEditComponent = {
                     } else {
                         that.uploadMessage = 'File was not uploaded successfully.';
                     }
-                    that.uploadErrors = error.data.errorMessages;
+                    if (error.data.error) {
+                        that.uploadErrors.push(error.data);
+                    } else if (error.data.errorMessages) {
+                        that.uploadErrors.push(error.data.errorMessages);
+                    }
                     that.uploadSuccess = false;
                     that.file = undefined;
                 }, event => {

@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "10.34.0",
+  "version": "10.36.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -8,6 +8,7 @@
     "html-lint": "htmllint src/app/**/*.html",
     "html-lint:verbose": "htmllint --rc .htmllintrc.verbose src/app/**/*.html",
     "start": "webpack-dev-server --env.server",
+    "start:prod": "webpack-dev-server --env.server --env.NODE_ENV=production",
     "profile": "webpack --profile --json > test_reports/stats.json",
     "test": "karma start --single-run",
     "test:auto": "karma start",
@@ -40,7 +41,7 @@
     "angularjs-toaster": "^2.2.0",
     "angulartics": "^1.6.0",
     "angulartics-google-tag-manager": "^0.0.1",
-    "bootstrap-sass": "3.3.7",
+    "bootstrap-sass": "3.4.1",
     "cytoscape": "2.6",
     "font-awesome": "^4.7.0",
     "jspdf": "^1.4.1",

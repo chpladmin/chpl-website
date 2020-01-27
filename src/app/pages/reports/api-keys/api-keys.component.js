@@ -51,7 +51,7 @@ export const ReportsApiKeysComponent = {
         }
 
         search () {
-            this.networkService.getApiUserActivity(this.dateAdjust(this.activityRange))
+            this.networkService.getActivityMetadata('api-keys', this.dateAdjust(this.activityRange))
                 .then(results => {
                     this.apiResponse = results.map(item => {
                         item.friendlyCreationDate = this.$filter('date')(item.date, 'MMM d, y H:mm:ss');

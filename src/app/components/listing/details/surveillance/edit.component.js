@@ -6,12 +6,13 @@ export const SurveillanceEditComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceEditController {
-        constructor ($log, $uibModal, authService, networkService, toaster, utilService) {
+        constructor ($log, $uibModal, authService, featureFlags, networkService, toaster, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal
             this.authService = authService;
             this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.toaster = toaster;
             this.utilService = utilService;
@@ -46,6 +47,10 @@ export const SurveillanceEditComponent = {
         }
 
         addRequirement () {
+            let data = angular.copy(this.data);
+            if (this.hasAnyRole(['ROLE_ACB']) && this.isOn('effective-rule-date-plus-one-week')) {
+                data.surveillanceRequirements.criteriaOptions = data.surveillanceRequirements.criteriaOptions.filter(option => !option.removed);
+            }
             this.modalInstance = this.$uibModal.open({
                 component: 'aiSurveillanceRequirementEdit',
                 animation: false,
@@ -57,7 +62,7 @@ export const SurveillanceEditComponent = {
                     randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
                     requirement: () => { return {nonconformities: []} },
                     surveillanceId: () => this.surveillance.id,
-                    surveillanceTypes: () => this.data,
+                    surveillanceTypes: () => data,
                     workType: () => 'add',
                 },
                 size: 'lg',
@@ -88,26 +93,28 @@ export const SurveillanceEditComponent = {
             let that = this;
             if (this.reason) {
                 this.getAssociatedComplaints().then(complaints => {
+                    let complaintsString;
                     if (Array.isArray(complaints) && complaints.length > 0) {
-                        let complaintsString = complaints.map(complaint => {
+                        complaintsString = complaints.map(complaint => {
                             return complaint.acbComplaintId;
                         }).join(', ');
-
-                        that.toaster.pop({
-                            type: 'success',
-                            body: 'Surveillance has been removed from the following complaints: ' + complaintsString,
-                        });
                     }
 
                     that.networkService.deleteSurveillance(that.surveillance.id, that.reason)
                         .then(response => {
                             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                                if (complaintsString) {
+                                    that.toaster.pop({
+                                        type: 'success',
+                                        body: 'Surveillance has been removed from the following complaints: ' + complaintsString,
+                                    });
+                                }
                                 that.close({ $value: response });
                             } else {
                                 that.errorMessages = [response];
                             }
                         }, error => {
-                            that.errorMessages = [error.statusText];
+                            that.errorMessages = [error.data.error ? error.data.error : error.statusText];
                         });
                 });
             }
@@ -235,6 +242,8 @@ export const SurveillanceEditComponent = {
                     }, error => {
                         if (error.data.errorMessages && error.data.errorMessages.length > 0) {
                             this.errorMessages = error.data.errorMessages;
+                        } else if (error.data.error) {
+                            this.errorMessages = [error.data.error];
                         } else {
                             this.errorMessages = [error.statusText];
                         }

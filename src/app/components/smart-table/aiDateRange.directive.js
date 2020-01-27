@@ -114,11 +114,15 @@
             if (predicateSearch) {
                 if (predicateSearch.after) {
                     vm.after = new Date(predicateSearch.after);
+                } else {
+                    vm.after = undefined;
                 }
                 if (predicateSearch.before) {
                     var before = new Date(predicateSearch.before);
                     before.setUTCDate(before.getUTCDate() - 1);
                     vm.before = before;
+                } else {
+                    vm.before = undefined;
                 }
                 vm.filterChanged();
             }

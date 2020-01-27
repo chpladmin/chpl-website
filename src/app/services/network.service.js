@@ -139,30 +139,37 @@ export class NetworkService {
     }
 
     getAcbs (editable) {
-        return this.apiGET('/acbs?editable=' + editable, true);
+        return this.apiGET('/acbs?editable=' + editable, {forceReload: true});
     }
 
     getAccessibilityStandards () {
         return this.apiGET('/data/accessibility_standards');
     }
 
-    getActivityMetadata (key, activityRange) {
+    getActivityMetadata (key, options) {
         let call = '/activity/metadata/' + key;
         let params = [];
-        if (activityRange && activityRange.startDate) {
-            params.push('start=' + activityRange.startDate.getTime());
+        let headerOptions = {};
+        if (options && options.ignoreLoadingBar) {
+            headerOptions.ignoreLoadingBar = true;
         }
-        if (activityRange && activityRange.endDate) {
-            params.push('end=' + activityRange.endDate.getTime());
+        if (options && options.startDate) {
+            params.push('start=' + options.startDate.getTime());
+        }
+        if (options && options.endDate) {
+            params.push('end=' + options.endDate.getTime());
+        }
+        if (options && options.pageNum) {
+            params.push('pageNum=' + options.pageNum);
         }
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
-        return this.apiGET(call);
+        return this.apiGET(call, headerOptions);
     }
 
-    getActivityById (id) {
-        return this.apiGET('/activity/' + id);
+    getActivityById (id, options = {}) {
+        return this.apiGET('/activity/' + id, options);
     }
 
     getAgeRanges () {
@@ -183,7 +190,7 @@ export class NetworkService {
     }
 
     getAnnouncements (pending, forceReload) {
-        return this.apiGET('/announcements?future=' + pending, forceReload);
+        return this.apiGET('/announcements?future=' + pending, {forceReload: forceReload});
     }
 
     getAnnualSurveillanceReports () {
@@ -216,11 +223,6 @@ export class NetworkService {
         return this.apiGET('/files/api_documentation/details');
     }
 
-    getApiUserActivity (activityRange) {
-        var call = '/activity/metadata/api-keys';
-        return this.getActivity(call, activityRange);
-    }
-
     getApiUsers (includeDeleted) {
         if (includeDeleted) {
             return this.apiGET('/key?includeDeleted=true');
@@ -239,7 +241,7 @@ export class NetworkService {
     }
 
     getAtls (editable) {
-        return this.apiGET('/atls?editable=' + editable, true);
+        return this.apiGET('/atls?editable=' + editable, {forceReload: true});
     }
 
     getCertBodies () {
@@ -306,10 +308,6 @@ export class NetworkService {
         return this.apiGET('/complaints');
     }
 
-    getComplaintStatusTypes () {
-        return this.apiGET('/data/complaint-status-types');
-    }
-
     getComplainantTypes () {
         return this.apiGET('/data/complainant-types');
     }
@@ -356,7 +354,7 @@ export class NetworkService {
     }
 
     getFuzzyTypes (forceReload) {
-        return this.apiGET('/data/fuzzy_choices', forceReload);
+        return this.apiGET('/data/fuzzy_choices', {forceReload: forceReload});
     }
 
     getIncumbentDevelopersStatistics () {
@@ -376,11 +374,11 @@ export class NetworkService {
     }
 
     getListing (listingId, forceReload) {
-        return this.apiGET('/certified_products/' + listingId + '/details', forceReload);
+        return this.apiGET('/certified_products/' + listingId + '/details', {forceReload: forceReload});
     }
 
     getListingBasic (listingId, forceReload) {
-        return this.apiGET('/certified_products/' + listingId, forceReload);
+        return this.apiGET('/certified_products/' + listingId, {forceReload: forceReload});
     }
 
     getListingCountStatistics () {
@@ -538,11 +536,11 @@ export class NetworkService {
             .then(function (response) {
                 data.nonconformityStatusTypes = response;
             });
-        this.apiGET('/data/surveillance_requirements')
+        this.apiGET('/data/surveillance-requirements')
             .then(function (response) {
                 data.surveillanceRequirements = response;
             });
-        this.apiGET('/data/nonconformity_types')
+        this.apiGET('/data/nonconformity-types')
             .then(function (response) {
                 data.nonconformityTypes = response;
             });
@@ -649,7 +647,7 @@ export class NetworkService {
     }
 
     keepalive () {
-        return this.apiGET('/auth/keep_alive');
+        return this.apiGET('/auth/keep_alive', {ignoreLoadingBar: true});
     }
 
     login (userObj) {
@@ -807,26 +805,19 @@ export class NetworkService {
             .then(response => response, response => this.$q.reject(response));
     }
 
-    apiGET (endpoint, forceReload) {
-        if (forceReload) {
-            return this.$http.get(this.API + endpoint, {headers: {'Cache-Control': 'no-cache'}})
-                .then(response => {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return this.$q.reject(response.data);
-                    }
-                }, error => this.$q.reject(error));
-        } else {
-            return this.$http.get(this.API + endpoint)
-                .then(response => {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return this.$q.reject(response.data);
-                    }
-                }, error => this.$q.reject(error));
+    apiGET (endpoint, options = {}) {
+        let headers = {}
+        if (options.forceReload) {
+            headers['Cache-Control'] = 'no-cache';
         }
+        return this.$http.get(this.API + endpoint, {data: '', headers: headers, ignoreLoadingBar: options.ignoreLoadingBar})
+            .then(response => {
+                if (angular.isObject(response.data)) {
+                    return response.data;
+                } else {
+                    return this.$q.reject(response.data);
+                }
+            }, error => this.$q.reject(error));
     }
 
     apiPOST (endpoint, postObject) {
