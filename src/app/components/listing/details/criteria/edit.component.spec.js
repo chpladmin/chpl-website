@@ -150,26 +150,6 @@
                 });
             });
 
-            describe('with relation to test data and test procedures', () => {
-                it('should know how many test data are available to select', () => {
-                    expect(ctrl.availableTestData.length).toBe(2);
-                });
-
-                it('should know how many test procedures are available to select', () => {
-                    expect(ctrl.availableTestProcedures.length).toBe(2);
-                });
-
-                it('should know how what test data are available to select', () => {
-                    expect(ctrl.availableTestData[0].name).toBe('NCQA eCQM Test Method');
-                    expect(ctrl.availableTestData[1].name).toBe('ONC Test Method');
-                });
-
-                it('should know how many test procedures are available to select', () => {
-                    expect(ctrl.availableTestProcedures[0].name).toBe('NCQA eCQM Test Method');
-                    expect(ctrl.availableTestProcedures[1].name).toBe('ONC Test Method');
-                });
-            });
-
             describe('with relation to test functionality', () => {
                 it('should be sorted by name', () => {
                     expect(ctrl.sortedTestFunctionalities[0].name).toBe('(a)(1)(i)')
