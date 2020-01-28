@@ -97,7 +97,8 @@
 
             function saveCert (cert) {
                 for (let i = 0; i < vm.product.certificationResults.length; i++) {
-                    if (vm.product.certificationResults[i].number === cert.number) {
+                    if (vm.product.certificationResults[i].number === cert.number
+                        && vm.product.certificationResults[i].title === cert.title) {
                         vm.product.certificationResults[i] = cert;
                     }
                 }
