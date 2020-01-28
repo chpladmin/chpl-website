@@ -57,7 +57,10 @@
                 vm.searchText = 'Search by Developer, Product, Version, or CHPL ID';
             }
             setFilterInfo();
-            vm.loadResults();
+            networkService.getSearchOptions().then(options => {
+                vm.certificationCriteria = options.certificationCriteria;
+                vm.loadResults();
+            });
         }
 
         function hasResults () {
@@ -104,6 +107,7 @@
 
         function refreshResults () {
             networkService.getCollection(vm.collectionKey).then(function (response) {
+                response.certificationCriteria = vm.certificationCriteria;
                 vm.allCps = collectionsService.translate(vm.collectionKey, response);
                 vm.isPreLoading = false;
             }, function (error) {

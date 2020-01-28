@@ -5,7 +5,7 @@
         .factory('collectionsService', collectionsService);
 
     /** @ngInject */
-    function collectionsService (SPLIT_PRIMARY) {
+    function collectionsService ($log, SPLIT_PRIMARY) {
         var service = {
             translate: translate,
         }
@@ -16,7 +16,7 @@
         function translate (key, array) {
             switch (key) {
             case 'apiDocumentation':
-                return apiDocumentation(array.results);
+                return apiDocumentation(array.results, array.certificationCriteria);
             case 'bannedDevelopers':
                 return bannedDevelopers(array);
             case 'correctiveAction':
@@ -26,7 +26,7 @@
             case 'inactiveCertificates':
                 return inactiveCertificates(array.results);
             case 'sed':
-                return sed(array.results);
+                return sed(array.results, array.certificationCriteria);
             case 'transparencyAttestations':
                 return transparencyAttestations(array);
                 // no default
@@ -46,20 +46,19 @@
          *   - 170.315 (g)(9)
          *   - 170.315 (g)(10)
          */
-        function apiDocumentation (array) {
-            var ret = [];
-            var cp;
-            for (var i = 0; i < array.length; i ++) {
-                cp = array[i];
-                if (cp.edition === '2015' && (cp.criteriaMet.indexOf('170.315 (g)(7)') > -1
-                                              || cp.criteriaMet.indexOf('170.315 (g)(8)') > -1
-                                              || cp.criteriaMet.indexOf('170.315 (g)(9)') > -1
-                                              || cp.criteriaMet.indexOf('170.315 (g)(10)') > -1)) {
-                    cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-
-                    ret.push(cp);
-                }
-            }
+        function apiDocumentation (array, certificationCriteria) {
+            let applicableCriteria = certificationCriteria
+                .filter(cc => ((cc.number === '170.315 (g)(7)' && cc.title === 'Application Access - Patient Selection')
+                               || (cc.number === '170.315 (g)(8)' && cc.title === 'Application Access - Data Category')
+                               || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request')
+                               || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request (Cures Update)')
+                               || (cc.number === '170.315 (g)(10)' && cc.title === 'Standardized API for Patient and Population Services')))
+                .map(cc => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
+            let ret = array.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
+                .map(listing => {
+                    listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
+                    return listing;
+                });
             return ret;
         }
 
@@ -164,23 +163,17 @@
 
         /*
          * Listings are part of this collection if:
-         * - 2014 or 2015 Edition and
-         * - at least one of:
-         *   - 170.314 (g)(3)
-         *   - 170.315 (g)(3)
+         *   they have 170.315 (g)(3)
          */
-        function sed (array) {
-            var ret = [];
-            var cp;
-            for (var i = 0; i < array.length; i ++) {
-                cp = array[i];
-                if ((/*cp.edition === '2014' || */cp.edition === '2015') && (cp.criteriaMet.indexOf('170.314 (g)(3)') > -1 || cp.criteriaMet.indexOf('170.315 (g)(3)') > -1)) {
-
-                    cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-
-                    ret.push(cp);
-                }
-            }
+        function sed (array, certificationCriteria) {
+            let applicableCriteria = certificationCriteria
+                .filter(cc => (cc.number === '170.315 (g)(3)' && cc.title === 'Safety-Enhanced Design'))
+                .map(cc => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
+            let ret = array.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
+                .map(listing => {
+                    listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
+                    return listing;
+                });
             return ret;
         }
 
