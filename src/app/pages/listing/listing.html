@@ -107,7 +107,7 @@
             <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
           </div>
           <span ng-if="$ctrl.listing.transparencyAttestation">
-            <div class="product-element" id="listing-information-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
+            <div class="product-element" id="listing-information-transparency-attestation" ng-if="! $ctrl.listing.transparencyAttestation.removed">
               <h2 class="product-heading">Transparency Attestation</h2>
               <p>{{ $ctrl.listing.transparencyAttestation }}</p>
             </div>
@@ -117,7 +117,7 @@
               <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
               <div class="clearfix"></div>
             </div>
-            <div class="product-element removed" id="listing-information-transparency-attestation" feature-flag="effective-rule-date">
+            <div class="product-element removed" id="listing-information-transparency-attestation" ng-if="$ctrl.listing.transparencyAttestation.removed">
               <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This requirement has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
               <h2 class="product-heading">Transparency Attestation</h2>
               <p>{{ $ctrl.listing.transparencyAttestation }}</p>

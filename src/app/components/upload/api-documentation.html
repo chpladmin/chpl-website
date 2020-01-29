@@ -12,7 +12,7 @@
     <form class="form form-horizontal" name="$ctrl.documentForm">
       <div class="row">
         <div ng-class="$ctrl.file ? 'col-sm-3' : 'col-sm-12'">
-          <button type="button" class="btn btn-default" ngf-select ng-model="$ctrl.file" name="file" id="upload-button">Choose file to upload</button>
+          <button type="button" class="btn btn-default" ngf-select ng-model="$ctrl.file" name="file" id="upload-button-api">Choose file to upload</button>
         </div>
         <div class="col-sm-3" ng-if="$ctrl.file">
           <strong>Filename: </strong>{{ $ctrl.file.name }}

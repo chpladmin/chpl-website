@@ -156,10 +156,26 @@
                 Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
                 Self-developer: {{ vm.activeDeveloper.selfDeveloper ? 'Yes' : 'No' }}<br />
                 <span ng-if="vm.isTransparencyAttestationViewable()">
-                  Transparency Attestation:<br />
-                  <ul>
-                    <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
-                  </ul>
+                  <div class="removed" ng-if="vm.isTransparencyAttestationRemoved()">
+                    <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program."
+                      tooltip-trigger="'mouseenter focus click'">
+                      <span class="sr-only">
+                        This requirement has been removed from the Program.
+                      </span>
+                      <i class="fa fa-info-circle fa-lg"></i>
+                    </button>
+                    Transparency Attestation:<br />
+                    <ul>
+                      <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation.transparencyAttestation ? trans.attestation.transparencyAttestation : 'None' }}</li>
+                    </ul>
+                  </div>
+                  <div ng-if="!vm.isTransparencyAttestationRemoved()">
+                    Transparency Attestation:<br />
+                    <ul>
+                      <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}:
+                        {{ trans.attestation.transparencyAttestation ? trans.attestation.transparencyAttestation : 'None' }}</li>
+                    </ul>
+                  </div>
                 </span>
                 <strong>Contact information</strong><br />
                 <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
