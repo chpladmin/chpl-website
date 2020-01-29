@@ -99,9 +99,7 @@
         <button class="btn btn-primary btn-sm"
                 ng-click="$ctrl.removeCriterion(criterion)"
                 id="remove-criteria-{{ criterion.certificationCriterion.id }}">
-          <span class="sr-only">Remove </span>
-          {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
-          <i class="fa fa-times"></i>
+          <span class="sr-only">Remove </span> {{ criterion.certificationCriterion.number }}: {{ criterion.certificationCriterion.title }} <i class="fa fa-times"></i>
         </button>
         &nbsp;
       </span>
@@ -118,7 +116,7 @@
         </ul>
       </div>
       <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.criterion"
-              ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
+              ng-options="(criteria.number + ': ' + criteria.title) for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
               ng-change="$ctrl.selectCriteria()">
       </select>
     </div>
