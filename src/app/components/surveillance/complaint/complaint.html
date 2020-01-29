@@ -97,8 +97,8 @@
     <div class="selected-items-container" ng-if="$ctrl.complaint.criteria && $ctrl.complaint.criteria.length !== 0">
       <span ng-repeat="criterion in $ctrl.complaint.criteria">
         <button class="btn btn-primary btn-sm"
-          ng-click="$ctrl.removeCriterion(criterion)"
-          id="remove-criteria-{{ criterion.certificationCriterion.id }}">
+                ng-click="$ctrl.removeCriterion(criterion)"
+                id="remove-criteria-{{ criterion.certificationCriterion.id }}">
           <span class="sr-only">Remove </span>
           {{ criterion.certificationCriterion.certificationEdition }} - {{ criterion.certificationCriterion.number }}
           <i class="fa fa-times"></i>
@@ -108,18 +108,18 @@
     </div>
     <div class="input-group">
       <div class="input-group-btn" uib-dropdown>
-        <button type="button" id="select-edition" class="btn btn-default input-group-btn-adjust dropdown-toggle"
-          uib-dropdown-toggle>
+        <button type="button" id="select-edition" class="btn btn-default input-group-btn-adjust dropdown-toggle" uib-dropdown-toggle>
           {{ $ctrl.edition.name }} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="select-edition">
-          <li ng-repeat="edition in $ctrl.editions | orderBy: 'name' : reverse"><a
-              ng-click="$ctrl.selectEdition(edition)"> {{ edition.name }}</a></li>
+          <li ng-repeat="edition in $ctrl.editions | orderBy: 'name' : reverse">
+            <a ng-click="$ctrl.selectEdition(edition)"> {{ edition.name }}</a>
+          </li>
         </ul>
       </div>
       <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.criterion"
-        ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
-        ng-change="$ctrl.selectCriteria()">
+              ng-options="criteria.number for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
+              ng-change="$ctrl.selectCriteria()">
       </select>
     </div>
   </div>
@@ -137,8 +137,8 @@
     <div class="selected-items-container" ng-if="$ctrl.complaint.listings && $ctrl.complaint.listings !== 0">
       <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
         <button class="btn btn-primary btn-sm"
-          ng-click="$ctrl.removeListing(listing)"
-          id="remove-listing-{{ listing.listingId }}">
+                ng-click="$ctrl.removeListing(listing)"
+                id="remove-listing-{{ listing.listingId }}">
           <span class="sr-only">Remove item </span>
           {{ listing.chplProductNumber }}
           <i class="fa fa-times"></i>
@@ -147,11 +147,11 @@
       </span>
     </div>
     <script type="text/ng-template" id="listingCustomTemplate.html">
-      <a>
-        <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
-        &nbsp;
-        <span><em>{{ match.model.developer}} - {{ match.model.product }}</em></span>
-      </a>
+    <a>
+    <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    &nbsp;
+    <span><em>{{ match.model.developer}} - {{ match.model.product }}</em></span>
+    </a>
     </script>
     <input name="listings"
            id="listings"
@@ -172,8 +172,8 @@
     <div class="selected-items-container" ng-if="$ctrl.complaint.surveillances && $ctrl.complaint.surveillances.length !== 0">
       <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
         <button class="btn btn-primary btn-sm"
-          ng-click="$ctrl.removeSurveillance(surveillance)"
-          id="remove-listing-{{ surveillance.surveillance.id }}">
+                ng-click="$ctrl.removeSurveillance(surveillance)"
+                id="remove-listing-{{ surveillance.surveillance.id }}">
           <span class="sr-only">Remove </span>
           {{ surveillance.surveillance.chplProductNumber }} - {{ surveillance.surveillance.friendlyId }}
           <i class="fa fa-times"></i>
