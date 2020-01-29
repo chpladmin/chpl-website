@@ -393,6 +393,10 @@ export class NetworkService {
         return this.apiGET('/schedules/triggers');
     }
 
+    getScheduledSystemJobs () {
+        return this.apiGET('/schedules/triggers?jobType=system');
+    }
+
     getScheduleJobs () {
         return this.apiGET('/schedules/jobs');
     }

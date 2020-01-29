@@ -1,8 +1,9 @@
 export const JobsScheduledTriggersComponent = {
     templateUrl: 'chpl.administration/jobs/scheduled/triggers.html',
     bindings: {
-        triggers: '<',
+        scheduledSystemJobs: '<',
         takeAction: '&',
+        triggers: '<',
     },
     controller: class JobsScheduledTriggersComponent {
         constructor ($log, SPLIT_PRIMARY) {
@@ -25,6 +26,9 @@ export const JobsScheduledTriggersComponent = {
                     }
                     return trigger;
                 });
+            }
+            if (changes.scheduledSystemJobs) {
+                this.scheduledSystemJobs = angular.copy(changes.scheduledSystemJobs.currentValue);
             }
         }
 
