@@ -97,7 +97,11 @@
                     name: vm.cp.developer.name,
                     status: vm.developer.status,
                     statusEvents: vm.developer.statusEvents,
-                    transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
+                    transparencyAttestations: [{
+                        acbId: vm.cp.certifyingBody.id,
+                        acbName: vm.cp.certifyingBody.name,
+                        attestation: { transparencyAttestation: vm.cp.transparencyAttestation.transparencyAttestation },
+                    }],
                     website: vm.cp.developer.website,
                 },
                 developerIds: [vm.cp.developer.developerId],
@@ -289,7 +293,6 @@
                 let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
                     return curAttestationObj.acbName === vm.cp.certifyingBody.name;
                 });
-                $log.info(matchingAttestationObj);
                 return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
             }
             return null;
