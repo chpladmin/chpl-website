@@ -137,6 +137,13 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.maxlength">Website is too long</div>
     </div>
+    <div class="form-group">
+      <label for="self-developer">Self-developer</label>
+      <select class="input-sm form-control" ng-model="vm.developer.selfDeveloper" id="self-developer" name="selfDeveloper">
+        <option ng-value="true">Yes</option>
+        <option ng-value="false">No</option>
+      </select>
+    </div>
     <div class="form-group" ng-if="vm.isTransparencyAttestationEditable()" ng-repeat="acb in vm.activeAcbs | orderBy:'toString()'">
       <label for="developer-transparency-{{acb}}">{{ acb }} Transparency Attestation</label>
       <select class="input-sm form-control" ng-model="vm.developer.transMap[acb].transparencyAttestation" id="developer-transparency-{{acb}}" name="developerTransparency{{acb}}">
