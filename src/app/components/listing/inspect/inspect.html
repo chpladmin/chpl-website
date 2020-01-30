@@ -98,15 +98,7 @@
               Zip: {{ vm.cp.developer.address.zipcode }}<br />
               Country: {{ vm.cp.developer.address.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
-              <span ng-if="vm.isTransparencyAttestationViewable() && !vm.cp.transparencyAttestation.removed">Transparency Attestation: {{ vm.cp.transparencyAttestation.transparencyAttestation }}<br /></span>
-              <div class="product-element removed" id="developer-transparency-attestation" ng-if="vm.isTransparencyAttestationViewable() && vm.cp.transparencyAttestation.removed">
-                <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program."
-                  tooltip-trigger="'mouseenter focus click'">
-                  <span class="sr-only">
-                    This requirement has been removed from the Program.
-                  </span>
-                  <i class="fa fa-info-circle fa-lg"></i>
-                </button>
+              <div ng-if="vm.cp.transparencyAttestation && vm.cp.transparencyAttestation.transparencyAttestation">
                 Transparency Attestation: {{ vm.cp.transparencyAttestation.transparencyAttestation }}
               </div>
               <strong>Contact information</strong><br />

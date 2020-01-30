@@ -34,7 +34,6 @@
         vm.isBlank = utilService.isBlank;
         vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
-        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
 
         vm.isOn = featureFlags.isOn;
 
@@ -296,13 +295,6 @@
                 return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
             }
             return null;
-        }
-
-        function isTransparencyAttestationViewable () {
-            if (vm.isOn('effective-rule-date-plus-one-week')) {
-                return !vm.isAcbAdmin;
-            }
-            return true;
         }
 
         function cancel () {
