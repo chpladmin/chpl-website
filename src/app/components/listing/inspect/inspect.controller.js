@@ -108,6 +108,9 @@
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
             }
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                delete dev.developer.transparencyAttestations;
+            }
             networkService.updateDeveloper(dev)
                 .then(function () {
                     vm.loadDev();
