@@ -31,12 +31,13 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
+    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, featureFlags, networkService) {
         var vm = this;
 
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.isFilterActive = isFilterActive;
+        vm.isOn = featureFlags.isOn;
         vm.loadResults = loadResults;
         vm.parseDataElement = parseDataElement;
         vm.refreshResults = refreshResults;
@@ -73,7 +74,8 @@
         }
 
         function isFilterActive (key) {
-            return vm.filters && vm.filters.length > 0 && vm.filters.indexOf(key) > -1;
+            return vm.filters && vm.filters.length > 0 && vm.filters.indexOf(key) > -1
+                && !(vm.isOn('effective-rule-date') && vm.collectionKey === 'inactiveCertificates' && key === 'edition');
         }
 
         function loadResults () {
