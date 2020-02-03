@@ -91,10 +91,16 @@ export const DeveloperComponent = {
         }
 
         isTransparencyAttestationEditable () {
-            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                return true;
             } else {
-                return this.isEffectiveRuleDateOn();
+                if (this.isEffectiveRuleDateOn()) {
+                    return true;
+                } else if (this.isEffectiveRuleDatePlusOneWeekOn()) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         }
 
