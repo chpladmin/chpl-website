@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 10.36.0
+_27 January 2020_
+
+### Flagged Features
+* Show new criteria on API Documentation page
+* Do not allow ONC-ACBs to edit 2014 listings
+* Add new Listing Reports page
+
+### Features
+* Disable editing of certification criteria under certain conditions
+* Handle new criteria fields for view/edit
+* Display Developers on public page w/Products/Versions/Listings
+
+---
+
 ## Version 10.35.0
 _2 January 2020_
 

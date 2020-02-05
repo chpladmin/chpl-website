@@ -140,25 +140,15 @@
 
         /*
          * Listings are part of this collection if:
-         * - 2014 or 2015 Edition and
          * - Certification status = Withdrawn by Developer
          */
         function inactiveCertificates (array ) {
-            var ret = [];
-            var cp;
-            var statuses = [
-                'Withdrawn by Developer',
-            ];
-            for (var i = 0; i < array.length; i ++) {
-                cp = array[i];
-                if (cp.edition !== '2011' && statuses.indexOf(cp.certificationStatus) > -1) {
-
+            return array
+                .filter(cp => cp.certificationStatus === 'Withdrawn by Developer')
+                .map(cp => {
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-
-                    ret.push(cp);
-                }
-            }
-            return ret;
+                    return cp;
+                });
         }
 
         /*

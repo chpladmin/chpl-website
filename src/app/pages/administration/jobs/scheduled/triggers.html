@@ -1,7 +1,7 @@
 <span>
-  <h3>Currently Scheduled Jobs</h3>
+  <h3>Currently Scheduled User Jobs</h3>
   <p ng-if="!$ctrl.triggers || $ctrl.triggers.length === 0">
-    No Jobs are scheduled
+    No User Jobs are scheduled
   </p>
   <table class="table table-condensed" st-table="$ctrl.displayedTriggers" st-safe-src="$ctrl.triggers" ng-if="$ctrl.triggers && $ctrl.triggers.length > 0">
     <thead>
@@ -20,6 +20,30 @@
           </ul>
         </td>
         <td><button class="btn btn-ai-success" ng-click="$ctrl.editTrigger(trigger)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ trigger.email }}</span></button></td>
+      </tr>
+    </tbody>
+  </table>
+</span>
+<span>
+  <h3>Currently Scheduled System Jobs</h3>
+  <p ng-if="!$ctrl.scheduledSystemJobs || $ctrl.scheduledSystemJobs.length === 0">
+    No System Jobs are scheduled
+  </p>
+  <table class="table table-condensed" st-table="$ctrl.displayedScheduledSystemJobs" st-safe-src="$ctrl.scheduledSystemJobs" ng-if="$ctrl.scheduledSystemJobs && $ctrl.scheduledSystemJobs.length > 0">
+    <thead>
+      <tr>
+        <th scope="col" class="search-header" st-sort="name" st-skip-natural="true">Job Name</th>
+        <th scope="col">Description</th>
+        <th scope="col" class="search-header" st-sort="nextRunDate" st-skip-natural="true" st-sort-default="true">Next Run Date</th>
+        <th scope="col" class="search-header" st-sort="triggerScheduleType" st-skip-natural="true">Trigger Schedule Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="scheduledSystemJob in $ctrl.displayedScheduledSystemJobs track by $index">
+        <td>{{ scheduledSystemJob.name }}</td>
+        <td>{{ scheduledSystemJob.description }}</td>
+        <td>{{ scheduledSystemJob.nextRunDate ? (scheduledSystemJob.nextRunDate | date:'yyyy-MM-dd HH:mm:ss Z') : 'In Progress' }}</td>
+        <td>{{ scheduledSystemJob.triggerScheduleType }}</td>
       </tr>
     </tbody>
   </table>

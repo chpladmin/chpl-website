@@ -1123,9 +1123,17 @@
                 $httpBackend.flush();
             });
 
-            it('should getSearchOptions', () => {
-                $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, {data: 'response'});
-                networkService.getSearchOptions().then(response => {
+            it('should getScheduledSystemJobs', () => {
+                $httpBackend.expectGET(/^\/rest\/schedules\/triggers\?jobType=system$/).respond(200, {data: 'response'});
+                networkService.getScheduledSystemJobs().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getScheduleJobs', () => {
+                $httpBackend.expectGET(/^\/rest\/schedules\/jobs$/).respond(200, {data: 'response'});
+                networkService.getScheduleJobs().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1139,9 +1147,9 @@
                 $httpBackend.flush();
             });
 
-            it('should getScheduleJobs', () => {
-                $httpBackend.expectGET(/^\/rest\/schedules\/jobs$/).respond(200, {data: 'response'});
-                networkService.getScheduleJobs().then(response => {
+            it('should getSearchOptions', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, {data: 'response'});
+                networkService.getSearchOptions().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
