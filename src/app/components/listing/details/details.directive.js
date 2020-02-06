@@ -102,6 +102,7 @@
                         vm.product.certificationResults[i] = cert;
                     }
                 }
+                vm.updateCs();
             }
 
             function sortCerts (cert) {
@@ -163,16 +164,20 @@
             }
 
             function updateCs () {
-                for (var i = 0; i < vm.cqms.length; i++) {
-                    vm.cqms[i].criteria = [];
-                    if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
+                vm.cqms.forEach(cqm => {
+                    cqm.criteria = [];
+                    if (cqm.success || cqm.successVersions.length > 0) {
                         for (var j = 1; j < 5; j++) {
-                            if (vm.cqms[i]['hasC' + j]) {
-                                vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(' + j + ')'});
+                            if (cqm['hasC' + j]) {
+                                let number = '170.315 (c)(' + j + ')';
+                                cqm.criteria.push({
+                                    certificationNumber: number,
+                                    criterion: vm.product.certificationResults.find(cert => cert.number === number && cert.success).criterion,
+                                });
                             }
                         }
                     }
-                }
+                });
             }
 
             function viewIcsFamily () {
