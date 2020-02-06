@@ -118,7 +118,7 @@ export const ReportsListingsComponent = {
             prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
             curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
             for (i = 0; i < prev.length; i++) {
-                var obj = { number: curr[i].number, changes: [] };
+                var obj = { number: curr[i].number, title: curr[i].title, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
                     change = this.ReportService.compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change) {
@@ -291,7 +291,7 @@ export const ReportsListingsComponent = {
                 var criteriaKeys = [];
                 var criteria = this.ReportService.compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
                 for (j = 0; j < criteria.length; j++) {
-                    obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
+                    obj.changes.push('<li>Certification Criteria "' + criteria[j].name + (criteria[j].title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
@@ -613,7 +613,7 @@ export const ReportsListingsComponent = {
                     }
                     certChanges = this.compareCerts(item.originalData.certificationResults, item.newData.certificationResults);
                     for (j = 0; j < certChanges.length; j++) {
-                        activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        activity.details.push('Certification "' + certChanges[j].number + (certChanges[j].title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                     }
                     var cqmChanges = this.compareCqms(item.originalData.cqmResults, item.newData.cqmResults);
                     for (j = 0; j < cqmChanges.length; j++) {
