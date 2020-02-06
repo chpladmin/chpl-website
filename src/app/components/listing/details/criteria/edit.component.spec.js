@@ -26,7 +26,9 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.components', 'chpl.shared');
+            angular.mock.module('chpl.components', 'chpl.shared', $provide => {
+                $provide.factory('chplHighlightCuresDirective', () => ({}));
+            });
 
             inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
