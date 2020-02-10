@@ -37,8 +37,6 @@
         vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
         vm.isDeveloperBanned = isDeveloperBanned;
-        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
-        vm.isTransparencyAttestationRemoved = isTransparencyAttestationRemoved;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -394,21 +392,6 @@
             } else {
                 return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
                 || vm.isDeveloperMergeable(vm.activeDeveloper);
-            }
-        }
-
-        function isTransparencyAttestationViewable () {
-            if (vm.isOn('effective-rule-date-plus-one-week')) {
-                return !vm.hasAnyRole(['ROLE_ACB']);
-            }
-            return true;
-        }
-
-        function isTransparencyAttestationRemoved () {
-            if (vm.activeDeveloper.transparencyAttestations || vm.activeDeveloper.transparencyAttestations.length === 0) {
-                return vm.isOn('effective-rule-date');
-            } else {
-                return vm.activeDeveloper.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
             }
         }
 
