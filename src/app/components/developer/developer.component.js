@@ -91,18 +91,10 @@ export const DeveloperComponent = {
         }
 
         isTransparencyAttestationEditable () {
-            let isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
             if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return !isAcbAdmin;
-            }
-            return isAcbAdmin;
-        }
-
-        isTransparencyAttestationRemoved () {
-            if (this.developer.transparencyAttestations || this.developer.transparencyAttestations.length === 0) {
-                return this.isEffectiveRuleDateOn();
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
             } else {
-                return this.developer.transparencyAttestations.reduce((acc, cur) => (cur.attestation ? cur.attestation.removed : false) || acc, false);
+                return true;
             }
         }
 

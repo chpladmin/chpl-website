@@ -7,6 +7,7 @@
         mock = {};
         mock.inspectingCp = {
             developer: { developerId: 1},
+            transparencyAttestation: 'Affirmative',
         };
         mock.resources = {
             bodies: [],

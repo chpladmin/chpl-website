@@ -34,7 +34,6 @@
         vm.isBlank = utilService.isBlank;
         vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
-        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
 
         vm.isOn = featureFlags.isOn;
 
@@ -97,13 +96,20 @@
                     name: vm.cp.developer.name,
                     status: vm.developer.status,
                     statusEvents: vm.developer.statusEvents,
-                    transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
+                    transparencyAttestations: [{
+                        acbId: vm.cp.certifyingBody.id,
+                        acbName: vm.cp.certifyingBody.name,
+                        attestation: { transparencyAttestation: vm.cp.transparencyAttestation.transparencyAttestation },
+                    }],
                     website: vm.cp.developer.website,
                 },
                 developerIds: [vm.cp.developer.developerId],
             };
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
+            }
+            if (vm.isOn('effective-rule-date-plus-one-week')) {
+                delete dev.developer.transparencyAttestations;
             }
             networkService.updateDeveloper(dev)
                 .then(function () {
@@ -289,17 +295,9 @@
                 let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
                     return curAttestationObj.acbName === vm.cp.certifyingBody.name;
                 });
-                $log.info(matchingAttestationObj);
                 return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
             }
             return null;
-        }
-
-        function isTransparencyAttestationViewable () {
-            if (vm.isOn('effective-rule-date-plus-one-week')) {
-                return !vm.isAcbAdmin;
-            }
-            return true;
         }
 
         function cancel () {
