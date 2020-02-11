@@ -170,9 +170,11 @@
                         for (var j = 1; j < 5; j++) {
                             if (cqm['hasC' + j]) {
                                 let number = '170.315 (c)(' + j + ')';
+                                let criterion = vm.product.certificationResults.find(cert => cert.number === number && cert.success) || {};
+                                criterion = criterion.criterion;
                                 cqm.criteria.push({
-                                    certificationNumber: number,
-                                    criterion: vm.product.certificationResults.find(cert => cert.number === number && cert.success).criterion,
+                                    number: number,
+                                    criterion: criterion,
                                 });
                             }
                         }
