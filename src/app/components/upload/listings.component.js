@@ -40,14 +40,19 @@ export const UploadListingsComponent = {
                     if (response.data.errorMessages
                         && response.data.errorMessages.length === 1
                         && response.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
-                        that.uploadMessage += ' The CSV header row does not match any of the headers in the system. Available templates are:';
+                        that.uploadMessage += ' The CSV header row does not match any of the headers in the system.';
                         that.networkService.getUploadTemplateVersions().then(response => {
-                            that.uploadErrors = response.data.map(item => {
-                                let ret = item.name + ', available as of: '
-                                    + that.$filter('date')(item.availableAsOf, 'mediumDate', 'UTC')
-                                    + (item.deprecated ? ' (deprecated)' : ' (active)');
-                                return ret;
-                            });
+                            if (response.data === null || response.data === undefined || response.data.length === 0) {
+                                that.uploadMessage += ' There are no available templates.';
+                            } else {
+                                that.uploadMessage += ' Available templates are: ';
+                                that.uploadErrors = response.data.map(item => {
+                                    let ret = item.name + ', available as of: '
+                                        + that.$filter('date')(item.availableAsOf, 'mediumDate', 'UTC')
+                                        + (item.deprecated ? ' (deprecated)' : ' (active)');
+                                    return ret;
+                                });
+                            }
                         });
                     } else {
                         that.uploadErrors = response.data.errorMessages;

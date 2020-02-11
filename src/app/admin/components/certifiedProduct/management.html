@@ -34,7 +34,7 @@
 
     <div class="row" ng-if="vm.workType === 'manageSurveillance'">
       <div class="col-sm-12">
-        <chpl-surveillance-management allowed-acbs="vm.surveillanceAllowedAcbs" listings="vm.surveillanceListings"></chpl-surveillance-management>
+        <chpl-surveillance-management allowed-acbs="vm.allowedAcbs" listings="vm.surveillanceListings"></chpl-surveillance-management>
       </div>
     </div> <!-- end of surveillance management -->
 
@@ -154,12 +154,14 @@
                 Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
                 Country: {{ vm.activeDeveloper.address.country }}<br />
                 Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
-                <span ng-if="vm.isTransparencyAttestationViewable()">
+                Self-developer: {{ vm.activeDeveloper.selfDeveloper ? 'Yes' : 'No' }}<br />
+                <div feature-flag="effective-rule-date" feature-flag-hide>
                   Transparency Attestation:<br />
                   <ul>
-                    <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
+                    <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}:
+                      {{ trans.attestation.transparencyAttestation ? trans.attestation.transparencyAttestation : 'None' }}</li>
                   </ul>
-                </span>
+                </div>
                 <strong>Contact information</strong><br />
                 <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
               </div>
@@ -352,8 +354,8 @@
                   <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
-                  <span ng-if="vm.isTransparencyAttestationViewable()">
-                    <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
+                  <span feature-flag="effective-rule-date" feature-flag-hide>
+                    <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation.transparencyAttestation ? vm.activeCP.transparencyAttestation.transparencyAttestation : 'None' }} <br />
                     <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   </span>
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />

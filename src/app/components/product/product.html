@@ -1,11 +1,11 @@
 <div id="chpl-product-{{ $ctrl.product.productId }}" class="row" st-table="$ctrl.activeVersion.displayedListings" st-safe-src="$ctrl.activeVersion.listings" st-set-filter="customFilter">
-  <div class="col-sm-12">
+  <div class="col-sm-12 product-border">
     <div class="well well-sm clickable" ng-click="$ctrl.showFull = !$ctrl.showFull; $ctrl.retrieveListings();" ng-if="!$ctrl.showFull">
-      <button class="btn btn-default pull-right"><i class="fa fa-caret-down"></i></button>
+      <button class="btn btn-default pull-right closed"><i class="fa fa-caret-down"></i></button>
       <h3>{{ $ctrl.product.name }}</h3>
     </div>
     <div ng-show="$ctrl.showFull">
-      <button class="btn btn-default pull-right" ng-click="$ctrl.showFull = !$ctrl.showFull"><i class="fa fa-caret-up"></i></button>
+      <button class="btn btn-default pull-right open" ng-click="$ctrl.showFull = !$ctrl.showFull"><i class="fa fa-caret-up"></i></button>
       <h3>{{ $ctrl.product.name }}</h3>
       <em>(Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</em>
       <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0" class="table table-condensed">

@@ -27,6 +27,7 @@
               Zip: {{ $ctrl.developer.address.zipcode }}<br />
               Country: {{ $ctrl.developer.address.country }}<br />
               Website: <span ng-if="$ctrl.developer.website"><a ai-a href="{{$ctrl.developer.website}}">{{ $ctrl.developer.website }}</a></span><span ng-if="!$ctrl.developer.website">None</span><br />
+              Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
             </address>
             <br />
             <strong>Contact information</strong><br />
@@ -86,6 +87,15 @@
                   <label for="developer-website">Website</label>
                   <input class="input-sm form-control" type="url" ng-model="$ctrl.splitDeveloper.newDeveloper.website" id="developer-website" name="developerWebsite" placeholder="http://www.example.com"></input>
                   <div class="text-danger" ng-if="$ctrl.splitForm.developerWebsite.$touched && $ctrl.splitForm.developerWebsite.$error.url">Website is invalid</div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="self-developer">Self-developer</label>
+                  <div>
+                    <select class="input-sm form-control" ng-model="$ctrl.splitDeveloper.newDeveloper.selfDeveloper" id="self-developer" name="selfDeveloper">
+                      <option ng-value="true">Yes</option>
+                      <option ng-value="false">No</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>

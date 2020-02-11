@@ -86,12 +86,16 @@ export const DeveloperComponent = {
             return this.isOn('effective-rule-date-plus-one-week');
         }
 
+        isEffectiveRuleDateOn () {
+            return this.isOn('effective-rule-date');
+        }
+
         isTransparencyAttestationEditable () {
-            let isAcbAdmin = this.hasAnyRole(['ROLE_ACB']);
             if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return !isAcbAdmin;
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            } else {
+                return true;
             }
-            return isAcbAdmin;
         }
 
         /*

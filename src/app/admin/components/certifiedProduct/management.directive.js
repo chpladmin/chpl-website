@@ -37,7 +37,6 @@
         vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
         vm.isDeveloperBanned = isDeveloperBanned;
-        vm.isTransparencyAttestationViewable = isTransparencyAttestationViewable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
@@ -70,7 +69,7 @@
             vm.refreshDevelopers();
             vm.refreshPending();
 
-            networkService.getAcbs(true).then(result => vm.surveillanceAllowedAcbs = result);
+            networkService.getAcbs(true).then(result => vm.allowedAcbs = result);
             networkService.getCollection('surveillanceManagement').then(result => vm.surveillanceListings = result);
             getResources();
         }
@@ -394,13 +393,6 @@
                 return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
                 || vm.isDeveloperMergeable(vm.activeDeveloper);
             }
-        }
-
-        function isTransparencyAttestationViewable () {
-            if (vm.isOn('effective-rule-date-plus-one-week')) {
-                return !vm.hasAnyRole(['ROLE_ACB']);
-            }
-            return true;
         }
 
         function searchForSurveillance () {

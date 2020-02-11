@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 10.37.0
+_11 February 2020_
+
+### Bug Fixes
+* Improve error message when no upload templates are available
+
+### Flagged Features
+* Update text on Inactive Collections page
+
+### Features
+* Add view of all system triggers on Scheduled Jobs page
+* Display Transparency Attestation with newly formatted object
+* Display "Self-developer" field for all Developers
+
+---
+
 ## Version 10.36.0
 _27 January 2020_
 

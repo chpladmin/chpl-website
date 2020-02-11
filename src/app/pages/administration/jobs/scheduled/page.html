@@ -7,7 +7,7 @@
   <span ng-if="$ctrl.mode === 'view'">
     <div class="row">
       <div class="col-sm-12">
-        <chpl-jobs-scheduled-triggers triggers="$ctrl.triggers" take-action="$ctrl.takeTriggerAction(action, data)"></chpl-jobs-scheduled-triggers>
+        <chpl-jobs-scheduled-triggers scheduled-system-jobs="$ctrl.scheduledSystemJobs" triggers="$ctrl.triggers" take-action="$ctrl.takeTriggerAction(action, data)"></chpl-jobs-scheduled-triggers>
       </div>
     </div>
     <div class="row">

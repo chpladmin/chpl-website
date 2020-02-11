@@ -12,6 +12,7 @@
             <span ng-if="!$ctrl.isSplitting">
               Developer code: {{ $ctrl.developer.developerCode }}<br />
               <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a><br /></span>
+              Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </span>
             <h3>Contact Information</h3>
@@ -22,9 +23,10 @@
             <chpl-address address="$ctrl.developer.address"></chpl-address>
           </div>
           <div class="col-sm-4">
-            <div feature-flag="effective-rule-date" feature-flag-hide>
+            <div class="product-element" id="developer-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
               <h3>Transparency Attestations</h3>
-              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
+              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
+                <strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
             </div>
             <h3>Status Information</h3>
             <div class="row well well-sm" ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
@@ -38,11 +40,6 @@
                 <p class="clickable text-center" ng-click="status.showComments = !status.showComments"><i class="fa" ng-class="status.showComments ? 'fa-caret-up' : 'fa-caret-down'"></i> Comments:</p>
                 <p ng-if="status.showComments">{{ status.reason || 'N/A'}}</p>
               </div>
-            </div>
-            <div class="removed" feature-flag="effective-rule-date">
-              <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This requirement has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-              <h3>Transparency Attestations</h3>
-              <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation"><strong>{{ att.acbName }}:</strong> {{ att.attestation }}</p>
             </div>
           </div>
         </div>
@@ -85,6 +82,15 @@
                   <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
                 </div>
               </div>
+              <div class="form-group">
+                <label class="control-label" for="self-developer">Self-developer</label>
+                <div>
+                  <select class="input-sm form-control" ng-model="$ctrl.developer.selfDeveloper" id="self-developer" name="selfDeveloper">
+                    <option ng-value="true">Yes</option>
+                    <option ng-value="false">No</option>
+                  </select>
+                </div>
+              </div>
               <chpl-contact contact="$ctrl.developer.contact"
                             is-editing="true"
                             is-required="true"
@@ -102,7 +108,7 @@
               <span ng-if="$ctrl.isTransparencyAttestationEditable()">
                 <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
                   <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
-                  <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name]" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
+                  <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name].transparencyAttestation" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
                     <option value="Negative">Negative</option>
                     <option value="Affirmative">Affirmative</option>
                     <option value="N/A">N/A</option>

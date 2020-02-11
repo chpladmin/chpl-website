@@ -3,6 +3,7 @@ export const JobsScheduledPageComponent = {
     bindings: {
         acbs: '<',
         jobs: '<',
+        scheduledSystemJobs: '<',
         triggers: '<',
     },
     controller: class JobsScheduledPageComponent {
@@ -22,6 +23,9 @@ export const JobsScheduledPageComponent = {
             }
             if (changes.jobs && changes.jobs.currentValue) {
                 this.jobs = angular.copy(changes.jobs.currentValue.results);
+            }
+            if (changes.scheduledSystemJobs && changes.scheduledSystemJobs.currentValue) {
+                this.scheduledSystemJobs = angular.copy(changes.scheduledSystemJobs.currentValue.results);
             }
             if (changes.triggers && changes.triggers.currentValue) {
                 this.triggers = angular.copy(changes.triggers.currentValue.results);
@@ -123,6 +127,7 @@ export const JobsScheduledPageComponent = {
                             body: 'One time job scheduled',
                         })
                         that.cancel();
+                        this.refreshSystemTriggers();
                     }, error => {
                         that.errorMessage = error.data.error;
                         that.$anchorScroll();
@@ -155,6 +160,11 @@ export const JobsScheduledPageComponent = {
         refreshTriggers () {
             let that = this;
             this.networkService.getScheduleTriggers().then(results => that.triggers = results.results);
+        }
+
+        refreshSystemTriggers () {
+            let that = this;
+            this.networkService.getScheduledSystemJobs().then(results => that.scheduledSystemJobs = results.results);
         }
     },
 }
