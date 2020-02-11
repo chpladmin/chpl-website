@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="panel-footer text-right" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB','ROLE_DEVELOPER'])">
+      <div class="panel-footer text-right" ng-if="$ctrl.showFooter()">
         <button class="btn btn-default" id="developer-component-edit" ng-if="$ctrl.can('edit') && !$ctrl.isEditing" ng-click="$ctrl.edit()" uib-tooltip="Edit Developer information" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-pencil-square-o"></i> Edit</button>
         <button class="btn btn-default" id="developer-component-split" ng-if="$ctrl.can('split') && !$ctrl.isSplitting" ng-click="$ctrl.split()"><i class="fa fa-scissors"></i> Split</button>
         <button class="btn btn-default" id="developer-component-merge" ng-if="$ctrl.can('merge') && !$ctrl.isSplitting" ng-click="$ctrl.merge()"><i class="fa fa-code-fork fa-rotate-180"></i> Merge</button>
