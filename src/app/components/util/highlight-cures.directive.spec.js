@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the "Cures Update" highlight', () => {
+    describe('the "Cures Update" highlight', () => {
 
         let $compile, $log, el, scope;
 
