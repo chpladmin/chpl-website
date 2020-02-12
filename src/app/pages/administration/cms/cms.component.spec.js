@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the CMS component', () => {
+    describe('the CMS component', () => {
         let $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

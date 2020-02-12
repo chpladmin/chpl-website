@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the SED View Task Modal controller', function () {
+    describe('the SED View Task Modal controller', function () {
         var $log, $uibModal, Mock, actualOptions, mock, scope, vm;
         mock = {
             task: {

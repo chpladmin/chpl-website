@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Trigger Edit component', () => {
+    describe('the Trigger Edit component', () => {
         let $compile, $log, ctrl, el, mock, scope;
 
         mock = {

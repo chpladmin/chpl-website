@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Certification Criteria Modal controller', () => {
+    describe('the Certification Criteria Modal controller', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {};

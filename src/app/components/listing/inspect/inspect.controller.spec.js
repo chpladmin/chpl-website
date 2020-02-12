@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Listing Inspection controller', function () {
+    describe('the Listing Inspection controller', function () {
         var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
@@ -143,7 +143,7 @@
             });
         });
 
-        fdescribe('when on step 1, and,', function () {
+        describe('when on step 1, and,', function () {
             beforeEach(function () {
                 vm.developer = {
                     developerId: 999,

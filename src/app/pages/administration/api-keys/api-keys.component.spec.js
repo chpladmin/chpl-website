@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the API Keys component', () => {
+    describe('the API Keys component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

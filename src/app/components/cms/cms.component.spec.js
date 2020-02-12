@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the CMS component', () => {
+    describe('the CMS component', () => {
         var $compile, $log, $q, authService, ctrl, el, networkService, scope;
 
         var mock = {};

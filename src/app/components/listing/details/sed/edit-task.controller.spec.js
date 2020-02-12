@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Edit SED Task Modal controller', function () {
+    describe('the Edit SED Task Modal controller', function () {
         var $controller, $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the surveillance requirement edit component', () => {
+    describe('the surveillance requirement edit component', () => {
         var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, featureFlags, scope;
 
         beforeEach(() => {
