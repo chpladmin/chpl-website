@@ -1,4 +1,4 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)" id="listings-report-page">
   <div class="row">
     <div class="col-sm-12">
       <h3>Certified Product</h3>
@@ -40,7 +40,7 @@
 
   <div class="row">
     <div class="col-sm-2">
-      <label class="control-label">Activity ({{ $ctrl.displayed.length }})</label>
+      <label class="control-label">Activity <span feature-flag="enhanced-reports-collapsed-acb" feature-flag-hide>({{ $ctrl.displayed.length }})</span></label>
       <select st-search="categoriesFilter" st-input-event="change" class="form-control" ng-model="$ctrl.categoriesFilter">
         <option value="|LISTING|" selected>All</option>
         <option value="|SURVEILLANCE|">Surveillance</option>
@@ -56,6 +56,20 @@
           register-restore-state="$ctrl.registerRestoreState(restoreState)"
           ></ai-date-range>
     </div>
+    <div class="col-sm-3" feature-flag="enhanced-reports-collapsed-acb">
+      <div uib-dropdown auto-close="outsideClick" class="btn-group">
+        <button class="btn btn-ai dropdown-toggle" type="button" id="acb-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+          ONC-ACB <i class="fa fa-filter"></i>
+        </button>
+        <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+          <st-list-multiple
+            collection="$ctrl.results"
+            fixed-items="$ctrl.acbItems"
+            predicate="acbName"
+            ></st-list-multiple>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="row" ng-if="$ctrl.showLoadingBar()">
     <div class="col-sm-5">
@@ -65,27 +79,46 @@
       </uib-progressbar>
     </div>
   </div>
-  <div class="row" ng-repeat="acb in $ctrl.activeAcbs | orderBy: 'toString()'">
+  <div class="row" feature-flag="enhanced-reports-collapsed-acb">
     <div class="col-sm-12">
-      <button class="btn btn-default pull-right" ng-click="$ctrl.display[acb] = !$ctrl.display[acb]"><i class="fa" ng-class="$ctrl.display[acb] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
-      <h4>{{ acb }} ({{ $ctrl.acbCount(acb) }})</h4>
-      <p ng-if="$ctrl.display[acb] && $ctrl.acbCount(acb) === 0">No activities found</p>
-      <table class="table table-responsive" ng-if="$ctrl.display[acb] && $ctrl.acbCount(acb) > 0">
+      <table class="table table-responsive">
         <thead>
+          <tr>
+            <td colspan="7" class="text-center">
+              <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
+            </td>
+          </tr>
           <tr>
             <th class="search-header" st-sort="developerName" st-skip-natural="true">Developer</th>
             <th class="search-header" st-sort="productName" st-skip-natural="true">Product</th>
             <th class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
+            <th class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
             <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
             <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
             <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
           </tr>
         </thead>
+        <tfoot>
+          <tr>
+            <td colspan="7" class="text-center">
+              <div class="text-right">
+                <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                Showing up to&nbsp;
+                <select ng-model="$ctrl.pageSize" id="pageSizeTop"
+                        ng-options="v as v for v in [50,100,250,1000,5000]">
+                </select>
+                &nbsp;results per page
+              </div>
+              <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
+            </td>
+          </tr>
+        </tfoot>
         <tbody>
-          <tr ng-repeat="activity in $ctrl.displayed | filter: { acbName: acb }">
+          <tr ng-repeat="activity in $ctrl.displayed">
             <td>{{ activity.developerName }}</td>
             <td>{{ activity.productName }}</td>
             <td>{{ activity.edition }}</td>
+            <td>{{ activity.acbName }}</td>
             <td>
               <a href="#/product/{{ activity.objectId }}">{{ activity.chplProductNumber }}</a>
               <a ui-sref="listing({id: activity.objectId })" class="pull-right" feature-flag="listing-edit"><i class="fa fa-pencil-square-o"></i></a>
@@ -113,4 +146,54 @@
       </table>
     </div>
   </div>
+  <span feature-flag="enhanced-reports-collapsed-acb" feature-flag-hide>
+    <div class="row" ng-repeat="acb in $ctrl.activeAcbs | orderBy: 'toString()'">
+      <div class="col-sm-12">
+        <button class="btn btn-default pull-right" ng-click="$ctrl.display[acb] = !$ctrl.display[acb]"><i class="fa" ng-class="$ctrl.display[acb] ? 'fa-caret-up' : 'fa-caret-down'"></i></button>
+        <h4>{{ acb }} ({{ $ctrl.acbCount(acb) }})</h4>
+        <p ng-if="$ctrl.display[acb] && $ctrl.acbCount(acb) === 0">No activities found</p>
+        <table class="table table-responsive" ng-if="$ctrl.display[acb] && $ctrl.acbCount(acb) > 0">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="developerName" st-skip-natural="true">Developer</th>
+              <th class="search-header" st-sort="productName" st-skip-natural="true">Product</th>
+              <th class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
+              <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="activity in $ctrl.displayed | filter: { acbName: acb }">
+              <td>{{ activity.developerName }}</td>
+              <td>{{ activity.productName }}</td>
+              <td>{{ activity.edition }}</td>
+              <td>
+                <a href="#/product/{{ activity.objectId }}">{{ activity.chplProductNumber }}</a>
+                <a ui-sref="listing({id: activity.objectId })" class="pull-right" feature-flag="listing-edit"><i class="fa fa-pencil-square-o"></i></a>
+                <a href="#/admin/dpManagement/manage/{{ activity.objectId }}" class="pull-right" feature-flag="listing-edit" feature-flag-hide><i class="fa fa-pencil-square-o"></i></a>
+              </td>
+              <td>
+                {{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}
+              </td>
+              <td>
+                <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>
+                <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
+                <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
+                <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
+                {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
+                <div ng-if="activity.action && activity.showDetails">
+                  {{ activity.action }}
+                  <ul>
+                    <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
+                  </ul>
+                  <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.compareSurveillances(activity.source.oldS, activity.source.newS)" ng-if="activity.source"><i class="fa fa-search"></i>View Details</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </span>
 </div>

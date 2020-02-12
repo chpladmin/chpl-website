@@ -4,13 +4,14 @@ export const ReportsListingsComponent = {
         productId: '<',
     },
     controller: class ReportsListings {
-        constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$state = $state;
             this.$uibModal = $uibModal;
             this.ReportService = ReportService;
+            this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
             this.activeAcbs = [];
@@ -27,6 +28,31 @@ export const ReportsListingsComponent = {
             };
             this.downloadProgress = 0;
             this.results = [];
+            this.pageSize = 50;
+        }
+
+        $onInit () {
+            let that = this;
+            let user = this.authService.getCurrentUser();
+            this.networkService.getSearchOptions()
+                .then(options => {
+                    that.acbItems = options.acbs
+                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                        .map(a => {
+                            let ret = {
+                                value: a.name,
+                            };
+                            if (a.retired) {
+                                ret.display = a.name + ' (Retired)';
+                                ret.retired = true;
+                                ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                            } else {
+                                ret.selected = that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                                    || user.organizations.filter(o => o.name === a.name).length > 0;
+                            }
+                            return ret;
+                        });
+                });
         }
 
         $onChanges (changes) {
@@ -740,7 +766,7 @@ export const ReportsListingsComponent = {
 
         canDownload () {
             return this.displayed
-                .filter(item => !item.action).length < 1000;
+                .filter(item => !item.action).length <= 1000;
         }
 
         prepareDownload () {
