@@ -35,7 +35,7 @@
             vm.prepCqms = prepCqms
             vm.registerSed = registerSed;
             vm.saveCert = saveCert;
-            vm.sortCerts = sortCerts;
+            vm.sortCerts = utilService.sortCert;
             vm.sortCqms = sortCqms;
             vm.showPanel = showPanel;
             vm.updateCs = updateCs;
@@ -103,26 +103,6 @@
                     }
                 }
                 vm.updateCs();
-            }
-
-            function sortCerts (cert) {
-                var ret = 0;
-                if (cert.number) {
-                    var letter;
-                    var number;
-                    letter = cert.number.substring(9,10);
-                    if (cert.number.substring(0,6) === '170.30') {
-                        number = cert.number.substring(6,7);
-                        ret = parseInt(number) * 100 + letter.charCodeAt(0);
-                    } else {
-                        number = cert.number.substring(12,14);
-                        if (number.substring(1,2) === ')') {
-                            number = number.substring(0,1);
-                        }
-                        ret = letter.charCodeAt(0) * 100 + parseInt(number);
-                    }
-                }
-                return ret;
             }
 
             function sortCqms (cqm) {
