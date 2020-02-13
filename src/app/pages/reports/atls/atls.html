@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-sm-6 col-sm-offset-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
-            ng-csv="$ctrl.displayed" filename="ONC-ATL_{{ $ctrl.filename }}"
+            ng-csv="$ctrl.displayed" filename="ONC-ATL_{{ $ctrl.filename }}" add-bom="true"
             csv-header="['ONC-ATL', 'Action', 'Details', 'Activity Date']"
             csv-column-order="['atlName', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
