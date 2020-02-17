@@ -62,6 +62,10 @@ export const ReportsListingsComponent = {
             this.search();
         }
 
+        $onDestroy () {
+            this.isDestroyed = true;
+        }
+
         onApplyFilter (filter) {
             let f = angular.fromJson(filter);
             if (f.productId) {
@@ -814,16 +818,23 @@ export const ReportsListingsComponent = {
                         before: new Date().getTime(),
                     };
                     that.doFilter(filter);
-                    for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
-                            results.activities.forEach(item => {
-                                that.results.push(that.prepare(item));
-                            });
-                            that.loadProgress.complete += 1;
-                            that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
-                        });
-                    }
+                    that.addPageToData(1);
                 });
+        }
+
+        addPageToData (page) {
+            let that = this;
+            if (this.isDestroyed) { return }
+            this.networkService.getActivityMetadata('beta/listings', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+                results.activities.forEach(item => {
+                    that.results.push(that.prepare(item));
+                });
+                that.loadProgress.complete += 1;
+                that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
+                if (page < that.loadProgress.total) {
+                    that.addPageToData(page + 1);
+                }
+            });
         }
 
         searchSingleProductId () {
