@@ -252,6 +252,10 @@
                     title = cert.title;
                 }
                 cert = cert.name || cert.number
+            } else if (cert.indexOf(':') > 0) {
+                let vals = cert.split(':');
+                cert = vals[0];
+                title = vals[1];
             }
             const edition = parseInt(cert.substring(4,7));
             const letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
