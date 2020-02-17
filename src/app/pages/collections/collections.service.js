@@ -5,7 +5,7 @@
         .factory('collectionsService', collectionsService);
 
     /** @ngInject */
-    function collectionsService ($log, SPLIT_PRIMARY) {
+    function collectionsService ($log, utilService, SPLIT_PRIMARY, SPLIT_SECONDARY) {
         var service = {
             translate: translate,
         }
@@ -57,6 +57,18 @@
             let ret = listings.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
                 .map(listing => {
                     listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
+                    listing.apiDocumentation = listing.apiDocumentation
+                        .split(SPLIT_PRIMARY)
+                        .map(item => {
+                            let ret = {};
+                            const data = item.split(SPLIT_SECONDARY);
+                            ret.criteria = certificationCriteria.find(cc => (cc.id + '') === data[0]);
+                            ret.url = data[1];
+                            return ret;
+                        })
+                        .sort((a, b) => utilService.sortCert(a.criteria) - utilService.sortCert(b.criteria))
+                        .map(object => object.criteria.number + (object.criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + SPLIT_SECONDARY + object.url)
+                        .join(SPLIT_PRIMARY);
                     return listing;
                 });
             return ret;
