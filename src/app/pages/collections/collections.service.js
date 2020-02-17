@@ -5,7 +5,7 @@
         .factory('collectionsService', collectionsService);
 
     /** @ngInject */
-    function collectionsService ($log, utilService, SPLIT_PRIMARY, SPLIT_SECONDARY) {
+    function collectionsService ($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
         var service = {
             translate: translate,
         }
