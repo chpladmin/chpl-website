@@ -13,22 +13,22 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function translate (key, array) {
+        function translate (key, data) {
             switch (key) {
             case 'apiDocumentation':
-                return apiDocumentation(array.results, array.certificationCriteria);
+                return apiDocumentation(data.results, data.certificationCriteria);
             case 'bannedDevelopers':
-                return bannedDevelopers(array);
+                return bannedDevelopers(data);
             case 'correctiveAction':
-                return correctiveActions(array.results);
+                return correctiveActions(data.results);
             case 'decertifiedProducts':
-                return decertifiedProducts(array.results);
+                return decertifiedProducts(data.results);
             case 'inactiveCertificates':
-                return inactiveCertificates(array.results);
+                return inactiveCertificates(data.results);
             case 'sed':
-                return sed(array.results, array.certificationCriteria);
+                return sed(data.results, data.certificationCriteria);
             case 'transparencyAttestations':
-                return transparencyAttestations(array);
+                return transparencyAttestations(data);
                 // no default
             }
         }
@@ -46,7 +46,7 @@
          *   - 170.315 (g)(9)
          *   - 170.315 (g)(10)
          */
-        function apiDocumentation (array, certificationCriteria) {
+        function apiDocumentation (listings, certificationCriteria) {
             let applicableCriteria = certificationCriteria
                 .filter(cc => ((cc.number === '170.315 (g)(7)' && cc.title === 'Application Access - Patient Selection')
                                || (cc.number === '170.315 (g)(8)' && cc.title === 'Application Access - Data Category')
@@ -54,7 +54,7 @@
                                || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request (Cures Update)')
                                || (cc.number === '170.315 (g)(10)' && cc.title === 'Standardized API for Patient and Population Services')))
                 .map(cc => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
-            let ret = array.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
+            let ret = listings.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
                 .map(listing => {
                     listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
                     return listing;
