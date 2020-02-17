@@ -295,7 +295,7 @@ export const ReportsListingsComponent = {
                     if (criteria[j].title && criteria[j].title.indexOf('Cures Update') > 0) {
                         name += ' (Cures Update)';
                     }
-                    obj.changes.push('<li>Certification Criteria "' + name  + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
+                    obj.changes.push('<li>Certification Criteria "' + name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
