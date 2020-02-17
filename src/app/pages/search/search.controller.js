@@ -354,8 +354,8 @@
                 ret = crit.split(SPLIT_PRIMARY)
                     .map(id => vm.lookupData.certificationCriteria.find(cc => cc.id === parseInt(id, 10)))
                     .filter(id => id !== undefined)
-                    .map(cc => cc.number + ': ' + cc.title)
                     .sort(utilService.sortCertActual)
+                    .map(cc => cc.number + ': ' + cc.title)
                     .join('\n');
             }
             return ret;
