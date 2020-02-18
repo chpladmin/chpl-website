@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the SED Participant Modal controller', function () {
+    describe('the SED Participant Modal controller', function () {
         var $controller, $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};

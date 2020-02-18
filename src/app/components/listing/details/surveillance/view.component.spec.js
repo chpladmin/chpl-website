@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the surveillance component', () => {
+    describe('the surveillance component', () => {
         var $log, $q, $uibModal, Mock, actualOptions, ctrl, el, networkService, scope;
 
         beforeEach(() => {

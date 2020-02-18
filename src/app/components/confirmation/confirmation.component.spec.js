@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Confirmation component', () => {
+    describe('the Confirmation component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

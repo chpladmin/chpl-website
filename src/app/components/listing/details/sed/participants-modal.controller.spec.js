@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the SED View Participants Modal controller', function () {
+    describe('the SED View Participants Modal controller', function () {
         var $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {

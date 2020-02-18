@@ -175,7 +175,7 @@
                 expect(util.sortRequirements('170.302 (a)')).toBeLessThan(util.sortRequirements(criteria2014));
             });
 
-            fit('should be able to sort nonconformity types', () => {
+            it('should be able to sort nonconformity types', () => {
                 var criteria2014_g_4 = { number: '170.314 (g)(4)' };
                 var criteria2014_g_10 = { number: '170.314 (g)(10)' };
                 var criteria2015_d_1 = { number: '170.315 (d)(1)' };
@@ -195,7 +195,7 @@
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
 
-            fit('should be able to sort nonconformity types', () => {
+            it('should be able to sort nonconformity types', () => {
                 var criteria2014_g_4 = '170.314 (g)(4)';
                 var criteria2014_g_10 = '170.314 (g)(10)';
                 var criteria2015_d_1 = '170.315 (d)(1)';
@@ -471,7 +471,7 @@
             });
         });
 
-        fdescribe('when getting ranges', () => {
+        describe('when getting ranges', () => {
             it('should get every one if no step specified', () => {
                 expect(util.range(6)).toEqual([0, 1, 2, 3, 4, 5]);
             });
@@ -497,11 +497,11 @@
             });
         });
 
-        fdescribe('when providing', () => {
+        describe('when providing', () => {
             const shouldReturnTrue = 'should return true';
             const shouldReturnFalse = 'should return false';
 
-            fdescribe('a string', () => {
+            describe('a string', () => {
                 it('which has no characters ' + shouldReturnTrue, () => {
                     let emptyString = '';
                     let isBlank = util.isBlank(emptyString);
@@ -527,7 +527,7 @@
                 });
             });
 
-            fdescribe('a variable', () => {
+            describe('a variable', () => {
                 it('which is null ' + shouldReturnTrue, () => {
                     let nullVariable = null;
                     let isBlank = util.isBlank(nullVariable);
@@ -541,7 +541,7 @@
                 });
             });
 
-            fdescribe('an empty', () => {
+            describe('an empty', () => {
                 it('array ' + shouldReturnTrue, () => {
                     let emptyArray = [];
                     let isBlank = util.isBlank(emptyArray);
@@ -555,7 +555,7 @@
                 });
             });
 
-            fdescribe('a populated', () => {
+            describe('a populated', () => {
                 it('array ' + shouldReturnFalse, () => {
                     let populatedArray = [5, 6, 7];
                     let isBlank = util.isBlank(populatedArray);

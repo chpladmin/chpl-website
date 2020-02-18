@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Collections', function () {
+    describe('the Collections', function () {
         var $compile, $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, mock, networkService, scope, vm;
 
         beforeEach(function () {
