@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Certification Criteria View component', function () {
+    describe('the Certification Criteria View component', function () {
         var $analytics, $compile, $log, $uibModal, Mock, actualOptions, ctrl, el, mock, scope;
 
         mock = {

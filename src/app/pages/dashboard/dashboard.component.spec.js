@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Dashboard component', () => {
+    describe('the Dashboard component', () => {
         var $compile, $log, $q, $rootScope, $state, authService, ctrl, el, mock, networkService, scope, toaster;
 
         mock = {

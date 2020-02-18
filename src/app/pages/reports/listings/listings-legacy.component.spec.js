@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Reports.Listing.Legacy component', () => {
+    describe('the Reports.Listing.Legacy component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 

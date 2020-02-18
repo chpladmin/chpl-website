@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Fuzzy Type component', () => {
+    describe('the Fuzzy Type component', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {

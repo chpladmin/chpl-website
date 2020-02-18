@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Jobs - Background - Page component', () => {
+    describe('the Jobs - Background - Page component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

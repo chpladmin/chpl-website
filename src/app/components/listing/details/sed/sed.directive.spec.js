@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the SED Display', () => {
+    describe('the SED Display', () => {
         var $compile, $log, $uibModal, Mock, actualOptions, el, mock, scope, utilService, vm;
 
         /* eslint-disable quotes, key-spacing, indent */

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Change Requests Management component', () => {
+    describe('the Change Requests Management component', () => {
         let $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

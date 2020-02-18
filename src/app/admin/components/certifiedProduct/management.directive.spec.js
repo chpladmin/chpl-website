@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.admin.listing.management.directive', function () {
+    describe('chpl.admin.listing.management.directive', function () {
         var $log, $q, $uibModal, Mock, actualOptions, authService, el, mock, networkService, vm;
 
         mock = {};

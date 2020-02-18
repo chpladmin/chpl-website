@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Upload Surveillance component', () => {
+    describe('the Upload Surveillance component', () => {
         var $compile, $log, $q, Upload, authService, ctrl, el, mock, scope;
 
         mock = {
