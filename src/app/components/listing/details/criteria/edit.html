@@ -16,9 +16,7 @@
       <label class="control-label" for="data_additionalSoftware{{ $ctrl.cert.number }}">Certification met via relied upon software</label>
       <ai-additional-software additional-software="$ctrl.cert.additionalSoftware" is-editing="$ctrl.canEdit()" ng-if="$ctrl.cert.metViaAdditionalSoftware"></ai-additional-software>
     </div>
-
-    <!--This table is displayed if the criteria is NOT attested to-->
-    <table class="table table-striped" ng-if="!$ctrl.cert.success && ($ctrl.cert.g1Success !== null || $ctrl.cert.g1MacraMeasures || $ctrl.cert.g2Success !== null || $ctrl.cert.g2MacraMeasures)">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">Attribute</th>
@@ -26,45 +24,11 @@
         </tr>
       </thead>
       <tbody>
-          <tr ng-if="$ctrl.cert.g1Success !== null">
-            <td><label class="control-label" for="data_g1Success{{ $ctrl.cert.number }}">Measure Successfully Tested for G1</label></td>
-            <td><select class="form-control input-sm" id="data_g1Success{{ $ctrl.cert.number }}" name="data_g1Success" ng_model="$ctrl.cert.g1Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
-          </tr>
-          <tr ng-if="$ctrl.cert.g1MacraMeasures">
-            <td><label class="control-label" for="data_g1MacraMeasures{{ $ctrl.cert.number }}">Measure<span ng-if="$ctrl.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</label></td>
-            <td>
-              <button id="clear-selection-g1macrameasures" class="btn btn-small btn-link pull-right" ng-click="$ctrl.cert.g1MacraMeasures=[];" ng-if="$ctrl.cert.g1MacraMeasures && $ctrl.cert.g1MacraMeasures.length !== 0">Clear Selection(s)<span class="sr-only">of G1 Macra Measures</span></button>
-              <select multiple data-ng-attr-size="{{ $ctrl.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm" id="data_g1MacraMeasures{{ $ctrl.cert.number }}" name="data_g1MacraMeasures" ng_model="$ctrl.cert.g1MacraMeasures" ng-options="m as m.abbreviation for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id" ng-disabled="!$ctrl.canEdit()"></select>
-            </td>
-          </tr>
-          <tr ng-if="$ctrl.cert.g2Success !== null">
-            <td><label class="control-label" for="data_g2Success{{ $ctrl.cert.number }}">Measure Successfully Tested for G2</label></td>
-            <td><select class="form-control input-sm" id="data_g2Success{{ $ctrl.cert.number }}" name="data_g2Success" ng_model="$ctrl.cert.g2Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
-          </tr>
-          <tr ng-if="$ctrl.cert.g2MacraMeasures">
-            <td><label class="control-label" for="data_g2MacraMeasures{{ $ctrl.cert.number }}">Measure<span ng-if="$ctrl.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</label></td>
-            <td>
-              <button id="clear-selection-g2macrameasures" class="btn btn-small btn-link pull-right" ng-click="$ctrl.cert.g2MacraMeasures=[];" ng-if="$ctrl.cert.g2MacraMeasures && $ctrl.cert.g2MacraMeasures.length !== 0">Clear Selection(s)<span class="sr-only">of G2 Macra Measures</span></button>
-              <select multiple data-ng-attr-size="{{ $ctrl.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm" id="data_g2MacraMeasures{{ $ctrl.cert.number }}" name="data_g2MacraMeasures" ng_model="$ctrl.cert.g2MacraMeasures" ng-options="m as m.abbreviation for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id" ng-disabled="!$ctrl.canEdit()"></select>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-    <!--This table is displayed if the criteria is attested to-->
-    <table class="table table-striped" ng-if="$ctrl.cert.success">
-      <thead>
-        <tr>
-          <th scope="col">Attribute</th>
-          <th scope="col">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-if="$ctrl.cert.gap !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.gap !== null">
           <td><label class="control-label" for="data_gap{{ $ctrl.cert.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.testStandards !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
           <td>Standard</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -123,7 +87,7 @@
                     ng-options="m as (m.abbreviation + (m.removed ? ' (Removed)' : '')) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.testFunctionality !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null">
           <td>Functionality Tested</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -143,7 +107,7 @@
               </div>
             </div>
           </td>
-          <td ng-if="$ctrl.cert.testFunctionality && $ctrl.cert.testFunctionality.length > 0 && !$ctrl.canEdit()">
+          <td ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality && $ctrl.cert.testFunctionality.length > 0 && !$ctrl.canEdit()">
             <ul>
               <li ng-repeat="m in $ctrl.cert.testFunctionality">
                 <span ng-if="!m.description">{{ m.name }}</span>
@@ -154,7 +118,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.testFunctionality || $ctrl.cert.testFunctionality.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.testProcedures !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null">
           <td>Test procedure</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -183,7 +147,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.testProcedures || $ctrl.cert.testProcedures.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.testToolsUsed !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testToolsUsed !== null">
           <td>Test tool</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -212,7 +176,7 @@
           <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0 && !$ctrl.canEdit()"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testToolId === null}">Tool: {{ m.testToolName }}; Version: {{ m.testToolVersion ? m.testToolVersion : 'N/A' }}<span ng-if="m.testToolId === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
           <td ng-if="(!$ctrl.cert.testToolsUsed || $ctrl.cert.testToolsUsed.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.testDataUsed !== null && $ctrl.availableTestData && $ctrl.availableTestData.length > 0">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testDataUsed !== null && $ctrl.availableTestData && $ctrl.availableTestData.length > 0">
           <td>Test data</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -242,39 +206,39 @@
           <td ng-if="$ctrl.cert.testDataUsed && $ctrl.cert.testDataUsed.length > 0 && !$ctrl.canEdit()"><div ng-repeat="m in $ctrl.cert.testDataUsed">Name: {{ m.testData.name ? m.testData.name : 'N/A' }}; Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
           <td ng-if="(!$ctrl.cert.testDataUsed || $ctrl.cert.testDataUsed.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.apiDocumentation !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.apiDocumentation !== null">
           <td><label class="control-label" for="data_api{{ $ctrl.cert.number }}">API Documentation</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_api{{ $ctrl.cert.number }}" name="data_apiDocumentation" ng-model="$ctrl.cert.apiDocumentation" ng-maxlength="1024" ng-disabled="!$ctrl.canEdit()"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.maxlength">Field is too long</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.exportDocumentation !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.exportDocumentation !== null">
           <td><label class="control-label" for="data_export{{ $ctrl.cert.number }}">Export Documentation</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_export{{ $ctrl.cert.number }}" name="data_exportDocumentation" ng-model="$ctrl.cert.exportDocumentation" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.maxlength">Field is too long</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.attestationAnswer !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.attestationAnswer !== null">
           <td><label class="control-label" for="data_attestationAnswer{{ $ctrl.cert.number }}">Attestation</label></td>
           <td><select class="form-control input-sm" id="data_attestationAnswer{{ $ctrl.cert.number }}" name="data_attestationAnswer" ng_model="$ctrl.cert.attestationAnswer" ng-options="b.value as b.name for b in $ctrl.yesNo"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.documentationUrl !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.documentationUrl !== null">
           <td><label class="control-label" for="data_documentation{{ $ctrl.cert.number }}">Documentation</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_documentation{{ $ctrl.cert.number }}" name="data_documentationUrl" ng-model="$ctrl.cert.documentationUrl" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.maxlength">Field is too long</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer">
           <td><label class="control-label" for="data_use{{ $ctrl.cert.number }}">Use Case(s)</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_use{{ $ctrl.cert.number }}" name="data_useCases" ng-model="$ctrl.cert.useCases" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.maxlength">Field is too long</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.privacySecurityFramework !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null">
           <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework" ng-disabled="!$ctrl.canEdit()">
               <option value="Approach 1">Approach 1</option>
@@ -282,7 +246,7 @@
               <option value="Approach 1;Approach 2">Approach 1;Approach 2</option>
           </select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.sed !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.sed !== null">
           <td><label class="control-label" for="data_sed{{ $ctrl.cert.number }}">SED</label></td>
           <td>
             <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-ng-disabled="$ctrl.cert.certificationEdition.name === '2015'" ng-disabled="!$ctrl.canEdit()"></select>
