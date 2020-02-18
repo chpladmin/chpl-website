@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the ACB Management component', function () {
+    describe('the ACB Management component', function () {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope;
 
         beforeEach(() => {

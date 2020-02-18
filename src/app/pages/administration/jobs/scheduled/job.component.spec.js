@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Job Edit component', () => {
+    describe('the Job Edit component', () => {
         let $compile, $log, ctrl, el, mock, scope;
 
         mock = {

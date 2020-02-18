@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Reports.UserActions component', () => {
+    describe('the Reports.UserActions component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 

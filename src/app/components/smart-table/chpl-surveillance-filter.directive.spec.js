@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Filter', () => {
+    describe('the Surveillance Filter', () => {
         var $analytics, $compile, $localStorage, $log, SPLIT_PRIMARY, el, scope, vm;
 
         var stateKey = 'testState';

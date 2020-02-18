@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the User Management component', () => {
+    describe('the User Management component', () => {
         var $compile, $log, $state, authService, ctrl, el, scope;
 
         beforeEach(() => {

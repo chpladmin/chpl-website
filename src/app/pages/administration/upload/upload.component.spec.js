@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Upload component', () => {
+    describe('the Upload component', () => {
         let $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

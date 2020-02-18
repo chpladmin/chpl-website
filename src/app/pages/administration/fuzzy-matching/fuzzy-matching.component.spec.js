@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Fuzzy Matching component', () => {
+    describe('the Fuzzy Matching component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

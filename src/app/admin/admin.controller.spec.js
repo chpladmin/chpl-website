@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the CHPL Admin Management', function () {
+    describe('the CHPL Admin Management', function () {
 
         var $controller, $log, $q, $rootScope, authService, networkService, scope, vm;
 
