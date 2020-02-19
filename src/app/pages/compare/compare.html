@@ -66,7 +66,7 @@
           </tr>
           <tr ng-repeat="cert in vm.sortedCerts" ng-if="vm.isShowing('certifications') && (vm.allCerts[cert].atLeastOne || vm.showAllPossibles)" ng-class="{ 'removed' : vm.allCerts[cert].removed }">
             <th scope="row" class="compare-rowCert">
-              {{ vm.allCerts[cert].number + ": " + vm.allCerts[cert].title }} <button ng-if="vm.allCerts[cert].removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
+              <span ng-if="vm.allCerts[cert].removed">Removed | </span>{{ vm.allCerts[cert].number + ": " + vm.allCerts[cert].title }} <button ng-if="vm.allCerts[cert].removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </th>
             <td ng-repeat="item in vm.allCerts[cert].values | orderBy:'certificationDate'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
