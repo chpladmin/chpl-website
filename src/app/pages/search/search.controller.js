@@ -446,7 +446,7 @@
                 pageSize: '50',
                 acbItems: [],
                 cqms: { 2011: [], other: [] },
-                criteria: { 2011: [], 2014: [], 2015: []},
+                criteria: { '2011': [], '2014': [], '2015': []},
                 editionItems: [],
                 statusItems: [],
             };
@@ -478,17 +478,18 @@
                     }
                     return obj;
                 });
-            vm.searchOptions.certificationStatuses = $filter('orderBy')(vm.searchOptions.certificationStatuses, 'name');
-            for (i = 0; i < vm.searchOptions.certificationStatuses.length; i++) {
-                obj = {
-                    value: vm.searchOptions.certificationStatuses[i].name,
-                    selected: vm.defaultRefineModel.certificationStatus[vm.searchOptions.certificationStatuses[i].name],
-                };
-                if (obj.value === 'Retired') {
-                    obj.retired = true;
-                }
-                vm.filterItems.statusItems.push(obj);
-            }
+            vm.filterItems.statusItems = vm.searchOptions.certificationStatuses
+                .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                .map(status => {
+                    let obj = {
+                        value: status.name,
+                        selected: vm.defaultRefineModel.certificationStatus[status.name],
+                    };
+                    if (obj.value === 'Retired') {
+                        obj.retired = true;
+                    }
+                    return obj;
+                });
             vm.searchOptions.certificationCriteria
                 .sort(utilService.sortCertActual)
                 .forEach(crit => {
