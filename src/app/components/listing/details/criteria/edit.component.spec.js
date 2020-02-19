@@ -128,7 +128,7 @@
                 });
 
                 it('should know when it was met via additional software', () => {
-                    var certMet = { additionalSoftware: [1] };
+                    var certMet = { additionalSoftware: [1], criterion: { removed: false} };
                     scope.resolve = {
                         cert: certMet,
                         resources: mock.resources,
