@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Listing component', () => {
+    xdescribe('the Reports.Listing component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 
