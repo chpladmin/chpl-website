@@ -7,6 +7,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+                $provide.factory('chplFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
@@ -46,7 +47,7 @@
         });
 
         describe('controller', () => {
-            it('should exist', function () {
+            it('should exist', () => {
                 expect(ctrl).toBeDefined();
             });
         });
