@@ -54,6 +54,7 @@
             vm.restoreStateHs = [];
             vm.showRetiredHs = [];
             vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
+            vm.lookupData = {};
             vm.downloadResultsCategories = [
                 { display: 'Edition', enabled: true, columns: [{ display: 'Edition', key: 'edition' }] },
                 { display: 'Product data', enabled: true, columns: [
@@ -67,7 +68,7 @@
                 { display: 'Practice Type', enabled: false, columns: [{ display: 'Practice Type', key: 'practiceType' }] },
                 { display: 'Status', enabled: true, columns: [{ display: 'Status', key: 'certificationStatus' }] },
                 { display: 'Details', enabled: true, columns: [{ display: 'Details', key: 'id', transform: id => 'https://chpl.healthit.gov/#/product/' + id }] },
-                { display: 'Certification Criteria', enabled: false, columns: [{ display: 'Certification Criteria', key: 'criteriaMet', transform: crit => crit ? crit.split(SPLIT_PRIMARY).sort(utilService.sortCertActual).join('\n') : '' }] },
+                { display: 'Certification Criteria', enabled: false, columns: [{ display: 'Certification Criteria', key: 'criteriaMet', transform: getCriteriaForCsv }] },
                 { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
                 { display: 'Surveillance', enabled: false, columns: [
                     { display: 'Total Surveillance', key: 'surveillanceCount' },
@@ -351,6 +352,19 @@
 
         ////////////////////////////////////////////////////////////////////
 
+        function getCriteriaForCsv (crit) {
+            let ret = '';
+            if (crit) {
+                ret = crit.split(SPLIT_PRIMARY)
+                    .map(id => vm.lookupData.certificationCriteria.find(cc => cc.id === parseInt(id, 10)))
+                    .filter(id => id !== undefined)
+                    .sort(utilService.sortCertActual)
+                    .map(cc => cc.number + ': ' + cc.title)
+                    .join('\n');
+            }
+            return ret;
+        }
+
         function incrementTable (results) {
             var delay = 100, size = 500;
             if (results.length > 0) {
@@ -403,6 +417,7 @@
                     openNonconformityCount: results[i].openNonconformityCount,
                     closedNonconformityCount: results[i].closedNonconformityCount,
                 });
+                results[i].criteriaMet = SPLIT_PRIMARY + results[i].criteriaMet + SPLIT_PRIMARY;
             }
             return results;
         }
@@ -412,6 +427,7 @@
                 .then(options => {
                     options.practiceTypes = options.practiceTypes.map(ptn => ptn.name);
                     vm.searchOptions = options;
+                    vm.lookupData.certificationCriteria = angular.copy(options.certificationCriteria);
                     setFilterInfo(vm.defaultRefineModel);
                 });
         }
@@ -494,7 +510,7 @@
                 .sort(utilService.sortCertActual)
                 .forEach(crit => {
                     obj = {
-                        value: crit.number,
+                        value: crit.id,
                         selected: false,
                         display: (crit.removed ? 'Removed | ' : '') + crit.number + ': ' + crit.title,
                         removed: crit.removed,

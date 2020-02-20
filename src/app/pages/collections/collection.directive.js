@@ -57,8 +57,11 @@
             if (!vm.searchText) {
                 vm.searchText = 'Search by Developer, Product, Version, or CHPL ID';
             }
-            setFilterInfo();
-            vm.loadResults();
+            networkService.getSearchOptions().then(options => {
+                vm.options = options;
+                vm.loadResults();
+                setFilterInfo();
+            });
         }
 
         function hasResults () {
@@ -106,6 +109,7 @@
 
         function refreshResults () {
             networkService.getCollection(vm.collectionKey).then(function (response) {
+                response.certificationCriteria = vm.options.certificationCriteria;
                 vm.allCps = collectionsService.translate(vm.collectionKey, response);
                 vm.isPreLoading = false;
             }, function (error) {
@@ -160,23 +164,20 @@
                 pageSize: '50',
             };
             if (vm.isFilterActive('acb')) {
-                networkService.getSearchOptions()
-                    .then(options => {
-                        vm.filterItems.acbItems = options.acbs
-                            .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-                            .map(acb => {
-                                let ret = {
-                                    value: acb.name,
-                                    retired: acb.retired,
-                                };
-                                if (acb.retired) {
-                                    ret.display = ret.value + ' (Retired)';
-                                    ret.selected = ((new Date()).getTime() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
-                                } else {
-                                    ret.selected = true;
-                                }
-                                return ret;
-                            });
+                vm.filterItems.acbItems = vm.options.acbs
+                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                    .map(acb => {
+                        let ret = {
+                            value: acb.name,
+                            retired: acb.retired,
+                        };
+                        if (acb.retired) {
+                            ret.display = ret.value + ' (Retired)';
+                            ret.selected = ((new Date()).getTime() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                        } else {
+                            ret.selected = true;
+                        }
+                        return ret;
                     });
             }
             if (vm.isFilterActive('certificationStatus')) {

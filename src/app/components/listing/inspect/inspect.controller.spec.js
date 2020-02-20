@@ -7,6 +7,7 @@
         mock = {};
         mock.inspectingCp = {
             developer: { developerId: 1},
+            transparencyAttestation: 'Affirmative',
         };
         mock.resources = {
             bodies: [],
@@ -163,7 +164,7 @@
                     transparencyAttestations: [{
                         acbId: 3,
                         acbName: 'Drummond Group',
-                        attestation: 'Affirmative',
+                        attestation: {transparencyAttestation: 'Affirmative', removed: false},
                     }],
                 };
                 vm.cp.developer.developerId = vm.developer.developerId;
@@ -282,13 +283,13 @@
 
                 it('should display a relevant transparency attestation if available', function () {
                     let expectedAttestation = vm.developer.transparencyAttestations[1].attestation;
-                    let attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                    let attestation = vm.getAttestationForCurrentSystemDeveloper();
                     expect(attestation).toBe(expectedAttestation);
                 });
 
                 it('should not display a relevant transparency attestation if not available', function () {
                     vm.developer.transparencyAttestations[1].acbName = 'no acbName matches now';
-                    let attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                    let attestation = vm.getAttestationForCurrentSystemDeveloper();
                     expect(attestation).toBeUndefined();
                 });
 
@@ -296,10 +297,10 @@
                     it('should skip the body of getAttestationStringForCurrentSystemDeveloper(), return null, '
                         + 'and display no system attestation info', function () {
                         vm.developer.transparencyAttestations = undefined;
-                        let attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                        let attestation = vm.getAttestationForCurrentSystemDeveloper();
                         expect(attestation).toBeNull();
                         vm.developer = undefined;
-                        attestation = vm.getAttestationStringForCurrentSystemDeveloper();
+                        attestation = vm.getAttestationForCurrentSystemDeveloper();
                         expect(attestation).toBeNull();
                     });
                 });

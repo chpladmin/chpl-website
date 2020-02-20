@@ -220,12 +220,12 @@
 
                         for (i = 0; i < expected.matchAny.items.length; i++) {
                             if (
-                                (actual + separator).toLowerCase() === (expected.matchAny.items[i] + separator).toLowerCase()
+                                (separator + actual + separator).toLowerCase() === (separator + expected.matchAny.items[i] + separator).toLowerCase()
                                     ||
                                     (
                                         !expected.matchAny.matchFull
                                             &&
-                                            (actual + separator).toLowerCase().indexOf((expected.matchAny.items[i] + separator).toLowerCase()) > -1
+                                            (separator + actual + separator).toLowerCase().indexOf((separator + expected.matchAny.items[i] + separator).toLowerCase()) > -1
                                     )
                             ) {
                                 return true;
@@ -247,8 +247,8 @@
 
                         ret = true;
                         for (i = 0; i < expected.matchAll.items.length; i++) {
-                            ret = ret && ((actual + separator).toLowerCase() === (expected.matchAll.items[i] + separator).toLowerCase()
-                                          || (actual + separator).toLowerCase().indexOf((expected.matchAll.items[i] + separator).toLowerCase()) > -1);
+                            ret = ret && ((separator + actual + separator).toLowerCase() === (separator + expected.matchAll.items[i] + separator).toLowerCase()
+                                          || (separator + actual + separator).toLowerCase().indexOf((separator + expected.matchAll.items[i] + separator).toLowerCase()) > -1);
                         }
 
                         return ret;

@@ -110,20 +110,39 @@
         });
 
         describe('when sorting', () => {
+            describe('certification criteria', () => {
+                it('should be able to sort strings', () => {
+                    expect(util.sortCert('170.314 (a)(1)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
+                    expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
+                    expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.315 (a)(10)'));
+                    expect(util.sortCert('170.302 (a)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
+                });
 
-            it('should be able to sort certs', () => {
-                expect(util.sortCert('170.314 (a)(1)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
-                expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
-                expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.315 (a)(10)'));
-                expect(util.sortCert('170.302 (a)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
-            });
+                it('should be able to sort objects by name', () => {
+                    expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
+                });
 
-            it('should be able to sort cert objects by name', () => {
-                expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
-            });
+                it('should be able to sort objects by number', () => {
+                    expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
+                });
 
-            it('should be able to sort cert objects by number', () => {
-                expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
+                it('should sort strings that have identical numbers by title', () => {
+                    let a = '170.315 (b)(2): A title';
+                    let b = '170.315 (b)(2): A title (with stuff)';
+                    expect(util.sortCert(a)).toBeLessThan(util.sortCert(b));
+                });
+
+                it('should sort objects that have identical numbers by title', () => {
+                    let a = {
+                        number: '170.315 (b)(2)',
+                        title: 'A title',
+                    };
+                    let b = {
+                        number: '170.315 (b)(2)',
+                        title: 'A title (with stuff)',
+                    };
+                    expect(util.sortCert(a)).toBeLessThan(util.sortCert(b));
+                });
             });
 
             it('should be able to sort cqms', () => {
@@ -218,7 +237,7 @@
                 expect(util.sortCertArray(['170.314 (a)(2)'])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
             });
 
-            xit('should farm out sorting', () => {
+            it('should farm out sorting', () => {
                 spyOn(util, 'sortCert').and.callFake(a => a);
                 expect(util.sortCertActual(1, 2)).toBeLessThan(0);
                 expect(util.sortCert.calls.count()).toBe(2);
@@ -226,7 +245,7 @@
                 expect(util.sortCert.calls.count()).toBe(4);
             });
 
-            xit('should farm out sorting', () => {
+            it('should farm out sorting', () => {
                 spyOn(util, 'sortCqm').and.callFake(a => a);
                 expect(util.sortCqmActual(1, 2)).toBeLessThan(0);
                 expect(util.sortCqm.calls.count()).toBe(2);
