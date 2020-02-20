@@ -196,15 +196,16 @@ export const SurveillanceComplaintComponent = {
             } else {
                 this.toaster.pop({
                     type: 'warning',
-                    body: this.criterion.number + ' already exists',
+                    body: 'Certification Criterion :"' + this.criterion.number + ': ' + this.criterion.title + '" is already associated with this complaint',
                 });
             }
             this.criterion = {};
         }
 
         isCriterionAlreadyAssociatedToComplaint (criterion) {
-            let found = this.complaint.criteria.find(item => item.certificationCriterion.number === criterion.number);
-            return found !== undefined;
+            return this.complaint.criteria
+                .find(item => item.certificationCriterion.number === criterion.number
+                      && item.certificationCriterion.title === criterion.title);
         }
 
         removeCriterion (criterionToRemove) {

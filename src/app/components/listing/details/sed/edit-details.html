@@ -61,7 +61,7 @@
         <label class="control-label col-sm-4" for="process-criteria-{{ $index }}">UCD Process {{ $index + 1 }} Applicable Criteria</label>
         <div class="col-sm-8">
           <button id="clear-selection-criteria" class="btn btn-small btn-link pull-right" ng-click="process.criteria=[];" ng-if="process.criteria && process.criteria.length !== 0">Clear Selection(s)<span class="sr-only">of Criteria</span></button>
-          <select ng-options="criteria.number for criteria in vm.criteria | orderBy: vm.sortCert track by criteria.number" ng-model="process.criteria"
+          <select ng-options="(criteria.number + ': ' + criteria.title) for criteria in vm.criteria | orderBy: vm.sortCert track by criteria.id" ng-model="process.criteria"
                   multiple data-ng-attr-size="{{ vm.criteria.length }}" id="process-criteria-{{ $index }}" name="processCriteria{{ $index }}"
                   class="form-control input-sm" required></select>
           <div class="text-danger" ng-if="vm.editForm['processCriteria' + $index].$touched && vm.editForm['processCriteria' + $index].$error.required">Field is required</div>

@@ -110,13 +110,13 @@
         }
 
         function _getCriterionProductCountDataInChartFormat (data, edition) {
-            return data.criterionProductStatisticsResult.filter(function (obj) {
-                return obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0;
-            }).sort(function (a, b) {
-                return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
-            }).map(function (obj) {
-                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: 'Name: ' + obj.criterion.title + '\n Count: ' + obj.productCount}]};
-            });
+            return data.criterionProductStatisticsResult.filter(obj => obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0)
+                .sort((a, b) => utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number))
+                .map(obj => {
+                    return {c: [{
+                        v: obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
+                    },{v: obj.productCount}, {v: 'Name: ' + obj.criterion.title + '\n Count: ' + obj.productCount}]};
+                });
         }
 
         function _createIncumbentDevelopersCountChart () {

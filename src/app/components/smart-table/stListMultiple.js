@@ -221,7 +221,7 @@
         }
 
         function getId (value) {
-            return 'filter-list-' + value.replace(/\s/g, '_');
+            return 'filter-list-' + (value + '').replace(/\s/g, '_');
         }
 
         function filterChanged () {

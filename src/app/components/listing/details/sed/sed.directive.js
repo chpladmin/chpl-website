@@ -206,10 +206,9 @@
                 };
 
                 vm.sedCriteria = vm.listing.certificationResults
-                    .filter(function (cert) { return cert.success && cert.sed; })
-                    .map(function (cert) { return cert.criterion; });
+                    .filter(cert => cert.success && cert.sed)
+                    .map(cert => cert.criterion);
                 vm.criteriaCount = vm.sedCriteria.length;
-                vm.sedCriteriaNumbers = vm.sedCriteria.map(function (cert) { return cert.number; });
 
                 csvRow = angular.copy(ROW_BASE);
 
@@ -219,9 +218,9 @@
                     if (!task.id) {
                         task.id = i * -1 - 1;
                     }
-                    task.criteria = $filter('orderBy')(task.criteria.filter(function (cert) { return vm.sedCriteriaNumbers.indexOf(cert.number) > -1; }), vm.sortCert);
+                    task.criteria = $filter('orderBy')(task.criteria.filter(cert => vm.sedCriteria.map(cert => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
-                    csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
+                    csvRow[4] = task.criteria.map(item => item.number + (item.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')).join(';');
                     csvRow[TASK_START + 0] = task.description;
                     csvRow[TASK_START + 1] = task.taskRatingScale;
                     csvRow[TASK_START + 2] = task.taskRating;
@@ -284,7 +283,7 @@
 
                 vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
                     item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) {
-                        var loc = vm.sedCriteriaNumbers.indexOf(cert.number);
+                        var loc = vm.sedCriteria.map(cert => cert.number).indexOf(cert.number);
                         if (loc > -1) {
                             vm.sedCriteria[loc].found = true;
                             return true;

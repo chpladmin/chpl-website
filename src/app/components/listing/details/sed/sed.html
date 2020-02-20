@@ -29,10 +29,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="process in vm.listing.sed.ucdProcesses | orderBy: [vm.sortProcesses]">
+          <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
             <td>
               <ul>
-                <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}: {{ crit.title }} <button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
+                <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}: <span chpl-highlight-cures ng-model="crit.title"></span> <button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
               </ul>
             </td>
             <td>{{ process.name ? process.name : 'None' }}</td>
@@ -49,12 +49,13 @@
           <tr>
             <th scope="col">Description</th>
             <th scope="col">Task Rating and Scale Type</th>
+            <th scope="col">Certification Criteria</th>
             <th scope="col"><span class="sr-only">View details</span></th>
           </tr>
         </thead>
         <tfoot>
           <tr>
-            <td colspan="3">
+            <td colspan="4">
               <button class="btn btn-ai-success"
                       ng-click="vm.getCsv()">
                 <i class="fa fa-cloud-download"></i> Download SED Details
@@ -66,6 +67,11 @@
           <tr ng-repeat="task in vm.listing.sed.testTasks | orderBy: 'description'">
             <td>{{ task.description }}</td>
             <td>{{ task.taskRating }} ({{ task.taskRatingScale }})</td>
+            <td>
+              <ul>
+                <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in task.criteria | orderBy: vm.sortCert">{{ crit.number }}: <span chpl-highlight-cures ng-model="crit.title"></span><button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
+              </ul>
+            </td>
             <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
           </tr>
         </tbody>

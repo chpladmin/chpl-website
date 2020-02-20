@@ -246,15 +246,24 @@
         }
 
         function sortCert (cert) {
+            let title = '';
             if (angular.isObject(cert)) {
-                cert = cert.name || cert.number;
+                if (cert.title) {
+                    title = cert.title;
+                }
+                cert = cert.name || cert.number
+            } else if (cert.indexOf(':') > 0) {
+                let vals = cert.split(':');
+                cert = vals[0];
+                title = vals[1];
             }
-            var edition = parseInt(cert.substring(4,7));
-            var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
-            var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
-            var ret = edition * 10000 +
-                    letter * 100 +
-                    number;
+            const edition = parseInt(cert.substring(4,7));
+            const letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
+            const number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
+            const ret = edition * 1000000 +
+                  letter * 10000 +
+                  number * 100 +
+                  title.length;
             return ret;
         }
 
