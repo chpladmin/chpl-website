@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Relied Upon Software edit component', function () {
+    describe('the Relied Upon Software edit component', function () {
         var $log, Mock, scope, vm;
 
         beforeEach(function () {

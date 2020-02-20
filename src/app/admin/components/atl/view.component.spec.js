@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the ATL Management component', function () {
+    describe('the ATL Management component', function () {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope;
 
         beforeEach(function () {

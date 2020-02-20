@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Report Relevent Listing component', () => {
+    describe('the Surveillance Report Relevent Listing component', () => {
         var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the ExcludedListings component', () => {
+    describe('the ExcludedListings component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

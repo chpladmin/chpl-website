@@ -82,6 +82,10 @@ export const DeveloperComponent = {
             }
         }
 
+        showFooter () {
+            return this.can('edit') || this.can('merge') || this.can('split');
+        }
+
         isEffectiveRuleDatePlusOneWeekOn () {
             return this.isOn('effective-rule-date-plus-one-week');
         }

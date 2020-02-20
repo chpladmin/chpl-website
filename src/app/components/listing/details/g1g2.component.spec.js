@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the G1/G2 listing details component', function () {
+    describe('the G1/G2 listing details component', function () {
 
         var $compile, $log, Mock, ctrl, el, scope;
 

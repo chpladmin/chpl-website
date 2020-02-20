@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Custom Smart-Table Filter', function () {
+    describe('the Custom Smart-Table Filter', function () {
 
         var $log, Mock, aiCustomFilter, mock;
 

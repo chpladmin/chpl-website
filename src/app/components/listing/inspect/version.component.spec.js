@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the version inspection component', () => {
+    describe('the version inspection component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

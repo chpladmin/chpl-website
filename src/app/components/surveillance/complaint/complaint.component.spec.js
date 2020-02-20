@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Complaint component', () => {
+    describe('the Surveillance Complaint component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {

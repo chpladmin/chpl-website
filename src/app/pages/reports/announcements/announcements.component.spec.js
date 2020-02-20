@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Reports.Announcements component', () => {
+    describe('the Reports.Announcements component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
