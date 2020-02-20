@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 10.37.1
+_20 February 2020_
+
+### Bug Fixes
+* Disable submission of "self-developer" change
+* Allow Developers to submit CRs
+
+---
+
 ## Version 10.37.0
 _11 February 2020_
 
