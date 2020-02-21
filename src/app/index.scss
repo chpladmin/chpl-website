@@ -617,6 +617,10 @@ tr.removed {
             tr:nth-of-type(odd) {
                 background-color: #eee;
             }
+
+            tr:nth-of-type(even) {
+                background-color: #fff;
+            }
         }
     }
 }
