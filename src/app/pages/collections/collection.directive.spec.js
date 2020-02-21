@@ -1,12 +1,17 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Collections', function () {
-        var $compile, $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, mock, networkService, scope, vm;
+    describe('the Collections', () => {
+        var $compile, $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, collectionsService, el, mock, networkService, scope, vm;
 
-        beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.collections', function ($provide) {
-                $provide.decorator('networkService', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.mock', 'chpl.collections', $provide => {
+                $provide.decorator('collectionsService', $delegate => {
+                    $delegate.translate = jasmine.createSpy('translate');
+
+                    return $delegate;
+                });
+                $provide.decorator('networkService', $delegate => {
                     $delegate.getCollection = jasmine.createSpy('getCollection');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
 
@@ -14,7 +19,7 @@
                 });
             });
 
-            inject(function (_$compile_, $controller, _$interval_, _$log_, _$q_, $rootScope, _CACHE_REFRESH_TIMEOUT_, _Mock_, _networkService_) {
+            inject((_$compile_, $controller, _$interval_, _$log_, _$q_, $rootScope, _CACHE_REFRESH_TIMEOUT_, _Mock_, _collectionsService_, _networkService_) => {
                 $compile = _$compile_;
                 $interval = _$interval_;
                 $log = _$log_;
@@ -26,6 +31,8 @@
                 };
                 mock.searchOptions.acbs[0].retired = true;
                 mock.searchOptions.acbs[0].retirementDate = new Date();
+                collectionsService = _collectionsService_;
+                collectionsService.translate.and.returnValue([]);
                 networkService = _networkService_;
                 networkService.getCollection.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
                 networkService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));
@@ -42,27 +49,27 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        describe('directive', function () {
-            it('should be compiled', function () {
+        describe('directive', () => {
+            it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });
         });
 
-        describe('controller', function () {
-            it('should exist', function () {
+        describe('controller', () => {
+            it('should exist', () => {
                 expect(vm).toBeDefined();
             });
 
-            describe('when figuring out if filters have changed', function () {
-                it('should report true if any filter has changes', function () {
+            describe('when figuring out if filters have changed', () => {
+                it('should report true if any filter has changes', () => {
                     vm.filters = ['acb', 'atl'];
                     vm.categoryChanged = {
                         acb: false,
@@ -109,8 +116,8 @@
             });
         });
 
-        describe('updating results data in the background', function () {
-            it('should refresh the list on a timer', function () {
+        describe('updating results data in the background', () => {
+            it('should refresh the list on a timer', () => {
                 expect(networkService.getCollection.calls.count()).toBe(1);
                 $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
                 expect(networkService.getCollection.calls.count()).toBe(2);
@@ -118,7 +125,7 @@
                 expect(networkService.getCollection.calls.count()).toBe(3);
             });
 
-            it('should be able to stop the refresh interval', function () {
+            it('should be able to stop the refresh interval', () => {
                 expect(vm.stopCacheRefreshPromise).toBeDefined();
                 expect(vm.stopCacheRefresh).toBeDefined();
                 vm.stopCacheRefresh();
