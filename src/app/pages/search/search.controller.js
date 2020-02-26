@@ -55,6 +55,30 @@
             vm.showRetiredHs = [];
             vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
             vm.lookupData = {};
+            vm.defaultRefineModel = {
+                certificationEdition: {
+                    '2011': false,
+                    '2014': true,
+                    '2015': true,
+                },
+                certificationStatus: {
+                    'Active': true,
+                    'Retired': false,
+                    'Suspended by ONC-ACB': true,
+                    'Withdrawn by Developer': false,
+                    'Withdrawn by Developer Under Surveillance/Review': false,
+                    'Withdrawn by ONC-ACB': false,
+                    'Suspended by ONC': true,
+                    'Terminated by ONC': false,
+                },
+            };
+            vm.retired = {
+                edition: { '2011': true },
+            };
+            if (vm.isOn('effective-rule-date')) {
+                vm.retired.edition['2014'] = true;
+            }
+
             vm.downloadResultsCategories = [
                 { display: 'Edition', enabled: true, columns: [{ display: 'Edition', key: 'edition' }] },
                 { display: 'Product data', enabled: true, columns: [
@@ -85,31 +109,6 @@
             }
             vm.loadResults();
             setTimestamp();
-        }
-
-        vm.defaultRefineModel = {
-            certificationEdition: {
-                '2011': false,
-                '2014': true,
-                '2015': true,
-            },
-            certificationStatus: {
-                'Active': true,
-                'Retired': false,
-                'Suspended by ONC-ACB': true,
-                'Withdrawn by Developer': false,
-                'Withdrawn by Developer Under Surveillance/Review': false,
-                'Withdrawn by ONC-ACB': false,
-                'Suspended by ONC': true,
-                'Terminated by ONC': false,
-            },
-        };
-
-        vm.retired = {
-            edition: { '2011': true },
-        };
-        if (vm.isOn('effective-rule-date')) {
-            vm.retired.edition['2014'] = true;
         }
 
         function browseAll () {
@@ -309,11 +308,6 @@
                 keyboard: false,
                 size: 'lg',
             });
-            vm.viewCertificationStatusLegendInstance.result.then(function (response) {
-                $log.info(response);
-            }, function (result) {
-                $log.info(result)
-            });
         }
 
         function viewPreviouslyCompared (doNotSearch) {
@@ -489,6 +483,8 @@
                         selected: vm.defaultRefineModel.certificationEdition[edition.name],
                     }
                     if (edition.name === '2011' || (edition.name === '2014' && vm.isOn('effective-rule-date'))) {
+                        vm.defaultRefineModel.certificationEdition['2014'] = false;
+                        obj.selected = false;
                         obj.display = 'Retired | ' + obj.value;
                         obj.retired = true;
                     }
