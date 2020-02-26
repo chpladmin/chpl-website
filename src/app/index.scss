@@ -589,10 +589,6 @@ option[disabled] {
     bottom: 25px !important;
 }
 
-.retired {
-    font-weight: normal;
-}
-
 li.removed,
 a.removed,
 td.removed,
@@ -601,7 +597,6 @@ tr.removed {
 }
 
 .removed {
-    font-weight: normal;
 
     .btn-link {
 
