@@ -70,7 +70,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="noncon in $ctrl.requirement.nonconformities track by $index">
-              <td>{{ noncon.nonconformityType }}</td>
+              <td>{{ noncon.criterion ? (noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
               <td>{{ noncon.status.name }}</td>
               <td>{{ noncon.summary }}</td>
               <td>

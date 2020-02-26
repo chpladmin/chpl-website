@@ -52,6 +52,13 @@ export const SurveillanceNonconformityEditComponent = {
             if (this.nonconformity.capMustCompleteDate) {
                 this.nonconformity.capMustCompleteDateObject = new Date(this.nonconformity.capMustCompleteDate);
             }
+            if (this.nonconformity.criterion) {
+                this.nonconformityType = this.data.nonconformityTypes.data
+                    .find(t => t.number === this.nonconformity.criterion.number && t.title === this.nonconformity.criterion.title);
+            } else {
+                this.nonconformityType = this.data.nonconformityTypes.data
+                    .find(t => t.number === this.nonconformity.nonconformityType);
+            }
         }
 
         cancel () {
@@ -103,6 +110,10 @@ export const SurveillanceNonconformityEditComponent = {
             } else {
                 this.nonconformity.capMustCompleteDate = null;
             }
+            if (this.nonconformityType.title) {
+                this.nonconformity.criterion = this.nonconformityType;
+            }
+            this.nonconformity.nonconformityType = this.nonconformityType.number;
             this.close({$value: this.nonconformity});
         }
 
