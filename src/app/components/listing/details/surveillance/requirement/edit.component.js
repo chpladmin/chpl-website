@@ -31,6 +31,14 @@ export const SurveillanceRequirementEditComponent = {
             if (this.requirement.result) {
                 this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
             }
+            if (this.requirement.criterion) {
+                this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
+                    .find(t => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
+            } else {
+                this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
+                    .find(t => t.number === this.requirement.requirement);
+            }
+            this.$log.info(this.requirementCriterionType);
         }
 
         addNonconformity () {
@@ -121,6 +129,14 @@ export const SurveillanceRequirementEditComponent = {
             if (this.requirement.result.name === 'No Non-Conformity') {
                 this.requirement.nonconformities = [];
             }
+            if (this.requirement.type.name === 'Certified Capability') {
+                if (this.requirementCriterionType.title) {
+                    this.requirement.criterion = this.requirementCriterionType;
+                } else if (this.requirementCriterionType.number) {
+                    this.requirement.requirement = this.requirementCriterionType.number;
+                }
+            }
+            this.$log.info(this.requirement);
             this.close({$value: this.requirement});
         }
     },
