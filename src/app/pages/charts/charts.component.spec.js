@@ -24,73 +24,6 @@
                 {id: 15, developerCount: 274, productCount: 275, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
                 {id: 16, developerCount: 10, productCount: 11, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
             ],
-            sedParticipantStatisticsCounts: [
-                {id: 187, sedCount: 7, participantCount: 130, creationDate: 1520357057186, deleted: false, lastModifiedDate: 1520357057186, lastModifiedUser: -3},
-                {id: 188, sedCount: 2, participantCount: 67, creationDate: 1520357057200, deleted: false, lastModifiedDate: 1520357057200, lastModifiedUser: -3},
-                {id: 189, sedCount: 2, participantCount: 72, creationDate: 1520357057202, deleted: false, lastModifiedDate: 1520357057202, lastModifiedUser: -3},
-            ],
-            participantAgeStatistics: [
-                {id: 190, ageCount: 3, testParticipantAgeId: 2, ageRange: '10-19', creationDate: 1521480652992, deleted: false, lastModifiedDate: 1521480652992, lastModifiedUser: -3},
-                {id: 191, ageCount: 740, testParticipantAgeId: 3, ageRange: '20-29', creationDate: 1521480652996, deleted: false, lastModifiedDate: 1521480652996, lastModifiedUser: -3},
-                {id: 192, ageCount: 1801, testParticipantAgeId: 4, ageRange: '30-39', creationDate: 1521480652997, deleted: false, lastModifiedDate: 1521480652997, lastModifiedUser: -3},
-                {id: 193, ageCount: 1406, testParticipantAgeId: 5, ageRange: '40-49', creationDate: 1521480652999, deleted: false, lastModifiedDate: 1521480652999, lastModifiedUser: -3},
-                {id: 194, ageCount: 1065, testParticipantAgeId: 6, ageRange: '50-59', creationDate: 1521480653000, deleted: false, lastModifiedDate: 1521480653000, lastModifiedUser: -3},
-                {id: 195, ageCount: 416, testParticipantAgeId: 7, ageRange: '60-69', creationDate: 1521480653002, deleted: false, lastModifiedDate: 1521480653002, lastModifiedUser: -3},
-                {id: 196, ageCount: 10, testParticipantAgeId: 8, ageRange: '70-79', creationDate: 1521480653003, deleted: false, lastModifiedDate: 1521480653003, lastModifiedUser: -3},
-            ],
-            genderMockData: {
-                id: 31,
-                maleCount: 1748,
-                femaleCount: 3693,
-                creationDate: 1521480652800,
-                deleted: false,
-                lastModifiedDate: 1521480652800,
-                lastModifiedUser: -3,
-            },
-            participantEducationStatistics: [
-                {id: 185, educationCount: 7, educationTypeId: 1, education: 'No high school degree', creationDate: 1521480653169, deleted: false, lastModifiedDate: 1521480653169, lastModifiedUser: -3},
-                {id: 186, educationCount: 225, educationTypeId: 2, education: 'High school graduate, diploma or the equivalent (for example: GED)', creationDate: 1521480653174, deleted: false, lastModifiedDate: 1521480653174, lastModifiedUser: -3},
-                {id: 187, educationCount: 257, educationTypeId: 3, education: 'Some college credit, no degree', creationDate: 1521480653175, deleted: false, lastModifiedDate: 1521480653175, lastModifiedUser: -3},
-                {id: 188, educationCount: 277, educationTypeId: 4, education: 'Trade/technical/vocational training', creationDate: 1521480653178, deleted: false, lastModifiedDate: 1521480653178, lastModifiedUser: -3},
-                {id: 189, educationCount: 556, educationTypeId: 5, education: 'Associate degree', creationDate: 1521480653179, deleted: false, lastModifiedDate: 1521480653179, lastModifiedUser: -3},
-                {id: 190, educationCount: 1600, educationTypeId: 6, education: 'Bachelor\'s degree', creationDate: 1521480653181, deleted: false, lastModifiedDate: 1521480653181, lastModifiedUser: -3},
-                {id: 191, educationCount: 556, educationTypeId: 7, education: 'Master\'s degree', creationDate: 1521480653183, deleted: false, lastModifiedDate: 1521480653183, lastModifiedUser: -3},
-                {id: 192, educationCount: 1963, educationTypeId: 9, education: 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', creationDate: 1521480653185, deleted: false, lastModifiedDate: 1521480653185, lastModifiedUser: -3},
-            ],
-            participantExperienceStatistics: [
-                {id: 1286, participantCount: 120, experienceMonths: -1, creationDate: 1521480655200, deleted: false, lastModifiedDate: 1521480655200, lastModifiedUser: -3},
-                {id: 1287, participantCount: 16, experienceMonths: 0, creationDate: 1521480655204, deleted: false, lastModifiedDate: 1521480655204, lastModifiedUser: -3},
-                {id: 1288, participantCount: 4, experienceMonths: 1, creationDate: 1521480655210, deleted: false, lastModifiedDate: 1521480655210, lastModifiedUser: -3},
-                {id: 1289, participantCount: 18, experienceMonths: 2, creationDate: 1521480655214, deleted: false, lastModifiedDate: 1521480655214, lastModifiedUser: -3},
-                {id: 1290, participantCount: 17, experienceMonths: 3, creationDate: 1521480655215, deleted: false, lastModifiedDate: 1521480655215, lastModifiedUser: -3},
-                {id: 1291, participantCount: 2, experienceMonths: 516, creationDate: 1521480655217, deleted: false, lastModifiedDate: 1521480655217, lastModifiedUser: -3},
-            ],
-            nonconformityStatisticsResult: [
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(11)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (b)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 20, nonconformityType: '170.314 (b)(7)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 3, nonconformityType: '170.315 (f)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 19, nonconformityType: '170.523 (k)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 1, nonconformityType: '170.314 (d)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (a)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(8)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 257, nonconformityType: '170.314 (f)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.315 (e)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 8, nonconformityType: '170.314 (b)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 14, nonconformityType: '170.314 (c)(3)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (b)(3)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 15, nonconformityType: '170.314 (e)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (b)(4)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (e)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 104, nonconformityType: '170.523 (k)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (d)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 1, nonconformityType: '170.314 (g)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 13, nonconformityType: '170.314 (c)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(13)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 9, nonconformityType: '170.314 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 63, nonconformityType: 'Other Non-Conformity', deleted: false, lastModifiedUser: -2,creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-            ],
         };
 
         beforeEach(() => {
@@ -161,10 +94,8 @@
                 expect(ctrl.chartState).toEqual({
                     isStacked: 'false',
                     listingCountType: '1',
-                    nonconformityCountType: 'All',
                     productEdition: 2014,
                     tab: 'product',
-                    yAxis: '',
                 });
             });
 
@@ -186,21 +117,6 @@
                     it('should load the nonconformity count statistics', () => {
                         expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
                     });
-
-                    it('should filter data by nonconformity type', () => {
-                        expect(ctrl.nonconformityCounts[2014].data.rows.length).toBe(16);
-                        expect(ctrl.nonconformityCounts[2015].data.rows.length).toBe(5);
-                        expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(24);
-                        expect(ctrl.nonconformityCounts['Program'].data.rows.length).toBe(3);
-                        expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(24);
-                    });
-                    it('should format the data correctly', () => {
-                        expect(ctrl.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
-                    });
-                });
-
-                it('should load only 2014 data when filtered to', () => {
-                    expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
                 });
 
                 describe('of the criterion/product statistics', () => {
