@@ -33,7 +33,7 @@
           </tr>
           <tr>
             <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a transparency or disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements Surveilled</a></th>
-            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
+            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">{{ req.type.name }}: {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}<br /></span></td>
           </tr>
           <tr>
             <th scope="row">
@@ -49,10 +49,10 @@
       </table>
       <div ng-repeat="req in surv.requirements | orderBy:$ctrl.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
-          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
-          <p>Non-Conformity related to {{ req.requirement }} Details</p>
+          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</span></a>
+          <p>Non-Conformity related to {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }} Details</p>
           <div ng-if="noncon.showDetails">
-            <p>Non-Conformity related to {{ req.requirement }} Dates</p>
+            <p>Non-Conformity related to {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }} Dates</p>
             <table class="table table-condensed">
               <thead class="sr-only">
                 <tr>
@@ -84,7 +84,7 @@
                 </tr>
               </tbody>
             </table>
-            <p>Non-Conformity related to {{ req.requirement }} Description</p>
+            <p>Non-Conformity related to {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }} Description</p>
             <table class="table table-condensed">
               <thead class="sr-only">
                 <tr>
@@ -95,7 +95,7 @@
               <tbody>
                 <tr>
                   <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, transparency or disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l). If the non-conformity type is designated as ‘Other Non-Conformity’, then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="'mouseenter focus click'">Non-Conformity Type</a></th>
-                  <td>{{ noncon.nonconformityType }}</td>
+                  <td>{{ noncon.criterion ? (noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
                 </tr>
                 <tr>
                   <th scope="row"><a href uib-tooltip="Whether the non-conformity is open or closed (has been resolved)." tooltip-trigger="'mouseenter focus click'">Non-Conformity Status</a></th>
@@ -124,7 +124,7 @@
               </tbody>
             </table>
             <div ng-if="noncon.documents && noncon.documents.length > 0">
-              <p>Non-Conformity related to {{ req.requirement }} Supporting Documentation</p>
+              <p>Non-Conformity related to {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }} Supporting Documentation</p>
               <ul>
                 <li ng-repeat="doc in noncon.documents">
                   {{ doc.fileName }}
