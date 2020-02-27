@@ -4,14 +4,6 @@
     fdescribe('the Charts component', () => {
         var $compile, $log, $q, $rootScope, ctrl, el, mock, networkService, scope;
         mock = {
-            criterionProductStatisticsResult: [
-                {id: 144, productCount: 928, certificationCriterionId: 63, criterion: {id: 63, number: '170.314 (a)(3)', title: 'Demographics', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448277, deleted: false, lastModifiedDate: 1525902448277, lastModifiedUser: -3},
-                {id: 208, productCount: 138, certificationCriterionId: 1, criterion: {id: 1, number: '170.315 (a)(1)', title: 'Computerized Provider Order Entry (CPOE) - Medications', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448482, deleted: false, lastModifiedDate: 1525902448482, lastModifiedUser: -3},
-                {id: 176, productCount: 138, certificationCriterionId: 3, criterion: {id: 3, number: '170.315 (a)(3)', title: 'CPOE - Diagnostic Imaging', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448382, deleted: false, lastModifiedDate: 1525902448382, lastModifiedUser: -3},
-                {id: 160, productCount: 847, certificationCriterionId: 62, criterion: {id: 62, number: '170.314 (a)(2)', title: 'Drug-drug, drug-allergy interactions checks', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448328, deleted: false, lastModifiedDate: 1525902448328, lastModifiedUser: -3},
-                {id: 161, productCount: 138, certificationCriterionId: 2, criterion: {id: 2, number: '170.315 (a)(2)', title: 'CPOE - Laboratory', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448330, deleted: false, lastModifiedDate: 1525902448330, lastModifiedUser: -3},
-                {id: 131, productCount: 906, certificationCriterionId: 64, criterion: {id: 64, number: '170.314 (a)(4)', title: 'Vital signs, body mass index, and growth Charts', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448257, deleted: false, lastModifiedDate: 1525902448257, lastModifiedUser: -3},
-            ],
             incumbentDevelopersStatisticsResult: [
                 {id: 2, newCount: 82, incumbentCount: 108, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
                 {id: 3, newCount: 43, incumbentCount: 147, oldCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
@@ -28,6 +20,9 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.charts', $provide => {
+                $provide.factory('chplChartsProductDirective', () => ({}));
+                $provide.factory('chplChartsSedDirective', () => ({}));
+                $provide.factory('chplChartsSurveillanceDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getCriterionProductStatistics = jasmine.createSpy('getCriterionProductStatistics');
                     $delegate.getIncumbentDevelopersStatistics = jasmine.createSpy('getIncumbentDevelopersStatistics');
@@ -94,7 +89,6 @@
                 expect(ctrl.chartState).toEqual({
                     isStacked: 'false',
                     listingCountType: '1',
-                    productEdition: 2014,
                     tab: 'product',
                 });
             });
@@ -122,15 +116,6 @@
                 describe('of the criterion/product statistics', () => {
                     it('should call the network service', () => {
                         expect(networkService.getCriterionProductStatistics).toHaveBeenCalled();
-                    });
-
-                    it('should filter the results by edition', () => {
-                        expect(ctrl.criterionProductCounts[2014].data.rows.length).toBe(3);
-                        expect(ctrl.criterionProductCounts[2015].data.rows.length).toBe(3);
-                    });
-
-                    it('should sort the results by criterion', () => {
-                        expect(ctrl.criterionProductCounts[2015].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
                     });
                 });
 
