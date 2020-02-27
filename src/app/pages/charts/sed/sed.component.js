@@ -10,10 +10,9 @@ export const ChartsSedComponent = {
         participantProductExperienceCount: '<',
     },
     controller: class ChartsSedComponent {
-        constructor ($log, utilService) {
+        constructor ($log) {
             'ngInject'
             this.$log = $log;
-            this.utilService = utilService;
         }
 
         $onChanges (changes) {
