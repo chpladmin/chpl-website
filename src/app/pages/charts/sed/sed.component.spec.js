@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Charts - SED component', () => {
+    describe('the Charts - SED component', () => {
         var $compile, $log, $rootScope, ctrl, el, mock, scope;
         mock = {
             sedParticipantStatisticsCount: { sedParticipantStatisticsCounts: [

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Charts - Product component', () => {
+    describe('the Charts - Product component', () => {
         var $compile, $log, $rootScope, ctrl, el, mock, scope;
         mock = {
             criterionProductCount: {criterionProductStatisticsResult: [

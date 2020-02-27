@@ -1,25 +1,14 @@
 (() => {
     'use strict';
 
-    fdescribe('the Charts component', () => {
+    describe('the Charts component', () => {
         var $compile, $log, $q, $rootScope, ctrl, el, mock, networkService, scope;
         mock = {
-            incumbentDevelopersStatisticsResult: [
-                {id: 2, newCount: 82, incumbentCount: 108, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
-                {id: 3, newCount: 43, incumbentCount: 147, oldCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
-                {id: 4, newCount: 340, incumbentCount: 537, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}},
-            ],
-            statisticsResult: [
-                {id: 12, developerCount: 724, productCount: 725, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 1, name: 'Active'}},
-                {id: 13, developerCount: 45, productCount: 46, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 4, name: 'Withdrawn by ONC-ACB'}},
-                {id: 14, developerCount: 195, productCount: 196, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 1, name: 'Active'}},
-                {id: 15, developerCount: 274, productCount: 275, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
-                {id: 16, developerCount: 10, productCount: 11, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
-            ],
         };
 
         beforeEach(() => {
             angular.mock.module('chpl.charts', $provide => {
+                $provide.factory('chplChartsDeveloperDirective', () => ({}));
                 $provide.factory('chplChartsProductDirective', () => ({}));
                 $provide.factory('chplChartsSedDirective', () => ({}));
                 $provide.factory('chplChartsSurveillanceDirective', () => ({}));
@@ -85,20 +74,9 @@
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
 
-            it('should default to product charts, and 2014 edition', () => {
+            it('should default to product charts', () => {
                 expect(ctrl.chartState).toEqual({
-                    isStacked: 'false',
-                    listingCountType: '1',
                     tab: 'product',
-                });
-            });
-
-            describe('chart state', () => {
-                it('should update stacking type', () => {
-                    expect(ctrl.listingCount.class['1'].chart.options.isStacked).toBeUndefined();
-                    ctrl.chartState.isStacked = 'fake';
-                    ctrl.updateChartStack();
-                    expect(ctrl.listingCount.class['1'].chart.options.isStacked).toBe('fake');
                 });
             });
 
@@ -123,48 +101,11 @@
                     it('should call the network service', () => {
                         expect(networkService.getIncumbentDevelopersStatistics).toHaveBeenCalled();
                     });
-
-                    it('should generate three charts', () => {
-                        expect(ctrl.incumbentDevelopersCounts.length).toBe(3);
-                    });
-
-                    it('should sort the charts and generate titles', () => {
-                        expect(ctrl.incumbentDevelopersCounts[0].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2014');
-                        expect(ctrl.incumbentDevelopersCounts[1].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2015');
-                        expect(ctrl.incumbentDevelopersCounts[2].options.title).toBe('New vs. Incumbent Developers by Edition, 2014 to 2015');
-                    });
-
-                    it('should generate the 2011 to 2014 data', () => {
-                        expect(ctrl.incumbentDevelopersCounts[0].data.rows[0].c[1].v).toBe(340);
-                        expect(ctrl.incumbentDevelopersCounts[0].data.rows[1].c[1].v).toBe(537);
-                    });
-
-                    it('should generate the 2011 to 2015 data', () => {
-                        expect(ctrl.incumbentDevelopersCounts[1].data.rows[0].c[1].v).toBe(82);
-                        expect(ctrl.incumbentDevelopersCounts[1].data.rows[1].c[1].v).toBe(108);
-                    });
-
-                    it('should generate the 2014 to 2015 data', () => {
-                        expect(ctrl.incumbentDevelopersCounts[2].data.rows[0].c[1].v).toBe(43);
-                        expect(ctrl.incumbentDevelopersCounts[2].data.rows[1].c[1].v).toBe(147);
-                    });
                 });
 
                 describe('of the listing count statistics', () => {
                     it('should call the network service', () => {
                         expect(networkService.getListingCountStatistics).toHaveBeenCalled();
-                    });
-
-                    it('should generate a chart object', () => {
-                        expect(ctrl.listingCount).toBeDefined();
-                    });
-
-                    it('should have three options', () => {
-                        expect(ctrl.listingCountTypes.length).toBe(3);
-                    });
-
-                    it('should have data for active 2014 products', () => {
-                        expect(ctrl.listingCount.edition['1'].chart.data.rows[0].c[2].v).toBe(725);
                     });
                 });
             });

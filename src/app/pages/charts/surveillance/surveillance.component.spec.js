@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Charts - Surveillance component', () => {
+    describe('the Charts - Surveillance component', () => {
         var $compile, $log, $rootScope, ctrl, el, mock, scope;
         mock = {
             nonconformityCriteriaCount: {nonconformityStatisticsResult: [
