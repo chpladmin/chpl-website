@@ -127,7 +127,7 @@ export const SurveillanceComponent = {
             var results = [];
             for (var i = 0; i < surv.requirements.length; i++) {
                 for (var j = 0; j < surv.requirements[i].nonconformities.length; j++) {
-                    results.push(surv.requirements[i].nonconformities[j].status.name + ' Non-Conformity Found for ' + surv.requirements[i].requirement);
+                    results.push(surv.requirements[i].nonconformities[j].status.name + ' Non-Conformity Found for ' + (surv.requirements[i].criterion ? (surv.requirements[i].criterion.number + ': ' + surv.requirements[i].criterion.title) : surv.requirements[i].requirement));
                 }
             }
             if (results.length === 0) {
