@@ -75,38 +75,15 @@
       </div>
     </div>
     <div ng-if="$ctrl.chartState.tab === 'sed'">
-      <div class="row">
-        <div class="col-sm-12">
-          <p>The safety-enhanced design (SED) criteria requires health IT developers to apply and test user centered design standards to their certified health IT. Developers follow <a href="https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record">NISTIR 7742</a> and submit results to ONC. SED testing requires participants who work in the health care field for which the product is intended to be used. The charts below describe the characteristics of the SED test participants for ONC certified health IT products.</p>
-          <div google-chart="" chart="$ctrl.sedParticipantCounts" class="column-chart"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4">
-          <div google-chart="" chart="$ctrl.participantGenderCounts" class="pie-chart"></div>
-        </div>
-        <div class="col-sm-4">
-          <div google-chart="" chart="$ctrl.participantAgeCounts" class="pie-chart"></div>
-        </div>
-        <div class="col-sm-4">
-          <div google-chart="" chart="$ctrl.participantEducationCounts" class="pie-chart"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div google-chart="" chart="$ctrl.participantProfessionalExperienceCounts" class="column-chart"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div google-chart="" chart="$ctrl.participantComputerExperienceCounts" class="column-chart"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div google-chart="" chart="$ctrl.participantProductExperienceCounts" class="column-chart"></div>
-        </div>
-      </div>
+      <chpl-charts-sed
+        sed-participant-statistics-count="$ctrl.sedParticipantStatisticsCount"
+        participant-gender-count="$ctrl.participantGenderCount"
+        participant-age-count="$ctrl.participantAgeCount"
+        participant-education-count="$ctrl.participantEducationCount"
+        participant-professional-experience-count="$ctrl.participantProfessionalExperienceCount"
+        participant-computer-experience-count="$ctrl.participantComputerExperienceCount"
+        participant-product-experience-count="$ctrl.participantProductExperienceCount"
+        ></chpl-charts-sed>
     </div>
     <div ng-if="$ctrl.chartState.tab === 'nonconformity'">
       <div class="row">

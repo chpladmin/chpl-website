@@ -29,13 +29,13 @@ export const ChartsComponent = {
             this._createIncumbentDevelopersCountChart();
             this._createListingCountCharts();
             this._createNonconformityCountChart();
-            this._createSedParticipantCountChart();
-            this._createParticipantGenderCountChart();
-            this._createParticipantAgeCountChart();
-            this._createParticipantEducationCountChart();
-            this._createParticipantProfessionalExperienceCountChart();
-            this._createParticipantComputerExperienceCountChart();
-            this._createParticipantProductExperienceCountChart();
+            this.loadSedParticipantCountChart();
+            this.loadParticipantGenderCountChart();
+            this.loadParticipantAgeCountChart();
+            this.loadParticipantEducationCountChart();
+            this.loadParticipantProfessionalExperienceCountChart();
+            this.loadParticipantComputerExperienceCountChart();
+            this.loadParticipantProductExperienceCountChart();
         }
 
         updateChartStack () {
@@ -416,271 +416,39 @@ export const ChartsComponent = {
             });
         }
 
-        _createSedParticipantCountChart () {
+        loadSedParticipantCountChart () {
             let that = this;
-            this.networkService.getSedParticipantStatisticsCount().then(function (data) {
-                that.sedParticipantCounts = {
-                    type: 'ColumnChart',
-                    data: {
-                        cols: [
-                            { label: 'Number of SED Test Participants Used', type: 'number'},
-                            { label: 'Number of 2015 Edition CHPL Listings', type: 'number'},
-                        ],
-                        rows: that._getSedParticipantCountDataInChartFormat(data),
-                    },
-                    options: {
-                        animation: {
-                            duration: 1000,
-                            easing: 'inAndOut',
-                            startup: true,
-                        },
-                        title: 'Number of Safety Enhanced Design Test Participants',
-                        hAxis: {
-                            title: 'Number of SED Test Participants Used',
-                            minValue: 0,
-                        },
-                        vAxis: {
-                            scaleType: 'mirrorLog',
-                            title: 'Number of 2015 Edition CHPL Listings',
-                            minValue: 0,
-                        },
-                    },
-                }
-            });
+            this.networkService.getSedParticipantStatisticsCount().then(data => that.sedParticipantStatisticsCount = data);
         }
 
-        _getSedParticipantCountDataInChartFormat (data) {
-            data.sedParticipantStatisticsCounts.sort(function (a, b) {
-                return parseInt(a.participantCount, 10) - parseInt(b.participantCount, 10);
-            });
-            return data.sedParticipantStatisticsCounts.map(function (obj) {
-                return {c: [{ v: obj.participantCount},{v: obj.sedCount}]};
-            });
-        }
-
-        _createParticipantGenderCountChart () {
+        loadParticipantGenderCountChart () {
             let that = this;
-            this.networkService.getParticipantGenderStatistics().then(function (data) {
-                that.participantGenderCounts = {
-                    type: 'PieChart',
-                    data: {
-                        cols: [
-                            { label: 'Genders', type: 'string'},
-                            { label: 'Counts', type: 'number'},
-                        ],
-                        rows: that._getParticipantGenderCountDataInChartFormat(data),
-                    },
-                    options: {
-                        title: 'Safety Enhanced Design Test Participants by Gender',
-                    },
-                }
-            });
+            this.networkService.getParticipantGenderStatistics().then(data => that.participantGenderCount = data);
         }
 
-        _getParticipantGenderCountDataInChartFormat (data) {
-            var genderData = [
-                {c: [{ v: 'Male'},{v: data.maleCount}]},
-                {c: [{ v: 'Female'},{v: data.femaleCount}]},
-                {c: [{ v: 'Unknown'},{v: data.unknownCount}]},
-            ];
-            return genderData;
-        }
-
-        _createParticipantAgeCountChart () {
+        loadParticipantAgeCountChart () {
             let that = this;
-            this.networkService.getParticipantAgeStatistics().then(function (data) {
-                that.participantAgeCounts = {
-                    type: 'PieChart',
-                    data: {
-                        cols: [
-                            { label: 'Age Ranges', type: 'string'},
-                            { label: 'Counts', type: 'number'},
-                        ],
-                        rows: that._getParticipantAgeCountDataInChartFormat(data),
-                    },
-                    options: {
-                        title: 'Safety Enhanced Design Test Participants by Age',
-                    },
-                }
-            });
+            this.networkService.getParticipantAgeStatistics().then(data => that.participantAgeCount = data);
         }
 
-        _getParticipantAgeCountDataInChartFormat (data) {
-            data.participantAgeStatistics.sort(function (a, b) {
-                return parseInt(a.ageRange, 10) - parseInt(b.ageRange, 10);
-            });
-            return data.participantAgeStatistics.map(function (obj) {
-                return {c: [{ v: obj.ageRange},{v: obj.ageCount}]};
-            });
-        }
-
-        _createParticipantEducationCountChart () {
+        loadParticipantEducationCountChart () {
             let that = this;
-            this.networkService.getParticipantEducationStatistics().then(function (data) {
-                that.participantEducationCounts = {
-                    type: 'PieChart',
-                    data: {
-                        cols: [
-                            { label: 'Education Level', type: 'string'},
-                            { label: 'Counts', type: 'number'},
-                        ],
-                        rows: that._getParticipantEducationCountDataInChartFormat(data),
-                    },
-                    options: {
-                        title: 'Safety Enhanced Design Test Participants by Education Level',
-                    },
-                }
-            });
+            this.networkService.getParticipantEducationStatistics().then(data => that.participantEducationCount = data);
         }
 
-        _getParticipantEducationCountDataInChartFormat (data) {
-            data.participantEducationStatistics.sort(function (a, b) {
-                return parseInt(a.educationRange, 10) - parseInt(b.educationRange, 10);
-            });
-            return data.participantEducationStatistics.map(function (obj) {
-                return {c: [{ v: obj.education},{v: obj.educationCount}]};
-            });
-        }
-
-        _createParticipantProfessionalExperienceCountChart () {
+        loadParticipantProfessionalExperienceCountChart () {
             let that = this;
-            this.networkService.getParticipantProfessionalExperienceStatistics().then(function (data) {
-                that.participantProfessionalExperienceCounts = {
-                    type: 'ColumnChart',
-                    data: {
-                        cols: [
-                            { label: 'Years Professional Experience', type: 'number'},
-                            { label: 'Number of SED Test Participants ', type: 'number'},
-                        ],
-                        rows: that._getParticipantExperienceCountDataInChartFormat(data),
-                    },
-                    options: {
-                        animation: {
-                            duration: 1000,
-                            easing: 'inAndOut',
-                            startup: true,
-                        },
-                        title: 'Years of Professional Experience for Safety Enhanced Design Test Participants',
-                        vAxis: {
-                            title: 'Number of SED Test Participants',
-                            minValue: 0,
-                        },
-                        hAxis: {
-                            minValue: 0,
-                            title: 'Years Professional Experience',
-                            gridlines: {
-                                count: 6,
-                            },
-                        },
-                    },
-                }
-            });
+            this.networkService.getParticipantProfessionalExperienceStatistics().then(data => that.participantProfessionalExperienceCount = data);
         }
 
-        _createParticipantComputerExperienceCountChart () {
+        loadParticipantComputerExperienceCountChart () {
             let that = this;
-            this.networkService.getParticipantComputerExperienceStatistics().then(function (data) {
-                that.participantComputerExperienceCounts = {
-                    type: 'ColumnChart',
-                    data: {
-                        cols: [
-                            { label: 'Years Computer Experience', type: 'number'},
-                            { label: 'Number of SED Test Participants ', type: 'number'},
-                        ],
-                        rows: that._getParticipantExperienceCountDataInChartFormat(data),
-                    },
-                    options: {
-                        animation: {
-                            duration: 1000,
-                            easing: 'inAndOut',
-                            startup: true,
-                        },
-                        title: 'Years of Computer Experience for Safety Enhanced Design Test Participants',
-                        vAxis: {
-                            title: 'Number of SED Test Participants',
-                            minValue: 0,
-                        },
-                        hAxis: {
-                            minValue: 0,
-                            title: 'Years Computer Experience',
-                            gridlines: {
-                                count: 6,
-                            },
-                        },
-                    },
-                }
-            });
+            this.networkService.getParticipantComputerExperienceStatistics().then(data => that.participantComputerExperienceCount = data);
         }
 
-        _createParticipantProductExperienceCountChart () {
+        loadParticipantProductExperienceCountChart () {
             let that = this;
-            this.networkService.getParticipantProductExperienceStatistics().then(function (data) {
-                that.participantProductExperienceCounts = {
-                    type: 'ColumnChart',
-                    data: {
-                        cols: [
-                            { label: 'Years Product Experience', type: 'number'},
-                            { label: 'Number of SED Test Participants ', type: 'number'},
-                        ],
-                        rows: that._getParticipantExperienceCountDataInChartFormat(data),
-                    },
-                    options: {
-                        animation: {
-                            duration: 1000,
-                            easing: 'inAndOut',
-                            startup: true,
-                        },
-                        title: 'Years of Product Experience for Safety Enhanced Design Test Participants',
-                        vAxis: {
-                            title: 'Number of SED Test Participants',
-                            minValue: 0,
-                        },
-                        hAxis: {
-                            minValue: 0,
-                            title: 'Years Product Experience',
-                            gridlines: {
-                                count: 7,
-                            },
-                        },
-                    },
-                }
-            });
-        }
-
-        _getParticipantExperienceCountDataInChartFormat (data) {
-            //Calculate the years exp based on the months
-            data.participantExperienceStatistics.map(function (obj) {
-                obj.experienceYears = Math.floor(obj.experienceMonths / 12);
-                return obj;
-            });
-
-            //Sum participants based on years experience
-            //var experienceMap = new Map();
-            var experienceMap = {};
-            angular.forEach(data.participantExperienceStatistics, function (value) {
-                var count = value.participantCount;
-                //if (experienceMap.has(value.experienceYears)) {
-                if (value.experienceYears in experienceMap) {
-                    count = experienceMap[value.experienceYears] + count;
-                }
-                experienceMap[value.experienceYears] = count;
-            })
-
-            //var experienceSummedByYear = Array.from(experienceMap);
-            //Convert to an array of arrays
-            var experienceSummedByYear = Object.keys(experienceMap).map(function (key) {
-                return [key, experienceMap[key]];
-            })
-
-            //Sort based on years experience
-            experienceSummedByYear.sort(function (a, b) {
-                return parseInt(a[0], 10) - parseInt(b[0], 10);
-            });
-
-            //Format the data for the chart
-            return experienceSummedByYear.map(function (obj) {
-                return {c: [{ v: obj[0]},{v: obj[1]}]};
-            });
+            this.networkService.getParticipantProductExperienceStatistics().then(data => that.participantProductExperienceCount = data);
         }
     },
 }
