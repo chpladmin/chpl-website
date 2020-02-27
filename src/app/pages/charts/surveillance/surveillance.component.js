@@ -3,7 +3,7 @@ export const ChartsSurveillanceComponent = {
     bindings: {
         nonconformityCriteriaCount: '<',
     },
-    controller: class ChartsSedComponent {
+    controller: class ChartsSurveillanceComponent {
         constructor ($log, utilService) {
             'ngInject'
             this.$log = $log;
