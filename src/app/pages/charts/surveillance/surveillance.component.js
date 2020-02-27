@@ -148,23 +148,28 @@ export const ChartsSurveillanceComponent = {
 
         _getNonconformityCountDataInChartFormat (data, type) {
             let that = this;
-            return data.nonconformityStatisticsResult.filter(function (obj) {
-                switch (type) {
-                case 2014:
-                    return obj.nonconformityType.indexOf('170.314') >= 0;
-                case 2015:
-                    return obj.nonconformityType.indexOf('170.315') >= 0;
-                case 'Program':
-                    return obj.nonconformityType.indexOf('170.523') >= 0 || obj.nonconformityType.indexOf('Other') >= 0;
-                case 'All':
-                    return true;
-                default: false;
-                }
-            }).sort(function (a, b) {
-                return that.utilService.sortOtherNonconformityTypes(a.nonconformityType) - that.utilService.sortOtherNonconformityTypes(b.nonconformityType);
-            }).map(function (obj) {
-                return {c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]};
-            });
+            return data.nonconformityStatisticsResult
+                .map(obj => {
+                    if (obj.criterion) {
+                        obj.nonconformityType = obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '');
+                    }
+                    return obj;
+                })
+                .filter(obj => {
+                    switch (type) {
+                    case 2014:
+                        return obj.nonconformityType.indexOf('170.314') >= 0;
+                    case 2015:
+                        return obj.nonconformityType.indexOf('170.315') >= 0;
+                    case 'Program':
+                        return obj.nonconformityType.indexOf('170.523') >= 0 || obj.nonconformityType.indexOf('Other') >= 0;
+                    case 'All':
+                        return true;
+                    default: false;
+                    }
+                })
+                .sort((a, b) => that.utilService.sortOtherNonconformityTypes(a.nonconformityType) - that.utilService.sortOtherNonconformityTypes(b.nonconformityType))
+                .map(obj => ({c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]}));
         }
     },
 }
