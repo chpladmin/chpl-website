@@ -1,9 +1,8 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Charts component controller', function () {
-
-        var $controller, $log, $q, mock, networkService, scope, vm;
+    describe('the Charts component', () => {
+        var $compile, $log, $q, $rootScope, ctrl, el, mock, networkService, scope;
         mock = {
             criterionProductStatisticsResult: [
                 {id: 144, productCount: 928, certificationCriterionId: 63, criterion: {id: 63, number: '170.314 (a)(3)', title: 'Demographics', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448277, deleted: false, lastModifiedDate: 1525902448277, lastModifiedUser: -3},
@@ -94,9 +93,9 @@
             ],
         };
 
-        beforeEach(function () {
-            angular.mock.module('chpl.charts', function ($provide) {
-                $provide.decorator('networkService', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.charts', $provide => {
+                $provide.decorator('networkService', $delegate => {
                     $delegate.getCriterionProductStatistics = jasmine.createSpy('getCriterionProductStatistics');
                     $delegate.getIncumbentDevelopersStatistics = jasmine.createSpy('getIncumbentDevelopersStatistics');
                     $delegate.getListingCountStatistics = jasmine.createSpy('getListingCountStatistics');
@@ -112,10 +111,11 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _networkService_) {
-                $controller = _$controller_;
+            inject((_$compile_, _$log_, _$q_, _$rootScope_, _networkService_) => {
+                $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                $rootScope = _$rootScope_;
                 networkService = _networkService_;
                 networkService.getCriterionProductStatistics.and.returnValue($q.when(mock));
                 networkService.getIncumbentDevelopersStatistics.and.returnValue($q.when(mock));
@@ -130,133 +130,142 @@
                 networkService.getParticipantProductExperienceStatistics.and.returnValue($q.when(mock));
 
                 scope = $rootScope.$new();
-                vm = $controller('ChartsController', {
-                    $scope: scope,
-                })
+                el = angular.element('<chpl-charts></chpl-charts>');
+
+                $compile(el)(scope);
                 scope.$digest();
+                ctrl = el.isolateScope().$ctrl;
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        it('should exist', function () {
-            expect(vm).toBeDefined();
-        });
-
-        it('should default to product charts, and 2014 edition', function () {
-            expect(vm.chartState).toEqual({
-                isStacked: 'false',
-                listingCountType: '1',
-                nonconformityCountType: 'All',
-                productEdition: 2014,
-                tab: 'product',
-                yAxis: '',
+        describe('view', () => {
+            it('should be compiled', () => {
+                expect(el.html()).not.toEqual(null);
             });
         });
 
-        describe('chart state', function () {
-            it('should update stacking type', function () {
-                expect(vm.listingCount.class['1'].chart.options.isStacked).toBeUndefined();
-                vm.chartState.isStacked = 'fake';
-                vm.updateChartStack();
-                expect(vm.listingCount.class['1'].chart.options.isStacked).toBe('fake');
-            });
-        });
-
-        describe('during load', function () {
-            it('should load the sed participant count statistics', function () {
-                expect(networkService.getSedParticipantStatisticsCount).toHaveBeenCalled();
-                expect(vm.sedParticipantCounts.data.rows.length).toBe(mock.sedParticipantStatisticsCounts.length);
+        describe('controller', () => {
+            it('should exist', () => {
+                expect(ctrl).toEqual(jasmine.any(Object));
             });
 
-            describe('of the nonconformity statistics', function () {
-                it('should load the nonconformity count statistics', function () {
+            it('should default to product charts, and 2014 edition', () => {
+                expect(ctrl.chartState).toEqual({
+                    isStacked: 'false',
+                    listingCountType: '1',
+                    nonconformityCountType: 'All',
+                    productEdition: 2014,
+                    tab: 'product',
+                    yAxis: '',
+                });
+            });
+
+            describe('chart state', () => {
+                it('should update stacking type', () => {
+                    expect(ctrl.listingCount.class['1'].chart.options.isStacked).toBeUndefined();
+                    ctrl.chartState.isStacked = 'fake';
+                    ctrl.updateChartStack();
+                    expect(ctrl.listingCount.class['1'].chart.options.isStacked).toBe('fake');
+                });
+            });
+
+            describe('during load', () => {
+                it('should load the sed participant count statistics', () => {
+                    expect(networkService.getSedParticipantStatisticsCount).toHaveBeenCalled();
+                    expect(ctrl.sedParticipantCounts.data.rows.length).toBe(mock.sedParticipantStatisticsCounts.length);
+                });
+
+                describe('of the nonconformity statistics', () => {
+                    it('should load the nonconformity count statistics', () => {
+                        expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
+                    });
+
+                    it('should filter data by nonconformity type', () => {
+                        expect(ctrl.nonconformityCounts[2014].data.rows.length).toBe(16);
+                        expect(ctrl.nonconformityCounts[2015].data.rows.length).toBe(5);
+                        expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(24);
+                        expect(ctrl.nonconformityCounts['Program'].data.rows.length).toBe(3);
+                        expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(24);
+                    });
+                    it('should format the data correctly', () => {
+                        expect(ctrl.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
+                    });
+                });
+
+                it('should load only 2014 data when filtered to', () => {
                     expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
                 });
 
-                it('should filter data by nonconformity type', function () {
-                    expect(vm.nonconformityCounts[2014].data.rows.length).toBe(16);
-                    expect(vm.nonconformityCounts[2015].data.rows.length).toBe(5);
-                    expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
-                    expect(vm.nonconformityCounts['Program'].data.rows.length).toBe(3);
-                    expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
-                });
-                it('should format the data correctly', function () {
-                    expect(vm.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
-                });
-            });
+                describe('of the criterion/product statistics', () => {
+                    it('should call the network service', () => {
+                        expect(networkService.getCriterionProductStatistics).toHaveBeenCalled();
+                    });
 
-            it('should load only 2014 data when filtered to', function () {
-                expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
-            });
+                    it('should filter the results by edition', () => {
+                        expect(ctrl.criterionProductCounts[2014].data.rows.length).toBe(3);
+                        expect(ctrl.criterionProductCounts[2015].data.rows.length).toBe(3);
+                    });
 
-            describe('of the criterion/product statistics', function () {
-                it('should call the network service', function () {
-                    expect(networkService.getCriterionProductStatistics).toHaveBeenCalled();
+                    it('should sort the results by criterion', () => {
+                        expect(ctrl.criterionProductCounts[2015].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
+                    });
                 });
 
-                it('should filter the results by edition', function () {
-                    expect(vm.criterionProductCounts[2014].data.rows.length).toBe(3);
-                    expect(vm.criterionProductCounts[2015].data.rows.length).toBe(3);
+                describe('of the incumbent developers statistics', () => {
+                    it('should call the network service', () => {
+                        expect(networkService.getIncumbentDevelopersStatistics).toHaveBeenCalled();
+                    });
+
+                    it('should generate three charts', () => {
+                        expect(ctrl.incumbentDevelopersCounts.length).toBe(3);
+                    });
+
+                    it('should sort the charts and generate titles', () => {
+                        expect(ctrl.incumbentDevelopersCounts[0].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2014');
+                        expect(ctrl.incumbentDevelopersCounts[1].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2015');
+                        expect(ctrl.incumbentDevelopersCounts[2].options.title).toBe('New vs. Incumbent Developers by Edition, 2014 to 2015');
+                    });
+
+                    it('should generate the 2011 to 2014 data', () => {
+                        expect(ctrl.incumbentDevelopersCounts[0].data.rows[0].c[1].v).toBe(340);
+                        expect(ctrl.incumbentDevelopersCounts[0].data.rows[1].c[1].v).toBe(537);
+                    });
+
+                    it('should generate the 2011 to 2015 data', () => {
+                        expect(ctrl.incumbentDevelopersCounts[1].data.rows[0].c[1].v).toBe(82);
+                        expect(ctrl.incumbentDevelopersCounts[1].data.rows[1].c[1].v).toBe(108);
+                    });
+
+                    it('should generate the 2014 to 2015 data', () => {
+                        expect(ctrl.incumbentDevelopersCounts[2].data.rows[0].c[1].v).toBe(43);
+                        expect(ctrl.incumbentDevelopersCounts[2].data.rows[1].c[1].v).toBe(147);
+                    });
                 });
 
-                it('should sort the results by criterion', function () {
-                    expect(vm.criterionProductCounts[2015].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
-                });
-            });
+                describe('of the listing count statistics', () => {
+                    it('should call the network service', () => {
+                        expect(networkService.getListingCountStatistics).toHaveBeenCalled();
+                    });
 
-            describe('of the incumbent developers statistics', function () {
-                it('should call the network service', function () {
-                    expect(networkService.getIncumbentDevelopersStatistics).toHaveBeenCalled();
-                });
+                    it('should generate a chart object', () => {
+                        expect(ctrl.listingCount).toBeDefined();
+                    });
 
-                it('should generate three charts', function () {
-                    expect(vm.incumbentDevelopersCounts.length).toBe(3);
-                });
+                    it('should have three options', () => {
+                        expect(ctrl.listingCountTypes.length).toBe(3);
+                    });
 
-                it('should sort the charts and generate titles', function () {
-                    expect(vm.incumbentDevelopersCounts[0].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2014');
-                    expect(vm.incumbentDevelopersCounts[1].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2015');
-                    expect(vm.incumbentDevelopersCounts[2].options.title).toBe('New vs. Incumbent Developers by Edition, 2014 to 2015');
-                });
-
-                it('should generate the 2011 to 2014 data', function () {
-                    expect(vm.incumbentDevelopersCounts[0].data.rows[0].c[1].v).toBe(340);
-                    expect(vm.incumbentDevelopersCounts[0].data.rows[1].c[1].v).toBe(537);
-                });
-
-                it('should generate the 2011 to 2015 data', function () {
-                    expect(vm.incumbentDevelopersCounts[1].data.rows[0].c[1].v).toBe(82);
-                    expect(vm.incumbentDevelopersCounts[1].data.rows[1].c[1].v).toBe(108);
-                });
-
-                it('should generate the 2014 to 2015 data', function () {
-                    expect(vm.incumbentDevelopersCounts[2].data.rows[0].c[1].v).toBe(43);
-                    expect(vm.incumbentDevelopersCounts[2].data.rows[1].c[1].v).toBe(147);
-                });
-            });
-
-            describe('of the listing count statistics', function () {
-                it('should call the network service', function () {
-                    expect(networkService.getListingCountStatistics).toHaveBeenCalled();
-                });
-
-                it('should generate a chart object', function () {
-                    expect(vm.listingCount).toBeDefined();
-                });
-
-                it('should have three options', function () {
-                    expect(vm.listingCountTypes.length).toBe(3);
-                });
-
-                it('should have data for active 2014 products', function () {
-                    expect(vm.listingCount.edition['1'].chart.data.rows[0].c[2].v).toBe(725);
+                    it('should have data for active 2014 products', () => {
+                        expect(ctrl.listingCount.edition['1'].chart.data.rows[0].c[2].v).toBe(725);
+                    });
                 });
             });
         });

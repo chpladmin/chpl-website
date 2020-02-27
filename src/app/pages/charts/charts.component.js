@@ -1,28 +1,23 @@
-(function () {
-    'use strict';
+export const ChartsComponent = {
+    templateUrl: 'chpl.charts/charts.html',
+    bindings: {
+    },
+    controller: class ChartsComponent {
+        constructor ($log, networkService, utilService) {
+            'ngInject'
+            this.$log = $log;
+            this.networkService = networkService;
+            this.utilService = utilService;
+        }
 
-    angular.module('chpl.charts')
-        .controller('ChartsController', ChartsController);
-
-    /** @ngInclude */
-    function ChartsController ($log, networkService, utilService) {
-        var vm = this;
-
-        vm.updateYAxis = updateYAxis;
-        vm.updateChartStack = updateChartStack;
-
-        activate();
-
-        ////////////////////////////////////////////////////////////////////
-
-        function activate () {
-            vm.nonconformityTypes = [
+        $onInit () {
+            this.nonconformityTypes = [
                 'All',
                 2014,
                 2015,
                 'Program',
             ];
-            vm.chartState = {
+            this.chartState = {
                 isStacked: 'false',
                 yAxis: '',
                 listingCountType: '1',
@@ -30,39 +25,42 @@
                 nonconformityCountType: 'All',
                 tab: 'product',
             };
-            _createCriterionProductCountChart();
-            _createIncumbentDevelopersCountChart();
-            _createListingCountCharts();
-            _createNonconformityCountChart();
-            _createSedParticipantCountChart();
-            _createParticipantGenderCountChart();
-            _createParticipantAgeCountChart();
-            _createParticipantEducationCountChart();
-            _createParticipantProfessionalExperienceCountChart();
-            _createParticipantComputerExperienceCountChart();
-            _createParticipantProductExperienceCountChart();
+            this._createCriterionProductCountChart();
+            this._createIncumbentDevelopersCountChart();
+            this._createListingCountCharts();
+            this._createNonconformityCountChart();
+            this._createSedParticipantCountChart();
+            this._createParticipantGenderCountChart();
+            this._createParticipantAgeCountChart();
+            this._createParticipantEducationCountChart();
+            this._createParticipantProfessionalExperienceCountChart();
+            this._createParticipantComputerExperienceCountChart();
+            this._createParticipantProductExperienceCountChart();
         }
 
-        function updateChartStack () {
-            Object.keys(vm.listingCount.edition).forEach(function (key) {
-                vm.listingCount.edition[key].chart.options.isStacked = vm.chartState.isStacked;
+        updateChartStack () {
+            let that = this;
+            Object.keys(this.listingCount.edition).forEach(function (key) {
+                that.listingCount.edition[key].chart.options.isStacked = that.chartState.isStacked;
             });
-            Object.keys(vm.listingCount.class).forEach(function (key) {
-                vm.listingCount.class[key].chart.options.isStacked = vm.chartState.isStacked;
+            Object.keys(this.listingCount.class).forEach(function (key) {
+                that.listingCount.class[key].chart.options.isStacked = that.chartState.isStacked;
             });
         }
 
-        function updateYAxis () {
-            Object.values(vm.nonconformityCounts).forEach(function (value) {
-                value.options.vAxis.scaleType = vm.chartState.yAxis;
+        updateYAxis () {
+            let that = this;
+            Object.values(this.nonconformityCounts).forEach(function (value) {
+                value.options.vAxis.scaleType = that.chartState.yAxis;
             });
         }
 
         ////////////////////////////////////////////////////////////////////
 
-        function _createCriterionProductCountChart () {
-            networkService.getCriterionProductStatistics().then(function (data) {
-                vm.criterionProductCounts = {
+        _createCriterionProductCountChart () {
+            let that = this;
+            this.networkService.getCriterionProductStatistics().then(function (data) {
+                that.criterionProductCounts = {
                     2014: {
                         type: 'BarChart',
                         data: {
@@ -71,7 +69,7 @@
                                 { label: 'Number of Unique Products', type: 'number'},
                                 { type: 'string', role: 'tooltip'},
                             ],
-                            rows: _getCriterionProductCountDataInChartFormat(data, 2014),
+                            rows: that._getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
                             tooltip: {isHtml: true},
@@ -92,7 +90,7 @@
                                 { label: 'Number of Unique Products', type: 'number'},
                                 { type: 'string', role: 'tooltip'},
                             ],
-                            rows: _getCriterionProductCountDataInChartFormat(data, 2015),
+                            rows: that._getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
                             tooltip: {isHtml: true},
@@ -109,9 +107,10 @@
             });
         }
 
-        function _getCriterionProductCountDataInChartFormat (data, edition) {
+        _getCriterionProductCountDataInChartFormat (data, edition) {
+            let that = this;
             return data.criterionProductStatisticsResult.filter(obj => obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0)
-                .sort((a, b) => utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number))
+                .sort((a, b) => that.utilService.sortCert(a.criterion.number) - that.utilService.sortCert(b.criterion.number))
                 .map(obj => {
                     return {c: [{
                         v: obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
@@ -119,9 +118,10 @@
                 });
         }
 
-        function _createIncumbentDevelopersCountChart () {
-            networkService.getIncumbentDevelopersStatistics().then(function (data) {
-                vm.incumbentDevelopersCounts =
+        _createIncumbentDevelopersCountChart () {
+            let that = this;
+            this.networkService.getIncumbentDevelopersStatistics().then(function (data) {
+                that.incumbentDevelopersCounts =
                     data.incumbentDevelopersStatisticsResult.sort(function (a, b) {
                         if (a.oldCertificationEdition.certificationEditionId === b.oldCertificationEdition.certificationEditionId) {
                             return a.newCertificationEdition.certificationEditionId - b.newCertificationEdition.certificationEditionId;
@@ -150,33 +150,34 @@
             })
         }
 
-        function _createListingCountCharts () {
-            networkService.getListingCountStatistics().then(function (data) {
-                vm.listingCount = {
+        _createListingCountCharts () {
+            let that = this;
+            this.networkService.getListingCountStatistics().then(function (data) {
+                that.listingCount = {
                     edition: {},
                     class: {},
                 };
                 data.statisticsResult.forEach(function (obj) {
-                    vm.listingCount.edition['' + obj.certificationStatus.id] = {
+                    that.listingCount.edition['' + obj.certificationStatus.id] = {
                         name: obj.certificationStatus.name,
-                        chart: _createListingCountChartEdition(data, obj.certificationStatus.name),
+                        chart: that._createListingCountChartEdition(data, obj.certificationStatus.name),
                     };
-                    vm.listingCount.class['' + obj.certificationStatus.id] = {
+                    that.listingCount.class['' + obj.certificationStatus.id] = {
                         name: obj.certificationStatus.name,
-                        chart: _createListingCountChartClass(data, obj.certificationStatus.name),
+                        chart: that._createListingCountChartClass(data, obj.certificationStatus.name),
                     };
                 });
-                vm.listingCountTypes = Object.keys(vm.listingCount.edition)
+                that.listingCountTypes = Object.keys(that.listingCount.edition)
                     .map(function (key) {
                         return {
                             id: key,
-                            name: vm.listingCount.edition[key].name,
+                            name: that.listingCount.edition[key].name,
                         }
                     });
             });
         }
 
-        function _createListingCountChartEdition (data, status) {
+        _createListingCountChartEdition (data, status) {
             return {
                 type: 'ColumnChart',
                 data: {
@@ -185,7 +186,7 @@
                         { label: 'Number of Developers with "' + status + '" Listings', type: 'number'},
                         { label: 'Number of Products with "' + status + '" Listings', type: 'number'},
                     ],
-                    rows: _getListingCountChartEditionData(data, status),
+                    rows: this._getListingCountChartEditionData(data, status),
                 },
                 options: {
                     animation: {
@@ -205,7 +206,7 @@
             }
         }
 
-        function _createListingCountChartClass (data, status) {
+        _createListingCountChartClass (data, status) {
             return {
                 type: 'ColumnChart',
                 data: {
@@ -214,7 +215,7 @@
                         { label: 'Certification Edition 2014', type: 'number'},
                         { label: 'Certification Edition 2015', type: 'number'},
                     ],
-                    rows: _getListingCountChartClassData(data, status),
+                    rows: this._getListingCountChartClassData(data, status),
                 },
                 options: {
                     animation: {
@@ -234,7 +235,7 @@
             }
         }
 
-        function _getListingCountChartEditionData (data, status) {
+        _getListingCountChartEditionData (data, status) {
             return data.statisticsResult.filter(function (a) {
                 return a.certificationStatus.name === status;
             }).map(function (obj) {
@@ -246,7 +247,7 @@
             });
         }
 
-        function _getListingCountChartClassData (data, status) {
+        _getListingCountChartClassData (data, status) {
             var transformedData = {
                 developer: {},
                 product: {},
@@ -278,9 +279,10 @@
             }];
         }
 
-        function _createNonconformityCountChart () {
-            networkService.getNonconformityStatisticsCount().then(function (data) {
-                vm.nonconformityCounts = {
+        _createNonconformityCountChart () {
+            let that = this;
+            this.networkService.getNonconformityStatisticsCount().then(function (data) {
+                that.nonconformityCounts = {
                     'All': {
                         type: 'ColumnChart',
                         data: {
@@ -288,7 +290,7 @@
                                 { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string'},
                                 { label: 'Number of Non-Conformities', type: 'number'},
                             ],
-                            rows: _getNonconformityCountDataInChartFormat(data, 'All'),
+                            rows: that._getNonconformityCountDataInChartFormat(data, 'All'),
                         },
                         options: {
                             animation: {
@@ -302,7 +304,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: vm.chartState.yAxis,
+                                scaleType: that.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -315,7 +317,7 @@
                                 { label: '2014 Certification Criteria and Program Requirements Surveilled', type: 'string'},
                                 { label: 'Number of Non-Conformities', type: 'number'},
                             ],
-                            rows: _getNonconformityCountDataInChartFormat(data, 2014),
+                            rows: that._getNonconformityCountDataInChartFormat(data, 2014),
                         },
                         options: {
                             animation: {
@@ -329,7 +331,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: vm.chartState.yAxis,
+                                scaleType: that.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -342,7 +344,7 @@
                                 { label: '2015 Certification Criteria and Program Requirements Surveilled', type: 'string'},
                                 { label: 'Number of Non-Conformities', type: 'number'},
                             ],
-                            rows: _getNonconformityCountDataInChartFormat(data, 2015),
+                            rows: that._getNonconformityCountDataInChartFormat(data, 2015),
                         },
                         options: {
                             animation: {
@@ -356,7 +358,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: vm.chartState.yAxis,
+                                scaleType: that.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -369,7 +371,7 @@
                                 { label: 'Program Certification Criteria and Program Requirements Surveilled', type: 'string'},
                                 { label: 'Number of Non-Conformities', type: 'number'},
                             ],
-                            rows: _getNonconformityCountDataInChartFormat(data, 'Program'),
+                            rows: that._getNonconformityCountDataInChartFormat(data, 'Program'),
                         },
                         options: {
                             animation: {
@@ -383,7 +385,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: vm.chartState.yAxis,
+                                scaleType: that.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -393,7 +395,8 @@
             });
         }
 
-        function _getNonconformityCountDataInChartFormat (data, type) {
+        _getNonconformityCountDataInChartFormat (data, type) {
+            let that = this;
             return data.nonconformityStatisticsResult.filter(function (obj) {
                 switch (type) {
                 case 2014:
@@ -407,22 +410,23 @@
                 default: false;
                 }
             }).sort(function (a, b) {
-                return utilService.sortOtherNonconformityTypes(a.nonconformityType) - utilService.sortOtherNonconformityTypes(b.nonconformityType);
+                return that.utilService.sortOtherNonconformityTypes(a.nonconformityType) - that.utilService.sortOtherNonconformityTypes(b.nonconformityType);
             }).map(function (obj) {
                 return {c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]};
             });
         }
 
-        function _createSedParticipantCountChart () {
-            networkService.getSedParticipantStatisticsCount().then(function (data) {
-                vm.sedParticipantCounts = {
+        _createSedParticipantCountChart () {
+            let that = this;
+            this.networkService.getSedParticipantStatisticsCount().then(function (data) {
+                that.sedParticipantCounts = {
                     type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'Number of SED Test Participants Used', type: 'number'},
                             { label: 'Number of 2015 Edition CHPL Listings', type: 'number'},
                         ],
-                        rows: _getSedParticipantCountDataInChartFormat(data),
+                        rows: that._getSedParticipantCountDataInChartFormat(data),
                     },
                     options: {
                         animation: {
@@ -445,7 +449,7 @@
             });
         }
 
-        function _getSedParticipantCountDataInChartFormat (data) {
+        _getSedParticipantCountDataInChartFormat (data) {
             data.sedParticipantStatisticsCounts.sort(function (a, b) {
                 return parseInt(a.participantCount, 10) - parseInt(b.participantCount, 10);
             });
@@ -454,16 +458,17 @@
             });
         }
 
-        function _createParticipantGenderCountChart () {
-            networkService.getParticipantGenderStatistics().then(function (data) {
-                vm.participantGenderCounts = {
+        _createParticipantGenderCountChart () {
+            let that = this;
+            this.networkService.getParticipantGenderStatistics().then(function (data) {
+                that.participantGenderCounts = {
                     type: 'PieChart',
                     data: {
                         cols: [
                             { label: 'Genders', type: 'string'},
                             { label: 'Counts', type: 'number'},
                         ],
-                        rows: _getParticipantGenderCountDataInChartFormat(data),
+                        rows: that._getParticipantGenderCountDataInChartFormat(data),
                     },
                     options: {
                         title: 'Safety Enhanced Design Test Participants by Gender',
@@ -472,7 +477,7 @@
             });
         }
 
-        function _getParticipantGenderCountDataInChartFormat (data) {
+        _getParticipantGenderCountDataInChartFormat (data) {
             var genderData = [
                 {c: [{ v: 'Male'},{v: data.maleCount}]},
                 {c: [{ v: 'Female'},{v: data.femaleCount}]},
@@ -481,16 +486,17 @@
             return genderData;
         }
 
-        function _createParticipantAgeCountChart () {
-            networkService.getParticipantAgeStatistics().then(function (data) {
-                vm.participantAgeCounts = {
+        _createParticipantAgeCountChart () {
+            let that = this;
+            this.networkService.getParticipantAgeStatistics().then(function (data) {
+                that.participantAgeCounts = {
                     type: 'PieChart',
                     data: {
                         cols: [
                             { label: 'Age Ranges', type: 'string'},
                             { label: 'Counts', type: 'number'},
                         ],
-                        rows: _getParticipantAgeCountDataInChartFormat(data),
+                        rows: that._getParticipantAgeCountDataInChartFormat(data),
                     },
                     options: {
                         title: 'Safety Enhanced Design Test Participants by Age',
@@ -499,7 +505,7 @@
             });
         }
 
-        function _getParticipantAgeCountDataInChartFormat (data) {
+        _getParticipantAgeCountDataInChartFormat (data) {
             data.participantAgeStatistics.sort(function (a, b) {
                 return parseInt(a.ageRange, 10) - parseInt(b.ageRange, 10);
             });
@@ -508,16 +514,17 @@
             });
         }
 
-        function _createParticipantEducationCountChart () {
-            networkService.getParticipantEducationStatistics().then(function (data) {
-                vm.participantEducationCounts = {
+        _createParticipantEducationCountChart () {
+            let that = this;
+            this.networkService.getParticipantEducationStatistics().then(function (data) {
+                that.participantEducationCounts = {
                     type: 'PieChart',
                     data: {
                         cols: [
                             { label: 'Education Level', type: 'string'},
                             { label: 'Counts', type: 'number'},
                         ],
-                        rows: _getParticipantEducationCountDataInChartFormat(data),
+                        rows: that._getParticipantEducationCountDataInChartFormat(data),
                     },
                     options: {
                         title: 'Safety Enhanced Design Test Participants by Education Level',
@@ -526,7 +533,7 @@
             });
         }
 
-        function _getParticipantEducationCountDataInChartFormat (data) {
+        _getParticipantEducationCountDataInChartFormat (data) {
             data.participantEducationStatistics.sort(function (a, b) {
                 return parseInt(a.educationRange, 10) - parseInt(b.educationRange, 10);
             });
@@ -535,16 +542,17 @@
             });
         }
 
-        function _createParticipantProfessionalExperienceCountChart () {
-            networkService.getParticipantProfessionalExperienceStatistics().then(function (data) {
-                vm.participantProfessionalExperienceCounts = {
+        _createParticipantProfessionalExperienceCountChart () {
+            let that = this;
+            this.networkService.getParticipantProfessionalExperienceStatistics().then(function (data) {
+                that.participantProfessionalExperienceCounts = {
                     type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'Years Professional Experience', type: 'number'},
                             { label: 'Number of SED Test Participants ', type: 'number'},
                         ],
-                        rows: _getParticipantExperienceCountDataInChartFormat(data),
+                        rows: that._getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
                         animation: {
@@ -569,16 +577,17 @@
             });
         }
 
-        function _createParticipantComputerExperienceCountChart () {
-            networkService.getParticipantComputerExperienceStatistics().then(function (data) {
-                vm.participantComputerExperienceCounts = {
+        _createParticipantComputerExperienceCountChart () {
+            let that = this;
+            this.networkService.getParticipantComputerExperienceStatistics().then(function (data) {
+                that.participantComputerExperienceCounts = {
                     type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'Years Computer Experience', type: 'number'},
                             { label: 'Number of SED Test Participants ', type: 'number'},
                         ],
-                        rows: _getParticipantExperienceCountDataInChartFormat(data),
+                        rows: that._getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
                         animation: {
@@ -603,16 +612,17 @@
             });
         }
 
-        function _createParticipantProductExperienceCountChart () {
-            networkService.getParticipantProductExperienceStatistics().then(function (data) {
-                vm.participantProductExperienceCounts = {
+        _createParticipantProductExperienceCountChart () {
+            let that = this;
+            this.networkService.getParticipantProductExperienceStatistics().then(function (data) {
+                that.participantProductExperienceCounts = {
                     type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'Years Product Experience', type: 'number'},
                             { label: 'Number of SED Test Participants ', type: 'number'},
                         ],
-                        rows: _getParticipantExperienceCountDataInChartFormat(data),
+                        rows: that._getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
                         animation: {
@@ -637,7 +647,7 @@
             });
         }
 
-        function _getParticipantExperienceCountDataInChartFormat (data) {
+        _getParticipantExperienceCountDataInChartFormat (data) {
             //Calculate the years exp based on the months
             data.participantExperienceStatistics.map(function (obj) {
                 obj.experienceYears = Math.floor(obj.experienceMonths / 12);
@@ -672,5 +682,8 @@
                 return {c: [{ v: obj[0]},{v: obj[1]}]};
             });
         }
-    }
-})();
+    },
+}
+
+angular.module('chpl.charts')
+    .component('chplCharts', ChartsComponent);

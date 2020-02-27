@@ -9,35 +9,35 @@
       <div class="col-sm-12">
         <p>This is a beta release for charts, which are dynamic and populated by the data currently in the CHPL. We will be working on iterating this feature over the coming months. Please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a> for questions or comments.</p>
         <ul class="nav nav-tabs">
-          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'product'}"><a ng-click="vm.chartState.tab = 'product'">Unique Product charts</a></li>
-          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'developer'}"><a ng-click="vm.chartState.tab = 'developer'">Developer charts</a></li>
-          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'sed'}"><a ng-click="vm.chartState.tab = 'sed'">SED Participant charts</a></li>
-          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'nonconformity'}"><a ng-click="vm.chartState.tab = 'nonconformity'">Nonconformity charts</a></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'product'}"><a ng-click="$ctrl.chartState.tab = 'product'">Unique Product charts</a></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'developer'}"><a ng-click="$ctrl.chartState.tab = 'developer'">Developer charts</a></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'sed'}"><a ng-click="$ctrl.chartState.tab = 'sed'">SED Participant charts</a></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'nonconformity'}"><a ng-click="$ctrl.chartState.tab = 'nonconformity'">Nonconformity charts</a></li>
         </ul>
       </div>
     </div>
-    <div ng-if="vm.chartState.tab === 'product'">
+    <div ng-if="$ctrl.chartState.tab === 'product'">
       <div class="row">
         <div class="col-sm-12">
           <ul class="nav nav-tabs">
-            <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2014}"><a ng-click="vm.chartState.productEdition = 2014">2014 Edition</a></li>
-            <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2015}"><a ng-click="vm.chartState.productEdition = 2015">2015 Edition</a></li>
+            <li role="presentation" ng-class="{'active': $ctrl.chartState.productEdition === 2014}"><a ng-click="$ctrl.chartState.productEdition = 2014">2014 Edition</a></li>
+            <li role="presentation" ng-class="{'active': $ctrl.chartState.productEdition === 2015}"><a ng-click="$ctrl.chartState.productEdition = 2015">2015 Edition</a></li>
           </ul>
           <p>The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that
             refer to a single product from the same developer, each listing in a group often differing by version number.</p>
-          <div ng-if="vm.chartState.productEdition === 2014" google-chart="" chart="vm.criterionProductCounts[2014]" class="bar-chart"></div>
-          <div ng-if="vm.chartState.productEdition === 2015" google-chart="" chart="vm.criterionProductCounts[2015]" class="bar-chart"></div>
+          <div ng-if="$ctrl.chartState.productEdition === 2014" google-chart="" chart="$ctrl.criterionProductCounts[2014]" class="bar-chart"></div>
+          <div ng-if="$ctrl.chartState.productEdition === 2015" google-chart="" chart="$ctrl.criterionProductCounts[2015]" class="bar-chart"></div>
         </div>
       </div>
     </div>
-    <div ng-if="vm.chartState.tab === 'developer'">
+    <div ng-if="$ctrl.chartState.tab === 'developer'">
       <div class="row">
         <div class="col-sm-12">
           <p>Since the start of the ONC Health IT Certification Program, there have been three certification editions: 2011, 2014, and 2015. The charts below describe the transition between each edition by certified health IT developers. The regulations for each edition can be found <a href ="https://www.healthit.gov/topic/certification-ehrs/certification-standards-and-regulations">here</a>.</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-4" ng-repeat="chart in vm.incumbentDevelopersCounts">
+        <div class="col-sm-4" ng-repeat="chart in $ctrl.incumbentDevelopersCounts">
           <div google-chart="" chart="chart" class="pie-chart"></div>
         </div>
       </div>
@@ -48,24 +48,24 @@
       </div>
       <div class="row">
         <div class="col-sm-6">
-          <div google-chart="" chart="vm.listingCount.edition['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.listingCount.edition['' + $ctrl.chartState.listingCountType].chart" class="column-chart"></div>
         </div>
         <div class="col-sm-6">
-          <div google-chart="" chart="vm.listingCount.class['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.listingCount.class['' + $ctrl.chartState.listingCountType].chart" class="column-chart"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
           <label>
             View the number of Developers and Products with Certification Status:
-            <select ng-model="vm.chartState.listingCountType"
-                    ng-options="option.id as option.name for option in vm.listingCountTypes | orderBy: 'name'">
+            <select ng-model="$ctrl.chartState.listingCountType"
+                    ng-options="option.id as option.name for option in $ctrl.listingCountTypes | orderBy: 'name'">
             </select>
           </label>
           <br />
           <label>
             Stacking type:
-            <select ng-model="vm.chartState.isStacked" ng-change="vm.updateChartStack()">
+            <select ng-model="$ctrl.chartState.isStacked" ng-change="$ctrl.updateChartStack()">
               <option value="percent">Percent</option>
               <option value="absolute">Absolute</option>
               <option value="false">None</option>
@@ -74,58 +74,58 @@
         </div>
       </div>
     </div>
-    <div ng-if="vm.chartState.tab === 'sed'">
+    <div ng-if="$ctrl.chartState.tab === 'sed'">
       <div class="row">
         <div class="col-sm-12">
           <p>The safety-enhanced design (SED) criteria requires health IT developers to apply and test user centered design standards to their certified health IT. Developers follow <a href="https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record">NISTIR 7742</a> and submit results to ONC. SED testing requires participants who work in the health care field for which the product is intended to be used. The charts below describe the characteristics of the SED test participants for ONC certified health IT products.</p>
-          <div google-chart="" chart="vm.sedParticipantCounts" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.sedParticipantCounts" class="column-chart"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <div google-chart="" chart="vm.participantGenderCounts" class="pie-chart"></div>
+          <div google-chart="" chart="$ctrl.participantGenderCounts" class="pie-chart"></div>
         </div>
         <div class="col-sm-4">
-          <div google-chart="" chart="vm.participantAgeCounts" class="pie-chart"></div>
+          <div google-chart="" chart="$ctrl.participantAgeCounts" class="pie-chart"></div>
         </div>
         <div class="col-sm-4">
-          <div google-chart="" chart="vm.participantEducationCounts" class="pie-chart"></div>
+          <div google-chart="" chart="$ctrl.participantEducationCounts" class="pie-chart"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <div google-chart="" chart="vm.participantProfessionalExperienceCounts" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.participantProfessionalExperienceCounts" class="column-chart"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <div google-chart="" chart="vm.participantComputerExperienceCounts" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.participantComputerExperienceCounts" class="column-chart"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <div google-chart="" chart="vm.participantProductExperienceCounts" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.participantProductExperienceCounts" class="column-chart"></div>
         </div>
       </div>
     </div>
-    <div ng-if="vm.chartState.tab === 'nonconformity'">
+    <div ng-if="$ctrl.chartState.tab === 'nonconformity'">
       <div class="row">
         <div class="col-sm-12">
-          <div google-chart="" chart="vm.nonconformityCounts['' + vm.chartState.nonconformityCountType]" class="column-chart"></div>
+          <div google-chart="" chart="$ctrl.nonconformityCounts['' + $ctrl.chartState.nonconformityCountType]" class="column-chart"></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
           <label>
             View the number of Non-Conformities with type of Program Requirements Surveilled:
-            <select ng-model="vm.chartState.nonconformityCountType"
-                    ng-options="option for option in vm.nonconformityTypes">
+            <select ng-model="$ctrl.chartState.nonconformityCountType"
+                    ng-options="option for option in $ctrl.nonconformityTypes">
             </select>
           </label>
           <br />
           <label>
             Y-Axis Type:
-            <select ng-model="vm.chartState.yAxis" ng-change="vm.updateYAxis()">
+            <select ng-model="$ctrl.chartState.yAxis" ng-change="$ctrl.updateYAxis()">
               <option value="">Linear</option>
               <option value="mirrorLog">Log</option>
             </select>
