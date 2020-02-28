@@ -252,6 +252,31 @@
                 expect(util.sortCqmActual(2, 1)).toBeGreaterThan(0);
                 expect(util.sortCqm.calls.count()).toBe(4);
             });
+
+            describe('test functionality', () => {
+                let b5 = {name: '(b)(3)(ii)(B)(5)'};
+                let b8 = {name: '(b)(3)(ii)(B)(8)'};
+                let d = {name: '(b)(3)(ii)(D)'};
+
+                it('should sort b5 before b8', () => {
+                    expect(util.sortTestFunctionality(b5, b8)).toBeLessThan(0);
+                    expect(util.sortTestFunctionality(b8, b5)).toBeGreaterThan(0);
+                });
+
+                it('should sort b5 before d', () => {
+                    expect(util.sortTestFunctionality(b5, d)).toBeLessThan(0);
+                    expect(util.sortTestFunctionality(d, b5)).toBeGreaterThan(0);
+                });
+
+                it('should sort b8 before d', () => {
+                    expect(util.sortTestFunctionality(b8, d)).toBeLessThan(0);
+                    expect(util.sortTestFunctionality(d, b8)).toBeGreaterThan(0);
+                });
+
+                it('shouldn\'t sort identical values', () => {
+                    expect(util.sortTestFunctionality(b8, b8)).toBe(0);
+                });
+            });
         });
 
         describe('when comparing arrays', () => {
