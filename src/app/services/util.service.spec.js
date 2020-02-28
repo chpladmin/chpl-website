@@ -257,6 +257,7 @@
                 let b5 = {name: '(b)(3)(ii)(B)(5)'};
                 let b8 = {name: '(b)(3)(ii)(B)(8)'};
                 let d = {name: '(b)(3)(ii)(D)'};
+                let other = {name: '170.102(13)(ii)(C)'};
 
                 it('should sort b5 before b8', () => {
                     expect(util.sortTestFunctionality(b5, b8)).toBeLessThan(0);
@@ -275,6 +276,11 @@
 
                 it('shouldn\'t sort identical values', () => {
                     expect(util.sortTestFunctionality(b8, b8)).toBe(0);
+                });
+
+                it('should sort other last', () => {
+                    expect(util.sortTestFunctionality(b8, other)).toBeLessThan(0);
+                    expect(util.sortTestFunctionality(other, b8)).toBeGreaterThan(0);
                 });
             });
         });

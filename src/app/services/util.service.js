@@ -334,19 +334,20 @@
             while (a && a.length > 0 && b && b.length > 0) {
                 let aVals = a.match(matcher);
                 let bVals = b.match(matcher);
-                let testA = isNaN(parseInt(aVals[0], 10)) ? aVals[0] : parseInt(aVals[0], 10);
-                let testB = isNaN(parseInt(bVals[0], 10)) ? bVals[0] : parseInt(bVals[0], 10);
-                if (testA < testB) { return -1; }
-                if (testA > testB) { return 1; }
-                a = a.replace(aVals[0], '');
-                b = b.replace(bVals[0], '');
+                if (aVals && bVals) {
+                    let testA = isNaN(parseInt(aVals[0], 10)) ? aVals[0] : parseInt(aVals[0], 10);
+                    let testB = isNaN(parseInt(bVals[0], 10)) ? bVals[0] : parseInt(bVals[0], 10);
+                    if (testA < testB) { return -1; }
+                    if (testA > testB) { return 1; }
+                    a = a.replace(aVals[0], '');
+                    b = b.replace(bVals[0], '');
+                } else {
+                    if (aVals) { return -1; }
+                    if (bVals) { return 1; }
+                }
             }
-            if (a.length > 0) {
-                return 1;
-            }
-            if (b.length > 0) {
-                return -1;
-            }
+            if (a.length > 0) { return 1; }
+            if (b.length > 0) { return -1; }
             return 0;
         }
 
