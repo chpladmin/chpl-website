@@ -148,7 +148,7 @@ let states = {
                     return getResources($q, networkService);
                 },
             },
-            data: { title: 'CHPL Reports - Listings' },
+            data: { title: 'CHPL Administration - Confirm Listings' },
         },{
             name: 'administration.fuzzy-matching',
             url: '/fuzzy-matching',
