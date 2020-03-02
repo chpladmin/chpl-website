@@ -75,6 +75,21 @@ export const ChangeRequestsComponent = {
             }
         }
 
+        can (action) {
+            if (!this.activeChangeRequest || !(this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action' || this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action')) {
+                return false;
+            }
+            switch (action) {
+            case 'edit':
+                return this.hasAnyRole(['ROLE_DEVELOPER'])
+                    || (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action');
+            case 'withdraw':
+                return this.hasAnyRole(['ROLE_DEVELOPER']);
+            default:
+                return false;
+            }
+        }
+
         cancel () {
             if (this.activeState) {
                 this.activeState = undefined;
