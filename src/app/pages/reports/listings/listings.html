@@ -40,35 +40,36 @@
 
   <div class="row">
     <div class="col-sm-2">
-      <label class="control-label">Activity <span feature-flag="enhanced-reports-collapsed-acb" feature-flag-hide>({{ $ctrl.displayed.length }})</span></label>
-      <select st-search="categoriesFilter" st-input-event="change" class="form-control" ng-model="$ctrl.categoriesFilter">
+      <label class="control-label" for="categoriesFilter">Activity <span feature-flag="enhanced-reports-collapsed-acb" feature-flag-hide>({{ $ctrl.displayed.length }})</span></label>
+      <select st-search="categoriesFilter" st-input-event="change" class="form-control" ng-model="$ctrl.categoriesFilter" id="categoriesFilter">
         <option value="|LISTING|" selected>All</option>
         <option value="|SURVEILLANCE|">Surveillance</option>
         <option value="|LISTING_UPLOAD|">Upload</option>
         <option value="|LISTING_STATUS_CHANGE|">Status Change</option>
       </select>
+      <div feature-flag="enhanced-reports-collapsed-acb" class="onc-acb-filter spaced-out">
+        Filter on ONC-ACB<br />
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-ai dropdown-toggle" type="button" id="acb-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            ONC-ACB <i class="fa fa-filter"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+            <st-list-multiple
+              collection="$ctrl.results"
+              fixed-items="$ctrl.acbItems"
+              predicate="acbName"
+              ></st-list-multiple>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="col-sm-3">
       Filter on Activity Date
-        <ai-date-range
-          predicate="date"
-          register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-          register-restore-state="$ctrl.registerRestoreState(restoreState)"
-          ></ai-date-range>
-    </div>
-    <div class="col-sm-3" feature-flag="enhanced-reports-collapsed-acb">
-      <div uib-dropdown auto-close="outsideClick" class="btn-group">
-        <button class="btn btn-ai dropdown-toggle" type="button" id="acb-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-          ONC-ACB <i class="fa fa-filter"></i>
-        </button>
-        <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-          <st-list-multiple
-            collection="$ctrl.results"
-            fixed-items="$ctrl.acbItems"
-            predicate="acbName"
-            ></st-list-multiple>
-        </ul>
-      </div>
+      <ai-date-range
+        predicate="date"
+        register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+        register-restore-state="$ctrl.registerRestoreState(restoreState)"
+        ></ai-date-range>
     </div>
   </div>
   <div class="row" ng-if="$ctrl.showLoadingBar()">
