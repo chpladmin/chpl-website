@@ -258,6 +258,7 @@
                 let b8 = {name: '(b)(3)(ii)(B)(8)'};
                 let d = {name: '(b)(3)(ii)(D)'};
                 let other = {name: '170.102(13)(ii)(C)'};
+                let other2 = {name: '170.102(19)(ii)'};
 
                 it('should sort b5 before b8', () => {
                     expect(util.sortTestFunctionality(b5, b8)).toBeLessThan(0);
@@ -281,6 +282,30 @@
                 it('should sort other last', () => {
                     expect(util.sortTestFunctionality(b8, other)).toBeLessThan(0);
                     expect(util.sortTestFunctionality(other, b8)).toBeGreaterThan(0);
+                });
+
+                it('should sort others', () => {
+                    expect(util.sortTestFunctionality(other, other2)).toBeLessThan(0);
+                    expect(util.sortTestFunctionality(other2, other)).toBeGreaterThan(0);
+                });
+
+                describe('mass sort', () => {
+                    let raw = [
+                        { name: '170.102(19)(ii)' },
+                        { name: '(b)(1)(iii)(G)(1)(ii)' },
+                        { name: '170.102(13)(ii)(C)' },
+                        { name: '(b)(1)(ii)(A)(5)(i)' },
+                        { name: '170.102(19)(i)' },
+                        { name: '(b)(1)(ii)(A)(5)(ii)' },
+                        { name: '(b)(1)(iii)(F)' },
+                        { name: '(b)(1)(iii)(E)' },
+                    ];
+
+                    it('should sort real data', () => {
+                        let sorted = raw.sort(util.sortTestFunctionality);
+                        expect(sorted[0].name).toBe('(b)(1)(ii)(A)(5)(i)');
+                        expect(sorted[7].name).toBe('170.102(19)(ii)');
+                    });
                 });
             });
         });

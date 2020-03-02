@@ -344,6 +344,8 @@
                 } else {
                     if (aVals) { return -1; }
                     if (bVals) { return 1; }
+                    a = a.substring(7);
+                    b = b.substring(7);
                 }
             }
             if (a.length > 0) { return 1; }
