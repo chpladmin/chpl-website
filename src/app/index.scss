@@ -596,6 +596,10 @@ tr.removed {
     font-style: italic;
 }
 
+option[label^="Removed"] {
+    font-style: italic;
+}
+
 .removed {
 
     .btn-link {
@@ -607,6 +611,12 @@ tr.removed {
 
     .criteria-title {
         font-style: italic;
+    }
+
+    .alert-success {
+        color: #000;
+        background-color: #eee;
+        border-color: #000;
     }
 
     .table-striped {
