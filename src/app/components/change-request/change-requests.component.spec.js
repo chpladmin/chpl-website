@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Change Requests component', () => {
+    describe('the Change Requests component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {

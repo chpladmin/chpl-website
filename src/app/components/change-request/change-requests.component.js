@@ -38,6 +38,7 @@ export const ChangeRequestsComponent = {
                 });
                 this.backup.changeRequests = angular.copy(this.changeRequests);
                 this.activeChangeRequest = undefined;
+                this.activeState = undefined;
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
@@ -113,6 +114,9 @@ export const ChangeRequestsComponent = {
                     changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Cancelled by Requester'),
                     comment: this.activeChangeRequest.comment,
                 };
+            } else if (this.administrationMode) {
+                this.activeChangeRequest.currentStatus.changeRequestStatusType = this.activeChangeRequest.newStatus;
+                this.activeChangeRequest.currentStatus.comment = this.activeChangeRequest.comment;
             } else if (this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
                 this.activeChangeRequest.currentStatus = {
                     changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Pending ONC-ACB Action'),
@@ -127,6 +131,7 @@ export const ChangeRequestsComponent = {
 
         startEditing () {
             this.activeState = 'edit';
+            this.isValid = !this.administrationMode;
             this.takeAction({action: 'focus'});
         }
 

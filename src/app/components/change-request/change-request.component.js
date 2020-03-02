@@ -5,6 +5,7 @@ export const ChangeRequestComponent = {
         activeState: '<',
         developer: '<',
         changeRequest: '<',
+        changeRequestStatusTypes: '<',
         takeAction: '&',
         showFormErrors: '<',
     },
@@ -40,6 +41,10 @@ export const ChangeRequestComponent = {
                     }
                 });
                 this.backup.changeRequest = angular.copy(this.changeRequest);
+            }
+            if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
+                this.changeRequestStatusTypes = changes.changeRequestStatusTypes.currentValue.data
+                    .filter(type => type.name === 'Accepted' || type.name === 'Pending Developer Action' || type.name === 'Rejected');
             }
             if (changes.showFormErrors) {
                 this.showFormErrors = changes.showFormErrors.currentValue;
