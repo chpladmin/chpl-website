@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Listing component', () => {
+    xdescribe('the Reports.Listing component', () => {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, ctrl, el, networkService, scope;
 
@@ -11,6 +11,7 @@
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     $delegate.getActivityById = jasmine.createSpy('getActivityById');
+                    $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
                     return $delegate;
                 });
@@ -30,6 +31,7 @@
                 networkService = _networkService_;
                 networkService.getActivityMetadata.and.returnValue($q.when({activities: Mock.listingActivityMetadata}));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getSearchOptions.and.returnValue($q.when({acbs: []}));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new()

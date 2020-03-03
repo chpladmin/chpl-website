@@ -4,13 +4,14 @@ export const ReportsListingsComponent = {
         productId: '<',
     },
     controller: class ReportsListings {
-        constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$state = $state;
             this.$uibModal = $uibModal;
             this.ReportService = ReportService;
+            this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
             this.activeAcbs = [];
@@ -27,6 +28,31 @@ export const ReportsListingsComponent = {
             };
             this.downloadProgress = 0;
             this.results = [];
+            this.pageSize = 50;
+        }
+
+        $onInit () {
+            let that = this;
+            let user = this.authService.getCurrentUser();
+            this.networkService.getSearchOptions()
+                .then(options => {
+                    that.acbItems = options.acbs
+                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                        .map(a => {
+                            let ret = {
+                                value: a.name,
+                            };
+                            if (a.retired) {
+                                ret.display = a.name + ' (Retired)';
+                                ret.retired = true;
+                                ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                            } else {
+                                ret.selected = that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                                    || user.organizations.filter(o => o.name === a.name).length > 0;
+                            }
+                            return ret;
+                        });
+                });
         }
 
         $onChanges (changes) {
@@ -34,6 +60,10 @@ export const ReportsListingsComponent = {
                 this.productId = angular.copy(changes.productId.currentValue);
             }
             this.search();
+        }
+
+        $onDestroy () {
+            this.isDestroyed = true;
         }
 
         onApplyFilter (filter) {
@@ -744,7 +774,7 @@ export const ReportsListingsComponent = {
 
         canDownload () {
             return this.displayed
-                .filter(item => !item.action).length < 1000;
+                .filter(item => !item.action).length <= 1000;
         }
 
         prepareDownload () {
@@ -792,16 +822,23 @@ export const ReportsListingsComponent = {
                         before: new Date().getTime(),
                     };
                     that.doFilter(filter);
-                    for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
-                            results.activities.forEach(item => {
-                                that.results.push(that.prepare(item));
-                            });
-                            that.loadProgress.complete += 1;
-                            that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
-                        });
-                    }
+                    that.addPageToData(1);
                 });
+        }
+
+        addPageToData (page) {
+            let that = this;
+            if (this.isDestroyed) { return }
+            this.networkService.getActivityMetadata('beta/listings', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+                results.activities.forEach(item => {
+                    that.results.push(that.prepare(item));
+                });
+                that.loadProgress.complete += 1;
+                that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
+                if (page < that.loadProgress.total) {
+                    that.addPageToData(page + 1);
+                }
+            });
         }
 
         searchSingleProductId () {

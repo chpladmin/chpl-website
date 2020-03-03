@@ -464,7 +464,8 @@ option[disabled] {
     right: 0;
 }
 
-#search-page .dropdown-menu {
+#search-page .dropdown-menu,
+#listings-report-page .dropdown-menu {
     width: 150%;
     max-height: 300px;
     overflow: auto;
@@ -476,6 +477,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu li>label,
+#listings-report-page .dropdown-menu li>label,
 #decertifications-page .dropdown-menu>div>li>label,
 #decertifications-page .dropdown-menu>li>label {
     cursor: pointer;
@@ -492,6 +494,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>span>a,
+#listings-report-page .dropdown-menu>li>span>a,
 #decertifications-page .dropdown-menu>div>li>span>a,
 #decertifications-page .dropdown-menu>li>span>a {
     display: block;
@@ -500,6 +503,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li.form-horizontal>div.form-group,
+#listings-report-page .dropdown-menu>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>div>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>li.form-horizontal>div.form-group {
     margin-left: 0;
@@ -507,6 +511,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>div>label.control-label,
+#listings-report-page .dropdown-menu>li>div>label.control-label,
 #decertifications-page .dropdown-menu>div>li>div>label.control-label,
 #decertifications-page .dropdown-menu>li>div>label.control-label {
     display: block;
@@ -516,6 +521,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>a,
+#listings-report-page .dropdown-menu>li>a,
 #decertifications-page .dropdown-menu>li>a {
     font-weight: 700;
 }
