@@ -281,21 +281,23 @@
                     }
                 }
 
-                vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
-                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) {
-                        var loc = vm.sedCriteria.map(cert => cert.number).indexOf(cert.number);
-                        if (loc > -1) {
-                            vm.sedCriteria[loc].found = true;
-                            return true;
-                        }
-                        return false;
-                    }), vm.sortCert);
-                    return item;
-                }).concat([{
-                    name: undefined,
-                    details: undefined,
-                    criteria: $filter('orderBy')(vm.sedCriteria.filter(function (cert) { return !cert.found; }), vm.sortCert),
-                }]).filter(function (item) { return item.criteria.length > 0; });
+                vm.ucdProcesses = vm.listing.sed.ucdProcesses
+                    .map(item => {
+                        vm.sedCriteria = vm.sedCriteria
+                            .map(criterion => {
+                                if (item.criteria.findIndex(crit => crit.number === criterion.number && crit.title === criterion.title) > -1) {
+                                    criterion.found = true;
+                                }
+                                return criterion;
+                            })
+                        return item;
+                    })
+                    .concat([{
+                        name: undefined,
+                        details: undefined,
+                        criteria: vm.sedCriteria.filter(criterion => !criterion.found),
+                    }])
+                    .filter(item => item.criteria.length > 0);
 
                 vm.csvData.values = csvSort(vm.csvData.values);
             }

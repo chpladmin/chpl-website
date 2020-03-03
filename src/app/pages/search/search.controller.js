@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, featureFlags, networkService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -14,6 +14,7 @@
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
+        vm.isOn = featureFlags.isOn;
         vm.loadResults = loadResults;
         vm.refreshResults = refreshResults;
         vm.registerAllowAll = registerAllowAll;
@@ -54,6 +55,30 @@
             vm.showRetiredHs = [];
             vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
             vm.lookupData = {};
+            vm.defaultRefineModel = {
+                certificationEdition: {
+                    '2011': false,
+                    '2014': true,
+                    '2015': true,
+                },
+                certificationStatus: {
+                    'Active': true,
+                    'Retired': false,
+                    'Suspended by ONC-ACB': true,
+                    'Withdrawn by Developer': false,
+                    'Withdrawn by Developer Under Surveillance/Review': false,
+                    'Withdrawn by ONC-ACB': false,
+                    'Suspended by ONC': true,
+                    'Terminated by ONC': false,
+                },
+            };
+            vm.retired = {
+                edition: { '2011': true },
+            };
+            if (vm.isOn('effective-rule-date')) {
+                vm.retired.edition['2014'] = true;
+            }
+
             vm.downloadResultsCategories = [
                 { display: 'Edition', enabled: true, columns: [{ display: 'Edition', key: 'edition' }] },
                 { display: 'Product data', enabled: true, columns: [
@@ -85,28 +110,6 @@
             vm.loadResults();
             setTimestamp();
         }
-
-        vm.defaultRefineModel = {
-            certificationEdition: {
-                '2011': false,
-                '2014': true,
-                '2015': true,
-            },
-            certificationStatus: {
-                'Active': true,
-                'Retired': false,
-                'Suspended by ONC-ACB': true,
-                'Withdrawn by Developer': false,
-                'Withdrawn by Developer Under Surveillance/Review': false,
-                'Withdrawn by ONC-ACB': false,
-                'Suspended by ONC': true,
-                'Terminated by ONC': false,
-            },
-        };
-
-        vm.retired = {
-            edition: { '2011': true },
-        };
 
         function browseAll () {
             $analytics.eventTrack('Browse All', { category: 'Search' });
@@ -305,11 +308,6 @@
                 keyboard: false,
                 size: 'lg',
             });
-            vm.viewCertificationStatusLegendInstance.result.then(function (response) {
-                $log.info(response);
-            }, function (result) {
-                $log.info(result)
-            });
         }
 
         function viewPreviouslyCompared (doNotSearch) {
@@ -458,7 +456,7 @@
                 pageSize: '50',
                 acbItems: [],
                 cqms: { 2011: [], other: [] },
-                criteria: { 2011: [], 2014: [], 2015: []},
+                criteria: { '2011': [], '2014': [], '2015': []},
                 editionItems: [],
                 statusItems: [],
             };
@@ -469,7 +467,7 @@
                         value: a.name,
                     };
                     if (a.retired) {
-                        ret.display = a.name + ' (Retired)';
+                        ret.display = 'Retired | ' + a.name;
                         ret.retired = true;
                         ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
                     } else {
@@ -477,51 +475,48 @@
                     }
                     return ret;
                 });
-            vm.searchOptions.editions = $filter('orderBy')(vm.searchOptions.editions, 'name');
-            for (i = 0; i < vm.searchOptions.editions.length; i++) {
-                obj = {
-                    value: vm.searchOptions.editions[i].name,
-                    selected: vm.defaultRefineModel.certificationEdition[vm.searchOptions.editions[i].name],
-                };
-                if (vm.retired.edition[vm.searchOptions.editions[i].name]) {
-                    obj.display = obj.value + ' (Retired)';
-                    obj.retired = true;
-                }
-                vm.filterItems.editionItems.push(obj);
-            }
-            vm.searchOptions.certificationStatuses = $filter('orderBy')(vm.searchOptions.certificationStatuses, 'name');
-            for (i = 0; i < vm.searchOptions.certificationStatuses.length; i++) {
-                obj = {
-                    value: vm.searchOptions.certificationStatuses[i].name,
-                    selected: vm.defaultRefineModel.certificationStatus[vm.searchOptions.certificationStatuses[i].name],
-                };
-                if (obj.value === 'Retired') {
-                    obj.retired = true;
-                }
-                vm.filterItems.statusItems.push(obj);
-            }
-            vm.searchOptions.certificationCriteria = $filter('orderBy')(vm.searchOptions.certificationCriteria, utilService.sortCert);
-            for (i = 0; i < vm.searchOptions.certificationCriteria.length; i++) {
-                var crit = vm.searchOptions.certificationCriteria[i];
-                obj = {
-                    value: crit.id,
-                    selected: false,
-                    display: crit.number + ': ' + crit.title + (crit.removed ? ' (Removed)' : ''),
-                    removed: crit.removed,
-                };
-                switch (crit.number.substring(4,7)) {
-                case '314':
-                    vm.filterItems.criteria[2014].push(obj);
-                    break;
-                case '315':
-                    vm.filterItems.criteria[2015].push(obj);
-                    break;
-                default:
-                    obj.display = obj.display + ' (Retired)';
-                    obj.retired = true;
-                    vm.filterItems.criteria[2011].push(obj);
-                }
-            }
+            vm.filterItems.editionItems = vm.searchOptions.editions
+                .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                .map(edition => {
+                    let obj = {
+                        value: edition.name,
+                        selected: vm.defaultRefineModel.certificationEdition[edition.name],
+                    }
+                    if (edition.name === '2011' || (edition.name === '2014' && vm.isOn('effective-rule-date'))) {
+                        vm.defaultRefineModel.certificationEdition['2014'] = false;
+                        obj.selected = false;
+                        obj.display = 'Retired | ' + obj.value;
+                        obj.retired = true;
+                    }
+                    return obj;
+                });
+            vm.filterItems.statusItems = vm.searchOptions.certificationStatuses
+                .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                .map(status => {
+                    let obj = {
+                        value: status.name,
+                        selected: vm.defaultRefineModel.certificationStatus[status.name],
+                    };
+                    if (obj.value === 'Retired') {
+                        obj.retired = true;
+                    }
+                    return obj;
+                });
+            vm.searchOptions.certificationCriteria
+                .sort(utilService.sortCertActual)
+                .forEach(crit => {
+                    obj = {
+                        value: crit.id,
+                        selected: false,
+                        display: (crit.removed ? 'Removed | ' : '') + crit.number + ': ' + crit.title,
+                        removed: crit.removed,
+                    };
+                    if (crit.certificationEdition === '2011' || (crit.certificationEdition === '2014' && vm.isOn('effective-rule-date'))) {
+                        obj.display = 'Retired | ' + obj.display;
+                        obj.retired = true;
+                    }
+                    vm.filterItems.criteria[crit.certificationEdition].push(obj);
+                });
             vm.searchOptions.cqms = $filter('orderBy')(vm.searchOptions.cqms, utilService.sortCqm);
             for (i = 0; i < vm.searchOptions.cqms.length; i++) {
                 var cqm = vm.searchOptions.cqms[i];
@@ -534,7 +529,7 @@
                     vm.filterItems.cqms.other.push(obj);
                 } else {
                     obj.value = 'NQF-' + cqm.name;
-                    obj.display = 'NQF-' + cqm.name + ': ' + cqm.title + '( Retired)';
+                    obj.display = 'Retired | NQF-' + cqm.name + ': ' + cqm.title;
                     obj.retired = true;
                     vm.filterItems.cqms[2011].push(obj);
                 }

@@ -10,7 +10,7 @@
     <a href ng-click="vm.clearFilter()">Reset</a>
   </li>
   <li ng-repeat="item in vm.distinctItems">
-    <label ng-class="{ 'emphasis' : vm.isNotDefault(item), 'removed' : item.removed }">
+    <label ng-class="{ 'emphasis' : vm.isNotDefault(item), 'removed' : item.removed, 'retired' : item.retired }">
       <input type="checkbox"
              value="{{ item.value }}"
              id="{{ vm.getId(item.value) }}"

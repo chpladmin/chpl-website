@@ -1,5 +1,5 @@
-(function () {
-    'use strict';
-
-    angular.module('chpl.registration', ['chpl.services']);
-})();
+export default angular
+    .module('chpl.registration', [
+        'chpl.services',
+        'feature-flags',
+    ]);
