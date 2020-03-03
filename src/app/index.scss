@@ -595,30 +595,46 @@ option[disabled] {
     bottom: 25px !important;
 }
 
-.removed {
-    color: #4d4d4d;
-    background-color: #ccc;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 5px;
-    background-image: linear-gradient(to bottom, #cccccc 0%, #ddd 51%, #cccccc 100%);
+li.removed,
+a.removed,
+td.removed,
+tr.removed {
+    font-style: italic;
+}
 
-    a {
-        color: #4d4d4d;
-    }
+option[label^="Removed"] {
+    font-style: italic;
+}
+
+.removed {
 
     .btn-link {
-        color: #4d4d4d;
+
+        i {
+            color: #4d4d4d;
+        }
+    }
+
+    .criteria-title {
+        font-style: italic;
+    }
+
+    .alert-success {
+        color: #000;
+        background-color: #eee;
+        border-color: #000;
     }
 
     .table-striped {
 
         tbody {
 
-            tr {
-                background-color: transparent;
+            tr:nth-of-type(odd) {
+                background-color: #eee;
+            }
+
+            tr:nth-of-type(even) {
+                background-color: #fff;
             }
         }
     }

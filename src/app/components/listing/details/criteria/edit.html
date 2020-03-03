@@ -6,11 +6,12 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: {{ $ctrl.cert.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.title"></span></h4>
+    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.title"></span></h4>
   </div>
-  <div class="modal-body" ng-form="$ctrl.editForm">
+  <div class="modal-body" ng-form="$ctrl.editForm" ng-class="{ 'removed' : $ctrl.cert.criterion.removed }">
     <input type="checkbox" ng-model="$ctrl.cert.success" id="data{{ $ctrl.cert.number }}" name="data"></input>
-    <label class="control-label" for="data{{ $ctrl.cert.number }}">{{ $ctrl.cert.number }}: {{ $ctrl.cert.title }}</label>
+    <label class="control-label" for="data{{ $ctrl.cert.number }}"><span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.number }}: {{ $ctrl.cert.title }}</span></label>
+    <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
     <div ng-if="$ctrl.cert.success">
       <input type="checkbox" ng-model="$ctrl.cert.metViaAdditionalSoftware" id="data_additionalSoftware{{ $ctrl.cert.number }}" name="data_additionalSoftware" ng-disabled="!$ctrl.canEdit()"></input>
       <label class="control-label" for="data_additionalSoftware{{ $ctrl.cert.number }}">Certification met via relied upon software</label>
@@ -71,7 +72,7 @@
             <button id="clear-selection-g1macrameasures" class="btn btn-small btn-link pull-right" ng-click="$ctrl.cert.g1MacraMeasures=[];" ng-if="$ctrl.cert.g1MacraMeasures && $ctrl.cert.g1MacraMeasures.length !== 0 && $ctrl.canEdit()">Clear Selection(s)<span class="sr-only">of G1 Macra Measures</span></button>
             <select multiple data-ng-attr-size="{{ $ctrl.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm"
                     id="data_g1MacraMeasures{{ $ctrl.cert.number }}" name="data_g1MacraMeasures" ng_model="$ctrl.cert.g1MacraMeasures" ng-disabled="!$ctrl.canEdit()"
-                    ng-options="m as (m.abbreviation + (m.removed ? ' (Removed)' : '')) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
+                    ng-options="m as ((m.removed ? 'Removed | ' : '') + m.abbreviation) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.g2Success !== null">
@@ -84,7 +85,7 @@
             <button id="clear-selection-g2macrameasures" class="btn btn-small btn-link pull-right" ng-click="$ctrl.cert.g2MacraMeasures=[];" ng-if="$ctrl.cert.g2MacraMeasures && $ctrl.cert.g2MacraMeasures.length !== 0 && $ctrl.canEdit()">Clear Selection(s)<span class="sr-only">of G2 Macra Measures</span></button>
             <select multiple data-ng-attr-size="{{ $ctrl.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm"
                     id="data_g2MacraMeasures{{ $ctrl.cert.number }}" name="data_g2MacraMeasures" ng_model="$ctrl.cert.g2MacraMeasures" ng-disabled="!$ctrl.canEdit()"
-                    ng-options="m as (m.abbreviation + (m.removed ? ' (Removed)' : '')) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
+                    ng-options="m as ((m.removed ? 'Removed | ' : '') + m.abbreviation) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null">

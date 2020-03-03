@@ -104,12 +104,12 @@
             expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, 'username');
         });
 
-        it('should redirect to /admin after authorizeUser is finished', function () {
+        it('should redirect to /administration after authorizeUser is finished', function () {
             spyOn($location, 'path');
             vm.authorizeDetails = mock.authorizeUser;
             vm.authorizeUser();
             scope.$digest();
-            expect($location.path).toHaveBeenCalledWith('/admin');
+            expect($location.path).toHaveBeenCalledWith('/administration');
         });
 
         it('should know what values are disallowed in passwords', function () {

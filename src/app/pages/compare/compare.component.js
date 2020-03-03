@@ -1,8 +1,5 @@
 export const CompareComponent = {
     templateUrl: 'chpl.compare/compare.html',
-    /*    bindings: {
-      compareIds: '<',
-      },*/
     controller: class CompareComponent {
         constructor ($filter, $log, $scope, $stateParams, networkService, utilService) {
             'ngInject'
