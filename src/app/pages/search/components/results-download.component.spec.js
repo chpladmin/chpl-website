@@ -77,9 +77,9 @@ describe('the search results download component,', () => {
 
         it('should have data rows', () => {
             ctrl.makeCsv();
-            expect(ctrl.csvData.values.length).toBe(9);
+            expect(ctrl.csvData.values.length).toBe(10);
             expect(ctrl.csvData.values[1]).toEqual([
-                '2014', 'Systemedx Inc', '2013 Systemedx Clinical Navigator', '2013.12', 'do the filter1396497600000', 'CHP-022218', 'Active', 'http://chpl.healthit.gov/#/product/296',
+                '2011', 'KDH Consulting, Inc.', 'LightSpeed EMR', '1.2', 'do the filter1317182400000', 'CHP-008217', 'Retired', 'http://chpl.healthit.gov/#/product/296',
             ]);
         });
     });

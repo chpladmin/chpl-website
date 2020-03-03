@@ -2,7 +2,7 @@
   <div ng-if="$ctrl.isEditing || $ctrl.cert.success || $ctrl.viewAll" id="criteria_{{ $ctrl.cert.criterion.number }}_details_header">
     <i class="fa fa-lg" ng-class="{'fa-check-square-o': $ctrl.cert.success && !$ctrl.cert.hasVersion, 'fa-square-o': !$ctrl.cert.success}"></i>
     <span class="sr-only">{{ $ctrl.cert.success ? 'meets' : 'does not meet'}}</span>
-    {{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span> <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
+    <span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span> <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></span>
     <span class="pull-right">
       <button class="btn btn-link" ng-click="$ctrl.toggleCriteria()" aria-expanded="{{ $ctrl.showDetails }}" ng-if="$ctrl.showViewDetailsLink()" id="criteria_{{ $ctrl.cert.criterion.number }}_details_link">{{ $ctrl.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.cert.criterion.number }}</span></button>
       <span ng-if="$ctrl.canEdit()">
@@ -62,7 +62,7 @@
               <ul>
                 <li ng-repeat="meas in $ctrl.cert.g1MacraMeasures | orderBy:'abbreviation'" ng-class="{ 'removed' : meas.removed }">
                   <button ng-if="meas.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-                  <a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'">{{ meas.name }}</a>
+                  <a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'" ng-class="{ 'removed' : meas.removed }"><span ng-if="meas.removed">Removed | </span>{{ meas.name }}</a>
                   <div ng-if="meas.removed" class="clearfix"></div>
                 </li>
               </ul>
@@ -83,7 +83,7 @@
               <ul>
                 <li ng-repeat="meas in $ctrl.cert.g2MacraMeasures | orderBy:'abbreviation'" ng-class="{ 'removed' : meas.removed }">
                   <button ng-if="meas.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-                  <a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'">{{ meas.name }}</a>
+                  <a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'" ng-class="{ 'removed' : meas.removed }"><span ng-if="meas.removed">Removed | </span>{{ meas.name }}</a>
                   <div ng-if="meas.removed" class="clearfix"></div>
                 </li>
               </ul>

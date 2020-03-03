@@ -38,7 +38,6 @@ export const SurveillanceRequirementEditComponent = {
                 this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
                     .find(t => t.number === this.requirement.requirement);
             }
-            this.$log.info(this.requirementCriterionType);
         }
 
         addNonconformity () {
@@ -136,7 +135,6 @@ export const SurveillanceRequirementEditComponent = {
                     this.requirement.requirement = this.requirementCriterionType.number;
                 }
             }
-            this.$log.info(this.requirement);
             this.close({$value: this.requirement});
         }
     },

@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Compare component', () => {
-        let $compile, $log, $q, $stateParams, ctrl, el, mock, networkService, scope;
+        let $componentController, $log, $q, $stateParams, ctrl, mock, networkService, scope;
 
         mock = {
             listing: {
@@ -24,8 +24,8 @@
                     return $delegate;
                 });
             });
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$stateParams_, _networkService_) => {
-                $compile = _$compile_;
+            inject((_$componentController_, _$log_, _$q_, $rootScope, _$stateParams_, _networkService_) => {
+                $componentController = _$componentController_;
                 $log = _$log_;
                 $q = _$q_;
                 $stateParams = _$stateParams_;
@@ -34,12 +34,12 @@
 
                 scope = $rootScope.$new();
                 $stateParams.compareIds = '123';
-
-                el = angular.element('<chpl-compare></chpl-compare>');
-
-                $compile(el)(scope);
+                ctrl = $componentController('chplCompare', {
+                    $scope: scope,
+                    $stateParams: $stateParams,
+                });
+                ctrl.$onInit();
                 scope.$digest();
-                ctrl = el.isolateScope().$ctrl;
             });
         });
 
@@ -49,12 +49,6 @@
                 console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
-        });
-
-        describe('view', () => {
-            it('should be compiled', () => {
-                expect(el.html()).not.toEqual(null);
-            });
         });
 
         describe('controller', () => {
@@ -83,7 +77,7 @@
             });
 
             it('should track products to compare', () => {
-                expect(ctrl.products.length).toBe(1);
+                expect(ctrl.listings.length).toBe(1);
             });
 
             it('should know what to compare', () => {

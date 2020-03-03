@@ -58,7 +58,9 @@
                     randomizedSitesUsed: undefined,
                     requirementId: 1,
                     surveillanceId: 1,
-                    surveillanceTypes: {},
+                    surveillanceTypes: {
+                        nonconformityTypes: { data: []},
+                    },
                     workType: 'create',
                 };
                 $compile(el)(scope);
@@ -108,7 +110,9 @@
                     randomizedSitesUsed: undefined,
                     requirementId: 1,
                     surveillanceId: 1,
-                    surveillanceTypes: {},
+                    surveillanceTypes: {
+                        nonconformityTypes: { data: []},
+                    },
                     workType: 'create',
                 };
                 el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
@@ -125,6 +129,7 @@
             it('should convert ncT status to objects on load', () => {
                 var data = {
                     nonconformityStatusTypes: {data: [{id: 1, name: 'Open'},{id: 2, name: 'name2'}]},
+                    nonconformityTypes: { data: []},
                 };
                 scope.resolve = {
                     disableValidation: false,
@@ -240,6 +245,10 @@
             });
 
             describe('when saving the nonconformity', () => {
+                beforeEach(() => {
+                    ctrl.nonconformityType = {};
+                });
+
                 it('should convert date objects to longs', () => {
                     var aDate = new Date('1/1/2003');
                     ctrl.nonconformity = {
