@@ -210,13 +210,13 @@
         function isSystemDevContactInfoValid () {
             vm.systemRequirements = [];
             if ((vm.developerChoice === 'create')
-                || ((vm.developer && !vm.isBlank(vm.developer.name) && !vm.isBlank(vm.developer.website))
-                && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email)
-                && !vm.isBlank(vm.developer.contact.phoneNumber))
-                && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city)
-                && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
-                && (vm.getAttestationForCurrentSystemDeveloper())
-                && (!vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)))) {
+                || (vm.developer
+                    && !vm.isBlank(vm.developer.name)
+                    && !vm.isBlank(vm.developer.website)
+                    && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email) && !vm.isBlank(vm.developer.contact.phoneNumber))
+                    && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city) && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
+                    && (vm.getAttestationForCurrentSystemDeveloper())
+                    && (!vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)))) {
                 return true;
             }
             vm.populateDeveloperSystemRequirements();
