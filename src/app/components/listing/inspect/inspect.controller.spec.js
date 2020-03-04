@@ -1,7 +1,7 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Listing Inspection controller', function () {
+    fdescribe('the Listing Inspection controller', () => {
         var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
@@ -20,19 +20,18 @@
             testingLabs: [],
         }
 
-        beforeEach(function () {
-            angular.mock.module('chpl.components', 'chpl.mock', function ($provide) {
-                $provide.decorator('networkService', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.components', 'chpl.mock', $provide => {
+                $provide.decorator('networkService', $delegate => {
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
                     $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
-                    $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
 
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+            inject(($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -40,7 +39,6 @@
                 networkService.confirmPendingCp.and.returnValue($q.when({}));
                 networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
                 networkService.rejectPendingCp.and.returnValue($q.when({}));
-                networkService.updateDeveloper.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('InspectController', {
@@ -56,26 +54,26 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        it('should exist', function () {
+        it('should exist', () => {
             expect(vm).toBeDefined();
         });
 
-        it('should have a way to close it\'s own modal', function () {
+        it('should have a way to close it\'s own modal', () => {
             expect(vm.cancel).toBeDefined();
             vm.cancel();
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
-        describe('when confirming or rejecting', function () {
-            it('should close the modal if confirmation is successful', function () {
+        describe('when confirming or rejecting', () => {
+            it('should close the modal if confirmation is successful', () => {
                 vm.confirm();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({
@@ -85,41 +83,41 @@
                 });
             });
 
-            it('should close the modal if rejection is successful', function () {
+            it('should close the modal if rejection is successful', () => {
                 vm.reject();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 'rejected'});
             });
 
-            it('should not dismiss the modal if confirmation fails', function () {
+            it('should not dismiss the modal if confirmation fails', () => {
                 networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
                 vm.confirm();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
-            it('should not dismiss the modal if rejection fails', function () {
+            it('should not dismiss the modal if rejection fails', () => {
                 networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
                 vm.reject();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
-            it('should have error messages if confirmation fails', function () {
+            it('should have error messages if confirmation fails', () => {
                 networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.confirm();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
-            it('should have error messages if rejection fails', function () {
+            it('should have error messages if rejection fails', () => {
                 networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.reject();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
-            it('should dismiss the modal with the contact if the pending listing was already resolved on confirmation', function () {
+            it('should dismiss the modal with the contact if the pending listing was already resolved on confirmation', () => {
                 var contact = {name: 'person'};
                 networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.confirm();
@@ -131,7 +129,7 @@
                 });
             });
 
-            it('should dismiss the modal with the contact if the pending listing was already resolved on rejection', function () {
+            it('should dismiss the modal with the contact if the pending listing was already resolved on rejection', () => {
                 var contact = {name: 'person'};
                 networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.reject();
@@ -144,8 +142,8 @@
             });
         });
 
-        describe('when on step 1, and,', function () {
-            beforeEach(function () {
+        describe('when analyzing the developer', () => {
+            beforeEach(() => {
                 vm.developer = {
                     developerId: 999,
                     name: 'Dude',
@@ -175,8 +173,8 @@
                 };
             });
 
-            describe('system developer info', function () {
-                describe('is missing', function () {
+            describe('with respect to system developer info', () => {
+                describe('that is missing', () => {
                     function testMissingData (developerObj, propToRemove) {
                         expect(developerObj[propToRemove]).toBeTruthy();
                         expect(vm.isDisabled()).toBe(false);
@@ -190,50 +188,50 @@
 
                     const shouldDisableNextButton = 'then it should disable the next button';
 
-                    it('developer name ' + shouldDisableNextButton, function () {
+                    it('developer name ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer, 'name');
                     });
 
-                    it('developer website ' + shouldDisableNextButton, function () {
+                    it('developer website ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer, 'website');
                     });
 
-                    it('contact full name ' + shouldDisableNextButton, function () {
+                    it('contact full name ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.contact, 'fullName');
                     });
 
-                    it('contact email ' + shouldDisableNextButton, function () {
+                    it('contact email ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.contact, 'email');
                     });
 
-                    it('contact phone number ' + shouldDisableNextButton, function () {
+                    it('contact phone number ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.contact, 'phoneNumber');
                     });
 
-                    it('address line1 ' + shouldDisableNextButton, function () {
+                    it('address line1 ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.address, 'line1');
                     });
 
-                    it('address city ' + shouldDisableNextButton, function () {
+                    it('address city ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.address, 'city');
                     });
 
-                    it('address state ' + shouldDisableNextButton, function () {
+                    it('address state ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.address, 'state');
                     });
 
-                    it('address zipcode ' + shouldDisableNextButton, function () {
+                    it('address zipcode ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.address, 'zipcode');
                     });
 
-                    it('transparency attestations ' + shouldDisableNextButton, function () {
+                    it('transparency attestations ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.transparencyAttestations[0], 'attestation');
                     });
                 });
 
                 const shouldEnableNextButton = 'should enable the next button';
 
-                it('has all contact info then it ' + shouldEnableNextButton, function () {
+                it('has all contact info then it ' + shouldEnableNextButton, () => {
                     expect(vm.developer.name).toBeTruthy();
                     expect(vm.developer.website).toBeTruthy();
                     expect(vm.developer.contact.fullName).toBeTruthy();
@@ -245,64 +243,6 @@
                     expect(vm.developer.address.zipcode).toBeTruthy();
                     expect(vm.developer.transparencyAttestations[0].attestation).toBeTruthy();
                     expect(vm.isDisabled()).toBe(false);
-                });
-            });
-
-            describe('save as developer information is clicked which calls saveInspectingDeveloper()', function () {
-                it('should call loadDev()', function () {
-                    vm.cp.developer = angular.copy(vm.developer);
-
-                    spyOn(vm, 'loadDev');
-                    vm.saveInspectingDeveloper();
-                    scope.$digest();
-                    expect(vm.loadDev).toHaveBeenCalled();
-                });
-            });
-
-            describe('viewing the system developer', function () {
-                beforeEach(function () {
-                    vm.cp.certifyingBody = {
-                        code: '04',
-                        name: 'Drummond Group',
-                        id: 3,
-                    };
-                    vm.developer.transparencyAttestations = [{
-                        acbId: 4,
-                        acbName: 'Other Group',
-                        attestation: null,
-                    }, {
-                        acbId: 3,
-                        acbName: 'Drummond Group',
-                        attestation: 'Affirmative',
-                    }, {
-                        acbId: 5,
-                        acbName: 'Some ACB',
-                        attestation: null,
-                    }];
-                });
-
-                it('should display a relevant transparency attestation if available', function () {
-                    let expectedAttestation = vm.developer.transparencyAttestations[1].attestation;
-                    let attestation = vm.getAttestationForCurrentSystemDeveloper();
-                    expect(attestation).toBe(expectedAttestation);
-                });
-
-                it('should not display a relevant transparency attestation if not available', function () {
-                    vm.developer.transparencyAttestations[1].acbName = 'no acbName matches now';
-                    let attestation = vm.getAttestationForCurrentSystemDeveloper();
-                    expect(attestation).toBeUndefined();
-                });
-
-                describe('but no developer data is available', function () {
-                    it('should skip the body of getAttestationStringForCurrentSystemDeveloper(), return null, '
-                        + 'and display no system attestation info', function () {
-                        vm.developer.transparencyAttestations = undefined;
-                        let attestation = vm.getAttestationForCurrentSystemDeveloper();
-                        expect(attestation).toBeNull();
-                        vm.developer = undefined;
-                        attestation = vm.getAttestationForCurrentSystemDeveloper();
-                        expect(attestation).toBeNull();
-                    });
                 });
             });
         });

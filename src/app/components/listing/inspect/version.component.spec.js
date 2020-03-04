@@ -1,7 +1,7 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the version inspection component', () => {
+    fdescribe('the version inspection component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -28,8 +28,8 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.components', ($provide) => {
-                $provide.decorator('networkService', ($delegate) => {
+            angular.mock.module('chpl.components', $provide => {
+                $provide.decorator('networkService', $delegate => {
                     $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
                     $delegate.getVersion = jasmine.createSpy('getVersion');
                     return $delegate;
@@ -56,7 +56,7 @@
         afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map((o) => { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });

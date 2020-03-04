@@ -4,7 +4,7 @@ export const InspectProductComponent = {
         onSelect: '&',
         pendingProduct: '<',
         developer: '<',
-        setProductChoice: '&',
+        setChoice: '&',
     },
     controller: class InspectProductController {
         constructor ($log, networkService) {
@@ -30,7 +30,7 @@ export const InspectProductComponent = {
             } else {
                 this.choice = 'create';
             }
-            this.setProductChoice({choice: this.choice});
+            this.setChoice({choice: this.choice});
         }
 
         select () {

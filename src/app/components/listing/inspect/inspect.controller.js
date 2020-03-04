@@ -10,7 +10,7 @@
 
         vm.loadDev = loadDev;
         vm.selectInspectingDeveloper = selectInspectingDeveloper;
-        vm.saveInspectingDeveloper = saveInspectingDeveloper;
+        vm.setDeveloperChoice = setDeveloperChoice;
 
         vm.selectInspectingProduct = selectInspectingProduct;
         vm.setProductChoice = setProductChoice;
@@ -46,14 +46,11 @@
             vm.stage = 'dev';
 
             vm.developers = developers;
-            vm.developerChoice = 'choose';
             vm.loadDev();
 
             vm.products = [];
-            vm.productChoice = 'choose';
 
             vm.versions = [];
-            vm.versionChoice = 'choose';
 
             vm.errorMessages = [];
             vm.systemRequirements = [];
@@ -81,40 +78,13 @@
             }
         }
 
-        function selectInspectingDeveloper () {
-            vm.cp.developer.developerId = vm.developerSelect.developerId;
+        function selectInspectingDeveloper (developerId) {
+            vm.cp.developer.developerId = developerId;
             vm.loadDev();
         }
 
-        function saveInspectingDeveloper () {
-            var dev = {
-                developer: {
-                    address: vm.cp.developer.address,
-                    contact: vm.cp.developer.contact,
-                    developerCode: vm.developer.developerCode,
-                    developerId: vm.cp.developer.developerId,
-                    name: vm.cp.developer.name,
-                    status: vm.developer.status,
-                    statusEvents: vm.developer.statusEvents,
-                    transparencyAttestations: [{
-                        acbId: vm.cp.certifyingBody.id,
-                        acbName: vm.cp.certifyingBody.name,
-                        attestation: { transparencyAttestation: vm.cp.transparencyAttestation.transparencyAttestation },
-                    }],
-                    website: vm.cp.developer.website,
-                },
-                developerIds: [vm.cp.developer.developerId],
-            };
-            if (!dev.developer.address.country) {
-                dev.developer.address.country = 'USA';
-            }
-            if (vm.isOn('effective-rule-date-plus-one-week')) {
-                delete dev.developer.transparencyAttestations;
-            }
-            networkService.updateDeveloper(dev)
-                .then(function () {
-                    vm.loadDev();
-                });
+        function setDeveloperChoice (choice) {
+            vm.developerChoice = choice;
         }
 
         function selectInspectingProduct (productId) {
@@ -284,7 +254,7 @@
                     vm.systemRequirements.push('None of the required developer address information'
                         + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
-                if (!vm.getAttestationForCurrentSystemDeveloper() || vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)) {
+                if ((!vm.getAttestationForCurrentSystemDeveloper() || vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)) && !vm.isOn('effective-rule-date')) {
                     vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
                 }
             }
