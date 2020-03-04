@@ -14,7 +14,7 @@
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i
                                                                                                                          class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()" ng-csv="$ctrl.displayed"
-              filename="Announcement_{{ $ctrl.filename }}"
+              filename="Announcement_{{ $ctrl.filename }}" add-bom="true"
               csv-header="['Description', 'Responsible User', 'Activity', 'Activity Date']"
               csv-column-order="['description', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
