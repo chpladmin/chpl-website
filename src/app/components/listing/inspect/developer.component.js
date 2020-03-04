@@ -46,11 +46,6 @@ export const InspectDeveloperComponent = {
                     selfDeveloper: this.listing.developer.selfDeveloper,
                     status: this.developer.status,
                     statusEvents: this.developer.statusEvents,
-                    transparencyAttestations: [{
-                        acbId: this.listing.certifyingBody.id,
-                        acbName: this.listing.certifyingBody.name,
-                        attestation: { transparencyAttestation: this.listing.transparencyAttestation.transparencyAttestation },
-                    }],
                     website: this.listing.developer.website,
                 },
                 developerIds: [this.listing.developer.developerId],
@@ -58,8 +53,12 @@ export const InspectDeveloperComponent = {
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
             }
-            if (this.isOn('effective-rule-date-plus-one-week')) {
-                delete dev.developer.transparencyAttestations;
+            if (this.listing.transparencyAttestation && !this.isOn('effective-rule-date-plus-one-week')) {
+                dev.transparencyAttestations = [{
+                    acbId: this.listing.certifyingBody.id,
+                    acbName: this.listing.certifyingBody.name,
+                    attestation: { transparencyAttestation: this.listing.transparencyAttestation.transparencyAttestation },
+                }];
             }
             let that = this;
             this.networkService.updateDeveloper(dev)
