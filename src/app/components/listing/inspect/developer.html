@@ -44,6 +44,7 @@
         <div class="panel-body">
           Developer Code: {{ $ctrl.developer.developerCode }}<br />
           Developer Status: {{ $ctrl.developer.status.status }}<br />
+          Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
           Line 1: {{ $ctrl.developer.address.line1 }}<br />
           Line 2: {{ $ctrl.developer.address.line2 }}<br />
           City: {{ $ctrl.developer.address.city }}<br />
@@ -80,6 +81,7 @@
           {{ $ctrl.listing.developer.name }}
         </div>
         <div class="panel-body">
+          Self-developer: {{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
           Line 1: {{ $ctrl.listing.developer.address.line1 }}<br />
           Line 2: {{ $ctrl.listing.developer.address.line2 }}<br />
           City: {{ $ctrl.listing.developer.address.city }}<br />

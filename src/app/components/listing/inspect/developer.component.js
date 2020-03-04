@@ -43,6 +43,7 @@ export const InspectDeveloperComponent = {
                     developerCode: this.developer.developerCode,
                     developerId: this.listing.developer.developerId,
                     name: this.listing.developer.name,
+                    selfDeveloper: this.listing.developer.selfDeveloper,
                     status: this.developer.status,
                     statusEvents: this.developer.statusEvents,
                     transparencyAttestations: [{
