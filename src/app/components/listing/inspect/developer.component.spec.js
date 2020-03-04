@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the developer inspection component', () => {
+    describe('the developer inspection component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

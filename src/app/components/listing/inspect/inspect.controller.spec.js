@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Listing Inspection controller', () => {
+    describe('the Listing Inspection controller', () => {
         var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
