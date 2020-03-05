@@ -95,7 +95,7 @@
     </div>
   </div>
 </span>
-<span ng-if="$ctrl.activeChangeRequest">
+<span ng-if="$ctrl.activeChangeRequest" ng-form="$ctrl.form">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">{{ $ctrl.getTitle() }}</h2>
@@ -122,10 +122,10 @@
           <button class="btn btn-default" ng-click="$ctrl.act('cancel')">Back to Change Request</button>
         </span>
         <span ng-switch-when="edit">
-          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
+          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.form.$valid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
         </span>
         <span ng-switch-when="withdraw">
-          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
+          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.form.$valid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
         </span>
         <span ng-switch-default>
           <button class="btn btn-default" ng-click="$ctrl.act('edit')" ng-if="$ctrl.can('edit')">Edit Change Request</button>

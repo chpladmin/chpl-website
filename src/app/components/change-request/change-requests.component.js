@@ -18,7 +18,6 @@ export const ChangeRequestsComponent = {
             this.filterItems = {
                 pageSize: 3,
             };
-            this.isValid = true;
         }
 
         $onChanges (changes) {
@@ -77,15 +76,16 @@ export const ChangeRequestsComponent = {
         }
 
         can (action) {
-            if (!this.activeChangeRequest || !(this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action' || this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action')) {
+            if (!this.activeChangeRequest || this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
                 return false;
             }
             switch (action) {
             case 'edit':
-                return this.hasAnyRole(['ROLE_DEVELOPER'])
-                    || (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action');
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+                    || (this.hasAnyRole(['ROLE_DEVELOPER']) && this.activeChangeRequest.currentStatus.changeRequestStatusType.name.indexOf('Pending') > -1);
             case 'withdraw':
-                return this.hasAnyRole(['ROLE_DEVELOPER']);
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+                    || (this.hasAnyRole(['ROLE_DEVELOPER']) && this.activeChangeRequest.currentStatus.changeRequestStatusType.name.indexOf('Pending') > -1);
             default:
                 return false;
             }
@@ -99,12 +99,14 @@ export const ChangeRequestsComponent = {
                 this.activeChangeRequest = undefined;
                 this.changeRequests = angular.copy(this.backup.changeRequests);
             }
+            this.showFormErrors = false;
             this.takeAction({action: 'cancel'});
         }
 
         fullyCancel () {
             this.activeChangeRequest = undefined;
             this.activeState = undefined;
+            this.showFormErrors = false;
             this.takeAction({action: 'cancel'});
         }
 
@@ -131,7 +133,6 @@ export const ChangeRequestsComponent = {
 
         startEditing () {
             this.activeState = 'edit';
-            this.isValid = !this.administrationMode;
             this.takeAction({action: 'focus'});
         }
 
@@ -164,7 +165,6 @@ export const ChangeRequestsComponent = {
 
         processChangeRequestUpdate (data) {
             this.activeChangeRequest = data.changeRequest;
-            this.isValid = data.validity;
         }
     },
 }

@@ -44,15 +44,23 @@ export const ChangeRequestComponent = {
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = changes.changeRequestStatusTypes.currentValue.data
-                    .filter(type => type.name === 'Accepted' || type.name === 'Pending Developer Action' || type.name === 'Rejected');
+                    .filter(type => type.name !== 'Cancelled by Requester');
             }
             if (changes.showFormErrors) {
                 this.showFormErrors = changes.showFormErrors.currentValue;
+            }
+            if (this.changeRequest && this.changeRequestStatusTypes) {
+                let currentStatus = this.changeRequest.currentStatus.changeRequestStatusType.name;
+                this.changeRequestStatusTypes = this.changeRequestStatusTypes
+                    .filter(type => type.name !== currentStatus);
             }
         }
 
         cancel () {
             this.changeRequest = angular.copy(this.backup.changeRequest);
+            this.showFormErrors = false;
+            this.form.$setPristine();
+            this.form.$setUntouched();
             this.takeAction({
                 action: 'cancel',
             });
@@ -63,9 +71,20 @@ export const ChangeRequestComponent = {
                 action: 'update',
                 data: {
                     changeRequest: this.changeRequest,
-                    validity: this.form.$valid,
                 },
             });
+        }
+
+        isCommentEnabled () {
+            return this.administrationMode
+                || this.activeState === 'withdraw'
+                || this.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action';
+        }
+
+        isCommentRequired () {
+            return this.changeRequest.newStatus
+                && (this.changeRequest.newStatus.name === 'Rejected'
+                    || this.changeRequest.newStatus.name === 'Pending Developer Action');
         }
     },
 }
