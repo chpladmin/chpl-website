@@ -169,7 +169,7 @@
 
         function makeCsv (data) {
             var blob = new Blob([this.arrayToCsv(data.values)], {
-                type: 'application/csv',
+                type: 'text/plain;charset=utf-8',
             });
             FileSaver.saveAs(blob, data.name);
         }
