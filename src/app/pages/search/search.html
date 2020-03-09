@@ -33,17 +33,17 @@
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
               <st-list-multiple
-                 collection="vm.allCps"
-                 fixed-items="vm.filterItems.statusItems"
-                 has-changes="vm.categoryChanged['certificationStatus']"
-                 predicate="certificationStatus"
-                 register-allow-all="vm.registerAllowAll(allowAll)"
-                 register-clear-filter="vm.registerClearFilter(clearFilter)"
-                 register-restore-state="vm.registerRestoreState(restoreState)"
-                 register-show-retired="vm.registerShowRetired(showRetired)"
-                 trigger-show-retired="vm.triggerShowRetired()"
-                 match-full="true"
-                 name-space="searchTableState"></st-list-multiple>
+                collection="vm.allCps"
+                fixed-items="vm.filterItems.statusItems"
+                has-changes="vm.categoryChanged['certificationStatus']"
+                predicate="certificationStatus"
+                register-allow-all="vm.registerAllowAll(allowAll)"
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                register-restore-state="vm.registerRestoreState(restoreState)"
+                register-show-retired="vm.registerShowRetired(showRetired)"
+                trigger-show-retired="vm.triggerShowRetired()"
+                match-full="true"
+                name-space="searchTableState"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -52,16 +52,16 @@
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
               <st-list-multiple
-                 collection="vm.allCps"
-                 fixed-items="vm.filterItems.editionItems"
-                 has-changes="vm.categoryChanged['edition']"
-                 predicate="edition"
-                 register-allow-all="vm.registerAllowAll(allowAll)"
-                 register-clear-filter="vm.registerClearFilter(clearFilter)"
-                 register-restore-state="vm.registerRestoreState(restoreState)"
-                 register-show-retired="vm.registerShowRetired(showRetired)"
-                 trigger-show-retired="vm.triggerShowRetired()"
-                 name-space="searchTableState"></st-list-multiple>
+                collection="vm.allCps"
+                fixed-items="vm.filterItems.editionItems"
+                has-changes="vm.categoryChanged['edition']"
+                predicate="edition"
+                register-allow-all="vm.registerAllowAll(allowAll)"
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                register-restore-state="vm.registerRestoreState(restoreState)"
+                register-show-retired="vm.registerShowRetired(showRetired)"
+                trigger-show-retired="vm.triggerShowRetired()"
+                name-space="searchTableState"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -76,16 +76,17 @@
               </li>
               <li ng-show="vm.show2011">
                 <st-list-multiple
-                   collection="vm.allCps"
-                   fixed-items="vm.filterItems.criteria[2011]"
-                   has-changes="vm.categoryChanged['criteria'][2011]"
-                   predicate="criteriaMet"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   trigger-show-retired="vm.triggerShowRetired()"
-                   name-space="searchTableState"
-                   allow-and="true"
-                   track-analytics="true"></st-list-multiple>
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.criteria[2011]"
+                  has-changes="vm.categoryChanged['criteria'][2011]"
+                  predicate="criteriaMet"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  trigger-show-retired="vm.triggerShowRetired()"
+                  name-space="searchTableState"
+                  allow-and="true"
+                  separator="{{ vm.SPLIT_PRIMARY }}"
+                  track-analytics="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
@@ -94,15 +95,17 @@
               </li>
               <li ng-show="vm.show2014">
                 <st-list-multiple
-                   collection="vm.allCps"
-                   fixed-items="vm.filterItems.criteria[2014]"
-                   has-changes="vm.categoryChanged['criteria'][2014]"
-                   predicate="criteriaMet"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   name-space="searchTableState"
-                   allow-and="true"
-                   track-analytics="true"></st-list-multiple>
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.criteria[2014]"
+                  has-changes="vm.categoryChanged['criteria'][2014]"
+                  predicate="criteriaMet"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  trigger-show-retired="vm.triggerShowRetired()"
+                  name-space="searchTableState"
+                  allow-and="true"
+                  separator="{{ vm.SPLIT_PRIMARY }}"
+                  track-analytics="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
@@ -111,15 +114,16 @@
               </li>
               <li ng-show="vm.show2015">
                 <st-list-multiple
-                   collection="vm.allCps"
-                   fixed-items="vm.filterItems.criteria[2015]"
-                   has-changes="vm.categoryChanged['criteria'][2015]"
-                   predicate="criteriaMet"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   name-space="searchTableState"
-                   allow-and="true"
-                   track-analytics="true"></st-list-multiple>
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.criteria[2015]"
+                  has-changes="vm.categoryChanged['criteria'][2015]"
+                  predicate="criteriaMet"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  name-space="searchTableState"
+                  allow-and="true"
+                  separator="{{ vm.SPLIT_PRIMARY }}"
+                  track-analytics="true"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -129,11 +133,11 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-surveillance-button" uib-dropdown-menu>
               <ai-surveillance-filter
-                 has-changes="vm.categoryChanged['surveillance']"
-                 register-clear-filter="vm.registerClearFilter(clearFilter)"
-                 register-restore-state="vm.registerRestoreState(restoreState)"
-                 register-allow-all="vm.registerAllowAll(allowAll)"
-                 name-space="searchTableState"></ai-surveillance-filter>
+                has-changes="vm.categoryChanged['surveillance']"
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                register-restore-state="vm.registerRestoreState(restoreState)"
+                register-allow-all="vm.registerAllowAll(allowAll)"
+                name-space="searchTableState"></ai-surveillance-filter>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -153,17 +157,17 @@
               </li>
               <li ng-show="vm.showCqms && vm.show2011Cqms">
                 <st-list-multiple
-                   collection="vm.allCps"
-                   fixed-items="vm.filterItems.cqms[2011]"
-                   has-changes="vm.categoryChanged['cqm-2011']"
-                   predicate="cqmsMet"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   trigger-show-retired="vm.triggerShowRetired()"
-                   name-space="searchTableState"
-                   allow-and="true"
-                   separator="{{ vm.SPLIT_PRIMARY }}"
-                   track-analytics="true"></st-list-multiple>
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.cqms[2011]"
+                  has-changes="vm.categoryChanged['cqm-2011']"
+                  predicate="cqmsMet"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  trigger-show-retired="vm.triggerShowRetired()"
+                  name-space="searchTableState"
+                  allow-and="true"
+                  separator="{{ vm.SPLIT_PRIMARY }}"
+                  track-analytics="true"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -172,16 +176,16 @@
               </li>
               <li ng-show="vm.showCqms && vm.showOtherCqms">
                 <st-list-multiple
-                   collection="vm.allCps"
-                   fixed-items="vm.filterItems.cqms.other"
-                   has-changes="vm.categoryChanged['cqm-other']"
-                   predicate="cqmsMet"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   name-space="searchTableState"
-                   allow-and="true"
-                   separator="{{ vm.SPLIT_PRIMARY }}"
-                   track-analytics="true"></st-list-multiple>
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.cqms.other"
+                  has-changes="vm.categoryChanged['cqm-other']"
+                  predicate="cqmsMet"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  name-space="searchTableState"
+                  allow-and="true"
+                  separator="{{ vm.SPLIT_PRIMARY }}"
+                  track-analytics="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -190,16 +194,16 @@
               </li>
               <li ng-show="vm.showAcbs">
                 <st-list-multiple
-                   collection="vm.allCps"
-                   fixed-items="vm.filterItems.acbItems"
-                   has-changes="vm.categoryChanged['acb']"
-                   predicate="acb"
-                   register-allow-all="vm.registerAllowAll(allowAll)"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   register-show-retired="vm.registerShowRetired(showRetired)"
-                   trigger-show-retired="vm.triggerShowRetired()"
-                   name-space="searchTableState"></st-list-multiple>
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.acbItems"
+                  has-changes="vm.categoryChanged['acb']"
+                  predicate="acb"
+                  register-allow-all="vm.registerAllowAll(allowAll)"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  register-show-retired="vm.registerShowRetired(showRetired)"
+                  trigger-show-retired="vm.triggerShowRetired()"
+                  name-space="searchTableState"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
@@ -208,13 +212,13 @@
               </li>
               <li ng-show="vm.showPracticeType">
                 <st-select-distinct
-                   collection="vm.allCps"
-                   fixed-items="vm.searchOptions.practiceTypes"
-                   has-changes="vm.categoryChanged['practiceType']"
-                   predicate="practiceType"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   name-space="searchTableState"></st-select-distinct>
+                  collection="vm.allCps"
+                  fixed-items="vm.searchOptions.practiceTypes"
+                  has-changes="vm.categoryChanged['practiceType']"
+                  predicate="practiceType"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  name-space="searchTableState"></st-select-distinct>
               </li>
               <li>
                 <a href ng-click="vm.showCertificationDate = !vm.showCertificationDate">
@@ -223,12 +227,12 @@
               </li>
               <li ng-show="vm.showCertificationDate">
                 <ai-date-range
-                   predicate="certificationDate"
-                   has-changes="vm.categoryChanged['certificationDate']"
-                   register-clear-filter="vm.registerClearFilter(clearFilter)"
-                   register-restore-state="vm.registerRestoreState(restoreState)"
-                   name-space="searchTableState"
-                   track-analytics="true"></ai-date-range>
+                  predicate="certificationDate"
+                  has-changes="vm.categoryChanged['certificationDate']"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  name-space="searchTableState"
+                  track-analytics="true"></ai-date-range>
               </li>
               <li class="form-horizontal">
                 <div class="form-group">
@@ -238,17 +242,17 @@
                   </label>
                   <div class="col-sm-8">
                     <input
-                       type="text"
-                       class="form-control"
-                       id="developerRefine"
-                       placeholder="Developer"
-                       ai-enhanced-text
-                       has-changes="vm.categoryChanged['developer']"
-                       predicate="developerSearch"
-                       register-clear-filter="vm.registerClearFilter(clearFilter)"
-                       register-restore-state="vm.registerRestoreState(restoreState)"
-                       name-space="searchTableState"
-                       />
+                      type="text"
+                      class="form-control"
+                      id="developerRefine"
+                      placeholder="Developer"
+                      ai-enhanced-text
+                      has-changes="vm.categoryChanged['developer']"
+                      predicate="developerSearch"
+                      register-clear-filter="vm.registerClearFilter(clearFilter)"
+                      register-restore-state="vm.registerRestoreState(restoreState)"
+                      name-space="searchTableState"
+                      />
                   </div>
                 </div>
               </li>
@@ -260,17 +264,17 @@
                   </label>
                   <div class="col-sm-8">
                     <input
-                       type="text"
-                       class="form-control"
-                       id="productRefine"
-                       placeholder="Product"
-                       ai-enhanced-text
-                       has-changes="vm.categoryChanged['product']"
-                       predicate="product"
-                       register-clear-filter="vm.registerClearFilter(clearFilter)"
-                       register-restore-state="vm.registerRestoreState(restoreState)"
-                       name-space="searchTableState"
-                       />
+                      type="text"
+                      class="form-control"
+                      id="productRefine"
+                      placeholder="Product"
+                      ai-enhanced-text
+                      has-changes="vm.categoryChanged['product']"
+                      predicate="product"
+                      register-clear-filter="vm.registerClearFilter(clearFilter)"
+                      register-restore-state="vm.registerRestoreState(restoreState)"
+                      name-space="searchTableState"
+                      />
                   </div>
                 </div>
               </li>
@@ -282,17 +286,17 @@
                   </label>
                   <div class="col-sm-8">
                     <input
-                       type="text"
-                       class="form-control"
-                       id="versionRefine"
-                       placeholder="Version"
-                       ai-enhanced-text
-                       has-changes="vm.categoryChanged['version']"
-                       predicate="version"
-                       register-clear-filter="vm.registerClearFilter(clearFilter)"
-                       register-restore-state="vm.registerRestoreState(restoreState)"
-                       name-space="searchTableState"
-                       />
+                      type="text"
+                      class="form-control"
+                      id="versionRefine"
+                      placeholder="Version"
+                      ai-enhanced-text
+                      has-changes="vm.categoryChanged['version']"
+                      predicate="version"
+                      register-clear-filter="vm.registerClearFilter(clearFilter)"
+                      register-restore-state="vm.registerRestoreState(restoreState)"
+                      name-space="searchTableState"
+                      />
                   </div>
                 </div>
               </li>
@@ -385,7 +389,7 @@
                   <td>
                     <div class="btn-group btn-group-justified">
                       <div class="btn-group">
-                        <a ui-sref="product({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
+                        <a ui-sref="listing({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
                       </div>
                       <div class="btn-group">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>

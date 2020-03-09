@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Surveillance Management component', () => {
+    describe('the Surveillance Management component', () => {
         var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

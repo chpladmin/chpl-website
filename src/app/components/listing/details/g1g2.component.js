@@ -30,7 +30,7 @@ export const G1G2DetailsComponent = {
                             if (this.measures[k].name === cert.g1MacraMeasures[j].name &&
                                 this.measures[k].description === cert.g1MacraMeasures[j].description &&
                                 this.measures[k].g === 'G1') {
-                                this.measures[k].criteria.push(cert.g1MacraMeasures[j].criteria.number);
+                                this.measures[k].criteria.push(cert.g1MacraMeasures[j].criteria.number + (cert.g1MacraMeasures[j].criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''));
                                 appending = false;
                             }
                         }
@@ -39,7 +39,7 @@ export const G1G2DetailsComponent = {
                                 name: cert.g1MacraMeasures[j].name,
                                 description: cert.g1MacraMeasures[j].description,
                                 g: 'G1',
-                                criteria: [cert.g1MacraMeasures[j].criteria.number],
+                                criteria: [cert.g1MacraMeasures[j].criteria.number + (cert.g1MacraMeasures[j].criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')],
                                 removed: cert.g1MacraMeasures[j].removed,
                             });
                         }
@@ -50,7 +50,7 @@ export const G1G2DetailsComponent = {
                             if (this.measures[k].name === cert.g2MacraMeasures[j].name &&
                                 this.measures[k].description === cert.g2MacraMeasures[j].description &&
                                 this.measures[k].g === 'G2') {
-                                this.measures[k].criteria.push(cert.g2MacraMeasures[j].criteria.number);
+                                this.measures[k].criteria.push(cert.g2MacraMeasures[j].criteria.number + (cert.g2MacraMeasures[j].criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''));
                                 appending = false;
                             }
                         }
@@ -59,7 +59,7 @@ export const G1G2DetailsComponent = {
                                 name: cert.g2MacraMeasures[j].name,
                                 description: cert.g2MacraMeasures[j].description,
                                 g: 'G2',
-                                criteria: [cert.g2MacraMeasures[j].criteria.number],
+                                criteria: [cert.g2MacraMeasures[j].criteria.number + (cert.g2MacraMeasures[j].criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')],
                                 removed: cert.g2MacraMeasures[j].removed,
                             });
                         }

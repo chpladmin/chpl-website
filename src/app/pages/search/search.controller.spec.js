@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.search.controller', function () {
+    describe('chpl.search.controller', function () {
 
         var $interval, $location, $log, $q, $uibModal, CACHE_REFRESH_TIMEOUT, Mock, networkService, scope, vm;
 
@@ -126,20 +126,6 @@
                 vm.viewCertificationStatusLegend();
                 expect(vm.viewCertificationStatusLegendInstance).toBeDefined();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-            });
-
-            it('should log that the status was closed', function () {
-                var initialCount = $log.info.logs.length;
-                vm.viewCertificationStatusLegend();
-                vm.viewCertificationStatusLegendInstance.close('closed');
-                expect($log.info.logs.length).toBe(initialCount + 1);
-            });
-
-            it('should log that the status was closed', function () {
-                var initialCount = $log.info.logs.length;
-                vm.viewCertificationStatusLegend();
-                vm.viewCertificationStatusLegendInstance.dismiss('dismissed');
-                expect($log.info.logs.length).toBe(initialCount + 1);
             });
         });
 

@@ -1,5 +1,35 @@
 # Release Notes
 
+## Version 10.38.0
+_9 March 2020_
+
+### Features
+* Handle criteria with identical numbers
+
+### Flagged Features
+* Add text description to CQM section
+* Display criteria differently depending on "removed" and "retired" states
+* Allow different display of Listings report
+
+### User Interface Updates
+* Add indication on criteria when removed
+
+### Bug Fixes
+* Add BOM to allow for display of extended characters in CSV files
+* Use correct title for Confirm Listings page
+* Show Criteria in SED when they should be seen
+
+---
+
+## Version 10.37.1
+_20 February 2020_
+
+### Bug Fixes
+* Disable submission of "self-developer" change
+* Allow Developers to submit CRs
+
+---
+
 ## Version 10.37.0
 _11 February 2020_
 

@@ -228,9 +228,10 @@ export const CertificationCriteriaEditComponent = {
         }
 
         _setAvailableTestValues () {
-            let number = this.cert.number
-            this.availableTestData = this.resources.testData.data.filter(item => item.criteria.number === number);
-            this.availableTestProcedures = this.resources.testProcedures.data.filter(item => item.criteria.number === number);
+            let number = this.cert.number;
+            let title = this.cert.title;
+            this.availableTestData = this.resources.testData.data.filter(item => item.criteria.number === number && item.criteria.title === title);
+            this.availableTestProcedures = this.resources.testProcedures.data.filter(item => item.criteria.number === number && item.criteria.title === title);
         }
 
         _setTestToolDropDownText () {

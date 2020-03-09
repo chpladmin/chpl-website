@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Reports.ApiKeyUsage component', () => {
+    describe('the Reports.ApiKeyUsage component', () => {
 
         var $compile, $log, $q, ctrl, el, networkService, scope;
 

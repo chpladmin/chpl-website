@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the ONC Organization Edit component', () => {
+    describe('the ONC Organization Edit component', () => {
         var $compile, $log, authService, ctrl, el, mock, scope;
 
         mock = {

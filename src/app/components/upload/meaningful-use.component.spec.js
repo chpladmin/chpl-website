@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Upload Meaningful Use component', () => {
+    describe('the Upload Meaningful Use component', () => {
         var $compile, $log, $q, $state, Upload, authService, ctrl, el, scope;
 
         var mock = {};

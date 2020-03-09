@@ -4,13 +4,14 @@ export const ReportsListingsComponent = {
         productId: '<',
     },
     controller: class ReportsListings {
-        constructor ($filter, $log, $state, $uibModal, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$state = $state;
             this.$uibModal = $uibModal;
             this.ReportService = ReportService;
+            this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
             this.activeAcbs = [];
@@ -27,6 +28,31 @@ export const ReportsListingsComponent = {
             };
             this.downloadProgress = 0;
             this.results = [];
+            this.pageSize = 50;
+        }
+
+        $onInit () {
+            let that = this;
+            let user = this.authService.getCurrentUser();
+            this.networkService.getSearchOptions()
+                .then(options => {
+                    that.acbItems = options.acbs
+                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                        .map(a => {
+                            let ret = {
+                                value: a.name,
+                            };
+                            if (a.retired) {
+                                ret.display = a.name + ' (Retired)';
+                                ret.retired = true;
+                                ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                            } else {
+                                ret.selected = that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                                    || user.organizations.filter(o => o.name === a.name).length > 0;
+                            }
+                            return ret;
+                        });
+                });
         }
 
         $onChanges (changes) {
@@ -34,6 +60,10 @@ export const ReportsListingsComponent = {
                 this.productId = angular.copy(changes.productId.currentValue);
             }
             this.search();
+        }
+
+        $onDestroy () {
+            this.isDestroyed = true;
         }
 
         onApplyFilter (filter) {
@@ -118,7 +148,7 @@ export const ReportsListingsComponent = {
             prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
             curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
             for (i = 0; i < prev.length; i++) {
-                var obj = { number: curr[i].number, changes: [] };
+                var obj = { number: curr[i].number, title: curr[i].title, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
                     change = this.ReportService.compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change) {
@@ -291,7 +321,11 @@ export const ReportsListingsComponent = {
                 var criteriaKeys = [];
                 var criteria = this.ReportService.compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
                 for (j = 0; j < criteria.length; j++) {
-                    obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
+                    let name = criteria[j].name;
+                    if (criteria[j].title && criteria[j].title.indexOf('Cures Update') > 0) {
+                        name += ' (Cures Update)';
+                    }
+                    obj.changes.push('<li>Certification Criteria "' + name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
@@ -613,7 +647,7 @@ export const ReportsListingsComponent = {
                     }
                     certChanges = this.compareCerts(item.originalData.certificationResults, item.newData.certificationResults);
                     for (j = 0; j < certChanges.length; j++) {
-                        activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        activity.details.push('Certification "' + certChanges[j].number + (certChanges[j].title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                     }
                     var cqmChanges = this.compareCqms(item.originalData.cqmResults, item.newData.cqmResults);
                     for (j = 0; j < cqmChanges.length; j++) {
@@ -740,7 +774,7 @@ export const ReportsListingsComponent = {
 
         canDownload () {
             return this.displayed
-                .filter(item => !item.action).length < 1000;
+                .filter(item => !item.action).length <= 1000;
         }
 
         prepareDownload () {
@@ -788,16 +822,23 @@ export const ReportsListingsComponent = {
                         before: new Date().getTime(),
                     };
                     that.doFilter(filter);
-                    for (let i = 1; i < that.loadProgress.total; i++) {
-                        that.networkService.getActivityMetadata('beta/listings', {pageNum: i, ignoreLoadingBar: true}).then(results => {
-                            results.activities.forEach(item => {
-                                that.results.push(that.prepare(item));
-                            });
-                            that.loadProgress.complete += 1;
-                            that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
-                        });
-                    }
+                    that.addPageToData(1);
                 });
+        }
+
+        addPageToData (page) {
+            let that = this;
+            if (this.isDestroyed) { return }
+            this.networkService.getActivityMetadata('beta/listings', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+                results.activities.forEach(item => {
+                    that.results.push(that.prepare(item));
+                });
+                that.loadProgress.complete += 1;
+                that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
+                if (page < that.loadProgress.total) {
+                    that.addPageToData(page + 1);
+                }
+            });
         }
 
         searchSingleProductId () {

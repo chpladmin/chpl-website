@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the SED Details Edit controller', function () {
+    describe('the SED Details Edit controller', function () {
         var $controller, $log, Mock, mock, scope, vm;
 
         mock = {

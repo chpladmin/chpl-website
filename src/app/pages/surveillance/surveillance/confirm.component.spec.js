@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Confirm Surveillance component', () => {
+    describe('the Confirm Surveillance component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, mock, networkService, scope;
 
         mock = {};

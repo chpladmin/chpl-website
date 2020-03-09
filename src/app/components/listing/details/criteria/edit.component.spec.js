@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Certification Criteria Modal controller', () => {
+    describe('the Certification Criteria Modal controller', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {};
@@ -15,6 +15,7 @@
             ],
             criterion: {
                 number: '170.315 (c)(4)',
+                name: '170.315 (c)(4): Clinical Quality Measures - Filter',
                 removed: false,
             },
         };
@@ -25,7 +26,9 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.components', 'chpl.shared');
+            angular.mock.module('chpl.components', 'chpl.shared', $provide => {
+                $provide.factory('chplHighlightCuresDirective', () => ({}));
+            });
 
             inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
@@ -128,7 +131,12 @@
                 });
 
                 it('should know when it was met via additional software', () => {
-                    var certMet = { additionalSoftware: [1] };
+                    var certMet = {
+                        additionalSoftware: [1],
+                        criterion: {
+                            removed: false,
+                        },
+                    };
                     scope.resolve = {
                         cert: certMet,
                         resources: mock.resources,
@@ -141,26 +149,6 @@
                     ctrl = el.isolateScope().$ctrl;
 
                     expect(ctrl.cert.metViaAdditionalSoftware).toBe(true);
-                });
-            });
-
-            describe('with relation to test data and test procedures', () => {
-                it('should know how many test data are available to select', () => {
-                    expect(ctrl.availableTestData.length).toBe(2);
-                });
-
-                it('should know how many test procedures are available to select', () => {
-                    expect(ctrl.availableTestProcedures.length).toBe(2);
-                });
-
-                it('should know how what test data are available to select', () => {
-                    expect(ctrl.availableTestData[0].name).toBe('NCQA eCQM Test Method');
-                    expect(ctrl.availableTestData[1].name).toBe('ONC Test Method');
-                });
-
-                it('should know how many test procedures are available to select', () => {
-                    expect(ctrl.availableTestProcedures[0].name).toBe('NCQA eCQM Test Method');
-                    expect(ctrl.availableTestProcedures[1].name).toBe('ONC Test Method');
                 });
             });
 

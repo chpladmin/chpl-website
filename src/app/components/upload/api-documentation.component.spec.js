@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the API Documentation Upload component', () => {
+    describe('the API Documentation Upload component', () => {
         var $compile, $log, $q, Upload, authService, ctrl, el, mock, scope;
 
         beforeEach(() => {

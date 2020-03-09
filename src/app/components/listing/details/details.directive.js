@@ -35,7 +35,7 @@
             vm.prepCqms = prepCqms
             vm.registerSed = registerSed;
             vm.saveCert = saveCert;
-            vm.sortCerts = sortCerts;
+            vm.sortCerts = utilService.sortCert;
             vm.sortCqms = sortCqms;
             vm.showPanel = showPanel;
             vm.updateCs = updateCs;
@@ -97,30 +97,12 @@
 
             function saveCert (cert) {
                 for (let i = 0; i < vm.product.certificationResults.length; i++) {
-                    if (vm.product.certificationResults[i].number === cert.number) {
+                    if (vm.product.certificationResults[i].number === cert.number
+                        && vm.product.certificationResults[i].title === cert.title) {
                         vm.product.certificationResults[i] = cert;
                     }
                 }
-            }
-
-            function sortCerts (cert) {
-                var ret = 0;
-                if (cert.number) {
-                    var letter;
-                    var number;
-                    letter = cert.number.substring(9,10);
-                    if (cert.number.substring(0,6) === '170.30') {
-                        number = cert.number.substring(6,7);
-                        ret = parseInt(number) * 100 + letter.charCodeAt(0);
-                    } else {
-                        number = cert.number.substring(12,14);
-                        if (number.substring(1,2) === ')') {
-                            number = number.substring(0,1);
-                        }
-                        ret = letter.charCodeAt(0) * 100 + parseInt(number);
-                    }
-                }
-                return ret;
+                vm.updateCs();
             }
 
             function sortCqms (cqm) {
@@ -162,16 +144,22 @@
             }
 
             function updateCs () {
-                for (var i = 0; i < vm.cqms.length; i++) {
-                    vm.cqms[i].criteria = [];
-                    if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
+                vm.cqms.forEach(cqm => {
+                    cqm.criteria = [];
+                    if (cqm.success || cqm.successVersions.length > 0) {
                         for (var j = 1; j < 5; j++) {
-                            if (vm.cqms[i]['hasC' + j]) {
-                                vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(' + j + ')'});
+                            if (cqm['hasC' + j]) {
+                                let number = '170.315 (c)(' + j + ')';
+                                //let criterion = vm.product.certificationResults.find(cert => cert.number === number && cert.success) || {};
+                                //criterion = criterion.criterion;
+                                cqm.criteria.push({
+                                    certificationNumber: number,
+                                    //criterion: criterion,
+                                });
                             }
                         }
                     }
-                }
+                });
             }
 
             function viewIcsFamily () {

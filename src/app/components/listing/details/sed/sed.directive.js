@@ -206,10 +206,9 @@
                 };
 
                 vm.sedCriteria = vm.listing.certificationResults
-                    .filter(function (cert) { return cert.success && cert.sed; })
-                    .map(function (cert) { return cert.criterion; });
+                    .filter(cert => cert.success && cert.sed)
+                    .map(cert => cert.criterion);
                 vm.criteriaCount = vm.sedCriteria.length;
-                vm.sedCriteriaNumbers = vm.sedCriteria.map(function (cert) { return cert.number; });
 
                 csvRow = angular.copy(ROW_BASE);
 
@@ -219,9 +218,9 @@
                     if (!task.id) {
                         task.id = i * -1 - 1;
                     }
-                    task.criteria = $filter('orderBy')(task.criteria.filter(function (cert) { return vm.sedCriteriaNumbers.indexOf(cert.number) > -1; }), vm.sortCert);
+                    task.criteria = $filter('orderBy')(task.criteria.filter(cert => vm.sedCriteria.map(cert => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
-                    csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
+                    csvRow[4] = task.criteria.map(item => item.number + (item.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')).join(';');
                     csvRow[TASK_START + 0] = task.description;
                     csvRow[TASK_START + 1] = task.taskRatingScale;
                     csvRow[TASK_START + 2] = task.taskRating;
@@ -282,21 +281,23 @@
                     }
                 }
 
-                vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
-                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) {
-                        var loc = vm.sedCriteriaNumbers.indexOf(cert.number);
-                        if (loc > -1) {
-                            vm.sedCriteria[loc].found = true;
-                            return true;
-                        }
-                        return false;
-                    }), vm.sortCert);
-                    return item;
-                }).concat([{
-                    name: undefined,
-                    details: undefined,
-                    criteria: $filter('orderBy')(vm.sedCriteria.filter(function (cert) { return !cert.found; }), vm.sortCert),
-                }]).filter(function (item) { return item.criteria.length > 0; });
+                vm.ucdProcesses = vm.listing.sed.ucdProcesses
+                    .map(item => {
+                        vm.sedCriteria = vm.sedCriteria
+                            .map(criterion => {
+                                if (item.criteria.findIndex(crit => crit.number === criterion.number && crit.title === criterion.title) > -1) {
+                                    criterion.found = true;
+                                }
+                                return criterion;
+                            })
+                        return item;
+                    })
+                    .concat([{
+                        name: undefined,
+                        details: undefined,
+                        criteria: vm.sedCriteria.filter(criterion => !criterion.found),
+                    }])
+                    .filter(item => item.criteria.length > 0);
 
                 vm.csvData.values = csvSort(vm.csvData.values);
             }

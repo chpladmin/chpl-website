@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Relied Upon Software view component', function () {
+    describe('the Relied Upon Software view component', function () {
         var $log, $uibModal, Mock, actualOptions, el, mock, vm;
 
         mock = {};

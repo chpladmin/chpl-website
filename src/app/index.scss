@@ -464,7 +464,8 @@ option[disabled] {
     right: 0;
 }
 
-#search-page .dropdown-menu {
+#search-page .dropdown-menu,
+#listings-report-page .dropdown-menu {
     width: 150%;
     max-height: 300px;
     overflow: auto;
@@ -476,6 +477,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu li>label,
+#listings-report-page .dropdown-menu li>label,
 #decertifications-page .dropdown-menu>div>li>label,
 #decertifications-page .dropdown-menu>li>label {
     cursor: pointer;
@@ -492,6 +494,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>span>a,
+#listings-report-page .dropdown-menu>li>span>a,
 #decertifications-page .dropdown-menu>div>li>span>a,
 #decertifications-page .dropdown-menu>li>span>a {
     display: block;
@@ -500,6 +503,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li.form-horizontal>div.form-group,
+#listings-report-page .dropdown-menu>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>div>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>li.form-horizontal>div.form-group {
     margin-left: 0;
@@ -507,6 +511,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>div>label.control-label,
+#listings-report-page .dropdown-menu>li>div>label.control-label,
 #decertifications-page .dropdown-menu>div>li>div>label.control-label,
 #decertifications-page .dropdown-menu>li>div>label.control-label {
     display: block;
@@ -516,6 +521,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>a,
+#listings-report-page .dropdown-menu>li>a,
 #decertifications-page .dropdown-menu>li>a {
     font-weight: 700;
 }
@@ -589,33 +595,53 @@ option[disabled] {
     bottom: 25px !important;
 }
 
-.removed {
-    color: #4d4d4d;
-    background-color: #ccc;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 5px;
-    background-image: linear-gradient(to bottom, #cccccc 0%, #ddd 51%, #cccccc 100%);
+li.removed,
+a.removed,
+td.removed,
+tr.removed {
+    font-style: italic;
+}
 
-    a {
-        color: #4d4d4d;
-    }
+option[label^="Removed"] {
+    font-style: italic;
+}
+
+.removed {
 
     .btn-link {
-        color: #4d4d4d;
+
+        i {
+            color: #4d4d4d;
+        }
+    }
+
+    .criteria-title {
+        font-style: italic;
+    }
+
+    .alert-success {
+        color: #000;
+        background-color: #eee;
+        border-color: #000;
     }
 
     .table-striped {
 
         tbody {
 
-            tr {
-                background-color: transparent;
+            tr:nth-of-type(odd) {
+                background-color: #eee;
+            }
+
+            tr:nth-of-type(even) {
+                background-color: #fff;
             }
         }
     }
+}
+
+.cures-update {
+    font-weight: bold;
 }
 
 .new-style {
