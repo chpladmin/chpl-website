@@ -358,7 +358,7 @@ require('jspdf-autotable');
                 keys.shift();
                 result = [];
                 for (index=0; index < keys.length; ++index) {
-                    if (criteriaMet.indexOf(keys[index]) !== -1) {
+                    if (criteriaMet.findIndex(criterion => criterion.number === keys[index]) > -1) {
                         result.push(true);
                     } else {
                         result.push(false);
@@ -369,7 +369,7 @@ require('jspdf-autotable');
                 keys.shift();
                 result = true;
                 for (index=0; index < keys.length; ++index) {
-                    if (criteriaMet.indexOf(keys[index]) !== -1) {
+                    if (criteriaMet.findIndex(criterion => criterion.number === keys[index]) > -1) {
                         result = false;
                     }
                 }
@@ -378,7 +378,7 @@ require('jspdf-autotable');
             if (keys.length > 1) {
                 $log.error('Multiple keys without a logic key value! (' + keys[0] + ') ' + key + ' -> ' + keys);
             }
-            return [(criteriaMet.indexOf(keys[0]) !== -1)];
+            return [(criteriaMet.findIndex(criterion => criterion.number === keys[0]) > -1)];
         }
 
         function getPdfCriteria (year) {
@@ -485,13 +485,13 @@ require('jspdf-autotable');
                     {'key': null, 'description': 'Clinical Quality Measures-Record and Export'},
                     {'key': '170.315 (c)(1)', 'description': '#170.315(c)(1)'},
                     {'key': null, 'description': 'Transitions of Care'},
-                    {'key': '170.315 (b)(1)', 'description': '#170.315(b)(1)'},
+                    {'key': '170.315 (b)(1)', 'description': '#170.315(b)(1) or #170.315(b)(1) (Cures Update)'},
                     {'key': null, 'description': 'Application Access-Patient Selection'},
                     {'key': '170.315 (g)(7)', 'description': '#170.315(g)(7)'},
                     {'key': null, 'description': 'Application Access-Data Category Request'},
                     {'key': '|,170.315 (g)(8),170.315 (g)(10)', 'description': '#170.315(g)(8) or #170.315(g)(10)'},
                     {'key': null, 'description': 'Application Access-All Data Request'},
-                    {'key': '170.315 (g)(9)', 'description': '#170.315(g)(9)'},
+                    {'key': '170.315 (g)(9)', 'description': '#170.315(g)(9) or #170.315(g)(9) (Cures Update)'},
                     {'key': null, 'description': 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
                     {'key': '|,170.315 (h)(1),170.315 (h)(2)', 'description': '#170.315(h)(1) or #170.315(h)(2)'},
                 ];
