@@ -12,7 +12,7 @@
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.downloadReady()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
-              ng-csv="$ctrl.displayed" filename="User_{{ $ctrl.filename }}"
+              ng-csv="$ctrl.displayed" filename="User_{{ $ctrl.filename }}" add-bom="true"
               csv-header="['User', 'Email', 'Responsible User', 'Activity', 'Activity Date']"
               csv-column-order="['subjectName', 'email', 'responsibleUserFullName', 'action', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>

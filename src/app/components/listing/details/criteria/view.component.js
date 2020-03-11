@@ -13,18 +13,22 @@ export const CertificationCriteriaViewComponent = {
         viewAll: '<',
     },
     controller: class CertificationCriteriaViewController {
-        constructor ($analytics, $log, $uibModal, authService, featureFlags) {
+        constructor ($analytics, $log, $uibModal, authService, featureFlags, utilService) {
             'ngInject'
             this.$analytics = $analytics;
             this.$log = $log;
             this.$uibModal = $uibModal;
             this.hasAnyRole = authService.hasAnyRole;
             this.isOn = featureFlags.isOn;
+            this.utilService = utilService;
         }
 
         $onChanges (changes) {
             if (changes.cert) {
                 this.cert = angular.copy(changes.cert.currentValue);
+                if (this.cert.testFunctionality) {
+                    this.cert.testFunctionality = this.cert.testFunctionality.sort(this.utilService.sortTestFunctionality);
+                }
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
