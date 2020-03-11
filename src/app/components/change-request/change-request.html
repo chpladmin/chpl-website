@@ -33,7 +33,7 @@
         <div class="form-group">
           <label class="control-label" for="current-website">Developer website</label>
           <div>
-            <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="current-website" name="currentWebsite" disabled></input>
+            <input class="input-sm form-control" type="url" ng-model="$ctrl.changeRequest.developer.website" id="current-website" name="currentWebsite" disabled></input>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
           <label class="control-label" for="submitted-website">Submitted website</label>
           <div>
             <input class="input-sm form-control" type="url" id="submitted-website" name="submittedWebsite" required
-                   ng-model="$ctrl.changeRequest.details.website" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw'" ng-change="$ctrl.update()"></input>
+                   ng-model="$ctrl.changeRequest.details.website" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw' || $ctrl.administrationMode" ng-change="$ctrl.update()"></input>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.required">Field is required</div>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.maxlength">Field is too long</div>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.url">Improper format (http://www.example.com)</div>
@@ -62,16 +62,30 @@
         <div class="form-group">
           <label class="control-label" for="comment">Reason</label>
           <div>
-            <textarea class="input-sm form-control" id="comment" name="comment" rows="8" placeholder="Please enter a reason for editing this change request"
+            <textarea class="input-sm form-control" id="comment" name="comment" rows="8" placeholder="Please enter the reason for this action"
                       ng-model="$ctrl.changeRequest.comment" ng-change="$ctrl.update()"
-                      ng-disabled="$ctrl.activeState === 'edit' && $ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'"></textarea>
+                      ng-disabled="!$ctrl.isCommentEnabled()" ng-required="$ctrl.isCommentRequired()"></textarea>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.comment.$touched) && $ctrl.form.comment.$error.required">Field is required</div>
           </div>
         </div>
+        <h3>Current Status</h3>
+        <p>{{ $ctrl.changeRequest.currentStatus.changeRequestStatusType.name }}</p>
         <h3>Change Status</h3>
         <p ng-if="$ctrl.activeState === 'withdraw'">You're withdrawing this change request</p>
-        <p ng-if="$ctrl.activeState === 'edit' && $ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'">No status change will happen</p>
-        <p ng-if="$ctrl.activeState === 'edit' && $ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'">Change request will be set to "Pending ONC-ACB Action"</p>
+        <span ng-if="$ctrl.activeState === 'edit'">
+          <span ng-if="!$ctrl.administrationMode">
+            <p ng-if="$ctrl.changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action'">No status change will happen</p>
+            <p ng-if="$ctrl.changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'">Change request will be set to "Pending ONC-ACB Action"</p>
+          </span>
+          <span ng-if="$ctrl.administrationMode">
+            <label class="control-label" for="change-request-status">New Request Status</label>
+            <select class="form-control" id="change-request-status" name="changeRequestStatus" required
+                    ng-change="$ctrl.update()"
+                    ng-model="$ctrl.changeRequest.newStatus" ng-options="status as status.name for status in $ctrl.changeRequestStatusTypes | orderBy: 'name' track by status.id">
+            </select>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.changeRequestStatus.$touched) && $ctrl.form.changeRequestStatus.$error.required">Field is required</div>
+          </span>
+        </span>
       </div>
     </div>
   </span>

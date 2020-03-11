@@ -18,7 +18,6 @@ export const ChangeRequestsComponent = {
             this.filterItems = {
                 pageSize: 3,
             };
-            this.isValid = true;
         }
 
         $onChanges (changes) {
@@ -38,6 +37,7 @@ export const ChangeRequestsComponent = {
                 });
                 this.backup.changeRequests = angular.copy(this.changeRequests);
                 this.activeChangeRequest = undefined;
+                this.activeState = undefined;
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
@@ -75,6 +75,20 @@ export const ChangeRequestsComponent = {
             }
         }
 
+        can (action) {
+            if (!this.activeChangeRequest || this.activeChangeRequest.currentStatus.changeRequestStatusType.name.indexOf('Pending') === -1) {
+                return false;
+            }
+            switch (action) {
+            case 'edit':
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
+            case 'withdraw':
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
+            default:
+                return false;
+            }
+        }
+
         cancel () {
             if (this.activeState) {
                 this.activeState = undefined;
@@ -83,12 +97,14 @@ export const ChangeRequestsComponent = {
                 this.activeChangeRequest = undefined;
                 this.changeRequests = angular.copy(this.backup.changeRequests);
             }
+            this.showFormErrors = false;
             this.takeAction({action: 'cancel'});
         }
 
         fullyCancel () {
             this.activeChangeRequest = undefined;
             this.activeState = undefined;
+            this.showFormErrors = false;
             this.takeAction({action: 'cancel'});
         }
 
@@ -98,6 +114,9 @@ export const ChangeRequestsComponent = {
                     changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Cancelled by Requester'),
                     comment: this.activeChangeRequest.comment,
                 };
+            } else if (this.administrationMode) {
+                this.activeChangeRequest.currentStatus.changeRequestStatusType = this.activeChangeRequest.newStatus;
+                this.activeChangeRequest.currentStatus.comment = this.activeChangeRequest.comment;
             } else if (this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
                 this.activeChangeRequest.currentStatus = {
                     changeRequestStatusType: this.changeRequestStatusTypes.data.find(crst => crst.name === 'Pending ONC-ACB Action'),
@@ -144,7 +163,6 @@ export const ChangeRequestsComponent = {
 
         processChangeRequestUpdate (data) {
             this.activeChangeRequest = data.changeRequest;
-            this.isValid = data.validity;
         }
     },
 }
