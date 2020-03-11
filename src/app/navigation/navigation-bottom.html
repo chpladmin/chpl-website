@@ -16,10 +16,10 @@
           {{ announcement.title }}<span ng-if="announcement.text">: {{ announcement.text }}</span>
         </p>
         <p class="announcement nav-text spaced-out badge" ng-if="vm.isOn('effective-rule-date') && !vm.isOn('effective-rule-date-plus-one-week')">
-          Effective Rule Date has passed
+          Note: the CHPL version displayed is after the rule effective date, but not yet one week past the rule effective date
         </p>
         <p class="announcement nav-text spaced-out badge" ng-if="vm.isOn('effective-rule-date-plus-one-week')">
-          Effective Rule Date is at least one week ago
+          Note: the CHPL version displayed is at least one week after the rule effective date
         </p>
       </div>
     </div><!-- /.container-fluid -->
