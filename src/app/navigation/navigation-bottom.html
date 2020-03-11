@@ -15,6 +15,12 @@
         <p class="announcement nav-text spaced-out badge" ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
           {{ announcement.title }}<span ng-if="announcement.text">: {{ announcement.text }}</span>
         </p>
+        <p class="announcement nav-text spaced-out badge" ng-if="vm.isOn('effective-rule-date') && !vm.isOn('effective-rule-date-plus-one-week')">
+          Effective Rule Date has passed
+        </p>
+        <p class="announcement nav-text spaced-out badge" ng-if="vm.isOn('effective-rule-date-plus-one-week')">
+          Effective Rule Date is at least one week ago
+        </p>
       </div>
     </div><!-- /.container-fluid -->
   </nav>
