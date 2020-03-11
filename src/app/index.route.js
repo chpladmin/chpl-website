@@ -1,4 +1,5 @@
 import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state.js';
+import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state.js';
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state.js';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state.js';
 import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
@@ -17,6 +18,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .module('chpl')
         .config(routeConfig)
         .config(administrationStates)
+        .config(chartsStates)
         .config(collectionsStates)
         .config(compareStates)
         .config(dashboardStates)
@@ -40,13 +42,6 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
                 controller: 'AdminController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Administration' },
-            })
-            .state('charts', {
-                url: '/charts',
-                controller: 'ChartsController',
-                controllerAs: 'vm',
-                template: require('./pages/charts/charts.html'),
-                data: { title: 'CHPL Charts' },
             })
             .state('registration', {
                 abstract: true,

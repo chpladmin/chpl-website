@@ -1,9 +1,6 @@
-(function () {
-    'use strict';
-
-    angular.module('chpl.charts', [
+export default angular
+    .module('chpl.charts', [
         'chpl.services',
         'googlechart',
         'ui.bootstrap',
     ]);
-})();
