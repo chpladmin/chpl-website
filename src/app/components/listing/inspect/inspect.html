@@ -11,118 +11,19 @@
   <div class="modal-body">
     <!-- Developer -->
     <div ng-if="vm.stage === 'dev'">
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>Developer</h1>
-          <p>Step 1 of 4</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6" ng-if="!vm.cp.developer.developerId" id="developer-new">
-          <h3>System developer information</h3>
-          <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              This developer <strong>"{{ vm.cp.developer.name }}"</strong> does not currently exist in the Open Data CHPL.
-            </div>
-            <div class="panel-body">
-              <div class="row admin-label-spaced">
-                <ul class="list-inline">
-                  <li><label><input id="select-developer" type="radio" name="developer-choice" ng-model="vm.developerChoice" value="choose"> Select existing developer</label></li>
-                  <li><label><input id="create-developer" type="radio" name="developer-choice" ng-model="vm.developerChoice" value="create"> Create new developer</label></li>
-                </ul>
-              </div>
-              <div ng-if="vm.developerChoice === 'choose'">
-                <label for="developer-select" class="control-label admin-label-spaced">Select a developer</label>
-                <select ng-model="vm.developerSelect"
-                        id="developer-select" class="input-sm form-control"
-                        ng-options="v.name for v in vm.developers | orderBy: 'name'">
-                </select>
-                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingDeveloper()">Select Developer</button></p>
-              </div>
-              <div ng-if="vm.developerChoice === 'create'">
-                Uploaded developer information will be used to create a new developer
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6" ng-if="vm.cp.developer.developerId" id="developer-system">
-          <h3>System developer information</h3>
-          <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              {{ vm.developer.name }}
-            </div>
-            <div class="panel-body">
-              Developer Code: {{ vm.developer.developerCode }}<br />
-              Developer Status: {{ vm.developer.status.status }}<br />
-              Line 1: {{ vm.developer.address.line1 }}<br />
-              Line 2: {{ vm.developer.address.line2 }}<br />
-              City: {{ vm.developer.address.city }}<br />
-              State: {{ vm.developer.address.state }}<br />
-              Zip: {{ vm.developer.address.zipcode }}<br />
-              Country: {{ vm.developer.address.country }}<br />
-              Website: {{ vm.developer.website }}<br />
-              <span ng-if="vm.getAttestationForCurrentSystemDeveloper() && !vm.getAttestationForCurrentSystemDeveloper().removed" feature-flag="effective-rule-date-plus-one-week" feature-flag-hide>
-                Transparency Attestation: {{ vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation }}<br />
-              </span>
-              <div class="product-element removed" id="developer-transparency-attestation"
-                ng-if="vm.getAttestationForCurrentSystemDeveloper() && vm.getAttestationForCurrentSystemDeveloper().removed" feature-flag="effective-rule-date-plus-one-week" feature-flag-hide>
-                <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program."
-                  tooltip-trigger="'mouseenter focus click'">
-                  <span class="sr-only">
-                    This requirement has been removed from the Program.
-                  </span>
-                  <i class="fa fa-info-circle fa-lg"></i>
-                </button>
-                Transparency Attestation: {{ vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation }}
-              </div>
-              <strong>Contact information</strong><br />
-              <ai-contact contact="vm.developer.contact"></ai-contact>
-              <br />
-              Last Modified Date: {{ vm.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6" id="developer-uploaded">
-          <h3>Uploaded developer information</h3>
-          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.developer.developerId"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              {{ vm.cp.developer.name }}
-            </div>
-            <div class="panel-body">
-              Line 1: {{ vm.cp.developer.address.line1 }}<br />
-              Line 2: {{ vm.cp.developer.address.line2 }}<br />
-              City: {{ vm.cp.developer.address.city }}<br />
-              State: {{ vm.cp.developer.address.state }}<br />
-              Zip: {{ vm.cp.developer.address.zipcode }}<br />
-              Country: {{ vm.cp.developer.address.country }}<br />
-              Website: {{ vm.cp.developer.website }}<br />
-              <div ng-if="vm.cp.transparencyAttestation && vm.cp.transparencyAttestation.transparencyAttestation" feature-flag="effective-rule-date-plus-one-week" feature-flag-hide>
-                Transparency Attestation: {{ vm.cp.transparencyAttestation.transparencyAttestation }}
-              </div>
-              <strong>Contact information</strong><br />
-              <ai-contact contact="vm.cp.developer.contact"></ai-contact>
-            </div>
-            <div class="panel-footer" ng-if="vm.cp.developer.developerId">
-              <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ai-inspect-developer developer="vm.developer" developers="vm.developers" listing="vm.cp" on-select="vm.selectInspectingDeveloper(developerId)" set-choice="vm.setDeveloperChoice(choice)"></ai-inspect-developer>
     </div>
     <!-- /Developer -->
 
     <!-- Product -->
     <div ng-if="vm.stage === 'prd'">
-      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(productId)" set-product-choice="vm.setProductChoice(choice)"></ai-inspect-product>
+      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(productId)" set-choice="vm.setProductChoice(choice)"></ai-inspect-product>
     </div>
     <!-- /Product -->
 
     <!-- Version -->
     <div ng-if="vm.stage === 'ver'">
-      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(versionId)" set-version-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
+      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(versionId)" set-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
     </div>
     <!-- /Version -->
 
@@ -165,7 +66,7 @@
                 <ul ng-if="vm.cp.testingLabs && vm.cp.testingLabs.length !== 0">
                   <li ng-repeat="atl in vm.cp.testingLabs">{{ atl.testingLabName }}</li>
                 </ul>
-                <strong>Accessibility Standards:</strong> {{ vm.cp.accessibilityStandards.length > 0 ? 'True' : 'None' }} <br />
+                <strong>Accessibility Standards:</strong> {{ vm.cp.accessibilityStandards.length === 0 ? 'None' : 'True' }} <br />
                 <ul>
                   <li ng-repeat="std in vm.cp.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
                 </ul>
