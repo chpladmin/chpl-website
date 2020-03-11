@@ -76,16 +76,14 @@ export const ChangeRequestsComponent = {
         }
 
         can (action) {
-            if (!this.activeChangeRequest || this.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
+            if (!this.activeChangeRequest || this.activeChangeRequest.currentStatus.changeRequestStatusType.name.indexOf('Pending') === -1) {
                 return false;
             }
             switch (action) {
             case 'edit':
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
-                    || (this.hasAnyRole(['ROLE_DEVELOPER']) && this.activeChangeRequest.currentStatus.changeRequestStatusType.name.indexOf('Pending') > -1);
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
             case 'withdraw':
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
-                    || (this.hasAnyRole(['ROLE_DEVELOPER']) && this.activeChangeRequest.currentStatus.changeRequestStatusType.name.indexOf('Pending') > -1);
+                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
             default:
                 return false;
             }
