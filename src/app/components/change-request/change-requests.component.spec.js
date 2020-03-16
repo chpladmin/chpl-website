@@ -192,7 +192,7 @@
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
-                    it('should not let them edit when awaiting Developer', () => {
+                    it('should let them edit when awaiting Developer', () => {
                         ctrl.activeChangeRequest = {
                             currentStatus: {
                                 changeRequestStatusType: {
@@ -200,7 +200,7 @@
                                 },
                             },
                         }
-                        expect(ctrl.can('edit')).toBe(false);
+                        expect(ctrl.can('edit')).toBe(true);
                     });
 
                     it('should not let them edit otherwise', () => {
@@ -242,7 +242,7 @@
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
-                    it('should not let them edit when awaiting Developer', () => {
+                    it('should let them edit when awaiting Developer', () => {
                         ctrl.activeChangeRequest = {
                             currentStatus: {
                                 changeRequestStatusType: {
@@ -250,7 +250,7 @@
                                 },
                             },
                         }
-                        expect(ctrl.can('edit')).toBe(false);
+                        expect(ctrl.can('edit')).toBe(true);
                     });
 
                     it('should not let them edit otherwise', () => {
@@ -292,7 +292,7 @@
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
-                    it('should not let them edit when awaiting Developer', () => {
+                    it('should not them edit when awaiting Developer', () => {
                         ctrl.activeChangeRequest = {
                             currentStatus: {
                                 changeRequestStatusType: {
@@ -300,7 +300,7 @@
                                 },
                             },
                         }
-                        expect(ctrl.can('edit')).toBe(false);
+                        expect(ctrl.can('edit')).toBe(true);
                     });
 
                     it('should not let them edit otherwise', () => {
@@ -386,13 +386,11 @@
                 });
 
                 describe('to receive an update', () => {
-                    it('should set the active CR and validity', () => {
+                    it('should set the active CR', () => {
                         expect(ctrl.activeChangeRequest).toBeUndefined;
-                        expect(ctrl.isValid).toBe(true);
                         let newCr = {id: 3};
-                        ctrl.act('update', { changeRequest: newCr, validity: 3 });
+                        ctrl.act('update', { changeRequest: newCr });
                         expect(ctrl.activeChangeRequest).toBe(newCr);
-                        expect(ctrl.isValid).toBe(3);
                     });
                 });
 

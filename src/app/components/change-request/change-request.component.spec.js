@@ -67,7 +67,6 @@
                     ctrl.update();
                     expect(scope.takeAction).toHaveBeenCalledWith('update', {
                         changeRequest: mock.changeRequest,
-                        validity: true,
                     });
                 });
 
