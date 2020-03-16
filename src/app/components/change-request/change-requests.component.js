@@ -84,8 +84,7 @@ export const ChangeRequestsComponent = {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
             case 'withdraw':
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
-            default:
-                return false;
+                // no default
             }
         }
 
