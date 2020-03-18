@@ -45,7 +45,7 @@
               <span>
                 <strong>Practice Type:</strong> {{ vm.cp.practiceType.name }} <br />
                 <strong>Classification Type:</strong> {{ vm.cp.classificationType.name }} <br />
-                <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
+                <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <span ng-if="vm.cp.curesUpdate">Cures Update</span><br />
                 <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
                 <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                 <span ng-if="vm.cp.productAdditionalSoftware"><strong>Relied Upon Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
