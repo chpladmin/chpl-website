@@ -9,83 +9,21 @@
     <h4 class="modal-title" id="inspect-label">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
   </div>
   <div class="modal-body">
-    <!-- Developer -->
     <div ng-if="vm.stage === 'dev'">
       <ai-inspect-developer developer="vm.developer" developers="vm.developers" listing="vm.cp" on-select="vm.selectInspectingDeveloper(developerId)" set-choice="vm.setDeveloperChoice(choice)"></ai-inspect-developer>
     </div>
-    <!-- /Developer -->
 
-    <!-- Product -->
     <div ng-if="vm.stage === 'prd'">
       <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(productId)" set-choice="vm.setProductChoice(choice)"></ai-inspect-product>
     </div>
-    <!-- /Product -->
 
-    <!-- Version -->
     <div ng-if="vm.stage === 'ver'">
       <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(versionId)" set-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
     </div>
-    <!-- /Version -->
 
-    <!-- Certified Product -->
     <div ng-if="vm.stage === 'cp'">
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>Certified Product</h1>
-          <p>Step 4 of 4</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              <span>{{ vm.cp.chplProductNumber }}</span>
-            </div>
-            <div class="panel-body">
-              <span>
-                <strong>Practice Type:</strong> {{ vm.cp.practiceType.name }} <br />
-                <strong>Classification Type:</strong> {{ vm.cp.classificationType.name }} <br />
-                <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <span ng-if="vm.cp.curesUpdate">Cures Update</span><br />
-                <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
-                <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                <span ng-if="vm.cp.productAdditionalSoftware"><strong>Relied Upon Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
-                <strong>Status:</strong> {{ vm.certificationStatus(vm.cp) }}<br />
-                <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
-                <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
-                <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
-                <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics.inherits) }} <br />
-                <strong>QMS:</strong> {{ vm.checkQmsBoolean(vm.cp.hasQms) }} <br />
-                <ul>
-                  <li ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }}<span ng-if="qms.qmsModification">, {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria">, {{ qms.applicableCriteria }}</span></li>
-                </ul>
-                <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
-                <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
-                <strong>SED Intended Users:</strong> {{ vm.cp.sedIntendedUserDescription ? vm.cp.sedIntendedUserDescription : 'None' }} <br />
-                <strong>SED End Date of Testing:</strong> {{ vm.cp.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
-                <strong>Testing Lab<span ng-if="vm.cp.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.cp.testingLabs || vm.cp.testingLabs.length === 0">None<br /></span>
-                <ul ng-if="vm.cp.testingLabs && vm.cp.testingLabs.length !== 0">
-                  <li ng-repeat="atl in vm.cp.testingLabs">{{ atl.testingLabName }}</li>
-                </ul>
-                <strong>Accessibility Standards:</strong> {{ vm.cp.accessibilityStandards.length === 0 ? 'None' : 'True' }} <br />
-                <ul>
-                  <li ng-repeat="std in vm.cp.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
-                </ul>
-              </span>
-              <br />
-              <ai-certs ng-if="vm.cp !== ''"
-                        default-all="true"
-                        edit-mode="false"
-                        is-confirming="true"
-                        product="vm.cp">
-              </ai-certs>
-              <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <chpl-inspect-listing listing="vm.cp" on-change="vm.editListing(listing)" resources="vm.resources"></chpl-inspect-listing>
     </div>
-    <!-- /Certified Product -->
-
   </div>
   <div class="modal-footer">
     <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) || (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) ||
