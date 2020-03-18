@@ -80,7 +80,10 @@
           </div>
           <div class="product-element" id="listing-information-certification-edition">
             <h2 class="product-heading">Certification Edition</h2>
-            <p>{{ $ctrl.listing.certificationEdition.name }}</p>
+            <p>
+              {{ $ctrl.listing.certificationEdition.name }}
+              <span ng-if="$ctrl.listing.curesUpdate"><br />Cures Update</span>
+            </p>
           </div>
           <div class="product-element" id="listing-information-certification-status">
             <h2 class="product-heading">Certification Status</h2>
