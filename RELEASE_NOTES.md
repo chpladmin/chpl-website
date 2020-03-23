@@ -1,5 +1,33 @@
 # Release Notes
 
+## Version 10.39.0
+_23 March 2020_
+
+### Features
+* Only display test functionality control if there are options
+* Support upload of Self-developer field
+* Enable sorting of test functionality
+* Distinguish between identically numbered criteria in Surveillance Non-Conformities
+
+### Bug Fixes
+* Restore 2014 Edition filter functionality
+
+### UI Updates
+* Display Transparency Attestation in such a way as to indicate that it's no longer part of the rule
+
+### Flagged Features
+* Update description of Base EHR in CMS ID Creator Download
+* Allow Change Request management by administrators
+* Disallow generation of CMS EHR IDs containing any 2014 Edition Listings
+* Update 2015 CMS EHR ID generation to handle removed and added criteria
+* Restrict ONC-ACB Users from modifying any 2014 Edition listings
+* Restrict ONC-ACB Users from modifying any criteria marked as removed
+* Restrict ACBs from viewing Transparency Attestation near or in editable scenarios
+* Stop allowing ONC-ACBs to add/edit surveillance and/or non-conformities associated to 2014 Edition Criteria
+* Update transparency attestations to work in accordance with new Cures rule
+
+---
+
 ## Version 10.38.0
 _9 March 2020_
 
