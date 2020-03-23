@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-sm-12">
+    <ul class="nav nav-tabs">
+      <li role="presentation" ng-class="{'active': $ctrl.chartState.productEdition === 2014}"><a ng-click="$ctrl.chartState.productEdition = 2014">2014 Edition</a></li>
+      <li role="presentation" ng-class="{'active': $ctrl.chartState.productEdition === 2015}"><a ng-click="$ctrl.chartState.productEdition = 2015">2015 Edition</a></li>
+    </ul>
+    <p>The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that
+      refer to a single product from the same developer, each listing in a group often differing by version number.</p>
+    <div ng-if="$ctrl.chartState.productEdition === 2014" google-chart="" chart="$ctrl.criterionProductCounts[2014]" class="bar-chart"></div>
+    <div ng-if="$ctrl.chartState.productEdition === 2015" google-chart="" chart="$ctrl.criterionProductCounts[2015]" class="bar-chart"></div>
+  </div>
+</div>

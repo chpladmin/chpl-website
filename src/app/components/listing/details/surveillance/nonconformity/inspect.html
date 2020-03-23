@@ -17,7 +17,7 @@
           <tbody>
             <tr>
               <th scope="row">Type</th>
-              <td>{{ noncon.nonconformityType }}</td>
+              <td>{{ noncon.criterion ? (noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
             </tr>
             <tr>
               <th scope="row">Status</th>

@@ -41,7 +41,11 @@
                     randomizedSitesUsed: 34,
                     requirement: {},
                     surveillanceId: 1,
-                    surveillanceTypes: {},
+                    surveillanceTypes: {
+                        surveillanceRequirements: {
+                            criteriaOptions: [],
+                        },
+                    },
                     workType: 'create',
                 };
                 $compile(el)(scope);
@@ -293,6 +297,7 @@
                     var activeReq = {
                         id: 'something',
                         result: { name: 'someting'},
+                        type: { name: 'something'},
                     };
                     ctrl.requirement = activeReq;
                     ctrl.save();
@@ -303,6 +308,7 @@
                     var activeReq = {
                         id: 'something',
                         result: { name: 'No Non-Conformity'},
+                        type: { name: 'No Non-Conformity'},
                         nonconformities: [1, 2, 3],
                     };
                     ctrl.requirement = activeReq;

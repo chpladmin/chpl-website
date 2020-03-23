@@ -85,7 +85,7 @@
           <tbody>
             <tr ng-repeat="req in $ctrl.surveillance.requirements | orderBy:['type.name',$ctrl.sortRequirements] track by $index">
               <td>{{ req.type.name }}</td>
-              <td>{{ req.requirement }}</td>
+              <td>{{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</td>
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>

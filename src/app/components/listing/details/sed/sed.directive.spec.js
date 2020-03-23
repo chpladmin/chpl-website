@@ -122,7 +122,7 @@
                     });
 
                     it('should associate the UCD Processes with multiple criteria', () => {
-                        expect(vm.ucdProcesses[0].criteria[0].number).toBe('170.315 (a)(1)');
+                        expect(vm.ucdProcesses[0].criteria[0].number).toBe('170.315 (a)(5)');
                         expect(vm.ucdProcesses[0].criteria.length).toBe(12);
                     });
                 });
@@ -228,7 +228,7 @@
                         });
 
                         it('should associate the UCD Processes with multiple criteria', () => {
-                            expect(vm.ucdProcesses[0].criteria[0].number).toEqual('170.315 (a)(1)');
+                            expect(vm.ucdProcesses[0].criteria[0].number).toEqual('170.315 (a)(5)');
                         });
                     });
 

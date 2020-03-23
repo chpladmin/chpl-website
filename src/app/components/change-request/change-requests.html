@@ -95,7 +95,7 @@
     </div>
   </div>
 </span>
-<span ng-if="$ctrl.activeChangeRequest">
+<span ng-if="$ctrl.activeChangeRequest" ng-form="$ctrl.form">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">{{ $ctrl.getTitle() }}</h2>
@@ -103,7 +103,14 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-md-12">
-          <chpl-change-request administration-mode="$ctrl.administrationMode" change-request="$ctrl.activeChangeRequest" developer="$ctrl.developer" take-action="$ctrl.act(action, data)" active-state="$ctrl.activeState" show-form-errors="$ctrl.showFormErrors"></chpl-change-request>
+          <chpl-change-request
+            administration-mode="$ctrl.administrationMode"
+            change-request="$ctrl.activeChangeRequest"
+            change-request-status-types="$ctrl.changeRequestStatusTypes"
+            developer="$ctrl.developer"
+            take-action="$ctrl.act(action, data)"
+            active-state="$ctrl.activeState"
+            show-form-errors="$ctrl.showFormErrors"></chpl-change-request>
         </div>
       </div>
     </div>
@@ -115,15 +122,15 @@
           <button class="btn btn-default" ng-click="$ctrl.act('cancel')">Back to Change Request</button>
         </span>
         <span ng-switch-when="edit">
-          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
+          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.form.$valid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
         </span>
         <span ng-switch-when="withdraw">
-          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
+          <button class="btn btn-default" ng-disabled="$ctrl.showFormErrors && !$ctrl.form.$valid" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.act('save')">Submit</button>
         </span>
         <span ng-switch-default>
-          <button class="btn btn-default" ng-click="$ctrl.act('edit')" ng-if="$ctrl.hasAnyRole(['ROLE_DEVELOPER']) && $ctrl.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action' || $ctrl.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'">Edit Change Request</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('edit')" ng-if="$ctrl.can('edit')">Edit Change Request</button>
           <button class="btn btn-default" ng-click="$ctrl.act('statusLog')">Status Log</button>
-          <button class="btn btn-default" ng-click="$ctrl.act('withdraw')" ng-if="$ctrl.hasAnyRole(['ROLE_DEVELOPER']) && $ctrl.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action' || $ctrl.activeChangeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'">Withdraw Change Request</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('withdraw')" ng-if="$ctrl.can('withdraw')">Withdraw Change Request</button>
         </span>
       </span>
     </div>

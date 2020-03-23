@@ -4,7 +4,7 @@ export const InspectVersionComponent = {
         onSelect: '&',
         pendingVersion: '<',
         product: '<',
-        setVersionChoice: '&',
+        setChoice: '&',
     },
     controller: class InspectVersionController {
         constructor ($log, networkService) {
@@ -30,7 +30,7 @@ export const InspectVersionComponent = {
             } else {
                 this.choice = 'create';
             }
-            this.setVersionChoice({choice: this.choice});
+            this.setChoice({choice: this.choice});
         }
 
         select () {

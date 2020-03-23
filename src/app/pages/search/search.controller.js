@@ -72,11 +72,8 @@
                     'Terminated by ONC': false,
                 },
             };
-            vm.retired = {
-                edition: { '2011': true },
-            };
             if (vm.isOn('effective-rule-date')) {
-                vm.retired.edition['2014'] = true;
+                vm.defaultRefineModel.certificationEdition['2014'] = false;
             }
 
             vm.downloadResultsCategories = [
@@ -483,7 +480,6 @@
                         selected: vm.defaultRefineModel.certificationEdition[edition.name],
                     }
                     if (edition.name === '2011' || (edition.name === '2014' && vm.isOn('effective-rule-date'))) {
-                        vm.defaultRefineModel.certificationEdition['2014'] = false;
                         obj.selected = false;
                         obj.display = 'Retired | ' + obj.value;
                         obj.retired = true;

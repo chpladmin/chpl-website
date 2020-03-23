@@ -6,10 +6,12 @@ export const ChangeRequestsManagementComponent = {
         changeRequestTypes: '<',
     },
     controller: class ChangeRequestsManagementComponent {
-        constructor ($log, authService) {
+        constructor ($log, authService, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
+            this.networkService = networkService;
+            this.toaster = toaster;
         }
 
         $onChanges (changes) {
@@ -21,6 +23,30 @@ export const ChangeRequestsManagementComponent = {
             }
             if (changes.changerequestTypes) {
                 this.changerequestTypes = angular.copy(changes.changerequestTypes.currentValue);
+            }
+        }
+
+        takeAction (action, data) {
+            let that = this;
+            switch (action) {
+            case 'save':
+                this.networkService.updateChangeRequest(data)
+                    .then(() => {
+                        that.networkService.getChangeRequests().then(response => {
+                            that.changeRequests = response;
+                            that.state = 'confirmation';
+                            that.confirmationText = 'The update has been completed successfully.'
+                        })
+                    }, error => {
+                        that.toaster.pop({
+                            type: 'error',
+                            title: 'Error in submission',
+                            body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
+                            bodyOutputType: 'trustedHtml',
+                        });
+                    });
+                break;
+                //no default
             }
         }
     },
