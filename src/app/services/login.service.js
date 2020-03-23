@@ -79,7 +79,7 @@
                 let userRole = parseJwt(token).Authority;
                 if (roles) {
                     if (userRole) {
-                        return roles.reduce((ret, role) => ret || userRole === role, false); // true if user has a role in the required list
+                        return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
                     }
                     return false; // logged in, role(s) required, user has no role
                 }
