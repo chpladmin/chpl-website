@@ -125,7 +125,7 @@
                   separator="{{ vm.SPLIT_PRIMARY }}"
                   track-analytics="true"></st-list-multiple>
               </li>
-              <li>
+              <li feature-flag="effective-rule-date">
                 <a href ng-click="vm.show2015Cures = !vm.show2015Cures">
                   <i class="fa" ng-class="vm.show2015 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2015Cures ? 'Hide' : 'View' }} 2015 Cures Update Certification Criteria <span ng-if="vm.categoryChanged['criteria']['2015Cures']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
