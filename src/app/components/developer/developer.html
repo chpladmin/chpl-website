@@ -85,7 +85,7 @@
               <div class="form-group">
                 <label class="control-label" for="self-developer">Self-developer</label>
                 <div>
-                  <select class="input-sm form-control" ng-model="$ctrl.developer.selfDeveloper" id="self-developer" name="selfDeveloper" ng-disabled="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])">
+                  <select class="input-sm form-control" ng-model="$ctrl.developer.selfDeveloper" id="self-developer" name="selfDeveloper">
                     <option ng-value="true">Yes</option>
                     <option ng-value="false">No</option>
                   </select>
@@ -94,14 +94,13 @@
               <chpl-contact contact="$ctrl.developer.contact"
                             is-editing="true"
                             is-required="true"
-                            is-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
+                            ignore-friendly-name="true"
                             on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
             </div>
             <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
               <chpl-address address="$ctrl.developer.address"
                             is-editing="true"
                             is-required="$ctrl.isSplitting"
-                            is-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"
                             on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
             </div>
             <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="col-sm-4">

@@ -17,12 +17,6 @@ let states = {
                         return networkService.getChangeRequestStatusTypes();
                     }
                 },
-                changeRequestTypes: (featureFlags, networkService) => {
-                    'ngInject'
-                    if (featureFlags.isOn('change-request')) {
-                        return networkService.getChangeRequestTypes();
-                    }
-                },
                 developerId: (authService, networkService) => {
                     'ngInject'
                     if (authService.hasAnyRole(['ROLE_DEVELOPER'])) {
