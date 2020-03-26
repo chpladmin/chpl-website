@@ -210,7 +210,7 @@
 
                     //matchAny
                     if (expected.matchAny) {
-                        if (expected.matchAny.all) {
+                        if (expected.matchAny.items.length === 0) {
                             return true;
                         }
 
@@ -237,7 +237,7 @@
 
                     //matchAll
                     if (expected.matchAll) {
-                        if (expected.matchAll.all) {
+                        if (expected.matchAll.items.length === 0) {
                             return true;
                         }
 
