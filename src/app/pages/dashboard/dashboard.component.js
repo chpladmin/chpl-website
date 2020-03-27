@@ -105,7 +105,7 @@ export const DashboardComponent = {
         saveRequest (data) {
             let that = this;
             let request = {
-                developer: this.developer,
+                developerId: this.developer.developerId,
                 details: data,
             };
             this.networkService.submitChangeRequest(request)
