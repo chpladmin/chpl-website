@@ -14,7 +14,6 @@ export const ReportsListingsComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
-            this.activeAcbs = [];
             this.displayed = [];
             this.categoriesFilter = '|LISTING|';
             this.clearFilterHs = [];
@@ -119,17 +118,12 @@ export const ReportsListingsComponent = {
                 filterData.productId = this.productId;
             }
             filterData.dataFilter = this.filterText;
-            filterData.displayAcbs = this.display;
             filterData.tableState = this.tableController.tableState();
             return filterData;
         }
 
         tableStateListener (tableController) {
             this.tableController = tableController;
-        }
-
-        acbCount (acb) {
-            return this.displayed.reduce((acc, activity) => activity.acbName === acb ? acc + 1 : acc, 0);
         }
 
         compareCerts (prev, curr) {
@@ -762,9 +756,6 @@ export const ReportsListingsComponent = {
             item.categoriesFilter = '|' + item.categories.join('|') + '|';
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
-            if (this.activeAcbs.indexOf(item.acbName) === -1) {
-                this.activeAcbs.push(item.acbName);
-            }
             if (full) {
                 this.parse(item);
                 item.showDetails = true;
