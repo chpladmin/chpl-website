@@ -410,9 +410,15 @@
         }
 
         function certificationResultSortIndex (certResult) {
-            var valueToFind = certResult.number;
-            if (isCertResultForCuresUpdateCriterion(certResult)) {
-                valueToFind += '(Cures Update)';
+            //Handle both criteria numbers and certificationResult objects
+            var valueToFind;
+            if (certResult.number) {
+                valueToFind = certResult.number;
+                if (isCertResultForCuresUpdateCriterion(certResult)) {
+                    valueToFind += '(Cures Update)';
+                }
+            } else {
+                valueToFind = certResult;
             }
             return certificationResultSortOrder().findIndex(item => item === valueToFind);
         }

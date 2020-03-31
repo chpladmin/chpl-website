@@ -108,11 +108,13 @@
         }
 
         function sortProcesses (process) {
-            return utilService.sortCertArray(process.criteria.map(function (item) { return item.number; }));
+            //return utilService.sortCertArray(process.criteria.map(function (item) { return item.number; }));
+            return utilService.sortCertArray(process.criteria);
         }
 
         function sortTasks (task) {
-            return utilService.sortCertArray(task.criteria.map(function (item) { return item.number; }));
+            //return utilService.sortCertArray(task.criteria.map(function (item) { return item.number; }));
+            return utilService.sortCertArray(task.criteria);
         }
 
         function viewParticipants (task) {
@@ -304,6 +306,7 @@
         }
 
         function csvSort (data) {
+            $log.info(data);
             var mapped = data.map(function (el, i) {
                 if (i === 0) {
                     return {
