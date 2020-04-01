@@ -420,7 +420,13 @@
             } else {
                 valueToFind = certResult;
             }
-            return certificationResultSortOrder().findIndex(item => item === valueToFind);
+
+            //If we don't find the item in the referece array, put it at the end
+            let index = certificationResultSortOrder().findIndex(item => item === valueToFind);
+            if (index === -1) {
+                index = 10000;
+            }
+            return index;
         }
 
         function certificationResultSortOrder () {
@@ -605,7 +611,9 @@
                 '170.315 (g)(9)',
                 '170.315 (g)(10)',
                 '170.315 (h)(1)',
-                '170.315 (h)(2)'];
+                '170.315 (h)(2)',
+                '170.523 (k)(1)',
+                '170.523 (k)(2)'];
         }
 
         function isCertResultForCuresUpdateCriterion (certResult) {

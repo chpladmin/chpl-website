@@ -108,13 +108,11 @@
         }
 
         function sortProcesses (process) {
-            //return utilService.sortCertArray(process.criteria.map(function (item) { return item.number; }));
-            return utilService.sortCertArray(process.criteria);
+            return utilService.sortCertArray(process.criteria.map(function (item) { return item.number; }));
         }
 
         function sortTasks (task) {
-            //return utilService.sortCertArray(task.criteria.map(function (item) { return item.number; }));
-            return utilService.sortCertArray(task.criteria);
+            return utilService.sortCertArray(task.criteria.map(function (item) { return item.number; }));
         }
 
         function viewParticipants (task) {
