@@ -51,11 +51,11 @@
             expect(aiCustomFilter(Mock.allCps, {practiceType: {distinct: 'Ambulatory'}}).length).toBe(5);
         });
 
-        xit('should allow matching any', () => {
-            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(3);
+        xit('should allow matching any', () => { //ignoring because mock data doesn't support these tests, until mock data can be updated
+            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(3);
         });
 
-        xdescribe('surveillance section', () => { //ignoring because mock data doesn't support these tests
+        xdescribe('surveillance section', () => { //ignoring because mock data doesn't support these tests, until mock data can be updated
             it('should filter on "never"', () => {
                 var survFilter = {surveillance: 'never'};
                 expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);

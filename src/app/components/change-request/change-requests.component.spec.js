@@ -212,6 +212,17 @@
                         expect(ctrl.can('withdraw')).toBe(true);
                     });
 
+                    it('should let them withdraw when awaiting ONC-ACB', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending ONC-ACB Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(true);
+                    });
+
                     it('should not let them withdraw otherwise', () => {
                         ctrl.activeChangeRequest = {
                             currentStatus: {
@@ -260,6 +271,28 @@
                             },
                         }
                         expect(ctrl.can('edit')).toBe(false);
+                    });
+
+                    it('should not let them withdraw when awaiting Developer', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending Developer Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(false);
+                    });
+
+                    it('should not let them withdraw when awaiting ONC-ACB', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending ONC-ACB Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(false);
                     });
 
                     it('should not let them withdraw', () => {
@@ -312,6 +345,28 @@
                         expect(ctrl.can('edit')).toBe(false);
                     });
 
+                    it('should not let them withdraw when awaiting Developer', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending Developer Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(false);
+                    });
+
+                    it('should not let them withdraw when awaiting ONC-ACB', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending ONC-ACB Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(false);
+                    });
+
                     it('should not let them withdraw', () => {
                         ctrl.activeChangeRequest = {
                             currentStatus: {
@@ -360,6 +415,28 @@
                             },
                         }
                         expect(ctrl.can('edit')).toBe(false);
+                    });
+
+                    it('should not let them withdraw when awaiting Developer', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending Developer Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(false);
+                    });
+
+                    it('should not let them withdraw when awaiting ONC-ACB', () => {
+                        ctrl.activeChangeRequest = {
+                            currentStatus: {
+                                changeRequestStatusType: {
+                                    name: 'Pending ONC-ACB Action',
+                                },
+                            },
+                        }
+                        expect(ctrl.can('withdraw')).toBe(false);
                     });
 
                     it('should not let them withdraw', () => {
