@@ -304,7 +304,6 @@
         }
 
         function csvSort (data) {
-            $log.info(data);
             var mapped = data.map(function (el, i) {
                 if (i === 0) {
                     return {
