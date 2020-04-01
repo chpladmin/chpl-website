@@ -11,6 +11,12 @@ let states = {
                         return networkService.getChangeRequests();
                     }
                 },
+                changeRequestTypes: (featureFlags, networkService) => {
+                    'ngInject'
+                    if (featureFlags.isOn('change-request')) {
+                        return networkService.getChangeRequestTypes();
+                    }
+                },
                 changeRequestStatusTypes: (featureFlags, networkService) => {
                     'ngInject'
                     if (featureFlags.isOn('change-request')) {

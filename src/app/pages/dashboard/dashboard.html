@@ -24,6 +24,7 @@
         <div ng-if="$ctrl.inState('changeRequest') && $ctrl.isOn('change-request')" ng-class="$ctrl.inState('focusChangeRequest') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-change-requests ng-if="$ctrl.developer"
                                 change-requests="$ctrl.changeRequests"
+                                change-request-types="$ctrl.changeRequestTypes"
                                 change-request-status-types="$ctrl.changeRequestStatusTypes"
                                 developer="$ctrl.developer"
                                 take-action="$ctrl.takeCrAction(action, data)"

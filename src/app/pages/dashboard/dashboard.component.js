@@ -2,6 +2,7 @@ export const DashboardComponent = {
     templateUrl: 'chpl.dashboard/dashboard.html',
     bindings: {
         changeRequests: '<',
+        changeRequestTypes: '<',
         changeRequestStatusTypes: '<',
         developerId: '<',
     },
@@ -27,6 +28,9 @@ export const DashboardComponent = {
         $onChanges (changes) {
             if (changes.changeRequests.currentValue) {
                 this.changeRequests = changes.changeRequests.currentValue;
+            }
+            if (changes.changeRequestTypes.currentValue) {
+                this.changeRequestTypes = changes.changeRequestTypes.currentValue;
             }
             if (changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = changes.changeRequestStatusTypes.currentValue;
