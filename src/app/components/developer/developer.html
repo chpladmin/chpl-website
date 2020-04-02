@@ -1,28 +1,33 @@
 <div id="chpl-developer" ng-form="$ctrl.form">
   <span ng-if="!$ctrl.isEditing">
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading" ng-if="!$ctrl.isChangeRequest">
         Developer
         <h2 class="panel-title">{{ $ctrl.developer.name }}</h2>
       </div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-sm-4">
+          <div ng-class="$ctrl.isChangeRequest ? 'col-sm-12' : 'col-sm-4'">
             <h3>Developer Details</h3>
-            <span ng-if="!$ctrl.isSplitting">
+            <span ng-if="!$ctrl.isSplitting && !$ctrl.isChangeRequest">
               Developer code: {{ $ctrl.developer.developerCode }}<br />
               <span ng-if="$ctrl.developer.website">Website: <a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a><br /></span>
               Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
               Last modified date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </span>
-            <h3>Contact Information</h3>
-            <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
+            <span ng-if="$ctrl.isChangeRequest">
+              Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
+            </span>
+            <span ng-if="$ctrl.developer.contact">
+              <h3>Contact Information</h3>
+              <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
+            </span>
           </div>
-          <div class="col-sm-4">
+          <div ng-class="$ctrl.isChangeRequest ? 'col-sm-12' : 'col-sm-4'" ng-if="$ctrl.developer.address">
             <h3>Address</h3>
             <chpl-address address="$ctrl.developer.address"></chpl-address>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-4" ng-if="!$ctrl.isChangeRequest">
             <div class="product-element" id="developer-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
               <h3>Transparency Attestations</h3>
               <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
@@ -54,7 +59,8 @@
 
   <span ng-if="$ctrl.isEditing">
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading"
+           ng-if="!$ctrl.isChangeRequest">
         <button class="btn btn-default btn-small pull-right" id="developer-component-cancel"
                 confirm="Are you sure you wish to cancel? Your changes will not be saved."
                 confirm-ok="Yes"
@@ -68,13 +74,15 @@
         <div class="form-group">
           <div class="row">
             <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
-              <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
-              <div class="form-group">
-                <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300" ng-disabled="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])"></input>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
+              <div class="form-group" ng-if="!$ctrl.isChangeRequest">
+                <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
+                <div>
+                  <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300" ng-disabled="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])"></input>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
+                </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="!$ctrl.isChangeRequest">
                 <label class="control-label" for="developer-website">Developer website</label>
                 <div>
                   <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
@@ -85,7 +93,10 @@
               <div class="form-group">
                 <label class="control-label" for="self-developer">Self-developer</label>
                 <div>
-                  <select class="input-sm form-control" ng-model="$ctrl.developer.selfDeveloper" id="self-developer" name="selfDeveloper">
+                  <select class="input-sm form-control" ng-model="$ctrl.developer.selfDeveloper"
+                          ng-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
+                          ng-change="$ctrl.formUpdate()"
+                          id="self-developer" name="selfDeveloper">
                     <option ng-value="true">Yes</option>
                     <option ng-value="false">No</option>
                   </select>
@@ -93,7 +104,8 @@
               </div>
               <chpl-contact contact="$ctrl.developer.contact"
                             is-editing="true"
-                            is-required="true"
+                            is-required="!$ctrl.isChangeRequest"
+                            is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                             ignore-friendly-name="true"
                             on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
             </div>
@@ -101,6 +113,7 @@
               <chpl-address address="$ctrl.developer.address"
                             is-editing="true"
                             is-required="$ctrl.isSplitting"
+                            is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                             on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
             </div>
             <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="col-sm-4">
@@ -181,8 +194,11 @@
           </div>
         </div>
       </div>
-      <div class="panel-footer text-right">
-        <button class="btn btn-default" id="developer-component-save" ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()" ng-mouseover="$ctrl.showFormErrors = true"><i class="fa fa-save"></i> Submit</button>
+      <div class="panel-footer text-right" ng-if="!$ctrl.isChangeRequest">
+        <button class="btn btn-default" id="developer-component-save" ng-click="$ctrl.save()"
+                ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                ng-mouseover="$ctrl.showFormErrors = true"
+                ><i class="fa fa-save"></i> Submit</button>
       </div>
     </div>
   </span> <!-- end edit -->

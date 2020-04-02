@@ -56,11 +56,18 @@
         <span ng-switch-when="Developer Details Change Request">
           <div class="col-sm-4">
             <h3>Current Details</h3>
-            <chpl-developer developer="$ctrl.changeRequest.developer"></chpl-developer>
+            <chpl-developer developer="$ctrl.changeRequest.developer" is-change-request="true"></chpl-developer>
           </div>
           <div class="col-sm-4">
             <h3>Submitted Details</h3>
-            <chpl-developer developer="$ctrl.changeRequest.details"></chpl-developer>
+            <chpl-developer developer="$ctrl.changeRequest.details"
+                            is-change-request="true"
+                            is-editing="true"
+                            can-edit="$ctrl.activeState === 'edit'"
+                            show-form-errors="$ctrl.showFormErrors"
+                            on-edit="$ctrl.handleEditedDeveloper(developer)"
+                            ></chpl-developer>
+            <!--
             <div class="form-group">
               <label class="control-label" for="submitted-website">Submitted website</label>
               <div>
@@ -71,6 +78,7 @@
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.url">Improper format (http://www.example.com)</div>
               </div>
             </div>
+            -->
           </div>
         </span>
       </span>

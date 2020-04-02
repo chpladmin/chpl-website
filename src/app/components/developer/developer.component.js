@@ -6,11 +6,13 @@ export const DeveloperComponent = {
         canEdit: '<',
         canMerge: '<',
         canSplit: '<',
+        isChangeRequest: '<',
         isEditing: '<',
         isInvalid: '<',
         isSplitting: '<',
         onCancel: '&?',
         onEdit: '&?',
+        showFormErrors: '<',
         takeAction: '&',
     },
     controller: class DeveloperComponent {
@@ -32,14 +34,24 @@ export const DeveloperComponent = {
             }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
-                this.developer.statusEvents = this.developer.statusEvents.map(e => {
-                    e.statusDateObject = new Date(e.statusDate);
-                    return e;
-                });
+                if (this.developer.statusEvents) {
+                    this.developer.statusEvents = this.developer.statusEvents.map(e => {
+                        e.statusDateObject = new Date(e.statusDate);
+                        return e;
+                    });
+                }
                 this.transMap = {};
-                this.developer.transparencyAttestations.forEach(att => {
-                    this.transMap[att.acbName] = att.attestation;
-                });
+                if (this.developer.transparencyAttestations) {
+                    this.developer.transparencyAttestations.forEach(att => {
+                        this.transMap[att.acbName] = att.attestation;
+                    });
+                }
+                if (!this.developer.address) {
+                    this.developer.address = {};
+                }
+                if (!this.developer.contact) {
+                    this.developer.contact = {};
+                }
             }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
@@ -50,6 +62,9 @@ export const DeveloperComponent = {
             if (changes.canSplit) {
                 this.canSplit = angular.copy(changes.canSplit.currentValue);
             }
+            if (changes.isChangeRequest) {
+                this.isChangeRequest = angular.copy(changes.isChangeRequest.currentValue);
+            }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
             }
@@ -58,6 +73,9 @@ export const DeveloperComponent = {
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
+            }
+            if (changes.showFormErrors) {
+                this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
             }
         }
 
@@ -145,14 +163,22 @@ export const DeveloperComponent = {
         /*
          * Handle callbacks
          */
+        formUpdate () {
+            if (this.isChangeRequest) {
+                this.onEdit({developer: this.developer});
+            }
+        }
+
         editAddress (address, errors, validForm) {
             this.developer.address = angular.copy(address);
             this.valid.address = validForm;
+            this.onEdit({developer: this.developer});
         }
 
         editContact (contact, errors, validForm) {
             this.developer.contact = angular.copy(contact);
             this.valid.contact = validForm;
+            this.onEdit({developer: this.developer});
         }
 
         /*

@@ -75,6 +75,11 @@ export const ChangeRequestComponent = {
             });
         }
 
+        handleEditedDeveloper (developer) {
+            this.changeRequest.details = developer;
+            this.update();
+        }
+
         isCommentEnabled () {
             return this.administrationMode
                 || this.activeState === 'withdraw'
