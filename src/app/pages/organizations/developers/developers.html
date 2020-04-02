@@ -70,6 +70,15 @@
                       on-edit="$ctrl.save(developer)"
                       take-action="$ctrl.takeAction(action)"
                       ></chpl-developer>
+      <div feature-flag="role-developer">
+        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB']) && !$ctrl.action">
+          <chpl-users column-count="1"
+                      users="$ctrl.users"
+                      roles="$ctrl.roles"
+                      take-action="$ctrl.takeUserAction(action, data)"
+                      ></chpl-users>
+        </div>
+      </div>
       <div ng-if="$ctrl.action === 'split'">
         <h4>Products staying with original Developer</h4>
         <div class="bg-danger" ng-if="$ctrl.products.length === 0">At least one Product must remain</div>
