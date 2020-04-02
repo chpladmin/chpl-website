@@ -63,7 +63,7 @@
             <chpl-developer developer="$ctrl.changeRequest.details"
                             is-change-request="true"
                             is-editing="true"
-                            can-edit="$ctrl.activeState === 'edit'"
+                            can-edit="$ctrl.activeState === 'edit' && !$ctrl.administrationMode"
                             show-form-errors="$ctrl.showFormErrors"
                             on-edit="$ctrl.handleEditedDeveloper(developer)"
                             ></chpl-developer>
@@ -173,11 +173,9 @@
           </div>
           <div ng-class="$ctrl.administrationMode ? 'col-sm-6' : 'col-sm-12'">
             Submitted details<br />
-            <ul class="list-unstyled">
-              <li ng-if="$ctrl.changeRequest.details.selfDeveloper !== null">Self-developer: {{ $ctrl.changeRequest.details.selfDeveloper ? 'Yes': 'No' }}</li>
-              <li ng-if="$ctrl.changeRequest.details.contact !== null">Contact:<chpl-contact contact="$ctrl.changeRequest.details.contact"></chpl-contact></li>
-              <li ng-if="$ctrl.changeRequest.details.address !== null">Address:<chpl-address address="$ctrl.changeRequest.details.address"></chpl-address></li>
-            </ul>
+            <chpl-developer developer="$ctrl.changeRequest.details"
+                            is-change-request="true"
+                            ></chpl-developer>
           </div>
         </span>
       </span>

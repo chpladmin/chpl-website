@@ -73,7 +73,7 @@
       <div class="panel-body">
         <div class="form-group">
           <div class="row">
-            <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
+            <div ng-class="$ctrl.hasAnyRole((['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest) ? 'col-sm-4' : 'col-sm-6'">
               <div class="form-group" ng-if="!$ctrl.isChangeRequest">
                 <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
                 <div>
@@ -109,14 +109,14 @@
                             ignore-friendly-name="true"
                             on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
             </div>
-            <div ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) ? 'col-sm-4' : 'col-sm-6'">
+            <div ng-class="($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest) ? 'col-sm-4' : 'col-sm-6'">
               <chpl-address address="$ctrl.developer.address"
                             is-editing="true"
                             is-required="$ctrl.isSplitting"
                             is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                             on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
             </div>
-            <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="col-sm-4">
+            <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest" class="col-sm-4">
               <span ng-if="$ctrl.isTransparencyAttestationEditable()">
                 <div class="form-group" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
                   <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>

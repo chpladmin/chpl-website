@@ -46,12 +46,6 @@ export const DeveloperComponent = {
                         this.transMap[att.acbName] = att.attestation;
                     });
                 }
-                if (!this.developer.address) {
-                    this.developer.address = {};
-                }
-                if (!this.developer.contact) {
-                    this.developer.contact = {};
-                }
             }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
