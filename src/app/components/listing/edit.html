@@ -45,7 +45,7 @@
     </select>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpClassification.$touched) && $ctrl.form.cpClassification.$error.required">Field is required</div>
   </div>
-  <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <br />
+  <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
   <div ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} </div>
   <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="form-group">
     <label for="cp-body">Certification Body</label>

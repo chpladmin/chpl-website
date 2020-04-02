@@ -583,6 +583,7 @@ export const ReportsListingsComponent = {
                     {key: 'accessibilityCertified', display: 'Accessibility Certified'},
                     {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
                     {key: 'chplProductNumber', display: 'CHPL Product Number'},
+                    {key: 'curesUpdate', display: '2015 Edition Cures Update status'},
                     {key: 'otherAcb', display: 'Other ONC-ACB'},
                     {key: 'productAdditionalSoftware', display: 'Product-wide Relied Upon Software'},
                     {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
