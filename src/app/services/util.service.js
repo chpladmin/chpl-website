@@ -410,23 +410,42 @@
         }
 
         function certificationResultSortIndex (certResult) {
-            //Handle both criteria numbers and certificationResult objects
-            var valueToFind;
-            if (certResult.number) {
-                valueToFind = certResult.number;
-                if (isCertResultForCuresUpdateCriterion(certResult)) {
-                    valueToFind += '(Cures Update)';
-                }
-            } else {
-                valueToFind = certResult;
+            //Handle both criteria numbers, names and certificationResult objects
+            let criterion = createCriterion(certResult);
+            if (!criterion) {
+                //Couldn't figure out what was passed in...
+                return Number.MAX_VALUE;
             }
 
+            let valueToFind = criterion.number;
+            if (isCertResultForCuresUpdateCriterion(criterion)) {
+                valueToFind += '(Cures Update)';
+            }
             //If we don't find the item in the referece array, put it at the end
             let index = certificationResultSortOrder().findIndex(item => item === valueToFind);
             if (index === -1) {
-                index = 10000;
+                index = Number.MAX_VALUE;
             }
             return index;
+        }
+
+        function createCriterion (cert) {
+            let criterion;
+            if (cert.number) {
+                criterion = {'number': cert.number, 'title': cert.title};
+
+            } else if (cert.name) {
+                criterion = {
+                    'number': cert.name.indexOf(':') > -1 ? cert.name.substring(0, cert.name.indexOf(':')) : cert.name,
+                    'title': cert.name.indexOf(':') > -1 ? cert.name.substring(cert.name.indexOf(':') + 1) : '',
+                }
+            } else {
+                criterion = {
+                    'number': cert.indexOf(':') > -1 ? cert.substring(0, cert.indexOf(':')) : cert,
+                    'title': cert.indexOf(':') > -1 ? cert.substring(cert.indexOf(':') + 1) : '',
+                }
+            }
+            return criterion;
         }
 
         function certificationResultSortOrder () {
