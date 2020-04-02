@@ -130,12 +130,21 @@ export const DashboardComponent = {
         }
 
         handleError (error) {
-            let messages = error.data.errorMessages ? error.data.errorMessages : [];
+            let messages;
+            let type = 'error';
+            let title = 'Error in submission';
+            if (error && error.data && error.data.error && error.data.error === 'gov.healthit.chpl.exception.InvalidArgumentsException: No data was changed.') {
+                messages = ['No data was changed'];
+                type = 'info';
+                title = 'Please check your input';
+            } else {
+                messages = error.data.errorMessages ? error.data.errorMessages : [];
+            }
             let body = messages.length > 0 ? 'Message' + (messages.length > 1 ? 's' : '') + ':<ul>' + messages.map(e => '<li>' + e + '</li>').join('') + '</ul>'
                 : 'An unexpected error occurred. Please try again or contact ONC for support';
             this.toaster.pop({
-                type: 'error',
-                title: 'Error in submission',
+                type: type,
+                title: title,
                 body: body,
                 bodyOutputType: 'trustedHtml',
             });
