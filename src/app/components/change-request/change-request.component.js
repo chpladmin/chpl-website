@@ -32,7 +32,7 @@ export const ChangeRequestComponent = {
                         s.actingOrganization = 'ONC';
                         break;
                     case 'ROLE_ACB':
-                        s.actingOrganization = s.certificationBody;
+                        s.actingOrganization = s.certificationBody.name;
                         break;
                     case 'ROLE_DEVELOPER':
                         s.actingOrganization = this.changeRequest.developer.name;
