@@ -199,7 +199,6 @@
                 var criteria2014_a_10 = { number: '170.314 (a)(10)' };
                 var criteria2015_d_1 = { number: '170.315 (d)(1)' };
                 var criteria2015_e_1 = { number: '170.315 (e)(1)' };
-                var criteria2015_e_1_removed = { number: '170.315 (e)(1) (Removed)' };
                 var criteria2015_g_4 = { number: '170.315 (g)(4)' };
                 var criteria2015_g_10 = { number: '170.315 (g)(10)' };
                 var transparency_k_2 = { number: '170.523 (k)(2)' };
@@ -208,8 +207,6 @@
                 expect(util.sortNonconformityTypes(criteria2014_a_10)).toBeLessThan(util.sortNonconformityTypes(criteria2015_d_1));
                 expect(util.sortNonconformityTypes(criteria2015_d_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_e_1));
                 expect(util.sortNonconformityTypes(criteria2015_e_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_4));
-                //This tes is not valid - we are no passing non-conformities with '(Removed)' appended to criteria number
-                //expect(util.sortNonconformityTypes(criteria2015_e_1)).toBe(util.sortNonconformityTypes(criteria2015_e_1_removed));
                 expect(util.sortNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_10));
                 expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
