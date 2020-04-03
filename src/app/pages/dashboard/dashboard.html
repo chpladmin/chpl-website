@@ -33,11 +33,18 @@
       </div>
       <div class="row" ng-if="$ctrl.inState('users')">
         <div class="col-md-12">
-          <chpl-users column-count="3"
-                      users="$ctrl.users"
-                      roles="$ctrl.roles"
-                      take-action="$ctrl.takeUserAction(action, data)"
-                      ></chpl-users>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
+            </div>
+            <div class="panel-body">
+              <chpl-users column-count="3"
+                          users="$ctrl.users"
+                          roles="$ctrl.roles"
+                          take-action="$ctrl.takeUserAction(action, data)"
+                          ></chpl-users>
+            </div>
+          </div>
         </div>
       </div>
     </div>
