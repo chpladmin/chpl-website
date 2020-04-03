@@ -71,12 +71,17 @@
                       take-action="$ctrl.takeAction(action)"
                       ></chpl-developer>
       <div feature-flag="role-developer">
-        <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB']) && !$ctrl.action">
-          <chpl-users column-count="1"
-                      users="$ctrl.users"
-                      roles="$ctrl.roles"
-                      take-action="$ctrl.takeUserAction(action, data)"
-                      ></chpl-users>
+        <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB']) && !$ctrl.action">
+          <div class="panel-heading">
+            <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
+          </div>
+          <div class="panel-body">
+            <chpl-users column-count="1"
+                        users="$ctrl.users"
+                        roles="$ctrl.roles"
+                        take-action="$ctrl.takeUserAction(action, data)"
+                        ></chpl-users>
+          </div>
         </div>
       </div>
       <div ng-if="$ctrl.action === 'split'">
