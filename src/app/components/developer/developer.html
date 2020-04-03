@@ -73,7 +73,7 @@
       <div class="panel-body">
         <div class="form-group">
           <div class="row">
-            <div ng-class="$ctrl.hasAnyRole((['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest) ? 'col-sm-4' : 'col-sm-6'">
+            <div ng-class="($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest) ? 'col-sm-4' : 'col-sm-6'">
               <div class="form-group" ng-if="!$ctrl.isChangeRequest">
                 <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
                 <div>
