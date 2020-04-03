@@ -67,18 +67,6 @@
                             show-form-errors="$ctrl.showFormErrors"
                             on-edit="$ctrl.handleEditedDeveloper(developer)"
                             ></chpl-developer>
-            <!--
-            <div class="form-group">
-              <label class="control-label" for="submitted-website">Submitted website</label>
-              <div>
-                <input class="input-sm form-control" type="url" id="submitted-website" name="submittedWebsite" required
-                       ng-model="$ctrl.changeRequest.details.website" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw' || $ctrl.administrationMode" ng-change="$ctrl.update()"></input>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.required">Field is required</div>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.maxlength">Field is too long</div>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.url">Improper format (http://www.example.com)</div>
-              </div>
-            </div>
-            -->
           </div>
         </span>
       </span>

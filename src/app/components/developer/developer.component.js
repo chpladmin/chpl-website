@@ -166,13 +166,17 @@ export const DeveloperComponent = {
         editAddress (address, errors, validForm) {
             this.developer.address = angular.copy(address);
             this.valid.address = validForm;
-            this.onEdit({developer: this.developer});
+            if (this.isChangeRequest) {
+                this.onEdit({developer: this.developer});
+            }
         }
 
         editContact (contact, errors, validForm) {
             this.developer.contact = angular.copy(contact);
             this.valid.contact = validForm;
-            this.onEdit({developer: this.developer});
+            if (this.isChangeRequest) {
+                this.onEdit({developer: this.developer});
+            }
         }
 
         /*
