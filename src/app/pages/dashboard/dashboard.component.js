@@ -134,8 +134,7 @@ export const DashboardComponent = {
             let type = 'error';
             let title = 'Error in submission';
             if (error && error.data && error.data.error
-                && (error.data.error === 'gov.healthit.chpl.exception.InvalidArgumentsException: No data was changed.'
-                    || error.data.error === 'No data was changed.')) {
+                && error.data.error === 'No data was changed.') {
                 messages = ['No data was changed'];
                 type = 'info';
                 title = 'Please check your input';
