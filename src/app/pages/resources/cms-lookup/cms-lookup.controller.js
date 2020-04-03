@@ -133,7 +133,7 @@
                     cp.version,
                     cp.vendor,
                     cp.chplProductNumber,
-                    cp.year,
+                    cp.year + (cp.curesUpdate ? ' Cures Update' : ''),
                     cp.classification,
                     cp.practiceType,
                 ]);

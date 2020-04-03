@@ -21,6 +21,7 @@ export const SurveillanceReportExcludedListingsComponent = {
                         listing.formattedCertificationDate = new Date(listing.certificationDate);
                         listing.lastModifiedDate = parseInt(listing.lastModifiedDate, 10);
                         listing.formattedLastModifiedDate = new Date(listing.lastModifiedDate);
+                        listing.edition = listing.edition + (listing.curesUpdate ? ' Cures Update' : '');
                         if (listing.excluded) {
                             this.excludedListings.push(listing);
                         }
