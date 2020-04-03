@@ -11,7 +11,6 @@
                 allowAnd: '@?',
                 hasChanges: '=?',
                 hidden: '@?',
-                hiddenOptions: '@?',
                 matchFull: '@?',
                 nameSpace: '@?',
                 separator: '@?',
@@ -227,17 +226,14 @@
         function filterChanged () {
             vm.hasChanges = getChanged();
             var query;
-            var numberOfItems = vm.selected.length;
             query = { separator: vm.separator ? vm.separator : '' };
             if (vm.matchAll) {
                 query.matchAll = {
-                    all: numberOfItems === 0,
                     matchFull: vm.matchFull,
                     items: vm.selected,
                 }
             } else {
                 query.matchAny = {
-                    all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length)),
                     matchFull: vm.matchFull,
                     items: vm.selected,
                 }
@@ -299,7 +295,7 @@
                 vm.selected.splice(index, 1);
             } else {
                 vm.selected.push(item.value);
-                if (!dontTriggerRetired && item.retired) {
+                if (!dontTriggerRetired && item.retired && vm.triggerShowRetired) {
                     vm.triggerShowRetired();
                 }
                 if (vm.trackAnalytics) {

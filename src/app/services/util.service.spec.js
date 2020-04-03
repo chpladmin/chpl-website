@@ -644,5 +644,37 @@
                 });
             });
         });
+
+        describe('when examining a criterion', () => {
+            it('should know if it counts as cures based on title', () => {
+                let criterion = {
+                    number: '170.315 (d)(2)',
+                    title: 'A Cures Criteria (Cures Update)',
+                };
+                expect(util.isCures(criterion)).toBe(true);
+            });
+
+            it('should know if it counts as cures based on number', () => {
+                let criterion = {
+                    number: '170.315 (b)(10)',
+                    title: 'a cures criteria',
+                };
+                expect(util.isCures(criterion)).toBe(true);
+                criterion.number = '170.315 (d)(12)';
+                expect(util.isCures(criterion)).toBe(true);
+                criterion.number = '170.315 (d)(13)';
+                expect(util.isCures(criterion)).toBe(true);
+                criterion.number = '170.315 (g)(10)';
+                expect(util.isCures(criterion)).toBe(true);
+            });
+
+            it('should know if it doesn\'t count as cures', () => {
+                let criterion = {
+                    number: '170.315 (d)(2)',
+                    title: 'not cures',
+                };
+                expect(util.isCures(criterion)).toBe(false);
+            });
+        });
     });
 })();

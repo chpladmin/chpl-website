@@ -7,7 +7,6 @@
         mock = {};
         mock.inspectingCp = {
             developer: { developerId: 1},
-            transparencyAttestation: 'Affirmative',
         };
         mock.resources = {
             bodies: [],
@@ -46,8 +45,6 @@
                     $uibModalInstance: Mock.modalInstance,
                     developers: Mock.developers,
                     inspectingCp: mock.inspectingCp,
-                    isAcbAdmin: true,
-                    isChplAdmin: true,
                     resources: mock.resources,
                 });
                 scope.$digest();
