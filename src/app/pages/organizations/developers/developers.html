@@ -46,7 +46,7 @@
             <td>{{ dev.developerCode }}</td>
             <td>{{ dev.name }}</td>
             <td>{{ dev.status.status }}</td>
-            <td ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
+            <td ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att].transparencyAttestation : 'None' }}</td>
             <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
         </tbody>
