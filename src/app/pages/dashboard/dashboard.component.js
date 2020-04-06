@@ -118,15 +118,24 @@ export const DashboardComponent = {
 
         updateRequest (data) {
             let that = this;
+            if (data.currentStatus && data.currentStatus.changeRequestStatusType && data.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
+                this.isWithdrawing = true;
+            } else {
+                this.isWithdrawing = false;
+            }
             this.networkService.updateChangeRequest(data)
                 .then(that.handleResponse.bind(that), that.handleError.bind(that));
         }
 
         handleResponse () {
             let that = this;
+            let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
+            if (this.isWithdrawing) {
+                confirmationText = 'Your change request has been successfully withdrawn.';
+            }
             this.networkService.getChangeRequests().then(response => that.changeRequests = response);
             this.state = 'confirmation';
-            this.confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.'
+            this.confirmationText = confirmationText;
         }
 
         handleError (error) {
@@ -135,7 +144,7 @@ export const DashboardComponent = {
             let title = 'Error in submission';
             if (error && error.data && error.data.error
                 && error.data.error === 'No data was changed.') {
-                messages = ['No data was changed'];
+                messages = ['Cannot "Submit" a change request when no changes have been made.'];
                 type = 'info';
                 title = 'Please check your input';
             } else {
