@@ -644,7 +644,7 @@ option[label^="Removed"] {
     font-weight: bold;
 }
 
-.new-style {
+.new-style-old {
     /* start of official new style code */
 
     /* Panel Styling */
@@ -796,5 +796,248 @@ option[label^="Removed"] {
                 clear: both;
             }
         }
+    }
+}
+
+.new-style {
+    /* Colors */
+
+    :root {
+        --grey-blue: #edf6ff;
+        --blue: #156dac;
+        --darkblue: #0e547f;
+        --grey: #c6d5e5;
+        --red: #c44f65;
+        --dark-grey: #555555;
+        --black: #1c1c1c;
+        --light-grey: #f9f9f9;
+        --white: #ffffff;
+        --primary: #edf6ff;
+        --secondary: #156dac;
+        --success: #4fc16f;
+        --info: #0e547f;
+        --warning: #c44f65;
+        --danger: #c44f65;
+        --light: #f9f9f9;
+        --dark: #1c1c1c;
+        --breakpoint-xs: 0;
+        --breakpoint-sm: 576px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 992px;
+        --breakpoint-xl: 1200px;
+        --font-family-sans-serif: Lato, Sans-serif;
+        --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    //*,
+
+    /* Typography */
+
+    h1 {
+        font-family: "Lato", sans-serif;
+        font-size: 2.5em;
+        font-weight: 900;
+        color: #1c1c1c;
+    }
+
+    h2 {
+        font-family: "Lato", sans-serif;
+        font-size: 2em;
+        font-weight: 600;
+        color: #1c1c1c;
+    }
+
+    h3 {
+        font-family: "Lato", sans-serif !important;
+        font-size: 1.75em;
+        font-weight: 900;
+        color: #1c1c1c;
+    }
+
+    h4 {
+        font-family: "Lato", sans-serif;
+        font-size: 1.5em;
+        font-weight: 600;
+        color: #1c1c1c;
+    }
+
+    h5 {
+        font-family: "Lato", sans-serif !important;
+        font-size: 1.25em;
+        font-weight: 900;
+        color: #1c1c1c;
+    }
+
+    h6 {
+        font-family: "Lato", sans-serif;
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #1c1c1c;
+    }
+
+    p {
+        font-family: "Lato", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        color: #1c1c1c;
+
+        .italic {
+            font-style: italic;
+        }
+
+        .bold {
+            font-style: italic;
+        }
+
+        .product-subheads {
+            text-transform: uppercase;
+            color: #555555;
+            padding: 10px 0 0;
+            font-weight: 300;
+        }
+    }
+    /* Button Styling */
+
+    .btn-default {
+        color: #156dac;
+        background: #edf6ff;
+        padding: 10px;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: #156dac 2px solid;
+
+        &:hover {
+            background: #d5e9fd;
+        }
+
+        &:focus {
+            background: #d5e9fd;
+        }
+
+        /*
+        &:active {
+	    inset 0px 0px 4px rgba(0, 0, 0, 0.25);
+        }
+        */
+    }
+
+    .btn-primary {
+        color: #156dac;
+        background: #ffffff;
+        padding: 10px;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: #156dac 2px solid;
+
+        /*
+        &:active {
+            inset 0px 0px 4px rgba(0, 0, 0, 0.25);
+        }
+        */
+
+        &:hover {
+            background: #f9f9f9;
+        }
+
+        &:focus {
+            background: #f9f9f9;
+        }
+    }
+
+    .btn-ai {
+        color: #f5d43c;
+        background: linear-gradient(#0070c9, #004378);
+
+        &:focus,
+        &.focus,
+        &:hover {
+            color: #fff;
+            background: linear-gradient(#0057b0, #001045);
+        }
+
+        &:active,
+        &.active {
+            color: #fff;
+            background: linear-gradient(#0057b0, #001045);
+
+            &:hover,
+            &:focus {
+                border: red;
+            }
+        }
+    }
+    /* Badges*/
+
+    .badge-success {
+        background-color: #4fc16f;
+
+        &:hover {
+            background-color: #356635;
+        }
+    }
+
+    .badge-error {
+        background-color: #c44f65;
+
+        &:hover {
+            background-color: #953b39;
+        }
+    }
+
+    /*Panel Styling */
+
+    .panel-default {
+        margin: 15px;
+        background-color: #fff;
+        border: 1px solid #c6d5e5;
+        border-radius: 5px;
+        box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
+    }
+
+    panel-body {
+        padding: 10px 10px 10px 15px;
+    }
+
+    .panel-ai {
+        border-color: #c6d5e5;
+
+        .panel-heading {
+            color: #1c1c1c;
+            background: #edf6ff;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-color: #c6d5e5;
+
+            a {
+                color: #1c1c1c;
+
+                .pull-right {
+                    color: #555555;
+                }
+            }
+
+            .badge {
+                color: #1c1c1c;
+                background: #edf6ff;
+            }
+        }
+    }
+
+    .panel-ai > .panel-heading + .panel-collapse > .panel-body {
+        border-top-color: #c6d5e5;
+    }
+
+    .panel-ai > .panel-footer + .panel-collapse > .panel-body {
+        border-bottom-color: #c6d5e5;
+    }
+
+    /* Form Styling Dropdown */
+
+    .form-control {
+        border-radius: 5px;
+        font-weight: bold;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        height: 50px;
     }
 }

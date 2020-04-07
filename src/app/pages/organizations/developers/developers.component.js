@@ -6,7 +6,7 @@ export const DevelopersComponent = {
         products: '<',
     },
     controller: class DevelopersComponent {
-        constructor ($log, $scope, $state, $stateParams, authService, networkService) {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.$scope = $scope;
@@ -14,19 +14,21 @@ export const DevelopersComponent = {
             this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.toaster = toaster;
             this.backup = {};
             this.splitEdit = true;
             this.movingProducts = [];
             this.activeAcbs = [];
+            this.roles = ['ROLE_DEVELOPER'];
         }
 
         $onInit () {
             let that = this;
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-                this.loadAcbs();
+                this.loadData();
             }
             let loggedIn = this.$scope.$on('loggedIn', () => {
-                that.loadAcbs();
+                that.loadData();
             })
             this.$scope.$on('$destroy', loggedIn);
             this.networkService.getSearchOptions()
@@ -86,11 +88,14 @@ export const DevelopersComponent = {
             this.splitEdit = false;
         }
 
-        loadAcbs () {
+        loadData () {
             let that = this;
             this.networkService.getAcbs(true).then(response => {
                 that.allowedAcbs = response.acbs;
             });
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && this.$stateParams.developerId) {
+                this.networkService.getUsersAtDeveloper(this.$stateParams.developerId).then(response => that.users = response.users);
+            }
         }
 
         loadDeveloper () {
@@ -192,6 +197,45 @@ export const DevelopersComponent = {
 
         takeAction (action) {
             this.action = action;
+        }
+
+        takeUserAction (action, data) {
+            let that = this;
+            switch (action) {
+            case 'edit':
+                this.state = 'focusUsers';
+                break;
+            case 'cancel':
+                this.state = undefined;
+                break;
+            case 'delete':
+                this.state = undefined;
+                this.networkService.removeUserFromDeveloper(data, this.$stateParams.developerId)
+                    .then(() => that.networkService.getUsersAtDeveloper(that.$stateParams.developerId).then(response => that.users = response.users));
+                break;
+            case 'invite':
+                this.state = undefined;
+                this.networkService.inviteUser({
+                    role: data.role,
+                    emailAddress: data.email,
+                    permissionObjectId: this.$stateParams.developerId,
+                }).then(() => that.toaster.pop({
+                    type: 'success',
+                    title: 'Email sent',
+                    body: 'Email sent successfully to ' + data.email,
+                }));
+                break;
+            case 'refresh':
+                this.state = undefined;
+                this.networkService.getUsersAtDeveloper(this.$stateParams.developerId)
+                    .then(response => that.users = response.users);
+                break;
+            case 'impersonate':
+                this.state = undefined;
+                this.$state.reload();
+                break;
+                //no default
+            }
         }
 
         takeProductAction (action, productId) {
