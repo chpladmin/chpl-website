@@ -91,6 +91,7 @@ export const UsersComponent = {
             this.form.$setPristine();
             this.form.$setUntouched();
             this.showFormErrors = false;
+            this.invitationOpen = false;
         }
 
         filter () {
