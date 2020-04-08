@@ -22,12 +22,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-if="$ctrl.cert.criterion.removed" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_removed">
-            <td>
-              Removed <button class="btn btn-link btn-xs pull-right" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-            </td>
-            <td>True</td>
-          </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.gap !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_GAP">
             <td>
               GAP <button class="btn btn-link btn-xs pull-right" uib-tooltip="The corresponding certification criteria are gap certified (True or False)." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The corresponding certification criteria are gap certified (True or False).</span><i class="fa fa-info-circle fa-lg"></i></button>
