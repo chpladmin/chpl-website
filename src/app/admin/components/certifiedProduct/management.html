@@ -347,7 +347,7 @@
                   <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
                   <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>
                   <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br /></span>
-                  <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
+                  <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <span ng-if="vm.activeCP.curesUpdate">Cures Update</span> <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                   <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>

@@ -17,31 +17,34 @@
           </div>
         </div>
         <div class="col-md-2" ng-form="$ctrl.form">
-          <button class="btn btn-default pull-right" ng-if="!$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = true" uib-tooltip="Invite a User" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-user-plus"></i><span class="sr-only">Invite a User</span></button>
-          <button class="btn btn-default pull-right" ng-if="$ctrl.showInviteForm" ng-click="$ctrl.showInviteForm = false"><i class="fa fa-close"></i><span class="sr-only">Cancel invitation</span></button>
-          <h2>Invite a User</h2>
-          <span ng-if="$ctrl.showInviteForm">
-            <div class="form-group">
-              <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
-              <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
-              <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
-              <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
-            </div>
-            <div class="form-group" ng-if="$ctrl.roles.length > 1">
-              <label class="control-label" for="new-role">User Role <span class="text-danger">*</span></label>
-              <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
-                      ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
-              <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
-                        ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-                        ng-mouseover="$ctrl.showFormErrors = true"
-                        ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
+          <div uib-dropdown auto-close="outsideClick" is-open="$ctrl.invitationOpen">
+            <button class="btn btn-default dropdown-toggle" type="button" id="invite-user-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true"
+                    uib-tooltip="Invite a User" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-user-plus"></i><span class="sr-only">Invite a User</span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-large" aria-labeledby="invite-user-button" uib-dropdown-menu>
+              <h2>Invite a User</h2>
+              <div class="form-group">
+                <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
+                <input class="form-control input-sm" type="email" required ng-model="$ctrl.inviteEmail" id="invite-email" name="inviteEmail" />
+                <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.required">Email is required</div>
+                <div class="text-danger" ng-if="($ctrl.form.inviteEmail.$touched || $ctrl.showFormErrors) && $ctrl.form.inviteEmail.$error.email">Invalid email</div>
+              </div>
+              <div class="form-group" ng-if="$ctrl.roles.length > 1">
+                <label class="control-label" for="new-role">User Role <span class="text-danger">*</span></label>
+                <select class="form-control input-sm" required ng-model="$ctrl.newRole" id="new-role" name="newRole"
+                        ng-options="role as role for role in $ctrl.roles | orderBy : 'toString()'"></select>
+                <div class="text-danger" ng-if="($ctrl.form.newRole.$touched || $ctrl.showFormErrors) && $ctrl.form.newRole.$error.required">Role is required</div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
+                          ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+                          ng-mouseover="$ctrl.showFormErrors = true"
+                          ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
+                </div>
               </div>
             </div>
-          </span>
+          </div>
         </div>
       </div>
       <div class="row" ng-repeat="idx in $ctrl.range($ctrl.filteredUsers.length, $ctrl.columnCount)">

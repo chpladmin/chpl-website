@@ -16,6 +16,7 @@
             extendSelect: extendSelect,
             findModel: findModel,
             isBlank: isBlank,
+            isCures: isCures,
             makeCsv: makeCsv,
             muuCount: muuCount,
             passwordClass: passwordClass,
@@ -165,6 +166,14 @@
             } else {
                 return item;
             }
+        }
+
+        function isCures (criterion) {
+            return criterion.title.indexOf('Cures Update') > -1
+            || criterion.number === '170.315 (b)(10)'
+            || criterion.number === '170.315 (d)(12)'
+            || criterion.number === '170.315 (d)(13)'
+            || criterion.number === '170.315 (g)(10)';
         }
 
         function makeCsv (data) {

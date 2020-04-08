@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, featureFlags, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, featureFlags, inspectingCp, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -20,17 +20,13 @@
 
         vm.confirm = confirm;
         vm.reject = reject;
-        vm.editCertifiedProduct = editCertifiedProduct;
+        vm.editListing = editListing;
 
         vm.next = next;
         vm.previous = previous;
         vm.isDisabled = isDisabled;
-
         vm.cancel = cancel;
-        vm.ternaryFilter = utilService.ternaryFilter;
-        vm.checkQmsBoolean = checkQmsBoolean;
 
-        vm.certificationStatus = utilService.certificationStatus;
         vm.isBlank = utilService.isBlank;
         vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
@@ -46,24 +42,14 @@
             vm.stage = 'dev';
 
             vm.developers = developers;
-            vm.loadDev();
-
             vm.products = [];
-
             vm.versions = [];
+            vm.loadDev();
 
             vm.errorMessages = [];
             vm.systemRequirements = [];
-            vm.isAcbAdmin = isAcbAdmin;
-            vm.isChplAdmin = isChplAdmin;
             vm.resources = resources;
-            vm.statuses = resources.statuses;
-            for (var i = 0; i < vm.statuses.length; i++) {
-                if (vm.statuses[i].name === 'Pending') {
-                    vm.cp.certificationStatus = vm.statuses[i];
-                    break;
-                }
-            }
+
             if (!vm.cp.developer.country) {
                 vm.cp.developer.country = 'USA';
             }
@@ -137,31 +123,8 @@
                 });
         }
 
-        function editCertifiedProduct () {
-            // if listing-edit is off, use this modal. If it's on, we'll need a new thing
-            vm.editModalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
-                controller: 'EditCertifiedProductController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    activeCP: function () { return vm.cp; },
-                    isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isChplAdmin: function () { return vm.isChplAdmin; },
-                    resources: function () { return vm.resources; },
-                    workType: function () { return 'confirm'; },
-                },
-            });
-            vm.editModalInstance.result.then(function (result) {
-                vm.cp = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
-                }
-            });
+        function editListing (listing) {
+            vm.cp = listing;
         }
 
         function next () {
@@ -238,21 +201,21 @@
                     if (vm.isBlank(vm.developer.contact.fullName) || vm.isBlank(vm.developer.contact.email)
                         || vm.isBlank(vm.developer.contact.phoneNumber)) {
                         vm.systemRequirements.push('At least one type of required developer contact information'
-                            + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                                                   + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
                     }
                 } else {
                     vm.systemRequirements.push('None of the required developer contact information'
-                        + EXISTS_MSG + PLEASE_SAVE_MSG);
+                                               + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
                 if (vm.developer.address) {
                     if (vm.isBlank(vm.developer.address.line1) || vm.isBlank(vm.developer.address.city)
                         || vm.isBlank(vm.developer.address.state) || vm.isBlank(vm.developer.address.zipcode)) {
                         vm.systemRequirements.push('At least one type of required developer address information'
-                            + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
+                                                   + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
                     }
                 } else {
                     vm.systemRequirements.push('None of the required developer address information'
-                        + EXISTS_MSG + PLEASE_SAVE_MSG);
+                                               + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
                 if ((!vm.getAttestationForCurrentSystemDeveloper() || vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)) && !vm.isOn('effective-rule-date')) {
                     vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
@@ -273,16 +236,6 @@
         function cancel () {
             $uibModalInstance.dismiss('cancelled');
         }
-
-        function checkQmsBoolean (qms) {
-            if (qms === null) {
-                return vm.cp.qmsStandards.length > 0 ? 'True' : 'False';
-            } else {
-                return vm.cp.hasQms ? 'True' : 'False';
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////
 
         function loadFamily () {
             if (vm.product && vm.product.productId) {

@@ -66,7 +66,7 @@
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-criteria-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['criteria'][2011] || vm.categoryChanged['criteria'][2014] || vm.categoryChanged['criteria'][2015]" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
+              <a ng-if="vm.categoryChanged['criteria'][2011] || vm.categoryChanged['criteria'][2014] || vm.categoryChanged['criteria'][2015] || vm.categoryChanged['criteria']['2015Cures']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button" uib-dropdown-menu>
               <li>
@@ -117,6 +117,24 @@
                   collection="vm.allCps"
                   fixed-items="vm.filterItems.criteria[2015]"
                   has-changes="vm.categoryChanged['criteria'][2015]"
+                  predicate="criteriaMet"
+                  register-clear-filter="vm.registerClearFilter(clearFilter)"
+                  register-restore-state="vm.registerRestoreState(restoreState)"
+                  name-space="searchTableState"
+                  allow-and="true"
+                  separator="{{ vm.SPLIT_PRIMARY }}"
+                  track-analytics="true"></st-list-multiple>
+              </li>
+              <li feature-flag="effective-rule-date">
+                <a href ng-click="vm.show2015Cures = !vm.show2015Cures">
+                  <i class="fa" ng-class="vm.show2015 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2015Cures ? 'Hide' : 'View' }} 2015 Cures Update Certification Criteria <span ng-if="vm.categoryChanged['criteria']['2015Cures']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.show2015Cures">
+                <st-list-multiple
+                  collection="vm.allCps"
+                  fixed-items="vm.filterItems.criteria['2015Cures']"
+                  has-changes="vm.categoryChanged['criteria']['2015Cures']"
                   predicate="criteriaMet"
                   register-clear-filter="vm.registerClearFilter(clearFilter)"
                   register-restore-state="vm.registerRestoreState(restoreState)"
