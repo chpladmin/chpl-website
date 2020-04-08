@@ -32,7 +32,7 @@ export const ChartsComponent = {
         loadCriterionProductCountChart () {
             let that = this;
             this.networkService.getCriterionProductStatistics().then(data => {
-                //Elevate the criteria information in the object, so allow for sorting
+                //Elevate the criteria information in the object, to allow for sorting
                 data.criterionProductStatisticsResult = data.criterionProductStatisticsResult.map(stat => {
                     stat.number = stat.criterion.number;
                     stat.title = stat.criterion.title;
