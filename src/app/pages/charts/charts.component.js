@@ -55,7 +55,16 @@ export const ChartsComponent = {
 
         loadNonconformityCountChart () {
             let that = this;
-            this.networkService.getNonconformityStatisticsCount().then(data => that.nonconformityCriteriaCount = data);
+            this.networkService.getNonconformityStatisticsCount().then(data => {
+                //Elevate the criteria information in the object, to allow for sorting
+                data.nonconformityStatisticsResult = data.nonconformityStatisticsResult.map(stat => {
+                    stat.number = stat.criterion ? stat.criterion.number : stat.nonconformityType;
+                    stat.title = stat.criterion ? stat.criterion.title : '';
+                    return stat;
+                });
+                data.nonconformityStatisticsResult.sort((a, b) => that.utilService.sortCertActual(a, b));
+                that.nonconformityCriteriaCount = data;
+            });
         }
 
         loadSedParticipantCountChart () {
