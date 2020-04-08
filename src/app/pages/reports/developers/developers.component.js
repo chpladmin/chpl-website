@@ -77,6 +77,7 @@ export const ReportsDevelopersComponent = {
                     {key: 'developerCode', display: 'Developer Code'},
                     {key: 'name', display: 'Name'},
                     {key: 'website', display: 'Website'},
+                    {key: 'selfDeveloper', display: 'Self-developer'},
                 ];
                 var nestedKeys = [
                     {key: 'status', subkey: 'statusName', display: 'Developer Status'},
