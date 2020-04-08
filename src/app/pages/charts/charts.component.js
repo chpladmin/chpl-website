@@ -3,10 +3,11 @@ export const ChartsComponent = {
     bindings: {
     },
     controller: class ChartsComponent {
-        constructor ($log, networkService) {
+        constructor ($log, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.networkService = networkService;
+            this.utilService = utilService;
         }
 
         $onInit () {
@@ -30,7 +31,16 @@ export const ChartsComponent = {
 
         loadCriterionProductCountChart () {
             let that = this;
-            this.networkService.getCriterionProductStatistics().then(data => that.criterionProduct = data);
+            this.networkService.getCriterionProductStatistics().then(data => {
+                //Elevate the criteria information in the object, so allow for sorting
+                data.criterionProductStatisticsResult = data.criterionProductStatisticsResult.map(stat => {
+                    stat.number = stat.criterion.number;
+                    stat.title = stat.criterion.title;
+                    return stat;
+                });
+                data.criterionProductStatisticsResult.sort((a, b) => that.utilService.sortCertActual(a, b));
+                that.criterionProduct = data;
+            });
         }
 
         loadIncumbentDevelopersCountChart () {
