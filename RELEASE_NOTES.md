@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 10.40.0
+_8 April 2020_
+
+### Features
+* Add ONC-ACB filter for Listing Reports page
+* Only allow ROLE_DEVELOPER to withdraw a Change Request
+
+### Flagged Features
+* Allow administration of Developer users
+* Put Cures Update criteria in separate filter
+
+### User Interface Updates
+* Indicate "Cures Update" status on pending listings
+* Display Listing's Cures Update status
+
+---
+
 ## Version 10.39.0
 _23 March 2020_
 
