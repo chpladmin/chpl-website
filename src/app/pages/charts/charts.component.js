@@ -31,16 +31,7 @@ export const ChartsComponent = {
 
         loadCriterionProductCountChart () {
             let that = this;
-            this.networkService.getCriterionProductStatistics().then(data => {
-                //Elevate the criteria information in the object, to allow for sorting
-                data.criterionProductStatisticsResult = data.criterionProductStatisticsResult.map(stat => {
-                    stat.number = stat.criterion.number;
-                    stat.title = stat.criterion.title;
-                    return stat;
-                });
-                data.criterionProductStatisticsResult.sort((a, b) => that.utilService.sortCertActual(a, b));
-                that.criterionProduct = data;
-            });
+            this.networkService.getCriterionProductStatistics().then(data => that.criterionProduct = data);
         }
 
         loadIncumbentDevelopersCountChart () {
@@ -55,16 +46,7 @@ export const ChartsComponent = {
 
         loadNonconformityCountChart () {
             let that = this;
-            this.networkService.getNonconformityStatisticsCount().then(data => {
-                //Elevate the criteria information in the object, to allow for sorting
-                data.nonconformityStatisticsResult = data.nonconformityStatisticsResult.map(stat => {
-                    stat.number = stat.criterion ? stat.criterion.number : stat.nonconformityType;
-                    stat.title = stat.criterion ? stat.criterion.title : '';
-                    return stat;
-                });
-                data.nonconformityStatisticsResult.sort((a, b) => that.utilService.sortCertActual(a, b));
-                that.nonconformityCriteriaCount = data;
-            });
+            this.networkService.getNonconformityStatisticsCount().then(data => that.nonconformityCriteriaCount = data);
         }
 
         loadSedParticipantCountChart () {
