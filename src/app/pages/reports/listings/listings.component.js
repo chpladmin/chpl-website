@@ -3,7 +3,7 @@ export const ReportsListingsComponent = {
     bindings: {
         productId: '<',
     },
-    controller: class ReportsListings {
+    controller: class ReportsListingsComponent {
         constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -14,6 +14,8 @@ export const ReportsListingsComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
+
+            this.results = [];
             this.displayed = [];
             this.categoriesFilter = '|LISTING|';
             this.clearFilterHs = [];
@@ -26,7 +28,6 @@ export const ReportsListingsComponent = {
                 complete: 0,
             };
             this.downloadProgress = 0;
-            this.results = [];
             this.pageSize = 50;
         }
 
@@ -120,6 +121,10 @@ export const ReportsListingsComponent = {
             filterData.dataFilter = this.filterText;
             filterData.tableState = this.tableController.tableState();
             return filterData;
+        }
+
+        downloadReady () {
+            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
         }
 
         tableStateListener (tableController) {
@@ -570,10 +575,6 @@ export const ReportsListingsComponent = {
                 });
             }
             return ret;
-        }
-
-        downloadReady () {
-            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
         }
 
         parse (meta) {
