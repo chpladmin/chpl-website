@@ -111,6 +111,7 @@
                 if (cp.surveillanceCount > 0 && (cp.openNonconformityCount > 0 || cp.closedNonconformityCount > 0)) {
 
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
+                    cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
                     cp.nonconformities = angular.toJson({
                         openNonconformityCount: cp.openNonconformityCount,
                         closedNonconformityCount: cp.closedNonconformityCount,
@@ -143,6 +144,7 @@
                 if (cp.edition !== '2011' && statuses.indexOf(cp.certificationStatus) > -1) {
 
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
+                    cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
 
                     ret.push(cp);
                 }
@@ -159,6 +161,7 @@
                 .filter(cp => cp.certificationStatus === 'Withdrawn by Developer')
                 .map(cp => {
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
+                    cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
                     return cp;
                 });
         }
