@@ -244,13 +244,15 @@ export const ReportsDevelopersComponent = {
         }
 
         compareTransparencyAttestation (before, after) {
-            if (!before.transparencyAttestation) {
+            if (!before.transparencyAttestation && after.transparencyAttestation) {
                 //Transparency attestation was added
                 return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation added: ' + after.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
-            } else if (!after.transparencyAttestation) {
+            }
+            if (before.transparencyAttestation && !after.transparencyAttestation) {
                 //Transparency attestation was removed - not sure this is possible
                 return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation removed. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
-            } else if (before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
+            }
+            if (before.transparencyAttestation && after.transparencyAttestation && before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
                 //Transparency attestation was changed
                 return '<li>Transparency Attestation "' + after.acbName +'" changes<ul><li>Transparency Attestation changed: ' + after.transparencyAttestation.transparencyAttestation + '. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
             }
