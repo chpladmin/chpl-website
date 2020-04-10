@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 10.41.0
+_10 April 2020_
+
+### Flagged Features
+* Stop displaying "Removed" attribute
+
+---
+
 ## Version 10.40.0
 _8 April 2020_
 
