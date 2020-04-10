@@ -136,6 +136,7 @@ export const DashboardComponent = {
             this.networkService.getChangeRequests().then(response => that.changeRequests = response);
             this.state = 'confirmation';
             this.confirmationText = confirmationText;
+            this.isWithdrawing = false;
         }
 
         handleError (error) {
