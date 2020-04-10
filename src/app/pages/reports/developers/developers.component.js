@@ -21,7 +21,7 @@ export const ReportsDevelopersComponent = {
                 total: 0,
                 complete: 0,
             };
-            this.downloadProgress = 0;
+            this.downloadProgress = { complete: 0 };
             this.pageSize = 50;
         }
 
@@ -71,10 +71,6 @@ export const ReportsDevelopersComponent = {
             filterData.dataFilter = this.filterText;
             filterData.tableState = this.tableController.tableState();
             return filterData;
-        }
-
-        downloadReady () {
-            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
         }
 
         tableStateListener (tableController) {
@@ -234,7 +230,7 @@ export const ReportsDevelopersComponent = {
                 .forEach(item => {
                     this.parse(item).then(() => {
                         progress += 1;
-                        this.downloadProgress = Math.floor(100 * ((progress + 1) / total));
+                        this.downloadProgress.complete = Math.floor(100 * ((progress + 1) / total));
                     });
                 });
             //todo, eventually: use the $q.all function as demonstrated in product history eye
@@ -242,16 +238,7 @@ export const ReportsDevelopersComponent = {
 
         showLoadingBar () {
             let tableState = this.tableController.tableState && this.tableController.tableState();
-            let earlyDate = 0;
-            let startDate = new Date().getTime();
-            if (tableState && tableState.search && tableState.search.predicateObject && tableState.search.predicateObject.date) {
-                earlyDate = tableState.search.predicateObject.date.after;
-            }
-            let earliestDateOfData = this.results
-                .map(evt => evt.date)
-                .reduce((acc, cur) => cur < acc ? cur : acc, startDate);
-            let shouldShow = (this.loadProgress.total > 0) && (this.loadProgress.percentage < 100) && (!earlyDate || earliestDateOfData > earlyDate);
-            return shouldShow;
+            return this.ReportService.showLoadingBar(tableState, this.results, this.loadProgress);
         }
 
         search () {
