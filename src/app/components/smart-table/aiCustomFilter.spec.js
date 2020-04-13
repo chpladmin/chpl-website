@@ -23,6 +23,7 @@
                 {"surveillance":"{\"openSurveillanceCount\":0,\"closedSurveillanceCount\":1,\"openNonconformityCount\":1,\"closedNonconformityCount\":1,\"surveillanceDates\":\"1508716800000&1512518400000\"}"},
                 {"surveillance":"{\"openSurveillanceCount\":1,\"closedSurveillanceCount\":1,\"openNonconformityCount\":1,\"closedNonconformityCount\":1,\"surveillanceDates\":\"1508716800000&1512518400000☺1612518400000&\"}"},
             ],
+            /* eslint-enable quotes, key-spacing */
         };
         beforeEach(() => {
             angular.mock.module('chpl.services', 'chpl.components', 'chpl.mock');
