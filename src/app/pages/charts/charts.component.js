@@ -3,11 +3,10 @@ export const ChartsComponent = {
     bindings: {
     },
     controller: class ChartsComponent {
-        constructor ($log, networkService, utilService) {
+        constructor ($log, networkService) {
             'ngInject'
             this.$log = $log;
             this.networkService = networkService;
-            this.utilService = utilService;
         }
 
         $onInit () {
