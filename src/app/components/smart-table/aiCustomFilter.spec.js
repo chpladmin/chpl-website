@@ -24,6 +24,7 @@
                 {"surveillance":"{\"openSurveillanceCount\":1,\"closedSurveillanceCount\":1,\"openNonconformityCount\":1,\"closedNonconformityCount\":1,\"surveillanceDates\":\"1508716800000&1512518400000☺1612518400000&\"}"},
             ],
             /* eslint-enable quotes, key-spacing */
+            editionItems: [{edition: '2011'}, {edition: '2014'}, {edition: '2015'}, {edition: '2015 Cures Update'}],
         };
         beforeEach(() => {
             angular.mock.module('chpl.services', 'chpl.components', 'chpl.mock');
@@ -261,6 +262,57 @@
                     };
                     expect(aiCustomFilter(mock.correctiveActionCollection, {nonconformities: ncFilter}).length).toBe(0);
                 });
+            });
+        });
+
+        describe('when filtering on certification edition', () => {
+            let query;
+            beforeEach(() => {
+                query = {
+                    certificationEdition: {
+                        items: [
+                            { value: '2011', selected: false },
+                            { value: '2014', selected: false },
+                            { value: '2015', selected: false },
+                            { value: '2015 Cures Edition', selected: false },
+                        ],
+                    },
+                };
+            });
+
+            it('should find 2011 edition', () => {
+                query.certificationEdition.items
+                    .filter(edition => edition.value === '2011')
+                    .forEach(edition => edition.selected = true);
+                expect(aiCustomFilter(mock.editionItems, query).length).toBe(1);
+            });
+
+            it('should find 2014 edition', () => {
+                query.certificationEdition.items
+                    .filter(edition => edition.value === '2014')
+                    .forEach(edition => edition.selected = true);
+                expect(aiCustomFilter(mock.editionItems, query).length).toBe(1);
+            });
+
+            it('should find 2015 edition', () => {
+                query.certificationEdition.items
+                    .filter(edition => edition.value === '2015')
+                    .forEach(edition => edition.selected = true);
+                expect(aiCustomFilter(mock.editionItems, query).length).toBe(1);
+            });
+
+            it('should find 2015 Cures Update edition', () => {
+                query.certificationEdition.items
+                    .filter(edition => edition.value === '2015 Cures Update')
+                    .forEach(edition => edition.selected = true);
+                expect(aiCustomFilter(mock.editionItems, query).length).toBe(1);
+            });
+
+            it('should find both 2015 editions', () => {
+                query.certificationEdition.items
+                    .filter(edition => edition.value === '2015' || edition.value === '2015 Cures Update')
+                    .forEach(edition => edition.selected = true);
+                expect(aiCustomFilter(mock.editionItems, query).length).toBe(1);
             });
         });
     });
