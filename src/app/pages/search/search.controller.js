@@ -398,6 +398,7 @@
         function parseAllResults (results) {
             for (var i = 0; i < results.length; i++) {
                 results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                results[i].edition = results[i].edition + (results[i].curesUpdate ? ' Cures Update' : '');
                 results[i].developerSearch = results[i].developer;
                 if (results[i].previousDevelopers) {
                     results[i].mainSearch += '|' + results[i].previousDevelopers;

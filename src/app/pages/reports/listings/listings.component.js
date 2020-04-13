@@ -758,6 +758,7 @@ export const ReportsListingsComponent = {
             item.categoriesFilter = '|' + item.categories.join('|') + '|';
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
+            item.edition = item.edition + (item.curesUpdate ? ' Cures Update' : '');
             if (full) {
                 this.parse(item);
                 item.showDetails = true;
