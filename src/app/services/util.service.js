@@ -29,7 +29,6 @@
             sortCqm: sortCqm,
             sortCqmActual: sortCqmActual,
             sortNonconformityTypes: sortNonconformityTypes,
-            sortOtherNonconformityTypes: sortOtherNonconformityTypes,
             sortRequirements: sortRequirements,
             sortTestFunctionality: sortTestFunctionality,
             statusFont: statusFont,
@@ -290,13 +289,6 @@
 
         function sortNonconformityTypes (type) {
             if (type.number === 'Other Non-Conformity') {
-                return Number.MAX_VALUE;
-            }
-            return sortCert(type);
-        }
-
-        function sortOtherNonconformityTypes (type) {
-            if (type === 'Other Non-Conformity') {
                 return Number.MAX_VALUE;
             }
             return sortCert(type);

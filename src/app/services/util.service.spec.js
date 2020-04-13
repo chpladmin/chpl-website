@@ -212,24 +212,6 @@
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
 
-            it('should be able to sort nonconformity types', () => {
-                var criteria2014_a_4 = '170.314 (a)(1)';
-                var criteria2014_a_10 = '170.314 (a)(10)';
-                var criteria2015_d_1 = '170.315 (d)(1)';
-                var criteria2015_e_1 = '170.315 (e)(1)';
-                var criteria2015_g_4 = '170.315 (g)(4)';
-                var criteria2015_g_10 = '170.315 (g)(10)';
-                var transparency_k_2 = '170.523 (k)(2)';
-                var other = 'Other Non-Conformity';
-                expect(util.sortOtherNonconformityTypes(criteria2014_a_4)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2014_a_10));
-                expect(util.sortOtherNonconformityTypes(criteria2014_a_10)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_d_1));
-                expect(util.sortOtherNonconformityTypes(criteria2015_d_1)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_e_1));
-                expect(util.sortOtherNonconformityTypes(criteria2015_e_1)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_g_4));
-                expect(util.sortOtherNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_g_10));
-                expect(util.sortOtherNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortOtherNonconformityTypes(transparency_k_2));
-                expect(util.sortOtherNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortOtherNonconformityTypes(other));
-            });
-
             it('should be able to order arrays of arrays of certs by the first cert', () => {
                 expect(util.sortCertArray([])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
                 expect(util.sortCertArray(['170.314 (a)(2)'])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
