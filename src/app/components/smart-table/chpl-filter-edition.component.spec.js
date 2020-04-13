@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Filter Edition component', () => {
+    describe('the Filter Edition component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {

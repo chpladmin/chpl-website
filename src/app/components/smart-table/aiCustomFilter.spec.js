@@ -24,7 +24,12 @@
                 {"surveillance":"{\"openSurveillanceCount\":1,\"closedSurveillanceCount\":1,\"openNonconformityCount\":1,\"closedNonconformityCount\":1,\"surveillanceDates\":\"1508716800000&1512518400000☺1612518400000&\"}"},
             ],
             /* eslint-enable quotes, key-spacing */
-            editionItems: [{edition: '2011'}, {edition: '2014'}, {edition: '2015'}, {edition: '2015 Cures Update'}],
+            editionItems: [
+                {certificationEdition: '2011'},
+                {certificationEdition: '2014'},
+                //{certificationEdition: '2015'},
+                //{certificationEdition: '2015 Cures Update'},
+            ],
         };
         beforeEach(() => {
             angular.mock.module('chpl.services', 'chpl.components', 'chpl.mock');
@@ -284,7 +289,7 @@
                 query.certificationEdition.items
                     .filter(edition => edition.value === '2011')
                     .forEach(edition => edition.selected = true);
-                expect(aiCustomFilter(mock.editionItems, query).length).toBe(1);
+                expect(aiCustomFilter(mock.editionItems, {certificationEdition: query}).length).toBe(1);
             });
 
             it('should find 2014 edition', () => {
