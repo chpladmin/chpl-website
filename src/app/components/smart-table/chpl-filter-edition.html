@@ -1,0 +1,21 @@
+<ul class="list-unstyled" ng-show="!$ctrl.hidden">
+  <li class="text-center" ng-if="$ctrl.allowAnd">
+    <label ng-class="{ 'emphasis' : $ctrl.matchAll }">
+      <input type="checkbox" ng-model="$ctrl.matchAll" id="filter-match-all" ng-change="$ctrl.filterChanged()" ng-show="false">
+      Matching <u class="matchingAnyAll">{{ $ctrl.matchAll ? 'all' : 'any' }}</u>
+    </label>
+  </li>
+  <li class="text-right">
+    <a href ng-click="$ctrl.selectAll()">Select All</a> |
+    <a href ng-click="$ctrl.clearFilter()">Reset</a>
+  </li>
+  <li ng-repeat="item in $ctrl.distinctItems">
+    <label ng-class="{ 'emphasis' : $ctrl.isNotDefault(item), 'removed' : item.removed, 'retired' : item.retired }">
+      <input type="checkbox"
+             value="{{ item.value }}"
+             id="{{ $ctrl.getId(item.value) }}"
+             ng-model="item.isSelected"
+             ng-change="$ctrl.toggleSelection(item)">{{ item.display ? item.display : item.value }}
+    </label>
+  </li>
+</ul>
