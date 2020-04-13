@@ -830,55 +830,67 @@ option[label^="Removed"] {
     }
     //*,
 
+    /* Format */
+
+    .body {
+        background: var(--white);
+    }
+
+    .main-content {
+        background: var(--grey);
+        padding: 10px;
+        border: 1px solid var(dark-grey);
+    }
+
     /* Typography */
 
     h1 {
         font-family: "Lato", sans-serif;
         font-size: 2.5em;
         font-weight: 900;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 
     h2 {
         font-family: "Lato", sans-serif;
         font-size: 2em;
         font-weight: 600;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 
     h3 {
         font-family: "Lato", sans-serif !important;
         font-size: 1.75em;
         font-weight: 900;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 
     h4 {
         font-family: "Lato", sans-serif;
         font-size: 1.5em;
         font-weight: 600;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 
     h5 {
         font-family: "Lato", sans-serif !important;
         font-size: 1.25em;
         font-weight: 900;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 
     h6 {
         font-family: "Lato", sans-serif;
         font-size: 1.25em;
         font-weight: 600;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 
     p {
         font-family: "Lato", sans-serif;
         font-size: 1em;
         font-weight: 400;
-        color: #1c1c1c;
+        color: var(--dark);
 
         .italic {
             font-style: italic;
@@ -897,74 +909,68 @@ option[label^="Removed"] {
     }
     /* Button Styling */
 
+    .btn {
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        padding: 5px 10px;
+
+        &:focus {
+            border-color: var(--dark-blue) 1px solid;
+        }
+
+        &:active {
+            box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+        }
+    }
+
     .btn-default {
-        color: #156dac;
-        background: #edf6ff;
         padding: 10px;
         line-height: 1.5;
         border-radius: 5px;
-        border: #156dac 2px solid;
+        color: var(--black);
+        background-color: var(--white);
+        border-color: var(--dark-grey) 1px solid;
 
         &:hover {
-            background: #d5e9fd;
+            background-color: var(--grey);
         }
-
-        &:focus {
-            background: #d5e9fd;
-        }
-
-        /*
-        &:active {
-	    inset 0px 0px 4px rgba(0, 0, 0, 0.25);
-        }
-        */
     }
 
     .btn-primary {
-        color: #156dac;
-        background: #ffffff;
-        padding: 10px;
+        color: var(--white);
+        background: var(--blue);
+        padding: 5px 10px;
         line-height: 1.5;
         border-radius: 5px;
-        border: #156dac 2px solid;
-
-        /*
-        &:active {
-            inset 0px 0px 4px rgba(0, 0, 0, 0.25);
-        }
-        */
+        border-color: var(--dark-blue) 1px solid;
 
         &:hover {
-            background: #f9f9f9;
-        }
-
-        &:focus {
-            background: #f9f9f9;
+            background: var(--dark-blue);
         }
     }
 
-    .btn-ai {
+    .btn-secondary {
+        color: var(--blue);
+        background: var(--white);
+        padding: 5px 10px;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: #156dac 1px solid;
+
+        &:hover {
+            background-color: var(--grey);
+        }
+    }
+
+    .btn-chpl {
         color: #f5d43c;
-        background: linear-gradient(#0070c9, #004378);
-
-        &:focus,
-        &.focus,
-        &:hover {
-            color: #fff;
-            background: linear-gradient(#0057b0, #001045);
-        }
-
-        &:active,
-        &.active {
-            color: #fff;
-            background: linear-gradient(#0057b0, #001045);
-
-            &:hover,
-            &:focus {
-                border: red;
-            }
-        }
+        background: var(--blue);
     }
+
     /* Badges*/
 
     .badge-success {
@@ -997,33 +1003,37 @@ option[label^="Removed"] {
         padding: 10px 10px 10px 15px;
     }
 
-    .panel-ai {
-        border-color: #c6d5e5;
+    .panel-heading {
+        background: var(--white);
 
-        .panel-heading {
-            color: #1c1c1c;
-            background: #edf6ff;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            border-color: #c6d5e5;
-
-            a {
-                color: #1c1c1c;
-
-                .pull-right {
-                    color: #555555;
-                }
-            }
-
-            .badge {
-                color: #1c1c1c;
-                background: #edf6ff;
-            }
+        .tracking-panel {
+            padding: 20px 15px;
         }
+    }
+
+    .panel-ai > .panel-heading {
+        color: #1c1c1c;
+        background: #edf6ff;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-color: #c6d5e5;
+    }
+
+    .panel-ai > .panel-heading a {
+        color: #1c1c1c;
+    }
+
+    .panel-ai > .panel-heading a .pull-right {
+        color: #555555;
     }
 
     .panel-ai > .panel-heading + .panel-collapse > .panel-body {
         border-top-color: #c6d5e5;
+    }
+
+    .panel-ai > .panel-heading .badge {
+        color: #1c1c1c;
+        background: #edf6ff;
     }
 
     .panel-ai > .panel-footer + .panel-collapse > .panel-body {
@@ -1039,5 +1049,22 @@ option[label^="Removed"] {
         padding-bottom: 15px;
         margin-bottom: 15px;
         height: 50px;
+    }
+
+    /* Well Styling */
+
+    .well-sm {
+        padding: 10px;
+        background-color: #f5f5f5;
+        border: 1px solid #e3e3e3;
+        margin-right: 0%;
+        border-radius: 5px;
+    }
+
+    /* Users dashboard Page */
+
+    .mydashboardheader {
+        padding-left: 40px;
+        padding-bottom: 10px;
     }
 }

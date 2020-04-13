@@ -24,6 +24,7 @@
         <div ng-if="$ctrl.inState('changeRequest') && $ctrl.isOn('change-request')" ng-class="$ctrl.inState('focusChangeRequest') ? 'col-md-10 col-md-offset-1' : 'col-md-6'">
           <chpl-change-requests ng-if="$ctrl.developer"
                                 change-requests="$ctrl.changeRequests"
+                                change-request-types="$ctrl.changeRequestTypes"
                                 change-request-status-types="$ctrl.changeRequestStatusTypes"
                                 developer="$ctrl.developer"
                                 take-action="$ctrl.takeCrAction(action, data)"
@@ -32,11 +33,18 @@
       </div>
       <div class="row" ng-if="$ctrl.inState('users')">
         <div class="col-md-12">
-          <chpl-users column-count="3"
-                      users="$ctrl.users"
-                      roles="$ctrl.roles"
-                      take-action="$ctrl.takeUserAction(action, data)"
-                      ></chpl-users>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
+            </div>
+            <div class="panel-body">
+              <chpl-users column-count="3"
+                          users="$ctrl.users"
+                          roles="$ctrl.roles"
+                          take-action="$ctrl.takeUserAction(action, data)"
+                          ></chpl-users>
+            </div>
+          </div>
         </div>
       </div>
     </div>

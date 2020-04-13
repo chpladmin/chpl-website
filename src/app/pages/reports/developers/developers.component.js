@@ -77,6 +77,7 @@ export const ReportsDevelopersComponent = {
                     {key: 'developerCode', display: 'Developer Code'},
                     {key: 'name', display: 'Name'},
                     {key: 'website', display: 'Website'},
+                    {key: 'selfDeveloper', display: 'Self-developer'},
                 ];
                 var nestedKeys = [
                     {key: 'status', subkey: 'statusName', display: 'Developer Status'},
@@ -234,27 +235,26 @@ export const ReportsDevelopersComponent = {
             //on the acbs
             before.forEach(beforeTA => {
                 let afterTA = after.find(ta => ta.acbId === beforeTA.acbId);
-                if (afterTA) {
-                    changes.push(this.compareTransparencyAttestation(beforeTA, afterTA));
+                let change = this.compareTransparencyAttestation(beforeTA, afterTA);
+                if (change) {
+                    changes.push(change);
                 }
             });
             return changes;
         }
 
         compareTransparencyAttestation (before, after) {
-            if (!before.transparencyAttestation && !after.transparencyAttestation) {
-                return '';
-            } else if (!before.transparencyAttestation) {
+            if (!before.transparencyAttestation && after.transparencyAttestation) {
                 //Transparency attestation was added
                 return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation added: ' + after.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
-            } else if (!after.transparencyAttestation) {
+            }
+            if (before.transparencyAttestation && !after.transparencyAttestation) {
                 //Transparency attestation was removed - not sure this is possible
                 return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation removed. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
-            } else if (before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
+            }
+            if (before.transparencyAttestation && after.transparencyAttestation && before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
                 //Transparency attestation was changed
                 return '<li>Transparency Attestation "' + after.acbName +'" changes<ul><li>Transparency Attestation changed: ' + after.transparencyAttestation.transparencyAttestation + '. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
-            } else {
-                return '';
             }
         }
 

@@ -1625,7 +1625,7 @@
 
             it('should submitChangeRequest', () => {
                 $httpBackend.expectPOST(/^\/rest\/change-requests$/).respond(200, {data: 'response'});
-                networkService.submitChangeRequest({changeRequestType: {id: 1}}).then(response => {
+                networkService.submitChangeRequest({details: {data: 1}}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
