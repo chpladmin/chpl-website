@@ -7,11 +7,6 @@
     function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
         let filterFilter = $filter('filter');
 
-        let certificationEditionComparator = (actual, expected) => {
-            return expected.certificationEdition.items
-                .find(edition => edition.value === actual).selected;
-        };
-
         let dateRangeComparator = (actual, expected) => {
             let higherLimit, itemDate, lowerLimit, queryDate;
 
@@ -333,11 +328,6 @@
                     // range comparator
                     if (expected.lower || expected.higher) {
                         return rangeComparator(actual, expected);
-                    }
-
-                    // certification edition
-                    if (expected.certificationEdition) {
-                        return certificationEditionComparator(actual, expected);
                     }
 
                     return true;
