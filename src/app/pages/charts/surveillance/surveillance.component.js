@@ -4,17 +4,27 @@ export const ChartsSurveillanceComponent = {
         nonconformityCriteriaCount: '<',
     },
     controller: class ChartsSurveillanceComponent {
-        constructor ($log, utilService) {
+        constructor ($log, featureFlags, utilService) {
             'ngInject'
             this.$log = $log;
             this.utilService = utilService;
-            this.nonconformityTypes = [
-                'All',
-                2014,
-                2015,
-                '2015 Cures Update',
-                'Program',
-            ];
+            this.isOn = featureFlags.isOn;
+            if (this.isOn('effective-rule-date')) {
+                this.nonconformityTypes = [
+                    'All',
+                    2014,
+                    2015,
+                    '2015 Cures Update',
+                    'Program',
+                ];
+            } else {
+                this.nonconformityTypes = [
+                    'All',
+                    2014,
+                    2015,
+                    'Program',
+                ];
+            }
             this.chartState = {
                 yAxis: '',
                 nonconformityCountType: 'All',
@@ -175,7 +185,6 @@ export const ChartsSurveillanceComponent = {
         }
 
         _getNonconformityCountDataInChartFormat (data, type) {
-            let that = this;
             return data.nonconformityStatisticsResult
                 .map(obj => {
                     if (obj.criterion) {
@@ -188,7 +197,7 @@ export const ChartsSurveillanceComponent = {
                     case 2014:
                         return obj.nonconformityType.indexOf('170.314') >= 0;
                     case 2015:
-                        return obj.nonconformityType.indexOf('170.315') === 0;
+                        return (obj.nonconformityType.indexOf('170.315') >= 0 && (!this.isOn('effective-rule-date') || obj.nonconformityType.indexOf('Cures Update') === -1));
                     case '2015 Cures Update':
                         return obj.nonconformityType.indexOf('Cures Update') >= 0;
                     case 'Program':
@@ -198,7 +207,7 @@ export const ChartsSurveillanceComponent = {
                     default: false;
                     }
                 })
-                .sort((a, b) => that.utilService.sortOtherNonconformityTypes(a.nonconformityType) - that.utilService.sortOtherNonconformityTypes(b.nonconformityType))
+                .sort((a, b) => this.utilService.sortOtherNonconformityTypes(a.nonconformityType) - this.utilService.sortOtherNonconformityTypes(b.nonconformityType))
                 .map(obj => ({c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]}));
         }
     },
