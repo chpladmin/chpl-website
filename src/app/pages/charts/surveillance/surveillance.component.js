@@ -12,6 +12,7 @@ export const ChartsSurveillanceComponent = {
                 'All',
                 2014,
                 2015,
+                '2015 Cures Update',
                 'Program',
             ];
             this.chartState = {
@@ -28,7 +29,7 @@ export const ChartsSurveillanceComponent = {
 
         updateYAxis () {
             let that = this;
-            Object.values(this.nonconformityCounts).forEach(function (value) {
+            Object.values(this.nonconformityCounts).forEach(value => {
                 value.options.vAxis.scaleType = that.chartState.yAxis;
             });
         }
@@ -116,6 +117,33 @@ export const ChartsSurveillanceComponent = {
                         },
                     },
                 },
+                '2015 Cures Update': {
+                    type: 'ColumnChart',
+                    data: {
+                        cols: [
+                            { label: '2015 Cures Update Certification Criteria and Program Requirements Surveilled', type: 'string'},
+                            { label: 'Number of Non-Conformities', type: 'number'},
+                        ],
+                        rows: this._getNonconformityCountDataInChartFormat(data, '2015 Cures Update'),
+                    },
+                    options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
+                        title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+                        hAxis: {
+                            title: '2015 Cures Update Certification Criteria and Program Requirements Surveilled',
+                            minValue: 0,
+                        },
+                        vAxis: {
+                            scaleType: this.chartState.yAxis,
+                            title: 'Number of Non-Conformities',
+                            minValue: 0,
+                        },
+                    },
+                },
                 'Program': {
                     type: 'ColumnChart',
                     data: {
@@ -160,7 +188,9 @@ export const ChartsSurveillanceComponent = {
                     case 2014:
                         return obj.nonconformityType.indexOf('170.314') >= 0;
                     case 2015:
-                        return obj.nonconformityType.indexOf('170.315') >= 0;
+                        return obj.nonconformityType.indexOf('170.315') === 0;
+                    case '2015 Cures Update':
+                        return obj.nonconformityType.indexOf('Cures Update') >= 0;
                     case 'Program':
                         return obj.nonconformityType.indexOf('170.523') >= 0 || obj.nonconformityType.indexOf('Other') >= 0;
                     case 'All':
