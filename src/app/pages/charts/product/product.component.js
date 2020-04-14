@@ -4,12 +4,18 @@ export const ChartsProductComponent = {
         criterionProduct: '<',
     },
     controller: class ChartsProductComponent {
-        constructor ($log, utilService) {
+        constructor ($log, featureFlags, utilService) {
             'ngInject'
             this.$log = $log;
             this.utilService = utilService;
+            this.isOn = featureFlags.isOn;
+            this.criteriaTypes = [
+                'All',
+                2015,
+                '2015 Cures Update',
+            ];
             this.chartState = {
-                productEdition: 2014,
+                criteriaType: 2014,
             };
         }
 
@@ -42,6 +48,27 @@ export const ChartsProductComponent = {
                         title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
                     },
                 },
+                'All': {
+                    type: 'BarChart',
+                    data: {
+                        cols: [
+                            { label: 'Certification Criteria', type: 'string'},
+                            { label: 'Number of Unique Products', type: 'number'},
+                            { type: 'string', role: 'tooltip'},
+                        ],
+                        rows: this._getCriterionProductCountDataInChartFormat(data, 'All'),
+                    },
+                    options: {
+                        tooltip: {isHtml: true},
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
+                        chartArea: { top: 64, height: '90%' },
+                        title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
+                    },
+                },
                 2015: {
                     type: 'BarChart',
                     data: {
@@ -63,13 +90,49 @@ export const ChartsProductComponent = {
                         title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
                     },
                 },
+                '2015 Cures Update': {
+                    type: 'BarChart',
+                    data: {
+                        cols: [
+                            { label: 'Certification Criteria', type: 'string'},
+                            { label: 'Number of Unique Products', type: 'number'},
+                            { type: 'string', role: 'tooltip'},
+                        ],
+                        rows: this._getCriterionProductCountDataInChartFormat(data, '2015 Cures Update'),
+                    },
+                    options: {
+                        tooltip: {isHtml: true},
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
+                        chartArea: { top: 64, height: '90%' },
+                        title: 'Number of 2015 Edition Unique Products certified to specific Cures Update Certification Criteria',
+                    },
+                },
             }
         }
 
         _getCriterionProductCountDataInChartFormat (data, edition) {
-            let that = this;
-            return data.criterionProductStatisticsResult.filter(obj => obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0)
-                .sort((a, b) => that.utilService.sortCert(a.criterion.number) - that.utilService.sortCert(b.criterion.number))
+            let ret;
+            return data.criterionProductStatisticsResult
+                .filter(obj => {
+                    switch (edition) {
+                    case 2014:
+                        return obj.criterion.certificationEdition === '2014';
+                    case 'All':
+                        return obj.criterion.certificationEdition === '2015';
+                    case 2015:
+                        ret = obj.criterion.certificationEdition === '2015' && !obj.criterion.title.includes('Cures Update');
+                        this.$log.info(obj.criterion, ret);
+                        return ret;
+                    case '2015 Cures Update':
+                        return obj.criterion.certificationEdition === '2015' && obj.criterion.title.includes('Cures Update');
+                    default: false;
+                    }
+                })
+                .sort((a, b) => this.utilService.sortCert(a.criterion.number) - this.utilService.sortCert(b.criterion.number))
                 .map(obj => {
                     return {c: [{
                         v: obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
