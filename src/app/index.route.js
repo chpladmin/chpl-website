@@ -6,13 +6,12 @@ import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dash
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
 import { reportsStatesConfig as reportsStates } from './pages/reports/reports.state.js';
+import { resourcesStatesConfig as resourcesStates } from './pages/resources/resources.state.js';
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
 import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
 
 (function () {
     'use strict';
-
-    let resourcesState = require('./pages/resources/resources.state.js');
 
     angular
         .module('chpl')
@@ -25,7 +24,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(listingStates)
         .config(organizationsStates)
         .config(reportsStates)
-        .config(resourcesState)
+        .config(resourcesStates)
         .config(surveillanceStates)
         .config(usersStates);
 
