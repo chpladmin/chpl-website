@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms_lookup')
+    angular.module('chpl.resources')
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
