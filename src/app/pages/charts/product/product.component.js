@@ -115,7 +115,6 @@ export const ChartsProductComponent = {
         }
 
         _getCriterionProductCountDataInChartFormat (data, edition) {
-            let ret;
             return data.criterionProductStatisticsResult
                 .filter(obj => {
                     switch (edition) {
@@ -124,9 +123,7 @@ export const ChartsProductComponent = {
                     case 'All':
                         return obj.criterion.certificationEdition === '2015';
                     case 2015:
-                        ret = obj.criterion.certificationEdition === '2015' && !obj.criterion.title.includes('Cures Update');
-                        this.$log.info(obj.criterion, ret);
-                        return ret;
+                        return obj.criterion.certificationEdition === '2015' && !obj.criterion.title.includes('Cures Update');
                     case '2015 Cures Update':
                         return obj.criterion.certificationEdition === '2015' && obj.criterion.title.includes('Cures Update');
                     default: false;
