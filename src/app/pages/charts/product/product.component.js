@@ -137,7 +137,7 @@ export const ChartsProductComponent = {
                 .sort((a, b) => this.utilService.sortCertActual(a, b))
                 .map(obj => {
                     return {c: [{
-                        v: obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
+                        v: (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + obj.criterion.number,
                     },{v: obj.productCount}, {v: 'Name: ' + obj.criterion.title + '\n Count: ' + obj.productCount}]};
                 });
         }
