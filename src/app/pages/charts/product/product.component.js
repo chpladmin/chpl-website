@@ -69,7 +69,13 @@ export const ChartsProductComponent = {
         _getCriterionProductCountDataInChartFormat (data, edition) {
             let that = this;
             return data.criterionProductStatisticsResult.filter(obj => obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0)
-                .sort((a, b) => that.utilService.sortCert(a.criterion.number) - that.utilService.sortCert(b.criterion.number))
+                .map(obj => {
+                    //Elevate the criteria information in the object, to allow for sorting
+                    obj.number = obj.criterion.number;
+                    obj.title = obj.criterion.title;
+                    return obj;
+                })
+                .sort((a, b) => that.utilService.sortCertActual(a, b))
                 .map(obj => {
                     return {c: [{
                         v: obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
