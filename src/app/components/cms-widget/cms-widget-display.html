@@ -13,8 +13,6 @@
     <div ng-if="!widget.productIds || widget.productIds.length === 0 || widget.searchResult.metPercentages.criteriaMet < 100">
       For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. Note the selected product or products must meet 100% of the Base Criteria.
     </div>
-  </div>
-  <div feature-flag="effective-rule-date">
     <div ng-if="widget.searchResult.products">
       <a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br />
       <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="warning" ng-if="widget.searchResult.metPercentages.criteriaMet < 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
