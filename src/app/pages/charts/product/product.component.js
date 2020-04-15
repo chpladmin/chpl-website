@@ -129,7 +129,12 @@ export const ChartsProductComponent = {
                     default: false;
                     }
                 })
-                .sort((a, b) => this.utilService.sortCert(a.criterion.number) - this.utilService.sortCert(b.criterion.number))
+                .map(obj => {
+                    obj.number = obj.criterion.number;
+                    obj.title = obj.criterion.title;
+                    return obj;
+                })
+                .sort((a, b) => this.utilService.sortCertActual(a, b))
                 .map(obj => {
                     return {c: [{
                         v: obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
