@@ -254,8 +254,8 @@ export const ReportsDevelopersComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: new Date('2016-04-01').getTime(), // - 6 * 365 * 24 * 60 * 60 * 1000,
-                                before: new Date().getTime(),
+                                after: new Date('2016-04-01').getTime(),
+                                before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                             },
                         },
                     };

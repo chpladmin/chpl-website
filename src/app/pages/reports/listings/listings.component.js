@@ -29,6 +29,7 @@ export const ReportsListingsComponent = {
             };
             this.downloadProgress = 0;
             this.pageSize = 50;
+            this.defaultDateRangeOffset = 60 * 24 * 60 * 60 * 1000; // 60 days
         }
 
         $onInit () {
@@ -811,8 +812,8 @@ export const ReportsListingsComponent = {
                     filter.tableState = this.tableController.tableState();
                     filter.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
                     filter.tableState.search.predicateObject.date = {
-                        after: new Date().getTime() - 60 * 24 * 60 * 60 * 1000,
-                        before: new Date().getTime(),
+                        after: this.ReportService.coerceToMidnight(new Date('2016-04-01')).getTime() - this.defaultDateRangeOffset,
+                        before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                     };
                     that.doFilter(filter);
                     that.addPageToData(1);
