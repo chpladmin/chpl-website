@@ -85,7 +85,7 @@ export const ReportsProductsComponent = {
 
                 var j;
                 var change;
-                if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
+                if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
                     activity.name = item.newData.name;
                     activity.type = 'Product has been updated';
                     activity.action = 'Product has been updated:<ul>';
@@ -123,6 +123,12 @@ export const ReportsProductsComponent = {
                     }
                     activity.action += '</ul>';
                     activity.detailsCSV = activity.action;
+                } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
+                    activity.action ='Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+                    activity.details = [];
+                } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
+                    activity.action = 'Products ' + item.originalData.name + ' split to become Products ' + item.newData[0].name + ' and ' + item.newData[1].name;
+                    activity.details = [];
                 } else {
                     this.ReportService.interpretNonUpdate(activity, item, 'product');
                     activity.action = activity.action[0];
