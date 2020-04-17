@@ -153,6 +153,9 @@ export const ChartsSurveillanceComponent = {
                     if (obj.criterion) {
                         obj.nonconformityType = obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '');
                     }
+                    //Elevate the criteria information in the object, to allow for sorting
+                    obj.number = obj.criterion ? obj.criterion.number : obj.nonconformityType;
+                    obj.title = obj.criterion ? obj.criterion.title : '';
                     return obj;
                 })
                 .filter(obj => {
@@ -168,7 +171,7 @@ export const ChartsSurveillanceComponent = {
                     default: false;
                     }
                 })
-                .sort((a, b) => that.utilService.sortOtherNonconformityTypes(a.nonconformityType) - that.utilService.sortOtherNonconformityTypes(b.nonconformityType))
+                .sort((a, b) => that.utilService.sortCertActual(a, b))
                 .map(obj => ({c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]}));
         }
     },
