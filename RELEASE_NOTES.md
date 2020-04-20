@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 10.42.0
+_20 April 2020_
+
+### Features
+* Change the order of display of revised criteria so "Cures Update" is first
+
+### Flagged Features
+* Stop displaying Transparency Attestations on Developers list
+* Display "Cures Update" everywhere it's appropriate
+* Allow Developers to submit Change Requests to change contact information
+
+### Bug Fixes
+* Show Transparency Attestation on Developer list
+
+### Flagged Bug Fixes
+* Show "Acting Organization" correctly for ONC-ACBs
+
+---
+
 ## Version 10.41.0
 _10 April 2020_
 
