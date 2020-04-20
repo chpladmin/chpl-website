@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h1>Certified Product</h1>
+    <p>Step 4 of 4</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-ai">
+      <div class="panel-heading">
+        <span>{{ $ctrl.listing.chplProductNumber }}</span>
+      </div>
+      <div class="panel-body">
+        <span>
+          <strong>Practice Type:</strong> {{ $ctrl.listing.practiceType.name ? $ctrl.listing.practiceType.name : 'N/A' }} <br />
+          <strong>Classification Type:</strong> {{ $ctrl.listing.classificationType.name ? $ctrl.listing.classificationType.name : 'N/A' }} <br />
+          <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
+          <strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} <br />
+          <strong>Certification Date:</strong> {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
+          <span ng-if="$ctrl.listing.productAdditionalSoftware"><strong>Relied Upon Software:</strong> {{ $ctrl.listing.productAdditionalSoftware }} <br /></span>
+          <strong>ACB Certification Id:</strong> {{ $ctrl.listing.acbCertificationId }} <br />
+          <strong>Other ACB:</strong> {{ $ctrl.listing.otherAcb ? $ctrl.listing.otherAcb : 'N/A' }} <br />
+          <strong>Transparency URL:</strong> {{ $ctrl.listing.transparencyAttestationUrl ? $ctrl.listing.transparencyAttestationUrl : 'None' }} <br />
+          <strong>Inherited Certification Status:</strong> {{ $ctrl.ternaryFilter($ctrl.listing.ics.inherits) }} <br />
+          <strong>QMS:</strong> {{ $ctrl.checkQmsBoolean($ctrl.listing.hasQms) }} <br />
+          <ul>
+            <li ng-repeat="qms in $ctrl.listing.qmsStandards">{{ qms.qmsStandardName }}<span ng-if="qms.qmsModification">, {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria">, {{ qms.applicableCriteria }}</span></li>
+          </ul>
+          <strong>Report File Location:</strong> {{ $ctrl.listing.reportFileLocation ? $ctrl.listing.reportFileLocation : 'N/A' }} <br />
+          <strong>SED Report File Location:</strong> {{ $ctrl.listing.sedReportFileLocation ? $ctrl.listing.sedReportFileLocation : 'N/A' }} <br />
+          <strong>SED Intended Users:</strong> {{ $ctrl.listing.sedIntendedUserDescription ? $ctrl.listing.sedIntendedUserDescription : 'None' }} <br />
+          <strong>SED End Date of Testing:</strong> {{ $ctrl.listing.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
+          <strong>Testing Lab<span ng-if="$ctrl.listing.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!$ctrl.listing.testingLabs || $ctrl.listing.testingLabs.length === 0">None<br /></span>
+          <ul ng-if="$ctrl.listing.testingLabs && $ctrl.listing.testingLabs.length !== 0">
+            <li ng-repeat="atl in $ctrl.listing.testingLabs">{{ atl.testingLabName }}</li>
+          </ul>
+          <strong>Accessibility Standards:</strong> {{ $ctrl.listing.accessibilityStandards.length === 0 ? 'None' : 'True' }} <br />
+          <ul>
+            <li ng-repeat="std in $ctrl.listing.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
+          </ul>
+        </span>
+        <br />
+        <ai-certs default-all="true"
+                  edit-mode="false"
+                  is-confirming="true"
+                  product="$ctrl.listing">
+        </ai-certs>
+        <p><button class="btn btn-default btn-block" ng-click="$ctrl.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
+      </div>
+    </div>
+  </div>
+</div>

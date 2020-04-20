@@ -398,6 +398,7 @@
         function parseAllResults (results) {
             for (var i = 0; i < results.length; i++) {
                 results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                results[i].edition = results[i].edition + (results[i].curesUpdate ? ' Cures Update' : '');
                 results[i].developerSearch = results[i].developer;
                 if (results[i].previousDevelopers) {
                     results[i].mainSearch += '|' + results[i].previousDevelopers;
@@ -453,7 +454,7 @@
                 pageSize: '50',
                 acbItems: [],
                 cqms: { 2011: [], other: [] },
-                criteria: { '2011': [], '2014': [], '2015': []},
+                criteria: { '2011': [], '2014': [], '2015': [], '2015Cures': []},
                 editionItems: [],
                 statusItems: [],
             };
@@ -511,7 +512,11 @@
                         obj.display = 'Retired | ' + obj.display;
                         obj.retired = true;
                     }
-                    vm.filterItems.criteria[crit.certificationEdition].push(obj);
+                    if (utilService.isCures(crit) && vm.isOn('effective-rule-date')) {
+                        vm.filterItems.criteria['2015Cures'].push(angular.copy(obj));
+                    } else {
+                        vm.filterItems.criteria[crit.certificationEdition].push(obj);
+                    }
                 });
             vm.searchOptions.cqms = $filter('orderBy')(vm.searchOptions.cqms, utilService.sortCqm);
             for (i = 0; i < vm.searchOptions.cqms.length; i++) {

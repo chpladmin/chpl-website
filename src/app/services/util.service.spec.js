@@ -126,22 +126,22 @@
                     expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
                 });
 
-                it('should sort strings that have identical numbers by title', () => {
+                it('should sort objects that are Cures Update before the original criteria', () => {
                     let a = '170.315 (b)(2): A title';
-                    let b = '170.315 (b)(2): A title (with stuff)';
-                    expect(util.sortCert(a)).toBeLessThan(util.sortCert(b));
+                    let b = '170.315 (b)(2): A title (Cures Update)';
+                    expect(util.sortCert(b)).toBeLessThan(util.sortCert(a));
                 });
 
-                it('should sort objects that have identical numbers by title', () => {
+                it('should sort objects that are Cures Update before the original criteria', () => {
                     let a = {
                         number: '170.315 (b)(2)',
                         title: 'A title',
                     };
                     let b = {
                         number: '170.315 (b)(2)',
-                        title: 'A title (with stuff)',
+                        title: 'A title (Cures Update)',
                     };
-                    expect(util.sortCert(a)).toBeLessThan(util.sortCert(b));
+                    expect(util.sortCert(b)).toBeLessThan(util.sortCert(a));
                 });
             });
 
@@ -195,41 +195,21 @@
             });
 
             it('should be able to sort nonconformity types', () => {
-                var criteria2014_g_4 = { number: '170.314 (g)(4)' };
-                var criteria2014_g_10 = { number: '170.314 (g)(10)' };
+                var criteria2014_a_4 = { number: '170.314 (a)(4)' };
+                var criteria2014_a_10 = { number: '170.314 (a)(10)' };
                 var criteria2015_d_1 = { number: '170.315 (d)(1)' };
                 var criteria2015_e_1 = { number: '170.315 (e)(1)' };
-                var criteria2015_e_1_removed = { number: '170.315 (e)(1) (Removed)' };
                 var criteria2015_g_4 = { number: '170.315 (g)(4)' };
                 var criteria2015_g_10 = { number: '170.315 (g)(10)' };
                 var transparency_k_2 = { number: '170.523 (k)(2)' };
                 var other = { number: 'Other Non-Conformity' };
-                expect(util.sortNonconformityTypes(criteria2014_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2014_g_10));
-                expect(util.sortNonconformityTypes(criteria2014_g_10)).toBeLessThan(util.sortNonconformityTypes(criteria2015_d_1));
+                expect(util.sortNonconformityTypes(criteria2014_a_4)).toBeLessThan(util.sortNonconformityTypes(criteria2014_a_10));
+                expect(util.sortNonconformityTypes(criteria2014_a_10)).toBeLessThan(util.sortNonconformityTypes(criteria2015_d_1));
                 expect(util.sortNonconformityTypes(criteria2015_d_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_e_1));
                 expect(util.sortNonconformityTypes(criteria2015_e_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_4));
-                expect(util.sortNonconformityTypes(criteria2015_e_1)).toBe(util.sortNonconformityTypes(criteria2015_e_1_removed));
                 expect(util.sortNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_10));
                 expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
-            });
-
-            it('should be able to sort nonconformity types', () => {
-                var criteria2014_g_4 = '170.314 (g)(4)';
-                var criteria2014_g_10 = '170.314 (g)(10)';
-                var criteria2015_d_1 = '170.315 (d)(1)';
-                var criteria2015_e_1 = '170.315 (e)(1)';
-                var criteria2015_g_4 = '170.315 (g)(4)';
-                var criteria2015_g_10 = '170.315 (g)(10)';
-                var transparency_k_2 = '170.523 (k)(2)';
-                var other = 'Other Non-Conformity';
-                expect(util.sortOtherNonconformityTypes(criteria2014_g_4)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2014_g_10));
-                expect(util.sortOtherNonconformityTypes(criteria2014_g_10)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_d_1));
-                expect(util.sortOtherNonconformityTypes(criteria2015_d_1)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_e_1));
-                expect(util.sortOtherNonconformityTypes(criteria2015_e_1)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_g_4));
-                expect(util.sortOtherNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortOtherNonconformityTypes(criteria2015_g_10));
-                expect(util.sortOtherNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortOtherNonconformityTypes(transparency_k_2));
-                expect(util.sortOtherNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortOtherNonconformityTypes(other));
             });
 
             it('should be able to order arrays of arrays of certs by the first cert', () => {
@@ -642,6 +622,38 @@
                     let isBlank = util.isBlank(populatedObject);
                     expect(isBlank).toBe(false);
                 });
+            });
+        });
+
+        describe('when examining a criterion', () => {
+            it('should know if it counts as cures based on title', () => {
+                let criterion = {
+                    number: '170.315 (d)(2)',
+                    title: 'A Cures Criteria (Cures Update)',
+                };
+                expect(util.isCures(criterion)).toBe(true);
+            });
+
+            it('should know if it counts as cures based on number', () => {
+                let criterion = {
+                    number: '170.315 (b)(10)',
+                    title: 'a cures criteria',
+                };
+                expect(util.isCures(criterion)).toBe(true);
+                criterion.number = '170.315 (d)(12)';
+                expect(util.isCures(criterion)).toBe(true);
+                criterion.number = '170.315 (d)(13)';
+                expect(util.isCures(criterion)).toBe(true);
+                criterion.number = '170.315 (g)(10)';
+                expect(util.isCures(criterion)).toBe(true);
+            });
+
+            it('should know if it doesn\'t count as cures', () => {
+                let criterion = {
+                    number: '170.315 (d)(2)',
+                    title: 'not cures',
+                };
+                expect(util.isCures(criterion)).toBe(false);
             });
         });
     });

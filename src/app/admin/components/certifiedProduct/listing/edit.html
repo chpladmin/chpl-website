@@ -55,7 +55,7 @@
       </select>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpClassification.$touched) && vm.editForm.cpClassification.$error.required">Field is required</div>
     </div>
-    <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
+    <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <span ng-if="vm.cp.curesUpdate">Cures Update</span> <br />
     <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} </div>
     <div ng-if="vm.isChplAdmin" class="form-group">
       <label for="cp-body">Certification Body</label>

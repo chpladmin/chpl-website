@@ -1,5 +1,49 @@
 # Release Notes
 
+## Version 10.42.0
+_20 April 2020_
+
+### Features
+* Change the order of display of revised criteria so "Cures Update" is first
+
+### Flagged Features
+* Stop displaying Transparency Attestations on Developers list
+* Display "Cures Update" everywhere it's appropriate
+* Allow Developers to submit Change Requests to change contact information
+
+### Bug Fixes
+* Show Transparency Attestation on Developer list
+
+### Flagged Bug Fixes
+* Show "Acting Organization" correctly for ONC-ACBs
+
+---
+
+## Version 10.41.0
+_10 April 2020_
+
+### Flagged Features
+* Stop displaying "Removed" attribute
+
+---
+
+## Version 10.40.0
+_8 April 2020_
+
+### Features
+* Add ONC-ACB filter for Listing Reports page
+* Only allow ROLE_DEVELOPER to withdraw a Change Request
+
+### Flagged Features
+* Allow administration of Developer users
+* Put Cures Update criteria in separate filter
+
+### User Interface Updates
+* Indicate "Cures Update" status on pending listings
+* Display Listing's Cures Update status
+
+---
+
 ## Version 10.39.0
 _23 March 2020_
 

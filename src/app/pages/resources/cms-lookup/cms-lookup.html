@@ -58,7 +58,7 @@
               <td>{{ row.version }}</td>
               <td>{{ row.vendor }}</td>
               <td>{{ row.chplProductNumber }}</td>
-              <td>{{ row.year }}</td>
+              <td>{{ row.year }} <span ng-if="row.curesUpdate">Cures Update</span></td>
               <td>{{ (row.classification === null ? "N/A" : row.classification) }}</td>
               <td>{{ (row.practiceType === null ? "N/A" : row.practiceType) }}</td>
               <td>

@@ -3,6 +3,7 @@ export const ChangeRequestsComponent = {
     bindings: {
         administrationMode: '<',
         changeRequests: '<',
+        changeRequestTypes: '<',
         changeRequestStatusTypes: '<',
         developer: '<',
         takeAction: '&',
@@ -38,6 +39,10 @@ export const ChangeRequestsComponent = {
                 this.backup.changeRequests = angular.copy(this.changeRequests);
                 this.activeChangeRequest = undefined;
                 this.activeState = undefined;
+            }
+            if (changes.changeRequestTypes && changes.changeRequestTypes.currentValue) {
+                this.changeRequestTypes = angular.copy(changes.changeRequestTypes.currentValue);
+                this.filterItems.types = this.changeRequestTypes.data.map(crt => ({value: crt.name, selected: true}));
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);
@@ -83,7 +88,7 @@ export const ChangeRequestsComponent = {
             case 'edit':
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
             case 'withdraw':
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']);
+                return this.hasAnyRole(['ROLE_DEVELOPER']);
                 // no default
             }
         }

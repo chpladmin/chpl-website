@@ -250,6 +250,9 @@ export const ListingHistoryComponent = {
             if (prev.chplProductNumber !== curr.chplProductNumber) {
                 activity.change.push('CHPL Product Number changed from ' + prev.chplProductNumber + ' to ' + curr.chplProductNumber);
             }
+            if (prev.curesUpdate !== curr.curesUpdate) {
+                activity.change.push('2015 Edition Cures Update status changed from ' + (prev.curesUpdate ? 'True' : 'False') + ' to ' + (curr.curesUpdate ? 'True' : 'False'));
+            }
         }
 
         _interpretDeveloper (activity) {
