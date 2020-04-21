@@ -1,0 +1,22 @@
+.flex-container {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: space-evenly;
+
+    &.wrap {
+        flex-wrap: wrap;
+    }
+}
+
+.flex-item {
+    width: 300px;
+
+    &.center {
+        text-align: center;
+    }
+
+    &.wide {
+        width: 650px;
+    }
+}
