@@ -11,7 +11,7 @@
   </ul>
   <div feature-flag="effective-rule-date">
     <div ng-if="!widget.productIds || widget.productIds.length === 0 || widget.searchResult.metPercentages.criteriaMet < 100">
-      For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. Note the selected product or products must meet 100% of the Base Criteria.
+      For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. Note the selected product<span ng-if="widget.productIds.length !== 1">s</span> must meet 100% of the Base Criteria.
     </div>
     <div ng-if="widget.searchResult.products">
       <a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br />
