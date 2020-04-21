@@ -343,13 +343,11 @@
             </li>
           </ul>
         </div>
+        <chpl-action-bar ng-if="!$ctrl.isChangeRequest"
+                         is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                         take-action="$ctrl.takeActionBarAction(action)">
+        </chpl-action-bar>
       </div>
-      <div class="panel-footer text-right" ng-if="!$ctrl.isChangeRequest">
-        <button class="btn btn-default" id="developer-component-save" ng-click="$ctrl.save()"
-                ng-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
-                ng-mouseover="$ctrl.showFormErrors = true"
-                ><i class="fa fa-save"></i> Submit</button>
-      </div>
-    </div>
+    </span>
   </span> <!-- end edit -->
 </div>
