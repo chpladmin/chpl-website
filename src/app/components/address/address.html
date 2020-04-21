@@ -63,7 +63,7 @@
     <span feature-flag="ui-bump-major">
       <ul class="flex-container wrap">
         <li class="flex-item">
-          <label class="control-label" for="line1">Line 1 <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+          <label class="control-label" for="line1">Address <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
           <div>
             <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.line1" id="line1" name="line1" ng-maxlength="250" ng-change="$ctrl.update()"></input>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.required">Field is required</div>
@@ -85,7 +85,7 @@
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.maxlength">Field is too long</div>
           </div>
         </li>
-        <li class="flex-item">
+        <li class="flex-item narrow">
           <label class="control-label" for="state">State <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
           <div>
             <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.state" id="state" name="state" ng-maxlength="250" ng-change="$ctrl.update()"></input>
@@ -93,7 +93,7 @@
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.maxlength">Field is too long</div>
           </div>
         </li>
-        <li class="flex-item">
+        <li class="flex-item narrow">
           <label class="control-label" for="zipcode">Zip <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
           <div>
             <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.zipcode" id="zipcode" name="zipcode" ng-maxlength="25" ng-change="$ctrl.update()"></input>
