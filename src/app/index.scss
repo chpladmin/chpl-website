@@ -799,50 +799,63 @@ option[label^="Removed"] {
     }
 }
 
-.new-style {
-    /* Colors */
+:root {
+    --grey-blue: #edf6ff;
+    --blue: #156dac;
+    --darkblue: #0e547f;
+    --grey: #c6d5e5;
+    --red: #c44f65;
+    --dark-grey: #555555;
+    --black: #1c1c1c;
+    --light-grey: #f9f9f9;
+    --white: #ffffff;
+    --primary: #edf6ff;
+    --secondary: #156dac;
+    --success: #4fc16f;
+    --info: #0e547f;
+    --warning: #c44f65;
+    --danger: #c44f65;
+    --light: #f9f9f9;
+    --dark: #1c1c1c;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: Lato, Sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
 
-    :root {
-        --grey-blue: #edf6ff;
-        --blue: #156dac;
-        --darkblue: #0e547f;
-        --grey: #c6d5e5;
-        --red: #c44f65;
-        --dark-grey: #555555;
-        --black: #1c1c1c;
-        --light-grey: #f9f9f9;
-        --white: #ffffff;
-        --primary: #edf6ff;
-        --secondary: #156dac;
-        --success: #4fc16f;
-        --info: #0e547f;
-        --warning: #c44f65;
-        --danger: #c44f65;
-        --light: #f9f9f9;
-        --dark: #1c1c1c;
-        --breakpoint-xs: 0;
-        --breakpoint-sm: 576px;
-        --breakpoint-md: 768px;
-        --breakpoint-lg: 992px;
-        --breakpoint-xl: 1200px;
-        --font-family-sans-serif: Lato, Sans-serif;
-        --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
+.new-style {
+    /*
+This is the new style wrapper for CHPL Made in Spring 2020
+   */
+
+    /* start of official new style code */
+
+    /*
+Colors
+   */
+
     //*,
 
-    /* Format */
+    /*
+Format
+   */
 
     .body {
         background: var(--white);
     }
 
     .main-content {
-        background: var(--grey);
+        background: var(--grey-blue);
         padding: 10px;
         border: 1px solid var(dark-grey);
     }
 
-    /* Typography */
+    /*
+Typography
+   */
 
     h1 {
         font-family: "Lato", sans-serif;
@@ -859,7 +872,7 @@ option[label^="Removed"] {
     }
 
     h3 {
-        font-family: "Lato", sans-serif !important;
+        font-family: "Lato", sans-serif;
         font-size: 1.75em;
         font-weight: 900;
         color: var(--dark);
@@ -873,7 +886,7 @@ option[label^="Removed"] {
     }
 
     h5 {
-        font-family: "Lato", sans-serif !important;
+        font-family: "Lato", sans-serif;
         font-size: 1.25em;
         font-weight: 900;
         color: var(--dark);
@@ -891,23 +904,36 @@ option[label^="Removed"] {
         font-size: 1em;
         font-weight: 400;
         color: var(--dark);
-
-        .italic {
-            font-style: italic;
-        }
-
-        .bold {
-            font-style: italic;
-        }
-
-        .product-subheads {
-            text-transform: uppercase;
-            color: #555555;
-            padding: 10px 0 0;
-            font-weight: 300;
-        }
     }
-    /* Button Styling */
+
+    p.italic {
+        font-family: "Lato", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        font-style: italic;
+        color: var(--dark);
+    }
+
+    p.bold {
+        font-family: "Lato", sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        font-style: italic;
+        color: var(--dark);
+    }
+
+    p.product-subheads {
+        text-transform: uppercase;
+        color: #555555;
+        padding: 10px 0;
+        font-family: "Lato";
+        font-size: 1em;
+        font-weight: 300;
+    }
+
+    /*
+Button Styling
+   */
 
     .btn {
         display: inline-block;
@@ -917,27 +943,27 @@ option[label^="Removed"] {
         white-space: nowrap;
         vertical-align: middle;
         padding: 5px 10px;
+    }
 
-        &:focus {
-            border-color: var(--dark-blue) 1px solid;
-        }
+    .btn:focus {
+        border-color: var( --dark-blue) 1px solid;
+    }
 
-        &:active {
-            box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-        }
+    .btn:active {
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
     }
 
     .btn-default {
-        padding: 10px;
+        padding: 5px 10px;
         line-height: 1.5;
-        border-radius: 5px;
         color: var(--black);
         background-color: var(--white);
         border-color: var(--dark-grey) 1px solid;
+        border-radius: 5px;
+    }
 
-        &:hover {
-            background-color: var(--grey);
-        }
+    .btn-default:hover {
+        background-color: var(--grey);
     }
 
     .btn-primary {
@@ -947,10 +973,10 @@ option[label^="Removed"] {
         line-height: 1.5;
         border-radius: 5px;
         border-color: var(--dark-blue) 1px solid;
+    }
 
-        &:hover {
-            background: var(--dark-blue);
-        }
+    .btn-primary:hover {
+        background: var(--dark-blue);
     }
 
     .btn-secondary {
@@ -960,10 +986,10 @@ option[label^="Removed"] {
         line-height: 1.5;
         border-radius: 5px;
         border: #156dac 1px solid;
+    }
 
-        &:hover {
-            background-color: var(--grey);
-        }
+    .btn-secondary:hover {
+        background-color: var(--grey);
     }
 
     .btn-chpl {
@@ -975,18 +1001,18 @@ option[label^="Removed"] {
 
     .badge-success {
         background-color: #4fc16f;
+    }
 
-        &:hover {
-            background-color: #356635;
-        }
+    .badge-success:hover {
+        background-color: #356635;
     }
 
     .badge-error {
         background-color: #c44f65;
+    }
 
-        &:hover {
-            background-color: #953b39;
-        }
+    .badge-error:hover {
+        background-color: #953b39;
     }
 
     /*Panel Styling */
@@ -999,16 +1025,20 @@ option[label^="Removed"] {
         box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
     }
 
-    panel-body {
+    .panel-body {
         padding: 10px 10px 10px 15px;
     }
 
     .panel-heading {
         background: var(--white);
+    }
 
-        .tracking-panel {
-            padding: 20px 15px;
-        }
+    .panel-heading.tracking-panel {
+        padding: 20px 15px;
+    }
+
+    .panel-ai {
+        border-color: #c6d5e5;
     }
 
     .panel-ai > .panel-heading {
@@ -1061,10 +1091,16 @@ option[label^="Removed"] {
         border-radius: 5px;
     }
 
+    /* Styling for Individual Pages starts below this point, be reference the code of for the general styling options */
+
     /* Users dashboard Page */
 
     .mydashboardheader {
         padding-left: 40px;
         padding-bottom: 10px;
     }
+
+    /* Developer Dashboard Page */
+
+    /* end of official new style code */
 }

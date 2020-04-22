@@ -24,7 +24,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.cms_lookup', function ($provide) {
+            angular.mock.module('chpl.resources', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.lookupCertificationId = jasmine.createSpy('lookupCertificationId');
                     return $delegate;
