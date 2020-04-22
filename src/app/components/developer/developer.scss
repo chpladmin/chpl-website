@@ -1,8 +1,6 @@
 .flex-container {
     display: flex;
-    list-style: none;
-    padding: 0;
-    justify-content: space-evenly;
+    //justify-content: space-evenly;
 
     &.wrap {
         flex-wrap: wrap;
@@ -10,17 +8,18 @@
 }
 
 .flex-item {
-    width: 300px;
+    flex: 0 48%;
 
     &.center {
+        margin: auto;
         text-align: center;
     }
 
     &.wide {
-        width: 650px;
+        flex: 0 100%;
     }
 
     &.narrow {
-        width: 150px;
+        flex: 0 24%;
     }
 }

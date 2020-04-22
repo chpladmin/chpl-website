@@ -1,15 +1,13 @@
-<div class="action-bar">
-  <ul class="flex-container">
-    <li class="flex-item center">
-      <button class="btn btn-default" id="action-bar-cancel"
-              confirm="Are you sure you wish to cancel? Your changes will not be saved."
-              confirm-ok="Yes"
-              confirm-cancel="No"
-              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="$ctrl.cancel()">Cancel</button>
-      <button class="btn btn-default" id="action-bar-save" ng-click="$ctrl.save()"
-              ng-disabled="$ctrl.isDisabled"
-              ng-mouseover="$ctrl.mouseover()">Save</button>
-    </li>
-  </ul>
+<div class="action-bar flex-container">
+  <div class="flex-item center">
+    <button class="btn btn-default" id="action-bar-cancel"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="$ctrl.cancel()">Cancel</button>
+    <button class="btn btn-default" id="action-bar-save" ng-click="$ctrl.save()"
+            ng-disabled="$ctrl.isDisabled"
+            ng-mouseover="$ctrl.mouseover()">Save</button>
+  </div>
 </div>
