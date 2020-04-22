@@ -67,7 +67,7 @@
             Transparency Attestation: {{ $ctrl.getAttestationForCurrentSystemDeveloper().transparencyAttestation }}
           </div>
           <strong>Contact information</strong><br />
-          <ai-contact contact="$ctrl.developer.contact"></ai-contact>
+          <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
           <br />
           Last Modified Date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
         </div>
@@ -93,7 +93,7 @@
             Transparency Attestation: {{ $ctrl.listing.transparencyAttestation.transparencyAttestation }}
           </div>
           <strong>Contact information</strong><br />
-          <ai-contact contact="$ctrl.listing.developer.contact"></ai-contact>
+          <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
         </div>
         <div class="panel-footer" ng-if="$ctrl.listing.developer.developerId">
           <button class="btn btn-default btn-block" ng-click="$ctrl.saveInspectingDeveloper()">Save as Developer Information</button>
