@@ -86,23 +86,22 @@ export const ReportsProductsComponent = {
                 var j;
                 var change;
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
-                    activity.name = item.newData.name;
-                    activity.type = 'Product has been updated';
-                    activity.action = 'Product has been updated:<ul>';
+                    activity.action = 'Updated product "' + item.newData.name + '"';
+                    activity.details = [];
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'name', 'Name');
                     if (change) {
-                        activity.action += '<li>' + change + '</li>';
+                        activity.details.push(change);
                     }
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'developerName', 'Developer');
                     if (change) {
-                        activity.action += '<li>' + change + '</li>';
+                        activity.details.push(change);
                     }
                     var contactChanges = this.ReportService.compareContact(item.originalData.contact, item.newData.contact);
                     if (contactChanges && contactChanges.length > 0) {
-                        activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
+                        activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
                     }
                     if (!angular.equals(item.originalData.ownerHistory, item.newData.ownerHistory)) {
-                        var ownerHistoryActionDetails = '<li>Owner history changed. Was:<ul>';
+                        var ownerHistoryActionDetails = 'Owner history changed. Was:<ul>';
                         if (item.originalData.ownerHistory.length === 0) {
                             ownerHistoryActionDetails += '<li>No previous history</li>';
                         } else {
@@ -118,11 +117,9 @@ export const ReportsProductsComponent = {
                                 ownerHistoryActionDetails += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
                             }
                         }
-                        ownerHistoryActionDetails += '</ul></li>';
-                        activity.action += ownerHistoryActionDetails;
+                        ownerHistoryActionDetails += '</ul>';
+                        activity.details.push(ownerHistoryActionDetails);
                     }
-                    activity.action += '</ul>';
-                    activity.detailsCSV = activity.action;
                 } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
                     activity.action ='Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
                     activity.details = [];
@@ -132,11 +129,12 @@ export const ReportsProductsComponent = {
                 } else {
                     this.ReportService.interpretNonUpdate(activity, item, 'product');
                     activity.action = activity.action[0];
-                    activity.type = activity.action;
+                    activity.details = [];
+                    activity.csvAction = activity.action.replace(',','","');
                 }
                 meta.action = activity.action;
-                meta.activityType = activity.type;
-                meta.detailsCSV = activity.detailsCSV;
+                meta.details = activity.details;
+                meta.csvDetails = activity.details.join('\n');
             });
         }
 

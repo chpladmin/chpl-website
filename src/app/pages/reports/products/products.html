@@ -14,7 +14,7 @@
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.downloadReady()"
               ng-csv="$ctrl.displayed" filename="Product_{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
               csv-header="['Developer', 'Product', 'Responsible User', 'Activity', 'Details', 'Activity Date']"
-              csv-column-order="['developerName', 'productName', 'fullName', 'activityType', 'detailsCSV', 'friendlyActivityDate']">
+              csv-column-order="['developerName', 'productName', 'fullName', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
     </div>
   </div>
@@ -48,7 +48,7 @@
     </thead>
     <tbody>
       <tr ng-if="$ctrl.displayed.length === 0">
-        <td colspan="5">No activity found</td>
+        <td colspan="4">No activity found</td>
       </tr>
       <tr ng-repeat="activity in $ctrl.displayed">
         <td>{{ activity.developerName }}</td>
@@ -60,7 +60,12 @@
           <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
           <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
           {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
-          <div ng-if="activity.action && activity.showDetails" ng-bind-html="activity.action"></div>
+          <div ng-if="activity.action && activity.showDetails">
+            {{ activity.action }}
+            <ul>
+              <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
+            </ul>
+          </div>
         </td>
       </tr>
     </tbody>
