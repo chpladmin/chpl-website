@@ -1,11 +1,11 @@
 <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB'])">
   <div class="col-sm-12">
-    <h2 ng-switch on="$ctrl.action">
-      <span ng-switch-when="edit">Edit Developer</span>
+    <h1 ng-switch on="$ctrl.action">
+      <span ng-switch-when="edit">{{ $ctrl.developer.name }}</span>
       <span ng-switch-when="merge">Merge Developers</span>
       <span ng-switch-when="split">Split a Developer</span>
       <span ng-switch-default>View Developer</span>
-    </h2>
+    </h1>
   </div>
 </div>
 <div class="row">
