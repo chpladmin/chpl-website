@@ -7,6 +7,7 @@ export default angular
         'angular-confirm',
         'chpl.constants',
         'chpl.services',
+        'feature-flags',
         'ngCsv',
         'ngFileUpload',
         'ngIdle',

@@ -1,4 +1,4 @@
-<div class="container-fluid new-style-old">
+<div class="container-fluid" ng-class="vm.isOn('ui-bump-version') ? 'new-style' : 'new-style-old'">
   <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF'])">
     <div class="row">
       <div class="col-sm-12">
