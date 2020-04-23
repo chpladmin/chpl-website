@@ -809,11 +809,16 @@ option[label^="Removed"] {
     &.wrap {
         flex-wrap: wrap;
     }
+
+    &.horizontal-space {
+        height: 15px;
+    }
 }
 
 .flex-item {
     min-width: 150px;
     flex: 1;
+    padding: 5px;
 
     &.wrap {
         flex: 0 50%;
@@ -1077,12 +1082,12 @@ option[label^="Removed"] {
     /* Form Styling Dropdown */
 
     .form-control {
-        border-radius: 5px;
-        font-weight: bold;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-        height: 50px;
+        font-family: "Lato";
+        font-size: 16px;
+        border-color: #6c9cbf;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: var(--dark);
     }
 
     /* Well Styling */
@@ -1100,5 +1105,23 @@ option[label^="Removed"] {
     .mydashboardheader {
         padding-left: 40px;
         padding-bottom: 10px;
+    }
+
+    label {
+        display: block;
+        font-family: "Lato";
+        font-size: 12px;
+        color: #6b6b6b;
+        text-transform: uppercase;
+    }
+
+    /* Data that is not editable*/
+
+    .read-only-data {
+        font-family: "Lato";
+        font-size: 16px;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: #1c1c1c;
     }
 }
