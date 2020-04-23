@@ -77,8 +77,7 @@
         }
 
         function isFilterActive (key) {
-            return vm.filters && vm.filters.length > 0 && vm.filters.indexOf(key) > -1
-                && !(vm.isOn('effective-rule-date') && vm.collectionKey === 'inactiveCertificates' && key === 'edition');
+            return vm.filters && vm.filters.length > 0 && vm.filters.indexOf(key) > -1;
         }
 
         function loadResults () {
@@ -187,7 +186,14 @@
                 vm.filterItems.acbAttestations = angular.copy(vm.refineModel.acbAttestations);
             }
             if (vm.isFilterActive('edition')) {
-                vm.filterItems.editionItems = angular.copy(vm.refineModel.edition);
+                vm.filterItems.editionItemsCures = [
+                    { value: '2015', selected: true },
+                    { value: '2015 Cures Update', selected: true },
+                ];
+                vm.filterItems.editionItems = [
+                    { value: '2014', selected: true },
+                    { value: '2015', selected: true },
+                ];
             }
         }
 
