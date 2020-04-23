@@ -799,36 +799,70 @@ option[label^="Removed"] {
     }
 }
 
-.new-style {
-    /* Colors */
+/*
+ * Start of flexbox code; only applies when ui-bump-major flag is on
+ */
 
-    :root {
-        --grey-blue: #edf6ff;
-        --blue: #156dac;
-        --darkblue: #0e547f;
-        --grey: #c6d5e5;
-        --red: #c44f65;
-        --dark-grey: #555555;
-        --black: #1c1c1c;
-        --light-grey: #f9f9f9;
-        --white: #ffffff;
-        --primary: #edf6ff;
-        --secondary: #156dac;
-        --success: #4fc16f;
-        --info: #0e547f;
-        --warning: #c44f65;
-        --danger: #c44f65;
-        --light: #f9f9f9;
-        --dark: #1c1c1c;
-        --breakpoint-xs: 0;
-        --breakpoint-sm: 576px;
-        --breakpoint-md: 768px;
-        --breakpoint-lg: 992px;
-        --breakpoint-xl: 1200px;
-        --font-family-sans-serif: Lato, Sans-serif;
-        --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+.flex-container {
+    display: flex;
+
+    &.wrap {
+        flex-wrap: wrap;
     }
-    //*,
+}
+
+.flex-item {
+    min-width: 150px;
+    flex: 1;
+
+    &.wrap {
+        flex: 0 50%;
+    }
+
+    &.center {
+        margin: auto;
+        text-align: center;
+    }
+
+    &.wide {
+        flex: 2;
+        min-width: 300px;
+    }
+
+    &.narrow {
+        flex: .5;
+        min-width: 75px;
+    }
+}
+
+:root {
+    --grey-blue: #edf6ff;
+    --blue: #156dac;
+    --darkblue: #0e547f;
+    --grey: #c6d5e5;
+    --red: #c44f65;
+    --dark-grey: #555555;
+    --black: #1c1c1c;
+    --light-grey: #f9f9f9;
+    --white: #ffffff;
+    --primary: #edf6ff;
+    --secondary: #156dac;
+    --success: #4fc16f;
+    --info: #0e547f;
+    --warning: #c44f65;
+    --danger: #c44f65;
+    --light: #f9f9f9;
+    --dark: #1c1c1c;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: Lato, Sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.new-style {
 
     /* Format */
 
