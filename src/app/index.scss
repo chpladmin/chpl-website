@@ -1183,4 +1183,11 @@ Button Styling
         line-height: 1.38;
         letter-spacing: .18px;
     }
+
+    /* Use bootstrap standard buttons in datepicker */
+
+    [uib-datepicker-popup-wrap] .btn {
+        border-radius: 3px;
+        border-color: #ccc;
+    }
 }
