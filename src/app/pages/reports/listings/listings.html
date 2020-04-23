@@ -25,19 +25,12 @@
       </div>
     </div>
   </div>
-  <div ng-if="!$ctrl.productId">
-    <div class="row form-group form-inline">
-      <div class="col-sm-12">
-      </div>
-    </div>
-  </div>
   <div class="row form-group">
     <div class="col-sm-5">
       <label for="data-filter" class="control-label">Filter</label>
       <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Product, or CHPL Product Number" class="form-control" type="search">
     </div>
   </div>
-
   <div class="row">
     <div class="col-sm-2">
       <label class="control-label" for="categoriesFilter">Activity</label>

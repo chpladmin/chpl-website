@@ -29,10 +29,6 @@
                 certificationStatus: [
                     { value: 'Withdrawn by Developer', selected: true },
                 ],
-                edition: [
-                    { value: '2014', selected: true },
-                    { value: '2015', selected: true },
-                ],
             };
         }
     }
