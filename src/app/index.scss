@@ -857,6 +857,7 @@ option[label^="Removed"] {
     --danger: #c44f65;
     --light: #f9f9f9;
     --dark: #1c1c1c;
+    --medium-grey: #6b6b6b;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -1110,7 +1111,7 @@ option[label^="Removed"] {
         display: block;
         font-family: "Lato";
         font-size: 12px;
-        color: #6b6b6b;
+        color: var(--medium-grey);
         text-transform: uppercase;
     }
 
@@ -1121,6 +1122,6 @@ option[label^="Removed"] {
         font-size: 16px;
         line-height: 1.38;
         letter-spacing: .18px;
-        color: #1c1c1c;
+        color: var(--dark);
     }
 }
