@@ -3,7 +3,7 @@ export const ReportsListingsComponent = {
     bindings: {
         productId: '<',
     },
-    controller: class ReportsListings {
+    controller: class ReportsListingsComponent {
         constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -14,6 +14,8 @@ export const ReportsListingsComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
+
+            this.results = [];
             this.displayed = [];
             this.categoriesFilter = '|LISTING|';
             this.clearFilterHs = [];
@@ -26,8 +28,8 @@ export const ReportsListingsComponent = {
                 complete: 0,
             };
             this.downloadProgress = 0;
-            this.results = [];
             this.pageSize = 50;
+            this.defaultDateRangeOffset = 60 * 24 * 60 * 60 * 1000; // 60 days
         }
 
         $onInit () {
@@ -120,6 +122,10 @@ export const ReportsListingsComponent = {
             filterData.dataFilter = this.filterText;
             filterData.tableState = this.tableController.tableState();
             return filterData;
+        }
+
+        downloadReady () {
+            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
         }
 
         tableStateListener (tableController) {
@@ -572,10 +578,6 @@ export const ReportsListingsComponent = {
             return ret;
         }
 
-        downloadReady () {
-            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
-        }
-
         parse (meta) {
             return this.networkService.getActivityById(meta.id, {ignoreLoadingBar: true}).then(item => {
                 var simpleCpFields = [
@@ -811,8 +813,8 @@ export const ReportsListingsComponent = {
                     filter.tableState = this.tableController.tableState();
                     filter.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
                     filter.tableState.search.predicateObject.date = {
-                        after: new Date().getTime() - 60 * 24 * 60 * 60 * 1000,
-                        before: new Date().getTime(),
+                        after: this.ReportService.coerceToMidnight(new Date('2016-04-01')).getTime() - this.defaultDateRangeOffset,
+                        before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                     };
                     that.doFilter(filter);
                     that.addPageToData(1);
