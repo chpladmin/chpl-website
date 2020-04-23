@@ -322,7 +322,7 @@
                   <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousDate(status)">Only one change of status allowed per day</div>
                 </div>
                 <div class="flex-item narrowest vertical-center">
-                  <button type="button" class="btn btn-link btn-sm pull-right" ng-click="$ctrl.removeStatus($ctrl.developer.statusEvents.indexOf(status))"><i class="fa fa-close"></i><span class="sr-only">Remove status</span></button>
+                  <button type="button" class="btn btn-link btn-sm" ng-click="$ctrl.removeStatus($ctrl.developer.statusEvents.indexOf(status))"><i class="fa fa-close"></i><span class="sr-only">Remove status</span></button>
                 </div>
               </div>
               <div class="flex-container">
