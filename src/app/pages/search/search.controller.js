@@ -487,6 +487,12 @@
                     }
                     return obj;
                 });
+            if (vm.isOn('effective-rule-date')) {
+                vm.filterItems.editionItems.push({
+                    value: '2015 Cures Update',
+                    selected: true,
+                });
+            }
             vm.filterItems.statusItems = vm.searchOptions.certificationStatuses
                 .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                 .map(status => {
