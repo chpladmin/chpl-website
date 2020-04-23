@@ -1,32 +1,83 @@
-.flex-container {
-    display: flex;
-    //justify-content: space-evenly;
+.developer-wrapper {
 
-    &.wrap {
-        flex-wrap: wrap;
-    }
-}
+    .flex-container {
+        display: flex;
+        //justify-content: space-evenly;
 
-.flex-item {
-    min-width: 150px;
-    flex: 1;
+        &.wrap {
+            flex-wrap: wrap;
+        }
 
-    &.wrap {
-        flex: 0 50%;
+        &.horizontal-space {
+            height: 15px;;
+        }
     }
 
-    &.center {
-        margin: auto;
-        text-align: center;
+    .flex-item {
+        min-width: 150px;
+        flex: 1;
+        padding: 5px;
+
+        &.wrap {
+            flex: 0 50%;
+        }
+
+        &.center {
+            margin: auto;
+            text-align: center;
+        }
+
+        &.wide {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        &.narrow {
+            flex: .5;
+            min-width: 75px;
+        }
     }
 
-    &.wide {
-        flex: 2;
-        min-width: 300px;
+    label {
+        display: block;
+        font-family: "Lato";
+        font-size: 12px;
+        color: #6b6b6b;
+        text-transform: uppercase;
     }
 
-    &.narrow {
-        flex: .5;
-        min-width: 75px;
+    .form-control {
+        font-family: "Lato";
+        font-size: 16px;
+        border-color: #6c9cbf;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: #1c1c1c;
+    }
+
+    .read-only-data {
+        font-family: "Lato";
+        font-size: 16px;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: #1c1c1c;
+    }
+
+    h1 {
+        font-family: "Lato";
+        font-size: 36px;
+        font-weight: 600;
+        line-height: 1.11;
+        letter-spacing: .18px;
+        color: #1c1c1c;
+    }
+
+    h2.panel-title {
+        font-family: "Lato";
+        font-size: 24px;
+        font-weight: 600;
+        line-height: .92;
+        letter-spacing: .18px;
+        color: #1c1c1c;
     }
 }
