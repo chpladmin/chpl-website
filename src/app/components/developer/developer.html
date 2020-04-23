@@ -212,9 +212,20 @@
         </div>
         <div class="panel-body">
           <div class="flex-container">
-            <div class="flex-item" ng-if="$ctrl.developer.lastModifiedDate">Last Modified<br />{{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC'}}</div>
-            <div class="flex-item" ng-if="$ctrl.developer.developerCode">Developer Code<br />{{ $ctrl.developer.developerCode }}</div>
+            <div class="flex-item" ng-if="$ctrl.developer.lastModifiedDate">
+              <label for="last-modified-date">Last Modified</label>
+              <span class="read-only-data" id="last-modified-date">
+                  {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC'}}
+              </span>
+            </div>
+            <div class="flex-item" ng-if="$ctrl.developer.developerCode">
+              <label for="developer-code">Developer Code</label>
+              <span class="read-only-data" id="developer-code">
+                  {{ $ctrl.developer.developerCode }}
+              </span>
+            </div>
           </div>
+          <div class="flex-container horizontal-space"></div>
           <div class="flex-container">
             <div class="flex-item" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest">
               <label class="control-label" for="developer-name">Developer name <span class="text-danger">*</span></label>
@@ -233,17 +244,20 @@
               </div>
             </div>
           </div>
+          <div class="flex-container horizontal-space"></div>
           <chpl-contact contact="$ctrl.developer.contact"
                         is-editing="true"
                         is-required="!$ctrl.isChangeRequest"
                         is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                         ignore-friendly-name="true"
                         on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+          <div class="flex-container horizontal-space"></div>
           <chpl-address address="$ctrl.developer.address"
                         is-editing="true"
                         is-required="$ctrl.isSplitting"
                         is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                         on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+          <div class="flex-container horizontal-space"></div>
           <div class="flex-container wrap">
             <div class="flex-item wrap" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest && $ctrl.isTransparencyAttestationEditable()">
               <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
@@ -254,6 +268,7 @@
               </select>
             </div>
           </div>
+          <div class="flex-container horizontal-space"></div>
           <div class="flex-container">
             <div class="flex-item narrow">
               <label class="control-label">Self-developer</label>
@@ -281,6 +296,7 @@
               </div>
             </div>
           </div>
+          <div class="flex-container horizontal-space"></div>
           <div class="flex-container">
             <div class="flex-item" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isChangeRequest">
               <strong>Developer Status</strong>

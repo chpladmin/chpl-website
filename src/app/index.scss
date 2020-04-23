@@ -809,6 +809,10 @@ option[label^="Removed"] {
     &.wrap {
         flex-wrap: wrap;
     }
+
+    &.horizontal-space {
+        height: 15px;
+    }
 }
 
 .flex-item {
@@ -857,6 +861,7 @@ option[label^="Removed"] {
     --danger: #c44f65;
     --light: #f9f9f9;
     --dark: #1c1c1c;
+    --medium-grey: #6b6b6b;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -1102,12 +1107,13 @@ Button Styling
     /* Form Styling Dropdown */
 
     .form-control {
-        border-radius: 5px;
-        font-weight: bold;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-        height: 50px;
+        font-family: "Lato";
+        font-size: 16px;
+        border-color: #6c9cbf;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: var(--dark);
+        width: calc(100% - 5px);
     }
 
     /* Well Styling */
@@ -1129,7 +1135,21 @@ Button Styling
         padding-bottom: 10px;
     }
 
-    /* Developer Dashboard Page */
+    label {
+        display: block;
+        font-family: "Lato";
+        font-size: 12px;
+        color: var(--medium-grey);
+        text-transform: uppercase;
+    }
 
-    /* end of official new style code */
+    /* Data that is not editable*/
+
+    .read-only-data {
+        font-family: "Lato";
+        font-size: 16px;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: var(--dark);
+    }
 }
