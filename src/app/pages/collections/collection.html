@@ -1,4 +1,4 @@
-<div class="container-fluid collection-page">
+<div class="container-fluid collection-page" ng-class="vm.isOn('ui-bump-major') ? 'new-style' : 'new-style-old'">
   <div class="pending" ng-if="vm.isPreLoading"></div>
   <div class="row">
     <div class="col-sm-12">

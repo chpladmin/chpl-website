@@ -4,11 +4,12 @@ export const UserManagementComponent = {
         users: '<',
     },
     controller: class UserManagementComponent {
-        constructor ($log, $scope, $state, authService, networkService, toaster) {
+        constructor ($log, $scope, $state, authService, featureFlags, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
+            this.isOn = featureFlags.isOn;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;

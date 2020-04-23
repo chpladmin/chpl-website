@@ -3,12 +3,13 @@ export const SurveillanceComponent = {
     bindings: {
     },
     controller: class SurveillanceComponent {
-        constructor ($log, $scope, $state, authService) {
+        constructor ($log, $scope, $state, authService, featureFlags) {
             'ngInject'
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
+            this.isOn = featureFlags.isOn;
         }
 
         $onInit () {

@@ -5,8 +5,10 @@
         .controller('ChplApiController', ChplApiController);
 
     /** @ngInject */
-    function ChplApiController ($location, $log, API) {
+    function ChplApiController ($location, $log, API, featureFlags) {
         var vm = this;
+
+        vm.isOn = featureFlags.isOn;
 
         activate();
 

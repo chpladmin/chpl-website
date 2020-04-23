@@ -1,4 +1,4 @@
-<div class="container" ng-if="!$ctrl.loading">
+<div class="container" ng-if="!$ctrl.loading" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : 'new-style-old'">
   <div class="row text-bottom" ng-if="$ctrl.listing">
     <div class="col-sm-8">
       <h1 id="listing-name">{{ $ctrl.listing.product.name }}</h1>
