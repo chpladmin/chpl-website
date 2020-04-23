@@ -1088,6 +1088,7 @@ option[label^="Removed"] {
         line-height: 1.38;
         letter-spacing: .18px;
         color: var(--dark);
+        width: calc(100% - 5px);
     }
 
     /* Well Styling */
