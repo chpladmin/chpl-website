@@ -813,11 +813,13 @@ option[label^="Removed"] {
     &.horizontal-space {
         height: 15px;
     }
+
 }
 
 .flex-item {
     min-width: 150px;
     flex: 1;
+    margin-bottom: 5px;
 
     &.wrap {
         flex: 0 50%;
@@ -828,6 +830,10 @@ option[label^="Removed"] {
         text-align: center;
     }
 
+    &.vertical-center {
+        align-self: flex-end;
+    }
+
     &.wide {
         flex: 2;
         min-width: 300px;
@@ -836,6 +842,16 @@ option[label^="Removed"] {
     &.narrow {
         flex: .5;
         min-width: 75px;
+    }
+
+    &.narrower {
+        flex: .25;
+        min-width: 37px;
+    }
+
+    &.narrowest {
+        flex: .125;
+        min-width: 18px;
     }
 }
 
@@ -1124,5 +1140,20 @@ option[label^="Removed"] {
         line-height: 1.38;
         letter-spacing: .18px;
         color: var(--dark);
+    }
+
+    .repeatable-item {
+        padding: 5px;
+        background-color: var(--light);
+        border: 1px solid #e3e3e3;
+        border-radius: 4px;
+        margin-bottom: 5px;
+    }
+
+    .btn-link {
+        font-family: "Lato";
+        font-size: 16px;
+        line-height: 1.38;
+        letter-spacing: .18px;
     }
 }
