@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" feature-flag="effective-rule-date-plus-three-months" feature-flag-hide>
       <li role="presentation" ng-class="{'active': $ctrl.chartState.criteriaType === 2014}"><a ng-click="$ctrl.chartState.criteriaType = 2014">2014 Edition</a></li>
       <li role="presentation" ng-class="{'active': $ctrl.chartState.criteriaType !== 2014}"><a ng-click="$ctrl.chartState.criteriaType = 'All'">2015 Edition</a></li>
     </ul>
