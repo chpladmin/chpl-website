@@ -145,8 +145,10 @@ export const ReportsListingsComponent = {
                 {key: 'success', display: 'Successful'},
             ];
             var i, j;
-            prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
-            curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            //prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            //curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            prev.sort((a, b) => this.utilService.sortCertActual(a, b));
+            curr.sort((a, b) => this.utilService.sortCertActual(a, b));
             for (i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].number, title: curr[i].title, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
