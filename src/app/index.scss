@@ -897,8 +897,8 @@ Format
     }
 
     .main-content {
-        background: var(--grey-blue);
-        padding: 10px;
+        background: var(--light-grey);
+        padding: 15px;
         border: 1px solid var(dark-grey);
     }
 
@@ -923,28 +923,28 @@ Typography
     h3 {
         font-family: "Lato", sans-serif;
         font-size: 1.75em;
-        font-weight: 900;
+        font-weight: 500;
         color: var(--dark);
     }
 
     h4 {
         font-family: "Lato", sans-serif;
         font-size: 1.5em;
-        font-weight: 600;
+        font-weight: 900;
         color: var(--dark);
     }
 
     h5 {
         font-family: "Lato", sans-serif;
         font-size: 1.25em;
-        font-weight: 900;
+        font-weight: 600;
         color: var(--dark);
     }
 
     h6 {
         font-family: "Lato", sans-serif;
         font-size: 1.25em;
-        font-weight: 600;
+        font-weight: 500;
         color: var(--dark);
     }
 
@@ -966,8 +966,7 @@ Typography
     p.bold {
         font-family: "Lato", sans-serif;
         font-size: 1em;
-        font-weight: 400;
-        font-style: italic;
+        font-weight: 600;
         color: var(--dark);
     }
 
@@ -995,7 +994,7 @@ Button Styling
     }
 
     .btn:focus {
-        border-color: var( --dark-blue) 1px solid;
+        border-color: var( --blue) 1px solid;
     }
 
     .btn:active {
@@ -1007,12 +1006,12 @@ Button Styling
         line-height: 1.5;
         color: var(--black);
         background-color: var(--white);
-        border-color: var(--dark-grey) 1px solid;
+        border-color: var(--grey-blue) 1px solid;
         border-radius: 5px;
     }
 
     .btn-default:hover {
-        background-color: var(--grey);
+        background-color: var(--light-blue);
     }
 
     .btn-primary {
@@ -1021,11 +1020,11 @@ Button Styling
         padding: 5px 10px;
         line-height: 1.5;
         border-radius: 5px;
-        border-color: var(--dark-blue) 1px solid;
+        border-color: var(--darkblue) 1px solid;
     }
 
     .btn-primary:hover {
-        background: var(--dark-blue);
+        background: var(--darkblue);
     }
 
     .btn-secondary {
@@ -1034,16 +1033,32 @@ Button Styling
         padding: 5px 10px;
         line-height: 1.5;
         border-radius: 5px;
-        border: #156dac 1px solid;
+        border: 1px solid var(--blue);
     }
 
     .btn-secondary:hover {
-        background-color: var(--grey);
+        background: var(--light-grey);
     }
 
-    .btn-chpl {
-        color: #f5d43c;
-        background: var(--blue);
+    .btn-widget {
+        color: var(--blue);
+        background: var(--grey-blue);
+        border: 1px solid var(--white);
+    }
+
+    .btn-wdiget:hover {
+        background: var(--grey);
+    }
+
+    .btn-filter {
+        background: var(--white);
+        color: var(--blue);
+        border: 1px solid var(--blue);
+    }
+
+    .btn-filter:hover {
+        background: var(--grey-blue);
+
     }
 
     /* Badges*/
@@ -1119,7 +1134,7 @@ Button Styling
         border-bottom-color: #c6d5e5;
     }
 
-    /* Form Styling Dropdown */
+    /* Form Styling */
 
     .form-control {
         font-family: "Lato";
@@ -1131,6 +1146,23 @@ Button Styling
         width: calc(100% - 5px);
     }
 
+    /* Table Styling */
+
+    .table-striped > tbody > tr:nth-of-type(even) {
+        background-color: var(--white);
+
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: var(--grey-blue);
+
+    }
+
+    .search-table th {
+        color: var(--blue);
+        font-weight: 500;
+    }
+
     /* Well Styling */
 
     .well-sm {
@@ -1139,6 +1171,20 @@ Button Styling
         border: 1px solid #e3e3e3;
         margin-right: 0%;
         border-radius: 5px;
+    }
+
+    /* Action Bar */
+
+    .action-bar {
+        background-color: white;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 50px;
+        z-index: 1035;
+        margin-bottom: 0;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
     }
 
     /* Styling for Individual Pages starts below this point, be reference the code of for the general styling options */
