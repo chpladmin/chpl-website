@@ -813,7 +813,7 @@ export const ReportsListingsComponent = {
                     filter.tableState = this.tableController.tableState();
                     filter.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
                     filter.tableState.search.predicateObject.date = {
-                        after: this.ReportService.coerceToMidnight(new Date('2016-04-01')).getTime() - this.defaultDateRangeOffset,
+                        after: this.ReportService.coerceToMidnight(new Date()).getTime() - this.defaultDateRangeOffset,
                         before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                     };
                     that.doFilter(filter);
