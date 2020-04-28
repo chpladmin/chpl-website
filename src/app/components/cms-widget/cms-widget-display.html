@@ -14,7 +14,8 @@
       For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. Note the selected product<span ng-if="widget.productIds.length !== 1">s</span> must meet 100% of the Base Criteria.
     </div>
     <div ng-if="widget.searchResult.products">
-      <a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br />
+      <span feature-flag="effective-rule-date" feature-flag-hide><a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br /></span>
+      <span feature-flag="effective-rule-date"><a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br /></span>
       <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="warning" ng-if="widget.searchResult.metPercentages.criteriaMet < 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
       <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="success" ng-if="widget.searchResult.metPercentages.criteriaMet === 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
     </div>
@@ -73,7 +74,8 @@
     <br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
   </p>
   <p feature-flag="effective-rule-date">
-    <a ui-sref="resources.cms-lookup">CMS ID Reverse Lookup</a>
+    <br />
+    To view which products were used to create a specific CMS ID, use the <a ui-sref="resources.cms-lookup">CMS ID Reverse Lookup</a>
   </p>
   <div ng-if="widget.searchResult.products">
     <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid" id="get-ehr-cert-id">Get {{ widget.searchResult.year }} EHR Certification ID</button>
