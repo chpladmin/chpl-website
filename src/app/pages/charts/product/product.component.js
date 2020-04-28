@@ -15,7 +15,7 @@ export const ChartsProductComponent = {
                 '2015 Cures Update',
             ];
             this.chartState = {
-                criteriaType: this.isOn('effective-rule-date-plus-three-months') ? 2015 : 2014,
+                criteriaType: this.isOn('effective-rule-date-plus-three-months') ? 'All' : 2014,
             };
         }
 
