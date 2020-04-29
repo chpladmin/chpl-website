@@ -35,10 +35,6 @@
                     { value: 'Withdrawn by ONC-ACB', selected: false },
                     { value: 'Terminated by ONC', selected: false },
                 ],
-                edition: [
-                    { value: '2014', selected: true },
-                    { value: '2015', selected: true },
-                ],
             };
         }
     }

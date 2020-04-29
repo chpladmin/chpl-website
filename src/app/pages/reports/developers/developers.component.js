@@ -186,7 +186,6 @@ export const ReportsDevelopersComponent = {
                     if (foundEvents) {
                         activity.details.push(translatedEvents);
                     }
-
                 } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
                     activity.action ='Developers ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
                     activity.details = [];
@@ -199,7 +198,6 @@ export const ReportsDevelopersComponent = {
                     activity.details = [];
                     activity.csvAction = activity.action.replace(',','","');
                 }
-
                 meta.action = activity.action;
                 meta.details = activity.details;
                 meta.csvDetails = activity.details.join('\n');
