@@ -1,5 +1,5 @@
 export const OverviewComponent = {
-    templateUrl: 'chpl.overview/overview.html',
+    templateUrl: 'chpl.resources/overview/overview.html',
     bindings: {
     },
     controller: class OverviewController {
@@ -56,5 +56,5 @@ export const OverviewComponent = {
 }
 
 angular
-    .module('chpl.overview')
+    .module('chpl.resources')
     .component('aiOverview', OverviewComponent);

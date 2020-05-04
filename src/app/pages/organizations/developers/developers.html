@@ -37,7 +37,7 @@
             <th scope="cols">Code</th>
             <th scope="cols">Name</th>
             <th scope="cols">Status</th>
-            <th scope="cols" ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ att }}</th>
+            <th scope="cols" ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'" feature-flag="effective-rule-date" feature-flag-hide>{{ att }}</th>
             <th scope="cols">Last modified date</th>
           </tr>
         </thead>
@@ -46,7 +46,7 @@
             <td>{{ dev.developerCode }}</td>
             <td>{{ dev.name }}</td>
             <td>{{ dev.status.status }}</td>
-            <td ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
+            <td ng-repeat="att in $ctrl.activeAcbs | orderBy:'toString()'" feature-flag="effective-rule-date" feature-flag-hide>{{ dev.transMap[att] ? dev.transMap[att].transparencyAttestation : 'None' }}</td>
             <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
         </tbody>

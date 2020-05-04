@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.chpl_api')
+    angular.module('chpl.resources')
         .controller('ChplApiController', ChplApiController);
 
     /** @ngInject */

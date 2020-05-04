@@ -3,7 +3,7 @@ export const ReportsListingsComponent = {
     bindings: {
         productId: '<',
     },
-    controller: class ReportsListings {
+    controller: class ReportsListingsComponent {
         constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -14,6 +14,8 @@ export const ReportsListingsComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
+
+            this.results = [];
             this.displayed = [];
             this.categoriesFilter = '|LISTING|';
             this.clearFilterHs = [];
@@ -26,8 +28,8 @@ export const ReportsListingsComponent = {
                 complete: 0,
             };
             this.downloadProgress = 0;
-            this.results = [];
             this.pageSize = 50;
+            this.defaultDateRangeOffset = 60 * 24 * 60 * 60 * 1000; // 60 days
         }
 
         $onInit () {
@@ -122,6 +124,10 @@ export const ReportsListingsComponent = {
             return filterData;
         }
 
+        downloadReady () {
+            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
+        }
+
         tableStateListener (tableController) {
             this.tableController = tableController;
         }
@@ -139,8 +145,8 @@ export const ReportsListingsComponent = {
                 {key: 'success', display: 'Successful'},
             ];
             var i, j;
-            prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
-            curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            prev.sort((a, b) => this.utilService.sortCertActual(a, b));
+            curr.sort((a, b) => this.utilService.sortCertActual(a, b));
             for (i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].number, title: curr[i].title, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
@@ -572,10 +578,6 @@ export const ReportsListingsComponent = {
             return ret;
         }
 
-        downloadReady () {
-            return this.displayed.reduce((acc, activity) => activity.action && acc, true);
-        }
-
         parse (meta) {
             return this.networkService.getActivityById(meta.id, {ignoreLoadingBar: true}).then(item => {
                 var simpleCpFields = [
@@ -757,6 +759,7 @@ export const ReportsListingsComponent = {
             item.categoriesFilter = '|' + item.categories.join('|') + '|';
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
+            item.edition = item.edition + (item.curesUpdate ? ' Cures Update' : '');
             if (full) {
                 this.parse(item);
                 item.showDetails = true;
@@ -810,8 +813,8 @@ export const ReportsListingsComponent = {
                     filter.tableState = this.tableController.tableState();
                     filter.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
                     filter.tableState.search.predicateObject.date = {
-                        after: new Date().getTime() - 60 * 24 * 60 * 60 * 1000,
-                        before: new Date().getTime(),
+                        after: this.ReportService.coerceToMidnight(new Date()).getTime() - this.defaultDateRangeOffset,
+                        before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                     };
                     that.doFilter(filter);
                     that.addPageToData(1);

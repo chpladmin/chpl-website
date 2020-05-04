@@ -187,7 +187,7 @@ require('jspdf-autotable');
                         ['Product Name',item.name],
                         ['Version',item.version],
                         ['Classification',(item.classification ? item.classification : 'N/A')],
-                        ['Certification Edition',item.year],
+                        ['Certification Edition',item.year + (item.curesUpdate ? ' Cures Update' : '')],
                         ['Relied Upon Software Required',software],
                     ],
                 });

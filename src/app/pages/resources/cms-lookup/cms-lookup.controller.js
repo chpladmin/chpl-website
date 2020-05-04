@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms_lookup')
+    angular.module('chpl.resources')
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
@@ -133,7 +133,7 @@
                     cp.version,
                     cp.vendor,
                     cp.chplProductNumber,
-                    cp.year,
+                    cp.year + (cp.curesUpdate ? ' Cures Update' : ''),
                     cp.classification,
                     cp.practiceType,
                 ]);

@@ -14,6 +14,18 @@
           </ul>
         </div>
         <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="filter-type-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-filter"></i> Request Type
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="filter-type-button" uib-dropdown-menu>
+            <st-list-multiple
+              collection="$ctrl.changeRequests"
+              predicate="requestType"
+              fixed-items="$ctrl.filterItems.types"
+              ></st-list-multiple>
+          </ul>
+        </div>
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-date-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-calendar"></i> Select a Date Range
           </button>
@@ -50,7 +62,7 @@
             <thead>
               <tr>
                 <th scope="cols" colspan="2" class="search-header" st-sort="developerName" st-skip-natural="true" ng-if="$ctrl.administrationMode">Developer</th>
-                <th scope="col">Request Type</th>
+                <th scope="col" class="search-header" st-sort="requestType" st-skip-natural="true">Request Type</th>
                 <th scope="col" class="search-header" st-sort="submittedDate" st-skip-natural="true" st-sort-default="reverse" ng-if="$ctrl.administrationMode">Creation Date</th>
                 <th scope="col" class="search-header" st-sort="changeDate" st-skip-natural="true" st-sort-default="reverse" ng-if="!$ctrl.administrationMode">Date</th>
                 <th scope="col" class="search-header" st-sort="requestStatus" st-skip-natural="true">Request Status</th>

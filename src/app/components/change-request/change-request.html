@@ -28,28 +28,48 @@
   </span>
   <span ng-switch-when="edit|withdraw" ng-switch-when-separator="|">
     <div class="row">
-      <div class="col-sm-4">
-        <h3>Current Website</h3>
-        <div class="form-group">
-          <label class="control-label" for="current-website">Developer website</label>
-          <div>
-            <input class="input-sm form-control" type="url" ng-model="$ctrl.changeRequest.developer.website" id="current-website" name="currentWebsite" disabled></input>
+      <span ng-switch="$ctrl.changeRequest.changeRequestType.name">
+        <span ng-switch-when="Website Change Request">
+          <div class="col-sm-4">
+            <h3>Current Website</h3>
+            <div class="form-group">
+              <label class="control-label" for="current-website">Developer website</label>
+              <div>
+                <input class="input-sm form-control" type="url" ng-model="$ctrl.changeRequest.developer.website" id="current-website" name="currentWebsite" disabled></input>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <h3>Submitted Website</h3>
-        <div class="form-group">
-          <label class="control-label" for="submitted-website">Submitted website</label>
-          <div>
-            <input class="input-sm form-control" type="url" id="submitted-website" name="submittedWebsite" required
-                   ng-model="$ctrl.changeRequest.details.website" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw' || $ctrl.administrationMode" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.required">Field is required</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.maxlength">Field is too long</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.url">Improper format (http://www.example.com)</div>
+          <div class="col-sm-4">
+            <h3>Submitted Website</h3>
+            <div class="form-group">
+              <label class="control-label" for="submitted-website">Submitted website</label>
+              <div>
+                <input class="input-sm form-control" type="url" id="submitted-website" name="submittedWebsite" required
+                       ng-model="$ctrl.changeRequest.details.website" ng-maxlength="300" ng-disabled="$ctrl.activeState === 'withdraw' || $ctrl.administrationMode" ng-change="$ctrl.update()"></input>
+                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.required">Field is required</div>
+                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.maxlength">Field is too long</div>
+                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.submittedWebsite.$touched) && $ctrl.form.submittedWebsite.$error.url">Improper format (http://www.example.com)</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </span>
+        <span ng-switch-when="Developer Details Change Request">
+          <div class="col-sm-4">
+            <h3>Current Details</h3>
+            <chpl-developer developer="$ctrl.changeRequest.developer" is-change-request="true"></chpl-developer>
+          </div>
+          <div class="col-sm-4">
+            <h3>Submitted Details</h3>
+            <chpl-developer developer="$ctrl.changeRequest.details"
+                            is-change-request="true"
+                            is-editing="true"
+                            can-edit="$ctrl.activeState === 'edit' && !$ctrl.administrationMode"
+                            show-form-errors="$ctrl.showFormErrors"
+                            on-edit="$ctrl.handleEditedDeveloper(developer)"
+                            ></chpl-developer>
+          </div>
+        </span>
+      </span>
       <div class="col-sm-4">
         <button class="btn btn-default pull-right" aria-label="Cancel"
                 confirm="Are you sure you wish to cancel? Your changes will not be saved."
@@ -121,10 +141,32 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12">
-        Current website: {{ $ctrl.changeRequest.developer.website }} <br />
-        Submitted website: {{ $ctrl.changeRequest.details.website }}
-      </div>
+      <span ng-switch="$ctrl.changeRequest.changeRequestType.name">
+        <span ng-switch-when="Website Change Request">
+          <div class="col-sm-6">
+            Current website<br />
+            {{ $ctrl.changeRequest.developer.website }}
+          </div>
+          <div class="col-sm-6">
+            Submitted website<br />
+            {{ $ctrl.changeRequest.details.website }}
+          </div>
+        </span>
+        <span ng-switch-when="Developer Details Change Request">
+          <div class="col-sm-6" ng-if="$ctrl.administrationMode">
+            Current details<br />
+            <chpl-developer developer="$ctrl.changeRequest.developer"
+                            show-full="true"
+                            ></chpl-developer>
+          </div>
+          <div ng-class="$ctrl.administrationMode ? 'col-sm-6' : 'col-sm-12'">
+            Submitted details<br />
+            <chpl-developer developer="$ctrl.changeRequest.details"
+                            is-change-request="true"
+                            ></chpl-developer>
+          </div>
+        </span>
+      </span>
     </div>
   </span>
 </span>

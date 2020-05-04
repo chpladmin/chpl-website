@@ -27,10 +27,6 @@
             ];
             vm.filters = ['acb', 'certificationStatus', 'decertificationDate', 'edition'];
             vm.refineModel = {
-                edition: [
-                    { value: '2014', selected: true },
-                    { value: '2015', selected: true },
-                ],
                 certificationStatus: [
                     { value: 'Withdrawn by Developer Under Surveillance/Review', selected: true },
                     { value: 'Withdrawn by ONC-ACB', selected: true },

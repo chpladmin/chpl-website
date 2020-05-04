@@ -20,7 +20,7 @@
           <span ng-if="$ctrl.listing.productAdditionalSoftware"><strong>Relied Upon Software:</strong> {{ $ctrl.listing.productAdditionalSoftware }} <br /></span>
           <strong>ACB Certification Id:</strong> {{ $ctrl.listing.acbCertificationId }} <br />
           <strong>Other ACB:</strong> {{ $ctrl.listing.otherAcb ? $ctrl.listing.otherAcb : 'N/A' }} <br />
-          <strong>Transparency URL:</strong> {{ $ctrl.listing.transparencyAttestationUrl ? $ctrl.listing.transparencyAttestationUrl : 'None' }} <br />
+          <strong>Mandatory Disclosures URL:</strong> {{ $ctrl.listing.transparencyAttestationUrl ? $ctrl.listing.transparencyAttestationUrl : 'None' }} <br />
           <strong>Inherited Certification Status:</strong> {{ $ctrl.ternaryFilter($ctrl.listing.ics.inherits) }} <br />
           <strong>QMS:</strong> {{ $ctrl.checkQmsBoolean($ctrl.listing.hasQms) }} <br />
           <ul>

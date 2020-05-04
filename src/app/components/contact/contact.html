@@ -15,7 +15,7 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="!$ctrl.ignoreFriendlyName">
       <label class="control-label" for="contactFriendly">Friendly Name</label>
       <div>
         <input class="input-sm form-control" type="text" ng-model="$ctrl.contact.friendlyName" ng-disabled="$ctrl.isDisabled" id="contactFriendly" name="contactFriendly" ng-maxlength="250" ng-change="$ctrl.update()"></input>

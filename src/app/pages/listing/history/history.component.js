@@ -115,8 +115,8 @@ export const ListingHistoryComponent = {
             var cCC = curr.certificationResults;
             var i, j;
 
-            pCC.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
-            cCC.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            pCC.sort((a, b) => this.utilService.sortCertActual(a, b));
+            cCC.sort((a, b) => this.utilService.sortCertActual(a, b));
             for (i = 0; i < pCC.length; i++) {
                 var obj = {
                     criteria: pCC[i].number + (pCC[i].title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),

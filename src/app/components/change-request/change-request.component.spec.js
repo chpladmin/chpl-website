@@ -107,7 +107,9 @@
                                         userPermission: {
                                             authority: 'ROLE_ACB',
                                         },
-                                        certificationBody: 'a body',
+                                        certificationBody: {
+                                            name: 'a body',
+                                        },
                                     }],
                                 },
                             },

@@ -1,5 +1,46 @@
 # Release Notes
 
+## Version 10.43.0
+_4 May 2020_
+
+### Features
+* Add new standardized date range picker
+* Update reports pages to support searches across all time
+  * Products
+  * Developers
+
+### Flagged Features
+* Add user guidance to CMS Widget
+* Add selector for Cures Update criteria in charts
+* Distinguish between Cures Update nonconformities in charts
+* Indicate frequency of download file generation
+* Add filter for 2015 Cures Update certification edition to main search
+
+### Bug Fixes
+* Activity in product history and activity report does not show correct for criteria edits during listing edit (#742)
+* Show Product Split and Merge in Product reports
+
+---
+
+## Version 10.42.0
+_20 April 2020_
+
+### Features
+* Change the order of display of revised criteria so "Cures Update" is first
+
+### Flagged Features
+* Stop displaying Transparency Attestations on Developers list
+* Display "Cures Update" everywhere it's appropriate
+* Allow Developers to submit Change Requests to change contact information
+
+### Bug Fixes
+* Show Transparency Attestation on Developer list
+
+### Flagged Bug Fixes
+* Show "Acting Organization" correctly for ONC-ACBs
+
+---
+
 ## Version 10.41.0
 _10 April 2020_
 

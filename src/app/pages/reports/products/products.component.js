@@ -1,6 +1,5 @@
 export const ReportsProductsComponent = {
     templateUrl: 'chpl.reports/products/products.html',
-    bindings: { },
     controller: class ReportsProductsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
@@ -10,61 +9,69 @@ export const ReportsProductsComponent = {
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
-            this.activityRange = {
-                range: 30,
-                startDate: new Date(),
-                endDate: new Date(),
-            };
-            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
+
+            this.results = [];
+            this.displayed = [];
+            this.clearFilterHs = [];
+            this.restoreStateHs = [];
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
             this.tableController = {};
+            this.loadProgress = {
+                total: 0,
+                complete: 0,
+            };
+            this.downloadProgress = { complete: 0 };
+            this.pageSize = 50;
+            this.defaultDateRangeOffset = 180 * 24 * 60 * 60 * 1000; // 180 days
         }
 
         $onInit () {
             this.search();
         }
 
-        dateAdjust (obj) {
-            var ret = angular.copy(obj);
-            ret.startDate = this.ReportService.coerceToMidnight(ret.startDate);
-            ret.endDate = this.ReportService.coerceToMidnight(ret.endDate, true);
-            return ret;
-        }
-
-        downloadReady () {
-            if (this.displayed) {
-                return this.displayed.reduce((acc, activity) => activity.action && acc, true);
-            } else {
-                return false;
-            }
+        $onDestroy () {
+            this.isDestroyed = true;
         }
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.activityRange.startDate = new Date(Date.parse(f.startDate));
-            this.activityRange.endDate = new Date(Date.parse(f.endDate));
-            this.filterText = f.dataFilter;
-            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
-            this.search();
+            this.doFilter(f)
+        }
+
+        onClearFilter () {
+            let filterData = {};
+            filterData.dataFilter = '';
+            filterData.tableState = this.tableController.tableState();
+            this.clearFilterHs.forEach(handler => handler());
+            this.doFilter(filterData);
+        }
+
+        doFilter (filter) {
+            let that = this;
+            this.filterText = filter.dataFilter;
+            if (filter.tableState.search.predicateObject.date) {
+                this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
+            } else {
+                this.tableController.search({}, 'date');
+            }
+            this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+            this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+        }
+
+        registerClearFilter (handler) {
+            this.clearFilterHs.push(handler);
+        }
+
+        registerRestoreState (handler) {
+            this.restoreStateHs.push(handler);
         }
 
         createFilterDataObject () {
             let filterData = {};
-            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
-            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             filterData.dataFilter = this.filterText;
-            filterData.tableState = {};
             filterData.tableState = this.tableController.tableState();
             return filterData;
-        }
-
-        onClearFilter () {
-            this.activityRange.endDate = new Date();
-            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
-            this.filterText = '';
-            this.tableController.sortBy('date');
-            this.search();
         }
 
         tableStateListener (tableController) {
@@ -85,24 +92,23 @@ export const ReportsProductsComponent = {
 
                 var j;
                 var change;
-                if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
-                    activity.name = item.newData.name;
-                    activity.type = 'Product has been updated';
-                    activity.action = 'Product has been updated:<ul>';
+                if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
+                    activity.action = 'Updated product "' + item.newData.name + '"';
+                    activity.details = [];
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'name', 'Name');
                     if (change) {
-                        activity.action += '<li>' + change + '</li>';
+                        activity.details.push(change);
                     }
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'developerName', 'Developer');
                     if (change) {
-                        activity.action += '<li>' + change + '</li>';
+                        activity.details.push(change);
                     }
                     var contactChanges = this.ReportService.compareContact(item.originalData.contact, item.newData.contact);
                     if (contactChanges && contactChanges.length > 0) {
-                        activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
+                        activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
                     }
                     if (!angular.equals(item.originalData.ownerHistory, item.newData.ownerHistory)) {
-                        var ownerHistoryActionDetails = '<li>Owner history changed. Was:<ul>';
+                        var ownerHistoryActionDetails = 'Owner history changed. Was:<ul>';
                         if (item.originalData.ownerHistory.length === 0) {
                             ownerHistoryActionDetails += '<li>No previous history</li>';
                         } else {
@@ -118,49 +124,95 @@ export const ReportsProductsComponent = {
                                 ownerHistoryActionDetails += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
                             }
                         }
-                        ownerHistoryActionDetails += '</ul></li>';
-                        activity.action += ownerHistoryActionDetails;
+                        ownerHistoryActionDetails += '</ul>';
+                        activity.details.push(ownerHistoryActionDetails);
                     }
-                    activity.action += '</ul>';
-                    activity.detailsCSV = activity.action;
+                } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
+                    activity.action ='Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+                    activity.details = [];
+                } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
+                    activity.action = 'Products ' + item.originalData.name + ' split to become Products ' + item.newData[0].name + ' and ' + item.newData[1].name;
+                    activity.details = [];
                 } else {
                     this.ReportService.interpretNonUpdate(activity, item, 'product');
                     activity.action = activity.action[0];
-                    activity.type = activity.action;
+                    activity.details = [];
+                    activity.csvAction = activity.action.replace(',','","');
                 }
                 meta.action = activity.action;
-                meta.activityType = activity.type;
-                meta.detailsCSV = activity.detailsCSV;
+                meta.details = activity.details;
+                meta.csvDetails = activity.details.join('\n');
             });
         }
 
-        prepare (results) {
-            this.displayed = results.map(item => {
-                item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
-                item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-                item.fullName = item.responsibleUser.fullName;
-                return item;
-            });
+        prepare (item) {
+            item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
+            item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+            item.fullName = item.responsibleUser.fullName;
+            return item;
+        }
+
+        canDownload () {
+            return this.displayed
+                .filter(item => !item.action).length <= 1000;
         }
 
         prepareDownload () {
+            let total = this.displayed
+                .filter(item => !item.action).length;
+            let progress = 0;
             this.displayed
                 .filter(item => !item.action)
-                .forEach(item => this.parse(item));
+                .forEach(item => {
+                    this.parse(item).then(() => {
+                        progress += 1;
+                        this.downloadProgress.complete = Math.floor(100 * ((progress + 1) / total));
+                    });
+                });
             //todo, eventually: use the $q.all function as demonstrated in product history eye
+        }
+
+        showLoadingBar () {
+            let tableState = this.tableController.tableState && this.tableController.tableState();
+            return this.ReportService.showLoadingBar(tableState, this.results, this.loadProgress);
         }
 
         search () {
             let that = this;
-            this.networkService.getActivityMetadata('products', this.dateAdjust(this.activityRange))
+            this.networkService.getActivityMetadata('beta/products')
                 .then(results => {
-                    that.results = results;
-                    that.prepare(that.results);
+                    that.results = results.activities
+                        .map(item => that.prepare(item));
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    let filter = {};
+                    filter.dataFilter = '';
+                    filter.tableState = this.tableController.tableState();
+                    filter.tableState.search = {
+                        predicateObject: {
+                            date: {
+                                after: this.ReportService.coerceToMidnight(new Date()).getTime() - this.defaultDateRangeOffset,
+                                before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
+                            },
+                        },
+                    };
+                    that.doFilter(filter);
+                    that.addPageToData(1);
                 });
         }
 
-        validDates () {
-            return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
+        addPageToData (page) {
+            let that = this;
+            if (this.isDestroyed) { return }
+            this.networkService.getActivityMetadata('beta/products', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+                results.activities.forEach(item => {
+                    that.results.push(that.prepare(item));
+                });
+                that.loadProgress.complete += 1;
+                that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
+                if (page < that.loadProgress.total) {
+                    that.addPageToData(page + 1);
+                }
+            });
         }
     },
 }

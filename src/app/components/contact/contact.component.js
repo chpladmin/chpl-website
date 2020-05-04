@@ -2,6 +2,7 @@ export const ContactComponent = {
     templateUrl: 'chpl.components/contact/contact.html',
     bindings: {
         contact: '<',
+        ignoreFriendlyName: '<',
         isEditing: '<',
         isRequired: '<',
         isDisabled: '<',
@@ -21,6 +22,9 @@ export const ContactComponent = {
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
+            }
+            if (changes.ignoreFriendlyName) {
+                this.ignoreFriendlyName = angular.copy(changes.ignoreFriendlyName.currentValue);
             }
             if (changes.isRequired) {
                 this.isRequired = angular.copy(changes.isRequired.currentValue);

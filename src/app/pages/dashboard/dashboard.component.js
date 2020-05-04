@@ -2,8 +2,8 @@ export const DashboardComponent = {
     templateUrl: 'chpl.dashboard/dashboard.html',
     bindings: {
         changeRequests: '<',
-        changeRequestStatusTypes: '<',
         changeRequestTypes: '<',
+        changeRequestStatusTypes: '<',
         developerId: '<',
     },
     controller: class DashboardComponent {
@@ -29,11 +29,11 @@ export const DashboardComponent = {
             if (changes.changeRequests.currentValue) {
                 this.changeRequests = changes.changeRequests.currentValue;
             }
-            if (changes.changeRequestStatusTypes.currentValue) {
-                this.changeRequestStatusTypes = changes.changeRequestStatusTypes.currentValue;
-            }
             if (changes.changeRequestTypes.currentValue) {
                 this.changeRequestTypes = changes.changeRequestTypes.currentValue;
+            }
+            if (changes.changeRequestStatusTypes.currentValue) {
+                this.changeRequestStatusTypes = changes.changeRequestStatusTypes.currentValue;
             }
             if (changes.developerId.currentValue) {
                 this.developerId = changes.developerId.currentValue;
@@ -80,70 +80,85 @@ export const DashboardComponent = {
         }
 
         takeDeveloperAction (action, developer) {
-            let that = this;
-            let request = {
-                developer: this.developer,
-                submitted: false,
-            };
             switch (action) {
             case 'edit':
                 this.state = 'focusDeveloper';
                 break;
             case 'save':
-                if (developer.website !== this.developer.website) {
-                    request.changeRequestType = this.changeRequestTypes.data.find(t => t.name === 'Website Change Request');
-                    request.details = { website: developer.website };
-                    request.submitted = true;
-                    this.networkService.submitChangeRequest(request)
-                        .then(() => {
-                            that.networkService.getChangeRequests().then(response => that.changeRequests = response);
-                            that.state = 'confirmation';
-                            that.confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.'
-                        }, error => {
-                            that.toaster.pop({
-                                type: 'error',
-                                title: 'Error in submission',
-                                body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
-                                bodyOutputType: 'trustedHtml',
-                            });
-                        });
-                }
-                if (!request.submitted) {
-                    this.cancel();
-                }
+                this.saveRequest(developer);
                 break;
                 //no default
             }
         }
 
         takeCrAction (action, data) {
-            let that = this;
             switch (action) {
             case 'cancel':
                 this.state = undefined;
                 break;
             case 'save':
-                this.networkService.updateChangeRequest(data)
-                    .then(() => {
-                        that.networkService.getChangeRequests().then(response => {
-                            that.changeRequests = response;
-                            that.state = 'confirmation';
-                            that.confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.'
-                        })
-                    }, error => {
-                        that.toaster.pop({
-                            type: 'error',
-                            title: 'Error in submission',
-                            body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
-                            bodyOutputType: 'trustedHtml',
-                        });
-                    });
+                this.updateRequest(data);
                 break;
             case 'focus':
                 this.state = 'focusChangeRequest';
                 break;
                 //no default
             }
+        }
+
+        saveRequest (data) {
+            let that = this;
+            let request = {
+                developer: this.developer,
+                details: data,
+            };
+            this.networkService.submitChangeRequest(request)
+                .then(that.handleResponse.bind(that), that.handleError.bind(that));
+        }
+
+        updateRequest (data) {
+            let that = this;
+            if (data.currentStatus && data.currentStatus.changeRequestStatusType && data.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
+                this.isWithdrawing = true;
+            } else {
+                this.isWithdrawing = false;
+            }
+            this.networkService.updateChangeRequest(data)
+                .then(that.handleResponse.bind(that), that.handleError.bind(that));
+        }
+
+        handleResponse () {
+            let that = this;
+            let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
+            if (this.isWithdrawing) {
+                confirmationText = 'Your change request has been successfully withdrawn.';
+            }
+            this.networkService.getChangeRequests().then(response => that.changeRequests = response);
+            this.state = 'confirmation';
+            this.confirmationText = confirmationText;
+            this.isWithdrawing = false;
+        }
+
+        handleError (error) {
+            let messages;
+            let type = 'error';
+            let title = 'Error in submission';
+            if (error && error.data && error.data.error
+                && error.data.error === 'No data was changed.') {
+                messages = ['Cannot "Submit" a change request when no changes have been made.'];
+                type = 'info';
+                title = 'Please check your input';
+            } else {
+                messages = error.data.errorMessages ? error.data.errorMessages : [];
+            }
+            let body = messages.length > 0 ? 'Message' + (messages.length > 1 ? 's' : '') + ':<ul>' + messages.map(e => '<li>' + e + '</li>').join('') + '</ul>'
+                : 'An unexpected error occurred. Please try again or contact ONC for support';
+            this.toaster.pop({
+                type: type,
+                title: title,
+                body: body,
+                bodyOutputType: 'trustedHtml',
+            });
         }
 
         takeUserAction (action, data) {

@@ -1,5 +1,5 @@
 export const ResourcesDownloadComponent = {
-    templateUrl: 'chpl.download/download.html',
+    templateUrl: 'chpl.resources/download/download.html',
     bindings: {
     },
     controller: class ResourcesDownloadController {
@@ -58,5 +58,5 @@ export const ResourcesDownloadComponent = {
 }
 
 angular
-    .module('chpl.download')
+    .module('chpl.resources')
     .component('aiResourcesDownload', ResourcesDownloadComponent);

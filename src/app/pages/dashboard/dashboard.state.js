@@ -11,16 +11,16 @@ let states = {
                         return networkService.getChangeRequests();
                     }
                 },
-                changeRequestStatusTypes: (featureFlags, networkService) => {
-                    'ngInject'
-                    if (featureFlags.isOn('change-request')) {
-                        return networkService.getChangeRequestStatusTypes();
-                    }
-                },
                 changeRequestTypes: (featureFlags, networkService) => {
                     'ngInject'
                     if (featureFlags.isOn('change-request')) {
                         return networkService.getChangeRequestTypes();
+                    }
+                },
+                changeRequestStatusTypes: (featureFlags, networkService) => {
+                    'ngInject'
+                    if (featureFlags.isOn('change-request')) {
+                        return networkService.getChangeRequestStatusTypes();
                     }
                 },
                 developerId: (authService, networkService) => {

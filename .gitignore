@@ -16,3 +16,4 @@ ready-for-deployment.sh
 ready-for-test.sh
 reset-qa.sh
 reset-local.sh
+ready-for-integration.sh

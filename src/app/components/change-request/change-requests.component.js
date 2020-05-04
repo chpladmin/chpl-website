@@ -3,6 +3,7 @@ export const ChangeRequestsComponent = {
     bindings: {
         administrationMode: '<',
         changeRequests: '<',
+        changeRequestTypes: '<',
         changeRequestStatusTypes: '<',
         developer: '<',
         takeAction: '&',
@@ -38,6 +39,10 @@ export const ChangeRequestsComponent = {
                 this.backup.changeRequests = angular.copy(this.changeRequests);
                 this.activeChangeRequest = undefined;
                 this.activeState = undefined;
+            }
+            if (changes.changeRequestTypes && changes.changeRequestTypes.currentValue) {
+                this.changeRequestTypes = angular.copy(changes.changeRequestTypes.currentValue);
+                this.filterItems.types = this.changeRequestTypes.data.map(crt => ({value: crt.name, selected: true}));
             }
             if (changes.changeRequestStatusTypes && changes.changeRequestStatusTypes.currentValue) {
                 this.changeRequestStatusTypes = angular.copy(changes.changeRequestStatusTypes.currentValue);

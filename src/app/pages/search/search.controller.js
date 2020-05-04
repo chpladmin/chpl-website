@@ -398,6 +398,7 @@
         function parseAllResults (results) {
             for (var i = 0; i < results.length; i++) {
                 results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                results[i].edition = results[i].edition + (results[i].curesUpdate ? ' Cures Update' : '');
                 results[i].developerSearch = results[i].developer;
                 if (results[i].previousDevelopers) {
                     results[i].mainSearch += '|' + results[i].previousDevelopers;
@@ -486,6 +487,12 @@
                     }
                     return obj;
                 });
+            if (vm.isOn('effective-rule-date')) {
+                vm.filterItems.editionItems.push({
+                    value: '2015 Cures Update',
+                    selected: true,
+                });
+            }
             vm.filterItems.statusItems = vm.searchOptions.certificationStatuses
                 .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                 .map(status => {
