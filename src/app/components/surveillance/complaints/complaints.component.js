@@ -22,6 +22,7 @@ export const SurveillanceComplaintsComponent = {
             this.listings = [];
             this.surveillances = [];
             this.complaintListType = 'ALL';
+            this.pageSize = 50;
         }
 
         $onInit () {
