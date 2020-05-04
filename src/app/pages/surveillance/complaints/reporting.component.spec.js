@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Complaints component', () => {
+    fdescribe('the Complaints Reporting component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         let complainantTypes = {
@@ -150,7 +150,7 @@
 
                 scope = $rootScope.$new();
 
-                el = angular.element('<chpl-surveillance-complaints display-header="true" complaint-list-type="ALL"></chpl-surveillance-complaints>');
+                el = angular.element('<chpl-complaints-reporting></chpl-complaints-reporting>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -175,95 +175,6 @@
         describe('controller', () => {
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
-            });
-
-            it('should delete a complaint', () => {
-                let complaint = { id: 1 };
-                ctrl.deleteComplaint(complaint);
-                expect(networkService.deleteComplaint).toHaveBeenCalled();
-                expect(ctrl.complaint).toEqual({});
-                expect(ctrl.isEditing).toBe(false);
-            });
-
-            it('should select a complaint', () => {
-                let complaint = {
-                    id: 1,
-                    listings: [
-                        { listingId: 1 },
-                        { listingId: 2 },
-                    ],
-                };
-                ctrl.selectComplaint(complaint);
-                expect(ctrl.isEditing).toBe(true);
-                expect(ctrl.complaint).toEqual(complaint);
-            });
-
-            it('should save/update a complaint', () => {
-                let complaint = { id: 1, formattedReceivedDate: new Date('2019-06-04') };
-                ctrl.isEditing = true;
-                ctrl.saveComplaint(complaint);
-                expect(complaint.receivedDate).toBeDefined();
-                expect(networkService.updateComplaint).toHaveBeenCalledWith(complaint);
-            });
-
-            it('should save/create a complaint', () => {
-                let complaint = { formattedReceivedDate: new Date('2019-06-04') };
-                ctrl.isEditing = true;
-                ctrl.saveComplaint(complaint);
-                expect(complaint.receivedDate).toBeDefined();
-                expect(networkService.createComplaint).toHaveBeenCalledWith(complaint);
-            });
-
-            it('should cancel current editing and go to select mode', () => {
-                ctrl.isEditing = true;
-                ctrl.cancelEdit();
-                expect(ctrl.isEditing).toEqual(false);
-            });
-
-            it('should allow for adding a new complaint', () => {
-                ctrl.complaint = { id: 5 };
-                ctrl.displayAddComplaint();
-                expect(ctrl.complaint).toEqual({});
-                expect(ctrl.isEditing).toEqual(true);
-            });
-
-            it('should be able to fetch all relevant complaints', () => {
-                ctrl.refreshComplaints();
-                expect(networkService.getComplaints).toHaveBeenCalled();
-                expect(ctrl.complaints.length).toBe(1);
-            });
-
-            it('should be able to fetch all complainant types', () => {
-                ctrl.refreshComplainantTypes();
-                expect(networkService.getComplainantTypes).toHaveBeenCalled();
-                expect(ctrl.complainantTypes.length).toBe(2);
-            });
-
-            it('should be able to fetch all listings', () => {
-                ctrl.refreshListings();
-                expect(networkService.getCollection).toHaveBeenCalled();
-                expect(ctrl.listings.length).toBe(3);
-            });
-            it('should be able to fetch all certification editions', () => {
-                ctrl.refreshListings();
-                expect(networkService.getEditions).toHaveBeenCalled();
-                expect(ctrl.editions.length).toBe(3);
-            });
-            it('should be able to fetch all criteria', () => {
-                ctrl.refreshCriteria();
-                expect(networkService.getCriteria).toHaveBeenCalled();
-                expect(ctrl.criteria.length).toBe(5);
-            });
-            it('should be able to fetch all surveillances for selected listings', () => {
-                let complaint = {
-                    id: 1,
-                    listings: [
-                        { listingId: 1 },
-                        { listingId: 2 },
-                    ],
-                };
-                ctrl.refreshSurveillances(complaint);
-                expect(networkService.getListingBasic).toHaveBeenCalledTimes(2);
             });
         });
     });

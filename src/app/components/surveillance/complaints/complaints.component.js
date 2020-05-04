@@ -1,18 +1,15 @@
 export const SurveillanceComplaintsComponent = {
-    templateUrl: 'chpl.surveillance/complaints/complaints.html',
+    templateUrl: 'chpl.components/surveillance/complaints/complaints.html',
     bindings: {
         complaintListType: '@?',
         displayAdd: '<',
         displayDelete: '<',
-        displayHeader: '<',
         quarterlyReport: '<',
     },
     controller: class SurveillanceComplaintsComponent {
-        constructor ($log, authService, featureFlags, networkService) {
+        constructor ($log, networkService) {
             'ngInject'
             this.$log = $log;
-            this.authService = authService;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.isEditing = false;
             this.complaints = [];
@@ -24,6 +21,7 @@ export const SurveillanceComplaintsComponent = {
             this.errorMessages = [];
             this.listings = [];
             this.surveillances = [];
+            this.complaintListType = 'ALL';
         }
 
         $onInit () {
@@ -35,19 +33,16 @@ export const SurveillanceComplaintsComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.complaintListType !== undefined && changes.complaintListType.currentValue === '') {
-                this.complaintListType = 'ALL';
+            if (changes.complaintListType && changes.complaintListType.currentValue) {
+                this.complaintListType = changes.complaintListType.currentValue;
             }
-            if (changes.displayAdd !== undefined && changes.displayAdd.currentValue === undefined) {
-                this.displayAdd = true;
+            if (changes.displayAdd) {
+                this.displayAdd = changes.displayAdd.currentValue;
             }
-            if (changes.displayDelete !== undefined && changes.displayDelete.currentValue === undefined) {
-                this.displayDelete = true;
+            if (changes.displayDelete) {
+                this.displayDelete = changes.displayDelete.currentValue;
             }
-            if (changes.displayHeader !== undefined && changes.displayHeader.currentValue === undefined) {
-                this.displayHeader = true;
-            }
-            if (changes.quarterlyReport !== undefined && changes.quarterlyReport.currentValue) {
+            if (changes.quarterlyReport && changes.quarterlyReport.currentValue) {
                 this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
             }
             this.refreshComplaints();
@@ -131,8 +126,7 @@ export const SurveillanceComplaintsComponent = {
         refreshComplaints () {
             let that = this;
             this.getComplaintsPromise().then(response => {
-                that.complaints = response.results;
-                that.complaints.forEach(complaint => {
+                that.complaints = response.results.map(complaint => {
                     if (complaint.receivedDate) {
                         complaint.formattedReceivedDate = new Date(complaint.receivedDate);
                     } else {
@@ -146,6 +140,7 @@ export const SurveillanceComplaintsComponent = {
                     complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
                     complaint.acbName = complaint.certificationBody.name;
                     complaint.complainantTypeName = complaint.complainantType.name;
+                    return complaint;
                 });
             });
         }
@@ -156,11 +151,6 @@ export const SurveillanceComplaintsComponent = {
             } else if (this.complaintListType === 'RELEVANT') {
                 return this.networkService.getRelevantComplaints(this.quarterlyReport);
             }
-        }
-
-        toUTCDate (date) {
-            let _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-            return _utc;
         }
 
         refreshComplainantTypes () {
@@ -228,5 +218,5 @@ export const SurveillanceComplaintsComponent = {
     },
 }
 
-angular.module('chpl.surveillance')
+angular.module('chpl.components')
     .component('chplSurveillanceComplaints', SurveillanceComplaintsComponent);
