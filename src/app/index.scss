@@ -829,6 +829,10 @@ option[label^="Removed"] {
         text-align: center;
     }
 
+    &.main-axis-align-end {
+        margin-left: auto;
+    }
+
     &.cross-axis-align-end {
         align-self: flex-end;
     }

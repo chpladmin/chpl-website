@@ -4,7 +4,7 @@
       <div class="flex-item">
         <chpl-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
       </div>
-      <div class="flex-item .cross-axis-align-end" ng-if="$ctrl.displayAdd">
+      <div class="flex-item main-axis-align-end" ng-if="$ctrl.displayAdd">
         <button class="btn" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
           Add New Complaint
         </button>
@@ -45,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <div class="flex-item">
+      <div class="flex-item flex-container">
         Filter on Received Date
         <chpl-date-range
           predicate="receivedDate"
@@ -53,7 +53,7 @@
           register-restore-state="$ctrl.registerRestoreState(restoreState)"
           ></chpl-date-range>
       </div>
-      <div class="flex-item">
+      <div class="flex-item flex-container">
         Filter on Closed Date
         <chpl-date-range
           predicate="closedDate"
