@@ -799,6 +799,65 @@ option[label^="Removed"] {
     }
 }
 
+/*
+ * Start of flexbox code; only applies when ui-bump-major flag is on
+ */
+
+.flex-container {
+    display: flex;
+
+    &.wrap {
+        flex-wrap: wrap;
+    }
+
+    &.horizontal-space {
+        height: 15px;
+    }
+}
+
+.flex-item {
+    min-width: 150px;
+    flex: 1;
+    margin-bottom: 5px;
+
+    &.wrap {
+        flex: 0 50%;
+    }
+
+    &.center {
+        margin: auto;
+        text-align: center;
+    }
+
+    &.cross-axis-align-end {
+        align-self: flex-end;
+    }
+
+    &.wide {
+        flex: 2;
+        min-width: 300px;
+    }
+
+    &.narrow {
+        flex: .5;
+        min-width: 75px;
+    }
+
+    &.narrower {
+        flex: .25;
+        min-width: 37px;
+    }
+
+    &.narrowest {
+        flex: .125;
+        min-width: 18px;
+    }
+}
+
+/*
+ * End of flexbox code; only applies when ui-bump-major flag is on
+ */
+
 :root {
     --grey-blue: #edf6ff;
     --blue: #156dac;
@@ -817,6 +876,7 @@ option[label^="Removed"] {
     --danger: #c44f65;
     --light: #f9f9f9;
     --dark: #1c1c1c;
+    --medium-grey: #6b6b6b;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -827,17 +887,6 @@ option[label^="Removed"] {
 }
 
 .new-style {
-    /*
-This is the new style wrapper for CHPL Made in Spring 2020
-   */
-
-    /* start of official new style code */
-
-    /*
-Colors
-   */
-
-    //*,
 
     /*
 Format
@@ -848,8 +897,8 @@ Format
     }
 
     .main-content {
-        background: var(--grey-blue);
-        padding: 10px;
+        background: var(--light-grey);
+        padding: 15px;
         border: 1px solid var(dark-grey);
     }
 
@@ -874,28 +923,28 @@ Typography
     h3 {
         font-family: "Lato", sans-serif;
         font-size: 1.75em;
-        font-weight: 900;
+        font-weight: 500;
         color: var(--dark);
     }
 
     h4 {
         font-family: "Lato", sans-serif;
         font-size: 1.5em;
-        font-weight: 600;
+        font-weight: 900;
         color: var(--dark);
     }
 
     h5 {
         font-family: "Lato", sans-serif;
         font-size: 1.25em;
-        font-weight: 900;
+        font-weight: 600;
         color: var(--dark);
     }
 
     h6 {
         font-family: "Lato", sans-serif;
         font-size: 1.25em;
-        font-weight: 600;
+        font-weight: 500;
         color: var(--dark);
     }
 
@@ -917,8 +966,7 @@ Typography
     p.bold {
         font-family: "Lato", sans-serif;
         font-size: 1em;
-        font-weight: 400;
-        font-style: italic;
+        font-weight: 600;
         color: var(--dark);
     }
 
@@ -946,7 +994,7 @@ Button Styling
     }
 
     .btn:focus {
-        border-color: var( --dark-blue) 1px solid;
+        border-color: var( --blue) 1px solid;
     }
 
     .btn:active {
@@ -958,12 +1006,12 @@ Button Styling
         line-height: 1.5;
         color: var(--black);
         background-color: var(--white);
-        border-color: var(--dark-grey) 1px solid;
+        border-color: var(--grey-blue) 1px solid;
         border-radius: 5px;
     }
 
     .btn-default:hover {
-        background-color: var(--grey);
+        background-color: var(--light-blue);
     }
 
     .btn-primary {
@@ -972,11 +1020,11 @@ Button Styling
         padding: 5px 10px;
         line-height: 1.5;
         border-radius: 5px;
-        border-color: var(--dark-blue) 1px solid;
+        border-color: var(--darkblue) 1px solid;
     }
 
     .btn-primary:hover {
-        background: var(--dark-blue);
+        background: var(--darkblue);
     }
 
     .btn-secondary {
@@ -985,16 +1033,32 @@ Button Styling
         padding: 5px 10px;
         line-height: 1.5;
         border-radius: 5px;
-        border: #156dac 1px solid;
+        border: 1px solid var(--blue);
     }
 
     .btn-secondary:hover {
-        background-color: var(--grey);
+        background: var(--light-grey);
     }
 
-    .btn-chpl {
-        color: #f5d43c;
-        background: var(--blue);
+    .btn-widget {
+        color: var(--blue);
+        background: var(--grey-blue);
+        border: 1px solid var(--white);
+    }
+
+    .btn-wdiget:hover {
+        background: var(--grey);
+    }
+
+    .btn-filter {
+        background: var(--white);
+        color: var(--blue);
+        border: 1px solid var(--blue);
+    }
+
+    .btn-filter:hover {
+        background: var(--grey-blue);
+
     }
 
     /* Badges*/
@@ -1070,15 +1134,33 @@ Button Styling
         border-bottom-color: #c6d5e5;
     }
 
-    /* Form Styling Dropdown */
+    /* Form Styling */
 
     .form-control {
-        border-radius: 5px;
-        font-weight: bold;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-        height: 50px;
+        font-family: "Lato";
+        font-size: 16px;
+        border-color: #6c9cbf;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: var(--dark);
+        width: calc(100% - 5px);
+    }
+
+    /* Table Styling */
+
+    .table-striped > tbody > tr:nth-of-type(even) {
+        background-color: var(--white);
+
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: var(--grey-blue);
+
+    }
+
+    .search-table th {
+        color: var(--blue);
+        font-weight: 500;
     }
 
     /* Well Styling */
@@ -1091,6 +1173,20 @@ Button Styling
         border-radius: 5px;
     }
 
+    /* Action Bar */
+
+    .action-bar {
+        background-color: white;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        height: 50px;
+        z-index: 1035;
+        margin-bottom: 0;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
+    }
+
     /* Styling for Individual Pages starts below this point, be reference the code of for the general styling options */
 
     /* Users dashboard Page */
@@ -1100,7 +1196,43 @@ Button Styling
         padding-bottom: 10px;
     }
 
-    /* Developer Dashboard Page */
+    label {
+        display: block;
+        font-family: "Lato";
+        font-size: 12px;
+        color: var(--medium-grey);
+        text-transform: uppercase;
+    }
 
-    /* end of official new style code */
+    /* Data that is not editable*/
+
+    .read-only-data {
+        font-family: "Lato";
+        font-size: 16px;
+        line-height: 1.38;
+        letter-spacing: .18px;
+        color: var(--dark);
+    }
+
+    .repeatable-item {
+        padding: 5px;
+        background-color: var(--light);
+        border: 1px solid #e3e3e3;
+        border-radius: 4px;
+        margin-bottom: 5px;
+    }
+
+    .btn-link {
+        font-family: "Lato";
+        font-size: 16px;
+        line-height: 1.38;
+        letter-spacing: .18px;
+    }
+
+    /* Use bootstrap standard buttons in datepicker */
+
+    [uib-datepicker-popup-wrap] .btn {
+        border-radius: 3px;
+        border-color: #ccc;
+    }
 }
