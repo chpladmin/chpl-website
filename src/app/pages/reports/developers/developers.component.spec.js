@@ -50,65 +50,8 @@
         });
 
         describe('controller', () => {
-            describe('helper functions', () => {
-                describe('for date ranges', () => {
-                    beforeEach(() => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('1/15/2017'),
-                            endDate: new Date('2/15/2017'),
-                        };
-                    });
-
-                    it('should have a function to determine if a date range is okay', () => {
-                        expect(ctrl.validDates).toBeDefined()
-                    });
-
-                    it('should allow dates with less than the range separation', () => {
-                        expect(ctrl.validDates()).toBe(true);
-                    });
-
-                    it('should not allow dates separated by more than the range', () => {
-                        ctrl.activityRange.range = 1;
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-
-                    it('should not allow dates where start is after end', () => {
-                        ctrl.activityRange.startDate = new Date('3/15/2017');
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-
-                    it('should correctly validate dates crossing DST', () => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('9/17/2017'),
-                            endDate: new Date('11/16/2017'),
-                        };
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-
-                    it('should correctly validate dates crossing DST', () => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('9/06/2017'),
-                            endDate: new Date('11/04/2017'),
-                        };
-                        expect(ctrl.validDates()).toBe(true);
-                    });
-
-                    it('should correctly validate dates crossing DST', () => {
-                        ctrl.activityRange = {
-                            range: 60,
-                            startDate: new Date('9/06/2017'),
-                            endDate: new Date('11/05/2017'),
-                        };
-                        expect(ctrl.validDates()).toBe(false);
-                    });
-                });
-            });
-
             describe('when filter is selected', () => {
-                xit('should populate model with filter values', () => {
+                it('should populate model with filter values', () => {
                     let filter = {
                         'startDate': '2019-01-01T05:00:00.000Z',
                         'endDate': '2019-01-30T05:00:00.000Z',
@@ -135,7 +78,7 @@
             });
 
             describe('when save filter is clicked', () => {
-                xit('should create a filter object for saving', () => {
+                it('should create a filter object for saving', () => {
                     ctrl.activityRange.startDate = new Date(Date.parse('2019-01-01T05:00:00.000Z'));
                     ctrl.activityRange.endDate = new Date(Date.parse('2019-01-30T05:00:00.000Z'));
                     ctrl.filterText = 'medco';

@@ -1,4 +1,4 @@
-<div class="container" ng-if="!$ctrl.loading">
+<div class="container" ng-if="!$ctrl.loading" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : 'new-style-old'">
   <div class="row text-bottom" ng-if="$ctrl.listing">
     <div class="col-sm-8">
       <h1 id="listing-name">{{ $ctrl.listing.product.name }}</h1>
@@ -56,11 +56,11 @@
             </span>
             <span ng-if="$ctrl.listing.product.contact">
               <h3>Contact information</h3>
-              <ai-contact contact="$ctrl.listing.product.contact"></ai-contact>
+              <chpl-contact contact="$ctrl.listing.product.contact"></chpl-contact>
             </span>
             <span ng-if="!$ctrl.listing.product.contact && $ctrl.listing.developer.contact">
               <h3>Contact information</h3>
-              <ai-contact contact="$ctrl.listing.developer.contact"></ai-contact>
+              <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
             </span>
           </div>
           <div class="product-element" id="listing-information-product-history">

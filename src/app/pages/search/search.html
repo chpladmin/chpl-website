@@ -1,4 +1,4 @@
-<div id="search-page">
+<div id="search-page" ng-class="vm.isOn('ui-bump-major') ? 'new-style' : 'new-style-old'">
   <div class="pending" id="pendingMask" ng-show="vm.isPreloading"></div>
   <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">

@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 10.43.0
+_4 May 2020_
+
+### Features
+* Add new standardized date range picker
+* Update reports pages to support searches across all time
+  * Products
+  * Developers
+
+### Flagged Features
+* Add user guidance to CMS Widget
+* Add selector for Cures Update criteria in charts
+* Distinguish between Cures Update nonconformities in charts
+* Indicate frequency of download file generation
+* Add filter for 2015 Cures Update certification edition to main search
+
+### Bug Fixes
+* Activity in product history and activity report does not show correct for criteria edits during listing edit (#742)
+* Show Product Split and Merge in Product reports
+
+---
+
 ## Version 10.42.0
 _20 April 2020_
 

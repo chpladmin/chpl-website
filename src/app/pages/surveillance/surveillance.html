@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : 'new-style-old'">
   <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
     <div class="row">
       <div class="col-sm-12">
