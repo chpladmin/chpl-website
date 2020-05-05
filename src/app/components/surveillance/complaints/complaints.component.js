@@ -11,8 +11,6 @@ export const SurveillanceComplaintsComponent = {
             'ngInject'
             this.$log = $log;
             this.networkService = networkService;
-            this.isEditing = false;
-            this.complaints = [];
             this.complaint = {};
             this.complainantTypes = [];
             this.certificationBodies = [];
@@ -23,6 +21,11 @@ export const SurveillanceComplaintsComponent = {
             this.surveillances = [];
             this.complaintListType = 'ALL';
             this.pageSize = 50;
+            this.filterItems = {
+                acbItems: [],
+                complaintStatusTypeItems: [],
+                complainantTypeItems: [],
+            }
         }
 
         $onInit () {
@@ -127,23 +130,37 @@ export const SurveillanceComplaintsComponent = {
         refreshComplaints () {
             let that = this;
             this.getComplaintsPromise().then(response => {
-                that.complaints = response.results.map(complaint => {
-                    if (complaint.receivedDate) {
-                        complaint.formattedReceivedDate = new Date(complaint.receivedDate);
-                    } else {
-                        complaint.formattedReceivedDate = null;
-                    }
-                    if (complaint.closedDate) {
-                        complaint.formattedClosedDate = new Date(complaint.closedDate);
-                    } else {
-                        complaint.formattedClosedDate = null;
-                    }
-                    complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
-                    complaint.acbName = complaint.certificationBody.name;
-                    complaint.complainantTypeName = complaint.complainantType.name;
-                    return complaint;
-                });
+                that.complaints = response.results
+                    .map(complaint => {
+                        if (complaint.receivedDate) {
+                            complaint.formattedReceivedDate = new Date(complaint.receivedDate);
+                        } else {
+                            complaint.formattedReceivedDate = null;
+                        }
+                        if (complaint.closedDate) {
+                            complaint.formattedClosedDate = new Date(complaint.closedDate);
+                        } else {
+                            complaint.formattedClosedDate = null;
+                        }
+                        complaint.acbName = complaint.certificationBody.name;
+                        complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
+                        complaint.complainantTypeName = complaint.complainantType.name;
+                        return complaint;
+                    })
+                    .forEach(complaint => that.addFilterItems(complaint));
             });
+        }
+
+        addFilterItems (complaint) {
+            if (!this.filterItems.acbItems.find(item => item.value === complaint.acbName)) {
+                this.filterItems.acbItems.push({value: complaint.acbName, selected: true});
+            }
+            if (!this.filterItems.complaintStatusTypeItems.find(item => item.value === complaint.complaintStatusTypeName)) {
+                this.filterItems.complaintStatusTypeItems.push({value: complaint.complaintStatusTypeName, selected: true});
+            }
+            if (!this.filterItems.complainantTypeItems.find(item => item.value === complaint.complainantTypeName)) {
+                this.filterItems.complainantTypeItems.push({value: complaint.complainantTypeName, selected: true});
+            }
         }
 
         getComplaintsPromise () {

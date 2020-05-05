@@ -1,10 +1,10 @@
 <div class="complaints-wrapper" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div ng-if="!$ctrl.isEditing">
     <div class="flex-container">
-      <div class="flex-item">
+<!--      <div class="flex-item">
         <chpl-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
-      </div>
-      <div class="flex-item main-axis-align-end" ng-if="$ctrl.displayAdd">
+      </div>-->
+      <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
         <button class="btn" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
           Add New Complaint
         </button>
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="flex-container">
-      <div class="flex-item">
+      <div class="flex-item" ng-if="$ctrl.filterItems.acbItems.length > 0">
         Filter on ONC-ACB<br />
         <div uib-dropdown auto-close="outsideClick" class="btn-group">
           <button class="btn btn-default dropdown-toggle" type="button" id="acb-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
@@ -27,11 +27,12 @@
             <st-list-multiple
               collection="$ctrl.complaints"
               predicate="acbName"
+              fixed-items="$ctrl.filterItems.acbItems"
               ></st-list-multiple>
           </ul>
         </div>
       </div>
-      <div class="flex-item">
+      <div class="flex-item" ng-if="$ctrl.filterItems.complaintStatusTypeItems.length > 0">
         Filter on Status<br />
         <div uib-dropdown auto-close="outsideClick" class="btn-group">
           <button class="btn btn-default dropdown-toggle" type="button" id="status-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
@@ -41,11 +42,12 @@
             <st-list-multiple
               collection="$ctrl.complaints"
               predicate="complaintStatusTypeName"
+              fixed-items="$ctrl.filterItems.complaintStatusTypeItems"
               ></st-list-multiple>
           </ul>
         </div>
       </div>
-      <div class="flex-item flex-container">
+      <div class="flex-item wider">
         Filter on Received Date
         <chpl-date-range
           predicate="receivedDate"
@@ -53,7 +55,7 @@
           register-restore-state="$ctrl.registerRestoreState(restoreState)"
           ></chpl-date-range>
       </div>
-      <div class="flex-item flex-container">
+      <div class="flex-item wider">
         Filter on Closed Date
         <chpl-date-range
           predicate="closedDate"
@@ -61,7 +63,7 @@
           register-restore-state="$ctrl.registerRestoreState(restoreState)"
           ></chpl-date-range>
       </div>
-      <div class="flex-item">
+      <div class="flex-item" ng-if="$ctrl.filterItems.complainantTypeItems.length > 0">
         Filter on Complainant Type<br />
         <div uib-dropdown auto-close="outsideClick" class="btn-group">
           <button class="btn btn-default dropdown-toggle" type="button" id="complainant-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
@@ -70,7 +72,8 @@
           <ul class="dropdown-menu" aria-labeledby="complainant-filter-button" uib-dropdown-menu>
             <st-list-multiple
               collection="$ctrl.complaints"
-              predicate="complaintTypeName"
+              predicate="complainantTypeName"
+              fixed-items="$ctrl.filterItems.complainantTypeItems"
               ></st-list-multiple>
           </ul>
         </div>
