@@ -805,6 +805,7 @@ option[label^="Removed"] {
 
 .flex-container {
     display: flex;
+    width: 100%;
 
     &.wrap {
         flex-wrap: wrap;
