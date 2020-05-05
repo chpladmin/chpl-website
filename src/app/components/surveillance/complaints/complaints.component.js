@@ -145,9 +145,12 @@ export const SurveillanceComplaintsComponent = {
                         complaint.acbName = complaint.certificationBody.name;
                         complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
                         complaint.complainantTypeName = complaint.complainantType.name;
+                        complaint.filterText = complaint.oncComplaintId + '|' + complaint.acbComplaintId
+                            + '|' + complaint.listings.map(l => l.chplProductNumber).join('|')
+                            + '|' + complaint.criteria.map(c => c.certificationCriterion.number).join('|');
+                        that.addFilterItems(complaint);
                         return complaint;
-                    })
-                    .forEach(complaint => that.addFilterItems(complaint));
+                    });
             });
         }
 
