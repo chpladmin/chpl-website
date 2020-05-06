@@ -1,11 +1,11 @@
-<div class="complaints-wrapper" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div ng-class="$ctrl.isOn('ui-bump-major') ? '' : 'complaints-wrapper'" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div ng-if="!$ctrl.isEditing">
     <div class="flex-container">
-<!--      <div class="flex-item">
+      <div class="flex-item">
         <chpl-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
-      </div>-->
+      </div>
       <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
-        <button class="btn" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
+        <button class="btn btn-default" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
           Add New Complaint
         </button>
       </div>
@@ -78,6 +78,87 @@
           </ul>
         </div>
       </div>
+      <div class="flex-item">
+        Filter on Parties Contacted<br />
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="parties-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            Parties Contacted <i class="fa fa-filter"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="parties-contacted-filter-button" uib-dropdown-menu>
+            <li>
+              Complainant Contacted
+              <chpl-boolean-filter
+                collection="$ctrl.complaints"
+                predicate="complainantContacted"
+                ></chpl-boolean-filter>
+            </li>
+            <li>
+              Developer Contacted
+              <chpl-boolean-filter
+                collection="$ctrl.complaints"
+                predicate="developerContacted"
+                ></chpl-boolean-filter>
+            </li>
+            <li>
+              ONC-ATL Contacted
+              <chpl-boolean-filter
+                collection="$ctrl.complaints"
+                predicate="oncAtlContacted"
+                ></chpl-boolean-filter>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--
+      <div class="flex-item">
+        Filter on Complainant Contacted<br />
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="complainant-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            Complainant Contacted <i class="fa fa-filter"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="complainant-contacted-filter-button" uib-dropdown-menu>
+            <li>
+              <chpl-boolean-filter
+                collection="$ctrl.complaints"
+                predicate="complainantContacted"
+                ></chpl-boolean-filter>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex-item">
+        Filter on Developer Contacted<br />
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="developer-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            Developer Contacted <i class="fa fa-filter"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="developer-contacted-filter-button" uib-dropdown-menu>
+            <li>
+              <chpl-boolean-filter
+                collection="$ctrl.complaints"
+                predicate="developerContacted"
+                ></chpl-boolean-filter>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex-item">
+        Filter on ONC-ATL Contacted<br />
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-default dropdown-toggle" type="button" id="oncatl-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            ONC-ATL Contacted <i class="fa fa-filter"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="oncatl-contacted-filter-button" uib-dropdown-menu>
+            <li>
+              <chpl-boolean-filter
+                collection="$ctrl.complaints"
+                predicate="oncAtlContacted"
+                ></chpl-boolean-filter>
+            </li>
+          </ul>
+        </div>
+      </div>
+      -->
     </div>
     <div class="flex-container">
       <div class="flex-item table-responsive">

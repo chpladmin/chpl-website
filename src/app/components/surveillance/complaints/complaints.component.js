@@ -7,18 +7,11 @@ export const SurveillanceComplaintsComponent = {
         quarterlyReport: '<',
     },
     controller: class SurveillanceComplaintsComponent {
-        constructor ($log, networkService) {
+        constructor ($log, featureFlags, networkService) {
             'ngInject'
             this.$log = $log;
             this.networkService = networkService;
-            this.complaint = {};
-            this.complainantTypes = [];
-            this.certificationBodies = [];
-            this.criteria = [];
-            this.editions = [];
-            this.errorMessages = [];
-            this.listings = [];
-            this.surveillances = [];
+            this.isOn = featureFlags.isOn;
             this.complaintListType = 'ALL';
             this.pageSize = 50;
             this.filterItems = {
@@ -151,6 +144,7 @@ export const SurveillanceComplaintsComponent = {
                         that.addFilterItems(complaint);
                         return complaint;
                     });
+                that.finalizeFilterItems();
             });
         }
 
@@ -164,6 +158,12 @@ export const SurveillanceComplaintsComponent = {
             if (!this.filterItems.complainantTypeItems.find(item => item.value === complaint.complainantTypeName)) {
                 this.filterItems.complainantTypeItems.push({value: complaint.complainantTypeName, selected: true});
             }
+        }
+
+        finalizeFilterItems () {
+            this.filterItems.acbItems = this.filterItems.acbItems.sort((a, b) => a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
+            this.filterItems.complaintStatusTypeItems = this.filterItems.complaintStatusTypeItems.sort((a, b) => a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
+            this.filterItems.complainantTypeItems = this.filterItems.complainantTypeItems.sort((a, b) => a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
         }
 
         getComplaintsPromise () {

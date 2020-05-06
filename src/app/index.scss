@@ -1184,6 +1184,32 @@ Button Styling
         border-radius: 5px;
     }
 
+    .dropdown-menu {
+        left: auto;
+        right: 0;
+        width: 150%;
+        max-height: 300px;
+        overflow: auto;
+
+        li {
+
+            select {
+                display: block;
+                padding: 3px 20px;
+                margin: 3px 0;
+                clear: both;
+                width: 100%;
+            }
+
+            label {
+                cursor: pointer;
+                display: block;
+                padding: 3px 20px;
+                clear: both;
+            }
+        }
+    }
+
     /* Action Bar */
 
     .action-bar {
