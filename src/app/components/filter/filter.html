@@ -1,0 +1,8 @@
+<div>
+  <ul>
+    <li ng-repeat="filter in $ctrl.filters" ng-class="{ active:filter.selected }">
+      <a href="" ng-click="$ctrl.select(filter)">{{ filter.title }}</a>
+    </li>
+  </ul>
+  <div ng-transclude></div>
+</div>
