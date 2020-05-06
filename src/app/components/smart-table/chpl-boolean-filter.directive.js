@@ -98,8 +98,8 @@
             vm.element[0].selectedIndex = 0;
             var predicateSearch = state.search.predicateObject[vm.predicate];
             if (predicateSearch) {
-                for (var i = 0; i < vm.distinctItems.length; i++) {
-                    if (vm.distinctItems[i] === predicateSearch) {
+                for (var i = 0; i < vm.booleanItems.length; i++) {
+                    if (vm.booleanItems[i] === predicateSearch) {
                         vm.element[0].selectedIndex = i;
                     }
                 }
