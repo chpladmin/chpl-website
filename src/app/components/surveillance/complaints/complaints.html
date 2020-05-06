@@ -2,7 +2,7 @@
   <div ng-if="!$ctrl.isEditing">
     <div class="flex-container">
       <div class="flex-item">
-        <chpl-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-filter>
+        <chpl-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-filter>
       </div>
       <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
         <button class="btn btn-default" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
@@ -28,6 +28,8 @@
               collection="$ctrl.complaints"
               predicate="acbName"
               fixed-items="$ctrl.filterItems.acbItems"
+              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+              register-restore-state="$ctrl.registerRestoreState(restoreState)"
               ></st-list-multiple>
           </ul>
         </div>
@@ -43,6 +45,8 @@
               collection="$ctrl.complaints"
               predicate="complaintStatusTypeName"
               fixed-items="$ctrl.filterItems.complaintStatusTypeItems"
+              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+              register-restore-state="$ctrl.registerRestoreState(restoreState)"
               ></st-list-multiple>
           </ul>
         </div>
@@ -74,6 +78,8 @@
               collection="$ctrl.complaints"
               predicate="complainantTypeName"
               fixed-items="$ctrl.filterItems.complainantTypeItems"
+              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+              register-restore-state="$ctrl.registerRestoreState(restoreState)"
               ></st-list-multiple>
           </ul>
         </div>
@@ -90,6 +96,8 @@
               <chpl-boolean-filter
                 collection="$ctrl.complaints"
                 predicate="complainantContacted"
+                register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+                register-restore-state="$ctrl.registerRestoreState(restoreState)"
                 ></chpl-boolean-filter>
             </li>
             <li>
@@ -97,6 +105,8 @@
               <chpl-boolean-filter
                 collection="$ctrl.complaints"
                 predicate="developerContacted"
+                register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+                register-restore-state="$ctrl.registerRestoreState(restoreState)"
                 ></chpl-boolean-filter>
             </li>
             <li>
@@ -104,6 +114,8 @@
               <chpl-boolean-filter
                 collection="$ctrl.complaints"
                 predicate="oncAtlContacted"
+                register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+                register-restore-state="$ctrl.registerRestoreState(restoreState)"
                 ></chpl-boolean-filter>
             </li>
           </ul>

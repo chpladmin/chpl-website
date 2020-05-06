@@ -12,6 +12,8 @@ export const SurveillanceComplaintsComponent = {
             this.$log = $log;
             this.networkService = networkService;
             this.isOn = featureFlags.isOn;
+            this.clearFilterHs = [];
+            this.restoreStateHs = [];
             this.complaintListType = 'ALL';
             this.pageSize = 50;
             this.filterItems = {
@@ -235,6 +237,62 @@ export const SurveillanceComplaintsComponent = {
 
         clearErrorMessages () {
             this.errorMessages = [];
+        }
+
+        onApplyFilter (filter) {
+            let f = angular.fromJson(filter);
+            this.doFilter(f);
+        }
+
+        onClearFilter () {
+            let filterData = {};
+            filterData.dataFilter = '';
+            filterData.tableState = this.tableController.tableState();
+            this.clearFilterHs.forEach(handler => handler());
+            this.doFilter(filterData);
+        }
+
+        doFilter (filter) {
+            let that = this;
+            this.filterText = filter.dataFilter;
+            let filterItems = [
+                'acbName',
+                'complaintStatusTypeName',
+                'receivedDate',
+                'closedDate',
+                'complainantTypeName',
+                'complainantContacted',
+                'developerContacted',
+                'oncAtlContacted',
+            ];
+            filterItems.forEach(predicate => {
+                if (filter.tableState.search.predicateObject[predicate]) {
+                    this.tableController.search(filter.tableState.search.predicateObject[predicate], predicate);
+                } else {
+                    this.tableController.search({}, predicate);
+                }
+            });
+            this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+            this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+        }
+
+        registerClearFilter (handler) {
+            this.clearFilterHs.push(handler);
+        }
+
+        registerRestoreState (handler) {
+            this.restoreStateHs.push(handler);
+        }
+
+        getFilterData () {
+            let filterData = {};
+            filterData.dataFilter = this.filterText;
+            filterData.tableState = this.tableController.tableState();
+            return filterData;
+        }
+
+        tableStateListener (tableController) {
+            this.tableController = tableController;
         }
     },
 }

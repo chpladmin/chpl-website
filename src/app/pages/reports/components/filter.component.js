@@ -48,6 +48,7 @@ export const FilterComponent = {
         clearFilter () {
             this.onClearFilter();
         }
+
         saveFilter () {
             let that = this;
             let filter = {};
