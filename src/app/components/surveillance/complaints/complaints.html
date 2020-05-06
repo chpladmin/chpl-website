@@ -2,7 +2,7 @@
   <div ng-if="!$ctrl.isEditing">
     <div class="flex-container">
       <div class="flex-item">
-        <chpl-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-filter>
+        <chpl-saved-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-saved-filter>
       </div>
       <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
         <button class="btn btn-default" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">

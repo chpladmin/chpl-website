@@ -1,12 +1,12 @@
-export const FilterComponent = {
-    templateUrl: 'chpl.reports/components/filter.component.html',
+export const SavedFilterComponent = {
+    templateUrl: 'chpl.components/filter/saved-filter.html',
     bindings: {
         filterTypeName: '@',
         onApplyFilter: '&',
         onClearFilter: '&',
         getFilterData: '&',
     },
-    controller: class FilterComponent {
+    controller: class SavedFilterComponent {
         constructor ($filter, $log, $scope, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
@@ -72,5 +72,5 @@ export const FilterComponent = {
     },
 }
 
-angular.module('chpl.reports')
-    .component('chplFilter', FilterComponent);
+angular.module('chpl.components')
+    .component('chplSavedFilter', SavedFilterComponent);

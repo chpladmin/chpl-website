@@ -7,7 +7,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.reports', $provide => {
-                $provide.factory('chplFilterDirective', () => ({}));
+                $provide.factory('chplSavedFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
                     return $delegate;
