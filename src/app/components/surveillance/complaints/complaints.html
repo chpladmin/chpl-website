@@ -10,7 +10,7 @@
       </chpl-filters-saved>
       <chpl-filters-body>
         <chpl-filter title="ONC-ACB" has-changes="$ctrl.hasChanges['acbName']"
-          ng-if="$ctrl.filterItems.acbItems.length > 0">
+                     ng-if="$ctrl.filterItems.acbItems.length > 0">
           <st-list-multiple
             collection="$ctrl.complaints"
             predicate="acbName"
@@ -94,179 +94,6 @@
         </button>
       </div>
     </div>
-<!--
-    <div class="flex-container">
-      <div class="flex-item">
-        <chpl-saved-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-saved-filter>
-      </div>
-      <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
-        <button class="btn btn-default" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
-          Add New Complaint
-        </button>
-      </div>
-    </div>
-    <div class="flex-container">
-      <div class="flex-item">
-        <label for="data-filter" class="control-label">Filter</label>
-        <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria" class="form-control" type="search">
-      </div>
-    </div>
-    <div class="flex-container">
-      <div class="flex-item" ng-if="$ctrl.filterItems.acbItems.length > 0">
-        Filter on ONC-ACB<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="acb-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            ONC-ACB <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="acb-filter-button" uib-dropdown-menu>
-            <st-list-multiple
-              collection="$ctrl.complaints"
-              predicate="acbName"
-              fixed-items="$ctrl.filterItems.acbItems"
-              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-              register-restore-state="$ctrl.registerRestoreState(restoreState)"
-              ></st-list-multiple>
-          </ul>
-        </div>
-      </div>
-      <div class="flex-item" ng-if="$ctrl.filterItems.complaintStatusTypeItems.length > 0">
-        Filter on Status<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="status-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            Status <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="status-filter-button" uib-dropdown-menu>
-            <st-list-multiple
-              collection="$ctrl.complaints"
-              predicate="complaintStatusTypeName"
-              fixed-items="$ctrl.filterItems.complaintStatusTypeItems"
-              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-              register-restore-state="$ctrl.registerRestoreState(restoreState)"
-              ></st-list-multiple>
-          </ul>
-        </div>
-      </div>
-      <div class="flex-item wide">
-        Filter on Received Date
-        <chpl-date-range
-          predicate="receivedDate"
-          register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-          register-restore-state="$ctrl.registerRestoreState(restoreState)"
-          ></chpl-date-range>
-      </div>
-      <div class="flex-item wide">
-        Filter on Closed Date
-        <chpl-date-range
-          predicate="closedDate"
-          register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-          register-restore-state="$ctrl.registerRestoreState(restoreState)"
-          ></chpl-date-range>
-      </div>
-      <div class="flex-item" ng-if="$ctrl.filterItems.complainantTypeItems.length > 0">
-        Filter on Complainant Type<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="complainant-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            Complainant Type <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="complainant-filter-button" uib-dropdown-menu>
-            <st-list-multiple
-              collection="$ctrl.complaints"
-              predicate="complainantTypeName"
-              fixed-items="$ctrl.filterItems.complainantTypeItems"
-              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-              register-restore-state="$ctrl.registerRestoreState(restoreState)"
-              ></st-list-multiple>
-          </ul>
-        </div>
-      </div>
-      <div class="flex-item">
-        Filter on Parties Contacted<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="parties-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            Parties Contacted <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="parties-contacted-filter-button" uib-dropdown-menu>
-            <li>
-              Complainant Contacted
-              <chpl-boolean-filter
-                collection="$ctrl.complaints"
-                predicate="complainantContacted"
-                register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-                register-restore-state="$ctrl.registerRestoreState(restoreState)"
-                ></chpl-boolean-filter>
-            </li>
-            <li>
-              Developer Contacted
-              <chpl-boolean-filter
-                collection="$ctrl.complaints"
-                predicate="developerContacted"
-                register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-                register-restore-state="$ctrl.registerRestoreState(restoreState)"
-                ></chpl-boolean-filter>
-            </li>
-            <li>
-              ONC-ATL Contacted
-              <chpl-boolean-filter
-                collection="$ctrl.complaints"
-                predicate="oncAtlContacted"
-                register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-                register-restore-state="$ctrl.registerRestoreState(restoreState)"
-                ></chpl-boolean-filter>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!--
-      <div class="flex-item">
-        Filter on Complainant Contacted<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="complainant-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            Complainant Contacted <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="complainant-contacted-filter-button" uib-dropdown-menu>
-            <li>
-              <chpl-boolean-filter
-                collection="$ctrl.complaints"
-                predicate="complainantContacted"
-                ></chpl-boolean-filter>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="flex-item">
-        Filter on Developer Contacted<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="developer-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            Developer Contacted <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="developer-contacted-filter-button" uib-dropdown-menu>
-            <li>
-              <chpl-boolean-filter
-                collection="$ctrl.complaints"
-                predicate="developerContacted"
-                ></chpl-boolean-filter>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="flex-item">
-        Filter on ONC-ATL Contacted<br />
-        <div uib-dropdown auto-close="outsideClick" class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="oncatl-contacted-filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-            ONC-ATL Contacted <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labeledby="oncatl-contacted-filter-button" uib-dropdown-menu>
-            <li>
-              <chpl-boolean-filter
-                collection="$ctrl.complaints"
-                predicate="oncAtlContacted"
-                ></chpl-boolean-filter>
-            </li>
-          </ul>
-        </div>
-      </div>
-      -->
-    </div>
     <div class="flex-container">
       <div class="flex-item table-responsive">
         <table class="table table-condensed" id="complaints-table">
@@ -336,7 +163,7 @@
       </div>
     </div>
   </div>
-  <div class="flex-container" ng-if="$ctrl.isEditing === true">
+  <div class="flex-container" ng-if="$ctrl.isEditing">
     <div class="flex-item">
       <chpl-surveillance-complaint
         complaint="$ctrl.complaint"
