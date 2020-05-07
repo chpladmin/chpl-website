@@ -910,13 +910,14 @@ Format
    */
 
     .body {
-        background: var(--white);
+        //background-image: url("../assets/images/blank.png");
+        background-color: var(--white);
     }
 
     .main-content {
         background: var(--light-grey);
         padding: 15px;
-        border: 1px solid var(dark-grey);
+        border: 1px solid var(--dark-grey);
     }
 
     /*
@@ -1188,32 +1189,6 @@ Button Styling
         border: 1px solid #e3e3e3;
         margin-right: 0%;
         border-radius: 5px;
-    }
-
-    .dropdown-menu {
-        left: auto;
-        right: 0;
-        width: 150%;
-        max-height: 300px;
-        overflow: auto;
-
-        li {
-
-            select {
-                display: block;
-                padding: 3px 20px;
-                margin: 3px 0;
-                clear: both;
-                width: 100%;
-            }
-
-            label {
-                cursor: pointer;
-                display: block;
-                padding: 3px 20px;
-                clear: both;
-            }
-        }
     }
 
     /* Action Bar */
