@@ -50,7 +50,6 @@
             });
             scope.$on('$destroy', restoreState);
 
-            ctrl.booleanItems = ['Any', 'True', 'False'];
             ctrl.element = element;
             ctrl.predicate = scope.predicate;
             ctrl.tableCtrl = table;
@@ -98,11 +97,6 @@
             vm.element[0].selectedIndex = 0;
             var predicateSearch = state.search.predicateObject[vm.predicate];
             if (predicateSearch) {
-                for (var i = 0; i < vm.booleanItems.length; i++) {
-                    if (vm.booleanItems[i] === predicateSearch) {
-                        vm.element[0].selectedIndex = i;
-                    }
-                }
                 if (predicateSearch.boolean && predicateSearch.boolean.length > 0) {
                     vm.selectedOption = predicateSearch.boolean;
                 } else {

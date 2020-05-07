@@ -21,6 +21,7 @@ export const SurveillanceComplaintsComponent = {
                 complaintStatusTypeItems: [],
                 complainantTypeItems: [],
             }
+            this.hasChanges = {};
         }
 
         $onInit () {

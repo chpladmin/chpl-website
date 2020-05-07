@@ -1,85 +1,79 @@
 export const FilterComponent = {
     templateUrl: 'chpl.components/filter/filter.html',
     bindings: {
+        title: '@',
+        hasChanges: '<',
     },
     transclude: true,
+    require: {
+        filtersCtrl: '^chplFilters',
+    },
     controller: class FilterComponent {
         constructor ($log) {
             'ngInject'
             this.$log = $log;
-            this.filters = [];
         }
 
-        select (filter) {
-            this.filters.forEach(filter => {
-                filter.selected = false;
-            });
-            filter.selected = true;
-        }
-
-        addFilter (filter) {
-            if (this.filters.length === 0) {
-                this.select(filter);
-            }
-            this.filters.push(filter);
+        $onInit () {
+            this.filtersCtrl.addFilter(this);
         }
 
         /*
-        onApplyFilter (filter) {
-            let f = angular.fromJson(filter);
-            this.doFilter(f);
-        }
+          onApplyFilter (filter) {
+          let f = angular.fromJson(filter);
+          this.doFilter(f);
+          }
 
-        onClearFilter () {
-            let filterData = {};
-            filterData.dataFilter = '';
-            filterData.tableState = this.tableController.tableState();
-            this.clearFilterHs.forEach(handler => handler());
-            this.doFilter(filterData);
-        }
+          onClearFilter () {
+          let filterData = {};
+          filterData.dataFilter = '';
+          filterData.tableState = this.tableController.tableState();
+          this.clearFilterHs.forEach(handler => handler());
+          this.doFilter(filterData);
+          }
 
-        doFilter (filter) {
-            let that = this;
-            this.filterText = filter.dataFilter;
-            let filterItems = [
-                'acbName',
-                'complaintStatusTypeName',
-                'receivedDate',
-                'closedDate',
-                'complainantTypeName',
-                'complainantContacted',
-                'developerContacted',
-                'oncAtlContacted',
-            ];
-            filterItems.forEach(predicate => {
-                if (filter.tableState.search.predicateObject[predicate]) {
-                    this.tableController.search(filter.tableState.search.predicateObject[predicate], predicate);
-                } else {
-                    this.tableController.search({}, predicate);
-                }
-            });
-            this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
-            this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
-        }
+          doFilter (filter) {
+          let that = this;
+          this.filterText = filter.dataFilter;
+          let filterItems = [
+          'acbName',
+          'complaintStatusTypeName',
+          'receivedDate',
+          'closedDate',
+          'complainantTypeName',
+          'complainantContacted',
+          'developerContacted',
+          'oncAtlContacted',
+          ];
+          filterItems.forEach(predicate => {
+          if (filter.tableState.search.predicateObject[predicate]) {
+          this.tableController.search(filter.tableState.search.predicateObject[predicate], predicate);
+          } else {
+          this.tableController.search({}, predicate);
+          }
+          });
+          this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+          this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+          }
 
-        registerClearFilter (handler) {
-            this.clearFilterHs.push(handler);
-        }
+          registerClearFilter (handler) {
+          this.clearFilterHs.push(handler);
+          }
 
-        registerRestoreState (handler) {
-            this.restoreStateHs.push(handler);
-        }
+          registerRestoreState (handler) {
+          this.restoreStateHs.push(handler);
+          }
 
-        getFilterData () {
-            let filterData = {};
-            filterData.dataFilter = this.filterText;
-            filterData.tableState = this.tableController.tableState();
-            return filterData;
-        }
+          getFilterData () {
+          let filterData = {};
+          filterData.dataFilter = this.filterText;
+          filterData.tableState = this.tableController.tableState();
+          return filterData;
+          }
 
-        tableStateListener (tableController) {
-            this.tableController = tableController;
-        }
+          tableStateListener (tableController) {
+          this.tableController = tableController;
+          }
         */
     },
 }

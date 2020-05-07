@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Filter component', () => {
+    fdescribe('the Filters component', () => {
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(() => {
@@ -13,7 +13,7 @@
 
                 scope = $rootScope.$new();
 
-                el = angular.element('<chpl-filters><chpl-filter title="fake"></chpl-filter></chpl-filters>');
+                el = angular.element('<chpl-filters></chpl-filters>');
 
                 $compile(el)(scope);
                 scope.$digest();
