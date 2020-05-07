@@ -7,7 +7,7 @@
   </div>
 </div>
 <div class="flex-container" ng-show="$ctrl.showAdvanced">
-  <div class="flex-item flex-container rotate">
+  <div class="flex-item flex-container rotate wrap" id="filters-titles">
     <div ng-repeat="filter in $ctrl.filters | orderBy : 'title'" class="flex-item" ng-class="{ active:filter.selected }">
       <button class="btn btn-link" ng-click="$ctrl.select(filter)">{{ filter.title }}</button> <span ng-if="filter.hasChanges"><span class="sr-only">Filter has non-default option selected</span>*</span>
     </div>
