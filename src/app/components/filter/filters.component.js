@@ -3,14 +3,15 @@ export const FiltersComponent = {
     bindings: {
     },
     transclude: {
-        header: 'chplFiltersHeader',
-        body: 'chplFiltersBody',
-        saved: 'chplFiltersSaved',
+        header: '?chplFiltersHeader',
+        body: '?chplFiltersBody',
+        saved: '?chplFiltersSaved',
     },
     controller: class FiltersComponent {
-        constructor ($log) {
+        constructor ($log, $transclude) {
             'ngInject'
             this.$log = $log;
+            this.isSlotFilled = $transclude.isSlotFilled;
             this.filters = [];
         }
 

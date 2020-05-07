@@ -116,6 +116,9 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.surveillance', $provide => {
+                $provide.factory('chplSavedFilterDirective', () => ({}));
+                $provide.factory('chplFiltersDirective', () => ({}));
+                $provide.factory('chplFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getComplainantTypes = jasmine.createSpy('getComplainantTypes');
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');

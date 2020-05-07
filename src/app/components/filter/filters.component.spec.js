@@ -13,7 +13,7 @@
 
                 scope = $rootScope.$new();
 
-                el = angular.element('<chpl-filters></chpl-filters>');
+                el = angular.element('<chpl-filters><chpl-filters-header /><chpl-filters-body /></chpl-filters>');
 
                 $compile(el)(scope);
                 scope.$digest();
