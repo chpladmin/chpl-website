@@ -2,6 +2,9 @@
   <div class="flex-item wide">
     <div ng-transclude="header"></div>
   </div>
+  <div class="flex-item text-right" ng-if="$ctrl.isSlotFilled('saved')">
+    <div ng-transclude="saved"></div>
+  </div>
   <div class="flex-item text-right">
     <button class="btn btn-link" ng-click="$ctrl.showAdvanced = !$ctrl.showAdvanced"><span ng-if="$ctrl.showAdvanced">Hide </span>Advanced Search</button>
   </div>
@@ -11,9 +14,6 @@
     <div ng-repeat="filter in $ctrl.filters | orderBy : 'title'" class="flex-item" ng-class="{ active:filter.selected }">
       <button class="btn btn-link" ng-click="$ctrl.select(filter)">{{ filter.title }}</button> <span ng-if="filter.hasChanges"><span class="sr-only">Filter has non-default option selected</span>*</span>
     </div>
-  </div>
-  <div class="flex-item" ng-if="$ctrl.isSlotFilled('saved')">
-    <div ng-transclude="saved"></div>
   </div>
   <div class="flex-item wide">
     <div ng-transclude="body"></div>
