@@ -162,6 +162,9 @@ export class NetworkService {
         if (options && options.pageNum) {
             params.push('pageNum=' + options.pageNum);
         }
+        if (options && options.pageSize) {
+            params.push('pageSize=' + options.pageSize);
+        }
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
