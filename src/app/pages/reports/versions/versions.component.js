@@ -23,7 +23,6 @@ export const ReportsVersionsComponent = {
             };
             this.downloadProgress = { complete: 0 };
             this.pageSize = 50;
-            this.defaultDateRangeOffset = 6 * 365 * 24 * 60 * 60 * 1000; // 6 years
         }
 
         $onInit () {
@@ -149,7 +148,7 @@ export const ReportsVersionsComponent = {
 
         search () {
             let that = this;
-            this.networkService.getActivityMetadata('beta/versions', {pageSize: 1})
+            this.networkService.getActivityMetadata('beta/versions')
                 .then(results => {
                     that.results = results.activities
                         .map(item => that.prepare(item));
@@ -160,7 +159,7 @@ export const ReportsVersionsComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: this.ReportService.coerceToMidnight(new Date()).getTime() - this.defaultDateRangeOffset,
+                                after: new Date('2016-04-01').getTime(),
                                 before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                             },
                         },
@@ -173,7 +172,7 @@ export const ReportsVersionsComponent = {
         addPageToData (page) {
             let that = this;
             if (this.isDestroyed) { return }
-            this.networkService.getActivityMetadata('beta/versions', {pageNum: page, ignoreLoadingBar: true, pageSize: 1}).then(results => {
+            this.networkService.getActivityMetadata('beta/versions', {pageNum: page, ignoreLoadingBar: true}).then(results => {
                 results.activities.forEach(item => {
                     that.results.push(that.prepare(item));
                 });
