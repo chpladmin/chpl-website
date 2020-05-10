@@ -13,8 +13,8 @@
       <button class="btn btn-ai-success pull-right" disabled ng-if="!$ctrl.canDownload()"><i class="fa fa-ban"></i> Too many results to download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.ReportService.downloadReady($ctrl.displayed)"
               ng-csv="$ctrl.displayed" filename="Version_{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
-              csv-header="['Product', 'Version', 'Responsible User', 'Activity', 'Details', 'Activity Date']"
-              csv-column-order="['productName', 'version', 'fullName', 'action', 'csvDetails', 'friendlyActivityDate']">
+              csv-header="['Developer', 'Product', 'Version', 'Responsible User', 'Activity', 'Details', 'Activity Date']"
+              csv-column-order="['developerName', 'productName', 'version', 'fullName', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
       <br />
       <div ng-if="$ctrl.downloadProgress.complete < 100 && $ctrl.downloadProgress.complete > 0">
