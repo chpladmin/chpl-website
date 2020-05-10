@@ -54,11 +54,12 @@
       <table class="table table-responsive">
         <thead>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="5" class="text-center">
               <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
             </td>
           </tr>
           <tr>
+            <th class="search-header" st-sort="developerName" st-skip-natural="true">Developer</th>
             <th class="search-header" st-sort="productName" st-skip-natural="true">Product</th>
             <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
             <th class="search-header" st-sort="fullName" st-skip-natural="true">Responsible User</th>
@@ -67,7 +68,7 @@
         </thead>
         <tfoot>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="5" class="text-center">
               <div class="text-right">
                 <label for="pageSizeTop" class="sr-only">Show how many results</label>
                 Showing up to&nbsp;
@@ -82,6 +83,7 @@
         </tfoot>
         <tbody>
           <tr ng-repeat="activity in $ctrl.displayed">
+            <td>{{ activity.developerName }}</td>
             <td>{{ activity.productName }}</td>
             <td>{{ activity.version }}</td>
             <td>{{ activity.fullName }}</td>
