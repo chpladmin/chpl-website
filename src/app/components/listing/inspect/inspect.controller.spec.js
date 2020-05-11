@@ -6,17 +6,22 @@
 
         mock = {};
         mock.inspectingCp = {
-            developer: { developerId: 1},
+            developer: { developerId: 1 },
+            certificationEdition: { name: 2015 },
         };
         mock.resources = {
+            accessibilityStandards: [],
             bodies: [],
             classifications: [],
             practices: [],
             qmsStandards: [],
-            accessibilityStandards: [],
-            targetedUsers: [],
             statuses: [],
+            targetedUsers: [],
             testingLabs: [],
+            testStandards: {data: [
+                {id: 1, name: 'name1', year: 2014},
+                {id: 2, name: 'name2', year: 2015},
+            ]},
         }
 
         beforeEach(() => {
