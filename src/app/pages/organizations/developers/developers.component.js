@@ -196,7 +196,16 @@ export const DevelopersComponent = {
         }
 
         takeAction (action) {
-            this.action = action;
+            switch (action) {
+            case 'split':
+                this.$state.go('.split', {
+                    developer: this.developer,
+                    products: this.products,
+                });
+                break;
+            default:
+                this.action = action;
+            }
         }
 
         takeUserAction (action, data) {
