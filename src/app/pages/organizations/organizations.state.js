@@ -9,61 +9,37 @@ let states = [
         },
     },{
         name: 'organizations.developers',
-        url: '/developers/{developerId}',
+        url: '/developers',
         component: 'chplDevelopers',
-        params: {
-            developerId: {squash: true, value: null},
-        },
         resolve: {
-            developer: (networkService, $transition$) => {
-                'ngInject'
-                if ($transition$.params().developerId) {
-                    return networkService.getDeveloper($transition$.params().developerId);
-                }
-                return {};
-            },
             developers: networkService => {
                 'ngInject'
                 return networkService.getDevelopers();
-            },
-            products: (networkService, $transition$) => {
-                'ngInject'
-                if ($transition$.params().developerId) {
-                    return networkService.getProductsByDeveloper($transition$.params().developerId);
-                }
-                return {};
             },
         },
         data: { title: 'CHPL Developers' },
     },{
-        name: 'organizations.developers.split',
-        url: '/split',
-        component: 'chplDeveloperSplit',
-        /*
+        name: 'organizations.developers.developer',
+        url: '/{developerId}',
+        component: 'chplDevelopersView',
         params: {
             developerId: {squash: true, value: null},
         },
         resolve: {
             developer: (networkService, $transition$) => {
                 'ngInject'
-                if ($transition$.params().developerId) {
-                    return networkService.getDeveloper($transition$.params().developerId);
-                }
-                return {};
-            },
-            developers: networkService => {
-                'ngInject'
-                return networkService.getDevelopers();
+                return networkService.getDeveloper($transition$.params().developerId);
             },
             products: (networkService, $transition$) => {
                 'ngInject'
-                if ($transition$.params().developerId) {
-                    return networkService.getProductsByDeveloper($transition$.params().developerId);
-                }
-                return {};
+                return networkService.getProductsByDeveloper($transition$.params().developerId);
             },
         },
-        */
+        data: { title: 'CHPL Developer' },
+    },{
+        name: 'organizations.developers.developer.split',
+        url: '/split',
+        component: 'chplDeveloperSplit',
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.onc-acbs',

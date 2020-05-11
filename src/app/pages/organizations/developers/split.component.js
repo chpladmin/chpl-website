@@ -5,9 +5,10 @@ export const DeveloperSplitComponent = {
         products: '<',
     },
     controller: class DeveloperSplitController {
-        constructor ($log, $uibModal, authService, networkService) {
+        constructor ($log, $state, authService, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.movingProducts = [];
@@ -15,11 +16,13 @@ export const DeveloperSplitComponent = {
         }
 
         $onInit () {
+            this.$log.info('$onInit');
             this.networkService.getAcbs(true)
                 .then(response => this.acbs = response.acbs);
         }
 
         $onChanges (changes) {
+            this.$log.info('$onChanges', changes);
             if (changes.developer) {
                 this.developer = angular.copy(this.changes.developer.currentValue);
                 this.newDeveloper = angular.copy(this.changes.developer.currentValue);
