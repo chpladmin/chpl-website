@@ -26,6 +26,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
+                $provide.factory('chplProductDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
@@ -46,7 +47,7 @@
                 scope.developers = {developers: mock.developers};
                 scope.products = {products: mock.products};
 
-                el = angular.element('<chpl-developers allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers>');
+                el = angular.element('<chpl-developers-view allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers-view>');
 
                 $compile(el)(scope);
                 scope.$digest();

@@ -59,7 +59,7 @@ export const DevelopersViewComponent = {
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
             }
             if (changes.products) {
-                this.products = (angular.copy(changes.products.currentValue)).products;
+                this.products = angular.copy(changes.products.currentValue.products);
                 this.backup.products = angular.copy(this.products);
             }
         }

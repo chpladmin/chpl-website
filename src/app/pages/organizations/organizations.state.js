@@ -22,9 +22,6 @@ let states = [
         name: 'organizations.developers.developer',
         url: '/{developerId}',
         component: 'chplDevelopersView',
-        params: {
-            developerId: {squash: true, value: null},
-        },
         resolve: {
             developer: (networkService, $transition$) => {
                 'ngInject'
