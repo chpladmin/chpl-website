@@ -1196,12 +1196,17 @@ Button Styling
         padding-bottom: 10px;
     }
 
+    .data-label,
     label {
         display: block;
         font-family: "Lato";
         font-size: 12px;
         color: var(--medium-grey);
         text-transform: uppercase;
+    }
+
+    .data-label {
+        font-weight: 700;
     }
 
     /* Data that is not editable*/
