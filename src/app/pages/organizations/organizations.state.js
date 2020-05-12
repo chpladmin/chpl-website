@@ -35,11 +35,11 @@ let states = [
                 return networkService.getProductsByDeveloper($transition$.params().developerId);
             },
         },
-        data: { title: 'CHPL Developer' },
+        data: { title: 'CHPL Developers' },
     },{
         name: 'organizations.developers.developer.split',
         url: '/split',
-        component: 'chplDeveloperSplit',
+        component: 'chplDevelopersSplit',
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.onc-acbs',

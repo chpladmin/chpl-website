@@ -1,10 +1,10 @@
-export const DeveloperSplitComponent = {
+export const DevelopersSplitComponent = {
     templateUrl: 'chpl.organizations/developers/split.html',
     bindings: {
         developer: '<',
         products: '<',
     },
-    controller: class DeveloperSplitController {
+    controller: class DevelopersSplitController {
         constructor ($log, $state, authService, networkService) {
             'ngInject'
             this.$log = $log;
@@ -12,23 +12,21 @@ export const DeveloperSplitComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.movingProducts = [];
-            this.attestattions
+            this.attestattions = {};
         }
 
         $onInit () {
-            this.$log.info('$onInit');
             this.networkService.getAcbs(true)
                 .then(response => this.acbs = response.acbs);
         }
 
         $onChanges (changes) {
-            this.$log.info('$onChanges', changes);
             if (changes.developer) {
-                this.developer = angular.copy(this.changes.developer.currentValue);
-                this.newDeveloper = angular.copy(this.changes.developer.currentValue);
+                this.developer = angular.copy(this.changes.developer.currentValue.developer);
+                this.newDeveloper = angular.copy(this.changes.developer.currentValue.developer);
             }
             if (changes.products) {
-                this.products = angular.copy(this.changes.products.currentValue);
+                this.products = angular.copy(this.changes.products.currentValue.products);
             }
         }
 
@@ -92,36 +90,9 @@ export const DeveloperSplitComponent = {
             });
             this.splitDeveloper.newDeveloper.transparencyAttestations = mappedAttestations;
         }
-
-        save () {
-            let that = this;
-
-            this.networkService.splitDeveloper(this.splitDeveloper)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        that.close({
-                            $value: response,
-                        });
-                    } else {
-                        if (response.data.errorMessages) {
-                            that.errorMessages = response.data.errorMessages;
-                        } else if (response.data.error) {
-                            that.errorMessages = [];
-                            that.errorMessages.push(response.data.error);
-                        }
-                    }
-                },function (error) {
-                    if (error.data.errorMessages) {
-                        that.errorMessages = error.data.errorMessages;
-                    } else if (error.data.error) {
-                        that.errorMessages = [];
-                        that.errorMessages.push(error.data.error);
-                    }
-                });
-        }
     },
 }
 
 angular
     .module('chpl.organizations')
-    .component('chplDeveloperSplit', DeveloperSplitComponent);
+    .component('chplDevelopersSplit', DevelopersSplitComponent);

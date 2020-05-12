@@ -123,7 +123,7 @@
               <span class="pull-right">
                 <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
                   <span ng-if="vm.products.length > 1">
-                    <a href="" ng-click="vm.splitDeveloper()"><i class="fa fa-scissors"></i> Split Developer</a> |
+                    <a ui-sref="organizations.developers.developer.split({ developerId: vm.activeDeveloper.id })"><i class="fa fa-scissors"></i> Split Developer</a> |
                   </span>
                 <a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
                 <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>

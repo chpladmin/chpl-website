@@ -1,38 +1,37 @@
 (() => {
     'use strict';
 
-    describe('the Developer Split component', () => {
-        var $compile, $log, $q, Mock, ctrl, el, mock, networkService, scope;
+    fdescribe('the Developer Split component', () => {
+        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
             developer: {},
+            products: [],
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.organizations', 'chpl.mock', $provide => {
+            angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.splitDeveloper = jasmine.createSpy('splitDeveloper');
-                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
-                Mock = _Mock_;
                 networkService = _networkService_;
                 networkService.splitDeveloper.and.returnValue($q.when({
                     oldDeveloper: 'a developer',
                     newDeveloper: 'new developer',
                 }));
-                networkService.getAcbs.and.returnValue($q.when({ acbs: Mock.acbs }));
 
                 scope = $rootScope.$new();
-                scope.developer = mock.developer;
+                scope.developer = {developer: mock.developer};
+                scope.products = {products: mock.products};
 
-                el = angular.element('<chpl-developer-split developer="developer"></chpl-developer-split>');
+                el = angular.element('<chpl-developers-split developer="developer" products="products"></chpl-developers-split>');
 
                 $compile(el)(scope);
                 scope.$digest();
