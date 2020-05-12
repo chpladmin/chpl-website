@@ -1,8 +1,8 @@
 (() => {
     'use strict';
 
-    fdescribe('the Developer Split component', () => {
-        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    describe('the Developer Split component', () => {
+        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
 
         mock = {
             developer: {},
@@ -12,23 +12,26 @@
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
                 $provide.decorator('networkService', $delegate => {
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.splitDeveloper = jasmine.createSpy('splitDeveloper');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                $state = _$state_;
                 networkService = _networkService_;
+                networkService.getAcbs.and.returnValue($q.when([]));
                 networkService.splitDeveloper.and.returnValue($q.when({
                     oldDeveloper: 'a developer',
                     newDeveloper: 'new developer',
                 }));
 
                 scope = $rootScope.$new();
-                scope.developer = {developer: mock.developer};
+                scope.developer = mock.developer;
                 scope.products = {products: mock.products};
 
                 el = angular.element('<chpl-developers-split developer="developer" products="products"></chpl-developers-split>');
@@ -59,69 +62,30 @@
             });
         });
 
-        describe('when moving product(s) to a new developer', () => {
-            it('should remove the product(s) from the old list', () => {
-                ctrl.productsToMoveToNew = [1,2];
-                ctrl.splitDeveloper.newProducts = [];
-                ctrl.splitDeveloper.oldProducts = [1,2,3,4];
-                ctrl.moveToNew();
-                expect(ctrl.splitDeveloper.oldProducts.length).toEqual(2);
-            });
-
-            it('should add the product to the new list', () => {
-                ctrl.productsToMoveToNew = [1,2];
-                ctrl.splitDeveloper.newProducts = [];
-                ctrl.splitDeveloper.oldProducts = [1,2,3,4];
-                ctrl.moveToNew();
-                expect(ctrl.splitDeveloper.newProducts.length).toEqual(2);
-            });
-
-            it('should clear the list of products to be moved', () => {
-                ctrl.productsToMoveToNew = [1,2];
-                ctrl.splitDeveloper.newProducts = [];
-                ctrl.splitDeveloper.oldProducts = [1,2,3,4];
-                ctrl.moveToNew();
-                expect(ctrl.productsToMoveToNew.length).toEqual(0);
+        describe('when moving a product to a new developer', () => {
+            it('should remove the product from the old list and add to new', () => {
+                ctrl.products = [{productId: 1}, {productId: 2}];
+                ctrl.movingProducts = [];
+                ctrl.toggleMove({productId: 1}, true);
+                expect(ctrl.products).toEqual([{productId: 2}]);
+                expect(ctrl.movingProducts).toEqual([{productId: 1}]);
             });
         });
 
-        describe('when moving product(s) to the original developer', () => {
-            it('should remove the product(s) from the new list', () => {
-                ctrl.productsToMoveToOld = [1,2];
-                ctrl.splitDeveloper.newProducts = [1,2,3,4];
-                ctrl.splitDeveloper.oldProducts = [];
-                ctrl.moveToOld();
-                expect(ctrl.splitDeveloper.newProducts.length).toEqual(2);
-            });
-
-            it('should add the product to the old list', () => {
-                ctrl.productsToMoveToOld = [1,2];
-                ctrl.splitDeveloper.newProducts = [1,2,3,4];
-                ctrl.splitDeveloper.oldProducts = [];
-                ctrl.moveToOld();
-                expect(ctrl.splitDeveloper.oldProducts.length).toEqual(2);
-            });
-
-            it('should clear the list of products to be moved', () => {
-                ctrl.productsToMoveToOld = [1,2];
-                ctrl.splitDeveloper.newProducts = [1,2,3,4];
-                ctrl.splitDeveloper.oldProducts = [];
-                ctrl.moveToOld();
-                expect(ctrl.productsToMoveToOld.length).toEqual(0);
-            });
-        });
-
-        describe('when an transparency attestation changes', () => {
-            it('should add the transparency attestation to the new developer', () => {
-                ctrl.attestations = {1: 'Negative'};
-                ctrl.splitDeveloper.newDeveloper.transparencyAttestations = [];
-                ctrl.attestationChange();
-                expect(ctrl.splitDeveloper.newDeveloper.transparencyAttestations.length).toEqual(1);
+        describe('when moving a product back to the old developer', () => {
+            it('should remove the product from the new list and add to old', () => {
+                ctrl.products = [];
+                ctrl.movingProducts = [{productId: 1}, {productId: 2}];
+                ctrl.toggleMove({productId: 1});
+                expect(ctrl.products).toEqual([{productId: 1}]);
+                expect(ctrl.movingProducts).toEqual([{productId: 2}]);
             });
         });
 
         describe('when a developer split is saved', () => {
             it('should navigate back to the developer on a status:200 response', () => {
+                spyOn($state, 'go');
+                ctrl.developer = {developerId: 'an id'};
                 networkService.splitDeveloper.and.returnValue($q.when({status: 200}));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
@@ -129,12 +93,13 @@
                     newProducts: [],
                     oldProducts: [],
                 };
-                ctrl.save();
+                ctrl.split();
                 scope.$digest();
-                expect(scope.close).toHaveBeenCalled();
+                expect($state.go).toHaveBeenCalled();
             });
 
             it('should report errors if response has errors', () => {
+                spyOn($state, 'go');
                 networkService.splitDeveloper.and.returnValue($q.when({status: 401, data: {errorMessages: ['This is an error', 'This is another error']}}));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
@@ -143,12 +108,13 @@
                     oldProducts: [],
                 };
                 ctrl.errorMessages = [];
-                ctrl.save();
+                ctrl.split();
                 scope.$digest();
                 expect(ctrl.errorMessages.length).toBe(2);
             });
 
             it('should pass the the split developer data to the network service', () => {
+                spyOn($state, 'go');
                 networkService.splitDeveloper.and.returnValue($q.when({status: 200}));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
@@ -156,11 +122,10 @@
                     newProducts: [],
                     oldProducts: [],
                 };
-                ctrl.save();
+                ctrl.split({});
                 scope.$digest();
                 expect(networkService.splitDeveloper).toHaveBeenCalledWith(ctrl.splitDeveloper);
             });
-
         });
     });
 })();

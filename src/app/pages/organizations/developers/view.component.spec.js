@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Developers component', () => {
+    describe('the Developers View component', () => {
         var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {

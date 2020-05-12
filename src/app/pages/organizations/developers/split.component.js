@@ -12,7 +12,13 @@ export const DevelopersSplitComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.movingProducts = [];
-            this.attestattions = {};
+            this.newDeveloper = {
+                status: {status: 'Active'},
+                statusEvents: [{
+                    status: { status: 'Active'},
+                    statusDate: new Date(),
+                }],
+            };
         }
 
         $onInit () {
@@ -21,29 +27,36 @@ export const DevelopersSplitComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.developer) {
-                this.developer = angular.copy(this.changes.developer.currentValue.developer);
-                this.newDeveloper = angular.copy(this.changes.developer.currentValue.developer);
+            if (changes.developer && changes.developer.currentValue) {
+                this.developer = angular.copy(changes.developer.currentValue);
             }
             if (changes.products) {
-                this.products = angular.copy(this.changes.products.currentValue.products);
+                this.products = angular.copy(changes.products.currentValue.products);
             }
         }
 
-        split () {
-            let that = this;
+        cancel () {
+            this.$state.go('organizations.developers.developer', {
+                developerId: this.developer.developerId,
+            }, {
+                reload: true,
+            });
+        }
+
+        split (developer) {
             let splitDeveloper = {
                 oldDeveloper: this.developer,
-                newDeveloper: this.newDeveloper,
+                newDeveloper: developer,
                 oldProducts: this.products,
                 newProducts: this.movingProducts,
             };
             this.errorMessages = [];
+            let that = this;
             this.networkService.splitDeveloper(splitDeveloper)
                 .then(response => {
                     if (!response.status || response.status === 200) {
-                        that.$state.go('organizations.developers', {
-                            developerId: response.oldDeveloper.developerId,
+                        that.$state.go('organizations.developers.developer', {
+                            developerId: that.developer.developerId,
                         }, {
                             reload: true,
                         });
@@ -75,20 +88,6 @@ export const DevelopersSplitComponent = {
                 this.products.push(this.movingProducts.find(prod => prod.productId === product.productId));
                 this.movingProducts = this.movingProducts.filter(prod => prod.productId !== product.productId);
             }
-        }
-
-        attestationChange () {
-            let that = this;
-            var mappedAttestations = [];
-            angular.forEach(this.attestations, function (value, key) {
-                let acb = that.acbs.find(function (acb) {
-                    return acb.id === parseInt(key, 10);
-                });
-                if (acb) {
-                    mappedAttestations.push({acbId: acb.id, acbName: acb.name, attestation: value});
-                }
-            });
-            this.splitDeveloper.newDeveloper.transparencyAttestations = mappedAttestations;
         }
     },
 }
