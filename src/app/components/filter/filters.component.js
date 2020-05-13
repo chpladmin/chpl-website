@@ -1,6 +1,7 @@
 export const FiltersComponent = {
     templateUrl: 'chpl.components/filter/filters.html',
     bindings: {
+        clearAllFilters: '&',
     },
     transclude: {
         header: '?chplFiltersHeader',

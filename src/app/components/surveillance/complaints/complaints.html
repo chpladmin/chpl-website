@@ -1,9 +1,10 @@
 <div ng-class="$ctrl.isOn('ui-bump-major') ? '' : 'complaints-wrapper'" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div ng-if="!$ctrl.isEditing">
-    <chpl-filters>
+    <chpl-filters
+      clear-all-filters="$ctrl.onClearFilter()">
       <chpl-filters-header>
         <label for="data-filter" class="control-label">Filter</label>
-        <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria" class="form-control" type="search">
+        <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria" class="form-control" type="search">
       </chpl-filters-header>
       <chpl-filters-saved>
         <chpl-saved-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-saved-filter>
