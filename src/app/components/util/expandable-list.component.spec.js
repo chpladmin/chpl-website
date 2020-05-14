@@ -28,8 +28,10 @@
                 scope.itemsList = mock.itemsList;
                 scope.selectedItems = mock.selectedItems;
                 scope.onChangeCallBack = jasmine.createSpy('onChangeCallBack');
+                scope.onValidate = jasmine.createSpy('onValidate');
+                scope.onValidate.and.returnValue({valid: true});
 
-                el = angular.element('<ai-expandable-list'
+                el = angular.element('<chpl-expandable-list'
                                      + '     identifier="testData"  '
                                      + '     item-key="id" '
                                      + '     item-text="name" '
@@ -37,6 +39,7 @@
                                      + '     selected-item-keys="selectedItems"'
                                      + '     placeholder="Select Test Data"'
                                      + '     on-change="onChangeCallBack(action)"'
+                                     + '     on-validate="onValidate(item)"'
                                      + '     additional-input="true"'
                                      + '     additional-input-label="Version"'
                                      + '     additional-input-max-length="50"'
@@ -48,7 +51,7 @@
                                      + '     add-items="true"'
                                      + '     add-items-option-text="Add a new option"'
                                      + '     add-items-placeholder="Enter new option">'
-                                     + ' </ai-expandable-list>');
+                                     + ' </chpl-expandable-list>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -91,7 +94,7 @@
                     ctrl.onChange = jasmine.createSpy('callback');
                     ctrl.addOption = 'New Option';
                     ctrl.addItemToListClick();
-                    scope.$digest();
+                    //scope.$digest();
                 });
 
                 it('should set add mode = false', () => {
@@ -123,7 +126,7 @@
                 beforeEach(() => {
                     //ctrl = element.isolateScope().$ctrl;
                     ctrl.inAddMode = true;
-                    scope.$digest();
+                    //scope.$digest();
 
                     ctrl.cancelAddItemToListClick();
                 });
@@ -167,14 +170,14 @@
                 it('should should not add the selected item if it is already selected', () => {
                     ctrl.selectedItem = ctrl.selectedItems[0]; //Exsiting in selectedItems
                     ctrl.selectOnChange();
-                    scope.$digest();
+                    //scope.$digest();
                     expect(ctrl.selectedItems.length).toBe(2);
                 });
 
                 it('should should add the selected item to selectedItems', () => {
                     ctrl.selectedItem = {id: 3, name: 'test3'};
                     ctrl.selectOnChange();
-                    scope.$digest();
+                    //scope.$digest();
                     expect(ctrl.selectedItems.length).toBe(3);
                 });
 
@@ -182,7 +185,7 @@
                     ctrl.selectedItem = {id: 3, name: 'test3'};
                     ctrl.onChange = jasmine.createSpy('callback');
                     ctrl.selectOnChange();
-                    scope.$digest();
+                    //scope.$digest();
                     expect(ctrl.onChange).toHaveBeenCalled();
                 });
             });
