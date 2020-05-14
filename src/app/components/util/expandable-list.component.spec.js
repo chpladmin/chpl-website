@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Expandable List component', () => {
+    describe('the Expandable List component', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {
@@ -182,6 +182,18 @@
                     ctrl.selectedItem = {id: 3, name: 'test3'};
                     ctrl.selectOnChange();
                     expect(scope.onChange).toHaveBeenCalled();
+                });
+            });
+
+            describe('when filtering options', () => {
+                it('should filter out options that have already been selected', () => {
+                    ctrl.options = [
+                        {text: 'test', value: {id: 3, name: 'test'}},
+                        {text: 'test2', value: {id: 65, name: 'test2'}},
+                        {text: 'test3', value: {id: 653, name: 'test3'}},
+                    ];
+                    ctrl.selectedItems = [{item: {id: 3, name: 'test'}}];
+                    expect(ctrl.filteredOptions().length).toBe(2);
                 });
             });
         });

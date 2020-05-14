@@ -1,6 +1,6 @@
 <div ng-form="{{ $ctrl.identifier }}_form">
   <ul class="list-unstyled">
-    <li ng-repeat="option in $ctrl.selectedItems track by $index">
+    <li ng-repeat="option in $ctrl.selectedItems | orderBy: 'item.name' track by $index">
       <div class="alert alert-success fade-in">
         <button class="close" ng-click="$ctrl.removeItem(option)">
           <span class="sr-only">Remove item {{ option.item.name }}</span>
@@ -56,12 +56,12 @@
       </div>
     </li>
   </ul>
-  <div ng-if="! $ctrl.inAddMode">
+  <div ng-if="!$ctrl.inAddMode && $ctrl.filteredOptions().length > 0">
     <select class="form-control"
             id="{{ $ctrl.identifier }} "
             name="{{ $ctrl.identifier }}"
             ng-model="$ctrl.selectedItem"
-            ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl.options"
+            ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl.filteredOptions()"
             ng-change="$ctrl.selectOnChange()">
       <option value="" disabled selected>{{ $ctrl.placeholder }}</option>
     </select>

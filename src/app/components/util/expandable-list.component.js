@@ -85,6 +85,10 @@ export const ExpandableListComponent = {
             this.addOption = '';
         }
 
+        filteredOptions () {
+            return this.options.filter(item => !this._doesItemExistInSelectedItems(item.value));
+        }
+
         isItemDisabled (item) {
             if (typeof this.itemDisabled === 'function') {
                 return this.itemDisabled({'item': item});
