@@ -99,7 +99,7 @@ export const ExpandableListComponent = {
                 this.selectedItems.splice(index, 1);
             }
             var onChangeObject = this._getOnChangeObject('Remove', item)
-            this.onChange({'action': onChangeObject});  //This is what makes the method binding work
+            this.onChange({'action': onChangeObject});
             this._validateItems(this.selectedItems);
         }
 
@@ -111,7 +111,7 @@ export const ExpandableListComponent = {
                     var item = this._createSelectedItem(this.selectedItem);
                     this.selectedItems.push(item);
                     var onChangeObject = this._getOnChangeObject('Add', item);
-                    this.onChange({'action': onChangeObject});  //This is what makes the method binding work
+                    this.onChange({'action': onChangeObject});
                 }
                 this.selectedItem = '';
             }
@@ -132,13 +132,8 @@ export const ExpandableListComponent = {
         }
 
         _doesItemExistInSelectedItems (item) {
-            var retValue = false;
-            this.selectedItems.forEach(arrayItem => {
-                if (arrayItem.item[this.itemKey] === item[this.itemKey]) {
-                    retValue = true;
-                }
-            });
-            return retValue;
+            return this.selectedItems
+                .reduce((acc, arrayItem) => acc || arrayItem.item[this.itemKey] === item[this.itemKey], false);
         }
 
         _getItemByKey (key) {
@@ -163,11 +158,13 @@ export const ExpandableListComponent = {
                     {text: addItem[this.itemText], value: addItem}
                 );
             }
-            this.items.forEach(arrayItem => {
-                this.options.push(
-                    {text: arrayItem[this.itemText], value: arrayItem}
-                );
-            });
+            this.items
+                .sort((a, b) => a[this.itemText] < b[this.itemText] ? -1 : a[this.itemText] > b[this.itemText] ? 1 : 0)
+                .forEach(arrayItem => {
+                    this.options.push(
+                        {text: arrayItem[this.itemText], value: arrayItem}
+                    );
+                });
         }
 
         _populateSelectedItems () {
