@@ -27,7 +27,7 @@
                 scope = $rootScope.$new();
                 scope.itemsList = mock.itemsList;
                 scope.selectedItems = mock.selectedItems;
-                scope.onChangeCallBack = jasmine.createSpy('onChangeCallBack');
+                scope.onChange = jasmine.createSpy('onChange');
                 scope.onValidate = jasmine.createSpy('onValidate');
                 scope.onValidate.and.returnValue({valid: true});
 
@@ -38,7 +38,7 @@
                                      + '     items="itemsList"'
                                      + '     selected-item-keys="selectedItems"'
                                      + '     placeholder="Select Test Data"'
-                                     + '     on-change="onChangeCallBack(action)"'
+                                     + '     on-change="onChange(action)"'
                                      + '     on-validate="onValidate(item)"'
                                      + '     additional-input="true"'
                                      + '     additional-input-label="Version"'
@@ -89,49 +89,48 @@
             });
 
             describe('when adding item(s) to the list', () => {
-                beforeEach(() => {
-                    //ctrl = el.isolateScope().$ctrl;
-                    ctrl.onChange = jasmine.createSpy('callback');
-                    ctrl.addOption = 'New Option';
-                    ctrl.addItemToListClick();
-                    //scope.$digest();
-                });
-
                 it('should set add mode = false', () => {
+                    ctrl.inAddMode = true;
+                    ctrl.addItemToListClick();
                     expect(ctrl.inAddMode).toBe(false);
                 });
 
                 it('should add item to selected items', () => {
-                    expect(ctrl.selectedItems.length).toBe(3);
+                    ctrl.selectedItems = [];
+                    ctrl.addOption = 'New Option';
+                    ctrl.addItemToListClick();
+                    expect(ctrl.selectedItems.length).toBe(1);
                 });
 
                 it('should call onChange callback', () => {
-                    expect(ctrl.onChange).toHaveBeenCalled();
+                    ctrl.addItemToListClick();
+                    expect(scope.onChange).toHaveBeenCalled();
                 });
 
                 it('should add item to options', () => {
-                    expect(ctrl.options.length).toBe(6);
+                    ctrl.options = [];
+                    ctrl.addOption = 'New Option';
+                    ctrl.addItemToListClick();
+                    expect(ctrl.options.length).toBe(1);
                 });
 
                 it('should clear the selected item', () => {
+                    ctrl.selectedItem = 'New Option';
+                    ctrl.addItemToListClick();
                     expect(ctrl.selectedItem).toBe('');
                 });
 
                 it('should clear addOption', () => {
+                    ctrl.addOption = 'New Option';
+                    ctrl.addItemToListClick();
                     expect(ctrl.addOption).toBe('');
                 });
             });
 
             describe('when cancelling addition of item', () => {
-                beforeEach(() => {
-                    //ctrl = element.isolateScope().$ctrl;
-                    ctrl.inAddMode = true;
-                    //scope.$digest();
-
-                    ctrl.cancelAddItemToListClick();
-                });
-
                 it('should reset the control to not be in add mode', () => {
+                    ctrl.inAddMode = true;
+                    ctrl.cancelAddItemToListClick();
                     expect(ctrl.inAddMode).toBe(false);
                     expect(ctrl.selectedItem).toBe('');
                     expect(ctrl.addOption).toBe('');
@@ -152,41 +151,37 @@
             });
 
             describe('when removing an item', () => {
-                beforeEach(() => {
-                    ctrl.onChange = jasmine.createSpy('callback');
-                    ctrl.removeItem(ctrl.selectedItems[0]);
-                });
-
                 it('should remove the item from selected items', () => {
+                    ctrl.selectedItems = [1, 2];
+                    ctrl.removeItem(ctrl.selectedItems[0]);
                     expect(ctrl.selectedItems.length).toBe(1);
                 });
 
-                it('should call the onChnage callback', () => {
-                    expect(ctrl.onChange).toHaveBeenCalled();
+                it('should call the onChange callback', () => {
+                    ctrl.removeItem(ctrl.selectedItems[0]);
+                    expect(scope.onChange).toHaveBeenCalled();
                 });
             });
 
             describe('when an item is selected', () => {
                 it('should should not add the selected item if it is already selected', () => {
-                    ctrl.selectedItem = ctrl.selectedItems[0]; //Exsiting in selectedItems
+                    const initialLength = ctrl.selectedItems.length;
+                    ctrl.selectedItem = mock.selectedItems[0]
                     ctrl.selectOnChange();
-                    //scope.$digest();
-                    expect(ctrl.selectedItems.length).toBe(2);
+                    expect(ctrl.selectedItems.length).toBe(initialLength);
                 });
 
                 it('should should add the selected item to selectedItems', () => {
+                    const initialLength = ctrl.selectedItems.length;
                     ctrl.selectedItem = {id: 3, name: 'test3'};
                     ctrl.selectOnChange();
-                    //scope.$digest();
-                    expect(ctrl.selectedItems.length).toBe(3);
+                    expect(ctrl.selectedItems.length).toBe(initialLength + 1);
                 });
 
                 it('should should call the onChange callback', () => {
                     ctrl.selectedItem = {id: 3, name: 'test3'};
-                    ctrl.onChange = jasmine.createSpy('callback');
                     ctrl.selectOnChange();
-                    //scope.$digest();
-                    expect(ctrl.onChange).toHaveBeenCalled();
+                    expect(scope.onChange).toHaveBeenCalled();
                 });
             });
         });
