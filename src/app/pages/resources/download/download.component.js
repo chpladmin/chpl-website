@@ -3,11 +3,12 @@ export const ResourcesDownloadComponent = {
     bindings: {
     },
     controller: class ResourcesDownloadController {
-        constructor ($log, API, authService) {
+        constructor ($log, API, authService, featureFlags) {
             'ngInject'
             this.$log = $log;
             this.API = API;
             this.authService = authService;
+            this.isOn = featureFlags.isOn;
         }
 
         $onInit () {

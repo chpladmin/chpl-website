@@ -5,9 +5,10 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($localStorage, $log, networkService, utilService) {
+    function CmsLookupController ($localStorage, $log, featureFlags, networkService, utilService) {
         var vm = this;
 
+        vm.isOn = featureFlags.isOn;
         vm.getCsv = getCsv;
         vm.lookupCertIds = lookupCertIds;
 
