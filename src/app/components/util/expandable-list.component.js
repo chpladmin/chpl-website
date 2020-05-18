@@ -52,6 +52,7 @@ export const ExpandableListComponent = {
 
         addItemToListClick () {
             this.inAddMode = false;
+            this.addingAnotherItem = false;
 
             var addItem = {};
             addItem[this.itemText] = this.addOption;
@@ -81,6 +82,7 @@ export const ExpandableListComponent = {
 
         cancelAddItemToListClick () {
             this.inAddMode = false;
+            this.addingAnotherItem = false;
             this.selectedItem = '';
             this.addOption = '';
         }
@@ -118,6 +120,7 @@ export const ExpandableListComponent = {
                     this.onChange({'action': onChangeObject});
                 }
                 this.selectedItem = '';
+                this.addingAnotherItem = false;
             }
             this._validateItems(this.selectedItems);
         }
