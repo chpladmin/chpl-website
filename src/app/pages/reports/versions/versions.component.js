@@ -115,7 +115,7 @@ export const ReportsVersionsComponent = {
         }
 
         prepare (item) {
-            item.filterText = item.developerName + '|' + item.productName + '|' + item.version + '|' + item.responsibleUser.fullName;
+            item.filterText = item.productName + '|' + item.version + '|' + item.responsibleUser.fullName;
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.fullName = item.responsibleUser.fullName;
             return item;
