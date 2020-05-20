@@ -4,9 +4,10 @@ export const ConfirmUserComponent = {
         hash: '<',
     },
     controller: class ConfirmUserComponent {
-        constructor ($log, networkService) {
+        constructor ($log, featureFlags, networkService) {
             'ngInject'
             this.$log = $log;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.message = {value: '', success: null};
         }
