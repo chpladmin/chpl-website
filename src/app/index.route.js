@@ -5,6 +5,7 @@ import { compareStatesConfig as compareStates } from './pages/compare/compare.st
 import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
+import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state.js';
 import { reportsStatesConfig as reportsStates } from './pages/reports/reports.state.js';
 import { resourcesStatesConfig as resourcesStates } from './pages/resources/resources.state.js';
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state.js';
@@ -23,6 +24,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
+        .config(registrationStates)
         .config(reportsStates)
         .config(resourcesStates)
         .config(surveillanceStates)
@@ -41,25 +43,6 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
                 controller: 'AdminController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Administration' },
-            })
-            .state('registration', {
-                abstract: true,
-                url: '/registration',
-                template: '<ui-view/>',
-            })
-            .state('registration.create-user', {
-                url: '/create-user/{hash}',
-                template: require('./pages/registration/create-user.html'),
-                controller: 'CreateController',
-                controllerAs: 'vm',
-                data: { title: 'CHPL Registration' },
-            })
-            .state('registration.confirm-user', {
-                url: '/confirm-user/{hash}',
-                template: require('./pages/registration/confirm-user.html'),
-                controller: 'ConfirmController',
-                controllerAs: 'vm',
-                data: { title: 'CHPL Registration' },
             })
             .state('search', {
                 url: '/search',
