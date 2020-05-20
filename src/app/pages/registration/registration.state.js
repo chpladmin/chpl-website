@@ -6,27 +6,30 @@ let states = [{
 },{
     name: 'registration.create-user',
     url: '/create-user/{hash}',
-    template: require('./create-user.html'),
-    controller: 'CreateController',
-    controllerAs: 'vm',
-    /*
+    component: 'chplRegistrationCreateUser',
     params: {
-        productId: {squash: true, value: null},
+        hash: {squash: true, value: null},
     },
     resolve: {
-        productId: $transition$ => {
+        hash: $transition$ => {
             'ngInject'
-            return $transition$.params().productId;
+            return $transition$.params().hash;
         },
     },
-    */
     data: { title: 'CHPL Registration' },
 },{
     name: 'registration.confirm-user',
     url: '/confirm-user/{hash}',
-    template: require('./confirm-user.html'),
-    controller: 'ConfirmController',
-    controllerAs: 'vm',
+    component: 'chplRegistrationConfirmUser',
+    params: {
+        hash: {squash: true, value: null},
+    },
+    resolve: {
+        hash: $transition$ => {
+            'ngInject'
+            return $transition$.params().hash;
+        },
+    },
     data: { title: 'CHPL Registration' },
 }];
 
