@@ -87,7 +87,7 @@ export const CreateUserComponent = {
         }
 
         misMatchPasswords () {
-            return this.userDetails.user.password !== this.userDetails.user.passwordverify;
+            return this.passwordStrength.password !== this.userDetails.user.passwordverify;
         }
 
         validateUser () {
