@@ -2,6 +2,7 @@ export const ContactComponent = {
     templateUrl: 'chpl.components/contact/contact.html',
     bindings: {
         contact: '<',
+        formHorizontal: '<',
         ignoreFriendlyName: '<',
         isEditing: '<',
         isRequired: '<',
@@ -19,6 +20,9 @@ export const ContactComponent = {
         $onChanges (changes) {
             if (changes.contact) {
                 this.contact = angular.copy(changes.contact.currentValue);
+            }
+            if (changes.formHorizontal) {
+                this.formHorizontal = angular.copy(changes.formHorizontal.currentValue);
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
