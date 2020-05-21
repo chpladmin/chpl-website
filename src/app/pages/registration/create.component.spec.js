@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Registration Create Account component', () => {
+    describe('the Registration Create Account component', () => {
         var $compile, $location, $log, $q, authService, ctrl, el, mock, networkService, scope;
 
         mock = {

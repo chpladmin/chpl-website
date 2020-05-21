@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Registration Confirm Account component', () => {
+    describe('the Registration Confirm Account component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
