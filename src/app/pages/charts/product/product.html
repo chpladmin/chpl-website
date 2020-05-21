@@ -9,13 +9,15 @@
     <p>Please note only certification criteria certified to by a unique product are displayed.</p>
   </div>
 </div>
-<div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014" feature-flag="effective-rule-date">
-  <div class="col-sm-12">
-    <label>
-      View Certification Criteria with respect to the 2015 Cures rule
-      <select ng-model="$ctrl.chartState.criteriaType"
-              ng-options="option for option in $ctrl.criteriaTypes">
-      </select>
-    </label>
+<span feature-flag="effective-rule-date">
+  <div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014">
+    <div class="col-sm-12">
+      <label>
+        View Certification Criteria with respect to the 2015 Cures rule
+        <select ng-model="$ctrl.chartState.criteriaType"
+                ng-options="option for option in $ctrl.criteriaTypes">
+        </select>
+      </label>
+    </div>
   </div>
-</div>
+</span>
