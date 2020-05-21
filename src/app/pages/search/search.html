@@ -1,4 +1,4 @@
-<div id="search-page" ng-class="vm.isOn('ui-bump-major') ? 'new-style' : 'new-style-old'">
+<div id="search-page" ng-class="vm.isOn('ui-bump-major') ? 'new-style' : ''">
   <div class="pending" id="pendingMask" ng-show="vm.isPreloading"></div>
   <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
@@ -337,7 +337,7 @@
       <div id="resultsSection" ng-show="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
         <div class="row">
           <div class="col-md-12">
-            <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
+            <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011<span feature-flag="effective-rule-date"> and 2014</span> edition listings.</p>
             <p class="text-right">
               <a href ng-click="vm.browseAll()">Browse all</a> |
               <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
