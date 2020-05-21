@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-sm-12">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" feature-flag="effective-rule-date-plus-three-months" feature-flag-hide>
       <li role="presentation" ng-class="{'active': $ctrl.chartState.criteriaType === 2014}"><a ng-click="$ctrl.chartState.criteriaType = 2014">2014 Edition</a></li>
       <li role="presentation" ng-class="{'active': $ctrl.chartState.criteriaType !== 2014}"><a ng-click="$ctrl.chartState.criteriaType = 'All'">2015 Edition</a></li>
     </ul>
-    <p>The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that
-      refer to a single product from the same developer, each listing in a group often differing by version number.</p>
+    <p>The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that refer to a single product from the same developer, each listing in a group often differing by version number.</p>
     <div google-chart="" chart="$ctrl.criterionProductCounts['' + $ctrl.chartState.criteriaType]" class="bar-chart"></div>
+    <p>Please note only certification criteria certified to by a unique product are displayed.</p>
   </div>
 </div>
 <div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014" feature-flag="effective-rule-date">
