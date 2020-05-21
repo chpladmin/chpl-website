@@ -74,6 +74,10 @@ export const CreateUserComponent = {
             }
         }
 
+        editContact (contact) {
+            this.userDetails.user = {...this.userDetails.user, ...contact};
+        }
+
         isCreateAccountMode () {
             return this.displayMode === 'CREATE-ACCOUNT';
         }
