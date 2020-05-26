@@ -5,12 +5,12 @@ export const ChartsDeveloperComponent = {
         listingCountData: '<',
     },
     controller: class ChartsDeveloperComponent {
-        constructor ($log) {
+        constructor ($log, featureFlags) {
             'ngInject'
             this.$log = $log;
+            this.isOn = featureFlags.isOn;
             this.chartState = {
                 isStacked: 'false',
-                listingCountType: '1',
             };
         }
 
@@ -85,6 +85,7 @@ export const ChartsDeveloperComponent = {
                         name: that.listingCount.edition[key].name,
                     }
                 });
+            this.chartState.listingCountType = this.listingCountTypes.find(t => t.name === 'Active');
         }
 
         _createListingCountChartEdition (data, status) {
@@ -120,7 +121,10 @@ export const ChartsDeveloperComponent = {
             return {
                 type: 'ColumnChart',
                 data: {
-                    cols: [
+                    cols: this.isOn('effective-rule-date-plus-three-months') ? [
+                        { label: 'Number of Developers and Products with "' + status + '" Listings', type: 'string'},
+                        { label: 'Certification Edition 2015', type: 'number'},
+                    ] : [
                         { label: 'Number of Developers and Products with "' + status + '" Listings', type: 'string'},
                         { label: 'Certification Edition 2014', type: 'number'},
                         { label: 'Certification Edition 2015', type: 'number'},
