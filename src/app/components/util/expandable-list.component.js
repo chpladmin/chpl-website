@@ -21,6 +21,7 @@
             itemKey: '@',                       //String that identifies the key property in the 'items' array.  For eaxmple: "id" for an object that looks like [{id: 2, name: 'AI'}]
             items: '<',                         //An array of objects to display in the drop down
             itemText: '@',                      //String that identifies the text property in the 'items' array.  This is used to create the display value in the dropdown.  For example: "name" for an object that looks like [{id: 2, name: 'AI'}]
+            newItems: '<',                      //Array of strings that need to be added as if they were added by clicking the "add new <something>"
             onChange: '&',                      //Callback that is used when the user makes a change to the control
             onValidate: '&',                    //Callback that is used to validate the selected item.  Response looks like {valid: bool, errors = [], warnings: []}
             placeholder: '@',                   //The text that appears in the drop down providing instruction to the user.  For example: "Select a Test Standard"
@@ -53,6 +54,7 @@
 
             _populateOptions();
             _populateSelectedItems();
+            _insertNewItems();
             _validateItems(ctrl.selectedItems);
         }
 
@@ -191,6 +193,15 @@
                 }
                 ctrl.selectedItems.push(newItem);
             });
+        }
+
+        function _insertNewItems () {
+            if (ctrl.newItems && ctrl.newItems.length > 0) {
+                ctrl.newItems.forEach(item => {
+                    ctrl.addOption = item;
+                    ctrl.addItemToListClick();
+                });
+            }
         }
 
         function _validateItems (selectedItems) {

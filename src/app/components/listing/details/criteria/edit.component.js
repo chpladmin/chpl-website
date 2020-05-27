@@ -45,6 +45,7 @@ export const CertificationCriteriaEditComponent = {
             this.selectedTestFunctionalityKeys = this._getSelectedTestFunctionalityKeys();
             this.selectedTestProcedureKeys = this._getSelectedTestProcedureKeys();
             this.selectedTestStandardKeys = this._getSelectedTestStandardKeys();
+            this.newTestStandards = this._getNewTestStandards();
             this.selectedTestToolKeys = this._getSelectedTestToolKeys();
             this.sortedTestFunctionalities = this._getSortedTestFunctionalities();
             this._setAvailableTestValues();
@@ -210,7 +211,18 @@ export const CertificationCriteriaEditComponent = {
             if (!this.cert.testStandards) {
                 return [];
             }
-            return this.cert.testStandards.map(ts => ({key: ts.testStandardId}));
+            return this.cert.testStandards
+                .filter(ts => ts.testStandardId)
+                .map(ts => ({key: ts.testStandardId}));
+        }
+
+        _getNewTestStandards () {
+            if (!this.cert.testStandards) {
+                return [];
+            }
+            return this.cert.testStandards
+                .filter(ts => !ts.testStandardId)
+                .map(ts => ts.testStandardName);
         }
 
         _getSelectedTestToolKeys () {
