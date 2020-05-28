@@ -22,8 +22,8 @@
           </div>
         </div>
         <div class="filters__sub-filters">
-          <div ng-repeat="filter in $ctrl.filters | orderBy : 'title'" class="filters__sub-filter" ng-class="{ active:filter.selected }">
-            <button class="btn btn-link" ng-class="{ 'filters__sub-filter-button--selected': filter.selected }" ng-click="$ctrl.select(filter)">{{ filter.title }}</button> <span ng-if="filter.hasChanges"><span class="sr-only">Filter has non-default option selected</span>*</span>
+          <div ng-repeat="filter in $ctrl.filters | orderBy : 'title'" class="filters__sub-filter" ng-class="{ 'filters__sub-filter--selected': filter.selected }">
+            <button class="btn btn-link" ng-click="$ctrl.select(filter)">{{ filter.title }}<span ng-if="filter.hasChanges"> *</span></button><span class="sr-only" ng-if="filter.hasChanges">Filter has non-default option selected</span>
           </div>
         </div>
       </div>

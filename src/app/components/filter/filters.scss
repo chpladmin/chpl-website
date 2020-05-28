@@ -57,6 +57,10 @@
     margin-bottom: 5px;
 }
 
+.filters__sub-filter--selected {
+    border: 2px solid var(--darkblue);
+}
+
 .filters__transcluded-filters {
     flex: 2;
     margin-bottom: 5px;
@@ -64,8 +68,4 @@
     align-self: center;
     border-left: 1px solid var(--blue);
     padding: 0 0 0 25px;
-}
-
-.filters__sub-filter-button--selected {
-    border-left: 2px solid var(--darkblue);
 }
