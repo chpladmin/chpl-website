@@ -1,0 +1,22 @@
+<div class="form-horizontal" ng-form="dateForm">
+  <div class="form-group">
+    <label class="col-sm-4 control-label" for="after" ng-class="{ 'emphasis' : vm.after }">From</label>
+    <div class="input-group col-sm-7">
+      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.after" is-open="vm.afterDatePicker" close-text="Close" id="after" name="after" ng-model-options="{ timezone: 'UTC' }" ng-change="vm.filterChanged()">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-sm" ng-click="vm.afterDatePicker = true"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+    <div class="text-danger" ng-if="dateForm.after.$touched && dateForm.after.$error.date">Improper format (MM/dd/yyyy)</div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 control-label" for="before" ng-class="{ 'emphasis' : vm.before }">To</label>
+    <div class="input-group col-sm-7">
+      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.before" is-open="vm.beforeDatePicker" close-text="Close" id="before" name="before" ng-model-options="{ timezone: 'UTC' }" ng-change="vm.filterChanged()">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-sm" ng-click="vm.beforeDatePicker = true"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+    <div class="text-danger" ng-if="dateForm.before.$touched && dateForm.before.$error.date">Improper format (MM/dd/yyyy)</div>
+  </div>
+</div>

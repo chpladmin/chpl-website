@@ -179,6 +179,21 @@ export const DeveloperComponent = {
             }
         }
 
+        takeActionBarAction (action) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'mouseover':
+                this.showFormErrors = true;
+                break;
+            case 'save':
+                this.save();
+                break;
+                //no default
+            }
+        }
+
         /*
          * Form validation
          */

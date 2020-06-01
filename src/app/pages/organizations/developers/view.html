@@ -1,0 +1,68 @@
+<ui-view>
+  <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB'])">
+    <div class="col-sm-12">
+      <h1>View Developer</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
+        <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
+      </ul>
+      <chpl-developer developer="$ctrl.developer"
+                      allowed-acbs="$ctrl.allowedAcbs"
+                      can-edit="$ctrl.can('edit')"
+                      can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
+                      can-split="$ctrl.can('split-developer')"
+                      is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
+                      is-invalid="$ctrl.action === 'merge' && $ctrl.mergingDevelopers.length < 2"
+                      on-cancel="$ctrl.cancel()"
+                      on-edit="$ctrl.save(developer)"
+                      take-action="$ctrl.takeAction(action)"
+                      ></chpl-developer>
+      <div feature-flag="role-developer">
+        <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC','ROLE_ACB']) && !$ctrl.action">
+          <div class="panel-heading">
+            <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
+          </div>
+          <div class="panel-body">
+            <chpl-users column-count="1"
+                        users="$ctrl.users"
+                        roles="$ctrl.roles"
+                        take-action="$ctrl.takeUserAction(action, data)"
+                        ></chpl-users>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" ng-if="!$ctrl.action || $ctrl.action === 'edit'">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title"><h2>Products</h2></div>
+        </div>
+        <div class="panel-body">
+          <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
+            <chpl-product product="product"
+                          search-options="$ctrl.searchOptions"
+                          ></chpl-product>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" ng-if="$ctrl.action === 'merge' && $ctrl.developers && $ctrl.mergingDevelopers">
+      <h3>Developers to merge</h3>
+      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length < 2">At least one other Developer must be selected to merge</div>
+      <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-warning btn-small pull-right" id="developers-developer-no-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, false)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa" ng-class="developer.developerId === $ctrl.developer.developerId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
+        <div class="clearfix"></div>
+      </div>
+      <h3>Developers not merging</h3>
+      <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-ai-success btn-small pull-right" id="developers-developer-can-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</ui-view>

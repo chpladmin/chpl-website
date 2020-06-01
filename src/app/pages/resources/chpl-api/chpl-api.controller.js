@@ -1,12 +1,14 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.chpl_api')
+    angular.module('chpl.resources')
         .controller('ChplApiController', ChplApiController);
 
     /** @ngInject */
-    function ChplApiController ($location, $log, API) {
+    function ChplApiController ($location, $log, API, featureFlags) {
         var vm = this;
+
+        vm.isOn = featureFlags.isOn;
 
         activate();
 

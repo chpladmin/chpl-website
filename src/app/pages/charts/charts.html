@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
   <div class="row">
     <div class="col-sm-12">
       <h1>Charts</h1>
@@ -21,7 +21,7 @@
         criterion-product="$ctrl.criterionProduct"
         ></chpl-charts-product>
     </div>
-    <div ng-if="$ctrl.chartState.tab === 'developer'">
+    <div ng-if="$ctrl.chartState.tab === 'developer' && $ctrl.incumbentDevelopers && $ctrl.listingCountData">
       <chpl-charts-developer
         incumbent-developers="$ctrl.incumbentDevelopers"
         listing-count-data="$ctrl.listingCountData"
@@ -38,7 +38,7 @@
         participant-product-experience-count="$ctrl.participantProductExperienceCount"
         ></chpl-charts-sed>
     </div>
-    <div ng-if="$ctrl.chartState.tab === 'nonconformity'">
+    <div ng-if="$ctrl.chartState.tab === 'nonconformity' && $ctrl.nonconformityCriteriaCount">
       <chpl-charts-surveillance
         nonconformity-criteria-count="$ctrl.nonconformityCriteriaCount"
         ></chpl-charts-surveillance>

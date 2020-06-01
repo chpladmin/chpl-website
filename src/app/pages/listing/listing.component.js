@@ -12,6 +12,7 @@ export const ListingComponent = {
             this.$uibModal = $uibModal;
             this.authService = authService;
             this.featureFlags = featureFlags;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
             this.certificationStatus = utilService.certificationStatus;
@@ -137,9 +138,8 @@ export const ListingComponent = {
         }
 
         takeDeveloperAction (action, developerId) {
-            this.$state.go('organizations.developers', {
+            this.$state.go('organizations.developers.developer', {
                 developerId: developerId,
-                action: action,
             });
         }
 

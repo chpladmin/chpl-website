@@ -9,32 +9,35 @@ let states = [
         },
     },{
         name: 'organizations.developers',
-        url: '/developers/{developerId}',
+        url: '/developers',
         component: 'chplDevelopers',
-        params: {
-            developerId: {squash: true, value: null},
-        },
         resolve: {
-            developer: (networkService, $transition$) => {
-                'ngInject'
-                if ($transition$.params().developerId) {
-                    return networkService.getDeveloper($transition$.params().developerId);
-                }
-                return {};
-            },
             developers: networkService => {
                 'ngInject'
                 return networkService.getDevelopers();
             },
+        },
+        data: { title: 'CHPL Developers' },
+    },{
+        name: 'organizations.developers.developer',
+        url: '/{developerId}',
+        component: 'chplDevelopersView',
+        resolve: {
+            developer: (networkService, $transition$) => {
+                'ngInject'
+                return networkService.getDeveloper($transition$.params().developerId);
+            },
             products: (networkService, $transition$) => {
                 'ngInject'
-                if ($transition$.params().developerId) {
-                    return networkService.getProductsByDeveloper($transition$.params().developerId);
-                }
-                return {};
+                return networkService.getProductsByDeveloper($transition$.params().developerId);
             },
         },
         data: { title: 'CHPL Developers' },
+    },{
+        name: 'organizations.developers.developer.split',
+        url: '/split',
+        component: 'chplDevelopersSplit',
+        data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',

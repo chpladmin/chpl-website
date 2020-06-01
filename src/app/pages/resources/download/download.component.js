@@ -1,13 +1,14 @@
 export const ResourcesDownloadComponent = {
-    templateUrl: 'chpl.download/download.html',
+    templateUrl: 'chpl.resources/download/download.html',
     bindings: {
     },
     controller: class ResourcesDownloadController {
-        constructor ($log, API, authService) {
+        constructor ($log, API, authService, featureFlags) {
             'ngInject'
             this.$log = $log;
             this.API = API;
             this.authService = authService;
+            this.isOn = featureFlags.isOn;
         }
 
         $onInit () {
@@ -58,5 +59,5 @@ export const ResourcesDownloadComponent = {
 }
 
 angular
-    .module('chpl.download')
+    .module('chpl.resources')
     .component('aiResourcesDownload', ResourcesDownloadComponent);

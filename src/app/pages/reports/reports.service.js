@@ -293,6 +293,24 @@ export class ReportService {
             return false;
         }
     }
+
+    downloadReady (displayed) {
+        return displayed.reduce((acc, activity) => activity.action && acc, true);
+    }
+
+    showLoadingBar (tableState, results, loadProgress) {
+        let earlyDate = 0;
+        let startDate = new Date().getTime();
+
+        if (tableState && tableState.search && tableState.search.predicateObject && tableState.search.predicateObject.date) {
+            earlyDate = tableState.search.predicateObject.date.after;
+        }
+        let earliestDateOfData = results
+            .map(evt => evt.date)
+            .reduce((acc, cur) => cur < acc ? cur : acc, startDate);
+        let shouldShow = (loadProgress.total > 0) && (loadProgress.percentage < 100) && (!earlyDate || earliestDateOfData > earlyDate);
+        return shouldShow;
+    }
 }
 
 angular.module('chpl.reports')

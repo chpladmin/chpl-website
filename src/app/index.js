@@ -28,15 +28,11 @@ import /* ngCsv from*/ 'ng-csv';
 import /* ngIdle from*/ 'ng-idle';
 import /* cytoscape from*/ 'cytoscape';
 import /* ngCytoscape from*/ './lib/ngCytoscape.min';
-//import ngMessages from 'ngMessages';
 import /* ngResource from*/ 'angular-resource';
 import /* ngSanitize from*/ 'angular-sanitize';
-//import ngTouch from 'ngTouch';
 import /* smartTable from*/ 'angular-smart-table';
 import /* toaster from*/ 'angularjs-toaster';
 import /* uiBoostrap from*/ 'angular-ui-bootstrap';
-//import ui.bootstrap.fontawesome from 'ui.bootstrap.fontawesome';
-//import /* ngFileUpload from*/ 'angular-file-upload';
 import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
 import 'angular-zxcvbn';
@@ -47,18 +43,15 @@ import 'angular-ui-router';
 import administration from './pages/administration/index';
 import /* adminModule from*/ './admin/index';
 import /* chartsModule from*/ './pages/charts/index';
-import /* chplApiModule from*/ './pages/resources/chpl-api/index';
-import /* cmsLookupModule from*/ './pages/resources/cms-lookup/index';
 import /* collectionsModule from*/ './pages/collections/index';
 import compare from './pages/compare/index';
 import /* componentsModule from*/ './components/index';
 import dashboard from './pages/dashboard/index';
-import /* downloadModule from*/ './pages/resources/download/index';
 import listing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
-import /* overviewModule from*/ './pages/resources/overview/index';
 import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
+import resources from './pages/resources/index';
 import /* registrationModule from*/ './pages/registration/index';
 import /* searchModule from*/ './pages/search/index';
 import services from './services/index';
@@ -93,19 +86,16 @@ const dependencies = [
     listing.name,
     organizations.name,
     reports.name,
+    resources.name,
     services.name,
     surveillance.name,
     users.name,
     'chpl.admin',
     'chpl.charts',
-    'chpl.chpl_api',
-    'chpl.cms_lookup',
     'chpl.collections',
     'chpl.components',
     'chpl.constants',
-    'chpl.download',
     'chpl.navigation',
-    'chpl.overview',
     'chpl.registration',
     'chpl.search',
     'chpl.shared',

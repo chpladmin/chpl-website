@@ -1,14 +1,15 @@
 export const OverviewComponent = {
-    templateUrl: 'chpl.overview/overview.html',
+    templateUrl: 'chpl.resources/overview/overview.html',
     bindings: {
     },
     controller: class OverviewController {
-        constructor ($anchorScroll, $location, $log, $rootScope, networkService) {
+        constructor ($anchorScroll, $location, $log, $rootScope, featureFlags, networkService) {
             'ngInject'
             this.$anchorScroll = $anchorScroll;
             this.$location = $location;
             this.$log = $log;
             this.currentPage = $rootScope.currentPage;
+            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
         }
 
@@ -56,5 +57,5 @@ export const OverviewComponent = {
 }
 
 angular
-    .module('chpl.overview')
+    .module('chpl.resources')
     .component('aiOverview', OverviewComponent);
