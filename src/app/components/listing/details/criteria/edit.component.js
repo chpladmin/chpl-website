@@ -129,7 +129,12 @@ export const CertificationCriteriaEditComponent = {
         testStandardOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this.cert.testStandards = this.cert.testStandards.filter(crts => crts.testStandardId !== action.item.item.id);
+                this.cert.testStandards = this.cert.testStandards.filter(crts => {
+                    if (action.item.item.id === 'newItem') {
+                        return crts.testStandardName !== action.item.item.name;
+                    }
+                    return crts.testStandardId !== action.item.item.id;
+                });
                 break;
             case 'Add':
                 this.cert.testStandards.push(new this.CertificationResultTestStandard(action.item.item));

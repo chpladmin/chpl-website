@@ -197,10 +197,15 @@
 
         function _insertNewItems () {
             if (ctrl.newItems && ctrl.newItems.length > 0) {
-                ctrl.newItems.forEach(item => {
-                    ctrl.addOption = item;
-                    ctrl.addItemToListClick();
-                });
+                ctrl.newItems
+                    .map(item => {
+                        let obj = {};
+                        obj[ctrl.itemText] = item;
+                        obj[ctrl.itemKey] = 'newItem';
+                        return obj;
+                    }).forEach(item => {
+                        ctrl.selectedItems.push(_createSelectedItem(item));
+                    });
             }
         }
 
