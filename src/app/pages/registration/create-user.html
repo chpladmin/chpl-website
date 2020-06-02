@@ -33,7 +33,7 @@
           <div class="form-group">
             <label for="password" class="control-label col-md-4">Password <span class="text-danger">*</span></label>
             <div class="col-md-8">
-              <input type="password" id="password" name="password" ng-model="$ctrl.userDetails.user.password" class="form-control" required ng-change="$ctrl.setExtras()"
+              <input type="password" id="password" name="password" ng-model="$ctrl.zxcvbnPassword" class="form-control" required ng-change="$ctrl.setExtras()"
                      zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
               <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
                 <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
@@ -86,7 +86,7 @@
             <div class="flex-item">
               <label for="password" class="control-label">Password <span class="text-danger">*</span></label>
               <div>
-                <input type="password" id="password" name="password" ng-model="$ctrl.userDetails.user.password" class="form-control" required ng-change="$ctrl.setExtras()"
+                <input type="password" id="password" name="password" ng-model="$ctrl.zxcvbnPassword" class="form-control" required ng-change="$ctrl.setExtras()"
                        zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && $ctrl.createUserForm.password.$error.required">Field is required</div>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && !$ctrl.createUserForm.password.$error.required && $ctrl.createUserForm.password.$error.passwordStrength">Password must be stronger</div>

@@ -62,6 +62,7 @@ export const CreateUserComponent = {
         }
 
         createUser () {
+            this.userDetails.user.password = this.zxcvbnPassword;
             if (this.validateUser()) {
                 this.networkService.createInvitedUser(this.userDetails)
                     .then(() => {
