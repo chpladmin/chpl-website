@@ -63,8 +63,8 @@
         </div>
         <div class="panel-body" ng-show="$ctrl.areExcludedShown">
           <chpl-surveillance-report-excluded-listings
-             listings="$ctrl.excludedListings"
-             on-save="$ctrl.saveRelevantListing(listing)">
+            listings="$ctrl.excludedListings"
+            on-save="$ctrl.saveRelevantListing(listing)">
           </chpl-surveillance-report-excluded-listings>
         </div>
       </div>
@@ -78,12 +78,12 @@
         </div>
         <div class="panel-body" ng-show="$ctrl.areListingsShown">
           <chpl-surveillance-report-relevant-listings
-             listings="$ctrl.relevantListings"
-             quarterly-report="$ctrl.report"
-             on-save="$ctrl.saveRelevantListing(listing)"
-             relevant-listing="$ctrl.relevantListing"
-             surveillance-outcomes="$ctrl.surveillanceOutcomes"
-             surveillance-process-types="$ctrl.surveillanceProcessTypes">
+            listings="$ctrl.relevantListings"
+            quarterly-report="$ctrl.report"
+            on-save="$ctrl.saveRelevantListing(listing)"
+            relevant-listing="$ctrl.relevantListing"
+            surveillance-outcomes="$ctrl.surveillanceOutcomes"
+            surveillance-process-types="$ctrl.surveillanceProcessTypes">
           </chpl-surveillance-report-relevant-listings>
         </div>
       </div>
@@ -97,11 +97,8 @@
         </div>
         <div class="panel-body" ng-show="$ctrl.areComplaintsShown">
           <chpl-surveillance-complaints
-             complaint-list-type="RELEVANT"
-             quarterly-report="$ctrl.report"
-             display-add="false"
-             display-delete="false"
-             display-header="false">
+            complaint-list-type="RELEVANT"
+            quarterly-report="$ctrl.report">
           </chpl-surveillance-complaints>
         </div>
       </div>

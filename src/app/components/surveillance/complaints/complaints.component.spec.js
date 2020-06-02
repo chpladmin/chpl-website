@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Complaints component', () => {
+    fdescribe('the Complaints component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         let complainantTypes = {
@@ -115,7 +115,10 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.surveillance', $provide => {
+            angular.mock.module('chpl.components', $provide => {
+                $provide.factory('chplSavedFilterDirective', () => ({}));
+                $provide.factory('chplFiltersDirective', () => ({}));
+                $provide.factory('chplFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getComplainantTypes = jasmine.createSpy('getComplainantTypes');
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
@@ -150,7 +153,7 @@
 
                 scope = $rootScope.$new();
 
-                el = angular.element('<chpl-surveillance-complaints display-header="true" complaint-list-type="ALL"></chpl-surveillance-complaints>');
+                el = angular.element('<chpl-surveillance-complaints complaint-list-type="ALL"></chpl-surveillance-complaints>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -181,6 +184,7 @@
                 let complaint = { id: 1 };
                 ctrl.deleteComplaint(complaint);
                 expect(networkService.deleteComplaint).toHaveBeenCalled();
+                scope.$digest();
                 expect(ctrl.complaint).toEqual({});
                 expect(ctrl.isEditing).toBe(false);
             });
@@ -228,32 +232,45 @@
             });
 
             it('should be able to fetch all relevant complaints', () => {
+                ctrl.complaints = [];
                 ctrl.refreshComplaints();
                 expect(networkService.getComplaints).toHaveBeenCalled();
+                scope.$digest();
                 expect(ctrl.complaints.length).toBe(1);
             });
 
             it('should be able to fetch all complainant types', () => {
+                ctrl.complainantTypes = [];
                 ctrl.refreshComplainantTypes();
                 expect(networkService.getComplainantTypes).toHaveBeenCalled();
+                scope.$digest();
                 expect(ctrl.complainantTypes.length).toBe(2);
             });
 
             it('should be able to fetch all listings', () => {
+                ctrl.listings = [];
                 ctrl.refreshListings();
                 expect(networkService.getCollection).toHaveBeenCalled();
+                scope.$digest();
                 expect(ctrl.listings.length).toBe(3);
             });
+
             it('should be able to fetch all certification editions', () => {
-                ctrl.refreshListings();
+                ctrl.editions = [];
+                ctrl.refreshEditions();
                 expect(networkService.getEditions).toHaveBeenCalled();
+                scope.$digest();
                 expect(ctrl.editions.length).toBe(3);
             });
+
             it('should be able to fetch all criteria', () => {
+                ctrl.criteria = [];
                 ctrl.refreshCriteria();
                 expect(networkService.getCriteria).toHaveBeenCalled();
+                scope.$digest();
                 expect(ctrl.criteria.length).toBe(5);
             });
+
             it('should be able to fetch all surveillances for selected listings', () => {
                 let complaint = {
                     id: 1,
