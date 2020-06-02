@@ -94,6 +94,7 @@
 
             it('should call createUser if the details are complete', () => {
                 ctrl.userDetails = angular.copy(mock.validUser);
+                ctrl.zxcvbnPassword = mock.validUser.user.password;
                 ctrl.createUser();
                 expect(networkService.createInvitedUser).toHaveBeenCalled();
             });
