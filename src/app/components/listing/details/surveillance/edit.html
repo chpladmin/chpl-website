@@ -33,7 +33,7 @@
           </span>
         </div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDate.$touched) && $ctrl.editForm.startDate.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDate.$touched) && $ctrl.editForm.startDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDate.$touched) && $ctrl.editForm.startDate.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
@@ -46,7 +46,7 @@
           </span>
         </div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDate.$touched) && $ctrl.editForm.endDate.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDate.$touched) && $ctrl.editForm.endDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDate.$touched) && $ctrl.editForm.endDate.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
@@ -125,8 +125,8 @@
       The following error(s) must be fixed:
       <ul>
         <li ng-if="$ctrl.editForm.startDate.$error.required">Start Date is required</li>
-        <li ng-if="$ctrl.editForm.startDate.$error.date">Start Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="$ctrl.editForm.endDate.$error.date">End Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.startDate.$error.parse">Start Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.endDate.$error.parse">End Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
         <li ng-if="$ctrl.editForm.authority.$error.required">Initiated by is required</li>
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
