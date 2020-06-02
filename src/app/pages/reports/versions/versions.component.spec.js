@@ -3,7 +3,8 @@ import {getActivity, getMetadata} from './history.mock';
 (() => {
     'use strict';
 
-    describe('the Reports.Versions component', () => {
+    xdescribe('the Reports.Versions component', () => {
+
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
@@ -25,7 +26,9 @@ import {getActivity, getMetadata} from './history.mock';
                 networkService.getActivityMetadata.and.returnValue($q.when(getMetadata('version')));
 
                 scope = $rootScope.$new()
+
                 el = angular.element('<chpl-reports-versions></chpl-reports-versions>');
+
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;

@@ -18,7 +18,7 @@
           <button type="button" class="btn btn-default btn-sm" ng-click="vm.beforeDatePicker = true"><i class="fa fa-calendar"></i></button>
         </span>
       </div>
-      <div class="text-danger" ng-if="dateForm.before.$touched && dateForm.before.$error.date">Improper format (MM/dd/yyyy)</div>
+      <div class="text-danger" ng-if="dateForm.before.$touched && dateForm.before.$error.parse">Improper format (MM/dd/yyyy)</div>
     </div>
   </div>
   <div feature-flag="ui-bump-major">
@@ -47,7 +47,7 @@
             <button type="button" class="btn btn-default btn-sm" ng-click="vm.beforeDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="dateForm.before.$touched && dateForm.before.$error.date">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="dateForm.before.$touched && dateForm.before.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
   </div>

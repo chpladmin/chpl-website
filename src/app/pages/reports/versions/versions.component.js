@@ -1,6 +1,5 @@
 export const ReportsVersionsComponent = {
     templateUrl: 'chpl.reports/versions/versions.html',
-    bindings: {},
     controller: class ReportsVersionsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
@@ -10,61 +9,68 @@ export const ReportsVersionsComponent = {
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
-            this.activityRange = {
-                range: 30,
-                startDate: new Date(),
-                endDate: new Date(),
-            };
-            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
+
+            this.results = [];
+            this.displayed = [];
+            this.clearFilterHs = [];
+            this.restoreStateHs = [];
             this.filename = 'Reports_' + new Date().getTime() + '.csv';
             this.filterText = '';
             this.tableController = {};
+            this.loadProgress = {
+                total: 0,
+                complete: 0,
+            };
+            this.downloadProgress = { complete: 0 };
+            this.pageSize = 50;
         }
 
         $onInit () {
             this.search();
         }
 
-        dateAdjust (obj) {
-            var ret = angular.copy(obj);
-            ret.startDate = this.ReportService.coerceToMidnight(ret.startDate);
-            ret.endDate = this.ReportService.coerceToMidnight(ret.endDate, true);
-            return ret;
-        }
-
-        downloadReady () {
-            if (this.displayed) {
-                return this.displayed.reduce((acc, activity) => activity.action && acc, true);
-            } else {
-                return false;
-            }
+        $onDestroy () {
+            this.isDestroyed = true;
         }
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.activityRange.startDate = new Date(Date.parse(f.startDate));
-            this.activityRange.endDate = new Date(Date.parse(f.endDate));
-            this.filterText = f.dataFilter;
-            this.tableController.sortBy(f.tableState.sort.predicate, f.tableState.sort.reverse);
-            this.search();
+            this.doFilter(f)
+        }
+
+        onClearFilter () {
+            let filterData = {};
+            filterData.dataFilter = '';
+            filterData.tableState = this.tableController.tableState();
+            this.clearFilterHs.forEach(handler => handler());
+            this.doFilter(filterData);
+        }
+
+        doFilter (filter) {
+            let that = this;
+            this.filterText = filter.dataFilter;
+            if (filter.tableState.search.predicateObject.date) {
+                this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
+            } else {
+                this.tableController.search({}, 'date');
+            }
+            this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+            this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
+        }
+
+        registerClearFilter (handler) {
+            this.clearFilterHs.push(handler);
+        }
+
+        registerRestoreState (handler) {
+            this.restoreStateHs.push(handler);
         }
 
         createFilterDataObject () {
             let filterData = {};
-            filterData.startDate = this.ReportService.coerceToMidnight(this.activityRange.startDate);
-            filterData.endDate = this.ReportService.coerceToMidnight(this.activityRange.endDate);
             filterData.dataFilter = this.filterText;
-            filterData.tableState = {};
             filterData.tableState = this.tableController.tableState();
             return filterData;
-        }
-
-        onClearFilter () {
-            this.activityRange.endDate = new Date();
-            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
-            this.filterText = '';
-            this.tableController.sortBy('date');
-            this.search();
         }
 
         tableStateListener (tableController) {
@@ -73,72 +79,109 @@ export const ReportsVersionsComponent = {
 
         parse (meta) {
             return this.networkService.getActivityById(meta.id).then(item => {
-                var change;
+                var activity = {
+                    id: item.id,
+                    date: item.activityDate,
+                };
 
+                var change;
                 if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, neither an array: update
-                    meta.product = item.newData.productName;
-                    meta.name = item.newData.version;
-                    meta.activityType= 'Version has been updated.';
-                    meta.action = 'Update:<ul>';
+                    activity.action = 'Updated version "' + item.newData.version + '"';
+                    activity.details = [];
                     change = this.ReportService.compareItem(item.originalData, item.newData, 'version', 'Version');
-                    if (change) { meta.action += '<li>' + change + '</li>'; }
-                    change = this.ReportService.compareItem(item.originalData, item.newData, 'productName', 'Associated Product');
-                    if (change) { meta.action += '<li>' + change + '</li>'; }
-                    meta.action += '</ul>';
-                    meta.detailsCSV = meta.action;
-                } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, original array, final object: merge
-                    meta.product = item.newData.productName;
-                    meta.name = item.newData.version;
-                    meta.activityType = 'Versions were merged.';
-                    meta.action = 'Versions ' + item.originalData.map(ver => ver.version).join(' and ') + ' merged to form ' + item.newData.version;
-                    meta.detailsCSV = meta.action;
-                } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // both exist, original object, final array: split
-                    meta.product = item.originalData.productName;
-                    meta.name = item.originalData.version;
-                    meta.activityType = 'Versions were split.';
-                    meta.action = 'Version ' + item.originalData.version + ' split to become ' + item.newData.map(ver => ver.version).join(' and ');
-                    meta.detailsCSV = meta.action;
-                } else {
-                    if (item.newData) {
-                        meta.product = item.newData.productName;
-                    } else if (item.originalData) {
-                        meta.product = item.originalData.productName;
+                    if (change) {
+                        activity.details.push(change);
                     }
-                    let activity = {};
-                    this.ReportService.interpretNonUpdate(activity, item, 'version', 'version');
-                    meta.action = activity.action[0];
-                    meta.activityType = meta.action;
+                    change = this.ReportService.compareItem(item.originalData, item.newData, 'productName', 'Associated Product');
+                    if (change) {
+                        activity.details.push(change);
+                    }
+                } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, original array, final object: merge
+                    activity.action ='Versions ' + item.originalData.map(d => d.version).join(' and ') + ' merged to form ' + item.newData.version;
+                    activity.details = [];
+                } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // both exist, original object, final array: split
+                    activity.action = 'Versions ' + item.originalData.version + ' split to become Versions ' + item.newData[0].version + ' and ' + item.newData[1].version;
+                    activity.details = [];
+                } else {
+                    this.ReportService.interpretNonUpdate(activity, item, 'Version', 'version');
+                    activity.action = activity.action[0];
+                    activity.details = [];
+                    activity.csvAction = activity.action.replace(',','","');
                 }
+                meta.action = activity.action;
+                meta.details = activity.details;
+                meta.csvDetails = activity.details.join('\n');
             });
         }
 
-        prepare (results) {
-            this.displayed = results.map(item => {
-                item.filterText = item.productName + '|' + item.version + '|' + item.responsibleUser.fullName
-                item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-                item.fullName = item.responsibleUser.fullName;
-                return item;
-            });
+        prepare (item) {
+            item.filterText = item.productName + '|' + item.version + '|' + item.responsibleUser.fullName;
+            item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+            item.fullName = item.responsibleUser.fullName;
+            return item;
+        }
+
+        canDownload () {
+            return this.displayed
+                .filter(item => !item.action).length <= 1000;
         }
 
         prepareDownload () {
+            let total = this.displayed
+                .filter(item => !item.action).length;
+            let progress = 0;
             this.displayed
                 .filter(item => !item.action)
-                .forEach(item => this.parse(item));
+                .forEach(item => {
+                    this.parse(item).then(() => {
+                        progress += 1;
+                        this.downloadProgress.complete = Math.floor(100 * ((progress + 1) / total));
+                    });
+                });
             //todo, eventually: use the $q.all function as demonstrated in product history eye
+        }
+
+        showLoadingBar () {
+            let tableState = this.tableController.tableState && this.tableController.tableState();
+            return this.ReportService.showLoadingBar(tableState, this.results, this.loadProgress);
         }
 
         search () {
             let that = this;
-            this.networkService.getActivityMetadata('versions', this.dateAdjust(this.activityRange))
+            this.networkService.getActivityMetadata('beta/versions')
                 .then(results => {
-                    that.results = results;
-                    that.prepare(that.results);
+                    that.results = results.activities
+                        .map(item => that.prepare(item));
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    let filter = {};
+                    filter.dataFilter = '';
+                    filter.tableState = this.tableController.tableState();
+                    filter.tableState.search = {
+                        predicateObject: {
+                            date: {
+                                after: new Date('2016-04-01').getTime(),
+                                before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
+                            },
+                        },
+                    };
+                    that.doFilter(filter);
+                    that.addPageToData(1);
                 });
         }
 
-        validDates () {
-            return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
+        addPageToData (page) {
+            let that = this;
+            if (this.isDestroyed) { return }
+            this.networkService.getActivityMetadata('beta/versions', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+                results.activities.forEach(item => {
+                    that.results.push(that.prepare(item));
+                });
+                that.loadProgress.complete += 1;
+                that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete + 1) / that.loadProgress.total));
+                if (page < that.loadProgress.total) {
+                    that.addPageToData(page + 1);
+                }
+            });
         }
     },
 }

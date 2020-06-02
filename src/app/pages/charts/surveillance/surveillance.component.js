@@ -9,10 +9,17 @@ export const ChartsSurveillanceComponent = {
             this.$log = $log;
             this.utilService = utilService;
             this.isOn = featureFlags.isOn;
-            if (this.isOn('effective-rule-date')) {
+            if (this.isOn('effective-rule-date') && !this.isOn('effective-rule-date-plus-three-months')) {
                 this.nonconformityTypes = [
                     'All',
                     2014,
+                    2015,
+                    '2015 Cures Update',
+                    'Program',
+                ];
+            } else if (this.isOn('effective-rule-date') && this.isOn('effective-rule-date-plus-three-months')) {
+                this.nonconformityTypes = [
+                    'All',
                     2015,
                     '2015 Cures Update',
                     'Program',
@@ -197,16 +204,19 @@ export const ChartsSurveillanceComponent = {
                 .filter(obj => {
                     switch (type) {
                     case 2014:
-                        return obj.nonconformityType.indexOf('170.314') >= 0;
+                        return obj.nonconformityType.includes('170.314');
                     case 2015:
-                        return (obj.nonconformityType.indexOf('170.315') >= 0 && (!this.isOn('effective-rule-date') || obj.nonconformityType.indexOf('Cures Update') === -1));
+                        return (obj.nonconformityType.includes('170.315') && (!this.isOn('effective-rule-date') || !obj.nonconformityType.includes('Cures Update')));
                     case '2015 Cures Update':
-                        return obj.nonconformityType.indexOf('Cures Update') >= 0;
+                        return obj.nonconformityType.includes('Cures Update');
                     case 'Program':
-                        return obj.nonconformityType.indexOf('170.523') >= 0 || obj.nonconformityType.indexOf('Other') >= 0;
+                        return obj.nonconformityType.includes('170.523') || obj.nonconformityType.includes('Other');
                     case 'All':
+                        if (this.isOn('effective-rule-date-plus-three-months')) {
+                            return !obj.nonconformityType.includes('170.314');
+                        }
                         return true;
-                    default: false;
+                        // no default
                     }
                 })
                 .sort((a, b) => this.utilService.sortCertActual(a, b))

@@ -37,7 +37,7 @@
           </span>
         </div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
@@ -49,7 +49,7 @@
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capApprovalDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.parse">Improper format (MM/dd/yyyy)</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.required">Field is required</div>
       </div>
     </div>
@@ -62,7 +62,7 @@
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capStartDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.parse">Improper format (MM/dd/yyyy)</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.required">Field is required</div>
       </div>
     </div>
@@ -75,7 +75,7 @@
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capEndDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.editForm.capEndDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.editForm.capEndDate.$error.parse">Improper format (MM/dd/yyyy)</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</div>
       </div>
     </div>
@@ -88,7 +88,7 @@
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capMustCompleteDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capMustCompleteDate.$touched) && $ctrl.editForm.capMustCompleteDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capMustCompleteDate.$touched) && $ctrl.editForm.capMustCompleteDate.$error.parse">Improper format (MM/dd/yyyy)</div>
         <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.capMustCompleteDate.$error.required">Field is required</div>
       </div>
     </div>
@@ -214,15 +214,15 @@
         <li ng-if="$ctrl.editForm.nonconformityType.$error.required">Non-Conformity Type is required</li>
         <li ng-if="$ctrl.editForm.nonconformityStatus.$error.required">Non-Conformity Status is required</li>
         <li ng-if="$ctrl.editForm.dateOfDetermination.$error.required">Date of Determination is required</li>
-        <li ng-if="$ctrl.editForm.dateOfDetermination.$error.date">Date of Determination is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.dateOfDetermination.$error.parse">Date of Determination is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.capApprovalDate.$error.required">Corrective Action Plan Approval Date is required</li>
-        <li ng-if="$ctrl.editForm.capApprovalDate.$error.date">Corrective Action Plan Approval Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capApprovalDate.$error.parse">Corrective Action Plan Approval Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.capStartDate.$error.required">Corrective Action Plan Start Date is required</li>
-        <li ng-if="$ctrl.editForm.capStartDate.$error.date">Corrective Action Plan Start Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capStartDate.$error.parse">Corrective Action Plan Start Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.capEndDate.$error.required">Corrective Action Plan End Date is required</li>
-        <li ng-if="$ctrl.editForm.capEndDate.$error.date">Corrective Action Plan End Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capEndDate.$error.parse">Corrective Action Plan End Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.required">Corrective Action Plan Must Complete Date is required</li>
-        <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.date">Corrective Action Plan Must Complete Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.parse">Corrective Action Plan Must Complete Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.sitesPassed.$error.required">Number of sites passed is required</li>
         <li ng-if="$ctrl.editForm.sitesPassed.$error.number">Number of sites passed must be a number</li>
         <li ng-if="$ctrl.editForm.totalSites.$error.required">Total sites is required</li>

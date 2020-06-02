@@ -1,5 +1,26 @@
 # Release Notes
 
+## Version 10.45.0
+_1 June 2020_
+
+### Features
+* Implement Split of Developers in new UI
+* Allow Version Report activity across any date range
+
+### Flagged Features
+* Update text on main search page to reflect post effective-rule-date changes
+* Remove 2014 Charts
+
+---
+
+## Version 10.44.0
+_18 May 2020_
+
+### Flagged Features
+* Update Developer edit to use new style
+
+---
+
 ## Version 10.43.0
 _4 May 2020_
 

@@ -842,6 +842,10 @@ option[label^="Removed"] {
         align-self: flex-end;
     }
 
+    &.cross-axis-align-center {
+        align-self: center;
+    }
+
     &.wide {
         flex: 2;
         //min-width: 300px;
@@ -1170,17 +1174,26 @@ Button Styling
 
     .table-striped > tbody > tr:nth-of-type(even) {
         background-color: var(--white);
-
     }
 
     .table-striped > tbody > tr:nth-of-type(odd) {
         background-color: var(--grey-blue);
-
     }
 
     .search-table th {
         color: var(--blue);
         font-weight: 500;
+    }
+
+    .container-striped {
+
+        &.even {
+            background-color: var(--white);
+        }
+
+        &.odd {
+            background-color: var(--grey-blue);
+        }
     }
 
     /* Well Styling */
@@ -1216,12 +1229,17 @@ Button Styling
         padding-bottom: 10px;
     }
 
+    .data-label,
     label {
         display: block;
         font-family: "Lato";
         font-size: 12px;
         color: var(--medium-grey);
         text-transform: uppercase;
+    }
+
+    .data-label {
+        font-weight: 700;
     }
 
     /* Data that is not editable*/
