@@ -88,15 +88,15 @@
               <div>
                 <input type="password" id="password" name="password" ng-model="$ctrl.userDetails.user.password" class="form-control" required ng-change="$ctrl.setExtras()"
                        zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
-                <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
-                  <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
-                </uib-progressbar>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && $ctrl.createUserForm.password.$error.required">Field is required</div>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && !$ctrl.createUserForm.password.$error.required && $ctrl.createUserForm.password.$error.passwordStrength">Password must be stronger</div>
                 <ul class="list-unstyled text-info" ng-if="$ctrl.passwordStrength.score <= 2">
                   <li ng-if="$ctrl.passwordStrength.feedback.warning">{{ $ctrl.passwordStrength.feedback.warning }}</li>
                   <li ng-repeat="sugg in $ctrl.passwordStrength.feedback.suggestions">{{ sugg }}</li>
                 </ul>
+                <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
+                  <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
+                </uib-progressbar>
               </div>
             </div>
             <div class="flex-item">
