@@ -826,6 +826,7 @@ option[label^="Removed"] {
     //min-width: 150px;
     flex: 1;
     margin-bottom: 5px;
+    //margin: 1px 1px 1px 5px;
     //border: 1px solid red;
 
     &.wrap {
@@ -847,6 +848,16 @@ option[label^="Removed"] {
 
     &.wide {
         flex: 2;
+        //min-width: 300px;
+    }
+
+    &.wider {
+        flex: 4;
+        //min-width: 300px;
+    }
+
+    &.widest {
+        flex: 8;
         //min-width: 300px;
     }
 
@@ -905,13 +916,14 @@ Format
    */
 
     .body {
-        background: var(--white);
+        background-image: url("../assets/images/white.png");
+        background-color: var(--white);
     }
 
     .main-content {
         background: var(--light-grey);
         padding: 15px;
-        border: 1px solid var(dark-grey);
+        border: 1px solid var(--dark-grey);
     }
 
     /*
