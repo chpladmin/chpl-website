@@ -50,7 +50,6 @@
         vm.selectProduct = selectProduct;
         vm.selectVersion = selectVersion;
         vm.splitProduct = splitProduct;
-        vm.splitDeveloper = splitDeveloper;
         vm.ternaryFilter = utilService.ternaryFilter;
 
         ////////////////////////////////////////////////////////////////////
@@ -472,35 +471,6 @@
                 .then(function (result) {
                     vm.surveillanceProduct = result;
                 });
-        }
-
-        function splitDeveloper () {
-            vm.splitDeveloperModalInstance = $uibModal.open({
-                component: 'aiDeveloperSplit',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    developer: () => vm.activeDeveloper,
-                    products: () => vm.products,
-                },
-            });
-            vm.splitDeveloperModalInstance.result.then(() => {
-                vm.forceRefresh = true;
-                refreshDevelopers();
-                if (!isEditingListing()) {
-                    vm.developerSelect = '';
-                    vm.activeDeveloper = '';
-                    vm.activeProduct = '';
-                    vm.activeVersion = '';
-                    vm.activeCP = '';
-                }
-            }, result => {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
-            });
         }
 
         function splitProduct () {

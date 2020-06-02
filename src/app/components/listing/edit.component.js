@@ -93,6 +93,7 @@ export const ListingEditComponent = {
                 this.networkService.getRelatedListings(this.listing.product.productId)
                     .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
             }
+            this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
         }
 
         addPreviousMuu () {

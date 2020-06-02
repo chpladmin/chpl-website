@@ -23,7 +23,6 @@ export const ReportsProductsComponent = {
             };
             this.downloadProgress = { complete: 0 };
             this.pageSize = 50;
-            this.defaultDateRangeOffset = 180 * 24 * 60 * 60 * 1000; // 180 days
         }
 
         $onInit () {
@@ -190,7 +189,7 @@ export const ReportsProductsComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: this.ReportService.coerceToMidnight(new Date()).getTime() - this.defaultDateRangeOffset,
+                                after: new Date('2016-04-01').getTime(),
                                 before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                             },
                         },
