@@ -62,7 +62,6 @@ export const CreateUserComponent = {
         }
 
         createUser () {
-            this.userDetails.user.password = this.zxcvbnPassword;
             if (this.validateUser()) {
                 this.networkService.createInvitedUser(this.userDetails)
                     .then(() => {
@@ -76,7 +75,7 @@ export const CreateUserComponent = {
         }
 
         editContact (contact) {
-            this.userDetails.user = {...this.userDetails.user, ...contact};
+            this.userDetails.user = Object.assign(this.userDetails.user, contact);
         }
 
         isCreateAccountMode () {
