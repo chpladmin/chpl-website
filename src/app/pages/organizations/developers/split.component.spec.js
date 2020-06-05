@@ -7,6 +7,18 @@
         mock = {
             developer: {},
             products: [],
+            goodResponse: {
+                data: {
+                    job: {
+                        jobDataMap: {
+                            user: {
+                                email: 'fake',
+                            },
+                        },
+                    },
+                },
+                status: 200,
+            },
         };
 
         beforeEach(() => {
@@ -87,14 +99,7 @@
             it('should navigate back to the developers page on a status:200 response', () => {
                 spyOn($state, 'go');
                 ctrl.developer = {developerId: 'an id'};
-                networkService.splitDeveloper.and.returnValue($q.when({
-                    data: {
-                        user: {
-                            email: 'fake',
-                        },
-                    },
-                    status: 200,
-                }));
+                networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
                     oldDeveloper: {},
@@ -109,13 +114,7 @@
             it('should pop a notice on success', () => {
                 spyOn(toaster, 'pop');
                 ctrl.developer = {developerId: 'an id'};
-                networkService.splitDeveloper.and.returnValue($q.when({
-                    data: {
-                        user: {
-                            email: 'fake',
-                        },
-                    },
-                }));
+                networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
                     oldDeveloper: {},
@@ -148,14 +147,7 @@
 
             it('should pass the the split developer data to the network service', () => {
                 spyOn($state, 'go');
-                networkService.splitDeveloper.and.returnValue($q.when({
-                    data: {
-                        user: {
-                            email: 'fake',
-                        },
-                    },
-                    status: 200,
-                }));
+                networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
                     oldDeveloper: {},

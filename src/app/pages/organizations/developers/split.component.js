@@ -59,7 +59,7 @@ export const DevelopersSplitComponent = {
                         that.toaster.pop({
                             type: 'success',
                             title: 'Split submitted',
-                            body: 'Your action has been submitted and you\'ll get an email at ' + response.data.user.email + ' when it\'s done',
+                            body: 'Your action has been submitted and you\'ll get an email at ' + response.data.job.jobDataMap.user.email + ' when it\'s done',
                         });
                         that.$state.go('organizations.developers.developer', {
                             developerId: undefined,
