@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Complaints component', () => {
+    describe('the Complaints component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         let complainantTypes = {
