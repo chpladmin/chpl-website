@@ -61,9 +61,7 @@ export const DevelopersSplitComponent = {
                             title: 'Split submitted',
                             body: 'Your action has been submitted and you\'ll get an email at ' + response.data.job.jobDataMap.user.email + ' when it\'s done',
                         });
-                        that.$state.go('organizations.developers.developer', {
-                            developerId: undefined,
-                        }, {
+                        that.$state.go('organizations.developers', {}, {
                             reload: true,
                         });
                     } else {
