@@ -194,7 +194,7 @@ export const ReportsAcbsComponent = {
                         },
                     };
                     that.doFilter(filter);
-                    if (results.resultSetSize > 0) {
+                    if (results.resultSetSize > results.pageSize) {
                         that.addPageToData(1);
                     }
                 });
