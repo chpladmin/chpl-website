@@ -18,7 +18,10 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.criteria = criteria;
+            vm.criteria = criteria.map(crit => {
+                crit.displayNumber = crit.removed ? 'Removed | ' + crit.number : crit.number;
+                return crit;
+            })
             vm.participants = angular.copy(participants);
             vm.task = angular.copy(task);
             if (!vm.task.uniqueId) {
