@@ -1,4 +1,4 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)" id="acbs-report-page">
   <div class="row">
     <div class="col-sm-12">
       <h3>ONC-ACBs</h3>
@@ -25,14 +25,27 @@
       </div>
     </div>
   </div>
-  <div class="row form-group">
-    <div class="col-sm-5">
-      <label for="activity-end-upload" class="control-label">Filter</label>
-      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Product, Version, or Responsible User" class="form-control" type="search">
-    </div>
-  </div>
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-sm-2" ng-if="$ctrl.acbItems.length > 1">
+      <div class="onc-acb-filter">
+        Filter on ONC-ACB<br />
+        <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <button class="btn btn-ai dropdown-toggle" type="button" id="acb-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            ONC-ACB <i class="fa fa-filter"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+            <st-list-multiple
+              collection="$ctrl.results"
+              fixed-items="$ctrl.acbItems"
+              predicate="acbName"
+              register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+              register-restore-state="$ctrl.registerRestoreState(restoreState)"
+              ></st-list-multiple>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div ng-class="$ctrl.acbItems.length > 1 ? 'col-sm-3' : 'col-sm-5'">
       Filter on Activity Date
       <chpl-date-range
         predicate="date"
