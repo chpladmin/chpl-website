@@ -146,6 +146,7 @@ export const ReportsAcbsComponent = {
 
         prepare (item) {
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+            this.parse(item);
             return item;
         }
 
@@ -193,7 +194,9 @@ export const ReportsAcbsComponent = {
                         },
                     };
                     that.doFilter(filter);
-                    that.addPageToData(1);
+                    if (results.resultSetSize > 0) {
+                        that.addPageToData(1);
+                    }
                 });
         }
 
