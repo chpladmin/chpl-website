@@ -8,12 +8,10 @@
             developer: {},
             products: [],
             goodResponse: {
-                data: {
-                    job: {
-                        jobDataMap: {
-                            user: {
-                                email: 'fake',
-                            },
+                job: {
+                    jobDataMap: {
+                        user: {
+                            email: 'fake',
                         },
                     },
                 },
