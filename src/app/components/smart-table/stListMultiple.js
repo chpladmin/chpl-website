@@ -24,7 +24,7 @@
             require: ['^stTable', 'stListMultiple'],
             scope: {
                 collection: '=',
-                fixedItems: '=?',
+                fixedItems: '=',
                 predicate: '@',
                 predicateExpression: '=',
                 registerAllowAll: '&?',
@@ -72,10 +72,10 @@
                 scope.$on('$destroy', showRetired);
             }
 
-            setItems();
+            scope.distinctItems = angular.copy(scope.fixedItems);
             setSelected();
             scope.$watch('fixedItems', function () {
-                setItems();
+                scope.distinctItems = angular.copy(scope.fixedItems);
                 setSelected();
                 ctrl.distinctItems = scope.distinctItems;
                 ctrl.selected = scope.selected;
@@ -86,51 +86,6 @@
             ctrl.selected = scope.selected;
             ctrl.tableCtrl = table;
             ctrl.activate();
-        }
-
-        function bindCollection (collection) {
-            var predicate = getPredicate();
-            var distinctItems = [];
-
-            angular.forEach(collection, function (item) {
-                var value = item[predicate];
-                fillDistinctItems(value, distinctItems);
-            });
-
-            distinctItems.sort(function (obj, other) {
-                if (obj.value > other.value) {
-                    return 1;
-                } else if (obj.value < other.value) {
-                    return -1;
-                }
-                return 0;
-            });
-            scope.distinctItems = distinctItems;
-        }
-
-        function fillDistinctItems (values, distinctItems) {
-            if (!angular.isObject(values)) {
-                values = [values];
-            }
-            var value;
-            for (var i = 0; i < values.length; i++) {
-                value = values[i] + '';
-                if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
-                    distinctItems.push({
-                        value: value,
-                        selected: true,
-                    });
-                }
-            }
-        }
-
-        function findItemWithValue (collection, value) {
-            for (var i = 0; i < collection.length; i++) {
-                if (collection[i].value === value) {
-                    return true;
-                }
-            }
-            return false;
         }
 
         function getPredicate () {
@@ -149,17 +104,6 @@
                     scope.selected.push(item.value);
                 }
             });
-        }
-
-        function setItems () {
-            if (angular.isDefined(scope.fixedItems)) {
-                scope.distinctItems = angular.copy(scope.fixedItems);
-            } else if (angular.isDefined(scope.collection)) {
-                bindCollection(scope.collection);
-                scope.$watch('collection', function (newCollection) {
-                    bindCollection(newCollection)
-                });
-            }
         }
     }
 

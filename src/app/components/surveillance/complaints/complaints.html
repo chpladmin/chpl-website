@@ -1,0 +1,186 @@
+<div ng-class="$ctrl.isOn('ui-bump-major') ? '' : 'complaints-wrapper'" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+  <div ng-if="!$ctrl.isEditing">
+    <chpl-filters
+      clear-all-filters="$ctrl.onClearFilter()">
+      <chpl-filters-header>
+        <label for="data-filter" class="control-label">Filter</label>
+        <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria" class="form-control" type="search">
+      </chpl-filters-header>
+      <chpl-filters-saved>
+        <chpl-saved-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-saved-filter>
+      </chpl-filters-saved>
+      <chpl-filters-body>
+        <chpl-filter title="ONC-ACB" has-changes="$ctrl.hasChanges['acbName']"
+                     ng-if="$ctrl.filterItems.acbItems.length > 0">
+          <st-list-multiple
+            collection="$ctrl.complaints"
+            predicate="acbName"
+            has-changes="$ctrl.hasChanges['acbName']"
+            fixed-items="$ctrl.filterItems.acbItems"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></st-list-multiple>
+        </chpl-filter>
+        <chpl-filter title="Status" has-changes="$ctrl.hasChanges['complaintStatusTypeName']"
+                     ng-if="$ctrl.filterItems.complaintStatusTypeItems.length > 0">
+          <st-list-multiple
+            collection="$ctrl.complaints"
+            predicate="complaintStatusTypeName"
+            has-changes="$ctrl.hasChanges['complaintStatusTypeName']"
+            fixed-items="$ctrl.filterItems.complaintStatusTypeItems"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></st-list-multiple>
+        </chpl-filter>
+        <chpl-filter title="Received Date" has-changes="$ctrl.hasChanges['receivedDate']">
+          <chpl-date-range
+            predicate="receivedDate"
+            has-changes="$ctrl.hasChanges['receivedDate']"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></chpl-date-range>
+        </chpl-filter>
+        <chpl-filter title="Closed Date" has-changes="$ctrl.hasChanges['closedDate']">
+          <chpl-date-range
+            predicate="closedDate"
+            has-changes="$ctrl.hasChanges['closedDate']"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></chpl-date-range>
+        </chpl-filter>
+        <chpl-filter title="Complainant Type" has-changes="$ctrl.hasChanges['complainantTypeName']"
+                     ng-if="$ctrl.filterItems.complainantTypeItems.length > 0">
+          <st-list-multiple
+            collection="$ctrl.complaints"
+            predicate="complainantTypeName"
+            has-changes="$ctrl.hasChanges['complainantTypeName']"
+            fixed-items="$ctrl.filterItems.complainantTypeItems"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></st-list-multiple>
+        </chpl-filter>
+        <chpl-filter title="Complainant Contacted" has-changes="$ctrl.hasChanges['complainantContacted']">
+          <chpl-boolean-filter
+            collection="$ctrl.complaints"
+            predicate="complainantContacted"
+            has-changes="$ctrl.hasChanges['complainantContacted']"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></chpl-boolean-filter>
+        </chpl-filter>
+        <chpl-filter title="Developer Contacted" has-changes="$ctrl.hasChanges['developerContacted']">
+          <chpl-boolean-filter
+            collection="$ctrl.complaints"
+            predicate="developerContacted"
+            has-changes="$ctrl.hasChanges['developerContacted']"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></chpl-boolean-filter>
+        </chpl-filter>
+        <chpl-filter title="ONC-ATL Contacted" has-changes="$ctrl.hasChanges['oncAtlContacted']">
+          <chpl-boolean-filter
+            collection="$ctrl.complaints"
+            predicate="oncAtlContacted"
+            has-changes="$ctrl.hasChanges['oncAtlContacted']"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></chpl-boolean-filter>
+        </chpl-filter>
+      </chpl-filters-body>
+    </chpl-filters>
+    <div class="flex-container">
+      <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
+        <button class="btn btn-default" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
+          Add New Complaint
+        </button>
+      </div>
+    </div>
+    <div class="flex-container">
+      <div class="flex-item table-responsive">
+        <table class="table table-condensed" id="complaints-table">
+          <thead>
+            <tr>
+              <td colspan="7" class="text-center">
+                <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="col" class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
+              <th scope="col" class="search-header" st-sort="complaintStatusTypeName" st-skip-natural="true">Status</th>
+              <th scope="col" class="search-header" st-sort="receivedDate" st-skip-natural="true" st-sort-default="reverse">Received Date</th>
+              <th scope="col" class="search-header" st-sort="acbComplaintId" st-skip-natural="true">ONC-ACB Complaint Id</th>
+              <th scope="col" class="search-header" st-sort="oncComplaintId" st-skip-natural="true">ONC Complaint Id</th>
+              <th scope="col" class="search-header" st-sort="complainantTypeName" st-skip-natural="true">Complainant Type</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="7" class="text-center">
+                <div class="text-right">
+                  <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                  Showing up to&nbsp;
+                  <select ng-model="$ctrl.pageSize" id="pageSizeTop"
+                          ng-options="v as v for v in [50,100,250,1000,5000]">
+                  </select>
+                  &nbsp;results per page
+                </div>
+                <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr ng-repeat="complaint in $ctrl.displayedComplaints">
+              <td>{{ complaint.certificationBody.name }}</td>
+              <td>
+                <span class="badge" ng-class="{ 'badge-success': complaint.complaintStatusTypeName === 'Open' }">
+                  {{ complaint.complaintStatusTypeName }}
+                </span>
+              </td>
+              <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td>{{ complaint.acbComplaintId }}</td>
+              <td>{{ complaint.oncComplaintId }}</td>
+              <td>
+                {{ complaint.complainantType.name }}
+                <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
+              </td>
+              <td>
+                <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" id="edit-complaint-{{ complaint.id }}"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+                <button class="btn btn-danger btn-link"
+                        title="Delete Complaint"
+                        id="delete-complaint-{{ complaint.id }}"
+                        ng-click="$ctrl.deleteComplaint(complaint)"
+                        ng-if="$ctrl.displayDelete"
+                        confirm="Are you sure you wish to delete this complaint?"
+                        confirm-ok="Delete Complaint"
+                        confirm-cancel="Cancel"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
+                  <span class="text-danger"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="flex-container" ng-if="$ctrl.isEditing">
+    <div class="flex-item">
+      <chpl-surveillance-complaint
+        complaint="$ctrl.complaint"
+        complainant-types="$ctrl.complainantTypes"
+        certification-bodies="$ctrl.certificationBodies"
+        criteria="$ctrl.criteria"
+        display-header="$ctrl.displayHeader"
+        editions="$ctrl.editions"
+        error-messages="$ctrl.errorMessages"
+        listings="$ctrl.listings"
+        surveillances="$ctrl.surveillances"
+        on-delete="$ctrl.deleteComplaint(complaint)"
+        on-save="$ctrl.saveComplaint(complaint)"
+        on-cancel="$ctrl.cancelEdit()"
+        on-listing-selected="$ctrl.selectListing(complaint)">
+      </chpl-surveillance-complaint>
+    </div>
+  </div>
+</div>

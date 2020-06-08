@@ -1,5 +1,5 @@
 export const SurveillanceComplaintComponent = {
-    templateUrl: 'chpl.components/surveillance/complaint/complaint.html',
+    templateUrl: 'chpl.components/surveillance/complaints/complaint.html',
     bindings: {
         complaint: '<',
         complainantTypes: '<',

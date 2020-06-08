@@ -31,6 +31,10 @@
                 {id: 1, name: 'name1'},
                 {id: 2, name: 'name2'},
             ]},
+            testStandards: {data: [
+                {id: 1, name: 'name1', year: 2014},
+                {id: 2, name: 'name2', year: 2015},
+            ]},
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
         }

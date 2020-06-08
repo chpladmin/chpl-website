@@ -1,0 +1,17 @@
+<div class="flex-container rotate">
+  <label>
+    <input type="radio" id="chpl-filter-boolean-{{ vm.predicate }}-any" value="Any" name="booleanFilter{{ vm.predicate }}"
+           ng-model="vm.selectedOption" ng-change="vm.filterChanged()"
+           > Any
+  </label>
+  <label>
+    <input type="radio" id="chpl-filter-boolean-{{ vm.predicate }}-true" value="True" name="booleanFilter{{ vm.predicate }}"
+           ng-model="vm.selectedOption" ng-change="vm.filterChanged()"
+           > Yes
+  </label>
+  <label>
+    <input type="radio" id="chpl-filter-boolean-{{ vm.predicate }}-false" value="False" name="booleanFilter{{ vm.predicate }}"
+           ng-model="vm.selectedOption" ng-change="vm.filterChanged()"
+           > No
+  </label>
+</div>

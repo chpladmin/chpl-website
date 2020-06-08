@@ -45,6 +45,7 @@ export const CertificationCriteriaEditComponent = {
             this.selectedTestFunctionalityKeys = this._getSelectedTestFunctionalityKeys();
             this.selectedTestProcedureKeys = this._getSelectedTestProcedureKeys();
             this.selectedTestStandardKeys = this._getSelectedTestStandardKeys();
+            this.newTestStandards = this._getNewTestStandards();
             this.selectedTestToolKeys = this._getSelectedTestToolKeys();
             this.sortedTestFunctionalities = this._getSortedTestFunctionalities();
             this._setAvailableTestValues();
@@ -128,7 +129,12 @@ export const CertificationCriteriaEditComponent = {
         testStandardOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this.cert.testStandards = this.cert.testStandards.filter(crts => crts.testStandardId !== action.item.item.id);
+                this.cert.testStandards = this.cert.testStandards.filter(crts => {
+                    if (action.item.item.id === 'newItem') {
+                        return crts.testStandardName !== action.item.item.name;
+                    }
+                    return crts.testStandardId !== action.item.item.id;
+                });
                 break;
             case 'Add':
                 this.cert.testStandards.push(new this.CertificationResultTestStandard(action.item.item));
@@ -210,7 +216,18 @@ export const CertificationCriteriaEditComponent = {
             if (!this.cert.testStandards) {
                 return [];
             }
-            return this.cert.testStandards.map(ts => ({key: ts.testStandardId}));
+            return this.cert.testStandards
+                .filter(ts => ts.testStandardId)
+                .map(ts => ({key: ts.testStandardId}));
+        }
+
+        _getNewTestStandards () {
+            if (!this.cert.testStandards) {
+                return [];
+            }
+            return this.cert.testStandards
+                .filter(ts => !ts.testStandardId)
+                .map(ts => ts.testStandardName);
         }
 
         _getSelectedTestToolKeys () {

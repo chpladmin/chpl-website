@@ -7,6 +7,22 @@
     function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
         let filterFilter = $filter('filter');
 
+        let booleanComparator = (actual, expected) => {
+            if (expected.boolean === 'Any') {
+                return true;
+            }
+
+            if (actual && expected.boolean === 'True') {
+                return true;
+            }
+
+            if (!actual && expected.boolean === 'False') {
+                return true;
+            }
+
+            return false;
+        };
+
         let dateRangeComparator = (actual, expected) => {
             let higherLimit, itemDate, lowerLimit, queryDate;
 
@@ -298,6 +314,11 @@
                     //exact match
                     if (expected.distinct) {
                         return distinctComparator(actual, expected);
+                    }
+
+                    //boolean match
+                    if (expected.boolean) {
+                        return booleanComparator(actual, expected);
                     }
 
                     //surveillance match

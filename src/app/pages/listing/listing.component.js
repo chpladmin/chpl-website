@@ -138,9 +138,8 @@ export const ListingComponent = {
         }
 
         takeDeveloperAction (action, developerId) {
-            this.$state.go('organizations.developers', {
+            this.$state.go('organizations.developers.developer', {
                 developerId: developerId,
-                action: action,
             });
         }
 
