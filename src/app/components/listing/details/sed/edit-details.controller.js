@@ -18,10 +18,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.criteria = criteria.map(item => {
-                item.displayNumber = item.removed ? 'Removed | ' + item.number : item.number;
-                return item;
-            });
+            vm.criteria = criteria;
             vm.listing = angular.copy(listing);
             vm.resources = resources;
             vm.ucdProcesses = angular.copy(ucdProcesses);
