@@ -61,7 +61,7 @@ export const JobsScheduledTriggerComponent = {
             if (this.recurring) {
                 toSave.trigger = this.trigger;
                 if (this.trigger.job.jobDataMap.acbSpecific) {
-                    toSave.trigger.acb = this.selectedAcb.map(acb => acb.name).join(this.SPLIT_PRIMARY);
+                    toSave.trigger.acb = this.selectedAcb.map(acb => acb.id).join(this.SPLIT_PRIMARY);
                 }
             } else {
                 toSave.runDateMillis = this.selectedDateTime.getTime();
