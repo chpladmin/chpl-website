@@ -1,12 +1,11 @@
 export const ReportsAcbsComponent = {
     templateUrl: 'chpl.reports/acbs/acbs.html',
     controller: class ReportsAcbsComponent {
-        constructor ($log, $scope, ReportService, authService, networkService, utilService) {
+        constructor ($log, $scope, ReportService, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.$scope = $scope;
             this.ReportService = ReportService;
-            this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
 
@@ -25,27 +24,6 @@ export const ReportsAcbsComponent = {
         }
 
         $onInit () {
-            let that = this;
-            let user = this.authService.getCurrentUser();
-            this.networkService.getSearchOptions()
-                .then(options => {
-                    that.acbItems = options.acbs
-                        .filter(a => that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-                                || user.organizations.filter(o => o.name === a.name).length > 0)
-                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-                        .map(a => {
-                            let ret = {
-                                value: a.name,
-                                selected: true,
-                            };
-                            if (a.retired) {
-                                ret.display = a.name + ' (Retired)';
-                                ret.retired = true;
-                                ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
-                            }
-                            return ret;
-                        });
-                });
             this.search();
         }
 
@@ -60,7 +38,6 @@ export const ReportsAcbsComponent = {
 
         onClearFilter () {
             let filterData = {};
-            filterData.dataFilter = '';
             filterData.tableState = this.tableController.tableState();
             this.clearFilterHs.forEach(handler => handler());
             this.doFilter(filterData);
@@ -68,11 +45,6 @@ export const ReportsAcbsComponent = {
 
         doFilter (filter) {
             let that = this;
-            if (filter.tableState.search.predicateObject.acbName) {
-                this.tableController.search(filter.tableState.search.predicateObject.acbName, 'acbName');
-            } else {
-                this.tableController.search({}, 'acbName');
-            }
             if (filter.tableState.search.predicateObject.date) {
                 this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
             } else {
@@ -92,7 +64,6 @@ export const ReportsAcbsComponent = {
 
         createFilterDataObject () {
             let filterData = {};
-            filterData.dataFilter = this.filterText;
             filterData.tableState = this.tableController.tableState();
             return filterData;
         }
