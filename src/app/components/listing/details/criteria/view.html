@@ -157,27 +157,27 @@
           </tr>
           <tr ng-if="$ctrl.cert.exportDocumentation !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Export_Documentation">
             <td>
-              Export Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+              Export Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.exportDocumentation"><a ai-a href="{{ $ctrl.cert.exportDocumentation }}" analytics-on="click" analytics-event="Export Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.exportDocumentation }">{{ $ctrl.cert.exportDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.exportDocumentation">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.attestationAnswer != null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Attestation_Answer">
             <td>
-              Attestation <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+              Attestation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ $ctrl.cert.attestationAnswer ? 'Yes' : 'No' }}</td>
           </tr>
           <tr ng-if="$ctrl.cert.documentationUrl !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url">
             <td>
-              Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+              Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink that has the documentation used to meet the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink that has the documentation used to meet the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.documentationUrl"><a ai-a href="{{ $ctrl.cert.documentationUrl }}" analytics-on="click" analytics-event="Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.documentationUrl }">{{ $ctrl.cert.documentationUrl }}</a></td>
             <td ng-if="!$ctrl.cert.documentationUrl">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Use_Cases">
             <td>
-              Use Case(s) <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+              Use Case(s) <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the use cases supported for the multi-factor authentication criterion (&sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the use cases supported for the multi-factor authentication criterion (&sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.useCases"><a ai-a href="{{ $ctrl.cert.useCases }}" analytics-on="click" analytics-event="Use Cases" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.useCases }">{{ $ctrl.cert.useCases }}</a></td>
             <td ng-if="!$ctrl.cert.useCases">None</td>
