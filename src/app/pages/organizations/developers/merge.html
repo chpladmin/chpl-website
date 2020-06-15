@@ -1,0 +1,42 @@
+<div class="flex-container">
+  <div class="flex-item">
+    <h1>Merge {{ $ctrl.developer.name }}</h1>
+  </div>
+</div>
+<div class="flex-container">
+  <div class="flex-item panel panel-default">
+    <div class="panel-header">
+      Add Developers to Merge
+    </div>
+    <div class="panel-body">
+      <h3>Developers not merging</h3>
+      <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-ai-success btn-small pull-right" id="developers-developer-can-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
+        <div class="clearfix"></div>
+      </div>
+      <select ng-model="$ctrl.developerToSplit"
+              id="developer-select" class="form-control"
+              ng-options="d.name for d in $ctrl.developers | orderBy: 'name'">
+      </select>
+    </div>
+  </div>
+  <div class="flex-item panel panel-default">
+    <div class="panel-header">
+      Developers Merging
+    </div>
+    <div class="panel-body">
+      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length < 2">At least one other Developer must be selected to merge</div>
+      <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
+        {{ developer.name }}
+        <button class="btn btn-warning btn-small pull-right" id="developers-developer-no-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, false)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa" ng-class="developer.developerId === $ctrl.developer.developerId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
+        <div class="clearfix"></div>
+      </div>
+      <chpl-developer developer="$ctrl.developer"
+                      is-editing="true"
+                      is-merging="true"
+                      on-cancel="$ctrl.cancel()"
+                      on-edit="$ctrl.merge(developer)"></chpl-developer>
+    </div>
+  </div>
+</div>

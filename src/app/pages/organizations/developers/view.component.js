@@ -53,9 +53,7 @@ export const DevelopersViewComponent = {
                     return d;
                 });
                 this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
-                this.mergingDevelopers = devs.filter(d => d.developerId === this.developer.developerId);
                 this.backup.developers = angular.copy(this.developers);
-                this.backup.mergingDevelopers = angular.copy(this.mergingDevelopers);
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
             }
             if (changes.products) {
@@ -75,7 +73,6 @@ export const DevelopersViewComponent = {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.mergingDevelopers = angular.copy(this.backup.mergingDevelopers);
             this.action = undefined;
         }
 
@@ -147,6 +144,12 @@ export const DevelopersViewComponent = {
                 this.$state.go('.split', {
                     developer: this.developer,
                     products: this.products,
+                });
+                break;
+            case 'merge':
+                this.$state.go('.merge', {
+                    developer: this.developer,
+                    developers: this.developers,
                 });
                 break;
             default:

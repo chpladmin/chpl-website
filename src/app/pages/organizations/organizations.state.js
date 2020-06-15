@@ -39,6 +39,11 @@ let states = [
         component: 'chplDevelopersSplit',
         data: { title: 'CHPL Developers - Split' },
     },{
+        name: 'organizations.developers.developer.merge',
+        url: '/merge',
+        component: 'chplDevelopersMerge',
+        data: { title: 'CHPL Developers - Merge' },
+    },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',
         component: 'chplOncOrganizations',
