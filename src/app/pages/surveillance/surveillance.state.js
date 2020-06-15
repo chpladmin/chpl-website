@@ -26,7 +26,7 @@ let states = [{
 },{
     name: 'surveillance.complaints',
     url: '/complaints',
-    component: 'chplSurveillanceComplaints',
+    component: 'chplComplaintsReporting',
     data: {
         title: 'CHPL Surveillance - Complaints Reporting',
     },

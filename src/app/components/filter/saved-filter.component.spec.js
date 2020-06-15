@@ -1,12 +1,12 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Filter component', () => {
+    describe('the Saved Filter component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.reports', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getFilters = jasmine.createSpy('getFilters');
                     $delegate.createFilter = jasmine.createSpy('createFilter');
@@ -30,7 +30,7 @@
 
                 scope = $rootScope.$new()
 
-                el = angular.element('<chpl-filter filter-type-name="Listing Report" on-apply-filter="onApplyFilter(filter)" get-filter-data="createFilterDataObject()"></chpl-filter>');
+                el = angular.element('<chpl-saved-filter filter-type-name="Listing Report" on-apply-filter="onApplyFilter(filter)" get-filter-data="createFilterDataObject()"></chpl-saved-filter>');
 
                 scope.onApplyFilter = jasmine.createSpy('onApplyFilter');
                 scope.createFilterDataObject = jasmine.createSpy('createFilterDataObject');

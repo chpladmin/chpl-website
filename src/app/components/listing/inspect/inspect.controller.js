@@ -49,6 +49,7 @@
             vm.errorMessages = [];
             vm.systemRequirements = [];
             vm.resources = resources;
+            vm.resources.testStandards.data = vm.resources.testStandards.data.filter(item => !item.year || item.year === vm.cp.certificationEdition.name);
 
             if (!vm.cp.developer.country) {
                 vm.cp.developer.country = 'USA';

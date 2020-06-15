@@ -1,31 +1,29 @@
 (() => {
     'use strict';
 
-    describe('the Reports.ApiKeys component', () => {
-
+    describe('the Registration Confirm Account component', () => {
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
-                $provide.factory('chplSavedFilterDirective', () => ({}));
+            angular.mock.module('chpl.registration', $provide => {
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
-                    $delegate.getActivityById = jasmine.createSpy('getActivityById');
+                    $delegate.confirmUser = jasmine.createSpy('confirmUser');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, $controller, _$log_, _$q_, $rootScope, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
-
                 networkService = _networkService_;
-                networkService.getActivityMetadata.and.returnValue($q.when([]));
-                networkService.getActivityById.and.returnValue($q.when({}));
+                networkService.confirmUser.and.returnValue($q.when({}));
 
-                scope = $rootScope.$new()
-                el = angular.element('<chpl-reports-api-keys></chpl-reports-api-keys>');
+                scope = $rootScope.$new();
+                scope.hash = 'fakehash';
+
+                el = angular.element('<chpl-registration-confirm-user hash="hash"></chpl-registration-confirm-user>');
+
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -48,7 +46,15 @@
 
         describe('controller', () => {
             it('should exist', () => {
-                expect(ctrl).toBeDefined();
+                expect(ctrl).toEqual(jasmine.any(Object));
+            });
+
+            it('should have a "confirm user" function', () => {
+                expect(ctrl.confirmUser).toBeDefined();
+            });
+
+            it('should have the hash as the string to confirm with', () => {
+                expect(ctrl.userDetails).toBe('fakehash');
             });
         });
     });
