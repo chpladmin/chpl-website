@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 10.46.0
+_15 June 2020_
+
+### Features
+* Add filters to Complaints pages
+
+### User Interface Updates
+* Add description of new values in tool-tip
+
+### Bug Fixes
+* Show Developer activity with better formatting in Excel
+* Display correct error messages on account creation
+* Use correct validator to show invalid Dates
+* Only display applicable Test Standards in upload/confirm edit workflow
+
+---
+
 ## Version 10.45.0
 _1 June 2020_
 
