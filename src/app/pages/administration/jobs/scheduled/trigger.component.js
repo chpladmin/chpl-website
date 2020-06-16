@@ -42,7 +42,7 @@ export const JobsScheduledTriggerComponent = {
                     this.trigger.cronSchedule = this._getDefaultCron();
                 }
                 if (this.trigger.acb) {
-                    this.selectedAcb = this.trigger.acb.split(this.SPLIT_PRIMARY).map(acb => ({name: acb}));
+                    this.selectedAcb = this.trigger.acb.split(this.SPLIT_PRIMARY).map(acb => ({name: this._getAcbName(parseInt(acb, 10))}));
                 }
                 if (this.trigger.job.jobDataMap.parameters) {
                     this.parameters = JSON.parse(this.trigger.job.jobDataMap.parameters);
@@ -79,6 +79,10 @@ export const JobsScheduledTriggerComponent = {
             this.onDelete({
                 trigger: this.trigger,
             });
+        }
+
+        _getAcbName (acbId) {
+            return this.acbs.find(acb => acb.id === acbId).name;
         }
 
         _getDefaultCron () {

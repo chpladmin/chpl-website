@@ -4,7 +4,7 @@ export const JobsScheduledTriggersComponent = {
         scheduledSystemJobs: '<',
         takeAction: '&',
         triggers: '<',
-        acbs: '<'
+        acbs: '<',
     },
     controller: class JobsScheduledTriggersComponent {
         constructor ($log, SPLIT_PRIMARY) {
@@ -26,7 +26,7 @@ export const JobsScheduledTriggersComponent = {
                     trigger.details = ['Schedule: ' + trigger.cronSchedule, 'Type: ' + trigger.job.name];
                     if (trigger.acb) {
                         let acbs = trigger.acb.split(this.SPLIT_PRIMARY);
-                        trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + this.getAcbNamesCommaDelimited(acbs));
+                        trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + this._getAcbNamesCommaDelimited(acbs));
                     }
                     return trigger;
                 });
@@ -43,12 +43,12 @@ export const JobsScheduledTriggersComponent = {
             });
         }
 
-        getAcb (acbId) {
-            return this.acbs.find(acb => acb.id == acbId)
+        _getAcb (acbId) {
+            return this.acbs.find(acb => acb.id === acbId)
         }
 
-        getAcbNamesCommaDelimited (acbs) {
-            return acbs.map(acbId => this.getAcb(acbId).name).join(', ');
+        _getAcbNamesCommaDelimited (acbs) {
+            return acbs.map(acbId => this._getAcb(parseInt(acbId, 10)).name).join(', ');
         }
     },
 }
