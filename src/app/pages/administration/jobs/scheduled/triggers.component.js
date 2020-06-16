@@ -4,6 +4,7 @@ export const JobsScheduledTriggersComponent = {
         scheduledSystemJobs: '<',
         takeAction: '&',
         triggers: '<',
+        acbs: '<'
     },
     controller: class JobsScheduledTriggersComponent {
         constructor ($log, SPLIT_PRIMARY) {
@@ -17,12 +18,15 @@ export const JobsScheduledTriggersComponent = {
             if (changes.triggers) {
                 this.triggers = angular.copy(changes.triggers.currentValue);
             }
+            if (changes.acbs) {
+                this.acbs = angular.copy(changes.acbs.currentValue);
+            }
             if (this.triggers && this.triggers.length > 0) {
                 this.triggers = this.triggers.map(trigger => {
                     trigger.details = ['Schedule: ' + trigger.cronSchedule, 'Type: ' + trigger.job.name];
                     if (trigger.acb) {
                         let acbs = trigger.acb.split(this.SPLIT_PRIMARY);
-                        trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + acbs.join(', '));
+                        trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + this.getAcbNamesCommaDelimited(acbs));
                     }
                     return trigger;
                 });
@@ -37,6 +41,14 @@ export const JobsScheduledTriggersComponent = {
                 action: 'edit',
                 data: trigger,
             });
+        }
+
+        getAcb (acbId) {
+            return this.acbs.find(acb => acb.id == acbId)
+        }
+
+        getAcbNamesCommaDelimited (acbs) {
+            return acbs.map(acbId => this.getAcb(acbId).name).join(', ');
         }
     },
 }
