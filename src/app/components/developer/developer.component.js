@@ -248,7 +248,6 @@ export const DeveloperComponent = {
             this.mergeOptions = {
                 name: new Set([this.developer.name].concat(this.mergingDevelopers.map(d => d.name))),
                 website: new Set([this.developer.website].concat(this.mergingDevelopers.map(d => d.website))),
-                selfDeveloper: new Set([this.developer.selfDeveloper].concat(this.mergingDevelopers.map(d => d.selfDeveloper))),
             }
         }
 
