@@ -5,36 +5,36 @@
 </div>
 <div class="flex-container">
   <div class="flex-item panel panel-default">
-    <div class="panel-header">
-      Add Developers to Merge
-    </div>
     <div class="panel-body">
-      <h3>Developers not merging</h3>
-      <div ng-repeat="developer in $ctrl.developers | filter: {deleted: false} | orderBy: 'name'">
-        {{ developer.name }}
-        <button class="btn btn-ai-success btn-small pull-right" id="developers-developer-can-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, true)"><i class="fa fa-plus"></i><span class="sr-only"> Add</span></button>
-        <div class="clearfix"></div>
+      <h2>Add Developers to Merge</h2>
+      <label for="selected-to-merge" class="sr-only">Add developer to merge</label>
+      <input type="text" ng-model="$ctrl.selectedToMerge" class="form-control" id="selected-to-merge" name="selectedToMerge"
+             uib-typeahead="developer.name as developer.name for developer in $ctrl.developers | filter:$viewValue | filter:{selected:false} | limitTo:8"
+             typeahead-no-results="$ctrl.noneFound" typeahead-on-select="$ctrl.selectDeveloper($item, $model, $label, $event)"
+             typeahead-editable="false" typeahead-show-hint="true">
+      <div ng-if="$ctrl.noneFound">
+        <i class="fa fa-cancel"></i> No Results Found
       </div>
-      <select ng-model="$ctrl.developerToSplit"
-              id="developer-select" class="form-control"
-              ng-options="d.name for d in $ctrl.developers | orderBy: 'name'">
-      </select>
+      <div ng-repeat="developer in $ctrl.developers">
+        <span ng-if="developer.selected"><i class="fa fa-check"></i><span class="sr-only">Developer is selected</span> </span>{{ developer.name }}
+      </div>
     </div>
   </div>
   <div class="flex-item panel panel-default">
-    <div class="panel-header">
-      Developers Merging
-    </div>
     <div class="panel-body">
-      <div class="bg-danger" ng-if="$ctrl.mergingDevelopers.length < 2">At least one other Developer must be selected to merge</div>
-      <div ng-repeat="developer in $ctrl.mergingDevelopers | orderBy: 'name'">
+      <h2>Developers Merging</h2>
+      <div ng-repeat="developer in $ctrl.selectedDevelopers | orderBy: 'name' track by $index"
+           class="container-striped" ng-class-even="'even'" ng-class-odd="'odd'"
+           ng-class="developer.developerId === $ctrl.developer.developerId ? 'selected-developer--primary' : 'clickable'"
+           ng-click="$ctrl.selectDeveloper(developer)">
         {{ developer.name }}
-        <button class="btn btn-warning btn-small pull-right" id="developers-developer-no-merge-{{ developer.developerId }}" ng-click="$ctrl.toggleMerge(developer, false)" ng-disabled="developer.developerId === $ctrl.developer.developerId"><i class="fa" ng-class="developer.developerId === $ctrl.developer.developerId ? 'fa-ban' : 'fa-minus'"></i><span class="sr-only"> Remove</span></button>
-        <div class="clearfix"></div>
+        <span class="pull-right" ng-if="developer.developerId !== $ctrl.developer.developerId"><i class="fa fa-close"></i></span>
       </div>
+      <h2>New Merged Developer</h2>
       <chpl-developer developer="$ctrl.developer"
                       is-editing="true"
                       is-merging="true"
+                      merging-developers="$ctrl.selectedDevelopers"
                       on-cancel="$ctrl.cancel()"
                       on-edit="$ctrl.merge(developer)"></chpl-developer>
     </div>

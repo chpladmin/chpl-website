@@ -17,8 +17,22 @@ export const DevelopersMergeComponent = {
             if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
             }
-            if (changes.developers) {
-                this.developers = angular.copy(changes.developers.currentValue.products);
+            if (changes.developers && changes.developers.currentValue) {
+                this.developers = changes.developers.currentValue.developers
+                    .filter(d => !d.deleted)
+                    .map(d => {
+                        d.selected = false;
+                        return d;
+                    })
+                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+            }
+            if (this.developer && this.developers) {
+                this.developers.forEach(d => {
+                    if (d.developerId === this.developer.developerId) {
+                        d.selected = true;
+                    }
+                });
+                this.selectedDevelopers = this.developers.filter(d => d.selected);
             }
         }
 
@@ -31,15 +45,13 @@ export const DevelopersMergeComponent = {
         }
 
         merge (developer) {
-            let mergeDeveloper = {
-                oldDeveloper: this.developer,
-                newDeveloper: developer,
-                oldProducts: this.products,
-                newProducts: this.movingProducts,
+            let developerToSave = {
+                developer: developer,
+                developerIds: this.selectedDevelopers.map(d => d.developerId),
             };
             this.errorMessages = [];
             let that = this;
-            this.networkService.mergeDeveloper(mergeDeveloper)
+            this.networkService.updateDeveloper(developerToSave)
                 .then(response => {
                     if (!response.status || response.status === 200) {
                         that.$state.go('organizations.developers.developer', {
@@ -65,6 +77,17 @@ export const DevelopersMergeComponent = {
                         that.errorMessages = ['An error has occurred.'];
                     }
                 });
+        }
+
+        selectDeveloper (developer) {
+            if (developer.developerId === this.developer.developerId) { return; }
+            this.developers
+                .filter(d => d.developerId === developer.developerId)
+                .forEach(d => d.selected = !d.selected);
+            this.selectedDevelopers = this.developers
+                .filter(d => d.selected)
+                .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+            this.selectedToMerge = null;
         }
     },
 }
