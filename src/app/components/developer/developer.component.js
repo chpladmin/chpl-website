@@ -10,6 +10,7 @@ export const DeveloperComponent = {
         isEditing: '<',
         isInvalid: '<',
         isSplitting: '<',
+        mergingDevelopers: '<',
         onCancel: '&?',
         onEdit: '&?',
         showFormErrors: '<',
@@ -22,6 +23,7 @@ export const DeveloperComponent = {
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.isOn = featureFlags.isOn;
+            this.mergeOptions = {};
             this.valid = {
                 address: true,
                 contact: true,
@@ -68,8 +70,14 @@ export const DeveloperComponent = {
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
+            if (changes.mergingDevelopers) {
+                this.mergingDevelopers = angular.copy(changes.mergingDevelopers.currentValue);
+            }
             if (changes.showFormErrors) {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
+            }
+            if (this.developer && this.mergingDevelopers) {
+                this.generateMergeOptions()
             }
         }
 
@@ -231,6 +239,29 @@ export const DeveloperComponent = {
 
         removeStatus (idx) {
             this.developer.statusEvents.splice(idx, 1);
+        }
+
+        /*
+         * Pill generation
+         */
+        generateMergeOptions () {
+            this.mergeOptions = {
+                name: new Set([this.developer.name].concat(this.mergingDevelopers.map(d => d.name))),
+                website: new Set([this.developer.website].concat(this.mergingDevelopers.map(d => d.website))),
+                selfDeveloper: new Set([this.developer.selfDeveloper].concat(this.mergingDevelopers.map(d => d.selfDeveloper))),
+            }
+        }
+
+        getDifferences (predicate) {
+            if (!this.developer || !this.mergeOptions[predicate]) { return; }
+            return Array.from(this.mergeOptions[predicate])
+                .filter(e => e !== this.developer[predicate])
+                .filter(e => e && e.length > 0)
+                .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        }
+
+        selectDifference (predicate, value) {
+            this.developer[predicate] = value;
         }
     },
 }

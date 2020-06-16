@@ -40,7 +40,7 @@ let states = [
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.developers.developer.merge',
-        url: '/merge',
+        url: '/merge?v',
         component: 'chplDevelopersMerge',
         data: { title: 'CHPL Developers - Merge' },
     },{

@@ -5,12 +5,20 @@ export const DevelopersMergeComponent = {
         developers: '<',
     },
     controller: class DevelopersMergeController {
-        constructor ($log, $state, authService, networkService) {
+        constructor ($log, $state, $stateParams, authService, networkService) {
             'ngInject'
             this.$log = $log;
             this.$state = $state;
+            this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.version = 'a';
+        }
+
+        $onInit () {
+            if (this.$stateParams && this.$stateParams.v) {
+                this.version = this.$stateParams.v;
+            }
         }
 
         $onChanges (changes) {
@@ -27,12 +35,7 @@ export const DevelopersMergeComponent = {
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (this.developer && this.developers) {
-                this.developers.forEach(d => {
-                    if (d.developerId === this.developer.developerId) {
-                        d.selected = true;
-                    }
-                });
-                this.selectedDevelopers = this.developers.filter(d => d.selected);
+                this.developers = this.developers.filter(d => d.developerId !== this.developer.developerId)
             }
         }
 
@@ -49,6 +52,7 @@ export const DevelopersMergeComponent = {
                 developer: developer,
                 developerIds: this.selectedDevelopers.map(d => d.developerId),
             };
+            developerToSave.developerIds.push(this.developer.developerId);
             this.errorMessages = [];
             let that = this;
             this.networkService.updateDeveloper(developerToSave)
@@ -80,7 +84,6 @@ export const DevelopersMergeComponent = {
         }
 
         selectDeveloper (developer) {
-            if (developer.developerId === this.developer.developerId) { return; }
             this.developers
                 .filter(d => d.developerId === developer.developerId)
                 .forEach(d => d.selected = !d.selected);
