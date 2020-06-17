@@ -81,10 +81,6 @@ export const JobsScheduledTriggerComponent = {
             });
         }
 
-        _getAcbName (acbId) {
-            return this.acbs.find(acb => acb.id === acbId).name;
-        }
-
         _getDefaultCron () {
             let ret = '';
             if (this.trigger.job && this.trigger.job.frequency) {
