@@ -28,6 +28,7 @@ export const DeveloperComponent = {
                 address: true,
                 contact: true,
             }
+            this.errorMessages = [];
         }
 
         $onChanges (changes) {
@@ -72,6 +73,7 @@ export const DeveloperComponent = {
             }
             if (changes.mergingDevelopers) {
                 this.mergingDevelopers = angular.copy(changes.mergingDevelopers.currentValue);
+                this.generateErrorMessages();
             }
             if (changes.showFormErrors) {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
@@ -177,6 +179,7 @@ export const DeveloperComponent = {
             if (this.isChangeRequest) {
                 this.onEdit({developer: this.developer});
             }
+            this.generateErrorMessages();
         }
 
         editContact (contact, errors, validForm) {
@@ -185,6 +188,7 @@ export const DeveloperComponent = {
             if (this.isChangeRequest) {
                 this.onEdit({developer: this.developer});
             }
+            this.generateErrorMessages();
         }
 
         takeActionBarAction (action) {
@@ -194,6 +198,7 @@ export const DeveloperComponent = {
                 break;
             case 'mouseover':
                 this.showFormErrors = true;
+                this.generateErrorMessages();
                 break;
             case 'save':
                 this.save();
@@ -205,12 +210,23 @@ export const DeveloperComponent = {
         /*
          * Form validation
          */
+        generateErrorMessages () {
+            let messages = [];
+            if (this.showFormErrors) {
+                if (!this.mergingDevelopers || this.mergingDevelopers.length === 0) {
+                    messages.push('At least one other Developer must be selected to merge');
+                }
+            }
+            this.errorMessages = messages;
+        }
+
         isValid () {
             return this.form.$valid // basic form validation
                 && !this.isInvalid // validation from outside
                 && this.valid.address && this.valid.contact // validation from sub-components
                 && this.developer.statusEvents && this.developer.statusEvents.length > 0 // status history exists
-                && this.developer.statusEvents.reduce((acc, e) => acc && !this.matchesPreviousStatus(e) && !this.matchesPreviousDate(e), true); // no duplicate status history data
+                && this.developer.statusEvents.reduce((acc, e) => acc && !this.matchesPreviousStatus(e) && !this.matchesPreviousDate(e), true) // no duplicate status history data
+                && this.errorMessages.length === 0; // business logic error messages
         }
 
         matchesPreviousStatus (status) {

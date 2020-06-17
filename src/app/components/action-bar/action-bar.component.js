@@ -1,6 +1,7 @@
 export const ActionBarComponent = {
     templateUrl: 'chpl.components/action-bar/action-bar.html',
     bindings: {
+        errorMessages: '<',
         isDisabled: '<',
         takeAction: '&',
     },
@@ -8,6 +9,12 @@ export const ActionBarComponent = {
         constructor ($log) {
             'ngInject'
             this.$log = $log;
+        }
+
+        onChanges (changes) {
+            if (changes.errorMessages) {
+                this.errorMessages = angular.copy(changes.errorMessages.currentValue);
+            }
         }
 
         cancel () {
