@@ -352,12 +352,14 @@
                         is-required="!$ctrl.isChangeRequest"
                         is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                         ignore-friendly-name="true"
+                        merge-options="$ctrl.contactOptions"
                         on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
           <div class="flex-container horizontal-space"></div>
           <chpl-address address="$ctrl.developer.address"
                         is-editing="true"
                         is-required="$ctrl.isSplitting"
                         is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
+                        merge-options="$ctrl.addressOptions"
                         on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
           <div class="flex-container horizontal-space"></div>
           <div class="flex-container wrap">

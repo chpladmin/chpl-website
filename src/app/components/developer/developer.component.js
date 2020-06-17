@@ -246,16 +246,58 @@ export const DeveloperComponent = {
          */
         generateMergeOptions () {
             this.mergeOptions = {
-                name: new Set([this.developer.name].concat(this.mergingDevelopers.map(d => d.name))),
-                website: new Set([this.developer.website].concat(this.mergingDevelopers.map(d => d.website))),
+                name: Array.from(new Set([this.developer.name].concat(this.mergingDevelopers.map(d => d.name)))),
+                website: Array.from(new Set([this.developer.website].concat(this.mergingDevelopers.map(d => d.website)))),
+            };
+            this.contactOptions = {
+                fullName: [],
+                title: [],
+                email: [],
+                phoneNumber: [],
+            };
+            this.addressOptions = {
+                line1: [],
+                line2: [],
+                city: [],
+                state: [],
+                zipcode: [],
+                country: [],
+            };
+            this.fillMergeOptionByDeveloper(this.developer);
+            this.mergingDevelopers.forEach(d => this.fillMergeOptionByDeveloper(d));
+            this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
+            this.contactOptions.title = Array.from(new Set(this.contactOptions.title));
+            this.contactOptions.email = Array.from(new Set(this.contactOptions.email));
+            this.contactOptions.phoneNumber = Array.from(new Set(this.contactOptions.phoneNumber));
+            this.addressOptions.line1 = Array.from(new Set(this.addressOptions.line1));
+            this.addressOptions.line2 = Array.from(new Set(this.addressOptions.line2));
+            this.addressOptions.city = Array.from(new Set(this.addressOptions.city));
+            this.addressOptions.state = Array.from(new Set(this.addressOptions.state));
+            this.addressOptions.zipcode = Array.from(new Set(this.addressOptions.zipcode));
+            this.addressOptions.country = Array.from(new Set(this.addressOptions.country));
+        }
+
+        fillMergeOptionByDeveloper (developer) {
+            if (developer.contact) {
+                this.contactOptions.fullName.push(developer.contact.fullName);
+                this.contactOptions.title.push(developer.contact.title);
+                this.contactOptions.email.push(developer.contact.email);
+                this.contactOptions.phoneNumber.push(developer.contact.phoneNumber);
+            }
+            if (developer.address) {
+                this.addressOptions.line1.push(developer.address.line1);
+                this.addressOptions.line2.push(developer.address.line2);
+                this.addressOptions.city.push(developer.address.city);
+                this.addressOptions.state.push(developer.address.state);
+                this.addressOptions.zipcode.push(developer.address.zipcode);
+                this.addressOptions.country.push(developer.address.country);
             }
         }
 
         getDifferences (predicate) {
             if (!this.developer || !this.mergeOptions[predicate]) { return; }
-            return Array.from(this.mergeOptions[predicate])
-                .filter(e => e !== this.developer[predicate])
-                .filter(e => e && e.length > 0)
+            return this.mergeOptions[predicate]
+                .filter(e => e && e.length > 0 && e !== this.developer[predicate])
                 .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
         }
 
