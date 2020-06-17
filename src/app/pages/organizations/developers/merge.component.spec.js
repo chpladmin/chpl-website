@@ -11,8 +11,9 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
+                $provide.factory('chplDeveloperDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.mergeDeveloper = jasmine.createSpy('mergeDeveloper');
+                    $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
                     return $delegate;
                 });
             });
@@ -23,13 +24,14 @@
                 $q = _$q_;
                 $state = _$state_;
                 networkService = _networkService_;
-                networkService.mergeDeveloper.and.returnValue($q.when({
+                networkService.updateDeveloper.and.returnValue($q.when({
                     developer: 'a developer',
+                    developerId: 32,
                 }));
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
-                scope.developers = mock.developers;
+                scope.developers = { developers: mock.developers };
 
                 el = angular.element('<chpl-developers-merge developer="developer" developers="developers"></chpl-developers-merge>');
 
@@ -60,48 +62,30 @@
         });
 
         describe('when a developer merge is saved', () => {
-            it('should navigate back to the developer on a status:200 response', () => {
+            it('should navigate back to the developer on a good response', () => {
                 spyOn($state, 'go');
-                ctrl.developer = {developerId: 'an id'};
-                networkService.mergeDeveloper.and.returnValue($q.when({status: 200}));
-                ctrl.mergeDeveloper = {
-                    newDeveloper: {},
-                    oldDeveloper: {},
-                    newProducts: [],
-                    oldProducts: [],
-                };
-                ctrl.merge();
+                let developer = {developerId: 'an id'};
+                ctrl.selectedDevelopers = [{developerId: 1}, {developerId: 2}];
+                networkService.updateDeveloper.and.returnValue($q.when({developerId: 200}));
+                ctrl.merge(developer);
                 scope.$digest();
-                expect($state.go).toHaveBeenCalled();
+                expect($state.go).toHaveBeenCalledWith(
+                    'organizations.developers.developer',
+                    { developerId: 200 },
+                    { reload: true },
+                );
             });
 
-            it('should report errors if response has errors', () => {
-                spyOn($state, 'go');
-                networkService.mergeDeveloper.and.returnValue($q.when({status: 401, data: {errorMessages: ['This is an error', 'This is another error']}}));
-                ctrl.mergeDeveloper = {
-                    newDeveloper: {},
-                    oldDeveloper: {},
-                    newProducts: [],
-                    oldProducts: [],
-                };
-                ctrl.errorMessages = [];
-                ctrl.merge();
-                scope.$digest();
-                expect(ctrl.errorMessages.length).toBe(2);
-            });
-
-            it('should pass the the merge developer data to the network service', () => {
-                spyOn($state, 'go');
-                networkService.mergeDeveloper.and.returnValue($q.when({status: 200}));
-                ctrl.mergeDeveloper = {
-                    newDeveloper: {},
-                    oldDeveloper: {},
-                    newProducts: [],
-                    oldProducts: [],
-                };
-                ctrl.merge({});
-                scope.$digest();
-                expect(networkService.mergeDeveloper).toHaveBeenCalledWith(ctrl.mergeDeveloper);
+            it('should pass the the merging developer data to the network service', () => {
+                let developer = {developerId: 'an id'};
+                ctrl.developer = developer;
+                ctrl.selectedDevelopers = [{developerId: 1}, {developerId: 2}];
+                networkService.updateDeveloper.and.returnValue($q.when({developerId: 200}));
+                ctrl.merge(developer);
+                expect(networkService.updateDeveloper).toHaveBeenCalledWith({
+                    developer: developer,
+                    developerIds: [1, 2, 'an id'],
+                });
             });
         });
     });

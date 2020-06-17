@@ -11,9 +11,9 @@ export const ActionBarComponent = {
             this.$log = $log;
         }
 
-        onChanges (changes) {
-            if (changes.errorMessages) {
-                this.errorMessages = angular.copy(changes.errorMessages.currentValue);
+        $onChanges (changes) {
+            if (changes.errorMessages && changes.errorMessages.currentValue) {
+                this.errorMessages = changes.errorMessages.currentValue.map(e => e);
             }
         }
 
