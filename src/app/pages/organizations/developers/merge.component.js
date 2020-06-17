@@ -53,33 +53,16 @@ export const DevelopersMergeComponent = {
                 developerIds: this.selectedDevelopers.map(d => d.developerId),
             };
             developerToSave.developerIds.push(this.developer.developerId);
-            this.errorMessages = [];
             let that = this;
             this.networkService.updateDeveloper(developerToSave)
                 .then(response => {
-                    if (!response.status || response.status === 200) {
-                        that.$state.go('organizations.developers.developer', {
-                            developerId: that.developer.developerId,
-                        }, {
-                            reload: true,
-                        });
-                    } else {
-                        if (response.data.errorMessages) {
-                            that.errorMessages = response.data.errorMessages;
-                        } else if (response.data.error) {
-                            that.errorMessages.push(response.data.error);
-                        } else {
-                            that.errorMessages = ['An error has occurred.'];
-                        }
-                    }
+                    that.$state.go('organizations.developers.developer', {
+                        developerId: response.developerId,
+                    }, {
+                        reload: true,
+                    });
                 }, error => {
-                    if (error.data.errorMessages) {
-                        that.errorMessages = error.data.errorMessages;
-                    } else if (error.data.error) {
-                        that.errorMessages.push(error.data.error);
-                    } else {
-                        that.errorMessages = ['An error has occurred.'];
-                    }
+                    that.$log.error(error);
                 });
         }
 

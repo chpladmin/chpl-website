@@ -54,6 +54,7 @@ export const ContactComponent = {
 
         selectDifference (predicate, value) {
             this.contact[predicate] = value;
+            this.update();
         }
 
         update () {

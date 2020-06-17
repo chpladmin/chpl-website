@@ -46,6 +46,7 @@ export const AddressComponent = {
 
         selectDifference (predicate, value) {
             this.address[predicate] = value;
+            this.update();
         }
 
         update () {
