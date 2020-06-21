@@ -60,3 +60,11 @@ On all Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpac
 [nodejs]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/
 [webpack]: https://webpack.js.org/
+
+### Automation test scripts
+
+* `yarn global add webdriverio`: Adds WDIO globally 
+* `yarn install`: Install dependency packages (This is needed only once on the machine)
+* `yarn run e2e`: Run End2End test 
+
+
