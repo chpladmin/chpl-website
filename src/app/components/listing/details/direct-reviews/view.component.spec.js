@@ -61,13 +61,9 @@
             });
 
             describe('on load', () => {
-                it('should create friendly dates', () => {
-                    expect(ctrl.directReviews[0].friendlyStartDate).toBe('3 June 2020');
-                    expect(ctrl.directReviews[0].friendlyEndDate).toBe('3 October 2020');
-                });
-
-                it('should handle empty end dates', () => {
-                    expect(ctrl.directReviews[1].friendlyEndDate).toBe('Has not ended');
+                it('should copy direct reviews', () => {
+                    expect(ctrl.directReviews).not.toBe(mock);
+                    expect(ctrl.directReviews).toEqual(mock);
                 });
             });
         });
