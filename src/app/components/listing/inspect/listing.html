@@ -40,11 +40,11 @@
           </ul>
         </span>
         <br />
-        <ai-certs default-all="true"
-                  edit-mode="false"
-                  is-confirming="true"
-                  product="$ctrl.listing">
-        </ai-certs>
+        <chpl-listing-details default-all="true"
+                              edit-mode="false"
+                              is-confirming="true"
+                              listing="$ctrl.listing">
+        </chpl-listing-details>
         <p><button class="btn btn-default btn-block" ng-click="$ctrl.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
       </div>
     </div>
