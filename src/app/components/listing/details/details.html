@@ -143,20 +143,20 @@
       <div class="panel-heading">
         <a href ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReview' }}" id="details-compliance-activities"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-right'"></i> Compliance Activities</a>
       </div>
-      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews'" id="panel-compliance-activities">
+      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'compliance'" id="panel-compliance-activities">
         <div class="panel panel-ai">
           <div class="panel-heading">
-            <a href ng-click="$ctrl.showPanel('surveillance')" aria-expanded="{{ $ctrl.panelShown === 'surveillance' }}" id="details-surveillance-activities"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found)</span></a>
+            <a href ng-click="$ctrl.showSubPanel('surveillance')" aria-expanded="{{ $ctrl.subPanelShown === 'surveillance' }}" id="details-surveillance-activities"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found)</span></a>
           </div>
-          <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'surveillance'" id="panel-surveillance-activities">
+          <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'surveillance'" id="panel-surveillance-activities">
             <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
           </div>
         </div>
         <div class="panel panel-ai">
           <div class="panel-heading">
-            <a href ng-click="$ctrl.showPanel('directReviews')" aria-expanded="{{ $ctrl.panelShown === 'directReviews' }}" id="details-direct-reviews-activities"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-right'"></i> Direct Review Activities<span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span></a>
+            <a href ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}" id="details-direct-reviews-activities"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-right'"></i> Direct Review Activities<span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span></a>
           </div>
-          <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'directReviews'" id="panel-direct-reviews-activities">
+          <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'directReviews'" id="panel-direct-reviews-activities">
             <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
           </div>
         </div>

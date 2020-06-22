@@ -11,7 +11,7 @@ export const ListingDetailsComponent = {
         viewAllCerts: '<defaultAll',
     },
     controller: class ListingDetailsComponent {
-        constructor ($analytics, $log, $uibModal, networkService, utilService) {
+        constructor ($analytics, $log, $uibModal, featureFlags, networkService, utilService) {
             this.$analytics = $analytics;
             this.$log = $log;
             this.$uibModal = $uibModal;
@@ -20,6 +20,7 @@ export const ListingDetailsComponent = {
             this.muuCount = utilService.muuCount;
             this.sortCerts = utilService.sortCert;
             this.handlers = [];
+            this.isOn = featureFlags.isOn;
             this.isEditing = false;
             this.viewAllCerts = false;
             this.panelShown = 'cert';
@@ -28,7 +29,12 @@ export const ListingDetailsComponent = {
         $onInit () {
             if (this.initialPanel) {
                 if (this.initialPanel !== 'none') {
-                    this.panelShown = this.initialPanel;
+                    if (this.isOn('direct-review') && (this.initialPanel === 'surveillance' || this.initialPanel === 'directReviews')) {
+                        this.panelShown = 'compliance';
+                        this.subPanelShown = this.initialPanel;
+                    } else {
+                        this.panelShown = this.initialPanel;
+                    }
                 } else {
                     this.panelShown = undefined;
                 }
@@ -116,9 +122,6 @@ export const ListingDetailsComponent = {
                 case 'surveillance':
                     this.$analytics.eventTrack('Viewed Surveillance information', { category: 'Listing Details', label: this.listing.chplProductNumber});
                     break;
-                case 'directReviews':
-                    this.$analytics.eventTrack('Viewed Direct Review information', { category: 'Listing Details', label: this.listing.chplProductNumber});
-                    break;
                 case 'g1g2':
                     this.$analytics.eventTrack('Viewed G1/G2 information', { category: 'Listing Details', label: this.listing.chplProductNumber});
                     break;
@@ -130,6 +133,22 @@ export const ListingDetailsComponent = {
             }
 
             this.panelShown = this.panelShown === panel ? '' : panel;
+        }
+
+        showSubPanel (panel) {
+            if (this.subPanelShown !== panel) {
+                switch (panel) {
+                case 'surveillance':
+                    this.$analytics.eventTrack('Viewed Surveillance information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+                    break;
+                case 'directReviews':
+                    this.$analytics.eventTrack('Viewed Direct Review information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+                    break;
+                    // no default
+                }
+            }
+
+            this.subPanelShown = this.subPanelShown === panel ? '' : panel;
         }
 
         updateCs () {
