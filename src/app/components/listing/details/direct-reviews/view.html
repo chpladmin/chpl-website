@@ -1,0 +1,9 @@
+<div class="inset-content">
+  <div ng-if="!$ctrl.directReviews || $ctrl.directReviews.length === 0">
+    No Direct Reviews have been conducted for this listing
+  </div>
+  <div ng-repeat="dr in $ctrl.directReviews">
+    <pre>{{ dr | json }}</pre>
+    <hr ng-if="!$last" />
+  </div>
+</div>

@@ -2,6 +2,7 @@ export const ListingDetailsComponent = {
     templateUrl: 'chpl.components/listing/details/details.html',
     bindings: {
         listing: '<',
+        directReviews: '<',
         editMode: '<',
         initialPanel: '@',
         isConfirming: '<',
@@ -42,13 +43,18 @@ export const ListingDetailsComponent = {
                 this.cqms = this.listing.cqmResults;
                 this.prepCqms();
             }
+            if (changes.directReviews && changes.directReviews.currentValue) {
+                this.directReviews = angular.copy(changes.directReviews.currentValue);
+            }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
             }
         }
 
         hasEdited () {
-            this.handlers.forEach(h => h());
+            angular.forEach(this.handlers, function (handler) {
+                handler();
+            });
         }
 
         prepCqms () {
@@ -104,8 +110,14 @@ export const ListingDetailsComponent = {
                 case 'additional':
                     this.$analytics.eventTrack('Viewed additional information', { category: 'Listing Details', label: this.listing.chplProductNumber});
                     break;
+                case 'compliance':
+                    this.$analytics.eventTrack('Viewed Compliance information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+                    break;
                 case 'surveillance':
-                    this.$analytics.eventTrack('Viewed surveillance information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+                    this.$analytics.eventTrack('Viewed Surveillance information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+                    break;
+                case 'directReviews':
+                    this.$analytics.eventTrack('Viewed Direct Review information', { category: 'Listing Details', label: this.listing.chplProductNumber});
                     break;
                 case 'g1g2':
                     this.$analytics.eventTrack('Viewed G1/G2 information', { category: 'Listing Details', label: this.listing.chplProductNumber});

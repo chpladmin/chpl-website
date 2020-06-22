@@ -74,6 +74,10 @@ export const ListingComponent = {
                 }, () => {
                     that.loading = false;
                 });
+            //if (this.isOn('direct-review')) {
+            this.networkService.getDirectReviews(this.listingId)
+                .then(data => that.directReviews = data);
+            //}
         }
 
         loadResources () {

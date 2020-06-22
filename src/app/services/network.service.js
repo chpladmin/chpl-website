@@ -340,6 +340,10 @@ export class NetworkService {
         }
     }
 
+    getDirectReviews (id) {
+        return this.apiGET('/certified_products/' + id + '/direct-reviews');
+    }
+
     getEditions () {
         return this.apiGET('/data/certification_editions');
     }

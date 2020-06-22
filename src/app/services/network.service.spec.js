@@ -851,6 +851,14 @@
                 $httpBackend.flush();
             });
 
+            fit('should getDirectReviews', () => {
+                $httpBackend.expectGET(/^\/rest\/certified_products\/id\/direct-reviews$/).respond(200, {data: 'response'});
+                networkService.getDirectReviews('id').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getEditions', () => {
                 $httpBackend.expectGET(/^\/rest\/data\/certification_editions$/).respond(200, {data: 'response'});
                 networkService.getEditions().then(response => {
