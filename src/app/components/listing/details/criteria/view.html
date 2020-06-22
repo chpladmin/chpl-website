@@ -170,7 +170,7 @@
           </tr>
           <tr ng-if="$ctrl.cert.documentationUrl !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url">
             <td>
-              Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) ) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) ) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
+              Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.documentationUrl"><a ai-a href="{{ $ctrl.cert.documentationUrl }}" analytics-on="click" analytics-event="Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.documentationUrl }">{{ $ctrl.cert.documentationUrl }}</a></td>
             <td ng-if="!$ctrl.cert.documentationUrl">None</td>
