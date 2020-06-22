@@ -1,8 +1,40 @@
-<div class="inset-content">
+<div class="direct-reviews">
   <div ng-if="!$ctrl.directReviews || $ctrl.directReviews.length === 0">
     No Direct Reviews have been conducted for this listing
   </div>
-  <div ng-repeat="dr in $ctrl.directReviews">
+  <div ng-repeat="dr in $ctrl.directReviews" class="direct-review" ng-class="dr.endDate ? 'direct-review--open' : 'direct-review--end'">
+    <div class="direct-review__header" ng-click="dr.open = !dr.open">
+      <span class="direct-review__header-title">{{ dr.endDate ? 'Closed' : 'Open' }} Direct Review</span>
+      <span class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + dr.friendlyEndDate : 'began ' + dr.friendlyStartDate }} Direct Review</span>
+    </div>
+    <div class="direct-review__basic-information" ng-if="dr.open">
+      <div class="direct-review__data">
+        <div class="direct-review__data-label">
+          Date review began
+        </div>
+        <div class="direct-review__data-element">
+          {{ dr.friendlyStartDate }}
+        </div>
+      </div>
+      <div class="direct-review__data">
+        <div class="direct-review__data-label">
+          Date review ended
+        </div>
+        <div class="direct-review__data-element">
+          {{ dr.friendlyEndDate }}
+        </div>
+      </div>
+      <div class="direct-review__data">
+        <div class="direct-review__data-label">
+          Circumstance<span ng-if="dr.circumstances.length !== 0">s</span>
+        </div>
+        <div class="direct-review__data-element">
+          <ul>
+            <li ng-repeat="c in dr.circumstances">{{ c }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <pre>{{ dr | json }}</pre>
     <hr ng-if="!$last" />
   </div>

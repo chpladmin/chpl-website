@@ -12,7 +12,15 @@ export const DirectReviewsComponent = {
 
         $onChanges (changes) {
             if (changes.directReviews && changes.directReviews.currentValue) {
-                this.directReviews = changes.directReviews.currentValue.map(dr => dr);
+                this.directReviews = changes.directReviews.currentValue.map(dr => {
+                    dr.friendlyStartDate = dr.startDate.dayOfMonth + ' ' + [...dr.startDate.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('') + ' ' + dr.startDate.year;
+                    if (dr.endDate) {
+                        dr.friendlyEndDate = dr.endDate.dayOfMonth + ' ' + [...dr.endDate.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('') + ' ' + dr.endDate.year;
+                    } else {
+                        dr.friendlyEndDate = 'Has not ended';
+                    }
+                    return dr;
+                });
             }
         }
     },
