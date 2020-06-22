@@ -12,7 +12,16 @@ export const DirectReviewsComponent = {
 
         $onChanges (changes) {
             if (changes.directReviews && changes.directReviews.currentValue) {
-                this.directReviews = changes.directReviews.currentValue.map(dr => dr);
+                this.directReviews = changes.directReviews.currentValue
+                    .map(dr => dr)
+                    .sort((a, b) => {
+                        if (a.endDate && b.endDate) {
+                            return a.endDate < b.endDate ? 1 : -1;
+                        } else if (!a.endDate && !b.endDate) {
+                            return a.startDate < b.startDate ? 1 : -1;
+                        }
+                        return a.endDate ? 1 : -1;
+                    });
             }
         }
     },

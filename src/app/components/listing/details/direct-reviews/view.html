@@ -22,7 +22,7 @@
           <button class="direct-review__tooltip-button" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button> Date review ended
         </div>
         <div class="direct-review__data-element">
-          {{ dr.endDate | date : 'mediumDate' : 'UTC' }}
+          {{ dr.endDate ? (dr.endDate | date : 'mediumDate' : 'UTC') : 'Has not ended' }}
         </div>
       </div>
       <div class="direct-review__circumstances">

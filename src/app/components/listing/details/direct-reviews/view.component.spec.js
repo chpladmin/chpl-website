@@ -5,23 +5,21 @@
         var $log, ctrl, el, mock, scope;
 
         mock = [{
-            startDate: {
-                dayOfMonth: 3,
-                month: 'JUNE',
-                year: 2020,
-            },
-            endDate: {
-                dayOfMonth: 3,
-                month: 'OCTOBER',
-                year: 2020,
-            },
+            startDate: 30000,
+            endDate: 40000,
+            id: 'closed-1',
         },{
-            startDate: {
-                dayOfMonth: 3,
-                month: 'JUNE',
-                year: 2020,
-            },
+            startDate: 20000,
             endDate: undefined,
+            id: 'open-1',
+        },{
+            startDate: 30000,
+            endDate: 45000,
+            id: 'closed-2',
+        },{
+            startDate: 50000,
+            endDate: undefined,
+            id: 'open-2',
         }];
 
         beforeEach(() => {
@@ -61,9 +59,11 @@
             });
 
             describe('on load', () => {
-                it('should copy direct reviews', () => {
-                    expect(ctrl.directReviews).not.toBe(mock);
-                    expect(ctrl.directReviews).toEqual(mock);
+                it('should sort DRs', () => {
+                    expect(ctrl.directReviews[0].id).toBe('open-2');
+                    expect(ctrl.directReviews[1].id).toBe('open-1');
+                    expect(ctrl.directReviews[2].id).toBe('closed-2');
+                    expect(ctrl.directReviews[3].id).toBe('closed-1');
                 });
             });
         });
