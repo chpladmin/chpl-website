@@ -1,0 +1,71 @@
+.direct-reviews {
+    border-left: 2px solid var(--grey);
+}
+
+.direct-review__header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.direct-review__header--open {
+    background-color: var(--grey);
+}
+
+.direct-review__header--closed {
+    background-color: var(--grey-blue);
+}
+
+.direct-review__header-title {
+    flex: 1;
+    font-weight: 700;
+}
+
+.direct-review__header-subtitle {
+    flex: 1;
+}
+
+.direct-review__header-toggle {
+    flex: 1;
+    text-align: right;
+}
+
+.direct-review__basic-information {
+    border-left: 3px solid var(--dark-grey);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+}
+
+.direct-review__start {
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.direct-review__end {
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.direct-review__circumstances {
+    grid-column-start: 1;
+    grid-column-end: span 2;
+    grid-row-start: 2;
+}
+
+.direct-review__data-label {
+    font-weight: 700;
+}
+
+.direct-review__tooltip-button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border-color: transparent;
+}

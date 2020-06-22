@@ -2,31 +2,32 @@
   <div ng-if="!$ctrl.directReviews || $ctrl.directReviews.length === 0">
     No Direct Reviews have been conducted for this listing
   </div>
-  <div ng-repeat="dr in $ctrl.directReviews" class="direct-review" ng-class="dr.endDate ? 'direct-review--open' : 'direct-review--end'">
-    <div class="direct-review__header" ng-click="dr.open = !dr.open">
+  <div ng-repeat="dr in $ctrl.directReviews" class="direct-review">
+    <div class="direct-review__header" ng-class="dr.endDate ? 'direct-review__header--closed' : 'direct-review__header--open'" ng-click="dr.open = !dr.open">
       <span class="direct-review__header-title">{{ dr.endDate ? 'Closed' : 'Open' }} Direct Review</span>
-      <span class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + dr.friendlyEndDate : 'began ' + dr.friendlyStartDate }} Direct Review</span>
+      <span class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + dr.friendlyEndDate : 'began ' + dr.friendlyStartDate }}</span>
+      <span class="direct-review__header-toggle"><i class="fa" ng-class="dr.open ? 'fa-caret-up' : 'fa-caret-down'"></i></span>
     </div>
     <div class="direct-review__basic-information" ng-if="dr.open">
-      <div class="direct-review__data">
+      <div class="direct-review__start">
         <div class="direct-review__data-label">
-          Date review began
+          <button class="direct-review__tooltip-button" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button> Date review began
         </div>
         <div class="direct-review__data-element">
           {{ dr.friendlyStartDate }}
         </div>
       </div>
-      <div class="direct-review__data">
+      <div class="direct-review__end">
         <div class="direct-review__data-label">
-          Date review ended
+          <button class="direct-review__tooltip-button" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button> Date review ended
         </div>
         <div class="direct-review__data-element">
           {{ dr.friendlyEndDate }}
         </div>
       </div>
-      <div class="direct-review__data">
+      <div class="direct-review__circumstances">
         <div class="direct-review__data-label">
-          Circumstance<span ng-if="dr.circumstances.length !== 0">s</span>
+          <button class="direct-review__tooltip-button" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button> Circumstance<span ng-if="dr.circumstances.length !== 0">s</span>
         </div>
         <div class="direct-review__data-element">
           <ul>
@@ -35,7 +36,5 @@
         </div>
       </div>
     </div>
-    <pre>{{ dr | json }}</pre>
-    <hr ng-if="!$last" />
   </div>
 </div>
