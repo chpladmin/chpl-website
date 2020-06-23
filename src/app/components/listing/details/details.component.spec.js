@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Listing Details component', () => {
+    describe('the Listing Details component', () => {
         var $compile, $log, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Direct Reviews component', () => {
+    describe('the Direct Reviews component', () => {
         var $log, ctrl, el, mock, scope;
 
         mock = [{

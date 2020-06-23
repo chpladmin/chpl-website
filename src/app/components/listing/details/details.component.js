@@ -75,9 +75,10 @@ export const ListingDetailsComponent = {
         }
 
         registerSed (handler) {
+            let that = this;
             this.handlers.push(handler);
             var removeHandler = function () {
-                this.handlers = this.handlers.filter(function (aHandler) {
+                that.handlers = that.handlers.filter(function (aHandler) {
                     return aHandler !== handler;
                 });
             };

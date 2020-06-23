@@ -851,7 +851,7 @@
                 $httpBackend.flush();
             });
 
-            fit('should getDirectReviews', () => {
+            it('should getDirectReviews', () => {
                 $httpBackend.expectGET(/^\/rest\/certified_products\/id\/direct-reviews$/).respond(200, {data: 'response'});
                 networkService.getDirectReviews('id').then(response => {
                     expect(response.data).toEqual('response');
