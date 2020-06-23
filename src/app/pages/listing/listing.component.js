@@ -11,7 +11,6 @@ export const ListingComponent = {
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.authService = authService;
-            this.featureFlags = featureFlags;
             this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -43,6 +42,8 @@ export const ListingComponent = {
 
             this.loadListing();
             this.loadResources();
+            // this should be flagged with "isOn('direct-review')" but adding that check stops it from loading
+            this.loadDirectReviews();
         }
 
         can (action) {
@@ -52,7 +53,7 @@ export const ListingComponent = {
         }
 
         canEdit () {
-            if (this.featureFlags.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
+            if (this.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
             } else {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
@@ -74,10 +75,12 @@ export const ListingComponent = {
                 }, () => {
                     that.loading = false;
                 });
-            if (this.featureFlags.isOn('direct-review')) {
-                that.networkService.getDirectReviews(that.listingId)
-                    .then(data => that.directReviews = data);
-            }
+        }
+
+        loadDirectReviews () {
+            let that = this;
+            this.networkService.getDirectReviews(this.listingId)
+                .then(data => that.directReviews = data);
         }
 
         loadResources () {
