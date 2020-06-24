@@ -116,6 +116,9 @@
     "wiredep": "~2.2.2",
     "zombie": "^5.0.5"
   },
+  "resolutions": {
+    "deasync": "0.1.16"
+  },
   "engines": {
     "node": ">=0.10.0"
   }
