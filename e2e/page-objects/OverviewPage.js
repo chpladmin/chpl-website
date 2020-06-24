@@ -44,4 +44,4 @@ class overviewPage extends BasePage {
   }
 }
 
-module.exports = new overviewPage();
+module.exports = new OverviewPage();
