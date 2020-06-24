@@ -1,4 +1,4 @@
-const config= require('./e2e/config/mainconfig');
+const config= require('./e2e/config/mainConfig');
 
 exports.config = {
     //
@@ -58,6 +58,9 @@ exports.config = {
         maxInstances: 5,
         //
         browserName: config.browser,
+        'goog:chromeOptions': {
+            args: ['--headless', '--dissable-gpu', '--no-sandbox'],
+        },
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -131,7 +134,13 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter.html
-    reporters: ['spec'],
+    reporters: [
+        'spec',
+        ['junit', {
+            outputDir: './test_reports/e2e/',
+            outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
+        }],
+    ],
 
     // =====
     // Hooks

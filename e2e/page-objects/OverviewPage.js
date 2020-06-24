@@ -7,7 +7,7 @@ const overviewElements= {
   ColValue: '#acbAtlTable thead tr th'
 }
 
-class overviewPage extends BasePage {
+class OverviewPage extends BasePage {
   open() {
     super.open(config.baseUrl);
   }
@@ -44,4 +44,4 @@ class overviewPage extends BasePage {
   }
 }
 
-module.exports = new overviewPage();
+module.exports = new OverviewPage();

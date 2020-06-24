@@ -6,7 +6,7 @@ const homepageElements= {
   overview : '=Overview'
 }
 
-class homePage extends BasePage {
+class HomePage extends BasePage {
   open() {
     super.open(config.baseUrl);
   }
@@ -26,4 +26,4 @@ class homePage extends BasePage {
   }
 }
 
-module.exports = new homePage();
+module.exports = new HomePage();
