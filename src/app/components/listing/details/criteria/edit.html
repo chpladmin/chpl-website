@@ -213,6 +213,7 @@
           <td>
             <input class="form-control input-sm" type="url" id="data_api{{ $ctrl.cert.number }}" name="data_apiDocumentation" ng-model="$ctrl.cert.apiDocumentation" ng-maxlength="1024" ng-disabled="!$ctrl.canEdit()"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.exportDocumentation !== null">
@@ -220,6 +221,7 @@
           <td>
             <input class="form-control input-sm" type="url" id="data_export{{ $ctrl.cert.number }}" name="data_exportDocumentation" ng-model="$ctrl.cert.exportDocumentation" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.attestationAnswer !== null">
@@ -231,6 +233,7 @@
           <td>
             <input class="form-control input-sm" type="url" id="data_documentation{{ $ctrl.cert.number }}" name="data_documentationUrl" ng-model="$ctrl.cert.documentationUrl" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer">
@@ -238,6 +241,7 @@
           <td>
             <input class="form-control input-sm" type="url" id="data_use{{ $ctrl.cert.number }}" name="data_useCases" ng-model="$ctrl.cert.useCases" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null">
@@ -259,7 +263,7 @@
     </table>
   </div>
   <div class="modal-footer">
-    <button ng-ng-disabled="$ctrl.editForm.$invalid" class="btn btn-ai-success btn-block" ng-click="$ctrl.save()">Save Certification Criteria</button>
+    <button ng-disabled="$ctrl.editForm.$invalid" class="btn btn-ai-success btn-block" ng-click="$ctrl.save()">Save Certification Criteria</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
