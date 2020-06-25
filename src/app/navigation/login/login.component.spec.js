@@ -109,7 +109,9 @@
             });
 
             it('should know when passwords aren\'t matched', () => {
-                ctrl.newPassword = 'new';
+                ctrl.passwordStrength = {
+                    password: 'new',
+                };
                 ctrl.confirmPassword = 'confirm';
                 expect(ctrl.misMatchPasswords()).toBe(true);
                 ctrl.confirmPassword = 'new';
@@ -183,6 +185,9 @@
 
             describe('when changing a password', () => {
                 it('should have an error message if passwords don\'t match', () => {
+                    ctrl.passwordStrength = {
+                        password: 'new',
+                    };
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'old';
                     ctrl.changePassword();
@@ -190,6 +195,9 @@
                 });
 
                 it('should call the network service', () => {
+                    ctrl.passwordStrength = {
+                        password: 'new',
+                    };
                     ctrl.password = 'old';
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'new';
@@ -199,6 +207,9 @@
 
                 it('should report a message and clear the form on success', () => {
                     spyOn(ctrl, 'clear');
+                    ctrl.passwordStrength = {
+                        password: 'new',
+                    };
                     ctrl.password = 'old';
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'new';
@@ -210,6 +221,9 @@
 
                 describe('when dealing with password strength', () => {
                     beforeEach(() => {
+                        ctrl.passwordStrength = {
+                            password: 'new',
+                        };
                         ctrl.password = 'old';
                         ctrl.newPassword = 'new';
                         ctrl.confirmPassword = 'new';
@@ -257,6 +271,9 @@
 
                 it('should report a message on failure', () => {
                     networkService.changePassword.and.returnValue($q.reject({}));
+                    ctrl.passwordStrength = {
+                        password: 'new',
+                    };
                     ctrl.password = 'old';
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'new';
@@ -423,6 +440,9 @@
             describe('when resetting a password in', () => {
                 it('should call the network service', () => {
                     const token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4'
+                    ctrl.passwordStrength = {
+                        password: 'new',
+                    };
                     ctrl.userName = 'test';
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'new';
