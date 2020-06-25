@@ -1,5 +1,5 @@
-import BasePage from "../../utilities/BasePage.js";
-const config = require("../../config/mainConfig.js");
+import BasePage from '../../utilities/BasePage.js';
+const config = require('../../config/mainConfig.js');
 
 const loginElements= {
     LoginButton: '#login-toggle',
@@ -7,22 +7,22 @@ const loginElements= {
 }
 
 class LoginPage extends BasePage {
-  open() {
-    super.open(config.baseUrl);
-  }
+    open () {
+        super.open(config.baseUrl);
+    }
 
-  get login() {
-    return $(loginElements.LoginButton);
-  }
+    get login () {
+        return $(loginElements.LoginButton);
+    }
 
-  get username() {
-    return $(loginElements.Username);
-  }
+    get username () {
+        return $(loginElements.Username);
+    }
 
-  gotoLoginPage() {
-    this.login.click();
-    return this;
-  }
+    gotoLoginPage () {
+        this.login.click();
+        return this;
+    }
 }
 
 module.exports = new LoginPage();

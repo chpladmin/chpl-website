@@ -14,7 +14,8 @@
     "test:auto": "karma start",
     "test:ahrq": "karma start --single-run --ahrq",
     "test:ci": "karma start --single-run --no-colors",
-    "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js && eslint e2e"
+    "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js && eslint e2e",
+    "e2e:lint": "eslint e2e"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",

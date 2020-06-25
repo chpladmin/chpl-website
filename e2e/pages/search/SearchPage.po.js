@@ -1,29 +1,29 @@
-import BasePage from "../../utilities/BasePage";
-const config = require("../../config/mainConfig.js");
+import BasePage from '../../utilities/BasePage';
+const config = require('../../config/mainConfig.js');
 
 const homepageElements= {
-  chplResource: '#resource-toggle',
-  overview : '=Overview'
+    chplResource: '#resource-toggle',
+    overview: '=Overview',
 }
 
 class SearchPage extends BasePage {
-  open() {
-    super.open(config.baseUrl);
-  }
+    open () {
+        super.open(config.baseUrl);
+    }
 
-  get chplResource(){
-    return $(homepageElements.chplResource);
-  }
+    get chplResource (){
+        return $(homepageElements.chplResource);
+    }
 
-  get overview(){
-    return $(homepageElements.overview);
-  }
+    get overview (){
+        return $(homepageElements.overview);
+    }
 
-  gotoResourcePage() {
-    this.chplResource.click();
-    this.overview.click();
-    return this;
-  }
+    gotoResourcePage () {
+        this.chplResource.click();
+        this.overview.click();
+        return this;
+    }
 }
 
 module.exports = new SearchPage();
