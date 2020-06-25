@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
     baseUrl: 'https://chpl.ahrqdev.org/#/search',
     browser: 'chrome',
