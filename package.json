@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "10.45.0",
+  "version": "10.47.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -115,6 +115,9 @@
     "webpack-merge": "^4.1.3",
     "wiredep": "~2.2.2",
     "zombie": "^5.0.5"
+  },
+  "resolutions": {
+    "deasync": "0.1.16"
   },
   "engines": {
     "node": ">=0.10.0"
