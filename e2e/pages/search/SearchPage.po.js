@@ -1,12 +1,12 @@
-import BasePage from "./BasePage";
-const config = require("../config/mainConfig.js");
+import BasePage from "../../utilities/BasePage";
+const config = require("../../config/mainConfig.js");
 
 const homepageElements= {
   chplResource: '#resource-toggle',
   overview : '=Overview'
 }
 
-class HomePage extends BasePage {
+class SearchPage extends BasePage {
   open() {
     super.open(config.baseUrl);
   }
@@ -26,4 +26,4 @@ class HomePage extends BasePage {
   }
 }
 
-module.exports = new HomePage();
+module.exports = new SearchPage();

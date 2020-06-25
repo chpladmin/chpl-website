@@ -1,5 +1,5 @@
-import BasePage from "./BasePage";
-const config = require("../config/mainConfig.js");
+import BasePage from "../../../utilities/BasePage";
+const config = require("../../../config/mainConfig.js");
 
 const overviewElements= {
   ONCACBATLtable: 'h2=ONC-ACB and ONC-ATL Information',

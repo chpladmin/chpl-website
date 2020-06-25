@@ -1,14 +1,14 @@
-import OverviewPage from "../page-objects/OverviewPage.js"
-import HomePage from "../page-objects/HomePage.js";
+import OverviewPage from "./OverviewPage.po.js"
+import SearchPage from "../../../pages/search/SearchPage.po.js";
 
 beforeEach(async () => {
-  await HomePage.open();
+  await SearchPage.open();
 });
 
 describe('Overview page', () => {
 
   beforeEach(function() {
-    HomePage.gotoResourcePage();
+    SearchPage.gotoResourcePage();
   });
   
   it('should have ONC ACB ATL table', () => {
