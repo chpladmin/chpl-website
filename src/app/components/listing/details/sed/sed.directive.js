@@ -220,7 +220,7 @@
                     }
                     task.criteria = $filter('orderBy')(task.criteria.filter(cert => vm.sedCriteria.map(cert => cert.number).indexOf(cert.number) > -1), vm.sortCert);
 
-                    csvRow[4] = task.criteria.map(item => item.number + (item.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')).join(';');
+                    csvRow[4] = task.criteria.map(item => (item.removed ? 'Removed | ' : '') + item.number + (item.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '')).join(';');
                     csvRow[TASK_START + 0] = task.description;
                     csvRow[TASK_START + 1] = task.taskRatingScale;
                     csvRow[TASK_START + 2] = task.taskRating;
