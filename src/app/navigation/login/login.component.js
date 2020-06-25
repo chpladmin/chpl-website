@@ -215,7 +215,7 @@ export const LoginComponent = {
         }
 
         misMatchPasswords () {
-            return this.newPassword !== this.confirmPassword;
+            return this.passwordStrength.password !== this.confirmPassword;
         }
 
         sendReset () {
