@@ -39,11 +39,8 @@ export const ListingComponent = {
             } else {
                 this.$localStorage.previouslyViewed = [this.listingId + ''];
             }
-
             this.loadListing();
             this.loadResources();
-            // this should be flagged with "isOn('direct-review')" but adding that check stops it from loading
-            this.loadDirectReviews();
         }
 
         can (action) {
@@ -72,6 +69,9 @@ export const ListingComponent = {
                     that.loading = false;
                     that.listing = data;
                     that.backupListing = angular.copy(that.listing);
+                    if (that.isOn('direct-review')) {
+                        that.loadDirectReviews();
+                    }
                 }, () => {
                     that.loading = false;
                 });
@@ -79,8 +79,10 @@ export const ListingComponent = {
 
         loadDirectReviews () {
             let that = this;
-            this.networkService.getDirectReviews(this.listingId)
-                .then(data => that.directReviews = data);
+            this.networkService.getDirectReviews(this.listing.developer.developerId)
+                .then(data => that.directReviews = data,
+                    () => that.networkService.getOBEDirectReviews(that.listingId)
+                        .then(data => that.directReviews = data))
         }
 
         loadResources () {
