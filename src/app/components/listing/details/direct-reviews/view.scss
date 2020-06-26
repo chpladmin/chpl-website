@@ -1,61 +1,69 @@
 .direct-reviews {
-    border-left: 2px solid var(--grey);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.direct-review {
+    border: 1px solid var(--grey);
+    margin-bottom: 8px;
+    border-radius: 8px;
 }
 
 .direct-review__header {
     display: flex;
-    width: 100%;
-    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
 }
 
 .direct-review__header--open {
-    background-color: var(--grey);
-}
-
-.direct-review__header--closed {
     background-color: var(--grey-blue);
 }
 
+.direct-review__header--closed {
+    background-color: var(--light-grey) !important;
+    // remove !important when "new-style" goes away / ui-bump-major changes / etc.
+}
+
 .direct-review__header-title {
-    flex: 1;
+    padding-left: 10px;
     font-weight: 700;
 }
 
 .direct-review__header-subtitle {
+    padding-left: 10px;
     flex: 1;
 }
 
 .direct-review__header-toggle {
-    flex: 1;
-    text-align: right;
+    margin-left: auto;
 }
 
 .direct-review__basic-information {
-    border-left: 3px solid var(--dark-grey);
+    border-left: 3px solid var(--grey);
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     width: 100%;
+    margin: 8px;
 }
 
 .direct-review__start {
     grid-column-start: 1;
     grid-row-start: 1;
+    margin: 8px;
 }
 
 .direct-review__end {
     grid-column-start: 2;
     grid-row-start: 1;
+    margin: 8px;
 }
 
 .direct-review__circumstances {
     grid-column-start: 1;
     grid-column-end: span 2;
     grid-row-start: 2;
-}
-
-.direct-review__data-label {
-    font-weight: 700;
+    margin: 8px;
 }
 
 .direct-review__tooltip-button {
