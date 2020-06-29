@@ -5,11 +5,11 @@ const homepageElements = {
 
 class SearchPage {
 
-    get chplResourceButton (){
+    get chplResourceButton () {
         return $(homepageElements.chplResource);
     }
 
-    get overviewPageButton (){
+    get overviewPageButton () {
         return $(homepageElements.overview);
     }
 
@@ -20,4 +20,4 @@ class SearchPage {
     }
 }
 
-module.exports= new SearchPage();
+module.exports = new SearchPage();

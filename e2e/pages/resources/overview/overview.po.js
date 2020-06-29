@@ -9,10 +9,12 @@ class OverviewPage {
     get acbatlTable () {
         return $(overviewElements.oncacbatlTable);
     }
-    get acbatlTableRow (){
+
+    get acbatlTableRow () {
         return $$(overviewElements.rowValue);
     }
-    get acbatlTableCol (){
+
+    get acbatlTableCol () {
         return $$(overviewElements.colValue);
     }
 
