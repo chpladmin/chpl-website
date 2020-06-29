@@ -187,7 +187,7 @@ export const ReportsDevelopersComponent = {
                         activity.details.push(translatedEvents);
                     }
                 } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
-                    activity.action ='Developers ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+                    activity.action = 'Developers ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
                     activity.details = [];
                 } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
                     activity.action = 'Developer ' + item.originalData.name + ' split to become Developers ' + item.newData[0].name + ' and ' + item.newData[1].name;
@@ -303,7 +303,7 @@ export const ReportsDevelopersComponent = {
             }
             if (before.transparencyAttestation && after.transparencyAttestation && before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
                 //Transparency attestation was changed
-                return '<li>Transparency Attestation "' + after.acbName +'" changes<ul><li>Transparency Attestation changed: ' + after.transparencyAttestation.transparencyAttestation + '. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
+                return '<li>Transparency Attestation "' + after.acbName + '" changes<ul><li>Transparency Attestation changed: ' + after.transparencyAttestation.transparencyAttestation + '. Was: ' + before.transparencyAttestation.transparencyAttestation + '.</li></ul></li>';
             }
         }
 
