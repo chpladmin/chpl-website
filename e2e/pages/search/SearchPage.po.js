@@ -1,7 +1,7 @@
-import BasePage from '../../utilities/BasePage';
+import BasePage from '../../utilities/basePage';
 const config = require('../../config/mainConfig.js');
 
-const homepageElements= {
+const homepageElements = {
     chplResource: '#resource-toggle',
     overview: '=Overview',
 }
@@ -11,17 +11,17 @@ class SearchPage extends BasePage {
         super.open(config.baseUrl);
     }
 
-    get chplResource (){
+    get chplResourceButton (){
         return $(homepageElements.chplResource);
     }
 
-    get overview (){
+    get overviewPage (){
         return $(homepageElements.overview);
     }
 
     gotoResourcePage () {
-        this.chplResource.click();
-        this.overview.click();
+        this.chplResourceButton.click();
+        this.overviewPage.click();
         return this;
     }
 }

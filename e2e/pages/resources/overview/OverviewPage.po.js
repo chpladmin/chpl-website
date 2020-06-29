@@ -1,10 +1,10 @@
-import BasePage from '../../../utilities/BasePage';
+import BasePage from '../../../utilities/basePage';
 const config = require('../../../config/mainConfig.js');
 
-const overviewElements= {
-    ONCACBATLtable: 'h2=ONC-ACB and ONC-ATL Information',
-    RowValue: '#acbAtlTable tbody tr',
-    ColValue: '#acbAtlTable thead tr th',
+const overviewElements = {
+    oncacbatlTable: 'h2=ONC-ACB and ONC-ATL Information',
+    rowValue: '#acbAtlTable tbody tr',
+    colValue: '#acbAtlTable thead tr th',
 }
 
 class OverviewPage extends BasePage {
@@ -13,13 +13,13 @@ class OverviewPage extends BasePage {
     }
 
     get acbatlTable () {
-        return $(overviewElements.ONCACBATLtable);
+        return $(overviewElements.oncacbatlTable);
     }
     get acbatlTableRow (){
-        return $$(overviewElements.RowValue);
+        return $$(overviewElements.rowValue);
     }
     get acbatlTableCol (){
-        return $$(overviewElements.ColValue);
+        return $$(overviewElements.colValue);
     }
 
     compareTableData (){

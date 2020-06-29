@@ -1,4 +1,4 @@
-import LoginPage from './Login.po.js'
+import LoginComponent from './loginComponent.js'
 import SearchPage from '../../pages/search/SearchPage.po.js'
 
 beforeEach(async () => {
@@ -8,8 +8,8 @@ beforeEach(async () => {
 describe('Login page', () => {
 
     it('should have username field', () => {
-        LoginPage.gotoLoginPage();
-        assert.equal(LoginPage.username.isDisplayed(),true);
+        LoginComponent.gotoLoginComponent();
+        assert.equal(LoginComponent.usernameInput.isDisplayed(),true);
     })
 
 })

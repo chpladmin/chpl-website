@@ -45,6 +45,7 @@ yarn install
 * `yarn test:ahrq`: Run tests once in a fashion suitable for the deployment environment
 * `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
 * `yarn e2e`: Run the end to end integration tests
+* `yarn e2e:lint`: Run code and syntax rules
 
 #### Yarn environment parameters
 

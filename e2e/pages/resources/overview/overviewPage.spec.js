@@ -1,5 +1,5 @@
-import OverviewPage from './OverviewPage.po.js';
-import SearchPage from '../../../pages/search/SearchPage.po.js';
+import OverviewPage from './overviewPage.po.js';
+import SearchPage from '../../search/searchPage.po.js';
 
 beforeEach(async () => {
     await SearchPage.open();
@@ -16,7 +16,22 @@ describe('Overview page', () => {
     })
 
     it('should have correct acb and atl in the table', () => {
-        OverviewPage.compareTableData();
-        assert.equal(OverviewPage.compareTableData(),true);
+        var rowcount=OverviewPage.acbatlTableRow.length;
+        var colcount=OverviewPage.acbatlTableCol.length;
+        var actualResult=[];
+        for (var i=1; i<=rowcount;i++){
+            for (var j=1; j<=colcount-2;j++){
+                var cellvalue=$('#acbAtlTable tbody tr:nth-child('+i+') td:nth-child('+j+')').getText();
+                actualResult.push(cellvalue);
+            }
+        }
+        const expectedTableVlaues=['ONC-ACB', 'Drummond Group', 'ONC-ACB', 'ICSA Labs', 'ONC-ACB','SLI Compliance', 'ONC-ACB', 'UL LLC', 'ONC-ATL', 'Drummond Group', 'ONC-ATL', 'ICSA Labs', 'ONC-ATL', 'National Committee for Quality Assurance (NCQA)', 'ONC-ATL', 'SLI Compliance','ONC-ATL', 'UL LLC']
+        var isSame=false;
+        for ( var k=0;k<actualResult.length;k++){
+            if (actualResult[k]===expectedTableVlaues[k]){
+                isSame=true;
+            }
+        }
+        assert.equal(isSame,true);
     })
 })
