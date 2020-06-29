@@ -1,14 +1,14 @@
-import LoginComponent from './loginComponent.js'
-import SearchPage from '../../pages/search/SearchPage.po.js'
+import LoginComponent from './login.po'
+import Hooks from '../../utilities/hooks'
 
 beforeEach(async () => {
-    await SearchPage.open();
+    await Hooks.open('/resources/overview');
 });
 
 describe('Login page', () => {
 
     it('should have username field', () => {
-        LoginComponent.gotoLoginComponent();
+        LoginComponent.openLoginComponent();
         assert.equal(LoginComponent.usernameInput.isDisplayed(),true);
     })
 

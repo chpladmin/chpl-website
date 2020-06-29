@@ -1,11 +1,9 @@
-import BasePage from '../../utilities/basePage.js';
-
 const loginElements = {
     loginButton: '#login-toggle',
     userName: '[name="username"]',
 }
 
-class LoginComponent extends BasePage {
+class LoginComponent {
 
     get toggleLoginComponent () {
         return $(loginElements.loginButton);
@@ -15,7 +13,7 @@ class LoginComponent extends BasePage {
         return $(loginElements.userName);
     }
 
-    gotoLoginComponent () {
+    openLoginComponent () {
         this.toggleLoginComponent.click();
         return this;
     }

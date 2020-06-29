@@ -1,15 +1,11 @@
-import OverviewPage from './overviewPage.po.js';
-import SearchPage from '../../search/searchPage.po.js';
+import OverviewPage from './overview.po.js';
+import Hooks from '../../../utilities/hooks'
 
 beforeEach(async () => {
-    await SearchPage.open();
+    await Hooks.open('/resources/overview');
 });
 
 describe('Overview page', () => {
-
-    beforeEach(function () {
-        SearchPage.gotoResourcePage();
-    })
 
     it('should have ONC ACB ATL table', () => {
         assert.equal(OverviewPage.acbatlTable.isDisplayed(),true);
