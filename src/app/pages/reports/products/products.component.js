@@ -127,7 +127,7 @@ export const ReportsProductsComponent = {
                         activity.details.push(ownerHistoryActionDetails);
                     }
                 } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
-                    activity.action ='Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+                    activity.action = 'Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
                     activity.details = [];
                 } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
                     activity.action = 'Products ' + item.originalData.name + ' split to become Products ' + item.newData[0].name + ' and ' + item.newData[1].name;

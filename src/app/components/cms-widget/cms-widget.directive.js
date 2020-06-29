@@ -236,7 +236,7 @@ require('jspdf-autotable');
             );
             doc.text(
                 40,
-                bodyStartY+30,
+                bodyStartY + 30,
                 doc.splitTextToSize(
                     '* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.',
                     775
@@ -246,7 +246,7 @@ require('jspdf-autotable');
             // Add Certification ID to PDF
             doc.setFontSize(20);
             doc.setFontType('bold');
-            doc.text(300, bodyStartY+70, 'CMS EHR ID: ' + data.ehrCertificationId);
+            doc.text(300, bodyStartY + 70, 'CMS EHR ID: ' + data.ehrCertificationId);
 
             // Add products table to PDF
             doc.setFontSize(10);
@@ -269,7 +269,7 @@ require('jspdf-autotable');
                         0: {columnWidth: 175},
                         1: {columnWidth: 'auto'},
                     },
-                    startY: i === 0 ? bodyStartY+90 : doc.autoTable.previous.finalY + 10,
+                    startY: i === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
                     margin: 20,
                     pageBreak: 'avoid',
                     tableWidth: 'auto',
@@ -306,7 +306,7 @@ require('jspdf-autotable');
                                 var met = checkCriterionIsMet(cellData.row.raw.key, data.criteria);
                                 cell.textPos.x += 32;
                                 var descriptionParts = cellData.row.raw.description.split('#');
-                                for (var partIndex=0; partIndex < descriptionParts.length; ++partIndex) {
+                                for (var partIndex = 0; partIndex < descriptionParts.length; ++partIndex) {
                                     var outText = descriptionParts[partIndex];
                                     doc.text(outText, cell.textPos.x, cell.textPos.y);
                                     cell.textPos.x += doc.getStringUnitWidth(outText) * fontSize;
@@ -331,7 +331,7 @@ require('jspdf-autotable');
                     },
                     afterPageContent: function () {
                         var total = checkImages.length;
-                        for (var index=0; index < total; index++) {
+                        for (var index = 0; index < total; index++) {
                             var img = checkImages.shift();
                             if (img) {
                                 doc.addImage(img.elem, 'jpeg', img.x, img.y, 10, 10);
@@ -357,7 +357,7 @@ require('jspdf-autotable');
             if (keys[0] === '|') {
                 keys.shift();
                 result = [];
-                for (index=0; index < keys.length; ++index) {
+                for (index = 0; index < keys.length; ++index) {
                     if (criteriaMet.findIndex(criterion => criterion.number === keys[index]) > -1) {
                         result.push(true);
                     } else {
@@ -368,7 +368,7 @@ require('jspdf-autotable');
             } else if (keys[0] === '&') {
                 keys.shift();
                 result = true;
-                for (index=0; index < keys.length; ++index) {
+                for (index = 0; index < keys.length; ++index) {
                     if (criteriaMet.findIndex(criterion => criterion.number === keys[index]) > -1) {
                         result = false;
                     }

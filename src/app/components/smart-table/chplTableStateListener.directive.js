@@ -1,5 +1,5 @@
 angular.module('chpl.components')
-    .directive('chplTableStateListener',function (){
+    .directive('chplTableStateListener', function () {
         return {
             require: '^stTable',
             scope: {

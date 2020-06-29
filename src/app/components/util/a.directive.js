@@ -10,7 +10,7 @@
             restrict: 'A',
             link: function (scope, element, attr) {
                 var link = attr['href'];
-                if (checkHttp(link) !== link){
+                if (checkHttp(link) !== link) {
                     attr['$$element'][0].href = checkHttp(link);
                     scope.$watch(link, function () {
                         attr['$$element'][0].href = checkHttp(link);
