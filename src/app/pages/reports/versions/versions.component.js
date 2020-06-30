@@ -1,9 +1,8 @@
 export const ReportsVersionsComponent = {
     templateUrl: 'chpl.reports/versions/versions.html',
     controller: class ReportsVersionsComponent {
-        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+        constructor ($log, $scope, ReportService, networkService, utilService) {
             'ngInject'
-            this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
             this.ReportService = ReportService;
