@@ -9,6 +9,7 @@ export const DeveloperComponent = {
         isChangeRequest: '<',
         isEditing: '<',
         isInvalid: '<',
+        isMerging: '<',
         isSplitting: '<',
         mergingDevelopers: '<',
         onCancel: '&?',
@@ -67,6 +68,9 @@ export const DeveloperComponent = {
             }
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
+            }
+            if (changes.isMeging) {
+                this.isMerging = angular.copy(changes.isMerging.currentValue);
             }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
@@ -213,7 +217,7 @@ export const DeveloperComponent = {
         generateErrorMessages () {
             let messages = [];
             if (this.showFormErrors) {
-                if (!this.mergingDevelopers || this.mergingDevelopers.length === 0) {
+                if (this.isMerging && (!this.mergingDevelopers || this.mergingDevelopers.length === 0)) {
                     messages.push('At least one other Developer must be selected to merge');
                 }
             }
