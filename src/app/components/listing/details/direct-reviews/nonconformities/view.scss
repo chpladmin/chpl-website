@@ -1,79 +1,72 @@
-.direct-reviews {
+.nonconformities {
     border-radius: 8px;
     margin-bottom: 8px;
 }
 
-.direct-review {
+.nonconformity {
     border: 1px solid var(--grey);
     margin-bottom: 8px;
     border-radius: 8px;
 }
 
-.direct-review__header {
+.nonconformity__header {
     display: flex;
     justify-content: space-between;
     border-radius: 8px;
 }
 
-.direct-review__header--open {
+.nonconformity__header--open {
     background-color: var(--grey-blue);
 }
 
-.direct-review__header--closed {
+.nonconformity__header--closed {
     background-color: var(--light-grey) !important;
     // remove !important when "new-style" goes away / ui-bump-major changes / etc.
 }
 
-.direct-review__header-title {
+.nonconformity__header-title {
     padding-left: 10px;
     font-weight: 700;
 }
 
-.direct-review__header-subtitle {
+.nonconformity__header-subtitle {
     padding-left: 10px;
     flex: 1;
 }
 
-.direct-review__header-toggle {
+.nonconformity__header-toggle {
     margin-left: auto;
 }
 
-.direct-review__basic-information {
+.nonconformity__basic-information {
     border-left: 3px solid var(--grey);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     width: 100%;
     margin: 8px;
 }
 
-.direct-review__start {
+.nonconformity__start {
     grid-column-start: 1;
     grid-row-start: 1;
     margin: 8px;
 }
 
-.direct-review__end {
+.nonconformity__end {
     grid-column-start: 2;
     grid-row-start: 1;
     margin: 8px;
 }
 
-.direct-review__circumstances {
+.nonconformity__circumstances {
     grid-column-start: 1;
     grid-column-end: span 2;
     grid-row-start: 2;
     margin: 8px;
 }
 
-.direct-review__nonconformities {
-    grid-column-start: 1;
-    grid-column-end: span 2;
-    grid-row-start: 3;
-    margin: 8px;
-}
-
-.direct-review__tooltip-button {
+.nonconformity__tooltip-button {
     display: inline-block;
     margin-bottom: 0;
     font-weight: normal;

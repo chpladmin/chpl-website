@@ -1,0 +1,43 @@
+<div class="nonconformities">
+  <div ng-if="!$ctrl.nonconformities || $ctrl.nonconformities.length === 0">
+    No Requirements or Nonconformities exist for this Direct Review
+  </div>
+  <div ng-repeat="nc in $ctrl.nonconformities" class="nonconformity panel-ai">
+    <div class="nonconformity__header panel-heading" ng-class="nc.endDate ? 'nonconformity__header--closed' : 'nonconformity__header--open'" ng-click="nc.open = !nc.open">
+      <div class="nonconformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></div>
+      <div class="nonconformity__header-title">{{ nc.endDate ? 'Closed' : 'Open' }} Direct Review</div>
+      <div class="nonconformity__header-subtitle">{{ nc.endDate ? 'ended ' + (nc.endDate | date : 'mediumDate' : 'UTC')  : nc.startDate ? 'began ' + (nc.startDate | date : 'mediumDate' : 'UTC') : 'has not started' }}</div>
+    </div>
+    <div class="nonconformity__basic-information panel-body" ng-if="nc.open">
+      <div class="nonconformity__start">
+        <div class="data-label">
+          <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date review began
+        </div>
+        <div class="nonconformity__data-element">
+          {{ nc.startDate ? (nc.startDate | date : 'mediumDate' : 'UTC') : 'Has not started' }}
+        </div>
+      </div>
+      <div class="nonconformity__end">
+        <div class="data-label">
+          <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date review ended
+        </div>
+        <div class="nonconformity__data-element">
+          {{ nc.endDate ? (nc.endDate | date : 'mediumDate' : 'UTC') : 'Has not ended' }}
+        </div>
+      </div>
+      <div class="nonconformity__circumstances">
+        <div class="data-label">
+          <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Circumstance<span ng-if="nc.circumstances.length !== 1">s</span>
+        </div>
+        <div class="nonconformity__data-element" ng-if="nc.circumstances && nc.circumstances.length > 0">
+          <ul>
+            <li ng-repeat="c in nc.circumstances">{{ c }}</li>
+          </ul>
+        </div>
+        <div class="nonconformity__data-element" ng-if="!nc.circumstances || nc.circumstances.length === 0">
+          No circumstances reported
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
