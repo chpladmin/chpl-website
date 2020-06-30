@@ -7,4 +7,4 @@ class Hooks {
     }
 }
 
-module.exports = new Hooks();
+export default new Hooks();

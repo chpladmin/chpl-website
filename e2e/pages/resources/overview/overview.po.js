@@ -20,4 +20,4 @@ class OverviewPage {
 
 }
 
-module.exports = new OverviewPage();
+export default new OverviewPage();

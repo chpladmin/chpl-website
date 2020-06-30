@@ -20,4 +20,4 @@ class SearchPage {
     }
 }
 
-module.exports = new SearchPage();
+export default new SearchPage();

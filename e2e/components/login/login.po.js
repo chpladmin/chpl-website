@@ -19,4 +19,4 @@ class LoginComponent {
     }
 }
 
-module.exports = new LoginComponent();
+export default new LoginComponent();
