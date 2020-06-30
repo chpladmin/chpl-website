@@ -80,9 +80,7 @@ export const ListingComponent = {
         loadDirectReviews () {
             let that = this;
             this.networkService.getDirectReviews(this.listing.developer.developerId)
-                .then(data => that.directReviews = data,
-                    () => that.networkService.getOBEDirectReviews(that.listingId)
-                        .then(data => that.directReviews = data))
+                .then(data => that.directReviews = data);
         }
 
         loadResources () {

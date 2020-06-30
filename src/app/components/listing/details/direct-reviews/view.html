@@ -6,7 +6,7 @@
     <div class="direct-review__header panel-heading" ng-class="dr.endDate ? 'direct-review__header--closed' : 'direct-review__header--open'" ng-click="dr.open = !dr.open">
       <div class="direct-review__header-toggle"><i class="fa fa-lg" ng-class="dr.open ? 'fa-caret-down' : 'fa-caret-right'"></i></div>
       <div class="direct-review__header-title">{{ dr.endDate ? 'Closed' : 'Open' }} Direct Review</div>
-      <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + (dr.endDate | date : 'mediumDate' : 'UTC')  : 'began ' + (dr.startDate | date : 'mediumDate' : 'UTC') }}</div>
+      <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + (dr.endDate | date : 'mediumDate' : 'UTC')  : dr.startDate ? 'began ' + (dr.startDate | date : 'mediumDate' : 'UTC') : 'has not started' }}</div>
     </div>
     <div class="direct-review__basic-information panel-body" ng-if="dr.open">
       <div class="direct-review__start">
@@ -14,7 +14,7 @@
           <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date review began
         </div>
         <div class="direct-review__data-element">
-          {{ dr.startDate | date : 'mediumDate' : 'UTC' }}
+          {{ dr.startDate ? (dr.startDate | date : 'mediumDate' : 'UTC') : 'Has not started' }}
         </div>
       </div>
       <div class="direct-review__end">
@@ -29,10 +29,13 @@
         <div class="data-label">
           <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Circumstance<span ng-if="dr.circumstances.length !== 1">s</span>
         </div>
-        <div class="direct-review__data-element">
+        <div class="direct-review__data-element" ng-if="dr.circumstances && dr.circumstances.length > 0">
           <ul>
             <li ng-repeat="c in dr.circumstances">{{ c }}</li>
           </ul>
+        </div>
+        <div class="direct-review__data-element" ng-if="!dr.circumstances || dr.circumstances.length === 0">
+          No circumstances reported
         </div>
       </div>
     </div>

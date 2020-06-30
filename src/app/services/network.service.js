@@ -344,10 +344,6 @@ export class NetworkService {
         return this.apiGET('/developers/' + id + '/direct-reviews');
     }
 
-    getOBEDirectReviews (id) {
-        return this.apiGET('/certified_products/' + id + '/direct-reviews');
-    } // TODO: remove this method when API is updated (ref: flag:direct-review)
-
     getEditions () {
         return this.apiGET('/data/certification_editions');
     }
