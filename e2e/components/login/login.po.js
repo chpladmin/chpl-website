@@ -4,6 +4,7 @@ const loginElements = {
 }
 
 class LoginComponent {
+    constructor () { }
 
     get toggleLoginComponent () {
         return $(loginElements.loginButton);
@@ -19,4 +20,4 @@ class LoginComponent {
     }
 }
 
-export default new LoginComponent();
+export default LoginComponent;

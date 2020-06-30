@@ -1,19 +1,23 @@
 import OverviewPage from './overview.po.js';
 import Hooks from '../../../utilities/hooks'
 
+let hooks, page;
+
 beforeEach(async () => {
-    await Hooks.open('/resources/overview');
+    page = new OverviewPage();
+    hooks = new Hooks();
+    await hooks.open('/resources/overview');
 });
 
 describe('Overview page', () => {
 
     it('should have ONC ACB ATL table', () => {
-        assert.equal(OverviewPage.acbatlTable.isDisplayed(),true);
+        assert.equal(page.acbatlTable.isDisplayed(),true);
     })
 
     it('should have correct acb and atl in the table', () => {
-        var rowcount = OverviewPage.acbatlTableRow.length;
-        var colcount = OverviewPage.acbatlTableCol.length;
+        var rowcount = page.acbatlTableRow.length;
+        var colcount = page.acbatlTableCol.length;
         var actualResult = [];
         for (var i = 1; i <= rowcount; i ++) {
             for (var j = 1; j <= colcount - 2; j ++) {

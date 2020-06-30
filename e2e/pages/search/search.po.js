@@ -4,6 +4,7 @@ const homepageElements = {
 }
 
 class SearchPage {
+    constructor () { }
 
     get chplResourceButton () {
         return $(homepageElements.chplResource);
@@ -20,4 +21,4 @@ class SearchPage {
     }
 }
 
-export default new SearchPage();
+export default SearchPage;
