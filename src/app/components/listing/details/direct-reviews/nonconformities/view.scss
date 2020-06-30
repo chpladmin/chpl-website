@@ -1,6 +1,20 @@
 .nonconformities {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     border-radius: 8px;
     margin-bottom: 8px;
+}
+
+.nonconformities__gridtable-header {
+    text-transform: uppercase;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    align-self: end;
+}
+
+.nonconformities__requirements-header {
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .nonconformity {
@@ -9,29 +23,23 @@
     border-radius: 8px;
 }
 
-.nonconformity__header {
-    display: flex;
-    justify-content: space-between;
-    border-radius: 8px;
+.nonconformity__gridtable-header--first {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
 }
 
-.nonconformity__header--open {
+.nonconformity__gridtable-header--last {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.nonconformity__gridtable-header--open {
     background-color: var(--grey-blue);
 }
 
-.nonconformity__header--closed {
+.nonconformity__gridtable-header--closed {
     background-color: var(--light-grey) !important;
     // remove !important when "new-style" goes away / ui-bump-major changes / etc.
-}
-
-.nonconformity__header-title {
-    padding-left: 10px;
-    font-weight: 700;
-}
-
-.nonconformity__header-subtitle {
-    padding-left: 10px;
-    flex: 1;
 }
 
 .nonconformity__header-toggle {
@@ -39,30 +47,22 @@
 }
 
 .nonconformity__basic-information {
-    border-left: 3px solid var(--grey);
+    border-left: 4px solid var(--dark-grey);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
     margin: 8px;
-}
-
-.nonconformity__start {
     grid-column-start: 1;
-    grid-row-start: 1;
-    margin: 8px;
+    grid-column-end: span 3;
 }
 
-.nonconformity__end {
-    grid-column-start: 2;
-    grid-row-start: 1;
-    margin: 8px;
-}
-
-.nonconformity__circumstances {
+.nonconformity__narrow {
     grid-column-start: 1;
-    grid-column-end: span 2;
-    grid-row-start: 2;
+    margin: 8px;
+}
+
+.nonconformity__wide {
+    grid-column-start: 1;
+    grid-column-end: span 3;
     margin: 8px;
 }
 
