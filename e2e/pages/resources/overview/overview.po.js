@@ -5,6 +5,7 @@ const overviewElements = {
 }
 
 class OverviewPage {
+    constructor () { }
 
     get acbatlTable () {
         return $(overviewElements.oncacbatlTable);
@@ -20,4 +21,4 @@ class OverviewPage {
 
 }
 
-export default new OverviewPage();
+export default OverviewPage;
