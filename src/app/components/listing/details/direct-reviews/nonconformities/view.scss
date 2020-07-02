@@ -18,6 +18,9 @@
 }
 
 .nonconformity {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
     border: 1px solid var(--grey);
     margin-bottom: 8px;
     border-radius: 8px;
@@ -56,7 +59,7 @@
 }
 
 .nonconformity__narrow {
-    grid-column-start: 1;
+    //grid-column-start: 1;
     margin: 8px;
 }
 
