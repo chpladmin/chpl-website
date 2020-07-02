@@ -13,17 +13,27 @@ export const DirectReviewsNonconformitiesComponent = {
         $onChanges (changes) {
             if (changes.nonconformities && changes.nonconformities.currentValue) {
                 this.nonconformities = changes.nonconformities.currentValue
-                    .map(dr => dr)
+                    .map(nc => {
+                        nc.friendlyCapApprovalDate = nc.capApprovalDate ? this.makeFriendlyDate(nc.capApprovalDate) : 'Has not been approved';
+                        nc.friendlyCapEndDate = nc.capEndDate ? this.makeFriendlyDate(nc.capEndDate) : 'Has not ended';
+                        nc.friendlyCapMustCompleteDate = nc.capMustCompleteDate ? this.makeFriendlyDate(nc.capMustCompleteDate) : 'Has not been approved';
+                        nc.friendlyCapStartDate = nc.capStartDate ? this.makeFriendlyDate(nc.capStartDate) : 'Has not started';
+                        return nc;
+                    })
                     .sort((a, b) => {
-                        if (a.endDate && b.endDate) {
-                            return a.endDate < b.endDate ? 1 : -1;
+                        if (a.nonconformityStatus && b.nonconformityStatus) {
+                            return a.nonconformityStatus < b.nonconformityStatus ? 1 : a.nonconformityStatus > b.nonconformityStatus ? -1 : 0;
                         }
-                        if (!a.endDate && !b.endDate) {
-                            return a.startDate < b.startDate ? 1 : -1;
+                        if (!a.nonconformityStatus && !b.nonconformityStatus) {
+                            return 0;
                         }
-                        return a.endDate ? 1 : -1;
+                        return a.nonconformityStatus ? -1 : 1;
                     });
             }
+        }
+
+        makeFriendlyDate (date) {
+            return date.dayOfMonth + ' ' + [...date.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('') + ' ' + date.year;
         }
     },
 }
