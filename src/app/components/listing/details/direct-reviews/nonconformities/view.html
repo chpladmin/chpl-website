@@ -12,14 +12,14 @@
   <div class="nonconformities__gridtable-header">Review Result</div>
   <div ng-repeat-start="nc in $ctrl.nonconformities" class="nonconformity__gridtable-header nonconformity__gridtable-header--first" ng-class="nc.nonconformityStatus === 'Closed' ? 'nonconformity__gridtable-header--closed' : 'nonconformity__gridtable-header--open'" ng-click="nc.open = !nc.open">
     <div class="nonconformity__gridtable-header">
-      <span class="nonconformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement }}
+      <span class="nonconformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'None recorded' }}
     </div>
   </div>
   <div class="nonconformity__gridtable-header" ng-class="nc.nonconformityStatus === 'Closed' ? 'nonconformity__gridtable-header--closed' : 'nonconformity__gridtable-header--open'" ng-click="nc.open = !nc.open">
-    <div class="nonconformity__gridtable-header">{{ nc.nonconformitySummary }}</div>
+    <div class="nonconformity__gridtable-header">{{ nc.nonconformitySummary ? nc.nonconformitySummary : 'None recorded' }}</div>
   </div>
   <div class="nonconformity__gridtable-header nonconformity__gridtable-header--last" ng-class="nc.nonconformityStatus === 'Closed' ? 'nonconformity__gridtable-header--closed' : 'nonconformity__gridtable-header--open'" ng-click="nc.open = !nc.open">
-    <div class="nonconformity__gridtable-header">{{ nc.nonconformityStatus }}</div>
+    <div class="nonconformity__gridtable-header">{{ nc.nonconformityStatus ? nc.nonconformityStatus : 'None recorded' }}</div>
   </div>
   <div class="nonconformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>
     <div class="nonconformity__wide">
@@ -27,7 +27,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Requirement
       </div>
       <div class="nonconformity__data-element">
-        {{ nc.requirement }}
+        {{ nc.requirement ? nc.requirement : 'None recorded' }}
       </div>
     </div>
     <div class="nonconformity__wide">
@@ -35,7 +35,8 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Developer Associated Listings
       </div>
       <div class="nonconformity__data-element">
-        <ul class="nonconformity__developer-associated-listings">
+      <div class="nonconformity__data-element" ng-if="!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0">None</div>
+        <ul class="nonconformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
           <li ng-repeat="listing in nc.developerAssociatedListings">{{ listing }}</li>
         </ul>
       </div>
@@ -53,7 +54,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Findings
       </div>
       <div class="nonconformity__data-element">
-        {{ nc.nonconformityFindings }}
+        {{ nc.nonconformityFindings ? nc.nonconformityFindings : 'None recorded' }}
       </div>
     </div>
     <div class="nonconformity__narrow">
@@ -85,7 +86,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Developer Explanation
       </div>
       <div class="nonconformity__data-element">
-        {{ nc.developerExplanation }}
+        {{ nc.developerExplanation ? nc.developerExplanation : 'None recorded' }}
       </div>
     </div>
     <div class="nonconformity__wide">
@@ -101,7 +102,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Resolution
       </div>
       <div class="nonconformity__data-element">
-        {{ nc.resolution }}
+        {{ nc.resolution ? nc.resolution : 'None recorded' }}
       </div>
     </div>
   </div>
