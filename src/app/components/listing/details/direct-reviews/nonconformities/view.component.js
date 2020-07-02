@@ -18,6 +18,7 @@ export const DirectReviewsNonconformitiesComponent = {
                         nc.friendlyCapEndDate = nc.capEndDate ? this.makeFriendlyDate(nc.capEndDate) : 'Has not ended';
                         nc.friendlyCapMustCompleteDate = nc.capMustCompleteDate ? this.makeFriendlyDate(nc.capMustCompleteDate) : 'Has not been approved';
                         nc.friendlyCapStartDate = nc.capStartDate ? this.makeFriendlyDate(nc.capStartDate) : 'Has not started';
+                        nc.friendlyDateOfDetermination = nc.dateOfDetermination ? this.makeFriendlyDate(nc.dateOfDetermination) : 'Has not been determined';
                         return nc;
                     })
                     .sort((a, b) => {

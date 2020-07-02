@@ -46,7 +46,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date of Determination
       </div>
       <div class="nonconformity__data-element">
-        Does this value exist? {{ nc.dateOfDetermination ? (nc.dateOfDetermination | date : 'mediumDate' : 'UTC') : 'Has not been determined' }}
+        {{ nc.friendlyDateOfDetermination }}
       </div>
     </div>
     <div class="nonconformity__wide">

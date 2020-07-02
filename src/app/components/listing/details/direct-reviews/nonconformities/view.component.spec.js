@@ -11,6 +11,7 @@
             capEndDate: {year: 2021, month: 'JULY', dayOfMonth: 20},
             capMustCompleteDate: {year: 2022, month: 'AUGUST', dayOfMonth: 21},
             capStartDate: {year: 2023, month: 'SEPTEMBER', dayOfMonth: 22},
+            dateOfDetermination: {year: 2024, month: 'OCTOBER', dayOfMonth: 23},
         },{
             nonconformityStatus: 'Open',
             id: 'open-1',
@@ -18,6 +19,7 @@
             capEndDate: undefined,
             capMustCompleteDate: undefined,
             capStartDate: undefined,
+            dateOfDetermination: undefined,
         },{
             nonconformityStatus: undefined,
             id: 'undefined-2',
@@ -79,6 +81,7 @@
                     expect(ctrl.nonconformities[1].friendlyCapEndDate).toBe('20 July 2021');
                     expect(ctrl.nonconformities[1].friendlyCapMustCompleteDate).toBe('21 August 2022');
                     expect(ctrl.nonconformities[1].friendlyCapStartDate).toBe('22 September 2023');
+                    expect(ctrl.nonconformities[1].friendlyDateOfDetermination).toBe('23 October 2024');
                 });
 
                 it('should handle blank dates', () => {
@@ -86,6 +89,7 @@
                     expect(ctrl.nonconformities[0].friendlyCapEndDate).toBe('Has not ended');
                     expect(ctrl.nonconformities[0].friendlyCapMustCompleteDate).toBe('Has not been approved');
                     expect(ctrl.nonconformities[0].friendlyCapStartDate).toBe('Has not started');
+                    expect(ctrl.nonconformities[0].friendlyDateOfDetermination).toBe('Has not been determined');
                 });
             });
         });
