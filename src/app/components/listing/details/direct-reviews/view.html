@@ -11,7 +11,7 @@
     <div class="direct-review__basic-information panel-body" ng-if="dr.open">
       <div class="direct-review__start">
         <div class="data-label">
-          <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date review began
+          Date review began<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
           {{ dr.startDate ? (dr.startDate | date : 'mediumDate' : 'UTC') : 'Has not started' }}
@@ -19,7 +19,7 @@
       </div>
       <div class="direct-review__end">
         <div class="data-label">
-          <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date review ended
+          Date review ended<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
           {{ dr.endDate ? (dr.endDate | date : 'mediumDate' : 'UTC') : 'Has not ended' }}
@@ -27,7 +27,7 @@
       </div>
       <div class="direct-review__circumstances">
         <div class="data-label">
-          <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Circumstance<span ng-if="dr.circumstances.length !== 1">s</span>
+          Circumstance<span ng-if="dr.circumstances.length !== 1">s</span><button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element" ng-if="dr.circumstances && dr.circumstances.length > 0">
           <ul>
