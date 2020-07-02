@@ -5,21 +5,28 @@
         var $log, ctrl, el, mock, scope;
 
         mock = [{
-            startDate: 30000,
-            endDate: 40000,
+            nonconformityStatus: 'Closed',
             id: 'closed-1',
+            capApprovalDate: {year: 2020, month: 'JUNE', dayOfMonth: 19},
+            capEndDate: {year: 2021, month: 'JULY', dayOfMonth: 20},
+            capMustCompleteDate: {year: 2022, month: 'AUGUST', dayOfMonth: 21},
+            capStartDate: {year: 2023, month: 'SEPTEMBER', dayOfMonth: 22},
         },{
-            startDate: 20000,
-            endDate: undefined,
+            nonconformityStatus: 'Open',
             id: 'open-1',
+            capApprovalDate: undefined,
+            capEndDate: undefined,
+            capMustCompleteDate: undefined,
+            capStartDate: undefined,
         },{
-            startDate: 30000,
-            endDate: 45000,
+            nonconformityStatus: undefined,
+            id: 'undefined-2',
+        },{
+            nonconformityStatus: undefined,
+            id: 'undefined-1',
+        },{
+            nonconformityStatus: 'Closed',
             id: 'closed-2',
-        },{
-            startDate: 50000,
-            endDate: undefined,
-            id: 'open-2',
         }];
 
         beforeEach(() => {
@@ -60,10 +67,25 @@
 
             describe('on load', () => {
                 it('should sort NCs', () => {
-                    expect(ctrl.nonconformities[0].id).toBe('open-2');
-                    expect(ctrl.nonconformities[1].id).toBe('open-1');
+                    expect(ctrl.nonconformities[0].id).toBe('open-1');
+                    expect(ctrl.nonconformities[1].id).toBe('closed-1');
                     expect(ctrl.nonconformities[2].id).toBe('closed-2');
-                    expect(ctrl.nonconformities[3].id).toBe('closed-1');
+                    expect(ctrl.nonconformities[3].id).toBe('undefined-2');
+                    expect(ctrl.nonconformities[4].id).toBe('undefined-1');
+                });
+
+                it('should translate dates', () => {
+                    expect(ctrl.nonconformities[1].friendlyCapApprovalDate).toBe('19 June 2020');
+                    expect(ctrl.nonconformities[1].friendlyCapEndDate).toBe('20 July 2021');
+                    expect(ctrl.nonconformities[1].friendlyCapMustCompleteDate).toBe('21 August 2022');
+                    expect(ctrl.nonconformities[1].friendlyCapStartDate).toBe('22 September 2023');
+                });
+
+                it('should handle blank dates', () => {
+                    expect(ctrl.nonconformities[0].friendlyCapApprovalDate).toBe('Has not been approved');
+                    expect(ctrl.nonconformities[0].friendlyCapEndDate).toBe('Has not ended');
+                    expect(ctrl.nonconformities[0].friendlyCapMustCompleteDate).toBe('Has not been approved');
+                    expect(ctrl.nonconformities[0].friendlyCapStartDate).toBe('Has not started');
                 });
             });
         });

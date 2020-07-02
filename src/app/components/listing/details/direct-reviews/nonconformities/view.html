@@ -46,7 +46,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date of Determination
       </div>
       <div class="nonconformity__data-element">
-        {{ dr.dateOfDetermination ? (dr.dateOfDetermination | date : 'mediumDate' : 'UTC') : 'Has not been determined' }}
+        Does this value exist? {{ nc.dateOfDetermination ? (nc.dateOfDetermination | date : 'mediumDate' : 'UTC') : 'Has not been determined' }}
       </div>
     </div>
     <div class="nonconformity__wide">
@@ -62,7 +62,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Corrective Action Plan Approval Date
       </div>
       <div class="nonconformity__data-element">
-        {{ dr.capApprovalDate ? (dr.capApprovalDate | date : 'mediumDate' : 'UTC') : 'Has not been approved' }}
+        {{ nc.friendlyCapApprovalDate }}
       </div>
     </div>
     <div class="nonconformity__narrow">
@@ -70,7 +70,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date Corrective Action Began
       </div>
       <div class="nonconformity__data-element">
-        {{ dr.capStartDate ? (dr.capStartDate | date : 'mediumDate' : 'UTC') : 'Has not been approved' }}
+        {{ nc.friendlyCapStartDate }}
       </div>
     </div>
     <div class="nonconformity__narrow">
@@ -78,7 +78,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date Corrective Action Must Be Completed
       </div>
       <div class="nonconformity__data-element">
-        {{ dr.capMustCompleteDate ? (dr.capMustCompleteDate | date : 'mediumDate' : 'UTC') : 'Has not been approved' }}
+        {{ nc.friendlyCapMustCompleteDate }}
       </div>
     </div>
     <div class="nonconformity__wide">
@@ -94,7 +94,7 @@
         <button class="nonconformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button> Date Corrective Action Was Completed
       </div>
       <div class="nonconformity__data-element">
-        {{ dr.capEndDate ? (dr.capEndDate | date : 'mediumDate' : 'UTC') : 'Has not ended' }}
+        {{ nc.friendlyCapEndDate }}
       </div>
     </div>
     <div class="nonconformity__wide">
