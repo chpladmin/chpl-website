@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Direct Reviews component', () => {
+    describe('the Direct Reviews component', () => {
         var $log, ctrl, el, mock, scope;
 
         mock = [{
@@ -81,7 +81,7 @@
                 it('should count NC statuses', () => {
                     expect(ctrl.directReviews[1].ncSummary).toBe('1 open / 3 non-conformities found');
                     expect(ctrl.directReviews[3].ncSummary).toBe('1 closed non-conformity found');
-                    expect(ctrl.directReviews[2].ncSummary).toBe('0 non-conformities found');
+                    expect(ctrl.directReviews[2].ncSummary).toBe('no non-conformities found');
                 });
             });
         });

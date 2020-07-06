@@ -23,7 +23,7 @@ export const DirectReviewsComponent = {
                         } else if (total > 0) {
                             dr.ncSummary = total + ' closed';
                         } else {
-                            dr.ncSummary = '0';
+                            dr.ncSummary = 'no';
                         }
                         dr.ncSummary += ' non-conformit' + (total !== 1 ? 'ies' : 'y') + ' found';
                         return dr;
