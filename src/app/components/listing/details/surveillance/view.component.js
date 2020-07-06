@@ -127,7 +127,16 @@ export const SurveillanceComponent = {
             var results = [];
             for (var i = 0; i < surv.requirements.length; i++) {
                 for (var j = 0; j < surv.requirements[i].nonconformities.length; j++) {
-                    results.push(surv.requirements[i].nonconformities[j].status.name + ' Non-Conformity Found for ' + (surv.requirements[i].criterion ? (surv.requirements[i].criterion.number + ': ' + surv.requirements[i].criterion.title) : surv.requirements[i].requirement));
+                    var result = surv.requirements[i].nonconformities[j].status.name + ' Non-Conformity Found for ';
+                    if (surv.requirements[i].criterion) {
+                        result += '<span class="' + (surv.requirements[i].criterion.removed ? 'removed' : '') + '">';
+                        result += surv.requirements[i].criterion.removed ? 'Removed | ' : '';
+                        result += surv.requirements[i].criterion.number + ': ' + surv.requirements[i].criterion.title + '</span>'
+                    } else {
+                        result += surv.requirements[i].requirement
+                    }
+                    result += '<br />';
+                    results.push(result);
                 }
             }
             if (results.length === 0) {

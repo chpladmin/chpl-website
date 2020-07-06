@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 10.47.0
+_24 June 2020_
+
+### Features
+* Add "Removed | " to display of removed criteria in several places
+
+### User Interface Updates
+* Change tool-tip text for two new criteria data fields
+
+### Bug Fixes
+* Require URL fields on criteria edit to be "shaped" like URLs
+
+---
+
 ## Version 10.46.0
 _15 June 2020_
 
