@@ -51,10 +51,18 @@ export const ListingDetailsComponent = {
             }
             if (changes.directReviews && changes.directReviews.currentValue) {
                 this.directReviews = changes.directReviews.currentValue
-                    .filter(dr => dr.nonconformities.reduce((acc, nc) => acc
-                                                            || !nc.developerAssociatedListings
-                                                            || nc.developerAssociatedListings.length === 0
-                                                            || nc.developerAssociatedListings.includes(this.listing.chplProductNumber), false));
+                    .filter(dr => {
+                        let shouldInclude = !dr.nonconformities
+                            || dr.nonconformities.length === 0
+                            || dr.nonconformities.reduce((acc, nc) => {
+                                let shouldInclude = acc
+                                    || !nc.developerAssociatedListings
+                                    || nc.developerAssociatedListings.length === 0
+                                    || nc.developerAssociatedListings.includes(this.listing.chplProductNumber)
+                                return shouldInclude;
+                            }, false);
+                        return shouldInclude;
+                    });
             }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
