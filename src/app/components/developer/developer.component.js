@@ -25,10 +25,6 @@ export const DeveloperComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.isOn = featureFlags.isOn;
             this.mergeOptions = {};
-            this.valid = {
-                address: true,
-                contact: true,
-            }
             this.errorMessages = [];
         }
 
@@ -184,18 +180,16 @@ export const DeveloperComponent = {
             }
         }
 
-        editAddress (address, errors, validForm) {
+        editAddress (address) {
             this.developer.address = angular.copy(address);
-            this.valid.address = validForm;
             if (this.isChangeRequest) {
                 this.onEdit({developer: this.developer});
             }
             this.generateErrorMessages();
         }
 
-        editContact (contact, errors, validForm) {
+        editContact (contact) {
             this.developer.contact = angular.copy(contact);
-            this.valid.contact = validForm;
             if (this.isChangeRequest) {
                 this.onEdit({developer: this.developer});
             }
@@ -234,7 +228,6 @@ export const DeveloperComponent = {
         isValid () {
             return this.form.$valid // basic form validation
                 && !this.isInvalid // validation from outside
-                && this.valid.address && this.valid.contact // validation from sub-components
                 && this.developer.statusEvents && this.developer.statusEvents.length > 0 // status history exists
                 && this.developer.statusEvents.reduce((acc, e) => acc && !this.matchesPreviousStatus(e) && !this.matchesPreviousDate(e), true) // no duplicate status history data
                 && this.errorMessages.length === 0; // business logic error messages

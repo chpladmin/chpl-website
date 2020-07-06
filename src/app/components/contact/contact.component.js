@@ -66,8 +66,6 @@ export const ContactComponent = {
             }
             this.onChange({
                 contact: this.contact,
-                errors: this.errorMessages,
-                validForm: this.form.$valid && this.errorMessages.length === 0,
             });
         }
 
