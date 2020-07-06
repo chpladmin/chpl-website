@@ -14,7 +14,7 @@
                       can-edit="$ctrl.can('edit')"
                       can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
                       can-split="$ctrl.can('split-developer')"
-                      is-editing="$ctrl.action === 'edit' || $ctrl.action === 'merge'"
+                      is-editing="$ctrl.action === 'edit'"
                       on-cancel="$ctrl.cancel()"
                       on-edit="$ctrl.save(developer)"
                       take-action="$ctrl.takeAction(action)"

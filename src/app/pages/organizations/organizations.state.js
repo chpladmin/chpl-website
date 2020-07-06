@@ -34,6 +34,14 @@ let states = [
         },
         data: { title: 'CHPL Developers' },
     },{
+        name: 'organizations.developers.developer.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'edit',
+        },
+        data: { title: 'CHPL Developers - Edit' },
+    },{
         name: 'organizations.developers.developer.split',
         url: '/split',
         component: 'chplDevelopersSplit',

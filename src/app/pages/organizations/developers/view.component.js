@@ -4,6 +4,7 @@ export const DevelopersViewComponent = {
         developer: '<',
         developers: '<',
         products: '<',
+        action: '@',
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
@@ -72,7 +73,7 @@ export const DevelopersViewComponent = {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.action = undefined;
+            this.$state.go('^');
         }
 
         loadData () {
@@ -97,7 +98,7 @@ export const DevelopersViewComponent = {
                 if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                     that.developer = response;
                     that.backup.developer = angular.copy(response);
-                    that.action = undefined;
+                    this.$state.go('^', undefined, {reload: true});
                 } else {
                     if (response.data.errorMessages) {
                         that.errorMessages = response.data.errorMessages;
@@ -119,22 +120,7 @@ export const DevelopersViewComponent = {
         }
 
         takeAction (action) {
-            switch (action) {
-            case 'split':
-                this.$state.go('.split', {
-                    developer: this.developer,
-                    products: this.products,
-                });
-                break;
-            case 'merge':
-                this.$state.go('.merge', {
-                    developer: this.developer,
-                    developers: this.developers,
-                });
-                break;
-            default:
-                this.action = action;
-            }
+            this.$state.go('.' + action);
         }
 
         takeUserAction (action, data) {
