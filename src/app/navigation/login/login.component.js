@@ -18,6 +18,7 @@ export const LoginComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.passwordClass = utilService.passwordClass;
             this.hasAnyRole = authService.hasAnyRole;
             this.activityEnum = {
                 LOGIN: 1,
