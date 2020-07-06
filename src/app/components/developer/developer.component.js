@@ -56,6 +56,7 @@ export const DeveloperComponent = {
                         this.transMap[att.acbName] = att.attestation;
                     });
                 }
+                this.developerBackup = angular.copy(this.developer);
             }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
@@ -272,8 +273,8 @@ export const DeveloperComponent = {
          */
         generateMergeOptions () {
             this.mergeOptions = {
-                name: Array.from(new Set([this.developer.name].concat(this.mergingDevelopers.map(d => d.name)))),
-                website: Array.from(new Set([this.developer.website].concat(this.mergingDevelopers.map(d => d.website)))),
+                name: Array.from(new Set([this.developerBackup.name].concat(this.mergingDevelopers.map(d => d.name)))),
+                website: [],
             };
             this.contactOptions = {
                 fullName: [],
@@ -291,6 +292,7 @@ export const DeveloperComponent = {
             };
             this.fillMergeOptionByDeveloper(this.developer);
             this.mergingDevelopers.forEach(d => this.fillMergeOptionByDeveloper(d));
+            this.mergeOptions.website = Array.from(new Set(this.mergeOptions.website));
             this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
             this.contactOptions.title = Array.from(new Set(this.contactOptions.title));
             this.contactOptions.email = Array.from(new Set(this.contactOptions.email));
@@ -304,19 +306,42 @@ export const DeveloperComponent = {
         }
 
         fillMergeOptionByDeveloper (developer) {
+            if (developer.website) {
+                this.mergeOptions.website.push(developer.website);
+            }
             if (developer.contact) {
-                this.contactOptions.fullName.push(developer.contact.fullName);
-                this.contactOptions.title.push(developer.contact.title);
-                this.contactOptions.email.push(developer.contact.email);
-                this.contactOptions.phoneNumber.push(developer.contact.phoneNumber);
+                if (developer.contact.fullName) {
+                    this.contactOptions.fullName.push(developer.contact.fullName);
+                }
+                if (developer.contact.title) {
+                    this.contactOptions.title.push(developer.contact.title);
+                }
+                if (developer.contact.email) {
+                    this.contactOptions.email.push(developer.contact.email);
+                }
+                if (developer.contact.phoneNumber) {
+                    this.contactOptions.phoneNumber.push(developer.contact.phoneNumber);
+                }
             }
             if (developer.address) {
-                this.addressOptions.line1.push(developer.address.line1);
-                this.addressOptions.line2.push(developer.address.line2);
-                this.addressOptions.city.push(developer.address.city);
-                this.addressOptions.state.push(developer.address.state);
-                this.addressOptions.zipcode.push(developer.address.zipcode);
-                this.addressOptions.country.push(developer.address.country);
+                if (developer.address.line1) {
+                    this.addressOptions.line1.push(developer.address.line1);
+                }
+                if (developer.address.line2) {
+                    this.addressOptions.line2.push(developer.address.line2);
+                }
+                if (developer.address.city) {
+                    this.addressOptions.city.push(developer.address.city);
+                }
+                if (developer.address.state) {
+                    this.addressOptions.state.push(developer.address.state);
+                }
+                if (developer.address.zipcode) {
+                    this.addressOptions.zipcode.push(developer.address.zipcode);
+                }
+                if (developer.address.country) {
+                    this.addressOptions.country.push(developer.address.country);
+                }
             }
         }
 
