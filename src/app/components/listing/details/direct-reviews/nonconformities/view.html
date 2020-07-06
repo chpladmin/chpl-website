@@ -37,7 +37,7 @@
       <div class="nonconformity__data-element">
       <div class="nonconformity__data-element" ng-if="!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0">None</div>
         <ul class="nonconformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
-          <li ng-repeat="listing in nc.developerAssociatedListings">{{ listing }}</li>
+          <li ng-repeat="listing in nc.developerAssociatedListings"><a ui-sref="listing({id: listing, initialPanel: 'directReviews'})">{{ listing }}</a></li>
         </ul>
       </div>
     </div>
