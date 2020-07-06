@@ -38,6 +38,12 @@ export const DeveloperComponent = {
             }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
+                if (!this.developer.contact) {
+                    this.developer.contact = {};
+                }
+                if (!this.developer.address) {
+                    this.developer.address = {};
+                }
                 if (this.developer.statusEvents) {
                     this.developer.statusEvents = this.developer.statusEvents.map(e => {
                         e.statusDateObject = new Date(e.statusDate);
