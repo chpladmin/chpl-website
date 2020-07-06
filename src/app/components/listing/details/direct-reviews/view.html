@@ -7,6 +7,7 @@
       <div class="direct-review__header-toggle"><i class="fa fa-lg" ng-class="dr.open ? 'fa-caret-down' : 'fa-caret-right'"></i></div>
       <div class="direct-review__header-title">{{ dr.endDate ? 'Closed' : 'Open' }} Direct Review</div>
       <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + (dr.endDate | date : 'mediumDate' : 'UTC')  : dr.startDate ? 'began ' + (dr.startDate | date : 'mediumDate' : 'UTC') : 'has not started' }}</div>
+      <div class="direct-review__header-nc-summary">{{ dr.ncSummary }}</div>
     </div>
     <div class="direct-review__basic-information panel-body" ng-if="dr.open">
       <div class="direct-review__start">

@@ -1,25 +1,37 @@
 (() => {
     'use strict';
 
-    describe('the Direct Reviews component', () => {
+    fdescribe('the Direct Reviews component', () => {
         var $log, ctrl, el, mock, scope;
 
         mock = [{
             startDate: 30000,
             endDate: 40000,
             id: 'closed-1',
+            nonconformities: [{
+                nonconformityStatus: 'Closed',
+            }],
         },{
             startDate: 20000,
             endDate: undefined,
             id: 'open-1',
+            nonconformities: [{
+                nonconformityStatus: 'Closed',
+            },{
+                nonconformityStatus: 'Open',
+            },{
+                nonconformityStatus: 'Closed',
+            }],
         },{
             startDate: 30000,
             endDate: 45000,
             id: 'closed-2',
+            nonconformities: [],
         },{
             startDate: 50000,
             endDate: undefined,
             id: 'open-2',
+            nonconformities: [],
         }];
 
         beforeEach(() => {
@@ -64,6 +76,12 @@
                     expect(ctrl.directReviews[1].id).toBe('open-1');
                     expect(ctrl.directReviews[2].id).toBe('closed-2');
                     expect(ctrl.directReviews[3].id).toBe('closed-1');
+                });
+
+                it('should count NC statuses', () => {
+                    expect(ctrl.directReviews[1].ncSummary).toBe('1 open / 3 non-conformities found');
+                    expect(ctrl.directReviews[3].ncSummary).toBe('1 closed non-conformity found');
+                    expect(ctrl.directReviews[2].ncSummary).toBe('0 non-conformities found');
                 });
             });
         });

@@ -13,7 +13,21 @@ export const DirectReviewsComponent = {
         $onChanges (changes) {
             if (changes.directReviews && changes.directReviews.currentValue) {
                 this.directReviews = changes.directReviews.currentValue
-                    .map(dr => dr)
+                    .map(dr => {
+                        let open = dr.nonconformities
+                            .filter(nc => nc.nonconformityStatus === 'Open')
+                            .length;
+                        let total = dr.nonconformities.length;
+                        if (open > 0) {
+                            dr.ncSummary = open + ' open / ' + total;
+                        } else if (total > 0) {
+                            dr.ncSummary = total + ' closed';
+                        } else {
+                            dr.ncSummary = '0';
+                        }
+                        dr.ncSummary += ' non-conformit' + (total !== 1 ? 'ies' : 'y') + ' found';
+                        return dr;
+                    })
                     .sort((a, b) => {
                         if (a.endDate && b.endDate) {
                             return a.endDate < b.endDate ? 1 : -1;

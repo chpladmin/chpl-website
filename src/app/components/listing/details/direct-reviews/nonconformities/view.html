@@ -1,6 +1,6 @@
 <div class="nonconformities" ng-if="!$ctrl.nonconformities || $ctrl.nonconformities.length === 0">
   <div class="nonconformity__wide">
-    No Requirements or Nonconformities exist for this Direct Review
+    No Requirements or Non-Conformities exist for this Direct Review
   </div>
 </div>
 <div class="nonconformities" ng-if="$ctrl.nonconformities && $ctrl.nonconformities.length > 0">
@@ -8,7 +8,7 @@
     <div class="nonconformities__requirements-header">Requirements</div>
     Requirements Reviewed
   </div>
-  <div class="nonconformities__gridtable-header">Non-conformity Summary</div>
+  <div class="nonconformities__gridtable-header">Non-Conformity Summary</div>
   <div class="nonconformities__gridtable-header">Review Result</div>
   <div ng-repeat-start="nc in $ctrl.nonconformities" class="nonconformity__gridtable-header nonconformity__gridtable-header--first" ng-class="nc.nonconformityStatus === 'Open' ? 'nonconformity__gridtable-header--open' : 'nonconformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
     <div>
