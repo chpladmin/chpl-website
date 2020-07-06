@@ -283,7 +283,7 @@ export const DeveloperComponent = {
                 zipcode: [],
                 country: [],
             };
-            this.fillMergeOptionByDeveloper(this.developer);
+            this.fillMergeOptionByDeveloper(this.developerBackup);
             this.mergingDevelopers.forEach(d => this.fillMergeOptionByDeveloper(d));
             this.mergeOptions.website = Array.from(new Set(this.mergeOptions.website));
             this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
