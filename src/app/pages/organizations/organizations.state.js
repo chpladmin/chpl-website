@@ -23,13 +23,21 @@ let states = [
         url: '/{developerId}',
         component: 'chplDevelopersView',
         resolve: {
-            developer: (networkService, $transition$) => {
+            developer: (networkService, $location, $transition$) => {
                 'ngInject'
-                return networkService.getDeveloper($transition$.params().developerId);
+                if (!$transition$.params().developerId) {
+                    $location.path('/organizations/developers');
+                } else {
+                    return networkService.getDeveloper($transition$.params().developerId);
+                }
             },
-            products: (networkService, $transition$) => {
+            products: (networkService, $location, $transition$) => {
                 'ngInject'
-                return networkService.getProductsByDeveloper($transition$.params().developerId);
+                if (!$transition$.params().developerId) {
+                    $location.path('/organizations/developers');
+                } else {
+                    return networkService.getProductsByDeveloper($transition$.params().developerId);
+                }
             },
         },
         data: { title: 'CHPL Developers' },
