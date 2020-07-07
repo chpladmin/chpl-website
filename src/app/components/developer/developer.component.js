@@ -164,6 +164,9 @@ export const DeveloperComponent = {
                 return e;
             });
             this.developer.transparencyAttestations = Object.keys(this.transMap).map(key => { return {acbName: key, attestation: this.transMap[key]}; });
+            if (!this.developer.address.line1) {
+                this.developer.address = undefined;
+            }
             this.onEdit({developer: this.developer});
         }
 
