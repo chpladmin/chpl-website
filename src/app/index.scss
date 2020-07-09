@@ -916,6 +916,10 @@ option[label^="Removed"] {
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.data-item--invalid {
+    text-decoration: line-through;
+}
+
 .new-style {
 
     /*
