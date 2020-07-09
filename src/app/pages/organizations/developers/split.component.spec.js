@@ -2,11 +2,21 @@
     'use strict';
 
     describe('the Developer Split component', () => {
-        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
+        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope, toaster;
 
         mock = {
             developer: {},
             products: [],
+            goodResponse: {
+                job: {
+                    jobDataMap: {
+                        user: {
+                            email: 'fake',
+                        },
+                    },
+                },
+                status: 200,
+            },
         };
 
         beforeEach(() => {
@@ -18,11 +28,12 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_, _toaster_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
                 $state = _$state_;
+                toaster = _toaster_;
                 networkService = _networkService_;
                 networkService.getAcbs.and.returnValue($q.when([]));
                 networkService.splitDeveloper.and.returnValue($q.when({
@@ -83,10 +94,9 @@
         });
 
         describe('when a developer split is saved', () => {
-            it('should navigate back to the developer on a status:200 response', () => {
+            it('should navigate back to the developers page on a status:200 response', () => {
                 spyOn($state, 'go');
-                ctrl.developer = {developerId: 'an id'};
-                networkService.splitDeveloper.and.returnValue($q.when({status: 200}));
+                networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
                     oldDeveloper: {},
@@ -95,7 +105,26 @@
                 };
                 ctrl.split();
                 scope.$digest();
-                expect($state.go).toHaveBeenCalled();
+                expect($state.go).toHaveBeenCalledWith('organizations.developers', {}, {reload: true});
+            });
+
+            it('should pop a notice on success', () => {
+                spyOn(toaster, 'pop');
+                ctrl.developer = {developerId: 'an id'};
+                networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
+                ctrl.splitDeveloper = {
+                    newDeveloper: {},
+                    oldDeveloper: {},
+                    newProducts: [],
+                    oldProducts: [],
+                };
+                ctrl.split();
+                scope.$digest();
+                expect(toaster.pop).toHaveBeenCalledWith({
+                    type: 'success',
+                    title: 'Split submitted',
+                    body: 'Your action has been submitted and you\'ll get an email at fake when it\'s done',
+                });
             });
 
             it('should report errors if response has errors', () => {
@@ -115,7 +144,7 @@
 
             it('should pass the the split developer data to the network service', () => {
                 spyOn($state, 'go');
-                networkService.splitDeveloper.and.returnValue($q.when({status: 200}));
+                networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
                     oldDeveloper: {},
