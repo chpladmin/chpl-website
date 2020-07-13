@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
-    <div class="col-md-3">
+    <div class="col-md-6">
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
@@ -20,33 +20,6 @@
                       on-edit="$ctrl.save(developer)"
                       take-action="$ctrl.takeAction(action)"
                       ></chpl-developer>
-    </div>
-    <div class="col-md-9">
-      <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])">
-        <div class="panel-heading">
-          <div class="panel-title"><h2>Tracking</h2></div>
-        </div>
-        <div class="panel-body">
-          <chpl-change-requests change-requests="$ctrl.changeRequests"
-                                change-request-types="$ctrl.changeRequestTypes"
-                                change-request-status-types="$ctrl.changeRequestStatusTypes"
-                                developer="$ctrl.developer"
-                                take-action="$ctrl.takeCrAction(action, data)"
-                                ></chpl-change-requests>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title"><h2>Products</h2></div>
-        </div>
-        <div class="panel-body">
-          <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
-            <chpl-product product="product"
-                          search-options="$ctrl.searchOptions"
-                          ></chpl-product>
-          </div>
-        </div>
-      </div>
       <div feature-flag="role-developer">
         <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])">
           <div class="panel-heading">
@@ -57,6 +30,28 @@
                         roles="$ctrl.roles"
                         take-action="$ctrl.takeUserAction(action, data)"
                         ></chpl-users>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div ng-if="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])">
+        <chpl-change-requests change-requests="$ctrl.changeRequests"
+                              change-request-types="$ctrl.changeRequestTypes"
+                              change-request-status-types="$ctrl.changeRequestStatusTypes"
+                              developer="$ctrl.developer"
+                              take-action="$ctrl.takeCrAction(action, data)"
+                              ></chpl-change-requests>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title"><h2>Products</h2></div>
+        </div>
+        <div class="panel-body">
+          <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
+            <chpl-product product="product"
+                          search-options="$ctrl.searchOptions"
+                          ></chpl-product>
           </div>
         </div>
       </div>
