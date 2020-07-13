@@ -184,13 +184,6 @@ export const LoginComponent = {
                             that.clear();
                             that._updateExtras();
                             that.broadcastLogin();
-                            if (that.hasAnyRole(['ROLE_DEVELOPER'])) {
-                                if (that.$state.includes('dashboard')) {
-                                    that.$state.reload();
-                                } else {
-                                    that.$state.go('dashboard');
-                                }
-                            }
                         });
                 }, error => {
                     const expired = new RegExp('The user is required to change their password on next log in\\.');
