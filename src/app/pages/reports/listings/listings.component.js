@@ -97,6 +97,11 @@ export const ReportsListingsComponent = {
             } else {
                 this.tableController.search('|LISTING|', 'categoriesFilter');
             }
+            if (filter.tableState.search.predicateObject.acbName) {
+                this.tableController.search(filter.tableState.search.predicateObject.acbName, 'acbName');
+            } else {
+                this.tableController.search({}, 'acbName');
+            }
             if (filter.tableState.search.predicateObject.date) {
                 this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
             } else {

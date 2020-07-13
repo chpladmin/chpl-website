@@ -1,9 +1,8 @@
 export const ReportsVersionsComponent = {
     templateUrl: 'chpl.reports/versions/versions.html',
     controller: class ReportsVersionsComponent {
-        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+        constructor ($log, $scope, ReportService, networkService, utilService) {
             'ngInject'
-            this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
             this.ReportService = ReportService;
@@ -97,7 +96,7 @@ export const ReportsVersionsComponent = {
                         activity.details.push(change);
                     }
                 } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, original array, final object: merge
-                    activity.action ='Versions ' + item.originalData.map(d => d.version).join(' and ') + ' merged to form ' + item.newData.version;
+                    activity.action = 'Versions ' + item.originalData.map(d => d.version).join(' and ') + ' merged to form ' + item.newData.version;
                     activity.details = [];
                 } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // both exist, original object, final array: split
                     activity.action = 'Versions ' + item.originalData.version + ' split to become Versions ' + item.newData[0].version + ' and ' + item.newData[1].version;

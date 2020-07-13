@@ -5,12 +5,13 @@ export const DevelopersSplitComponent = {
         products: '<',
     },
     controller: class DevelopersSplitController {
-        constructor ($log, $state, authService, networkService) {
+        constructor ($log, $state, authService, networkService, toaster) {
             'ngInject'
             this.$log = $log;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.toaster = toaster;
             this.movingProducts = [];
             this.newDeveloper = {
                 status: {status: 'Active'},
@@ -55,9 +56,12 @@ export const DevelopersSplitComponent = {
             this.networkService.splitDeveloper(splitDeveloper)
                 .then(response => {
                     if (!response.status || response.status === 200) {
-                        that.$state.go('organizations.developers.developer', {
-                            developerId: that.developer.developerId,
-                        }, {
+                        that.toaster.pop({
+                            type: 'success',
+                            title: 'Split submitted',
+                            body: 'Your action has been submitted and you\'ll get an email at ' + response.job.jobDataMap.user.email + ' when it\'s done',
+                        });
+                        that.$state.go('organizations.developers', {}, {
                             reload: true,
                         });
                     } else {
