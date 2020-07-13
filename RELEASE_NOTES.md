@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 10.48.0
+_13 July 2020_
+
+### Features
+* Display notification of Split action to initiating user
+* Use new style for ONC-ACB activity reports
+
+### User Interface Updates
+* Use new link for CHPL Public User Guide
+
+---
+
 ## Version 10.47.0
 _24 June 2020_
 
