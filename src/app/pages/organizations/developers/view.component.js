@@ -4,6 +4,7 @@ export const DevelopersViewComponent = {
         developer: '<',
         developers: '<',
         products: '<',
+        action: '@',
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
@@ -38,7 +39,6 @@ export const DevelopersViewComponent = {
         $onChanges (changes) {
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
-                this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
             }
             if (changes.developers) {
@@ -53,9 +53,7 @@ export const DevelopersViewComponent = {
                     return d;
                 });
                 this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
-                this.mergingDevelopers = devs.filter(d => d.developerId === this.developer.developerId);
                 this.backup.developers = angular.copy(this.developers);
-                this.backup.mergingDevelopers = angular.copy(this.mergingDevelopers);
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
             }
             if (changes.products) {
@@ -76,8 +74,7 @@ export const DevelopersViewComponent = {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.mergingDevelopers = angular.copy(this.backup.mergingDevelopers);
-            this.action = undefined;
+            this.$state.go('^');
         }
 
         loadData () {
@@ -99,12 +96,7 @@ export const DevelopersViewComponent = {
             if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
                 this.saveRequest(developer);
             } else {
-                let developerIds = [];
-                if (this.action === 'merge') {
-                    developerIds = developerIds.concat(this.mergingDevelopers.map(ver => ver.developerId));
-                } else {
-                    developerIds.push(this.developer.developerId);
-                }
+                let developerIds = [this.developer.developerId];
                 let that = this;
                 this.developer = developer;
                 this.errorMessages = [];
@@ -113,55 +105,24 @@ export const DevelopersViewComponent = {
                     developerIds: developerIds,
                 }).then(response => {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        if (that.action === 'merge') {
-                            that.$state.go('organizations.developers.developer', {
-                                developerId: response.developerId,
-                                action: undefined,
-                            }, {
-                                reload: true,
-                            });
-                        }
                         that.developer = response;
                         that.backup.developer = angular.copy(response);
-                        that.newDeveloper = angular.copy(response);
-                        that.action = undefined;
-                    } else {
-                        if (response.data.errorMessages) {
-                            that.errorMessages = response.data.errorMessages;
-                        } else if (response.data.error) {
-                            that.errorMessages.push(response.data.error);
+                        this.$state.go('^', undefined, {reload: true});
+                    }, error => {
+                        if (error.data.errorMessages) {
+                            that.errorMessages = error.data.errorMessages;
+                        } else if (error.data.error) {
+                            that.errorMessages.push(error.data.error);
                         } else {
                             that.errorMessages = ['An error has occurred.'];
                         }
                     }
-                }, error => {
-                    if (error.data.errorMessages) {
-                        that.errorMessages = error.data.errorMessages;
-                    } else if (error.data.error) {
-                        that.errorMessages.push(error.data.error);
-                    } else {
-                        that.errorMessages = ['An error has occurred.'];
-                    }
                 });
             }
-        }
-
-        saveSplitEdit (developer) {
-            this.newDeveloper = developer;
-            this.splitEdit = false;
         }
 
         takeAction (action) {
-            switch (action) {
-            case 'split':
-                this.$state.go('.split', {
-                    developer: this.developer,
-                    products: this.products,
-                });
-                break;
-            default:
-                this.action = action;
-            }
+            this.$state.go('.' + action);
         }
 
         takeCrAction (action, data) {
@@ -270,37 +231,6 @@ export const DevelopersViewComponent = {
                 this.$state.reload();
                 break;
                 //no default
-            }
-        }
-
-        takeProductAction (action, productId) {
-            this.$state.go('organizations.developers.products', {
-                action: action,
-                productId: productId,
-            });
-        }
-
-        takeSplitAction () {
-            this.splitEdit = true;
-        }
-
-        toggleMerge (developer, merge) {
-            if (merge) {
-                this.mergingDevelopers.push(this.developers.filter(dev => dev.developerId === developer.developerId)[0]);
-                this.developers = this.developers.filter(dev => dev.developerId !== developer.developerId);
-            } else {
-                this.developers.push(this.mergingDevelopers.filter(dev => dev.developerId === developer.developerId)[0]);
-                this.mergingDevelopers = this.mergingDevelopers.filter(dev => dev.developerId !== developer.developerId);
-            }
-        }
-
-        toggleMove (product, toNew) {
-            if (toNew) {
-                this.movingProducts.push(this.products.filter(prod => prod.productId === product.productId)[0]);
-                this.products = this.products.filter(prod => prod.productId !== product.productId);
-            } else {
-                this.products.push(this.movingProducts.filter(prod => prod.productId === product.productId)[0]);
-                this.movingProducts = this.movingProducts.filter(prod => prod.productId !== product.productId);
             }
         }
     },
