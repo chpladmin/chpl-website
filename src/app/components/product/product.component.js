@@ -37,6 +37,7 @@ export const ProductComponent = {
                         that.versions = versions
                             .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
                         that.activeVersion = that.versions[0];
+                        that.retrieveListings();
                     });
             }
             if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {

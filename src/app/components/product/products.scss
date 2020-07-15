@@ -1,0 +1,21 @@
+.products__product {
+    border: 1px solid var(--grey);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.products__product-header {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 4fr 1fr 2em;
+    background-color: var(--grey-blue);
+    padding: 8px;
+}
+
+.products__product-header-item {
+    text-align: right;
+}
+
+.products__product-header-item--first {
+    text-align: left;
+}
