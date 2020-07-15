@@ -42,18 +42,9 @@
                               take-action="$ctrl.takeCrAction(action, data)"
                               ></chpl-change-requests>
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title"><h2>Products</h2></div>
-        </div>
-        <div class="panel-body">
-          <div ng-repeat="product in $ctrl.products | orderBy: 'name'">
-            <chpl-product product="product"
-                          search-options="$ctrl.searchOptions"
-                          ></chpl-product>
-          </div>
-        </div>
-      </div>
+      <chpl-products products="$ctrl.products"
+                     search-options="$ctrl.searchOptions"
+                     ></chpl-products>
     </div>
   </div>
 </ui-view>
