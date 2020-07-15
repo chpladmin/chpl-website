@@ -162,6 +162,12 @@
                     <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300" ng-disabled="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])"></input>
                     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
                     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
+                    <ul class="list-inline">
+                      <li ng-repeat="option in $ctrl.getDifferences('name')">
+                        <button class="btn btn-link developer__merge-option"
+                                ng-click="$ctrl.selectDifference('name', option)">{{ option }}</button>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div class="form-group" ng-if="!$ctrl.isChangeRequest">
@@ -170,6 +176,12 @@
                     <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
                     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
                     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
+                    <ul class="list-inline">
+                      <li ng-repeat="option in $ctrl.getDifferences('website')">
+                        <button class="btn btn-link developer__merge-option"
+                                ng-click="$ctrl.selectDifference('website', option)">{{ option }}</button>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div class="form-group">
@@ -189,14 +201,14 @@
                               is-required="!$ctrl.isChangeRequest"
                               is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                               ignore-friendly-name="true"
-                              on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+                              on-change="$ctrl.editContact(contact)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
               </div>
               <div ng-class="($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest) ? 'col-sm-4' : 'col-sm-6'">
                 <chpl-address address="$ctrl.developer.address"
                               is-editing="true"
                               is-required="$ctrl.isSplitting"
                               is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
-                              on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+                              on-change="$ctrl.editAddress(address)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
               </div>
               <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest" class="col-sm-4">
                 <span ng-if="$ctrl.isTransparencyAttestationEditable()">
@@ -311,6 +323,12 @@
                 <input class="input-sm form-control" type="text" required ng-model="$ctrl.developer.name" id="developer-name" name="developerName" ng-maxlength="300"></input>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.required">Field is required</div>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerName.$touched) && $ctrl.form.developerName.$error.maxlength">Field is too long</div>
+                <ul class="list-inline">
+                  <li ng-repeat="option in $ctrl.getDifferences('name')">
+                    <button class="btn btn-link developer__merge-option"
+                            ng-click="$ctrl.selectDifference('name', option)">{{ option }}</button>
+                  </li>
+                </ul>
               </div>
             </div>
             <div class="flex-item" ng-if="!$ctrl.isChangeRequest">
@@ -319,6 +337,12 @@
                 <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
                 <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
+                <ul class="list-inline">
+                  <li ng-repeat="option in $ctrl.getDifferences('website')">
+                    <button class="btn btn-link developer__merge-option"
+                            ng-click="$ctrl.selectDifference('website', option)">{{ option }}</button>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -328,13 +352,15 @@
                         is-required="!$ctrl.isChangeRequest"
                         is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
                         ignore-friendly-name="true"
-                        on-change="$ctrl.editContact(contact, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+                        merge-options="$ctrl.contactOptions"
+                        on-change="$ctrl.editContact(contact)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
           <div class="flex-container horizontal-space"></div>
           <chpl-address address="$ctrl.developer.address"
                         is-editing="true"
                         is-required="$ctrl.isSplitting"
                         is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
-                        on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+                        merge-options="$ctrl.addressOptions"
+                        on-change="$ctrl.editAddress(address)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
           <div class="flex-container horizontal-space"></div>
           <div class="flex-container wrap">
             <div class="flex-item wrap" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest && $ctrl.isTransparencyAttestationEditable()">
@@ -426,6 +452,7 @@
         </div>
         <chpl-action-bar ng-if="!$ctrl.isChangeRequest"
                          is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                         error-messages="$ctrl.errorMessages"
                          take-action="$ctrl.takeActionBarAction(action)">
         </chpl-action-bar>
       </div>

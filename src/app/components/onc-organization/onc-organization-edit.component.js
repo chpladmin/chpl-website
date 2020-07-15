@@ -11,9 +11,6 @@ export const OncOrganizationEditComponent = {
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.backup = {};
-            this.valid = {
-                address: true,
-            }
         }
 
         $onChanges (changes) {
@@ -52,12 +49,11 @@ export const OncOrganizationEditComponent = {
             this.organization = angular.copy(this.backup.organization);
         }
 
-        editAddress (address, errors, validForm) {
+        editAddress (address) {
             if (!this.organization) {
                 this.organization = {};
             }
             this.organization.address = angular.copy(address);
-            this.valid.address = validForm;
         }
 
         getCode () {

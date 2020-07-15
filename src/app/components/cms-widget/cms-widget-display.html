@@ -9,26 +9,13 @@
       </button>
     </li>
   </ul>
-  <div feature-flag="effective-rule-date">
-    <div ng-if="!widget.productIds || widget.productIds.length === 0 || widget.searchResult.metPercentages.criteriaMet < 100">
-      For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. Note the selected product<span ng-if="widget.productIds.length !== 1">s</span> must meet 100% of the Base Criteria.
-    </div>
-    <div ng-if="widget.searchResult.products">
-      <span feature-flag="effective-rule-date" feature-flag-hide><a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br /></span>
-      <span feature-flag="effective-rule-date"><a href="https://www.healthit.gov/sites/default/files/2015edition_base_ehr_definition_ml_11-4-15.pdf">Base Criteria</a> Met<br /></span>
-      <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="warning" ng-if="widget.searchResult.metPercentages.criteriaMet < 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
-      <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="success" ng-if="widget.searchResult.metPercentages.criteriaMet === 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
-    </div>
+  <div ng-if="!widget.productIds || widget.productIds.length === 0 || widget.searchResult.metPercentages.criteriaMet < 100">
+    For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. Note the selected product<span ng-if="widget.productIds.length !== 1">s</span> must meet 100% of the Base Criteria.
   </div>
-  <div feature-flag="effective-rule-date" feature-flag-hide>
-    <div ng-if="widget.searchResult.products">
-      <table class="table table-condensed">
-        <tr><th scope="row">Base Criteria</th><td class="text-right">{{ widget.searchResult.metPercentages.criteriaMet }}%</td></tr>
-        <tr ng-if="widget.searchResult.year === '2014'"><th scope="row">CQM Domains</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmDomains }}%</td></tr>
-        <tr ng-if="widget.searchResult.year === '2014'"><th scope="row">Inpatient CQMs</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmsInpatient }}%</td></tr>
-        <tr ng-if="widget.searchResult.year === '2014'"><th scope="row">Ambulatory CQMs</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmsAmbulatory }}%</td></tr>
-      </table>
-    </div>
+  <div ng-if="widget.searchResult.products">
+    <a href="http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition">Base Criteria</a> Met<br />
+    <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="warning" ng-if="widget.searchResult.metPercentages.criteriaMet < 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
+    <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="success" ng-if="widget.searchResult.metPercentages.criteriaMet === 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
   </div>
   <div ng-if="widget.searchResult.missingAnd.length">
     Please select a product or products that contain the following criteria:
@@ -73,7 +60,7 @@
     <strong>{{ widget.createResponse.ehrCertificationId }}</strong>
     <br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
   </p>
-  <p feature-flag="effective-rule-date">
+  <p>
     <br />
     To view which products were used to create a specific CMS ID, use the <a ui-sref="resources.cms-lookup">CMS ID Reverse Lookup</a>
   </p>
