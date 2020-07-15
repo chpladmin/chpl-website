@@ -108,10 +108,8 @@
             describe('when handling callbacks', () => {
                 it('should handle the address', () => {
                     ctrl.organization.address = undefined;
-                    ctrl.valid.address = undefined;
-                    ctrl.editAddress({city: 'a name'}, [], true);
+                    ctrl.editAddress({city: 'a name'});
                     expect(ctrl.organization.address.city).toBe('a name');
-                    expect(ctrl.valid.address).toBe(true);
                 });
             });
         });

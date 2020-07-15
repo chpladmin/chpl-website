@@ -1,5 +1,8 @@
 <div class="action-bar flex-container">
   <div class="flex-item center">
+    <ul class="action-bar__error-messages list-unstyled" ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0">
+      <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
+    </ul>
     <button class="btn btn-default" id="action-bar-cancel"
             confirm="Are you sure you wish to cancel? Your changes will not be saved."
             confirm-ok="Yes"

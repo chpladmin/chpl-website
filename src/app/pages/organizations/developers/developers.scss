@@ -1,0 +1,21 @@
+.selected-developer--primary {
+    background-color: var(--grey);
+}
+
+.selected-developer--secondary {
+    cursor: pointer;
+}
+
+.selected-developer--odd {
+    background-color: var(--grey-blue);
+}
+
+.selected-developer--even {
+    background-color: var(--white);
+}
+
+.developer__merge-option {
+    border-color: var(--darkblue);
+    border-width: 2px;
+    border-radius: 16px;
+}
