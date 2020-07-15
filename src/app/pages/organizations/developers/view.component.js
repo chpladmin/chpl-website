@@ -108,14 +108,22 @@ export const DevelopersViewComponent = {
                         that.developer = response;
                         that.backup.developer = angular.copy(response);
                         this.$state.go('^', undefined, {reload: true});
-                    }, error => {
-                        if (error.data.errorMessages) {
-                            that.errorMessages = error.data.errorMessages;
-                        } else if (error.data.error) {
-                            that.errorMessages.push(error.data.error);
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
                         } else {
                             that.errorMessages = ['An error has occurred.'];
                         }
+                    }
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
+                    } else {
+                        that.errorMessages = ['An error has occurred.'];
                     }
                 });
             }
