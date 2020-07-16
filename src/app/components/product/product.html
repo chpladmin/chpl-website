@@ -1,6 +1,8 @@
-<div id="chpl-product-{{ $ctrl.product.productId }}" class="row" st-table="$ctrl.activeVersion.displayedListings" st-safe-src="$ctrl.activeVersion.listings" st-set-filter="customFilter">
+<div id="chpl-product-{{ $ctrl.product.productId }}" class="row" st-table="$ctrl.product.activeVersion.displayedListings" st-safe-src="$ctrl.product.activeVersion.listings" st-set-filter="customFilter">
   <div class="col-sm-12 product-border">
     <div>
+      <pre>{{ $ctrl.product.activeVersion | json }}</pre>
+      <pre>{{ $ctrl.product.versions | json }}</pre>
       <em>(Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</em>
       <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0" class="table table-condensed">
         <thead>
@@ -21,9 +23,9 @@
         <chpl-contact contact="$ctrl.product.contact"></chpl-contact>
       </span>
       <h4>Version</h4>
-      <select ng-model="$ctrl.activeVersion"
-              id="active-version" name="activeVersion" class="input-sm form-control"
-              ng-options="v as v.version for v in $ctrl.versions">
+      <select ng-model="$ctrl.product.activeVersion"
+              id="active-version" name="product.activeVersion" class="input-sm form-control"
+              ng-options="v as v.version for v in $ctrl.product.versions">
       </select>
       <hr />
       <div uib-dropdown auto-close="outsideClick" class="btn-group" id="filters">
@@ -32,15 +34,15 @@
         </button>
         <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
           <st-list-multiple
-            collection="$ctrl.activeVersion.listings"
+            collection="$ctrl.product.activeVersion.listings"
             fixed-items="$ctrl.statusItems"
             predicate="certificationStatus"
             match-full="true"></st-list-multiple>
         </ul>
       </div>
       <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
-      <p ng-if="$ctrl.activeVersion.displayedListings.length === 0">No Listings match the filter</p>
-      <table class="table table-condensed" ng-if="$ctrl.activeVersion.displayedListings && $ctrl.activeVersion.displayedListings.length > 0">
+      <p ng-if="$ctrl.product.activeVersion.displayedListings.length === 0">No Listings match the filter</p>
+      <table class="table table-condensed" ng-if="$ctrl.product.activeVersion.displayedListings && $ctrl.product.activeVersion.displayedListings.length > 0">
         <thead>
           <tr>
             <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default>Listings</th>
@@ -48,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="listing in $ctrl.activeVersion.displayedListings">
+          <tr ng-repeat="listing in $ctrl.product.activeVersion.displayedListings">
             <td><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></td>
             <td><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</td>
           </tr>

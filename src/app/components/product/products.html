@@ -4,12 +4,12 @@
   </div>
   <div class="panel-body">
     <div ng-repeat="product in $ctrl.products | orderBy: 'name'" class="products__product">
-      <div class="products__product-header" ng-click="product.isOpen = !product.isOpen">
+      <div class="products__product-header" ng-click="$ctrl.toggleProduct(product)">
         <div class="products__product-header-item products__product-header-item--first"><h3>{{ product.name }}</h3></div>
         <div class="products__product-header-item">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 0">s</span></div>
         <div class="products__product-header-item"><i class="fa" ng-class="{ 'fa-caret-down' : !product.isOpen, 'fa-caret-up' : product.isOpen }"></i></div>
       </div>
-      <div ng-show="product.isOpen">
+      <div ng-if="product.isOpen">
         <chpl-product product="product"
                       search-options="$ctrl.searchOptions"
                       ></chpl-product>

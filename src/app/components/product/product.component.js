@@ -28,17 +28,6 @@ export const ProductComponent = {
             let that = this;
             if (changes.product) {
                 this.product = angular.copy(changes.product.currentValue);
-                this.product.ownerHistory = this.product.ownerHistory.map(o => {
-                    o.transferDateObject = new Date(o.transferDate);
-                    return o;
-                });
-                this.networkService.getVersionsByProduct(this.product.productId)
-                    .then(versions => {
-                        that.versions = versions
-                            .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
-                        that.activeVersion = that.versions[0];
-                        that.retrieveListings();
-                    });
             }
             if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {
                 this.statusItems = changes.searchOptions.currentValue.certificationStatuses
@@ -54,14 +43,10 @@ export const ProductComponent = {
         }
 
         retrieveListings () {
-            if (!this.listingsRetrieved) {
-                this.listingsRetrieved = true;
-                this.versions = this.versions
-                    .map(v => {
-                        this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings);
-                        return v;
-                    });
-            }
+            this.product.versions.forEach(v => {
+                this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings);
+            });
+            this.activeVersion = this.product.versions[0];
         }
 
         viewCertificationStatusLegend () {
