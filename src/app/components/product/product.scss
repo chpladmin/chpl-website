@@ -1,13 +1,6 @@
 .product__product-info {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-}
-
-.products__product-header-item {
-    text-align: right;
-}
-
-.products__product-header-item--first {
-    text-align: left;
+    justify-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
