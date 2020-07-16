@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, featureFlags, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -33,7 +33,6 @@
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
-        vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
         vm.isDeveloperBanned = isDeveloperBanned;
         vm.loadCp = loadCp;
@@ -319,7 +318,7 @@
         }
 
         function isProductEditable (cp) {
-            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
+            if (cp.certificationEdition.name === '2014' && vm.hasAnyRole(['ROLE_ACB'])) {
                 return false;
             }
             if (cp.certificationEvents) {

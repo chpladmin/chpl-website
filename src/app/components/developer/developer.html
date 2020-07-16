@@ -32,11 +32,6 @@
               <chpl-address address="$ctrl.developer.address"></chpl-address>
             </div>
             <div class="col-sm-4" ng-if="!$ctrl.isChangeRequest">
-              <div class="product-element" id="developer-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
-                <h3>Transparency Attestations</h3>
-                <p ng-repeat="att in $ctrl.developer.transparencyAttestations | orderBy : 'acbName'" ng-if="att.attestation">
-                  <strong>{{ att.acbName }}:</strong> {{ att.attestation.transparencyAttestation }}</p>
-              </div>
               <h3>Status Information</h3>
               <div class="row well well-sm" ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
                 <div class="col-sm-6">
@@ -105,7 +100,7 @@
             </div>
           </div>
           <div class="flex-container horizontal-space"></div>
-          <div class="flex-container wrap" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest && $ctrl.isTransparencyAttestationEditable()">
+          <div class="flex-container wrap" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isChangeRequest">
             <div class="flex-item wrap" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'" ng-if="$ctrl.transMap[acb.name].transparencyAttestation">
               <div class="data-label">{{ acb.name }}</div>
               <div class="read-only-data">{{ $ctrl.transMap[acb.name].transparencyAttestation }}</div>

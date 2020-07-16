@@ -58,7 +58,7 @@
             vm.defaultRefineModel = {
                 certificationEdition: {
                     '2011': false,
-                    '2014': true,
+                    '2014': false,
                     '2015': true,
                 },
                 certificationStatus: {
@@ -72,9 +72,6 @@
                     'Terminated by ONC': false,
                 },
             };
-            if (vm.isOn('effective-rule-date')) {
-                vm.defaultRefineModel.certificationEdition['2014'] = false;
-            }
 
             vm.downloadResultsCategories = [
                 { display: 'Edition', enabled: true, columns: [{ display: 'Edition', key: 'edition' }] },
@@ -480,19 +477,17 @@
                         value: edition.name,
                         selected: vm.defaultRefineModel.certificationEdition[edition.name],
                     }
-                    if (edition.name === '2011' || (edition.name === '2014' && vm.isOn('effective-rule-date'))) {
+                    if (edition.name === '2011' || edition.name === '2014') {
                         obj.selected = false;
                         obj.display = 'Retired | ' + obj.value;
                         obj.retired = true;
                     }
                     return obj;
                 });
-            if (vm.isOn('effective-rule-date')) {
-                vm.filterItems.editionItems.push({
-                    value: '2015 Cures Update',
-                    selected: true,
-                });
-            }
+            vm.filterItems.editionItems.push({
+                value: '2015 Cures Update',
+                selected: true,
+            });
             vm.filterItems.statusItems = vm.searchOptions.certificationStatuses
                 .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
                 .map(status => {
@@ -514,11 +509,11 @@
                         display: (crit.removed ? 'Removed | ' : '') + crit.number + ': ' + crit.title,
                         removed: crit.removed,
                     };
-                    if (crit.certificationEdition === '2011' || (crit.certificationEdition === '2014' && vm.isOn('effective-rule-date'))) {
+                    if (crit.certificationEdition === '2011' || crit.certificationEdition === '2014') {
                         obj.display = 'Retired | ' + obj.display;
                         obj.retired = true;
                     }
-                    if (utilService.isCures(crit) && vm.isOn('effective-rule-date')) {
+                    if (utilService.isCures(crit)) {
                         vm.filterItems.criteria['2015Cures'].push(angular.copy(obj));
                     } else {
                         vm.filterItems.criteria[crit.certificationEdition].push(obj);
