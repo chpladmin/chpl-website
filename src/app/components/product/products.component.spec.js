@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Products component', () => {
-        var $compile, $log, ctrl, el, mock, scope;
+        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
             products: [{
@@ -21,11 +21,20 @@
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
                 $provide.factory('chplProductDirective', () => ({}));
+                $provide.decorator('networkService', $delegate => {
+                    $delegate.getProductsByVersion = jasmine.createSpy('getProductsByVersion');
+                    $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
+                    return $delegate;
+                });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                $q = _$q_;
+                networkService = _networkService_;
+                networkService.getProductsByVersion.and.returnValue($q.when([]));
+                networkService.getVersionsByProduct.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
                 scope.products = mock.products;
