@@ -28,10 +28,7 @@ export const DevelopersViewComponent = {
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
                 this.loadData();
             }
-            let loggedIn = this.$scope.$on('loggedIn', () => {
-                that.loadData();
-            })
-            this.$scope.$on('$destroy', loggedIn);
+            this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
             this.networkService.getSearchOptions()
                 .then(options => that.searchOptions = options);
         }
@@ -60,6 +57,10 @@ export const DevelopersViewComponent = {
                 this.products = angular.copy(changes.products.currentValue.products);
                 this.backup.products = angular.copy(this.products);
             }
+        }
+
+        $onDestroy () {
+            this.loggedIn();
         }
 
         can (action) {
