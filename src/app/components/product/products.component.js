@@ -5,9 +5,10 @@ export const ProductsComponent = {
         searchOptions: '<',
     },
     controller: class ProductsComponent {
-        constructor ($log, networkService) {
+        constructor ($log, $q, networkService) {
             'ngInject'
             this.$log = $log;
+            this.$q = $q;
             this.networkService = networkService;
         }
 
@@ -33,15 +34,23 @@ export const ProductsComponent = {
         }
 
         toggleProduct (product) {
-            let activeProduct = this.products.find(p => p.productId === product.productId);
-            if (!activeProduct.loaded) {
-                activeProduct.versions.forEach(v => {
-                    this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings);
+            this.products = this.products
+                .map(p => {
+                    if (p.productId === product.productId) {
+                        if (!p.loaded) {
+                            let promises = p.versions.map(v => this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings));
+                            this.$q.all(promises)
+                                .then(() => {
+                                    p.activeVersion = p.versions[0];
+                                    p.loaded = true;
+                                    p.isOpen = !p.isOpen;
+                                });
+                        } else {
+                            p.isOpen = !p.isOpen;
+                        }
+                    }
+                    return p;
                 });
-                activeProduct.activeVersion = activeProduct.versions[0];
-                activeProduct.loaded = true;
-            }
-            activeProduct.isOpen = !activeProduct.isOpen;
         }
     },
 }

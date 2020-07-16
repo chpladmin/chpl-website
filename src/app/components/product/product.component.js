@@ -5,12 +5,10 @@ export const ProductComponent = {
         searchOptions: '<',
     },
     controller: class ProductComponent {
-        constructor ($log, $uibModal, networkService, utilService) {
+        constructor ($log, $uibModal, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal;
-            this.networkService = networkService;
-            this.listingsRetrieved = false;
             this.statusFont = utilService.statusFont;
             this.defaultRefine = {
                 'Active': true,
@@ -40,13 +38,6 @@ export const ProductComponent = {
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
             }
-        }
-
-        retrieveListings () {
-            this.product.versions.forEach(v => {
-                this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings);
-            });
-            this.activeVersion = this.product.versions[0];
         }
 
         viewCertificationStatusLegend () {

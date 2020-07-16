@@ -1,33 +1,14 @@
-<div id="chpl-product-{{ $ctrl.product.productId }}" class="row" st-table="$ctrl.product.activeVersion.displayedListings" st-safe-src="$ctrl.product.activeVersion.listings" st-set-filter="customFilter">
-  <div class="col-sm-12 product-border">
-    <div>
-      <pre>{{ $ctrl.product.activeVersion | json }}</pre>
-      <pre>{{ $ctrl.product.versions | json }}</pre>
-      <em>(Last modified date: {{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</em>
-      <table ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0" class="table table-condensed">
-        <thead>
-          <tr>
-            <th scope="col">Previous Owner<span ng-if="$ctrl.product.ownerHistory.length > 1">s</span></th>
-            <th scope="col">Effective date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="owner in $ctrl.product.ownerHistory | orderBy : '-transferDate'">
-            <td>{{ owner.developer.name }}</td>
-            <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <span ng-if="$ctrl.product.contact">
-        <h3>Contact information</h3>
-        <chpl-contact contact="$ctrl.product.contact"></chpl-contact>
-      </span>
-      <h4>Version</h4>
+<div id="chpl-product-{{ $ctrl.product.productId }}" st-table="$ctrl.product.activeVersion.displayedListings" st-safe-src="$ctrl.product.activeVersion.listings" st-set-filter="customFilter">
+  <div class="product__product-info">
+    <div class="product__product-info-item">
+      <label for="active-version">Version</label>
       <select ng-model="$ctrl.product.activeVersion"
               id="active-version" name="product.activeVersion" class="input-sm form-control"
               ng-options="v as v.version for v in $ctrl.product.versions">
       </select>
-      <hr />
+    </div>
+    <div class="product__product-info-item">
+      <div class="data-label">Certification Status</div>
       <div uib-dropdown auto-close="outsideClick" class="btn-group" id="filters">
         <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
           <i class="fa fa-filter"></i> Certification Status
@@ -41,21 +22,51 @@
         </ul>
       </div>
       <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
-      <p ng-if="$ctrl.product.activeVersion.displayedListings.length === 0">No Listings match the filter</p>
-      <table class="table table-condensed" ng-if="$ctrl.product.activeVersion.displayedListings && $ctrl.product.activeVersion.displayedListings.length > 0">
+    </div>
+    <div class="product__product-info-item">
+      <div class="data-label">Last Modified</div>
+      <div class="read-only-data">{{ $ctrl.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
+    </div>
+    <div class="product__product-info-item" ng-if="$ctrl.product.ownerHistory && $ctrl.product.ownerHistory.length > 0">
+      <table class="table table-condensed">
         <thead>
           <tr>
-            <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default>Listings</th>
-            <th scope="col" class="search-header" st-sort="certificationStatus" st-skip-natural="true">Certification Status</th>
+            <th scope="col">Previous Owner<span ng-if="$ctrl.product.ownerHistory.length > 1">s</span></th>
+            <th scope="col">Effective date</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="listing in $ctrl.product.activeVersion.displayedListings">
-            <td><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></td>
-            <td><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</td>
+          <tr ng-repeat="owner in $ctrl.product.ownerHistory | orderBy : '-transferDate'">
+            <td>{{ owner.developer.name }}</td>
+            <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="product__product-info-item" ng-if="$ctrl.product.contact">
+      <div class="data-label">Contact information</div>
+      <chpl-contact contact="$ctrl.product.contact"></chpl-contact>
+    </div>
+  </div>
+  <div class="product__listings">
+    <p ng-if="$ctrl.product.activeVersion.displayedListings.length === 0">No Listings match the filter</p>
+    <table class="table table-condensed" ng-if="$ctrl.product.activeVersion.displayedListings && $ctrl.product.activeVersion.displayedListings.length > 0">
+      <thead>
+        <tr>
+          <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default>Listings</th>
+          <th scope="col" class="search-header" st-sort="certificationStatus" st-skip-natural="true">Certification Status</th>
+          <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
+          <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="listing in $ctrl.product.activeVersion.displayedListings">
+          <td><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></td>
+          <td><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</td>
+          <td>{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></td>
+          <td>{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
