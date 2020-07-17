@@ -141,6 +141,41 @@
     <label for="cp-other-acb">Other ACB</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.otherAcb" id="cp-other-acb">
   </div>
+  <div>
+    Real World Testing
+    <div class="form-horizontal">
+      <div class="form-group form-group-sm">
+          <label class="col-sm-6 control-label" for="rwt-plan-url">Plan URL</label>
+          <div class="col-sm-6">
+            <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.rwtPlanUrl" id="rwt-plan-url" name="rwtPlanUrl" ng-maxlength="1024">
+          </div>
+          <label class="col-sm-6 control-label" for="rwt-plan-submission-date">Plan Submission Date</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.rwtPlanSubmissionDateObject" is-open="$ctrl.listing.rwtPlanSubmissionDateDatePicker" close-text="Close" id="rwt-plan-submission-date" name="rwtPlanSubmissionDate">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.listing.rwtPlanSubmissionDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-if="$ctrl.form.rwtPlanSubmissionDateObject.$touched && $ctrl.form.rwtPlanSubmissionDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
+          </div>
+          <label class="col-sm-6 control-label" for="rwt-results-url">Results URL</label>
+          <div class="col-sm-6">
+            <input class="form-control" type="url" ng-model="$ctrl.listing.rwtResultsUrl" id="rwt-results-url" name="rwtResultsUrl" ng-maxlength="1024">
+          </div>
+          <label class="col-sm-6 control-label" for="rwt-results-submission-date">Results Submission Date</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.rwtResultsSubmissionDateObject" is-open="$ctrl.listing.rwtResultsSubmissionDateDatePicker" close-text="Close" id="rwt-results-submission-date" name="rwtResultsSubmissionDate">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.listing.rwtResultsSubmissionDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-if="$ctrl.form.rwtResultsSubmissionDateObject.$touched && $ctrl.form.rwtResultsSubmissionDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
+          </div>
+      </div>
+    </div>
+  </div>
   <div class="form-group">
     <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
     <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">

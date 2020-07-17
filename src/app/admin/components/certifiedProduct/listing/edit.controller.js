@@ -80,6 +80,8 @@
             } else {
                 vm.cp.meaningfulUseUserHistory = [];
             }
+            vm.cp.rwtPlanSubmissionDateObject = new Date(vm.cp.rwtPlanSubmissionDate);
+            vm.cp.rwtResultsSubmissionDateObject = new Date(vm.cp.rwtResultsSubmissionDate);
 
             vm.attachModel();
             loadFamily();
@@ -234,6 +236,8 @@
                     vm.idFields.suffix;
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
+            vm.cp.rwtPlanSubmissionDate = vm.cp.rwtPlanSubmissionDateObject.getTime();
+            vm.cp.rwtResultsSubmissionDate = vm.cp.rwtResultsSubmissionDateObject.getTime();
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
                 networkService.updateCP({

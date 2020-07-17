@@ -112,19 +112,19 @@
             <h2>Real World Testing</h2>
             <div class="listing__rwt-container">
               <div class="data-label" ng-if="$ctrl.listing.rwtPlanUrl">
-                <label>Plan</label>
+                <label for="rwtPlanUrl">Plan</label>
               </div>
               <div ng-if="$ctrl.listing.rwtPlanUrl">
-                <a ai-a href="{{ $ctrl.listing.rwtPlanUrl }}">{{ $ctrl.listing.rwtPlanUrl }}</a>
+                <a ai-a href="{{ $ctrl.listing.rwtPlanUrl }}" name="rwtPlanUrl" id="rwt-plan-url">{{ $ctrl.listing.rwtPlanUrl }}</a>
               </div>
               <div ng-if="$ctrl.listing.rwtPlanSubmissionDate">
                 <p>Submission confirmed: {{ $ctrl.listing.rwtPlanSubmissionDate | date: 'MMM d, yyyy' }}</p>
               </div>
               <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
-                <label>Results</label>
+                <label for="rwtRsultsURL">Results</label>
               </div>
               <div ng-if="$ctrl.listing.rwtResultsUrl">
-                <a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}">{{ $ctrl.listing.rwtResultsUrl }}</a>
+                <a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a>
               </div>
               <div ng-if="$ctrl.listing.rwtResultsSubmissionDate">
                 <p>Submission confirmed: {{ $ctrl.listing.rwtResultsSubmissionDate | date: 'MMM d, yyyy' }}</p>
