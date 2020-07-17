@@ -1,15 +1,10 @@
 <div class="panel panel-default">
   <div class="panel-heading products__products-header">
     <div class="products__products-header-item"><h2>Products</h2></div>
-    <div class="products__products-header-item products__products-header-item--last">
-      <div uib-dropdown auto-close="outsideClick" class="btn-group">
-        <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
-          <i class="fa fa-filter"></i> Certification Status
-        </button>
-        <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-          <li ng-repeat="status in $ctrl.statusItems">{{ status }}</li>
-        </ul>
-      </div>
+    <div class="products__products-header-item products__products-header-item--last" ng-if="$ctrl.statusItems">
+      <chpl-filter-multiple
+        items="$ctrl.statusItems">
+      </chpl-filter-multiple>
       <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
     </div>
   </div>

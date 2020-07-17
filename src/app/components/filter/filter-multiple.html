@@ -1,0 +1,8 @@
+<div uib-dropdown auto-close="outsideClick" class="btn-group">
+  <button class="btn btn-default dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
+    <i class="fa fa-filter"></i> {{ $ctrl.title }}
+  </button>
+  <ul class="dropdown-menu" aria-labeledby="filter-button" uib-dropdown-menu>
+    <li ng-repeat="item in $ctrl.items">{{ item }}</li>
+  </ul>
+</div>
