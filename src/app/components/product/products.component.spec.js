@@ -66,6 +66,12 @@
             it('should exist', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
+
+            describe('on init', () => {
+                it('should get status items', () => {
+                    expect(ctrl.statusItems).toEqual([{value: 'Active', selected: true}]);
+                });
+            });
         });
     });
 })();
