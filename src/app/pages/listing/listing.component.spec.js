@@ -225,7 +225,15 @@
             });
         });
 
-        describe('editing', () => {
+        describe('when editing', () => {
+            beforeEach(() => {
+                ctrl.listing = {
+                    certificationEdition: {
+                        name: '2015',
+                    },
+                };
+            });
+
             it('should not allow anonymous users to edit', () => {
                 expect(ctrl.canEdit()).toBe(false);
             });

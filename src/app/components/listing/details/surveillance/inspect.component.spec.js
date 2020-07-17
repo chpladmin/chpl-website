@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the surveillance inspection component', () => {
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, featureFlags, networkService, scope, utilService;
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope, utilService;
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.components', $provide => {
