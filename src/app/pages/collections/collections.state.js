@@ -46,10 +46,6 @@ let states = [
         controllerAs: 'vm',
         template: require('./sed/sed.html'),
         data: { title: 'SED Information for 2015 Edition Products' },
-    },{
-        name: 'collections.transparency-attestations',
-        url: '/transparency-attestations',
-        redirectTo: 'search',
     },
 ];
 

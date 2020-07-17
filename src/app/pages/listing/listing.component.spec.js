@@ -268,7 +268,7 @@
                 expect(ctrl.canEdit()).toBe(false);
             });
 
-            describe('of 2014 listings', () => {
+            describe('2014 listings', () => {
                 beforeEach(() => {
                     ctrl.listing = {
                         certificationEdition: {
