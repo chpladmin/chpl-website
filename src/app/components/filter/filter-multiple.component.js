@@ -17,7 +17,7 @@ export const FilterMultipleComponent = {
             }
         }
 
-        getClass (item) {
+        getCheckbox (item) {
             if (item === 'all') {
                 let selected = this.howManySelected();
                 if (selected === 0) {
@@ -40,6 +40,17 @@ export const FilterMultipleComponent = {
                 return 'All';
             }
             return selected + ' selected';
+        }
+
+        selectedClass (item) {
+            if (item === 'all') {
+                let selected = this.howManySelected();
+                if (selected === this.items.length) {
+                    return 'filter-multiple__item--selected';
+                }
+            } else if (item.selected) {
+                return 'filter-multiple__item--selected';
+            }
         }
 
         update (item) {

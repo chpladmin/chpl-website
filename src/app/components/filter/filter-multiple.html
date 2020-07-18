@@ -3,7 +3,7 @@
     <i class="fa fa-filter"></i> {{ $ctrl.getTitle() }}
   </button>
   <ul class="dropdown-menu filter-multiple__dropdown" aria-labeledby="filter-button" uib-dropdown-menu>
-    <li ng-click="$ctrl.update('all')" class="filter-multiple__item"><i class="fa" ng-class="$ctrl.getClass('all')"></i> All</li>
-    <li ng-click="$ctrl.update(item)" class="filter-multiple__item" ng-repeat="item in $ctrl.items"><i class="fa" ng-class="$ctrl.getClass(item)"></i> {{ item.value }}</li>
+    <li ng-click="$ctrl.update('all')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('all')"><i class="fa" ng-class="$ctrl.getCheckbox('all')"></i> All</li>
+    <li ng-click="$ctrl.update(item)" class="filter-multiple__item" ng-class="$ctrl.selectedClass(item)" ng-repeat="item in $ctrl.items"><i class="fa" ng-class="$ctrl.getCheckbox(item)"></i> {{ item.value }}</li>
   </ul>
 </div>

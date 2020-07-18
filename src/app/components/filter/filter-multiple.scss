@@ -5,5 +5,9 @@
 }
 
 .filter-multiple__item {
-    margin: 8px;
+    padding: 8px;
+}
+
+.filter-multiple__item--selected {
+    background-color: var(--primary);
 }
