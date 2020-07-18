@@ -65,6 +65,12 @@ export const ProductsComponent = {
             });
         }
 
+        noVisibleListings (product) {
+            return product.activeVersion && product.activeVersion.listings
+                .filter(l => l.displayed)
+                .length === 0;
+        }
+
         toggleProduct (product) {
             this.products = this.products
                 .map(p => {
@@ -76,6 +82,7 @@ export const ProductsComponent = {
                                     p.activeVersion = p.versions[0];
                                     p.loaded = true;
                                     p.isOpen = !p.isOpen;
+                                    this.doFilter(this.statusItems);
                                 });
                         } else {
                             p.isOpen = !p.isOpen;

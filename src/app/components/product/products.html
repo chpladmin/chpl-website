@@ -52,8 +52,8 @@
             </div>
           </div>
           <div class="product__listings">
-            <p ng-if="product.activeVersion.listings.length === 0">No Listings match the filter</p>
-            <div class="product__listing" ng-repeat="listing in product.activeVersion.listings" ng-if="listing.displayed">
+            <p ng-if="$ctrl.noVisibleListings(product)">No Listings match the filter</p>
+            <div class="product__listing" ng-repeat="listing in product.activeVersion.listings | filter:{displayed:true}">
               <div class="product__listing-data-item">
                 <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL Product Number</div>
                 <div class="product__listing-element"><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></div>
