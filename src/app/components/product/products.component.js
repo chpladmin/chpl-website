@@ -14,7 +14,7 @@ export const ProductsComponent = {
             this.statusFont = utilService.statusFont;
             this.defaultRefine = {
                 'Active': true,
-                'Retired': true,
+                'Retired': false,
                 'Suspended by ONC-ACB': true,
                 'Withdrawn by Developer': true,
                 'Withdrawn by Developer Under Surveillance/Review': true,
@@ -51,6 +51,18 @@ export const ProductsComponent = {
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
             }
+        }
+
+        doFilter (items) {
+            this.products.forEach(p => {
+                p.versions.forEach(v => {
+                    if (v.listings) {
+                        v.listings.forEach(l => {
+                            l.displayed = items.find(i => i.value === l.certificationStatus).selected;
+                        });
+                    }
+                });
+            });
         }
 
         toggleProduct (product) {

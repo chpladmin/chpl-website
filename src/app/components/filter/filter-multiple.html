@@ -1,8 +1,9 @@
 <div uib-dropdown auto-close="outsideClick" class="btn-group">
   <button class="btn btn-default dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
-    <i class="fa fa-filter"></i> {{ $ctrl.title }}
+    <i class="fa fa-filter"></i> {{ $ctrl.getTitle() }}
   </button>
-  <ul class="dropdown-menu" aria-labeledby="filter-button" uib-dropdown-menu>
-    <li ng-repeat="item in $ctrl.items">{{ item }}</li>
+  <ul class="dropdown-menu filter-multiple__dropdown" aria-labeledby="filter-button" uib-dropdown-menu>
+    <li ng-click="$ctrl.update('all')" class="filter-multiple__item"><i class="fa" ng-class="$ctrl.getClass('all')"></i> All</li>
+    <li ng-click="$ctrl.update(item)" class="filter-multiple__item" ng-repeat="item in $ctrl.items"><i class="fa" ng-class="$ctrl.getClass(item)"></i> {{ item.value }}</li>
   </ul>
 </div>

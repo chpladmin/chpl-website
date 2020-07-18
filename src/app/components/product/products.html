@@ -3,7 +3,8 @@
     <div class="products__products-header-item"><h2>Products</h2></div>
     <div class="products__products-header-item products__products-header-item--last" ng-if="$ctrl.statusItems">
       <chpl-filter-multiple
-        items="$ctrl.statusItems">
+        items="$ctrl.statusItems"
+        on-change="$ctrl.doFilter(items)">
       </chpl-filter-multiple>
       <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
     </div>
@@ -52,7 +53,7 @@
           </div>
           <div class="product__listings">
             <p ng-if="product.activeVersion.listings.length === 0">No Listings match the filter</p>
-            <div class="product__listing" ng-repeat="listing in product.activeVersion.listings">
+            <div class="product__listing" ng-repeat="listing in product.activeVersion.listings" ng-if="listing.displayed">
               <div class="product__listing-data-item">
                 <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL Product Number</div>
                 <div class="product__listing-element"><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></div>
