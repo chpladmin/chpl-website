@@ -25,7 +25,7 @@
                       ng-options="v as v.version for v in product.versions">
               </select>
             </div>
-            <div class="product__product-info-item">
+            <div class="product__product-info-item product__product-info-item--right">
               <div class="data-label">Last Modified</div>
               <div class="read-only-data">{{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
             </div>
@@ -52,24 +52,24 @@
           </div>
           <div class="product__listings">
             <p ng-if="product.activeVersion.listings.length === 0">No Listings match the filter</p>
-            <table class="table table-condensed" ng-if="product.activeVersion.listings && product.activeVersion.listings.length > 0">
-              <thead>
-                <tr>
-                  <th scope="col">Listings</th>
-                  <th scope="col">Certification Status</th>
-                  <th scope="col">Edition</th>
-                  <th scope="col">Certification Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="listing in product.activeVersion.listings">
-                  <td><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></td>
-                  <td><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</td>
-                  <td>{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></td>
-                  <td>{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="product__listing" ng-repeat="listing in product.activeVersion.listings">
+              <div class="product__listing-data-item">
+                <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL Product Number</div>
+                <div class="product__listing-element"><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></div>
+              </div>
+              <div class="product__listing-data-item">
+                <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Status</div>
+                <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</div>
+              </div>
+              <div class="product__listing-data-item">
+                <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Edition</div>
+                <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
+              </div>
+              <div class="product__listing-data-item">
+                <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Date</div>
+                <div class="product__listing-element">{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
