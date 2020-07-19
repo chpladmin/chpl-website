@@ -50,10 +50,12 @@ export const ProductsComponent = {
                         return status;
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
+                this.currentFilter = this.statusItems;
             }
         }
 
         doFilter (items) {
+            this.currentFilter = items;
             this.products.forEach(p => {
                 p.versions.forEach(v => {
                     if (v.listings) {
@@ -63,6 +65,24 @@ export const ProductsComponent = {
                     }
                 });
             });
+        }
+
+        getListingCounts (product) {
+            if (!product.loaded) { return '' }
+            let counts = product.versions.reduce((acc, v) => {
+                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length
+                acc.total += v.listings.length;
+                return acc;
+            }, {active: 0, total: 0});
+            let ret = '';
+            if (counts.active > 0) {
+                ret += counts.active + ' active / '
+            }
+            ret += counts.total + ' listing';
+            if (counts.total !== 1) {
+                ret += 's';
+            }
+            return ret;
         }
 
         noVisibleListings (product) {
@@ -82,7 +102,7 @@ export const ProductsComponent = {
                                     p.activeVersion = p.versions[0];
                                     p.loaded = true;
                                     p.isOpen = !p.isOpen;
-                                    this.doFilter(this.statusItems);
+                                    this.doFilter(this.currentFilter);
                                 });
                         } else {
                             p.isOpen = !p.isOpen;
