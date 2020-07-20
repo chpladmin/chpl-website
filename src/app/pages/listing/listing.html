@@ -117,7 +117,7 @@
               <div ng-if="$ctrl.listing.rwtPlanUrl">
                 <a ai-a href="{{ $ctrl.listing.rwtPlanUrl }}" name="rwtPlanUrl" id="rwt-plan-url">{{ $ctrl.listing.rwtPlanUrl }}</a>
               </div>
-              <div ng-if="$ctrl.listing.rwtPlanSubmissionDate">
+              <div ng-if="$ctrl.listing.rwtPlanSubmissionDate && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
                 <p>Submission confirmed: {{ $ctrl.listing.rwtPlanSubmissionDate | date: 'MMM d, yyyy' }}</p>
               </div>
               <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
@@ -126,7 +126,7 @@
               <div ng-if="$ctrl.listing.rwtResultsUrl">
                 <a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a>
               </div>
-              <div ng-if="$ctrl.listing.rwtResultsSubmissionDate">
+              <div ng-if="$ctrl.listing.rwtResultsSubmissionDate && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
                 <p>Submission confirmed: {{ $ctrl.listing.rwtResultsSubmissionDate | date: 'MMM d, yyyy' }}</p>
               </div>
             </div>
