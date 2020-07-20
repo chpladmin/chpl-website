@@ -16,6 +16,7 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
+        vm.displayRealWorldTesting = utilService.displayRealWorldTesting;
         vm.extendSelect = utilService.extendSelect;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;

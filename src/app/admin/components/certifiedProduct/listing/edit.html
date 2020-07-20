@@ -151,7 +151,7 @@
       <label for="cp-other-acb">Other ACB</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cp-other-acb">
     </div>
-    <div>
+    <div ng-if="vm.displayRealWorldTesting(vm.cp)">
       Real World Testing
       <div class="form-horizontal">
         <div class="form-group form-group-sm">

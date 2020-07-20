@@ -16,6 +16,7 @@ export const ListingComponent = {
             this.networkService = networkService;
             this.utilService = utilService;
             this.certificationStatus = utilService.certificationStatus;
+            this.displayRealWorldTesting = utilService.displayRealWorldTesting;
             this.hasAnyRole = authService.hasAnyRole;
             this.resources = {};
             this.editCallbacks = {};
