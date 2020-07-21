@@ -81,6 +81,13 @@ export const DevelopersViewComponent = {
             this.$state.go('^');
         }
 
+        closeConfirmation () {
+            this.action = undefined;
+            if (this.$state.$current.name === 'organizations.developers.developer.edit') {
+                this.$state.go('^', undefined, {reload: true});
+            }
+        }
+
         loadData () {
             let that = this;
             this.networkService.getAcbs(true).then(response => {
@@ -171,12 +178,11 @@ export const DevelopersViewComponent = {
         }
 
         handleResponse () {
-            let that = this;
             let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
             if (this.isWithdrawing) {
                 confirmationText = 'Your change request has been successfully withdrawn.';
             }
-            this.networkService.getChangeRequests().then(response => that.changeRequests = response);
+            this.networkService.getChangeRequests().then(response => this.changeRequests = response);
             this.action = 'confirmation';
             this.confirmationText = confirmationText;
             this.isWithdrawing = false;
