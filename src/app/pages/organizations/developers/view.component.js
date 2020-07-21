@@ -13,6 +13,7 @@ export const DevelopersViewComponent = {
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.canManageDeveloper = authService.canManageDeveloper;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
@@ -64,6 +65,8 @@ export const DevelopersViewComponent = {
         }
 
         can (action) {
+            if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
+            if (action === 'manageTracking' && !this.hasAnyRole(['ROLE_DEVELOPER'])) { return false; } // only DEVELOPER can manage tracking
             if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge

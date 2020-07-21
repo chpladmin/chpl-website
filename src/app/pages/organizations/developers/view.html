@@ -20,7 +20,7 @@
                       take-action="$ctrl.takeAction(action)"
                       ></chpl-developer>
       <div feature-flag="role-developer">
-        <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])">
+        <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
           <div class="panel-heading">
             <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
           </div>
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div ng-if="$ctrl.hasAnyRole(['ROLE_DEVELOPER'])">
+      <div ng-if="$ctrl.can('manageTracking')">
         <chpl-change-requests change-requests="$ctrl.changeRequests"
                               change-request-types="$ctrl.changeRequestTypes"
                               change-request-status-types="$ctrl.changeRequestStatusTypes"
