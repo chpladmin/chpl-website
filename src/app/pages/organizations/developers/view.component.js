@@ -142,9 +142,6 @@ export const DevelopersViewComponent = {
             case 'save':
                 this.updateRequest(data);
                 break;
-            case 'focus':
-                this.action = 'focusChangeRequest';
-                break;
                 //no default
             }
         }

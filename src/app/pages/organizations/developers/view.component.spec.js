@@ -220,11 +220,6 @@
                     expect(networkService.updateChangeRequest).toHaveBeenCalledWith(cr);
                     expect(networkService.getChangeRequests.calls.count()).toBe(initCount + 1);
                 });
-
-                it('should handle focus', () => {
-                    ctrl.takeCrAction('focus');
-                    expect(ctrl.action).toBe('focusChangeRequest');
-                });
             });
         });
     });
