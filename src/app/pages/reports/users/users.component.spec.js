@@ -3,10 +3,15 @@
 
     xdescribe('the Reports.Users component', () => {
 
-        var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
+        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
+
+        mock = {
+            activities: [],
+            activity: {},
+        };
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.reports', $provide => {
+            angular.mock.module('chpl.reports', $provide => {
                 $provide.factory('chplSavedFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
@@ -15,15 +20,13 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
-                Mock = _Mock_;
                 networkService = _networkService_;
-
-                networkService.getActivityMetadata.and.returnValue($q.when(Mock.productReportsMetadata));
-                networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getActivityMetadata.and.returnValue($q.when(mock));
+                networkService.getActivityById.and.returnValue($q.when(mock.activity));
 
                 scope = $rootScope.$new()
                 el = angular.element('<chpl-reports-users></chpl-reports-users>');
