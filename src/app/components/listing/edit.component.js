@@ -95,8 +95,12 @@ export const ListingEditComponent = {
                     .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
             }
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
-            this.listing.rwtPlanSubmissionDateObject = new Date(this.listing.rwtPlanSubmissionDate);
-            this.listing.rwtResultsSubmissionDateObject = new Date(this.listing.rwtResultsSubmissionDate);
+            if (this.listing.rwtPlanSubmissionDate) {
+                this.listing.rwtPlanSubmissionDateObject = new Date(this.listing.rwtPlanSubmissionDate);
+            }
+            if (this.listing.rwtResultsSubmissionDate) {
+                this.listing.rwtResultsSubmissionDateObject = new Date(this.listing.rwtResultsSubmissionDate);
+            }
         }
 
         addPreviousMuu () {
@@ -217,8 +221,16 @@ export const ListingEditComponent = {
                     this.idFields.suffix;
             }
             this.listing.certificationDate = this.listing.certDate.getTime();
-            this.listing.rwtPlanSubmissionDate = this.listing.rwtPlanSubmissionDateObject.getTime();
-            this.listing.rwtResultsSubmissionDate = this.listing.rwtResultsSubmissionDateObject.getTime();
+            if (this.listing.rwtPlanSubmissionDateObject) {
+                this.listing.rwtPlanSubmissionDate = this.listing.rwtPlanSubmissionDateObject.getTime();
+            } else {
+                this.listing.rwtPlanSubmissionDate = undefined;
+            }
+            if (this.listing.rwtResultsSubmissionDateObject) {
+                this.listing.rwtResultsSubmissionDate = this.listing.rwtResultsSubmissionDateObject.getTime();
+            } else {
+                this.listing.rwtResultsSubmissionDate = undefined;
+            }
             this.onSave({
                 listing: this.listing,
                 reason: this.reason,
