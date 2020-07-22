@@ -224,12 +224,12 @@ export const ListingEditComponent = {
             if (this.listing.rwtPlanSubmissionDateObject) {
                 this.listing.rwtPlanSubmissionDate = this.listing.rwtPlanSubmissionDateObject.getTime();
             } else {
-                this.listing.rwtPlanSubmissionDate = undefined;
+                this.listing.rwtPlanSubmissionDate = null;
             }
             if (this.listing.rwtResultsSubmissionDateObject) {
                 this.listing.rwtResultsSubmissionDate = this.listing.rwtResultsSubmissionDateObject.getTime();
             } else {
-                this.listing.rwtResultsSubmissionDate = undefined;
+                this.listing.rwtResultsSubmissionDate = null;
             }
             this.onSave({
                 listing: this.listing,

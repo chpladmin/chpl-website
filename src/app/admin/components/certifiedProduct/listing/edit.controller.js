@@ -244,12 +244,12 @@
             if (vm.cp.rwtPlanSubmissionDateObject) {
                 vm.cp.rwtPlanSubmissionDate = vm.cp.rwtPlanSubmissionDateObject.getTime();
             } else {
-                vm.cp.rwtPlanSubmissionDate = undefined;
+                vm.cp.rwtPlanSubmissionDate = null;
             }
             if (vm.cp.rwtResultsSubmissionDateObject) {
                 vm.cp.rwtResultsSubmissionDate = vm.cp.rwtResultsSubmissionDateObject.getTime();
             } else {
-                vm.cp.rwtPlanSubmissionDate = undefined;
+                vm.cp.rwtResultsSubmissionDate = null;
             }
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
