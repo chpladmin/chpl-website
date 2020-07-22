@@ -253,6 +253,26 @@ export const ListingHistoryComponent = {
             if (prev.curesUpdate !== curr.curesUpdate) {
                 activity.change.push('2015 Edition Cures Update status changed from ' + (prev.curesUpdate ? 'True' : 'False') + ' to ' + (curr.curesUpdate ? 'True' : 'False'));
             }
+            if (prev.rwtPlanUrl !== curr.rwtPlanUrl) {
+                if (!prev.rwtPlanUrl) {
+                    activity.change.push('Real World Testing Plan URL added: ' + curr.rwtPlanUrl);
+                } else if (!curr.rwtPlanUrl) {
+                    activity.change.push('Real World Testing Plan URL removed: ' + prev.rwtPlanUrl);
+
+                } else {
+                    activity.change.push('Real World Testing Plan URL changed from ' + prev.rwtPlanUrl + ' to ' + curr.rwtPlanUrl)
+                }
+            }
+            if (prev.rwtResultsUrl !== curr.rwtResultsUrl) {
+                if (!prev.rwtResultsUrl) {
+                    activity.change.push('Real World Testing Results URL added: ' + curr.rwtResultsUrl);
+                } else if (!curr.rwtResultsUrl) {
+                    activity.change.push('Real World Testing Results URL removed: ' + prev.rwtResultsUrl);
+
+                } else {
+                    activity.change.push('Real World Testing Results URL changed from ' + prev.rwtResultsUrl + ' to ' + curr.rwtResultsUrl)
+                }
+            }
         }
 
         _interpretDeveloper (activity) {
