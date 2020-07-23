@@ -348,11 +348,11 @@
                   </ul>
                 </span>
                 <br />
-                <ai-certs ng-if="vm.activeCP !== ''"
-                          default-all="true"
-                          edit-mode="false"
-                          product="vm.activeCP">
-                </ai-certs>
+                <chpl-listing-details ng-if="vm.activeCP !== ''"
+                                      default-all="true"
+                                      edit-mode="false"
+                                      listing="vm.activeCP">
+                </chpl-listing-details>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
               </div>
             </div>
