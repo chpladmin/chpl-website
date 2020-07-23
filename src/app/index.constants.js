@@ -7,5 +7,6 @@
         .constant('MINUTES_BETWEEN_KEEPALIVE', 5)
         .constant('RELOAD_TIMEOUT', 3000)
         .constant('SPLIT_PRIMARY', '☺')
-        .constant('SPLIT_SECONDARY', '☹');
+        .constant('SPLIT_SECONDARY', '☹')
+        .constant('SPLIT_COMMA', ',');
 })();

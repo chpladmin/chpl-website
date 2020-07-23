@@ -6,10 +6,10 @@ export const JobsScheduledJobComponent = {
         onCancel: '&',
     },
     controller: class JobsScheduledJobComponent {
-        constructor ($log, SPLIT_PRIMARY) {
+        constructor ($log, SPLIT_COMMA) {
             'ngInject'
             this.$log = $log;
-            this.SPLIT_PRIMARY = SPLIT_PRIMARY;
+            this.SPLIT_COMMA = SPLIT_COMMA;
             this.newItem = {};
         }
 
@@ -31,16 +31,16 @@ export const JobsScheduledJobComponent = {
 
         addNewItem (item) {
             const key = item.split('-')[0];
-            const vals = this.job.jobDataMap[key] ? this.job.jobDataMap[key].split(this.SPLIT_PRIMARY) : [];
+            const vals = this.job.jobDataMap[key] ? this.job.jobDataMap[key].split(this.SPLIT_COMMA) : [];
             vals.push(this.newItem[item]);
             this.newItem[item] = '';
-            this.job.jobDataMap[key] = vals.join(this.SPLIT_PRIMARY);
+            this.job.jobDataMap[key] = vals.join(this.SPLIT_COMMA);
         }
 
         removeItem (item, value) {
             const key = item.split('-')[0];
-            const vals = this.job.jobDataMap[key].split(this.SPLIT_PRIMARY).filter(v => v !== value);
-            this.job.jobDataMap[key] = vals.join(this.SPLIT_PRIMARY);
+            const vals = this.job.jobDataMap[key].split(this.SPLIT_COMMA).filter(v => v !== value);
+            this.job.jobDataMap[key] = vals.join(this.SPLIT_COMMA);
         }
     },
 }
