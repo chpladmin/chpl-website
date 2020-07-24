@@ -108,12 +108,13 @@
       </div>
       <div class="panel-body animate-if" ng-show="$ctrl.panelShown === 'sed'" id="panel-sed">
         <ai-sed
-           criteria-count="$ctrl.sedCriteriaCount"
-           edit-mode="$ctrl.isEditing"
-           listing="$ctrl.listing"
-           refresh="$ctrl.registerSed(handler)"
-           resources="$ctrl.resources"
-           task-count="$ctrl.sedTaskCount">
+          criteria-count="$ctrl.sedCriteriaCount"
+          edit-mode="$ctrl.isEditing"
+          listing="$ctrl.listing"
+          on-change="$ctrl.sedChange(listing)"
+          refresh="$ctrl.registerSed(handler)"
+          resources="$ctrl.resources"
+          task-count="$ctrl.sedTaskCount">
         </ai-sed>
       </div>
     </div>
