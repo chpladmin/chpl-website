@@ -29,6 +29,7 @@
         vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
+        vm.updateListing = updateListing;
 
         activate();
 
@@ -267,6 +268,10 @@
             } else {
                 $log.info('Cannot save; no work type found');
             }
+        }
+
+        function updateListing (listing) {
+            vm.cp = listing;
         }
 
         ////////////////////////////////////////////////////////////////////
