@@ -13,6 +13,7 @@
                 criteriaCount: '=?',
                 editMode: '=?',
                 listing: '=',
+                onChange: '&',
                 refresh: '&?',
                 resources: '=?',
                 taskCount: '=?',
@@ -75,6 +76,7 @@
                 vm.allParticipants = result.participants;
                 vm.tasks.push(result.task);
                 vm.taskCount = vm.tasks.length;
+                vm.onChange({listing: vm.listing});
             });
         }
 
@@ -100,6 +102,7 @@
                 vm.listing.sedTestingEndDate = result.listing.sedTestingEndDate;
                 vm.listing.sed.ucdProcesses = result.ucdProcesses;
                 vm.ucdProcesses = result.ucdProcesses;
+                vm.onChange({listing: vm.listing});
             });
         }
 
@@ -137,6 +140,7 @@
                     }
                 }
                 vm.allParticipants = result.allParticipants;
+                vm.onChange({listing: vm.listing});
             });
         }
 
@@ -168,6 +172,7 @@
                     }
                 }
                 vm.allParticipants = result.participants;
+                vm.onChange({listing: vm.listing});
             });
         }
 

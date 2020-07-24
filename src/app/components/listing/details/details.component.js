@@ -109,6 +109,10 @@ export const ListingDetailsComponent = {
             this.updateCs();
         }
 
+        sedChange (listing) {
+            this.onChange({listing: listing});
+        }
+
         sortCqms (cqm) {
             var ret = 0;
             if (cqm.cmsId) {
