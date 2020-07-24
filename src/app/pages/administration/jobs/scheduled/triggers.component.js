@@ -7,10 +7,9 @@ export const JobsScheduledTriggersComponent = {
         acbs: '<',
     },
     controller: class JobsScheduledTriggersComponent {
-        constructor ($log, SPLIT_COMMA) {
+        constructor ($log) {
             'ngInject'
             this.$log = $log;
-            this.SPLIT_COMMA = SPLIT_COMMA
             this.mode = 'view';
         }
 
@@ -25,7 +24,7 @@ export const JobsScheduledTriggersComponent = {
                 this.triggers = this.triggers.map(trigger => {
                     trigger.details = ['Schedule: ' + trigger.cronSchedule, 'Type: ' + trigger.job.name];
                     if (trigger.acb) {
-                        let acbs = trigger.acb.split(this.SPLIT_COMMA);
+                        let acbs = trigger.acb.split(',');
                         trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + this._getAcbNamesCommaDelimited(acbs));
                     }
                     return trigger;

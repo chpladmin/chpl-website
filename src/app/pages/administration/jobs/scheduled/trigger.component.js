@@ -9,11 +9,10 @@ export const JobsScheduledTriggerComponent = {
         onDelete: '&',
     },
     controller: class JobsScheduledJobComponent {
-        constructor ($interval, $log, SPLIT_COMMA) {
+        constructor ($interval, $log) {
             'ngInject'
             this.$interval = $interval;
             this.$log = $log;
-            this.SPLIT_COMMA = SPLIT_COMMA;
             this.selectedDateTime = new Date();
             this.parameters = [];
         }
@@ -42,7 +41,7 @@ export const JobsScheduledTriggerComponent = {
                     this.trigger.cronSchedule = this._getDefaultCron();
                 }
                 if (this.trigger.acb) {
-                    this.selectedAcb = this.trigger.acb.split(this.SPLIT_COMMA).map(acb => ({id: acb}));
+                    this.selectedAcb = this.trigger.acb.split(',').map(acb => ({id: acb}));
                 }
                 if (this.trigger.job.jobDataMap.parameters) {
                     this.parameters = JSON.parse(this.trigger.job.jobDataMap.parameters);
@@ -61,7 +60,7 @@ export const JobsScheduledTriggerComponent = {
             if (this.recurring) {
                 toSave.trigger = this.trigger;
                 if (this.trigger.job.jobDataMap.acbSpecific) {
-                    toSave.trigger.acb = this.selectedAcb.map(acb => acb.id).join(this.SPLIT_COMMA);
+                    toSave.trigger.acb = this.selectedAcb.map(acb => acb.id).join(',');
                 }
             } else {
                 toSave.runDateMillis = this.selectedDateTime.getTime();

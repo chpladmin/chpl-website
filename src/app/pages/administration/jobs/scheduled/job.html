@@ -12,9 +12,9 @@
       {{ item.split('-')[1] }}
     </div>
     <div class="col-md-6">
-      <span ng-if="!$ctrl.job.jobDataMap[item.split('-')[0]].split($ctrl.SPLIT_COMMA)">No data entered</span>
+      <span ng-if="!$ctrl.job.jobDataMap[item.split('-')[0]].split(',')">No data entered</span>
       <ul>
-        <li ng-repeat="value in $ctrl.job.jobDataMap[item.split('-')[0]].split($ctrl.SPLIT_COMMA)">
+        <li ng-repeat="value in $ctrl.job.jobDataMap[item.split('-')[0]].split(',')">
           {{ value }}
           <button class="btn btn-warning pull-right" ng-click="$ctrl.removeItem(item, value)"><i class="fa fa-trash"></i><span class="sr-only">Remove</span></button>
           <div class="clearfix"></div>
