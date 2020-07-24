@@ -78,7 +78,10 @@ export const CertificationCriteriaEditComponent = {
         testDataOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this.cert.testDataUsed = this.cert.testDataUsed.filter(crtd => crtd.testData.id !== action.item.item.id);
+                this.cert.testDataUsed = this.cert.testDataUsed
+                    .filter(crtd => !(crtd.testData.id === action.item.item.id
+                                      && crtd.version === action.item.additionalInputValue
+                                      && crtd.alteration === action.item.additionalInput2Value));
                 break;
             case 'Add':
                 this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
@@ -98,7 +101,8 @@ export const CertificationCriteriaEditComponent = {
         testFunctionalityOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this.cert.testFunctionality = this.cert.testFunctionality.filter(crtf => crtf.testFunctionalityId !== action.item.item.id);
+                this.cert.testFunctionality = this.cert.testFunctionality
+                    .filter(crtf => crtf.testFunctionalityId !== action.item.item.id);
                 break;
             case 'Add':
                 this.cert.testFunctionality.push(new this.CertificationResultTestFunctionality(action.item.item));
@@ -110,7 +114,9 @@ export const CertificationCriteriaEditComponent = {
         testProceduresOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this.cert.testProcedures = this.cert.testProcedures.filter(crtp => crtp.testProcedure.id !== action.item.item.id);
+                this.cert.testProcedures = this.cert.testProcedures
+                    .filter(crtp => !(crtp.testProcedure.id === action.item.item.id
+                                      && crtp.testProcedureVersion === action.item.additionalInputValue));
                 break;
             case 'Add':
                 this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
@@ -146,7 +152,9 @@ export const CertificationCriteriaEditComponent = {
         testToolsOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                this.cert.testToolsUsed = this.cert.testToolsUsed.filter(crtt => crtt.testToolId !== action.item.item.id);
+                this.cert.testToolsUsed = this.cert.testToolsUsed
+                    .filter(crtt => !(crtt.testToolId === action.item.item.id
+                                      && crtt.testToolVersion === action.item.additionalInputValue));
                 break;
             case 'Add':
                 this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
