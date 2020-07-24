@@ -380,6 +380,7 @@
                         is-confirming="$ctrl.workType === 'confirm'"
                         is-editing="true"
                         listing="$ctrl.listing"
+                        on-change="$ctrl.updateListing(listing)"
                         resources="$ctrl.resources">
   </chpl-listing-details>
   <div class="form-group">

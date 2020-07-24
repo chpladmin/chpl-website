@@ -390,6 +390,7 @@
                           is-confirming="vm.workType === 'confirm'"
                           is-editing="true"
                           listing="vm.cp"
+                          on-change="vm.updateListing(listing)"
                           resources="vm.resources">
     </chpl-listing-details>
     <div class="form-group">
