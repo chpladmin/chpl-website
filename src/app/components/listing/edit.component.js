@@ -219,6 +219,10 @@ export const ListingEditComponent = {
                 reason: this.reason,
             });
         }
+
+        updateListing (listing) {
+            this.listing = listing;
+        }
     },
 }
 angular.module('chpl.components')

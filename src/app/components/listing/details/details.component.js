@@ -7,6 +7,7 @@ export const ListingDetailsComponent = {
         initialPanel: '@',
         isConfirming: '<',
         isEditing: '<',
+        onChange: '&',
         resources: '<',
         viewAllCerts: '<defaultAll',
     },
@@ -73,6 +74,7 @@ export const ListingDetailsComponent = {
             angular.forEach(this.handlers, function (handler) {
                 handler();
             });
+            this.onChange({listing: this.listing});
         }
 
         prepCqms () {
@@ -181,6 +183,7 @@ export const ListingDetailsComponent = {
                     }
                 }
             });
+            this.onChange({listing: this.listing});
         }
 
         viewIcsFamily () {
