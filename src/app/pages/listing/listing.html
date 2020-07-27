@@ -115,9 +115,10 @@
           </span>
         </div>
         <div class="col-sm-8" id="listing-information-details">
-          <ai-certs initial-panel="{{ $ctrl.initialPanel }}"
-                    product="$ctrl.listing">
-          </ai-certs>
+          <chpl-listing-details initial-panel="{{ $ctrl.initialPanel }}"
+                                listing="$ctrl.listing"
+                                direct-reviews="$ctrl.directReviews">
+          </chpl-listing-details>
         </div>
       </div>
     </div>

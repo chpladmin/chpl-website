@@ -385,13 +385,14 @@
       </tbody>
     </table>
     <br />
-    <ai-certs default-all="true"
-              edit-mode="true"
-              is-confirming="vm.workType === 'confirm'"
-              is-editing="true"
-              product="vm.cp"
-              resources="vm.resources">
-    </ai-certs>
+    <chpl-listing-details default-all="true"
+                          edit-mode="true"
+                          is-confirming="vm.workType === 'confirm'"
+                          is-editing="true"
+                          listing="vm.cp"
+                          on-change="vm.updateListing(listing)"
+                          resources="vm.resources">
+    </chpl-listing-details>
     <div class="form-group">
       <label for="reason-for-change">Reason for Change</label>
       <input class="input-sm form-control" type="text" ng-model="vm.reason" id="reason-for-change" name="reasonForChange">

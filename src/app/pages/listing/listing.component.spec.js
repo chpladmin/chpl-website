@@ -41,6 +41,7 @@
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
+                    $delegate.getDirectReviews = jasmine.createSpy('getDirectReviews');
                     $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
@@ -73,6 +74,7 @@
                 networkService = _networkService_;
                 networkService.getAccessibilityStandards.and.returnValue($q.when({}));
                 networkService.getAtls.and.returnValue($q.when({}));
+                networkService.getDirectReviews.and.returnValue($q.when([]));
                 networkService.getListing.and.returnValue($q.when(mock.products));
                 networkService.getQmsStandards.and.returnValue($q.when({}));
                 networkService.getSearchOptions.and.returnValue($q.when({}));
