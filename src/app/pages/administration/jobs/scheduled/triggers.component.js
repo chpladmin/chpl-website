@@ -25,7 +25,7 @@ export const JobsScheduledTriggersComponent = {
                     trigger.details = ['Schedule: ' + trigger.cronSchedule, 'Type: ' + trigger.job.name];
                     if (trigger.acb) {
                         let acbs = trigger.acb.split(',');
-                        trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + this._getAcbNamesCommaDelimited(acbs));
+                        trigger.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + this._getFormattedAcbNames(acbs));
                     }
                     return trigger;
                 });
@@ -46,7 +46,7 @@ export const JobsScheduledTriggersComponent = {
             return this.acbs.find(acb => acb.id === acbId)
         }
 
-        _getAcbNamesCommaDelimited (acbs) {
+        _getFormattedAcbNames (acbs) {
             return acbs.map(acbId => this._getAcb(parseInt(acbId, 10)).name).join(', ');
         }
     },
