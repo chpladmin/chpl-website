@@ -271,7 +271,12 @@
         }
 
         function updateListing (listing) {
-            vm.cp = listing;
+            vm.cp.certificationResults = listing.certificationResults;
+            vm.cp.cqmResults = listing.cqmResults;
+            vm.cp.sed = listing.sed;
+            vm.cp.sedIntendedUserDescription = listing.sedIntendedUserDescription;
+            vm.cp.sedReportFileLocation = listing.sedReportFileLocation;
+            vm.cp.sedTestingEndDate = listing.sedTestingEndDate;
         }
 
         ////////////////////////////////////////////////////////////////////

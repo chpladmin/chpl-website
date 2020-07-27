@@ -74,8 +74,8 @@
             });
             vm.modalInstance.result.then(function (result) {
                 vm.allParticipants = result.participants;
-                vm.tasks.push(result.task);
-                vm.taskCount = vm.tasks.length;
+                vm.listing.sed.testTasks.push(result.task);
+                vm.taskCount = vm.listing.sed.testTasks.length;
                 vm.onChange({listing: vm.listing});
             });
         }
@@ -134,9 +134,9 @@
                 },
             });
             vm.modalInstance.result.then(function (result) {
-                for (var i = 0; i < vm.tasks.length; i++) {
-                    if (vm.tasks[i].id === task.id) {
-                        vm.tasks[i].testParticipants = result.participants;
+                for (var i = 0; i < vm.listing.sed.testTasks.length; i++) {
+                    if (vm.listing.sed.testTasks[i].id === task.id) {
+                        vm.listing.sed.testTasks[i].testParticipants = result.participants;
                     }
                 }
                 vm.allParticipants = result.allParticipants;
@@ -161,13 +161,13 @@
                 },
             });
             vm.modalInstance.result.then(function (result) {
-                for (var i = 0; i < vm.tasks.length; i++) {
-                    if (vm.tasks[i].id === task.id) {
+                for (var i = 0; i < vm.listing.sed.testTasks.length; i++) {
+                    if (vm.listing.sed.testTasks[i].id === task.id) {
                         if (result.deleted) {
-                            vm.tasks.splice(i, 1);
-                            vm.taskCount = vm.tasks.length;
+                            vm.listing.sed.testTasks.splice(i, 1);
+                            vm.taskCount = vm.listing.sed.testTasks.length;
                         } else {
-                            vm.tasks[i] = result.task;
+                            vm.listing.sed.testTasks[i] = result.task;
                         }
                     }
                 }
@@ -217,9 +217,8 @@
 
                 csvRow = angular.copy(ROW_BASE);
 
-                vm.tasks = vm.listing.sed.testTasks;
-                for (i = 0; i < vm.tasks.length; i++) {
-                    task = vm.tasks[i];
+                for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
+                    task = vm.listing.sed.testTasks[i];
                     if (!task.id) {
                         task.id = i * -1 - 1;
                     }
@@ -264,7 +263,7 @@
                     }
                 }
 
-                vm.taskCount = vm.tasks.length;
+                vm.taskCount = vm.listing.sed.testTasks.length;
 
                 var partMap = {};
                 vm.allParticipants = [];
@@ -276,8 +275,8 @@
                     }
                     vm.allParticipants.push(val);
                 });
-                for (i = 0; i < vm.tasks.length; i++) {
-                    task = vm.tasks[i];
+                for (i = 0; i < vm.listing.sed.testTasks.length; i++) {
+                    task = vm.listing.sed.testTasks[i];
                     for (j = 0; j < task.testParticipants.length; j++) {
                         participant = task.testParticipants[j];
                         if (participant.uniqueId) {
