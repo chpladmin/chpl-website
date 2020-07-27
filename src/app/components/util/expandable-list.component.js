@@ -74,14 +74,9 @@ export const ExpandableListComponent = {
             this.addOption = '';
         }
 
-        additionalInputChange (item) {
-            var action = this._getOnChangeObject('Edit', item)
-            this.onChange({'action': action});  //This is what makes the method binding work
-        }
-
-        additionalInput2Change (item) {
-            var action = this._getOnChangeObject('Edit', item)
-            this.onChange({'action': action});  //This is what makes the method binding work
+        inputChange () {
+            var action = this._getOnChangeObject('Edit', this.selectedItems)
+            this.onChange({'action': action});
         }
 
         cancelAddItemToListClick () {

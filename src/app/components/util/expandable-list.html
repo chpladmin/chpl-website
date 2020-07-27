@@ -11,7 +11,7 @@
                name="{{ $ctrl.identifier }}_additionalInput_{{ $index }}"
                class="form-control"
                ng-model="option.additionalInputValue"
-               ng-change="$ctrl.additionalInputChange(option)"
+               ng-change="$ctrl.inputChange()"
                ng-maxlength="$ctrl.additionalInputMaxLength"
                ng-required="{{ $ctrl.additionalInputRequired }}">
         <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput_{{ $index }}.$error.maxlength">
@@ -33,7 +33,7 @@
                name="{{ $ctrl.identifier }}_additionalInput2_{{ $index }}"
                class="form-control"
                ng-model="option.additionalInput2Value"
-               ng-change="$ctrl.additionalInput2Change(option)"
+               ng-change="$ctrl.inputChange()"
                ng-maxlength="$ctrl.additionalInput2MaxLength"
                ng-required="{{ $ctrl.additionalInput2Required }}">
         <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.maxlength">

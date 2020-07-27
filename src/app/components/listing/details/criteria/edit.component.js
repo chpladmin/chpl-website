@@ -87,14 +87,9 @@ export const CertificationCriteriaEditComponent = {
                 this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
                 break;
             case 'Edit':
-                this.cert.testDataUsed.forEach(crtd => {
-                    if (crtd.testData.id === action.item.item.id) {
-                        crtd.version = action.item.additionalInputValue;
-                        crtd.alteration = action.item.additionalInput2Value;
-                    }
-                });
+                this.cert.testDataUsed = action.item.map(i => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
                 break;
-            default:
+                // no default
             }
         }
 
@@ -122,13 +117,9 @@ export const CertificationCriteriaEditComponent = {
                 this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
                 break;
             case 'Edit':
-                this.cert.testProcedures.forEach(crtp => {
-                    if (crtp.testProcedure.id === action.item.item.id) {
-                        crtp.testProcedureVersion = action.item.additionalInputValue;
-                    }
-                });
+                this.cert.testProcedures = action.item.map(i => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
                 break;
-            default:
+                // no default
             }
         }
 
@@ -160,13 +151,9 @@ export const CertificationCriteriaEditComponent = {
                 this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
                 break;
             case 'Edit':
-                this.cert.testToolsUsed.forEach(crtt => {
-                    if (crtt.testToolId === action.item.item.id) {
-                        crtt.testToolVersion = action.item.additionalInputValue;
-                    }
-                });
+                this.cert.testToolsUsed = action.item.map(i => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
                 break;
-            default:
+                // no default
             }
         }
 
