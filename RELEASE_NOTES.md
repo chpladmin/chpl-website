@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 10.49.0
+_27 July 2020_
+
+### Features
+* Enable Developer merge in new workflow
+* Stop allowing multiple values for certain criteria data elements
+
+### Flagged Features
+* Display direct review on listing details page
+
+### Bug Fixes
+* Show correct error messages on password change
+
+---
+
 ## Version 10.48.0
 _13 July 2020_
 

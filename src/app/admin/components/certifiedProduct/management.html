@@ -3,7 +3,6 @@
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
         <li><strong>What would you like to merge?</strong></li>
-        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="developer"> Developers</label></li>
         <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="product"> Products</label></li>
         <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="version"> Versions</label></li>
       </ul>
@@ -47,18 +46,14 @@
 
     <div ng-if="vm.workType === 'merge'" class="row">
       <div class="col-sm-12">
-        <p>In the 'Merge Developers and Products' module, you can merge existing health IT developers, certified products, or versions of certified products. To begin, select either developers, products, or versions, for merging.</p>
-        <span ng-if="vm.mergeType === 'developer'">
-          <p>Select the developers to merge by holding the Control (CTRL) button while clicking the desired developers. Then click the 'Choose Developers' button.</p>
-          <p>Inspect the chosen developers to be merged, and enter or edit information for the new merged Developer. Once you are satisfied with your changes, click the 'Save Combined Developer' button, or click 'Cancel Edits' to discard your changes.</p>
-        </span>
+        <p>In the 'Merge Products' module, you can merge existing health IT products, or versions of certified products. To begin, select either products, or versions, for merging.</p>
         <p ng-if="vm.mergeType !== 'developer'">Select a desired developer from the dropdown list, and click 'Choose' to proceed.</p>
       </div>
     </div>
 
     <div ng-if="vm.workType === 'manage' || vm.workType === 'merge'"> <!-- developer -->
       <div class="row">
-        <div class="col-sm-12" ng-if="vm.activeDeveloper === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
+        <div class="col-sm-12" ng-if="vm.activeDeveloper === '' && vm.workType === 'manage'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
@@ -77,42 +72,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
-          <label for="developer-merge-select" class="control-label admin-label-spaced">Select developers to merge</label>
-          <button id="clear-selection-developers" class="btn btn-small btn-link pull-right" ng-click="vm.mergingDevelopers=[];" ng-if="vm.mergingDevelopers && vm.mergingDevelopers.length !== 0">Clear Selection(s)<span class="sr-only">of Developers</span></button>
-          <select ng-model="vm.mergingDevelopers" multiple="true"
-                  id="developer-merge-select" class="input-sm form-control"
-                  size="12" ng-options="v.name for v in vm.developers | orderBy: 'name'">
-          </select>
-          <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
-        </div>
       </div> <!-- end select developer -->
-
-      <div class="row" ng-if="vm.activeDeveloper === '' && vm.developers.length > 0">
-        <div class="col-sm-12">
-          <button class="btn btn-ai-success" ng-click="vm.viewDeveloperCodes = !vm.viewDeveloperCodes">{{ vm.viewDeveloperCodes ? 'Hide' : 'Show' }} Developer Codes</button>
-          <table class="table table-striped table-condensed" ng-if="vm.viewDeveloperCodes">
-            <thead>
-              <tr>
-                <th scope="cols">Code</th>
-                <th scope="cols">Name</th>
-                <th scope="cols">Status</th>
-                <th scope="cols" ng-repeat="att in vm.activeAcbs | orderBy:'toString()'">{{ att }}</th>
-                <th scope="cols">Last modified date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="dev in vm.developers | orderBy: 'name'">
-                <td>{{ dev.developerCode }}</td>
-                <td>{{ dev.name }}</td>
-                <td>{{ dev.status.status }}</td>
-                <td ng-repeat="att in vm.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
-                <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
 
       <div class="row" ng-if="vm.activeDeveloper !== ''">
         <div class="col-sm-12">
@@ -125,8 +85,10 @@
                   <span ng-if="vm.products.length > 1">
                     <a ui-sref="organizations.developers.developer.split({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-scissors"></i> Split Developer</a> |
                   </span>
-                <a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
-                <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+                  <a ui-sref="organizations.developers.developer.edit({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |
+                  <a ui-sref="organizations.developers.developer.merge({ developerId: vm.activeDeveloper.developerId })"><i class="fa  fa-code-fork fa-rotate-180"></i> Merge Developer</a> |
+                  <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+                </span>
               </span>
             </div>
             <div class="panel-body">
@@ -181,7 +143,7 @@
         </div>
       </div>
 
-      <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
+      <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== '' && vm.workType !== 'merge'"> <!-- product -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'product'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
@@ -254,7 +216,7 @@
         </div>
       </div>
 
-      <div class="row" ng-if="vm.activeProduct !== '' && vm.activeDeveloper !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
+      <div class="row" ng-if="vm.activeProduct !== '' && vm.activeDeveloper !== '' && vm.activeVersion === '' && (vm.mergeType !== 'product' || vm.workType !== 'merge')"> <!-- version -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'version'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
@@ -287,6 +249,7 @@
           <p><strong>No versions are available for merge</strong></p>
         </div> <!-- end version merge select -->
       </div> <!-- end select version -->
+
       <div class="row" ng-if="vm.activeVersion !== ''">
         <div class="col-sm-12">
           <div class="panel panel-ai panel-admin">
@@ -385,11 +348,11 @@
                   </ul>
                 </span>
                 <br />
-                <ai-certs ng-if="vm.activeCP !== ''"
-                          default-all="true"
-                          edit-mode="false"
-                          product="vm.activeCP">
-                </ai-certs>
+                <chpl-listing-details ng-if="vm.activeCP !== ''"
+                                      default-all="true"
+                                      edit-mode="false"
+                                      listing="vm.activeCP">
+                </chpl-listing-details>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
               </div>
             </div>

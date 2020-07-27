@@ -18,6 +18,7 @@ export const LoginComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.passwordClass = utilService.passwordClass;
             this.hasAnyRole = authService.hasAnyRole;
             this.activityEnum = {
                 LOGIN: 1,
@@ -215,7 +216,7 @@ export const LoginComponent = {
         }
 
         misMatchPasswords () {
-            return this.newPassword !== this.confirmPassword;
+            return this.passwordStrength.password !== this.confirmPassword;
         }
 
         sendReset () {

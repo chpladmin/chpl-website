@@ -35,7 +35,12 @@
       </div>
     </span>
     <h3>Address</h3>
-    <chpl-address address="$ctrl.organization.address" is-editing="true" is-required="!$ctrl.organization.retired" is-disabled="$ctrl.organization.retired" on-change="$ctrl.editAddress(address, errors, validForm)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+    <chpl-address address="$ctrl.organization.address"
+                  is-editing="true"
+                  is-required="!$ctrl.organization.retired"
+                  is-disabled="$ctrl.organization.retired"
+                  on-change="$ctrl.editAddress(address)"
+                  show-form-errors="$ctrl.showFormErrors"></chpl-address>
     <div class="pull-right">
       <button class="btn" id="chpl-organization-save"
               ng-click="$ctrl.save()" ng-disabled="$ctrl.showFormErrors && $ctrl.form.$invalid"
