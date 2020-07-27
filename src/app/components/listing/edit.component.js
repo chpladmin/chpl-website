@@ -221,7 +221,12 @@ export const ListingEditComponent = {
         }
 
         updateListing (listing) {
-            this.listing = listing;
+            this.listing.certificationResults = listing.certificationResults;
+            this.listing.cqmResults = listing.cqmResults;
+            this.listing.sed = listing.sed;
+            this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
+            this.listing.sedReportFileLocation = listing.sedReportFileLocation;
+            this.listing.sedTestingEndDate = listing.sedTestingEndDate;
         }
     },
 }
