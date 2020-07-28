@@ -1,5 +1,5 @@
 <div class="col-sm-12" ng-form="$ctrl.editForm" ng-class="{ 'removed' : $ctrl.cert.criterion.removed }">
-  <div ng-if="$ctrl.isEditing || $ctrl.cert.success || $ctrl.viewAll" id="criteria_{{ $ctrl.cert.criterion.number }}_details_header">
+  <div ng-if="$ctrl.isEditing || $ctrl.cert.success || $ctrl.viewAll" id="criteria_{{ $ctrl.cert.criterion.number }}_details_header{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
     <i class="fa fa-lg" ng-class="{'fa-check-square-o': $ctrl.cert.success && !$ctrl.cert.hasVersion, 'fa-square-o': !$ctrl.cert.success}"></i>
     <span class="sr-only">{{ $ctrl.cert.success ? 'meets' : 'does not meet'}}</span>
     <span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span> <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></span>
