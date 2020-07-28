@@ -35,6 +35,17 @@
       </div>
     </div>
     <div class="col-md-6">
+      <div class="panel panel-default" feature-flag="direct-review">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
+            <h2>Direct Review Activities</h2>
+          </div>
+          <div class="panel-body">
+            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+          </div>
+        </div>
+      </div>
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-title"><h2>Products</h2></div>
