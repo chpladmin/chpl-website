@@ -1,5 +1,3 @@
-import credentials from '../../config/credentials';
-
 const loginElements = {
     loginButton: '#login-toggle',
     userName: '[name="username"]',
@@ -33,16 +31,16 @@ class LoginComponent {
 
     loginAsACB () {
         this.openLoginComponent();
-        this.usernameInput.addValue(credentials.usernameACB);
-        this.passwordInput.addValue(credentials.passwordACB);
+        this.usernameInput.addValue(process.env.USERNAMEACB);
+        this.passwordInput.addValue(process.env.PASSWORDACB);
         this.loginBtn.click();
         return this;
     }
 
     loginAsAdmin () {
         this.openLoginComponent();
-        this.usernameInput.addValue(credentials.usernameAdmin);
-        this.passwordInput.addValue(credentials.passwordAdmin);
+        this.usernameInput.addValue(process.env.USERNAMEADMIN);
+        this.passwordInput.addValue(process.env.PASSWORDADMIN);
         this.loginBtn.click();
         return this;
     }
