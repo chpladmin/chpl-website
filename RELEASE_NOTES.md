@@ -13,6 +13,9 @@ _27 July 2020_
 ### Bug Fixes
 * Show correct error messages on password change
 
+### UI updates
+* Add "accessibility assistance" text to new user registration page
+
 ---
 
 ## Version 10.48.0
