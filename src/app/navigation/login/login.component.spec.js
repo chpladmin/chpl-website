@@ -369,35 +369,6 @@
                         expect(ctrl.activity).toBe(ctrl.activityEnum.EXPIRED);
                     });
                 });
-
-                describe('with respect to ROLE_DEVELOPER', () => {
-                    it('should not redirect to the dashboard state if not ROLE_DEVELOPER', () => {
-                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') === -1)
-                        spyOn($state, 'go');
-                        ctrl.login();
-                        scope.$digest();
-                        expect($state.go).not.toHaveBeenCalled();
-                    });
-
-                    it('should redirect to the dashboard state if ROLE_DEVELOPER', () => {
-                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0)
-                        spyOn($state, 'go');
-                        ctrl.login();
-                        scope.$digest();
-                        expect($state.go).toHaveBeenCalledWith('dashboard');
-                    });
-
-                    it('should reload state ROLE_DEVELOPER and already on dashboard', () => {
-                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0)
-                        $state.includes.and.callFake(state => state === 'dashboard');
-                        spyOn($state, 'go');
-                        spyOn($state, 'reload');
-                        ctrl.login();
-                        scope.$digest();
-                        expect($state.go).not.toHaveBeenCalled();
-                        expect($state.reload).toHaveBeenCalled();
-                    });
-                });
             });
 
             describe('when logging out', () => {

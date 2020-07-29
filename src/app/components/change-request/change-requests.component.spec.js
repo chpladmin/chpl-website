@@ -494,19 +494,16 @@
                     it('should handle edit', () => {
                         ctrl.act('edit');
                         expect(ctrl.activeState).toBe('edit');
-                        expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle statusLog', () => {
                         ctrl.act('statusLog');
                         expect(ctrl.activeState).toBe('log');
-                        expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
 
                     it('should handle withdraw', () => {
                         ctrl.act('withdraw');
                         expect(ctrl.activeState).toBe('withdraw');
-                        expect(scope.takeAction).toHaveBeenCalledWith('focus', undefined);
                     });
                 });
 
