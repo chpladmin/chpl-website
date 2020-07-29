@@ -24,6 +24,8 @@ exports.config = {
     specs: [
         `${__dirname}/e2e/pages/*/*/*spec.js`,
         `${__dirname}/e2e/components/*/*spec.js`,
+        `${__dirname}/e2e/workflowTest/*/*spec.js`,
+        
     ],
     // suites: {
     //     login: [
@@ -177,7 +179,13 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
     before: function (capabilities, specs) {
-        assert = require('assert')
+        assert = require('chai').assert;
+        browser.addCommand("waitAndClick", function () {
+            // `this` is return value of $(selector)
+            this.waitForDisplayed()
+            this.click()
+        }, true)
+        
     },
     /**
      * Runs before a WebdriverIO command gets executed.
