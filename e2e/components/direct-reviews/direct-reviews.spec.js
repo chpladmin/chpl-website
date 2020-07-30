@@ -40,7 +40,6 @@ describe('the Direct Reviews component', () => {
         it('should have basic DR data', () => {
             let directReviews = component.directReviews;
             directReviews[2].scrollIntoView({block: 'center', inline: 'center'});
-            browser.saveScreenshot('./test_reports/tmp.png');
             directReviews[2].click();
             expect(component.getDirectReviewBegan(directReviews[2]).getText()).toMatch(/Jun 10, 2020/);
             expect(component.getDirectReviewEnded(directReviews[2]).getText()).toMatch(/Jun 29, 2020/);
@@ -61,10 +60,29 @@ describe('the Direct Reviews component', () => {
             });
 
             it('should sort them "open" first', () => {
-                expect(nonconformities.length).toBe(3);
                 expect(component.getNonconformityResult(nonconformities[0]).getText()).toBe('Open');
                 expect(component.getNonconformityResult(nonconformities[1]).getText()).toBe('Closed');
                 expect(component.getNonconformityResult(nonconformities[2]).getText()).toBe('None recorded');
+            });
+
+            it('should have NC data', () => {
+                let nc = nonconformities[1];
+                nc.scrollIntoView({block: 'center', inline: 'center'});
+                nc.click();
+                browser.saveScreenshot('./test_reports/tmp.png');
+                expect(component.getNonconformityRequirement().getText()).toBe('170.406(b)(1)');
+                expect(component.getNonconformityDateOfDetermination().getText()).toBe('1 June 2020');
+                expect(component.getNonconformityFindings().getText()).toBe('some findings');
+                expect(component.getNonconformityCapApprovalDate().getText()).toBe('2 June 2020');
+                expect(component.getNonconformityCapStartDate().getText()).toBe('8 June 2020');
+                expect(component.getNonconformityCapMustCompleteDate().getText()).toBe('30 June 2020');
+                expect(component.getNonconformityDeveloperExplanation().getText()).toBe('an explanation by the developer');
+                expect(component.getNonconformityCapCompletedDate().getText()).toBe('26 June 2020');
+                expect(component.getNonconformityResolution().getText()).toBe('it\'s fixed!');
+                let dal = component.getNonconformityDeveloperAssociatedListings();
+                expect(dal.length).toBe(2);
+                expect(dal[0].getText()).toBe('15.04.04.2913.Gree.11.00.1.171101');
+                expect(dal[1].getText()).toBe('15.04.04.2913.Gree.19.01.1.200214');
             });
         });
     });

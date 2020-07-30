@@ -6,9 +6,21 @@ const elements = {
     start: '.direct-review__start',
     end: '.direct-review__end',
     circumstances: '.direct-review__circumstances',
-    dataElement: '.direct-review__data-element',
+    drDataElement: '.direct-review__data-element',
     nonconformities: '.nonconformity__header',
     result: '.nonconformity__gridtable-header--last',
+    basicInformation: '.nonconformity__basic-information',
+    requirement: '.nonconformity__requirement',
+    dal: '.nonconformity__dal',
+    determination: '.nonconformity__determination',
+    findings: '.nonconformity__findings',
+    capApproval: '.nonconformity__cap-approval',
+    capStart: '.nonconformity__cap-start',
+    capMustComplete: '.nonconformity__cap-must-complete',
+    explanation: '.nonconformity__explanation',
+    capCompleted: '.nonconformity__cap-completed',
+    resolution: '.nonconformity__resolution',
+    ncDataElement: '.nonconformity__data-element',
 }
 
 class DirectReviewsComponent {
@@ -31,11 +43,11 @@ class DirectReviewsComponent {
     }
 
     getDirectReviewBegan (directReview) {
-        return directReview.$(elements.start).$(elements.dataElement);
+        return directReview.$(elements.start).$(elements.drDataElement);
     }
 
     getDirectReviewEnded (directReview) {
-        return directReview.$(elements.end).$(elements.dataElement);
+        return directReview.$(elements.end).$(elements.drDataElement);
     }
 
     getDirectReviewCircumstances (directReview) {
@@ -48,6 +60,46 @@ class DirectReviewsComponent {
 
     getNonconformityResult (nonconformity) {
         return nonconformity.$(elements.result)
+    }
+
+    getNonconformityRequirement () {
+        return $(elements.basicInformation).$(elements.requirement).$(elements.ncDataElement);
+    }
+
+    getNonconformityDeveloperAssociatedListings () {
+        return $(elements.basicInformation).$(elements.dal).$$('li');
+    }
+
+    getNonconformityDateOfDetermination () {
+        return $(elements.basicInformation).$(elements.determination).$(elements.ncDataElement);
+    }
+
+    getNonconformityFindings () {
+        return $(elements.basicInformation).$(elements.findings).$(elements.ncDataElement);
+    }
+
+    getNonconformityCapApprovalDate () {
+        return $(elements.basicInformation).$(elements.capApproval).$(elements.ncDataElement);
+    }
+
+    getNonconformityCapStartDate () {
+        return $(elements.basicInformation).$(elements.capStart).$(elements.ncDataElement);
+    }
+
+    getNonconformityCapMustCompleteDate () {
+        return $(elements.basicInformation).$(elements.capMustComplete).$(elements.ncDataElement);
+    }
+
+    getNonconformityDeveloperExplanation () {
+        return $(elements.basicInformation).$(elements.explanation).$(elements.ncDataElement);
+    }
+
+    getNonconformityCapCompletedDate () {
+        return $(elements.basicInformation).$(elements.capCompleted).$(elements.ncDataElement);
+    }
+
+    getNonconformityResolution () {
+        return $(elements.basicInformation).$(elements.resolution).$(elements.ncDataElement);
     }
 }
 

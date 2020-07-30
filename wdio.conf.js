@@ -22,8 +22,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        `${__dirname}/e2e/pages/*/*/*spec.js`,
-        `${__dirname}/e2e/components/*/*spec.js`,
+        `${__dirname}/e2e/**/*spec.js`,
     ],
     // suites: {
     //     login: [
