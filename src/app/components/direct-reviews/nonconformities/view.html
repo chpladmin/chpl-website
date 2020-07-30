@@ -10,16 +10,16 @@
   </div>
   <div class="nonconformities__gridtable-header">Non-Conformity Summary</div>
   <div class="nonconformities__gridtable-header">Review Result</div>
-  <div ng-repeat-start="nc in $ctrl.nonconformities" class="nonconformity__gridtable-header nonconformity__gridtable-header--first" ng-class="nc.nonconformityStatus === 'Open' ? 'nonconformity__gridtable-header--open' : 'nonconformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div>
+  <div ng-repeat-start="nc in $ctrl.nonconformities" class="nonconformity__header" ng-class="nc.nonconformityStatus === 'Open' ? 'nonconformity__gridtable-header--open' : 'nonconformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
+    <div class="nonconformity__gridtable-header nonconformity__gridtable-header--first">
       <span class="nonconformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'None recorded' }}
     </div>
-  </div>
-  <div class="nonconformity__gridtable-header" ng-class="nc.nonconformityStatus === 'Open' ? 'nonconformity__gridtable-header--open' : 'nonconformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div>{{ nc.nonconformitySummary ? nc.nonconformitySummary : 'None recorded' }}</div>
-  </div>
-  <div class="nonconformity__gridtable-header nonconformity__gridtable-header--last" ng-class="nc.nonconformityStatus === 'Open' ? 'nonconformity__gridtable-header--open' : 'nonconformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div>{{ nc.nonconformityStatus ? nc.nonconformityStatus : 'None recorded' }}</div>
+    <div class="nonconformity__gridtable-header">
+      <div>{{ nc.nonconformitySummary ? nc.nonconformitySummary : 'None recorded' }}</div>
+    </div>
+    <div class="nonconformity__gridtable-header nonconformity__gridtable-header--last">
+      <div>{{ nc.nonconformityStatus ? nc.nonconformityStatus : 'None recorded' }}</div>
+    </div>
   </div>
   <div class="nonconformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>
     <div class="nonconformity__wide">
