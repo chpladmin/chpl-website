@@ -53,16 +53,13 @@ describe('ACB can', () => {
         listingEditPage.removeTestProcToolData('Remove item ONC Test Method');
         listingEditPage.saveCertifiedProduct.waitAndClick();
         listingEditPage.viewDetailsCriteria('170.315 (b)(3)' , true);
+       // browser.pause(10000)
         assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Functionality_Tested_cures"]').getText(), 'Request to send an additional supply of medication (Resupply)');
+        //browser.pause(10000)
         assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_procedure_cures"]').getText(), 'ONC Test Method');
         assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_data_cures"]').getText(), 'ONC Test Method');
         assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_tool_cures"]').getText(), 'HL7v2 Immunization Test Suite');
         listingEditPage.closeEditListing();
     })
 
-    after(() => {
-        // Need to reject uploaded files for this test
-        hooks.open('/administration/confirm/listings');
-        confirmPage.rejectListing('15.04.04.1722.AQA1.03.01.1.200620')
-    })
 })

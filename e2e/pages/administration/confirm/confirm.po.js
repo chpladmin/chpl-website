@@ -73,8 +73,8 @@ class ConfirmPage {
 
     rejectListing (chplId) {
         $('//td[text()="' + chplId + '"]/parent::tr/td[8]/input').waitAndClick();
-        this.rejectBtn.click();
-        this.yesConfirmation.click();
+        this.rejectBtn.waitAndClick();
+        this.yesConfirmation.waitAndClick();
     }
 }
 

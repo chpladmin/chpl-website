@@ -60,10 +60,4 @@ describe('Admin can', () => {
         listingEditPage.closeEditListing();
     })
 
-    after(() => {
-        // clean up
-        // Need to reject uploaded files for this test
-        hooks.open('/administration/confirm/listings');
-        confirmPage.rejectListing('15.04.04.1722.AQA2.03.00.1.190615');
-    })
 })
