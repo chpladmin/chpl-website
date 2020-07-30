@@ -21,6 +21,7 @@ const elements = {
     capCompleted: '.nonconformity__cap-completed',
     resolution: '.nonconformity__resolution',
     ncDataElement: '.nonconformity__data-element',
+    ncNoneFound: '.nonconformity__none-found',
 }
 
 class DirectReviewsComponent {
@@ -55,7 +56,11 @@ class DirectReviewsComponent {
     }
 
     getDirectReviewNonconformities (directReview) {
-        return directReview.$$(elements.nonconformities);
+        let ncs = directReview.$$(elements.nonconformities);
+        if (ncs && ncs.length > 0) {
+            return ncs;
+        }
+        return directReview.$(elements.ncNoneFound);
     }
 
     getNonconformityResult (nonconformity) {

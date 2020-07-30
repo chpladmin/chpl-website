@@ -85,5 +85,14 @@ describe('the Direct Reviews component', () => {
                 expect(dal[1].getText()).toBe('15.04.04.2913.Gree.19.01.1.200214');
             });
         });
+
+        describe('for DRs without NCs', () => {
+            it('should indicate the absence of NCs', () => {
+                let directReviews = component.directReviews;
+                directReviews[1].scrollIntoView({block: 'center', inline: 'center'});
+                directReviews[1].click();
+                expect(component.getDirectReviewNonconformities(directReviews[1]).getText()).toBe('No Requirements or Non-Conformities exist for this Direct Review');
+            });
+        });
     });
 });
