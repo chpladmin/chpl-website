@@ -18,11 +18,11 @@ describe('the Direct Reviews component', () => {
         });
 
         it('should have four direct reviews', () => {
-            expect(component.directReviews.length).toBe(4);
+            expect(component.getDirectReviews().length).toBe(4);
         });
 
         it('should sort them "open" first', () => {
-            let directReviews = component.directReviews;
+            let directReviews = component.getDirectReviews();
             expect(component.getDirectReviewTitle(directReviews[0]).getText()).toBe('Open Direct Review');
             expect(component.getDirectReviewTitle(directReviews[1]).getText()).toBe('Open Direct Review');
             expect(component.getDirectReviewTitle(directReviews[2]).getText()).toBe('Closed Direct Review');
@@ -30,7 +30,7 @@ describe('the Direct Reviews component', () => {
         });
 
         it('should sort them by date inside the type first', () => {
-            let directReviews = component.directReviews;
+            let directReviews = component.getDirectReviews();
             expect(component.getDirectReviewSubtitle(directReviews[0]).getText()).toMatch(/Jul 1, 2020/);
             expect(component.getDirectReviewSubtitle(directReviews[1]).getText()).toMatch(/Jun 15, 2020/);
             expect(component.getDirectReviewSubtitle(directReviews[2]).getText()).toMatch(/Jun 29, 2020/);
@@ -38,7 +38,7 @@ describe('the Direct Reviews component', () => {
         });
 
         it('should have basic DR data', () => {
-            let directReviews = component.directReviews;
+            let directReviews = component.getDirectReviews();
             directReviews[2].scrollIntoView({block: 'center', inline: 'center'});
             directReviews[2].click();
             expect(component.getDirectReviewBegan(directReviews[2]).getText()).toMatch(/Jun 10, 2020/);
@@ -53,7 +53,7 @@ describe('the Direct Reviews component', () => {
         describe('for nonconformities', () => {
             let nonconformities;
             beforeEach(() => {
-                let directReviews = component.directReviews;
+                let directReviews = component.getDirectReviews();
                 directReviews[2].scrollIntoView({block: 'center', inline: 'center'});
                 directReviews[2].click();
                 nonconformities = component.getDirectReviewNonconformities(directReviews[2]);
@@ -69,7 +69,6 @@ describe('the Direct Reviews component', () => {
                 let nc = nonconformities[1];
                 nc.scrollIntoView({block: 'center', inline: 'center'});
                 nc.click();
-                browser.saveScreenshot('./test_reports/tmp.png');
                 expect(component.getNonconformityRequirement().getText()).toBe('170.406(b)(1)');
                 expect(component.getNonconformityDateOfDetermination().getText()).toBe('1 June 2020');
                 expect(component.getNonconformityFindings().getText()).toBe('some findings');
@@ -88,11 +87,22 @@ describe('the Direct Reviews component', () => {
 
         describe('for DRs without NCs', () => {
             it('should indicate the absence of NCs', () => {
-                let directReviews = component.directReviews;
+                let directReviews = component.getDirectReviews();
                 directReviews[1].scrollIntoView({block: 'center', inline: 'center'});
                 directReviews[1].click();
                 expect(component.getDirectReviewNonconformities(directReviews[1]).getText()).toBe('No Requirements or Non-Conformities exist for this Direct Review');
             });
+        });
+    });
+
+    describe('for Radysans, Inc', () => {
+        beforeEach(() => {
+            page.selectDeveloper('Radysans, Inc');
+        });
+
+        it('should indicate the absence of DRs', () => {
+            let directReviews = component.getDirectReviews();
+            expect(directReviews.getText()).toBe('No Direct Reviews have been conducted for this listing');
         });
     });
 });

@@ -31,8 +31,12 @@ class DirectReviewsComponent {
         return $(elements.root);
     }
 
-    get directReviews () {
-        return $(elements.root).$$(elements.directReviews);
+    getDirectReviews () {
+        let drs = $(elements.root).$$(elements.directReviews);
+        if (drs && drs.length > 0) {
+            return drs;
+        }
+        return $(elements.root);
     }
 
     getDirectReviewTitle (directReview) {
