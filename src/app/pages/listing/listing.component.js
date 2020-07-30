@@ -125,6 +125,7 @@ export const ListingComponent = {
                     that.isSaving = false;
                 }
             }, error => {
+                that.$log.info('This is where we are!')
                 that.saveErrors = {
                     errors: [],
                     warnings: [],

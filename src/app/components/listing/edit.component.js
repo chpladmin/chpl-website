@@ -21,6 +21,7 @@ export const ListingEditComponent = {
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.acknowledgeWarnings = false;
         }
 
         $onChanges (changes) {
@@ -217,6 +218,7 @@ export const ListingEditComponent = {
             this.onSave({
                 listing: this.listing,
                 reason: this.reason,
+                acknowledgeWarnings: this.acknowledgeWarnings,
             });
         }
 

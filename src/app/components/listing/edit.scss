@@ -1,0 +1,11 @@
+label.edit-listing__acknowledge-warning-label {
+    display: inline;
+    font-family: "Lato";
+    font-size: 12px;
+    color: var(--warning);
+    text-transform: uppercase;
+}
+
+input[type="checkbox"].edit-listing__acknowledge-warning-checkbox {
+    margin: 10px 5px 10px 0;
+}
