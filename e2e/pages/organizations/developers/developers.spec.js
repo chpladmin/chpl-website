@@ -1,4 +1,4 @@
-import DevelopersPage from './developers.po.js';
+import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks'
 const config = require('../../../config/mainConfig');
 
@@ -14,5 +14,15 @@ describe('the Developers page', () => {
     it('should load a Developer', () => {
         page.selectDeveloper('Greenway Health, LLC');
         expect(browser).toHaveUrl(config.baseUrl + '/organizations/developers/1914');
+    });
+
+    describe('when on a specific Developer page', () => {
+        beforeEach(() => {
+            page.selectDeveloper('Greenway Health, LLC');
+        });
+
+        it('should have a Direct Reviews section', () => {
+            expect(page.directReviewsHeader).toExist();
+        });
     });
 });
