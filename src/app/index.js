@@ -46,7 +46,6 @@ import /* chartsModule from*/ './pages/charts/index';
 import /* collectionsModule from*/ './pages/collections/index';
 import compare from './pages/compare/index';
 import /* componentsModule from*/ './components/index';
-import dashboard from './pages/dashboard/index';
 import listing from './pages/listing/index';
 import /* navigationModule from*/ './navigation/index';
 import organizations from './pages/organizations/index';
@@ -82,7 +81,6 @@ const dependencies = [
     'zxcvbn',
     administration.name,
     compare.name,
-    dashboard.name,
     listing.name,
     organizations.name,
     reports.name,

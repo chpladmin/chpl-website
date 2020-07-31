@@ -72,7 +72,7 @@
             it('should add to elements', () => {
                 ctrl.newItem['email-Subscribers'] = 'newEmail'
                 ctrl.addNewItem('email-Subscribers');
-                expect(ctrl.job.jobDataMap.email).toBe('alarned@ainq.com☺newEmail');
+                expect(ctrl.job.jobDataMap.email).toBe('alarned@ainq.com,newEmail');
             });
 
             it('should add elements even if null', () => {
