@@ -22,12 +22,16 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        `${__dirname}/e2e/**/*spec.js`,
+        'e2e/**/*spec.js',
     ],
-    // suites: {
-    //     login: [
-    //         `${__dirname}/e2e/components/*/*.spec.js`
-    //     ],
+    suites: {
+        components: [
+            'e2e/components/**/*.spec.js',
+        ],
+        pages: [
+            'e2e/pages/**/*.spec.js',
+        ],
+    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'

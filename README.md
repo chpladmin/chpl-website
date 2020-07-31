@@ -44,7 +44,7 @@ yarn install
 * `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
 * `yarn test:ahrq`: Run tests once in a fashion suitable for the deployment environment
 * `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
-* `yarn e2e`: Run the end to end integration tests
+* `yarn e2e`: Run the end to end integration tests, as well as e2e linting
 * `yarn e2e:lint`: Run code and syntax rules
 
 #### Yarn environment parameters
@@ -56,7 +56,13 @@ Usable on `yarn build` and `yarn start`, these parameters control configuration 
 
 #### Linting
 
-On all Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue
+On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue
+
+#### E2E testing
+
+If a single spec file should be tested, instead of all of them, the command `yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
+
+To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
 
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/
