@@ -6,7 +6,7 @@ let hooks, page;
 beforeEach(async () => {
     page = new OverviewPage();
     hooks = new Hooks();
-    await hooks.open('/resources/overview');
+    await hooks.open('#/resources/overview');
 });
 
 describe('Overview page', () => {

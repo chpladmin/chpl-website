@@ -8,7 +8,7 @@ beforeEach(async () => {
     page = new DevelopersPage();
     component = new DirectReviewsComponent();
     hooks = new Hooks();
-    await hooks.open('/organizations/developers');
+    await hooks.open('#/organizations/developers');
 });
 
 describe('the Direct Reviews component', () => {
