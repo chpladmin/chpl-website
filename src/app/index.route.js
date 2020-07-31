@@ -2,7 +2,6 @@ import { administrationStatesConfig as administrationStates } from './pages/admi
 import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state.js';
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state.js';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state.js';
-import { dashboardStatesConfig as dashboardStates } from './pages/dashboard/dashboard.state.js';
 import { listingStatesConfig as listingStates } from './pages/listing/listing.state.js';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state.js';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state.js';
@@ -21,7 +20,6 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state.js';
         .config(chartsStates)
         .config(collectionsStates)
         .config(compareStates)
-        .config(dashboardStates)
         .config(listingStates)
         .config(organizationsStates)
         .config(registrationStates)

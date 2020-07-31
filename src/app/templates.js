@@ -5,7 +5,6 @@ ctxs.push({module: 'chpl.charts', ctx: require.context('./pages/charts/', true, 
 ctxs.push({module: 'chpl.compare', ctx: require.context('./pages/compare/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.components', ctx: require.context('./components/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.collections', ctx: require.context('./pages/collections/', true, /.*\.html$/)});
-ctxs.push({module: 'chpl.dashboard', ctx: require.context('./pages/dashboard/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.listing', ctx: require.context('./pages/listing/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.navigation', ctx: require.context('./navigation/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.organizations', ctx: require.context('./pages/organizations/', true, /.*\.html$/)});
