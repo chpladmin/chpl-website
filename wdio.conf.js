@@ -22,9 +22,9 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        `${__dirname}/e2e/pages/*/*/*spec.js`,
+        //`${__dirname}/e2e/pages/*/*/*spec.js`,
         `${__dirname}/e2e/components/*/*spec.js`,
-        `${__dirname}/e2e/workflowTest/*/*spec.js`,
+        //`${__dirname}/e2e/workflowTest/*/aqa1_acb_add_remove_testProcDataToolFunc.spec.js`,
         
     ],
     // suites: {
@@ -65,9 +65,9 @@ exports.config = {
         maxInstances: 5,
         //
         browserName: config.browser,
-        'goog:chromeOptions': {
-            args: ['--headless', '--dissable-gpu', '--no-sandbox'],
-        },
+        // 'goog:chromeOptions': {
+        //     args: ['--headless', '--dissable-gpu', '--no-sandbox'],
+        // },
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -128,10 +128,20 @@ exports.config = {
     //
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
-    mochaOpts: {
+    jasmineNodeOpts: {
         ui: 'bdd',
-        timeout: 60000,
-        compilers: ['js:@babel/register'],
+        defaultTimeoutInterval: 60000,
+        helpers: [require.resolve('@babel/register')],
+        expectationResultHandler: function(passed, assertion) {
+            /**
+             * only take screenshot if assertion failed
+             */
+            if(passed) {
+                return
+            }
+    
+            browser.saveScreenshot(`assertionError_${assertion.error.message}.png`)
+        }
     },
 
     //
@@ -170,8 +180,9 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // beforeSession: function (config, capabilities, specs) {
-    // },
+    beforeSession: function (config, capabilities, specs) {
+        require('@babel/register');
+      },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.

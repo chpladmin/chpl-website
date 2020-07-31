@@ -59,6 +59,7 @@
     "@babel/core": "^7.0.0-0",
     "@babel/preset-env": "^7.0.0-rc.1",
     "@wdio/cli": "^6.1.20",
+    "@wdio/jasmine-framework": "^6.3.6",
     "@wdio/junit-reporter": "^6.1.14",
     "@wdio/local-runner": "^6.1.20",
     "@wdio/mocha-framework": "^6.1.19",
