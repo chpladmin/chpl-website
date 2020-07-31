@@ -1,5 +1,5 @@
 const elements = {
-    root: 'div.direct-reviews',
+    root: 'chpl-direct-reviews',
     directReviews: '.direct-review',
     title: '.direct-review__header-title',
     subtitle: '.direct-review__header-subtitle',
