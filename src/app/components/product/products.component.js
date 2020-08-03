@@ -2,6 +2,7 @@ export const ProductsComponent = {
     templateUrl: 'chpl.components/product/products.html',
     bindings: {
         products: '<',
+        productId: '@',
         searchOptions: '<',
     },
     controller: class ProductsComponent {
@@ -39,6 +40,9 @@ export const ProductsComponent = {
                         });
                     return p;
                 });
+                if (this.productId) {
+                    this.activeProduct = this.products.filter(p => p.productId === this.productId)[0];
+                }
             }
             if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {
                 this.statusItems = changes.searchOptions.currentValue.certificationStatuses

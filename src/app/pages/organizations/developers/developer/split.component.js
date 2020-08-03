@@ -1,5 +1,5 @@
 export const DevelopersSplitComponent = {
-    templateUrl: 'chpl.organizations/developers/split.html',
+    templateUrl: 'chpl.organizations/developers/developer/split.html',
     bindings: {
         developer: '<',
         products: '<',

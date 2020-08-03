@@ -1035,6 +1035,14 @@
                 $httpBackend.flush();
             });
 
+            it('should getProduct', () => {
+                $httpBackend.expectGET(/^\/rest\/products\/productId$/).respond(200, {data: 'response'});
+                networkService.getProductId('productId').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getProductActivity', function () {
                 var aDate = new Date();
                 $httpBackend.expectGET(/^\/rest\/activity\/products$/).respond(200, {data: 'response'});

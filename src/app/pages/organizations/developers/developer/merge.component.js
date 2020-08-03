@@ -1,5 +1,5 @@
 export const DevelopersMergeComponent = {
-    templateUrl: 'chpl.organizations/developers/merge.html',
+    templateUrl: 'chpl.organizations/developers/developer/merge.html',
     bindings: {
         developer: '<',
         developers: '<',

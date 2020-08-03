@@ -444,6 +444,10 @@ export class NetworkService {
         return this.apiGET('/data/practice_types');
     }
 
+    getProduct (productId) {
+        return this.apiGET('/products/' + productId);
+    }
+
     getProductActivity (activityRange) {
         var call = '/activity/products';
         return this.getActivity(call, activityRange);

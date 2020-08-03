@@ -1,9 +1,10 @@
 export const DevelopersViewComponent = {
-    templateUrl: 'chpl.organizations/developers/view.html',
+    templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
         developers: '<',
         products: '<',
+        productId: '@',
         action: '@',
     },
     controller: class DevelopersViewComponent {
@@ -26,7 +27,7 @@ export const DevelopersViewComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct') {
                 this.loadData();
             }
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());

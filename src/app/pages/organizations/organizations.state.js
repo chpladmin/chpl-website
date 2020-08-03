@@ -60,6 +60,18 @@ let states = [
         component: 'chplDevelopersMerge',
         data: { title: 'CHPL Developers - Merge' },
     },{
+        name: 'organizations.developers.developer.product',
+        url: '/products/{productId}',
+        abstract: true,
+    },{
+        name: 'organizations.developers.developer.product.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'editProduct',
+        },
+        data: { title: 'CHPL Developers - Edit Product' },
+    },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',
         component: 'chplOncOrganizations',
