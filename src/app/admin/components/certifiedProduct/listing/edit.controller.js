@@ -16,6 +16,7 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
+        vm.doWarningsExist = doWarningsExist;
         vm.extendSelect = utilService.extendSelect;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
@@ -30,6 +31,7 @@
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
         vm.updateListing = updateListing;
+        vm.acknowledgeWarnings = false;
 
         activate();
 
@@ -127,6 +129,14 @@
 
         function disabledStatus (name) {
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
+        }
+
+        function doWarningsExist () {
+            if (vm.warnings && vm.warnings.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function hasDateMatches () {
@@ -240,6 +250,7 @@
                 networkService.updateCP({
                     listing: vm.cp,
                     reason: vm.reason,
+                    acknowledgeWarnings: this.acknowledgeWarnings,
                 }).then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
