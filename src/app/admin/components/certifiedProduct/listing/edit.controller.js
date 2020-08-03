@@ -16,7 +16,6 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
-        vm.doWarningsExist = doWarningsExist;
         vm.extendSelect = utilService.extendSelect;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
@@ -129,14 +128,6 @@
 
         function disabledStatus (name) {
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
-        }
-
-        function doWarningsExist () {
-            if (vm.warnings && vm.warnings.length > 0) {
-                return true;
-            } else {
-                return false;
-            }
         }
 
         function hasDateMatches () {
