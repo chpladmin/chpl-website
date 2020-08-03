@@ -18,8 +18,7 @@
             <th scope="col"><span class="sr-only">Category</span></th>
             <th scope="col" ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">
               {{ listing.product.name }}<br />
-              <ai-cms-widget-button product-id="{{ listing.id }}" product-name="{{ listing.product.name }}" ng-if="listing.certificationEdition.name === '2015'" feature-flag="effective-rule-date"></ai-cms-widget-button>
-              <ai-cms-widget-button product-id="{{ listing.id }}" product-name="{{ listing.product.name }}" ng-if="$ctrl.certificationStatus(listing) !== 'Retired'" feature-flag="effective-rule-date" feature-flag-hide></ai-cms-widget-button>
+              <ai-cms-widget-button product-id="{{ listing.id }}" product-name="{{ listing.product.name }}" ng-if="listing.certificationEdition.name === '2015'"></ai-cms-widget-button>
             </th>
           </tr>
         </thead>

@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, featureFlags, inspectingCp, networkService, resources, utilService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -30,8 +30,6 @@
         vm.isBlank = utilService.isBlank;
         vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
-
-        vm.isOn = featureFlags.isOn;
 
         activate();
 
@@ -217,9 +215,6 @@
                 } else {
                     vm.systemRequirements.push('None of the required developer address information'
                                                + EXISTS_MSG + PLEASE_SAVE_MSG);
-                }
-                if ((!vm.getAttestationForCurrentSystemDeveloper() || vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)) && !vm.isOn('effective-rule-date')) {
-                    vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
                 }
             }
         }

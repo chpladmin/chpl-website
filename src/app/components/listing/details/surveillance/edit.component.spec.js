@@ -2,16 +2,12 @@
     'use strict';
 
     describe('the surveillance edit component', () => {
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, featureFlags, networkService, scope, utilService;
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope, utilService;
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-                    return $delegate;
-                });
-                $provide.decorator('featureFlags', $delegate => {
-                    $delegate.isOn = jasmine.createSpy('isOn');
                     return $delegate;
                 });
                 $provide.decorator('networkService', $delegate => {
@@ -28,14 +24,12 @@
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _featureFlags_, _networkService_, _utilService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(false);
-                featureFlags = _featureFlags_;
-                featureFlags.isOn.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.deleteSurveillance.and.returnValue($q.when({}));
                 networkService.getComplaints.and.returnValue($q.when([]));
@@ -199,9 +193,8 @@
                     expect($log.info.logs.length).toBe(logCount + 1);
                 });
 
-                it('should filter out removed criteria when user is ROLE_ACB and flag is on', () => {
+                it('should filter out removed criteria when user is ROLE_ACB', () => {
                     authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
-                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date-plus-one-week');
                     ctrl.data = {
                         surveillanceRequirements: {
                             criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
@@ -210,18 +203,6 @@
                     };
                     ctrl.addRequirement();
                     expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions.length).toBe(2);
-                });
-
-                it('should filter out removed criteria when user is ROLE_ACB and flag is off', () => {
-                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
-                    ctrl.data = {
-                        surveillanceRequirements: {
-                            criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
-                            criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}],
-                        },
-                    };
-                    ctrl.addRequirement();
-                    expect(actualOptions.resolve.surveillanceTypes().surveillanceRequirements.criteriaOptions.length).toBe(3);
                 });
 
                 it('should not change base data', () => {

@@ -37,7 +37,7 @@
         <a href="" ng-click="$ctrl.showPanel('cqm')" aria-expanded="{{ $ctrl.panelShown === 'cqm' }}" id="details-cqm"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ $ctrl.countCqms }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cqm'" id="panel-cqm">
-        <p feature-flag="effective-rule-date">Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
+        <p>Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
         <table class="table">
           <thead>
             <tr>

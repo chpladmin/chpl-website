@@ -40,42 +40,22 @@
                 register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
             </ul>
           </div>
-          <span ng-if="vm.isOn('effective-rule-date')">
-            <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('edition')">
-              <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-                Certification Edition <i class="fa fa-filter"></i>
-              </button>
-              <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
-                <st-list-multiple
-                  collection="vm.allCps"
-                  predicate="edition"
-                  match-full="true"
-                  fixed-items="vm.filterItems.editionItemsCures"
-                  has-changes="vm.categoryChanged['edition']"
-                  register-allow-all="vm.registerAllowAll(allowAll)"
-                  register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
-              </ul>
-            </div>
-          </span>
-          <span ng-if="!vm.isOn('effective-rule-date')">
-            <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('edition')">
-              <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-                Certification Edition <i class="fa fa-filter"></i>
-              </button>
-              <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
-                <st-list-multiple
-                  collection="vm.allCps"
-                  predicate="edition"
-                  match-full="true"
-                  fixed-items="vm.filterItems.editionItems"
-                  has-changes="vm.categoryChanged['edition']"
-                  register-allow-all="vm.registerAllowAll(allowAll)"
-                  register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
-              </ul>
-            </div>
-          </span>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('edition')">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              Certification Edition <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
+              <st-list-multiple
+                collection="vm.allCps"
+                predicate="edition"
+                match-full="true"
+                fixed-items="vm.filterItems.editionItemsCures"
+                has-changes="vm.categoryChanged['edition']"
+                register-allow-all="vm.registerAllowAll(allowAll)"
+                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+            </ul>
+          </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationDate')">
             <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationDate" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationDate']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
