@@ -62,7 +62,6 @@
     "@wdio/jasmine-framework": "^6.3.6",
     "@wdio/junit-reporter": "^6.1.14",
     "@wdio/local-runner": "^6.1.20",
-    "@wdio/mocha-framework": "^6.1.19",
     "@wdio/spec-reporter": "^6.1.14",
     "@wdio/sync": "^6.1.14",
     "angular-mocks": "^1.7.2",

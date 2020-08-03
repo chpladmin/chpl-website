@@ -9,11 +9,35 @@ beforeEach(async () => {
     await hooks.open('/resources/overview');
 });
 
-describe('Login page', () => {
+describe('ACB can', () => {
 
-    it('should have username field', () => {
+    it('login successfully', () => {
+        component.loginAsACB();
+        component.logoutButton.waitForDisplayed();
+        assert.equal(component.logoutButton.isDisplayed(),true);
+    })
+
+    it('logsout successfully', () => {
+        component.logOut();
+        component.loginButton.waitForDisplayed();
+        assert.equal(component.loginButton.isDisplayed(),true);
+    })
+
+})
+
+describe('Admin can', () => {
+
+    it('login successfully', () => {
         component.openLoginComponent();
-        assert.equal(component.usernameInput.isDisplayed(),true);
+        component.loginAsAdmin();
+        component.logoutButton.waitForDisplayed();
+        assert.equal(component.logoutButton.isDisplayed(),true);
+    })
+
+    it('logsout successfully', () => {
+        component.logOut();
+        component.loginButton.waitForDisplayed();
+        assert.equal(component.loginButton.isDisplayed(),true);
     })
 
 })

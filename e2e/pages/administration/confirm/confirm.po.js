@@ -1,79 +1,43 @@
 class ConfirmPage {
     constructor () { }
 
-    get inspectNextBtn () {
+    get inspectNextButton () {
         return $('#inspect-next');
     }
 
-    get inspectConfirmBtn () {
+    get inspectConfirmButton () {
         return $('#inspect-confirm');
-    }
-
-    get editcertifiedProduct () {
-        return $('#inspect-edit');
-    }
-
-    get testProcedureName () {
-        return $('//*[@id="testProcedures "]');
-    }
-
-    get allTestProcedureVersion () {
-        return $$('*[id^="testProcedures-additional-input"]');
-    }
-
-    get testToolsName () {
-        return $('//*[@id="testTools "]');
-    }
-
-    get alltestToolsVersion () {
-        return $$('*[id^="testTools-additional-input"]');
-    }
-
-    get testDataName () {
-        return $('//*[@id="testData "]');
-    }
-
-    get alltestDataVersion () {
-        return $$('*[id^="testData-additional-input"]');
-    }
-
-    get testFunctionalityName () {
-        return $('*[id="testFunctionality "]');
-    }
-
-    get saveCertifiedProduct () {
-        return $('button=Save Certification Criteria');
-    }
-
-    get closeListingEditBtn () {
-        return $('button.close.pull-right.ng-isolate-scope');
     }
 
     get yesConfirmation () {
         return $('//button[text()="Yes"]');
     }
 
-    get rejectBtn () {
+    get rejectButton () {
         return $('//table[@id="pending-listings-table"]/tfoot/tr/th/button');
     }
 
     gotoConfirmListingPg (inspectListingId ) {
         $('//button[@id="pending-listing-inspect-' + inspectListingId + '"]').waitAndClick();
-        this.inspectNextBtn.waitAndClick();
-        this.inspectNextBtn.waitAndClick();
-        this.inspectNextBtn.waitAndClick();
-        if (this.inspectConfirmBtn.isDisplayed()) {
-            this.inspectConfirmBtn.waitForDisplayed();
+        this.inspectNextButton.waitAndClick();
+        this.inspectNextButton.waitAndClick();
+        this.inspectNextButton.waitAndClick();
+        if (this.inspectConfirmButton.isDisplayed()) {
+            this.inspectConfirmButton.waitForDisplayed();
         }
         else {
-            this.inspectNextBtn.waitAndClick();
-            this.inspectConfirmBtn.waitForDisplayed();
+            this.inspectNextButton.waitAndClick();
+            this.inspectConfirmButton.waitForDisplayed();
         }
     }
 
+    findListingtoReject (chplId) {
+        return $('//td[text()="' + chplId + '"]');
+    }
+
     rejectListing (chplId) {
-        $('//td[text()="' + chplId + '"]/parent::tr/td[8]/input').waitAndClick();
-        this.rejectBtn.waitAndClick();
+        $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
+        this.rejectButton.waitAndClick();
         this.yesConfirmation.waitAndClick();
     }
 }

@@ -37,7 +37,7 @@ class ListingEditPage {
         return $('button=Save Certification Criteria');
     }
 
-    get closeListingEditBtn () {
+    get closeListingEditButton () {
         return $('button.close.pull-right.ng-isolate-scope');
     }
 
@@ -96,10 +96,46 @@ class ListingEditPage {
     }
 
     closeEditListing () {
-        this.closeListingEditBtn.waitAndClick();
+        this.closeListingEditButton.waitAndClick();
         this.yesConfirmation.waitAndClick();
-        this.closeListingEditBtn.waitAndClick();
+        this.closeListingEditButton.waitAndClick();
         this.yesConfirmation.waitAndClick();
+    }
+
+    getTestFunctionalityDetail (criteriaId , cures) {
+        if (cures === true) {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Functionality_Tested_cures"]');
+        }
+        else {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Functionality_Tested"]');
+        }
+    }
+
+    getTestDataDetail (criteriaId , cures) {
+        if (cures === true) {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_data_cures"]');
+        }
+        else {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_data"]');
+        }
+    }
+
+    getTestToolDetail (criteriaId , cures) {
+        if (cures === true) {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_tool_cures"]');
+        }
+        else {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_tool"]');
+        }
+    }
+
+    getTestProcedureDetail (criteriaId , cures) {
+        if (cures === true) {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_procedure_cures"]');
+        }
+        else {
+            return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_procedure"]');
+        }
     }
 }
 

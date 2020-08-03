@@ -1,8 +1,11 @@
+import credentials from '../../config/credentials';
+
 const loginElements = {
     loginButton: '#login-toggle',
     userName: '[name="username"]',
     password: '[name="password"]',
     login: 'button=Log In',
+    logout: '//button[text()="Log Out"]',
 }
 
 class LoginComponent {
@@ -20,8 +23,12 @@ class LoginComponent {
         return $(loginElements.password);
     }
 
-    get loginBtn () {
+    get loginButton () {
         return $(loginElements.login);
+    }
+
+    get logoutButton () {
+        return $(loginElements.logout);
     }
 
     openLoginComponent () {
@@ -31,18 +38,23 @@ class LoginComponent {
 
     loginAsACB () {
         this.openLoginComponent();
-        this.usernameInput.addValue(process.env.USERNAMEACB);
-        this.passwordInput.addValue(process.env.PASSWORDACB);
-        this.loginBtn.click();
+        this.usernameInput.addValue(credentials.usernameACB);
+        this.passwordInput.addValue(credentials.passwordACB);
+        this.loginButton.click();
         return this;
     }
 
     loginAsAdmin () {
         this.openLoginComponent();
-        this.usernameInput.addValue(process.env.USERNAMEADMIN);
-        this.passwordInput.addValue(process.env.PASSWORDADMIN);
-        this.loginBtn.click();
+        this.usernameInput.addValue(credentials.usernameAdmin);
+        this.passwordInput.addValue(credentials.passwordAdmin);
+        this.loginButton.click();
         return this;
+    }
+
+    logOut () {
+        this.logoutButton.waitForDisplayed();
+        this.logoutButton.waitAndClick();
     }
 }
 

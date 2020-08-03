@@ -22,9 +22,9 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        //`${__dirname}/e2e/pages/*/*/*spec.js`,
+        `${__dirname}/e2e/pages/*/*/*spec.js`,
         `${__dirname}/e2e/components/*/*spec.js`,
-        //`${__dirname}/e2e/workflowTest/*/aqa1_acb_add_remove_testProcDataToolFunc.spec.js`,
+        `${__dirname}/e2e/workflowTest/*/*spec.js`,
         
     ],
     // suites: {
@@ -51,7 +51,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -62,12 +62,12 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         //
         browserName: config.browser,
-        // 'goog:chromeOptions': {
-        //     args: ['--headless', '--dissable-gpu', '--no-sandbox'],
-        // },
+        'goog:chromeOptions': {
+            args: ['--headless', '--dissable-gpu', '--no-sandbox'],
+        },
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -81,6 +81,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: config.logLevel,
+    //outputDir: `${__dirname}/e2e/logs`,
     //
     // Set specific log levels per logger
     // loggers:
@@ -125,7 +126,7 @@ exports.config = {
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
-    //
+    framework: 'jasmine',
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     jasmineNodeOpts: {

@@ -7,19 +7,19 @@ import {assert} from 'chai';
 
 let confirmPage , hooks, listingEditPage, loginComponent, uploadPage;
 
+// **Run once before the first test case**
+beforeAll(() => {
+    uploadPage = new UploadPage();
+    confirmPage = new ConfirmPage();
+    listingEditPage = new ListingEditPage();
+    loginComponent = new LoginComponent();
+    hooks = new Hooks();
+    hooks.open('/administration/upload');
+    loginComponent.loginAsACB();
+    uploadPage.uploadListing('../../../utilities/2015_v19_AQA1.csv');
+})
+
 describe('ACB can', () => {
-    // **Run once before the first test case**
-    before(() => {
-        uploadPage = new UploadPage();
-        confirmPage = new ConfirmPage();
-        listingEditPage = new ListingEditPage();
-        loginComponent = new LoginComponent();
-        hooks = new Hooks();
-        hooks.open('/administration/upload');
-        loginComponent.loginAsACB();
-        uploadPage.uploadListing('../../../utilities/2015_v19_AQA1.csv');
-        assert.include(uploadPage.uploadSuccessfulText.getText(),uploadPage.expectedUploadSuccessfulText, 'File has uploaded successfully');
-    })
     // **Run once before each test case**
     beforeEach(function () {
         hooks.open('/administration/confirm/listings')
@@ -34,10 +34,10 @@ describe('ACB can', () => {
         listingEditPage.selectTestTools('Inferno' , '3');
         listingEditPage.saveCertifiedProduct.waitAndClick();
         listingEditPage.viewDetailsCriteria('170.315 (b)(3)' ,true);
-        assert.include($('//*[@id="criteria_170.315 (b)(3)_details_row_Functionality_Tested_cures"]').getText(), 'Request to send an additional supply of medication (Resupply)');
-        assert.include($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_procedure_cures"]').getText(), 'ONC Test Method - Surescripts (Alternative)');
-        assert.include($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_data_cures"]').getText(), 'ONC Test Method');
-        assert.include($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_tool_cures"]').getText(), 'Inferno');
+        assert.include(listingEditPage.getTestFunctionalityDetail('170.315 (b)(3)' ,true).getText(), 'Request to send an additional supply of medication (Resupply)');
+        assert.include(listingEditPage.getTestProcedureDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method - Surescripts (Alternative)');
+        assert.include(listingEditPage.getTestDataDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method');
+        assert.include(listingEditPage.getTestToolDetail('170.315 (b)(3)' ,true).getText(), 'Inferno');
         listingEditPage.closeEditListing();
     })
 
@@ -53,11 +53,10 @@ describe('ACB can', () => {
         listingEditPage.removeTestProcToolData('Remove item ONC Test Method');
         listingEditPage.saveCertifiedProduct.waitAndClick();
         listingEditPage.viewDetailsCriteria('170.315 (b)(3)' , true);
-        assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Functionality_Tested_cures"]').getText(), 'Request to send an additional supply of medication (Resupply)');
-        assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_procedure_cures"]').getText(), 'ONC Test Method');
-        assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_data_cures"]').getText(), 'ONC Test Method');
-        assert.notInclude($('//*[@id="criteria_170.315 (b)(3)_details_row_Test_tool_cures"]').getText(), 'HL7v2 Immunization Test Suite');
+        assert.notInclude(listingEditPage.getTestFunctionalityDetail('170.315 (b)(3)' ,true).getText(), 'Request to send an additional supply of medication (Resupply)');
+        assert.notInclude(listingEditPage.getTestProcedureDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method');
+        assert.notInclude(listingEditPage.getTestDataDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method');
+        assert.notInclude(listingEditPage.getTestToolDetail('170.315 (b)(3)' ,true).getText(), 'HL7v2 Immunization Test Suite');
         listingEditPage.closeEditListing();
     })
-
 })

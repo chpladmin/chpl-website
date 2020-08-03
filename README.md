@@ -63,3 +63,6 @@ On all Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpac
 [yarn]: https://yarnpkg.com/en/
 [webpack]: https://webpack.js.org/
 
+#### Automation credetials set up
+
+Rename e2e/config/credentialsEXAMPLE.js to e2e/config/credentials.js And Add Usernames and password in it.
