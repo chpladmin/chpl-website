@@ -125,14 +125,6 @@ export const ListingEditComponent = {
             return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
         }
 
-        doWarningsExist () {
-            if (this.messages && this.messages.warnings && this.messages.warnings.length > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
         hasDateMatches () {
             return this.listing.certificationEvents
                 .reduce((acc, ce) => acc || this.matchesPreviousDate(ce), false);
