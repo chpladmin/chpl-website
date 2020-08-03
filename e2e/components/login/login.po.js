@@ -1,4 +1,4 @@
-import credentials from '../../config/credentials';
+import credentials from '../../config/credentials.js';
 
 const loginElements = {
     loginButton: '#login-toggle',
