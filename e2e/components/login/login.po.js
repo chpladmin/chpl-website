@@ -1,7 +1,7 @@
 import credentials from '../../config/credentials.js';
 
 const loginElements = {
-    loginButton: '#login-toggle',
+    loginButton: '//*[@id="login-toggle"]',
     userName: '[name="username"]',
     password: '[name="password"]',
     login: 'button=Log In',
