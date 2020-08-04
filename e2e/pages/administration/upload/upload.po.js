@@ -7,7 +7,7 @@ const uploadElements = {
 class UploadPage {
     constructor () { }
 
-    get ChooseUploadListingButton () {
+    get chooseUploadListingButton () {
         return $(uploadElements.chooseUploadListing);
     }
 
@@ -23,7 +23,7 @@ class UploadPage {
         const path = require('path');
         const filePath = path.join(__dirname, uploadfilePath);
         const remoteFilePath = browser.uploadFile(filePath);
-        this.ChooseUploadListingButton.addValue(remoteFilePath);
+        this.chooseUploadListingButton.addValue(remoteFilePath);
         this.uploadButton.waitAndClick();
         browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed() === true)
     }

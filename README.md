@@ -44,7 +44,7 @@ yarn install
 * `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
 * `yarn test:ahrq`: Run tests once in a fashion suitable for the deployment environment
 * `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
-* `yarn e2e`: Run the end to end integration tests. This script needs to be run as "USERNAMEACB=UserName_for_ACB PASSWORDACB=PassWord_for_ACB USERNAMEADMIN=UserName_for_ADMIN PASSWORDADMIN=PassWord_for_ADMIN yarn e2e"
+* `yarn e2e`: Run the end to end integration tests.
 * `yarn e2e:lint`: Run code and syntax rules
 
 #### Yarn environment parameters

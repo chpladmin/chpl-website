@@ -3,7 +3,6 @@ import ConfirmPage from '../../pages/administration/confirm/confirm.po';
 import ListingEditPage from '../../pages/searchCHPL/listingEdit/listingEdit.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import {assert} from 'chai';
 
 let confirmPage , hooks, listingEditPage, loginComponent, uploadPage;
 

@@ -1,7 +1,6 @@
 import UploadPage from './upload.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
-import {assert} from 'chai';
 
 let hooks, loginComponent, uploadPage;
 

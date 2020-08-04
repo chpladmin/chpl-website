@@ -2,7 +2,6 @@ import ConfirmPage from './confirm.po';
 import UploadPage from '../upload/upload.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
-import {assert} from 'chai';
 
 let confirmPage, hooks, loginComponent, uploadPage;
 
@@ -22,6 +21,6 @@ describe('Confirm page', () => {
         hooks.open('/administration/confirm/listings');
         confirmPage.rejectListing('15.04.04.1722.AQA1.03.01.1.200620');
         assert.equal(confirmPage.findListingtoReject('15.04.04.1722.AQA1.03.01.1.200620').isDisplayed(),false)
-    })
+    });
 
-})
+});

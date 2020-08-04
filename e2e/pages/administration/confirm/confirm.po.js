@@ -31,8 +31,7 @@ class ConfirmPage {
         this.inspectNextButton.waitAndClick();
         if (this.inspectConfirmButton.isDisplayed()) {
             this.inspectConfirmButton.waitForDisplayed();
-        }
-        else {
+        } else {
             this.inspectNextButton.waitAndClick();
             this.inspectConfirmButton.waitForDisplayed();
         }
@@ -46,8 +45,7 @@ class ConfirmPage {
         $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
         if (this.rejectButton.isClickable()) {
             this.rejectButton.waitAndClick();
-        }
-        else {
+        } else {
             $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
             this.rejectButton.waitAndClick();
         }
