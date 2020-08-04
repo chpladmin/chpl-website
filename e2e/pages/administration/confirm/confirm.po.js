@@ -37,7 +37,13 @@ class ConfirmPage {
 
     rejectListing (chplId) {
         $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
-        this.rejectButton.waitAndClick();
+        if (this.rejectButton.isClickable()) {
+            this.rejectButton.waitAndClick();
+        }
+        else {
+            $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
+            this.rejectButton.waitAndClick();
+        }
         this.yesConfirmation.waitAndClick();
     }
 }

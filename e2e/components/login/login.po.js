@@ -38,7 +38,13 @@ class LoginComponent {
 
     loginAsACB () {
         this.openLoginComponent();
-        this.usernameInput.addValue(credentials.usernameACB);
+        if (this.usernameInput.isDisplayed()) {
+            this.usernameInput.addValue(credentials.usernameACB);
+        }
+        else {
+            this.openLoginComponent();
+            this.usernameInput.addValue(credentials.usernameACB);
+        }
         this.passwordInput.addValue(credentials.passwordACB);
         this.loginButton.click();
         return this;
