@@ -1037,7 +1037,7 @@
 
             it('should getProduct', () => {
                 $httpBackend.expectGET(/^\/rest\/products\/productId$/).respond(200, {data: 'response'});
-                networkService.getProductId('productId').then(response => {
+                networkService.getProduct('productId').then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
