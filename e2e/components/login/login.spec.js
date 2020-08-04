@@ -9,34 +9,34 @@ beforeEach(async () => {
     await hooks.open('/administration/upload');
 });
 
-describe('ACB can', () => {
+describe('an ACB user', () => {
 
-    it('login successfully', () => {
+    it('should be able to login successfully', () => {
         component.loginAsACB();
         component.logoutButton.waitForDisplayed();
-        assert.equal(component.logoutButton.isDisplayed(),true);
+        assert.isTrue(component.logoutButton.isDisplayed());
     })
 
-    it('logsout successfully', () => {
+    it('should be able to logsout successfully', () => {
         component.logOut();
         component.loginButton.waitForDisplayed();
-        assert.equal(component.loginButton.isDisplayed(),true);
+        assert.isTrue(component.loginButton.isDisplayed());
     })
 
 })
 
-describe('Admin can', () => {
+describe('an Admin user', () => {
 
-    it('login successfully', () => {
+    it('should be able to login successfully', () => {
         component.loginAsAdmin();
         component.logoutButton.waitForDisplayed();
-        assert.equal(component.logoutButton.isDisplayed(),true);
+        assert.isTrue(component.logoutButton.isDisplayed());
     })
 
-    it('logsout successfully', () => {
+    it('should be able to logsout successfully', () => {
         component.logOut();
         component.loginButton.waitForDisplayed();
-        assert.equal(component.loginButton.isDisplayed(),true);
+        assert.isTrue(component.loginButton.isDisplayed());
     })
 
 })

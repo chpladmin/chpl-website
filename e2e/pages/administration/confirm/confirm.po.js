@@ -1,23 +1,30 @@
+const confirmElements = {
+    inspectNext: '#inspect-next',
+    inspectConfirm: '#inspect-confirm',
+    yesConfirmation: '//button[text()="Yes"]',
+    rejectButton: '//table[@id="pending-listings-table"]/tfoot/tr/th/button',
+}
+
 class ConfirmPage {
     constructor () { }
 
     get inspectNextButton () {
-        return $('#inspect-next');
+        return $(confirmElements.inspectNext);
     }
 
     get inspectConfirmButton () {
-        return $('#inspect-confirm');
+        return $(confirmElements.inspectConfirm);
     }
 
     get yesConfirmation () {
-        return $('//button[text()="Yes"]');
+        return $(confirmElements.yesConfirmation);
     }
 
     get rejectButton () {
-        return $('//table[@id="pending-listings-table"]/tfoot/tr/th/button');
+        return $(confirmElements.rejectButton);
     }
 
-    gotoConfirmListingPg (inspectListingId ) {
+    gotoConfirmListingPage (inspectListingId ) {
         $('//button[@id="pending-listing-inspect-' + inspectListingId + '"]').waitAndClick();
         this.inspectNextButton.waitAndClick();
         this.inspectNextButton.waitAndClick();

@@ -19,14 +19,14 @@ beforeAll(() => {
     uploadPage.uploadListing('../../../utilities/2015_v19_AQA1.csv');
 })
 
-describe('ACB can', () => {
+describe('an ACB user', () => {
     // **Run once before each test case**
     beforeEach(function () {
         hooks.open('/administration/confirm/listings')
     })
 
-    it('add test procedure, test data, test tools, test functionality to v19 uploaded listing (170.315 (b)(3) cures criteria)', () => {
-        confirmPage.gotoConfirmListingPg('15.04.04.1722.AQA1.03.01.1.200620');
+    it('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {
+        confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
         listingEditPage.gotoEditCriteria('170.315 (b)(3)' , true);
         listingEditPage.selectTestFunctionality('(b)(3)(ii)(B)(4)');
         listingEditPage.selectTestProcedures('ONC Test Method - Surescripts (Alternative)' , '1');
@@ -41,9 +41,9 @@ describe('ACB can', () => {
         listingEditPage.closeEditListing();
     })
 
-    it('remove uploaded test procedure, test data, test tools (170.315 (b)(3) cures criteria)', () => {
+    it('should be able to remove uploaded test procedure, test data, test tools (170.315 (b)(3) cures criteria)', () => {
         browser.refresh();
-        confirmPage.gotoConfirmListingPg('15.04.04.1722.AQA1.03.01.1.200620');
+        confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
         listingEditPage.gotoEditCriteria('170.315 (b)(3)' , true);
         //Remove test tool
         listingEditPage.removeTestProcToolData('Remove item HL7v2 Immunization Test Suite');

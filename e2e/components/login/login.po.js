@@ -37,19 +37,19 @@ class LoginComponent {
     }
 
     loginAsACB () {
-        if (this.usernameInput.isDisplayed()) {
-            this.usernameInput.addValue(credentials.usernameACB);
-        }
-        else {
+        if (this.usernameInput.isDisplayed() === false) {
             this.openLoginComponent();
-            this.usernameInput.addValue(credentials.usernameACB);
         }
+        this.usernameInput.addValue(credentials.usernameACB);
         this.passwordInput.addValue(credentials.passwordACB);
         this.loginButton.click();
         return this;
     }
 
     loginAsAdmin () {
+        if (this.usernameInput.isDisplayed() === false) {
+            this.openLoginComponent();
+        }
         this.usernameInput.addValue(credentials.usernameAdmin);
         this.passwordInput.addValue(credentials.passwordAdmin);
         this.loginButton.click();
