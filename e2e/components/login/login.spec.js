@@ -6,7 +6,7 @@ let component, hooks;
 beforeEach(async () => {
     component = new LoginComponent();
     hooks = new Hooks();
-    await hooks.open('/resources/overview');
+    await hooks.open('/administration/upload');
 });
 
 describe('ACB can', () => {
@@ -28,7 +28,6 @@ describe('ACB can', () => {
 describe('Admin can', () => {
 
     it('login successfully', () => {
-        component.openLoginComponent();
         component.loginAsAdmin();
         component.logoutButton.waitForDisplayed();
         assert.equal(component.logoutButton.isDisplayed(),true);
