@@ -29,10 +29,10 @@
                 </select>
               </div>
               <div class="product__product-info-item">
-                <button ui-sref=".product.edit({ productId: product.productId })">Edit</button>
+                <button class="btn btn-default" ui-sref=".product.edit({ productId: product.productId })"><i class="fa fa-pencil"></i> Edit</button>
               </div>
               <div class="product__product-info-item product__product-info-item--right">
-                <div class="data-label">Last Modified</div>
+                <div class="data-label">Last Modified (what is modified? product or version?</div>
                 <div class="read-only-data">{{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
               </div>
               <div class="product__product-info-item" ng-if="product.ownerHistory && product.ownerHistory.length > 0">
@@ -88,13 +88,10 @@
     <div class="panel-heading products__products-header">
       <div class="products__products-header-item"><h2>Edit Product Details</h2></div>
     </div>
-    <div class="panel-heading product__edit-panel-heading flex-grid-perfectspacing">
-      <div class="flex-grid-item"><h2 class="panel-header__spacing">Edit Product Details</h2></div>
-    </div>
     <div class="panel-body">
       <div class="product__edit-information-product">
         <div class="product__edit-start">
-          <div class="product__edit-data-label"><label for="productName">Product Name</label></div>
+          <div class="product__data-label"><label for="productName">Product Name</label></div>
           <div class="product__edit-data-element">
             <input class="product__edit-form-control" type="text" id="product-name" name="productName"
                    ng-model="$ctrl.activeProduct.name">
@@ -102,35 +99,35 @@
         </div>
       </div>
       <div class="product__history-of-product">
-        <div class="product__history-of-product-start">
+        <div class="product__history-of-product-header">
           <div class="product__data-label">
             Product Owner
           </div>
-          <div class="product__data-element">
-            3M Medical Services
-          </div>
         </div>
-        <div class="product__history-of-product-edit">
+        <div class="product__history-of-product-header product__history-of-product-header--end">
           <div class="product__data-label">
             Effective Date
           </div>
+        </div>
+        <div class="product__history-of-product-item" ng-repeat-start="owner in $ctrl.ownerHistory">
           <div class="product__data-element">
-            1 Apr 2020
+            {{ owner.name }}
           </div>
         </div>
-        <div class="product__history-of-product-end">
-          <div class="product__data-label">
-          </div>
+        <div class="product__history-of-product-item">
           <div class="product__data-element">
-            <button class="icon-primary" ng-click="$ctrl.addStatus()"><i class="fa fa-times"></i></button>
+            {{ owner.effectiveDate | date : 'mediumDate' : 'EST' }}
           </div>
+        </div>
+        <div class="product__history-of-product-item product__history-of-product-item--end" ng-repeat-end>
+          <button class="btn btn-link btn-sm" ng-click="$ctrl.removeOwner(owner)"><i class="fa fa-times"></i></button>
         </div>
       </div>
       <div class="product__edit-history-product repeatable-item">
         <div class="product__edit">
-          <div class="product__edit-data-label">Product Owner<span class="text-danger">*</span></div>
+          <div class="product__data-label">Product Owner<span class="text-danger">*</span></div>
           <div class="product__edit-data-element ">
-            <select ng-model="status.status.status" required="" id="developer-status-0" name="developerStatus0" class="product__edit-form-control" aria-invalid="false">
+            <select ng-model="status.status.status" id="developer-status-0" name="developerStatus0" class="product__edit-form-control">
               <option value="Cerner Corporoations" selected="selected">Cerner Corporoations</option>
               <option value="Epic Systems Corporoations">Epic Systems Corporoations</option>
               <option value="Audacious Inquiry">Audacious Inquiry</option>
@@ -140,10 +137,10 @@
           </div>
         </div>
         <div class="product__edit">
-          <div class="product__edit-data-label">Effective Date<span class="text-danger">*</span></div>
+          <div class="product__data-label">Effective Date<span class="text-danger">*</span></div>
           <div class="product__edit-data-element">
             <div class="input-group">
-              <input class="product__edit-form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDateObject" is-open="status.statusDatePicker" close-text="Close" id="status-date-0" name="statusDate0" ng-model-options="{ timezone: 'UTC' }" required="" aria-invalid="false" style=""><div uib-datepicker-popup-wrap="" ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false"><!-- ngIf: isOpen -->
+              <input class="product__edit-form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDateObject" is-open="status.statusDatePicker" close-text="Close" id="status-date-0" name="statusDate0" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap="" ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false"><!-- ngIf: isOpen -->
               </div>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-link btn-sm" ng-click="status.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
