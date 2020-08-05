@@ -1,6 +1,6 @@
 import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
-import ListingEditPage from '../../pages/searchCHPL/listingEdit/listingEdit.po';
+import ListingEditPage from '../../pages/listing/listingEdit.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 
@@ -15,7 +15,7 @@ beforeAll(() => {
     hooks = new Hooks();
     hooks.open('/administration/upload');
     loginComponent.loginAsACB();
-    uploadPage.uploadListing('../../../utilities/2015_v19_AQA1.csv');
+    uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
 })
 
 describe('an ACB user', () => {

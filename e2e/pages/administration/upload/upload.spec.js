@@ -15,12 +15,12 @@ describe('Upload page', () => {
 
     it('allows uploading v19 template', () => {
         loginComponent.loginAsACB();
-        uploadPage.uploadListing('../../../utilities/2015_v19_AQA1.csv');
+        uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
         assert.include(uploadPage.uploadSuccessfulText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     })
 
     it('allows uploading v18 template', () => {
-        uploadPage.uploadListing('../../../utilities/2015_v18_AQA2.csv');
+        uploadPage.uploadListing('../../../resources/2015_v18_AQA2.csv');
         assert.include(uploadPage.uploadSuccessfulText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     })
 

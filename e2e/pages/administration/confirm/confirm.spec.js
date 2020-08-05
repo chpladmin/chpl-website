@@ -12,7 +12,7 @@ beforeEach(() => {
     hooks = new Hooks();
     hooks.open('/administration/upload');
     loginComponent.loginAsACB();
-    uploadPage.uploadListing('../../../utilities/2015_v19_AQA1.csv');
+    uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
 });
 
 describe('Confirm page', () => {
