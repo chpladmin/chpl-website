@@ -1,6 +1,7 @@
 export const ProductsComponent = {
-    templateUrl: 'chpl.components/product/products.html',
+    templateUrl: 'chpl.components/products/products.html',
     bindings: {
+        developers: '<',
         products: '<',
         productId: '@',
         searchOptions: '<',
@@ -26,6 +27,9 @@ export const ProductsComponent = {
         }
 
         $onChanges (changes) {
+            if (changes.developers) {
+                this.developers = angular.copy(changes.developers.currentValue);
+            }
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
                     p.loaded = false;
@@ -33,16 +37,8 @@ export const ProductsComponent = {
                         o.transferDateObject = new Date(o.transferDate);
                         return o;
                     });
-                    this.networkService.getVersionsByProduct(p.productId)
-                        .then(versions => {
-                            p.versions = versions
-                                .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
-                        });
                     return p;
                 });
-                if (this.productId) {
-                    this.activeProduct = this.products.filter(p => p.productId === this.productId)[0];
-                }
             }
             if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {
                 this.statusItems = changes.searchOptions.currentValue.certificationStatuses
@@ -55,6 +51,22 @@ export const ProductsComponent = {
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
                 this.currentFilter = this.statusItems;
+            }
+            if (this.products) {
+                if (this.productId) {
+                    this.$log.info(this.productId, typeof(this.productId));
+                    this.activeProduct = this.products.filter(p => p.productId === parseInt(this.productId, 10))[0];
+                    this.$log.info(this.activeProduct);
+                } else {
+                    this.products = this.products.map(p => {
+                        this.networkService.getVersionsByProduct(p.productId)
+                            .then(versions => {
+                                p.versions = versions
+                                    .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
+                            });
+                        return p;
+                    });
+                }
             }
         }
 

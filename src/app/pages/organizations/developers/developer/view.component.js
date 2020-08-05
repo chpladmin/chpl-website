@@ -4,7 +4,6 @@ export const DevelopersViewComponent = {
         developer: '<',
         developers: '<',
         products: '<',
-        productId: '@',
         action: '@',
     },
     controller: class DevelopersViewComponent {
@@ -33,6 +32,9 @@ export const DevelopersViewComponent = {
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
             this.networkService.getSearchOptions()
                 .then(options => that.searchOptions = options);
+            if (this.$stateParams.productId) {
+                this.productId = this.$stateParams.productId;
+            }
         }
 
         $onChanges (changes) {

@@ -1,0 +1,190 @@
+<span ng-if="!$ctrl.activeProduct">
+  <div class="panel panel-default">
+    <div class="panel-heading products__products-header">
+      <div class="products__products-header-item"><h2>Products</h2></div>
+      <div class="products__products-header-item products__products-header-item--last" ng-if="$ctrl.statusItems">
+        <chpl-filter-multiple
+          items="$ctrl.statusItems"
+          on-change="$ctrl.doFilter(items)">
+        </chpl-filter-multiple>
+        <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div ng-repeat="product in $ctrl.products | orderBy: 'name'" class="products__product">
+        <div class="products__product-header" ng-click="$ctrl.toggleProduct(product)">
+          <div class="products__product-header-item products__product-header-item--first"><h3>{{ product.name }}</h3></div>
+          <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
+          <div class="products__product-header-item">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 1">s</span></div>
+          <div class="products__product-header-item"><i class="fa" ng-class="{ 'fa-caret-down' : !product.isOpen, 'fa-caret-up' : product.isOpen }"></i></div>
+        </div>
+        <div ng-if="product.isOpen">
+          <div id="chpl-product-{{ product.productId }}">
+            <div class="product__product-info">
+              <div class="product__product-info-item">
+                <label for="active-version">Version</label>
+                <select ng-model="product.activeVersion"
+                        id="active-version" name="product.activeVersion" class="input-sm form-control"
+                        ng-options="v as v.version for v in product.versions">
+                </select>
+              </div>
+              <div class="product__product-info-item">
+                <button ui-sref=".product.edit({ productId: product.productId })">Edit</button>
+              </div>
+              <div class="product__product-info-item product__product-info-item--right">
+                <div class="data-label">Last Modified</div>
+                <div class="read-only-data">{{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
+              </div>
+              <div class="product__product-info-item" ng-if="product.ownerHistory && product.ownerHistory.length > 0">
+                <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th scope="col">Previous Owner<span ng-if="product.ownerHistory.length > 1">s</span></th>
+                      <th scope="col">Effective date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="owner in product.ownerHistory | orderBy : '-transferDate'">
+                      <td>{{ owner.developer.name }}</td>
+                      <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="product__product-info-item" ng-if="product.contact">
+                <div class="data-label">Contact information</div>
+                <chpl-contact contact="product.contact"></chpl-contact>
+              </div>
+            </div>
+            <div class="product__listings">
+              <p ng-if="$ctrl.noVisibleListings(product)">No Listings match the filter</p>
+              <div class="product__listing" ng-repeat="listing in product.activeVersion.listings | filter:{displayed:true}">
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL Product Number</div>
+                  <div class="product__listing-element"><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></div>
+                </div>
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Status</div>
+                  <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</div>
+                </div>
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Edition</div>
+                  <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
+                </div>
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Date</div>
+                  <div class="product__listing-element">{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</span>
+<span ng-if="$ctrl.activeProduct">
+  <div class="panel-default">
+    <div class="panel-heading products__products-header">
+      <div class="products__products-header-item"><h2>Edit Product Details</h2></div>
+    </div>
+    <div class="panel-heading product__edit-panel-heading flex-grid-perfectspacing">
+      <div class="flex-grid-item"><h2 class="panel-header__spacing">Edit Product Details</h2></div>
+    </div>
+    <div class="panel-body">
+      <div class="product__edit-information-product">
+        <div class="product__edit-start">
+          <div class="product__edit-data-label"><label for="productName">Product Name</label></div>
+          <div class="product__edit-data-element">
+            <input class="product__edit-form-control" type="text" id="product-name" name="productName"
+                   ng-model="$ctrl.activeProduct.name">
+          </div>
+        </div>
+      </div>
+      <div class="product__history-of-product">
+        <div class="product__history-of-product-start">
+          <div class="product__data-label">
+            Product Owner
+          </div>
+          <div class="product__data-element">
+            3M Medical Services
+          </div>
+        </div>
+        <div class="product__history-of-product-edit">
+          <div class="product__data-label">
+            Effective Date
+          </div>
+          <div class="product__data-element">
+            1 Apr 2020
+          </div>
+        </div>
+        <div class="product__history-of-product-end">
+          <div class="product__data-label">
+          </div>
+          <div class="product__data-element">
+            <button class="icon-primary" ng-click="$ctrl.addStatus()"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="product__edit-history-product repeatable-item">
+        <div class="product__edit">
+          <div class="product__edit-data-label">Product Owner<span class="text-danger">*</span></div>
+          <div class="product__edit-data-element ">
+            <select ng-model="status.status.status" required="" id="developer-status-0" name="developerStatus0" class="product__edit-form-control" aria-invalid="false">
+              <option value="Cerner Corporoations" selected="selected">Cerner Corporoations</option>
+              <option value="Epic Systems Corporoations">Epic Systems Corporoations</option>
+              <option value="Audacious Inquiry">Audacious Inquiry</option>
+            </select>
+            <!-- ngIf: ($ctrl.showFormErrors || $ctrl.form['developerStatus' + $index].$touched) && $ctrl.form['developerStatus' + $index].$error.required -->
+            <!-- ngIf: ($ctrl.showFormErrors || $ctrl.form['developerStatus' + $index].$touched) && $ctrl.matchesPreviousStatus(status) -->
+          </div>
+        </div>
+        <div class="product__edit">
+          <div class="product__edit-data-label">Effective Date<span class="text-danger">*</span></div>
+          <div class="product__edit-data-element">
+            <div class="input-group">
+              <input class="product__edit-form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDateObject" is-open="status.statusDatePicker" close-text="Close" id="status-date-0" name="statusDate0" ng-model-options="{ timezone: 'UTC' }" required="" aria-invalid="false" style=""><div uib-datepicker-popup-wrap="" ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false"><!-- ngIf: isOpen -->
+              </div>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-link btn-sm" ng-click="status.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
+            <!-- ngIf: ($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.form['statusDate' + $index].$error.required -->
+            <!-- ngIf: ($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousDate(status) -->
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-link" ng-click="$ctrl.addStatus()"><i class="fa fa-plus-circle"></i> Add Product Owner</button>
+      <hr>
+      <div>
+        <h4>Contact Information</h4>
+      </div>
+      <div class="product__edit-information-contact">
+        <div class="product__edit-start">
+          <div class="product__edit-data-label">Contact Full Name</div>
+          <div class="product__edit-data-element">
+            <input class="product__edit-form-control" type="text" placeholder="Pat Miller Smith" aria-label="Search">
+          </div>
+        </div>
+        <div class="product__edit">
+          <div class="product__edit-data-label">Title</div>
+          <div class="product__edit-data-element">
+            <input class="product__edit-form-control" type="text" placeholder="" aria-label="Search">
+          </div>
+        </div>
+        <div class="product__edit">
+          <div class="product__edit-data-label">Email</div>
+          <div class="product__edit-data-element">
+            <input class="product__edit-form-control" type="text" placeholder="ASP.MD" aria-label="Search">
+          </div>
+        </div>
+        <div class="product__edit-end">
+          <div class="product__edit-data-label">Phone</div>
+          <div class="product__edit-data-element">
+            <input class="product__edit-form-control" type="text" placeholder="410-555-6969" aria-label="Search">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</span>
