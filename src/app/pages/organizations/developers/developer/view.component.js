@@ -81,7 +81,11 @@ export const DevelopersViewComponent = {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.$state.go('^');
+            this.$state.go('organizations.developers.developer', {
+                developerId: this.developer.developerId,
+                action: undefined,
+                productId: undefined,
+            });
         }
 
         closeConfirmation () {
@@ -143,8 +147,44 @@ export const DevelopersViewComponent = {
             }
         }
 
+        saveProduct (product) {
+            let that = this;
+            let request = {
+                productIds: [product.productId],
+                product: product,
+                newDeveloperId: product.developerId,
+            };
+            this.errorMessages = [];
+            this.networkService.updateProduct(request)
+                .then(response => {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        this.$state.go('organizations.developers.developer', {
+                            developerId: this.developer.developerId,
+                            action: undefined,
+                            productId: undefined,
+                        }, {reload: true});
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
+                        } else {
+                            that.errorMessages = ['An error has occurred.'];
+                        }
+                    }
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
+                    } else {
+                        that.errorMessages = ['An error has occurred.'];
+                    }
+                });
+        }
+
         takeAction (action) {
-            this.$state.go('.' + action);
+            this.$state.go('organizations.developers.developer.' + action);
         }
 
         takeCrAction (action, data) {

@@ -2,6 +2,8 @@ export const ProductsComponent = {
     templateUrl: 'chpl.components/products/products.html',
     bindings: {
         developers: '<',
+        onCancel: '&?',
+        onEdit: '&?',
         products: '<',
         productId: '@',
         searchOptions: '<',
@@ -33,6 +35,7 @@ export const ProductsComponent = {
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
                     p.loaded = false;
+                    p.isOpen = false;
                     p.ownerHistory = p.ownerHistory.map(o => {
                         o.transferDateObject = new Date(o.transferDate);
                         return o;
@@ -54,9 +57,7 @@ export const ProductsComponent = {
             }
             if (this.products) {
                 if (this.productId) {
-                    this.$log.info(this.productId, typeof(this.productId));
                     this.activeProduct = this.products.filter(p => p.productId === parseInt(this.productId, 10))[0];
-                    this.$log.info(this.activeProduct);
                 } else {
                     this.products = this.products.map(p => {
                         this.networkService.getVersionsByProduct(p.productId)
@@ -70,6 +71,10 @@ export const ProductsComponent = {
             }
         }
 
+        cancel () {
+            this.onCancel();
+        }
+
         doFilter (items) {
             this.currentFilter = items;
             this.products.forEach(p => {
@@ -81,6 +86,10 @@ export const ProductsComponent = {
                     }
                 });
             });
+        }
+
+        editContact (contact) {
+            this.activeProduct.contact = angular.copy(contact);
         }
 
         getListingCounts (product) {
@@ -101,10 +110,33 @@ export const ProductsComponent = {
             return ret;
         }
 
+        isValid () {
+            return this.form.$valid;
+        }
+
         noVisibleListings (product) {
             return product.activeVersion && product.activeVersion.listings
                 .filter(l => l.displayed)
                 .length === 0;
+        }
+
+        save () {
+            this.onEdit({product: this.activeProduct});
+        }
+
+        takeActionBarAction (action) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'mouseover':
+                this.showFormErrors = true;
+                break;
+            case 'save':
+                this.save();
+                break;
+                //no default
+            }
         }
 
         toggleProduct (product) {

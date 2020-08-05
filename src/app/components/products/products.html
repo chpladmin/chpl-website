@@ -83,7 +83,7 @@
     </div>
   </div>
 </span>
-<span ng-if="$ctrl.activeProduct">
+<span ng-if="$ctrl.activeProduct" ng-form="$ctrl.form">
   <div class="panel-default">
     <div class="panel-heading products__products-header">
       <div class="products__products-header-item"><h2>Edit Product Details</h2></div>
@@ -159,32 +159,14 @@
       <div>
         <h4>Contact Information</h4>
       </div>
-      <div class="product__edit-information-contact">
-        <div class="product__edit-start">
-          <div class="product__edit-data-label">Contact Full Name</div>
-          <div class="product__edit-data-element">
-            <input class="product__edit-form-control" type="text" placeholder="Pat Miller Smith" aria-label="Search">
-          </div>
-        </div>
-        <div class="product__edit">
-          <div class="product__edit-data-label">Title</div>
-          <div class="product__edit-data-element">
-            <input class="product__edit-form-control" type="text" placeholder="" aria-label="Search">
-          </div>
-        </div>
-        <div class="product__edit">
-          <div class="product__edit-data-label">Email</div>
-          <div class="product__edit-data-element">
-            <input class="product__edit-form-control" type="text" placeholder="ASP.MD" aria-label="Search">
-          </div>
-        </div>
-        <div class="product__edit-end">
-          <div class="product__edit-data-label">Phone</div>
-          <div class="product__edit-data-element">
-            <input class="product__edit-form-control" type="text" placeholder="410-555-6969" aria-label="Search">
-          </div>
-        </div>
-      </div>
+      <chpl-contact contact="$ctrl.product.contact"
+                    is-editing="true"
+                    ignore-friendly-name="true"
+                    on-change="$ctrl.editContact(contact)"
+                    show-form-errors="$ctrl.showFormErrors"></chpl-contact>
     </div>
   </div>
+  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                   take-action="$ctrl.takeActionBarAction(action)">
+  </chpl-action-bar>
 </span>

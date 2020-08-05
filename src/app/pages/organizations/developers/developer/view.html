@@ -46,6 +46,8 @@
                      product-id="{{ $ctrl.productId }}"
                      developers="$ctrl.developers"
                      search-options="$ctrl.searchOptions"
+                     on-cancel="$ctrl.cancel()"
+                     on-edit="$ctrl.saveProduct(product)"
                      ></chpl-products>
     </div>
   </div>
