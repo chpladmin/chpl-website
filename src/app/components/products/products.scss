@@ -31,13 +31,28 @@
     display: grid;
     align-items: center;
     justify-items: stretch;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 3fr 1fr 1fr;
     margin: 8px;
     column-gap: 8px;
 }
 
-.product__product-info-item--right {
+.product__product-info-item-edit {
     justify-self: end;
+}
+
+.product__product-info-item-last-modifed {
+    grid-column: 3 / 4;
+    justify-self: end;
+}
+
+.product__product-info-item-previous-owners {
+    grid-row: 2;
+    grid-column: 1 / 4;
+}
+
+.product__product-info-item-contact {
+    grid-row: 3;
+    grid-column: 1 / 4;
 }
 
 .product__listings {

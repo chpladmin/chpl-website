@@ -21,21 +21,21 @@
         <div ng-if="product.isOpen">
           <div id="chpl-product-{{ product.productId }}">
             <div class="product__product-info">
-              <div class="product__product-info-item">
+              <div class="product__product-info-item-version">
                 <label for="active-version">Version</label>
                 <select ng-model="product.activeVersion"
                         id="active-version" name="product.activeVersion" class="input-sm form-control"
                         ng-options="v as v.version for v in product.versions">
                 </select>
               </div>
-              <div class="product__product-info-item">
+              <div class="product__product-info-item-edit">
                 <button class="btn btn-default" ui-sref=".product.edit({ productId: product.productId })"><i class="fa fa-pencil"></i> Edit</button>
               </div>
-              <div class="product__product-info-item product__product-info-item--right">
+              <div class="product__product-info-item-last-modified">
                 <div class="data-label">Last Modified (what is modified? product or version?</div>
                 <div class="read-only-data">{{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
               </div>
-              <div class="product__product-info-item" ng-if="product.ownerHistory && product.ownerHistory.length > 0">
+              <div class="product__product-info-item-previous-owners" ng-if="product.ownerHistory && product.ownerHistory.length > 0">
                 <table class="table table-condensed">
                   <thead>
                     <tr>
@@ -51,7 +51,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="product__product-info-item" ng-if="product.contact">
+              <div class="product__product-info-item-contact" ng-if="product.contact">
                 <div class="data-label">Contact information</div>
                 <chpl-contact contact="product.contact"></chpl-contact>
               </div>
