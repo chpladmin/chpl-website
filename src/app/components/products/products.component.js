@@ -30,16 +30,17 @@ export const ProductsComponent = {
 
         $onChanges (changes) {
             if (changes.developers) {
-                this.developers = angular.copy(changes.developers.currentValue);
+                this.developers = changes.developers.currentValue
+                    .map(d => {
+                        d.displayName = d.name + (d.deleted ? ' - deleted' : ' - active');
+                        return d;
+                    })
+                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
                     p.loaded = false;
                     p.isOpen = false;
-                    p.ownerHistory = p.ownerHistory.map(o => {
-                        o.transferDateObject = new Date(o.transferDate);
-                        return o;
-                    });
                     return p;
                 });
             }
@@ -57,7 +58,23 @@ export const ProductsComponent = {
             }
             if (this.products) {
                 if (this.productId) {
-                    this.activeProduct = this.products.filter(p => p.productId === parseInt(this.productId, 10))[0];
+                    this.activeProduct = this.products
+                        .filter(p => p.productId === parseInt(this.productId, 10))
+                        .map(p => {
+                            p.ownerHistory = p.ownerHistory
+                                .filter(o => o.transferDate)
+                                .concat({
+                                    developer: p.owner,
+                                    transferDate: undefined,
+                                })
+                                .sort((a, b) => {
+                                    if (a.transferDate && b.transferDate) {
+                                        return b.transferDate - a.transferDate;
+                                    }
+                                    return a.transferDate ? 1 : -1;
+                                })
+                            return p;
+                        })[0];
                 } else {
                     this.products = this.products.map(p => {
                         this.networkService.getVersionsByProduct(p.productId)
@@ -92,6 +109,29 @@ export const ProductsComponent = {
             this.activeProduct.contact = angular.copy(contact);
         }
 
+        generateErrorMessages () {
+            let messages = [];
+            if (this.activeProduct) {
+                if (this.activeProduct.ownerHistory.length < 1) {
+                    messages.push('At least one Owner must be recorded');
+                }
+                if (this.activeProduct.ownerHistory[0].transferDate) {
+                    messages.push('Current Developer must be indicated');
+                }
+                this.activeProduct.ownerHistory.forEach((o, idx, arr) => {
+                    if (idx > 0) {
+                        if (!o.transferDate) {
+                            messages.push('Product may not have two current Owners');
+                        }
+                        if (arr[idx].developer.name === arr[idx - 1].developer.name) {
+                            messages.push('Product cannot transfer from Developer "' + arr[idx].developer.name + '" to the same Developer');
+                        }
+                    }
+                });
+            }
+            this.errorMessages = messages;
+        }
+
         getListingCounts (product) {
             if (!product.loaded) { return '' }
             let counts = product.versions.reduce((acc, v) => {
@@ -111,7 +151,8 @@ export const ProductsComponent = {
         }
 
         isValid () {
-            return this.form.$valid;
+            return this.errorMessages.length === 0 // business logic rules
+                && this.form.$valid; // form validation
         }
 
         noVisibleListings (product) {
@@ -120,8 +161,32 @@ export const ProductsComponent = {
                 .length === 0;
         }
 
+        removeOwner (owner) {
+            this.activeProduct.ownerHistory = this.activeProduct.ownerHistory
+                .filter(o => (!(o.developer.developerId === owner.developer.developerId && o.transferDate === owner.transferDate)));
+            this.generateErrorMessages();
+        }
+
         save () {
             this.onEdit({product: this.activeProduct});
+        }
+
+        saveNewOwner () {
+            this.activeProduct.ownerHistory = this.activeProduct.ownerHistory
+                .concat({
+                    developer: this.newOwner,
+                    transferDate: this.newTransferDate,
+                })
+                .sort((a, b) => {
+                    if (a.transferDate && b.transferDate) {
+                        return b.transferDate - a.transferDate;
+                    }
+                    return a.transferDate ? 1 : -1;
+                });
+            this.newOwner = undefined;
+            this.newTransferDate = undefined;
+            this.addingOwner = false;
+            this.generateErrorMessages();
         }
 
         takeActionBarAction (action) {
@@ -131,6 +196,7 @@ export const ProductsComponent = {
                 break;
             case 'mouseover':
                 this.showFormErrors = true;
+                this.generateErrorMessages();
                 break;
             case 'save':
                 this.save();
