@@ -25,7 +25,7 @@ class UploadPage {
         const remoteFilePath = browser.uploadFile(filePath);
         this.chooseUploadListingButton.addValue(remoteFilePath);
         this.uploadButton.waitAndClick();
-        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed() === true)
+        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed())
     }
 }
 

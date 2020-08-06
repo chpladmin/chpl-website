@@ -1,53 +1,67 @@
-class ListingEditPage {
+const listingEditElements = {
+    editcertifiedProduct: '#inspect-edit',
+    testProcedureName: '//*[@id="testProcedures "]',
+    allTestProcedureVersion: '*[id^="testProcedures-additional-input"]',
+    testToolsName: '//*[@id="testTools "]',
+    allTestToolsVersion: '*[id^="testTools-additional-input"]',
+    testDataName: '//*[@id="testData "]',
+    allTestDataVersion: '*[id^="testData-additional-input"]',
+    testFunctionalityName: '*[id="testFunctionality "]',
+    saveCertifiedProduct: 'button=Save Certification Criteria',
+    closeListingEditButton: 'button.close.pull-right.ng-isolate-scope',
+    yesConfirmation: '//button[text()="Yes"]',
+}
+
+class ListingEditComponent {
     constructor () { }
 
     get editcertifiedProduct () {
-        return $('#inspect-edit');
+        return $(listingEditElements.editcertifiedProduct);
     }
 
     get testProcedureName () {
-        return $('//*[@id="testProcedures "]');
+        return $(listingEditElements.testProcedureName);
     }
 
     get allTestProcedureVersion () {
-        return $$('*[id^="testProcedures-additional-input"]');
+        return $$(listingEditElements.allTestProcedureVersion);
     }
 
     get testToolsName () {
-        return $('//*[@id="testTools "]');
+        return $(listingEditElements.testToolsName);
     }
 
     get allTestToolsVersion () {
-        return $$('*[id^="testTools-additional-input"]');
+        return $$(listingEditElements.allTestToolsVersion);
     }
 
     get testDataName () {
-        return $('//*[@id="testData "]');
+        return $(listingEditElements.testDataName);
     }
 
     get allTestDataVersion () {
-        return $$('*[id^="testData-additional-input"]');
+        return $$(listingEditElements.allTestDataVersion);
     }
 
     get testFunctionalityName () {
-        return $('*[id="testFunctionality "]');
+        return $(listingEditElements.testFunctionalityName);
     }
 
     get saveCertifiedProduct () {
-        return $('button=Save Certification Criteria');
+        return $(listingEditElements.saveCertifiedProduct);
     }
 
     get closeListingEditButton () {
-        return $('button.close.pull-right.ng-isolate-scope');
+        return $(listingEditElements.closeListingEditButton);
     }
 
     get yesConfirmation () {
-        return $('//button[text()="Yes"]');
+        return $(listingEditElements.yesConfirmation);
     }
 
-    gotoEditCriteria (editCriteriaId , cures) {
+    openEditCriteria (editCriteriaId , cures) {
         this.editcertifiedProduct.click();
-        if (cures === true) {
+        if (cures) {
             //click on Edit for on the criteria
             $('//*[@id="criteria_' + editCriteriaId + '_details_header_cures"]/span[3]/span/button/i').click();
         }
@@ -56,25 +70,25 @@ class ListingEditPage {
         }
     }
 
-    selectTestProcedures (name , version) {
+    addTestProcedures (name , version) {
         this.testProcedureName.selectByVisibleText(name);
         const totalTestProc = this.allTestProcedureVersion.length;
         //This will get latest added test procedure version text box
         $('//*[@id="testProcedures-additional-input-' + (totalTestProc - 1) + '"]').addValue(version);
     }
 
-    selectTestFunctionality (name) {
+    addTestFunctionality (name) {
         this.testFunctionalityName.selectByVisibleText(name);
     }
 
-    selectTestData (name , version) {
+    addTestData (name , version) {
         this.testDataName.selectByVisibleText(name);
         const totalTestData = (this.allTestDataVersion.length) / 2;
         //This will get latest added test data version text box, alteration has same id so this below locator is different than test proc, tools
         $('//*[@id="testData-additional-input-' + (totalTestData - 1) + '"]').addValue(version);
     }
 
-    selectTestTools (name , version) {
+    addTestTools (name , version) {
         this.testToolsName.selectByVisibleText(name);
         const totalTestTools = this.allTestToolsVersion.length;
         //This will get latest added test tools version text box
@@ -86,7 +100,7 @@ class ListingEditPage {
     }
 
     viewDetailsCriteria (criteriaId , cures) {
-        if (cures === true) {
+        if (cures) {
             //click on Edit for on the criteria
             $('//*[@id="criteria_' + criteriaId + '_details_link_cures"]').waitAndClick();
         }
@@ -103,7 +117,7 @@ class ListingEditPage {
     }
 
     getTestFunctionalityDetail (criteriaId , cures) {
-        if (cures === true) {
+        if (cures) {
             return $('//*[@id="criteria_' + criteriaId + '_details_row_Functionality_Tested_cures"]');
         }
         else {
@@ -112,7 +126,7 @@ class ListingEditPage {
     }
 
     getTestDataDetail (criteriaId , cures) {
-        if (cures === true) {
+        if (cures) {
             return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_data_cures"]');
         }
         else {
@@ -121,7 +135,7 @@ class ListingEditPage {
     }
 
     getTestToolDetail (criteriaId , cures) {
-        if (cures === true) {
+        if (cures) {
             return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_tool_cures"]');
         }
         else {
@@ -130,7 +144,7 @@ class ListingEditPage {
     }
 
     getTestProcedureDetail (criteriaId , cures) {
-        if (cures === true) {
+        if (cures) {
             return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_procedure_cures"]');
         }
         else {
@@ -139,4 +153,4 @@ class ListingEditPage {
     }
 }
 
-export default ListingEditPage;
+export default ListingEditComponent;

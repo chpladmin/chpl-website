@@ -20,7 +20,7 @@ describe('Confirm page', () => {
     it('allows user to reject a file', () => {
         hooks.open('#/administration/confirm/listings');
         confirmPage.rejectListing('15.04.04.1722.AQA1.03.01.1.200620');
-        assert.equal(confirmPage.findListingtoReject('15.04.04.1722.AQA1.03.01.1.200620').isDisplayed(),false)
+        assert.isFalse(confirmPage.findListingtoReject('15.04.04.1722.AQA1.03.01.1.200620').isDisplayed())
     });
 
 });

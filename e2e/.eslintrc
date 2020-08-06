@@ -9,10 +9,7 @@
         "by": false,
         "$": false,
         "$$": false,
-        "process": false,
-        "__dirname": false,
-        "before": false,
-        "after": false
+        "__dirname": false
     },
     "parser": "babel-eslint",
     "rules": {
