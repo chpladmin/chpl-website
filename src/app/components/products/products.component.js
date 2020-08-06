@@ -168,14 +168,17 @@ export const ProductsComponent = {
         }
 
         save () {
-            this.onEdit({product: this.activeProduct});
+            let request = angular.copy(this.activeProduct);
+            request.owner = request.ownerHistory[0].developer;
+            request.ownerHistory = request.ownerHistory.filter(o => o.transferDate);
+            this.onEdit({product: request});
         }
 
         saveNewOwner () {
             this.activeProduct.ownerHistory = this.activeProduct.ownerHistory
                 .concat({
                     developer: this.newOwner,
-                    transferDate: this.newTransferDate,
+                    transferDate: this.newTransferDate.getTime(),
                 })
                 .sort((a, b) => {
                     if (a.transferDate && b.transferDate) {
