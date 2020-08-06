@@ -32,6 +32,7 @@
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
 
         vm.isOn = featureFlags.isOn;
+        vm.acknowledgeWarnings = false;
 
         activate();
 
@@ -93,7 +94,7 @@
         function confirm () {
             networkService.confirmPendingCp({
                 pendingListing: vm.cp,
-                acknowledgeWarnings: vm.acknowledgeWarnings,
+                warningAcknowledgement: vm.acknowledgeWarnings,
             }).then(function (result) {
                     $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
                 }, function (error) {
