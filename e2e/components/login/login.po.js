@@ -37,7 +37,7 @@ class LoginComponent {
     }
 
     loginAsACB () {
-        if (this.usernameInput.isDisplayed() === false) {
+        if (!this.usernameInput.isDisplayed()) {
             this.openLoginComponent();
         }
         this.usernameInput.addValue(credentials.usernameACB);
@@ -47,7 +47,7 @@ class LoginComponent {
     }
 
     loginAsAdmin () {
-        if (this.usernameInput.isDisplayed() === false) {
+        if (!this.usernameInput.isDisplayed()) {
             this.openLoginComponent();
         }
         this.usernameInput.addValue(credentials.usernameAdmin);

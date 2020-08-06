@@ -13,7 +13,7 @@ beforeAll(() => {
     listingEditPage = new ListingEditPage();
     loginComponent = new LoginComponent();
     hooks = new Hooks();
-    hooks.open('/administration/upload');
+    hooks.open('#/administration/upload');
     loginComponent.loginAsACB();
     uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
 })
@@ -21,7 +21,7 @@ beforeAll(() => {
 describe('an ACB user', () => {
     // **Run once before each test case**
     beforeEach(function () {
-        hooks.open('/administration/confirm/listings')
+        hooks.open('#/administration/confirm/listings')
     })
 
     it('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {

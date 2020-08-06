@@ -17,7 +17,7 @@ class ListingEditPage {
         return $('//*[@id="testTools "]');
     }
 
-    get alltestToolsVersion () {
+    get allTestToolsVersion () {
         return $$('*[id^="testTools-additional-input"]');
     }
 
@@ -25,7 +25,7 @@ class ListingEditPage {
         return $('//*[@id="testData "]');
     }
 
-    get alltestDataVersion () {
+    get allTestDataVersion () {
         return $$('*[id^="testData-additional-input"]');
     }
 
@@ -69,14 +69,14 @@ class ListingEditPage {
 
     selectTestData (name , version) {
         this.testDataName.selectByVisibleText(name);
-        const totalTestData = (this.alltestDataVersion.length) / 2;
+        const totalTestData = (this.allTestDataVersion.length) / 2;
         //This will get latest added test data version text box, alteration has same id so this below locator is different than test proc, tools
         $('//*[@id="testData-additional-input-' + (totalTestData - 1) + '"]').addValue(version);
     }
 
     selectTestTools (name , version) {
         this.testToolsName.selectByVisibleText(name);
-        const totalTestTools = this.alltestToolsVersion.length;
+        const totalTestTools = this.allTestToolsVersion.length;
         //This will get latest added test tools version text box
         $('//*[@id="testTools-additional-input-' + (totalTestTools - 1) + '"]').addValue(version);
     }

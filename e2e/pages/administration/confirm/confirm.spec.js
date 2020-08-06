@@ -10,7 +10,7 @@ beforeEach(() => {
     confirmPage = new ConfirmPage();
     loginComponent = new LoginComponent();
     hooks = new Hooks();
-    hooks.open('/administration/upload');
+    hooks.open('#/administration/upload');
     loginComponent.loginAsACB();
     uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
 });
@@ -18,7 +18,7 @@ beforeEach(() => {
 describe('Confirm page', () => {
 
     it('allows user to reject a file', () => {
-        hooks.open('/administration/confirm/listings');
+        hooks.open('#/administration/confirm/listings');
         confirmPage.rejectListing('15.04.04.1722.AQA1.03.01.1.200620');
         assert.equal(confirmPage.findListingtoReject('15.04.04.1722.AQA1.03.01.1.200620').isDisplayed(),false)
     });

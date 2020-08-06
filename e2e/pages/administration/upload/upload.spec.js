@@ -8,7 +8,7 @@ beforeEach(async () => {
     uploadPage = new UploadPage();
     loginComponent = new LoginComponent();
     hooks = new Hooks();
-    await hooks.open('/administration/upload');
+    await hooks.open('#/administration/upload');
 });
 
 describe('Upload page', () => {

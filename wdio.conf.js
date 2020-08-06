@@ -141,7 +141,7 @@ exports.config = {
                 return
             }
     
-            browser.saveScreenshot(`assertionError_${assertion.error.message}.png`)
+            browser.saveScreenshot(`${__dirname}/e2e/test_reports/assertionError_${assertion.error.message}.png`)
         }
     },
 
