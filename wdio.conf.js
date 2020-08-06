@@ -31,6 +31,9 @@ exports.config = {
         pages: [
             'e2e/pages/**/*.spec.js',
         ],
+        readonly: [
+            'e2e/**/*.readonly.spec.js',
+        ],
     },
     // Patterns to exclude.
     exclude: [
