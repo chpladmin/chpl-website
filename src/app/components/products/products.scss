@@ -138,7 +138,13 @@
 }
 
 .product__history-of-product-item--end {
-    text-align-last: end;
+    justify-self: end;
+    align-self: center;
+}
+
+.product__history-of-product-add-new {
+    grid-column-start: 1;
+    grid-column-end: 4;
 }
 
 .product__edit-form-control {

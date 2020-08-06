@@ -91,7 +91,7 @@
     <div class="panel-body">
       <div class="product__edit-information-product">
         <div class="product__edit-start">
-          <div class="product__data-label"><label for="productName">Product Name</label></div>
+          <div class="product__data-label"><label for="product-name">Product Name</label></div>
           <div class="product__edit-data-element">
             <input class="product__edit-form-control" type="text" id="product-name" name="productName"
                    ng-model="$ctrl.activeProduct.name">
@@ -124,7 +124,7 @@
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
           <div class="product__edit">
-            <div class="product__data-label"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
+            <div class="product__data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
             <div class="product__edit-data-element ">
               <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="product__edit-form-control"
                       ng-options="developer as developer.displayName for developer in $ctrl.developers">
@@ -134,7 +134,7 @@
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
           <div class="product__edit">
-            <div class="product__data-label"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
+            <div class="product__data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
             <div class="product__edit-data-element">
               <div class="input-group">
                 <input class="product__edit-form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
