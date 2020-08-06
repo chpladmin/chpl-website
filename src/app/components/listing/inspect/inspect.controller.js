@@ -96,18 +96,18 @@
                 pendingListing: vm.cp,
                 warningAcknowledgement: vm.acknowledgeWarnings,
             }).then(function (result) {
-                    $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
-                }, function (error) {
-                    if (error.data.contact) {
-                        $uibModalInstance.close({
-                            contact: error.data.contact,
-                            objectId: error.data.objectId,
-                            status: 'resolved',
-                        });
-                    } else {
-                        vm.errorMessages = error.data.errorMessages;
-                    }
-                });
+                $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
+            }, function (error) {
+                if (error.data.contact) {
+                    $uibModalInstance.close({
+                        contact: error.data.contact,
+                        objectId: error.data.objectId,
+                        status: 'resolved',
+                    });
+                } else {
+                    vm.errorMessages = error.data.errorMessages;
+                }
+            });
         }
 
         function reject () {
