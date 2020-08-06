@@ -5,13 +5,12 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, featureFlags, networkService, utilService) {
+    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, networkService, utilService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
         vm.cancel = cancel;
-        vm.isOn = featureFlags.isOn;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
@@ -101,10 +100,7 @@
 
         function isTransparencyAttestationEditable () {
             let isAcbAdmin = vm.hasAnyRole(['ROLE_ACB']);
-            if (vm.isOn('effective-rule-date-plus-one-week')) {
-                return !isAcbAdmin;
-            }
-            return isAcbAdmin;
+            return !isAcbAdmin;
         }
 
         function matchesPreviousDate (status) {

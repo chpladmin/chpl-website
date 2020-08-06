@@ -115,22 +115,6 @@ export const DeveloperComponent = {
             return this.can('edit') || this.can('merge') || this.can('split');
         }
 
-        isEffectiveRuleDatePlusOneWeekOn () {
-            return this.isOn('effective-rule-date-plus-one-week');
-        }
-
-        isEffectiveRuleDateOn () {
-            return this.isOn('effective-rule-date');
-        }
-
-        isTransparencyAttestationEditable () {
-            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
-            } else {
-                return true;
-            }
-        }
-
         /*
          * Initiate changes
          */

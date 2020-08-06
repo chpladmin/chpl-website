@@ -8,11 +8,10 @@ export const InspectDeveloperComponent = {
         setChoice: '&',
     },
     controller: class InspectDeveloperController {
-        constructor ($log, featureFlags, networkService, utilService) {
+        constructor ($log, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.isBlank = utilService.isBlank;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.choice = 'choose';
         }
@@ -53,7 +52,7 @@ export const InspectDeveloperComponent = {
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
             }
-            if (this.listing.transparencyAttestation && !this.isOn('effective-rule-date-plus-one-week')) {
+            if (this.listing.transparencyAttestation) {
                 dev.transparencyAttestations = [{
                     acbId: this.listing.certifyingBody.id,
                     acbName: this.listing.certifyingBody.name,

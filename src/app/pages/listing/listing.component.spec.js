@@ -227,7 +227,15 @@
             });
         });
 
-        describe('editing', () => {
+        describe('when editing', () => {
+            beforeEach(() => {
+                ctrl.listing = {
+                    certificationEdition: {
+                        name: '2015',
+                    },
+                };
+            });
+
             it('should not allow anonymous users to edit', () => {
                 expect(ctrl.canEdit()).toBe(false);
             });
@@ -262,9 +270,8 @@
                 expect(ctrl.canEdit()).toBe(false);
             });
 
-            describe('with respect to flag:effective-rule-date-plus-one-week', () => {
+            describe('2014 listings', () => {
                 beforeEach(() => {
-                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date-plus-one-week');
                     ctrl.listing = {
                         certificationEdition: {
                             name: '2014',
