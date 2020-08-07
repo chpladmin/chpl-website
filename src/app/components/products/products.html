@@ -28,10 +28,18 @@
                         ng-options="v as v.version for v in product.versions">
                 </select>
               </div>
-              <div class="product__product-info-item-edit">
-                <button class="btn btn-default" ui-sref=".product.edit({ productId: product.productId })"><i class="fa fa-pencil"></i> Edit</button>
+              <div class="product__product-info-item-edit" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="edit-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
+                    <i class="fa fa-pencil"></i> Edit
+                  </button>
+                  <ul class="dropdown-menu" aria-labeledby="edit-button" uib-dropdown-menu>
+                    <li class="product__product_edit_filter_item" ng-click="$ctrl.editProduct(product)">Product</li>
+                    <li class="product__product_edit_filter_item" ng-click="$ctrl.editVersion(product.activeVersion)">Version</li>
+                  </ul>
+                </div>
               </div>
-              <div class="product__product-info-item-last-modified">
+              <div class="product__product-info-item-last-modified" ng-class="{'product__product-info-item-last-modified--anon' : !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) }">
                 <div class="data-label">Last Modified (what is modified? product or version?</div>
                 <div class="read-only-data">{{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
               </div>

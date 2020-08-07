@@ -40,9 +40,23 @@
     justify-self: end;
 }
 
+.product__product_edit_filter_item {
+    padding: 8px;
+}
+
+.product__product_edit_filter_item:hover,
+.product__product_edit_filter_item:focus,
+.product__product_edit_filter_item:active {
+    background-color: var(--primary);
+}
+
 .product__product-info-item-last-modifed {
     grid-column: 3 / 4;
     justify-self: end;
+}
+
+.product__product-info-item-last-modified--anon {
+    grid-column: 2 / 4;
 }
 
 .product__product-info-item-previous-owners {

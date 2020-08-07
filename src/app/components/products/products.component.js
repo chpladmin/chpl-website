@@ -117,6 +117,14 @@ export const ProductsComponent = {
             this.activeProduct.contact = angular.copy(contact);
         }
 
+        editProduct (product) {
+            this.$state.go('organizations.developers.developer.product.edit', {productId: product.productId});
+        }
+
+        editVersion (version) {
+            this.$log.info(version);
+        }
+
         generateErrorMessages () {
             let messages = [];
             if (this.activeProduct) {
