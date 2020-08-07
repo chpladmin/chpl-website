@@ -191,10 +191,11 @@ export const ProductsComponent = {
         }
 
         saveNewOwner () {
+            let time = this.newTransferDate ? this.newTransferDate.getTime() : undefined;
             this.activeProduct.ownerHistory = this.activeProduct.ownerHistory
                 .concat({
                     developer: this.newOwner,
-                    transferDate: this.newTransferDate.getTime(),
+                    transferDate: time,
                 })
                 .sort((a, b) => {
                     if (a.transferDate && b.transferDate) {
