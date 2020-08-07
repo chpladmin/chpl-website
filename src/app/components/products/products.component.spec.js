@@ -37,7 +37,7 @@
                 networkService.getVersionsByProduct.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
-                scope.developers = mock.developers;
+                scope.developers = mock;
                 scope.products = mock.products;
                 scope.searchOptions = mock.searchOptions;
 

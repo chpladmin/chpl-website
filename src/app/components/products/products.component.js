@@ -1,7 +1,6 @@
 export const ProductsComponent = {
     templateUrl: 'chpl.components/products/products.html',
     bindings: {
-        developers: '<',
         onCancel: '&?',
         onEdit: '&?',
         products: '<',
@@ -9,11 +8,13 @@ export const ProductsComponent = {
         searchOptions: '<',
     },
     controller: class ProductsComponent {
-        constructor ($log, $uibModal, $q, networkService, utilService) {
+        constructor ($log, $q, $state, $uibModal, authService, networkService, utilService) {
             'ngInject'
             this.$log = $log;
             this.$q = $q;
+            this.$state = $state;
             this.$uibModal = $uibModal;
+            this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.statusFont = utilService.statusFont;
             this.defaultRefine = {
@@ -28,15 +29,21 @@ export const ProductsComponent = {
             };
         }
 
-        $onChanges (changes) {
-            if (changes.developers) {
-                this.developers = changes.developers.currentValue
-                    .map(d => {
-                        d.displayName = d.name + (d.deleted ? ' - deleted' : ' - active');
-                        return d;
-                    })
-                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+        $onInit () {
+            if (this.productId && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                let that = this;
+                this.networkService.getDevelopers(true).then(response => {
+                    that.developers = response.developers
+                        .map(d => {
+                            d.displayName = d.name + (d.deleted ? ' - deleted' : ' - active');
+                            return d;
+                        })
+                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+                });
             }
+        }
+
+        $onChanges (changes) {
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
                     p.loaded = false;

@@ -14,7 +14,7 @@ let states = [
         resolve: {
             developers: networkService => {
                 'ngInject'
-                return networkService.getDevelopers(true);
+                return networkService.getDevelopers();
             },
         },
         data: { title: 'CHPL Developers' },

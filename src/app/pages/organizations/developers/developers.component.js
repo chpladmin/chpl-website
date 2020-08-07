@@ -23,7 +23,6 @@ export const DevelopersComponent = {
                     });
                     return d;
                 });
-                this.activeDevelopers = this.developers.filter(d => !d.deleted);
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
             }
         }
