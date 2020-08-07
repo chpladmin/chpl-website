@@ -5,12 +5,10 @@
     </div>
     <div class="panel-body">
       <div class="product__edit-information-product">
-        <div class="product__edit-start">
-          <div class="product__data-label data-label"><label for="product-name">Product Name</label></div>
-          <div class="product__edit-data-element">
-            <input class="form-control" type="text" id="product-name" name="productName"
-                   ng-model="$ctrl.product.name">
-          </div>
+        <div class="product__data-label data-label"><label for="product-name">Product Name</label></div>
+        <div>
+          <input class="form-control" type="text" id="product-name" name="productName"
+                 ng-model="$ctrl.product.name">
         </div>
       </div>
       <div class="product__history-of-product">
@@ -25,41 +23,29 @@
           </div>
         </div>
         <div class="product__history-of-product-item" ng-repeat-start="owner in $ctrl.product.ownerHistory">
-          <div class="product__data-element">
-            {{ owner.developer.name }}
-          </div>
+          {{ owner.developer.name }}
         </div>
         <div class="product__history-of-product-item">
-          <div class="product__data-element">
-            {{ owner.transferDate ? (owner.transferDate | date : 'mediumDate' : 'EST') : 'current' }}
-          </div>
+          {{ owner.transferDate ? (owner.transferDate | date : 'mediumDate' : 'EST') : 'current' }}
         </div>
         <div class="product__history-of-product-item product__history-of-product-item--end" ng-repeat-end>
           <button class="btn btn-link btn-sm" ng-click="$ctrl.removeOwner(owner)"><i class="fa fa-times"></i></button>
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
-          <div class="product__edit">
-            <div class="product__data-label data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
-            <div class="product__edit-data-element ">
-              <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="form-control"
-                      ng-options="developer as developer.displayName for developer in $ctrl.developers">
-              </select>
-            </div>
-          </div>
+          <div class="data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
+          <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="form-control"
+                  ng-options="developer as developer.displayName for developer in $ctrl.developers">
+          </select>
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
-          <div class="product__edit">
-            <div class="product__data-label data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
-            <div class="product__edit-data-element">
-              <div class="input-group">
-                <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
-                       id="transfer-date" name="transferDate" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
-                </div>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-link btn-sm" ng-click="$ctrl.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
-                </span>
-              </div>
+          <div class="data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
+          <div class="input-group">
+            <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
+                   id="transfer-date" name="transferDate" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
             </div>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-link btn-sm" ng-click="$ctrl.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
+            </span>
           </div>
         </div>
         <div class="product__history-of-product-item product__history-of-product-item--end" ng-if="$ctrl.addingOwner">
