@@ -48,7 +48,7 @@
                   <thead>
                     <tr>
                       <th scope="col">Previous Owner<span ng-if="product.ownerHistory.length > 1">s</span></th>
-                      <th scope="col">Effective date</th>
+                      <th scope="col">Transfer date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -91,90 +91,9 @@
     </div>
   </div>
 </span>
-<span ng-if="$ctrl.activeProduct" ng-form="$ctrl.form">
-  <div class="panel-default">
-    <div class="panel-heading products__products-header">
-      <div class="products__products-header-item"><h2>Edit Product Details</h2></div>
-    </div>
-    <div class="panel-body">
-      <div class="product__edit-information-product">
-        <div class="product__edit-start">
-          <div class="product__data-label"><label for="product-name">Product Name</label></div>
-          <div class="product__edit-data-element">
-            <input class="product__edit-form-control" type="text" id="product-name" name="productName"
-                   ng-model="$ctrl.activeProduct.name">
-          </div>
-        </div>
-      </div>
-      <div class="product__history-of-product">
-        <div class="product__history-of-product-header">
-          <div class="product__data-label">
-            Product Owner
-          </div>
-        </div>
-        <div class="product__history-of-product-header product__history-of-product-header--end">
-          <div class="product__data-label">
-            Transfer Date
-          </div>
-        </div>
-        <div class="product__history-of-product-item" ng-repeat-start="owner in $ctrl.activeProduct.ownerHistory">
-          <div class="product__data-element">
-            {{ owner.developer.name }}
-          </div>
-        </div>
-        <div class="product__history-of-product-item">
-          <div class="product__data-element">
-            {{ owner.transferDate ? (owner.transferDate | date : 'mediumDate' : 'EST') : 'current' }}
-          </div>
-        </div>
-        <div class="product__history-of-product-item product__history-of-product-item--end" ng-repeat-end>
-          <button class="btn btn-link btn-sm" ng-click="$ctrl.removeOwner(owner)"><i class="fa fa-times"></i></button>
-        </div>
-        <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
-          <div class="product__edit">
-            <div class="product__data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
-            <div class="product__edit-data-element ">
-              <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="product__edit-form-control"
-                      ng-options="developer as developer.displayName for developer in $ctrl.developers">
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
-          <div class="product__edit">
-            <div class="product__data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
-            <div class="product__edit-data-element">
-              <div class="input-group">
-                <input class="product__edit-form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
-                       id="transfer-date" name="transferDate" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
-                </div>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-link btn-sm" ng-click="$ctrl.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="product__history-of-product-item product__history-of-product-item--end" ng-if="$ctrl.addingOwner">
-          <button class="btn btn-link btn-sm" ng-disabled="!$ctrl.newOwner" ng-click="$ctrl.saveNewOwner()"><i class="fa fa-save"></i></button>
-        </div>
-        <div class="product__history-of-product-add-new" ng-if="!$ctrl.addingOwner">
-          <button class="btn btn-sm btn-link" ng-click="$ctrl.addingOwner = true"><i class="fa fa-plus-circle"></i> Add Product Owner</button>
-        </div>
-      </div>
-      <hr>
-      <div>
-        <h4>Contact Information</h4>
-      </div>
-      <chpl-contact contact="$ctrl.activeProduct.contact"
-                    is-editing="true"
-                    ignore-friendly-name="true"
-                    on-change="$ctrl.editContact(contact)"
-                    show-form-errors="$ctrl.showFormErrors"></chpl-contact>
-    </div>
-  </div>
-  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
-                   error-messages="$ctrl.errorMessages"
-                   take-action="$ctrl.takeActionBarAction(action)">
-  </chpl-action-bar>
+<span ng-if="$ctrl.activeProduct">
+  <chpl-product-edit
+    product="$ctrl.activeProduct"
+    take-action="$ctrl.handleEdit(action, data)"
+    ></chpl-product-edit>
 </span>

@@ -29,20 +29,6 @@ export const ProductsComponent = {
             };
         }
 
-        $onInit () {
-            if (this.productId && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-                let that = this;
-                this.networkService.getDevelopers(true).then(response => {
-                    that.developers = response.developers
-                        .map(d => {
-                            d.displayName = d.name + (d.deleted ? ' - deleted' : ' - active');
-                            return d;
-                        })
-                        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-                });
-            }
-        }
-
         $onChanges (changes) {
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
@@ -66,22 +52,7 @@ export const ProductsComponent = {
             if (this.products) {
                 if (this.productId) {
                     this.activeProduct = this.products
-                        .filter(p => p.productId === parseInt(this.productId, 10))
-                        .map(p => {
-                            p.ownerHistory = p.ownerHistory
-                                .filter(o => o.transferDate)
-                                .concat({
-                                    developer: p.owner,
-                                    transferDate: undefined,
-                                })
-                                .sort((a, b) => {
-                                    if (a.transferDate && b.transferDate) {
-                                        return b.transferDate - a.transferDate;
-                                    }
-                                    return a.transferDate ? 1 : -1;
-                                })
-                            return p;
-                        })[0];
+                        .filter(p => p.productId === parseInt(this.productId, 10))[0]
                 } else {
                     this.products = this.products.map(p => {
                         this.networkService.getVersionsByProduct(p.productId)
@@ -113,39 +84,12 @@ export const ProductsComponent = {
             });
         }
 
-        editContact (contact) {
-            this.activeProduct.contact = angular.copy(contact);
-        }
-
         editProduct (product) {
             this.$state.go('organizations.developers.developer.product.edit', {productId: product.productId});
         }
 
         editVersion (version) {
             this.$log.info(version);
-        }
-
-        generateErrorMessages () {
-            let messages = [];
-            if (this.activeProduct) {
-                if (this.activeProduct.ownerHistory.length < 1) {
-                    messages.push('At least one Owner must be recorded');
-                }
-                if (this.activeProduct.ownerHistory[0].transferDate) {
-                    messages.push('Current Developer must be indicated');
-                }
-                this.activeProduct.ownerHistory.forEach((o, idx, arr) => {
-                    if (idx > 0) {
-                        if (!o.transferDate) {
-                            messages.push('Product may not have two current Owners');
-                        }
-                        if (arr[idx].developer.name === arr[idx - 1].developer.name) {
-                            messages.push('Product cannot transfer from Developer "' + arr[idx].developer.name + '" to the same Developer');
-                        }
-                    }
-                });
-            }
-            this.errorMessages = messages;
         }
 
         getListingCounts (product) {
@@ -166,9 +110,16 @@ export const ProductsComponent = {
             return ret;
         }
 
-        isValid () {
-            return this.errorMessages.length === 0 // business logic rules
-                && this.form.$valid; // form validation
+        handleEdit (action, data) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'edit':
+                this.save(data);
+                break;
+                //no default
+            }
         }
 
         noVisibleListings (product) {
@@ -177,52 +128,8 @@ export const ProductsComponent = {
                 .length === 0;
         }
 
-        removeOwner (owner) {
-            this.activeProduct.ownerHistory = this.activeProduct.ownerHistory
-                .filter(o => (!(o.developer.developerId === owner.developer.developerId && o.transferDate === owner.transferDate)));
-            this.generateErrorMessages();
-        }
-
-        save () {
-            let request = angular.copy(this.activeProduct);
-            request.owner = request.ownerHistory[0].developer;
-            request.ownerHistory = request.ownerHistory.filter(o => o.transferDate);
-            this.onEdit({product: request});
-        }
-
-        saveNewOwner () {
-            let time = this.newTransferDate ? this.newTransferDate.getTime() : undefined;
-            this.activeProduct.ownerHistory = this.activeProduct.ownerHistory
-                .concat({
-                    developer: this.newOwner,
-                    transferDate: time,
-                })
-                .sort((a, b) => {
-                    if (a.transferDate && b.transferDate) {
-                        return b.transferDate - a.transferDate;
-                    }
-                    return a.transferDate ? 1 : -1;
-                });
-            this.newOwner = undefined;
-            this.newTransferDate = undefined;
-            this.addingOwner = false;
-            this.generateErrorMessages();
-        }
-
-        takeActionBarAction (action) {
-            switch (action) {
-            case 'cancel':
-                this.cancel();
-                break;
-            case 'mouseover':
-                this.showFormErrors = true;
-                this.generateErrorMessages();
-                break;
-            case 'save':
-                this.save();
-                break;
-                //no default
-            }
+        save (product) {
+            this.onEdit({product: product});
         }
 
         toggleProduct (product) {
