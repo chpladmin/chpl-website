@@ -1,23 +1,6 @@
-.product__data-label {
-    font-family: "Lato";
-    font-size: .8em;
-    color: var(--dark-grey);
-    text-transform: uppercase;
-    font-weight: 500;
-    line-height: 1.4em;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
 .product__edit-information-product {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
     margin: 8px;
     background: var(--white);
-    border-radius: 8px;
-    grid-gap: 8px;
 }
 
 .product__history-of-product {
@@ -25,7 +8,6 @@
     grid-template-columns: 2fr 1.4fr 3em;
     margin: 0 8px;
     background: var(--light-grey);
-    border-radius: 8px;
 }
 
 .product__history-of-product-header--end {
@@ -41,16 +23,4 @@
 .product__history-of-product-add-new {
     grid-column-start: 1;
     grid-column-end: 4;
-}
-
-.product__edit-form-control {
-    display: block;
-    width: 100%;
-    height: 35px;
-    padding: 8px;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid var(--blue);
-    border-radius: 5px;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }

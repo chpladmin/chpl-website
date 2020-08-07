@@ -6,21 +6,21 @@
     <div class="panel-body">
       <div class="product__edit-information-product">
         <div class="product__edit-start">
-          <div class="product__data-label"><label for="product-name">Product Name</label></div>
+          <div class="product__data-label data-label"><label for="product-name">Product Name</label></div>
           <div class="product__edit-data-element">
-            <input class="product__edit-form-control" type="text" id="product-name" name="productName"
+            <input class="form-control" type="text" id="product-name" name="productName"
                    ng-model="$ctrl.product.name">
           </div>
         </div>
       </div>
       <div class="product__history-of-product">
         <div class="product__history-of-product-header">
-          <div class="product__data-label">
+          <div class="product__data-label data-label">
             Product Owner
           </div>
         </div>
         <div class="product__history-of-product-header product__history-of-product-header--end">
-          <div class="product__data-label">
+          <div class="product__data-label data-label">
             Transfer Date
           </div>
         </div>
@@ -39,9 +39,9 @@
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
           <div class="product__edit">
-            <div class="product__data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
+            <div class="product__data-label data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
             <div class="product__edit-data-element ">
-              <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="product__edit-form-control"
+              <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="form-control"
                       ng-options="developer as developer.displayName for developer in $ctrl.developers">
               </select>
             </div>
@@ -49,10 +49,10 @@
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
           <div class="product__edit">
-            <div class="product__data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
+            <div class="product__data-label data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
             <div class="product__edit-data-element">
               <div class="input-group">
-                <input class="product__edit-form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
+                <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
                        id="transfer-date" name="transferDate" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
                 </div>
                 <span class="input-group-btn">
