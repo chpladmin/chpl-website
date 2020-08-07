@@ -5,6 +5,7 @@
         var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
+            developers: [],
             products: [{
                 productId: 636, name: 'OnBase,  Inc.', lastModifiedDate: null,
                 contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
@@ -20,7 +21,6 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
-                $provide.factory('chplProductDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getProductsByVersion = jasmine.createSpy('getProductsByVersion');
                     $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
@@ -37,10 +37,11 @@
                 networkService.getVersionsByProduct.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
+                scope.developers = mock.developers;
                 scope.products = mock.products;
                 scope.searchOptions = mock.searchOptions;
 
-                el = angular.element('<chpl-products products="products" search-options="searchOptions"></chpl-products>');
+                el = angular.element('<chpl-products developers="developers" products="products" search-options="searchOptions"></chpl-products>');
 
                 $compile(el)(scope);
                 scope.$digest();
