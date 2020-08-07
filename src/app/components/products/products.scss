@@ -40,13 +40,13 @@
     justify-self: end;
 }
 
-.product__product_edit_filter_item {
+.product__product-edit-filter-item {
     padding: 8px;
 }
 
-.product__product_edit_filter_item:hover,
-.product__product_edit_filter_item:focus,
-.product__product_edit_filter_item:active {
+.product__product-edit-filter-item:hover,
+.product__product-edit-filter-item:focus,
+.product__product-edit-filter-item:active {
     background-color: var(--primary);
 }
 
