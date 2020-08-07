@@ -28,7 +28,6 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
-        vm.editProduct = editProduct;
         vm.editVersion = editVersion;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -136,28 +135,6 @@
                 delete vm.mergeProduct.productId;
                 delete vm.mergeProduct.lastModifiedDate;
             }
-        }
-
-        function editProduct () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/product/edit.html',
-                controller: 'EditProductController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    activeProduct: function () { return vm.activeProduct; },
-                },
-            });
-            vm.productMessage = null;
-            vm.modalInstance.result.then(function (result) {
-                vm.activeProduct = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.productMessage = result;
-                }
-            });
         }
 
         function mergeProducts () {
