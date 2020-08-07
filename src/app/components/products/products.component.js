@@ -96,6 +96,7 @@ export const ProductsComponent = {
         }
 
         cancel () {
+            this.activeProduct = undefined;
             this.onCancel();
         }
 

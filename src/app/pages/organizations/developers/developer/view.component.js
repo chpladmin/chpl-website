@@ -85,7 +85,7 @@ export const DevelopersViewComponent = {
                 developerId: this.developer.developerId,
                 action: undefined,
                 productId: undefined,
-            });
+            }, {reload: true});
         }
 
         closeConfirmation () {
