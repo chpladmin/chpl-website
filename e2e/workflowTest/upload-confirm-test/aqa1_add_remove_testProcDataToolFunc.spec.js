@@ -15,7 +15,6 @@ beforeAll(() => {
     hooks = new Hooks();
     hooks.open('#/administration/upload');
     loginComponent.loginAsACB();
-    
 })
 
 describe('an ACB user', () => {
@@ -57,7 +56,4 @@ describe('an ACB user', () => {
     afterEach(function () {
         listingEditComponent.closeEditListing();
     })
-    
 })
-
-
