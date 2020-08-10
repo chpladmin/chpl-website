@@ -11,7 +11,6 @@ export const ListingComponent = {
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.authService = authService;
-            this.featureFlags = featureFlags;
             this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -40,7 +39,6 @@ export const ListingComponent = {
             } else {
                 this.$localStorage.previouslyViewed = [this.listingId + ''];
             }
-
             this.loadListing();
             this.loadResources();
         }
@@ -52,7 +50,7 @@ export const ListingComponent = {
         }
 
         canEdit () {
-            if (this.featureFlags.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
+            if (this.listing.certificationEdition.name === '2014') {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
             } else {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
@@ -71,9 +69,18 @@ export const ListingComponent = {
                     that.loading = false;
                     that.listing = data;
                     that.backupListing = angular.copy(that.listing);
+                    if (that.isOn('direct-review')) {
+                        that.loadDirectReviews();
+                    }
                 }, () => {
                     that.loading = false;
                 });
+        }
+
+        loadDirectReviews () {
+            let that = this;
+            this.networkService.getDirectReviews(this.listing.developer.developerId)
+                .then(data => that.directReviews = data);
         }
 
         loadResources () {

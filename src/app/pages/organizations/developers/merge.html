@@ -1,0 +1,61 @@
+<div class="flex-container">
+  <div class="flex-item">
+    <h1>Merge {{ $ctrl.developer.name }}</h1>
+  </div>
+</div>
+<div class="flex-container">
+  <div class="flex-item panel panel-default">
+    <div class="panel-body">
+      <h2>Add Developers to Merge</h2>
+      <label for="selected-to-merge" class="sr-only">Add developer to merge</label>
+      <input type="text" ng-model="$ctrl.selectedToMerge" class="form-control" id="selected-to-merge" name="selectedToMerge"
+             uib-typeahead="developer.name as developer.name for developer in $ctrl.developers | filter:$viewValue | filter:{selected:false} | limitTo:8"
+             typeahead-no-results="$ctrl.noneFound" typeahead-on-select="$ctrl.selectDeveloper($item, $model, $label, $event)"
+             typeahead-editable="false" typeahead-show-hint="true">
+      <div ng-if="$ctrl.noneFound">
+        <i class="fa fa-cancel"></i> No Results Found
+      </div>
+      <span ng-if="$ctrl.version === 'a'">
+        <div ng-repeat="developer in $ctrl.developers"
+             ng-click="$ctrl.selectDeveloper(developer)">
+          <span ng-if="developer.selected"><i class="fa fa-check"></i><span class="sr-only">Developer is selected</span> </span>{{ developer.name }}
+        </div>
+      </span>
+      <span ng-if="$ctrl.version === 'b'">
+        <h2>Developers Merging</h2>
+        <div class="selected-developer selected-developer--primary">
+          {{ $ctrl.developer.name }}
+        </div>
+        <div ng-repeat="developer in $ctrl.selectedDevelopers | orderBy: 'name' track by $index"
+             class="selected-developer selected-developer--secondary" ng-class-even="'selected-developer--even'" ng-class-odd="'selected-developer--odd'"
+             ng-click="$ctrl.selectDeveloper(developer)">
+          {{ developer.name }}
+          <span class="pull-right"><i class="fa fa-close"></i></span>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div class="flex-item panel panel-default">
+    <div class="panel-body">
+      <span ng-if="$ctrl.version === 'a'">
+        <h2>Developers Merging</h2>
+        <div class="selected-developer selected-developer--primary">
+          {{ $ctrl.developer.name }}
+        </div>
+        <div ng-repeat="developer in $ctrl.selectedDevelopers | orderBy: 'name' track by $index"
+             class="selected-developer selected-developer--secondary" ng-class-even="'selected-developer--even'" ng-class-odd="'selected-developer--odd'"
+             ng-click="$ctrl.selectDeveloper(developer)">
+          {{ developer.name }}
+          <span class="pull-right"><i class="fa fa-close"></i></span>
+        </div>
+      </span>
+      <h2>New Merged Developer</h2>
+      <chpl-developer developer="$ctrl.developer"
+                      is-editing="true"
+                      is-merging="true"
+                      merging-developers="$ctrl.selectedDevelopers"
+                      on-cancel="$ctrl.cancel()"
+                      on-edit="$ctrl.merge(developer)"></chpl-developer>
+    </div>
+  </div>
+</div>

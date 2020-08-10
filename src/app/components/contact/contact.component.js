@@ -8,6 +8,7 @@ export const ContactComponent = {
         isRequired: '<',
         isDisabled: '<',
         onChange: '&',
+        mergeOptions: '<',
         showFormErrors: '<',
     },
     controller: class ContactComponent {
@@ -36,9 +37,24 @@ export const ContactComponent = {
             if (changes.isDisabled) {
                 this.isDisabled = angular.copy(changes.isDisabled.currentValue);
             }
+            if (changes.mergeOptions) {
+                this.mergeOptions = angular.copy(changes.mergeOptions.currentValue);
+            }
             if (changes.showFormErrors) {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
             }
+        }
+
+        getDifferences (predicate) {
+            if (!this.contact || !this.mergeOptions[predicate]) { return; }
+            return this.mergeOptions[predicate]
+                .filter(e => e && e.length > 0 && e !== this.contact[predicate])
+                .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        }
+
+        selectDifference (predicate, value) {
+            this.contact[predicate] = value;
+            this.update();
         }
 
         update () {
@@ -50,8 +66,6 @@ export const ContactComponent = {
             }
             this.onChange({
                 contact: this.contact,
-                errors: this.errorMessages,
-                validForm: this.form.$valid && this.errorMessages.length === 0,
             });
         }
 

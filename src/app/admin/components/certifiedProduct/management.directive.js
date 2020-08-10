@@ -21,25 +21,22 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, featureFlags, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
         vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
-        vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
-        vm.isOn = featureFlags.isOn;
         vm.isProductEditable = isProductEditable;
         vm.isDeveloperBanned = isDeveloperBanned;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
-        vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
         vm.refreshDevelopers = refreshDevelopers;
@@ -125,66 +122,6 @@
                 delete vm.mergeDeveloper.developerId;
                 delete vm.mergeDeveloper.lastModifiedDate;
             }
-        }
-
-        function editDeveloper () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/developer/edit.html',
-                controller: 'EditDeveloperController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    activeDeveloper: function () { return vm.activeDeveloper; },
-                    activeAcbs: function () { return vm.activeAcbs; },
-                },
-            });
-            vm.modalInstance.result.then(function (result) {
-                vm.developerMessage = null;
-                vm.activeDeveloper = result;
-                networkService.getDevelopers()
-                    .then(function (developers) {
-                        vm.developers = developers.developers;
-                        prepCodes();
-                        for (var i = 0; i < vm.developers.length; i++) {
-                            if (result.developerId === vm.developers[i].developerId) {
-                                vm.activeDeveloper = vm.developers[i];
-                            }
-                        }
-                    });
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.developerMessage = result;
-                }
-            });
-        }
-
-        function mergeDevelopers () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/developer/merge.html',
-                controller: 'MergeDeveloperController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    developers: function () { return vm.mergingDevelopers; },
-                },
-            });
-            vm.modalInstance.result.then(function () {
-                vm.developerMessage = null;
-                networkService.getDevelopers()
-                    .then(function (developers) {
-                        vm.developers = developers.developers;
-                        prepCodes();
-                    });
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.developerMessage = result;
-                }
-            });
         }
 
         function selectProduct () {
@@ -381,7 +318,7 @@
         }
 
         function isProductEditable (cp) {
-            if (cp.certificationEdition.name === '2014' && featureFlags.isOn('effective-rule-date-plus-one-week') && vm.hasAnyRole(['ROLE_ACB'])) {
+            if (cp.certificationEdition.name === '2014' && vm.hasAnyRole(['ROLE_ACB'])) {
                 return false;
             }
             if (cp.certificationEvents) {

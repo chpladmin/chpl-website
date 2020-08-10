@@ -14,7 +14,7 @@
                 scope = $rootScope.$new();
                 scope.onChange = jasmine.createSpy('onChange');
 
-                el = angular.element('<chpl-contact on-change="onChange(contact, errors, validForm)"></chpl-contact>');
+                el = angular.element('<chpl-contact on-change="onChange(contact)"></chpl-contact>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -101,12 +101,6 @@
                 ctrl.update();
                 expect(scope.onChange).toHaveBeenCalledWith(
                     {},
-                    [
-                        'Full name is required',
-                        'Email is required',
-                        'Phone number is required',
-                    ],
-                    false,
                 );
             });
 

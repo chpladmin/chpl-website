@@ -135,17 +135,14 @@ export const ChangeRequestsComponent = {
 
         startEditing () {
             this.activeState = 'edit';
-            this.takeAction({action: 'focus'});
         }
 
         viewStatusLog () {
             this.activeState = 'log';
-            this.takeAction({action: 'focus'});
         }
 
         setUpToWithdrawChangeRequest () {
             this.activeState = 'withdraw';
-            this.takeAction({action: 'focus'});
         }
 
         getTitle () {

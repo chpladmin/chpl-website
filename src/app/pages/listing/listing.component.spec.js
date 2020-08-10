@@ -41,6 +41,7 @@
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
+                    $delegate.getDirectReviews = jasmine.createSpy('getDirectReviews');
                     $delegate.getListing = jasmine.createSpy('getListing');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
@@ -73,6 +74,7 @@
                 networkService = _networkService_;
                 networkService.getAccessibilityStandards.and.returnValue($q.when({}));
                 networkService.getAtls.and.returnValue($q.when({}));
+                networkService.getDirectReviews.and.returnValue($q.when([]));
                 networkService.getListing.and.returnValue($q.when(mock.products));
                 networkService.getQmsStandards.and.returnValue($q.when({}));
                 networkService.getSearchOptions.and.returnValue($q.when({}));
@@ -225,7 +227,15 @@
             });
         });
 
-        describe('editing', () => {
+        describe('when editing', () => {
+            beforeEach(() => {
+                ctrl.listing = {
+                    certificationEdition: {
+                        name: '2015',
+                    },
+                };
+            });
+
             it('should not allow anonymous users to edit', () => {
                 expect(ctrl.canEdit()).toBe(false);
             });
@@ -260,9 +270,8 @@
                 expect(ctrl.canEdit()).toBe(false);
             });
 
-            describe('with respect to flag:effective-rule-date-plus-one-week', () => {
+            describe('2014 listings', () => {
                 beforeEach(() => {
-                    featureFlags.isOn.and.callFake(flag => flag === 'effective-rule-date-plus-one-week');
                     ctrl.listing = {
                         certificationEdition: {
                             name: '2014',

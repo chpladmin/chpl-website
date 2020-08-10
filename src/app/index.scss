@@ -465,6 +465,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu,
+#acbs-report-page .dropdown-menu,
 #listings-report-page .dropdown-menu {
     width: 150%;
     max-height: 300px;
@@ -477,6 +478,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu li>label,
+#acbs-report-page .dropdown-menu li>label,
 #listings-report-page .dropdown-menu li>label,
 #decertifications-page .dropdown-menu>div>li>label,
 #decertifications-page .dropdown-menu>li>label {
@@ -494,6 +496,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>span>a,
+#acbs-report-page .dropdown-menu>li>span>a,
 #listings-report-page .dropdown-menu>li>span>a,
 #decertifications-page .dropdown-menu>div>li>span>a,
 #decertifications-page .dropdown-menu>li>span>a {
@@ -503,6 +506,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li.form-horizontal>div.form-group,
+#acbs-report-page .dropdown-menu>li.form-horizontal>div.form-group,
 #listings-report-page .dropdown-menu>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>div>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>li.form-horizontal>div.form-group {
@@ -511,6 +515,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>div>label.control-label,
+#acbs-report-page .dropdown-menu>li>div>label.control-label,
 #listings-report-page .dropdown-menu>li>div>label.control-label,
 #decertifications-page .dropdown-menu>div>li>div>label.control-label,
 #decertifications-page .dropdown-menu>li>div>label.control-label {
@@ -521,6 +526,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>a,
+#acbs-report-page .dropdown-menu>li>a,
 #listings-report-page .dropdown-menu>li>a,
 #decertifications-page .dropdown-menu>li>a {
     font-weight: 700;
@@ -910,6 +916,10 @@ option[label^="Removed"] {
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.data-item--invalid {
+    text-decoration: line-through;
+}
+
 .new-style {
 
     /*
@@ -1208,18 +1218,6 @@ Button Styling
     }
 
     /* Action Bar */
-
-    .action-bar {
-        background-color: white;
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        height: 50px;
-        z-index: 1035;
-        margin-bottom: 0;
-        box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
-    }
 
     /* Styling for Individual Pages starts below this point, be reference the code of for the general styling options */
 

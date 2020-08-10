@@ -18,6 +18,7 @@ export const LoginComponent = {
             this.authService = authService;
             this.networkService = networkService;
             this.utilService = utilService;
+            this.passwordClass = utilService.passwordClass;
             this.hasAnyRole = authService.hasAnyRole;
             this.activityEnum = {
                 LOGIN: 1,
@@ -184,13 +185,6 @@ export const LoginComponent = {
                             that.clear();
                             that._updateExtras();
                             that.broadcastLogin();
-                            if (that.hasAnyRole(['ROLE_DEVELOPER'])) {
-                                if (that.$state.includes('dashboard')) {
-                                    that.$state.reload();
-                                } else {
-                                    that.$state.go('dashboard');
-                                }
-                            }
                         });
                 }, error => {
                     const expired = new RegExp('The user is required to change their password on next log in\\.');
@@ -215,7 +209,7 @@ export const LoginComponent = {
         }
 
         misMatchPasswords () {
-            return this.newPassword !== this.confirmPassword;
+            return this.passwordStrength.password !== this.confirmPassword;
         }
 
         sendReset () {

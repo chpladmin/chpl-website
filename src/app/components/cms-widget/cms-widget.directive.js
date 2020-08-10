@@ -236,7 +236,7 @@ require('jspdf-autotable');
             );
             doc.text(
                 40,
-                bodyStartY+30,
+                bodyStartY + 30,
                 doc.splitTextToSize(
                     '* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.',
                     775
@@ -246,7 +246,7 @@ require('jspdf-autotable');
             // Add Certification ID to PDF
             doc.setFontSize(20);
             doc.setFontType('bold');
-            doc.text(300, bodyStartY+70, 'CMS EHR ID: ' + data.ehrCertificationId);
+            doc.text(300, bodyStartY + 70, 'CMS EHR ID: ' + data.ehrCertificationId);
 
             // Add products table to PDF
             doc.setFontSize(10);
@@ -269,7 +269,7 @@ require('jspdf-autotable');
                         0: {columnWidth: 175},
                         1: {columnWidth: 'auto'},
                     },
-                    startY: i === 0 ? bodyStartY+90 : doc.autoTable.previous.finalY + 10,
+                    startY: i === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
                     margin: 20,
                     pageBreak: 'avoid',
                     tableWidth: 'auto',
@@ -306,7 +306,7 @@ require('jspdf-autotable');
                                 var met = checkCriterionIsMet(cellData.row.raw.key, data.criteria);
                                 cell.textPos.x += 32;
                                 var descriptionParts = cellData.row.raw.description.split('#');
-                                for (var partIndex=0; partIndex < descriptionParts.length; ++partIndex) {
+                                for (var partIndex = 0; partIndex < descriptionParts.length; ++partIndex) {
                                     var outText = descriptionParts[partIndex];
                                     doc.text(outText, cell.textPos.x, cell.textPos.y);
                                     cell.textPos.x += doc.getStringUnitWidth(outText) * fontSize;
@@ -331,7 +331,7 @@ require('jspdf-autotable');
                     },
                     afterPageContent: function () {
                         var total = checkImages.length;
-                        for (var index=0; index < total; index++) {
+                        for (var index = 0; index < total; index++) {
                             var img = checkImages.shift();
                             if (img) {
                                 doc.addImage(img.elem, 'jpeg', img.x, img.y, 10, 10);
@@ -357,7 +357,7 @@ require('jspdf-autotable');
             if (keys[0] === '|') {
                 keys.shift();
                 result = [];
-                for (index=0; index < keys.length; ++index) {
+                for (index = 0; index < keys.length; ++index) {
                     if (criteriaMet.findIndex(criterion => criterion.number === keys[index]) > -1) {
                         result.push(true);
                     } else {
@@ -368,7 +368,7 @@ require('jspdf-autotable');
             } else if (keys[0] === '&') {
                 keys.shift();
                 result = true;
-                for (index=0; index < keys.length; ++index) {
+                for (index = 0; index < keys.length; ++index) {
                     if (criteriaMet.findIndex(criterion => criterion.number === keys[index]) > -1) {
                         result = false;
                     }
@@ -439,40 +439,7 @@ require('jspdf-autotable');
                     {'key': '|,170.314 (d)(7),170.315 (d)(7)', 'description': '(7) #170.314(d)(7) or #170.315(d)(7); and'},
                     {'key': '|,170.314 (d)(8),170.315 (d)(8)', 'description': '(8) #170.314(d)(8) or #170.315(d)(8)'},
                 ];
-            } else if (year === '2015' && !featureFlags.isOn('effective-rule-date')) {
-                return [
-                    {'key': null, 'description': 'Demographics'},
-                    {'key': '170.315 (a)(5)', 'description': '#170.315(a)(5)'},
-                    {'key': null, 'description': 'Problem List'},
-                    {'key': '170.315 (a)(6)', 'description': '#170.315(a)(6)'},
-                    {'key': null, 'description': 'Medication List'},
-                    {'key': '170.315 (a)(7)', 'description': '#170.315(a)(7)'},
-                    {'key': null, 'description': 'Medication Allergy List'},
-                    {'key': '170.315 (a)(8)', 'description': '#170.315(a)(8)'},
-                    {'key': null, 'description': 'Smoking Status'},
-                    {'key': '170.315 (a)(11)', 'description': '#170.315(a)(11)'},
-                    {'key': null, 'description': 'Implantable Device List'},
-                    {'key': '170.315 (a)(14)', 'description': '#170.315(a)(14)'},
-                    {'key': null, 'description': 'Clinical Decision Support'},
-                    {'key': '170.315 (a)(9)', 'description': '#170.315(a)(9)'},
-                    {'key': null, 'description': 'Computerized Provider Order Entry'},
-                    {'key': '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', 'description': '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
-                    {'key': null, 'description': 'Clinical Quality Measures-Record and Export'},
-                    {'key': '170.315 (c)(1)', 'description': '#170.315(c)(1)'},
-                    {'key': null, 'description': 'Transitions of Care'},
-                    {'key': '170.315 (b)(1)', 'description': '#170.315(b)(1)'},
-                    {'key': null, 'description': 'Data Export'},
-                    {'key': '170.315 (b)(6)', 'description': '#170.315(b)(6)'},
-                    {'key': null, 'description': 'Application Access-Patient Selection'},
-                    {'key': '170.315 (g)(7)', 'description': '#170.315(g)(7)'},
-                    {'key': null, 'description': 'Application Access-Data Category Request'},
-                    {'key': '170.315 (g)(8)', 'description': '#170.315(g)(8)'},
-                    {'key': null, 'description': 'Application Access-All Data Request'},
-                    {'key': '170.315 (g)(9)', 'description': '#170.315(g)(9)'},
-                    {'key': null, 'description': 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
-                    {'key': '|,170.315 (h)(1),170.315 (h)(2)', 'description': '#170.315(h)(1) or #170.315(h)(2)'},
-                ];
-            } else if (year === '2015' && featureFlags.isOn('effective-rule-date')) {
+            } else if (year === '2015') {
                 return [
                     {'key': null, 'description': 'Demographics'},
                     {'key': '170.315 (a)(5)', 'description': '#170.315(a)(5)'},

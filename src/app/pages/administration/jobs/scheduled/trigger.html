@@ -83,7 +83,7 @@
         <button id="clear-selection-acbs" class="btn btn-small btn-link pull-right" ng-click="$ctrl.selectedAcb=[];" ng-if="$ctrl.selectedAcb && $ctrl.selectedAcb.length !== 0">Clear Selection<span class="sr-only"> of ONC-ACBs</span></button>
         <select multiple required data-ng-attr-size="{{ $ctrl.acbs.length }}" class="form-control"
                 id="acb" name="acb" ng-model="$ctrl.selectedAcb"
-                ng-options="acb as acb.name for acb in $ctrl.acbs | orderBy: 'name' track by acb.name">
+                ng-options="acb as acb.name for acb in $ctrl.acbs | orderBy: 'name' track by acb.id">
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.acb.$touched) && $ctrl.form.acb.$error.required">ONC-ACB is required</div>
       </div>

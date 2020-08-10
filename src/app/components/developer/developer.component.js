@@ -9,7 +9,9 @@ export const DeveloperComponent = {
         isChangeRequest: '<',
         isEditing: '<',
         isInvalid: '<',
+        isMerging: '<',
         isSplitting: '<',
+        mergingDevelopers: '<',
         onCancel: '&?',
         onEdit: '&?',
         showFormErrors: '<',
@@ -22,10 +24,8 @@ export const DeveloperComponent = {
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.isOn = featureFlags.isOn;
-            this.valid = {
-                address: true,
-                contact: true,
-            }
+            this.mergeOptions = {};
+            this.errorMessages = [];
         }
 
         $onChanges (changes) {
@@ -34,6 +34,12 @@ export const DeveloperComponent = {
             }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
+                if (!this.developer.contact) {
+                    this.developer.contact = {};
+                }
+                if (!this.developer.address) {
+                    this.developer.address = {};
+                }
                 if (this.developer.statusEvents) {
                     this.developer.statusEvents = this.developer.statusEvents.map(e => {
                         e.statusDateObject = new Date(e.statusDate);
@@ -46,6 +52,7 @@ export const DeveloperComponent = {
                         this.transMap[att.acbName] = att.attestation;
                     });
                 }
+                this.developerBackup = angular.copy(this.developer);
             }
             if (changes.canEdit) {
                 this.canEdit = angular.copy(changes.canEdit.currentValue);
@@ -65,11 +72,21 @@ export const DeveloperComponent = {
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
+            if (changes.isMeging) {
+                this.isMerging = angular.copy(changes.isMerging.currentValue);
+            }
             if (changes.isSplitting) {
                 this.isSplitting = angular.copy(changes.isSplitting.currentValue);
             }
+            if (changes.mergingDevelopers) {
+                this.mergingDevelopers = angular.copy(changes.mergingDevelopers.currentValue);
+                this.generateErrorMessages();
+            }
             if (changes.showFormErrors) {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
+            }
+            if (this.developer && this.mergingDevelopers) {
+                this.generateMergeOptions()
             }
         }
 
@@ -96,22 +113,6 @@ export const DeveloperComponent = {
 
         showFooter () {
             return this.can('edit') || this.can('merge') || this.can('split');
-        }
-
-        isEffectiveRuleDatePlusOneWeekOn () {
-            return this.isOn('effective-rule-date-plus-one-week');
-        }
-
-        isEffectiveRuleDateOn () {
-            return this.isOn('effective-rule-date');
-        }
-
-        isTransparencyAttestationEditable () {
-            if (this.isEffectiveRuleDatePlusOneWeekOn()) {
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
-            } else {
-                return true;
-            }
         }
 
         /*
@@ -147,6 +148,9 @@ export const DeveloperComponent = {
                 return e;
             });
             this.developer.transparencyAttestations = Object.keys(this.transMap).map(key => { return {acbName: key, attestation: this.transMap[key]}; });
+            if (!this.developer.address.line1) {
+                this.developer.address = undefined;
+            }
             this.onEdit({developer: this.developer});
         }
 
@@ -163,20 +167,20 @@ export const DeveloperComponent = {
             }
         }
 
-        editAddress (address, errors, validForm) {
+        editAddress (address) {
             this.developer.address = angular.copy(address);
-            this.valid.address = validForm;
             if (this.isChangeRequest) {
                 this.onEdit({developer: this.developer});
             }
+            this.generateErrorMessages();
         }
 
-        editContact (contact, errors, validForm) {
+        editContact (contact) {
             this.developer.contact = angular.copy(contact);
-            this.valid.contact = validForm;
             if (this.isChangeRequest) {
                 this.onEdit({developer: this.developer});
             }
+            this.generateErrorMessages();
         }
 
         takeActionBarAction (action) {
@@ -186,6 +190,7 @@ export const DeveloperComponent = {
                 break;
             case 'mouseover':
                 this.showFormErrors = true;
+                this.generateErrorMessages();
                 break;
             case 'save':
                 this.save();
@@ -197,12 +202,22 @@ export const DeveloperComponent = {
         /*
          * Form validation
          */
+        generateErrorMessages () {
+            let messages = [];
+            if (this.showFormErrors) {
+                if (this.isMerging && (!this.mergingDevelopers || this.mergingDevelopers.length === 0)) {
+                    messages.push('At least one other Developer must be selected to merge');
+                }
+            }
+            this.errorMessages = messages;
+        }
+
         isValid () {
             return this.form.$valid // basic form validation
                 && !this.isInvalid // validation from outside
-                && this.valid.address && this.valid.contact // validation from sub-components
                 && this.developer.statusEvents && this.developer.statusEvents.length > 0 // status history exists
-                && this.developer.statusEvents.reduce((acc, e) => acc && !this.matchesPreviousStatus(e) && !this.matchesPreviousDate(e), true); // no duplicate status history data
+                && this.developer.statusEvents.reduce((acc, e) => acc && !this.matchesPreviousStatus(e) && !this.matchesPreviousDate(e), true) // no duplicate status history data
+                && this.errorMessages.length === 0; // business logic error messages
         }
 
         matchesPreviousStatus (status) {
@@ -231,6 +246,94 @@ export const DeveloperComponent = {
 
         removeStatus (idx) {
             this.developer.statusEvents.splice(idx, 1);
+        }
+
+        /*
+         * Pill generation
+         */
+        generateMergeOptions () {
+            this.mergeOptions = {
+                name: Array.from(new Set([this.developerBackup.name].concat(this.mergingDevelopers.map(d => d.name)))),
+                website: [],
+            };
+            this.contactOptions = {
+                fullName: [],
+                title: [],
+                email: [],
+                phoneNumber: [],
+            };
+            this.addressOptions = {
+                line1: [],
+                line2: [],
+                city: [],
+                state: [],
+                zipcode: [],
+                country: [],
+            };
+            this.fillMergeOptionByDeveloper(this.developerBackup);
+            this.mergingDevelopers.forEach(d => this.fillMergeOptionByDeveloper(d));
+            this.mergeOptions.website = Array.from(new Set(this.mergeOptions.website));
+            this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
+            this.contactOptions.title = Array.from(new Set(this.contactOptions.title));
+            this.contactOptions.email = Array.from(new Set(this.contactOptions.email));
+            this.contactOptions.phoneNumber = Array.from(new Set(this.contactOptions.phoneNumber));
+            this.addressOptions.line1 = Array.from(new Set(this.addressOptions.line1));
+            this.addressOptions.line2 = Array.from(new Set(this.addressOptions.line2));
+            this.addressOptions.city = Array.from(new Set(this.addressOptions.city));
+            this.addressOptions.state = Array.from(new Set(this.addressOptions.state));
+            this.addressOptions.zipcode = Array.from(new Set(this.addressOptions.zipcode));
+            this.addressOptions.country = Array.from(new Set(this.addressOptions.country));
+        }
+
+        fillMergeOptionByDeveloper (developer) {
+            if (developer.website) {
+                this.mergeOptions.website.push(developer.website);
+            }
+            if (developer.contact) {
+                if (developer.contact.fullName) {
+                    this.contactOptions.fullName.push(developer.contact.fullName);
+                }
+                if (developer.contact.title) {
+                    this.contactOptions.title.push(developer.contact.title);
+                }
+                if (developer.contact.email) {
+                    this.contactOptions.email.push(developer.contact.email);
+                }
+                if (developer.contact.phoneNumber) {
+                    this.contactOptions.phoneNumber.push(developer.contact.phoneNumber);
+                }
+            }
+            if (developer.address) {
+                if (developer.address.line1) {
+                    this.addressOptions.line1.push(developer.address.line1);
+                }
+                if (developer.address.line2) {
+                    this.addressOptions.line2.push(developer.address.line2);
+                }
+                if (developer.address.city) {
+                    this.addressOptions.city.push(developer.address.city);
+                }
+                if (developer.address.state) {
+                    this.addressOptions.state.push(developer.address.state);
+                }
+                if (developer.address.zipcode) {
+                    this.addressOptions.zipcode.push(developer.address.zipcode);
+                }
+                if (developer.address.country) {
+                    this.addressOptions.country.push(developer.address.country);
+                }
+            }
+        }
+
+        getDifferences (predicate) {
+            if (!this.developer || !this.mergeOptions[predicate]) { return; }
+            return this.mergeOptions[predicate]
+                .filter(e => e && e.length > 0 && e !== this.developer[predicate])
+                .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        }
+
+        selectDifference (predicate, value) {
+            this.developer[predicate] = value;
         }
     },
 }

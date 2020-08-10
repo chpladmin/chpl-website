@@ -44,7 +44,7 @@
     <span ng-if="vm.listing.certificationEdition.name === '2015'">
       <button class="btn btn-ai pull-right" ng-if="vm.editMode" ng-click="vm.addTask()"><i class="fa fa-plus"></i> Add SED Task</button>
       <h4>SED Testing Tasks</h4>
-      <table class="table table-condensed nowrap" ng-if="vm.tasks && vm.tasks.length > 0" id="sed-tasks-table">
+      <table class="table table-condensed nowrap" ng-if="vm.listing.sed.testTasks && vm.listing.sed.testTasks.length > 0" id="sed-tasks-table">
         <thead>
           <tr>
             <th scope="col">Description</th>
@@ -76,7 +76,7 @@
           </tr>
         </tbody>
       </table>
-      <p ng-if="!vm.tasks || vm.tasks.length === 0">No SED Tasks are recorded.</p>
+      <p ng-if="!vm.listing.sed.testTasks || vm.listing.sed.testTasks.length === 0">No SED Tasks are recorded.</p>
     </span>
   </span>
 </div>
