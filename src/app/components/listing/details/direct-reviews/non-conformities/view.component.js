@@ -1,9 +1,9 @@
-export const DirectReviewsNonconformitiesComponent = {
-    templateUrl: 'chpl.components/listing/details/direct-reviews/nonconformities/view.html',
+export const DirectReviewsNonConformitiesComponent = {
+    templateUrl: 'chpl.components/listing/details/direct-reviews/non-conformities/view.html',
     bindings: {
-        nonconformities: '<',
+        nonConformities: '<',
     },
-    controller: class DirectReviewsNonconformitiesController {
+    controller: class DirectReviewsNonConformitiesController {
         constructor ($log, utilService) {
             'ngInject';
             this.$log = $log;
@@ -11,8 +11,8 @@ export const DirectReviewsNonconformitiesComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.nonconformities && changes.nonconformities.currentValue) {
-                this.nonconformities = changes.nonconformities.currentValue
+            if (changes.nonConformities && changes.nonConformities.currentValue) {
+                this.nonConformities = changes.nonConformities.currentValue
                     .map(nc => {
                         nc.friendlyCapApprovalDate = nc.capApprovalDate ? this.makeFriendlyDate(nc.capApprovalDate) : 'Has not been approved';
                         nc.friendlyCapEndDate = nc.capEndDate ? this.makeFriendlyDate(nc.capEndDate) : 'Has not ended';
@@ -22,13 +22,13 @@ export const DirectReviewsNonconformitiesComponent = {
                         return nc;
                     })
                     .sort((a, b) => {
-                        if (a.nonconformityStatus && b.nonconformityStatus) {
-                            return a.nonconformityStatus < b.nonconformityStatus ? 1 : a.nonconformityStatus > b.nonconformityStatus ? -1 : 0;
+                        if (a.nonConformityStatus && b.nonConformityStatus) {
+                            return a.nonConformityStatus < b.nonConformityStatus ? 1 : a.nonConformityStatus > b.nonConformityStatus ? -1 : 0;
                         }
-                        if (!a.nonconformityStatus && !b.nonconformityStatus) {
+                        if (!a.nonConformityStatus && !b.nonConformityStatus) {
                             return 0;
                         }
-                        return a.nonconformityStatus ? -1 : 1;
+                        return a.nonConformityStatus ? -1 : 1;
                     });
             }
         }
@@ -41,4 +41,4 @@ export const DirectReviewsNonconformitiesComponent = {
 
 angular
     .module('chpl.components')
-    .component('chplDirectReviewsNonconformities', DirectReviewsNonconformitiesComponent);
+    .component('chplDirectReviewsNonConformities', DirectReviewsNonConformitiesComponent);

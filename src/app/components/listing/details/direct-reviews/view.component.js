@@ -14,10 +14,10 @@ export const DirectReviewsComponent = {
             if (changes.directReviews && changes.directReviews.currentValue) {
                 this.directReviews = changes.directReviews.currentValue
                     .map(dr => {
-                        let open = dr.nonconformities
-                            .filter(nc => nc.nonconformityStatus === 'Open')
+                        let open = dr.nonConformities
+                            .filter(nc => nc.nonConformityStatus === 'Open')
                             .length;
-                        let total = dr.nonconformities.length;
+                        let total = dr.nonConformities.length;
                         if (open > 0) {
                             dr.ncSummary = open + ' open / ' + total;
                         } else if (total > 0) {

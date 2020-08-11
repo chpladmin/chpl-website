@@ -53,9 +53,9 @@ export const ListingDetailsComponent = {
             if (changes.directReviews && changes.directReviews.currentValue) {
                 this.directReviews = changes.directReviews.currentValue
                     .filter(dr => {
-                        let shouldInclude = !dr.nonconformities
-                            || dr.nonconformities.length === 0
-                            || dr.nonconformities.reduce((acc, nc) => {
+                        let shouldInclude = !dr.nonConformities
+                            || dr.nonConformities.length === 0
+                            || dr.nonConformities.reduce((acc, nc) => {
                                 let shouldInclude = acc
                                     || !nc.developerAssociatedListings
                                     || nc.developerAssociatedListings.length === 0
