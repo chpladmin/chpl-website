@@ -16,11 +16,11 @@
             endDate: undefined,
             id: 'open-1',
             nonConformities: [{
-                nonconformityStatus: 'Closed',
+                nonConformityStatus: 'Closed',
             },{
-                nonconformityStatus: 'Open',
+                nonConformityStatus: 'Open',
             },{
-                nonconformityStatus: 'Closed',
+                nonConformityStatus: 'Closed',
             }],
         },{
             startDate: 30000,

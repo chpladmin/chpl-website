@@ -40,7 +40,7 @@
                 scope = $rootScope.$new();
                 scope.nonConformities = mock;
 
-                el = angular.element('<chpl-direct-reviews-non-conformities nonConformities="nonConformities"></chpl-direct-reviews-non-conformities>');
+                el = angular.element('<chpl-direct-reviews-non-conformities non-conformities="nonConformities"></chpl-direct-reviews-non-conformities>');
 
                 $compile(el)(scope);
                 scope.$digest();
