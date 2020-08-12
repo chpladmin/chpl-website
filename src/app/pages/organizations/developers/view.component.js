@@ -3,6 +3,7 @@ export const DevelopersViewComponent = {
     bindings: {
         developer: '<',
         developers: '<',
+        directReviews: '<',
         products: '<',
         action: '@',
     },
@@ -53,6 +54,9 @@ export const DevelopersViewComponent = {
                 this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
                 this.backup.developers = angular.copy(this.developers);
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
+            }
+            if (changes.directReviews) {
+                this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
             if (changes.products) {
                 this.products = angular.copy(changes.products.currentValue.products);
