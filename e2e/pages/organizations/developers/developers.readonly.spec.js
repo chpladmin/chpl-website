@@ -5,6 +5,8 @@ let hooks, page;
 
 describe('the Developers page', () => {
     beforeEach(async () => {
+        browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
+        browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
         page = new DevelopersPage();
         hooks = new Hooks();
         await hooks.open('#/organizations/developers');
@@ -17,11 +19,33 @@ describe('the Developers page', () => {
 
     describe('when on a specific Developer page', () => {
         beforeEach(() => {
-            page.selectDeveloper('Greenway Health, LLC');
+            let developer = 'Greenway Health, LLC';
+            page.selectDeveloper(developer);
+            page.getDeveloperPageTitle(developer).waitForDisplayed();
         });
 
         it('should have a Direct Reviews section', () => {
             expect(page.directReviewsHeader).toExist();
+        });
+
+        it('should have Products', () => {
+            expect(page.products.length).toBeGreaterThan(0);
+        });
+
+        describe('when looking at a specific Product', () => {
+            beforeEach(() => {
+                browser.saveScreenshot('./test_reports/gettingprod1.png')
+                let product = 'Greenway Intergy Meaningful Use Edition';
+                page.selectProduct(page.getProduct(product));
+                page.productsHeader.scrollIntoView({block: 'center', inline: 'center'});
+                page.getProductInfo(product).waitForDisplayed({timeout: 35000}); // demo of using a longer timeout than default
+                browser.saveScreenshot('./test_reports/gettingprod2.png')
+            });
+
+            it('should have the last modified date', () => {
+                browser.saveScreenshot('./test_reports/moddate.png')
+                expect(page.getLastModifed(page.getProduct('Greenway Intergy Meaningful Use Edition')).getText()).toBe('Aug 19, 2016');
+            });
         });
     });
 });
