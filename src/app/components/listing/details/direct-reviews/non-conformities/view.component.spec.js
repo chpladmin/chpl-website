@@ -77,11 +77,11 @@
                 });
 
                 it('should translate dates', () => {
-                    expect(ctrl.nonConformities[1].friendlyCapApprovalDate).toBe('19 June 2020');
-                    expect(ctrl.nonConformities[1].friendlyCapEndDate).toBe('20 July 2021');
-                    expect(ctrl.nonConformities[1].friendlyCapMustCompleteDate).toBe('21 August 2022');
-                    expect(ctrl.nonConformities[1].friendlyCapStartDate).toBe('22 September 2023');
-                    expect(ctrl.nonConformities[1].friendlyDateOfDetermination).toBe('23 October 2024');
+                    expect(ctrl.nonConformities[1].friendlyCapApprovalDate).toBe('Jun 19, 2020');
+                    expect(ctrl.nonConformities[1].friendlyCapEndDate).toBe('Jul 20, 2021');
+                    expect(ctrl.nonConformities[1].friendlyCapMustCompleteDate).toBe('Aug 21, 2022');
+                    expect(ctrl.nonConformities[1].friendlyCapStartDate).toBe('Sep 22, 2023');
+                    expect(ctrl.nonConformities[1].friendlyDateOfDetermination).toBe('Oct 23, 2024');
                 });
 
                 it('should handle blank dates', () => {
