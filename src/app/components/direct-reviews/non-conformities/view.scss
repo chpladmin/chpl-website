@@ -28,6 +28,13 @@
     border-radius: 8px;
 }
 
+.non-conformity__header {
+    grid-column: 1 / span 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+}
+
 .non-conformity__gridtable-header {
     padding: 10px 15px;
 }

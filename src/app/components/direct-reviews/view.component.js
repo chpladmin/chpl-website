@@ -1,5 +1,5 @@
 export const DirectReviewsComponent = {
-    templateUrl: 'chpl.components/listing/details/direct-reviews/view.html',
+    templateUrl: 'chpl.components/direct-reviews/view.html',
     bindings: {
         directReviews: '<',
     },

@@ -1,5 +1,5 @@
-<div class="non-conformities" ng-if="!$ctrl.nonConformities || $ctrl.nonConformities.length === 0">
-  <div class="non-conformity__wide">
+<div class="nonConformities" ng-if="!$ctrl.nonConformities || $ctrl.nonConformities.length === 0">
+  <div class="non-conformity__wide non-conformity__none-found">
     No Requirements or Non-Conformities exist for this Direct Review
   </div>
 </div>
@@ -10,19 +10,19 @@
   </div>
   <div class="non-conformities__gridtable-header">Non-Conformity Summary</div>
   <div class="non-conformities__gridtable-header">Review Result</div>
-  <div ng-repeat-start="nc in $ctrl.nonConformities" class="non-conformity__gridtable-header non-conformity__gridtable-header--first" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div>
+  <div ng-repeat-start="nc in $ctrl.nonConformities" class="non-conformity__header" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
+    <div class="non-conformity__gridtable-header non-conformity__gridtable-header--first">
       <span class="non-conformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'None recorded' }}
     </div>
-  </div>
-  <div class="non-conformity__gridtable-header" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div>{{ nc.nonConformitySummary ? nc.nonConformitySummary : 'None recorded' }}</div>
-  </div>
-  <div class="non-conformity__gridtable-header non-conformity__gridtable-header--last" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div>{{ nc.nonConformityStatus ? nc.nonConformityStatus : 'None recorded' }}</div>
+    <div class="non-conformity__gridtable-header">
+      <div>{{ nc.nonConformitySummary ? nc.nonConformitySummary : 'None recorded' }}</div>
+    </div>
+    <div class="non-conformity__gridtable-header nonconformity__gridtable-header--last">
+      <div>{{ nc.nonConformityStatus ? nc.nonConformityStatus : 'None recorded' }}</div>
+    </div>
   </div>
   <div class="non-conformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__requirement">
       <div class="data-label">
         Requirement <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -30,7 +30,7 @@
         {{ nc.requirement ? nc.requirement : 'None recorded' }}
       </div>
     </div>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__dal">
       <div class="data-label">
         Developer Associated Listings<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -41,7 +41,7 @@
         </ul>
       </div>
     </div>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__determination">
       <div class="data-label">
         Date of Determination<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -49,7 +49,7 @@
         {{ nc.friendlyDateOfDetermination }}
       </div>
     </div>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__findings">
       <div class="data-label">
         Findings<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -57,7 +57,7 @@
         {{ nc.nonConformityFindings ? nc.nonConformityFindings : 'None recorded' }}
       </div>
     </div>
-    <div class="non-conformity__narrow">
+    <div class="non-conformity__narrow non-conformity__cap-approval">
       <div class="data-label">
         Corrective Action Plan Approval Date<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -65,7 +65,7 @@
         {{ nc.friendlyCapApprovalDate }}
       </div>
     </div>
-    <div class="non-conformity__narrow">
+    <div class="non-conformity__narrow non-conformity__cap-start">
       <div class="data-label">
         Date Corrective Action Began<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -73,7 +73,7 @@
         {{ nc.friendlyCapStartDate }}
       </div>
     </div>
-    <div class="non-conformity__narrow">
+    <div class="non-conformity__narrow non-conformity__cap-must-complete">
       <div class="data-label">
         Date Corrective Action Must Be Completed<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -81,7 +81,7 @@
         {{ nc.friendlyCapMustCompleteDate }}
       </div>
     </div>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__explanation">
       <div class="data-label">
         Developer Explanation<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -89,7 +89,7 @@
         {{ nc.developerExplanation ? nc.developerExplanation : 'None recorded' }}
       </div>
     </div>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__cap-completed">
       <div class="data-label">
         Date Corrective Action Was Completed<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
@@ -97,7 +97,7 @@
         {{ nc.friendlyCapEndDate }}
       </div>
     </div>
-    <div class="non-conformity__wide">
+    <div class="non-conformity__wide non-conformity__resolution">
       <div class="data-label">
         Resolution<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>

@@ -1,5 +1,5 @@
 export const DirectReviewsNonConformitiesComponent = {
-    templateUrl: 'chpl.components/listing/details/direct-reviews/non-conformities/view.html',
+    templateUrl: 'chpl.components/direct-reviews/non-conformities/view.html',
     bindings: {
         nonConformities: '<',
     },
