@@ -31,6 +31,14 @@ let states = [
                     return networkService.getDeveloper($transition$.params().developerId);
                 }
             },
+            directReviews: (featureFlags, networkService, $location, $transition$) => {
+                'ngInject'
+                if (!$transition$.params().developerId) {
+                    $location.path('/organizations/developers');
+                } else if (featureFlags.isOn('direct-review')) {
+                    return networkService.getDirectReviews($transition$.params().developerId);
+                }
+            },
             products: (networkService, $location, $transition$) => {
                 'ngInject'
                 if (!$transition$.params().developerId) {

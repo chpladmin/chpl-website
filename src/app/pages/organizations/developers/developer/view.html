@@ -42,6 +42,17 @@
                               take-action="$ctrl.takeCrAction(action, data)"
                               ></chpl-change-requests>
       </div>
+      <div class="panel panel-default" feature-flag="direct-review">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
+            <h2>Direct Review Activities</h2>
+          </div>
+          <div class="panel-body">
+            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+          </div>
+        </div>
+      </div>
       <chpl-products products="$ctrl.products"
                      product-id="{{ $ctrl.productId }}"
                      search-options="$ctrl.searchOptions"
