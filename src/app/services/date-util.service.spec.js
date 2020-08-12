@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Date service', () => {
+    describe('the Date service', () => {
         var $log, date, mock;
 
         mock = {

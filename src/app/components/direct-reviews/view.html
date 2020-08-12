@@ -6,7 +6,7 @@
     <div class="direct-review__header panel-heading" ng-class="dr.endDate ? 'direct-review__header--closed' : 'direct-review__header--open'" ng-click="dr.open = !dr.open">
       <div class="direct-review__header-toggle"><i class="fa fa-lg" ng-class="dr.open ? 'fa-caret-down' : 'fa-caret-right'"></i></div>
       <div class="direct-review__header-title">{{ dr.endDate ? 'Closed' : 'Open' }} Direct Review</div>
-      <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + $ctrl.DateUtil.getDisplayDateFormat(dr.endDate)  : dr.startDate ? 'began ' + $ctrl.DateUtil.getDisplayDateFormat(dr.startDate) : 'has not started' }}</div>
+      <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + $ctrl.DateUtil.getDisplayDateFormat(dr.endDate) : dr.startDate ? 'began ' + $ctrl.DateUtil.getDisplayDateFormat(dr.startDate) : 'has not started' }}</div>
       <div class="direct-review__header-nc-summary">{{ dr.ncSummary }}</div>
     </div>
     <div class="direct-review__basic-information panel-body" ng-if="dr.open">
@@ -15,7 +15,7 @@
           Date review began<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
-          {{ dr.startDate ? $ctrl.DateUtil.getDisplayDateFormat(dr.startDate) : 'Has not started' }}
+          {{ $ctrl.DateUtil.getDisplayDateFormat(dr.startDate, 'Has not started') }}
         </div>
       </div>
       <div class="direct-review__end">
@@ -23,7 +23,7 @@
           Date review ended<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
-          {{ dr.endDate ? $ctrl.DateUtil.getDisplayDateFormat(dr.endDate) : 'Has not ended' }}
+          {{ $ctrl.DateUtil.getDisplayDateFormat(dr.endDate, 'Has not ended') }}
         </div>
       </div>
       <div class="direct-review__circumstances">
