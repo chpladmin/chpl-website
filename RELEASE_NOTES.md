@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 10.50.0
+_10 August 2020_
+
+### Features
+* Allow users to see User reports through all time
+
+### Flagged Features
+* Allow Developer Users to manage their Developer on their public page
+
+### Bug Fixes
+* Display / hide bad data related to bad input on Listing inspect
+
+---
+
 ## Version 10.49.0
 _27 July 2020_
 
