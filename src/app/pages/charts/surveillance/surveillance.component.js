@@ -9,15 +9,7 @@ export const ChartsSurveillanceComponent = {
             this.$log = $log;
             this.utilService = utilService;
             this.isOn = featureFlags.isOn;
-            if (this.isOn('effective-rule-date') && !this.isOn('effective-rule-date-plus-three-months')) {
-                this.nonconformityTypes = [
-                    'All',
-                    2014,
-                    2015,
-                    '2015 Cures Update',
-                    'Program',
-                ];
-            } else if (this.isOn('effective-rule-date') && this.isOn('effective-rule-date-plus-three-months')) {
+            if (this.isOn('effective-rule-date-plus-three-months')) {
                 this.nonconformityTypes = [
                     'All',
                     2015,
@@ -29,6 +21,7 @@ export const ChartsSurveillanceComponent = {
                     'All',
                     2014,
                     2015,
+                    '2015 Cures Update',
                     'Program',
                 ];
             }
@@ -206,7 +199,7 @@ export const ChartsSurveillanceComponent = {
                     case 2014:
                         return obj.nonconformityType.includes('170.314');
                     case 2015:
-                        return (obj.nonconformityType.includes('170.315') && (!this.isOn('effective-rule-date') || !obj.nonconformityType.includes('Cures Update')));
+                        return (obj.nonconformityType.includes('170.315') && !obj.nonconformityType.includes('Cures Update'));
                     case '2015 Cures Update':
                         return obj.nonconformityType.includes('Cures Update');
                     case 'Program':

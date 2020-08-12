@@ -84,12 +84,6 @@
                     expect(ctrl.allowedAcbs).toEqual(mock.acbs);
                 });
 
-                it('should tweak the developer as necessary', () => {
-                    expect(ctrl.developer).not.toBe(mock.developerTweaked);
-                    expect(ctrl.developer).toEqual(mock.developerTweaked);
-                    expect(ctrl.transMap).toEqual({Drummond: true});
-                });
-
                 it('shouldn\'t change anything that shouldn\'t change', () => {
                     // save old state
                     let developer = ctrl.developer;

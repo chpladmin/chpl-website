@@ -142,6 +142,10 @@ export const ReportsListingsComponent = {
             var change;
             var certKeys = [
                 {key: 'apiDocumentation', display: 'API Documentation'},
+                {key: 'exportDocumentation', display: 'Export Documentation'},
+                {key: 'documentationUrl', display: 'Documentation URL'},
+                {key: 'attestationAnswer', display: 'Attestation'},
+                {key: 'useCases', display: 'Use Cases'},
                 {key: 'g1Success', display: 'Certified to G1'},
                 {key: 'g2Success', display: 'Certified to G2'},
                 {key: 'gap', display: 'GAP Tested'},

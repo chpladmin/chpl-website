@@ -9,13 +9,13 @@ beforeEach(async () => {
     await hooks.open('#/resources/overview');
 });
 
-describe('Overview page', () => {
+describe('the Overview page', () => {
 
-    it('should have ONC ACB ATL table', () => {
+    it('should have an ONC ACB ATL table', () => {
         assert.equal(page.acbatlTable.isDisplayed(),true);
-    })
+    });
 
-    it('should have correct acb and atl in the table', () => {
+    it('should have acb and atl data in the table', () => {
         var rowcount = page.acbatlTableRow.length;
         var colcount = page.acbatlTableCol.length;
         var actualResult = [];
@@ -33,5 +33,5 @@ describe('Overview page', () => {
             }
         }
         assert.equal(isSame,true);
-    })
-})
+    });
+});

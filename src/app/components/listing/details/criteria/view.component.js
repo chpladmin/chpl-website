@@ -39,8 +39,7 @@ export const CertificationCriteriaViewComponent = {
             return this.isEditing // in editing mode
                 && (this.cert.success // can always remove success
                     || this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
-                    || !this.cert.criterion.removed // ROLE_ACB can only edit when not removed criteria
-                    || !this.isOn('effective-rule-date-plus-one-week')); // unless it's the grace period right after RED
+                    || !this.cert.criterion.removed); // ROLE_ACB can only edit when not removed criteria
         }
 
         editCert () {

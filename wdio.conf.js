@@ -22,15 +22,19 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        `${__dirname}/e2e/pages/*/*/*spec.js`,
-        `${__dirname}/e2e/components/*/*spec.js`,
-        `${__dirname}/e2e/workflowTest/*/*spec.js`,
-        
+        'e2e/**/*spec.js',
     ],
-    // suites: {
-    //     login: [
-    //         `${__dirname}/e2e/components/*/*.spec.js`
-    //     ],
+    suites: {
+        components: [
+            'e2e/components/**/*.spec.js',
+        ],
+        pages: [
+            'e2e/pages/**/*.spec.js',
+        ],
+        readonly: [
+            'e2e/**/*.readonly.spec.js',
+        ],
+    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -105,7 +109,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: config.baseUrl,
+    baseUrl: 'http://localhost:3000/',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: config.timeout,
