@@ -4,10 +4,10 @@ export const DirectReviewsComponent = {
         directReviews: '<',
     },
     controller: class DirectReviewsController {
-        constructor ($log, utilService) {
+        constructor ($log, DateUtil) {
             'ngInject';
             this.$log = $log;
-            this.utilService = utilService;
+            this.DateUtil = DateUtil;
         }
 
         $onChanges (changes) {
