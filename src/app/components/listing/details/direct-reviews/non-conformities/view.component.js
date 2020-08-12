@@ -34,7 +34,7 @@ export const DirectReviewsNonConformitiesComponent = {
         }
 
         makeFriendlyDate (date) {
-            return date.dayOfMonth + ' ' + [...date.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('') + ' ' + date.year;
+            return [...date.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('').substring(0,3) + ' ' + date.dayOfMonth + ', ' + date.year;
         }
     },
 }
