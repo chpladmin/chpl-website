@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Date service', () => {
+    fdescribe('the Date service', () => {
         var $log, date, mock;
 
         mock = {
@@ -33,6 +33,18 @@
 
             it('should convert a "long" date into standard form', () => {
                 expect(date.getDisplayDateFormat(mock.dateLong)).toBe('Aug 7, 2020');
+            });
+
+            it('should have a default when no value is provided', () => {
+                expect(date.getDisplayDateFormat(undefined)).toBe('N/A');
+                expect(date.getDisplayDateFormat(null)).toBe('N/A');
+                expect(date.getDisplayDateFormat({})).toBe('N/A');
+            });
+
+            it('should allow a specified default when no value is provided', () => {
+                expect(date.getDisplayDateFormat(undefined, 'no date provided')).toBe('no date provided');
+                expect(date.getDisplayDateFormat(null, 'what date')).toBe('what date');
+                expect(date.getDisplayDateFormat({}, 'not available')).toBe('not available');
             });
         });
     });
