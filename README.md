@@ -70,3 +70,7 @@ To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `ya
 [nodejs]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/
 [webpack]: https://webpack.js.org/
+
+#### Automation credetials set up
+
+Rename e2e/config/credentialsEXAMPLE.js to e2e/config/credentials.js And Add Usernames and password in it.
