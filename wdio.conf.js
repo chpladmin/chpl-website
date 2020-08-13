@@ -55,7 +55,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -66,7 +66,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         //
         browserName: config.browser,
         'goog:chromeOptions': {
@@ -85,6 +85,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: config.logLevel,
+    //outputDir: `${__dirname}/e2e/logs`,
     //
     // Set specific log levels per logger
     // loggers:
@@ -129,13 +130,23 @@ exports.config = {
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
-    //
+    framework: 'jasmine',
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
-    mochaOpts: {
+    jasmineNodeOpts: {
         ui: 'bdd',
-        timeout: 60000,
-        compilers: ['js:@babel/register'],
+        defaultTimeoutInterval: 60000,
+        helpers: [require.resolve('@babel/register')],
+        expectationResultHandler: function(passed, assertion) {
+            /**
+             * only take screenshot if assertion failed
+             */
+            if(passed) {
+                return
+            }
+    
+            browser.saveScreenshot(`${__dirname}/e2e/test_reports/assertionError_${assertion.error.message}.png`)
+        }
     },
 
     //
@@ -174,8 +185,9 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // beforeSession: function (config, capabilities, specs) {
-    // },
+    beforeSession: function (config, capabilities, specs) {
+        require('@babel/register');
+      },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -183,7 +195,13 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
     before: function (capabilities, specs) {
-        assert = require('assert')
+        assert = require('chai').assert;
+        browser.addCommand("waitAndClick", function () {
+            // `this` is return value of $(selector)
+            this.waitForDisplayed()
+            this.click()
+        }, true)
+        
     },
     /**
      * Runs before a WebdriverIO command gets executed.
