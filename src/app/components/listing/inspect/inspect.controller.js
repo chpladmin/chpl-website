@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, featureFlags, inspectingCp, networkService, resources, utilService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -28,10 +28,8 @@
         vm.cancel = cancel;
 
         vm.isBlank = utilService.isBlank;
-        vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
 
-        vm.isOn = featureFlags.isOn;
         vm.acknowledgeWarnings = false;
 
         activate();
@@ -181,9 +179,7 @@
                     && !vm.isBlank(vm.developer.name)
                     && !vm.isBlank(vm.developer.website)
                     && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email) && !vm.isBlank(vm.developer.contact.phoneNumber))
-                    && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city) && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
-                    && (vm.getAttestationForCurrentSystemDeveloper())
-                    && (!vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)))) {
+                    && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city) && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode)))) {
                 return true;
             }
             vm.populateDeveloperSystemRequirements();
@@ -221,20 +217,7 @@
                     vm.systemRequirements.push('None of the required developer address information'
                                                + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
-                if ((!vm.getAttestationForCurrentSystemDeveloper() || vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)) && !vm.isOn('effective-rule-date')) {
-                    vm.systemRequirements.push('A transparency attestation' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
-                }
             }
-        }
-
-        function getAttestationForCurrentSystemDeveloper () {
-            if (vm.developer && vm.developer.transparencyAttestations) {
-                let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
-                    return curAttestationObj.acbName === vm.cp.certifyingBody.name;
-                });
-                return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
-            }
-            return null;
         }
 
         function cancel () {

@@ -6,13 +6,12 @@ export const SurveillanceEditComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceEditController {
-        constructor ($log, $uibModal, authService, featureFlags, networkService, toaster, utilService) {
+        constructor ($log, $uibModal, authService, networkService, toaster, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal
             this.authService = authService;
             this.hasAnyRole = authService.hasAnyRole;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.toaster = toaster;
             this.utilService = utilService;
@@ -48,7 +47,7 @@ export const SurveillanceEditComponent = {
 
         addRequirement () {
             let data = angular.copy(this.data);
-            if (this.hasAnyRole(['ROLE_ACB']) && this.isOn('effective-rule-date-plus-one-week')) {
+            if (this.hasAnyRole(['ROLE_ACB'])) {
                 data.surveillanceRequirements.criteriaOptions = data.surveillanceRequirements.criteriaOptions.filter(option => !option.removed);
             }
             this.modalInstance = this.$uibModal.open({

@@ -50,7 +50,7 @@ export const ListingComponent = {
         }
 
         canEdit () {
-            if (this.isOn('effective-rule-date-plus-one-week') && this.listing.certificationEdition.name === '2014') {
+            if (this.listing.certificationEdition.name === '2014') {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
             } else {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);

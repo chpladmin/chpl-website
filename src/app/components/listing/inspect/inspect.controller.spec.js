@@ -164,7 +164,7 @@
                     transparencyAttestations: [{
                         acbId: 3,
                         acbName: 'Drummond Group',
-                        attestation: {transparencyAttestation: 'Affirmative', removed: false},
+                        attestation: {transparencyAttestation: 'Affirmative', removed: true},
                     }],
                 };
                 vm.cp.developer.developerId = vm.developer.developerId;
@@ -225,10 +225,6 @@
                     it('address zipcode ' + shouldDisableNextButton, () => {
                         testMissingData(vm.developer.address, 'zipcode');
                     });
-
-                    it('transparency attestations ' + shouldDisableNextButton, () => {
-                        testMissingData(vm.developer.transparencyAttestations[0], 'attestation');
-                    });
                 });
 
                 const shouldEnableNextButton = 'should enable the next button';
@@ -243,7 +239,6 @@
                     expect(vm.developer.address.city).toBeTruthy();
                     expect(vm.developer.address.state).toBeTruthy();
                     expect(vm.developer.address.zipcode).toBeTruthy();
-                    expect(vm.developer.transparencyAttestations[0].attestation).toBeTruthy();
                     expect(vm.isDisabled()).toBe(false);
                 });
             });

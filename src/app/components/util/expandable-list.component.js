@@ -4,9 +4,9 @@ export const ExpandableListComponent = {
         addItems: '@',                      //Boolean value indicating if the control has the functionality to add new items to the drop down.  When this is true, an extra item will appear in the list and when the user selects that item, they will be presented with a text box to type in the new value.
         addItemsOptionText: '@',            //Text for the additional option
         addItemsPlaceholder: '@',           //Direction that appear in the text box
-        additionalInput: '@',               //Boolean value indicating whether the control renders an additioanl text box for data associated with the selected item.
+        additionalInput: '@',               //Boolean value indicating whether the control renders an additional text box for data associated with the selected item.
         additionalInputLabel: '@',          //String that is the label for the additional input text box.
-        additionalInputRequired: '@',       //Boolean indicating if the addiational input is required.
+        additionalInputRequired: '@',       //Boolean indicating if the additional input is required.
         additionalInputMaxLength: '@',      //Number indicating how many characters can be entered in the additional input text box
         additionalInput2: '@',
         additionalInput2Label: '@',
@@ -74,14 +74,9 @@ export const ExpandableListComponent = {
             this.addOption = '';
         }
 
-        additionalInputChange (item) {
-            var action = this._getOnChangeObject('Edit', item)
-            this.onChange({'action': action});  //This is what makes the method binding work
-        }
-
-        additionalInput2Change (item) {
-            var action = this._getOnChangeObject('Edit', item)
-            this.onChange({'action': action});  //This is what makes the method binding work
+        inputChange () {
+            var action = this._getOnChangeObject('Edit', this.selectedItems)
+            this.onChange({'action': action});
         }
 
         cancelAddItemToListClick () {
