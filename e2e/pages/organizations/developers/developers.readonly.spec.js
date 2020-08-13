@@ -34,16 +34,13 @@ describe('the Developers page', () => {
 
         describe('when looking at a specific Product', () => {
             beforeEach(() => {
-                browser.saveScreenshot('./test_reports/gettingprod1.png')
                 let product = 'Greenway Intergy Meaningful Use Edition';
                 page.selectProduct(page.getProduct(product));
                 page.productsHeader.scrollIntoView({block: 'center', inline: 'center'});
                 page.getProductInfo(product).waitForDisplayed({timeout: 35000}); // demo of using a longer timeout than default
-                browser.saveScreenshot('./test_reports/gettingprod2.png')
             });
 
             it('should have the last modified date', () => {
-                browser.saveScreenshot('./test_reports/moddate.png')
                 expect(page.getLastModifed(page.getProduct('Greenway Intergy Meaningful Use Edition')).getText()).toBe('Aug 19, 2016');
             });
         });
