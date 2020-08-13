@@ -16,7 +16,7 @@
     "test:ci": "karma start --single-run --no-colors",
     "e2e": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:lint": "eslint e2e",
-    "e2e:clean": "rm test_reports/e2e/wdio-*-junit-reporter.xml"
+    "e2e:clean": "rm test_reports/e2e/* || true"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",

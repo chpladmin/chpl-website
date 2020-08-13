@@ -46,6 +46,7 @@ yarn install
 * `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
 * `yarn e2e`: Run the end to end integration tests, as well as e2e linting
 * `yarn e2e:lint`: Run code and syntax rules
+* `yarn e2e:clean`: Clear out old E2E artifacts
 
 #### Yarn environment parameters
 
