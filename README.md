@@ -74,4 +74,4 @@ To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `ya
 
 #### Automation credetials set up
 
-Rename e2e/config/credentialsEXAMPLE.js to e2e/config/credentials.js And Add Usernames and password in it.
+Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
