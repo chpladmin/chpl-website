@@ -21,17 +21,17 @@
       <div class="col-sm-8">
         <input type="password" class="form-control" id="new-password-{{ $id }}" name="newPassword" ng-model="$ctrl.newPassword" placeholder="new password" required
                zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
-        <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
-          <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
-        </uib-progressbar>
         <div class="text-danger" ng-if="$ctrl.loginForm.newPassword.$touched && $ctrl.loginForm.newPassword.$error.required">Password is required</div>
-        <div class="text-danger" ng-if="$ctrl.loginForm.newPassword.$touched && $ctrl.loginForm.newPassword.$error.passwordStrength">Password must be stronger</div>
+        <div class="text-danger" ng-if="$ctrl.loginForm.newPassword.$touched && !$ctrl.loginForm.newPassword.$error.required && $ctrl.loginForm.newPassword.$error.passwordStrength">Password must be stronger</div>
       </div>
       <div class="col-sm-12">
         <ul class="list-unstyled text-info" ng-if="$ctrl.passwordStrength.score <= 2">
           <li ng-if="$ctrl.passwordStrength.feedback.warning">{{ $ctrl.passwordStrength.feedback.warning }}</li>
           <li ng-repeat="sugg in $ctrl.passwordStrength.feedback.suggestions">{{ sugg }}</li>
         </ul>
+        <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
+          <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
+        </uib-progressbar>
       </div>
     </div>
 
@@ -40,7 +40,7 @@
       <div class="col-sm-8">
         <input type="password" class="form-control" id="confirm-password-{{ $id }}" name="confirmPassword" ng-model="$ctrl.confirmPassword" placeholder="confirm password" required />
         <div class="text-danger" ng-if="$ctrl.loginForm.confirmPassword.$touched && $ctrl.loginForm.confirmPassword.$error.required">Confirm password is required</div>
-        <div class="text-danger" ng-if="$ctrl.loginForm.confirmPassword.$touched && $ctrl.misMatchPasswords()">Passwords must match</div>
+        <div class="text-danger" ng-if="$ctrl.loginForm.confirmPassword.$touched && !$ctrl.loginForm.confirmPassword.$error.required && $ctrl.misMatchPasswords()">Passwords must match</div>
       </div>
     </div>
 

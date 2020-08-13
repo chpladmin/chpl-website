@@ -1,12 +1,11 @@
 (() => {
     'use strict';
 
-    describe('the Listing Details', () => {
-
-        var $compile, $log, Mock, el, networkService, scope, vm;
+    describe('the Listing Details component', () => {
+        var $compile, $log, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
+            angular.mock.module('chpl.mock', 'chpl.components', $provide => {
                 $provide.factory('aiSedDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
@@ -21,13 +20,15 @@
                 networkService = _networkService_;
                 networkService.getSurveillanceLookups.and.returnValue($q.when({}));
 
-                el = angular.element('<ai-certs product="product"></ai-certs>');
                 scope = $rootScope.$new();
-                scope.product = Mock.fullListings[1];
-                scope.product.sed = {testTasks: [], ucdProcesses: []};
+                scope.listing = Mock.fullListings[1];
+                scope.listing.sed = {testTasks: [], ucdProcesses: []};
+
+                el = angular.element('<chpl-listing-details listing="listing"></chpl-listing-details-certs>');
+
                 $compile(el)(scope);
                 scope.$digest();
-                vm = el.isolateScope().vm;
+                ctrl = el.isolateScope().$ctrl;
             });
         });
 
@@ -39,7 +40,7 @@
             }
         });
 
-        describe('directive', () => {
+        describe('view', () => {
             it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });
@@ -47,28 +48,28 @@
 
         describe('controller', () => {
             it('should have isolate scope object with instanciate members', () => {
-                expect(vm).toEqual(jasmine.any(Object));
+                expect(ctrl).toEqual(jasmine.any(Object));
             });
 
             describe('initial state', () => {
                 it('should be open to criteria by default', () => {
-                    expect(vm.panelShown).toBe('cert');
+                    expect(ctrl.panelShown).toBe('cert');
                 });
 
                 it('should be able to be open to nothing', () => {
-                    el = angular.element('<ai-certs product="product" initial-panel="none"></ai-certs>');
+                    el = angular.element('<chpl-listing-details listing="listing" initial-panel="none"></chpl-listing-details>');
                     $compile(el)(scope);
                     scope.$digest();
-                    vm = el.isolateScope().vm;
-                    expect(vm.panelShown).toBeUndefined();
+                    ctrl = el.isolateScope().$ctrl;
+                    expect(ctrl.panelShown).toBeUndefined();
                 });
 
                 it('should be able to be open to surveillance', () => {
-                    el = angular.element('<ai-certs product="product" initial-panel="surveillance"></ai-certs>');
+                    el = angular.element('<chpl-listing-details listing="listing" initial-panel="surveillance"></chpl-listing-details>');
                     $compile(el)(scope);
                     scope.$digest();
-                    vm = el.isolateScope().vm;
-                    expect(vm.panelShown).toBe('surveillance');
+                    ctrl = el.isolateScope().$ctrl;
+                    expect(ctrl.panelShown).toBe('surveillance');
                 });
             });
         });

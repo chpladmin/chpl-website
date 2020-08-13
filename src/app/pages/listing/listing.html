@@ -23,10 +23,7 @@
           </span>
           <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
           <div class="btn-group">
-            <div class="btn-group" ng-if="$ctrl.listing.certificationEdition.name === '2015'" feature-flag="effective-rule-date">
-              <ai-cms-widget-button product-id="{{ $ctrl.listing.id }}" product-name="{{ $ctrl.listing.product.name }}"></ai-cms-widget-button>
-            </div>
-            <div class="btn-group" ng-if="$ctrl.certificationStatus($ctrl.listing) !== 'Retired'" feature-flag="effective-rule-date" feature-flag-hide>
+            <div class="btn-group" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
               <ai-cms-widget-button product-id="{{ $ctrl.listing.id }}" product-name="{{ $ctrl.listing.product.name }}"></ai-cms-widget-button>
             </div>
             <div class="btn-group">
@@ -132,10 +129,6 @@
             </div>
           </div>
           <span ng-if="$ctrl.listing.transparencyAttestation">
-            <div class="product-element" id="listing-information-transparency-attestation" feature-flag="effective-rule-date" feature-flag-hide>
-              <h2 class="product-heading">Transparency Attestation</h2>
-              <p>{{ $ctrl.listing.transparencyAttestation.transparencyAttestation }}</p>
-            </div>
             <div class="product-element" id="listing-information-mandatory-disclosures-url">
               <h2 class="product-heading">Mandatory Disclosures URL</h2>
               <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
@@ -145,9 +138,10 @@
           </span>
         </div>
         <div class="col-sm-8" id="listing-information-details">
-          <ai-certs initial-panel="{{ $ctrl.initialPanel }}"
-                    product="$ctrl.listing">
-          </ai-certs>
+          <chpl-listing-details initial-panel="{{ $ctrl.initialPanel }}"
+                                listing="$ctrl.listing"
+                                direct-reviews="$ctrl.directReviews">
+          </chpl-listing-details>
         </div>
       </div>
     </div>

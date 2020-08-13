@@ -8,6 +8,7 @@
     function authService ($localStorage, $log, $rootScope, $window, API_KEY) {
         var service = {
             canImpersonate: canImpersonate,
+            canManageDeveloper: canManageDeveloper,
             getApiKey: getApiKey,
             getCurrentUser: getCurrentUser,
             getFullname: getFullname,
@@ -30,6 +31,19 @@
             return !isImpersonating() &&
                 ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
                  || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
+        }
+
+        function canManageDeveloper (developer) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                return true;
+            }
+            if (hasAnyRole(['ROLE_DEVELOPER'])) {
+                let currentUser = getCurrentUser();
+                return currentUser.organizations
+                    .filter(d => d.id === developer.developerId)
+                    .length > 0;
+            }
+            return false;
         }
 
         function getApiKey () {

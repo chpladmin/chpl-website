@@ -6,6 +6,7 @@ export const AddressComponent = {
         isRequired: '<',
         isDisabled: '<',
         onChange: '&',
+        mergeOptions: '<',
         showFormErrors: '<',
     },
     controller: class AddressComponent {
@@ -28,9 +29,24 @@ export const AddressComponent = {
             if (changes.isDisabled) {
                 this.isDisabled = angular.copy(changes.isDisabled.currentValue);
             }
+            if (changes.mergeOptions) {
+                this.mergeOptions = angular.copy(changes.mergeOptions.currentValue);
+            }
             if (changes.showFormErrors) {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
             }
+        }
+
+        getDifferences (predicate) {
+            if (!this.address || !this.mergeOptions[predicate]) { return; }
+            return this.mergeOptions[predicate]
+                .filter(e => e && e.length > 0 && e !== this.address[predicate])
+                .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        }
+
+        selectDifference (predicate, value) {
+            this.address[predicate] = value;
+            this.update();
         }
 
         update () {

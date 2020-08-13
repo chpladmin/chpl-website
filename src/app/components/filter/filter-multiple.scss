@@ -1,0 +1,13 @@
+.filter-multiple__dropdown {
+    min-width: 360px;
+    left: auto;
+    right: 0;
+}
+
+.filter-multiple__item {
+    padding: 8px;
+}
+
+.filter-multiple__item--selected {
+    background-color: var(--primary);
+}

@@ -1,7 +1,5 @@
 import { Visualizer } from '@uirouter/visualizer';
 import { states as administrationStates } from './pages/administration/administration.state.js';
-import { states as collectionsStates } from './pages/collections/collections.state.js';
-import { states as dashboardStates } from './pages/dashboard/dashboard.state.js';
 
 (() => {
     'use strict';
@@ -23,31 +21,6 @@ import { states as dashboardStates } from './pages/dashboard/dashboard.state.js'
                     // load states dependent on features
                     if (featureFlags.isOn('change-request')) {
                         administrationStates['change-request'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    }
-
-                    if (featureFlags.isOn('role-developer')) {
-                        dashboardStates['role-developer'].forEach(state => {
-                            if ($uiRouter.stateRegistry.get(state.name)) {
-                                $uiRouter.stateRegistry.deregister(state.name);
-                            }
-                            $uiRouter.stateRegistry.register(state);
-                            needsReload = needsReload || $state.$current.name === state.name;
-                        });
-                    } else {
-                        dashboardStates['role-developer'].forEach(state => {
-                            $uiRouter.stateRegistry.deregister(state.name);
-                            needsRedirect = needsRedirect || $state.$current.name === state.name;
-                        });
-                    }
-
-                    if (featureFlags.isOn('effective-rule-date')) {
-                        collectionsStates['effective-rule-date'].forEach(state => {
                             if ($uiRouter.stateRegistry.get(state.name)) {
                                 $uiRouter.stateRegistry.deregister(state.name);
                             }

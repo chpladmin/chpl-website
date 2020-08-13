@@ -84,12 +84,6 @@
                     expect(ctrl.allowedAcbs).toEqual(mock.acbs);
                 });
 
-                it('should tweak the developer as necessary', () => {
-                    expect(ctrl.developer).not.toBe(mock.developerTweaked);
-                    expect(ctrl.developer).toEqual(mock.developerTweaked);
-                    expect(ctrl.transMap).toEqual({Drummond: true});
-                });
-
                 it('shouldn\'t change anything that shouldn\'t change', () => {
                     // save old state
                     let developer = ctrl.developer;
@@ -178,18 +172,14 @@
             describe('when handling callbacks', () => {
                 it('should handle the address', () => {
                     ctrl.developer.address = undefined;
-                    ctrl.valid.address = undefined;
-                    ctrl.editAddress({city: 'a name'}, [], true);
+                    ctrl.editAddress({city: 'a name'});
                     expect(ctrl.developer.address.city).toBe('a name');
-                    expect(ctrl.valid.address).toBe(true);
                 });
 
                 it('should handle the contact', () => {
                     ctrl.developer.contact = undefined;
-                    ctrl.valid.contact = undefined;
-                    ctrl.editContact({name: 'a name'}, [], true);
+                    ctrl.editContact({name: 'a name'});
                     expect(ctrl.developer.contact.name).toBe('a name');
-                    expect(ctrl.valid.contact).toBe(true);
                 });
             });
 
@@ -205,12 +195,6 @@
                     ctrl.isInvalid = true; // external validity
                     expect(ctrl.isValid()).toBe(false);
                     ctrl.isInvalid = false;
-                    ctrl.valid.contact = false; // contact validitiy
-                    expect(ctrl.isValid()).toBe(false);
-                    ctrl.valid.contact = true;
-                    ctrl.valid.address = false; // address validity
-                    expect(ctrl.isValid()).toBe(false);
-                    ctrl.valid.address = true;
                     ctrl.developer.statusEvents = undefined; // status events exist
                     expect(ctrl.isValid()).toBeFalsy();
                     ctrl.developer.statusEvents = []; // at least one status event

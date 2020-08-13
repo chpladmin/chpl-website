@@ -64,12 +64,12 @@
 
             describe('should use the util service', () => {
                 it('to enable sorting of tasks', () => {
-                    vm.sortTasks(vm.tasks[0]);
+                    vm.sortTasks(vm.listing.sed.testTasks[0]);
                     expect(utilService.sortCertArray).toHaveBeenCalled();
                 });
 
                 it('to enable sorting of processes', () => {
-                    vm.sortProcesses(vm.tasks[0]);
+                    vm.sortProcesses(vm.listing.sed.testTasks[0]);
                     expect(utilService.sortCertArray).toHaveBeenCalled();
                 });
 
@@ -91,11 +91,11 @@
 
                 describe('with respect to tasks', () => {
                     it('should have an array of tasks', () => {
-                        expect(vm.tasks.length).toBe(48);
+                        expect(vm.listing.sed.testTasks.length).toBe(48);
                     });
 
                     it('should have the associated criteria attached to the tasks', () => {
-                        expect(vm.tasks[0].criteria[0].number).toEqual('170.315 (a)(5)');
+                        expect(vm.listing.sed.testTasks[0].criteria[0].number).toEqual('170.315 (a)(5)');
                     });
 
                     it('should know what the task length is', () => {
@@ -193,11 +193,11 @@
 
                     describe('with respect to tasks', () => {
                         it('should have an array of tasks pulled from the criteria', () => {
-                            expect(vm.tasks.length).toBe(48);
+                            expect(vm.listing.sed.testTasks.length).toBe(48);
                         });
 
                         it('should have the associated criteria attached to the tasks', () => {
-                            expect(vm.tasks[0].criteria[0].number).toEqual('170.315 (a)(5)');
+                            expect(vm.listing.sed.testTasks[0].criteria[0].number).toEqual('170.315 (a)(5)');
                         });
 
                         it('should know what the task length is', () => {
@@ -307,25 +307,25 @@
             it('should replace the active task with an edited one on close', () => {
                 var newTask = {
                     name: 'fake',
-                    id: vm.tasks[1].id,
+                    id: vm.listing.sed.testTasks[1].id,
                 };
-                vm.viewTask(vm.tasks[1]);
+                vm.viewTask(vm.listing.sed.testTasks[1]);
                 vm.modalInstance.close({
                     task: newTask,
                     participants: [1],
                 });
-                expect(vm.tasks[1]).toBe(newTask);
+                expect(vm.listing.sed.testTasks[1]).toBe(newTask);
                 expect(vm.allParticipants).toEqual([1]);
             });
 
             it('should remove the active task if it was deleted', () => {
-                var initLength = vm.tasks.length;
-                vm.viewTask(vm.tasks[1]);
+                var initLength = vm.listing.sed.testTasks.length;
+                vm.viewTask(vm.listing.sed.testTasks[1]);
                 vm.modalInstance.close({
                     deleted: true,
                     participants: [1],
                 });
-                expect(vm.tasks.length).toBe(initLength - 1);
+                expect(vm.listing.sed.testTasks.length).toBe(initLength - 1);
                 expect(vm.allParticipants).toEqual([1]);
             });
         });
@@ -365,10 +365,10 @@
             });
 
             it('should add the new task to the list of tasks', () => {
-                vm.tasks = [];
+                vm.listing.sed.testTasks = [];
                 vm.addTask();
                 vm.modalInstance.close({task: 'new', participants: [2,3]});
-                expect(vm.tasks).toEqual(['new']);
+                expect(vm.listing.sed.testTasks).toEqual(['new']);
             });
 
             it('should update the list of participants', () => {
@@ -396,7 +396,7 @@
                         participants: jasmine.any(Function),
                     },
                 };
-                vm.tasks = [
+                vm.listing.sed.testTasks = [
                     {
                         id: 1,
                         testParticipants: [1,2],
@@ -410,14 +410,14 @@
 
             it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
-                vm.viewParticipants(vm.tasks[1]);
+                vm.viewParticipants(vm.listing.sed.testTasks[1]);
                 expect(vm.modalInstance).toBeDefined();
             });
 
             it('should resolve elements', () => {
                 vm.allParticipants = [1,2];
                 vm.editMode = 'on';
-                vm.viewParticipants(vm.tasks[1]);
+                vm.viewParticipants(vm.listing.sed.testTasks[1]);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.allParticipants()).toEqual([1,2]);
                 expect(actualOptions.resolve.editMode()).toBe('on');
@@ -426,17 +426,17 @@
 
             it('should replace the task participant list with an edited one on close', () => {
                 var newParticipants = [1,2,3];
-                vm.viewParticipants(vm.tasks[1]);
+                vm.viewParticipants(vm.listing.sed.testTasks[1]);
                 vm.modalInstance.close({
                     participants: newParticipants,
                 });
-                expect(vm.tasks[1].testParticipants).toEqual(newParticipants);
+                expect(vm.listing.sed.testTasks[1].testParticipants).toEqual(newParticipants);
             });
 
             it('should replace the "all participants" list with an edited one on close', () => {
                 var newParticipants = [1,2,3];
                 vm.allParticipants = [1,2];
-                vm.viewParticipants(vm.tasks[1]);
+                vm.viewParticipants(vm.listing.sed.testTasks[1]);
                 vm.modalInstance.close({
                     allParticipants: newParticipants,
                 });
