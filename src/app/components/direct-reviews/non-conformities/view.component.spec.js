@@ -85,10 +85,10 @@
                 });
 
                 it('should handle blank dates', () => {
-                    expect(ctrl.nonConformities[0].friendlyCapApprovalDate).toBe('Has not been approved');
-                    expect(ctrl.nonConformities[0].friendlyCapEndDate).toBe('Has not ended');
-                    expect(ctrl.nonConformities[0].friendlyCapMustCompleteDate).toBe('Has not been approved');
-                    expect(ctrl.nonConformities[0].friendlyCapStartDate).toBe('Has not started');
+                    expect(ctrl.nonConformities[0].friendlyCapApprovalDate).toBe('Has not been determined');
+                    expect(ctrl.nonConformities[0].friendlyCapEndDate).toBe('Has not been completed');
+                    expect(ctrl.nonConformities[0].friendlyCapMustCompleteDate).toBe('Has not been determined');
+                    expect(ctrl.nonConformities[0].friendlyCapStartDate).toBe('Has not begun');
                     expect(ctrl.nonConformities[0].friendlyDateOfDetermination).toBe('Has not been determined');
                 });
             });
