@@ -54,6 +54,10 @@ class DevelopersPage {
         return this;
     }
 
+    getEditButton (product) {
+        return this.getProduct(product).$('.product__product-info').$('#edit-button');
+    }
+
     selectProduct (product) {
         product.$('..').$('..').click();
     }
