@@ -16,19 +16,6 @@
             },
             developer: {
                 address: {},
-                transparencyAttestations: [{
-                    acbId: 4,
-                    acbName: 'Other Group',
-                    attestation: null,
-                },{
-                    acbId: 3,
-                    acbName: 'Drummond Group',
-                    attestation: 'Affirmative',
-                },{
-                    acbId: 5,
-                    acbName: 'Some ACB',
-                    attestation: null,
-                }],
             },
             resources: {
                 bodies: [],
@@ -94,31 +81,6 @@
                     ctrl.saveInspectingDeveloper();
                     scope.$digest();
                     expect(networkService.updateDeveloper).toHaveBeenCalled();
-                });
-            });
-
-            describe('when viewing the system developer', () => {
-                it('should display a relevant transparency attestation if available', () => {
-                    let expectedAttestation = ctrl.developer.transparencyAttestations[1].attestation;
-                    let attestation = ctrl.getAttestationForCurrentSystemDeveloper();
-                    expect(attestation).toBe(expectedAttestation);
-                });
-
-                it('should not display a relevant transparency attestation if not available', () => {
-                    ctrl.developer.transparencyAttestations[1].acbName = 'no acbName matches now';
-                    let attestation = ctrl.getAttestationForCurrentSystemDeveloper();
-                    expect(attestation).toBeUndefined();
-                });
-
-                describe('but no developer data is available', () => {
-                    it('should skip the body of getAttestationStringForCurrentSystemDeveloper(), return null, and display no system attestation info', () => {
-                        ctrl.developer.transparencyAttestations = undefined;
-                        let attestation = ctrl.getAttestationForCurrentSystemDeveloper();
-                        expect(attestation).toBeNull();
-                        ctrl.developer = undefined;
-                        attestation = ctrl.getAttestationForCurrentSystemDeveloper();
-                        expect(attestation).toBeNull();
-                    });
                 });
             });
         });

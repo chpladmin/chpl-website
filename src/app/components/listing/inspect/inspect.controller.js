@@ -28,7 +28,6 @@
         vm.cancel = cancel;
 
         vm.isBlank = utilService.isBlank;
-        vm.getAttestationForCurrentSystemDeveloper = getAttestationForCurrentSystemDeveloper;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
 
         activate();
@@ -176,9 +175,7 @@
                     && !vm.isBlank(vm.developer.name)
                     && !vm.isBlank(vm.developer.website)
                     && (vm.developer.contact && !vm.isBlank(vm.developer.contact.fullName) && !vm.isBlank(vm.developer.contact.email) && !vm.isBlank(vm.developer.contact.phoneNumber))
-                    && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city) && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode))
-                    && (vm.getAttestationForCurrentSystemDeveloper())
-                    && (!vm.isBlank(vm.getAttestationForCurrentSystemDeveloper().transparencyAttestation)))) {
+                    && (vm.developer.address && !vm.isBlank(vm.developer.address.line1) && !vm.isBlank(vm.developer.address.city) && !vm.isBlank(vm.developer.address.state) && !vm.isBlank(vm.developer.address.zipcode)))) {
                 return true;
             }
             vm.populateDeveloperSystemRequirements();
@@ -217,16 +214,6 @@
                                                + EXISTS_MSG + PLEASE_SAVE_MSG);
                 }
             }
-        }
-
-        function getAttestationForCurrentSystemDeveloper () {
-            if (vm.developer && vm.developer.transparencyAttestations) {
-                let matchingAttestationObj = vm.developer.transparencyAttestations.find(function (curAttestationObj) {
-                    return curAttestationObj.acbName === vm.cp.certifyingBody.name;
-                });
-                return matchingAttestationObj ? matchingAttestationObj.attestation : undefined;
-            }
-            return null;
         }
 
         function cancel () {
