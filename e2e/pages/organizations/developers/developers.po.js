@@ -36,20 +36,19 @@ class DevelopersPage {
     }
 
     getProduct (product) {
-        return $('h3=' + product);
+        return $('h3=' + product).$('..').$('..').$('..');
     }
 
     getProductInfo (product) {
-        return product.$('..').$('..').$('..').$('.product__product-info');
+        return product.$('.product__product-info');
     }
 
     getVersionCount (product) {
-        return product.$('..').$('..').$$('.products__product-header-item')[2];
+        return product.$('.products__product-header').$$('.products__product-header-item')[2];
     }
 
     getLastModifed (product) {
-        return product.$('..').$('..').$('..').$(elements.lastModified).$('.read-only-data');
-        //return this.getProductInfo(product).$(elements.lastModified);
+        return product.$(elements.lastModified).$('.read-only-data');
     }
 
     selectDeveloper (developerName) {
@@ -59,11 +58,11 @@ class DevelopersPage {
     }
 
     getEditButton (product) {
-        return this.getProduct(product).$('.product__product-info').$('#edit-button');
+        return product.$('.product__product-info').$('#edit-button');
     }
 
     selectProduct (product) {
-        product.$('..').$('..').click();
+        product.$('.products__product-header').click();
     }
 }
 
