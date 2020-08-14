@@ -1,6 +1,6 @@
 <div class="nonConformities" ng-if="!$ctrl.nonConformities || $ctrl.nonConformities.length === 0">
   <div class="non-conformity__wide non-conformity__none-found">
-    No Requirements or Non-Conformities exist for this Direct Review
+    Has not been determined
   </div>
 </div>
 <div class="non-conformities" ng-if="$ctrl.nonConformities && $ctrl.nonConformities.length > 0">
@@ -12,22 +12,22 @@
   <div class="non-conformities__gridtable-header">Review Result</div>
   <div ng-repeat-start="nc in $ctrl.nonConformities" class="non-conformity__header" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
     <div class="non-conformity__gridtable-header non-conformity__gridtable-header--first">
-      <span class="non-conformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'None recorded' }}
+      <span class="non-conformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'Has not been determined' }}
     </div>
     <div class="non-conformity__gridtable-header">
-      <div>{{ nc.nonConformitySummary ? nc.nonConformitySummary : 'None recorded' }}</div>
+      <div>{{ nc.nonConformitySummary ? nc.nonConformitySummary : 'Has not been determined' }}</div>
     </div>
     <div class="non-conformity__gridtable-header nonconformity__gridtable-header--last">
-      <div>{{ nc.nonConformityStatus ? nc.nonConformityStatus : 'None recorded' }}</div>
+      <div>{{ nc.nonConformityStatus ? nc.nonConformityStatus : 'Has not been determined' }}</div>
     </div>
   </div>
   <div class="non-conformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>
     <div class="non-conformity__wide non-conformity__requirement">
       <div class="data-label">
-        Requirement <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Non-Conformity Type <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
-        {{ nc.requirement ? nc.requirement : 'None recorded' }}
+        {{ nc.nonConformityType ? nc.nonConformityType : 'Has not been determined' }}
       </div>
     </div>
     <div class="non-conformity__wide non-conformity__dal">
@@ -54,7 +54,7 @@
         Findings<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
-        {{ nc.nonConformityFindings ? nc.nonConformityFindings : 'None recorded' }}
+        {{ nc.nonConformityFindings ? nc.nonConformityFindings : 'Has not been determined' }}
       </div>
     </div>
     <div class="non-conformity__narrow non-conformity__cap-approval">
@@ -86,7 +86,7 @@
         Developer Explanation<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
-        {{ nc.developerExplanation ? nc.developerExplanation : 'None recorded' }}
+        {{ nc.developerExplanation ? nc.developerExplanation : 'Has not been determined' }}
       </div>
     </div>
     <div class="non-conformity__wide non-conformity__cap-completed">
@@ -102,7 +102,7 @@
         Resolution<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
-        {{ nc.resolution ? nc.resolution : 'None recorded' }}
+        {{ nc.resolution ? nc.resolution : 'Has not been resolved' }}
       </div>
     </div>
   </div>

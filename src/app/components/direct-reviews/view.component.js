@@ -13,6 +13,7 @@ export const DirectReviewsComponent = {
         $onChanges (changes) {
             if (changes.directReviews && changes.directReviews.currentValue) {
                 this.directReviews = changes.directReviews.currentValue
+                    .filter(dr => dr.startDate)
                     .map(dr => {
                         let open = dr.nonConformities
                             .filter(nc => nc.nonConformityStatus === 'Open')
