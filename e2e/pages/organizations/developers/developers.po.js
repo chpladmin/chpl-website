@@ -40,7 +40,11 @@ class DevelopersPage {
     }
 
     getProductInfo (product) {
-        return $('h3=' + product).$('..').$('..').$('..').$('.product__product-info');
+        return product.$('..').$('..').$('..').$('.product__product-info');
+    }
+
+    getVersionCount (product) {
+        return product.$('..').$('..').$$('.products__product-header-item')[2];
     }
 
     getLastModifed (product) {

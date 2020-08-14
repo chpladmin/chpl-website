@@ -1,3 +1,4 @@
+/* eslint-disable no-console,angular/log */
 import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks'
 
@@ -33,15 +34,18 @@ describe('the Developers page', () => {
         });
 
         describe('when looking at a specific Product', () => {
+            let name = 'MediaDent';
+            let product;
             beforeEach(() => {
-                let product = 'Greenway Intergy Meaningful Use Edition';
-                page.selectProduct(page.getProduct(product));
-                page.productsHeader.scrollIntoView({block: 'center', inline: 'center'});
-                page.getProductInfo(product).waitForDisplayed({timeout: 35000}); // demo of using a longer timeout than default
+                product = page.getProduct(name);
+                product.scrollIntoView({block: 'center', inline: 'center'});
+                browser.waitUntil(() => page.getVersionCount(product).getText() === '12 Versions');
+                page.selectProduct(product);
+                page.getProductInfo(product).waitForDisplayed({timeout: 55000});
             });
 
             it('should have the last modified date', () => {
-                expect(page.getLastModifed(page.getProduct('Greenway Intergy Meaningful Use Edition')).getText()).toBe('Aug 19, 2016');
+                expect(page.getLastModifed(product).getText()).toBe('Sep 26, 2019');
             });
         });
     });
