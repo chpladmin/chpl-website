@@ -5,30 +5,19 @@ import LoginComponent from '../../../components/login/login.po';
 
 let hooks, loginComponent, page;
 
-describe('while logged in', () => {
+describe('when on the Developers page', () => {
     beforeEach(async () => {
+        browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
+        browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
         loginComponent = new LoginComponent();
         hooks = new Hooks();
-        await hooks.open('#/resources/overview');
-        console.log('-----\nawait-1\n------')
-        await browser.saveScreenshot('test_reports/e2e/loggedIn-1.png');
-        console.log('-----\nawait-2\n------')
-        await loginComponent.loginAsACB();
-        console.log('-----\nawait-3\n------')
-        await browser.saveScreenshot('test_reports/e2e/loggedIn-2.png');
-        console.log('-----\nawait-4\n------')
-        await loginComponent.logoutButton.waitForDisplayed();
-        console.log('-----\nawait-5\n------')
-        await browser.saveScreenshot('test_reports/e2e/loggedIn-3.png');
-        console.log('-----\nawait-6\n------')
+        await hooks.open('#/organizations/developers');
     });
 
-    describe('on the Developers page', () => {
-        beforeEach(async () => {
-            browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-            browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
-            await hooks.open('#/organizations/developers');
-            browser.saveScreenshot('test_reports/e2e/onDevPage.png');
+    describe('when logged in', () => {
+        beforeEach(() => {
+            loginComponent.loginAsACB();
+            loginComponent.logoutButton.waitForDisplayed();
         });
 
         describe('when on a specific Developer page', () => {
@@ -40,15 +29,18 @@ describe('while logged in', () => {
             });
 
             describe('when looking at a specific Product', () => {
+                let name = 'Intergy EHR';
+                let product;
                 beforeEach(() => {
-                    let product = 'Greenway Intergy Meaningful Use Edition';
-                    page.selectProduct(page.getProduct(product));
-                    page.productsHeader.scrollIntoView({block: 'center', inline: 'center'});
-                    page.getProductInfo(product).waitForDisplayed();
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
                 });
 
                 it('should have an edit button', () => {
-                    expect(page.getEditButton('Greenway Intergy Meaningful Use Edition').getText()).toBeDisplayed();
+                    expect(page.getEditButton(product)).toBeDisplayed();
                 });
             });
         });
