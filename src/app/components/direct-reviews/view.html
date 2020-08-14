@@ -1,6 +1,6 @@
 <div class="direct-reviews">
   <div ng-if="!$ctrl.directReviews || $ctrl.directReviews.length === 0">
-    No Direct Reviews have been conducted for this listing
+    No Direct Reviews have been conducted
   </div>
   <div ng-repeat="dr in $ctrl.directReviews" class="direct-review panel-ai">
     <div class="direct-review__header panel-heading" ng-class="dr.endDate ? 'direct-review__header--closed' : 'direct-review__header--open'" ng-click="dr.open = !dr.open">
