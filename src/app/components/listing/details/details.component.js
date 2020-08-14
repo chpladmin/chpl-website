@@ -59,7 +59,7 @@ export const ListingDetailsComponent = {
                                 let shouldInclude = acc
                                     || !nc.developerAssociatedListings
                                     || nc.developerAssociatedListings.length === 0
-                                    || nc.developerAssociatedListings.includes(this.listing.chplProductNumber)
+                                    || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0
                                 return shouldInclude;
                             }, false);
                         return shouldInclude;
