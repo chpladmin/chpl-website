@@ -19,7 +19,7 @@ describe('the Direct Reviews component', () => {
 
         it('should indicate the absence of DRs', () => {
             let directReviews = component.getDirectReviews();
-            expect(directReviews.getText()).toBe('No Direct Reviews have been conducted for this listing');
+            expect(directReviews.getText()).toBe('No Direct Reviews have been conducted');
         });
     });
 });
