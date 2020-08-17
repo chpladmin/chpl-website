@@ -13,6 +13,7 @@ beforeEach(() => {
     hooks.open('#/administration/upload');
     loginComponent.loginAsACB();
     uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+    uploadPage.waitForSuccessfulUpload();
 });
 
 describe('Confirm page', () => {

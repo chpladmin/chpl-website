@@ -201,7 +201,15 @@ exports.config = {
             this.waitForDisplayed()
             this.click()
         }, true)
-        
+        //element wrapped in div is not clickable solution
+        browser.addCommand("scrollAndClick", function () {
+        // `this` is return value of $(selector)
+        var runInBrowser = function (argument) {
+            argument.click();
+        };
+        this.scrollIntoView();
+        browser.execute(runInBrowser,this);
+        }, true)
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -236,8 +244,9 @@ exports.config = {
     /**
      * Function to be executed after a test (in Mocha/Jasmine).
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: function(test, context, { error, result, duration, passed, retries }) {
+        browser.refresh();
+    },
 
 
     /**
