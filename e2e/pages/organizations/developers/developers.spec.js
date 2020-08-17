@@ -51,12 +51,32 @@ describe('the Developers page', () => {
                     beforeEach(() => {
                         page.editProduct(product);
                         page.editProductsHeader.waitForDisplayed();
-                        browser.saveScreenshot('test_reports/e2e/editing.png');
                     });
 
                     it('should have the product name in an editable field', () => {
                         expect(page.editProductName).toBeDisplayed();
                         expect(page.editProductName.getValue()).toBe(name);
+                    });
+
+                    it('should allow editing of the POC', () => {
+                        let timestamp = (new Date()).getTime();
+                        page.editContactFull.setValue('name' + timestamp);
+                        page.editContactTitle.setValue('title' + timestamp);
+                        page.editContactEmail.setValue('email' + timestamp + '@example.com');
+                        page.editContactPhone.setValue('phone' + timestamp);
+                        browser.saveScreenshot('test_reports/e2e/entereddata.png');
+                        page.save();
+                        page.productsHeader.waitForDisplayed();
+                        page.clearToast();
+                        product.scrollIntoView({block: 'center', inline: 'center'});
+                        browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
+                        page.selectProduct(product);
+                        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                        browser.saveScreenshot('test_reports/e2e/entereddata-2.png');
+                        expect(page.getContactFull(product).getText()).toBe('name' + timestamp);
+                        expect(page.getContactTitle(product).getText()).toBe('title' + timestamp);
+                        expect(page.getContactEmail(product).getText()).toBe('email' + timestamp + '@example.com');
+                        expect(page.getContactPhone(product).getText()).toBe('phone' + timestamp);
                     });
                 });
             });
