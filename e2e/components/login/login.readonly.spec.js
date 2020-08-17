@@ -6,7 +6,7 @@ let component, hooks;
 beforeEach(async () => {
     component = new LoginComponent();
     hooks = new Hooks();
-    await hooks.open('#/resources/overview');
+    await hooks.open('#/administration/upload');
 });
 
 describe('an ACB user', () => {
