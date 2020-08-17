@@ -1,4 +1,3 @@
-/* eslint-disable no-console,angular/log */
 const elements = {
     developersSelect: '#developer-select',
     developersButton: '#developer-button',
