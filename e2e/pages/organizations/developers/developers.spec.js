@@ -5,7 +5,7 @@ import LoginComponent from '../../../components/login/login.po';
 
 let hooks, loginComponent, page;
 
-describe('when on the Developers page', () => {
+describe('the Developers page', () => {
     beforeEach(async () => {
         browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
         browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
@@ -14,13 +14,17 @@ describe('when on the Developers page', () => {
         await hooks.open('#/organizations/developers');
     });
 
-    describe('when logged in', () => {
+    describe('when logged in as an ACB', () => {
         beforeEach(() => {
-            loginComponent.loginAsACB();
+            loginComponent.logIn('acb');
             loginComponent.logoutButton.waitForDisplayed();
         });
 
-        describe('when on a specific Developer page', () => {
+        afterEach(() => {
+            loginComponent.logOut();
+        });
+
+        describe('on a specific Developer page', () => {
             beforeEach(() => {
                 let developer = 'Greenway Health, LLC';
                 page = new DevelopersPage();
@@ -41,6 +45,19 @@ describe('when on the Developers page', () => {
 
                 it('should have an edit button', () => {
                     expect(page.getEditButton(product)).toBeDisplayed();
+                });
+
+                describe('when editing that Product', () => {
+                    beforeEach(() => {
+                        page.editProduct(product);
+                        page.editProductsHeader.waitForDisplayed();
+                        browser.saveScreenshot('test_reports/e2e/editing.png');
+                    });
+
+                    it('should have the product name in an editable field', () => {
+                        expect(page.editProductName).toBeDisplayed();
+                        expect(page.editProductName.getValue()).toBe(name);
+                    });
                 });
             });
         });

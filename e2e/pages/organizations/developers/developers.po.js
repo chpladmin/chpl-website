@@ -4,8 +4,10 @@ const elements = {
     developersButton: '#developer-button',
     directReviewsHeader: 'h2=Direct Review Activities',
     productsHeader: 'h2=Products',
+    editProductsHeader: 'h2=Edit Product Details',
     products: '.products__product',
     lastModified: '.product__product-info-item-last-modified',
+    editProductName: '#product-name',
 }
 
 class DevelopersPage {
@@ -31,6 +33,10 @@ class DevelopersPage {
         return $(elements.productsHeader);
     }
 
+    get editProductsHeader () {
+        return $(elements.editProductsHeader);
+    }
+
     get products () {
         return $$(elements.products);
     }
@@ -51,6 +57,10 @@ class DevelopersPage {
         return product.$(elements.lastModified).$('.read-only-data');
     }
 
+    get editProductName () {
+        return $(elements.editProductName);
+    }
+
     selectDeveloper (developerName) {
         this.developersSelect.selectByVisibleText(developerName);
         this.developersButton.click();
@@ -63,6 +73,11 @@ class DevelopersPage {
 
     selectProduct (product) {
         product.$('.products__product-header').click();
+    }
+
+    editProduct (product) {
+        this.getEditButton(product).click();
+        product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
     }
 }
 
