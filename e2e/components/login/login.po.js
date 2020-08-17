@@ -53,7 +53,19 @@ class LoginComponent {
         this.loginButton.click();
     }
 
+    logIn (user) {
+        if (!this.usernameInput.isDisplayed()) {
+            this.openLoginComponent();
+        }
+        this.usernameInput.addValue(credentials[user].username);
+        this.passwordInput.addValue(credentials[user].password);
+        this.loginButton.click();
+    }
+
     logOut () {
+        if (!this.logoutButton.isDisplayed()) {
+            this.openLoginComponent();
+        }
         this.logoutButton.waitForDisplayed();
         this.logoutButton.waitAndClick();
     }

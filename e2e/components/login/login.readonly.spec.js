@@ -40,3 +40,39 @@ describe('an Admin user', () => {
     })
 
 })
+
+describe('when logging in', () => {
+    afterEach(() => {
+        component.logOut();
+    });
+
+    it('should be able to log in as ACB', () => {
+        component.logIn('acb');
+        component.logoutButton.waitForDisplayed();
+        expect(component.toggleLoginComponent.getText()).toBe('AQA ACB');
+    });
+
+    it('should be able to log in as ONC', () => {
+        component.logIn('onc');
+        component.logoutButton.waitForDisplayed();
+        expect(component.toggleLoginComponent.getText()).toBe('AQA ONC');
+    });
+
+    it('should be able to log in as ADMIN', () => {
+        component.logIn('admin');
+        component.logoutButton.waitForDisplayed();
+        expect(component.toggleLoginComponent.getText()).toBe('AQA Admin');
+    });
+});
+
+describe('when logging out', () => {
+    beforeEach(() => {
+        component.logIn('acb');
+        component.toggleLoginComponent.click();
+    });
+
+    it('should be able to log out', () => {
+        component.logOut();
+        expect(component.loginButton).toBeDisplayed();
+    });
+});
