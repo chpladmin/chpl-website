@@ -1,5 +1,50 @@
 # Release Notes
 
+## Version 10.51.0
+_18 August 2020_
+
+### Flagged Features
+* Display Direct Review data on Developers pages
+
+### Bug Fixes
+* Remove no longer required Transparency Attestation validation logic
+* Only remove one of duplicate values in Criteria edit
+* Display modifications to new fields in Listing Reports
+
+---
+
+## Version 10.50.0
+_10 August 2020_
+
+### Features
+* Allow users to see User reports through all time
+
+### Flagged Features
+* Allow Developer Users to manage their Developer on their public page
+
+### Bug Fixes
+* Display / hide bad data related to bad input on Listing inspect
+
+---
+
+## Version 10.49.0
+_27 July 2020_
+
+### Features
+* Enable Developer merge in new workflow
+* Stop allowing multiple values for certain criteria data elements
+
+### Flagged Features
+* Display direct review on listing details page
+
+### Bug Fixes
+* Show correct error messages on password change
+
+### UI updates
+* Add "accessibility assistance" text to new user registration page
+
+---
+
 ## Version 10.48.0
 _13 July 2020_
 

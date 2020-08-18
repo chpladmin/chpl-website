@@ -52,20 +52,6 @@
           Zip: {{ $ctrl.developer.address.zipcode }}<br />
           Country: {{ $ctrl.developer.address.country }}<br />
           Website: {{ $ctrl.developer.website }}<br />
-          <span ng-if="$ctrl.getAttestationForCurrentSystemDeveloper() && !$ctrl.getAttestationForCurrentSystemDeveloper().removed" feature-flag="effective-rule-date-plus-one-week" feature-flag-hide>
-            Transparency Attestation: {{ $ctrl.getAttestationForCurrentSystemDeveloper().transparencyAttestation }}<br />
-          </span>
-          <div class="product-element removed" id="developer-transparency-attestation"
-               ng-if="$ctrl.getAttestationForCurrentSystemDeveloper() && $ctrl.getAttestationForCurrentSystemDeveloper().removed" feature-flag="effective-rule-date-plus-one-week" feature-flag-hide>
-            <button class="btn btn-link btn-xs pull-right" uib-tooltip="This requirement has been removed from the Program."
-                    tooltip-trigger="'mouseenter focus click'">
-              <span class="sr-only">
-                This requirement has been removed from the Program.
-              </span>
-              <i class="fa fa-info-circle fa-lg"></i>
-            </button>
-            Transparency Attestation: {{ $ctrl.getAttestationForCurrentSystemDeveloper().transparencyAttestation }}
-          </div>
           <strong>Contact information</strong><br />
           <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
           <br />
@@ -89,9 +75,6 @@
           Zip: {{ $ctrl.listing.developer.address.zipcode }}<br />
           Country: {{ $ctrl.listing.developer.address.country }}<br />
           Website: {{ $ctrl.listing.developer.website }}<br />
-          <div ng-if="$ctrl.listing.transparencyAttestation && $ctrl.listing.transparencyAttestation.transparencyAttestation" feature-flag="effective-rule-date-plus-one-week" feature-flag-hide>
-            Transparency Attestation: {{ $ctrl.listing.transparencyAttestation.transparencyAttestation }}
-          </div>
           <strong>Contact information</strong><br />
           <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
         </div>

@@ -23,21 +23,50 @@ let states = [
         url: '/{developerId}',
         component: 'chplDevelopersView',
         resolve: {
-            developer: (networkService, $transition$) => {
+            developer: (networkService, $location, $transition$) => {
                 'ngInject'
-                return networkService.getDeveloper($transition$.params().developerId);
+                if (!$transition$.params().developerId) {
+                    $location.path('/organizations/developers');
+                } else {
+                    return networkService.getDeveloper($transition$.params().developerId);
+                }
             },
-            products: (networkService, $transition$) => {
+            directReviews: (featureFlags, networkService, $location, $transition$) => {
                 'ngInject'
-                return networkService.getProductsByDeveloper($transition$.params().developerId);
+                if (!$transition$.params().developerId) {
+                    $location.path('/organizations/developers');
+                } else if (featureFlags.isOn('direct-review')) {
+                    return networkService.getDirectReviews($transition$.params().developerId);
+                }
+            },
+            products: (networkService, $location, $transition$) => {
+                'ngInject'
+                if (!$transition$.params().developerId) {
+                    $location.path('/organizations/developers');
+                } else {
+                    return networkService.getProductsByDeveloper($transition$.params().developerId);
+                }
             },
         },
         data: { title: 'CHPL Developers' },
+    },{
+        name: 'organizations.developers.developer.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'edit',
+        },
+        data: { title: 'CHPL Developers - Edit' },
     },{
         name: 'organizations.developers.developer.split',
         url: '/split',
         component: 'chplDevelopersSplit',
         data: { title: 'CHPL Developers - Split' },
+    },{
+        name: 'organizations.developers.developer.merge',
+        url: '/merge?v',
+        component: 'chplDevelopersMerge',
+        data: { title: 'CHPL Developers - Merge' },
     },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',

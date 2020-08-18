@@ -6,12 +6,11 @@ export const SurveillanceRequirementEditComponent = {
         dismiss: '&',
     },
     controller: class SurveillanceRequirementEditController {
-        constructor ($log, $uibModal, authService, featureFlags, utilService) {
+        constructor ($log, $uibModal, authService, utilService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal
             this.hasAnyRole = authService.hasAnyRole;
-            this.isOn = featureFlags.isOn;
             this.utilService = utilService;
             this.sortCriteria = utilService.sortCert;
         }
@@ -42,7 +41,7 @@ export const SurveillanceRequirementEditComponent = {
 
         addNonconformity () {
             let data = angular.copy(this.data);
-            if (this.hasAnyRole(['ROLE_ACB']) && this.isOn('effective-rule-date-plus-one-week')) {
+            if (this.hasAnyRole(['ROLE_ACB'])) {
                 data.nonconformityTypes.data = data.nonconformityTypes.data.filter(option => !option.removed);
             }
             this.modalInstance = this.$uibModal.open({

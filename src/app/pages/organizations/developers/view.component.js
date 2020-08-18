@@ -3,7 +3,9 @@ export const DevelopersViewComponent = {
     bindings: {
         developer: '<',
         developers: '<',
+        directReviews: '<',
         products: '<',
+        action: '@',
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
@@ -12,6 +14,7 @@ export const DevelopersViewComponent = {
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.canManageDeveloper = authService.canManageDeveloper;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
@@ -24,13 +27,10 @@ export const DevelopersViewComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
                 this.loadData();
             }
-            let loggedIn = this.$scope.$on('loggedIn', () => {
-                that.loadData();
-            })
-            this.$scope.$on('$destroy', loggedIn);
+            this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
             this.networkService.getSearchOptions()
                 .then(options => that.searchOptions = options);
         }
@@ -38,7 +38,6 @@ export const DevelopersViewComponent = {
         $onChanges (changes) {
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
-                this.newDeveloper = angular.copy(this.developer);
                 this.backup.developer = angular.copy(this.developer);
             }
             if (changes.developers) {
@@ -53,10 +52,11 @@ export const DevelopersViewComponent = {
                     return d;
                 });
                 this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
-                this.mergingDevelopers = devs.filter(d => d.developerId === this.developer.developerId);
                 this.backup.developers = angular.copy(this.developers);
-                this.backup.mergingDevelopers = angular.copy(this.mergingDevelopers);
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
+            }
+            if (changes.directReviews) {
+                this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
             if (changes.products) {
                 this.products = angular.copy(changes.products.currentValue.products);
@@ -64,19 +64,32 @@ export const DevelopersViewComponent = {
             }
         }
 
+        $onDestroy () {
+            this.loggedIn();
+        }
+
         can (action) {
+            if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
+            if (action === 'manageTracking' && !this.hasAnyRole(['ROLE_DEVELOPER'])) { return false; } // only DEVELOPER can manage tracking
             if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
-            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
+            if (action === 'split') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
+            return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); // must be active
         }
 
         cancel () {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.mergingDevelopers = angular.copy(this.backup.mergingDevelopers);
+            this.$state.go('^');
+        }
+
+        closeConfirmation () {
             this.action = undefined;
+            if (this.$state.$current.name === 'organizations.developers.developer.edit') {
+                this.$state.go('^', undefined, {reload: true});
+            }
         }
 
         loadData () {
@@ -84,92 +97,139 @@ export const DevelopersViewComponent = {
             this.networkService.getAcbs(true).then(response => {
                 that.allowedAcbs = response.acbs;
             });
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && this.$stateParams.developerId) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.developerId) {
                 this.networkService.getUsersAtDeveloper(this.$stateParams.developerId).then(response => that.users = response.users);
+            }
+            if (this.hasAnyRole(['ROLE_DEVELOPER']) && this.$stateParams.developerId) {
+                this.networkService.getChangeRequests().then(response => that.changeRequests = response);
+                this.networkService.getChangeRequestTypes().then(response => that.changeRequestTypes = response);
+                this.networkService.getChangeRequestStatusTypes().then(response => that.changeRequestStatusTypes = response);
             }
         }
 
         save (developer) {
-            let developerIds = [];
-            if (this.action === 'merge') {
-                developerIds = developerIds.concat(this.mergingDevelopers.map(ver => ver.developerId));
+            if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+                this.saveRequest(developer);
             } else {
-                developerIds.push(this.developer.developerId);
-            }
-            let that = this;
-            this.developer = developer;
-            this.errorMessages = [];
-            this.networkService.updateDeveloper({
-                developer: this.developer,
-                developerIds: developerIds,
-            }).then(response => {
-                if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                    if (that.action === 'merge') {
-                        that.$state.go('organizations.developers.developer', {
-                            developerId: response.developerId,
-                            action: undefined,
-                        }, {
-                            reload: true,
-                        });
+                let developerIds = [this.developer.developerId];
+                let that = this;
+                this.developer = developer;
+                this.errorMessages = [];
+                this.networkService.updateDeveloper({
+                    developer: this.developer,
+                    developerIds: developerIds,
+                }).then(response => {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        that.developer = response;
+                        that.backup.developer = angular.copy(response);
+                        this.$state.go('^', undefined, {reload: true});
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
+                        } else {
+                            that.errorMessages = ['An error has occurred.'];
+                        }
                     }
-                    that.developer = response;
-                    that.backup.developer = angular.copy(response);
-                    that.newDeveloper = angular.copy(response);
-                    that.action = undefined;
-                } else {
-                    if (response.data.errorMessages) {
-                        that.errorMessages = response.data.errorMessages;
-                    } else if (response.data.error) {
-                        that.errorMessages.push(response.data.error);
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
                     } else {
                         that.errorMessages = ['An error has occurred.'];
                     }
-                }
-            }, error => {
-                if (error.data.errorMessages) {
-                    that.errorMessages = error.data.errorMessages;
-                } else if (error.data.error) {
-                    that.errorMessages.push(error.data.error);
-                } else {
-                    that.errorMessages = ['An error has occurred.'];
-                }
-            });
-        }
-
-        saveSplitEdit (developer) {
-            this.newDeveloper = developer;
-            this.splitEdit = false;
+                });
+            }
         }
 
         takeAction (action) {
+            this.$state.go('.' + action);
+        }
+
+        takeCrAction (action, data) {
             switch (action) {
-            case 'split':
-                this.$state.go('.split', {
-                    developer: this.developer,
-                    products: this.products,
-                });
+            case 'cancel':
+                this.action = undefined;
                 break;
-            default:
-                this.action = action;
+            case 'save':
+                this.updateRequest(data);
+                break;
+                //no default
             }
+        }
+
+        saveRequest (data) {
+            let that = this;
+            let request = {
+                developer: this.developer,
+                details: data,
+            };
+            this.networkService.submitChangeRequest(request)
+                .then(that.handleResponse.bind(that), that.handleError.bind(that));
+        }
+
+        updateRequest (data) {
+            let that = this;
+            if (data.currentStatus && data.currentStatus.changeRequestStatusType && data.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
+                this.isWithdrawing = true;
+            } else {
+                this.isWithdrawing = false;
+            }
+            this.networkService.updateChangeRequest(data)
+                .then(that.handleResponse.bind(that), that.handleError.bind(that));
+        }
+
+        handleResponse () {
+            let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
+            if (this.isWithdrawing) {
+                confirmationText = 'Your change request has been successfully withdrawn.';
+            }
+            this.networkService.getChangeRequests().then(response => this.changeRequests = response);
+            this.action = 'confirmation';
+            this.confirmationText = confirmationText;
+            this.isWithdrawing = false;
+        }
+
+        handleError (error) {
+            let messages;
+            let type = 'error';
+            let title = 'Error in submission';
+            if (error && error.data && error.data.error
+                && error.data.error === 'No data was changed.') {
+                messages = ['Cannot "Submit" a change request when no changes have been made.'];
+                type = 'info';
+                title = 'Please check your input';
+            } else {
+                messages = error.data.errorMessages ? error.data.errorMessages : [];
+            }
+            let body = messages.length > 0 ? 'Message' + (messages.length > 1 ? 's' : '') + ':<ul>' + messages.map(e => '<li>' + e + '</li>').join('') + '</ul>'
+                : 'An unexpected error occurred. Please try again or contact ONC for support';
+            this.toaster.pop({
+                type: type,
+                title: title,
+                body: body,
+                bodyOutputType: 'trustedHtml',
+            });
         }
 
         takeUserAction (action, data) {
             let that = this;
             switch (action) {
             case 'edit':
-                this.state = 'focusUsers';
+                this.action = 'focusUsers';
                 break;
             case 'cancel':
-                this.state = undefined;
+                this.action = undefined;
                 break;
             case 'delete':
-                this.state = undefined;
+                this.action = undefined;
                 this.networkService.removeUserFromDeveloper(data, this.$stateParams.developerId)
                     .then(() => that.networkService.getUsersAtDeveloper(that.$stateParams.developerId).then(response => that.users = response.users));
                 break;
             case 'invite':
-                this.state = undefined;
+                this.action = undefined;
                 this.networkService.inviteUser({
                     role: data.role,
                     emailAddress: data.email,
@@ -181,46 +241,15 @@ export const DevelopersViewComponent = {
                 }));
                 break;
             case 'refresh':
-                this.state = undefined;
+                this.action = undefined;
                 this.networkService.getUsersAtDeveloper(this.$stateParams.developerId)
                     .then(response => that.users = response.users);
                 break;
             case 'impersonate':
-                this.state = undefined;
+                this.action = undefined;
                 this.$state.reload();
                 break;
                 //no default
-            }
-        }
-
-        takeProductAction (action, productId) {
-            this.$state.go('organizations.developers.products', {
-                action: action,
-                productId: productId,
-            });
-        }
-
-        takeSplitAction () {
-            this.splitEdit = true;
-        }
-
-        toggleMerge (developer, merge) {
-            if (merge) {
-                this.mergingDevelopers.push(this.developers.filter(dev => dev.developerId === developer.developerId)[0]);
-                this.developers = this.developers.filter(dev => dev.developerId !== developer.developerId);
-            } else {
-                this.developers.push(this.mergingDevelopers.filter(dev => dev.developerId === developer.developerId)[0]);
-                this.mergingDevelopers = this.mergingDevelopers.filter(dev => dev.developerId !== developer.developerId);
-            }
-        }
-
-        toggleMove (product, toNew) {
-            if (toNew) {
-                this.movingProducts.push(this.products.filter(prod => prod.productId === product.productId)[0]);
-                this.products = this.products.filter(prod => prod.productId !== product.productId);
-            } else {
-                this.products.push(this.movingProducts.filter(prod => prod.productId === product.productId)[0]);
-                this.movingProducts = this.movingProducts.filter(prod => prod.productId !== product.productId);
             }
         }
     },

@@ -8,18 +8,16 @@
     <div google-chart="" chart="$ctrl.criterionProductCounts['' + $ctrl.chartState.criteriaType]" class="bar-chart"></div>
   </div>
 </div>
-<span feature-flag="effective-rule-date">
-  <div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014">
-    <div class="col-sm-12">
-      <label>
-        View Certification Criteria with respect to the 2015 Cures rule
-        <select ng-model="$ctrl.chartState.criteriaType"
-                ng-options="option for option in $ctrl.criteriaTypes">
-        </select>
-      </label>
-    </div>
+<div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014">
+  <div class="col-sm-12">
+    <label>
+      View Certification Criteria with respect to the 2015 Cures rule
+      <select ng-model="$ctrl.chartState.criteriaType"
+              ng-options="option for option in $ctrl.criteriaTypes">
+      </select>
+    </label>
   </div>
-</span>
+</div>
 <div class="row">
   <div class="col-sm-12">
     <p>Please note only certification criteria certified to by a unique product are displayed.</p>
