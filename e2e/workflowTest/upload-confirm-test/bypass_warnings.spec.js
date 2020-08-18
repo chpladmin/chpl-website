@@ -17,26 +17,26 @@ beforeAll( () => {
     loginComponent.loginAsACB();
 })
 
-// describe('Confirming a listing', () => {
-//     // **Run once before each test case**
-//     beforeEach(function () {
-//         uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
-//         uploadPage.waitForSuccessfulUpload();
-//         hooks.open('#/administration/confirm/listings')
-//     })
+describe('Confirming a listing', () => {
+    // **Run once before each test case**
+    beforeEach(function () {
+        uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
+        uploadPage.waitForSuccessfulUpload();
+        hooks.open('#/administration/confirm/listings')
+    })
 
-//     it('should not show warning bypass checkbox when upload listing file doesnt have warnings', () => {
-//         confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
-//         assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
-//     })
-// })
+    it('should not show warning bypass checkbox when upload listing file doesnt have warnings', () => {
+        confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
+        assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
+    })
+})
 
 describe('Confirming a listing', () => {
     // **Run once before each test case**
     beforeAll(function () {
-        //hooks.open('#/administration/upload');
-        //uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
-        //uploadPage.waitForSuccessfulUpload();
+        hooks.open('#/administration/upload');
+        uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+        uploadPage.waitForSuccessfulUpload();
         hooks.open('#/administration/confirm/listings');
     })
 
@@ -48,7 +48,8 @@ describe('Confirming a listing', () => {
     it('works successfully when user clicks on bypass warnings', () => {
         confirmPage.gotoConfirmListingPage('15.04.04.1722.PAL3.03.01.1.190105');
         confirmPage.warningCheckbox.click();
-        confirmPage.confirmListing();
+        confirmPage.confirmButton.click();
+        confirmPage.yesConfirmation.click();
         confirmPage.waitForSuccessfulConfirm();
         assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
     })
