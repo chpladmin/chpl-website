@@ -65,10 +65,13 @@ describe('the Developers page', () => {
 
                     it('should allow editing of the POC', () => {
                         let timestamp = (new Date()).getTime();
-                        contact.editFull.setValue('name' + timestamp);
-                        contact.editTitle.setValue('title' + timestamp);
-                        contact.editEmail.setValue('email' + timestamp + '@example.com');
-                        contact.editPhone.setValue('phone' + timestamp);
+                        let poc = {
+                            full: 'name' + timestamp,
+                            title: 'title' + timestamp,
+                            email: 'email' + timestamp + '@example.com',
+                            phone: 'phone' + timestamp,
+                        };
+                        contact.set(poc);
                         actionBar.save();
                         page.productsHeader.waitForDisplayed();
                         toast.clearAllToast();
@@ -76,10 +79,7 @@ describe('the Developers page', () => {
                         browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                         page.selectProduct(product);
                         page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                        expect(contact.getFull(product).getText()).toBe('name' + timestamp);
-                        expect(contact.getTitle(product).getText()).toBe('title' + timestamp);
-                        expect(contact.getEmail(product).getText()).toBe('email' + timestamp + '@example.com');
-                        expect(contact.getPhone(product).getText()).toBe('phone' + timestamp);
+                        expect(contact.get(product)).toEqual(poc);
                     });
                 });
             });

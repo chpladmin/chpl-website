@@ -40,6 +40,23 @@ class ContactComponent {
     get editPhone () {
         return $(elements.editPhone);
     }
+
+    get (element) {
+        let contact = {
+            full: this.getFull(element).getText(),
+            title: this.getTitle(element).getText(),
+            email: this.getEmail(element).getText(),
+            phone: this.getPhone(element).getText(),
+        };
+        return contact;
+    }
+
+    set (contact) {
+        this.editFull.setValue(contact.full);
+        this.editTitle.setValue(contact.title);
+        this.editEmail.setValue(contact.email);
+        this.editPhone.setValue(contact.phone);
+    }
 }
 
 export default ContactComponent;
