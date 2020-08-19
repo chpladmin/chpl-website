@@ -3,7 +3,9 @@ const uploadElements = {
     uploadButton: '.btn.btn-ai-success',
     listingUploadText: '//chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
     chooseUploadAPIDocumentation: '//*[@id="ngf-label-upload-button-api"]/input[@id="ngf-upload-button-api"]',
-    apiDocUploadText: '//chpl-upload-api-documentation/div/div[2]/div',
+    uploadAPIDoc: 'chpl-upload-api-documentation',
+    uploadMessages: '.upload-messages',
+    uploadMessagesText: 'div.ng-binding.ng-scope',
 }
 const path = require('path');
 
@@ -27,7 +29,7 @@ class UploadPage {
     }
 
     get apiDocUploadText () {
-        return $(uploadElements.apiDocUploadText);
+        return $(uploadElements.uploadAPIDoc).$(uploadElements.uploadMessages).$(uploadElements.uploadMessagesText);
     }
 
     uploadListing (uploadfilePath) {

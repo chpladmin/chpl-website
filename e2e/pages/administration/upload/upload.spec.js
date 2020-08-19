@@ -43,7 +43,6 @@ describe('API documentation file', () => {
         uploadPage.uploadAPIDocFile('../../../resources/APIDOC_File.xlsx');
         assert.include(uploadPage.apiDocUploadText.getText(),'was uploaded successfully.');
         uploadPage.uploadAPIDocFile('../../../resources/APIDOC_File.xlsx');
-        browser.pause(1000);
         assert.notInclude(uploadPage.apiDocUploadText.getText(),'was not uploaded successfully.');
     })
 
