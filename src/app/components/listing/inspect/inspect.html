@@ -47,6 +47,12 @@
             <li ng-repeat="error in vm.errorMessages | orderBy:'toString()'">{{ error }}</li>
           </ul>
         </div>
+        <div ng-if="vm.warningMessages && vm.warningMessages.length !== 0">
+          Warning<span ng-if="vm.warningMessages.length !== 1">s</span> in product confirmation
+          <ul>
+            <li ng-repeat="warning in vm.warningMessages | orderBy:'toString()'">{{ warning }}</li>
+          </ul>
+        </div>
         <div ng-if="vm.systemRequirements && vm.systemRequirements.length !== 0">
           System Requirement<span ng-if="vm.systemRequirements.length !== 1">s</span> not met
           <ul>
