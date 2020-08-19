@@ -104,6 +104,7 @@
                     });
                 } else {
                     vm.errorMessages = error.data.errorMessages;
+                    vm.warningMessages = error.data.warningMessages;
                 }
             });
         }
