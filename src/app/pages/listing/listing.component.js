@@ -17,6 +17,7 @@ export const ListingComponent = {
             this.certificationStatus = utilService.certificationStatus;
             this.displayRealWorldTesting = utilService.displayRealWorldTesting;
             this.hasAnyRole = authService.hasAnyRole;
+            this.canManageAcb = authService.canManageAcb;
             this.resources = {};
             this.editCallbacks = {};
             this.isSaving = false;

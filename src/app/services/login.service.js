@@ -8,6 +8,7 @@
     function authService ($localStorage, $log, $rootScope, $window, API_KEY) {
         var service = {
             canImpersonate: canImpersonate,
+            canManageAcb: canManageAcb,
             canManageDeveloper: canManageDeveloper,
             getApiKey: getApiKey,
             getCurrentUser: getCurrentUser,
@@ -31,6 +32,19 @@
             return !isImpersonating() &&
                 ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
                  || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
+        }
+
+        function canManageAcb (acb) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                return true;
+            }
+            if (hasAnyRole(['ROLE_ACB'])) {
+                let currentUser = getCurrentUser();
+                return currentUser.organizations
+                    .filter(o => o.id === acb.id)
+                    .length > 0;
+            }
+            return false;
         }
 
         function canManageDeveloper (developer) {
