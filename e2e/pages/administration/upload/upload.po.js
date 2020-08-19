@@ -1,3 +1,4 @@
+const config = require('../../../config/mainConfig');
 const uploadElements = {
     chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
     uploadButton: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/form/div/div[4]/button[1]',
@@ -28,7 +29,11 @@ class UploadPage {
     }
 
     waitForSuccessfulUpload () {
-        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed());
+        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed() ,
+            {
+                timeout: config.longTimeout,
+            }
+        );
     }
 }
 

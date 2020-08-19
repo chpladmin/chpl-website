@@ -68,6 +68,11 @@ class ConfirmPage {
         this.yesConfirmation.waitAndClick();
     }
 
+    confirmListing () {
+        this.confirmButton.scrollAndClick();
+        this.yesConfirmation.waitAndClick();
+    }
+
     waitForSuccessfulConfirm () {
         browser.waitUntil( () => this.toastContainerTitle.isDisplayed() ,
             {
