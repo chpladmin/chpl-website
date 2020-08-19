@@ -4,7 +4,7 @@ import Hooks from '../../../utilities/hooks';
 
 let hooks, loginComponent, uploadPage;
 
-beforeEach(async () => {
+beforeAll(async () => {
     uploadPage = new UploadPage();
     loginComponent = new LoginComponent();
     hooks = new Hooks();
@@ -12,16 +12,40 @@ beforeEach(async () => {
 });
 
 describe('Upload page', () => {
+    beforeEach(function () {
+        loginComponent.loginAsACB();
+    })
 
     it('allows uploading v19 template', () => {
-        loginComponent.loginAsACB();
         uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
-        assert.include(uploadPage.uploadSuccessfulText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+        assert.include(uploadPage.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     })
 
     it('allows uploading v18 template', () => {
         uploadPage.uploadListing('../../../resources/2015_v18_AQA2.csv');
-        assert.include(uploadPage.uploadSuccessfulText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+        assert.include(uploadPage.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+    })
+
+    afterEach(function () {
+        loginComponent.openLoginComponent();
+        loginComponent.logOut();
     })
 
 })
+
+describe('API documentation file', () => {
+
+    beforeEach(function () {
+        loginComponent.loginAsAdmin();
+    })
+
+    it('can be uploaded successfully back to back', () => {
+        uploadPage.uploadAPIDocFile('../../../resources/APIDOC_File.xlsx');
+        assert.include(uploadPage.apiDocUploadText.getText(),'was uploaded successfully.');
+        uploadPage.uploadAPIDocFile('../../../resources/APIDOC_File.xlsx');
+        browser.pause(1000);
+        assert.notInclude(uploadPage.apiDocUploadText.getText(),'was not uploaded successfully.');
+    })
+
+})
+
