@@ -6,6 +6,10 @@ class Hooks {
         browser.setWindowSize(1600, 1024);
         browser.url(path);
     }
+
+    waitForSpinnerToDisappear () {
+        browser.waitUntil( () => !$('#loading-bar-spinner').isDisplayed());
+    }
 }
 
 export default Hooks;

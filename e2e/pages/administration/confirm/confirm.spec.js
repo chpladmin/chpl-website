@@ -6,6 +6,7 @@ import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
 let confirmPage, hooks, loginComponent, uploadPage;
+const rejectListingId = '15.04.04.1722.AQA3.03.01.1.200620';
 
 beforeEach(() => {
     uploadPage = new UploadPage();
@@ -22,8 +23,8 @@ describe('Confirm page', () => {
 
     it('allows user to reject a file', () => {
         hooks.open('#/administration/confirm/listings');
-        confirmPage.rejectListing('15.04.04.1722.AQA3.03.01.1.200620');
-        assert.isFalse(confirmPage.findListingtoReject('15.04.04.1722.AQA3.03.01.1.200620').isDisplayed())
+        confirmPage.rejectListing(rejectListingId);
+        assert.isFalse(confirmPage.findListingtoReject(rejectListingId).isDisplayed())
     });
 
 });
