@@ -1,10 +1,11 @@
 import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks'
 import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
 
-let actionBar, hooks, login, page, toast;
+let actionBar, contact, hooks, login, page, toast;
 
 describe('the Developers page', () => {
     beforeEach(async () => {
@@ -12,6 +13,7 @@ describe('the Developers page', () => {
         browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
         hooks = new Hooks();
         actionBar = new ActionBarComponent();
+        contact = new ContactComponent();
         login = new LoginComponent();
         toast = new ToastComponent();
         await hooks.open('#/organizations/developers');
@@ -63,10 +65,10 @@ describe('the Developers page', () => {
 
                     it('should allow editing of the POC', () => {
                         let timestamp = (new Date()).getTime();
-                        page.editContactFull.setValue('name' + timestamp);
-                        page.editContactTitle.setValue('title' + timestamp);
-                        page.editContactEmail.setValue('email' + timestamp + '@example.com');
-                        page.editContactPhone.setValue('phone' + timestamp);
+                        contact.editFull.setValue('name' + timestamp);
+                        contact.editTitle.setValue('title' + timestamp);
+                        contact.editEmail.setValue('email' + timestamp + '@example.com');
+                        contact.editPhone.setValue('phone' + timestamp);
                         actionBar.save();
                         page.productsHeader.waitForDisplayed();
                         toast.clearAllToast();
@@ -74,10 +76,10 @@ describe('the Developers page', () => {
                         browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                         page.selectProduct(product);
                         page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                        expect(page.getContactFull(product).getText()).toBe('name' + timestamp);
-                        expect(page.getContactTitle(product).getText()).toBe('title' + timestamp);
-                        expect(page.getContactEmail(product).getText()).toBe('email' + timestamp + '@example.com');
-                        expect(page.getContactPhone(product).getText()).toBe('phone' + timestamp);
+                        expect(contact.getFull(product).getText()).toBe('name' + timestamp);
+                        expect(contact.getTitle(product).getText()).toBe('title' + timestamp);
+                        expect(contact.getEmail(product).getText()).toBe('email' + timestamp + '@example.com');
+                        expect(contact.getPhone(product).getText()).toBe('phone' + timestamp);
                     });
                 });
             });

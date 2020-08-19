@@ -7,10 +7,6 @@ const elements = {
     products: '.products__product',
     lastModified: '.product__product-info-item-last-modified',
     editProductName: '#product-name',
-    editContactFull: '#contactFull',
-    editContactTitle: '#contactTitle',
-    editContactEmail: '#contactEmail',
-    editContactPhone: '#contactPhoneNumber',
 }
 
 class DevelopersPage {
@@ -60,40 +56,8 @@ class DevelopersPage {
         return product.$(elements.lastModified).$('.read-only-data');
     }
 
-    getContactFull (product) {
-        return product.$('chpl-contact').$$('.flex-item')[1].$('.read-only-data');
-    }
-
-    getContactTitle (product) {
-        return product.$('chpl-contact').$$('.flex-item')[0].$('.read-only-data');
-    }
-
-    getContactEmail (product) {
-        return product.$('chpl-contact').$$('.flex-item')[2].$('.read-only-data');
-    }
-
-    getContactPhone (product) {
-        return product.$('chpl-contact').$$('.flex-item')[3].$('.read-only-data');
-    }
-
     get editProductName () {
         return $(elements.editProductName);
-    }
-
-    get editContactFull () {
-        return $(elements.editContactFull);
-    }
-
-    get editContactTitle () {
-        return $(elements.editContactTitle);
-    }
-
-    get editContactEmail () {
-        return $(elements.editContactEmail);
-    }
-
-    get editContactPhone () {
-        return $(elements.editContactPhone);
     }
 
     selectDeveloper (developerName) {
