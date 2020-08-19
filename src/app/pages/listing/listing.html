@@ -114,7 +114,7 @@
               <div ng-if="$ctrl.listing.rwtPlanUrl">
                 <p><a ai-a href="{{ $ctrl.listing.rwtPlanUrl }}" name="rwtPlanUrl" id="rwt-plan-url">{{ $ctrl.listing.rwtPlanUrl }}</a></p>
               </div>
-              <div ng-if="$ctrl.listing.rwtPlanSubmissionDate && ($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || $ctrl.canManageAcb($ctrl.listing.certifyingBody))">
+              <div ng-if="$ctrl.listing.rwtPlanSubmissionDate && ($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || $ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
                 <p>Submission confirmed: {{ $ctrl.listing.rwtPlanSubmissionDate | date: 'MMM d, yyyy' }}</p>
               </div>
               <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
@@ -123,7 +123,7 @@
               <div ng-if="$ctrl.listing.rwtResultsUrl">
                 <p><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></p>
               </div>
-              <div ng-if="$ctrl.listing.rwtResultsSubmissionDate && ($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || $ctrl.canManageAcb($ctrl.listing.certifyingBody))">
+              <div ng-if="$ctrl.listing.rwtResultsSubmissionDate && ($ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || $ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
                 <p>Submission confirmed: {{ $ctrl.listing.rwtResultsSubmissionDate | date: 'MMM d, yyyy' }}</p>
               </div>
             </div>

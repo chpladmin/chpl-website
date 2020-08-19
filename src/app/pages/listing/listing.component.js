@@ -18,6 +18,7 @@ export const ListingComponent = {
             this.displayRealWorldTesting = utilService.displayRealWorldTesting;
             this.hasAnyRole = authService.hasAnyRole;
             this.canManageAcb = authService.canManageAcb;
+            this.canManageDeveloper = authService.canManageDeveloper;
             this.resources = {};
             this.editCallbacks = {};
             this.isSaving = false;
