@@ -1,26 +1,30 @@
 import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks'
+import ActionBarComponent from '../../../components/action-bar/action-bar.po';
 import LoginComponent from '../../../components/login/login.po';
+import ToastComponent from '../../../components/toast/toast.po';
 
-let hooks, loginComponent, page;
+let actionBar, hooks, login, page, toast;
 
 describe('the Developers page', () => {
     beforeEach(async () => {
         browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
         browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
-        loginComponent = new LoginComponent();
         hooks = new Hooks();
+        actionBar = new ActionBarComponent();
+        login = new LoginComponent();
+        toast = new ToastComponent();
         await hooks.open('#/organizations/developers');
     });
 
     describe('when logged in as an ACB', () => {
         beforeEach(() => {
-            loginComponent.logIn('acb');
-            loginComponent.logoutButton.waitForDisplayed();
+            login.logIn('acb');
+            login.logoutButton.waitForDisplayed();
         });
 
         afterEach(() => {
-            loginComponent.logOut();
+            login.logOut();
         });
 
         describe('on a specific Developer page', () => {
@@ -63,9 +67,9 @@ describe('the Developers page', () => {
                         page.editContactTitle.setValue('title' + timestamp);
                         page.editContactEmail.setValue('email' + timestamp + '@example.com');
                         page.editContactPhone.setValue('phone' + timestamp);
-                        page.save();
+                        actionBar.save();
                         page.productsHeader.waitForDisplayed();
-                        page.clearToast();
+                        toast.clearAllToast();
                         product.scrollIntoView({block: 'center', inline: 'center'});
                         browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                         page.selectProduct(product);
@@ -96,9 +100,9 @@ describe('the Developers page', () => {
                         let timestamp = (new Date()).getTime();
                         let newName = name + ' - ' + timestamp;
                         page.editProductName.setValue(newName);
-                        page.save();
+                        actionBar.save();
                         page.productsHeader.waitForDisplayed();
-                        page.clearToast();
+                        toast.clearAllToast();
                         product = page.getProduct(newName);
                         product.scrollIntoView({block: 'center', inline: 'center'});
                         browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');

@@ -11,7 +11,6 @@ const elements = {
     editContactTitle: '#contactTitle',
     editContactEmail: '#contactEmail',
     editContactPhone: '#contactPhoneNumber',
-    save: '#action-bar-save',
 }
 
 class DevelopersPage {
@@ -114,14 +113,6 @@ class DevelopersPage {
     editProduct (product) {
         this.getEditButton(product).click();
         product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
-    }
-
-    save () {
-        $(elements.save).click();
-    }
-
-    clearToast () {
-        $('#toast-container').$$('div').forEach(toast => toast.click());
     }
 }
 
