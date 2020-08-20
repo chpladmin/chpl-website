@@ -12,7 +12,7 @@ angular.module('chpl.components')
                 },
                 function (newVal) {
                     scope.onChange({tableState: newVal, tableController: stTable})
-                },
-                true)},
+                }, true)
+            },
         }
     });

@@ -216,8 +216,8 @@ export const ListingHistoryComponent = {
         _interpretCqms (prev, curr, activity) {
             var pCqms = prev.cqmResults;
             var cCqms = curr.cqmResults;
-            pCqms.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
-            cCqms.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+            pCqms.sort(function (a,b) { return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0); } );
+            cCqms.sort(function (a,b) { return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0); } );
             var i, j;
             for (i = 0; i < pCqms.length; i++) {
                 var obj = { cmsId: pCqms[i].cmsId, changes: [] };

@@ -310,8 +310,8 @@ export const ReportsListingsComponent = {
         compareCqms (prev, curr) {
             var ret = [];
             var change;
-            prev.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
-            curr.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+            prev.sort(function (a,b) { return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0); } );
+            curr.sort(function (a,b) { return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0); } );
             var i, j;
             for (i = 0; i < prev.length; i++) {
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
@@ -447,8 +447,8 @@ export const ReportsListingsComponent = {
             ];
             var i, j, k;
             if (prev !== null) {
-                prev.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
-                curr.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                prev.sort(function (a,b) { return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0); } );
+                curr.sort(function (a,b) { return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0); } );
                 for (i = 0; i < prev.length; i++) {
                     for (j = 0; j < curr.length; j++) {
                         if (prev[i].description === curr[j].description) {

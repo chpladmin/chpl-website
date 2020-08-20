@@ -129,7 +129,7 @@
         function restoreState (state) {
             vm.element[0].selectedIndex = 0;
             var predicateSearch = state.search.predicateObject[vm.predicate];
-            if (predicateSearch) {// && vm.distinctItems) {
+            if (predicateSearch) {
                 for (var i = 0; i < vm.distinctItems.length; i++) {
                     if (vm.distinctItems[i] === predicateSearch) {
                         vm.element[0].selectedIndex = i;

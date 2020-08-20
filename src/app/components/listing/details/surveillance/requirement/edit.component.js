@@ -51,7 +51,7 @@ export const SurveillanceRequirementEditComponent = {
                 keyboard: false,
                 resolve: {
                     disableValidation: () => false,
-                    nonconformity: () => { return {}},
+                    nonconformity: () => { return {} },
                     randomized: () => this.randomized,
                     randomizedSitesUsed: () => this.randomizedSitesUsed,
                     requirementId: () => this.requirement.id,
