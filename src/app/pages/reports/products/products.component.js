@@ -1,3 +1,7 @@
+import '../../../../../node_modules/@js-joda/timezone';
+import { Locale } from '../../../../../node_modules/@js-joda/locale_en-us';
+import * as jsJoda from '../../../../../node_modules/@js-joda/core';
+
 export const ReportsProductsComponent = {
     templateUrl: 'chpl.reports/products/products.html',
     controller: class ReportsProductsComponent {
@@ -27,6 +31,9 @@ export const ReportsProductsComponent = {
 
         $onInit () {
             this.search();
+            this.$log.info(Locale);
+            this.formatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y h:mm:ss a z').withLocale(Locale.US);
+            //this.formatter = jsJoda.DateTimeFormatter.ofPattern('MM/dd/yyyy H:mm:ss z');
         }
 
         $onDestroy () {
@@ -146,8 +153,10 @@ export const ReportsProductsComponent = {
 
         prepare (item) {
             item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
-            item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
+            item.friendlyActivityDate = jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(item.date), jsJoda.ZoneId.of('America/New_York'));
+            item.friendlyActivityDateString = item.friendlyActivityDate.format(this.formatter);
             item.fullName = item.responsibleUser.fullName;
+            this.$log.info(item.friendlyActivityDate.toString());
             return item;
         }
 
@@ -217,4 +226,6 @@ export const ReportsProductsComponent = {
 }
 
 angular.module('chpl.reports')
-    .component('chplReportsProducts', ReportsProductsComponent);
+    .component('chplReportsProducts', ReportsProductsComponent)
+    .constant('jsJoda', jsJoda)
+    .constant('Locale', Locale);
