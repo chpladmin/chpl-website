@@ -71,4 +71,8 @@ describe('listing with warnings on confirm and no errors', () => {
         assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
     })
 
+    afterEach(function () {
+        browser.refresh();
+    })
+
 })

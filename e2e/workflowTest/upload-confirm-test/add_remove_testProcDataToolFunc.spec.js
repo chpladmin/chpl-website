@@ -56,4 +56,7 @@ describe('an ACB user', () => {
         assert.notInclude(listingEditComponent.getTestToolDetail('170.315 (b)(3)' ,true).getText(), 'HL7v2 Immunization Test Suite');
     })
 
+    afterEach(function () {
+        browser.refresh();
+    })
 })
