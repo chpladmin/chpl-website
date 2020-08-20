@@ -327,13 +327,13 @@
                   <ul ng-if="vm.activeCP.testingLabs && vm.activeCP.testingLabs.length !== 0">
                     <li ng-repeat="atl in vm.activeCP.testingLabs">{{ atl.testingLabName }}</li>
                   </ul>
-                  <span ng-if="vm.displayRealWorldTesting(vm.cp)">
+                  <span ng-if="vm.activeCP.rwtPlanUrl || vm.activeCP.rwtPlanSubmissionDate || vm.activeCP.rwtResultsUrl || vm.activeCP.rwtResultsSubmissionDate">
                   <strong>Real World Testing</strong><br/>
                     <ul>
-                      <li><strong>Plan Url:</strong> {{ vm.activeCP.rwtPlanUrl }}</li>
-                      <li><strong>Plan Submission Date:</strong> {{ vm.activeCP.rwtPlanSubmissionDate | date: 'MMM d, yyyy' }}</li>
-                      <li><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                      <li><strong>Results Submission Date:</strong> {{ vm.activeCP.rwtResultsSubmissionDate | date: 'MMM d, yyyy' }}</li>
+                      <li ng-if="vm.activeCP.rwtPlanUrl"><strong>Plan Url:</strong> {{ vm.activeCP.rwtPlanUrl }}</li>
+                      <li ng-if="vm.activeCP.rwtPlanSubmissionDate"><strong>Plan Submission Date:</strong> {{ vm.activeCP.rwtPlanSubmissionDate | date: 'MMM d, yyyy' }}</li>
+                      <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
+                      <li ng-if="vm.activeCP.rwtResultsSubmissionDate"><strong>Results Submission Date:</strong> {{ vm.activeCP.rwtResultsSubmissionDate | date: 'MMM d, yyyy' }}</li>
                     </ul>
                   </span>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
