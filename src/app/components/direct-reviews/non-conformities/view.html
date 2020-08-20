@@ -5,11 +5,11 @@
 </div>
 <div class="non-conformities" ng-if="$ctrl.nonConformities && $ctrl.nonConformities.length > 0">
   <div class="non-conformities__gridtable-header">
-    <div class="non-conformities__requirements-header">Requirements</div>
+    <div class="non-conformities__requirements-header">Direct Review Requirements</div>
     Requirements Reviewed
   </div>
   <div class="non-conformities__gridtable-header">Non-Conformity Summary</div>
-  <div class="non-conformities__gridtable-header">Review Result</div>
+  <div class="non-conformities__gridtable-header">Direct Review Result</div>
   <div ng-repeat-start="nc in $ctrl.nonConformities" class="non-conformity__header" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
     <div class="non-conformity__gridtable-header non-conformity__gridtable-header--first">
       <span class="non-conformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'Has not been determined' }}
@@ -24,7 +24,7 @@
   <div class="non-conformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>
     <div class="non-conformity__wide non-conformity__requirement">
       <div class="data-label">
-        Non-Conformity Type <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Non-Conformity Type <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="Type of non-conformity found during review" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Type of non-conformity found during review</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.nonConformityType ? nc.nonConformityType : 'Has not been determined' }}
@@ -32,7 +32,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__dal">
       <div class="data-label">
-        Developer Associated Listings<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Developer Associated Listings <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="A listing of other certified products associated with the non-conformity, as applicable" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A listing of other certified products associated with the non-conformity, as applicable</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
       <div class="non-conformity__data-element" ng-if="!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0">None</div>
@@ -43,7 +43,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__determination">
       <div class="data-label">
-        Date of Determination<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Date of Determination <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="The date that ONC determined that a non-conformity was present" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that ONC determined that a non-conformity was present</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.friendlyDateOfDetermination }}
@@ -51,7 +51,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__findings">
       <div class="data-label">
-        Findings<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Findings <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="A detailed description of the ONC findings related to the non-conformity" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A detailed description of the ONC findings related to the non-conformity</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.nonConformityFindings ? nc.nonConformityFindings : 'Has not been determined' }}
@@ -59,7 +59,7 @@
     </div>
     <div class="non-conformity__narrow non-conformity__cap-approval">
       <div class="data-label">
-        Corrective Action Plan Approval Date<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Corrective Action Plan Approval Date <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="The date that ONC approved the corrective action plan proposed by the developer" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that ONC approved the corrective action plan proposed by the developer</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.friendlyCapApprovalDate }}
@@ -67,7 +67,7 @@
     </div>
     <div class="non-conformity__narrow non-conformity__cap-start">
       <div class="data-label">
-        Date Corrective Action Began<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Date Corrective Action Began <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="The date that the corrective action was started" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that the corrective action was started</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.friendlyCapStartDate }}
@@ -75,7 +75,7 @@
     </div>
     <div class="non-conformity__narrow non-conformity__cap-must-complete">
       <div class="data-label">
-        Date Corrective Action Must Be Completed<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Date Corrective Action Must Be Completed <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.friendlyCapMustCompleteDate }}
@@ -83,7 +83,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__explanation">
       <div class="data-label">
-        Developer Explanation<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Developer Explanation <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="If available, the developer’s explanation of why it agrees or disagrees with ONC’s assessment of the non-conformity and an explanation of why the non-conformity occurred" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">If available, the developer’s explanation of why it agrees or disagrees with ONC’s assessment of the non-conformity and an explanation of why the non-conformity occurred</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.developerExplanation ? nc.developerExplanation : 'Has not been determined' }}
@@ -91,7 +91,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__cap-completed">
       <div class="data-label">
-        Date Corrective Action Was Completed<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Date Corrective Action Was Completed <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="The date the corrective action was completed" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date the corrective action was completed</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.friendlyCapEndDate }}
@@ -99,7 +99,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__resolution">
       <div class="data-label">
-        Resolution<button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+        Resolution <button class="non-conformity__tooltip-button btn btn-link" uib-tooltip="A detailed description of how the non-conformity was resolved" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A detailed description of how the non-conformity was resolved</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.resolution ? nc.resolution : 'Has not been resolved' }}

@@ -12,7 +12,7 @@
     <div class="direct-review__basic-information panel-body" ng-if="dr.open">
       <div class="direct-review__start">
         <div class="data-label">
-          Date review began<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+          Direct Review Began <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="The date direct review was initiated" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date direct review was initiated</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
           {{ $ctrl.DateUtil.getDisplayDateFormat(dr.startDate, 'Has not started') }}
@@ -20,7 +20,7 @@
       </div>
       <div class="direct-review__end">
         <div class="data-label">
-          Date review ended<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+          Direct Review Ended <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="The date direct review was completed" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date direct review was completed</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
           {{ $ctrl.DateUtil.getDisplayDateFormat(dr.endDate, 'Has not ended') }}
@@ -28,7 +28,7 @@
       </div>
       <div class="direct-review__circumstances">
         <div class="data-label">
-          Circumstance<span ng-if="dr.circumstances.length !== 1">s</span><button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+          Circumstance <span ng-if="dr.circumstances.length !== 1">s</span><button class="direct-review__tooltip-button btn btn-link" uib-tooltip="Circumstance{{ dr.circumstances.length !== 1 ? 's' : '' }} for ONC to conduct direct review" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Circumstance<span ng-if="dr.circumstances.length !== 1">s</span> for ONC to conduct direct review</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element" ng-if="dr.circumstances && dr.circumstances.length > 0">
           <ul>
