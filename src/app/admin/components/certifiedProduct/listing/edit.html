@@ -448,8 +448,8 @@
       </ul>
     </div>
     <div class="text-left" ng-if="vm.warnings && vm.warnings.length > 0">
-      <input type="checkbox" ng-model="vm.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
-      <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="vm.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
+      <input type="checkbox" ng-model="vm.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="admin-edit-listing__acknowledge-warning-checkbox">
+      <label for="acknowledge-warnings" class="admin-edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="vm.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
     </div>
     <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus()) && vm.showFormErrors) || vm.isSaving"
             id="edit-save"
