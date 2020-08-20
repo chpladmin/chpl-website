@@ -89,6 +89,11 @@ export const ListingDetailsComponent = {
                         let bVal = parseInt(b.substring(1), 10);
                         return aVal - bVal;
                     });
+                    cqm.successVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
                     return cqm;
                 });
             }
