@@ -30,7 +30,6 @@
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
         vm.updateListing = updateListing;
-        vm.acknowledgeWarnings = false;
 
         activate();
 

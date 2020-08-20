@@ -30,8 +30,6 @@
         vm.isBlank = utilService.isBlank;
         vm.populateDeveloperSystemRequirements = populateDeveloperSystemRequirements;
 
-        vm.acknowledgeWarnings = false;
-
         activate();
 
         ////////////////////////////////////////////////////////////////////
