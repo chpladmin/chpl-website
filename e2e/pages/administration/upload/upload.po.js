@@ -6,6 +6,7 @@ const uploadElements = {
     uploadAPIDoc: 'chpl-upload-api-documentation',
     uploadMessages: '.upload-messages',
     uploadMessagesText: 'div.ng-binding.ng-scope',
+    uploadSuccessfulText: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
 }
 const path = require('path');
 
@@ -18,6 +19,10 @@ class UploadPage {
 
     get uploadButton () {
         return $(uploadElements.uploadButton);
+    }
+
+    get uploadSuccessfulText () {
+        return $(uploadElements.uploadSuccessfulText);
     }
 
     get listingUploadText () {
@@ -42,7 +47,8 @@ class UploadPage {
     uploadAPIDocFile (uploadfilePath) {
         const filePath = path.join(__dirname, uploadfilePath);
         this.chooseUploadAPIDocumentation.addValue(browser.uploadFile(filePath));
-        this.uploadButton.scrollAndClick();
+        this.uploadButton.scrollIntoView();
+        this.uploadButton.click();
         browser.waitUntil( () => this.apiDocUploadText.isDisplayed());
     }
 }

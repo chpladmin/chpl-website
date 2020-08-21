@@ -27,7 +27,9 @@ describe('Upload page', () => {
     })
 
     afterEach(function () {
-        loginComponent.openLoginComponent();
+        if (!loginComponent.logoutButton.isDisplayed()) {
+            loginComponent.openLoginComponent();
+        }
         loginComponent.logOut();
     })
 
@@ -40,9 +42,9 @@ describe('API documentation file', () => {
     })
 
     it('can be uploaded successfully back to back', () => {
-        uploadPage.uploadAPIDocFile('../../../resources/APIDOC_File.xlsx');
+        uploadPage.uploadAPIDocFile('../../../resources/APIDoc_File.xlsx');
         assert.include(uploadPage.apiDocUploadText.getText(),'was uploaded successfully.');
-        uploadPage.uploadAPIDocFile('../../../resources/APIDOC_File.xlsx');
+        uploadPage.uploadAPIDocFile('../../../resources/APIDoc_File.xlsx');
         assert.notInclude(uploadPage.apiDocUploadText.getText(),'was not uploaded successfully.');
     })
 
