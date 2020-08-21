@@ -7,7 +7,7 @@ const uploadElements = {
     uploadMessages: '.upload-messages',
     uploadMessagesText: 'div.ng-binding.ng-scope',
     uploadSuccessfulText: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
-}
+};
 const path = require('path');
 
 class UploadPage {
