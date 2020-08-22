@@ -4,7 +4,7 @@ const searchpageElements = {
     compareWidget: '#compare-widget-toggle',
     browseAll: '//button[text()=" Browse all"]',
     searchListing: '#searchField',
-}
+};
 
 class SearchPage {
     constructor () { }

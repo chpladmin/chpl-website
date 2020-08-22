@@ -2,7 +2,7 @@ const elements = {
     compareWidget: '#compare-widget-toggle',
     compareProducts: '//button[text()="Compare products"]',
     removeProducts: '//button[text()="Remove all products"]',
-}
+};
 
 class compareWidgetComponent {
     constructor () { }

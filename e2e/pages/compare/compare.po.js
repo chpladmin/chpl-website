@@ -3,7 +3,7 @@ const elements = {
     certificationCriteria: '//table/tbody/tr[9]/th/a',
     clinicalQualityMeasures: '//table/tbody/tr[88]/th/a',
     allCCCQM: '.compare-rowCert.ng-binding',
-}
+};
 
 class ComparePage {
     constructor () { }
