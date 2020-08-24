@@ -11,33 +11,32 @@ beforeAll(async () => {
     await hooks.open('#/administration/upload');
 });
 
-describe('Upload page', () => {
-    beforeEach(function () {
+describe('When uploading a listing as ONC-ACB', () => {
+    beforeAll(function () {
         loginComponent.loginAsACB();
     })
 
-    it('allows uploading v19 template', () => {
+    it('can upload v19 template', () => {
         uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
         assert.include(uploadPage.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     })
 
-    it('allows uploading v18 template', () => {
+    it('can upload v18 template', () => {
         uploadPage.uploadListing('../../../resources/2015_v18_AQA2.csv');
         assert.include(uploadPage.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     })
 
-    afterEach(function () {
+    afterAll(function () {
         if (!loginComponent.logoutButton.isDisplayed()) {
             loginComponent.openLoginComponent();
         }
         loginComponent.logOut();
     })
-
 })
 
-describe('API documentation file', () => {
+describe('When uploading API documentation files as ADMIN', () => {
 
-    beforeEach(function () {
+    beforeAll(function () {
         loginComponent.loginAsAdmin();
     })
 
