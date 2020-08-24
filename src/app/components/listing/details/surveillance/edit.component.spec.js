@@ -54,7 +54,7 @@
                     surveillance: Mock.surveillances[0],
                     surveillanceTypes: Mock.surveillanceData,
                     workType: 'edit',
-                }
+                };
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -353,7 +353,7 @@
 
                 it('should append the response if it does not match', () => {
                     ctrl.editRequirement(ctrl.surveillance.requirements[1]);
-                    ctrl.modalInstance.close({guiId: 123123})
+                    ctrl.modalInstance.close({guiId: 123123});
                     expect(ctrl.surveillance.requirements[1]).not.toEqual({guiId: 123123});
                     expect(ctrl.surveillance.requirements[2]).toEqual({guiId: 123123});
                 });
@@ -449,7 +449,7 @@
 
                 it('should set the end date to null if it doesn\'t exist', () => {
                     ctrl.surveillance.endDate = undefined;
-                    ctrl.surveillance.endDateObject = null
+                    ctrl.surveillance.endDateObject = null;
                     ctrl.save();
                     expect(ctrl.surveillance.endDate).toBe(null);
                 });

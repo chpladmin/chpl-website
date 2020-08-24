@@ -67,7 +67,7 @@
             networkService.getAcbs(true).then(result => vm.allowedAcbs = result);
             networkService.getCollection('surveillanceManagement').then(result => vm.surveillanceListings = result);
             getResources();
-        }
+        };
 
         function areResourcesReady () {
             return vm.resourcesReady.searchOptions &&
@@ -102,12 +102,12 @@
                 networkService.getPendingListings()
                     .then(function (listings) {
                         vm.pendingProducts = listings.length;
-                    })
+                    });
             }
             networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.pendingSurveillances = ([].concat(surveillances.pendingSurveillance)).length;
-                })
+                });
         }
 
         function selectDeveloper () {
@@ -236,7 +236,7 @@
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
                         vm.forceRefresh = false;
-                    })
+                    });
             }
         }
 
@@ -404,7 +404,7 @@
             vm.splitProductInstance.result.then(function (result) {
                 if (isEditingListing()) {
                     vm.forceRefresh = true;
-                    refreshDevelopers()
+                    refreshDevelopers();
                 } else {
                     vm.activeProduct = result.product;
                     vm.activeVersion = '';

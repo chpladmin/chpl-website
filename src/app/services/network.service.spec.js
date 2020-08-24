@@ -16,7 +16,7 @@
                 networkService = _networkService_;
 
                 $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
-            })
+            });
         });
 
         afterEach(() => {

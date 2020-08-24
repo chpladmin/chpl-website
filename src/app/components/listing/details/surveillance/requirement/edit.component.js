@@ -7,9 +7,9 @@ export const SurveillanceRequirementEditComponent = {
     },
     controller: class SurveillanceRequirementEditController {
         constructor ($log, $uibModal, authService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
-            this.$uibModal = $uibModal
+            this.$uibModal = $uibModal;
             this.hasAnyRole = authService.hasAnyRole;
             this.utilService = utilService;
             this.sortCriteria = utilService.sortCert;
@@ -51,7 +51,7 @@ export const SurveillanceRequirementEditComponent = {
                 keyboard: false,
                 resolve: {
                     disableValidation: () => false,
-                    nonconformity: () => { return {} },
+                    nonconformity: () => { return {}; },
                     randomized: () => this.randomized,
                     randomizedSitesUsed: () => this.randomizedSitesUsed,
                     requirementId: () => this.requirement.id,
@@ -137,7 +137,7 @@ export const SurveillanceRequirementEditComponent = {
             this.close({$value: this.requirement});
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

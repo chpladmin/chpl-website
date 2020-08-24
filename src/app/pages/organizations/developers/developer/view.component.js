@@ -9,7 +9,7 @@ export const DevelopersViewComponent = {
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
@@ -296,7 +296,7 @@ export const DevelopersViewComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.organizations')
     .component('chplDevelopersView', DevelopersViewComponent);

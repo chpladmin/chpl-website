@@ -6,7 +6,7 @@ export const ProductEditComponent = {
     },
     controller: class ProductEditComponent {
         constructor ($log, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
         }
@@ -125,7 +125,7 @@ export const ProductEditComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplProductEdit', ProductEditComponent);

@@ -6,7 +6,7 @@ export const DevelopersMergeComponent = {
     },
     controller: class DevelopersMergeController {
         constructor ($log, $state, $stateParams, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.$stateParams = $stateParams;
@@ -35,7 +35,7 @@ export const DevelopersMergeComponent = {
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (this.developer && this.developers) {
-                this.developers = this.developers.filter(d => d.developerId !== this.developer.developerId)
+                this.developers = this.developers.filter(d => d.developerId !== this.developer.developerId);
             }
         }
 
@@ -76,7 +76,7 @@ export const DevelopersMergeComponent = {
             this.selectedToMerge = null;
         }
     },
-}
+};
 
 angular
     .module('chpl.organizations')

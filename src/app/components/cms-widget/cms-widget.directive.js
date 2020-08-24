@@ -43,7 +43,7 @@ require('jspdf-autotable');
             } else {
                 vm.clearProducts();
             }
-        }
+        };
 
         function addProduct (id) {
             if (!isInList(id)) {
@@ -60,7 +60,7 @@ require('jspdf-autotable');
         }
 
         function compare () {
-            const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name } });
+            const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name }; });
             $rootScope.$broadcast('compareAll', payload);
             $rootScope.$broadcast('HideWidget');
             $rootScope.$broadcast('ShowCompareWidget');

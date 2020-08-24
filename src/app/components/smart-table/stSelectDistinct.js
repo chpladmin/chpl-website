@@ -24,7 +24,7 @@
                 registerRestoreState: '&',
             },
             templateUrl: 'chpl.components/smart-table/stSelectDistinct.html',
-        }
+        };
     }
 
     function stSelectDistinctLink (scope, element, attr, ctrls) {
@@ -84,7 +84,7 @@
             } else if (angular.isDefined(scope.collection)) {
                 bindCollection(scope.collection);
                 scope.$watch('collection', function (newCollection) {
-                    bindCollection(newCollection)
+                    bindCollection(newCollection);
                 });
             }
         }

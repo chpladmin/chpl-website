@@ -48,7 +48,7 @@
                 scope.dismiss = jasmine.createSpy('dismiss');
                 scope.resolve = {
                     surveillance: Mock.surveillances[0],
-                }
+                };
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -178,7 +178,7 @@
                     };
                     ctrl.surveillanceTypes.nonconformityTypes = {
                         data: [{removed: false}, {removed: false}, {removed: true}],
-                    }
+                    };
                     ctrl.surveillance.certifiedProduct.edition = '2011';
                     ctrl.editSurveillance();
                     expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(0);

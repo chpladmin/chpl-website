@@ -125,7 +125,7 @@
                         getChangeRequests: networkService.getChangeRequests.calls.count(),
                         getChangeRequestTypes: networkService.getChangeRequestTypes.calls.count(),
                         getChangeRequestStatusTypes: networkService.getChangeRequestStatusTypes.calls.count(),
-                    }
+                    };
                     $rootScope.$broadcast('loggedIn');
                     expect(networkService.getSearchOptions.calls.count()).toBe(initCount.getSearchOptions);
                     expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount.getUsersAtDeveloper + 1);
@@ -143,8 +143,8 @@
                         getChangeRequests: networkService.getChangeRequests.calls.count(),
                         getChangeRequestTypes: networkService.getChangeRequestTypes.calls.count(),
                         getChangeRequestStatusTypes: networkService.getChangeRequestStatusTypes.calls.count(),
-                    }
-                    ctrl.$onDestroy()
+                    };
+                    ctrl.$onDestroy();
                     $rootScope.$broadcast('loggedIn');
                     expect(networkService.getSearchOptions.calls.count()).toBe(initCount.getSearchOptions);
                     expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount.getUsersAtDeveloper);

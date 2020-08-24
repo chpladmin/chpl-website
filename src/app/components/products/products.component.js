@@ -9,7 +9,7 @@ export const ProductsComponent = {
     },
     controller: class ProductsComponent {
         constructor ($log, $q, $state, $uibModal, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$q = $q;
             this.$state = $state;
@@ -43,7 +43,7 @@ export const ProductsComponent = {
                         let status = {
                             value: cs.name,
                             selected: this.defaultRefine[cs.name],
-                        }
+                        };
                         return status;
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
@@ -52,7 +52,7 @@ export const ProductsComponent = {
             if (this.products) {
                 if (this.productId) {
                     this.activeProduct = this.products
-                        .filter(p => p.productId === parseInt(this.productId, 10))[0]
+                        .filter(p => p.productId === parseInt(this.productId, 10))[0];
                 } else {
                     this.products = this.products.map(p => {
                         this.networkService.getVersionsByProduct(p.productId)
@@ -93,15 +93,15 @@ export const ProductsComponent = {
         }
 
         getListingCounts (product) {
-            if (!product.loaded) { return '' }
+            if (!product.loaded) { return ''; }
             let counts = product.versions.reduce((acc, v) => {
-                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length
+                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
                 acc.total += v.listings.length;
                 return acc;
             }, {active: 0, total: 0});
             let ret = '';
             if (counts.active > 0) {
-                ret += counts.active + ' active / '
+                ret += counts.active + ' active / ';
             }
             ret += counts.total + ' listing';
             if (counts.total !== 1) {
@@ -170,7 +170,7 @@ export const ProductsComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplProducts', ProductsComponent);

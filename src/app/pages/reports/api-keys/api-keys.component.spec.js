@@ -24,7 +24,7 @@
                 networkService.getActivityMetadata.and.returnValue($q.when([]));
                 networkService.getActivityById.and.returnValue($q.when({}));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 el = angular.element('<chpl-reports-api-keys></chpl-reports-api-keys>');
                 $compile(el)(scope);
                 scope.$digest();

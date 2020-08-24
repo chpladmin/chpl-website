@@ -5,7 +5,7 @@ export const ReportsListingsComponent = {
     },
     controller: class ReportsListingsComponent {
         constructor ($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$state = $state;
@@ -528,7 +528,7 @@ export const ReportsListingsComponent = {
                                 cur.found = true;
                                 ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" version changed from "' + pre.testProcedureVersion + '" to "' + cur.testProcedureVersion + '"</li>');
                             }
-                        })
+                        });
                         if (!pre.found) {
                             ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" was removed</li>');
                         }
@@ -570,7 +570,7 @@ export const ReportsListingsComponent = {
                                     ret.push('<li>Test Data "' + pre.testData.name + '" alteration changed from "' + pre.alteration + '" to "' + cur.alteration + '"</li>');
                                 }
                             }
-                        })
+                        });
                         if (!pre.found) {
                             ret.push('<li>Test Data "' + pre.testData.name + '" was removed</li>');
                         }
@@ -740,7 +740,7 @@ export const ReportsListingsComponent = {
                                 meta.source = {
                                     oldS: item.originalData,
                                     newS: item.newData,
-                                }
+                                };
                             } else {
                                 action += actions.join('</li><li>');
                                 action += '</li></ul>';
@@ -764,7 +764,7 @@ export const ReportsListingsComponent = {
         }
 
         prepare (item, full) {
-            item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber
+            item.filterText = item.developerName + '|' + item.productName + '|' + item.chplProductNumber;
             item.categoriesFilter = '|' + item.categories.join('|') + '|';
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.friendlyCertificationDate = new Date(item.certificationDate).toISOString().substring(0, 10);
@@ -816,7 +816,7 @@ export const ReportsListingsComponent = {
                 .then(results => {
                     that.results = results.activities
                         .map(item => that.prepare(item));
-                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
                     let filter = {};
                     filter.dataFilter = '';
                     filter.tableState = this.tableController.tableState();
@@ -832,7 +832,7 @@ export const ReportsListingsComponent = {
 
         addPageToData (page) {
             let that = this;
-            if (this.isDestroyed) { return }
+            if (this.isDestroyed) { return; }
             this.networkService.getActivityMetadata('beta/listings', {pageNum: page, ignoreLoadingBar: true}).then(results => {
                 results.activities.forEach(item => {
                     that.results.push(that.prepare(item));
@@ -862,7 +862,7 @@ export const ReportsListingsComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsListings', ReportsListingsComponent);

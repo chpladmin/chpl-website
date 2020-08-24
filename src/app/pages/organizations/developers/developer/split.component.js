@@ -6,7 +6,7 @@ export const DevelopersSplitComponent = {
     },
     controller: class DevelopersSplitController {
         constructor ($log, $state, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
@@ -94,7 +94,7 @@ export const DevelopersSplitComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.organizations')

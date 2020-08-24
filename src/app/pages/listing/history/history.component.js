@@ -7,7 +7,7 @@ export const ListingHistoryComponent = {
     },
     controller: class ListingHistoryComponent {
         constructor ($filter, $log, $q, $state, featureFlags, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$q = $q;
@@ -406,7 +406,7 @@ export const ListingHistoryComponent = {
             return ret;
         }
     },
-}
+};
 
 angular
     .module('chpl.listing')

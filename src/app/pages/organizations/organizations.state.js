@@ -13,7 +13,7 @@ let states = [
         component: 'chplDevelopers',
         resolve: {
             developers: networkService => {
-                'ngInject'
+                'ngInject';
                 return networkService.getDevelopers();
             },
         },
@@ -24,7 +24,7 @@ let states = [
         component: 'chplDevelopersView',
         resolve: {
             developer: (networkService, $location, $transition$) => {
-                'ngInject'
+                'ngInject';
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else {
@@ -32,7 +32,7 @@ let states = [
                 }
             },
             directReviews: (featureFlags, networkService, $location, $transition$) => {
-                'ngInject'
+                'ngInject';
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else if (featureFlags.isOn('direct-review')) {
@@ -40,7 +40,7 @@ let states = [
                 }
             },
             products: (networkService, $location, $transition$) => {
-                'ngInject'
+                'ngInject';
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else {
@@ -85,11 +85,11 @@ let states = [
         component: 'chplOncOrganizations',
         resolve: {
             allOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAcbs(false);
             },
             editableOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAcbs(true);
             },
             roles: () => ['ROLE_ACB'],
@@ -113,7 +113,7 @@ let states = [
         component: 'chplOncOrganization',
         resolve: {
             organization: ($transition$, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAcb($transition$.params().id);
             },
         },
@@ -143,11 +143,11 @@ let states = [
         component: 'chplOncOrganizations',
         resolve: {
             allOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAtls(false);
             },
             editableOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAtls(true);
             },
             roles: () => ['ROLE_ATL'],
@@ -171,7 +171,7 @@ let states = [
         component: 'chplOncOrganization',
         resolve: {
             organization: ($transition$, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAtl($transition$.params().id);
             },
         },
@@ -199,7 +199,7 @@ let states = [
 ];
 
 function organizationsStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });
