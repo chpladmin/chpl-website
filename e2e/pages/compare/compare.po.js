@@ -1,5 +1,5 @@
 const elements = {
-    showAllPossible: '#showAllPossible',
+    showAllPossible: '#show-all-possible',
     certificationCriteria: '#toggle-certification-criteria',
     clinicalQualityMeasures: '#toggle-cqms',
     allCCCQM: '.compare-rowCert.ng-binding',
