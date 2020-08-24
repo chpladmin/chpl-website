@@ -1,7 +1,7 @@
 const elements = {
     showAllPossible: '#showAllPossible',
-    certificationCriteria: '//table/tbody/tr[9]/th/a',
-    clinicalQualityMeasures: '//table/tbody/tr[88]/th/a',
+    certificationCriteria: '#toggle-certification-criteria',
+    clinicalQualityMeasures: '#toggle-cqms',
     allCCCQM: '.compare-rowCert.ng-binding',
 };
 
