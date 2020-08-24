@@ -4,7 +4,7 @@ const elements = {
     editTitle: '#contactTitle',
     editEmail: '#contactEmail',
     editPhone: '#contactPhoneNumber',
-}
+};
 
 class ContactComponent {
     constructor () { }

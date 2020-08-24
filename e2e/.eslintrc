@@ -32,7 +32,7 @@
         "no-useless-return": ["error"],
         "no-whitespace-before-property": ["error"],
         "quotes": ["error", "single"],
-        "semi": ["error"],
+        "semi": ["warn"],
         "semi-spacing": ["error", {"before": false, "after": true}],
         "sort-vars": ["error"],
         "space-before-blocks": ["error"],

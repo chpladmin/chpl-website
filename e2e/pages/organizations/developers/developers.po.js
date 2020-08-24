@@ -7,7 +7,7 @@ const elements = {
     products: '.products__product',
     lastModified: '.product__product-info-item-last-modified',
     editProductName: '#product-name',
-}
+};
 
 class DevelopersPage {
     constructor () { }

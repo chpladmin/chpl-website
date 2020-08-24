@@ -1,5 +1,5 @@
 import DevelopersPage from './developers.po';
-import Hooks from '../../../utilities/hooks'
+import Hooks from '../../../utilities/hooks';
 import ActionBarComponent from '../../../components/action-bar/action-bar.po';
 import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';

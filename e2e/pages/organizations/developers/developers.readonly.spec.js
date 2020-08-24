@@ -1,6 +1,5 @@
-/* eslint-disable no-console,angular/log */
 import DevelopersPage from './developers.po';
-import Hooks from '../../../utilities/hooks'
+import Hooks from '../../../utilities/hooks';
 
 let hooks, page;
 

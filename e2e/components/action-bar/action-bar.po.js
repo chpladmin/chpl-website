@@ -1,6 +1,6 @@
 const elements = {
     save: '#action-bar-save',
-}
+};
 
 class ActionBarComponent {
     constructor () { }

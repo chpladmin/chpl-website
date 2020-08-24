@@ -1,6 +1,6 @@
 const elements = {
     container: '#toast-container',
-}
+};
 
 class ToastComponent {
     constructor () { }

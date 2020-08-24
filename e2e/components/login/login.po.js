@@ -6,7 +6,7 @@ const loginElements = {
     password: '[name="password"]',
     login: 'button=Log In',
     logout: '//button[text()="Log Out"]',
-}
+};
 
 class LoginComponent {
     constructor () { }
