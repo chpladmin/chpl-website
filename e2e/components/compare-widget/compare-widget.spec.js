@@ -27,10 +27,8 @@ describe('on compare widget', () => {
             assert.isFalse(component.removeProductsButton.isDisplayed());
         });
     });
-});
 
-describe('on compare widget', () => {
-    describe('if there is at least 1 listing added for compare', () => {
+    describe('if there is exactly 1 listing added for compare', () => {
         beforeAll(() => {
             page.searchForListing(chplId2);
             page.addListingToCompare(ListingId2);
@@ -51,11 +49,8 @@ describe('on compare widget', () => {
             assert.isFalse(component.removeProductsButton.isDisplayed());
             assert.isFalse(component.compareProductsButton.isDisplayed());
         });
-
     });
-});
 
-describe('on compare widget', () => {
     describe('if there are at least 2 listings added for compare', () => {
         beforeAll(() => {
             page.searchForListing(chplId1);
