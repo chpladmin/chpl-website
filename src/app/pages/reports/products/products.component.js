@@ -55,9 +55,9 @@ export const ReportsProductsComponent = {
             let that = this;
             this.filterText = filter.dataFilter;
             if (filter.tableState.search.predicateObject.date) {
-                this.tableController.search(filter.tableState.search.predicateObject.date, 'friendlyActivityDateMilis');
+                this.tableController.search(filter.tableState.search.predicateObject.date, 'friendlyActivityDateMillis');
             } else {
-                this.tableController.search({}, 'friendlyActivityDateMilis');
+                this.tableController.search({}, 'friendlyActivityDateMillis');
             }
             this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
             this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
@@ -153,6 +153,7 @@ export const ReportsProductsComponent = {
             item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
             item.friendlyActivityDate = this.longToZonedDateTime(item.date)
             item.friendlyActivityDateMilis = item.friendlyActivityDate.toInstant().toEpochMilli();
+            item.friendlyActivityDateString = this.zonedDateTimeToString(item.friendlyActivityDate);
             item.fullName = item.responsibleUser.fullName;
             return item;
         }
