@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Ai Date Range', () => {
+    xdescribe('the Ai Date Range', () => {
         var $analytics, $compile, $localStorage, $log, el, scope, vm;
 
         var stateKey = 'test';
