@@ -1,5 +1,4 @@
 import '../../../../node_modules/@js-joda/timezone';
-//import { Locale } from '../../../../node_modules/@js-joda/locale_en-us';
 import * as jsJoda from '../../../../node_modules/@js-joda/core';
 
 (function () {
@@ -26,7 +25,7 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'chpl.components/smart-table/chpl-date-range.html',
+            templateUrl: 'chpl.components/smart-table/chpl-joda-date-range.html',
         }
     }
 
@@ -84,39 +83,43 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
         }
 
         function filterChanged () {
+            vm.$log.info('Filter changed.');
             vm.hasChanges = vm.before || vm.after;
             var query = {};
             if (vm.before) {
                 var before;
                 if (angular.isObject(vm.before)) {
-                    vm.$log.info('Got here');
-                    query.before = angular.copy(vm.before)
+                    //before = longToZonedDateTime(vm.before.getTime()).with(jsJoda.LocalTime.MAX);
+                    before = datePartsToZonedDateTime(vm.before.getFullYear(),
+                        vm.before.getMonth() + 1,
+                        vm.before.getDate(),
+                        jsJoda.LocalTime.MAX);
                 } else {
-                    query.before = _convertToZonedDateTimeUsingEasternTime(vm.before);
+                    before = longToZonedDateTime(vm.before).with(jsJoda.LocalTime.MAX);
                 }
-                vm.$log.info('Before');
-                vm.$log.info(query.before);
-                vm.$log.info(new Date());
-                query.before = new Date(query.before.toInstant().toEpochMilli());
+                query.before = new Date(zonedDateTimeToLong(before));
                 if (vm.trackAnalytics) {
+                    //TODO
                     $analytics.eventTrack('Certification Date "To" Filter', { category: 'Search', label: $filter('date')(before, 'mediumDate', 'UTC')});
                 }
             }
-
             if (vm.after) {
                 var after;
                 if (angular.isObject(vm.after)) {
-                    after = angular.copy(vm.after)
+                    after = longToZonedDateTime(vm.after.getTime()).with(jsJoda.LocalTime.MIN);
+                    //after = datePartsToZonedDateTime(vm.after.getFullYear(),
+                    //    vm.after.getMonth() + 1,
+                    //    vm.after.getDate(),
+                    //    jsJoda.LocalTime.MIDNIGHT);
                 } else {
-                    after = _convertToZonedDateTimeUsingEasternTime(vm.after);
+                    after = longToZonedDateTime(vm.after).with(jsJoda.LocalTime.MIDNIGHT);
                 }
-                query.after = new Date(after.toInstant().toEpochMilli());
+                query.after = new Date(zonedDateTimeToLong(after));
                 if (vm.trackAnalytics) {
+                    //TODO
                     $analytics.eventTrack('Certification Date "After" Filter', { category: 'Search', label: $filter('date')(after, 'mediumDate', 'UTC')});
                 }
             }
-            vm.$log.info('Query');
-            vm.$log.info(query);
             vm.tableCtrl.search(query, vm.predicate);
             vm.storeState();
         }
@@ -125,16 +128,11 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
             var predicateSearch = state.search.predicateObject[vm.predicate];
             if (predicateSearch) {
                 if (predicateSearch.after) {
-                    //vm.after = new Date(predicateSearch.after);
-                    //console.log(predicateSearch.after);
                     vm.after = new Date(predicateSearch.after);
                 } else {
                     vm.after = undefined;
                 }
                 if (predicateSearch.before) {
-                    //var before = new Date(predicateSearch.before);
-                    //before.setUTCDate(before.getUTCDate() - 1);
-                    //console.log(predicateSearch.before);
                     vm.before = new Date(predicateSearch.before);
                 } else {
                     vm.before = undefined;
@@ -149,8 +147,19 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
             }
         }
 
-        function _convertToZonedDateTimeUsingEasternTime (dateLong) {
-            return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of('America/New_York'));
+        function longToZonedDateTime (dateLong, zone) {
+            zone = zone || 'America/New_York'
+            return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
+        }
+
+        function zonedDateTimeToLong (date) {
+            return date.toInstant().toEpochMilli();
+        }
+
+        function datePartsToZonedDateTime (year, month, day, localTime, zone) {
+            zone = zone || 'America/New_York';
+            localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
+            return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
         }
     }
 })();

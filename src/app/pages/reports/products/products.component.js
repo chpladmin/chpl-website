@@ -55,9 +55,9 @@ export const ReportsProductsComponent = {
             let that = this;
             this.filterText = filter.dataFilter;
             if (filter.tableState.search.predicateObject.date) {
-                this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
+                this.tableController.search(filter.tableState.search.predicateObject.date, 'friendlyActivityDateMilis');
             } else {
-                this.tableController.search({}, 'date');
+                this.tableController.search({}, 'friendlyActivityDateMilis');
             }
             this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
             this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
@@ -151,7 +151,8 @@ export const ReportsProductsComponent = {
 
         prepare (item) {
             item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
-            item.friendlyActivityDate = this.convertToZonedDateTimeUsingEasternTime(item.date)
+            item.friendlyActivityDate = this.longToZonedDateTime(item.date)
+            item.friendlyActivityDateMilis = item.friendlyActivityDate.toInstant().toEpochMilli();
             item.fullName = item.responsibleUser.fullName;
             return item;
         }
@@ -194,8 +195,12 @@ export const ReportsProductsComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: this.zonedDateTimeForBeginningOfChpl().toInstant().toEpochMilli(),
-                                before: this.zonedDateTimeForCurrentDateEndOfDay().toInstant().toEpochMilli(),
+                                after: this.zonedDateTimeToLong(this.datePartsToZonedDateTime(2016, 4, 15)),
+                                before: this.zonedDateTimeToLong(
+                                    this.datePartsToZonedDateTime(jsJoda.LocalDate.now().year(),
+                                        jsJoda.LocalDate.now().monthValue(),
+                                        jsJoda.LocalDate.now().dayOfMonth(),
+                                        jsJoda.LocalTime.MAX)),
                             },
                         },
                     };
@@ -219,24 +224,25 @@ export const ReportsProductsComponent = {
             });
         }
 
-        convertToZonedDateTimeUsingEasternTime (dateLong) {
-            return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of('America/New_York'));
+        longToZonedDateTime (dateLong, zone) {
+            zone = zone || 'America/New_York'
+            return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
         }
 
-        convertZonedDateTimeToString (date, format) {
-            if (!format) {
-                format = 'MMM d, y h:mm:ss a z';
-            }
+        zonedDateTimeToLong (date) {
+            return date.toInstant().toEpochMilli();
+        }
+
+        zonedDateTimeToString (date, format) {
+            format = format || 'MMM d, y h:mm:ss a z';
             let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
             return date.format(formatter);
         }
 
-        zonedDateTimeForBeginningOfChpl () {
-            return jsJoda.ZonedDateTime.of(jsJoda.LocalDate.parse('2016-04-01'), jsJoda.LocalTime.MIDNIGHT, jsJoda.ZoneId.of('America/New_York'));
-        }
-
-        zonedDateTimeForCurrentDateEndOfDay () {
-            return jsJoda.ZonedDateTime.now(jsJoda.ZoneId.of('America/New_York')).with(jsJoda.LocalTime.MAX)
+        datePartsToZonedDateTime (year, month, day, localTime, zone) {
+            zone = zone || 'America/New_York';
+            localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
+            return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
         }
     },
 }

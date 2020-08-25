@@ -33,7 +33,7 @@
   </div>
   <div class="row">
     <div class="col-sm-5">
-      Filter on Activity Date
+      Filter on Activity Date (based on Eastern Time)
       <chpl-joda-date-range
         predicate="date"
         register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
@@ -90,7 +90,7 @@
               <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
               <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
               <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
-              {{ $ctrl.convertZonedDateTimeToString(activity.friendlyActivityDate) }} <br /> {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
+              {{ $ctrl.zonedDateTimeToString(activity.friendlyActivityDate) }} <br /> {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
               <div ng-if="activity.action && activity.showDetails">
                 {{ activity.action }}
                 <ul>
