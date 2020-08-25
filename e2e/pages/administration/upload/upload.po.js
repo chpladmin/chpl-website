@@ -1,3 +1,5 @@
+// No need for this now, update next time
+
 const uploadElements = {
     chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
     uploadButton: '.btn.btn-ai-success',
