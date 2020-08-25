@@ -11,14 +11,14 @@ beforeEach(async () => {
 
 describe('on compare page after clicking show all-', () => {
 
-    it('All 78 certification criteria should be displayed', () => {
+    it('should display all of the 78 certification criterias', () => {
         page.checkShowAllCheckbox();
-        page.certificationCriterialink.scrollIntoView();
-        page.certificationCriterialink.click();
+        page.certificationCriteriaLink.scrollIntoView();
+        page.certificationCriteriaLink.click();
         assert.equal(page.allCCCQM.length,78);
     });
 
-    it('All 98 CQMs should be displayed', () => {
+    it('should display all of the 98 CQMs', () => {
         page.checkShowAllCheckbox();
         page.clinicalQualityMeasuresLink.scrollIntoView();
         page.clinicalQualityMeasuresLink.click();

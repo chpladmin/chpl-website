@@ -41,13 +41,11 @@ class SearchPage {
     gotoResourcePage () {
         this.chplResourceButton.click();
         this.overviewPageButton.click();
-        return this;
     }
 
     searchForListing (chplId) {
         this.searchListing.clearValue();
         this.searchListing.addValue(chplId);
-        return this;
     }
 }
 

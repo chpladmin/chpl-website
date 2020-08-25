@@ -56,7 +56,7 @@ describe('on compare widget', () => {
 });
 
 describe('on compare widget', () => {
-    describe('if there are atleast 2 listings added for compare', () => {
+    describe('if there are at least 2 listings added for compare', () => {
         beforeAll(() => {
             page.searchForListing(chplId1);
             page.addListingToCompare(ListingId1);

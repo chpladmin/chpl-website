@@ -12,7 +12,7 @@ class ComparePage {
         return $(elements.showAllPossible);
     }
 
-    get certificationCriterialink () {
+    get certificationCriteriaLink () {
         return $(elements.certificationCriteria);
     }
 
