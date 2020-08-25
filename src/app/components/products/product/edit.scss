@@ -5,7 +5,7 @@
 
 .product__history-of-product {
     display: grid;
-    grid-template-columns: 2fr 1.4fr 3em;
+    grid-template-columns: 2fr 1.4fr 6em;
     margin: 0 8px;
     background: var(--light-grey);
 }
@@ -17,7 +17,7 @@
 
 .product__history-of-product-item--end {
     justify-self: end;
-    align-self: center;
+    align-self: top;
 }
 
 .product__history-of-product-add-new {

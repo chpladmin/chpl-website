@@ -45,6 +45,14 @@ export const ProductEditComponent = {
             this.takeAction({action: 'cancel'});
         }
 
+        doneAddingOwner () {
+            this.newOwner = undefined;
+            this.newTransferDate = undefined;
+            this.addingOwner = false;
+            this.showFormErrors = false;
+            this.generateErrorMessages();
+        }
+
         editContact (contact) {
             this.product.contact = angular.copy(contact);
         }
@@ -52,10 +60,10 @@ export const ProductEditComponent = {
         generateErrorMessages () {
             let messages = [];
             if (this.product) {
-                if (this.product.ownerHistory.length < 1) {
+                if (!this.product.ownerHistory || this.product.ownerHistory.length < 1) {
                     messages.push('At least one Owner must be recorded');
                 }
-                if (this.product.ownerHistory[0].transferDate) {
+                if (this.product.ownerHistory[0] && this.product.ownerHistory[0].transferDate) {
                     messages.push('Current Developer must be indicated');
                 }
                 this.product.ownerHistory.forEach((o, idx, arr) => {
@@ -103,10 +111,7 @@ export const ProductEditComponent = {
                     }
                     return a.transferDate ? 1 : -1;
                 });
-            this.newOwner = undefined;
-            this.newTransferDate = undefined;
-            this.addingOwner = false;
-            this.generateErrorMessages();
+            this.doneAddingOwner();
         }
 
         takeActionBarAction (action) {
