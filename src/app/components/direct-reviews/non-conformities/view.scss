@@ -1,4 +1,4 @@
-.nonconformities {
+.non-conformities {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: 5px;
@@ -7,19 +7,19 @@
     border: 1px solid var(--grey);
 }
 
-.nonconformities__gridtable-header {
+.non-conformities__gridtable-header {
     text-transform: uppercase;
     margin-top: 5px;
     margin-bottom: 5px;
     align-self: end;
 }
 
-.nonconformities__requirements-header {
+.non-conformities__requirements-header {
     text-transform: uppercase;
     font-weight: 700;
 }
 
-.nonconformity {
+.non-conformity {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     width: 100%;
@@ -28,41 +28,41 @@
     border-radius: 8px;
 }
 
-.nonconformity__header {
+.non-conformity__header {
     grid-column: 1 / span 3;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     width: 100%;
 }
 
-.nonconformity__gridtable-header {
+.non-conformity__gridtable-header {
     padding: 10px 15px;
 }
 
-.nonconformity__gridtable-header--first {
+.non-conformity__gridtable-header--first {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
 }
 
-.nonconformity__gridtable-header--last {
+.non-conformity__gridtable-header--last {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
 }
 
-.nonconformity__gridtable-header--open {
+.non-conformity__gridtable-header--open {
     background-color: var(--grey-blue);
 }
 
-.nonconformity__gridtable-header--closed {
+.non-conformity__gridtable-header--closed {
     background-color: var(--light-grey) !important;
     // remove !important when "new-style" goes away / ui-bump-major changes / etc.
 }
 
-.nonconformity__header-toggle {
+.non-conformity__header-toggle {
     margin-left: auto;
 }
 
-.nonconformity__basic-information {
+.non-conformity__basic-information {
     border-left: 4px solid var(--dark-grey);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -71,18 +71,18 @@
     grid-column-end: span 3;
 }
 
-.nonconformity__narrow {
+.non-conformity__narrow {
     //grid-column-start: 1;
     margin: 8px;
 }
 
-.nonconformity__wide {
+.non-conformity__wide {
     grid-column-start: 1;
     grid-column-end: span 3;
     margin: 8px;
 }
 
-.nonconformity__tooltip-button {
+.non-conformity__tooltip-button {
     display: inline-block;
     margin-bottom: 0;
     font-weight: normal;
