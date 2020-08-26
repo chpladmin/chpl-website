@@ -110,7 +110,7 @@ export const ReportsUserActionsComponent = {
 
         search () {
             this.initializeSearch();
-            this.callActivityServiceForMetadataOld('listings');
+            this.callActivityServiceForMetadata('beta/listings');
             this.callActivityServiceForMetadata('beta/products');
             this.callActivityServiceForMetadata('beta/versions');
             this.callActivityServiceForMetadata('beta/users');
