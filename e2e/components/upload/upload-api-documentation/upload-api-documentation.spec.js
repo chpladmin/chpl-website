@@ -15,14 +15,13 @@ describe('When uploading API documentation files as ADMIN', () => {
 
     beforeAll(function () {
         loginComponent.loginAsAdmin();
-    })
+    });
 
     it('can be uploaded successfully back to back', () => {
         uploadcomponent.uploadAPIDocFile('../../../resources/APIDoc_File.xlsx');
         assert.include(uploadcomponent.apiDocUploadText.getText(),'was uploaded successfully.');
         uploadcomponent.uploadAPIDocFile('../../../resources/APIDoc_File.xlsx');
         assert.notInclude(uploadcomponent.apiDocUploadText.getText(),'was not uploaded successfully.');
-    })
+    });
 
-})
-
+});

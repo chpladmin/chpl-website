@@ -31,7 +31,7 @@ class UploadListingComponent {
         const filePath = path.join(__dirname, uploadfilePath);
         this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
         this.uploadButton.waitAndClick();
-        browser.waitUntil( () => this.listingUploadText.isDisplayed())
+        browser.waitUntil( () => this.listingUploadText.isDisplayed());
     }
 
 }
