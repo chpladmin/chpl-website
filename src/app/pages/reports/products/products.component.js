@@ -193,7 +193,7 @@ export const ReportsProductsComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: this.DateUtil.zonedDateTimeToLong(this.DateUtil.datePartsToZonedDateTime(2016, 4, 15)),
+                                after: this.DateUtil.zonedDateTimeToLong(this.DateUtil.datePartsToZonedDateTime(2016, 4, 1)),
                                 before: this.DateUtil.zonedDateTimeToLong(
                                     this.DateUtil.datePartsToZonedDateTime(this.DateUtil.jsJoda().LocalDate.now().year(),
                                         this.DateUtil.jsJoda().LocalDate.now().monthValue(),
