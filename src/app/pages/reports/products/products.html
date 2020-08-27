@@ -90,7 +90,7 @@
               <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
               <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
               <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
-              {{ $ctrl.zonedDateTimeToString(activity.friendlyActivityDate) }} <br /> {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
+              {{ $ctrl.DateUtil.zonedDateTimeToString(activity.friendlyActivityDate) }} <br /> {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
               <div ng-if="activity.action && activity.showDetails">
                 {{ activity.action }}
                 <ul>

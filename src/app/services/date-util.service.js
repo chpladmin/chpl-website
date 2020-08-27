@@ -39,6 +39,10 @@ class DateUtil {
         localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
         return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
     }
+
+    jsJoda () {
+        return jsJoda;
+    }
 }
 
 angular

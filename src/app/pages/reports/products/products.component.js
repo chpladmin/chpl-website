@@ -195,10 +195,10 @@ export const ReportsProductsComponent = {
                             date: {
                                 after: this.DateUtil.zonedDateTimeToLong(this.DateUtil.datePartsToZonedDateTime(2016, 4, 15)),
                                 before: this.DateUtil.zonedDateTimeToLong(
-                                    this.DateUtil.datePartsToZonedDateTime(jsJoda.LocalDate.now().year(),
-                                        jsJoda.LocalDate.now().monthValue(),
-                                        jsJoda.LocalDate.now().dayOfMonth(),
-                                        jsJoda.LocalTime.MAX)),
+                                    this.DateUtil.datePartsToZonedDateTime(this.DateUtil.jsJoda().LocalDate.now().year(),
+                                        this.DateUtil.jsJoda().LocalDate.now().monthValue(),
+                                        this.DateUtil.jsJoda().LocalDate.now().dayOfMonth(),
+                                        this.DateUtil.jsJoda().LocalTime.MAX)),
                             },
                         },
                     };
@@ -221,27 +221,6 @@ export const ReportsProductsComponent = {
                 }
             });
         }
-
-        //longToZonedDateTime (dateLong, zone) {
-        //    zone = zone || 'America/New_York'
-        //    return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
-        //}
-
-        //zonedDateTimeToLong (date) {
-        //    return date.toInstant().toEpochMilli();
-        //}
-
-        //zonedDateTimeToString (date, format) {
-        //    format = format || 'MMM d, y h:mm:ss a z';
-        //    let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
-        //    return date.format(formatter);
-        //}
-
-        //datePartsToZonedDateTime (year, month, day, localTime, zone) {
-        //    zone = zone || 'America/New_York';
-        //    localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
-        //    return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
-        //}
     },
 }
 
