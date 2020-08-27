@@ -1,15 +1,12 @@
-import '../../../../../node_modules/@js-joda/timezone';
-import { Locale } from '../../../../../node_modules/@js-joda/locale_en-us';
-import * as jsJoda from '../../../../../node_modules/@js-joda/core';
-
 export const ReportsProductsComponent = {
     templateUrl: 'chpl.reports/products/products.html',
     controller: class ReportsProductsComponent {
-        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $scope, DateUtil, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
+            this.DateUtil = DateUtil;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -151,9 +148,9 @@ export const ReportsProductsComponent = {
 
         prepare (item) {
             item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
-            item.friendlyActivityDate = this.longToZonedDateTime(item.date)
+            item.friendlyActivityDate = this.DateUtil.longToZonedDateTime(item.date)
             item.friendlyActivityDateMilis = item.friendlyActivityDate.toInstant().toEpochMilli();
-            item.friendlyActivityDateString = this.zonedDateTimeToString(item.friendlyActivityDate);
+            item.friendlyActivityDateString = this.DateUtil.zonedDateTimeToString(item.friendlyActivityDate);
             item.fullName = item.responsibleUser.fullName;
             return item;
         }
@@ -196,9 +193,9 @@ export const ReportsProductsComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: this.zonedDateTimeToLong(this.datePartsToZonedDateTime(2016, 4, 15)),
-                                before: this.zonedDateTimeToLong(
-                                    this.datePartsToZonedDateTime(jsJoda.LocalDate.now().year(),
+                                after: this.DateUtil.zonedDateTimeToLong(this.DateUtil.datePartsToZonedDateTime(2016, 4, 15)),
+                                before: this.DateUtil.zonedDateTimeToLong(
+                                    this.DateUtil.datePartsToZonedDateTime(jsJoda.LocalDate.now().year(),
                                         jsJoda.LocalDate.now().monthValue(),
                                         jsJoda.LocalDate.now().dayOfMonth(),
                                         jsJoda.LocalTime.MAX)),
@@ -225,30 +222,28 @@ export const ReportsProductsComponent = {
             });
         }
 
-        longToZonedDateTime (dateLong, zone) {
-            zone = zone || 'America/New_York'
-            return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
-        }
+        //longToZonedDateTime (dateLong, zone) {
+        //    zone = zone || 'America/New_York'
+        //    return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
+        //}
 
-        zonedDateTimeToLong (date) {
-            return date.toInstant().toEpochMilli();
-        }
+        //zonedDateTimeToLong (date) {
+        //    return date.toInstant().toEpochMilli();
+        //}
 
-        zonedDateTimeToString (date, format) {
-            format = format || 'MMM d, y h:mm:ss a z';
-            let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
-            return date.format(formatter);
-        }
+        //zonedDateTimeToString (date, format) {
+        //    format = format || 'MMM d, y h:mm:ss a z';
+        //    let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
+        //    return date.format(formatter);
+        //}
 
-        datePartsToZonedDateTime (year, month, day, localTime, zone) {
-            zone = zone || 'America/New_York';
-            localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
-            return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
-        }
+        //datePartsToZonedDateTime (year, month, day, localTime, zone) {
+        //    zone = zone || 'America/New_York';
+        //    localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
+        //    return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
+        //}
     },
 }
 
 angular.module('chpl.reports')
-    .component('chplReportsProducts', ReportsProductsComponent)
-    .constant('jsJoda', jsJoda)
-    .constant('Locale', Locale);
+    .component('chplReportsProducts', ReportsProductsComponent);
