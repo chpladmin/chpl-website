@@ -13,10 +13,17 @@ class DateUtil {
         if (typeof(date) === 'number') {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
         }
-        if (date && date.month && date.dayOfMonth && date.year) {
-            return [...date.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('').substring(0,3) + ' ' + date.dayOfMonth + ', ' + date.year;
+        if (date && date.month && date.dayOfMonth && date.year) { //This maps perfectly to a js-joda LocalDate
+            //return [...date.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('').substring(0,3) + ' ' + date.dayOfMonth + ', ' + date.year;
+            return this.localDateTimeToString(date);
         }
         return fallback || 'N/A';
+    }
+
+    localDateTimeToString (date, format) {
+        format = format || 'MMM d, y';
+        let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
+        return date.format(formatter);
     }
 
     longToZonedDateTime (dateLong, zone) {
