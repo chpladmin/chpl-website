@@ -1,6 +1,3 @@
-import '../../../../node_modules/@js-joda/timezone';
-import * as jsJoda from '../../../../node_modules/@js-joda/core';
-
 (function () {
     'use strict';
 
@@ -59,10 +56,11 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
     }
 
     /** @ngInclude */
-    function ChplDateRangeController ($analytics, $filter, $localStorage, $log) {
+    function ChplDateRangeController ($analytics, $filter, $localStorage, $log, DateUtil) {
         var vm = this;
 
         vm.$log = $log;
+        vm.DateUtil = DateUtil;
         vm.activate = activate;
         vm.clearFilter = clearFilter;
         vm.filterChanged = filterChanged;
@@ -90,14 +88,14 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
                 var before;
                 if (angular.isObject(vm.before)) {
                     //before = longToZonedDateTime(vm.before.getTime()).with(jsJoda.LocalTime.MAX);
-                    before = datePartsToZonedDateTime(vm.before.getFullYear(),
+                    before = vm.DateUtil.datePartsToZonedDateTime(vm.before.getFullYear(),
                         vm.before.getMonth() + 1,
                         vm.before.getDate(),
-                        jsJoda.LocalTime.MAX);
+                        vm.DateUtil.jsJoda().LocalTime.MAX);
                 } else {
-                    before = longToZonedDateTime(vm.before).with(jsJoda.LocalTime.MAX);
+                    before = vm.DateUtil.longToZonedDateTime(vm.before).with(vm.DateUtil.jsJoda().LocalTime.MAX);
                 }
-                query.before = new Date(zonedDateTimeToLong(before));
+                query.before = new Date(vm.DateUtil.zonedDateTimeToLong(before));
                 if (vm.trackAnalytics) {
                     //TODO
                     $analytics.eventTrack('Certification Date "To" Filter', { category: 'Search', label: $filter('date')(before, 'mediumDate', 'UTC')});
@@ -106,15 +104,15 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
             if (vm.after) {
                 var after;
                 if (angular.isObject(vm.after)) {
-                    after = longToZonedDateTime(vm.after.getTime()).with(jsJoda.LocalTime.MIN);
+                    after = vm.DateUtil.longToZonedDateTime(vm.after.getTime()).with(vm.DateUtil.jsJoda().LocalTime.MIN);
                     //after = datePartsToZonedDateTime(vm.after.getFullYear(),
                     //    vm.after.getMonth() + 1,
                     //    vm.after.getDate(),
                     //    jsJoda.LocalTime.MIDNIGHT);
                 } else {
-                    after = longToZonedDateTime(vm.after).with(jsJoda.LocalTime.MIDNIGHT);
+                    after = vm.DateUtil.longToZonedDateTime(vm.after).with(vm.DateUtil.jsJoda().LocalTime.MIDNIGHT);
                 }
-                query.after = new Date(zonedDateTimeToLong(after));
+                query.after = new Date(vm.DateUtil.zonedDateTimeToLong(after));
                 if (vm.trackAnalytics) {
                     //TODO
                     $analytics.eventTrack('Certification Date "After" Filter', { category: 'Search', label: $filter('date')(after, 'mediumDate', 'UTC')});
@@ -145,21 +143,6 @@ import * as jsJoda from '../../../../node_modules/@js-joda/core';
             if (vm.nameSpace) {
                 $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
             }
-        }
-
-        function longToZonedDateTime (dateLong, zone) {
-            zone = zone || 'America/New_York'
-            return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
-        }
-
-        function zonedDateTimeToLong (date) {
-            return date.toInstant().toEpochMilli();
-        }
-
-        function datePartsToZonedDateTime (year, month, day, localTime, zone) {
-            zone = zone || 'America/New_York';
-            localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
-            return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
         }
     }
 })();
