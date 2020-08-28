@@ -17,7 +17,7 @@ beforeAll( () => {
     hooks = new Hooks();
     hooks.open('#/administration/upload');
     loginComponent.loginAsACB();
-})
+});
 
 describe('listing with no confirm warnings and no errors', () => {
     // **Run once before each test case**
@@ -25,7 +25,7 @@ describe('listing with no confirm warnings and no errors', () => {
         uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
         uploadPage.waitForSuccessfulUpload();
         hooks.open('#/administration/confirm/listings')
-    })
+    });
 
     it('should not show warning bypass checkbox and confirm works successfully', () => {
         confirmPage.gotoConfirmListingPage(listingIdNoWarningError);
@@ -33,8 +33,11 @@ describe('listing with no confirm warnings and no errors', () => {
         assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
         confirmPage.waitForSuccessfulConfirm();
         assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
-    })
-})
+    });
+    afterEach(function () {
+        browser.refresh();
+    });
+});
 
 describe('listing with warnings on confirm and no errors', () => {
 
@@ -43,14 +46,14 @@ describe('listing with warnings on confirm and no errors', () => {
         uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
         uploadPage.waitForSuccessfulUpload();
         hooks.open('#/administration/confirm/listings');
-    })
+    });
 
     it('should show warning bypass checkbox while confirming', () => {
         confirmPage.gotoConfirmListingPage(listingIdWithWarning);
         confirmPage.confirmListing();
         hooks.waitForSpinnerToDisappear();
         assert.isTrue(confirmPage.warningCheckbox.isDisplayed());
-    })
+    });
 
     it('should not get confirmed until bypasscheckbox is checked', () => {
         confirmPage.gotoConfirmListingPage(listingIdWithWarning);
@@ -59,7 +62,7 @@ describe('listing with warnings on confirm and no errors', () => {
         confirmPage.confirmListing();
         hooks.waitForSpinnerToDisappear();
         assert.isTrue(confirmPage.confirmButton.isDisplayed());
-    })
+    });
 
     it('should get confirm if user checks checbox for bypass warnings', () => {
         confirmPage.gotoConfirmListingPage(listingIdWithWarning);
@@ -69,10 +72,10 @@ describe('listing with warnings on confirm and no errors', () => {
         confirmPage.confirmListing();
         confirmPage.waitForSuccessfulConfirm();
         assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
-    })
+    });
 
     afterEach(function () {
         browser.refresh();
-    })
+    });
 
-})
+});
