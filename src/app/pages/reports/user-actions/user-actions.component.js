@@ -114,26 +114,17 @@ export const ReportsUserActionsComponent = {
             this.callActivityServiceForMetadata('beta/products');
             this.callActivityServiceForMetadata('beta/versions');
             this.callActivityServiceForMetadata('beta/users');
-            this.callActivityServiceForMetadataOld('announcements');
+            this.callActivityServiceForMetadata('beta/announcements');
             this.callActivityServiceForMetadata('beta/developers');
-            this.callActivityServiceForMetadataOld('pending_listings');
-            this.callActivityServiceForMetadataOld('corrective_action_plans');
-            this.callActivityServiceForMetadataOld('pending_surveillances');
+            this.callActivityServiceForMetadata('beta/pending-listings');
+            this.callActivityServiceForMetadata('beta/corrective-action-plans');
+            this.callActivityServiceForMetadata('beta/pending-surveillances');
         }
 
         initializeSearch () {
             this.userList = [];
             this.userActivities = [];
             this.isUserTableVisible = [];
-        }
-
-        callActivityServiceForMetadataOld (metadataType) {
-            let that = this;
-            this.networkService.getActivityMetadata(metadataType, this.activityRange)
-                .then(results => {
-                    that.results = that.results
-                        .concat(results.map(item => that.prepare(item, metadataType)));
-                });
         }
 
         callActivityServiceForMetadata (metadataType) {
