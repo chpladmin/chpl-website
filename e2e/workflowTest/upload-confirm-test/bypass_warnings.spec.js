@@ -65,7 +65,7 @@ describe('listing with warnings on confirm and no errors', () => {
         assert.isTrue(confirmPage.confirmButton.isDisplayed());
     });
 
-    it('should get confirm if user checks checbox for bypass warnings', () => {
+    it('should get confirm if user checks checkbox for bypass warnings', () => {
         confirmPage.gotoConfirmListingPage(listingIdWithWarning);
         confirmPage.confirmListing();
         hooks.waitForSpinnerToDisappear();
