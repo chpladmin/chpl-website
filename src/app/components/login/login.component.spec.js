@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Login Component', () => {
+    fdescribe('the Login Component', () => {
         var $compile, $log, $q, $state, Idle, Keepalive, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -18,7 +18,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.navigation', $provide => {
+            angular.mock.module('chpl.components', $provide => {
                 $provide.decorator('authService', $delegate => {
                     $delegate.getUsername = jasmine.createSpy('getUsername');
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
