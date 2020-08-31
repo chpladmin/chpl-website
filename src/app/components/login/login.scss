@@ -1,0 +1,24 @@
+.login {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(200px, 2fr);
+    gap: 3px 8px;
+}
+
+.login__label-element {
+    text-align: right;
+    justify-self: end;
+    align-self: center;
+}
+
+.login__input-element {
+    justify-self: stretch;
+    align-self: stretch;
+}
+
+.login__element--full {
+    grid-column: 1 / -1;
+}
+
+.login__input-field {
+    width: 100% !important; //remove when form-control can be removed; related to ui-bump-major
+}
