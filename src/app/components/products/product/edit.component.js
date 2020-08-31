@@ -20,6 +20,10 @@ export const ProductEditComponent = {
                         return d;
                     })
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+                if (that.developers && that.product) {
+                    that.$log.info('init');
+                    that.currentOwner = that.developers.filter(d => d.developerId === that.product.owner.developerId)[0];
+                }
             });
         }
 
@@ -32,6 +36,10 @@ export const ProductEditComponent = {
                         developer: this.product.owner,
                         transferDate: undefined,
                     })
+                    .map(d => {
+                        d.displayName = d.name + (d.deleted ? ' - deleted' : ' - active');
+                        return d;
+                    })
                     .sort((a, b) => {
                         if (a.transferDate && b.transferDate) {
                             return b.transferDate - a.transferDate;
@@ -39,6 +47,7 @@ export const ProductEditComponent = {
                         return a.transferDate ? 1 : -1;
                     });
             }
+            this.$log.info('changes');
         }
 
         cancel () {
@@ -60,22 +69,16 @@ export const ProductEditComponent = {
         generateErrorMessages () {
             let messages = [];
             if (this.product) {
-                if (!this.product.ownerHistory || this.product.ownerHistory.length < 1) {
-                    messages.push('At least one Owner must be recorded');
-                }
-                if (this.product.ownerHistory[0] && this.product.ownerHistory[0].transferDate) {
-                    messages.push('Current Developer must be indicated');
-                }
                 this.product.ownerHistory.forEach((o, idx, arr) => {
                     if (idx > 0) {
-                        if (!o.transferDate) {
-                            messages.push('Product may not have two current Owners');
-                        }
                         if (arr[idx].developer.name === arr[idx - 1].developer.name) {
                             messages.push('Product cannot transfer from Developer "' + arr[idx].developer.name + '" to the same Developer');
                         }
                     }
                 });
+            }
+            if (this.needsOwner()) {
+                messages.push('Product must have a current Owner');
             }
             this.errorMessages = messages;
         }
@@ -83,6 +86,10 @@ export const ProductEditComponent = {
         isValid () {
             return this.errorMessages.length === 0 // business logic rules
                 && this.form.$valid; // form validation
+        }
+
+        needsOwner () {
+            return this.product.ownerHistory.filter(o => !o.transferDate).length === 0
         }
 
         removeOwner (owner) {
@@ -128,6 +135,26 @@ export const ProductEditComponent = {
                 break;
                 //no default
             }
+        }
+
+        updateCurrentOwner () {
+            this.product.ownerHistory.forEach(owner => {
+                if (!owner.transferDate) {
+                    owner.transferDate = new Date();
+                }
+            });
+            this.product.ownerHistory = this.product.ownerHistory
+                .concat({
+                    developer: this.currentOwner,
+                    transferDate: undefined,
+                })
+                .sort((a, b) => {
+                    if (a.transferDate && b.transferDate) {
+                        return b.transferDate - a.transferDate;
+                    }
+                    return a.transferDate ? 1 : -1;
+                });
+            this.doneAddingOwner();
         }
     },
 };
