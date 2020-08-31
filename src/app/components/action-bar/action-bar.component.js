@@ -1,6 +1,7 @@
 export const ActionBarComponent = {
     templateUrl: 'chpl.components/action-bar/action-bar.html',
     bindings: {
+        canDelete: '@',
         errorMessages: '<',
         isDisabled: '<',
         takeAction: '&',
@@ -20,6 +21,12 @@ export const ActionBarComponent = {
         cancel () {
             this.takeAction({
                 action: 'cancel',
+            });
+        }
+
+        delete () {
+            this.takeAction({
+                action: 'delete',
             });
         }
 

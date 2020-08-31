@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Login Component', () => {
+    describe('the Login Component', () => {
         var $compile, $log, $q, $state, Idle, Keepalive, authService, ctrl, el, mock, networkService, scope;
 
         mock = {

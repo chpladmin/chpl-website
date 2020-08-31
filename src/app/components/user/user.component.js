@@ -58,6 +58,24 @@ export const UserComponent = {
                 data: this.user,
             });
         }
+
+        takeActionBarAction (action) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'delete':
+                this.delete();
+                break;
+            case 'mouseover':
+                this.showFormErrors = true;
+                break;
+            case 'save':
+                this.save();
+                break;
+                //no default
+            }
+        }
     },
 }
 

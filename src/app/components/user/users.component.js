@@ -56,7 +56,7 @@ export const UsersComponent = {
                         that.takeAction({action: 'refresh'});
                         that.activeUser = undefined;
                     }, error => {
-                        that.errors = error.data.error;
+                        that.errors = [error.data.error];
                     });
                 break;
             case 'cancel':
