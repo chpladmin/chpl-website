@@ -190,65 +190,79 @@
         });
 
         describe('when current user is managing acbs', () => {
-            beforeEach(() => {
-                let user = angular.copy(mock.user);
-                user.Authority = undefined;
-                $localStorage.currentUser = user;
-            });
             it('should know ADMIN can manage any acb', () => {
-                $localStorage.currentUser.Authority = 'ROLE_ADMIN';
-                expect(auth.canManageAcb({id: 5}));
+                let user = angular.copy(mock.user);
+                user.Authority = 'ROLE_ADMIN';
+                auth.saveToken(buildToken(user));
+                expect(auth.canManageAcb({id: 5})).toBe(true);
             });
             it('should know ONC can manage any acb', () => {
-                $localStorage.currentUser.Authority = 'ROLE_ONC';
-                expect(auth.canManageAcb({id: 5}));
+                let user = angular.copy(mock.user);
+                user.Authority = 'ROLE_ONC';
+                auth.saveToken(buildToken(user));
+                expect(auth.canManageAcb({id: 5})).toBe(true);
             });
             it('should know DEVELOPER cannot manage any acb', () => {
-                $localStorage.currentUser.Authority = 'ROLE_DEVELOPER';
-                expect(auth.canManageAcb({id: 5}));
+                let user = angular.copy(mock.user);
+                user.Authority = 'ROLE_DEVELOPER';
+                auth.saveToken(buildToken(user));
+                expect(auth.canManageAcb({id: 5})).toBe(false);
             });
             describe('when the user is role ACB', () => {
                 it('should allow user to manage acb', () => {
-                    $localStorage.currentUser.Authority = 'ROLE_ACB';
-                    $localStorage.currentUser.orgs = [{id: 2}, {id: 3}];
-                    expect(auth.canManageAcb({id: 3}));
+                    let user = angular.copy(mock.user);
+                    user.Authority = 'ROLE_ACB';
+                    auth.saveToken(buildToken(user));
+                    $localStorage.currentUser = user;
+                    $localStorage.currentUser.organizations = [{id: 2}, {id: 3}];
+                    expect(auth.canManageAcb({id: 3})).toBe(true);
                 });
                 it('should not allow user to manage acb', () => {
-                    $localStorage.currentUser.Authority = 'ROLE_ACB';
-                    $localStorage.currentUser.orgs = [{id: 2}, {id: 3}];
-                    expect(auth.canManageAcb({id: 4}));
+                    let user = angular.copy(mock.user);
+                    user.Authority = 'ROLE_ACB';
+                    auth.saveToken(buildToken(user));
+                    $localStorage.currentUser = user;
+                    $localStorage.currentUser.organizations = [{id: 2}, {id: 3}];
+                    expect(auth.canManageAcb({id: 4})).toBe(false);
                 });
             });
         });
 
         describe('when current user is managing developers', () => {
-            beforeEach(() => {
-                let user = angular.copy(mock.user);
-                user.Authority = undefined;
-                $localStorage.currentUser = user;
-            });
             it('should know ADMIN can manage any developer', () => {
-                $localStorage.currentUser.Authority = 'ROLE_ADMIN';
-                expect(auth.canManageDeveloper({id: 5}));
+                let user = angular.copy(mock.user);
+                user.Authority = 'ROLE_ADMIN';
+                auth.saveToken(buildToken(user));
+                expect(auth.canManageDeveloper({id: 5})).toBe(true);
             });
             it('should know ONC can manage any developer', () => {
-                $localStorage.currentUser.Authority = 'ROLE_ONC';
-                expect(auth.canManageDeveloper({id: 5}));
+                let user = angular.copy(mock.user);
+                user.Authority = 'ROLE_ONC';
+                auth.saveToken(buildToken(user));
+                expect(auth.canManageDeveloper({id: 5})).toBe(true);
             });
             it('should know ACB cannot manage any developer', () => {
-                $localStorage.currentUser.Authority = 'ROLE_ACB';
-                expect(auth.canManageDeveloper({id: 5}));
+                let user = angular.copy(mock.user);
+                user.Authority = 'ROLE_ACB';
+                auth.saveToken(buildToken(user));
+                expect(auth.canManageDeveloper({id: 5})).toBe(true);
             });
             describe('when the user is role Developer', () => {
                 it('should allow user to manage developer', () => {
-                    $localStorage.currentUser.Authority = 'ROLE_DEVELOPER';
-                    $localStorage.currentUser.orgs = [{id: 222}, {id: 333}];
-                    expect(auth.canManageDeveloper({id: 333}));
+                    let user = angular.copy(mock.user);
+                    user.Authority = 'ROLE_DEVELOPER';
+                    auth.saveToken(buildToken(user));
+                    $localStorage.currentUser = user;
+                    $localStorage.currentUser.organizations = [{id: 222}, {id: 333}];
+                    expect(auth.canManageDeveloper({developerId: 333})).toBe(true);
                 });
                 it('should not allow user to manage developer', () => {
-                    $localStorage.currentUser.Authority = 'ROLE_DEVELOPER';
-                    $localStorage.currentUser.orgs = [{id: 222}, {id: 333}];
-                    expect(auth.canManageAcb({id: 444}));
+                    let user = angular.copy(mock.user);
+                    user.Authority = 'ROLE_DEVELOPER';
+                    auth.saveToken(buildToken(user));
+                    $localStorage.currentUser = user;
+                    $localStorage.currentUser.organizations = [{id: 222}, {id: 333}];
+                    expect(auth.canManageDeveloper({developerId: 444})).toBe(false);
                 });
             });
         });
