@@ -1,7 +1,7 @@
 <div class="row" ng-if="$ctrl.activeUser">
   <div class="col-md-6 col-md-offset-3">
     <h2>Edit user</h2>
-    <chpl-user user="$ctrl.activeUser" is-editing="true" take-action="$ctrl.act(action, data)"></chpl-user>
+    <chpl-user user="$ctrl.activeUser" errors="$ctrl.errors" is-editing="true" take-action="$ctrl.act(action, data)"></chpl-user>
   </div>
 </div>
 <span ng-if="!$ctrl.activeUser">

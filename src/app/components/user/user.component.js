@@ -2,6 +2,7 @@ export const UserComponent = {
     templateUrl: 'chpl.components/user/user.html',
     bindings: {
         user: '<',
+        errors: '<',
         isEditing: '<',
         takeAction: '&',
     },
@@ -15,6 +16,9 @@ export const UserComponent = {
         $onChanges (changes) {
             if (changes.user) {
                 this.user = angular.copy(changes.user.currentValue);
+            }
+            if (changes.errors) {
+                this.errors = angular.copy(changes.errors.currentValue);
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);

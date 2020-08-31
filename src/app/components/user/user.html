@@ -79,6 +79,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
+        <div class="text-danger" ng-if="$ctrl.errors">{{ $ctrl.errors }}</div>
         <button class="btn btn-ai-success btn-small pull-right" id="user-component-save-{{ $ctrl.user.userId }}" uib-tooltip="Save" tooltip-trigger="'mouseenter focus click'"
                 ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
                 ng-mouseover="$ctrl.showFormErrors = true"
