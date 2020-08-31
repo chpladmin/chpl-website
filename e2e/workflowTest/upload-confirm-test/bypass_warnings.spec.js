@@ -24,7 +24,7 @@ describe('listing with no confirm warnings and no errors', () => {
     beforeEach(function () {
         uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
         uploadPage.waitForSuccessfulUpload();
-        hooks.open('#/administration/confirm/listings')
+        hooks.open('#/administration/confirm/listings');
     });
 
     it('should not show warning bypass checkbox and confirm works successfully', () => {
