@@ -69,7 +69,11 @@ export const CreateUserComponent = {
                         this.userDetails = {user: {}};
                         this.changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
                     }, error => {
-                        this.message.value = error.data.errorMessages;
+                        if (error.data.errorMessages) {
+                            this.message.value = error.data.errorMessages;
+                        } else if (error.data.error) {
+                            this.message.value = error.data.error;
+                        }
                     });
             }
         }
