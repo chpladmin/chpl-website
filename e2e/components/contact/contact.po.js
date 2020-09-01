@@ -10,19 +10,30 @@ class ContactComponent {
     constructor () { }
 
     getFull (element) {
-        return element.$(elements.container).$$('.flex-item')[1].$('.read-only-data');
+        return this.getDataItem(element, 'Full name');
+    }
+
+    getFriendly (element) {
+        return this.getDataItem(element, 'Friendly name');
     }
 
     getTitle (element) {
-        return element.$(elements.container).$$('.flex-item')[0].$('.read-only-data');
+        return this.getDataItem(element, 'Title');
     }
 
     getEmail (element) {
-        return element.$(elements.container).$$('.flex-item')[2].$('.read-only-data');
+        return this.getDataItem(element, 'Email');
     }
 
     getPhone (element) {
-        return element.$(elements.container).$$('.flex-item')[3].$('.read-only-data');
+        return this.getDataItem(element, 'Phone');
+    }
+
+    getDataItem (element, label) {
+        return element.$(elements.container)
+            .$$('.flex-item')
+            .filter(el => el.$('.data-label').getText().toLowerCase() === label.toLowerCase())[0]
+            .$('.read-only-data');
     }
 
     get editFull () {

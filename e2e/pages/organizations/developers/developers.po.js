@@ -5,7 +5,6 @@ const elements = {
     productsHeader: 'h2=Products',
     editProductsHeader: 'h2=Edit Product Details',
     products: '.products__product',
-    lastModified: '.product__product-info-item-last-modified',
     editProductName: '#product-name',
 };
 
@@ -50,10 +49,6 @@ class DevelopersPage {
 
     getVersionCount (product) {
         return product.$('.products__product-header').$$('.products__product-header-item')[2];
-    }
-
-    getLastModifed (product) {
-        return product.$(elements.lastModified).$('.read-only-data');
     }
 
     get editProductName () {
