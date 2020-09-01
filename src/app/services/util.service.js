@@ -13,7 +13,6 @@
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
             certificationStatus: certificationStatus,
-            displayRealWorldTesting: displayRealWorldTesting,
             extendSelect: extendSelect,
             findModel: findModel,
             isBlank: isBlank,
@@ -148,13 +147,6 @@
                 return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
             }
             return '';
-        }
-
-        function displayRealWorldTesting (listing) {
-            if (listing.rwtEligibilityYear) {
-                return true;
-            }
-            return false;
         }
 
         function extendSelect (options, value) {

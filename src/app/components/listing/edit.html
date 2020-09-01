@@ -141,7 +141,7 @@
     <label for="cp-other-acb">Other ACB</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.otherAcb" id="cp-other-acb">
   </div>
-  <div ng-if="$ctrl.displayRealWorldTesting($ctrl.listing)">
+  <div ng-if="$ctrl.listing.rwtEligibilityYear">
     Real World Testing
     <div class="form-horizontal">
       <div class="form-group form-group-sm">
