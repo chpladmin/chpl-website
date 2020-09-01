@@ -9,12 +9,6 @@ export const ReportsUserActionsComponent = {
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
-            this.activityRange = {
-                range: 30,
-                startDate: new Date(),
-                endDate: new Date(),
-            };
-            this.activityRange.startDate.setDate(this.activityRange.endDate.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
 
             this.results = [];
             this.displayed = [];
@@ -111,14 +105,16 @@ export const ReportsUserActionsComponent = {
         search () {
             this.initializeSearch();
             this.callActivityServiceForMetadata('beta/listings');
+            this.callActivityServiceForMetadata('beta/developers');
             this.callActivityServiceForMetadata('beta/products');
             this.callActivityServiceForMetadata('beta/versions');
-            this.callActivityServiceForMetadata('beta/users');
+            this.callActivityServiceForMetadata('beta/acbs');
+            this.callActivityServiceForMetadata('beta/atls');
             this.callActivityServiceForMetadata('beta/announcements');
-            this.callActivityServiceForMetadata('beta/developers');
+            this.callActivityServiceForMetadata('beta/users');
             this.callActivityServiceForMetadata('beta/pending-listings');
-            this.callActivityServiceForMetadata('beta/corrective-action-plans');
             this.callActivityServiceForMetadata('beta/pending-surveillances');
+            this.callActivityServiceForMetadata('beta/corrective-action-plans');
         }
 
         initializeSearch () {
