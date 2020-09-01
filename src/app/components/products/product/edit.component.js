@@ -140,7 +140,7 @@ export const ProductEditComponent = {
         updateCurrentOwner () {
             this.product.ownerHistory.forEach(owner => {
                 if (!owner.transferDate) {
-                    owner.transferDate = new Date();
+                    owner.transferDate = (new Date()).getTime();
                 }
             });
             this.product.ownerHistory = this.product.ownerHistory
