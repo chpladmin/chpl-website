@@ -48,7 +48,6 @@ export const ReportsProductsComponent = {
         }
 
         doFilter (filter) {
-            this.$log.info(filter);
             let that = this;
             this.filterText = filter.dataFilter;
             if (filter.tableState.search.predicateObject.date) {

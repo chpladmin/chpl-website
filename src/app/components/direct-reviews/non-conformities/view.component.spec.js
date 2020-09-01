@@ -1,8 +1,8 @@
 (() => {
     'use strict';
 
-    describe('the Direct Reviews / NonConformities component', () => {
-        var $log, ctrl, el, mock, scope;
+    fdescribe('the Direct Reviews / NonConformities component', () => {
+        var $log, DateUtil, ctrl, el, mock, scope;
 
         mock = [{
             nonConformityStatus: 'Closed',
@@ -32,12 +32,20 @@
         }];
 
         beforeEach(() => {
-            angular.mock.module('chpl.components');
+            angular.mock.module('chpl.components', function ($provide) {
+                $provide.decorator('DateUtil', function ($delegate) {
+                    $delegate.getDisplayDateFormat = jasmine.createSpy('getDisplayDateFormat');
+                    return $delegate;
+                });
+            });
 
-            inject(($compile, _$log_, $rootScope, DateUtil) => {
+            inject(($compile, _$log_, $rootScope, _DateUtil_) => {
                 $log = _$log_;
 
                 scope = $rootScope.$new();
+
+                DateUtil = _DateUtil_;
+                DateUtil.getDisplayDateFormat.and.returnValue('aaa');
 
                 mock[0].capApprovalDate = DateUtil.jsJoda().LocalDate.of(2020, 6, 19);
                 mock[0].capEndDate = DateUtil.jsJoda().LocalDate.of(2021, 7, 20);
@@ -84,19 +92,8 @@
                 });
 
                 it('should translate dates', () => {
-                    expect(ctrl.nonConformities[1].friendlyCapApprovalDate).toBe('Jun 19, 2020');
-                    expect(ctrl.nonConformities[1].friendlyCapEndDate).toBe('Jul 20, 2021');
-                    expect(ctrl.nonConformities[1].friendlyCapMustCompleteDate).toBe('Aug 21, 2022');
-                    expect(ctrl.nonConformities[1].friendlyCapStartDate).toBe('Sep 22, 2023');
-                    expect(ctrl.nonConformities[1].friendlyDateOfDetermination).toBe('Oct 23, 2024');
-                });
-
-                it('should handle blank dates', () => {
-                    expect(ctrl.nonConformities[0].friendlyCapApprovalDate).toBe('Has not been determined');
-                    expect(ctrl.nonConformities[0].friendlyCapEndDate).toBe('Has not been completed');
-                    expect(ctrl.nonConformities[0].friendlyCapMustCompleteDate).toBe('Has not been determined');
-                    expect(ctrl.nonConformities[0].friendlyCapStartDate).toBe('Has not begun');
-                    expect(ctrl.nonConformities[0].friendlyDateOfDetermination).toBe('Has not been determined');
+                    expect(DateUtil.getDisplayDateFormat).toHaveBeenCalled();
+                    expect(DateUtil.getDisplayDateFormat).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(String));
                 });
             });
         });

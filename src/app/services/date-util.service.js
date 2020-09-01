@@ -44,9 +44,7 @@ class DateUtil {
     datePartsToZonedDateTime (year, month, day, localTime, zone) {
         zone = zone || 'America/New_York';
         localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
-        this.$log.info(localTime);
         let x = jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
-        this.$log.info(this.zonedDateTimeToString(x));
         return x;
     }
 
