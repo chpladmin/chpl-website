@@ -31,7 +31,7 @@
     display: grid;
     align-items: center;
     justify-items: stretch;
-    grid-template-columns: 3fr 1fr 1fr;
+    grid-template-columns: 4fr 1fr;
     margin: 8px;
     column-gap: 8px;
 }
@@ -50,23 +50,14 @@
     background-color: var(--primary);
 }
 
-.product__product-info-item-last-modifed {
-    grid-column: 3 / 4;
-    justify-self: end;
-}
-
-.product__product-info-item-last-modified--anon {
-    grid-column: 2 / 4;
-}
-
 .product__product-info-item-previous-owners {
     grid-row: 2;
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
 }
 
 .product__product-info-item-contact {
     grid-row: 3;
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
 }
 
 .product__listings {
