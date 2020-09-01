@@ -21,7 +21,6 @@ export const ProductEditComponent = {
                     })
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
                 if (that.developers && that.product) {
-                    that.$log.info('init');
                     that.currentOwner = that.developers.filter(d => d.developerId === that.product.owner.developerId)[0];
                 }
             });
@@ -47,7 +46,6 @@ export const ProductEditComponent = {
                         return a.transferDate ? 1 : -1;
                     });
             }
-            this.$log.info('changes');
         }
 
         cancel () {
