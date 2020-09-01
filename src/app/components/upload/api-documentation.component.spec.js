@@ -131,6 +131,23 @@
                     expect(ctrl.uploadErrors).toEqual([1]);
                     expect(ctrl.uploadSuccess).toBe(false);
                 });
+
+                it('should handle repeated upload', () => {
+                    Upload.upload.and.returnValue($q.when(response));
+                    let data = angular.copy(mock.baseData);
+                    data.url = data.url + '?file_update_date=33';
+                    ctrl.accurateAsOfDateObject = new Date(33);
+                    ctrl.file = 'file';
+                    Upload.upload.and.returnValue($q.when(response));
+                    ctrl.upload();
+                    scope.$digest();
+                    expect(Upload.upload).toHaveBeenCalledWith(data);
+                    expect(Upload.upload.calls.count()).toBe(1);
+                    ctrl.file = 'new file';
+                    ctrl.upload();
+                    expect(Upload.upload).toHaveBeenCalledWith(data);
+                    expect(Upload.upload.calls.count()).toBe(2);
+                });
             });
         });
     });
