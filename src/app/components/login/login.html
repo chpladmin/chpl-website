@@ -1,10 +1,18 @@
 <div class="login" ng-class="$ctrl.formClass" ng-form="$ctrl.loginForm" role="log in / log out">
-  <div class="login__label-element" ng-if="$ctrl.activity !== $ctrl.activityEnum.NONE && $ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING">
+  <div class="login__label-element" ng-if="$ctrl.activity !== $ctrl.activityEnum.NONE && $ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING && $ctrl.activity !== $ctrl.activityEnum.RESET">
     <label class="control-label" for="username-{{ $id }}">Email <span class="text-danger">*</span><br />(or Username)</label>
   </div>
-  <div class="login__input-element" ng-if="$ctrl.activity !== $ctrl.activityEnum.NONE && $ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING">
+  <div class="login__input-element" ng-if="$ctrl.activity !== $ctrl.activityEnum.NONE && $ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING && $ctrl.activity !== $ctrl.activityEnum.RESET">
     <input type="text" class="form-control login__input-field" id="username-{{ $id }}" name="username" ng-model="$ctrl.userName" placeholder="email (or username)" required />
     <div class="text-danger" ng-if="$ctrl.loginForm.username.$touched && $ctrl.loginForm.username.$error.required">Email (or Username) is required</div>
+  </div>
+
+  <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <label class="control-label" for="username-{{ $id }}">Username <span class="text-danger">*</span></label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <input type="text" class="form-control login__input-field" id="username-{{ $id }}" name="username" ng-model="$ctrl.userName" placeholder="username" required />
+    <div class="text-danger" ng-if="$ctrl.loginForm.username.$touched && $ctrl.loginForm.username.$error.required">Username is required</div>
   </div>
 
   <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.LOGIN || $ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED">
