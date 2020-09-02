@@ -1,34 +1,34 @@
 <div class="direct-reviews">
   <div ng-if="!$ctrl.directReviews || $ctrl.directReviews.length === 0">
-    No Direct Reviews have been conducted for this listing
+    No Direct Reviews have been conducted
   </div>
   <div ng-repeat="dr in $ctrl.directReviews" class="direct-review panel-ai">
     <div class="direct-review__header panel-heading" ng-class="dr.endDate ? 'direct-review__header--closed' : 'direct-review__header--open'" ng-click="dr.open = !dr.open">
       <div class="direct-review__header-toggle"><i class="fa fa-lg" ng-class="dr.open ? 'fa-caret-down' : 'fa-caret-right'"></i></div>
       <div class="direct-review__header-title">{{ dr.endDate ? 'Closed' : 'Open' }} Direct Review</div>
-      <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + (dr.endDate | date : 'mediumDate' : 'UTC')  : dr.startDate ? 'began ' + (dr.startDate | date : 'mediumDate' : 'UTC') : 'has not started' }}</div>
+      <div class="direct-review__header-subtitle">{{ dr.endDate ? 'ended ' + $ctrl.DateUtil.getDisplayDateFormat(dr.endDate) : dr.startDate ? 'began ' + $ctrl.DateUtil.getDisplayDateFormat(dr.startDate) : 'has not started' }}</div>
       <div class="direct-review__header-nc-summary">{{ dr.ncSummary }}</div>
     </div>
     <div class="direct-review__basic-information panel-body" ng-if="dr.open">
       <div class="direct-review__start">
         <div class="data-label">
-          Date review began<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+          Direct Review Began <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="The date direct review was initiated" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date direct review was initiated</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
-          {{ dr.startDate ? (dr.startDate | date : 'mediumDate' : 'UTC') : 'Has not started' }}
+          {{ $ctrl.DateUtil.getDisplayDateFormat(dr.startDate, 'Has not started') }}
         </div>
       </div>
       <div class="direct-review__end">
         <div class="data-label">
-          Date review ended<button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+          Direct Review Ended <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="The date direct review was completed" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date direct review was completed</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element">
-          {{ dr.endDate ? (dr.endDate | date : 'mediumDate' : 'UTC') : 'Has not ended' }}
+          {{ $ctrl.DateUtil.getDisplayDateFormat(dr.endDate, 'Has not ended') }}
         </div>
       </div>
       <div class="direct-review__circumstances">
         <div class="data-label">
-          Circumstance<span ng-if="dr.circumstances.length !== 1">s</span><button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+          Circumstance <span ng-if="dr.circumstances.length !== 1">s</span><button class="direct-review__tooltip-button btn btn-link" uib-tooltip="Circumstance{{ dr.circumstances.length !== 1 ? 's' : '' }} for ONC to conduct direct review" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Circumstance<span ng-if="dr.circumstances.length !== 1">s</span> for ONC to conduct direct review</span><i class="fa fa-info-circle"></i></button>
         </div>
         <div class="direct-review__data-element" ng-if="dr.circumstances && dr.circumstances.length > 0">
           <ul>
@@ -36,11 +36,11 @@
           </ul>
         </div>
         <div class="direct-review__data-element" ng-if="!dr.circumstances || dr.circumstances.length === 0">
-          No circumstances reported
+          Have not been determined
         </div>
       </div>
-      <div class="direct-review__nonconformities">
-        <chpl-direct-reviews-nonconformities nonconformities="dr.nonconformities"></chpl-direct-reviews-nonconformities>
+      <div class="direct-review__non-conformities">
+        <chpl-direct-reviews-non-conformities non-conformities="dr.nonConformities"></chpl-direct-reviews-non-conformities>
       </div>
     </div>
   </div>

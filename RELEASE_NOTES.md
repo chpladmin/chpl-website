@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 10.51.0
+_18 August 2020_
+
+### Flagged Features
+* Display Direct Review data on Developers pages
+
+### Bug Fixes
+* Remove no longer required Transparency Attestation validation logic
+* Only remove one of duplicate values in Criteria edit
+* Display modifications to new fields in Listing Reports
+
+---
+
 ## Version 10.50.0
 _10 August 2020_
 
