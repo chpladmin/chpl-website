@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Ai Date Range', () => {
+    fdescribe('the Ai Date Range', () => {
         var $analytics, $compile, $localStorage, $log, el, scope, vm;
 
         var stateKey = 'test';
@@ -107,7 +107,7 @@
                         expect(vm.after).toEqual(afterObj);
                     });
 
-                    xit('should restore "before"', () => {
+                    it('should restore "before"', () => {
                         var beforeObj = new Date();
                         state.search.predicateObject.dateRange.before = beforeObj.getTime();
                         vm.restoreState(state);
@@ -149,7 +149,7 @@
                 });
 
                 describe('the after date', () => {
-                    xit('should query as Time, not a date object', () => {
+                    it('should query as Time, not a date object', () => {
                         var dateObj = new Date();
                         vm.after = dateObj;
                         vm.filterChanged();
@@ -167,7 +167,7 @@
                 });
 
                 describe('the before date', () => {
-                    xit('should query as Time, not a date object', () => {
+                    it('should query as Time, not a date object', () => {
                         var dateObj = new Date();
                         vm.before = dateObj;
                         vm.filterChanged();
