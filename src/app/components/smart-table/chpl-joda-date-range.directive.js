@@ -86,7 +86,6 @@
             if (vm.before) {
                 var before;
                 if (angular.isObject(vm.before)) {
-                    //before = longToZonedDateTime(vm.before.getTime()).with(jsJoda.LocalTime.MAX);
                     before = vm.DateUtil.datePartsToZonedDateTime(vm.before.getFullYear(),
                         vm.before.getMonth() + 1,
                         vm.before.getDate(),
@@ -104,10 +103,6 @@
                 var after;
                 if (angular.isObject(vm.after)) {
                     after = vm.DateUtil.longToZonedDateTime(vm.after.getTime()).with(vm.DateUtil.jsJoda().LocalTime.MIN);
-                    //after = datePartsToZonedDateTime(vm.after.getFullYear(),
-                    //    vm.after.getMonth() + 1,
-                    //    vm.after.getDate(),
-                    //    jsJoda.LocalTime.MIDNIGHT);
                 } else {
                     after = vm.DateUtil.longToZonedDateTime(vm.after).with(vm.DateUtil.jsJoda().LocalTime.MIDNIGHT);
                 }
