@@ -27,8 +27,8 @@ export class NetworkService {
         return this.apiPOST(url, userObj);
     }
 
-    confirmPendingCp (pendingCp) {
-        return this.apiPOST('/certified_products/pending/' + pendingCp.id + '/confirm', pendingCp);
+    confirmPendingCp (request) {
+        return this.apiPOST('/certified_products/pending/' + request.pendingListing.id + '/beta/confirm', request);
     }
 
     confirmPendingSurveillance (surveillance) {
