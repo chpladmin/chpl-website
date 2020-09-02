@@ -1211,7 +1211,6 @@
     loglevel-plugin-prefix "^0.8.4"
     strip-ansi "^6.0.0"
 
-<<<<<<< HEAD
 "@wdio/mocha-framework@^6.1.19":
   version "6.3.6"
   resolved "https://registry.yarnpkg.com/@wdio/mocha-framework/-/mocha-framework-6.3.6.tgz#d6a7b9ca34c3d5c1b57812954e674688810ae9ae"
@@ -1222,8 +1221,6 @@
     expect-webdriverio "^1.1.5"
     mocha "^8.0.1"
 
-=======
->>>>>>> staging
 "@wdio/protocols@6.1.14":
   version "6.1.14"
   resolved "https://registry.yarnpkg.com/@wdio/protocols/-/protocols-6.1.14.tgz#ac499b4b8777524c9de7ff054c96896927d2bac1"
