@@ -90,7 +90,7 @@
         function confirm () {
             networkService.confirmPendingCp({
                 pendingListing: vm.cp,
-                warningAcknowledgement: vm.acknowledgeWarnings,
+                acknowledgeWarnings: vm.acknowledgeWarnings,
             }).then(function (result) {
                 $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
             }, function (error) {
