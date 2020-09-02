@@ -3,10 +3,13 @@ import { Locale } from '../../../node_modules/@js-joda/locale_en-us';
 import * as jsJoda from '../../../node_modules/@js-joda/core';
 
 class DateUtil {
+
     constructor ($filter, $log) {
         'ngInject'
         this.$filter = $filter;
         this.$log = $log;
+
+        this._ZONE_ID = jsJoda.ZoneId.of('America/New_York');
     }
 
     getDisplayDateFormat (date, fallback) {
@@ -14,7 +17,6 @@ class DateUtil {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
         }
         if (date && date.month && date.dayOfMonth && date.year) { //This maps perfectly to a js-joda LocalDate
-            //return [...date.month.toLowerCase()].map((w, i) => i === 0 ? w[0].toUpperCase() : w).join('').substring(0,3) + ' ' + date.dayOfMonth + ', ' + date.year;
             return this.localDateTimeToString(date);
         }
         return fallback || 'N/A';
@@ -26,9 +28,8 @@ class DateUtil {
         return date.format(formatter);
     }
 
-    longToZonedDateTime (dateLong, zone) {
-        zone = zone || 'America/New_York';
-        return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), jsJoda.ZoneId.of(zone));
+    longToZonedDateTime (dateLong) {
+        return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this._ZONE_ID);
     }
 
     zonedDateTimeToLong (date) {
@@ -41,10 +42,9 @@ class DateUtil {
         return date.format(formatter);
     }
 
-    datePartsToZonedDateTime (year, month, day, localTime, zone) {
-        zone = zone || 'America/New_York';
+    datePartsToZonedDateTime (year, month, day, localTime) {
         localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
-        let x = jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, jsJoda.ZoneId.of(zone));
+        let x = jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, this._ZONE_ID);
         return x;
     }
 

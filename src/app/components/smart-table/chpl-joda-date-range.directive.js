@@ -81,7 +81,6 @@
         }
 
         function filterChanged () {
-            vm.$log.info('Filter changed.');
             vm.hasChanges = vm.before || vm.after;
             var query = {};
             if (vm.before) {
@@ -123,13 +122,10 @@
         }
 
         function restoreState (state) {
-            vm.$log.info('Restore State.');
             var predicateSearch = state.search.predicateObject[vm.predicate];
             if (predicateSearch) {
                 if (predicateSearch.after) {
                     vm.after = new Date(predicateSearch.after);
-                    vm.$log.info('After');
-                    vm.$log.info(vm.after);
                 } else {
                     vm.after = undefined;
                 }
