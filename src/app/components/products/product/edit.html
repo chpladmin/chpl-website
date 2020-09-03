@@ -36,19 +36,19 @@
           </span>
         </div>
         <div class="product__history-of-product-item">
-          {{ owner.transferDate ? (owner.transferDate | date : 'mediumDate' : 'EST') : 'current' }}
+          {{ owner.transferDate ? (owner.transferDate | date : 'mediumDate' : 'UTC') : 'current' }}
         </div>
         <div class="product__history-of-product-item product__history-of-product-item--end" ng-repeat-end>
           <button class="btn btn-link btn-sm" ng-click="$ctrl.removeOwner(owner)" ng-if="owner.transferDate"><i class="fa fa-times"></i></button>
         </div>
-        <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
+        <div class="product__history-of-product-item product__history-of-product-item--adding" ng-if="$ctrl.addingOwner">
           <div class="data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
           <select ng-model="$ctrl.newOwner" id="product-owner" name="productOwner" class="form-control" required
                   ng-options="developer as developer.displayName for developer in $ctrl.developers">
           </select>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productOwner.$touched) && $ctrl.form.productOwner.$error.required">Field is required</div>
         </div>
-        <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
+        <div class="product__history-of-product-item product__history-of-product-item--adding" ng-if="$ctrl.addingOwner">
           <div class="data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
           <div class="input-group">
             <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close" required
@@ -60,7 +60,7 @@
           </div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.transferDate.$touched) && $ctrl.form.transferDate.$error.required">Field is required</div>
         </div>
-        <div class="product__history-of-product-item product__history-of-product-item--end" ng-if="$ctrl.addingOwner">
+        <div class="product__history-of-product-item product__history-of-product-item--adding product__history-of-product-item--end" ng-if="$ctrl.addingOwner">
           <button class="btn btn-link btn-sm" ng-disabled="!$ctrl.newOwner && $ctrl.showFormErrors" ng-click="$ctrl.saveNewOwner()" ng-mouseover="$ctrl.showFormErrors = true; $ctrl.generateErrorMessages()"><i class="fa fa-save"></i></button>
           <button class="btn btn-link btn-sm" ng-click="$ctrl.doneAddingOwner()"><i class="fa fa-times"></i></button>
         </div>

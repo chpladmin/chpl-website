@@ -10,6 +10,14 @@
     background: var(--light-grey);
 }
 
+.product__history-of-product-item {
+    align-self: center;
+}
+
+.product__history-of-product-item--adding {
+    align-self: start;
+}
+
 .product__history-of-product-header--end {
     grid-column-start: 2;
     grid-column-end: 4;
@@ -17,7 +25,6 @@
 
 .product__history-of-product-item--end {
     justify-self: end;
-    align-self: top;
 }
 
 .product__history-of-product-add-new {
