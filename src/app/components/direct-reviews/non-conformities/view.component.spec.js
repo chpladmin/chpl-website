@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Direct Reviews / NonConformities component', () => {
-        var $log, DateUtil, ctrl, el, mock, scope;
+        var $log, ctrl, el, mock, scope;
 
         mock = [{
             nonConformityStatus: 'Closed',
@@ -32,27 +32,12 @@
         }];
 
         beforeEach(() => {
-            angular.mock.module('chpl.components', function ($provide) {
-                $provide.decorator('DateUtil', function ($delegate) {
-                    $delegate.getDisplayDateFormat = jasmine.createSpy('getDisplayDateFormat');
-                    return $delegate;
-                });
-            });
+            angular.mock.module('chpl.components');
 
-            inject(($compile, _$log_, $rootScope, _DateUtil_) => {
+            inject(($compile, _$log_, $rootScope) => {
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-
-                DateUtil = _DateUtil_;
-                DateUtil.getDisplayDateFormat.and.returnValue('aaa');
-
-                mock[0].capApprovalDate = DateUtil.jsJoda().LocalDate.of(2020, 6, 19);
-                mock[0].capEndDate = DateUtil.jsJoda().LocalDate.of(2021, 7, 20);
-                mock[0].capMustCompleteDate = DateUtil.jsJoda().LocalDate.of(2022, 8, 21);
-                mock[0].capStartDate = DateUtil.jsJoda().LocalDate.of(2023, 9, 22);
-                mock[0].dateOfDetermination = DateUtil.jsJoda().LocalDate.of(2024, 10, 23);
-
                 scope.nonConformities = mock;
 
                 el = angular.element('<chpl-direct-reviews-non-conformities non-conformities="nonConformities"></chpl-direct-reviews-non-conformities>');
@@ -92,8 +77,19 @@
                 });
 
                 it('should translate dates', () => {
-                    expect(DateUtil.getDisplayDateFormat).toHaveBeenCalled();
-                    expect(DateUtil.getDisplayDateFormat).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(String));
+                    expect(ctrl.nonConformities[1].friendlyCapApprovalDate).toBe('Jun 19, 2020');
+                    expect(ctrl.nonConformities[1].friendlyCapEndDate).toBe('Jul 20, 2021');
+                    expect(ctrl.nonConformities[1].friendlyCapMustCompleteDate).toBe('Aug 21, 2022');
+                    expect(ctrl.nonConformities[1].friendlyCapStartDate).toBe('Sep 22, 2023');
+                    expect(ctrl.nonConformities[1].friendlyDateOfDetermination).toBe('Oct 23, 2024');
+                });
+
+                it('should handle blank dates', () => {
+                    expect(ctrl.nonConformities[0].friendlyCapApprovalDate).toBe('Has not been determined');
+                    expect(ctrl.nonConformities[0].friendlyCapEndDate).toBe('Has not been completed');
+                    expect(ctrl.nonConformities[0].friendlyCapMustCompleteDate).toBe('Has not been determined');
+                    expect(ctrl.nonConformities[0].friendlyCapStartDate).toBe('Has not begun');
+                    expect(ctrl.nonConformities[0].friendlyDateOfDetermination).toBe('Has not been determined');
                 });
             });
         });

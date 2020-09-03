@@ -1,12 +1,11 @@
 export const ReportsProductsComponent = {
     templateUrl: 'chpl.reports/products/products.html',
     controller: class ReportsProductsComponent {
-        constructor ($filter, $log, $scope, DateUtil, ReportService, networkService, utilService) {
+        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
-            this.DateUtil = DateUtil;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -51,9 +50,9 @@ export const ReportsProductsComponent = {
             let that = this;
             this.filterText = filter.dataFilter;
             if (filter.tableState.search.predicateObject.date) {
-                this.tableController.search(filter.tableState.search.predicateObject.date, 'friendlyActivityDateMillis');
+                this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
             } else {
-                this.tableController.search({}, 'friendlyActivityDateMillis');
+                this.tableController.search({}, 'date');
             }
             this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
             this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
@@ -147,9 +146,7 @@ export const ReportsProductsComponent = {
 
         prepare (item) {
             item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
-            item.friendlyActivityDate = this.DateUtil.longToZonedDateTime(item.date)
-            item.friendlyActivityDateMilis = item.friendlyActivityDate.toInstant().toEpochMilli();
-            item.friendlyActivityDateString = this.DateUtil.zonedDateTimeToString(item.friendlyActivityDate);
+            item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.fullName = item.responsibleUser.fullName;
             return item;
         }
@@ -192,12 +189,8 @@ export const ReportsProductsComponent = {
                     filter.tableState.search = {
                         predicateObject: {
                             date: {
-                                after: this.DateUtil.zonedDateTimeToLong(this.DateUtil.datePartsToZonedDateTime(2016, 4, 1)),
-                                before: this.DateUtil.zonedDateTimeToLong(
-                                    this.DateUtil.datePartsToZonedDateTime(this.DateUtil.jsJoda().LocalDate.now().year(),
-                                        this.DateUtil.jsJoda().LocalDate.now().monthValue(),
-                                        this.DateUtil.jsJoda().LocalDate.now().dayOfMonth(),
-                                        this.DateUtil.jsJoda().LocalTime.MAX)),
+                                after: new Date('2016-04-01').getTime(),
+                                before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                             },
                         },
                     };

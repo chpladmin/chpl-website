@@ -14,7 +14,7 @@
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.ReportService.downloadReady($ctrl.displayed)"
               ng-csv="$ctrl.displayed" filename="Product_{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
               csv-header="['Developer', 'Product', 'Responsible User', 'Activity', 'Details', 'Activity Date']"
-              csv-column-order="['developerName', 'productName', 'fullName', 'action', 'csvDetails', 'friendlyActivityDateString']">
+              csv-column-order="['developerName', 'productName', 'fullName', 'action', 'csvDetails', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
       <br />
       <div ng-if="$ctrl.downloadProgress.complete < 100 && $ctrl.downloadProgress.complete > 0">
@@ -33,12 +33,12 @@
   </div>
   <div class="row">
     <div class="col-sm-5">
-      Filter on Activity Date (based on Eastern Time)
-      <chpl-joda-date-range
+      Filter on Activity Date
+      <chpl-date-range
         predicate="date"
         register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
         register-restore-state="$ctrl.registerRestoreState(restoreState)"
-        ></chpl-joda-date-range>
+        ></chpl-date-range>
     </div>
   </div>
   <div class="row" ng-if="$ctrl.showLoadingBar()">
@@ -90,7 +90,7 @@
               <button class="btn btn-link pull-right" ng-if="activity.action && !activity.showDetails" ng-click="activity.showDetails = true">Details</button>
               <button class="btn btn-link pull-right" ng-if="activity.action && activity.showDetails" ng-click="activity.showDetails = false">Hide Details</button>
               <button class="btn btn-link pull-right" ng-if="!activity.action && activity.showDetails" disabled><i class="fa fa-spin fa-spinner"></i> Processing</button>
-              {{ $ctrl.DateUtil.zonedDateTimeToString(activity.friendlyActivityDate) }}
+              {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
               <div ng-if="activity.action && activity.showDetails">
                 {{ activity.action }}
                 <ul>

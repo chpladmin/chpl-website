@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Ai Date Range', () => {
+    describe('the Ai Date Range', () => {
         var $analytics, $compile, $localStorage, $log, el, scope, vm;
 
         var stateKey = 'test';
