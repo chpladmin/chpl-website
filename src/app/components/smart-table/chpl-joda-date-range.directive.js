@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('chpl.components')
-        .controller('ChplDateRangeController', ChplDateRangeController)
+        .controller('ChplJodaDateRangeController', ChplJodaDateRangeController)
         .directive('chplJodaDateRange', chplJodaDateRange);
 
     function chplJodaDateRange () {
@@ -12,7 +12,7 @@
                 nameSpace: '@?',
                 trackAnalytics: '@?',
             },
-            controller: 'ChplDateRangeController',
+            controller: 'ChplJodaDateRangeController',
             controllerAs: 'vm',
             link: chplDateRangeLink,
             restrict: 'E',
@@ -56,7 +56,7 @@
     }
 
     /** @ngInclude */
-    function ChplDateRangeController ($analytics, $filter, $localStorage, $log, DateUtil) {
+    function ChplJodaDateRangeController ($analytics, $filter, $localStorage, $log, DateUtil) {
         var vm = this;
 
         vm.$log = $log;
