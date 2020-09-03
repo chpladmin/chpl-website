@@ -256,6 +256,7 @@
                 networkService.updateCP({
                     listing: vm.cp,
                     reason: vm.reason,
+                    acknowledgeWarnings: this.acknowledgeWarnings,
                 }).then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

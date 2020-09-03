@@ -233,6 +233,7 @@ export const ListingEditComponent = {
             this.onSave({
                 listing: this.listing,
                 reason: this.reason,
+                acknowledgeWarnings: this.acknowledgeWarnings,
             });
         }
 
