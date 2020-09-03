@@ -47,12 +47,22 @@
             <li ng-repeat="error in vm.errorMessages | orderBy:'toString()'">{{ error }}</li>
           </ul>
         </div>
+        <div ng-if="vm.warningMessages && vm.warningMessages.length !== 0">
+          Warning<span ng-if="vm.warningMessages.length !== 1">s</span> in product confirmation
+          <ul>
+            <li ng-repeat="warning in vm.warningMessages | orderBy:'toString()'">{{ warning }}</li>
+          </ul>
+        </div>
         <div ng-if="vm.systemRequirements && vm.systemRequirements.length !== 0">
           System Requirement<span ng-if="vm.systemRequirements.length !== 1">s</span> not met
           <ul>
             <li ng-repeat="issue in vm.systemRequirements | orderBy:'toString()'">{{ issue }}</li>
           </ul>
         </div>
+      </div>
+      <div ng-if="vm.stage === 'cp' && vm.warningMessages && vm.warningMessages.length !== 0" class="col-sm-12 text-left">
+        <input type="checkbox" ng-model="vm.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="inspect__acknowledge-warning-checkbox">
+        <label for="acknowledge-warnings" class="inspect__acknowledge-warning-label">I have reviewed the warning<span ng-if="vm.warningMessages.length !== 1">s</span> above and wish to proceed with this update</label>
       </div>
     </div>
     <button class="btn btn-warning btn-large pull-left" id="inspect-previous"

@@ -82,8 +82,8 @@
             });
 
             it('should return a promise with the data if a POST doesn\'t return an object', () => {
-                $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, 'response');
-                networkService.confirmPendingCp({id: 'id'}).then(response => {
+                $httpBackend.expectPOST(/certified_products\/pending\/1\/beta\/confirm/).respond(200, 'response');
+                networkService.confirmPendingCp({pendingListing: {id: 1}, warningAcknowledgement: false}).then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -94,8 +94,8 @@
             });
 
             it('should return a promise with the data if a POST responds with a failure', () => {
-                $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(500, 'response');
-                networkService.confirmPendingCp({id: 'id'}).then(response => {
+                $httpBackend.expectPOST(/certified_products\/pending\/1\/beta\/confirm/).respond(500, 'response');
+                networkService.confirmPendingCp({pendingListing: {id: 1}, warningAcknowledgement: false}).then(response => {
                     response.then(reject => {
                         expect(reject).toEqual('response');
                     });
@@ -198,8 +198,8 @@
             });
 
             it('should confirmPendingCp', () => {
-                $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/id\/confirm$/).respond(200, {data: 'response'});
-                networkService.confirmPendingCp({id: 'id'}).then(response => {
+                $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/1\/beta\/confirm$/).respond(200, {data: 'response'});
+                networkService.confirmPendingCp({pendingListing: {id: 1}, warningAcknowledgement: false}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();

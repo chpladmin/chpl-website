@@ -1,14 +1,14 @@
-// No need for this now, update next time
-
 const uploadElements = {
+    root: 'chpl-upload-listings',
+    title: '.panel-title',
     chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
     uploadButton: '.btn.btn-ai-success',
     listingUploadText: '//chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
-    uploadSuccessfulText: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
 };
+
 const path = require('path');
 
-class UploadPage {
+class UploadListingComponent {
     constructor () { }
 
     get chooseUploadListingButton () {
@@ -16,19 +16,15 @@ class UploadPage {
     }
 
     get uploadButton () {
-        return $(uploadElements.uploadButton);
-    }
-
-    get uploadSuccessfulText () {
-        return $(uploadElements.uploadSuccessfulText);
+        return $(uploadElements.root).$(uploadElements.uploadButton);
     }
 
     get listingUploadText () {
         return $(uploadElements.listingUploadText);
     }
 
-    waitForSuccessfulUpload () {
-        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed());
+    get title () {
+        return $(uploadElements.root).$(uploadElements.title);
     }
 
     uploadListing (uploadfilePath) {
@@ -40,4 +36,4 @@ class UploadPage {
 
 }
 
-export default UploadPage;
+export default UploadListingComponent;

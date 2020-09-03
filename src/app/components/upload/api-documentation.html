@@ -3,11 +3,13 @@
     <h3 class="panel-title">Upload API Documentation Information</h3>
   </div>
   <div class="panel-body">
-    <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
-      {{ $ctrl.uploadMessage }}
-      <ul ng-if="$ctrl.uploadErrors.length > 0" ng-class="'bg-danger'">
-        <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
-      </ul>
+    <div class="upload-messages">
+      <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
+        {{ $ctrl.uploadMessage }}
+        <ul ng-if="$ctrl.uploadErrors.length > 0" ng-class="'bg-danger'">
+          <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
+        </ul>
+      </div>
     </div>
     <form class="form form-horizontal" name="$ctrl.documentForm">
       <div class="row">
