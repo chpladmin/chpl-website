@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, DateUtil, authService, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -30,6 +30,7 @@
         vm.editCertifiedProduct = editCertifiedProduct;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
+        vm.getDisplayDateFormat = DateUtil.getDisplayDateFormat;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;

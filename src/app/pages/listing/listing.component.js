@@ -2,7 +2,7 @@ export const ListingComponent = {
     templateUrl: 'chpl.listing/listing.html',
     bindings: { },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, featureFlags, networkService, utilService) {
+        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, featureFlags, networkService, utilService) {
             'ngInject'
             this.$localStorage = $localStorage;
             this.$log = $log;
@@ -11,6 +11,7 @@ export const ListingComponent = {
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
             this.authService = authService;
+            this.getDisplayDateFormat = DateUtil.getDisplayDateFormat;
             this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
