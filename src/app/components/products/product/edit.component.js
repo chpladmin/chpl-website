@@ -75,19 +75,12 @@ export const ProductEditComponent = {
                     }
                 });
             }
-            if (this.needsOwner()) {
-                messages.push('Product must have a current Owner');
-            }
             this.errorMessages = messages;
         }
 
         isValid () {
             return this.errorMessages.length === 0 // business logic rules
                 && this.form.$valid; // form validation
-        }
-
-        needsOwner () {
-            return this.product.ownerHistory.filter(o => !o.transferDate).length === 0
         }
 
         removeOwner (owner) {

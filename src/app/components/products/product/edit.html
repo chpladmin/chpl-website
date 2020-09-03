@@ -39,7 +39,7 @@
           {{ owner.transferDate ? (owner.transferDate | date : 'mediumDate' : 'EST') : 'current' }}
         </div>
         <div class="product__history-of-product-item product__history-of-product-item--end" ng-repeat-end>
-          <button class="btn btn-link btn-sm" ng-click="$ctrl.removeOwner(owner)"><i class="fa fa-times"></i></button>
+          <button class="btn btn-link btn-sm" ng-click="$ctrl.removeOwner(owner)" ng-if="owner.transferDate"><i class="fa fa-times"></i></button>
         </div>
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
           <div class="data-label sr-only"><label for="product-owner">Product Owner <span class="text-danger">*</span></label></div>
@@ -51,9 +51,7 @@
         <div class="product__history-of-product-item" ng-if="$ctrl.addingOwner">
           <div class="data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
           <div class="input-group">
-            <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close"
-                   ng-required="!$ctrl.needsOwner()"
-                   ng-disabled="$ctrl.needsOwner()"
+            <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDate" is-open="$ctrl.transferDatePicker" close-text="Close" required
                    id="transfer-date" name="transferDate" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
             </div>
             <span class="input-group-btn">
