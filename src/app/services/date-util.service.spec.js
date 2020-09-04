@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Date service', () => {
+    describe('the Date service', () => {
         var $log, date, mock;
 
         mock = {
@@ -28,7 +28,6 @@
 
         describe('when converting dates to display form', () => {
             it('should convert a "Date" object into standard form', () => {
-                //expect(date.getDisplayDateFormat(mock.dateObject)).toBe('Sep 22, 2020');
                 expect(date.getDisplayDateFormat(date.jsJoda().LocalDate.of(2020, 9, 22))).toBe('Sep 22, 2020');
             });
 
