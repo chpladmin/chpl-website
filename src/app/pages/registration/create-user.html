@@ -1,4 +1,4 @@
-<div class="container" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
+<div class="container new-style">
   <div class="row">
     <div class="col-md-12">
       <h1>User Registration</h1>
@@ -21,109 +21,61 @@
         <div class="col-md-8 col-md-offset-2" ng-if="$ctrl.message.value">
           <p class="alert alert-danger">{{ $ctrl.message.value }}</p>
         </div>
-        <div class="col-md-12 form-horizontal" feature-flag="ui-bump-major" feature-flag-hide>
-          <p>Create a new account</p>
-          <div class="form-group">
-            <label for="username" class="control-label col-md-4">Username <span class="text-danger">*</span></label>
-            <div class="col-md-8">
+        <div class="flex-container">
+          <div class="flex-item">
+            <p>Create a new account</p>
+          </div>
+        </div>
+        <div class="flex-container">
+          <div class="flex-item">
+            <label for="username" class="control-label">Username <span class="text-danger">*</span></label>
+            <div>
               <input type="text" id="username" name="username" ng-model="$ctrl.userDetails.user.subjectName" class="form-control" required ng-maxlength="25" ng-change="$ctrl.setExtras()" />
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.username.$touched) && $ctrl.createUserForm.username.$error.required">Field is required</div>
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.username.$touched) && $ctrl.createUserForm.username.$error.maxlength">Field is too long</div>
             </div>
           </div>
-          <div class="form-group">
-            <label for="password" class="control-label col-md-4">Password <span class="text-danger">*</span></label>
-            <div class="col-md-8">
+        </div>
+        <div class="flex-container">
+          <div class="flex-item">
+            <label for="password" class="control-label">Password <span class="text-danger">*</span></label>
+            <div>
               <input type="password" id="password" name="password" ng-model="$ctrl.userDetails.user.password" class="form-control" required ng-change="$ctrl.setExtras()"
                      zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
-              <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
-                <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
-              </uib-progressbar>
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && $ctrl.createUserForm.password.$error.required">Field is required</div>
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && !$ctrl.createUserForm.password.$error.required && $ctrl.createUserForm.password.$error.passwordStrength">Password must be stronger</div>
               <ul class="list-unstyled text-info" ng-if="$ctrl.passwordStrength.score <= 2">
                 <li ng-if="$ctrl.passwordStrength.feedback.warning">{{ $ctrl.passwordStrength.feedback.warning }}</li>
                 <li ng-repeat="sugg in $ctrl.passwordStrength.feedback.suggestions">{{ sugg }}</li>
               </ul>
+              <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
+                <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
+              </uib-progressbar>
             </div>
           </div>
-          <div class="form-group">
-            <label for="passwordverify" class="control-label col-md-4">Verify password <span class="text-danger">*</span></label>
-            <div class="col-md-8">
+          <div class="flex-item">
+            <label for="passwordverify" class="control-label">Verify password <span class="text-danger">*</span></label>
+            <div>
               <input type="password" id="passwordverify" name="passwordverify" ng-model="$ctrl.userDetails.user.passwordverify" class="form-control" required />
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.passwordverify.$touched) && $ctrl.createUserForm.passwordverify.$error.required">Field is required</div>
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.passwordverify.$touched) && !$ctrl.createUserForm.passwordverify.$error.required && $ctrl.misMatchPasswords()">Passwords must match</div>
             </div>
           </div>
-          <chpl-contact contact="$ctrl.userDetails.user"
-                        is-editing="true"
-                        is-required="true"
-                        on-change="$ctrl.editContact(contact)"
-                        form-horizontal="true"
-                        show-form-errors="$ctrl.showFormErrors"></chpl-contact>
-          <button class="btn btn-default btn-block"
-                  ng-mouseover="$ctrl.showFormErrors = true; $ctrl.setExtras()"
-                  ng-click="$ctrl.createUser()" ng-disabled="($ctrl.createUserForm.$invalid || $ctrl.misMatchPasswords()) && $ctrl.showFormErrors">Create account</button>
-          <p>Or <button class="btn btn-link" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">sign in to your existing account</button></p>
-          <p>If you require accessibility assistance please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a></p>
         </div>
-        <span feature-flag="ui-bump-major">
-          <div class="flex-container">
-            <div class="flex-item">
-              <p>Create a new account</p>
-            </div>
+        <chpl-contact contact="$ctrl.userDetails.user"
+                      is-editing="true"
+                      is-required="true"
+                      on-change="$ctrl.editContact(contact)"
+                      show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+        <div class="flex-container">
+          <div class="flex-item center">
+            <button class="btn btn-default"
+                    ng-mouseover="$ctrl.showFormErrors = true; $ctrl.setExtras()"
+                    ng-click="$ctrl.createUser()" ng-disabled="($ctrl.createUserForm.$invalid || $ctrl.misMatchPasswords()) && $ctrl.showFormErrors">Create account</button>
+            <p>Or <button class="btn btn-link" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">sign in to your existing account</button></p>
+            <p>If you require accessibility assistance please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a></p>
           </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <label for="username" class="control-label">Username <span class="text-danger">*</span></label>
-              <div>
-                <input type="text" id="username" name="username" ng-model="$ctrl.userDetails.user.subjectName" class="form-control" required ng-maxlength="25" ng-change="$ctrl.setExtras()" />
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.username.$touched) && $ctrl.createUserForm.username.$error.required">Field is required</div>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.username.$touched) && $ctrl.createUserForm.username.$error.maxlength">Field is too long</div>
-              </div>
-            </div>
-          </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <label for="password" class="control-label">Password <span class="text-danger">*</span></label>
-              <div>
-                <input type="password" id="password" name="password" ng-model="$ctrl.userDetails.user.password" class="form-control" required ng-change="$ctrl.setExtras()"
-                       zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && $ctrl.createUserForm.password.$error.required">Field is required</div>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.password.$touched) && !$ctrl.createUserForm.password.$error.required && $ctrl.createUserForm.password.$error.passwordStrength">Password must be stronger</div>
-                <ul class="list-unstyled text-info" ng-if="$ctrl.passwordStrength.score <= 2">
-                  <li ng-if="$ctrl.passwordStrength.feedback.warning">{{ $ctrl.passwordStrength.feedback.warning }}</li>
-                  <li ng-repeat="sugg in $ctrl.passwordStrength.feedback.suggestions">{{ sugg }}</li>
-                </ul>
-                <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
-                  <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
-                </uib-progressbar>
-              </div>
-            </div>
-            <div class="flex-item">
-              <label for="passwordverify" class="control-label">Verify password <span class="text-danger">*</span></label>
-              <div>
-                <input type="password" id="passwordverify" name="passwordverify" ng-model="$ctrl.userDetails.user.passwordverify" class="form-control" required />
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.passwordverify.$touched) && $ctrl.createUserForm.passwordverify.$error.required">Field is required</div>
-                <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.passwordverify.$touched) && !$ctrl.createUserForm.passwordverify.$error.required && $ctrl.misMatchPasswords()">Passwords must match</div>
-              </div>
-            </div>
-          </div>
-          <chpl-contact contact="$ctrl.userDetails.user"
-                        is-editing="true"
-                        is-required="true"
-                        on-change="$ctrl.editContact(contact)"
-                        show-form-errors="$ctrl.showFormErrors"></chpl-contact>
-          <div class="flex-container">
-            <div class="flex-item center">
-              <button class="btn btn-default"
-                      ng-mouseover="$ctrl.showFormErrors = true; $ctrl.setExtras()"
-                      ng-click="$ctrl.createUser()" ng-disabled="($ctrl.createUserForm.$invalid || $ctrl.misMatchPasswords()) && $ctrl.showFormErrors">Create account</button>
-              <p>Or <button class="btn btn-link" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">sign in to your existing account</button></p>
-              <p>If you require accessibility assistance please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a></p>
-            </div>
-          </div>
-        </span>
+        </div>
       </div>
       <div class="row" ng-if="$ctrl.isSignInMode()" ng-form="$ctrl.authorizeUserForm">
         <div class="col-md-12">
