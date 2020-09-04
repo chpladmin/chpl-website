@@ -42,7 +42,7 @@ class ConfirmPage {
     }
 
     get rejectButtonOnInspectListing () {
-        return $(confirmElements.rejectButtonOnInspectListing); 
+        return $(confirmElements.rejectButtonOnInspectListing);
     }
 
     rejectCheckbox (chplId) {
