@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Date service', () => {
+    fdescribe('the Date service', () => {
         var $log, date, mock;
 
         mock = {
@@ -47,6 +47,41 @@
                 expect(date.getDisplayDateFormat(null, 'what date')).toBe('what date');
                 expect(date.getDisplayDateFormat({}, 'not available')).toBe('not available');
             });
+        });
+
+        //TODO: Determine how we can mock js-joda correctly to run these tests
+        describe('when converting a LocalDate object to string', () => {
+            it('should use the format that was passed in, if passed in', () => { });
+
+            it('should use the default format, if one is not passed in', () => { });
+
+            it('should use the jsJoda library to do conversion', () => { });
+        });
+
+        describe('when converting a long to ZonedDateTime object', () => {
+            it('should use jsJoda library to create a ZonedDateTime object', () => { });
+
+            it('should always create the ZonedDateTime based on Eastern Time (America/New_York)', () => { });
+        });
+
+        describe('when converting a ZonedDateTime object to a long', () => {
+            it('should use the jsJoda library to generate the long value', () => { });
+        });
+
+        describe('when converting a ZonedDateTime object to a string', () => {
+            it('should use the format that was passed in, if passed in', () => { });
+
+            it('should use the default format, if one is not passed in', () => { });
+
+            it('should use the jsJoda library to do conversion', () => { });
+        });
+
+        describe('when creating a ZonedDateTime based on date and time parts', () => {
+            it('should use the default time, if one was not passed in', () => { });
+
+            it('should use the passed in time, if one was passed in', () => { });
+
+            it('should use the jsJoda library to generate the ZonedDateTime object', () => { });
         });
     });
 })();
