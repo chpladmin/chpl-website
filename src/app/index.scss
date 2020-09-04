@@ -1074,6 +1074,19 @@ Button Styling
         text-transform: uppercase;
     }
 
+    .swagger-ui {
+
+        .operation {
+
+            .content {
+
+                label {
+                    text-transform: none;
+                }
+            }
+        }
+    }
+
     .data-label {
         font-weight: 700;
     }
