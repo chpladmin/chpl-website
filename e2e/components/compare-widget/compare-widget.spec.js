@@ -1,17 +1,19 @@
-import compareWidgetComponent from './compare-widget.po';
+import CompareWidgetComponent from './compare-widget.po';
 import SearchPage from '../../pages/search/search.po';
 import Hooks from '../../utilities/hooks';
 
-let component, hooks, page;
-let ListingId1 = 9261;
-let ListingId2 = 9956;
-let chplId2 = '15.04.04.2916.smar.07.01.1.190328';
-let chplId1 = '15.02.02.3007.A056.01.00.0.180214';
+let compare, hooks, search;
+let listingId1 = 9261;
+let listingId2 = 9956;
+let search1 = '(SQI) Solution For Quality Improvement';
+let search2 = '24/7 smartEMR';
 
 beforeEach(async () => {
-    page = new SearchPage();
-    component = new compareWidgetComponent();
+    search = new SearchPage();
+    compare = new CompareWidgetComponent();
     hooks = new Hooks();
+    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
+    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     await hooks.open('#/search');
 });
 
@@ -19,59 +21,60 @@ describe('on compare widget', () => {
     describe('if there is no listing added for compare', () => {
 
         it('should not have compare products button', () => {
-            component.compareWidget.click();
-            assert.isFalse(component.compareProductsButton.isDisplayed());
+            compare.compareWidget.click();
+            assert.isFalse(compare.compareProductsButton.isDisplayed());
         });
+
         it('should not have remove all products button', () => {
-            component.compareWidget.click();
-            assert.isFalse(component.removeProductsButton.isDisplayed());
+            compare.compareWidget.click();
+            assert.isFalse(compare.removeProductsButton.isDisplayed());
         });
     });
 
     describe('if there is exactly 1 listing added for compare', () => {
         beforeAll(() => {
-            page.searchForListing(chplId2);
-            page.addListingToCompare(ListingId2);
+            search.searchForListing(search2);
+            compare.addListingToCompare(listingId2);
         });
 
         it('should have compare products button but disabled', () => {
-            assert.isTrue(component.compareProductsButton.isDisplayed());
-            assert.isFalse(component.compareProductsButton.isClickable());
+            assert.isTrue(compare.compareProductsButton.isDisplayed());
+            assert.isFalse(compare.compareProductsButton.isClickable());
         });
 
         it('should have remove all products button and enabled', () => {
-            assert.isTrue(component.removeProductsButton.isDisplayed());
-            assert.isTrue(component.removeProductsButton.isClickable());
+            assert.isTrue(compare.removeProductsButton.isDisplayed());
+            assert.isTrue(compare.removeProductsButton.isClickable());
         });
 
         it('remove products removes products', () => {
-            component.removeProductsButton.click();
-            assert.isFalse(component.removeProductsButton.isDisplayed());
-            assert.isFalse(component.compareProductsButton.isDisplayed());
+            compare.removeProductsButton.click();
+            assert.isFalse(compare.removeProductsButton.isDisplayed());
+            assert.isFalse(compare.compareProductsButton.isDisplayed());
         });
     });
 
     describe('if there are at least 2 listings added for compare', () => {
         beforeAll(() => {
-            page.searchForListing(chplId1);
-            page.addListingToCompare(ListingId1);
-            page.searchForListing(chplId2);
-            page.addListingToCompare(ListingId2);
+            search.searchForListing(search1);
+            compare.addListingToCompare(listingId1);
+            search.searchForListing(search2);
+            compare.addListingToCompare(listingId2);
         });
 
         it('should have compare products button and enabled', () => {
-            assert.isTrue(component.compareProductsButton.isDisplayed());
-            assert.isTrue(component.compareProductsButton.isClickable());
+            assert.isTrue(compare.compareProductsButton.isDisplayed());
+            assert.isTrue(compare.compareProductsButton.isClickable());
         });
 
         it('should have remove all products button and enabled', () => {
-            assert.isTrue(component.removeProductsButton.isDisplayed());
-            assert.isTrue(component.removeProductsButton.isClickable());
+            assert.isTrue(compare.removeProductsButton.isDisplayed());
+            assert.isTrue(compare.removeProductsButton.isClickable());
         });
 
         it('compare products button opens compare page for the selected listings', () => {
-            component.compareProductsButton.click();
-            assert.include(browser.getUrl(),'/compare/' + ListingId1 + '&' + ListingId2);
+            compare.compareProductsButton.click();
+            assert.include(browser.getUrl(),'/compare/' + listingId1 + '&' + listingId2);
         });
     });
 });

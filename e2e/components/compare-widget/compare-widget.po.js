@@ -4,7 +4,7 @@ const elements = {
     removeProducts: '//button[text()="Remove all products"]',
 };
 
-class compareWidgetComponent {
+class CompareWidgetComponent {
     constructor () { }
 
     get compareWidget () {
@@ -19,6 +19,14 @@ class compareWidgetComponent {
         return $(elements.removeProducts);
     }
 
+    compareButton (listingId) {
+        return $('#toggle-compare-' + listingId);
+    }
+
+    addListingToCompare (listingId) {
+        this.compareButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
+        this.compareButton(listingId).click();
+    }
 }
 
-export default compareWidgetComponent;
+export default CompareWidgetComponent;
