@@ -1,18 +1,21 @@
-.swagger-ui .endpoint h4 a,
-.swagger-ui .endpoint a {
-    color: #337ab7;
-}
-
-.swagger-ui .endpoint .endpoint-actions a,
-.swagger-ui .endpoint .endpoint-heading span {
-    color: #333;
-}
-
-.swagger-ui .api-version {
-    color: #333;
-}
-
 .swagger-ui {
+
+    .api-version {
+        color: #333;
+    }
+
+    .endpoint {
+
+        h4 a,
+        a {
+            color: #337ab7;
+        }
+
+        .endpoint-actions a,
+        .endpoint-heading span {
+            color: #333;
+        }
+    }
 
     .operation {
 
