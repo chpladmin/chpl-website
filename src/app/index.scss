@@ -9,6 +9,34 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
 @import "~angularjs-toaster/toaster.scss";
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic");
 
+:root {
+    --grey-blue: #edf6ff;
+    --blue: #156dac;
+    --darkblue: #0e547f;
+    --grey: #c6d5e5;
+    --red: #c44f65;
+    --dark-grey: #555555;
+    --black: #1c1c1c;
+    --light-grey: #f9f9f9;
+    --white: #ffffff;
+    --primary: #edf6ff;
+    --secondary: #156dac;
+    --success: #4fc16f;
+    --info: #0e547f;
+    --warning: #c44f65;
+    --danger: #c44f65;
+    --light: #f9f9f9;
+    --dark: #1c1c1c;
+    --medium-grey: #6b6b6b;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: Lato, Sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 .browsehappy {
     margin: .2em 0;
     background: #ccc;
@@ -24,7 +52,7 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
 }
 
 body {
-    background-image: url("../assets/images/CHPL_BackgroundPattern.png");
+    background-color: var(--white);
     font-family: "Lato", sans-serif;
 }
 
@@ -62,19 +90,45 @@ a.btn {
 }
 
 h1 {
-    font-family: "Oswald", sans-serif;
-    font-weight: 300; /* 400-regular, 300-light */
-    color: #0070c9;
+    font-family: "Lato", sans-serif;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: var(--dark);
 }
 
 h2 {
-    font-family: "Oswald", sans-serif;
-    font-weight: 300;
-    color: #0070c9;
+    font-family: "Lato", sans-serif;
+    font-size: 2em;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+h3 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.75em;
+    font-weight: 500;
+    color: var(--dark);
 }
 
 h4 {
-    font-weight: 700;
+    font-family: "Lato", sans-serif;
+    font-size: 1.5em;
+    font-weight: 900;
+    color: var(--dark);
+}
+
+h5 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.25em;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+h6 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.25em;
+    font-weight: 500;
+    color: var(--dark);
 }
 
 .splash-row {
@@ -109,22 +163,10 @@ h4 {
     position: fixed;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd) {
-    background-color: #dee1ff;
-}
-
-.table-striped-foldout>tbody>tr:nth-of-type(4n+3) {
-    background-color: #f6f6fa;
-}
-
-.table-striped>tbody>tr:nth-of-type(even) {
-    background-color: #f6f6fa;
-}
-
 .main-content {
-    background: #fff;
-    padding: 5px;
-    border: 1px solid #e1e1e1;
+    background: var(--light-grey);
+    padding: 15px;
+    border: 1px solid var(--dark-grey);
 }
 
 .inset-content {
@@ -199,37 +241,36 @@ h4 {
 }
 
 .panel-ai {
-    border-color: #337ab7;
+    border-color: #c6d5e5;
 }
 
 .panel-ai > .panel-heading {
-    color: #f5d43c;
-    background: linear-gradient(#0070c9, #004378);
+    color: #1c1c1c;
+    background: #edf6ff;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    border-color: #337ab7;
+    border-color: #c6d5e5;
 }
 
 .panel-ai > .panel-heading a {
-    color: #f5d43c;
-    text-decoration: none;
+    color: #1c1c1c;
 }
 
 .panel-ai > .panel-heading a .pull-right {
-    color: #fff;
+    color: #555555;
 }
 
 .panel-ai > .panel-heading + .panel-collapse > .panel-body {
-    border-top-color: #337ab7;
+    border-top-color: #c6d5e5;
 }
 
 .panel-ai > .panel-heading .badge {
-    color: #f5d43c;
-    background: linear-gradient(#0070c9, #004378);
+    color: #1c1c1c;
+    background: #edf6ff;
 }
 
 .panel-ai > .panel-footer + .panel-collapse > .panel-body {
-    border-bottom-color: #337ab7;
+    border-bottom-color: #c6d5e5;
 }
 
 .btn-ai {
@@ -711,89 +752,8 @@ option[label^="Removed"] {
     }
 }
 
-:root {
-    --grey-blue: #edf6ff;
-    --blue: #156dac;
-    --darkblue: #0e547f;
-    --grey: #c6d5e5;
-    --red: #c44f65;
-    --dark-grey: #555555;
-    --black: #1c1c1c;
-    --light-grey: #f9f9f9;
-    --white: #ffffff;
-    --primary: #edf6ff;
-    --secondary: #156dac;
-    --success: #4fc16f;
-    --info: #0e547f;
-    --warning: #c44f65;
-    --danger: #c44f65;
-    --light: #f9f9f9;
-    --dark: #1c1c1c;
-    --medium-grey: #6b6b6b;
-    --breakpoint-xs: 0;
-    --breakpoint-sm: 576px;
-    --breakpoint-md: 768px;
-    --breakpoint-lg: 992px;
-    --breakpoint-xl: 1200px;
-    --font-family-sans-serif: Lato, Sans-serif;
-    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
 .data-item--invalid {
     text-decoration: line-through;
-}
-
-.body {
-    background-image: url("../assets/images/white.png");
-    background-color: var(--white);
-}
-
-.main-content {
-    background: var(--light-grey);
-    padding: 15px;
-    border: 1px solid var(--dark-grey);
-}
-
-h1 {
-    font-family: "Lato", sans-serif;
-    font-size: 2.5em;
-    font-weight: 900;
-    color: var(--dark);
-}
-
-h2 {
-    font-family: "Lato", sans-serif;
-    font-size: 2em;
-    font-weight: 600;
-    color: var(--dark);
-}
-
-h3 {
-    font-family: "Lato", sans-serif;
-    font-size: 1.75em;
-    font-weight: 500;
-    color: var(--dark);
-}
-
-h4 {
-    font-family: "Lato", sans-serif;
-    font-size: 1.5em;
-    font-weight: 900;
-    color: var(--dark);
-}
-
-h5 {
-    font-family: "Lato", sans-serif;
-    font-size: 1.25em;
-    font-weight: 600;
-    color: var(--dark);
-}
-
-h6 {
-    font-family: "Lato", sans-serif;
-    font-size: 1.25em;
-    font-weight: 500;
-    color: var(--dark);
 }
 
 p {
@@ -890,7 +850,7 @@ p.product-subheads {
     border: 1px solid var(--white);
 }
 
-.btn-wdiget:hover {
+.btn-widget:hover {
     background: var(--grey);
 }
 
@@ -902,7 +862,6 @@ p.product-subheads {
 
 .btn-filter:hover {
     background: var(--grey-blue);
-
 }
 
 .badge-success {
@@ -973,8 +932,6 @@ p.product-subheads {
 .panel-ai > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #c6d5e5;
 }
-
-/* Form Styling */
 
 .form-control {
     font-family: "Lato";
