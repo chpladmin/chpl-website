@@ -743,356 +743,318 @@ option[label^="Removed"] {
     text-decoration: line-through;
 }
 
-.new-style {
+.body {
+    background-image: url("../assets/images/white.png");
+    background-color: var(--white);
+}
 
-    /*
-Format
-   */
+.main-content {
+    background: var(--light-grey);
+    padding: 15px;
+    border: 1px solid var(--dark-grey);
+}
 
-    .body {
-        background-image: url("../assets/images/white.png");
+h1 {
+    font-family: "Lato", sans-serif;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: var(--dark);
+}
+
+h2 {
+    font-family: "Lato", sans-serif;
+    font-size: 2em;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+h3 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.75em;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+h4 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.5em;
+    font-weight: 900;
+    color: var(--dark);
+}
+
+h5 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.25em;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+h6 {
+    font-family: "Lato", sans-serif;
+    font-size: 1.25em;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+p {
+    font-family: "Lato", sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--dark);
+}
+
+p.italic {
+    font-family: "Lato", sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--dark);
+}
+
+p.bold {
+    font-family: "Lato", sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+p.product-subheads {
+    text-transform: uppercase;
+    color: #555555;
+    padding: 10px 0;
+    font-family: "Lato";
+    font-size: 1em;
+    font-weight: 300;
+}
+
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 5px 10px;
+}
+
+.btn:focus {
+    border-color: var( --blue) 1px solid;
+}
+
+.btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.btn-default {
+    padding: 5px 10px;
+    line-height: 1.5;
+    color: var(--black);
+    background-color: var(--white);
+    border-color: var(--grey-blue) 1px solid;
+    border-radius: 5px;
+}
+
+.btn-default:hover {
+    background-color: var(--light-blue);
+}
+
+.btn-primary {
+    color: var(--white);
+    background: var(--blue);
+    padding: 5px 10px;
+    line-height: 1.5;
+    border-radius: 5px;
+    border-color: var(--darkblue) 1px solid;
+}
+
+.btn-primary:hover {
+    background: var(--darkblue);
+}
+
+.btn-secondary {
+    color: var(--blue);
+    background: var(--white);
+    padding: 5px 10px;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: 1px solid var(--blue);
+}
+
+.btn-secondary:hover {
+    background: var(--light-grey);
+}
+
+.btn-widget {
+    color: var(--blue);
+    background: var(--grey-blue);
+    border: 1px solid var(--white);
+}
+
+.btn-wdiget:hover {
+    background: var(--grey);
+}
+
+.btn-filter {
+    background: var(--white);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+}
+
+.btn-filter:hover {
+    background: var(--grey-blue);
+
+}
+
+.badge-success {
+    background-color: #4fc16f;
+}
+
+.badge-success:hover {
+    background-color: #356635;
+}
+
+.badge-error {
+    background-color: #c44f65;
+}
+
+.badge-error:hover {
+    background-color: #953b39;
+}
+
+.panel-default {
+    margin: 15px;
+    background-color: #fff;
+    border: 1px solid #c6d5e5;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
+}
+
+.panel-body {
+    padding: 10px 10px 10px 15px;
+}
+
+.panel-heading {
+    background: var(--white);
+}
+
+.panel-heading.tracking-panel {
+    padding: 20px 15px;
+}
+
+.panel-ai {
+    border-color: #c6d5e5;
+}
+
+.panel-ai > .panel-heading {
+    color: #1c1c1c;
+    background: #edf6ff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-color: #c6d5e5;
+}
+
+.panel-ai > .panel-heading a {
+    color: #1c1c1c;
+}
+
+.panel-ai > .panel-heading a .pull-right {
+    color: #555555;
+}
+
+.panel-ai > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #c6d5e5;
+}
+
+.panel-ai > .panel-heading .badge {
+    color: #1c1c1c;
+    background: #edf6ff;
+}
+
+.panel-ai > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #c6d5e5;
+}
+
+/* Form Styling */
+
+.form-control {
+    font-family: "Lato";
+    font-size: 16px;
+    border-color: #6c9cbf;
+    line-height: 1.38;
+    letter-spacing: .18px;
+    color: var(--dark);
+    width: calc(100% - 5px);
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: var(--white);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: var(--grey-blue);
+}
+
+.search-table th {
+    color: var(--blue);
+    font-weight: 500;
+}
+
+.container-striped {
+
+    &.even {
         background-color: var(--white);
     }
 
-    .main-content {
-        background: var(--light-grey);
-        padding: 15px;
-        border: 1px solid var(--dark-grey);
-    }
-
-    /*
-Typography
-   */
-
-    h1 {
-        font-family: "Lato", sans-serif;
-        font-size: 2.5em;
-        font-weight: 900;
-        color: var(--dark);
-    }
-
-    h2 {
-        font-family: "Lato", sans-serif;
-        font-size: 2em;
-        font-weight: 600;
-        color: var(--dark);
-    }
-
-    h3 {
-        font-family: "Lato", sans-serif;
-        font-size: 1.75em;
-        font-weight: 500;
-        color: var(--dark);
-    }
-
-    h4 {
-        font-family: "Lato", sans-serif;
-        font-size: 1.5em;
-        font-weight: 900;
-        color: var(--dark);
-    }
-
-    h5 {
-        font-family: "Lato", sans-serif;
-        font-size: 1.25em;
-        font-weight: 600;
-        color: var(--dark);
-    }
-
-    h6 {
-        font-family: "Lato", sans-serif;
-        font-size: 1.25em;
-        font-weight: 500;
-        color: var(--dark);
-    }
-
-    p {
-        font-family: "Lato", sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        color: var(--dark);
-    }
-
-    p.italic {
-        font-family: "Lato", sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        font-style: italic;
-        color: var(--dark);
-    }
-
-    p.bold {
-        font-family: "Lato", sans-serif;
-        font-size: 1em;
-        font-weight: 600;
-        color: var(--dark);
-    }
-
-    p.product-subheads {
-        text-transform: uppercase;
-        color: #555555;
-        padding: 10px 0;
-        font-family: "Lato";
-        font-size: 1em;
-        font-weight: 300;
-    }
-
-    /*
-Button Styling
-   */
-
-    .btn {
-        display: inline-block;
-        margin-bottom: 0;
-        font-weight: normal;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        padding: 5px 10px;
-    }
-
-    .btn:focus {
-        border-color: var( --blue) 1px solid;
-    }
-
-    .btn:active {
-        box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-    }
-
-    .btn-default {
-        padding: 5px 10px;
-        line-height: 1.5;
-        color: var(--black);
-        background-color: var(--white);
-        border-color: var(--grey-blue) 1px solid;
-        border-radius: 5px;
-    }
-
-    .btn-default:hover {
-        background-color: var(--light-blue);
-    }
-
-    .btn-primary {
-        color: var(--white);
-        background: var(--blue);
-        padding: 5px 10px;
-        line-height: 1.5;
-        border-radius: 5px;
-        border-color: var(--darkblue) 1px solid;
-    }
-
-    .btn-primary:hover {
-        background: var(--darkblue);
-    }
-
-    .btn-secondary {
-        color: var(--blue);
-        background: var(--white);
-        padding: 5px 10px;
-        line-height: 1.5;
-        border-radius: 5px;
-        border: 1px solid var(--blue);
-    }
-
-    .btn-secondary:hover {
-        background: var(--light-grey);
-    }
-
-    .btn-widget {
-        color: var(--blue);
-        background: var(--grey-blue);
-        border: 1px solid var(--white);
-    }
-
-    .btn-wdiget:hover {
-        background: var(--grey);
-    }
-
-    .btn-filter {
-        background: var(--white);
-        color: var(--blue);
-        border: 1px solid var(--blue);
-    }
-
-    .btn-filter:hover {
-        background: var(--grey-blue);
-
-    }
-
-    /* Badges*/
-
-    .badge-success {
-        background-color: #4fc16f;
-    }
-
-    .badge-success:hover {
-        background-color: #356635;
-    }
-
-    .badge-error {
-        background-color: #c44f65;
-    }
-
-    .badge-error:hover {
-        background-color: #953b39;
-    }
-
-    /*Panel Styling */
-
-    .panel-default {
-        margin: 15px;
-        background-color: #fff;
-        border: 1px solid #c6d5e5;
-        border-radius: 5px;
-        box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
-    }
-
-    .panel-body {
-        padding: 10px 10px 10px 15px;
-    }
-
-    .panel-heading {
-        background: var(--white);
-    }
-
-    .panel-heading.tracking-panel {
-        padding: 20px 15px;
-    }
-
-    .panel-ai {
-        border-color: #c6d5e5;
-    }
-
-    .panel-ai > .panel-heading {
-        color: #1c1c1c;
-        background: #edf6ff;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        border-color: #c6d5e5;
-    }
-
-    .panel-ai > .panel-heading a {
-        color: #1c1c1c;
-    }
-
-    .panel-ai > .panel-heading a .pull-right {
-        color: #555555;
-    }
-
-    .panel-ai > .panel-heading + .panel-collapse > .panel-body {
-        border-top-color: #c6d5e5;
-    }
-
-    .panel-ai > .panel-heading .badge {
-        color: #1c1c1c;
-        background: #edf6ff;
-    }
-
-    .panel-ai > .panel-footer + .panel-collapse > .panel-body {
-        border-bottom-color: #c6d5e5;
-    }
-
-    /* Form Styling */
-
-    .form-control {
-        font-family: "Lato";
-        font-size: 16px;
-        border-color: #6c9cbf;
-        line-height: 1.38;
-        letter-spacing: .18px;
-        color: var(--dark);
-        width: calc(100% - 5px);
-    }
-
-    /* Table Styling */
-
-    .table-striped > tbody > tr:nth-of-type(even) {
-        background-color: var(--white);
-    }
-
-    .table-striped > tbody > tr:nth-of-type(odd) {
+    &.odd {
         background-color: var(--grey-blue);
     }
+}
 
-    .search-table th {
-        color: var(--blue);
-        font-weight: 500;
-    }
+.well-sm {
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    margin-right: 0%;
+    border-radius: 5px;
+}
 
-    .container-striped {
+.data-label,
+label {
+    display: block;
+    font-family: "Lato";
+    font-size: 12px;
+    color: var(--medium-grey);
+    text-transform: uppercase;
+}
 
-        &.even {
-            background-color: var(--white);
-        }
+.data-label {
+    font-weight: 700;
+}
 
-        &.odd {
-            background-color: var(--grey-blue);
-        }
-    }
+.read-only-data {
+    font-family: "Lato";
+    font-size: 16px;
+    line-height: 1.38;
+    letter-spacing: .18px;
+    color: var(--dark);
+}
 
-    /* Well Styling */
+.repeatable-item {
+    padding: 5px;
+    background-color: var(--light);
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
 
-    .well-sm {
-        padding: 10px;
-        background-color: #f5f5f5;
-        border: 1px solid #e3e3e3;
-        margin-right: 0%;
-        border-radius: 5px;
-    }
+.btn-link {
+    font-family: "Lato";
+    font-size: 16px;
+    line-height: 1.38;
+    letter-spacing: .18px;
+}
 
-    /* Action Bar */
-
-    /* Styling for Individual Pages starts below this point, be reference the code of for the general styling options */
-
-    /* Users dashboard Page */
-
-    .mydashboardheader {
-        padding-left: 40px;
-        padding-bottom: 10px;
-    }
-
-    .data-label,
-    label {
-        display: block;
-        font-family: "Lato";
-        font-size: 12px;
-        color: var(--medium-grey);
-        text-transform: uppercase;
-    }
-
-    .data-label {
-        font-weight: 700;
-    }
-
-    /* Data that is not editable*/
-
-    .read-only-data {
-        font-family: "Lato";
-        font-size: 16px;
-        line-height: 1.38;
-        letter-spacing: .18px;
-        color: var(--dark);
-    }
-
-    .repeatable-item {
-        padding: 5px;
-        background-color: var(--light);
-        border: 1px solid #e3e3e3;
-        border-radius: 4px;
-        margin-bottom: 5px;
-    }
-
-    .btn-link {
-        font-family: "Lato";
-        font-size: 16px;
-        line-height: 1.38;
-        letter-spacing: .18px;
-    }
-
-    /* Use bootstrap standard buttons in datepicker */
-
-    [uib-datepicker-popup-wrap] .btn {
-        border-radius: 3px;
-        border-color: #ccc;
-    }
+[uib-datepicker-popup-wrap] .btn {
+    border-radius: 3px;
+    border-color: #ccc;
 }
