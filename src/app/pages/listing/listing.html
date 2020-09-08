@@ -23,7 +23,7 @@
       </div>
       <div class="listing__header">
         <div>
-          <h1 id="listing-name">{{ $ctrl.listing.product.name }}</h1>
+          <h1 class="listing__header-name">{{ $ctrl.listing.product.name }}</h1>
         </div>
         <div class="listing__header-info">
           <div>
@@ -44,95 +44,99 @@
         </div>
       </div>
         <div class="listing__details">
-          <div class="listing__basic-information">
-            <div class="listing__basic-information-header">
-              <h2>Listing Details
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">Listing Details</h2>
             </div>
-            <div>
-              <div class="data-label">CHPL Product Number</div>
-              <div class="read-only-data">{{ $ctrl.listing.chplProductNumber }}</div>
-            </div>
-            <div>
-              <div class="data-label">Version</div>
-              <div class="read-only-data">{{ $ctrl.listing.version.version }}</div>
-            </div>
-            <div>
-              <div class="data-label">Certification Edition</div>
-              <div class="read-only-data">
-                {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span>
+            <div class="panel-body">
+              <div class="listing__basic-information">
+                <div>
+                  <div class="data-label">CHPL Product Number</div>
+                  <div class="read-only-data">{{ $ctrl.listing.chplProductNumber }}</div>
+                </div>
+                <div>
+                  <div class="data-label">Version</div>
+                  <div class="read-only-data">{{ $ctrl.listing.version.version }}</div>
+                </div>
+                <div>
+                  <div class="data-label">Certification Edition</div>
+                  <div class="read-only-data">
+                    {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="data-label">ONC-Authorized Certification Body</div>
+                  <div class="read-only-data">{{ $ctrl.listing.certifyingBody.name }}<br /><strong>Why isn't this as large as the ONC-ATL section?</strong></div>
+                </div>
+                <div>
+                  <div class="data-label">Certification Status</div>
+                  <div class="read-only-data">{{ $ctrl.certificationStatus($ctrl.listing) }}</div>
+                </div>
+                <div>
+                  <div class="data-label">Certification Date</div>
+                  <div class="read-only-data">{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}<br /><strong>Why is this here twice?</strong></div>
+                </div>
+                <div ng-if="$ctrl.listing.acbCertificationId">
+                  <div class="data-label">ONC-ACB Certification ID</div>
+                  <div class="read-only-data">{{ $ctrl.listing.acbCertificationId }}</div>
+                </div>
+                <div class="listing__developer-information">
+                  <div class="data-label">Developer</div>
+                  <p><a ui-sref="organizations.developers.developer({developerId: $ctrl.listing.developer.developerId})">{{ $ctrl.listing.developer.name }}</a></p>
+                  <p ng-if="$ctrl.listing && $ctrl.listing.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.listing.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.listing.developer.status.status }}</p>
+                  <p ng-if="$ctrl.listing.developer.website"><a ai-a href="{{ $ctrl.listing.developer.website }}">{{ $ctrl.listing.developer.website }}</a></p>
+                  <p>Self-developer: {{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</p>
+                  <strong>Can we standardize on a view mode for Address & Contact? They're different between Developer page and Listing page</strong>
+                  <span ng-if="$ctrl.listing.developer.address">
+                    <address>
+                      {{ $ctrl.listing.developer.address.line1 }}<span ng-if="$ctrl.listing.developer.address.line1 && $ctrl.listing.developer.address.line2">, </span> {{ $ctrl.listing.developer.address.line2 }}<br />
+                      {{ $ctrl.listing.developer.address.city }}<span ng-if="$ctrl.listing.developer.address.city && $ctrl.listing.developer.address.state">, </span>{{ $ctrl.listing.developer.address.state }} {{ $ctrl.listing.developer.address.zipcode }}<br />
+                      {{ $ctrl.listing.developer.address.country }}
+                    </address>
+                  </span>
+                </div>
+                <div>
+                  <div class="data-label">Contact</div>
+                  <span ng-if="$ctrl.listing.product.contact">
+                    <chpl-contact contact="$ctrl.listing.product.contact"></chpl-contact>
+                  </span>
+                  <span ng-if="!$ctrl.listing.product.contact && $ctrl.listing.developer.contact">
+                    <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
+                  </span>
+                </div>
+                <div ng-if="$ctrl.listing.product.ownerHistory && $ctrl.listing.product.ownerHistory.length > 0">
+                  <div class="data-label">Previous Developer<span ng-if="$ctrl.listing.product.ownerHistory.length > 1">s</span></div>
+                  <div class="read-only-data">
+                    <ul>
+                      <li ng-repeat="prev in $ctrl.listing.product.ownerHistory | orderBy:'transferDate'">
+                        <strong>{{ prev.developer.name }}</strong><br />
+                        Transfer Date: {{ prev.transferDate | date : 'mediumDate' : 'UTC' }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+                  <div class="data-label">Practice Type</div>
+                  <div class="read-only-data">{{ $ctrl.listing.practiceType.name }}</div>
+                </div>
+                <div ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+                  <div class="data-label">Classification Type</div>
+                  <div class="read-only-data">{{ $ctrl.listing.classificationType.name }}</div>
+                </div>
+                <div ng-if="$ctrl.listing.productAdditionalSoftware">
+                  <div class="data-label">Relied Upon Software</div>
+                  <div class="read-only-data">{{ $ctrl.listing.productAdditionalSoftware }}</div>
+                </div>
+                <div ng-if="$ctrl.listing.transparencyAttestation">
+                  <div class="data-label">Mandatory Disclosures URL</div>
+                  <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
+                  <p class="read-only-data" ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+                </div>
+                <div ng-if="$ctrl.listing.testingLabs && $ctrl.listing.testingLabs.length !== 0">
+                  <div class="data-label">ONC-Authorized Testing Laborator{{ $ctrl.listing.testingLabs.length === 1 ? 'y' : 'ies' }}</div>
+                  <div class="read-only-data" ng-repeat="atl in $ctrl.listing.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</div>
+                </div>
               </div>
-            </div>
-            <div>
-              <div class="data-label">ONC-Authorized Certification Body</div>
-              <div class="read-only-data">{{ $ctrl.listing.certifyingBody.name }}<br /><strong>Why isn't this as large as the ONC-ATL section?</strong></div>
-            </div>
-            <div>
-              <div class="data-label">Certification Status</div>
-              <div class="read-only-data">{{ $ctrl.certificationStatus($ctrl.listing) }}</div>
-            </div>
-            <div>
-              <div class="data-label">Certification Date</div>
-              <div class="read-only-data">{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}<br /><strong>Why is this here twice?</strong></div>
-            </div>
-            <div ng-if="$ctrl.listing.acbCertificationId">
-              <div class="data-label">ONC-ACB Certification ID</div>
-              <div class="read-only-data">{{ $ctrl.listing.acbCertificationId }}</div>
-            </div>
-            <div class="listing__developer-information">
-              <div class="data-label">Developer</div>
-              <p><a ui-sref="organizations.developers.developer({developerId: $ctrl.listing.developer.developerId})">{{ $ctrl.listing.developer.name }}</a></p>
-              <p ng-if="$ctrl.listing && $ctrl.listing.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="$ctrl.listing.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ $ctrl.listing.developer.status.status }}</p>
-              <p ng-if="$ctrl.listing.developer.website"><a ai-a href="{{ $ctrl.listing.developer.website }}">{{ $ctrl.listing.developer.website }}</a></p>
-              <p>Self-developer: {{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</p>
-              <strong>Can we standardize on a view mode for Address & Contact? They're different between Developer page and Listing page</strong>
-              <span ng-if="$ctrl.listing.developer.address">
-                <address>
-                  {{ $ctrl.listing.developer.address.line1 }}<span ng-if="$ctrl.listing.developer.address.line1 && $ctrl.listing.developer.address.line2">, </span> {{ $ctrl.listing.developer.address.line2 }}<br />
-                  {{ $ctrl.listing.developer.address.city }}<span ng-if="$ctrl.listing.developer.address.city && $ctrl.listing.developer.address.state">, </span>{{ $ctrl.listing.developer.address.state }} {{ $ctrl.listing.developer.address.zipcode }}<br />
-                  {{ $ctrl.listing.developer.address.country }}
-                </address>
-              </span>
-            </div>
-            <div>
-              <div class="data-label">Contact</div>
-              <span ng-if="$ctrl.listing.product.contact">
-                <chpl-contact contact="$ctrl.listing.product.contact"></chpl-contact>
-              </span>
-              <span ng-if="!$ctrl.listing.product.contact && $ctrl.listing.developer.contact">
-                <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
-              </span>
-            </div>
-            <div ng-if="$ctrl.listing.product.ownerHistory && $ctrl.listing.product.ownerHistory.length > 0">
-              <div class="data-label">Previous Developer<span ng-if="$ctrl.listing.product.ownerHistory.length > 1">s</span></div>
-              <div class="read-only-data">
-                <ul>
-                  <li ng-repeat="prev in $ctrl.listing.product.ownerHistory | orderBy:'transferDate'">
-                    <strong>{{ prev.developer.name }}</strong><br />
-                    Transfer Date: {{ prev.transferDate | date : 'mediumDate' : 'UTC' }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div ng-if="$ctrl.listing.certificationEdition.name === '2014'">
-              <div class="data-label">Practice Type</div>
-              <div class="read-only-data">{{ $ctrl.listing.practiceType.name }}</div>
-            </div>
-            <div ng-if="$ctrl.listing.certificationEdition.name === '2014'">
-              <div class="data-label">Classification Type</div>
-              <div class="read-only-data">{{ $ctrl.listing.classificationType.name }}</div>
-            </div>
-            <div ng-if="$ctrl.listing.productAdditionalSoftware">
-              <div class="data-label">Relied Upon Software</div>
-              <div class="read-only-data">{{ $ctrl.listing.productAdditionalSoftware }}</div>
-            </div>
-            <div ng-if="$ctrl.listing.transparencyAttestation">
-              <div class="data-label">Mandatory Disclosures URL</div>
-              <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
-              <p class="read-only-data" ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
-            </div>
-            <div ng-if="$ctrl.listing.testingLabs && $ctrl.listing.testingLabs.length !== 0">
-              <div class="data-label">ONC-Authorized Testing Laborator{{ $ctrl.listing.testingLabs.length === 1 ? 'y' : 'ies' }}</div>
-              <div class="read-only-data" ng-repeat="atl in $ctrl.listing.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</div>
             </div>
           </div>
           <div class="listing__detailed-information">

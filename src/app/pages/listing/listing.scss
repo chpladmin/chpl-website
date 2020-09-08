@@ -3,6 +3,10 @@
     grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
 }
 
+.listing__header-name {
+    margin-top: 0;
+}
+
 .listing__header-info {
     display: flex;
     justify-content: space-between;
@@ -18,10 +22,6 @@
     display: grid;
     grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
     gap: 12px 8px;
-}
-
-.listing__basic-information-header {
-    grid-column: 1 / -1;
 }
 
 .listing__developer-information {
