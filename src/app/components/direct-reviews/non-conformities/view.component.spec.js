@@ -38,6 +38,10 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
+
+                DateUtil = _DateUtil_;
+                DateUtil.getDisplayDateFormat.and.returnValue('aaa');
+
                 scope.nonConformities = mock;
 
                 el = angular.element('<chpl-direct-reviews-non-conformities non-conformities="nonConformities"></chpl-direct-reviews-non-conformities>');
