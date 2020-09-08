@@ -1,15 +1,38 @@
-<div class="container" ng-if="!$ctrl.loading" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
-  <div class="row text-bottom" ng-if="$ctrl.listing">
-    <div class="col-sm-8">
-      <h1 id="listing-name">{{ $ctrl.listing.product.name }}</h1>
-    </div>
-    <div class="col-sm-4 text-right">
-      <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
-    </div>
+<div class="container-fluid" ng-if="!$ctrl.loading" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
+  <div class="main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.listing">
+    <p class="lead">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
-  <div class="main-content" id="main-content" tabindex="-1">
-    <p class="lead" ng-if="!$ctrl.listing">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
-    <div ng-if="$ctrl.listing && !$ctrl.isEditing">
+  <div class="main-content" id="main-content" tabindex="-1" ng-if="$ctrl.listing">
+    <div ng-if="!$ctrl.isEditing">
+      <div class="row">
+        <div class="col-sm-12 text-right">
+          <div class="btn-group">
+            <ai-cms-widget-button
+              product-id="{{ $ctrl.listing.id }}"
+              product-name="{{ $ctrl.listing.product.name }}"
+              ng-if="$ctrl.listing.certificationEdition.name === '2015'"></ai-cms-widget-button>
+            <ai-compare-widget-button
+              product-id="{{ $ctrl.listing.id }}"
+              product-name="{{ $ctrl.listing.product.name }}"></ai-compare-widget-button>
+          </div>
+        </div>
+      </div>
+      <div class="listing__header">
+        <div>
+          <h1 id="listing-name">{{ $ctrl.listing.product.name }}</h1>
+        </div>
+        <div class="listing__header-info">
+          <div>Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
+          <div>Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
+          <div><button class="btn btn-default btn-sm" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i> Listing History</button></div>
+          <div ng-if="$ctrl.canEdit()">
+            <a feature-flag="listing-edit" feature-flag-hide ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit</a>
+            <button feature-flag="listing-edit" class="btn btn-default" ng-click="$ctrl.isEditing = true"><i class="fa fa-pencil-square-o"></i> Edit</button>
+          </div>
+          <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></div>
+          <div><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a><blink>Use this?</blink></div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-sm-4">
           <p>CHPL Product Number: {{ $ctrl.listing.chplProductNumber }}</p>
@@ -123,7 +146,7 @@
       </div>
     </div>
     <div feature-flag="listing-edit">
-      <div ng-if="$ctrl.listing && $ctrl.isEditing">
+      <div ng-if="$ctrl.isEditing">
         <chpl-listing-edit listing="$ctrl.listing" is-saving="$ctrl.isSaving" messages="$ctrl.saveErrors" on-cancel="$ctrl.cancel()" on-save="$ctrl.saveEdit(listing, reason, acknowledgeWarnings)" resources="$ctrl.resources" work-type="$ctrl.workType"></chpl-listing-edit>
       </div>
     </div>

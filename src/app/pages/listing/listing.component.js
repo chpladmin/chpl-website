@@ -43,12 +43,6 @@ export const ListingComponent = {
             this.loadResources();
         }
 
-        can (action) {
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
-            if (action === 'merge') { return false; } // if not above roles, can't merge
-            return this.listing.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
-        }
-
         canEdit () {
             if (this.listing.certificationEdition.name === '2014') {
                 return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
