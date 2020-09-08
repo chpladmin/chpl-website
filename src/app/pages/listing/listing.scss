@@ -5,4 +5,25 @@
 
 .listing__header-info {
     display: flex;
+    justify-content: space-between;
+}
+
+.listing__details {
+    display: grid;
+    grid-template-columns: minmax(750px, 1fr) minmax(450px, 1fr);
+    align-items: start;
+}
+
+.listing__basic-information {
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
+    gap: 12px 8px;
+}
+
+.listing__basic-information-header {
+    grid-column: 1 / -1;
+}
+
+.listing__developer-information {
+    grid-column-start: 1;
 }
