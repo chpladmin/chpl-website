@@ -16,8 +16,8 @@ class DateUtil {
         if (typeof(date) === 'number') {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
         }
-        if (date && date.month && date.dayOfMonth && date.year) { //This maps perfectly to a js-joda LocalDate
-            return this.localDateTimeToString(date);
+        if (date && date.month && date.dayOfMonth && date.year) {
+            return this.localDateTimeToString(this.datePartsToLocalDate(date.year, date.month, date.dayOfMonth));
         }
         return fallback || 'N/A';
     }
@@ -46,6 +46,10 @@ class DateUtil {
         localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
         let x = jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, this._ZONE_ID);
         return x;
+    }
+
+    datePartsToLocalDate (year, month, day) {
+        return jsJoda.LocalDate.of(year, month, day);
     }
 
     jsJoda () {

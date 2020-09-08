@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Direct Reviews / NonConformities component', () => {
+    fdescribe('the Direct Reviews / NonConformities component', () => {
         var $log, DateUtil, ctrl, el, mock, scope;
 
         mock = [{
@@ -47,11 +47,11 @@
                 DateUtil = _DateUtil_;
                 DateUtil.getDisplayDateFormat.and.returnValue('aaa');
 
-                mock[0].capApprovalDate = DateUtil.jsJoda().LocalDate.of(2020, 6, 19);
-                mock[0].capEndDate = DateUtil.jsJoda().LocalDate.of(2021, 7, 20);
-                mock[0].capMustCompleteDate = DateUtil.jsJoda().LocalDate.of(2022, 8, 21);
-                mock[0].capStartDate = DateUtil.jsJoda().LocalDate.of(2023, 9, 22);
-                mock[0].dateOfDetermination = DateUtil.jsJoda().LocalDate.of(2024, 10, 23);
+                //mock[0].capApprovalDate = DateUtil.jsJoda().LocalDate.of(2020, 6, 19);
+                //mock[0].capEndDate = DateUtil.jsJoda().LocalDate.of(2021, 7, 20);
+                //mock[0].capMustCompleteDate = DateUtil.jsJoda().LocalDate.of(2022, 8, 21);
+                //mock[0].capStartDate = DateUtil.jsJoda().LocalDate.of(2023, 9, 22);
+                //mock[0].dateOfDetermination = DateUtil.jsJoda().LocalDate.of(2024, 10, 23);
 
                 scope.nonConformities = mock;
 
