@@ -1,3 +1,5 @@
+// This test is using AQA1 upload listing
+
 import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
 import ListingEditComponent from '../../components/listing/edit/listingEdit.po';
@@ -22,6 +24,7 @@ describe('an ACB user', () => {
     beforeEach(function () {
         hooks.open('#/administration/upload');
         uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
+        uploadPage.waitForSuccessfulUpload();
         hooks.open('#/administration/confirm/listings')
     })
 
@@ -54,6 +57,6 @@ describe('an ACB user', () => {
     })
 
     afterEach(function () {
-        listingEditComponent.closeEditListing();
+        browser.refresh();
     })
 })
