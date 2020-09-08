@@ -17,7 +17,7 @@ class DateUtil {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
         }
         if (date && date.month && date.dayOfMonth && date.year) {
-            return this.localDateTimeToString(this.datePartsToLocalDate(date.year, date.month, date.dayOfMonth));
+            return this.localDateTimeToString(this.datePartsToLocalDate(date.year, date.monthValue, date.dayOfMonth));
         }
         return fallback || 'N/A';
     }

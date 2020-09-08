@@ -7,11 +7,11 @@
         mock = [{
             nonConformityStatus: 'Closed',
             id: 'closed-1',
-            capApprovalDate: {year: 2020, month: 'JUNE', dayOfMonth: 19},
-            capEndDate: {year: 2021, month: 'JULY', dayOfMonth: 20},
-            capMustCompleteDate: {year: 2022, month: 'AUGUST', dayOfMonth: 21},
-            capStartDate: {year: 2023, month: 'SEPTEMBER', dayOfMonth: 22},
-            dateOfDetermination: {year: 2024, month: 'OCTOBER', dayOfMonth: 23},
+            capApprovalDate: {year: 2020, month: 'JUNE', monthValue: 6, dayOfMonth: 19},
+            capEndDate: {year: 2021, month: 'JULY', monthValue: 7, dayOfMonth: 20},
+            capMustCompleteDate: {year: 2022, month: 'AUGUST', monthValue: 8, dayOfMonth: 21},
+            capStartDate: {year: 2023, month: 'SEPTEMBER', monthValue: 9, dayOfMonth: 22},
+            dateOfDetermination: {year: 2024, month: 'OCTOBER', monthValue: 10, dayOfMonth: 23},
         },{
             nonConformityStatus: 'Open',
             id: 'open-1',
@@ -38,9 +38,6 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-
-                DateUtil = _DateUtil_;
-                DateUtil.getDisplayDateFormat.and.returnValue('aaa');
 
                 scope.nonConformities = mock;
 
