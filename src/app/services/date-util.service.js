@@ -10,6 +10,12 @@ class DateUtil {
         this.$log = $log;
 
         this._ZONE_ID = jsJoda.ZoneId.of('America/New_York');
+
+        this.TimeOfDay = {
+            BEGINNING_OF_DAY: 'min',
+            END_OF_DAY: 'max',
+            NOON: 'noon',
+        };
     }
 
     getDisplayDateFormat (date, fallback) {
@@ -17,46 +23,69 @@ class DateUtil {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
         }
         if (date && date.month && date.dayOfMonth && date.year) {
-            return this.localDateTimeToString(this.datePartsToLocalDate(date.year, date.monthValue, date.dayOfMonth));
+            return this.localDateTimeToString(this._datePartsToLocalDate(date.year, date.month, date.dayOfMonth));
         }
         return fallback || 'N/A';
     }
 
-    localDateTimeToString (date, format) {
-        format = format || 'MMM d, y';
-        let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
-        return date.format(formatter);
+    datePartsToTimestamp (year, month, day, hour, minute, second, nano) {
+        let time;
+        switch (arguments.length) {
+        case 4:
+            time = this._localTimeFromTimeOfDay(hour);
+            break;
+        case 7:
+            time = jsJoda.LocalTime.of(hour, minute, second, nano);
+            break;
+        default:
+            time = jsJoda.LocalTime.MIN;
+        }
+        return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), time, this._ZONE_ID).toInstant().toEpochMilli();
     }
 
-    longToZonedDateTime (dateLong) {
+    updateTimePortionOfTimestamp (timestamp, newHour, newMinute, newSecond, newNano) {
+        let time;
+        switch (arguments.length) {
+        case 2:
+            time = this._localTimeFromTimeOfDay(newHour);
+            break;
+        case 5:
+            time = jsJoda.LocalTime.of(newHour, newMinute, newSecond, newNano);
+            break;
+        default:
+            return jsJoda.LocalTime.MIN;
+        }
+        return this._timestampToZonedDateTime(timestamp).with(time).toInstant().toEpochMilli();
+    }
+
+    timestampToString (timestamp, format) {
+        format = format || 'MMM d, y h:mm:ss a z';
+        let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
+        return this._timestampToZonedDateTime(timestamp).format(formatter);
+    }
+
+    _localTimeFromTimeOfDay (timeOfDay) {
+        switch (timeOfDay) {
+        case this.TimeOfDay.MIN:
+            return jsJoda.LocalTime.MIN;
+        case this.TimeOfDay.MAX:
+            return jsJoda.LocalTime.MAX;
+        case this.TimeOfDay.NOON:
+            return jsJoda.LocalTime.NOON;
+        default:
+            return jsJoda.LocalTime.MIN;
+        }
+    }
+
+    _timestampToZonedDateTime (dateLong) {
         return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this._ZONE_ID);
     }
 
-    zonedDateTimeToLong (date) {
-        return date.toInstant().toEpochMilli();
-    }
-
-    zonedDateTimeToString (date, format) {
-        format = format || 'MMM d, y h:mm:ss a z';
-        let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
-        return date.format(formatter);
-    }
-
-    datePartsToZonedDateTime (year, month, day, localTime) {
-        localTime = localTime || jsJoda.LocalTime.MIDNIGHT;
-        let x = jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), localTime, this._ZONE_ID);
-        return x;
-    }
-
-    datePartsToLocalDate (year, month, day) {
+    _datePartsToLocalDate (year, month, day) {
         return jsJoda.LocalDate.of(year, month, day);
-    }
-
-    jsJoda () {
-        return jsJoda;
     }
 }
 
-angular
-    .module('chpl.services')
+angular.module('chpl.services')
     .service('DateUtil', DateUtil);
+
