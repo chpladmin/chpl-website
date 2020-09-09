@@ -8,11 +8,18 @@ export const UploadApiDocumentationComponent = {
             this.$log = $log;
             this.Upload = Upload;
             this.accurateAsOfDateObject = new Date();
+            this.API = API;
+            this.token = authService.getToken();
+            this.apiKey = authService.getApiKey();
+            this.setItemToDefault();
+        }
+
+        setItemToDefault () {
             this.item = {
-                url: API + '/files/api_documentation',
+                url: this.API + '/files/api_documentation',
                 headers: {
-                    Authorization: 'Bearer ' + authService.getToken(),
-                    'API-Key': authService.getApiKey(),
+                    Authorization: 'Bearer ' + this.token,
+                    'API-Key': this.apiKey,
                 },
             };
         }
@@ -33,6 +40,7 @@ export const UploadApiDocumentationComponent = {
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;
+                    that.setItemToDefault();
                 }, error => {
                     if (error.data.fileName) {
                         that.uploadMessage = 'File "' + error.data.fileName + '" was not uploaded successfully.';
@@ -44,6 +52,7 @@ export const UploadApiDocumentationComponent = {
                     that.uploadErrors = error.data.errorMessages;
                     that.uploadSuccess = false;
                     that.file = undefined;
+                    that.setItemToDefault();
                 }, event => {
                     that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
                     that.$log.info('progress: ' + that.progressPercentage + '% ' + event.config.data.file.name);

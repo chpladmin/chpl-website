@@ -137,15 +137,13 @@ exports.config = {
         ui: 'bdd',
         defaultTimeoutInterval: 60000,
         helpers: [require.resolve('@babel/register')],
-        expectationResultHandler: function(passed, assertion) {
-            /**
-             * only take screenshot if assertion failed
-             */
-            if(passed) {
-                return
+        expectationResultHandler: function (passed, assertion) {
+            if (passed) {
+                return;
             }
-    
-            browser.saveScreenshot(`${__dirname}/e2e/test_reports/assertionError_${assertion.error.message}.png`)
+            var message = assertion.error.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            var location = `${__dirname}/test_reports/e2e/assertionError_` + message + '.png';
+            browser.saveScreenshot(location);
         }
     },
 
@@ -201,7 +199,15 @@ exports.config = {
             this.waitForDisplayed()
             this.click()
         }, true)
-        
+        //element wrapped in div is not clickable solution
+        browser.addCommand("scrollAndClick", function () {
+        // `this` is return value of $(selector)
+        var runInBrowser = function (argument) {
+            argument.click();
+        };
+        this.scrollIntoView();
+        browser.execute(runInBrowser,this);
+        }, true)
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -238,8 +244,6 @@ exports.config = {
      */
     // afterTest: function(test, context, { error, result, duration, passed, retries }) {
     // },
-
-
     /**
      * Hook that gets executed after the suite has ended
      * @param {Object} suite suite details
