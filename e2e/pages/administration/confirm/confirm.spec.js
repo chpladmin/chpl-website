@@ -42,7 +42,7 @@ describe('when user is on confirm listing page', () => {
             uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
             uploadPage.waitForSuccessfulUpload();
             uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
-            uploadPage.waitForSuccessfulUpload();
+            hooks.waitForSpinnerToDisappear();
         });
 
         it('should allow user to mass reject multiple listings', () => {
