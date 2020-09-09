@@ -1,8 +1,12 @@
+// No need for this now, update next time
+
 const uploadElements = {
     chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
-    uploadButton: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/form/div/div[4]/button[1]',
+    uploadButton: '.btn.btn-ai-success',
+    listingUploadText: '//chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
     uploadSuccessfulText: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
-}
+};
+const path = require('path');
 
 class UploadPage {
     constructor () { }
@@ -19,14 +23,21 @@ class UploadPage {
         return $(uploadElements.uploadSuccessfulText);
     }
 
-    uploadListing (uploadfilePath) {
-        const path = require('path');
-        const filePath = path.join(__dirname, uploadfilePath);
-        const remoteFilePath = browser.uploadFile(filePath);
-        this.chooseUploadListingButton.addValue(remoteFilePath);
-        this.uploadButton.waitAndClick();
-        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed())
+    get listingUploadText () {
+        return $(uploadElements.listingUploadText);
     }
+
+    waitForSuccessfulUpload () {
+        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed());
+    }
+
+    uploadListing (uploadfilePath) {
+        const filePath = path.join(__dirname, uploadfilePath);
+        this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
+        this.uploadButton.waitAndClick();
+        browser.waitUntil( () => this.listingUploadText.isDisplayed());
+    }
+
 }
 
 export default UploadPage;

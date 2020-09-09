@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 10.52.0
+_8 September 2020_
+
+### Features
+* Add "Ignore warnings" checkbox when editing or confirming certified product
+
+### Bug Fixes
+* Allow multiple API Documentation uploads without page reload
+
+---
+
 ## Version 10.51.0
 _18 August 2020_
 

@@ -8,30 +8,30 @@
             startDate: 30000,
             endDate: 40000,
             id: 'closed-1',
-            nonconformities: [{
-                nonconformityStatus: 'Closed',
+            nonConformities: [{
+                nonConformityStatus: 'Closed',
             }],
         },{
             startDate: 20000,
             endDate: undefined,
             id: 'open-1',
-            nonconformities: [{
-                nonconformityStatus: 'Closed',
+            nonConformities: [{
+                nonConformityStatus: 'Closed',
             },{
-                nonconformityStatus: 'Open',
+                nonConformityStatus: 'Open',
             },{
-                nonconformityStatus: 'Closed',
+                nonConformityStatus: 'Closed',
             }],
         },{
             startDate: 30000,
             endDate: 45000,
             id: 'closed-2',
-            nonconformities: [],
+            nonConformities: [],
         },{
             startDate: 50000,
             endDate: undefined,
             id: 'open-2',
-            nonconformities: [],
+            nonConformities: [],
         }];
 
         beforeEach(() => {
