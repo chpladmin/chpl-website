@@ -48,7 +48,7 @@
                 scope.dismiss = jasmine.createSpy('dismiss');
                 scope.resolve = {
                     surveillance: Mock.surveillances[0],
-                }
+                };
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -150,7 +150,7 @@
                 });
 
                 it('should pass in only the appropriate edition of requirements', () => {
-                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC';}, false)); // user is ONC
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ONC
                     ctrl.surveillanceTypes.surveillanceRequirements = {
                         criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
                         criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
@@ -171,14 +171,14 @@
                 });
 
                 it('should filter removed ones out if ROLE_ACB', () => {
-                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
                     ctrl.surveillanceTypes.surveillanceRequirements = {
                         criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
                         criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
                     };
                     ctrl.surveillanceTypes.nonconformityTypes = {
                         data: [{removed: false}, {removed: false}, {removed: true}],
-                    }
+                    };
                     ctrl.surveillance.certifiedProduct.edition = '2011';
                     ctrl.editSurveillance();
                     expect(ctrl.surveillanceTypes.surveillanceRequirements.criteriaOptions.length).toBe(0);
