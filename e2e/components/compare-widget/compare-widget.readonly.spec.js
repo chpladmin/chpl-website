@@ -5,8 +5,8 @@ import Hooks from '../../utilities/hooks';
 let compare, hooks, search;
 let ListingId1 = 9347;
 let ListingId2 = 9861;
-let chplId1 = '15.04.04.2216.PDSM.08.00.1.180202';
-let chplId2 = '15.05.05.1757.KAZE.01.00.0.190115';
+let search1 = '2216';//using developer code to search listing
+let search2 = '1757';//using developer code to search listing
 
 beforeEach(async () => {
     search = new SearchPage();
@@ -31,7 +31,7 @@ describe('on compare widget', () => {
 
     describe('if there is exactly 1 listing added for compare', () => {
         beforeAll(() => {
-            search.searchForListing(chplId2);
+            search.searchForListing(search2);
             compare.addListingToCompare(ListingId2);
         });
 
@@ -54,9 +54,9 @@ describe('on compare widget', () => {
 
     describe('if there are at least 2 listings added for compare', () => {
         beforeAll(() => {
-            search.searchForListing(chplId1);
+            search.searchForListing(search1);
             compare.addListingToCompare(ListingId1);
-            search.searchForListing(chplId2);
+            search.searchForListing(search2);
             compare.addListingToCompare(ListingId2);
         });
 
