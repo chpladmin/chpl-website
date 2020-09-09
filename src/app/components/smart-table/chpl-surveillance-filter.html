@@ -12,10 +12,9 @@
 </li>
 <span ng-if="vm.query.surveillance.status === 'has-had'" class="form-horizontal" ng-form="vm.form">
   <li class="text-center">
-    <label ng-class="{ 'emphasis' : vm.query.matchAll }">
-      <input type="checkbox" ng-model="vm.query.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
-      Matching <u>{{ vm.query.matchAll ? 'all' : 'any' }}</u>
-    </label>
+    <button ng-click="vm.query.matchAll = !vm.query.matchAll; vm.filterChanged()" class="btn btn-default" ng-class="{ 'emphasis' : vm.query.matchAll }">
+      Matching <strong>Any</strong> <i class="fa" ng-class="vm.query.matchAll ? 'fa-toggle-on' : 'fa-toggle-off'"></i> <strong>All</strong>
+    </button>
   </li>
   <li>
     <label for="filter-open-surveillance">
