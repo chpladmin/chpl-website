@@ -139,7 +139,7 @@
                 });
 
                 it('should filter out removed criteria when user is ROLE_ACB', () => {
-                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
                     ctrl.data = {
                         nonconformityTypes: {
                             data: [{removed: false}, {removed: false}, {removed: true}],
@@ -150,7 +150,7 @@
                 });
 
                 it('should not change base data', () => {
-                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB';}, false)); // user is ACB
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
                     ctrl.data = {
                         nonconformityTypes: {
                             data: [{removed: false}, {removed: false}, {removed: true}],
@@ -161,7 +161,7 @@
                 });
 
                 it('should not filter out removed criteria when user is ROLE_ACB', () => {
-                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC';}, false)); // user is ACB
+                    authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ACB
                     ctrl.data = {
                         nonconformityTypes: {
                             data: [{removed: false}, {removed: false}, {removed: true}],

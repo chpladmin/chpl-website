@@ -436,16 +436,20 @@
       </ul>
     </div>
     <div class="text-left text-warning" ng-if="vm.warnings && vm.warnings.length > 0">
-      The following warning(s) should be fixed:
+      The following warning<span ng-if="vm.warnings.length !== 1">s</span> should be fixed:
       <ul>
         <li ng-repeat="msg in vm.warnings | orderBy:'toString()' track by $index">{{ msg }}</li>
       </ul>
     </div>
-    <div class="text-danger text-left" ng-if="vm.errors">
-      The following error(s) must be fixed:
+    <div class="text-danger text-left" ng-if="vm.errors && vm.errors.length > 0">
+      The following error<span ng-if="vm.warnings.length !== 1">s</span> must be fixed:
       <ul>
         <li ng-repeat="msg in vm.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
       </ul>
+    </div>
+    <div class="text-left" ng-if="vm.warnings && vm.warnings.length > 0">
+      <input type="checkbox" ng-model="vm.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
+      <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="vm.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
     </div>
     <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus()) && vm.showFormErrors) || vm.isSaving"
             id="edit-save"
