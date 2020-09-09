@@ -3,10 +3,10 @@ import SearchPage from '../../pages/search/search.po';
 import Hooks from '../../utilities/hooks';
 
 let component, hooks, page;
-let ListingId1 = 9261;
-let ListingId2 = 9956;
-let chplId2 = '15.04.04.2916.smar.07.01.1.190328';
-let chplId1 = '15.02.02.3007.A056.01.00.0.180214';
+let ListingId1 = 9347;
+let ListingId2 = 9861;
+let chplId1 = '15.04.04.2216.PDSM.08.00.1.180202';
+let chplId2 = '15.05.05.1757.KAZE.01.00.0.190115';
 
 beforeEach(async () => {
     page = new SearchPage();
