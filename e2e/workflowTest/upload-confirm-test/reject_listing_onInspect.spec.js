@@ -31,4 +31,3 @@ describe('When user rejects a listing while inspecting uploaded listing', () => 
         assert.isFalse(confirmPage.findListingtoReject(listingId).isDisplayed());
     });
 });
-

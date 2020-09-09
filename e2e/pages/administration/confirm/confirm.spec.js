@@ -24,7 +24,7 @@ describe('when user is on confirm listing page', () => {
         loginComponent.logOut();
     });
 
-    describe('when uploading a listing', () => {
+    describe('and uploading a listing', () => {
         beforeEach(() => {
             uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
             uploadPage.waitForSuccessfulUpload();
@@ -37,7 +37,7 @@ describe('when user is on confirm listing page', () => {
         });
     });
 
-    describe('when uploading multiple listing', () => {
+    describe('and uploading multiple listing', () => {
         beforeEach(() => {
             uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
             uploadPage.waitForSuccessfulUpload();
@@ -45,7 +45,7 @@ describe('when user is on confirm listing page', () => {
             uploadPage.waitForSuccessfulUpload();
         });
 
-        it('should allow user to mass reject ', () => {
+        it('should allow user to mass reject multiple listings', () => {
             hooks.open('#/administration/confirm/listings');
             confirmPage.rejectCheckbox(rejectListingId1).scrollAndClick();
             confirmPage.rejectCheckbox(rejectListingId2).scrollAndClick();
