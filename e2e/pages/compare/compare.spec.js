@@ -18,10 +18,10 @@ describe('on compare page after clicking show all-', () => {
         assert.equal(page.allCCCQM.length,78);
     });
 
-    it('should display all of the 98 CQMs', () => {
+    it('should display all of the 99 CQMs', () => {
         page.checkShowAllCheckbox();
         page.clinicalQualityMeasuresLink.scrollIntoView();
         page.clinicalQualityMeasuresLink.click();
-        assert.equal(page.allCCCQM.length,98);
+        assert.equal(page.allCCCQM.length,99);
     });
 });
