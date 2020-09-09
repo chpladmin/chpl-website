@@ -46,6 +46,7 @@ yarn install
 * `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
 * `yarn e2e`: Run the end to end integration tests, as well as e2e linting
 * `yarn e2e:lint`: Run code and syntax rules
+* `yarn e2e:clean`: Clear out old E2E artifacts
 
 #### Yarn environment parameters
 
@@ -73,4 +74,4 @@ To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `ya
 
 #### Automation credetials set up
 
-Rename e2e/config/credentialsEXAMPLE.js to e2e/config/credentials.js And Add Usernames and password in it.
+Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users

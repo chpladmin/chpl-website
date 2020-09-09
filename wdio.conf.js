@@ -137,15 +137,13 @@ exports.config = {
         ui: 'bdd',
         defaultTimeoutInterval: 60000,
         helpers: [require.resolve('@babel/register')],
-        expectationResultHandler: function(passed, assertion) {
-            /**
-             * only take screenshot if assertion failed
-             */
-            if(passed) {
-                return
+        expectationResultHandler: function (passed, assertion) {
+            if (passed) {
+                return;
             }
-    
-            browser.saveScreenshot(`${__dirname}/e2e/test_reports/assertionError_${assertion.error.message}.png`)
+            var message = assertion.error.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            var location = `${__dirname}/test_reports/e2e/assertionError_` + message + '.png';
+            browser.saveScreenshot(location);
         }
     },
 

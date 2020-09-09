@@ -16,7 +16,7 @@
                 networkService = _networkService_;
 
                 $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
-            })
+            });
         });
 
         afterEach(() => {
@@ -1030,6 +1030,14 @@
             it('should getPractices', () => {
                 $httpBackend.expectGET(/^\/rest\/data\/practice_types$/).respond(200, {data: 'response'});
                 networkService.getPractices().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getProduct', () => {
+                $httpBackend.expectGET(/^\/rest\/products\/productId$/).respond(200, {data: 'response'});
+                networkService.getProduct('productId').then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();

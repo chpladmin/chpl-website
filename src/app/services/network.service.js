@@ -214,7 +214,7 @@ export class NetworkService {
         if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
         if (options.filter && options.filter.key) {
             var tmp = 'filter=';
-            if (!options.showOnly) { tmp += '!' }
+            if (!options.showOnly) { tmp += '!'; }
             tmp += options.filter.key;
             params.push(tmp);
         }
@@ -444,6 +444,10 @@ export class NetworkService {
         return this.apiGET('/data/practice_types');
     }
 
+    getProduct (productId) {
+        return this.apiGET('/products/' + productId);
+    }
+
     getProductActivity (activityRange) {
         var call = '/activity/products';
         return this.getActivity(call, activityRange);
@@ -498,7 +502,7 @@ export class NetworkService {
     }
 
     getSingleDeveloperActivityMetadata (id, options) {
-        let url = '/activity/metadata/developers/' + id
+        let url = '/activity/metadata/developers/' + id;
         if (options && options.end) {
             url += '?end=' + options.end;
         }
@@ -754,11 +758,11 @@ export class NetworkService {
     }
 
     updateChangeRequest (changeRequest) {
-        return this.apiPUT('/change-requests', changeRequest)
+        return this.apiPUT('/change-requests', changeRequest);
     }
 
     updateComplaint (complaint) {
-        return this.apiPUT('/complaints/' + complaint.id, complaint)
+        return this.apiPUT('/complaints/' + complaint.id, complaint);
     }
 
     updateCP (cpObject) {
@@ -817,7 +821,7 @@ export class NetworkService {
     }
 
     apiGET (endpoint, options = {}) {
-        let headers = {}
+        let headers = {};
         if (options.forceReload) {
             headers['Cache-Control'] = 'no-cache';
         }

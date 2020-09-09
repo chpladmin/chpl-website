@@ -22,7 +22,7 @@ const elements = {
     resolution: '.nonconformity__resolution',
     ncDataElement: '.nonconformity__data-element',
     ncNoneFound: '.nonconformity__none-found',
-}
+};
 
 class DirectReviewsComponent {
     constructor () { }
@@ -68,7 +68,7 @@ class DirectReviewsComponent {
     }
 
     getNonconformityResult (nonconformity) {
-        return nonconformity.$(elements.result)
+        return nonconformity.$(elements.result);
     }
 
     getNonconformityRequirement () {
