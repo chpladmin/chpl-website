@@ -3,17 +3,15 @@ import SearchPage from '../../pages/search/search.po';
 import Hooks from '../../utilities/hooks';
 
 let compare, hooks, search;
-let listingId1 = 9261;
-let listingId2 = 9956;
-let search1 = '(SQI) Solution For Quality Improvement';
-let search2 = '24/7 smartEMR';
+let ListingId1 = 9347;
+let ListingId2 = 9861;
+let chplId1 = '15.04.04.2216.PDSM.08.00.1.180202';
+let chplId2 = '15.05.05.1757.KAZE.01.00.0.190115';
 
 beforeEach(async () => {
     search = new SearchPage();
     compare = new CompareWidgetComponent();
     hooks = new Hooks();
-    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     await hooks.open('#/search');
 });
 
@@ -33,8 +31,8 @@ describe('on compare widget', () => {
 
     describe('if there is exactly 1 listing added for compare', () => {
         beforeAll(() => {
-            search.searchForListing(search2);
-            compare.addListingToCompare(listingId2);
+            search.searchForListing(chplId2);
+            compare.addListingToCompare(ListingId2);
         });
 
         it('should have compare products button but disabled', () => {
@@ -56,10 +54,10 @@ describe('on compare widget', () => {
 
     describe('if there are at least 2 listings added for compare', () => {
         beforeAll(() => {
-            search.searchForListing(search1);
-            compare.addListingToCompare(listingId1);
-            search.searchForListing(search2);
-            compare.addListingToCompare(listingId2);
+            search.searchForListing(chplId1);
+            compare.addListingToCompare(ListingId1);
+            search.searchForListing(chplId2);
+            compare.addListingToCompare(ListingId2);
         });
 
         it('should have compare products button and enabled', () => {
@@ -74,7 +72,7 @@ describe('on compare widget', () => {
 
         it('compare products button opens compare page for the selected listings', () => {
             compare.compareProductsButton.click();
-            assert.include(browser.getUrl(),'/compare/' + listingId1 + '&' + listingId2);
+            assert.include(browser.getUrl(),'/compare/' + ListingId1 + '&' + ListingId2);
         });
     });
 });
