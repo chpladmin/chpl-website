@@ -21,9 +21,9 @@
         <div id="chpl-product-{{ product.productId }}">
           <div class="product__product-info">
             <div class="product__product-info-item">
-              <label for="active-version">Version</label>
+              <label for="active-version-{{ product.productId }}">Version</label>
               <select ng-model="product.activeVersion"
-                      id="active-version" name="product.activeVersion" class="input-sm form-control"
+                      id="active-version-{{ product.productId }}" name="product.activeVersion" class="input-sm form-control"
                       ng-options="v as v.version for v in product.versions">
               </select>
             </div>
@@ -61,7 +61,7 @@
               </div>
               <div class="product__listing-data-item">
                 <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Status</div>
-                <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i></a> {{ listing.certificationStatus }}</div>
+                <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i><span class="sr-only">{{ listing.certificationStatus }}</span></a> {{ listing.certificationStatus }}</div>
               </div>
               <div class="product__listing-data-item">
                 <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Edition</div>
