@@ -29,15 +29,6 @@ class SearchPage {
         return $(searchpageElements.searchListing);
     }
 
-    compareButton (listingid) {
-        return $('#toggle-compare-' + listingid);
-    }
-
-    addListingToCompare (listingid) {
-        this.compareButton(listingid).scrollIntoView();
-        this.compareButton(listingid).click();
-    }
-
     gotoResourcePage () {
         this.chplResourceButton.click();
         this.overviewPageButton.click();

@@ -1,4 +1,4 @@
-import compareWidgetComponent from './compare-widget.po';
+import CompareWidgetComponent from './compare-widget.po';
 import SearchPage from '../../pages/search/search.po';
 import Hooks from '../../utilities/hooks';
 
@@ -10,7 +10,7 @@ let chplId2 = '15.05.05.1757.KAZE.01.00.0.190115';
 
 beforeEach(async () => {
     page = new SearchPage();
-    component = new compareWidgetComponent();
+    component = new CompareWidgetComponent();
     hooks = new Hooks();
     await hooks.open('#/search');
 });
