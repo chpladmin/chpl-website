@@ -23,7 +23,7 @@ class DateUtil {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
         }
         if (date && date.month && date.dayOfMonth && date.year) {
-            return this.localDateTimeToString(this._datePartsToLocalDate(date.year, date.month, date.dayOfMonth));
+            return this._localDateTimeToString(this._datePartsToLocalDate(date.year, this._monthNameToNumber(date.month), date.dayOfMonth));
         }
         return fallback || 'N/A';
     }
@@ -64,6 +64,8 @@ class DateUtil {
         return this._timestampToZonedDateTime(timestamp).format(formatter);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
     _localTimeFromTimeOfDay (timeOfDay) {
         switch (timeOfDay) {
         case this.TimeOfDay.MIN:
@@ -77,6 +79,12 @@ class DateUtil {
         }
     }
 
+    _localDateTimeToString (date, format) {
+        format = format || 'MMM d, y';
+        let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
+        return date.format(formatter);
+    }
+
     _timestampToZonedDateTime (dateLong) {
         return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this._ZONE_ID);
     }
@@ -84,8 +92,39 @@ class DateUtil {
     _datePartsToLocalDate (year, month, day) {
         return jsJoda.LocalDate.of(year, month, day);
     }
+
+    _monthNameToNumber (monthName) {
+        //js-joda month IS NOT indexed starting with 0
+        switch (monthName.toUpperCase()) {
+        case 'JANUARY':
+            return 1;
+        case 'FEBRUARY':
+            return 2;
+        case 'MARCH':
+            return 3;
+        case 'APRIL':
+            return 4;
+        case 'MAY':
+            return 5;
+        case 'JUNE':
+            return 6;
+        case 'JULY':
+            return 7;
+        case 'AUGUST':
+            return 8;
+        case 'SEPTEMBER':
+            return 9;
+        case 'OCTOBER':
+            return 10;
+        case 'NOVEMBER':
+            return 11;
+        case 'DECEMBER':
+            return 12;
+        default:
+            return null;
+        }
+    }
 }
 
 angular.module('chpl.services')
     .service('DateUtil', DateUtil);
-
