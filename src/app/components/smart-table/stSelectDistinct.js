@@ -25,7 +25,7 @@
                 registerRestoreState: '&',
             },
             templateUrl: 'chpl.components/smart-table/stSelectDistinct.html',
-        }
+        };
     }
 
     function stSelectDistinctLink (scope, element, attr, ctrls) {
@@ -85,7 +85,7 @@
             } else if (angular.isDefined(scope.collection)) {
                 bindCollection(scope.collection);
                 scope.$watch('collection', function (newCollection) {
-                    bindCollection(newCollection)
+                    bindCollection(newCollection);
                 });
             }
         }
@@ -130,7 +130,7 @@
         function restoreState (state) {
             vm.element[0].selectedIndex = 0;
             var predicateSearch = state.search.predicateObject[vm.predicate];
-            if (predicateSearch) {// && vm.distinctItems) {
+            if (predicateSearch) {
                 for (var i = 0; i < vm.distinctItems.length; i++) {
                     if (vm.distinctItems[i] === predicateSearch) {
                         vm.element[0].selectedIndex = i;
