@@ -10,7 +10,7 @@
     </div>
     <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right"
-              ng-csv="$ctrl.results" filename="User_Activity_{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
+              ng-csv="$ctrl.displayed" filename="User_Activity_{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
               csv-header="['User Name', 'Email', 'Activity', 'Activity Date']"
               csv-column-order="['responsibleUserFullName', 'email', 'description', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
