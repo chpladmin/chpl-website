@@ -1,0 +1,10 @@
+.change-requests__requests-header {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+}
+
+.change-requests__filters {
+    display: flex;
+    justify-content: space-between;
+}

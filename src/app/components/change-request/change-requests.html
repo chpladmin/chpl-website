@@ -1,7 +1,8 @@
 <span ng-show="!$ctrl.activeChangeRequest">
   <div class="panel panel-default" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests" st-set-filter="customFilter">
-    <div class="panel-heading">
-      <div class="pull-right">
+    <div class="panel-heading change-requests__requests-header">
+      <div><h2 class="panel-title">Tracking</h2></div>
+      <div class="change-requests__filters">
         <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.administrationMode">
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-developer-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-filter"></i> Developer Name
@@ -48,7 +49,6 @@
           </ul>
         </div>
       </div>
-      <h2 class="panel-title">Tracking</h2>
     </div>
     <div class="panel-body" ng-if="!$ctrl.activeChangeRequest">
       <div class="row" ng-if="!$ctrl.displayedChangeRequests || $ctrl.displayedChangeRequests.length === 0">
