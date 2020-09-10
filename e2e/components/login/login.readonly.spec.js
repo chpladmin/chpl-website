@@ -59,6 +59,12 @@ describe('when logging in', () => {
         component.logoutButton.waitForDisplayed();
         expect(component.toggleLoginComponent.getText()).toBe('AQA Admin');
     });
+
+    it('should be able to log in as ADMIN with an email address', () => {
+        component.logInWithEmail('admin');
+        component.logoutButton.waitForDisplayed();
+        expect(component.toggleLoginComponent.getText()).toBe('AQA Admin');
+    });
 });
 
 describe('when logging out', () => {
