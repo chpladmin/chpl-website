@@ -1,22 +1,33 @@
-<div class="action-bar flex-container">
-  <div class="flex-item center">
-    <ul class="action-bar__error-messages list-unstyled" ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0">
+<div class="action-bar">
+  <div class="action-bar__error-toggle" ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" ng-click="$ctrl.showErrors = !$ctrl.showErrors">
+    Errors and Warnings <i class="fa" ng-class="$ctrl.showErrors ? 'fa-caret-down' : 'fa-caret-left'"></i>
+  </div>
+  <div class="action-bar__errors" ng-if="$ctrl.showErrors">
+    <ul class="action-bar__error-messages list-unstyled">
       <li ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
     </ul>
-    <button class="btn btn-danger" id="action-bar-delete" ng-if="$ctrl.canDelete"
-            confirm="Are you sure you wish to delete?"
-            confirm-ok="Yes"
-            confirm-cancel="No"
-            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="$ctrl.delete()">Delete</button>
-    <button class="btn btn-default" id="action-bar-cancel"
-            confirm="Are you sure you wish to cancel? Your changes will not be saved."
-            confirm-ok="Yes"
-            confirm-cancel="No"
-            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="$ctrl.cancel()">Cancel</button>
-    <button class="btn btn-primary" id="action-bar-save" ng-click="$ctrl.save()"
-            ng-disabled="$ctrl.isDisabled"
-            ng-mouseover="$ctrl.mouseover()">Save</button>
+  </div>
+  <div class="action-bar__buttons">
+    <div class="action-bar__button" ng-if="$ctrl.canDelete">
+      <button class="btn btn-danger" id="action-bar-delete"
+              confirm="Are you sure you wish to delete?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="$ctrl.delete()">Delete</button>
+    </div>
+    <div class="action-bar__button">
+      <button class="btn btn-default" id="action-bar-cancel"
+              confirm="Are you sure you wish to cancel? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="$ctrl.cancel()">Cancel</button>
+    </div>
+    <div class="action-bar__button">
+      <button class="btn btn-primary" id="action-bar-save" ng-click="$ctrl.save()"
+              ng-disabled="$ctrl.isDisabled"
+              ng-mouseover="$ctrl.mouseover()">Save</button>
+    </div>
   </div>
 </div>
