@@ -21,7 +21,7 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
     --white: #ffffff;
     --primary: #edf6ff;
     --secondary: #156dac;
-    --success: #4fc16f;
+    --success: #356635;
     --info: #0e547f;
     --warning: #c44f65;
     --danger: #c44f65;
@@ -808,20 +808,12 @@ p {
     }
 }
 
-.badge-success {
-    background-color: #4fc16f;
-
-    &:hover {
-        background-color: #356635;
-    }
+.badge {
+    background-color: var(--dark);
 }
 
-.badge-error {
-    background-color: #c44f65;
-
-    .badge-error:hover {
-        background-color: #953b39;
-    }
+.badge-success {
+    background-color: var(--success);
 }
 
 .panel-default {
