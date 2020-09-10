@@ -22,7 +22,7 @@
             </span>
           </div>
           <div ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
-            <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</a>
+            <button class="btn btn-default" ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</button>
           </div>
         </div>
         <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
