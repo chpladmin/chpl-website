@@ -7,7 +7,7 @@
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-developer-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-filter"></i> Developer Name
           </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-developer-button" uib-dropdown-menu>
+          <ul class="change-requests__dropdown-menu dropdown-menu" aria-labeledby="filter-developer-button" uib-dropdown-menu>
             <label for="developer" class="control-label">Developer</label>
             <input type="text" class="form-control" id="developer"
                    ai-enhanced-text predicate="developerName"
@@ -18,7 +18,7 @@
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-type-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-filter"></i> Request Type
           </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-type-button" uib-dropdown-menu>
+          <ul class="change-requests__dropdown-menu dropdown-menu" aria-labeledby="filter-type-button" uib-dropdown-menu>
             <st-list-multiple
               collection="$ctrl.changeRequests"
               predicate="requestType"
@@ -30,7 +30,7 @@
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-date-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-calendar"></i> Select a Date Range
           </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-date-button" uib-dropdown-menu>
+          <ul class="change-requests__dropdown-menu dropdown-menu" aria-labeledby="filter-date-button" uib-dropdown-menu>
             <ai-date-range
               predicate="changeDate"
               ></ai-date-range>
@@ -40,7 +40,7 @@
           <button class="btn btn-default dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-filter"></i> Request Status
           </button>
-          <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+          <ul class="change-requests__dropdown-menu dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
             <st-list-multiple
               collection="$ctrl.changeRequests"
               predicate="requestStatus"

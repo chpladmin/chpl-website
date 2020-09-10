@@ -8,3 +8,11 @@
     display: flex;
     justify-content: space-between;
 }
+
+.change-requests__dropdown-menu {
+    min-width: 300px;
+    left: auto;
+    right: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
