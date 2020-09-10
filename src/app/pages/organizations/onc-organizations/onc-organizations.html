@@ -6,12 +6,16 @@
 </div>
 <div class="row is-flex">
   <div class="col-md-3 organizations-side-nav">
-    <div ng-repeat="org in $ctrl.allOrgs">
-      <button type="button" class="btn btn-link" ng-click="$ctrl.showOrg(org)"><strong>{{ org.name }}</strong></button>
-      <span class="badge" ng-if="org.retired">Retired</span>
-      <span ng-if="org.id.toString() === $ctrl.$state.params.id"><i class="fa fa-caret-right"></i></span>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div ng-repeat="org in $ctrl.allOrgs">
+          <button type="button" class="btn btn-link" ng-click="$ctrl.showOrg(org)"><strong>{{ org.name }}</strong></button>
+          <span class="badge" ng-if="org.retired">Retired</span>
+          <span ng-if="org.id.toString() === $ctrl.$state.params.id"><i class="fa fa-caret-right"></i></span>
+        </div>
+        <button type="button" class="btn btn-primary btn-block spaced-out" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">Create New {{ $ctrl.type }}</button>
+      </div>
     </div>
-    <button type="button" class="btn btn-primary btn-block spaced-out" ng-click="$ctrl.create()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">Create New {{ $ctrl.type }}</button>
   </div>
   <div class="col-md-9" ng-if="$ctrl.hasOrg()">
     <div class="panel panel-default">
