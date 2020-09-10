@@ -960,6 +960,7 @@ label {
         .heading,
         .content {
             background-color: var(--swagger-put-content);
+            border-color: var(--swagger-put-content);
         }
 
         .http-method {
