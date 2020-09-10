@@ -7,7 +7,7 @@ const confirmElements = {
     warningCheckbox: '#acknowledge-warnings',
     confirmButton: '#inspect-confirm',
     toastContainertitle: '.ng-binding.toast-title',
-}
+};
 
 class ConfirmPage {
     constructor () { }
@@ -78,7 +78,7 @@ class ConfirmPage {
             {
                 timeout: config.longTimeout,
             }
-        )
+        );
     }
 }
 
