@@ -28,6 +28,8 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
     --light: #f9f9f9;
     --dark: #1c1c1c;
     --medium-grey: #6b6b6b;
+    --swagger-put-content: #ede0f8;
+    --swagger-put-badge: #6b23a4;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -916,4 +918,64 @@ label {
 [uib-datepicker-popup-wrap] .btn {
     border-radius: 3px;
     border-color: #ccc;
+}
+
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+    color: var(--black);
+}
+
+.breadcrumb > .active {
+    color: var(--black);
+    font-weight: 600;
+}
+
+.progress-bar-danger {
+    background-color: var(--danger);
+}
+
+.progress-bar-warning {
+    background-color: var(--secondary);
+}
+
+.progress-bar-success {
+    background-color: var(--success);
+}
+
+.swagger-ui {
+
+    .put {
+
+        h5,
+        .h5,
+        .description {
+            color: var(--swagger-put-badge);
+        }
+
+        .heading,
+        .content {
+            background-color: var(--swagger-put-content);
+        }
+
+        .http-method {
+            background-color: var(--swagger-put-badge);
+        }
+    }
+
+    .post {
+
+        h5,
+        .h5,
+        .description {
+            color: var(--success);
+        }
+
+        .http-method {
+            background-color: var(--success);
+        }
+    }
 }
