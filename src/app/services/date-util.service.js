@@ -68,9 +68,9 @@ class DateUtil {
 
     _localTimeFromTimeOfDay (timeOfDay) {
         switch (timeOfDay) {
-        case this.TimeOfDay.MIN:
+        case this.TimeOfDay.BEGINNING_OF_DAY:
             return jsJoda.LocalTime.MIN;
-        case this.TimeOfDay.MAX:
+        case this.TimeOfDay.END_OF_DAY:
             return jsJoda.LocalTime.MAX;
         case this.TimeOfDay.NOON:
             return jsJoda.LocalTime.NOON;

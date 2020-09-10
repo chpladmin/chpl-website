@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Date service', () => {
+    fdescribe('the Date service', () => {
         var $log, date, mock;
 
         mock = {
@@ -27,9 +27,13 @@
         });
 
         describe('when converting dates to display form', () => {
-            xit('should convert a "Date" object into standard form', () => {
-                //date.jsJoda should be mocked when we figure out how...
-                expect(date.getDisplayDateFormat(date.jsJoda().LocalDate.of(2020, 9, 22))).toBe('Sep 22, 2020');
+            it('should convert a "Date" object into standard form', () => {
+                let localDate = {
+                    month: 'SEPTEMBER',
+                    dayOfMonth: 9,
+                    year: 2020,
+                };
+                expect(date.getDisplayDateFormat(localDate)).toBe('Sep 9, 2020');
             });
 
             it('should convert a "long" date into standard form', () => {
@@ -50,38 +54,72 @@
         });
 
         //TODO: Determine how we can mock js-joda correctly to run these tests
-        describe('when converting a LocalDate object to string', () => {
-            it('should use the format that was passed in, if passed in', () => { });
+        describe('when converting a date parts to a timestamp', () => {
+            it('should convert the year, month, and day into a timestamp', () => {
+                let timestamp = date.datePartsToTimestamp(2020, 9, 9);
+                let d = new Date(timestamp);
+                expect(d.getFullYear()).toBe(2020);
+                expect(d.getMonth()).toBe(8);
+                expect(d.getDate()).toBe(9);
+            });
 
-            it('should use the default format, if one is not passed in', () => { });
+            it('should have a time of midnight, if no time is passed in', () => {
+                let timestamp = date.datePartsToTimestamp(2020, 9, 9);
+                let d = new Date(timestamp);
+                expect(d.getHours()).toBe(0);
+                expect(d.getMinutes()).toBe(0);
+                expect(d.getSeconds()).toBe(0);
+            });
 
-            it('should use the jsJoda library to do conversion', () => { });
+            it('should have a time of noon, when noon is passed in', () => {
+                let timestamp = date.datePartsToTimestamp(2020, 9, 9, date.TimeOfDay.NOON);
+                let d = new Date(timestamp);
+                expect(d.getHours()).toBe(12);
+                expect(d.getMinutes()).toBe(0);
+                expect(d.getSeconds()).toBe(0);
+            });
+
+            it('should have a custom time, when a custom time is passed in', () => {
+                let timestamp = date.datePartsToTimestamp(2020, 9, 9, 14, 21, 28, 10);
+                let d = new Date(timestamp);
+                expect(d.getHours()).toBe(14);
+                expect(d.getMinutes()).toBe(21);
+                expect(d.getSeconds()).toBe(28);
+            });
         });
 
-        describe('when converting a long to ZonedDateTime object', () => {
-            it('should use jsJoda library to create a ZonedDateTime object', () => { });
+        describe('when updating the time portion of a timestamp', () => {
+            it('should correctly update the time portion of the timestamp, based on a constant', () => {
+                let orig = new Date();
+                let timestamp = date.updateTimePortionOfTimestamp(orig.getTime(), date.TimeOfDay.END_OF_DAY);
+                let d = new Date(timestamp);
+                expect(d.getHours()).toBe(23);
+                expect(d.getMinutes()).toBe(59);
+                expect(d.getSeconds()).toBe(59);
+            });
 
-            it('should always create the ZonedDateTime based on Eastern Time (America/New_York)', () => { });
+            it('should correctly update the time portion of the timestamp, based on a custom time', () => {
+                let orig = new Date();
+                let timestamp = date.updateTimePortionOfTimestamp(orig.getTime(), 14, 21, 28, 10);
+                let d = new Date(timestamp);
+                expect(d.getHours()).toBe(14);
+                expect(d.getMinutes()).toBe(21);
+                expect(d.getSeconds()).toBe(28);
+            });
         });
 
-        describe('when converting a ZonedDateTime object to a long', () => {
-            it('should use the jsJoda library to generate the long value', () => { });
-        });
+        describe('when converting a timestamp to string', () => {
+            it('should use the default format, when no format is passed in', () => {
+                let orig = new Date(2020, 8, 9, 10, 11, 12, 13);
+                let str = date.timestampToString(orig.getTime());
+                expect(str).toBe('Sep 9, 2020 10:11:12 AM ET');
+            });
 
-        describe('when converting a ZonedDateTime object to a string', () => {
-            it('should use the format that was passed in, if passed in', () => { });
-
-            it('should use the default format, if one is not passed in', () => { });
-
-            it('should use the jsJoda library to do conversion', () => { });
-        });
-
-        describe('when creating a ZonedDateTime based on date and time parts', () => {
-            it('should use the default time, if one was not passed in', () => { });
-
-            it('should use the passed in time, if one was passed in', () => { });
-
-            it('should use the jsJoda library to generate the ZonedDateTime object', () => { });
+            it('should use the passed in format, when provided', () => {
+                let orig = new Date(2020, 8, 9, 10, 11, 12, 13);
+                let str = date.timestampToString(orig.getTime(), 'MM/dd/yyyy');
+                expect(str).toBe('09/09/2020');
+            });
         });
     });
 })();
