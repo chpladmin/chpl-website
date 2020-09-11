@@ -127,9 +127,10 @@ export const ReportsUserActionsComponent = {
             let that = this;
             this.networkService.getActivityMetadata(metadataType)
                 .then(results => {
-                    results.activities.forEach(item => {
-                        that.results.push(that.prepare(item, metadataType));
-                    });
+                    results.activities.filter(item => item.responsibleUser.userId !== -2)
+                        .forEach(item => {
+                            that.results.push(that.prepare(item, metadataType));
+                        });
                     that.loadProgress.complete += 1;
                     that.loadProgress.total += (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
                     that.addPageToData(1, metadataType);
@@ -149,9 +150,10 @@ export const ReportsUserActionsComponent = {
             let that = this;
             if (this.isDestroyed) { return }
             this.networkService.getActivityMetadata(metadataType, {pageNum: page, ignoreLoadingBar: true}).then(results => {
-                results.activities.forEach(item => {
-                    that.results.push(that.prepare(item, metadataType));
-                });
+                results.activities.filter(item => item.responsibleUser.userId !== -2)
+                    .forEach(item => {
+                        that.results.push(that.prepare(item, metadataType));
+                    });
                 that.loadProgress.complete += 1;
                 that.loadProgress.percentage = Math.floor(100 * ((that.loadProgress.complete) / that.loadProgress.total));
                 if (page < (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))) {
