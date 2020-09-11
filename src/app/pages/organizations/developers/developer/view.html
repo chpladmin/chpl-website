@@ -45,11 +45,22 @@
       <div class="panel panel-default" feature-flag="direct-review">
         <div class="panel-heading">
           <div class="panel-title">
-            <span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
+            <span class="pull-right">
+              <span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
+              <span class="developer__direct-review-error" ng-if="$ctrl.drStatus === 'error'">error</span>
+            </span>
             <h2>Direct Review Activities</h2>
           </div>
           <div class="panel-body">
-            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+            <span ng-if="$ctrl.drStatus === 'success'">
+              <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+            </span>
+            <span ng-if="$ctrl.drStatus === 'error'">
+              <p>Direct Review information is not currently available, please check back later</p>
+            </span>
+            <span ng-if="$ctrl.drStatus === 'pending'">
+              <p><i class="fa fa-spin fa-spinner"></i> Direct Review information is loading</p>
+            </span>
           </div>
         </div>
       </div>
