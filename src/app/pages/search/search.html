@@ -407,14 +407,14 @@
                   <td>{{ cp.chplProductNumber }}</td>
                   <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
                   <td>
-                    <div class="btn-group btn-group-justified">
-                      <div class="btn-group">
+                    <div class="search__action-buttons">
+                      <div class="text-center">
                         <a ui-sref="listing({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
                       </div>
-                      <div class="btn-group">
+                      <div class="text-center">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>
                       </div>
-                      <div class="btn-group" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
+                      <div class="text-center" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
                         <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-cms-widget-button>
                       </div>
                     </div>
