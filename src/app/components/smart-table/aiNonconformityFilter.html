@@ -1,8 +1,7 @@
 <li class="text-center">
-  <label ng-class="{ 'emphasis' : vm.query.nonconformities.matchAll }">
-    <input type="checkbox" ng-model="vm.query.nonconformities.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
-    Matching <u>{{ vm.query.nonconformities.matchAll ? 'all' : 'any' }}</u>
-  </label>
+  <button ng-click="vm.query.nonconformities.matchAll = !vm.query.nonconformities.matchAll; vm.filterChanged()" class="btn btn-default" ng-class="{ 'emphasis' : vm.query.nonconformities.matchAll }">
+    Matching <strong>Any</strong> <i class="fa" ng-class="vm.query.nonconformities.matchAll ? 'fa-toggle-on' : 'fa-toggle-off'"></i> <strong>All</strong>
+  </button>
 </li>
 <li>
   <label for="filter-open-nonconformity">
