@@ -23,6 +23,7 @@ export const ReportsUserActionsComponent = {
                 complete: 0,
             };
             this.pageSize = 50;
+            this.defaultDateRangeOffset = 60 * 24 * 60 * 60 * 1000; // 60 days
             this.isUserTableVisible = [];
             this.userList = [];
         }
@@ -139,7 +140,7 @@ export const ReportsUserActionsComponent = {
                     filter.tableState = this.tableController.tableState();
                     filter.tableState.search.predicateObject.categoriesFilter = '|All|';
                     filter.tableState.search.predicateObject.date = {
-                        after: new Date('2016-04-01').getTime(),
+                        after: this.ReportService.coerceToMidnight(new Date()).getTime() - this.defaultDateRangeOffset,
                         before: this.ReportService.coerceToMidnight(new Date(), true).getTime(),
                     };
                     that.doFilter(filter);
