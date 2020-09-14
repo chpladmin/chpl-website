@@ -6,6 +6,7 @@ const elements = {
     editProductsHeader: 'h2=Edit Product Details',
     products: '.products__product',
     editProductName: '#product-name',
+    activeVersion: '#active-version',
 };
 
 class DevelopersPage {
@@ -72,6 +73,10 @@ class DevelopersPage {
     editProduct (product) {
         this.getEditButton(product).click();
         product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
+    }
+
+    getActiveVersion (product) {
+        return product.$(elements.activeVersion);
     }
 }
 

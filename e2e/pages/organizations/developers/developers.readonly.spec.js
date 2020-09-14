@@ -19,7 +19,7 @@ describe('the Developers page', () => {
         expect(browser).toHaveUrl('#/organizations/developers/1914', {containing: true});
     });
 
-    describe('when on a specific Developer page', () => {
+    describe('when on the "GE Healthcare" Developer page', () => {
         beforeEach(() => {
             let developer = 'GE Healthcare';
             page.selectDeveloper(developer);
@@ -34,7 +34,7 @@ describe('the Developers page', () => {
             expect(page.products.length).toBeGreaterThan(0);
         });
 
-        describe('when looking at a specific Product', () => {
+        describe('when looking at "Centricity Perinatal"', () => {
             let name = 'Centricity Perinatal';
             let product;
             beforeEach(() => {
@@ -48,6 +48,27 @@ describe('the Developers page', () => {
             it('should have product Contact information', () => {
                 expect(contact.getFull(product).getText()).toBe('Tamara Grassle');
             });
+        });
+    });
+
+    describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
+        let developer = 'Procentive';
+        let productName = 'Procentive';
+        let product;
+        beforeEach(() => {
+            page.selectDeveloper(developer);
+            page.getDeveloperPageTitle(developer).waitForDisplayed();
+            product = page.getProduct(productName);
+            product.scrollIntoView({block: 'center', inline: 'center'});
+            browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
+            page.selectProduct(product);
+            page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        /* eslint-disable no-console,angular/log */
+        it('should have Versions', () => {
+            console.log(page.getActiveVersion(product));
+            expect(page.getActiveVersion(product)).toHaveTextContaining('2011');
         });
     });
 });
