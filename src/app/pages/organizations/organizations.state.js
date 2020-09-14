@@ -80,6 +80,18 @@ let states = [
         },
         data: { title: 'CHPL Developers - Edit Product' },
     },{
+        name: 'organizations.developers.developer.product.version',
+        url: '/versions/{versionId}',
+        abstract: true,
+    },{
+        name: 'organizations.developers.developer.product.version.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'editVersion',
+        },
+        data: { title: 'CHPL Developers - Edit Version' },
+    },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',
         component: 'chplOncOrganizations',

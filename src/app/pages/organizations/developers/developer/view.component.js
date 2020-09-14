@@ -27,7 +27,7 @@ export const DevelopersViewComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct') {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct' && this.action !== 'editVersion') {
                 this.loadData();
             }
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
@@ -35,6 +35,9 @@ export const DevelopersViewComponent = {
                 .then(options => that.searchOptions = options);
             if (this.$stateParams.productId) {
                 this.productId = this.$stateParams.productId;
+            }
+            if (this.$stateParams.versionId) {
+                this.versionId = this.$stateParams.versionId;
             }
         }
 
@@ -89,6 +92,7 @@ export const DevelopersViewComponent = {
                 developerId: this.developer.developerId,
                 action: undefined,
                 productId: undefined,
+                versionId: undefined,
             }, {reload: true});
         }
 
@@ -151,6 +155,14 @@ export const DevelopersViewComponent = {
             }
         }
 
+        saveUpdate (data) {
+            if (this.versionId) {
+                this.saveVersion(data);
+            } else {
+                this.saveProduct(data);
+            }
+        }
+
         saveProduct (product) {
             let that = this;
             let request = {
@@ -166,6 +178,44 @@ export const DevelopersViewComponent = {
                             developerId: this.developer.developerId,
                             action: undefined,
                             productId: undefined,
+                            versionId: undefined,
+                        }, {reload: true});
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
+                        } else {
+                            that.errorMessages = ['An error has occurred.'];
+                        }
+                    }
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
+                    } else {
+                        that.errorMessages = ['An error has occurred.'];
+                    }
+                });
+        }
+
+        saveVersion (version) {
+            let that = this;
+            let request = {
+                versionIds: [version.versionId],
+                version: version,
+                newProductId: version.productId,
+            };
+            this.errorMessages = [];
+            this.networkService.updateVersion(request)
+                .then(response => {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        this.$state.go('organizations.developers.developer', {
+                            developerId: this.developer.developerId,
+                            action: undefined,
+                            productId: undefined,
+                            versionId: undefined,
                         }, {reload: true});
                     } else {
                         if (response.data.errorMessages) {

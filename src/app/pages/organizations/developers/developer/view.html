@@ -55,9 +55,10 @@
       </div>
       <chpl-products products="$ctrl.products"
                      product-id="{{ $ctrl.productId }}"
+                     version-id="{{ $ctrl.versionId }}"
                      search-options="$ctrl.searchOptions"
                      on-cancel="$ctrl.cancel()"
-                     on-edit="$ctrl.saveProduct(product)"
+                     on-edit="$ctrl.saveUpdate(data)"
                      ></chpl-products>
     </div>
   </div>
