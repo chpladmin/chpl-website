@@ -16,7 +16,7 @@ describe('when user is on confirm listing page', () => {
         loginComponent = new LoginComponent();
         hooks = new Hooks();
         hooks.open('#/administration/upload');
-        loginComponent.loginAsACB();
+        loginComponent.logIn('acb');
     });
 
     afterEach(() => {
