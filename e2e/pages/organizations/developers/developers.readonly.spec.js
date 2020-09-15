@@ -69,5 +69,9 @@ describe('the Developers page', () => {
         it('should have Versions', () => {
             expect(page.getActiveVersion(product)).toHaveTextContaining('2011');
         });
+
+        it('should not have an edit button', () => {
+            expect(page.getEditButton(product)).not.toExist();
+        });
     });
 });
