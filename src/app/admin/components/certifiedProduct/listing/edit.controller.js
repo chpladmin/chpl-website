@@ -5,9 +5,10 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
+    function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, DateUtil, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
         var vm = this;
 
+        vm.DateUtil = DateUtil;
         vm.addPreviousMuu = addPreviousMuu;
         vm.addPreviousStatus = addPreviousStatus;
         vm.addNewValue = utilService.addNewValue;
@@ -82,7 +83,7 @@
                 vm.cp.meaningfulUseUserHistory = [];
             }
             if (vm.cp.rwtPlanSubmissionDate) {
-                vm.cp.rwtPlanSubmissionDateObject = new Date(vm.cp.rwtPlanSubmissionDate);
+                vm.cp.rwtPlanSubmissionDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtPlanSubmissionDate);
             }
             if (vm.cp.rwtResultsSubmissionDate) {
                 vm.cp.rwtResultsSubmissionDateObject = new Date(vm.cp.rwtResultsSubmissionDate);
@@ -241,16 +242,19 @@
                     vm.idFields.suffix;
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
+
+            $log.info(vm.cp.rwtPlanSubmissionDateObject);
             if (vm.cp.rwtPlanSubmissionDateObject) {
-                vm.cp.rwtPlanSubmissionDate = vm.cp.rwtPlanSubmissionDateObject.getTime();
-            } else {
-                vm.cp.rwtPlanSubmissionDate = null;
+                vm.cp.rwtPlanSubmissionDate = vm.DateUtil.timestampToString(vm.cp.rwtPlanSubmissionDateObject, 'yyyy-MM-dd');
             }
+            $log.info(vm.cp.rwtPlanSubmissionDate);
+
+            $log.info(vm.cp.rwtResultsSubmissionDateObject);
             if (vm.cp.rwtResultsSubmissionDateObject) {
-                vm.cp.rwtResultsSubmissionDate = vm.cp.rwtResultsSubmissionDateObject.getTime();
-            } else {
-                vm.cp.rwtResultsSubmissionDate = null;
+                vm.cp.rwtResultsSubmissionDate = vm.DateUtil.timestampToString(vm.cp.rwtResultsSubmissionDateObject, 'yyyy-MM-dd');
             }
+            $log.info(vm.cp.rwtResultsSubmissionDate);
+
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
                 networkService.updateCP({

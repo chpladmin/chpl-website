@@ -64,6 +64,26 @@ class DateUtil {
         return this._timestampToZonedDateTime(timestamp).format(formatter);
     }
 
+    localDateToTimestamp (localDateString) {
+        let localDate = jsJoda.LocalDate.parse(localDateString);
+        let localTime = jsJoda.LocalTime.MIDNIGHT;
+        return jsJoda.ZonedDateTime.of3(localDate, localTime, this._ZONE_ID).toInstant().toEpochMilli();
+    }
+
+    localDateToString (localDateString, format) {
+        format = format || 'MM/dd/yyyy';
+        if (localDateString) {
+            //let x = this.localDateToTimestamp(localDateString);
+            //this.$log.info(x);
+            //let y = this.timestampToString(x, format);
+            //this.$log.info(y);
+            //return y;
+            return this.timestampToString(this.localDateToTimestamp(localDateString), format);
+        } else {
+            return null;
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////
 
     _localTimeFromTimeOfDay (timeOfDay) {

@@ -29,7 +29,6 @@
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
         vm.editVersion = editVersion;
-        vm.getDisplayDateFormat = DateUtil.getDisplayDateFormat;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
@@ -37,6 +36,8 @@
         vm.isDeveloperBanned = isDeveloperBanned;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
+        //vm.localDateToString = DateUtil.localDateToString;
+        vm.DateUtil = DateUtil;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
         vm.refreshDevelopers = refreshDevelopers;
