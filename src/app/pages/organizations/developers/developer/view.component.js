@@ -1,5 +1,5 @@
 export const DevelopersViewComponent = {
-    templateUrl: 'chpl.organizations/developers/view.html',
+    templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
         developers: '<',
@@ -9,7 +9,7 @@ export const DevelopersViewComponent = {
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
@@ -27,12 +27,15 @@ export const DevelopersViewComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct') {
                 this.loadData();
             }
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
             this.networkService.getSearchOptions()
                 .then(options => that.searchOptions = options);
+            if (this.$stateParams.productId) {
+                this.productId = this.$stateParams.productId;
+            }
         }
 
         $onChanges (changes) {
@@ -82,7 +85,11 @@ export const DevelopersViewComponent = {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
             this.products = angular.copy(this.backup.products);
-            this.$state.go('^');
+            this.$state.go('organizations.developers.developer', {
+                developerId: this.developer.developerId,
+                action: undefined,
+                productId: undefined,
+            }, {reload: true});
         }
 
         closeConfirmation () {
@@ -144,8 +151,44 @@ export const DevelopersViewComponent = {
             }
         }
 
+        saveProduct (product) {
+            let that = this;
+            let request = {
+                productIds: [product.productId],
+                product: product,
+                newDeveloperId: product.developerId,
+            };
+            this.errorMessages = [];
+            this.networkService.updateProduct(request)
+                .then(response => {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        this.$state.go('organizations.developers.developer', {
+                            developerId: this.developer.developerId,
+                            action: undefined,
+                            productId: undefined,
+                        }, {reload: true});
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
+                        } else {
+                            that.errorMessages = ['An error has occurred.'];
+                        }
+                    }
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
+                    } else {
+                        that.errorMessages = ['An error has occurred.'];
+                    }
+                });
+        }
+
         takeAction (action) {
-            this.$state.go('.' + action);
+            this.$state.go('organizations.developers.developer.' + action);
         }
 
         takeCrAction (action, data) {
@@ -253,7 +296,7 @@ export const DevelopersViewComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.organizations')
     .component('chplDevelopersView', DevelopersViewComponent);

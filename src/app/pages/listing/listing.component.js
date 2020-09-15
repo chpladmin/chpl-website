@@ -109,12 +109,13 @@ export const ListingComponent = {
             });
         }
 
-        saveEdit (listing, reason) {
+        saveEdit (listing, reason, acknowledgeWarnings) {
             let that = this;
             this.isSaving = true;
             this.networkService.updateCP({
                 listing: listing,
                 reason: reason,
+                acknowledgeWarnings: acknowledgeWarnings,
             }).then(response => {
                 if (!response.status || response.status === 200) {
                     that.isEditing = false;

@@ -1,15 +1,20 @@
 export const ProductsComponent = {
-    templateUrl: 'chpl.components/product/products.html',
+    templateUrl: 'chpl.components/products/products.html',
     bindings: {
+        onCancel: '&?',
+        onEdit: '&?',
         products: '<',
+        productId: '@',
         searchOptions: '<',
     },
     controller: class ProductsComponent {
-        constructor ($log, $uibModal, $q, networkService, utilService) {
-            'ngInject'
+        constructor ($log, $q, $state, $uibModal, authService, networkService, utilService) {
+            'ngInject';
             this.$log = $log;
             this.$q = $q;
+            this.$state = $state;
             this.$uibModal = $uibModal;
+            this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.statusFont = utilService.statusFont;
             this.defaultRefine = {
@@ -28,15 +33,7 @@ export const ProductsComponent = {
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
                     p.loaded = false;
-                    p.ownerHistory = p.ownerHistory.map(o => {
-                        o.transferDateObject = new Date(o.transferDate);
-                        return o;
-                    });
-                    this.networkService.getVersionsByProduct(p.productId)
-                        .then(versions => {
-                            p.versions = versions
-                                .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
-                        });
+                    p.isOpen = false;
                     return p;
                 });
             }
@@ -46,12 +43,32 @@ export const ProductsComponent = {
                         let status = {
                             value: cs.name,
                             selected: this.defaultRefine[cs.name],
-                        }
+                        };
                         return status;
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
                 this.currentFilter = this.statusItems;
             }
+            if (this.products) {
+                if (this.productId) {
+                    this.activeProduct = this.products
+                        .filter(p => p.productId === parseInt(this.productId, 10))[0];
+                } else {
+                    this.products = this.products.map(p => {
+                        this.networkService.getVersionsByProduct(p.productId)
+                            .then(versions => {
+                                p.versions = versions
+                                    .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
+                            });
+                        return p;
+                    });
+                }
+            }
+        }
+
+        cancel () {
+            this.activeProduct = undefined;
+            this.onCancel();
         }
 
         doFilter (items) {
@@ -67,16 +84,24 @@ export const ProductsComponent = {
             });
         }
 
+        editProduct (product) {
+            this.$state.go('organizations.developers.developer.product.edit', {productId: product.productId});
+        }
+
+        editVersion (version) {
+            this.$log.info(version);
+        }
+
         getListingCounts (product) {
-            if (!product.loaded) { return '' }
+            if (!product.loaded) { return ''; }
             let counts = product.versions.reduce((acc, v) => {
-                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length
+                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
                 acc.total += v.listings.length;
                 return acc;
             }, {active: 0, total: 0});
             let ret = '';
             if (counts.active > 0) {
-                ret += counts.active + ' active / '
+                ret += counts.active + ' active / ';
             }
             ret += counts.total + ' listing';
             if (counts.total !== 1) {
@@ -85,10 +110,26 @@ export const ProductsComponent = {
             return ret;
         }
 
+        handleEdit (action, data) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'edit':
+                this.save(data);
+                break;
+                //no default
+            }
+        }
+
         noVisibleListings (product) {
             return product.activeVersion && product.activeVersion.listings
                 .filter(l => l.displayed)
                 .length === 0;
+        }
+
+        save (product) {
+            this.onEdit({product: product});
         }
 
         toggleProduct (product) {
@@ -129,7 +170,7 @@ export const ProductsComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplProducts', ProductsComponent);

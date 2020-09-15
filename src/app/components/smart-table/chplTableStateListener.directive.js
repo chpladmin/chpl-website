@@ -11,8 +11,8 @@ angular.module('chpl.components')
                     return stTable.tableState();
                 },
                 function (newVal) {
-                    scope.onChange({tableState: newVal, tableController: stTable})
-                },
-                true)},
-        }
+                    scope.onChange({tableState: newVal, tableController: stTable});
+                }, true);
+            },
+        };
     });

@@ -1,6 +1,6 @@
-import DirectReviewsComponent from './direct-reviews.po'
-import DevelopersPage from '../../pages/organizations/developers/developers.po'
-import Hooks from '../../utilities/hooks'
+import DirectReviewsComponent from './direct-reviews.po';
+import DevelopersPage from '../../pages/organizations/developers/developers.po';
+import Hooks from '../../utilities/hooks';
 
 let component, hooks, page;
 
