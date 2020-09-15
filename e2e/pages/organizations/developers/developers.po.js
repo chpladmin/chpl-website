@@ -4,9 +4,11 @@ const elements = {
     directReviewsHeader: 'h2=Direct Review Activities',
     productsHeader: 'h2=Products',
     editProductsHeader: 'h2=Edit Product Details',
+    editVersionHeader: 'h2=Edit Version Details',
     products: '.products__product',
     editProductName: '#product-name',
     activeVersion: '#active-version',
+    editVersionName: '#version-name',
 };
 
 class DevelopersPage {
@@ -36,6 +38,10 @@ class DevelopersPage {
         return $(elements.editProductsHeader);
     }
 
+    get editVersionHeader () {
+        return $(elements.editVersionHeader);
+    }
+
     get products () {
         return $$(elements.products);
     }
@@ -56,10 +62,13 @@ class DevelopersPage {
         return $(elements.editProductName);
     }
 
+    get editVersionName () {
+        return $(elements.editVersionName);
+    }
+
     selectDeveloper (developerName) {
         this.developersSelect.selectByVisibleText(developerName);
         this.developersButton.click();
-        return this;
     }
 
     getEditButton (product) {
@@ -70,6 +79,10 @@ class DevelopersPage {
         product.$('.products__product-header').click();
     }
 
+    selectVersion (product, versionName) {
+        product.$(elements.activeVersion).selectByVisibleText(versionName);
+    }
+
     editProduct (product) {
         this.getEditButton(product).click();
         product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
@@ -77,6 +90,11 @@ class DevelopersPage {
 
     getActiveVersion (product) {
         return product.$(elements.activeVersion);
+    }
+
+    editVersion (product) {
+        this.getEditButton(product).click();
+        product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[1].click();
     }
 }
 

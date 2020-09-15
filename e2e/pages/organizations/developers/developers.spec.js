@@ -29,7 +29,7 @@ describe('the Developers page', () => {
             login.logOut();
         });
 
-        describe('on a specific Developer page', () => {
+        describe('when on the "Greenway Health, LLC" Developer page', () => {
             beforeEach(() => {
                 let developer = 'Greenway Health, LLC';
                 page = new DevelopersPage();
@@ -37,7 +37,7 @@ describe('the Developers page', () => {
                 page.getDeveloperPageTitle(developer).waitForDisplayed();
             });
 
-            describe('when looking at a specific Product', () => {
+            describe('when looking at "Intergy EHR"', () => {
                 let name = 'Intergy EHR';
                 let product;
                 beforeEach(() => {
@@ -84,7 +84,7 @@ describe('the Developers page', () => {
                 });
             });
 
-            describe('when planning to change a Product name', () => {
+            describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
                 let name = 'MediaDent 10.0 using SuccessEHS 7.20';
                 let product;
                 beforeEach(() => {
@@ -116,6 +116,48 @@ describe('the Developers page', () => {
                         expect(page.editProductName.getValue()).toBe(newName);
                     });
                 });
+            });
+        });
+
+        describe('when on the "Procentive" Developer page, on the "Procentive" Product, editing Version "2015"', () => {
+            let developer = 'Procentive';
+            let productName = 'Procentive';
+            let product;
+            let version = '2015';
+
+            beforeEach(() => {
+                page = new DevelopersPage();
+                page.selectDeveloper(developer);
+                page.getDeveloperPageTitle(developer).waitForDisplayed();
+                product = page.getProduct(productName);
+                product.scrollIntoView({block: 'center', inline: 'center'});
+                browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
+                page.selectProduct(product);
+                page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                page.selectVersion(product, version);
+                page.editVersion(product);
+                page.editVersionHeader.waitForDisplayed();
+            });
+
+            it('should allow Versions to be edited', () => {
+                let timestamp = (new Date()).getTime();
+                let newVersion = version + ' - ' + timestamp;
+                page.editVersionName.clearValue();
+                page.editVersionName.setValue(newVersion);
+                actionBar.save();
+                page.productsHeader.waitForDisplayed();
+                toast.clearAllToast();
+                product = page.getProduct(productName);
+                product.scrollIntoView({block: 'center', inline: 'center'});
+                browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
+                page.selectProduct(product);
+                page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                expect(page.getActiveVersion(product)).toHaveTextContaining(newVersion);
+                page.selectVersion(product, newVersion);
+                page.editVersion(product);
+                page.editVersionHeader.waitForDisplayed();
+                expect(page.editVersionName).toBeDisplayed();
+                expect(page.editVersionName.getValue()).toBe(newVersion);
             });
         });
     });

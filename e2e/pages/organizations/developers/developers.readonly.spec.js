@@ -55,6 +55,7 @@ describe('the Developers page', () => {
         let developer = 'Procentive';
         let productName = 'Procentive';
         let product;
+
         beforeEach(() => {
             page.selectDeveloper(developer);
             page.getDeveloperPageTitle(developer).waitForDisplayed();
@@ -65,9 +66,7 @@ describe('the Developers page', () => {
             page.getProductInfo(product).waitForDisplayed({timeout: 55000});
         });
 
-        /* eslint-disable no-console,angular/log */
         it('should have Versions', () => {
-            console.log(page.getActiveVersion(product));
             expect(page.getActiveVersion(product)).toHaveTextContaining('2011');
         });
     });
