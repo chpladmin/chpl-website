@@ -15,7 +15,7 @@ beforeAll( () => {
     loginComponent = new LoginComponent();
     hooks = new Hooks();
     hooks.open('#/administration/upload');
-    loginComponent.loginAsACB();
+    loginComponent.logIn('acb');
     uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
     uploadPage.waitForSuccessfulUpload();
     hooks.open('#/administration/confirm/listings');
