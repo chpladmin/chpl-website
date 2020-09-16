@@ -330,10 +330,10 @@
                   <span ng-if="vm.activeCP.rwtPlanUrl || vm.activeCP.rwtPlanSubmissionDate || vm.activeCP.rwtResultsUrl || vm.activeCP.rwtResultsSubmissionDate">
                   <strong>Real World Testing</strong><br/>
                     <ul>
-                      <li ng-if="vm.activeCP.rwtPlanUrl"><strong>Plan Url:</strong> {{ vm.activeCP.rwtPlanUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtPlanSubmissionDate"><strong>Plan Submission Date:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlanSubmissionDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtPlanUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlanUrl }}</li>
+                      <li ng-if="vm.activeCP.rwtPlanSubmissionDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlanSubmissionDate) }}</li>
                       <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtResultsSubmissionDate"><strong>Results Submission Date:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsSubmissionDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtResultsSubmissionDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsSubmissionDate) }}</li>
                     </ul>
                   </span>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />

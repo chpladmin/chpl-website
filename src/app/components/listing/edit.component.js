@@ -10,11 +10,12 @@ export const ListingEditComponent = {
         workType: '<',
     },
     controller: class ListingEditComponent {
-        constructor ($filter, $log, $timeout, authService, networkService, utilService) {
+        constructor ($filter, $log, $timeout, DateUtil, authService, networkService, utilService) {
             'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.$timeout = $timeout;
+            this.DateUtil = DateUtil;
             this.addNewValue = utilService.addNewValue;
             this.certificationStatus = utilService.certificationStatus;
             this.extendSelect = utilService.extendSelect;
@@ -95,10 +96,10 @@ export const ListingEditComponent = {
             }
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
             if (this.listing.rwtPlanSubmissionDate) {
-                this.listing.rwtPlanSubmissionDateObject = new Date(this.listing.rwtPlanSubmissionDate);
+                this.listing.rwtPlanSubmissionDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlanSubmissionDate));
             }
             if (this.listing.rwtResultsSubmissionDate) {
-                this.listing.rwtResultsSubmissionDateObject = new Date(this.listing.rwtResultsSubmissionDate);
+                this.listing.rwtResultsSubmissionDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtResultsSubmissionDate));
             }
         }
 
@@ -221,12 +222,12 @@ export const ListingEditComponent = {
             }
             this.listing.certificationDate = this.listing.certDate.getTime();
             if (this.listing.rwtPlanSubmissionDateObject) {
-                this.listing.rwtPlanSubmissionDate = this.listing.rwtPlanSubmissionDateObject.getTime();
+                this.listing.rwtPlanSubmissionDate = this.DateUtil.timestampToString(this.listing.rwtPlanSubmissionDateObject.getTime(), 'yyyy-MM-dd');
             } else {
                 this.listing.rwtPlanSubmissionDate = null;
             }
             if (this.listing.rwtResultsSubmissionDateObject) {
-                this.listing.rwtResultsSubmissionDate = this.listing.rwtResultsSubmissionDateObject.getTime();
+                this.listing.rwtResultsSubmissionDate = this.DateUtil.timestampToString(this.listing.rwtResultsSubmissionDateObject.getTime(), 'yyyy-MM-dd');
             } else {
                 this.listing.rwtResultsSubmissionDate = null;
             }

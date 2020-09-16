@@ -73,11 +73,6 @@ class DateUtil {
     localDateToString (localDateString, format) {
         format = format || 'MM/dd/yyyy';
         if (localDateString) {
-            //let x = this.localDateToTimestamp(localDateString);
-            //this.$log.info(x);
-            //let y = this.timestampToString(x, format);
-            //this.$log.info(y);
-            //return y;
             return this.timestampToString(this.localDateToTimestamp(localDateString), format);
         } else {
             return null;
