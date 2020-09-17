@@ -41,6 +41,7 @@ describe('when user is on confirm listing page', () => {
         beforeEach(() => {
             uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
             uploadPage.waitForSuccessfulUpload();
+            hooks.open('#/administration/upload');
             uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
             hooks.waitForSpinnerToDisappear();
         });
