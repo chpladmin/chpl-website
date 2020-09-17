@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Direct Reviews / NonConformities component', () => {
+    describe('the Direct Reviews / NonConformities component', () => {
         var $log, DateUtil, ctrl, el, mock, scope;
 
         mock = [{

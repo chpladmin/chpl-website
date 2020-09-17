@@ -243,17 +243,12 @@
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
 
-            $log.info(vm.cp.rwtPlansCheckDateObject);
             if (vm.cp.rwtPlansCheckDateObject) {
                 vm.cp.rwtPlansCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtPlansCheckDateObject, 'yyyy-MM-dd');
             }
-            $log.info(vm.cp.rwtPlansCheckDate);
-
-            $log.info(vm.cp.rwtResultsCheckDateObject);
             if (vm.cp.rwtResultsCheckDateObject) {
                 vm.cp.rwtResultsCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtResultsCheckDateObject, 'yyyy-MM-dd');
             }
-            $log.info(vm.cp.rwtResultsCheckDate);
 
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
