@@ -95,11 +95,11 @@ export const ListingEditComponent = {
                     .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
             }
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
-            if (this.listing.rwtPlanSubmissionDate) {
-                this.listing.rwtPlanSubmissionDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlanSubmissionDate));
+            if (this.listing.rwtPlansCheckDate) {
+                this.listing.rwtPlansCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlansCheckDate));
             }
-            if (this.listing.rwtResultsSubmissionDate) {
-                this.listing.rwtResultsSubmissionDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtResultsSubmissionDate));
+            if (this.listing.rwtResultsCheckDate) {
+                this.listing.rwtResultsCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtResultsCheckDate));
             }
         }
 
@@ -221,15 +221,15 @@ export const ListingEditComponent = {
                     this.idFields.suffix;
             }
             this.listing.certificationDate = this.listing.certDate.getTime();
-            if (this.listing.rwtPlanSubmissionDateObject) {
-                this.listing.rwtPlanSubmissionDate = this.DateUtil.timestampToString(this.listing.rwtPlanSubmissionDateObject.getTime(), 'yyyy-MM-dd');
+            if (this.listing.rwtPlansCheckDateObject) {
+                this.listing.rwtPlansCheckDate = this.DateUtil.timestampToString(this.listing.rwtPlansCheckDateObject.getTime(), 'yyyy-MM-dd');
             } else {
-                this.listing.rwtPlanSubmissionDate = null;
+                this.listing.rwtPlansCheckDate = null;
             }
-            if (this.listing.rwtResultsSubmissionDateObject) {
-                this.listing.rwtResultsSubmissionDate = this.DateUtil.timestampToString(this.listing.rwtResultsSubmissionDateObject.getTime(), 'yyyy-MM-dd');
+            if (this.listing.rwtResultsCheckDateObject) {
+                this.listing.rwtResultsCheckDate = this.DateUtil.timestampToString(this.listing.rwtResultsCheckDateObject.getTime(), 'yyyy-MM-dd');
             } else {
-                this.listing.rwtResultsSubmissionDate = null;
+                this.listing.rwtResultsCheckDate = null;
             }
             this.onSave({
                 listing: this.listing,

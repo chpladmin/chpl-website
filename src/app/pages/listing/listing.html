@@ -105,16 +105,16 @@
             <h2 class="product-heading">Relied Upon Software</h2>
             <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
           </div>
-          <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlanUrl || $ctrl.listing.rwtPlanSubmissionDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsSubmissionDate)">
+          <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
             <h2>Real World Testing</h2>
-            <div class="data-label" ng-if="$ctrl.listing.rwtPlanUrl">
-              <label for="rwtPlanUrl">Plans</label>
+            <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
+              <label for="rwtPlansUrl">Plans</label>
             </div>
-            <div ng-if="$ctrl.listing.rwtPlanUrl">
-              <p><a ai-a href="{{ $ctrl.listing.rwtPlanUrl }}" name="rwtPlanUrl" id="rwt-plan-url">{{ $ctrl.listing.rwtPlanUrl }}</a></p>
+            <div ng-if="$ctrl.listing.rwtPlansUrl">
+              <p><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></p>
             </div>
-            <div ng-if="$ctrl.listing.rwtPlanSubmissionDate && ($ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
-              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlanSubmissionDate) }}</p>
+            <div ng-if="$ctrl.listing.rwtPlansCheckDate && ($ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
+              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</p>
             </div>
             <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
               <label for="rwtRsultsURL">Results</label>
@@ -122,8 +122,8 @@
             <div ng-if="$ctrl.listing.rwtResultsUrl">
               <p><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></p>
             </div>
-            <div ng-if="$ctrl.listing.rwtResultsSubmissionDate && ($ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
-              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsSubmissionDate) }}</p>
+            <div ng-if="$ctrl.listing.rwtResultsCheckDate && ($ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
+              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</p>
             </div>
 
           </div>

@@ -82,11 +82,11 @@
             } else {
                 vm.cp.meaningfulUseUserHistory = [];
             }
-            if (vm.cp.rwtPlanSubmissionDate) {
-                vm.cp.rwtPlanSubmissionDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtPlanSubmissionDate);
+            if (vm.cp.rwtPlansCheckDate) {
+                vm.cp.rwtPlansCheckDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtPlansCheckDate);
             }
-            if (vm.cp.rwtResultsSubmissionDate) {
-                vm.cp.rwtResultsSubmissionDateObject = new Date(vm.cp.rwtResultsSubmissionDate);
+            if (vm.cp.rwtResultsCheckDate) {
+                vm.cp.rwtResultsCheckDateObject = new Date(vm.cp.rwtResultsCheckDate);
             }
 
             vm.attachModel();
@@ -243,17 +243,17 @@
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
 
-            $log.info(vm.cp.rwtPlanSubmissionDateObject);
-            if (vm.cp.rwtPlanSubmissionDateObject) {
-                vm.cp.rwtPlanSubmissionDate = vm.DateUtil.timestampToString(vm.cp.rwtPlanSubmissionDateObject, 'yyyy-MM-dd');
+            $log.info(vm.cp.rwtPlansCheckDateObject);
+            if (vm.cp.rwtPlansCheckDateObject) {
+                vm.cp.rwtPlansCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtPlansCheckDateObject, 'yyyy-MM-dd');
             }
-            $log.info(vm.cp.rwtPlanSubmissionDate);
+            $log.info(vm.cp.rwtPlansCheckDate);
 
-            $log.info(vm.cp.rwtResultsSubmissionDateObject);
-            if (vm.cp.rwtResultsSubmissionDateObject) {
-                vm.cp.rwtResultsSubmissionDate = vm.DateUtil.timestampToString(vm.cp.rwtResultsSubmissionDateObject, 'yyyy-MM-dd');
+            $log.info(vm.cp.rwtResultsCheckDateObject);
+            if (vm.cp.rwtResultsCheckDateObject) {
+                vm.cp.rwtResultsCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtResultsCheckDateObject, 'yyyy-MM-dd');
             }
-            $log.info(vm.cp.rwtResultsSubmissionDate);
+            $log.info(vm.cp.rwtResultsCheckDate);
 
             if (vm.workType === 'manage') {
                 vm.isSaving = true;

@@ -155,33 +155,33 @@
       Real World Testing
       <div class="form-horizontal">
         <div class="form-group form-group-sm">
-            <label class="col-sm-6 control-label" for="rwt-plan-url">Plans URL</label>
+            <label class="col-sm-6 control-label" for="rwt-plans-url">Plans URL</label>
             <div class="col-sm-6">
-              <input class="input-sm form-control" type="url" ng-model="vm.cp.rwtPlanUrl" id="rwt-plan-url" name="rwtPlanUrl" ng-maxlength="1024">
+              <input class="input-sm form-control" type="url" ng-model="vm.cp.rwtPlansUrl" id="rwt-plans-url" name="rwtPlansUrl" ng-maxlength="1024">
             </div>
-            <label class="col-sm-6 control-label" for="rwt-plan-submission-date">Plans Last ONC-ACB Completeness Check</label>
+            <label class="col-sm-6 control-label" for="rwt-plans-check-date">Plans Last ONC-ACB Completeness Check</label>
             <div class="col-sm-6">
               <div class="input-group">
-                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.rwtPlanSubmissionDateObject" is-open="vm.cp.rwtPlanSubmissionDateDatePicker" close-text="Close" id="rwt-plan-submission-date" name="rwtPlanSubmissionDate" ng-model-options="{ timezone: 'UTC' }">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.rwtPlansCheckDateObject" is-open="vm.cp.rwtPlansCheckDateDatePicker" close-text="Close" id="rwt-plans-check-date" name="rwtPlansCheckDate" ng-model-options="{ timezone: 'UTC' }">
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtPlanSubmissionDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
                 </span>
               </div>
-              <div class="text-danger" ng-if="vm.editForm.rwtPlanSubmissionDateObject.$touched && vm.editForm.rwtPlanSubmissionDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansCheckDateObject.$touched && vm.editForm.rwtPlansCheckDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
             </div>
             <label class="col-sm-6 control-label" for="rwt-results-url">Results URL</label>
             <div class="col-sm-6">
               <input class="form-control" type="url" ng-model="vm.cp.rwtResultsUrl" id="rwt-results-url" name="rwtResultsUrl" ng-maxlength="1024">
             </div>
-            <label class="col-sm-6 control-label" for="rwt-results-submission-date">Results Last ONC-ACB Completeness Check</label>
+            <label class="col-sm-6 control-label" for="rwt-results-check-date">Results Last ONC-ACB Completeness Check</label>
             <div class="col-sm-6">
               <div class="input-group">
-                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.rwtResultsSubmissionDateObject" is-open="vm.cp.rwtResultsSubmissionDateDatePicker" close-text="Close" id="rwt-results-submission-date" name="rwtResultsSubmissionDate" ng-model-options="{ timezone: 'UTC' }">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.rwtResultsCheckDateObject" is-open="vm.cp.rwtResultsCheckDateDatePicker" close-text="Close" id="rwt-results-check-date" name="rwtResultsCheckDate" ng-model-options="{ timezone: 'UTC' }">
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtResultsSubmissionDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
                 </span>
               </div>
-              <div class="text-danger" ng-if="vm.editForm.rwtResultsSubmissionDateObject.$touched && vm.editForm.rwtResultsSubmissionDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsCheckDateObject.$touched && vm.editForm.rwtResultsCheckDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
             </div>
         </div>
       </div>

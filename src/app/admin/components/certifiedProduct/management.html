@@ -327,13 +327,13 @@
                   <ul ng-if="vm.activeCP.testingLabs && vm.activeCP.testingLabs.length !== 0">
                     <li ng-repeat="atl in vm.activeCP.testingLabs">{{ atl.testingLabName }}</li>
                   </ul>
-                  <span ng-if="vm.activeCP.rwtPlanUrl || vm.activeCP.rwtPlanSubmissionDate || vm.activeCP.rwtResultsUrl || vm.activeCP.rwtResultsSubmissionDate">
+                  <span ng-if="vm.activeCP.rwtPlansUrl || vm.activeCP.rwtPlansCheckDate || vm.activeCP.rwtResultsUrl || vm.activeCP.rwtResultsCheckDate">
                   <strong>Real World Testing</strong><br/>
                     <ul>
-                      <li ng-if="vm.activeCP.rwtPlanUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlanUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtPlanSubmissionDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlanSubmissionDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtPlansUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlansUrl }}</li>
+                      <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlansCheckDate) }}</li>
                       <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtResultsSubmissionDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsSubmissionDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsCheckDate) }}</li>
                     </ul>
                   </span>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />

@@ -1,17 +1,17 @@
 (() => {
     'use strict';
 
-    describe('the Direct Reviews / NonConformities component', () => {
+    fdescribe('the Direct Reviews / NonConformities component', () => {
         var $log, DateUtil, ctrl, el, mock, scope;
 
         mock = [{
             nonConformityStatus: 'Closed',
             id: 'closed-1',
-            capApprovalDate: {year: 2020, month: 'JUNE', dayOfMonth: 19},
-            capEndDate: {year: 2021, month: 'JULY', dayOfMonth: 20},
-            capMustCompleteDate: {year: 2022, month: 'AUGUST', dayOfMonth: 21},
-            capStartDate: {year: 2023, month: 'SEPTEMBER', dayOfMonth: 22},
-            dateOfDetermination: {year: 2024, month: 'OCTOBER', dayOfMonth: 23},
+            capApprovalDate: '2020-06-19',
+            capEndDate: '2021-07-20',
+            capMustCompleteDate: '2022-08-21',
+            capStartDate: '2023-09-22',
+            dateOfDetermination: '2024-10-23',
         },{
             nonConformityStatus: 'Open',
             id: 'open-1',
@@ -87,7 +87,7 @@
 
                 it('should translate dates', () => {
                     expect(DateUtil.getDisplayDateFormat).toHaveBeenCalled();
-                    expect(DateUtil.getDisplayDateFormat).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(String));
+                    expect(DateUtil.getDisplayDateFormat).toHaveBeenCalledWith(jasmine.any(String), jasmine.any(String));
                 });
             });
         });
