@@ -42,7 +42,7 @@ export const DevelopersViewComponent = {
                     .then(results => {
                         that.drStatus = 'success';
                         that.directReviews = results;
-                    }, error => that.drStatus = 'error');
+                    }, () => that.drStatus = 'error');
             }
         }
 
