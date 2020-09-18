@@ -62,7 +62,7 @@ export const ListingDetailsComponent = {
                                     let shouldInclude = acc
                                         || !nc.developerAssociatedListings
                                         || nc.developerAssociatedListings.length === 0
-                                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0
+                                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0;
                                     return shouldInclude;
                                 }, false);
                             return shouldInclude;
@@ -223,16 +223,16 @@ export const ListingDetailsComponent = {
                 ret = false;
                 if (cqm.criteria) {
                     for (var i = 0; i < cqm.criteria.length; i++) {
-                        ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')')
+                        ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')');
                     }
                 }
             } else {
                 ret = cqm['hasC' + num];
             }
-            return ret
+            return ret;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplListingDetails', ListingDetailsComponent);

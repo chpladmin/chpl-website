@@ -23,7 +23,7 @@
                 registerRestoreState: '&',
             },
             templateUrl: 'chpl.components/smart-table/chpl-surveillance-filter.html',
-        }
+        };
     }
 
     function chplSurveillanceFilterLink (scope, element, attr, ctrls) {
@@ -80,7 +80,7 @@
                 NC: {},
                 surveillance: {},
                 dates: {},
-            }
+            };
             vm.filterChanged();
         }
 
@@ -98,26 +98,26 @@
             }
             if (vm.initialState) {
                 if (vm.query.surveillance.status !== vm.initialState.surveillance.status) {
-                    if (vm.query.surveillance.status === 'never') { events.push('Never Surveilled') }
-                    else if (vm.query.surveillance.status === 'has-had') { events.push('Has had Surveillance') }
-                    else { events.push('Cleared Surveillance') }
+                    if (vm.query.surveillance.status === 'never') { events.push('Never Surveilled'); }
+                    else if (vm.query.surveillance.status === 'has-had') { events.push('Has had Surveillance'); }
+                    else { events.push('Cleared Surveillance'); }
                 }
                 if (vm.query.NC.never !== vm.initialState.NC.never) {
-                    if (vm.query.NC.never) { events.push('Never had a Nonconformity') }
-                    else { events.push('Cleared Never had a Nonconformity') }
+                    if (vm.query.NC.never) { events.push('Never had a Nonconformity'); }
+                    else { events.push('Cleared Never had a Nonconformity'); }
                 }
                 if (vm.query.NC.open !== vm.initialState.NC.open) {
-                    if (vm.query.NC.open) { events.push('Open Nonconformity') }
-                    else { events.push('Cleared Open Nonconformity') }
+                    if (vm.query.NC.open) { events.push('Open Nonconformity'); }
+                    else { events.push('Cleared Open Nonconformity'); }
                 }
                 if (vm.query.NC.closed !== vm.initialState.NC.closed) {
-                    if (vm.query.NC.closed) { events.push('Closed Nonconformity') }
-                    else { events.push('Cleared Closed Nonconformity') }
+                    if (vm.query.NC.closed) { events.push('Closed Nonconformity'); }
+                    else { events.push('Cleared Closed Nonconformity'); }
                 }
                 if (vm.query.matchAll !== vm.initialState.matchAll) {
-                    if (vm.query.matchAll) { events.push('Matching All') }
-                    else if (vm.query.matchAll === false) { events.push('Matching Any') }
-                    else { events.push('Cleared Match All') }
+                    if (vm.query.matchAll) { events.push('Matching All'); }
+                    else if (vm.query.matchAll === false) { events.push('Matching Any'); }
+                    else { events.push('Cleared Match All'); }
                 }
                 vm.hasChanges = (events.length > 0);
             } else if (vm.query.surveillance.status || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
@@ -167,7 +167,7 @@
                     NC: {},
                     surveillance: {},
                     dates: {},
-                }
+                };
             }
         }
     }

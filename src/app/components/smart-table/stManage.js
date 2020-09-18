@@ -20,6 +20,6 @@
                 });
                 scope.$on('$destroy', search);
             },
-        }
+        };
     }
 })();

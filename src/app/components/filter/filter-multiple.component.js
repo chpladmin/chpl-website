@@ -6,7 +6,7 @@ export const FilterMultipleComponent = {
     },
     controller: class FilterMultipleComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.title = 'Certification Status';
         }
@@ -67,7 +67,7 @@ export const FilterMultipleComponent = {
             return this.items.reduce((acc, i) => i.selected ? acc + 1 : acc, 0);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplFilterMultiple', FilterMultipleComponent);

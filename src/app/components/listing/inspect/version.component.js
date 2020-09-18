@@ -8,7 +8,7 @@ export const InspectVersionComponent = {
     },
     controller: class InspectVersionController {
         constructor ($log, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
         }
@@ -44,7 +44,7 @@ export const InspectVersionComponent = {
                 .then(result => this.systemVersion = result);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('aiInspectVersion', InspectVersionComponent);

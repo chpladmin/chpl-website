@@ -6,7 +6,7 @@ export const FuzzyTypeComponent = {
     },
     controller: class FuzzyTypeComponent {
         constructor ($filter, $log) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.backup = {};
@@ -47,7 +47,7 @@ export const FuzzyTypeComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplFuzzyType', FuzzyTypeComponent);

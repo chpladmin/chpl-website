@@ -15,7 +15,7 @@ let states = [{
             params: {
                 id: trans.params().id,
             },
-        }
+        };
     },
 },{
     name: 'product.initial-panel',
@@ -27,12 +27,12 @@ let states = [{
                 id: trans.params().id,
                 initialPanel: trans.params().initialPanel,
             },
-        }
+        };
     },
 }];
 
 function listingStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

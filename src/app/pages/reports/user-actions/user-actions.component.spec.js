@@ -23,7 +23,7 @@
 
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.productReportsMetadata));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 el = angular.element('<chpl-reports-user-actions></chpl-reports-user-actions>');
                 $compile(el)(scope);
                 scope.$digest();
@@ -60,7 +60,7 @@
                     });
 
                     it('should have a function to determine if a date range is okay', () => {
-                        expect(ctrl.validDates).toBeDefined()
+                        expect(ctrl.validDates).toBeDefined();
                     });
 
                     it('should allow dates with less than the range separation', () => {
@@ -143,7 +143,7 @@
                     expect(filter.startDate).toBe(ctrl.activityRange.startDate);
                     expect(filter.endDate).toBe(ctrl.activityRange.endDate);
                     expect(filter.dataFilter).toBe(ctrl.filterText);
-                })
+                });
             });
         });
     });

@@ -52,7 +52,7 @@
 
                 el = angular.element('<chpl-upload-meaningful-use></chpl-upload-meaningful-use');
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;

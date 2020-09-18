@@ -6,7 +6,7 @@ export const SurveillanceManagementViewComponent = {
     },
     controller: class SurveillanceManagementViewComponent {
         constructor ($log, authService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.certificationStatus = utilService.certificationStatus;
             this.hasAnyRole = authService.hasAnyRole;
@@ -33,7 +33,7 @@ export const SurveillanceManagementViewComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplSurveillanceManagementView', SurveillanceManagementViewComponent);

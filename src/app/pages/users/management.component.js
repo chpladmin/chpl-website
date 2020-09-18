@@ -5,7 +5,7 @@ export const UserManagementComponent = {
     },
     controller: class UserManagementComponent {
         constructor ($log, $scope, $state, authService, featureFlags, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
@@ -17,7 +17,7 @@ export const UserManagementComponent = {
 
         $onInit () {
             let that = this;
-            let loggedIn = this.$scope.$on('loggedIn', that.handleRole())
+            let loggedIn = this.$scope.$on('loggedIn', that.handleRole());
             this.$scope.$on('$destroy', loggedIn);
             this.handleRole();
         }
@@ -67,7 +67,7 @@ export const UserManagementComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.users')
     .component('chplUserManagement', UserManagementComponent);

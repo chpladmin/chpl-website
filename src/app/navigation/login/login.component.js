@@ -7,7 +7,7 @@ export const LoginComponent = {
     },
     controller: class LoginComponent {
         constructor ($log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$rootScope = $rootScope;
             this.$scope = $scope;
@@ -252,7 +252,7 @@ export const LoginComponent = {
             this.extras = vals;
         }
     },
-}
+};
 
 angular.module('chpl.navigation')
     .component('chplLogin', LoginComponent);

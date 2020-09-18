@@ -2,7 +2,7 @@ export const ReportsUserActionsComponent = {
     templateUrl: 'chpl.reports/user-actions/user-actions.html',
     controller: class ReportsUserActionsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -55,7 +55,7 @@ export const ReportsUserActionsComponent = {
 
         onClearFilter () {
             this.activityRange.endDate = new Date();
-            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1);
             this.filterText = '';
             this.tableController.sortBy('date');
             this.search();
@@ -121,7 +121,7 @@ export const ReportsUserActionsComponent = {
             return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsUserActions', ReportsUserActionsComponent);

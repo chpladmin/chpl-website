@@ -4,7 +4,7 @@ export const SurveillanceComponent = {
     },
     controller: class SurveillanceComponent {
         constructor ($log, $scope, $state, authService, featureFlags) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
@@ -18,7 +18,7 @@ export const SurveillanceComponent = {
             this.$scope.$on('$destroy', loggedIn);
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplSurveillance', SurveillanceComponent);

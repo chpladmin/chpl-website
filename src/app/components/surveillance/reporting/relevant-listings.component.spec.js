@@ -51,7 +51,7 @@
             it('should save the listing', () => {
                 let given = { id: 1 };
                 ctrl.activeListing = given;
-                ctrl.save(given)
+                ctrl.save(given);
                 expect(scope.onSave).toHaveBeenCalledWith((given));
                 expect(ctrl.activeListing).toBe(undefined);
             });

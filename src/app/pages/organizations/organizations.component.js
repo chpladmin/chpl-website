@@ -4,12 +4,12 @@ export const OrganizationsComponent = {
     },
     controller: class OrganizationsComponent {
         constructor ($log, featureFlags) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.isOn = featureFlags.isOn;
         }
     },
-}
+};
 
 angular.module('chpl.organizations')
     .component('chplOrganizations', OrganizationsComponent);
