@@ -21,5 +21,6 @@
 }
 
 .developer__direct-review-error {
-    color: var(--danger);
+    color: var(--white) !important;
+    background-color: var(--danger) !important;
 }

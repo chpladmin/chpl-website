@@ -47,7 +47,7 @@
           <div class="panel-title">
             <span class="pull-right">
               <span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
-              <span class="developer__direct-review-error" ng-if="$ctrl.drStatus === 'error'">error</span>
+              <span class="developer__direct-review-error badge badge-error" ng-if="$ctrl.drStatus === 'error'">error</span>
             </span>
             <h2>Direct Review Activities</h2>
           </div>

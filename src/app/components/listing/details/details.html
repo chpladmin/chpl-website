@@ -156,7 +156,7 @@
         </div>
         <div class="panel panel-ai">
           <div class="panel-heading">
-            <a href ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}" id="details-direct-reviews-activities"><i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-right'"></i> Direct Review Activities<span class="pull-right"><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="details__direct-review-error">error</span></span></a>
+            <a href ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}" id="details-direct-reviews-activities"><i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-right'"></i> Direct Review Activities<span class="pull-right"><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="details__direct-review-error badge badge-error">error</span></span></a>
           </div>
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'directReviews'" id="panel-direct-reviews-activities">
             <span ng-if="$ctrl.drStatus === 'success'">
