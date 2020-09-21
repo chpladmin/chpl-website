@@ -53,13 +53,13 @@ export const ListingDetailsComponent = {
             if (changes.directReviews && changes.directReviews.currentValue) {
                 this.directReviews = changes.directReviews.currentValue
                     .filter(dr => {
-                        let shouldInclude = !dr.nonconformities
-                            || dr.nonconformities.length === 0
-                            || dr.nonconformities.reduce((acc, nc) => {
+                        let shouldInclude = !dr.nonConformities
+                            || dr.nonConformities.length === 0
+                            || dr.nonConformities.reduce((acc, nc) => {
                                 let shouldInclude = acc
                                     || !nc.developerAssociatedListings
                                     || nc.developerAssociatedListings.length === 0
-                                    || nc.developerAssociatedListings.includes(this.listing.chplProductNumber)
+                                    || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0
                                 return shouldInclude;
                             }, false);
                         return shouldInclude;
@@ -79,12 +79,23 @@ export const ListingDetailsComponent = {
 
         prepCqms () {
             if (this.cqms) {
-                for (var i = 0; i < this.cqms.length; i++) {
-                    this.cqms[i].id = i;
+                this.cqms = this.cqms.map((cqm, idx) => {
+                    cqm.id = idx;
                     for (var j = 1; j < 5; j++) {
-                        this.cqms[i]['hasC' + j] = this.checkC(this.cqms[i], j);
+                        cqm['hasC' + j] = this.checkC(cqm, j);
                     }
-                }
+                    cqm.allVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
+                    cqm.successVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
+                    return cqm;
+                });
             }
         }
 
@@ -187,6 +198,7 @@ export const ListingDetailsComponent = {
                     }
                 }
             });
+            this.listing.cqmResults = angular.copy(this.cqms);
             this.onChange({listing: this.listing});
         }
 

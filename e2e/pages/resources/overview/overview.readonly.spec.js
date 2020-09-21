@@ -1,5 +1,5 @@
 import OverviewPage from './overview.po.js';
-import Hooks from '../../../utilities/hooks'
+import Hooks from '../../../utilities/hooks';
 
 let hooks, page;
 
@@ -25,7 +25,7 @@ describe('the Overview page', () => {
                 actualResult.push(cellvalue);
             }
         }
-        const expectedTableVlaues = ['ONC-ACB', 'Drummond Group', 'ONC-ACB', 'ICSA Labs', 'ONC-ACB','SLI Compliance', 'ONC-ACB', 'UL LLC', 'ONC-ATL', 'Drummond Group', 'ONC-ATL', 'ICSA Labs', 'ONC-ATL', 'National Committee for Quality Assurance (NCQA)', 'ONC-ATL', 'SLI Compliance','ONC-ATL', 'UL LLC']
+        const expectedTableVlaues = ['ONC-ACB', 'Drummond Group', 'ONC-ACB', 'ICSA Labs', 'ONC-ACB','SLI Compliance', 'ONC-ACB', 'UL LLC', 'ONC-ATL', 'Drummond Group', 'ONC-ATL', 'ICSA Labs', 'ONC-ATL', 'National Committee for Quality Assurance (NCQA)', 'ONC-ATL', 'SLI Compliance','ONC-ATL', 'UL LLC'];
         var isSame = false;
         for ( var k = 0; k < actualResult.length; k ++) {
             if (actualResult[k] === expectedTableVlaues[k]) {

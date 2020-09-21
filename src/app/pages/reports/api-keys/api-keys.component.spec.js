@@ -6,7 +6,7 @@
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+            angular.mock.module('chpl.mock', 'chpl.reports', $provide => {
                 $provide.factory('chplSavedFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
@@ -24,7 +24,7 @@
                 networkService.getActivityMetadata.and.returnValue($q.when([]));
                 networkService.getActivityById.and.returnValue($q.when({}));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 el = angular.element('<chpl-reports-api-keys></chpl-reports-api-keys>');
                 $compile(el)(scope);
                 scope.$digest();
