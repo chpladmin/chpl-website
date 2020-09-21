@@ -22,6 +22,7 @@ let states = [
         name: 'organizations.developers.developer',
         url: '/{developerId}',
         component: 'chplDevelopersView',
+        //abstract: true,
         resolve: {
             developer: (networkService, $location, $transition$) => {
                 'ngInject';
@@ -49,10 +50,16 @@ let states = [
             },
         },
         data: { title: 'CHPL Developers' },
-    },{
+    }/*,{
+        name: 'organizations.developers.developer.view',
+        url: '',
+        component: 'chplDevelopersView',
+    }*/,{
         name: 'organizations.developers.developer.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
+        views: {
+            'developer@^': 'chplDevelopersEdit',
+        },
         resolve: {
             action: () => 'edit',
         },
@@ -60,12 +67,18 @@ let states = [
     },{
         name: 'organizations.developers.developer.split',
         url: '/split',
-        component: 'chplDevelopersSplit',
+        views: {
+            'view@^': 'chplDevelopersSplit',
+        },
+        //component: 'chplDevelopersSplit',
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.developers.developer.merge',
         url: '/merge?v',
-        component: 'chplDevelopersMerge',
+        views: {
+            'view@^': 'chplDevelopersMerge',
+        },
+        //component: 'chplDevelopersMerge',
         data: { title: 'CHPL Developers - Merge' },
     },{
         name: 'organizations.developers.developer.product',
@@ -74,11 +87,20 @@ let states = [
     },{
         name: 'organizations.developers.developer.product.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
+        views: {
+            'products@^.^': 'chplProducts',
+        },
         resolve: {
             action: () => 'editProduct',
         },
         data: { title: 'CHPL Developers - Edit Product' },
+    },{
+        name: 'organizations.developers.developer.product.merge',
+        url: '/merge',
+        views: {
+            'products@^.^': 'chplProductsMerge',
+        },
+        data: { title: 'CHPL Developers - Merge Product' },
     },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',

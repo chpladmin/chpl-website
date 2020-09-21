@@ -92,6 +92,14 @@ export const ProductsComponent = {
             this.$log.info(version);
         }
 
+        mergeProduct (product) {
+            this.$state.go('organizations.developers.developer.product.merge', {
+                productId: product.productId,
+                product: product,
+                products: this.products,
+            });
+        }
+
         getListingCounts (product) {
             if (!product.loaded) { return ''; }
             let counts = product.versions.reduce((acc, v) => {
