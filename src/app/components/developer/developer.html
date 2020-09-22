@@ -2,59 +2,45 @@
   <span ng-if="!$ctrl.isEditing">
     <div class="panel panel-default">
       <div class="panel-heading" ng-if="!$ctrl.isSplitting && !$ctrl.isChangeRequest">
-        Developer
         <h2 class="panel-title">{{ $ctrl.developer.name }}</h2>
       </div>
       <div class="panel-heading" ng-if="$ctrl.isSplitting">
         <h2 class="panel-title">Original Developer</h2>
       </div>
       <div class="panel-body">
-        <div class="flex-container" ng-if="!$ctrl.isChangeRequest">
-          <div class="flex-item">
-            <div class="data-label">Developer name</div>
-            <div class="read-only-data">{{ $ctrl.developer.name }}</div>
+        <div class="developer__developer-information">
+          <div class="developer__developer-column" ng-if="!$ctrl.isChangeRequest">
+            <div>
+              <div class="data-label">Developer code</div>
+              <div class="read-only-data">{{ $ctrl.developer.developerCode }}</div>
+            </div>
+            <div>
+              <div class="data-label">Self-developer</div>
+              <div class="read-only-data">{{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}</div>
+            </div>
+            <div ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
+              <div>
+                <div class="data-label">Status</div>
+                <div class="read-only-data"><i ng-if="status.status.status !== 'Active'" class="fa status-bad" ng-class="status.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ status.status.status }} as of {{ status.statusDate | date : 'mediumDate' : 'UTC' }}</div>
+              </div>
+              <div ng-if="status.reason">
+                <div class="read-only-data">{{ status.reason || 'N/A'}}</div>
+              </div>
+            </div>
           </div>
-          <div class="flex-item">
-            <div class="data-label">Developer code</div>
-            <div class="read-only-data">{{ $ctrl.developer.developerCode }}</div>
-          </div>
-          <div class="flex-item" ng-if="$ctrl.developer.website">
-            <div class="data-label">Developer website</div>
-            <div><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></div>
-          </div>
-        </div>
-        <div class="flex-container horizontal-space"></div>
-        <span ng-if="$ctrl.developer.contact">
-          <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
-        </span>
-        <div class="flex-container horizontal-space"></div>
-        <span ng-if="$ctrl.developer.address">
-          <chpl-address address="$ctrl.developer.address"></chpl-address>
-        </span>
-        <div class="flex-container horizontal-space"></div>
-        <div class="flex-container">
-          <div class="flex-item">
-            <div class="data-label">Last modified date</div>
-            <div class="read-only-data">{{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
-          </div>
-          <div class="flex-item">
-            <div class="data-label">Self-developer</div>
-            <div class="read-only-data">{{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}</div>
-          </div>
-        </div>
-        <div class="flex-container horizontal-space"></div>
-        <div class="flex-container" ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDate'">
-          <div class="flex-item">
-            <div class="data-label">Status</div>
-            <div class="read-only-data"><i ng-if="status.status.status !== 'Active'" class="fa status-bad" ng-class="status.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ status.status.status }}</div>
-          </div>
-          <div class="flex-item">
-            <div class="data-label">Status date</div>
-            <div class="read-only-data">{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</div>
-          </div>
-          <div class="flex-item">
-            <div class="data-label">Comments</div>
-            <div class="read-only-data">{{ status.reason || 'N/A'}}</div>
+          <div class="developer__developer-column">
+            <div ng-if="$ctrl.developer.contact">
+              <div class="data-label">Contact</div>
+              <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
+            </div>
+            <div ng-if="$ctrl.developer.address">
+              <div class="data-label">Address</div>
+              <chpl-address address="$ctrl.developer.address"></chpl-address>
+            </div>
+            <div ng-if="$ctrl.developer.website">
+              <div class="data-label">Website</div>
+              <div><a ai-a href="{{ $ctrl.developer.website }}">{{ $ctrl.developer.website }}</a></div>
+            </div>
           </div>
         </div>
       </div>
@@ -101,49 +87,6 @@
               </ul>
             </div>
           </div>
-          <div class="flex-item" ng-if="!$ctrl.isChangeRequest">
-            <label class="control-label" for="developer-website">Developer website</label>
-            <div>
-              <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
-              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
-              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
-              <ul class="list-inline">
-                <li ng-repeat="option in $ctrl.getDifferences('website')">
-                  <button class="btn btn-link developer__merge-option"
-                          ng-click="$ctrl.selectDifference('website', option)">{{ option }}</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="flex-container horizontal-space"></div>
-        <chpl-contact contact="$ctrl.developer.contact"
-                      is-editing="true"
-                      is-required="!$ctrl.isChangeRequest"
-                      is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
-                      ignore-friendly-name="false"
-                      merge-options="$ctrl.contactOptions"
-                      on-change="$ctrl.editContact(contact)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
-        <div class="flex-container horizontal-space"></div>
-        <chpl-address address="$ctrl.developer.address"
-                      is-editing="true"
-                      is-required="$ctrl.isSplitting"
-                      is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
-                      merge-options="$ctrl.addressOptions"
-                      on-change="$ctrl.editAddress(address)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
-        <div class="flex-container horizontal-space"></div>
-        <div class="flex-container wrap">
-          <div class="flex-item wrap" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !$ctrl.isChangeRequest && $ctrl.isTransparencyAttestationEditable()">
-            <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
-            <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name].transparencyAttestation" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
-              <option value="Negative">Negative</option>
-              <option value="Affirmative">Affirmative</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </div>
-        </div>
-        <div class="flex-container horizontal-space"></div>
-        <div class="flex-container">
           <div class="flex-item narrow">
             <label class="control-label">Self-developer</label>
             <div class="flex-container">
@@ -170,22 +113,7 @@
             </div>
           </div>
         </div>
-        <div class="flex-container horizontal-space"></div>
         <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isChangeRequest">
-          <div class="repeatable-item" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'">
-            <div class="flex-container">
-              <div class="flex-item">
-                <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
-              </div>
-              <div class="flex-item">
-                <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name].transparencyAttestation" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
-                  <option value="Negative">Negative</option>
-                  <option value="Affirmative">Affirmative</option>
-                  <option value="N/A">N/A</option>
-                </select>
-              </div>
-            </div>
-          </div>
           <div class="repeatable-item" ng-repeat="status in $ctrl.developer.statusEvents | orderBy:'-statusDateObject' track by $index">
             <div class="flex-container">
               <div class="flex-item">
@@ -231,6 +159,48 @@
             <div class="flex-item">
               <div class="bg-info" ng-if="$ctrl.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
             </div>
+          </div>
+        </div>
+        <div class="flex-container horizontal-space"></div>
+        <chpl-contact contact="$ctrl.developer.contact"
+                      is-editing="true"
+                      is-required="!$ctrl.isChangeRequest"
+                      is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
+                      ignore-friendly-name="false"
+                      merge-options="$ctrl.contactOptions"
+                      on-change="$ctrl.editContact(contact)" show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+        <div class="flex-container horizontal-space"></div>
+        <chpl-address address="$ctrl.developer.address"
+                      is-editing="true"
+                      is-required="$ctrl.isSplitting"
+                      is-disabled="$ctrl.isChangeRequest && !$ctrl.canEdit"
+                      merge-options="$ctrl.addressOptions"
+                      on-change="$ctrl.editAddress(address)" show-form-errors="$ctrl.showFormErrors"></chpl-address>
+        <div class="flex-container horizontal-space"></div>
+        <div class="flex-container">
+          <div class="flex-item" ng-if="!$ctrl.isChangeRequest">
+            <label class="control-label" for="developer-website">Developer website</label>
+            <div>
+              <input class="input-sm form-control" type="url" ng-model="$ctrl.developer.website" id="developer-website" name="developerWebsite" ng-maxlength="300"></input>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.maxlength">Field is too long</div>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.developerWebsite.$touched) && $ctrl.form.developerWebsite.$error.url">Improper format (http://www.example.com)</div>
+              <ul class="list-inline">
+                <li ng-repeat="option in $ctrl.getDifferences('website')">
+                  <button class="btn btn-link developer__merge-option"
+                          ng-click="$ctrl.selectDifference('website', option)">{{ option }}</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flex-container wrap">
+          <div class="flex-item wrap" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isChangeRequest">
+            <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
+            <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name].transparencyAttestation" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
+              <option value="Negative">Negative</option>
+              <option value="Affirmative">Affirmative</option>
+              <option value="N/A">N/A</option>
+            </select>
           </div>
         </div>
       </div>

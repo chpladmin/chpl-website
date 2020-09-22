@@ -42,14 +42,7 @@
             <p>Self-developer: {{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</p>
             <span ng-if="$ctrl.listing.developer.address">
               <h3>Address</h3>
-              <address>
-                Line 1: {{ $ctrl.listing.developer.address.line1 }}<br />
-                Line 2: {{ $ctrl.listing.developer.address.line2 }}<br />
-                City: {{ $ctrl.listing.developer.address.city }}<br />
-                State: {{ $ctrl.listing.developer.address.state }}<br />
-                Zip: {{ $ctrl.listing.developer.address.zipcode }}<br />
-                Country: {{ $ctrl.listing.developer.address.country }}<br />
-              </address>
+              <chpl-address address="$ctrl.listing.developer.address"></chpl-address>
             </span>
             <span ng-if="$ctrl.listing.product.contact">
               <h3>Contact information</h3>

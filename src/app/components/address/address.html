@@ -1,36 +1,8 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    <div class="flex-container">
-      <div class="flex-item">
-        <div class="data-label">Address</div>
-        <div class="read-only-data">
-          {{ $ctrl.address.line1 }}
-          <span ng-if="$ctrl.address.line2">, {{ $ctrl.address.line2 }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="flex-container">
-      <div class="flex-item">
-        <div class="data-label">City</div>
-        <div class="read-only-data">{{ $ctrl.address.city }}</div>
-      </div>
-      <div class="flex-item">
-        <div class="data-label">State</div>
-        <div class="read-only-data">{{ $ctrl.address.state }}</div>
-      </div>
-      <div class="flex-item">
-        <div class="data-label">Zip</div>
-        <div class="read-only-data">{{ $ctrl.address.zipcode }}</div>
-      </div>
-    </div>
-    <div class="flex-container">
-      <div class="flex-item">
-        <div class="data-label">Country</div>
-        <div class="read-only-data">{{ $ctrl.address.country }}</div>
-      </div>
-    </div>
+    {{ $ctrl.address.line1 }}<span ng-if="$ctrl.address.line2">, {{ $ctrl.address.line2 }}</span><br />
+    {{ $ctrl.address.city }}, {{ $ctrl.address.state }} {{ $ctrl.address.zipcode }}, {{ $ctrl.address.country }}
   </span>
-
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
     <div class="flex-container">
       <div class="flex-item">
