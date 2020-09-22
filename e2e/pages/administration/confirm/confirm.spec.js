@@ -24,7 +24,7 @@ describe('Confirm page', () => {
     it('allows user to reject a file', () => {
         hooks.open('#/administration/confirm/listings');
         confirmPage.rejectListing(rejectListingId);
-        assert.isFalse(confirmPage.findListingtoReject(rejectListingId).isDisplayed())
+        assert.isFalse(confirmPage.findListingtoReject(rejectListingId).isDisplayed());
     });
 
 });
