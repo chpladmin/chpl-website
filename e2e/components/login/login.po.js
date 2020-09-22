@@ -59,7 +59,7 @@ class LoginComponent {
         }
         this.usernameInput.addValue(credentials[user].username);
         this.passwordInput.addValue(credentials[user].password);
-        this.loginButton.click();
+        this.loginButton.scrollAndClick();
     }
 
     logOut () {
