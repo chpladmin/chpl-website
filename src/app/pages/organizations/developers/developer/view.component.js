@@ -2,10 +2,10 @@ export const DevelopersViewComponent = {
     templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
-        developers: '<',
+        //developers: '<',
         directReviews: '<',
         products: '<',
-        action: '@',
+        //action: '@',
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
@@ -33,9 +33,9 @@ export const DevelopersViewComponent = {
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
             this.networkService.getSearchOptions()
                 .then(options => that.searchOptions = options);
-            if (this.$stateParams.productId) {
+            /*if (this.$stateParams.productId) {
                 this.productId = this.$stateParams.productId;
-            }
+            }*/
         }
 
         $onChanges (changes) {
@@ -43,6 +43,7 @@ export const DevelopersViewComponent = {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.backup.developer = angular.copy(this.developer);
             }
+            /*
             if (changes.developers) {
                 let acbs = {};
                 let devs = changes.developers.currentValue.developers;
@@ -57,7 +58,7 @@ export const DevelopersViewComponent = {
                 this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
                 this.backup.developers = angular.copy(this.developers);
                 angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
-            }
+            }*/
             if (changes.directReviews) {
                 this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
@@ -77,7 +78,7 @@ export const DevelopersViewComponent = {
             if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
-            if (action === 'split') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
+            if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
             return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); // must be active
         }
 
@@ -114,7 +115,7 @@ export const DevelopersViewComponent = {
             }
         }
 
-        save (developer) {
+        /*save (developer) {
             if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
                 this.saveRequest(developer);
             } else {
@@ -149,9 +150,9 @@ export const DevelopersViewComponent = {
                     }
                 });
             }
-        }
+        }*/
 
-        saveProduct (product) {
+        /*saveProduct (product) {
             let that = this;
             let request = {
                 productIds: [product.productId],
@@ -185,7 +186,7 @@ export const DevelopersViewComponent = {
                         that.errorMessages = ['An error has occurred.'];
                     }
                 });
-        }
+        }*/
 
         takeAction (action) {
             this.$state.go('organizations.developers.developer.' + action);

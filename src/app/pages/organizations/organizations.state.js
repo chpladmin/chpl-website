@@ -81,7 +81,7 @@ let states = [
         name: 'organizations.developers.developer.product.edit',
         url: '/edit',
         views: {
-            'products@^.^': 'chplProducts',
+            'products@^.^': 'chplProductEdit',
         },
         resolve: {
             action: () => 'editProduct',

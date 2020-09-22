@@ -11,13 +11,9 @@
       </ul>
       <div ui-view="developer">
         <chpl-developer developer="$ctrl.developer"
-                        allowed-acbs="$ctrl.allowedAcbs"
                         can-edit="$ctrl.can('edit')"
                         can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
                         can-split="$ctrl.can('split-developer')"
-                        is-editing="$ctrl.action === 'edit'"
-                        on-cancel="$ctrl.cancel()"
-                        on-edit="$ctrl.save(developer)"
                         take-action="$ctrl.takeAction(action)"
                         ></chpl-developer>
       </div>
@@ -57,10 +53,8 @@
       </div>
       <div ui-view="products">
         <chpl-products products="$ctrl.products"
-                       product-id="{{ $ctrl.productId }}"
                        search-options="$ctrl.searchOptions"
                        on-cancel="$ctrl.cancel()"
-                       on-edit="$ctrl.saveProduct(product)"
                        ></chpl-products>
       </div>
     </div>
