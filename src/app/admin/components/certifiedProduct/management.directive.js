@@ -36,7 +36,6 @@
         vm.isDeveloperBanned = isDeveloperBanned;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
-        //vm.localDateToString = DateUtil.localDateToString;
         vm.DateUtil = DateUtil;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
