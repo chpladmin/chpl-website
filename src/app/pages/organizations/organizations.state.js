@@ -22,7 +22,6 @@ let states = [
         name: 'organizations.developers.developer',
         url: '/{developerId}',
         component: 'chplDevelopersView',
-        //abstract: true,
         resolve: {
             developer: (networkService, $location, $transition$) => {
                 'ngInject';
@@ -50,11 +49,7 @@ let states = [
             },
         },
         data: { title: 'CHPL Developers' },
-    }/*,{
-        name: 'organizations.developers.developer.view',
-        url: '',
-        component: 'chplDevelopersView',
-    }*/,{
+    },{
         name: 'organizations.developers.developer.edit',
         url: '/edit',
         views: {
@@ -70,15 +65,13 @@ let states = [
         views: {
             'view@^': 'chplDevelopersSplit',
         },
-        //component: 'chplDevelopersSplit',
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.developers.developer.merge',
-        url: '/merge?v',
+        url: '/merge',
         views: {
             'view@^': 'chplDevelopersMerge',
         },
-        //component: 'chplDevelopersMerge',
         data: { title: 'CHPL Developers - Merge' },
     },{
         name: 'organizations.developers.developer.product',
