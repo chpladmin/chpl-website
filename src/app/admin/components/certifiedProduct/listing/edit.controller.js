@@ -86,7 +86,7 @@
                 vm.cp.rwtPlansCheckDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtPlansCheckDate);
             }
             if (vm.cp.rwtResultsCheckDate) {
-                vm.cp.rwtResultsCheckDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtResultssCheckDate);
+                vm.cp.rwtResultsCheckDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtResultsCheckDate);
             }
 
             vm.attachModel();

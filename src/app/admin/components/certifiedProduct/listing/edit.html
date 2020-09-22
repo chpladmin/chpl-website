@@ -158,6 +158,8 @@
             <label class="col-sm-6 control-label" for="rwt-plans-url">Plans URL</label>
             <div class="col-sm-6">
               <input class="input-sm form-control" type="url" ng-model="vm.cp.rwtPlansUrl" id="rwt-plans-url" name="rwtPlansUrl" ng-maxlength="1024">
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansUrl.$touched && vm.editForm.rwtPlansUrl.$error.url">Improper format (http://www.example.com)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansUrl.$touched && vm.editForm.rwtPlansUrl.$error.maxlength">Field is too long</div>
             </div>
             <label class="col-sm-6 control-label" for="rwt-plans-check-date">Plans Last ONC-ACB Completeness Check</label>
             <div class="col-sm-6">
@@ -167,11 +169,13 @@
                   <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
                 </span>
               </div>
-              <div class="text-danger" ng-if="vm.editForm.rwtPlansCheckDateObject.$touched && vm.editForm.rwtPlansCheckDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansCheckDate.$touched && vm.editForm.rwtPlansCheckDate.$error.parse">Improper format (MM/dd/yyyy)</div>
             </div>
             <label class="col-sm-6 control-label" for="rwt-results-url">Results URL</label>
             <div class="col-sm-6">
               <input class="form-control" type="url" ng-model="vm.cp.rwtResultsUrl" id="rwt-results-url" name="rwtResultsUrl" ng-maxlength="1024">
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsUrl.$touched && vm.editForm.rwtResultsUrl.$error.url">Improper format (http://www.example.com)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsUrl.$touched && vm.editForm.rwtResultsUrl.$error.maxlength">Field is too long</div>
             </div>
             <label class="col-sm-6 control-label" for="rwt-results-check-date">Results Last ONC-ACB Completeness Check</label>
             <div class="col-sm-6">
@@ -181,7 +185,7 @@
                   <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
                 </span>
               </div>
-              <div class="text-danger" ng-if="vm.editForm.rwtResultsCheckDateObject.$touched && vm.editForm.rwtResultsCheckDateObject.$error.parse">Improper format (MM/dd/yyyy)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsCheckDate.$touched && vm.editForm.rwtResultsCheckDate.$error.parse">Improper format (MM/dd/yyyy)</div>
             </div>
         </div>
       </div>
