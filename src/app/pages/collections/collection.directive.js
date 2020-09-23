@@ -31,13 +31,12 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, featureFlags, networkService) {
+    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
         var vm = this;
 
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.isFilterActive = isFilterActive;
-        vm.isOn = featureFlags.isOn;
         vm.loadResults = loadResults;
         vm.parseDataElement = parseDataElement;
         vm.refreshResults = refreshResults;

@@ -5,6 +5,11 @@
     </div>
   </div>
   <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
+    <div class="col-sm-12">
+      <h1>Developer Information</h1>
+    </div>
+  </div>
+  <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
     <div class="col-md-6">
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
@@ -44,11 +49,11 @@
         <div class="panel-heading">
           <div class="panel-title">
             <span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
-            <h2>Direct Review Activities</h2>
+            <h2 class="panel-title">Direct Review Activities</h2>
           </div>
-          <div class="panel-body">
-            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
-          </div>
+        </div>
+        <div class="panel-body">
+          <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
         </div>
       </div>
       <div ui-view="products">

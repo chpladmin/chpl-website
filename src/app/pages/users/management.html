@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
+<div class="container-fluid">
   <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
     <div class="row">
       <div class="col-sm-12">
@@ -6,7 +6,11 @@
       </div>
     </div>
     <div class="main-content row" id="main-content" tabindex="-1">
-      <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
+        </div>
+      </div>
     </div>
   </span>
   <div class="main-content row splash-row" id="main-content" tabindex="-1" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">

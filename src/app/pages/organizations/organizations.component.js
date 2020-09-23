@@ -3,10 +3,9 @@ export const OrganizationsComponent = {
     bindings: {
     },
     controller: class OrganizationsComponent {
-        constructor ($log, featureFlags) {
+        constructor ($log) {
             'ngInject'
             this.$log = $log;
-            this.isOn = featureFlags.isOn;
         }
     },
 }
