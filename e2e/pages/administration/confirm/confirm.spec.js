@@ -27,7 +27,7 @@ describe('when user is on confirm listing page', () => {
     describe('and uploading a listing', () => {
         beforeEach(() => {
             uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
-            uploadPage.waitForSuccessfulUpload();
+            uploadPage.waitForSuccessfulUpload('AQA3');
         });
 
         it('should allow user to reject a file', () => {
@@ -40,11 +40,9 @@ describe('when user is on confirm listing page', () => {
     describe('and uploading multiple listing', () => {
         beforeEach(() => {
             uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
-            hooks.waitForSpinnerToDisappear();
-            uploadPage.waitForSuccessfulUpload();
-            hooks.open('#/administration/upload');
+            uploadPage.waitForSuccessfulUpload('AQA3');
             uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
-            hooks.waitForSpinnerToDisappear();
+            uploadPage.waitForSuccessfulUpload('AQA4');
         });
 
         it('should allow user to mass reject multiple listings', () => {

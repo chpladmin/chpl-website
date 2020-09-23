@@ -14,7 +14,7 @@ beforeAll(async () => {
 describe('When uploading API documentation files as ADMIN', () => {
 
     beforeAll(function () {
-        loginComponent.loginAsAdmin();
+        loginComponent.login('admin');
     });
 
     it('can be uploaded successfully back to back', () => {

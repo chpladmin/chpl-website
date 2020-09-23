@@ -87,7 +87,7 @@ class ConfirmPage {
             {
                 timeout: config.longTimeout,
             }
-        )
+        );
     }
 }
 

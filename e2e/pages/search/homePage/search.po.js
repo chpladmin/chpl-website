@@ -1,7 +1,7 @@
 const homepageElements = {
     chplResource: '#resource-toggle',
     overview: '=Overview',
-}
+};
 
 class SearchPage {
     constructor () { }

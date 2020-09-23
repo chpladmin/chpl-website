@@ -17,7 +17,7 @@ beforeAll( () => {
     hooks.open('#/administration/upload');
     loginComponent.logIn('acb');
     uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
-    uploadPage.waitForSuccessfulUpload();
+    uploadPage.waitForSuccessfulUpload('AQA3');
     hooks.open('#/administration/confirm/listings');
 });
 

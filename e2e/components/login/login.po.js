@@ -35,24 +35,6 @@ class LoginComponent {
         this.toggleLoginComponent.click();
     }
 
-    loginAsACB () {
-        if (!this.usernameInput.isDisplayed()) {
-            this.openLoginComponent();
-        }
-        this.usernameInput.addValue(credentials.usernameACB);
-        this.passwordInput.addValue(credentials.passwordACB);
-        this.loginButton.click();
-    }
-
-    loginAsAdmin () {
-        if (!this.usernameInput.isDisplayed()) {
-            this.openLoginComponent();
-        }
-        this.usernameInput.addValue(credentials.usernameAdmin);
-        this.passwordInput.addValue(credentials.passwordAdmin);
-        this.loginButton.click();
-    }
-
     logIn (user) {
         if (!this.usernameInput.isDisplayed()) {
             this.openLoginComponent();

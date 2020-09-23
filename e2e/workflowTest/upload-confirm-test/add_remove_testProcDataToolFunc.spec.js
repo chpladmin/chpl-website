@@ -16,17 +16,17 @@ beforeAll(() => {
     loginComponent = new LoginComponent();
     hooks = new Hooks();
     hooks.open('#/administration/upload');
-    loginComponent.loginAsACB();
-})
+    loginComponent.login('acb');
+});
 
 describe('an ACB user', () => {
     // **Run once before each test case**
     beforeEach(function () {
         hooks.open('#/administration/upload');
         uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
-        uploadPage.waitForSuccessfulUpload();
-        hooks.open('#/administration/confirm/listings')
-    })
+        uploadPage.waitForSuccessfulUpload('AQA1');
+        hooks.open('#/administration/confirm/listings');
+    });
 
     it('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {
         confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
@@ -41,7 +41,7 @@ describe('an ACB user', () => {
         assert.include(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method - Surescripts (Alternative)');
         assert.include(listingEditComponent.getTestDataDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method');
         assert.include(listingEditComponent.getTestToolDetail('170.315 (b)(3)' ,true).getText(), 'Inferno');
-    })
+    });
 
     it('should be able to remove uploaded test procedure, test tools (170.315 (b)(3) cures criteria)', () => {
         confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
@@ -54,9 +54,9 @@ describe('an ACB user', () => {
         listingEditComponent.viewDetailsCriteria('170.315 (b)(3)' , true);
         assert.notInclude(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)' ,true).getText(), 'ONC Test Method');
         assert.notInclude(listingEditComponent.getTestToolDetail('170.315 (b)(3)' ,true).getText(), 'HL7v2 Immunization Test Suite');
-    })
+    });
 
     afterEach(function () {
         browser.refresh();
-    })
-})
+    });
+});
