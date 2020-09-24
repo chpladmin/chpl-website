@@ -12,13 +12,16 @@
   <div class="non-conformities__gridtable-header">Direct Review Result</div>
   <div ng-repeat-start="nc in $ctrl.nonConformities" class="non-conformity__header" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
     <div class="non-conformity__gridtable-header non-conformity__gridtable-header--first">
-      <span class="non-conformity__header-toggle"><i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-right'"></i></span> {{ nc.requirement ? nc.requirement : 'Has not been determined' }}
+      {{ nc.requirement ? nc.requirement : 'Has not been determined' }}
     </div>
     <div class="non-conformity__gridtable-header">
-      <div>{{ nc.nonConformitySummary ? nc.nonConformitySummary : 'Has not been determined' }}</div>
+      {{ nc.nonConformitySummary ? nc.nonConformitySummary : 'Has not been determined' }}
+    </div>
+    <div class="non-conformity__gridtable-header">
+      {{ nc.nonConformityStatus ? nc.nonConformityStatus : 'Has not been determined' }}
     </div>
     <div class="non-conformity__gridtable-header nonconformity__gridtable-header--last">
-      <div>{{ nc.nonConformityStatus ? nc.nonConformityStatus : 'Has not been determined' }}</div>
+      <i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-left'"></i>
     </div>
   </div>
   <div class="non-conformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>

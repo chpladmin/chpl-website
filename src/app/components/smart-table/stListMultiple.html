@@ -1,9 +1,8 @@
 <ul class="list-unstyled" ng-show="!vm.hidden">
   <li class="text-center" ng-if="vm.allowAnd">
-    <label ng-class="{ 'emphasis' : vm.matchAll }">
-      <input type="checkbox" ng-model="vm.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
-      Matching <u class="matchingAnyAll">{{ vm.matchAll ? 'all' : 'any' }}</u>
-    </label>
+    <button ng-click="vm.matchAll = !vm.matchAll; vm.filterChanged()" class="btn btn-default" ng-class="{ 'emphasis' : vm.matchAll }">
+      Matching <strong>Any</strong> <i class="fa" ng-class="vm.matchAll ? 'fa-toggle-on' : 'fa-toggle-off'"></i> <strong>All</strong>
+    </button>
   </li>
   <li class="text-right">
     <a href ng-click="vm.selectAll()">Select All</a> |

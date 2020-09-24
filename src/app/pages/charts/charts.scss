@@ -11,3 +11,13 @@
 .pie-chart {
     height: 450px;
 }
+
+.nav-tabs>li.active>button,
+.nav-tabs>li.active>button:hover,
+.nav-tabs>li.active>button:focus {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}

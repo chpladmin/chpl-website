@@ -1,4 +1,4 @@
-<div ng-class="$ctrl.isOn('ui-bump-major') ? '' : 'complaints-wrapper'" st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
+<div st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div ng-if="!$ctrl.isEditing">
     <chpl-filters
       clear-all-filters="$ctrl.onClearFilter()">

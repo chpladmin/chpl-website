@@ -1,4 +1,4 @@
-<div id="search-page" ng-class="vm.isOn('ui-bump-major') ? 'new-style' : ''">
+<div id="search-page">
   <div class="pending" id="pendingMask" ng-show="vm.isPreloading"></div>
   <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
@@ -22,7 +22,7 @@
             </span>
           </div>
           <div ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
-            <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</a>
+            <button class="btn btn-default" ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</button>
           </div>
         </div>
         <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
@@ -234,6 +234,7 @@
                   collection="vm.allCps"
                   fixed-items="vm.searchOptions.practiceTypes"
                   has-changes="vm.categoryChanged['practiceType']"
+                  label="Practice Type"
                   predicate="practiceType"
                   register-clear-filter="vm.registerClearFilter(clearFilter)"
                   register-restore-state="vm.registerRestoreState(restoreState)"
@@ -374,7 +375,7 @@
                   <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
                   <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
                   <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
-                  <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status <a href ng-click="vm.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></a></th>
+                  <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status <button class="btn btn-link" ng-click="vm.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i><span class="sr-only">View Certification Status Legend</span></button></th>
                   <th scope="col"><span class="sr-only">Actions</span></th>
                 </tr>
               </thead>
@@ -406,14 +407,14 @@
                   <td>{{ cp.chplProductNumber }}</td>
                   <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
                   <td>
-                    <div class="btn-group btn-group-justified">
-                      <div class="btn-group">
+                    <div class="search__action-buttons">
+                      <div class="text-center">
                         <a ui-sref="listing({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
                       </div>
-                      <div class="btn-group">
+                      <div class="text-center">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>
                       </div>
-                      <div class="btn-group" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
+                      <div class="text-center" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
                         <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-cms-widget-button>
                       </div>
                     </div>

@@ -79,12 +79,23 @@ export const ListingDetailsComponent = {
 
         prepCqms () {
             if (this.cqms) {
-                for (var i = 0; i < this.cqms.length; i++) {
-                    this.cqms[i].id = i;
+                this.cqms = this.cqms.map((cqm, idx) => {
+                    cqm.id = idx;
                     for (var j = 1; j < 5; j++) {
-                        this.cqms[i]['hasC' + j] = this.checkC(this.cqms[i], j);
+                        cqm['hasC' + j] = this.checkC(cqm, j);
                     }
-                }
+                    cqm.allVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
+                    cqm.successVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
+                    return cqm;
+                });
             }
         }
 
@@ -187,6 +198,7 @@ export const ListingDetailsComponent = {
                     }
                 }
             });
+            this.listing.cqmResults = angular.copy(this.cqms);
             this.onChange({listing: this.listing});
         }
 

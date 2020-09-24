@@ -1,151 +1,77 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    <span feature-flag="ui-bump-major" feature-flag-hide>
-    Name: {{ $ctrl.contact.fullName }}<br />
-    <span ng-if="$ctrl.contact.friendlyName">Friendly name: {{ $ctrl.contact.friendlyName }}<br /></span>
-    <span ng-if="$ctrl.contact.title">Title: {{ $ctrl.contact.title }}<br /></span>
-    Email: {{ $ctrl.contact.email }}<br />
-    Phone: {{ $ctrl.contact.phoneNumber }}
-    </span>
-
-    <span feature-flag="ui-bump-major">
-      <div class="flex-container">
-        <div class="flex-item" ng-if="$ctrl.contact.title">
-          <div class="data-label">Title</div>
-          <div class="read-only-data">{{ $ctrl.contact.title }}</div>
-        </div>
-        <div class="flex-item">
-          <div class="data-label">Full name</div>
-          <div class="read-only-data">{{ $ctrl.contact.fullName }}</div>
-        </div>
-        <div class="flex-item" ng-if="$ctrl.contact.friendlyName">
-          <div class="data-label">Friendly name</div>
-          <div class="read-only-data">{{ $ctrl.contact.friendlyName }}</div>
-        </div>
-      </div>
-      <div class="flex-container">
-        <div class="flex-item">
-          <div class="data-label">Email</div>
-          <div class="read-only-data">{{ $ctrl.contact.email }}</div>
-        </div>
-        <div class="flex-item">
-          <div class="data-label">Phone</div>
-          <div class="read-only-data">{{ $ctrl.contact.phoneNumber }}</div>
-        </div>
-      </div>
-    </span>
+    {{ $ctrl.contact.fullName }}<span ng-if="$ctrl.contact.friendlyName"> ({{ $ctrl.contact.friendlyName }})</span><span ng-if="$ctrl.contact.title">, {{ $ctrl.contact.title }}</span><br />
+    {{ $ctrl.contact.phoneNumber }}<br />
+    {{ $ctrl.contact.email }}
   </span>
 
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
-    <span feature-flag="ui-bump-major" feature-flag-hide>
-      <div class="form-group">
-        <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactFull">Full Name <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-        <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+    <div class="flex-container">
+      <div class="flex-item">
+        <label class="control-label" for="contactFull">Full Name <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+        <div>
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.fullName" id="contactFull" name="contactFull" ng-maxlength="500" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.maxlength">Field is too long</div>
+          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+            <li ng-repeat="option in $ctrl.getDifferences('fullName')">
+              <button class="btn btn-link contact__merge-option"
+                      ng-click="$ctrl.selectDifference('fullName', option)">{{ option }}</button>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="form-group" ng-if="!$ctrl.ignoreFriendlyName">
-        <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactFriendly">Friendly Name</label>
-        <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <div class="flex-item" ng-if="!$ctrl.ignoreFriendlyName">
+        <label class="control-label" for="contactFriendly">Friendly Name</label>
+        <div>
           <input class="input-sm form-control" type="text" ng-model="$ctrl.contact.friendlyName" ng-disabled="$ctrl.isDisabled" id="contactFriendly" name="contactFriendly" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFriendly.$touched) && $ctrl.form.contactFriendly.$error.maxlength">Field is too long</div>
         </div>
       </div>
-      <div class="form-group">
-        <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactTitle">Title</label>
-        <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <div class="flex-item">
+        <label class="control-label" for="contactTitle">Title</label>
+        <div>
           <input class="input-sm form-control" type="text" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.title" id="contactTitle" name="contactTitle" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactTitle.$touched) && $ctrl.form.contactTitle.$error.maxlength">Field is too long</div>
+          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+            <li ng-repeat="option in $ctrl.getDifferences('title')">
+              <button class="btn btn-link contact__merge-option"
+                      ng-click="$ctrl.selectDifference('title', option)">{{ option }}</button>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="form-group">
-        <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-        <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+    </div>
+    <div class="flex-container">
+      <div class="flex-item">
+        <label class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+        <div>
           <input class="input-sm form-control" type="email" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.email" id="contactEmail" name="contactEmail" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.maxlength">Field is too long</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.email">Improper format (sample@example.com)</div>
+          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+            <li ng-repeat="option in $ctrl.getDifferences('email')">
+              <button class="btn btn-link contact__merge-option"
+                      ng-click="$ctrl.selectDifference('email', option)">{{ option }}</button>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="form-group">
-        <label ng-class="{ 'col-md-4' : $ctrl.formHorizontal }" class="control-label" for="contactPhoneNumber">Phone <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-        <div ng-class="{ 'col-md-8' : $ctrl.formHorizontal }">
+      <div class="flex-item">
+        <label class="control-label" for="contactPhoneNumber">Phone <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
+        <div>
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber" ng-maxlength="100" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.maxlength">Field is too long</div>
+          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+            <li ng-repeat="option in $ctrl.getDifferences('phoneNumber')">
+              <button class="btn btn-link contact__merge-option"
+                      ng-click="$ctrl.selectDifference('phoneNumber', option)">{{ option }}</button>
+            </li>
+          </ul>
         </div>
       </div>
-    </span>
-    <span feature-flag="ui-bump-major">
-      <div class="flex-container">
-        <div class="flex-item">
-          <label class="control-label" for="contactFull">Full Name <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-          <div>
-            <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.fullName" id="contactFull" name="contactFull" ng-maxlength="500" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.required">Field is required</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.maxlength">Field is too long</div>
-            <ul class="list-inline" ng-if="$ctrl.mergeOptions">
-              <li ng-repeat="option in $ctrl.getDifferences('fullName')">
-                <button class="btn btn-link contact__merge-option"
-                        ng-click="$ctrl.selectDifference('fullName', option)">{{ option }}</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="flex-item" ng-if="!$ctrl.ignoreFriendlyName">
-          <label class="control-label" for="contactFriendly">Friendly Name</label>
-          <div>
-            <input class="input-sm form-control" type="text" ng-model="$ctrl.contact.friendlyName" ng-disabled="$ctrl.isDisabled" id="contactFriendly" name="contactFriendly" ng-maxlength="250" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFriendly.$touched) && $ctrl.form.contactFriendly.$error.maxlength">Field is too long</div>
-          </div>
-        </div>
-        <div class="flex-item">
-          <label class="control-label" for="contactTitle">Title</label>
-          <div>
-            <input class="input-sm form-control" type="text" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.title" id="contactTitle" name="contactTitle" ng-maxlength="250" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactTitle.$touched) && $ctrl.form.contactTitle.$error.maxlength">Field is too long</div>
-            <ul class="list-inline" ng-if="$ctrl.mergeOptions">
-              <li ng-repeat="option in $ctrl.getDifferences('title')">
-                <button class="btn btn-link contact__merge-option"
-                        ng-click="$ctrl.selectDifference('title', option)">{{ option }}</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="flex-container">
-        <div class="flex-item">
-          <label class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-          <div>
-            <input class="input-sm form-control" type="email" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.email" id="contactEmail" name="contactEmail" ng-maxlength="250" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.required">Field is required</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.maxlength">Field is too long</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.email">Improper format (sample@example.com)</div>
-            <ul class="list-inline" ng-if="$ctrl.mergeOptions">
-              <li ng-repeat="option in $ctrl.getDifferences('email')">
-                <button class="btn btn-link contact__merge-option"
-                        ng-click="$ctrl.selectDifference('email', option)">{{ option }}</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="flex-item">
-          <label class="control-label" for="contactPhoneNumber">Phone <span class="text-danger" ng-if="$ctrl.valuesRequired()">*</span></label>
-          <div>
-            <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber" ng-maxlength="100" ng-change="$ctrl.update()"></input>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.required">Field is required</div>
-            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.maxlength">Field is too long</div>
-            <ul class="list-inline" ng-if="$ctrl.mergeOptions">
-              <li ng-repeat="option in $ctrl.getDifferences('phoneNumber')">
-                <button class="btn btn-link contact__merge-option"
-                        ng-click="$ctrl.selectDifference('phoneNumber', option)">{{ option }}</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </span>
+    </div>
   </span>
 </span>
