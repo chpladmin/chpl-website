@@ -16,7 +16,7 @@ beforeAll(() => {
     loginComponent = new LoginComponent();
     hooks = new Hooks();
     hooks.open('#/administration/upload');
-    loginComponent.login('acb');
+    loginComponent.logIn('acb');
 });
 
 describe('an ACB user', () => {
