@@ -55,9 +55,6 @@ let states = [
         views: {
             'developer@^': 'chplDevelopersEdit',
         },
-        resolve: {
-            action: () => 'edit',
-        },
         data: { title: 'CHPL Developers - Edit' },
     },{
         name: 'organizations.developers.developer.split',
@@ -81,10 +78,7 @@ let states = [
         name: 'organizations.developers.developer.product.edit',
         url: '/edit',
         views: {
-            'products@^.^': 'chplProductEdit',
-        },
-        resolve: {
-            action: () => 'editProduct',
+            'products@^.^': 'chplProductsEdit',
         },
         data: { title: 'CHPL Developers - Edit Product' },
     },{
