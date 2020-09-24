@@ -79,16 +79,19 @@ export const CertificationCriteriaEditComponent = {
         }
 
         svapOnChange (action) {
+            this.$log.info('Action');
+            this.$log.info(action);
             switch (action.action) {
             case 'Remove':
                 this.cert.svaps = this.cert.svaps
-                    .filter(svap=> !(svap.svapId === action.item.item.id));
+                    .filter(svap=> !(svap.svapId === action.item.item.svapId));
                 break;
             case 'Add':
                 this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
                 break;
             // no default
             }
+            this.$log.info(this.cert.svaps);
         }
 
         testDataOnChange (action) {
