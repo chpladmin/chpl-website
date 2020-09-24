@@ -75,7 +75,7 @@ exports.config = {
         //
         browserName: config.browser,
         'goog:chromeOptions': {
-            //args: ['--headless', '--dissable-gpu', '--no-sandbox'],
+            args: ['--headless', '--dissable-gpu', '--no-sandbox'],
             prefs: {
                 'directory_upgrade': true,
                 'prompt_for_download': false,
