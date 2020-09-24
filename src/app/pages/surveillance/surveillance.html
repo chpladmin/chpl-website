@@ -1,11 +1,11 @@
-<div class="container-fluid" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
+<div class="container-fluid">
   <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
     <div class="row">
       <div class="col-sm-12">
         <h1>CHPL Surveillance</h1>
       </div>
     </div>
-    <div class="main-content row" ng-class="$ctrl.isOn('ui-bump-major') ? '' : 'surveillance-wrapper'" id="main-content" tabindex="-1">
+    <div class="main-content row" id="main-content" tabindex="-1">
       <div class="col-sm-12">
         <ui-view></ui-view>
       </div>

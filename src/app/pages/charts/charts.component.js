@@ -3,10 +3,9 @@ export const ChartsComponent = {
     bindings: {
     },
     controller: class ChartsComponent {
-        constructor ($log, featureFlags, networkService) {
+        constructor ($log, networkService) {
             'ngInject'
             this.$log = $log;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
         }
 

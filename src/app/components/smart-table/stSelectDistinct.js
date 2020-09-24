@@ -19,6 +19,7 @@
             scope: {
                 collection: '=',
                 fixedItems: '=?',
+                label: '@',
                 predicate: '@',
                 registerClearFilter: '&',
                 registerRestoreState: '&',
