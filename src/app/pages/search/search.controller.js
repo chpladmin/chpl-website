@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, featureFlags, networkService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -14,7 +14,6 @@
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
-        vm.isOn = featureFlags.isOn;
         vm.loadResults = loadResults;
         vm.refreshResults = refreshResults;
         vm.registerAllowAll = registerAllowAll;

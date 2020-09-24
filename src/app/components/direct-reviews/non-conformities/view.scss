@@ -31,7 +31,7 @@
 .non-conformity__header {
     grid-column: 1 / span 3;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 3em;
     width: 100%;
 }
 
@@ -56,10 +56,6 @@
 .non-conformity__gridtable-header--closed {
     background-color: var(--light-grey) !important;
     // remove !important when "new-style" goes away / ui-bump-major changes / etc.
-}
-
-.non-conformity__header-toggle {
-    margin-left: auto;
 }
 
 .non-conformity__basic-information {

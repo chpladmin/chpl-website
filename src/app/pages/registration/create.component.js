@@ -7,12 +7,11 @@ export const CreateUserComponent = {
         hash: '<',
     },
     controller: class CreateUserComponent {
-        constructor ($location, $log, authService, featureFlags, networkService, utilService) {
+        constructor ($location, $log, authService, networkService, utilService) {
             'ngInject';
             this.$location = $location;
             this.$log = $log;
             this.authService = authService;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
             this.passwordClass = utilService.passwordClass;

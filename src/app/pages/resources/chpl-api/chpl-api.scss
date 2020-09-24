@@ -1,0 +1,29 @@
+.swagger-ui {
+
+    .api-version {
+        color: #333;
+    }
+
+    .endpoint {
+
+        h4 a,
+        a {
+            color: #337ab7;
+        }
+
+        .endpoint-actions a,
+        .endpoint-heading span {
+            color: #333;
+        }
+    }
+
+    .operation {
+
+        .content {
+
+            label {
+                text-transform: none;
+            }
+        }
+    }
+}
