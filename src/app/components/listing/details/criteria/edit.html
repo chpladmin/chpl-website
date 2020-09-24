@@ -29,6 +29,37 @@
           <td><label class="control-label" for="data_gap{{ $ctrl.cert.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
+
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null">
+          <td>Standards Version Advancement Process</td>
+          <td ng-if="$ctrl.canEdit()">
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                  <chpl-expandable-list
+                    identifier="svap"
+                    item-key="svapId"
+                    item-text="regulatoryTextCitation"
+                    items="$ctrl.cert.allowedSvaps"
+                    selected-item-keys="$ctrl.selectedSvapKeys"
+                    placeholder="Select an SVAP"
+                    on-change="$ctrl.svapOnChange(action)">
+                  </chpl-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td ng-if="$ctrl.cert.testStandards && $ctrl.cert.testStandards.length > 0 && !$ctrl.canEdit()">
+            <ul>
+              <li ng-repeat="m in $ctrl.cert.testStandards">
+                <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
+              </li>
+            </ul>
+          </td>
+          <td ng-if="(!$ctrl.cert.testStandards || $ctrl.cert.testStandards.length === 0) && !$ctrl.canEdit()">None</td>
+        </tr>
+
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
           <td>Test Standard</td>
           <td ng-if="$ctrl.canEdit()">

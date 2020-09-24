@@ -1,11 +1,11 @@
-import '../../../node_modules/@js-joda/timezone'
+import '../../../node_modules/@js-joda/timezone';
 import { Locale } from '../../../node_modules/@js-joda/locale_en-us';
 import * as jsJoda from '../../../node_modules/@js-joda/core';
 
 class DateUtil {
 
     constructor ($filter, $log) {
-        'ngInject'
+        'ngInject';
         this.$filter = $filter;
         this.$log = $log;
 
