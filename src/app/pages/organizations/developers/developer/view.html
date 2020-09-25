@@ -17,7 +17,7 @@
       <div ui-view="developer">
         <chpl-developer developer="$ctrl.developer"
                         can-edit="$ctrl.can('edit')"
-                        can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
+                        can-merge="$ctrl.can('merge')"
                         can-split="$ctrl.can('split-developer')"
                         take-action="$ctrl.takeAction(action)"
                         ></chpl-developer>

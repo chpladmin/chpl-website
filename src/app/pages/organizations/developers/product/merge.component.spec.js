@@ -7,12 +7,14 @@
         mock = {
             product: {},
             products: [],
+            developer: {},
         };
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
                 $provide.factory('chplProductDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
+                    $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
                     return $delegate;
                 });
@@ -24,16 +26,17 @@
                 $q = _$q_;
                 $state = _$state_;
                 networkService = _networkService_;
+                networkService.getProduct.and.returnValue($q.when(mock.product));
                 networkService.updateProduct.and.returnValue($q.when({
                     product: 'a product',
                     productId: 32,
                 }));
 
                 scope = $rootScope.$new();
-                scope.product = mock.product;
+                scope.developer = mock.developer;
                 scope.products = { products: mock.products };
 
-                el = angular.element('<chpl-products-merge product="product" products="products"></chpl-products-merge>');
+                el = angular.element('<chpl-products-merge developer="developer" products="products"></chpl-products-merge>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -62,7 +65,7 @@
         });
 
         describe('when a product merge is saved', () => {
-            it('should navigate back to the product on a good response', () => {
+            it('should navigate back to the developer on a good response', () => {
                 spyOn($state, 'go');
                 let product = {productId: 'an id'};
                 ctrl.selectedProducts = [{productId: 1}, {productId: 2}];
@@ -70,7 +73,7 @@
                 ctrl.merge(product);
                 scope.$digest();
                 expect($state.go).toHaveBeenCalledWith(
-                    'organizations.products.product',
+                    'organizations.developers.developer',
                     { productId: 200 },
                     { reload: true },
                 );

@@ -2,10 +2,10 @@
     'use strict';
 
     describe('the Products Edit component', () => {
-        var $compile, $log, $q, $rootScope, $state, ctrl, el, mock, networkService, scope;
+        var $compile, $log, $q, $rootScope, ctrl, el, mock, networkService, scope;
 
         mock = {
-            product:{
+            product: {
                 name: 'a product',
             },
             stateParams: {
@@ -23,12 +23,11 @@
                     return $delegate;
                 });
             });
-            inject((_$compile_, _$log_, _$q_, _$rootScope_, _$state_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, _$rootScope_, _networkService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
                 $rootScope = _$rootScope_;
-                $state = _$state_;
                 networkService = _networkService_;
                 networkService.getProduct.and.returnValue($q.when(mock.product));
 

@@ -85,7 +85,7 @@ let states = [
         name: 'organizations.developers.developer.product.merge',
         url: '/merge',
         views: {
-            'products@^.^': 'chplProductsMerge',
+            'view@^.^': 'chplProductsMerge',
         },
         data: { title: 'CHPL Developers - Merge Product' },
     },{
