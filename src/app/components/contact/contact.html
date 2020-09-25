@@ -15,7 +15,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('fullName')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('fullName', option)">{{ option }}</button>
             </li>
           </ul>
@@ -35,7 +35,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactTitle.$touched) && $ctrl.form.contactTitle.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('title')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('title', option)">{{ option }}</button>
             </li>
           </ul>
@@ -52,7 +52,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.email">Improper format (sample@example.com)</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('email')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('email', option)">{{ option }}</button>
             </li>
           </ul>
@@ -66,7 +66,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('phoneNumber')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('phoneNumber', option)">{{ option }}</button>
             </li>
           </ul>
