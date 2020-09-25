@@ -81,7 +81,10 @@ describe('the Developers page', () => {
                         browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                         page.selectProduct(product);
                         page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                        expect(contact.get(product)).toEqual(poc);
+                        expect(contact.get(product)).toHaveTextContaining(poc.full);
+                        expect(contact.get(product)).toHaveTextContaining(poc.title);
+                        expect(contact.get(product)).toHaveTextContaining(poc.email);
+                        expect(contact.get(product)).toHaveTextContaining(poc.phone);
                     });
                 });
             });
@@ -124,6 +127,7 @@ describe('the Developers page', () => {
         describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
             let developer = 'Procentive';
             let productName = 'Procentive';
+            let productId = '1987';
             let product;
 
             beforeEach(() => {
@@ -141,7 +145,7 @@ describe('the Developers page', () => {
                 let version = '2015';
 
                 beforeEach(() => {
-                    page.selectVersion(product, version);
+                    page.selectVersion(product, productId, version);
                     page.editVersion(product);
                     page.editVersionHeader.waitForDisplayed();
                 });
@@ -159,8 +163,8 @@ describe('the Developers page', () => {
                     browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
                     page.selectProduct(product);
                     page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                    expect(page.getActiveVersion(product)).toHaveTextContaining(newVersion);
-                    page.selectVersion(product, newVersion);
+                    expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
+                    page.selectVersion(product, productId, newVersion);
                     page.editVersion(product);
                     page.editVersionHeader.waitForDisplayed();
                     expect(page.editVersionName).toBeDisplayed();
@@ -172,7 +176,7 @@ describe('the Developers page', () => {
                 let version = 'Version 2015';
 
                 beforeEach(() => {
-                    page.selectVersion(product, version);
+                    page.selectVersion(product, productId, version);
                     page.editVersion(product);
                     page.editVersionHeader.waitForDisplayed();
                 });
@@ -190,9 +194,9 @@ describe('the Developers page', () => {
                     browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
                     page.selectProduct(product);
                     page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                    expect(page.getActiveVersion(product)).toHaveTextContaining(version);
-                    expect(page.getActiveVersion(product)).not.toHaveTextContaining(newVersion);
-                    page.selectVersion(product, version);
+                    expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
+                    expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(newVersion);
+                    page.selectVersion(product, productId, version);
                     page.editVersion(product);
                     page.editVersionHeader.waitForDisplayed();
                     expect(page.editVersionName).toBeDisplayed();

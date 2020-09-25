@@ -79,8 +79,8 @@ class DevelopersPage {
         product.$('.products__product-header').click();
     }
 
-    selectVersion (product, versionName) {
-        product.$(elements.activeVersion).selectByVisibleText(versionName);
+    selectVersion (product, productId, versionName) {
+        product.$(elements.activeVersion + '-' + productId).selectByVisibleText(versionName);
     }
 
     editProduct (product) {
@@ -88,8 +88,12 @@ class DevelopersPage {
         product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
     }
 
-    getActiveVersion (product) {
-        return product.$(elements.activeVersion);
+    getActiveVersion (product, productId) {
+        return product.$(elements.activeVersion + '-' + productId);
+    }
+
+    getActiveContact (product) {
+        return product.$('chpl-contact');
     }
 
     editVersion (product) {

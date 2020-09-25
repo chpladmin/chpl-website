@@ -46,7 +46,7 @@ describe('the Developers page', () => {
             });
 
             it('should have product Contact information', () => {
-                expect(contact.getFull(product).getText()).toBe('Tamara Grassle');
+                expect(contact.get(product)).toHaveTextContaining('Tamara Grassle');
             });
         });
     });
@@ -54,6 +54,7 @@ describe('the Developers page', () => {
     describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
         let developer = 'Procentive';
         let productName = 'Procentive';
+        let productId = '1987';
         let product;
 
         beforeEach(() => {
@@ -67,7 +68,7 @@ describe('the Developers page', () => {
         });
 
         it('should have Versions', () => {
-            expect(page.getActiveVersion(product)).toHaveTextContaining('2011');
+            expect(page.getActiveVersion(product, productId)).toHaveTextContaining('2011');
         });
 
         it('should not have an edit button', () => {
