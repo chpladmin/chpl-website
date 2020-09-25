@@ -8,7 +8,7 @@ export const InspectProductComponent = {
     },
     controller: class InspectProductController {
         constructor ($log, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
         }
@@ -44,7 +44,7 @@ export const InspectProductComponent = {
                 .then(result => this.systemProduct = result);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('aiInspectProduct', InspectProductComponent);

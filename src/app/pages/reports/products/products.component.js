@@ -2,7 +2,7 @@ export const ReportsProductsComponent = {
     templateUrl: 'chpl.reports/products/products.html',
     controller: class ReportsProductsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -35,7 +35,7 @@ export const ReportsProductsComponent = {
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.doFilter(f)
+            this.doFilter(f);
         }
 
         onClearFilter () {
@@ -145,7 +145,7 @@ export const ReportsProductsComponent = {
         }
 
         prepare (item) {
-            item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName
+            item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName;
             item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
             item.fullName = item.responsibleUser.fullName;
             return item;
@@ -182,7 +182,7 @@ export const ReportsProductsComponent = {
                 .then(results => {
                     that.results = results.activities
                         .map(item => that.prepare(item));
-                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
                     let filter = {};
                     filter.dataFilter = '';
                     filter.tableState = this.tableController.tableState();
@@ -201,7 +201,7 @@ export const ReportsProductsComponent = {
 
         addPageToData (page) {
             let that = this;
-            if (this.isDestroyed) { return }
+            if (this.isDestroyed) { return; }
             this.networkService.getActivityMetadata('beta/products', {pageNum: page, ignoreLoadingBar: true}).then(results => {
                 results.activities.forEach(item => {
                     that.results.push(that.prepare(item));
@@ -214,7 +214,7 @@ export const ReportsProductsComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsProducts', ReportsProductsComponent);

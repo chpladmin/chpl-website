@@ -7,7 +7,7 @@ export const SurveillanceNonconformityEditComponent = {
     },
     controller: class SurveillanceNonconformityEditController {
         constructor ($log, API, Upload, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.API = API;
             this.Upload = Upload;
@@ -154,7 +154,7 @@ export const SurveillanceNonconformityEditComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

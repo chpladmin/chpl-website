@@ -1,8 +1,8 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    {{ $ctrl.contact.fullName }}<span ng-if="$ctrl.contact.friendlyName"> ({{ $ctrl.contact.friendlyName }})</span><span ng-if="$ctrl.contact.title">, {{ $ctrl.contact.title }}</span><br />
-    {{ $ctrl.contact.phoneNumber }}<br />
-    {{ $ctrl.contact.email }}
+    <span class="sr-only">Full name: </span>{{ $ctrl.contact.fullName }}<span ng-if="$ctrl.contact.friendlyName"> (<span class="sr-only">Friendly name: </span>{{ $ctrl.contact.friendlyName }})</span><span ng-if="$ctrl.contact.title">, <span class="sr-only">Title: </span>{{ $ctrl.contact.title }}</span><br />
+    <span class="sr-only">Phone: </span>{{ $ctrl.contact.phoneNumber }}<br />
+    <span class="sr-only">Email: </span>{{ $ctrl.contact.email }}
   </span>
 
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">

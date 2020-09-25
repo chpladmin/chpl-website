@@ -6,7 +6,7 @@ export const ConfirmationComponent = {
     },
     controller: class ConfirmationComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -16,7 +16,7 @@ export const ConfirmationComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplConfirmation', ConfirmationComponent);

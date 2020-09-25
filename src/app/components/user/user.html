@@ -77,21 +77,10 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <button class="btn btn-ai-success btn-small pull-right" id="user-component-save-{{ $ctrl.user.userId }}" uib-tooltip="Save" tooltip-trigger="'mouseenter focus click'"
-                ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-                ng-mouseover="$ctrl.showFormErrors = true"
-                ng-click="$ctrl.save()"><i class="fa fa-save"></i><span class="sr-only"> Save</span></button>
-        <button class="btn btn-warning btn-small" id="user-component-cancel-{{ $ctrl.user.userId }}" uib-tooltip="Cancel" tooltip-trigger="'mouseenter focus click'"
-                ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only"> Cancel</span></button>
-        <button class="btn btn-danger btn-small" id="user-component-delete-{{ $ctrl.user.userId }}" uib-tooltip="Delete" tooltip-trigger="'mouseenter focus click'"
-                confirm="Are you sure you wish to delete this User? This action is permanent."
-                confirm-ok="Yes"
-                confirm-cancel="No"
-                confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                ng-click="$ctrl.delete()"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></button>
-      </div>
-    </div>
+    <chpl-action-bar can-delete="true"
+                     error-messages="$ctrl.errors"
+                     is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+                     take-action="$ctrl.takeActionBarAction(action)">
+    </chpl-action-bar>
   </span>
 </div>

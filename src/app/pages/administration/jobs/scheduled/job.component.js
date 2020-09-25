@@ -7,7 +7,7 @@ export const JobsScheduledJobComponent = {
     },
     controller: class JobsScheduledJobComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.newItem = {};
         }
@@ -42,7 +42,7 @@ export const JobsScheduledJobComponent = {
             this.job.jobDataMap[key] = vals.join(',');
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsScheduledJob', JobsScheduledJobComponent);

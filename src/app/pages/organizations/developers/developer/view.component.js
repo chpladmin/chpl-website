@@ -3,22 +3,23 @@ export const DevelopersViewComponent = {
     bindings: {
         developer: '<',
         developers: '<',
-        directReviews: '<',
         products: '<',
         action: '@',
     },
     controller: class DevelopersViewComponent {
-        constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
+        constructor ($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
             'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.canManageDeveloper = authService.canManageDeveloper;
+            this.featureFlags = featureFlags;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
             this.backup = {};
+            this.drStatus = 'pending';
             this.splitEdit = true;
             this.movingProducts = [];
             this.activeAcbs = [];
@@ -38,6 +39,13 @@ export const DevelopersViewComponent = {
             }
             if (this.$stateParams.versionId) {
                 this.versionId = this.$stateParams.versionId;
+            }
+            if (this.featureFlags.isOn('direct-review')) {
+                this.networkService.getDirectReviews(this.developer.developerId)
+                    .then(results => {
+                        that.drStatus = 'success';
+                        that.directReviews = results;
+                    }, () => that.drStatus = 'error');
             }
         }
 

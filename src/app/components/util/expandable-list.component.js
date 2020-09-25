@@ -29,7 +29,7 @@ export const ExpandableListComponent = {
         }
 
         $onInit () {
-            this.addItem = ''
+            this.addItem = '';
             this.inAddMode = false;
             this.options = [];
             this.selectedItem = '';
@@ -75,7 +75,7 @@ export const ExpandableListComponent = {
         }
 
         inputChange () {
-            var action = this._getOnChangeObject('Edit', this.selectedItems)
+            var action = this._getOnChangeObject('Edit', this.selectedItems);
             this.onChange({'action': action});
         }
 
@@ -102,7 +102,7 @@ export const ExpandableListComponent = {
             if (index > -1) {
                 this.selectedItems.splice(index, 1);
             }
-            var onChangeObject = this._getOnChangeObject('Remove', item)
+            var onChangeObject = this._getOnChangeObject('Remove', item);
             this.onChange({'action': onChangeObject});
             this._validateItems(this.selectedItems);
         }
@@ -210,6 +210,6 @@ export const ExpandableListComponent = {
             });
         }
     },
-}
+};
 angular.module('chpl.components')
     .component('chplExpandableList', ExpandableListComponent);

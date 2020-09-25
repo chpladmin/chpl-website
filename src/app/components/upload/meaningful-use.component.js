@@ -3,7 +3,7 @@ export const UploadMeaningfulUseComponent = {
     bindings: {},
     controller: class UploadMeaningfulUseController {
         constructor ($log, $state, API, Upload, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.Upload = Upload;
@@ -48,7 +48,7 @@ export const UploadMeaningfulUseComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

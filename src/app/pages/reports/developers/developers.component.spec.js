@@ -25,7 +25,7 @@
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.developerReportsMetadata));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
 
                 el = angular.element('<chpl-reports-developers></chpl-reports-developers>');
 

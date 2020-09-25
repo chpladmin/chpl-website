@@ -3,7 +3,7 @@ export const ReportsApiKeyUsageComponent = {
     bindings: {},
     controller: class ReportsApiKeyUsageComponent {
         constructor ($filter, $log, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
@@ -56,7 +56,7 @@ export const ReportsApiKeyUsageComponent = {
             this.networkService.getApiActivity(this.dateAdjust(this.apiKeyReport))
                 .then(data => {
                     ctrl.searchedApi = data.map(item => {
-                        item.friendlyCreationDate = this.$filter('date')(item.creationDate, 'MMM d, y H:mm:ss')
+                        item.friendlyCreationDate = this.$filter('date')(item.creationDate, 'MMM d, y H:mm:ss');
                         item.filterText = item.apiKey + '|' + item.name + '|' + item.email + '|' + item.apiCallPath;
                         return item;
                     });
@@ -96,14 +96,14 @@ export const ReportsApiKeyUsageComponent = {
 
         onClearFilter () {
             this.apiKeyReport.endDate = new Date();
-            this.apiKeyReport.startDate = this.utilService.addDays(this.apiKeyReport.endDate, (this.apiKeyReport.range * -1) + 1)
+            this.apiKeyReport.startDate = this.utilService.addDays(this.apiKeyReport.endDate, (this.apiKeyReport.range * -1) + 1);
             this.apiKeyReport.filter = undefined;
             this.apiKeyReport.filterText = '';
             this.search(1);
         }
 
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsApiKeyUsage', ReportsApiKeyUsageComponent);

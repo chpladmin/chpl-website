@@ -6,7 +6,7 @@ export const AnnouncementComponent = {
     },
     controller: class AnnouncementComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -52,7 +52,7 @@ export const AnnouncementComponent = {
             return this.announcement.endDate && this.announcement.startDate && this.announcement.endDate > this.announcement.startDate;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplAnnouncement', AnnouncementComponent);

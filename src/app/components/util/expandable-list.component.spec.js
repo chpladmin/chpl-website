@@ -166,7 +166,7 @@
             describe('when an item is selected', () => {
                 it('should should not add the selected item if it is already selected', () => {
                     const initialLength = ctrl.selectedItems.length;
-                    ctrl.selectedItem = mock.selectedItems[0]
+                    ctrl.selectedItem = mock.selectedItems[0];
                     ctrl.selectOnChange();
                     expect(ctrl.selectedItems.length).toBe(initialLength);
                 });

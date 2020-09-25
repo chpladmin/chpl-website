@@ -46,7 +46,7 @@ import './history.mock';
                 scope.dismiss = jasmine.createSpy('dismiss');
                 scope.resolve = {
                     listing: mock.listing,
-                }
+                };
 
                 el = angular.element('<chpl-listing-history close="close($value)" dismiss="dismiss()" resolve="resolve"></chpl-listing-history>');
 

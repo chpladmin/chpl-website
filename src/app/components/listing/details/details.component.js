@@ -22,6 +22,7 @@ export const ListingDetailsComponent = {
             this.sortCerts = utilService.sortCert;
             this.handlers = [];
             this.isOn = featureFlags.isOn;
+            this.drStatus = 'pending';
             this.isEditing = false;
             this.viewAllCerts = false;
             this.panelShown = 'cert';
@@ -51,19 +52,24 @@ export const ListingDetailsComponent = {
                 this.prepCqms();
             }
             if (changes.directReviews && changes.directReviews.currentValue) {
-                this.directReviews = changes.directReviews.currentValue
-                    .filter(dr => {
-                        let shouldInclude = !dr.nonConformities
-                            || dr.nonConformities.length === 0
-                            || dr.nonConformities.reduce((acc, nc) => {
-                                let shouldInclude = acc
-                                    || !nc.developerAssociatedListings
-                                    || nc.developerAssociatedListings.length === 0
-                                    || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0
-                                return shouldInclude;
-                            }, false);
-                        return shouldInclude;
-                    });
+                if (changes.directReviews.currentValue.status === 200) {
+                    this.drStatus = 'success';
+                    this.directReviews = changes.directReviews.currentValue.drs
+                        .filter(dr => {
+                            let shouldInclude = !dr.nonConformities
+                                || dr.nonConformities.length === 0
+                                || dr.nonConformities.reduce((acc, nc) => {
+                                    let shouldInclude = acc
+                                        || !nc.developerAssociatedListings
+                                        || nc.developerAssociatedListings.length === 0
+                                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0;
+                                    return shouldInclude;
+                                }, false);
+                            return shouldInclude;
+                        });
+                } else {
+                    this.drStatus = 'error';
+                }
             }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
@@ -229,16 +235,16 @@ export const ListingDetailsComponent = {
                 ret = false;
                 if (cqm.criteria) {
                     for (var i = 0; i < cqm.criteria.length; i++) {
-                        ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')')
+                        ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')');
                     }
                 }
             } else {
                 ret = cqm['hasC' + num];
             }
-            return ret
+            return ret;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplListingDetails', ListingDetailsComponent);

@@ -8,7 +8,7 @@ export const SavedFilterComponent = {
     },
     controller: class SavedFilterComponent {
         constructor ($filter, $log, $scope, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -37,7 +37,7 @@ export const SavedFilterComponent = {
             this.networkService.getFilters(this.filterTypeId)
                 .then(response => {
                     that.availableFilters = response.results;
-                    that.availableFilters.sort((a, b) => (a.name > b.name) ? 1 : -1)
+                    that.availableFilters.sort((a, b) => (a.name > b.name) ? 1 : -1);
                 });
         }
 
@@ -70,7 +70,7 @@ export const SavedFilterComponent = {
                 .then(() => that.refreshFilterList());
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSavedFilter', SavedFilterComponent);

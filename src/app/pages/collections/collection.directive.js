@@ -61,7 +61,7 @@
                 vm.loadResults();
                 setFilterInfo();
             });
-        }
+        };
 
         function hasResults () {
             return angular.isDefined(vm.allCps);

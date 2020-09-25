@@ -3,7 +3,7 @@ export const ListingComponent = {
     bindings: { },
     controller: class ListingComponent {
         constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, featureFlags, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$localStorage = $localStorage;
             this.$log = $log;
             this.$q = $q;
@@ -80,7 +80,13 @@ export const ListingComponent = {
         loadDirectReviews () {
             let that = this;
             this.networkService.getDirectReviews(this.listing.developer.developerId)
-                .then(data => that.directReviews = data);
+                .then(data => that.directReviews = {
+                    status: 200,
+                    drs: data,
+                }, error => that.directReviews = {
+                    status: error,
+                    drs: [],
+                });
         }
 
         loadResources () {
@@ -129,7 +135,7 @@ export const ListingComponent = {
                 that.saveErrors = {
                     errors: [],
                     warnings: [],
-                }
+                };
                 if (error.data) {
                     if (error.data.error && error.data.error.length > 0) {
                         that.saveErrors.errors.push(error.data.error);
@@ -142,7 +148,7 @@ export const ListingComponent = {
                     }
                 }
                 that.isSaving = false;
-            })
+            });
         }
 
         takeDeveloperAction (action, developerId) {
@@ -165,7 +171,7 @@ export const ListingComponent = {
             });
         }
     },
-}
+};
 
 angular
     .module('chpl.listing')

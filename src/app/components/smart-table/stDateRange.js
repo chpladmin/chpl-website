@@ -31,10 +31,10 @@
 
                             scope.$apply(function () {
                                 table.search(query, predicateName);
-                            })
+                            });
                         });
                     });
                 },
-            }
-        })
+            };
+        });
 })();
