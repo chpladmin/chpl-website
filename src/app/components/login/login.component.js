@@ -1,5 +1,5 @@
 export const LoginComponent = {
-    templateUrl: 'chpl.navigation/login/login.html',
+    templateUrl: 'chpl.components/login/login.html',
     bindings: {
         formClass: '@',
         pClass: '@',
@@ -254,5 +254,5 @@ export const LoginComponent = {
     },
 }
 
-angular.module('chpl.navigation')
+angular.module('chpl.components')
     .component('chplLogin', LoginComponent);
