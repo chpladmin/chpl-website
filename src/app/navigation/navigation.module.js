@@ -5,7 +5,6 @@
         'chpl.services',
         'chpl.constants',
         'feature-flags',
-        'ngIdle',
         'toaster',
         'ui.router',
     ])

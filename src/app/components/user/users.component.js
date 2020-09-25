@@ -39,6 +39,7 @@ export const UsersComponent = {
 
         act (action, data) {
             let that = this;
+            this.errors = undefined;
             switch (action) {
             case 'delete':
                 this.takeAction({action: 'delete', data: data});
@@ -53,8 +54,10 @@ export const UsersComponent = {
                 this.networkService.updateUser(data)
                     .then(() => {
                         that.takeAction({action: 'refresh'});
+                        that.activeUser = undefined;
+                    }, error => {
+                        that.errors = [error.data.error];
                     });
-                this.activeUser = undefined;
                 break;
             case 'cancel':
                 this.activeUser = undefined;

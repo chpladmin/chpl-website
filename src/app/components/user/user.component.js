@@ -2,6 +2,7 @@ export const UserComponent = {
     templateUrl: 'chpl.components/user/user.html',
     bindings: {
         user: '<',
+        errors: '<',
         isEditing: '<',
         takeAction: '&',
     },
@@ -15,6 +16,9 @@ export const UserComponent = {
         $onChanges (changes) {
             if (changes.user) {
                 this.user = angular.copy(changes.user.currentValue);
+            }
+            if (changes.errors) {
+                this.errors = angular.copy(changes.errors.currentValue);
             }
             if (changes.isEditing) {
                 this.isEditing = angular.copy(changes.isEditing.currentValue);
@@ -53,6 +57,24 @@ export const UserComponent = {
                 action: 'save',
                 data: this.user,
             });
+        }
+
+        takeActionBarAction (action) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'delete':
+                this.delete();
+                break;
+            case 'mouseover':
+                this.showFormErrors = true;
+                break;
+            case 'save':
+                this.save();
+                break;
+                //no default
+            }
         }
     },
 };
