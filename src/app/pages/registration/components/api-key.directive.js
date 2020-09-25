@@ -35,7 +35,7 @@
             if (vm.admin) {
                 vm.loadUsers();
             }
-        }
+        };
 
         function loadUsers () {
             networkService.getApiUsers()

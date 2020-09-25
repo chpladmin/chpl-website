@@ -76,7 +76,7 @@
             });
 
             it('should log an error if getAcbs fails', function () {
-                var initLength = $log.error.logs.length
+                var initLength = $log.error.logs.length;
                 networkService.getAcbs.and.returnValue($q.reject('expected error'));
                 ctrl.loadAcbs();
                 scope.$digest();
@@ -89,7 +89,7 @@
             });
 
             it('should log an error if getAtls fails', function () {
-                var initLength = $log.error.logs.length
+                var initLength = $log.error.logs.length;
                 networkService.getAtls.and.returnValue($q.reject('expected error'));
                 ctrl.loadAtls();
                 scope.$digest();
@@ -102,7 +102,7 @@
             });
 
             it('should log an error if getAnnouncements fails', function () {
-                var initLength = $log.error.logs.length
+                var initLength = $log.error.logs.length;
                 networkService.getAnnouncements.and.returnValue($q.reject('expected error'));
                 ctrl.loadAnnouncements();
                 scope.$digest();

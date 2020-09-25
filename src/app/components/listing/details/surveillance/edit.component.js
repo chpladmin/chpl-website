@@ -7,9 +7,9 @@ export const SurveillanceEditComponent = {
     },
     controller: class SurveillanceEditController {
         constructor ($log, $uibModal, authService, networkService, toaster, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
-            this.$uibModal = $uibModal
+            this.$uibModal = $uibModal;
             this.authService = authService;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
@@ -59,7 +59,7 @@ export const SurveillanceEditComponent = {
                     disableValidation: () => false,
                     randomized: () => this.surveillance.type.name === 'Randomized',
                     randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
-                    requirement: () => { return {nonconformities: []} },
+                    requirement: () => { return {nonconformities: []}; },
                     surveillanceId: () => this.surveillance.id,
                     surveillanceTypes: () => data,
                     workType: () => 'add',
@@ -250,7 +250,7 @@ export const SurveillanceEditComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

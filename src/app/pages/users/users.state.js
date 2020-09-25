@@ -5,7 +5,7 @@ let states = [
         component: 'chplUserManagement',
         resolve: {
             users: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                     return networkService.getUsers();
                 } else {
@@ -18,7 +18,7 @@ let states = [
 ];
 
 function usersStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

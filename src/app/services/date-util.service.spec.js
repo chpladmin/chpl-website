@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Date service', () => {
+    describe('the Date service', () => {
         var $log, date, mock;
 
         mock = {
@@ -15,7 +15,7 @@
             inject((_$log_, _DateUtil_) => {
                 $log = _$log_;
                 date = _DateUtil_;
-            })
+            });
         });
 
         afterEach(() => {

@@ -4,7 +4,7 @@ export const OverviewComponent = {
     },
     controller: class OverviewController {
         constructor ($anchorScroll, $location, $log, $rootScope, networkService) {
-            'ngInject'
+            'ngInject';
             this.$anchorScroll = $anchorScroll;
             this.$location = $location;
             this.$log = $log;
@@ -53,7 +53,7 @@ export const OverviewComponent = {
             this.$anchorScroll();
         }
     },
-}
+};
 
 angular
     .module('chpl.resources')

@@ -2,7 +2,7 @@ export const CompareComponent = {
     templateUrl: 'chpl.compare/compare.html',
     controller: class CompareComponent {
         constructor ($filter, $log, $scope, $stateParams, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -156,7 +156,7 @@ export const CompareComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.compare')
     .component('chplCompare', CompareComponent);

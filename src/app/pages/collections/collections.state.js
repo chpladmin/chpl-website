@@ -50,7 +50,7 @@ let states = [
 ];
 
 function collectionsStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

@@ -5,7 +5,7 @@ export const UploadListingsComponent = {
     },
     controller: class UploadListingsComponent {
         constructor ($filter, $log, API, Upload, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.Upload = Upload;
@@ -67,7 +67,7 @@ export const UploadListingsComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplUploadListings', UploadListingsComponent);

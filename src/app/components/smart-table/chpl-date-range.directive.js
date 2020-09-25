@@ -22,7 +22,7 @@
                 registerRestoreState: '&',
             },
             templateUrl: 'chpl.components/smart-table/chpl-date-range.html',
-        }
+        };
     }
 
     function chplDateRangeLink (scope, element, attr, ctrls) {
@@ -83,7 +83,7 @@
             if (vm.before) {
                 var before;
                 if (angular.isObject(vm.before)) {
-                    before = angular.copy(vm.before)
+                    before = angular.copy(vm.before);
                 } else {
                     before = new Date(vm.before);
                 }
@@ -96,7 +96,7 @@
             if (vm.after) {
                 var after;
                 if (angular.isObject(vm.after)) {
-                    after = angular.copy(vm.after)
+                    after = angular.copy(vm.after);
                 } else {
                     after = new Date(vm.after);
                 }

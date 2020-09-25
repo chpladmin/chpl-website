@@ -43,11 +43,11 @@ let states = [{
     component: 'chplSurveillanceManagement',
     resolve: {
         allowedAcbs: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getAcbs(true);
         },
         listings: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getCollection('surveillanceManagement');
         },
     },
@@ -61,27 +61,27 @@ let states = [{
     component: 'chplSurveillanceReporting',
     resolve: {
         acbs: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getAcbs(true);
         },
         annual: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getAnnualSurveillanceReports();
         },
         availableQuarters: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getQuarterlySurveillanceQuarters();
         },
         quarters: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getQuarterlySurveillanceReports();
         },
         surveillanceOutcomes: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getSurveillanceOutcomes();
         },
         surveillanceProcessTypes: networkService => {
-            'ngInject'
+            'ngInject';
             return networkService.getSurveillanceProcessTypes();
         },
     },
@@ -95,7 +95,7 @@ let states = [{
     component: 'chplSurveillanceReportAnnual',
     resolve: {
         report: ($transition$, networkService) => {
-            'ngInject'
+            'ngInject';
             return networkService.getAnnualSurveillanceReport($transition$.params().reportId);
         },
     },
@@ -112,15 +112,15 @@ let states = [{
     component: 'chplSurveillanceReportQuarter',
     resolve: {
         report: ($transition$, networkService) => {
-            'ngInject'
+            'ngInject';
             return networkService.getQuarterlySurveillanceReport($transition$.params().reportId);
         },
         relevantListing: $transition$ => {
-            'ngInject'
+            'ngInject';
             return $transition$.params().relevantListing;
         },
         relevantListings: ($transition$, networkService) => {
-            'ngInject'
+            'ngInject';
             return networkService.getRelevantListings($transition$.params().reportId);
         },
     },
@@ -131,7 +131,7 @@ let states = [{
 }];
 
 function surveillanceStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

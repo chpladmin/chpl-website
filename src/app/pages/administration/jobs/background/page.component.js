@@ -5,7 +5,7 @@ export const JobsBackgroundPageComponent = {
     },
     controller: class JobsBackgroundPageComponent {
         constructor ($log, $scope, $timeout, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$timeout = $timeout;
@@ -45,7 +45,7 @@ export const JobsBackgroundPageComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsBackgroundPage', JobsBackgroundPageComponent);

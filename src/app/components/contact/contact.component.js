@@ -13,7 +13,7 @@ export const ContactComponent = {
     },
     controller: class ContactComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.errorMessages = [];
         }
@@ -79,7 +79,7 @@ export const ContactComponent = {
                         !!this.contact.phoneNumber);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplContact', ContactComponent);

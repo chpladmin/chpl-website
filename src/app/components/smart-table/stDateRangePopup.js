@@ -33,7 +33,7 @@
 
                                 scope.$apply(function () {
                                     table.search(query, predicateName);
-                                })
+                                });
                             }
                         });
                     });
@@ -48,13 +48,13 @@
                             } else {
                                 scope.$parent.isAfterOpen = true;
                             }
-                        }
+                        };
                     }
 
                     scope.openBefore = open(true);
                     scope.openAfter = open();
                     scope.datepickerOptions = { closeOnDateSelection: false };
                 },
-            }
-        })
+            };
+        });
 })();

@@ -8,7 +8,7 @@ export const UserComponent = {
     },
     controller: class UserComponent {
         constructor ($log, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.canImpersonate = authService.canImpersonate;
         }
@@ -77,7 +77,7 @@ export const UserComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplUser', UserComponent);

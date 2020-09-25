@@ -8,7 +8,7 @@ export const ActionBarComponent = {
     },
     controller: class ActionBarComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -42,7 +42,7 @@ export const ActionBarComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplActionBar', ActionBarComponent);

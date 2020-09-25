@@ -5,7 +5,7 @@ export const ConfirmSurveillanceComponent = {
     },
     controller: class ConfirmSurveillanceComponent {
         constructor ($log, $uibModal, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$uibModal = $uibModal;
             this.networkService = networkService;
@@ -50,7 +50,7 @@ export const ConfirmSurveillanceComponent = {
                 if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
                     for (var i = 0; i < that.uploadingSurveillances.length; i++) {
                         if (surv.id === that.uploadingSurveillances[i].id) {
-                            that.uploadingSurveillances.splice(i,1)
+                            that.uploadingSurveillances.splice(i,1);
                             that.pendingSurveillances = that.uploadingSurveillances.length;
                         }
                     }
@@ -106,7 +106,7 @@ export const ConfirmSurveillanceComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplConfirmSurveillance', ConfirmSurveillanceComponent);

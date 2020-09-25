@@ -131,9 +131,9 @@ export const SurveillanceComponent = {
                     if (surv.requirements[i].criterion) {
                         result += '<span class="' + (surv.requirements[i].criterion.removed ? 'removed' : '') + '">';
                         result += surv.requirements[i].criterion.removed ? 'Removed | ' : '';
-                        result += surv.requirements[i].criterion.number + ': ' + surv.requirements[i].criterion.title + '</span>'
+                        result += surv.requirements[i].criterion.number + ': ' + surv.requirements[i].criterion.title + '</span>';
                     } else {
-                        result += surv.requirements[i].requirement
+                        result += surv.requirements[i].requirement;
                     }
                     result += '<br />';
                     results.push(result);
@@ -155,7 +155,7 @@ export const SurveillanceComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

@@ -7,7 +7,7 @@ export const ChangeRequestsManagementComponent = {
     },
     controller: class ChangeRequestsManagementComponent {
         constructor ($log, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
@@ -35,8 +35,8 @@ export const ChangeRequestsManagementComponent = {
                         that.networkService.getChangeRequests().then(response => {
                             that.changeRequests = response;
                             that.state = 'confirmation';
-                            that.confirmationText = 'The update has been completed successfully.'
-                        })
+                            that.confirmationText = 'The update has been completed successfully.';
+                        });
                     }, error => {
                         that.toaster.pop({
                             type: 'error',
@@ -50,7 +50,7 @@ export const ChangeRequestsManagementComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplChangeRequestsManagement', ChangeRequestsManagementComponent);

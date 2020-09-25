@@ -168,13 +168,13 @@
                 });
 
                 it('should set a "saving" flag', () => {
-                    ctrl.saveEdit(listing, 'reason')
+                    ctrl.saveEdit(listing, 'reason');
                     expect(ctrl.isSaving).toBe(true);
                 });
 
                 it('should report errors and turn off the saving flag', () => {
                     networkService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
-                    ctrl.saveEdit(listing, 'reason')
+                    ctrl.saveEdit(listing, 'reason');
                     scope.$digest();
                     expect(ctrl.saveErrors.errors).toEqual(['an error']);
                     expect(ctrl.isSaving).toBe(false);
@@ -182,7 +182,7 @@
 
                 it('should report errors on server data.error', () => {
                     networkService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
-                    ctrl.saveEdit(listing, 'reason')
+                    ctrl.saveEdit(listing, 'reason');
                     scope.$digest();
                     expect(ctrl.saveErrors.errors).toEqual(['an error']);
                     expect(ctrl.isSaving).toBe(false);
@@ -190,7 +190,7 @@
 
                 it('should report errors on server data.errorMessages', () => {
                     networkService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
-                    ctrl.saveEdit(listing, 'reason')
+                    ctrl.saveEdit(listing, 'reason');
                     scope.$digest();
                     expect(ctrl.saveErrors.errors).toEqual(['an error2']);
                     expect(ctrl.isSaving).toBe(false);
@@ -198,7 +198,7 @@
 
                 it('should report errors on server data.warningMessages', () => {
                     networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
-                    ctrl.saveEdit(listing, 'reason')
+                    ctrl.saveEdit(listing, 'reason');
                     scope.$digest();
                     expect(ctrl.saveErrors.warnings).toEqual(['an error3']);
                     expect(ctrl.isSaving).toBe(false);
@@ -206,7 +206,7 @@
 
                 it('should report no errors if none were returned', () => {
                     networkService.updateCP.and.returnValue($q.reject({}));
-                    ctrl.saveEdit(listing, 'reason')
+                    ctrl.saveEdit(listing, 'reason');
                     scope.$digest();
                     expect(ctrl.saveErrors.errors).toEqual([]);
                     expect(ctrl.isSaving).toBe(false);

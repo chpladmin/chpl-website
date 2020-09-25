@@ -3,7 +3,7 @@ export const UploadApiDocumentationComponent = {
     bindings: {},
     controller: class UploadApiDocumentationComponent {
         constructor ($location, $log, API, Upload, authService) {
-            'ngInject'
+            'ngInject';
             this.$location = $location;
             this.$log = $log;
             this.Upload = Upload;
@@ -60,7 +60,7 @@ export const UploadApiDocumentationComponent = {
             }
         }
     },
-}
+};
 angular
     .module('chpl.components')
     .component('chplUploadApiDocumentation', UploadApiDocumentationComponent);

@@ -16,7 +16,7 @@ export const VersionComponent = {
     },
     controller: class VersionComponent {
         constructor ($filter, $log, authService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
@@ -60,14 +60,14 @@ export const VersionComponent = {
             case 'edit':
                 return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
             case 'merge':
                 return this.canMerge // allowed by containing component
                     && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
             case 'split':
                 return this.canSplit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"o
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"o
             default:
                 return false;
             }
@@ -122,7 +122,7 @@ export const VersionComponent = {
                 && !this.isInvalid; // validation from outside
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplVersion', VersionComponent);

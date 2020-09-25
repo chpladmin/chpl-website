@@ -22,7 +22,7 @@
                 registerRestoreState: '&',
             },
             templateUrl: 'chpl.components/smart-table/chpl-boolean-filter.html',
-        }
+        };
     }
 
     function chplBooleanFilterLink (scope, element, attr, ctrls) {

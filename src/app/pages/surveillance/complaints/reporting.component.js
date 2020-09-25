@@ -4,11 +4,11 @@ export const ComplaintsReporting = {
     },
     controller: class ComplaintsReporting {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplComplaintsReporting', ComplaintsReporting);

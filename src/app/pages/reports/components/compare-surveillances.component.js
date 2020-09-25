@@ -7,7 +7,7 @@ export const CompareSurveillancesComponent = {
     },
     controller: class CompareSurveillancesComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -20,7 +20,7 @@ export const CompareSurveillancesComponent = {
             this.dismiss();
         }
     },
-}
+};
 
 angular
     .module('chpl.reports')

@@ -94,7 +94,7 @@
                 });
 
                 describe('restoration', function () {
-                    var state
+                    var state;
                     beforeEach(function () {
                         spyOn(vm, 'filterChanged');
                         state = {

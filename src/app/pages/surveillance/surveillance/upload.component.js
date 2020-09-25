@@ -4,11 +4,11 @@ export const UploadSurveillancesComponent = {
     },
     controller: class UploadSurveillanceComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplUploadSurveillances', UploadSurveillancesComponent);

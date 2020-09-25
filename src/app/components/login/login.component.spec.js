@@ -51,7 +51,7 @@
 
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
-                authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_ADMIN') > -1)
+                authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_ADMIN') > -1);
                 authService.hasAnyRole.and.returnValue(true);
                 authService.isImpersonating.and.returnValue(false);
                 authService.saveToken.and.returnValue({});
@@ -410,7 +410,7 @@
 
             describe('when resetting a password in', () => {
                 it('should call the network service', () => {
-                    const token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4'
+                    const token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4';
                     ctrl.passwordStrength = {
                         password: 'new',
                     };
