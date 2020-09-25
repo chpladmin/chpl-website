@@ -136,7 +136,7 @@
                 it('should close the report', () => {
                     ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
                     ctrl.actOnQuarter({name: 'name1'}, 2019, 'Q1');
-                    expect(ctrl.activeQuarterReport).toBeUndefined
+                    expect(ctrl.activeQuarterReport).toBeUndefined;
                 });
 
                 describe('when handling callbacks', () => {
@@ -234,7 +234,7 @@
 
                 describe('on cancel', () => {
                     it('should refresh the state', () => {
-                        ctrl.cancel()
+                        ctrl.cancel();
                         expect($state.go).toHaveBeenCalledWith('surveillance.reporting', {}, {reload: true});
                     });
                 });

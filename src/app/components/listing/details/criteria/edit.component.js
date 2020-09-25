@@ -7,7 +7,7 @@ export const CertificationCriteriaEditComponent = {
     },
     controller: class CertificationCriteriaEditController {
         constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
@@ -251,7 +251,7 @@ export const CertificationCriteriaEditComponent = {
             });
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

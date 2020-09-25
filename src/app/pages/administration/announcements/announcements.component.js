@@ -5,7 +5,7 @@ export const AnnouncementsComponent = {
     },
     controller: class AnnouncementsComponent {
         constructor ($log, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
@@ -48,7 +48,7 @@ export const AnnouncementsComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplAnnouncements', AnnouncementsComponent);

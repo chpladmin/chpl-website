@@ -3,14 +3,13 @@ export const AdministrationComponent = {
     bindings: {
     },
     controller: class AdministrationComponent {
-        constructor ($log, authService, featureFlags) {
-            'ngInject'
+        constructor ($log, authService) {
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
-            this.isOn = featureFlags.isOn;
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplAdministration', AdministrationComponent);

@@ -116,7 +116,7 @@
                 spyOn($rootScope, '$broadcast');
                 vm.widget.searchResult = {
                     products: products,
-                }
+                };
                 vm.compare();
                 expect($rootScope.$broadcast).toHaveBeenCalledWith('compareAll', payload);
             });
@@ -125,7 +125,7 @@
                 spyOn($rootScope, '$broadcast');
                 vm.widget.searchResult = {
                     products: products,
-                }
+                };
                 vm.compare();
                 expect($rootScope.$broadcast).toHaveBeenCalledWith('HideWidget');
             });
@@ -134,7 +134,7 @@
                 spyOn($rootScope, '$broadcast');
                 vm.widget.searchResult = {
                     products: products,
-                }
+                };
                 vm.compare();
                 expect($rootScope.$broadcast).toHaveBeenCalledWith('ShowCompareWidget');
             });

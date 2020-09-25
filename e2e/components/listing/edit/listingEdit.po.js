@@ -10,7 +10,7 @@ const listingEditElements = {
     saveCertifiedProduct: 'button=Save Certification Criteria',
     closeListingEditButton: 'button.close.pull-right.ng-isolate-scope',
     yesConfirmation: '//button[text()="Yes"]',
-}
+};
 
 class ListingEditComponent {
     constructor () { }

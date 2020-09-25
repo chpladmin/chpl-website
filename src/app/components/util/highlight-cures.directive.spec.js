@@ -6,7 +6,7 @@
         let $compile, $log, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.components')
+            angular.mock.module('chpl.components');
         });
 
         beforeEach(inject((_$compile_, _$log_, $rootScope) => {

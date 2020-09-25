@@ -921,6 +921,21 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@js-joda/core@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@js-joda/core/-/core-3.1.0.tgz#756216eb23bda2438a64fb919cb571c479bc8a74"
+  integrity sha512-6tzM0xVXtEFjihUxaILrbJ9jNWNeYvCy3PWzSmlR1Rl0E+MYIN8lyaa3+xYrUX0AbPSFcj7ApdD06hpqVyNpMA==
+
+"@js-joda/locale_en-us@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@js-joda/locale_en-us/-/locale_en-us-3.1.1.tgz#c2eab2561aa048f5366046edd313ce94108263c6"
+  integrity sha512-EYrs4h0Um/9LqcEwDb0kGTHGaGkJgEO2cj78KKICPz7hsdvJHPOADIkDtjesYInZ1YkNrtE3HopnfETLDBvnWg==
+
+"@js-joda/timezone@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@js-joda/timezone/-/timezone-2.3.0.tgz#72878f6dc8afef20c29906e5d8d946f91618a2c3"
+  integrity sha512-DHXdNs0SydSqC5f0oRJPpTcNfnpRojgBqMCFupQFv6WgeZAjU3DBx+A7JtaGPP3dHrP2Odi2N8Vf+uAm/8ynCQ==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -3187,9 +3202,9 @@ chrome-trace-event@^1.0.2:
     tslib "^1.9.0"
 
 chromedriver@^85.0.0:
-  version "85.0.1"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-85.0.1.tgz#2e1b571845253368fcd112108f23eb9c778f7982"
-  integrity sha512-z8je3U4tXFZnx7AloRabM4Ep1lpFJvHxLoGuRvLg33Qy0UKk/z6OXmHUO2z6DKE0Oe6CFpjj/bdhuQ8dfvq9ug==
+  version "85.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-85.0.0.tgz#5b9b6a184569f5e2b22b45a928bbc66d1c4bb36f"
+  integrity sha512-Noinnkl9gRsfC1EYA5trcOVf9r/P6JJnWf+mU6KZS3xLjV9x/o71VZ+gqRl3oSI4PnTGnqYRISZFQk/teYVTRg==
   dependencies:
     "@testim/chrome-version" "^1.0.7"
     axios "^0.19.2"

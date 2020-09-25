@@ -6,7 +6,7 @@ export const SurveillanceManagementComponent = {
     },
     controller: class SurveillanceManagementComponent {
         constructor ($log, $stateParams, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$stateParams = $stateParams;
             this.networkService = networkService;
@@ -109,7 +109,7 @@ export const SurveillanceManagementComponent = {
                         if (t.id === listing.id) {
                             t.listing = result;
                         }
-                    }))
+                    }));
             }
         }
 
@@ -154,7 +154,7 @@ export const SurveillanceManagementComponent = {
             return changed;
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplSurveillanceManagement', SurveillanceManagementComponent);

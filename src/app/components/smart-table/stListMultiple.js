@@ -33,7 +33,7 @@
                 registerShowRetired: '&?',
             },
             templateUrl: 'chpl.components/smart-table/stListMultiple.html',
-        }
+        };
     }
 
     function stListMultipleLink (scope, element, attr, ctrls) {
@@ -142,7 +142,7 @@
                     item.isSelected = false;
                     vm.toggleSelection(item, true, true);
                 }
-            })
+            });
             if (restoreAnalytics) {
                 vm.trackAnalaytics = true;
             }
@@ -157,7 +157,7 @@
                     item.isSelected = item.selected;
                     vm.toggleSelection(item, true, true);
                 }
-            })
+            });
             vm.matchAll = false;
             vm.filterChanged();
             vm.storeState();
@@ -175,12 +175,12 @@
                 query.matchAll = {
                     matchFull: vm.matchFull,
                     items: vm.selected,
-                }
+                };
             } else {
                 query.matchAny = {
                     matchFull: vm.matchFull,
                     items: vm.selected,
-                }
+                };
             }
             vm.tableCtrl.search(query, vm.predicate);
         }
@@ -209,7 +209,7 @@
                     item.isSelected = true;
                     vm.selected.push(item.value);
                 }
-            })
+            });
             vm.matchAll = false;
             vm.filterChanged();
             vm.storeState();
@@ -221,7 +221,7 @@
                     item.isSelected = true;
                     vm.selected.push(item.value);
                 }
-            })
+            });
             vm.matchAll = false;
             vm.filterChanged();
             vm.storeState();
@@ -264,7 +264,7 @@
             var ret = vm.matchAll;
             angular.forEach(vm.distinctItems, function (item) {
                 ret = ret || isNotDefault(item);
-            })
+            });
             return ret;
         }
 
@@ -275,7 +275,7 @@
                 } else {
                     item.isSelected = false;
                 }
-            })
+            });
             vm.filterChanged();
             vm.storeState();
         }

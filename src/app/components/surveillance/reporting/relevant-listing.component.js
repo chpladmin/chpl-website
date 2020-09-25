@@ -9,7 +9,7 @@ export const SurveillanceReportRelevantListingComponent = {
     },
     controller: class SurveillanceReportRelevantListingComponent {
         constructor ($log, $state, $stateParams, $uibModal, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.$stateParams = $stateParams;
@@ -120,7 +120,7 @@ export const SurveillanceReportRelevantListingComponent = {
             return surveillance;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSurveillanceReportRelevantListing', SurveillanceReportRelevantListingComponent);

@@ -6,7 +6,7 @@
 
         mock = {
             version: {versionId: 1, version: 'a version'},
-        }
+        };
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {

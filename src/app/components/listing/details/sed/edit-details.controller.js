@@ -23,7 +23,7 @@
             vm.resources = resources;
             vm.ucdProcesses = angular.copy(ucdProcesses);
             vm.resources.ucdProcesses.data = vm.resources.ucdProcesses.data
-                .concat(ucdProcesses.filter(function (process) { return !process.id }));
+                .concat(ucdProcesses.filter(function (process) { return !process.id; }));
             if (vm.listing.sedTestingEndDate) {
                 vm.sedDate = new Date(vm.listing.sedTestingEndDate);
             }

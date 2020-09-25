@@ -194,7 +194,7 @@
             it('should create a modal instance when a Product is to be split', function () {
                 vm.activeProduct = mock.products[0];
                 expect(vm.splitProductInstance).toBeUndefined();
-                vm.splitProduct()
+                vm.splitProduct();
                 expect(vm.splitProductInstance).toBeDefined();
             });
 
@@ -202,7 +202,7 @@
                 var product = mock.products[0];
                 vm.activeProduct = product;
                 vm.versions = [1,2,3];
-                vm.splitProduct()
+                vm.splitProduct();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
                 expect(actualOptions.resolve.product()).toEqual(mock.products[0]);
                 expect(actualOptions.resolve.versions()).toEqual([1,2,3]);
@@ -213,7 +213,7 @@
                 vm.products = [1,2];
                 vm.activeProduct = product;
                 vm.versions = [1,2,3];
-                vm.splitProduct()
+                vm.splitProduct();
                 vm.splitProductInstance.close({product: 'product', versions: [1,2], newProduct: 'new'});
                 expect(vm.activeProduct).toEqual('product');
                 expect(vm.versions).toEqual([1,2]);
@@ -224,7 +224,7 @@
                 var logCount = $log.info.logs.length;
                 var product = mock.products[0];
                 vm.activeProduct = product;
-                vm.splitProduct()
+                vm.splitProduct();
                 vm.splitProductInstance.dismiss('cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
             });
@@ -232,7 +232,7 @@
             it('should report messages if they were sent back', function () {
                 var product = mock.products[0];
                 vm.activeProduct = product;
-                vm.splitProduct()
+                vm.splitProduct();
                 vm.splitProductInstance.dismiss('split messages');
                 expect(vm.productMessage).toBe('split messages');
             });
@@ -261,12 +261,12 @@
 
             it('should create a modal instance when a Listing is to be edited', function () {
                 expect(vm.modalInstance).toBeUndefined();
-                vm.editCertifiedProduct()
+                vm.editCertifiedProduct();
                 expect(vm.modalInstance).toBeDefined();
             });
 
             it('should resolve elements on edit', function () {
-                vm.editCertifiedProduct()
+                vm.editCertifiedProduct();
                 expect($uibModal.open).toHaveBeenCalledWith(listingEditOptions);
                 expect(actualOptions.resolve.activeCP()).toEqual('');
                 expect(actualOptions.resolve.isAcbAdmin()).toEqual(true);

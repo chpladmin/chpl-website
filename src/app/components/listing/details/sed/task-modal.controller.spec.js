@@ -18,7 +18,7 @@
                     { occupation: 'RN', productExperienceMonths: 20 },
                 ],
             },
-        }
+        };
 
         beforeEach(function () {
             angular.mock.module('chpl.components', 'chpl.mock');
@@ -200,7 +200,7 @@
             });
 
             it('should pass back a message and the participants', function () {
-                vm.participants = [1,2]
+                vm.participants = [1,2];
                 vm.deleteTask();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({
                     deleted: true,

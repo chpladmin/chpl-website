@@ -101,7 +101,7 @@
                     });
 
                     it('should handle success', () => {
-                        response.data.pendingCertifiedProducts = [1, 2]
+                        response.data.pendingCertifiedProducts = [1, 2];
                         Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
@@ -113,7 +113,7 @@
 
                     it('should handle a deprecated template', () => {
                         response.headers.warning = '299 - "Deprecated upload template"';
-                        response.data.pendingCertifiedProducts = [1, 2]
+                        response.data.pendingCertifiedProducts = [1, 2];
                         Upload.upload.and.returnValue($q.when(response));
                         ctrl.upload();
                         scope.$digest();
