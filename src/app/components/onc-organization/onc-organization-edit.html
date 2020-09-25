@@ -26,9 +26,9 @@
         <label for="retirement-date">Retirement Date <span class="text-danger" ng-if="$ctrl.organization.retired">*</span></label>
         <div class="input-group">
           <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.organization.retirementDateObject" is-open="$ctrl.organization.retirementDatePicker" close-text="Close" id="retirement-date" name="retirementDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.organization.retired" ng-disabled="!$ctrl.organization.retired" ng-change="$ctrl.update()"></input>
-          <div class="input-group-btn">
-            <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.organization.retirementDatePicker = true"><i class="fa fa-calendar"></i></button>
-          </div>
+          <span class="input-group-btn">
+            <button type="button" class="btn" ng-click="$ctrl.organization.retirementDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
         </div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.retirementDate.$touched) && $ctrl.form.retirementDate.$error.required">Retirement Date is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.retirementDate.$touched) && $ctrl.form.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>

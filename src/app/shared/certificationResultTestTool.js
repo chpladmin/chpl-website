@@ -9,7 +9,7 @@
                     'testToolId': testTool.id,
                     'testToolName': testTool.name,
                     'testToolVersion': version,
-                }
+                };
             };
 
             // Return a reference to the function

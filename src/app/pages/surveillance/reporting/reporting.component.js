@@ -10,7 +10,7 @@ export const SurveillanceReportingComponent = {
     },
     controller: class SurveillanceReportingComponent {
         constructor ($log, $state, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
@@ -199,7 +199,7 @@ export const SurveillanceReportingComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplSurveillanceReporting', SurveillanceReportingComponent);

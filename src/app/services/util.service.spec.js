@@ -30,7 +30,7 @@
                 FileSaver = _FileSaver_;
                 FileSaver.saveAs.and.returnValue();
                 util = _utilService_;
-            })
+            });
         });
 
         afterEach(() => {
@@ -299,22 +299,22 @@
             it('should know if an object was added to an array', () => {
                 var a = [].concat(mock.objects[1]);
                 var b = [].concat(mock.objects[1],mock.objects[2]);
-                ret.added.push(mock.objects[2])
+                ret.added.push(mock.objects[2]);
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
             it('should know if an object was removed from an array', () => {
                 var a = [].concat(mock.objects[1],mock.objects[0]);
                 var b = [].concat(mock.objects[1]);
-                ret.removed.push(mock.objects[0])
+                ret.removed.push(mock.objects[0]);
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
             it('should know if objects were added and removed from an array', () => {
                 var a = [].concat(mock.objects[0],mock.objects[1]);
                 var b = [].concat(mock.objects[1],mock.objects[2]);
-                ret.added.push(mock.objects[2])
-                ret.removed.push(mock.objects[0])
+                ret.added.push(mock.objects[2]);
+                ret.removed.push(mock.objects[0]);
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
@@ -397,7 +397,7 @@
                     state: undefined,
                     zipcode: undefined,
                     country: undefined,
-                }
+                };
                 expect(util.addressRequired(address)).toBe(false);
                 address.country = '';
                 expect(util.addressRequired(address)).toBe(false);
@@ -445,7 +445,7 @@
                         { status: { name: 'Inactive' }, eventDate: 6 },
                         { status: { name: 'Closed' }, eventDate: 2 },
                     ],
-                }
+                };
                 expect(util.certificationStatus(cp)).toBe('Inactive');
                 cp.certificationEvents[1].eventDate = 1;
                 expect(util.certificationStatus(cp)).toBe('Active');
@@ -454,7 +454,7 @@
             it('should return "" if no events exist', () => {
                 var cp = {
                     certificationEvents: [],
-                }
+                };
                 expect(util.certificationStatus(cp)).toBe('');
             });
 
@@ -474,7 +474,7 @@
                         { status: { name: 'Inactive' }, statusDateObject: new Date('2/2/2018') },
                         { status: { name: 'Closed' }, statusDateObject: new Date('3/3/2018') },
                     ],
-                }
+                };
                 expect(util.certificationStatus(cp, {editing: true})).toBe('Closed');
                 cp.certificationEvents[0].statusDateObject = new Date('4/4/2018');
                 expect(util.certificationStatus(cp, {editing: true})).toBe('Active');

@@ -32,7 +32,7 @@
 
                 el = angular.element('<chpl-cms-management></chpl-cms-management>');
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;

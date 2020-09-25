@@ -154,9 +154,9 @@
 
             describe('with relation to test functionality', () => {
                 it('should be sorted by name', () => {
-                    expect(ctrl.sortedTestFunctionalities[0].name).toBe('(a)(1)(i)')
-                    expect(ctrl.sortedTestFunctionalities[1].name).toBe('(a)(1)(ii)')
-                    expect(ctrl.sortedTestFunctionalities[2].name).toBe('(a)(2)(ii)')
+                    expect(ctrl.sortedTestFunctionalities[0].name).toBe('(a)(1)(i)');
+                    expect(ctrl.sortedTestFunctionalities[1].name).toBe('(a)(1)(ii)');
+                    expect(ctrl.sortedTestFunctionalities[2].name).toBe('(a)(2)(ii)');
                 });
             });
         });

@@ -341,7 +341,7 @@ export class NetworkService {
     }
 
     getDirectReviews (id) {
-        return this.apiGET('/developers/' + id + '/direct-reviews');
+        return this.apiGET('/developers/' + id + '/direct-reviews', {forceReload: true});
     }
 
     getEditions () {
@@ -827,8 +827,10 @@ export class NetworkService {
         }
         return this.$http.get(this.API + endpoint, {data: '', headers: headers, ignoreLoadingBar: options.ignoreLoadingBar})
             .then(response => {
-                if (angular.isObject(response.data)) {
+                if (angular.isObject(response.data) && response.status !== 204) {
                     return response.data;
+                } else if (response.status === 204) {
+                    return this.$q.reject(204);
                 } else {
                     return this.$q.reject(response.data);
                 }

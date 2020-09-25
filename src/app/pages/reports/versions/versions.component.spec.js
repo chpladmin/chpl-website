@@ -25,7 +25,7 @@ import {getActivity, getMetadata} from './history.mock';
                 networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
                 networkService.getActivityMetadata.and.returnValue($q.when(getMetadata('version')));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
 
                 el = angular.element('<chpl-reports-versions></chpl-reports-versions>');
 
@@ -98,7 +98,7 @@ import {getActivity, getMetadata} from './history.mock';
                     });
 
                     it('should have a function to determine if a date range is okay', () => {
-                        expect(ctrl.validDates).toBeDefined()
+                        expect(ctrl.validDates).toBeDefined();
                     });
 
                     it('should allow dates with less than the range separation', () => {

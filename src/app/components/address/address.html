@@ -1,7 +1,7 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    {{ $ctrl.address.line1 }}<span ng-if="$ctrl.address.line2">, {{ $ctrl.address.line2 }}</span><br />
-    {{ $ctrl.address.city }}, {{ $ctrl.address.state }} {{ $ctrl.address.zipcode }}, {{ $ctrl.address.country }}
+    <span class="sr-only">Line 1: </span>{{ $ctrl.address.line1 }}<span ng-if="$ctrl.address.line2">, <span class="sr-only">Line 2: </span>{{ $ctrl.address.line2 }}</span><br />
+    <span class="sr-only">City: </span>{{ $ctrl.address.city }}, <span class="sr-only">State: </span>{{ $ctrl.address.state }} <span class="sr-only">Zipcode: </span>{{ $ctrl.address.zipcode }}, <span class="sr-only">Country: </span>{{ $ctrl.address.country }}
   </span>
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
     <div class="flex-container">

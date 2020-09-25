@@ -12,7 +12,7 @@ export const SurveillanceReportQuarterComponent = {
     },
     controller: class SurveillanceReportQuarterComponent {
         constructor ($log, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.backup = {};
             this.hasAnyRole = authService.hasAnyRole;
@@ -102,7 +102,7 @@ export const SurveillanceReportQuarterComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplSurveillanceReportQuarter', SurveillanceReportQuarterComponent);

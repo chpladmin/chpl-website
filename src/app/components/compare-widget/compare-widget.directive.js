@@ -35,7 +35,7 @@
                 payload.forEach((item) => { vm.toggleProduct(item.productId, item.name); });
             });
             $scope.$on('$destroy', compareAll);
-        }
+        };
 
         function clearProducts () {
             vm.compareWidget = {

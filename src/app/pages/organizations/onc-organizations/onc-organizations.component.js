@@ -10,7 +10,7 @@ export const OncOrganizationsComponent = {
     },
     controller: class OncOrganizationsComponent {
         constructor ($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster, utilService) {
-            'ngInject'
+            'ngInject';
             this.$anchorScroll = $anchorScroll;
             this.$log = $log;
             this.$q = $q;
@@ -185,7 +185,7 @@ export const OncOrganizationsComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.organizations')
     .component('chplOncOrganizations', OncOrganizationsComponent);

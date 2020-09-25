@@ -52,14 +52,14 @@
                 let given = { id: 1, reason: 'a reason' };
                 let expected = { id: 1, reason: 'a reason', excluded: true };
                 ctrl.listing = given;
-                ctrl.excludeListing()
+                ctrl.excludeListing();
                 expect(scope.onSave).toHaveBeenCalledWith((expected));
             });
 
             it('should undo the exclude of the listing', () => {
                 let given = { id: 1 };
                 let expected = { id: 1, reason: undefined, excluded: false };
-                ctrl.undoExcludedListing(given)
+                ctrl.undoExcludedListing(given);
                 expect(scope.onSave).toHaveBeenCalledWith((expected));
             });
         });

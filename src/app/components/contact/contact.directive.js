@@ -35,7 +35,7 @@
         this.$onInit = function () {
             vm.errorMessages = [];
             vm.updateErrors();
-        }
+        };
 
         function updateErrors () {
             vm.errorMessages = [];

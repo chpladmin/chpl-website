@@ -4,12 +4,12 @@ export const AdministrationComponent = {
     },
     controller: class AdministrationComponent {
         constructor ($log, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplAdministration', AdministrationComponent);

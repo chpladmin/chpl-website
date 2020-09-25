@@ -8,7 +8,7 @@ export const JobsScheduledTriggersComponent = {
     },
     controller: class JobsScheduledTriggersComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.mode = 'view';
         }
@@ -43,14 +43,14 @@ export const JobsScheduledTriggersComponent = {
         }
 
         _getAcb (acbId) {
-            return this.acbs.find(acb => acb.id === acbId)
+            return this.acbs.find(acb => acb.id === acbId);
         }
 
         _getFormattedAcbNames (acbs) {
             return acbs.map(acbId => this._getAcb(parseInt(acbId, 10)).name).join(', ');
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsScheduledTriggers', JobsScheduledTriggersComponent);

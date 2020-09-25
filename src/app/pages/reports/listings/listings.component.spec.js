@@ -34,7 +34,7 @@
                 networkService.getSearchOptions.and.returnValue($q.when({acbs: []}));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when([]));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
 
                 el = angular.element('<chpl-reports-listings></chpl-reports-listings>');
 
@@ -118,7 +118,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         networkService.getActivityById.and.returnValue($q.when(rawActivity));
                         ctrl.parse(rawActivity);
                         scope.$digest();
@@ -144,7 +144,7 @@
                             details: ['Certification Status changed from Retired to Active'],
                             csvDetails: 'Certification Status changed from Retired to Active',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -158,7 +158,7 @@
                             details: ['Product-wide Relied Upon Software added: Some new software'],
                             csvDetails: 'Product-wide Relied Upon Software added: Some new software',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -172,7 +172,7 @@
                             details: ['Certifying Body changed from ICSA Labs to CCHIT'],
                             csvDetails: 'Certifying Body changed from ICSA Labs to CCHIT',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -186,7 +186,7 @@
                             details: ['Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>'],
                             csvDetails: 'Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -200,7 +200,7 @@
                             details: ['Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>'],
                             csvDetails: 'Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -214,7 +214,7 @@
                             details: ['CQM "null" changes<ul><li>Success added: true</li></ul>'],
                             csvDetails: 'CQM "null" changes<ul><li>Success added: true</li></ul>',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -237,7 +237,7 @@
                             details: ['ICS Parent "ID" changes<ul><li>ID removed</li></ul>', 'ICS Parent "ID3" changes<ul><li>ID3 added</li></ul>'],
                             csvDetails: 'ICS Parent "ID" changes<ul><li>ID removed</li></ul>\nICS Parent "ID3" changes<ul><li>ID3 added</li></ul>',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -252,7 +252,7 @@
                             details: ['ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>', 'ICS Child "ID" changes<ul><li>ID added</li></ul>'],
                             csvDetails: 'ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>\nICS Child "ID" changes<ul><li>ID added</li></ul>',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -274,7 +274,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -288,7 +288,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -302,7 +302,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -316,7 +316,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -330,7 +330,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -344,7 +344,7 @@
                             details: [],
                             csvDetails: '',
                             ...rawActivity,
-                        }
+                        };
                         ctrl.parse(rawActivity);
                         scope.$digest();
                         expect(rawActivity).toEqual(expectedActivity);
@@ -368,7 +368,7 @@
                                     newS: rawActivity.newData,
                                 },
                                 ...rawActivity,
-                            }
+                            };
                             ctrl.parse(rawActivity);
                             scope.$digest();
                             expect(rawActivity).toEqual(expectedActivity);
@@ -383,7 +383,7 @@
                                 details: ['SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>'],
                                 csvDetails: 'SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>',
                                 ...rawActivity,
-                            }
+                            };
                             ctrl.parse(rawActivity);
                             scope.$digest();
                             expect(rawActivity).toEqual(expectedActivity);
@@ -398,7 +398,7 @@
                                 details: ['SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>'],
                                 csvDetails: 'SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>',
                                 ...rawActivity,
-                            }
+                            };
                             ctrl.parse(rawActivity);
                             scope.$digest();
                             expect(rawActivity).toEqual(expectedActivity);
@@ -481,7 +481,7 @@
                         var activity, curr, prev;
                         beforeEach(() => {
                             prev = ActivityMock.sed[2].originalData;
-                            curr = ActivityMock.sed[2].newData
+                            curr = ActivityMock.sed[2].newData;
                         });
 
                         it('should dedupe participants', () => {

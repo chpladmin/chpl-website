@@ -11,7 +11,7 @@ export const ListingEditComponent = {
     },
     controller: class ListingEditComponent {
         constructor ($filter, $log, $timeout, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$timeout = $timeout;
@@ -230,6 +230,6 @@ export const ListingEditComponent = {
             this.listing.sedTestingEndDate = listing.sedTestingEndDate;
         }
     },
-}
+};
 angular.module('chpl.components')
     .component('chplListingEdit', ListingEditComponent);

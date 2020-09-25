@@ -8,7 +8,7 @@ export const CreateUserComponent = {
     },
     controller: class CreateUserComponent {
         constructor ($location, $log, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$location = $location;
             this.$log = $log;
             this.authService = authService;
@@ -68,7 +68,11 @@ export const CreateUserComponent = {
                         this.userDetails = {user: {}};
                         this.changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
                     }, error => {
-                        this.message.value = error.data.errorMessages;
+                        if (error.data.errorMessages) {
+                            this.message.value = error.data.errorMessages;
+                        } else if (error.data.error) {
+                            this.message.value = error.data.error;
+                        }
                     });
             }
         }
@@ -115,7 +119,7 @@ export const CreateUserComponent = {
             this.extras = vals;
         }
     },
-}
+};
 
 angular.module('chpl.registration')
     .component('chplRegistrationCreateUser', CreateUserComponent);

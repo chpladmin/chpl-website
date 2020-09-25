@@ -23,7 +23,7 @@
                 registerRestoreState: '&',
             },
             templateUrl: 'chpl.components/smart-table/aiSurveillanceFilter.html',
-        }
+        };
     }
 
     function aiSurveillanceFilterLink (scope, element, attr, ctrls) {
@@ -77,7 +77,7 @@
         function allowAll () {
             vm.query = {
                 NC: {},
-            }
+            };
             vm.filterChanged();
         }
 
@@ -95,26 +95,26 @@
             }
             if (vm.initialState) {
                 if (vm.query.surveillance !== vm.initialState.surveillance) {
-                    if (vm.query.surveillance === 'never') { events.push('Never Surveilled') }
-                    else if (vm.query.surveillance === 'has-had') { events.push('Has had Surveillance') }
-                    else { events.push('Cleared Surveillance') }
+                    if (vm.query.surveillance === 'never') { events.push('Never Surveilled'); }
+                    else if (vm.query.surveillance === 'has-had') { events.push('Has had Surveillance'); }
+                    else { events.push('Cleared Surveillance'); }
                 }
                 if (vm.query.NC.never !== vm.initialState.NC.never) {
-                    if (vm.query.NC.never) { events.push('Never had a Nonconformity') }
-                    else { events.push('Cleared Never had a Nonconformity') }
+                    if (vm.query.NC.never) { events.push('Never had a Nonconformity'); }
+                    else { events.push('Cleared Never had a Nonconformity'); }
                 }
                 if (vm.query.NC.open !== vm.initialState.NC.open) {
-                    if (vm.query.NC.open) { events.push('Open Nonconformity') }
-                    else { events.push('Cleared Open Nonconformity') }
+                    if (vm.query.NC.open) { events.push('Open Nonconformity'); }
+                    else { events.push('Cleared Open Nonconformity'); }
                 }
                 if (vm.query.NC.closed !== vm.initialState.NC.closed) {
-                    if (vm.query.NC.closed) { events.push('Closed Nonconformity') }
-                    else { events.push('Cleared Closed Nonconformity') }
+                    if (vm.query.NC.closed) { events.push('Closed Nonconformity'); }
+                    else { events.push('Cleared Closed Nonconformity'); }
                 }
                 if (vm.query.matchAll !== vm.initialState.matchAll) {
-                    if (vm.query.matchAll) { events.push('Matching All') }
-                    else if (vm.query.matchAll === false) { events.push('Matching Any') }
-                    else { events.push('Cleared Match All') }
+                    if (vm.query.matchAll) { events.push('Matching All'); }
+                    else if (vm.query.matchAll === false) { events.push('Matching Any'); }
+                    else { events.push('Cleared Match All'); }
                 }
                 vm.hasChanges = (events.length > 0);
             } else if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
@@ -161,7 +161,7 @@
             } else {
                 vm.query = {
                     NC: {},
-                }
+                };
             }
         }
     }

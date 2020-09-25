@@ -13,3 +13,8 @@
 .selected-item--even {
     background-color: var(--white);
 }
+
+.developer__direct-review-error {
+    color: var(--white) !important;
+    background-color: var(--danger) !important;
+}
