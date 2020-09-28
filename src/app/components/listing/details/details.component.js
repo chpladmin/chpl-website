@@ -4,6 +4,7 @@ export const ListingDetailsComponent = {
         listing: '<',
         directReviews: '<',
         editMode: '<',
+        hideDirectReview: '<',
         initialPanel: '@',
         isConfirming: '<',
         isEditing: '<',
