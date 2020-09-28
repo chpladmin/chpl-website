@@ -6,7 +6,7 @@ const loginElements = {
     password: '[name="password"]',
     login: 'button=Log In',
     logout: '//button[text()="Log Out"]',
-}
+};
 
 class LoginComponent {
     constructor () { }
@@ -33,7 +33,6 @@ class LoginComponent {
 
     openLoginComponent () {
         this.toggleLoginComponent.click();
-        return this;
     }
 
     loginAsACB () {
@@ -43,7 +42,6 @@ class LoginComponent {
         this.usernameInput.addValue(credentials.usernameACB);
         this.passwordInput.addValue(credentials.passwordACB);
         this.loginButton.click();
-        return this;
     }
 
     loginAsAdmin () {
@@ -53,10 +51,21 @@ class LoginComponent {
         this.usernameInput.addValue(credentials.usernameAdmin);
         this.passwordInput.addValue(credentials.passwordAdmin);
         this.loginButton.click();
-        return this;
+    }
+
+    logIn (user) {
+        if (!this.usernameInput.isDisplayed()) {
+            this.openLoginComponent();
+        }
+        this.usernameInput.addValue(credentials[user].username);
+        this.passwordInput.addValue(credentials[user].password);
+        this.loginButton.click();
     }
 
     logOut () {
+        if (!this.logoutButton.isDisplayed()) {
+            this.openLoginComponent();
+        }
         this.logoutButton.waitForDisplayed();
         this.logoutButton.waitAndClick();
     }

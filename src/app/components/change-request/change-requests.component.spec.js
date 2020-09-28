@@ -110,7 +110,7 @@
                     expect(ctrl.filterItems.pageSize).toBe(3);
                     let changes = {
                         administrationMode: { currentValue: true },
-                    }
+                    };
                     ctrl.$onChanges(changes);
                     expect(ctrl.filterItems.pageSize).toBe(10);
                 });
@@ -134,7 +134,7 @@
                     });
                     it('should be "Change Request" in admin mode', () => {
                         ctrl.administrationMode = true;
-                        ctrl.activeChangeRequest = 'something'
+                        ctrl.activeChangeRequest = 'something';
                         expect(ctrl.getTitle()).toBe('Change Request');
                     });
 
@@ -164,7 +164,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -175,7 +175,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -186,7 +186,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(false);
                     });
 
@@ -197,7 +197,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(true);
                     });
 
@@ -208,7 +208,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(true);
                     });
 
@@ -219,7 +219,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(true);
                     });
 
@@ -230,7 +230,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
                 });
@@ -247,7 +247,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -258,7 +258,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -269,7 +269,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(false);
                     });
 
@@ -280,7 +280,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
 
@@ -291,7 +291,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
 
@@ -302,7 +302,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
                 });
@@ -319,7 +319,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -330,7 +330,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -341,7 +341,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(false);
                     });
 
@@ -352,7 +352,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
 
@@ -363,7 +363,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
 
@@ -374,7 +374,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
                 });
@@ -391,7 +391,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -402,7 +402,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(true);
                     });
 
@@ -413,7 +413,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('edit')).toBe(false);
                     });
 
@@ -424,7 +424,7 @@
                                     name: 'Pending Developer Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
 
@@ -435,7 +435,7 @@
                                     name: 'Pending ONC-ACB Action',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
 
@@ -446,7 +446,7 @@
                                     name: 'other',
                                 },
                             },
-                        }
+                        };
                         expect(ctrl.can('withdraw')).toBe(false);
                     });
                 });

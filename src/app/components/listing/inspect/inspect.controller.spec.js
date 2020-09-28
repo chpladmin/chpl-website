@@ -22,7 +22,7 @@
                 {id: 1, name: 'name1', year: 2014},
                 {id: 2, name: 'name2', year: 2015},
             ]},
-        }
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.components', 'chpl.mock', $provide => {

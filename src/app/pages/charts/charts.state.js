@@ -6,7 +6,7 @@ let states = [{
 }];
 
 function chartsStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

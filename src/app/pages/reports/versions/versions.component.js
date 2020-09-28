@@ -2,7 +2,7 @@ export const ReportsVersionsComponent = {
     templateUrl: 'chpl.reports/versions/versions.html',
     controller: class ReportsVersionsComponent {
         constructor ($log, $scope, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.ReportService = ReportService;
@@ -34,7 +34,7 @@ export const ReportsVersionsComponent = {
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.doFilter(f)
+            this.doFilter(f);
         }
 
         onClearFilter () {
@@ -151,7 +151,7 @@ export const ReportsVersionsComponent = {
                 .then(results => {
                     that.results = results.activities
                         .map(item => that.prepare(item));
-                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
                     let filter = {};
                     filter.dataFilter = '';
                     filter.tableState = this.tableController.tableState();
@@ -170,7 +170,7 @@ export const ReportsVersionsComponent = {
 
         addPageToData (page) {
             let that = this;
-            if (this.isDestroyed) { return }
+            if (this.isDestroyed) { return; }
             this.networkService.getActivityMetadata('beta/versions', {pageNum: page, ignoreLoadingBar: true}).then(results => {
                 results.activities.forEach(item => {
                     that.results.push(that.prepare(item));
@@ -183,7 +183,7 @@ export const ReportsVersionsComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsVersions', ReportsVersionsComponent);

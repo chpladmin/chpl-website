@@ -5,7 +5,7 @@ export const ApiKeysComponent = {
     },
     controller: class ApiKeysComponent {
         constructor ($log, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
             this.hasAnyRole = authService.hasAnyRole;
@@ -24,7 +24,7 @@ export const ApiKeysComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplApiKeys', ApiKeysComponent);

@@ -58,7 +58,7 @@
                 'ICSA Labs': true,
                 'UL LLC': true,
             },
-        }
+        };
         mock.refine = {
             certificationStatuses: ['Active', 'Suspended by ONC-ACB', 'Suspended by ONC'],
             certificationEditions: ['2014', '2015'],

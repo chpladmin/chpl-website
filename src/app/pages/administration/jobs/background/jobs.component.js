@@ -5,7 +5,7 @@ export const JobsBackgroundJobsComponent = {
     },
     controller: class JobsBackgroundJobsComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -19,7 +19,7 @@ export const JobsBackgroundJobsComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsBackgroundJobs', JobsBackgroundJobsComponent);

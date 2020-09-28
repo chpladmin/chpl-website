@@ -10,7 +10,7 @@ export const ChangeRequestsComponent = {
     },
     controller: class ChangeRequestsComponent {
         constructor ($filter, $log, authService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
@@ -157,7 +157,7 @@ export const ChangeRequestsComponent = {
                 if (this.administrationMode && this.activeChangeRequest) {
                     return 'Change Request';
                 } else {
-                    return 'Tracking'
+                    return 'Tracking';
                 }
             }
         }
@@ -166,7 +166,7 @@ export const ChangeRequestsComponent = {
             this.activeChangeRequest = data.changeRequest;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplChangeRequests', ChangeRequestsComponent);

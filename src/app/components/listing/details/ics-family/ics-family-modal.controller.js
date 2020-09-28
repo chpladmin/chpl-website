@@ -50,7 +50,7 @@
 
             vm.icsCyGraphReady = function (evt) {
                 $log.info('graph ready to be interacted with: ', evt);
-            }
+            };
 
             vm.icsStyle = [
                 {

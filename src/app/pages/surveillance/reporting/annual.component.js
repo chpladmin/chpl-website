@@ -8,7 +8,7 @@ export const SurveillanceReportAnnualComponent = {
     },
     controller: class SurveillanceReportAnnualComponent {
         constructor ($log, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.backup = {};
             this.hasAnyRole = authService.hasAnyRole;
@@ -57,7 +57,7 @@ export const SurveillanceReportAnnualComponent = {
                 });
         }
     },
-}
+};
 
 angular.module('chpl.surveillance')
     .component('chplSurveillanceReportAnnual', SurveillanceReportAnnualComponent);

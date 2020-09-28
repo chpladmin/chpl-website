@@ -10,7 +10,7 @@ export const FilterComponent = {
     },
     controller: class FilterComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -18,7 +18,7 @@ export const FilterComponent = {
             this.filtersCtrl.addFilter(this);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplFilter', FilterComponent);

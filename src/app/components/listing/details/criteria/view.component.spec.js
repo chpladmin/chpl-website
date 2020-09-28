@@ -213,7 +213,7 @@
 
                 it('should resolve elements', function () {
                     var hasIcs = true;
-                    var resources = {}
+                    var resources = {};
                     ctrl.hasIcs = hasIcs;
                     ctrl.resources = resources;
                     ctrl.editCert();

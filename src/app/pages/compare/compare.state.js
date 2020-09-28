@@ -8,7 +8,7 @@ let states = [
 ];
 
 function compareStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

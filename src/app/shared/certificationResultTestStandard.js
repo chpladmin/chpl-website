@@ -8,7 +8,7 @@
                     'description': testStandard.description,
                     'testStandardName': testStandard.name,
                     'testStandardId': testStandard.id,
-                }
+                };
             };
 
             // Return a reference to the function

@@ -18,6 +18,7 @@
     },
     "parser": "babel-eslint",
     "rules": {
+        "block-spacing": ["error"],
         "comma-dangle": ["error", "always-multiline"],
         "curly": ["error"],
         "default-case": ["error"],
@@ -36,6 +37,7 @@
         "no-useless-return": ["error"],
         "no-whitespace-before-property": ["error"],
         "quotes": ["error", "single"],
+        "semi": ["warn"],
         "semi-spacing": ["error", {"before": false, "after": true}],
         "sort-vars": ["error"],
         "space-before-blocks": ["error"],

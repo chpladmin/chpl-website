@@ -32,7 +32,7 @@
 
         this.$onInit = function () {
             vm.buildGrouping();
-        }
+        };
 
         function addItem () {
             vm.editModalInstance = $uibModal.open({

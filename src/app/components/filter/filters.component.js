@@ -10,7 +10,7 @@ export const FiltersComponent = {
     },
     controller: class FiltersComponent {
         constructor ($log, $transclude) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.isSlotFilled = $transclude.isSlotFilled;
             this.filters = [];
@@ -30,7 +30,7 @@ export const FiltersComponent = {
             this.filters.push(filter);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplFilters', FiltersComponent);

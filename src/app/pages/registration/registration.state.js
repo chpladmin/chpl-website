@@ -12,7 +12,7 @@ let states = [{
     },
     resolve: {
         hash: $transition$ => {
-            'ngInject'
+            'ngInject';
             return $transition$.params().hash;
         },
     },
@@ -26,7 +26,7 @@ let states = [{
     },
     resolve: {
         hash: $transition$ => {
-            'ngInject'
+            'ngInject';
             return $transition$.params().hash;
         },
     },
@@ -34,7 +34,7 @@ let states = [{
 }];
 
 function registrationStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

@@ -68,19 +68,21 @@ import { states as administrationStates } from './pages/administration/administr
                 // Set currentPage for internal page links
                 $rootScope.currentPage = $location.path();
             }
+
+            // If there's an anchor, scroll to it
+            if ($location.hash()) {
+                let target = $location.hash();
+                $anchorScroll();
+                $timeout(() => {
+                    var element = $window.document.getElementById(target);
+                    var elementAng = angular.element($window.document.getElementById(target));
+                    if (element && elementAng) {
+                        elementAng.attr('tabindex', '-1');
+                        element.focus();
+                    }
+                }, 0, false);
+            }
         });
 
-        // If there's an anchor, scroll to it
-        if ($location.hash()) {
-            $anchorScroll();
-            $timeout(() => {
-                var element = $window.document.getElementById('main-content');
-                var elementAng = angular.element($window.document.getElementById('main-content'));
-                if (element && elementAng) {
-                    elementAng.attr('tabindex', '-1');
-                    element.focus();
-                }
-            });
-        }
     }
 })();

@@ -11,7 +11,7 @@ export const ChartsSedComponent = {
     },
     controller: class ChartsSedComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -66,7 +66,7 @@ export const ChartsSedComponent = {
                         minValue: 0,
                     },
                 },
-            }
+            };
         }
 
         _getSedParticipantCountDataInChartFormat (data) {
@@ -91,7 +91,7 @@ export const ChartsSedComponent = {
                 options: {
                     title: 'Safety Enhanced Design Test Participants by Gender',
                 },
-            }
+            };
         }
 
         _getParticipantGenderCountDataInChartFormat (data) {
@@ -116,7 +116,7 @@ export const ChartsSedComponent = {
                 options: {
                     title: 'Safety Enhanced Design Test Participants by Age',
                 },
-            }
+            };
         }
 
         _getParticipantAgeCountDataInChartFormat (data) {
@@ -141,7 +141,7 @@ export const ChartsSedComponent = {
                 options: {
                     title: 'Safety Enhanced Design Test Participants by Education Level',
                 },
-            }
+            };
         }
 
         _getParticipantEducationCountDataInChartFormat (data) {
@@ -182,7 +182,7 @@ export const ChartsSedComponent = {
                         },
                     },
                 },
-            }
+            };
         }
 
         _createParticipantComputerExperienceCountChart (data) {
@@ -214,7 +214,7 @@ export const ChartsSedComponent = {
                         },
                     },
                 },
-            }
+            };
         }
 
         _createParticipantProductExperienceCountChart (data) {
@@ -246,7 +246,7 @@ export const ChartsSedComponent = {
                         },
                     },
                 },
-            }
+            };
         }
 
         _getParticipantExperienceCountDataInChartFormat (data) {
@@ -266,13 +266,13 @@ export const ChartsSedComponent = {
                     count = experienceMap[value.experienceYears] + count;
                 }
                 experienceMap[value.experienceYears] = count;
-            })
+            });
 
             //var experienceSummedByYear = Array.from(experienceMap);
             //Convert to an array of arrays
             var experienceSummedByYear = Object.keys(experienceMap).map(function (key) {
                 return [key, experienceMap[key]];
-            })
+            });
 
             //Sort based on years experience
             experienceSummedByYear.sort(function (a, b) {
@@ -285,7 +285,7 @@ export const ChartsSedComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.charts')
     .component('chplChartsSed', ChartsSedComponent);

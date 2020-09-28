@@ -1,0 +1,33 @@
+.product__edit-information-product {
+    margin: 8px;
+    background: var(--white);
+}
+
+.product__history-of-product {
+    display: grid;
+    grid-template-columns: 2fr 1.4fr 6em;
+    margin: 0 8px;
+    background: var(--light-grey);
+}
+
+.product__history-of-product-item {
+    align-self: center;
+}
+
+.product__history-of-product-item--adding {
+    align-self: start;
+}
+
+.product__history-of-product-header--end {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+
+.product__history-of-product-item--end {
+    justify-self: end;
+}
+
+.product__history-of-product-add-new {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
