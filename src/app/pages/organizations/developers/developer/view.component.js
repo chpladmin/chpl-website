@@ -2,10 +2,8 @@ export const DevelopersViewComponent = {
     templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
-        //developers: '<',
         directReviews: '<',
         products: '<',
-        //action: '@',
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
@@ -49,22 +47,6 @@ export const DevelopersViewComponent = {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.backup.developer = angular.copy(this.developer);
             }
-            /*
-              if (changes.developers) {
-              let acbs = {};
-              let devs = changes.developers.currentValue.developers;
-              this.allDevelopers = devs.map(d => {
-              d.transMap = {};
-              d.transparencyAttestations.forEach(att => {
-              d.transMap[att.acbName] = att.attestation;
-              acbs[att.acbName] = true;
-              });
-              return d;
-              });
-              this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
-              this.backup.developers = angular.copy(this.developers);
-              angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
-              }*/
             if (changes.directReviews) {
                 this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
@@ -120,79 +102,6 @@ export const DevelopersViewComponent = {
                 this.networkService.getChangeRequestStatusTypes().then(response => that.changeRequestStatusTypes = response);
             }
         }
-
-        /*save (developer) {
-          if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
-          this.saveRequest(developer);
-          } else {
-          let developerIds = [this.developer.developerId];
-          let that = this;
-          this.developer = developer;
-          this.errorMessages = [];
-          this.networkService.updateDeveloper({
-          developer: this.developer,
-          developerIds: developerIds,
-          }).then(response => {
-          if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-          that.developer = response;
-          that.backup.developer = angular.copy(response);
-          this.$state.go('^', undefined, {reload: true});
-          } else {
-          if (response.data.errorMessages) {
-          that.errorMessages = response.data.errorMessages;
-          } else if (response.data.error) {
-          that.errorMessages.push(response.data.error);
-          } else {
-          that.errorMessages = ['An error has occurred.'];
-          }
-          }
-          }, error => {
-          if (error.data.errorMessages) {
-          that.errorMessages = error.data.errorMessages;
-          } else if (error.data.error) {
-          that.errorMessages.push(error.data.error);
-          } else {
-          that.errorMessages = ['An error has occurred.'];
-          }
-          });
-          }
-          }*/
-
-        /*saveProduct (product) {
-          let that = this;
-          let request = {
-          productIds: [product.productId],
-          product: product,
-          newDeveloperId: product.developerId,
-          };
-          this.errorMessages = [];
-          this.networkService.updateProduct(request)
-          .then(response => {
-          if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-          this.$state.go('organizations.developers.developer', {
-          developerId: this.developer.developerId,
-          action: undefined,
-          productId: undefined,
-          }, {reload: true});
-          } else {
-          if (response.data.errorMessages) {
-          that.errorMessages = response.data.errorMessages;
-          } else if (response.data.error) {
-          that.errorMessages.push(response.data.error);
-          } else {
-          that.errorMessages = ['An error has occurred.'];
-          }
-          }
-          }, error => {
-          if (error.data.errorMessages) {
-          that.errorMessages = error.data.errorMessages;
-          } else if (error.data.error) {
-          that.errorMessages.push(error.data.error);
-          } else {
-          that.errorMessages = ['An error has occurred.'];
-          }
-          });
-          }*/
 
         takeAction (action) {
             this.$state.go('organizations.developers.developer.' + action);
