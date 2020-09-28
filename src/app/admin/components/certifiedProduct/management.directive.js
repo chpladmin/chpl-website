@@ -58,7 +58,7 @@
             if (angular.isUndefined(vm.workType)) {
                 vm.workType = 'manage';
             }
-            vm.mergeType = 'developer';
+            vm.mergeType = 'version';
             vm.resources = {};
             vm.forceRefresh = false;
             vm.refreshDevelopers();
@@ -332,7 +332,7 @@
                 vm.activeProduct = '';
                 vm.activeVersion = '';
                 vm.activeCP = '';
-                vm.mergeType = 'developer';
+                vm.mergeType = 'version';
                 vm.workType = workType;
             }
         }
