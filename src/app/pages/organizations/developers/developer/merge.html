@@ -23,10 +23,10 @@
         <i class="fa fa-cancel"></i> No Results Found
       </div>
       <div ng-repeat="developer in $ctrl.developers"
-           class="selectable-item" ng-class-even="'selectable-item--even'" ng-class-odd="'selectable-item--odd'"
+           class="selectable-item" ng-class="{ 'selectable-item--selected' : developer.selected }" ng-class-even="'selectable-item--even'" ng-class-odd="'selectable-item--odd'"
            ng-click="$ctrl.selectDeveloper(developer)">
         <div>{{ developer.name }}</div>
-        <div><i class="fa" ng-class="developer.selected ? 'fa-check' : 'fa-arrow-right'"></i></div>
+        <div ng-if="!developer.selected"><i class="fa fa-arrow-right"></i></div>
       </div>
     </div>
   </div>
@@ -37,7 +37,6 @@
     <div class="panel-body">
       <div class="selected-item selected-item--primary">
         {{ $ctrl.developer.name }}
-        <div><i class="fa fa-check"></i></div>
       </div>
       <div ng-repeat="developer in $ctrl.selectedDevelopers | orderBy: 'name' track by $index"
            class="selected-item selected-item--secondary"

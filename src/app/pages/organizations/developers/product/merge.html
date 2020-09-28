@@ -23,10 +23,10 @@
         <i class="fa fa-cancel"></i> No Results Found
       </div>
       <div ng-repeat="product in $ctrl.products"
-           class="selectable-item" ng-class-even="'selectable-item--even'" ng-class-odd="'selectable-item--odd'"
+           class="selectable-item" ng-class="{ 'selectable-item--selected' : product.selected }" ng-class-even="'selectable-item--even'" ng-class-odd="'selectable-item--odd'"
            ng-click="$ctrl.selectProduct(product)">
         <div>{{ product.name }}</div>
-        <div><i class="fa" ng-class="product.selected ? 'fa-check' : 'fa-arrow-right'"></i></div>
+        <div ng-if="!product.selected"><i class="fa fa-arrow-right"></i></div>
       </div>
     </div>
   </div>
@@ -37,7 +37,6 @@
     <div class="panel-body">
       <div class="selected-item selected-item--primary">
         <div>{{ $ctrl.product.name }}</div>
-        <div><i class="fa fa-check"></i></div>
       </div>
       <div ng-repeat="product in $ctrl.selectedProducts | orderBy: 'name' track by $index"
            class="selected-item selected-item--secondary"

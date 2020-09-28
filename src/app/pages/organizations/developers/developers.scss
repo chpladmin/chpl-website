@@ -5,11 +5,15 @@
 }
 
 .selectable-item--odd {
-    background-color: var(--grey-blue);
+    background-color: var(--light-grey);
 }
 
 .selectable-item--even {
     background-color: var(--white);
+}
+
+.selectable-item--selected {
+    background-color: var(--grey-blue);
 }
 
 .selected-item {
@@ -25,7 +29,7 @@
 }
 
 .selected-item--secondary {
-    background-color: var(--light-grey);
+    background-color: var(--grey-blue);
 }
 
 .developer__direct-review-error {
