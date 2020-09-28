@@ -5,35 +5,47 @@
 </div>
 <div class="flex-container">
   <div class="flex-item panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Add Developers to Merge</h2>
+    </div>
     <div class="panel-body">
-      <h2>Add Developers to Merge</h2>
       <label for="selected-to-merge" class="sr-only">Add developer to merge</label>
-      <input type="text" ng-model="$ctrl.selectedToMerge" class="form-control" id="selected-to-merge" name="selectedToMerge"
-             uib-typeahead="developer.name as developer.name for developer in $ctrl.developers | filter:$viewValue | filter:{selected:false} | limitTo:8"
-             typeahead-no-results="$ctrl.noneFound" typeahead-on-select="$ctrl.selectDeveloper($item, $model, $label, $event)"
-             typeahead-editable="false" typeahead-show-hint="true">
+      <div class="input-group">
+        <span class="input-group-addon">
+          <i class="fa fa-search"></i>
+        </span>
+        <input type="text" ng-model="$ctrl.selectedToMerge" class="form-control" id="selected-to-merge" name="selectedToMerge" placeholder="Enter Developer name..."
+               uib-typeahead="developer.name as developer.name for developer in $ctrl.developers | filter:$viewValue | filter:{selected:false} | limitTo:8"
+               typeahead-no-results="$ctrl.noneFound" typeahead-on-select="$ctrl.selectDeveloper($item, $model, $label, $event)"
+               typeahead-editable="false" typeahead-show-hint="true">
+      </div>
       <div ng-if="$ctrl.noneFound">
         <i class="fa fa-cancel"></i> No Results Found
       </div>
       <div ng-repeat="developer in $ctrl.developers"
+           class="selectable-item" ng-class-even="'selectable-item--even'" ng-class-odd="'selectable-item--odd'"
            ng-click="$ctrl.selectDeveloper(developer)">
-        <span ng-if="developer.selected"><i class="fa fa-check"></i><span class="sr-only">Developer is selected</span> </span>{{ developer.name }}
+        <div>{{ developer.name }}</div>
+        <div><i class="fa" ng-class="developer.selected ? 'fa-check' : 'fa-arrow-right'"></i></div>
       </div>
     </div>
   </div>
   <div class="flex-item panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Developers Merging</h2>
+    </div>
     <div class="panel-body">
-      <h2>Developers Merging</h2>
       <div class="selected-item selected-item--primary">
         {{ $ctrl.developer.name }}
+        <div><i class="fa fa-check"></i></div>
       </div>
       <div ng-repeat="developer in $ctrl.selectedDevelopers | orderBy: 'name' track by $index"
-           class="selected-item selected-item--secondary" ng-class-even="'selected-item--even'" ng-class-odd="'selected-item--odd'"
+           class="selected-item selected-item--secondary"
            ng-click="$ctrl.selectDeveloper(developer)">
-        {{ developer.name }}
-        <span class="pull-right"><i class="fa fa-close"></i></span>
+        <div>{{ developer.name }}</div>
+        <div><i class="fa fa-close"></i></div>
       </div>
-      <h2>New Merged Developer</h2>
+      <h3>New Merged Developer</h3>
       <chpl-developer developer="$ctrl.developer"
                       is-editing="true"
                       is-merging="true"
