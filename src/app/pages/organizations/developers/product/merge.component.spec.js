@@ -12,7 +12,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
-                $provide.factory('chplProductDirective', () => ({}));
+                $provide.factory('chplProductEditDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
@@ -67,27 +67,34 @@
         describe('when a product merge is saved', () => {
             it('should navigate back to the developer on a good response', () => {
                 spyOn($state, 'go');
-                let product = {productId: 'an id'};
+                let product = {
+                    productId: 'an id',
+                };
+                ctrl.developer = { developerId: 'dev ID' };
                 ctrl.selectedProducts = [{productId: 1}, {productId: 2}];
                 networkService.updateProduct.and.returnValue($q.when({productId: 200}));
                 ctrl.merge(product);
                 scope.$digest();
                 expect($state.go).toHaveBeenCalledWith(
                     'organizations.developers.developer',
-                    { productId: 200 },
+                    { developerId: 'dev ID' },
                     { reload: true },
                 );
             });
 
             it('should pass the the merging product data to the network service', () => {
-                let product = {productId: 'an id'};
+                let product = {
+                    productId: 'an id',
+                };
                 ctrl.product = product;
+                ctrl.developer = { developerId: 'dev ID' };
                 ctrl.selectedProducts = [{productId: 1}, {productId: 2}];
                 networkService.updateProduct.and.returnValue($q.when({productId: 200}));
                 ctrl.merge(product);
                 expect(networkService.updateProduct).toHaveBeenCalledWith({
                     product: product,
                     productIds: [1, 2, 'an id'],
+                    newDeveloperId: 'dev ID',
                 });
             });
         });

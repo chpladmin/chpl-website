@@ -50,7 +50,7 @@ export const ProductsMergeComponent = {
             let productToSave = {
                 product: product,
                 productIds: this.selectedProducts.map(d => d.productId),
-                newDeveloperId: product.owner.developerId,
+                newDeveloperId: this.developer.developerId,
             };
             productToSave.productIds.push(this.product.productId);
             let that = this;

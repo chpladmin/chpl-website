@@ -62,7 +62,7 @@ export const ProductEditComponent = {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
             }
             if (this.product && this.mergingProducts) {
-                this.generateMergeOptions()
+                this.generateMergeOptions();
             }
         }
 
