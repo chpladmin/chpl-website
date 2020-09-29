@@ -1,8 +1,4 @@
 module.exports = {
-    usernameACB: 'ACB USERNAME',
-    passwordACB: 'ACB PASSWORD',
-    usernameAdmin: 'ACB USERNAME',
-    passwordAdmin: 'ACB PASSWORD',
     acb: {
         username: 'insert username here',
         email: 'email address',

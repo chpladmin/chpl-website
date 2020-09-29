@@ -27,8 +27,8 @@ class UploadPage {
         return $(uploadElements.listingUploadText);
     }
 
-    waitForSuccessfulUpload () {
-        browser.waitUntil( () => this.uploadSuccessfulText.isDisplayed());
+    waitForSuccessfulUpload (fileName) {
+        browser.waitUntil( () => this.uploadSuccessfulText.getText().includes(fileName));
     }
 
     uploadListing (uploadfilePath) {
