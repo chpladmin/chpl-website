@@ -137,12 +137,12 @@
 
                 it('should create a modal instance when a Listing is to be edited', () => {
                     expect(ctrl.modalInstance).toBeUndefined();
-                    ctrl.inspectSurveillance({})
+                    ctrl.inspectSurveillance({});
                     expect(ctrl.modalInstance).toBeDefined();
                 });
 
                 xit('should resolve elements on inspect', () => {
-                    ctrl.inspectSurveillance({id: 'a surveillance'})
+                    ctrl.inspectSurveillance({id: 'a surveillance'});
                     expect($uibModal.open).toHaveBeenCalledWith(surveillanceInspectOptions);
                     expect(actualOptions.resolve.surveillance()).toEqual({id: 'a surveillance'});
                     el.isolateScope().$digest();

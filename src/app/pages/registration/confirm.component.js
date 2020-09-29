@@ -5,7 +5,7 @@ export const ConfirmUserComponent = {
     },
     controller: class ConfirmUserComponent {
         constructor ($log, featureFlags, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.isOn = featureFlags.isOn;
             this.networkService = networkService;
@@ -31,7 +31,7 @@ export const ConfirmUserComponent = {
                 });
         }
     },
-}
+};
 
 angular.module('chpl.registration')
     .component('chplRegistrationConfirmUser', ConfirmUserComponent);

@@ -3,7 +3,7 @@ export const ReportsAnnouncementsComponent = {
     bindings: { },
     controller: class ReportsAnnouncementsComponent {
         constructor ($filter, $log, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
@@ -60,7 +60,7 @@ export const ReportsAnnouncementsComponent = {
 
         onClearFilter () {
             this.activityRange.endDate = new Date();
-            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1)
+            this.activityRange.startDate = this.utilService.addDays(this.activityRange.endDate, (this.activityRange.range * -1) + 1);
             this.filterText = '';
             this.tableController.sortBy('date');
             this.search();
@@ -78,7 +78,7 @@ export const ReportsAnnouncementsComponent = {
                 } else if (this.isActivityNewAnnouncement(item)) {
                     action = 'Announcement was created.';
                 } else if (item.originalData && item.newData) {
-                    action = 'Announcement was updated.'
+                    action = 'Announcement was updated.';
                     action += this.getUpdateActivity(item);
                 }
 
@@ -137,7 +137,7 @@ export const ReportsAnnouncementsComponent = {
             this.displayed = results.map(item => {
                 item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
                 item.responsibleUserFullName = item.responsibleUser.fullName;
-                item.filterText = item.description + '|' + item.responsibleUserFullName
+                item.filterText = item.description + '|' + item.responsibleUserFullName;
                 return item;
             });
         }
@@ -162,7 +162,7 @@ export const ReportsAnnouncementsComponent = {
             return this.ReportService.validDates(this.activityRange.startDate, this.activityRange.endDate, this.activityRange.range, false);
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsAnnouncements', ReportsAnnouncementsComponent);

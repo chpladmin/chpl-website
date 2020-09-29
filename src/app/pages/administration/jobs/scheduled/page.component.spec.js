@@ -84,7 +84,7 @@
             describe('on actions', () => {
                 it('should cancel', () => {
                     ctrl.activeJob = 'fake';
-                    ctrl.activeTrigger = 'another fake'
+                    ctrl.activeTrigger = 'another fake';
                     ctrl.mode = 'something';
                     ctrl.cancel();
                     expect(ctrl.activeJob).toBeUndefined();

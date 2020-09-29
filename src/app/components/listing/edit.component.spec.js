@@ -37,7 +37,7 @@
             ]},
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
-        }
+        };
         mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
 
         beforeEach(() => {
@@ -165,7 +165,7 @@
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
             });
 
             it('should not load family if the product has no productId', () => {
@@ -179,7 +179,7 @@
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
             });
 
             it('should not load family if the product does not exist', () => {
@@ -193,7 +193,7 @@
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
             });
 
             describe('when disabling related options', () => {

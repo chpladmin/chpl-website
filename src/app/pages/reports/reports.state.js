@@ -38,7 +38,7 @@ let states = [{
     },
     resolve: {
         productId: $transition$ => {
-            'ngInject'
+            'ngInject';
             return $transition$.params().productId;
         },
     },
@@ -71,7 +71,7 @@ let states = [{
 }];
 
 function reportsStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

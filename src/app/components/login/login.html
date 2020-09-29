@@ -1,0 +1,102 @@
+<div class="login" ng-class="$ctrl.formClass" ng-form="$ctrl.loginForm" role="log in / log out">
+  <div class="login__label-element" ng-if="$ctrl.activity !== $ctrl.activityEnum.NONE && $ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING && $ctrl.activity !== $ctrl.activityEnum.RESET">
+    <label class="control-label" for="username-{{ $id }}">Email <span class="text-danger">*</span><br />(or Username)</label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity !== $ctrl.activityEnum.NONE && $ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING && $ctrl.activity !== $ctrl.activityEnum.RESET">
+    <input type="text" class="form-control login__input-field" id="username-{{ $id }}" name="username" ng-model="$ctrl.userName" placeholder="email (or username)" required />
+    <div class="text-danger" ng-if="$ctrl.loginForm.username.$touched && $ctrl.loginForm.username.$error.required">Email (or Username) is required</div>
+  </div>
+
+  <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <label class="control-label" for="username-{{ $id }}">Username <span class="text-danger">*</span></label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <input type="text" class="form-control login__input-field" id="username-{{ $id }}" name="username" ng-model="$ctrl.userName" placeholder="username" required />
+    <div class="text-danger" ng-if="$ctrl.loginForm.username.$touched && $ctrl.loginForm.username.$error.required">Username is required</div>
+  </div>
+
+  <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.LOGIN || $ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED">
+    <label for="password-{{ $id }}"><span ng-if="$ctrl.activity !== $ctrl.activityEnum.LOGIN">Old </span>Password <span class="text-danger">*</span></label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity === $ctrl.activityEnum.LOGIN || $ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED">
+    <input type="password" class="form-control login__input-field" id="password-{{ $id }}" name="password" ng-model="$ctrl.password" placeholder="password" required />
+    <div class="text-danger" ng-if="$ctrl.loginForm.password.$touched && $ctrl.loginForm.password.$error.required">Password is required</div>
+  </div>
+
+  <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED || $ctrl.activity === $ctrl.activityEnum.PASSWORD_RESET">
+    <label for="new-password-{{ $id }}">New Password <span class="text-danger">*</span></label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED || $ctrl.activity === $ctrl.activityEnum.PASSWORD_RESET">
+    <input type="password" class="form-control login__input-field" id="new-password-{{ $id }}" name="newPassword" ng-model="$ctrl.newPassword" placeholder="new password" required
+           zxcvbn="$ctrl.passwordStrength" zx-extras="$ctrl.extras" zx-min-score="3" />
+    <div class="text-danger" ng-if="$ctrl.loginForm.newPassword.$touched && $ctrl.loginForm.newPassword.$error.required">Password is required</div>
+    <div class="text-danger" ng-if="$ctrl.loginForm.newPassword.$touched && !$ctrl.loginForm.newPassword.$error.required && $ctrl.loginForm.newPassword.$error.passwordStrength">Password must be stronger</div>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED || $ctrl.activity === $ctrl.activityEnum.PASSWORD_RESET">
+    <ul class="list-unstyled text-info" ng-if="$ctrl.passwordStrength.score <= 2">
+      <li ng-if="$ctrl.passwordStrength.feedback.warning">{{ $ctrl.passwordStrength.feedback.warning }}</li>
+      <li ng-repeat="sugg in $ctrl.passwordStrength.feedback.suggestions">{{ sugg }}</li>
+    </ul>
+    <uib-progressbar max="4" value="$ctrl.passwordStrength.score" type="{{ $ctrl.passwordClass($ctrl.passwordStrength.score) }}" title="Password strength rating">
+      <span class="sr-only">Password strength: </span>{{ $ctrl.passwordTitle($ctrl.passwordStrength.score) }}
+    </uib-progressbar>
+  </div>
+
+  <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED || $ctrl.activity === $ctrl.activityEnum.PASSWORD_RESET">
+    <label for="confirm-password-{{ $id }}">Confirm Password <span class="text-danger">*</span></label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED || $ctrl.activity === $ctrl.activityEnum.PASSWORD_RESET">
+    <input type="password" class="form-control login__input-field" id="confirm-password-{{ $id }}" name="confirmPassword" ng-model="$ctrl.confirmPassword" placeholder="confirm password" required />
+    <div class="text-danger" ng-if="$ctrl.loginForm.confirmPassword.$touched && $ctrl.loginForm.confirmPassword.$error.required">Confirm password is required</div>
+    <div class="text-danger" ng-if="$ctrl.loginForm.confirmPassword.$touched && !$ctrl.loginForm.confirmPassword.$error.required && $ctrl.misMatchPasswords()">Passwords must match</div>
+  </div>
+
+  <div class="login__label-element" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <label for="email-{{ $id }}">Email <span class="text-danger">*</span></label>
+  </div>
+  <div class="login__input-element" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <input type="email" class="form-control login__input-field" id="email-{{ $id }}" name="email" ng-model="$ctrl.email" placeholder="sample@example.com" required />
+    <div class="text-danger" ng-if="$ctrl.loginForm.email.$touched && $ctrl.loginForm.email.$error.required">Email is required</div>
+    <div class="text-danger" ng-if="$ctrl.loginForm.email.$touched && $ctrl.loginForm.email.$error.email">Invalid email</div>
+  </div>
+
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.LOGIN">
+    <button class="btn btn-default btn-block" id="login_{{ $id }}" ng-click="$ctrl.login(); $event.stopPropagation()" ng-disabled="$ctrl.loginForm.$invalid">Log In</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.RESET">
+    <button class="btn btn-default btn-block" id="reset_{{ $id }}" ng-click="$ctrl.sendReset(); $event.stopPropagation()" ng-disabled="$ctrl.loginForm.$invalid">Send reset email</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.LOGIN || $ctrl.activity === $ctrl.activityEnum.EXPIRED">
+    <button class="btn btn-default btn-block" id="forgot_{{ $id }}" ng-click="$ctrl.setActivity($ctrl.activityEnum.RESET); $event.stopPropagation()">Forgot Password</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.NONE || $ctrl.activity === $ctrl.activityEnum.IMPERSONATING">
+    <button class="btn btn-default btn-block" id="logout_{{ $id }}" ng-click="$ctrl.logout()">Log Out</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.IMPERSONATING">
+    <button class="btn btn-default btn-block" id="impersonating_{{ $id }}" ng-click="$ctrl.stopImpersonating()">Stop Impersonation</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.EXPIRED">
+    <button class="btn btn-default btn-block" id="confirm_{{ $id }}" ng-click="$ctrl.changePassword()" ng-disabled="$ctrl.loginForm.$invalid || $ctrl.misMatchPasswords()">Confirm new Password</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.PASSWORD_RESET">
+    <button class="btn btn-default btn-block" id="confirm_{{ $id }}" ng-click="$ctrl.resetPassword()" ng-disabled="$ctrl.loginForm.$invalid || $ctrl.misMatchPasswords()">Confirm Password Reset</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity !== $ctrl.activityEnum.CHANGE && $ctrl.activity !== $ctrl.activityEnum.IMPERSONATING && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])">
+    <button class="btn btn-default btn-block" id="change_{{ $id }}" ng-click="$ctrl.setActivity($ctrl.activityEnum.CHANGE); $event.stopPropagation()">Change Password</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.CHANGE || $ctrl.activity === $ctrl.activityEnum.RESET">
+    <button class="btn btn-default btn-block" id="cancel_{{ $id }}" ng-click="$ctrl.$onInit(); $event.stopPropagation()">Cancel</button>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.EXPIRED">
+    <p class="$ctrl.pClass">You must change or reset your password before you can log in</p>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.message.length > 0">
+    <p ng-class="$ctrl.messageClass">{{ $ctrl.message }}</p>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.activity === $ctrl.activityEnum.LOGIN">
+    <p class="text-center"><small>This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.</small></p>
+  </div>
+  <div class="login__element--full" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN'])">
+    <a href="rest/ff4j-console/home">FF4j</a>
+  </div>
+</div>

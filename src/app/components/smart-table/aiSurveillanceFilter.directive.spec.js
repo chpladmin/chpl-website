@@ -93,7 +93,7 @@
                 });
 
                 describe('restoration', function () {
-                    var state
+                    var state;
                     beforeEach(function () {
                         spyOn(vm, 'filterChanged');
                         state = {
@@ -244,7 +244,7 @@
                                     closed: false,
                                 },
                                 matchAll: false,
-                            }
+                            };
                             vm.filterChanged();
                             expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Never Surveilled,Cleared Never had a Nonconformity,Cleared Open Nonconformity,Cleared Closed Nonconformity,Matching Any'});
                             vm.initialState = {
@@ -255,7 +255,7 @@
                                     closed: false,
                                 },
                                 matchAll: false,
-                            }
+                            };
                             vm.query = {
                                 surveillance: 'has-had',
                                 NC: {

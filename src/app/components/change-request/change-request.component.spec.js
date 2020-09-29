@@ -79,7 +79,7 @@
                                 },
                             },
                         };
-                        ctrl.$onChanges(changes)
+                        ctrl.$onChanges(changes);
                         expect(ctrl.changeRequest.statuses[0].actingOrganization).toBe('ONC');
                     });
 
@@ -95,7 +95,7 @@
                                 },
                             },
                         };
-                        ctrl.$onChanges(changes)
+                        ctrl.$onChanges(changes);
                         expect(ctrl.changeRequest.statuses[0].actingOrganization).toBe('ONC');
                     });
 
@@ -114,7 +114,7 @@
                                 },
                             },
                         };
-                        ctrl.$onChanges(changes)
+                        ctrl.$onChanges(changes);
                         expect(ctrl.changeRequest.statuses[0].actingOrganization).toBe('a body');
                     });
 
@@ -133,7 +133,7 @@
                                 },
                             },
                         };
-                        ctrl.$onChanges(changes)
+                        ctrl.$onChanges(changes);
                         expect(ctrl.changeRequest.statuses[0].actingOrganization).toBe('a name');
                     });
                 });
@@ -151,7 +151,7 @@
                                 },
                             },
                         };
-                        ctrl.$onChanges(changes)
+                        ctrl.$onChanges(changes);
                         expect(ctrl.changeRequestStatusTypes).toEqual([{name: 'one'}]);
                     });
 
@@ -199,7 +199,7 @@
                 });
 
                 it('should enable it when Pending Developer Action', () => {
-                    ctrl.changeRequest.currentStatus.changeRequestStatusType.name = 'Pending Developer Action'
+                    ctrl.changeRequest.currentStatus.changeRequestStatusType.name = 'Pending Developer Action';
                     expect(ctrl.isCommentEnabled()).toBe(true);
                 });
 

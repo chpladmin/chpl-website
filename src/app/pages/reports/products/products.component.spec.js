@@ -24,7 +24,7 @@
                 networkService.getActivityMetadata.and.returnValue($q.when(Mock.productReportsMetadata));
                 networkService.getActivityById.and.returnValue($q.when(Mock.listingActivity));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
 
                 el = angular.element('<chpl-reports-products></chpl-reports-products>');
 
@@ -91,7 +91,7 @@
                     expect(filter.startDate).toBe(ctrl.activityRange.startDate);
                     expect(filter.endDate).toBe(ctrl.activityRange.endDate);
                     expect(filter.dataFilter).toBe(ctrl.filterText);
-                })
+                });
             });
         });
     });

@@ -70,13 +70,13 @@
 
         describe('when handling job data', () => {
             it('should add to elements', () => {
-                ctrl.newItem['email-Subscribers'] = 'newEmail'
+                ctrl.newItem['email-Subscribers'] = 'newEmail';
                 ctrl.addNewItem('email-Subscribers');
                 expect(ctrl.job.jobDataMap.email).toBe('alarned@ainq.com,newEmail');
             });
 
             it('should add elements even if null', () => {
-                ctrl.newItem['email-Subscribers'] = 'newEmail'
+                ctrl.newItem['email-Subscribers'] = 'newEmail';
                 ctrl.job.jobDataMap.email = null;
                 ctrl.addNewItem('email-Subscribers');
                 expect(ctrl.job.jobDataMap.email).toBe('newEmail');

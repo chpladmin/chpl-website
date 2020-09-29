@@ -10,7 +10,7 @@ export const SurveillanceReportRelevantListingsComponent = {
     },
     controller: class SurveillanceReportRelevantListingComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -49,11 +49,11 @@ export const SurveillanceReportRelevantListingsComponent = {
         }
 
         save (listing) {
-            this.onSave({ listing: listing })
+            this.onSave({ listing: listing });
             this.activeListing = undefined;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSurveillanceReportRelevantListings', SurveillanceReportRelevantListingsComponent);

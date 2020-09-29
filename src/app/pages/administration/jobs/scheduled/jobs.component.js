@@ -6,7 +6,7 @@ export const JobsScheduledJobsComponent = {
     },
     controller: class JobsScheduledJobsComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hideAcb = true;
             this.showJob = false;
@@ -45,7 +45,7 @@ export const JobsScheduledJobsComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsScheduledJobs', JobsScheduledJobsComponent);

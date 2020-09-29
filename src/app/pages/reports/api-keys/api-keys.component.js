@@ -3,7 +3,7 @@ export const ReportsApiKeysComponent = {
     bindings: { },
     controller: class ReportsApiKeyComponent {
         constructor ($filter, $log, ReportService, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.ReportService = ReportService;
@@ -79,7 +79,7 @@ export const ReportsApiKeysComponent = {
             this.search();
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsApiKeys', ReportsApiKeysComponent);

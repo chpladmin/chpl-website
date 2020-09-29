@@ -34,7 +34,7 @@
             inject((_$log_, _ReportService_) => {
                 $log = _$log_;
                 service = _ReportService_;
-            })
+            });
         });
 
         afterEach(() => {

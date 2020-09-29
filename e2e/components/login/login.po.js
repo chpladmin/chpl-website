@@ -44,6 +44,15 @@ class LoginComponent {
         this.loginButton.scrollAndClick();
     }
 
+    logInWithEmail (user) {
+        if (!this.usernameInput.isDisplayed()) {
+            this.openLoginComponent();
+        }
+        this.usernameInput.addValue(credentials[user].email);
+        this.passwordInput.addValue(credentials[user].password);
+        this.loginButton.click();
+    }
+
     logOut () {
         if (!this.logoutButton.isDisplayed()) {
             this.openLoginComponent();

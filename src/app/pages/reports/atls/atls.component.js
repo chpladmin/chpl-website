@@ -3,7 +3,7 @@ export const ReportsAtlsComponent = {
     bindings: {},
     controller: class ReportsAtlsComponent {
         constructor ($log, $scope, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.ReportService = ReportService;
@@ -77,7 +77,7 @@ export const ReportsAtlsComponent = {
                 .forEach(item => this.parse(item));
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsAtls', ReportsAtlsComponent);

@@ -2,7 +2,7 @@ export const ReportsDevelopersComponent = {
     templateUrl: 'chpl.reports/developers/developers.html',
     controller: class ReportsDevelopersComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -35,7 +35,7 @@ export const ReportsDevelopersComponent = {
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.doFilter(f)
+            this.doFilter(f);
         }
 
         onClearFilter () {
@@ -246,7 +246,7 @@ export const ReportsDevelopersComponent = {
                 .then(results => {
                     that.results = results.activities
                         .map(item => that.prepare(item));
-                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
                     let filter = {};
                     filter.dataFilter = '';
                     filter.tableState = this.tableController.tableState();
@@ -265,7 +265,7 @@ export const ReportsDevelopersComponent = {
 
         addPageToData (page) {
             let that = this;
-            if (this.isDestroyed) { return }
+            if (this.isDestroyed) { return; }
             this.networkService.getActivityMetadata('beta/developers', {pageNum: page, ignoreLoadingBar: true}).then(results => {
                 results.activities.forEach(item => {
                     that.results.push(that.prepare(item));
@@ -311,7 +311,7 @@ export const ReportsDevelopersComponent = {
             return attestationMappings.reduce((acc, curr) => acc || (typeof curr.transparencyAttestation === 'object' && curr.transparencyAttestation !== null) , false);
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsDevelopers', ReportsDevelopersComponent);

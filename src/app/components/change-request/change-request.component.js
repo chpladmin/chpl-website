@@ -11,7 +11,7 @@ export const ChangeRequestComponent = {
     },
     controller: class ChangeRequestComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.backup = {};
         }
@@ -92,7 +92,7 @@ export const ChangeRequestComponent = {
                     || this.changeRequest.newStatus.name === 'Pending Developer Action');
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplChangeRequest', ChangeRequestComponent);

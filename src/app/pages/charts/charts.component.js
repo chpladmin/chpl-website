@@ -3,10 +3,9 @@ export const ChartsComponent = {
     bindings: {
     },
     controller: class ChartsComponent {
-        constructor ($log, featureFlags, networkService) {
-            'ngInject'
+        constructor ($log, networkService) {
+            'ngInject';
             this.$log = $log;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
         }
 
@@ -84,7 +83,7 @@ export const ChartsComponent = {
             this.networkService.getParticipantProductExperienceStatistics().then(data => that.participantProductExperienceCount = data);
         }
     },
-}
+};
 
 angular.module('chpl.charts')
     .component('chplCharts', ChartsComponent);
