@@ -27,3 +27,9 @@
 .listing__developer-information {
     grid-column-start: 1;
 }
+
+.listing-edit__details {
+    display: grid;
+    grid-template-columns: minmax(750px, 1fr) minmax(450px, 1fr);
+    align-items: start;
+}
