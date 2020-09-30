@@ -9,31 +9,8 @@ const elements = {
 class ContactComponent {
     constructor () { }
 
-    getFull (element) {
-        return this.getDataItem(element, 'Full name');
-    }
-
-    getFriendly (element) {
-        return this.getDataItem(element, 'Friendly name');
-    }
-
-    getTitle (element) {
-        return this.getDataItem(element, 'Title');
-    }
-
-    getEmail (element) {
-        return this.getDataItem(element, 'Email');
-    }
-
-    getPhone (element) {
-        return this.getDataItem(element, 'Phone');
-    }
-
-    getDataItem (element, label) {
-        return element.$(elements.container)
-            .$$('.flex-item')
-            .filter(el => el.$('.data-label').getText().toLowerCase() === label.toLowerCase())[0]
-            .$('.read-only-data');
+    get (element) {
+        return element.$(elements.container);
     }
 
     get editFull () {
@@ -50,16 +27,6 @@ class ContactComponent {
 
     get editPhone () {
         return $(elements.editPhone);
-    }
-
-    get (element) {
-        let contact = {
-            full: this.getFull(element).getText(),
-            title: this.getTitle(element).getText(),
-            email: this.getEmail(element).getText(),
-            phone: this.getPhone(element).getText(),
-        };
-        return contact;
     }
 
     set (contact) {

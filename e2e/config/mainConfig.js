@@ -1,6 +1,6 @@
 module.exports = {
     browser: 'chrome',
     logLevel: 'warn',
-    timeout: 15000,
+    timeout: 25000,
     longTimeout: 40000,
 };

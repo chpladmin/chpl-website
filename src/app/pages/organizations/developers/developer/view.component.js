@@ -27,12 +27,18 @@ export const DevelopersViewComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct') {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct' && this.action !== 'editVersion') {
                 this.loadData();
             }
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
             this.networkService.getSearchOptions()
                 .then(options => that.searchOptions = options);
+            if (this.$stateParams.productId) {
+                this.productId = this.$stateParams.productId;
+            }
+            if (this.$stateParams.versionId) {
+                this.versionId = this.$stateParams.versionId;
+            }
             if (this.featureFlags.isOn('direct-review')) {
                 this.networkService.getDirectReviews(this.developer.developerId)
                     .then(results => {
@@ -78,6 +84,7 @@ export const DevelopersViewComponent = {
                 developerId: this.developer.developerId,
                 action: undefined,
                 productId: undefined,
+                versionId: undefined,
             }, {reload: true});
         }
 
