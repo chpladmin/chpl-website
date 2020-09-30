@@ -35,8 +35,7 @@
             <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0">
               <ul>
                 <li ng-repeat="m in $ctrl.cert.svaps">
-                  <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
-                  <span ng-if="!m.approvedStandardVersion">{{ m.regulatoryTextCitation }}</span>
+                  <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
                 </li>
               </ul>
             </td>
