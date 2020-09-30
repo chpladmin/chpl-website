@@ -230,7 +230,7 @@ exports.config = {
             return new Promise(function (resolve, reject) {
             var timer = setTimeout(function () {
                 watcher.close();
-                reject(new Error('File did not exists and was not created during the timeout.'));
+                reject(new Error('File did not exist and was not created before the timeout.'));
             }, timeout);
           
             fs.access(filePath, fs.constants.R_OK, function (err) {
