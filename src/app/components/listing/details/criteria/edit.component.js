@@ -52,6 +52,7 @@ export const CertificationCriteriaEditComponent = {
             this.selectedSvapKeys = this._getSelectedSvapKeys();
             this._setAvailableTestValues();
             this._setTestToolDropDownText();
+            this._setSvapDisplayText();
 
             //this.cert.svaps = this.cert.svaps.map(svap => ({ ...svap, 'name': svap.regulatoryTextCitation + ' - ' + svap.approvedStandardVersion }));
         }
@@ -270,6 +271,10 @@ export const CertificationCriteriaEditComponent = {
             let title = this.cert.title;
             this.availableTestData = this.resources.testData.data.filter(item => item.criteria.number === number && item.criteria.title === title);
             this.availableTestProcedures = this.resources.testProcedures.data.filter(item => item.criteria.number === number && item.criteria.title === title);
+        }
+
+        _setSvapDisplayText () {
+            this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
         }
 
         _setTestToolDropDownText () {
