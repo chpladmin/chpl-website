@@ -5,13 +5,16 @@
         var $compile, $log, $q, $rootScope, ctrl, el, mock, networkService, scope;
 
         mock = {
-            version: {
-                name: 'a version',
+            product: {
+                name: 'a product',
             },
             stateParams: {
                 developerId: 22,
                 productId: 42,
                 versionId: 32,
+            },
+            version: {
+                name: 'a version',
             },
         };
 
@@ -20,6 +23,7 @@
                 $provide.factory('$stateParams', () => mock.stateParams);
                 $provide.factory('chplVersionEditDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
+                    $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getVersion = jasmine.createSpy('getVersion');
                     return $delegate;
                 });
@@ -30,6 +34,7 @@
                 $q = _$q_;
                 $rootScope = _$rootScope_;
                 networkService = _networkService_;
+                networkService.getProduct.and.returnValue($q.when(mock.product));
                 networkService.getVersion.and.returnValue($q.when(mock.version));
 
                 scope = $rootScope.$new();
@@ -63,6 +68,7 @@
 
             describe('during initialization', () => {
                 it('should get data', () => {
+                    expect(networkService.getProduct.calls.count()).toBe(1);
                     expect(networkService.getVersion.calls.count()).toBe(1);
                 });
             });
