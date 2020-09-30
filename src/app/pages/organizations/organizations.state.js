@@ -88,7 +88,7 @@ let states = [
         name: 'organizations.developers.developer.product.version.edit',
         url: '/edit',
         views: {
-            'products@^.^': 'chplVersionsEdit',
+            'products@^.^.^': 'chplVersionsEdit',
         },
         data: { title: 'CHPL Developers - Edit Version' },
     },{

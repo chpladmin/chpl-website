@@ -23,6 +23,10 @@ export const VersionsEditComponent = {
                     that.version = data;
                     that.backup.version = angular.copy(data);
                 });
+            this.networkService.getProduct(this.productId)
+                .then(data => {
+                    that.product = data;
+                });
         }
 
         cancel () {
