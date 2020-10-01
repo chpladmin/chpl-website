@@ -18,14 +18,10 @@
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
         <div ng-repeat="n in $ctrl.listing.certificationResults | orderBy:$ctrl.sortCerts track by n.criterion.id">
           <chpl-certification-criteria ng-if="$ctrl.viewAllCerts || n.success"
-                                       accessibility-standards="$ctrl.listing.accessibilityStandards"
                                        cert="n"
                                        has-ics="$ctrl.listing.ics.inherits"
                                        is-confirming="$ctrl.isConfirming"
-                                       on-change="$ctrl.saveCert(cert)"
                                        qms-standards="$ctrl.listing.qmsStandards"
-                                       refresh-sed="$ctrl.hasEdited()"
-                                       resources="$ctrl.resources"
                                        view-all="$ctrl.viewAllCerts">
           </chpl-certification-criteria>
         </div>
@@ -81,9 +77,6 @@
         <ai-sed
           criteria-count="$ctrl.sedCriteriaCount"
           listing="$ctrl.listing"
-          on-change="$ctrl.sedChange(listing)"
-          refresh="$ctrl.registerSed(handler)"
-          resources="$ctrl.resources"
           task-count="$ctrl.sedTaskCount">
         </ai-sed>
       </div>
