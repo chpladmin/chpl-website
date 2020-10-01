@@ -6,7 +6,7 @@
     <div class="panel-body">
       <chpl-listing-edit
         isSaving="$ctrl.isSaving"
-        listing="$ctrl.listing"
+        listing="$ctrl.listingBasic"
         messages="$ctrl.messages"
         on-cancel="$ctrl.cancel()"
         on-save="$ctrl.save(listing, reason, acknowledgeWarnings)"
@@ -24,7 +24,7 @@
         default-all="true"
         hide-direct-reviews="true"
         initial-panel="additional"
-        listing="$ctrl.listing"
+        listing="$ctrl.listingDetails"
         on-change="$ctrl.update(listing)"
         resources="$ctrl.resources"
         >

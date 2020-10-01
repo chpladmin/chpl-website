@@ -16,7 +16,8 @@ export const ListingEditPageComponent = {
 
         $onChanges (changes) {
             if (changes.listing) {
-                this.listing = changes.listing.currentValue;
+                this.listingBasic = angular.copy(changes.listing.currentValue);
+                this.listingDetails = angular.copy(changes.listing.currentValue);
             }
             if (changes.resources) {
                 this.resources = changes.resources.currentValue;
@@ -30,11 +31,22 @@ export const ListingEditPageComponent = {
         save (listing, reason, acknowledgeWarnings) {
             let that = this;
             this.isSaving = true;
-            this.$log.error(listing.otherAcb);
-            that.$log.error(listing, acknowledgeWarnings);
+            this.listingBasic.certificationResults = this.listingDetails.certificationResults;
+            this.listingBasic.cqmResults = this.listingDetails.cqmResults;
+            this.listingBasic.sed = this.listingDetails.sed;
+            this.listingBasic.sedIntendedUserDescription = this.listingDetails.sedIntendedUserDescription;
+            this.listingBasic.sedReportFileLocation = this.listingDetails.sedReportFileLocation;
+            this.listingBasic.sedTestingEndDate = this.listingDetails.sedTestingEndDate;
+
+            this.listingBasic.otherAcb = this.listingDetails.otherAcb;
+            this.listingBasic.ics = this.listingDetails.ics;
+            this.listingBasic.qmsStandards = this.listingDetails.qmsStandards;
+            this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
+            this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
+            that.$log.error(this.listingBasic, acknowledgeWarnings);
             /*
             this.networkService.updateCP({
-                listing: listing,
+                listing: this.listingBasic,
                 reason: reason,
                 acknowledgeWarnings: acknowledgeWarnings,
             }).then(response => {
@@ -66,24 +78,22 @@ export const ListingEditPageComponent = {
         }
 
         update (listing) {
-            this.listing.certificationResults = listing.certificationResults;
-            this.listing.cqmResults = listing.cqmResults;
-            this.listing.sed = listing.sed;
-            this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
-            this.listing.sedReportFileLocation = listing.sedReportFileLocation;
-            this.listing.sedTestingEndDate = listing.sedTestingEndDate;
+            this.listingDetails.certificationResults = listing.certificationResults;
+            this.listingDetails.cqmResults = listing.cqmResults;
+            this.listingDetails.sed = listing.sed;
+            this.listingDetails.sedIntendedUserDescription = listing.sedIntendedUserDescription;
+            this.listingDetails.sedReportFileLocation = listing.sedReportFileLocation;
+            this.listingDetails.sedTestingEndDate = listing.sedTestingEndDate;
 
-            this.listing.otherAcb = listing.otherAcb;
-            this.listing.ics.inherits = angular.copy(listing.ics.inherits);
-            this.listing.ics.parents = angular.copy(listing.ics.parents);
-            this.listing.qmsStandards = angular.copy(listing.qmsStandards);
-            this.listing.targetedUsers = angular.copy(listing.targetedUsers);
-            this.listing.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
+            this.listingDetails.otherAcb = listing.otherAcb;
+            this.listingDetails.ics = angular.copy(listing.ics);
+            this.listingDetails.qmsStandards = angular.copy(listing.qmsStandards);
+            this.listingDetails.targetedUsers = angular.copy(listing.targetedUsers);
+            this.listingDetails.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
                 .map(muu => {
                     muu.muuDate = muu.muuDateObject.getTime();
                     return muu;
                 });
-            this.listing = angular.copy(this.listing);
         }
     },
 };
