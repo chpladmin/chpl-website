@@ -1,4 +1,16 @@
-.details__direct-review-error {
+.listing-details__element-header {
+    display: flex;
+}
+
+.listing-details__element-header-title {
+    flex: 1;
+}
+
+.listing-details__element-header-toggle {
+    padding-left: 8px;
+}
+
+.listing-details__direct-review-error {
     color: var(--white) !important;
     background-color: var(--danger) !important;
 }
