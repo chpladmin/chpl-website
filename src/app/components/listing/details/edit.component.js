@@ -6,7 +6,6 @@ export const ListingDetailsEditComponent = {
         isConfirming: '<',
         onChange: '&',
         resources: '<',
-        viewAllCerts: '<defaultAll',
     },
     controller: class ListingDetailsEditComponent {
         constructor ($analytics, $log, $uibModal, featureFlags, networkService, utilService) {
@@ -20,7 +19,7 @@ export const ListingDetailsEditComponent = {
             this.handlers = [];
             this.isOn = featureFlags.isOn;
             this.drStatus = 'pending';
-            this.viewAllCerts = false;
+            this.viewAllCerts = true;
             this.panelShown = 'cert';
         }
 

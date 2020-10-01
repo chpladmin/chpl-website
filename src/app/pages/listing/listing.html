@@ -52,7 +52,7 @@
       <div class="listing__details">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h2 class="panel-title">Listing Details</h2>
+            <h2 class="panel-title">Listing Information</h2>
           </div>
           <div class="panel-body">
             <div class="listing__basic-information">
@@ -140,11 +140,16 @@
             </div>
           </div>
         </div>
-        <div class="listing__detailed-information">
-          <chpl-listing-details-view initial-panel="{{ $ctrl.panel }}"
-                                     listing="$ctrl.listing"
-                                     direct-reviews="$ctrl.directReviews">
-          </chpl-listing-details-view>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title">Listing Details</h2>
+          </div>
+          <div class="panel-body">
+            <chpl-listing-details-view initial-panel="{{ $ctrl.panel }}"
+                                       listing="$ctrl.listing"
+                                       direct-reviews="$ctrl.directReviews">
+            </chpl-listing-details-view>
+          </div>
         </div>
       </div>
     </ui-view>
