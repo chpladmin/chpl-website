@@ -53,8 +53,6 @@ export const CertificationCriteriaEditComponent = {
             this._setAvailableTestValues();
             this._setTestToolDropDownText();
             this._setSvapDisplayText();
-
-            //this.cert.svaps = this.cert.svaps.map(svap => ({ ...svap, 'name': svap.regulatoryTextCitation + ' - ' + svap.approvedStandardVersion }));
         }
 
         cancel () {
@@ -80,8 +78,6 @@ export const CertificationCriteriaEditComponent = {
         }
 
         svapOnChange (action) {
-            this.$log.info('Action');
-            this.$log.info(action);
             switch (action.action) {
             case 'Remove':
                 this.cert.svaps = this.cert.svaps
@@ -92,7 +88,6 @@ export const CertificationCriteriaEditComponent = {
                 break;
             // no default
             }
-            this.$log.info(this.cert.svaps);
         }
 
         testDataOnChange (action) {
@@ -274,7 +269,9 @@ export const CertificationCriteriaEditComponent = {
         }
 
         _setSvapDisplayText () {
-            this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
+            if (Array.isArray(this.cert.allowedSvaps)) {
+                this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
+            }
         }
 
         _setTestToolDropDownText () {

@@ -9,7 +9,7 @@
                     'name': testFunctionality.name,
                     'testFunctionalityId': testFunctionality.id,
                     'year': testFunctionality.year,
-                };
+                }
             };
 
             // Return a reference to the function

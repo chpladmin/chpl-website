@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Certification Criteria Modal controller', () => {
+    fdescribe('the Certification Criteria Modal controller', () => {
         var $compile, $log, ctrl, el, mock, scope;
 
         mock = {};
@@ -46,10 +46,24 @@
                         {'id': 2, 'name': '(a)(2)(ii)'},
                         {'id': 3, 'name': '(a)(1)(i)'},
                     ],
+                    //allowedSvaps: [
+                    //    {svapId: 1, regulatoryTextCitation: 'reg1', approvedStandardVersion: 'ver1'},
+                    //    {svapId: 2, regulatoryTextCitation: 'reg2', approvedStandardVersion: 'ver2'},
+                    //],
                     resources: mock.resources,
                     hasIcs: false,
                     isConfirming: false,
                 };
+                scope.resolve.cert = ({
+                    ...scope.resolve.cert,
+                    allowedSvaps: [
+                        {svapId: 1, regulatoryTextCitation: 'reg1', approvedStandardVersion: 'ver1'},
+                        {svapId: 2, regulatoryTextCitation: 'reg2', approvedStandardVersion: 'ver2'},
+                    ],
+                    svaps: [
+                        {svapId: 1, regulatoryTextCitation: 'reg1', approvedStandardVersion: 'ver1'},
+                    ],
+                });
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -159,6 +173,50 @@
                     expect(ctrl.sortedTestFunctionalities[2].name).toBe('(a)(2)(ii)')
                 });
             });
+
+            describe('with regard to SVAP', () => {
+                it('should add the display text to the SVAP object', () => {
+                    expect(ctrl.cert.allowedSvaps[0].displayText).toBe('reg1 ver1');
+                    expect(ctrl.cert.allowedSvaps[1].displayText).toBe('reg2 ver2');
+                });
+
+                it('should get a list of preselected SAVP ids', () => {
+                    expect(ctrl.selectedSvapKeys[0].key).toBe(1);
+                });
+
+                it('should add the SVAP to the cert', () => {
+                    ctrl.cert.svaps = [];
+                    let action = {
+                        action: 'Add',
+                        item: {
+                            item: {
+                                svapId: 1,
+                                regulatoryTextCitation: 'reg1',
+                                approvedStandardVersion: 'ver1',
+                            }
+                        }
+                    }
+                    ctrl.svapOnChange(action);
+                    expect(ctrl.cert.svaps.length).toBe(1);
+                });
+
+                it('should remove the SVAP from the cert', () => {
+                    expect(ctrl.cert.svaps.length).toBe(1);
+
+                    let action = {
+                        action: 'Remove',
+                        item: {
+                            item: {
+                                svapId: 1,
+                                regulatoryTextCitation: 'reg1',
+                                approvedStandardVersion: 'ver1',
+                            }
+                        }
+                    }
+                    ctrl.svapOnChange(action);
+                    expect(ctrl.cert.svaps.length).toBe(0);
+                });
+            })
         });
     });
 })();

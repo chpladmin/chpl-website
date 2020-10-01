@@ -7,7 +7,7 @@
                 return {
                     'testProcedure': testProcedure,
                     'testProcedureVersion': version,
-                };
+                }
             };
 
             // Return a reference to the function

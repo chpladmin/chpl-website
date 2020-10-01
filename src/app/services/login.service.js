@@ -20,7 +20,7 @@
             parseJwt: parseJwt,
             saveCurrentUser: saveCurrentUser,
             saveToken: saveToken,
-        };
+        }
         return service;
 
         ////////////////////////////////////////////////////////////////////////

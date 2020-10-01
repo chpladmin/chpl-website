@@ -8,7 +8,7 @@
                     'testData': testData,
                     'version': version,
                     'alteration': alteration,
-                };
+                }
             };
 
             // Return a reference to the function

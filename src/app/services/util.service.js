@@ -430,12 +430,12 @@
                 criterion = {
                     'number': cert.name.indexOf(':') > -1 ? cert.name.substring(0, cert.name.indexOf(':')) : cert.name,
                     'title': cert.name.indexOf(':') > -1 ? cert.name.substring(cert.name.indexOf(':') + 1) : '',
-                };
+                }
             } else {
                 criterion = {
                     'number': cert.indexOf(':') > -1 ? cert.substring(0, cert.indexOf(':')) : cert,
                     'title': cert.indexOf(':') > -1 ? cert.substring(cert.indexOf(':') + 1) : '',
-                };
+                }
             }
             return criterion;
         }
