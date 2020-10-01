@@ -210,8 +210,8 @@
                                 svapId: 1,
                                 regulatoryTextCitation: 'reg1',
                                 approvedStandardVersion: 'ver1',
-                            }
-                        }
+                            },
+                        },
                     }
                     ctrl.svapOnChange(action);
                     expect(ctrl.cert.svaps.length).toBe(0);
