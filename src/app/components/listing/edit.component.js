@@ -110,6 +110,15 @@ export const ListingEditComponent = {
             return this.workType === 'confirm' ? false : this.$filter('orderBy')(this.listing.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
         }
 
+        isValid () {
+            return this.isSaving
+                || !(this.form.$invalid
+                     || this.missingIcsSource()
+                     || this.hasStatusMatches()
+                     || this.hasDateMatches()
+                     || this.improperFirstStatus());
+        }
+
         matchesPreviousDate (event) {
             let orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject');
             let statusLoc = orderedStatus.indexOf(event);
@@ -173,6 +182,21 @@ export const ListingEditComponent = {
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,
             });
+        }
+
+        takeActionBarAction (action) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'mouseover':
+                this.showFormErrors = true;
+                break;
+            case 'save':
+                this.save();
+                break;
+                //no default
+            }
         }
 
         updateListing (listing) {

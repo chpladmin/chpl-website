@@ -223,6 +223,7 @@
       <li>Certification Status Changed from anything to "Active"</li>
     </ul>
   </div>
+  <!--
   <div class="text-left text-danger"
        ng-if="$ctrl.showFormErrors && ($ctrl.form.$invalid || ($ctrl.idFields.ics !== $ctrl.requiredIcsCode() && $ctrl.requiredIcsCode() > 0 && $ctrl.listing.ics.parents.length > 0) || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus())">
     The following error(s) must be fixed:
@@ -263,15 +264,13 @@
       <li ng-repeat="msg in $ctrl.messages.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
     </ul>
   </div>
+  -->
   <div ng-if="$ctrl.messages.warnings && $ctrl.messages.warnings.length > 0">
     <input type="checkbox" ng-model="$ctrl.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
     <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
   </div>
-  <button ng-disabled="(($ctrl.form.$invalid || $ctrl.missingIcsSource() || $ctrl.hasStatusMatches() || $ctrl.hasDateMatches() || $ctrl.improperFirstStatus()) && $ctrl.showFormErrors) || $ctrl.isSaving"
-          id="edit-save"
-          class="btn btn-ai-success pull-right"
-          ng-mouseover="$ctrl.showFormErrors = true"
-          ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
-  <button class="btn btn-warning"
-          ng-click="$ctrl.cancel()"><i class="fa fa-close"></i> Cancel</button>
+  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                   error-messages="$ctrl.errorMessages"
+                   take-action="$ctrl.takeActionBarAction(action)">
+  </chpl-action-bar>
 </div>
