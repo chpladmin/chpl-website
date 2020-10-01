@@ -8,8 +8,8 @@ const path = require('path');
 const fs = require('fs');
 
 let cms,cmsLookup, hooks,search;
-let ListingId1 = 9851;
-let ListingId2 = 9879;
+let listingId1 = 9851;
+let listingId2 = 9879;
 let search1 = '2621';//using developer code to search listing
 let search2 = '2155';//using developer code to search listing
 let fullListingId1 = '15.04.04.2621.iMed.51.00.1.181229';
@@ -29,9 +29,9 @@ describe('On cms reverse look up page', () => {
             //creating cms id first as they are different cms ids between different environments
             hooks.open('#/search');
             search.searchForListing(search1);
-            cms.addListingToCms(ListingId1);
+            cms.addListingToCms(listingId1);
             search.searchForListing(search2);
-            cms.addListingToCms(ListingId2);
+            cms.addListingToCms(listingId2);
             hooks.waitForSpinnerToDisappear();
             cms.waitForProcessingSpinnerToDisappear();
             cms.getCertIdButton.click();
@@ -59,7 +59,6 @@ describe('On cms reverse look up page', () => {
             const fileName = 'CMS_ID.' + cmsId + '.csv';
             const filePath = path.join(global.downloadDir, fileName);
             browser.waitForFileExists(filePath,config.timeout);
-            //Assertion to check if file downloaded ?
             assert.isTrue(fs.existsSync(filePath));
             //Reading file contents
             const fileContents = fs.readFileSync(filePath, 'utf-8');

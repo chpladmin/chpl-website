@@ -7,14 +7,14 @@ const path = require('path');
 const fs = require('fs');
 
 let cms, hooks, search;
-let ListingId1 = 9851;
-let ListingId2 = 9879;
+let listingId1 = 9851;
+let listingId2 = 9879;
 let search1 = '2621';//using developer code to search listing
 let search2 = '2155';//using developer code to search listing
 let cmsId;
-let chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
-let cmsReverseLookup = '#/resources/cms-lookup';
-let baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition';
+const chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
+const cmsReverseLookup = '#/resources/cms-lookup';
+const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition';
 
 beforeAll(async () => {
     search = new SearchPage();
@@ -59,7 +59,7 @@ describe('on cms widget', () => {
     describe('if a listing added meet 80% of base criteria (View with partial products selected) - ', () => {
         beforeAll(() => {
             search.searchForListing(search1);
-            cms.addListingToCms(ListingId1);
+            cms.addListingToCms(listingId1);
             hooks.waitForSpinnerToDisappear();
             cms.waitForProcessingSpinnerToDisappear();
         });
@@ -111,9 +111,9 @@ describe('on cms widget', () => {
     describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
         beforeAll(() => {
             search.searchForListing(search1);
-            cms.addListingToCms(ListingId1);
+            cms.addListingToCms(listingId1);
             search.searchForListing(search2);
-            cms.addListingToCms(ListingId2);
+            cms.addListingToCms(listingId2);
             hooks.waitForSpinnerToDisappear();
             cms.waitForProcessingSpinnerToDisappear();
         });
@@ -161,11 +161,10 @@ describe('on cms widget', () => {
         });
 
         it('PDF is downloaded after generating CMS ID', () => {
-            cms.downloadPDFButton.click();
+            cms.downloadPdfButton.click();
             const fileName = cmsId + '.pdf';
             const filePath = path.join(global.downloadDir, fileName);
             browser.waitForFileExists(filePath,config.timeout);
-            //Assertion to check if file downloaded ?
             assert.isTrue(fs.existsSync(filePath));
         });
 

@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Store the directory path in a global, which allows us to access this path inside our tests
-global.downloadDir = path.join(`${__dirname}`, 'e2e/tempDownload');
+global.downloadDir = path.join(`${__dirname}`, 'test_reports/e2e/');
 
 exports.config = {
     //
@@ -328,23 +328,8 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-     onComplete: function() {
-        var list = fs.readdirSync(downloadDir);
-        for(var i = 0; i < list.length; i++) {
-        var filename = path.join(downloadDir, list[i]);
-        var stat = fs.statSync(filename);
-        if(filename == "." || filename == "..") {
-        // pass these files
-        } else if(stat.isDirectory()) {
-        // rmdir recursively
-        rmdir(filename);
-        } else {
-        // rm fiilename
-        fs.unlinkSync(filename);
-                }
-        }
-        fs.rmdirSync(downloadDir);
-    },
+    // onComplete: function(exitCode, config, capabilities, results) {
+    // },
     /**
     * Gets executed when a refresh happens.
     * @param {String} oldSessionId session ID of the old session

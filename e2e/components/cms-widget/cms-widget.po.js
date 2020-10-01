@@ -13,9 +13,6 @@ const elements = {
     missingBaseCriteriaListAnd: '.cms-widget__missing-and',
     downloadPDF: '#download-ehr-cert',
     processingSpinner: '.fa.fa-spinner.fa-spin',
-};
-
-const asserts = {
     noProductsSelected: '//*[@id="widget-dropdown"]/ai-cms-widget-display/div/div[1]',
 };
 
@@ -55,7 +52,7 @@ class CmsWidgetComponent {
     }
 
     get noProductsSelectedText () {
-        return $(asserts.noProductsSelected);
+        return $(elements.noProductsSelected);
     }
 
     get cmsCertificationIdText () {
@@ -74,7 +71,7 @@ class CmsWidgetComponent {
         return $(elements.missingBaseCriteriaListAnd);
     }
 
-    get downloadPDFButton () {
+    get downloadPdfButton () {
         return $(elements.downloadPDF);
     }
 
