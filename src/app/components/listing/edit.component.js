@@ -49,15 +49,12 @@ export const ListingEditComponent = {
                 this.workType = angular.copy(changes.workType.currentValue);
             }
             if (this.listing && this.resources) {
-                this._prepareFields();
+                this.prepareFields();
             }
         }
 
-        _prepareFields () {
+        prepareFields () {
             this.listing.certDate = new Date(this.listing.certificationDate);
-            if (angular.isUndefined(this.listing.ics.parents)) {
-                this.listing.ics.parents = [];
-            }
             if (this.listing.chplProductNumber.length > 12) {
                 let idFields = this.listing.chplProductNumber.split('.');
                 this.idFields = {
@@ -72,14 +69,6 @@ export const ListingEditComponent = {
                 ce.statusDateObject = new Date(ce.eventDate);
                 ce.status = this.utilService.findModel(ce.status, this.resources.statuses);
             });
-            if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
-                this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map(muu => {
-                    muu.muuDateObject = new Date(muu.muuDate);
-                    return muu;
-                });
-            } else {
-                this.listing.meaningfulUseUserHistory = [];
-            }
 
             this.listing.practiceType = this.utilService.findModel(this.listing.practiceType, this.resources.practices);
             this.listing.classificationType = this.utilService.findModel(this.listing.classificationType, this.resources.classifications);
@@ -87,20 +76,7 @@ export const ListingEditComponent = {
             if (this.listing.testingLab) {
                 this.listing.testingLab = this.utilService.findModel(this.listing.testingLab, this.resources.testingLabs);
             }
-
-            if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015') {
-                let that = this;
-                this.networkService.getRelatedListings(this.listing.product.productId)
-                    .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
-            }
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
-        }
-
-        addPreviousMuu () {
-            this.listing.meaningfulUseUserHistory.push({
-                muuDateObject: new Date(),
-                muuCount: 0,
-            });
         }
 
         addPreviousStatus () {
@@ -113,11 +89,6 @@ export const ListingEditComponent = {
         cancel () {
             this.listing = angular.copy(this.backupListing);
             this.onCancel();
-        }
-
-        disabledParent (listing) {
-            return this.listing.ics.parents
-                .reduce((disabled, current) => disabled || current.chplProductNumber === listing.chplProductNumber, !!(this.listing.chplProductNumber === listing.chplProductNumber));
         }
 
         disabledStatus (name) {
@@ -148,15 +119,6 @@ export const ListingEditComponent = {
             return false;
         }
 
-        matchesPreviousMuuDate (muu) {
-            let orderedMuu = this.$filter('orderBy')(this.listing.meaningfulUseUserHistory, 'muuDateObject');
-            let muuLoc = orderedMuu.indexOf(muu);
-            if (muuLoc > 0) {
-                return (this.$filter('date')(muu.muuDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedMuu[muuLoc - 1].muuDateObject, 'mediumDate', 'UTC'));
-            }
-            return false;
-        }
-
         matchesPreviousStatus (event) {
             let orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject');
             let statusLoc = orderedStatus.indexOf(event);
@@ -182,16 +144,8 @@ export const ListingEditComponent = {
             }
         }
 
-        missingIcsSource () {
-            return this.listing.certificationEdition.name === '2015' && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
-        }
-
         removePreviousStatus (statusDateObject) {
             this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== statusDateObject.getTime());
-        }
-
-        removePreviousMuu (muuDateObject) {
-            this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.filter(muu => muu.muuDateObject.getTime() !== muuDateObject.getTime());
         }
 
         requiredIcsCode () {
@@ -204,7 +158,6 @@ export const ListingEditComponent = {
 
         save () {
             this.listing.certificationEvents.forEach(ce => ce.eventDate = ce.statusDateObject.getTime());
-            this.listing.meaningfulUseUserHistory.forEach(muu => muu.muuDate = muu.muuDateObject.getTime());
             if (this.listing.chplProductNumber.length > 12) {
                 this.listing.chplProductNumber =
                     this.idFields.prefix + '.' +

@@ -240,5 +240,180 @@
         </span>
       </div>
     </div>
+
+    <div feature-flag="listing-edit">
+      <div class="panel panel-ai" ng-if="$ctrl.isEditing">
+        <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}">
+          <div class="listing-details__element-header-title">Additional Information</div>
+          <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
+        </div>
+        <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
+          <div class="form-group">
+            <label for="cp-other-acb">Other ACB</label>
+            <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.otherAcb" id="cp-other-acb" ng-change="$ctrl.updateAdditional()">
+          </div>
+          <div class="form-group">
+            <label for="cp-ics">Inherited Certification Status</label>
+            <input type="checkbox" ng-model="$ctrl.listing.ics.inherits" id="cp-ics" ng-change="$ctrl.updateAdditional()">
+          </div>
+          <div ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.listing.ics.inherits">
+            Inherited Certification Management
+            <ul class="list-unstyled text-right">
+              <li ng-repeat="parent in $ctrl.listing.ics.parents track by $index">
+                <strong>Inherits from:</strong> {{ parent.chplProductNumber }} <span ng-if="parent.certificationDate">( {{ parent.certificationDate | date : 'mediumDate' : 'UTC' }} )</span>
+                <button class="btn btn-sm btn-danger" ng-click="$ctrl.listing.ics.parents.splice($index,1); $ctrl.updateAdditional()"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button>
+                <div class="clearfix"></div>
+              </li>
+            </ul>
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <label class="col-sm-6 control-label" for="new-ics-parent">ICS Source Listings (Same Product)</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <select class="form-control" ng-model="$ctrl.newIcsParent.chplProductNumber" id="new-ics-parent"
+                            ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') disable when $ctrl.disabledParent(listing) for listing in $ctrl.relatedListings | orderBy:'certificationDate'">
+                    </select>
+                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.ics.parents, $ctrl.newIcsParent); $ctrl.newIcsParent = ''; $ctrl.updateAdditional()" ng-disabled="!$ctrl.newIcsParent"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+                  </div>
+                </div>
+                <label class="col-sm-6 control-label" for="new-ics-parent-other">ICS Source Listings (Other - Enter CHPL ID)</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <input type="text" class="form-control" ng-model="$ctrl.newIcsParentOther.chplProductNumber" id="new-ics-parent-other" name="newIcsParentOther"
+                           ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/">
+                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.ics.parents, $ctrl.newIcsParentOther); $ctrl.newIcsParentOther = ''; $ctrl.updateAdditional()" ng-disabled="!$ctrl.newIcsParentOther || $ctrl.form.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+                  </div>
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newIcsParentOther.$touched) && $ctrl.form.newIcsParentOther.$error.pattern">Improper format</div>
+                </div>
+              </div>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.$dirty) && $ctrl.missingIcsSource()">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</div>
+            </div>
+          </div>
+          <div>
+            QMS Testing
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm" ng-repeat="qms in $ctrl.listing.qmsStandards track by $index">
+                <label class="col-sm-6 control-label" for="qms-standard-{{ qms.id }}">QMS Standard</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <select class="form-control" ng-model="qms.qmsStandardName" id="qms-standard-{{ qms.id }}"
+                            ng-options="option.name as option.name for option in $ctrl.resources.qmsStandards.data | orderBy:'name'"
+                            ng-change="qms.qmsStandardId = option.id; ctrl.updateAdditional()">
+                    </select>
+                    <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.qmsStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+                  </div>
+                </div>
+                <label class="col-sm-6 control-label" for="qms-modification-{{ qms.id }}">QMS Modification</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="qms.qmsModification" id="qms-modification-{{ qms.id }}" ng-change="$ctrl.updateAdditional()">
+                </div>
+                <label class="col-sm-6 control-label" for="qms-applicable-criteria-{{ qms.id }}">QMS Applicable Criteria</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qms-applicable-criteria-{{ qms.id }}" ng-change="$ctrl.updateAdditional()">
+                </div>
+              </div>
+              <div class="form-group form-group-sm">
+                <label class="col-sm-6 control-label" for="new-qms-standard-item">New QMS Standard</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <select class="form-control" ng-model="$ctrl.newQmsStandard.qmsStandardName" id="new-qms-standard-item"
+                            ng-options="option.name as option.name for option in $ctrl.resources.qmsStandards.data">
+                    </select>
+                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.qmsStandards, $ctrl.newQmsStandard); $ctrl.newQmsStandard = {}; $ctrl.updateAdditional()"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+                  </div>
+                </div>
+                <label class="col-sm-6 control-label" for="new-qms-standard-expandable-name">Add new QMS Standard to available options</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="$ctrl.newQmsStandard.expandableName" id="new-qms-standard-expandable-name" name="newQmsStandardExpandableName" ng-change="$ctrl.extendSelect($ctrl.resources.qmsStandards.data, $ctrl.newQmsStandard.expandableName); $ctrl.newQmsStandard.qmsStandardName = $ctrl.newQmsStandard.expandableName; $ctrl.updateAdditional()" ng-maxlength="255">
+                  <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.newQmsStandardExpandableName.$touched) && $ctrl.form.newQmsStandardExpandableName.$error.maxlength">Field is too long</div>
+                </div>
+                <label class="col-sm-6 control-label" for="new-qms-standard-modification">QMS Modification</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="$ctrl.newQmsStandard.qmsModification" id="new-qms-standard-modification" ng-change="$ctrl.updateAdditional()">
+                </div>
+                <label class="col-sm-6 control-label" for="new-qms-standard-applicable-criteria">QMS Applicable Criteria</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="$ctrl.newQmsStandard.applicableCriteria" id="new-qms-standard-applicable-criteria" ng-change="$ctrl.updateAdditional()">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            Targeted Users
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm" ng-repeat="item in $ctrl.listing.targetedUsers track by $index">
+                <label class="col-sm-6 control-label" for="targeted-user-{{ item.id }}">Targeted User</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <select class="form-control" ng-model="item.targetedUserName" id="targeted-user-{{ item.id }}"
+                            ng-options="option.name as option.name for option in $ctrl.resources.targetedUsers.data | orderBy:'name'"
+                            ng-change="item.targetedUserId = option.id">
+                    </select>
+                    <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.targetedUsers.splice($index,1); $ctrl.updateAdditional()"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group form-group-sm">
+                <label class="col-sm-6 control-label" for="new-targeted-user-item">New Targeted User</label>
+                <div class="col-sm-6">
+                  <div class="input-group">
+                    <select class="form-control" ng-model="$ctrl.newTargetedUser.targetedUserName" id="new-targeted-user-item"
+                            ng-options="option.name as option.name for option in $ctrl.resources.targetedUsers.data">
+                    </select>
+                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.targetedUsers, $ctrl.newTargetedUser); $ctrl.newTargetedUser = {}; $ctrl.updateAdditional()"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+                  </div>
+                </div>
+                <label class="col-sm-6 control-label" for="new-targeted-user-expandable-name">Add new Targeted User to available options</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="$ctrl.newTargetedUser.expandableName" id="new-targeted-user-expandable-name" ng-change="$ctrl.extendSelect($ctrl.resources.targetedUsers.data, $ctrl.newTargetedUser.expandableName); $ctrl.newTargetedUser.targetedUserName = $ctrl.newTargetedUser.expandableName; $ctrl.updateAdditional()">
+                </div>
+              </div>
+            </div>
+          </div>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th scope="col">Estimated Number of Meaningful Use Users History</th>
+                <th scope="col">Effective date</th>
+                <th scope="col"><span class="sr-only">Event Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="$ctrl.addPreviousMuu()"><i class="fa fa-plus"></i><span class="sr-only"> Add value</span></button></td>
+              </tr>
+              <tr ng-repeat="muu in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
+                <td>
+                  <div class="form-group">
+                    <label><span class="sr-only"><span ng-if="$first">Current </span>Value</span>
+                      <input type="number" ng-model="muu.muuCount" name="muuCount{{ $index }}" class="input-sm form-control" ng-change="$ctrl.updateAdditional()"></input>
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <label><span class="sr-only">Effective Date</span>
+                      <div class="input-group">
+                        <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="muu.muuDateObject" is-open="muu.muuDatePicker" close-text="Close" name="muuDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" ng-change="$ctrl.updateAdditional()">
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-ai btn-sm" ng-click="muu.muuDatePicker = true"><i class="fa fa-calendar"></i></button>
+                        </span>
+                      </div>
+                    </label>
+                    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['statusDate' + $index].$touched) && $ctrl.matchesPreviousMuuDate(muu)">Only one value allowed per day</div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-block btn-danger" ng-click="$ctrl.removePreviousMuu(muu.muuDateObject); $ctrl.updateAdditional()"><i class="fa fa-trash"></i><span class="sr-only"> Remove value</span></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>No Meaningful Use Users data exists</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

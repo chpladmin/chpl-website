@@ -62,14 +62,24 @@ export const ListingEditPageComponent = {
         }
 
         update (listing) {
-            this.$log.error('update');
             this.listing.certificationResults = listing.certificationResults;
             this.listing.cqmResults = listing.cqmResults;
             this.listing.sed = listing.sed;
             this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
             this.listing.sedReportFileLocation = listing.sedReportFileLocation;
             this.listing.sedTestingEndDate = listing.sedTestingEndDate;
-            // todo: additional information
+
+            this.listing.otherAcb = listing.otherAcb;
+            this.listing.ics.inherits = angular.copy(listing.ics.inherits);
+            this.listing.ics.parents = angular.copy(listing.ics.parents);
+            this.listing.qmsStandards = angular.copy(listing.qmsStandards);
+            this.listing.targetedUsers = angular.copy(listing.targetedUsers);
+            this.listing.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
+                .map(muu => {
+                    muu.muuDate = muu.muuDateObject.getTime();
+                    return muu;
+                });
+            this.listing = angular.copy(this.listing);
         }
     },
 };

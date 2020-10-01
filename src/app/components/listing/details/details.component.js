@@ -74,6 +74,21 @@ export const ListingDetailsComponent = {
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
             }
+            if (this.listing && this.resources) {
+                this.prepareFields();
+            }
+        }
+
+        addPreviousMuu () {
+            this.listing.meaningfulUseUserHistory.push({
+                muuDateObject: new Date(),
+                muuCount: 0,
+            });
+        }
+
+        disabledParent (listing) {
+            return this.listing.ics.parents
+                .reduce((disabled, current) => disabled || current.chplProductNumber === listing.chplProductNumber, !!(this.listing.chplProductNumber === listing.chplProductNumber));
         }
 
         hasEdited () {
@@ -81,6 +96,39 @@ export const ListingDetailsComponent = {
                 handler();
             });
             this.onChange({listing: this.listing});
+        }
+
+        missingIcsSource () {
+            return this.listing.certificationEdition.name === '2015' && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
+        }
+
+        matchesPreviousMuuDate (muu) {
+            let orderedMuu = this.$filter('orderBy')(this.listing.meaningfulUseUserHistory, 'muuDateObject');
+            let muuLoc = orderedMuu.indexOf(muu);
+            if (muuLoc > 0) {
+                return (this.$filter('date')(muu.muuDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedMuu[muuLoc - 1].muuDateObject, 'mediumDate', 'UTC'));
+            }
+            return false;
+        }
+
+        prepareFields () {
+            if (angular.isUndefined(this.listing.ics.parents)) {
+                this.listing.ics.parents = [];
+            }
+            if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
+                this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map(muu => {
+                    muu.muuDateObject = new Date(muu.muuDate);
+                    return muu;
+                });
+            } else {
+                this.listing.meaningfulUseUserHistory = [];
+            }
+
+            if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015') {
+                let that = this;
+                this.networkService.getRelatedListings(this.listing.product.productId)
+                    .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
+            }
         }
 
         prepCqms () {
@@ -114,6 +162,10 @@ export const ListingDetailsComponent = {
                 });
             };
             return removeHandler;
+        }
+
+        removePreviousMuu (muuDateObject) {
+            this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.filter(muu => muu.muuDateObject.getTime() !== muuDateObject.getTime());
         }
 
         saveCert (cert) {
@@ -187,6 +239,10 @@ export const ListingDetailsComponent = {
             this.subPanelShown = this.subPanelShown === panel ? '' : panel;
         }
 
+        updateAdditional () {
+            this.onChange({listing: this.listing});
+        }
+
         updateCs () {
             this.cqms.forEach(cqm => {
                 cqm.criteria = [];
@@ -194,11 +250,8 @@ export const ListingDetailsComponent = {
                     for (var j = 1; j < 5; j++) {
                         if (cqm['hasC' + j]) {
                             let number = '170.315 (c)(' + j + ')';
-                            //let criterion = this.listing.certificationResults.find(cert => cert.number === number && cert.success) || {};
-                            //criterion = criterion.criterion;
                             cqm.criteria.push({
                                 certificationNumber: number,
-                                //criterion: criterion,
                             });
                         }
                     }
