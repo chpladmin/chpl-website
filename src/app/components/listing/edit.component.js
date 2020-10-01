@@ -27,6 +27,7 @@ export const ListingEditComponent = {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
                 this.backupListing = angular.copy(changes.listing.currentValue);
+                this.$log.error(this.listing.otherAcb);
             }
             if (changes.isSaving) {
                 this.isSaving = angular.copy(changes.isSaving.currentValue);

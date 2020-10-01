@@ -1,17 +1,16 @@
-export const ListingDetailsComponent = {
-    templateUrl: 'chpl.components/listing/details/details.html',
+export const ListingDetailsViewComponent = {
+    templateUrl: 'chpl.components/listing/details/view.html',
     bindings: {
         listing: '<',
         directReviews: '<',
         editMode: '<',
         initialPanel: '@',
         isConfirming: '<',
-        isEditing: '<',
         onChange: '&',
         resources: '<',
         viewAllCerts: '<defaultAll',
     },
-    controller: class ListingDetailsComponent {
+    controller: class ListingDetailsViewComponent {
         constructor ($analytics, $log, $uibModal, featureFlags, networkService, utilService) {
             this.$analytics = $analytics;
             this.$log = $log;
@@ -23,7 +22,6 @@ export const ListingDetailsComponent = {
             this.handlers = [];
             this.isOn = featureFlags.isOn;
             this.drStatus = 'pending';
-            this.isEditing = false;
             this.viewAllCerts = false;
             this.panelShown = 'cert';
         }
@@ -300,4 +298,4 @@ export const ListingDetailsComponent = {
 };
 
 angular.module('chpl.components')
-    .component('chplListingDetails', ListingDetailsComponent);
+    .component('chplListingDetailsView', ListingDetailsViewComponent);

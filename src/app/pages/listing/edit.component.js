@@ -30,6 +30,9 @@ export const ListingEditPageComponent = {
         save (listing, reason, acknowledgeWarnings) {
             let that = this;
             this.isSaving = true;
+            this.$log.error(listing.otherAcb);
+            that.$log.error(listing, acknowledgeWarnings);
+            /*
             this.networkService.updateCP({
                 listing: listing,
                 reason: reason,
@@ -59,6 +62,7 @@ export const ListingEditPageComponent = {
                 }
                 that.isSaving = false;
             });
+            */
         }
 
         update (listing) {
