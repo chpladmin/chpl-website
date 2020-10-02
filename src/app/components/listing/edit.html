@@ -6,15 +6,15 @@
       </span>
       <div class="form-group">
         <label for="id-prod" class="sr-only">Product Code:</label>
-        <input type="text" id="id-prod" name="idProd" ng-model="$ctrl.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required>
+        <input type="text" id="id-prod" name="idProd" ng-model="$ctrl.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" ng-change="$ctrl.update()" required>
       </div>
       <div class="form-group">
         <label for="id-ver" class="sr-only">Version Code:</label>
-        <input type="text" id="id-ver" name="idVer" ng-model="$ctrl.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required>
+        <input type="text" id="id-ver" name="idVer" ng-model="$ctrl.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" ng-change="$ctrl.update()" required>
       </div>
       <div class="form-group">
         <label for="id-ics" class="sr-only">ICS Code:</label>
-        <input type="text" id="id-ics" name="idIcs" ng-model="$ctrl.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required>
+        <input type="text" id="id-ics" name="idIcs" ng-model="$ctrl.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" ng-change="$ctrl.update()" required>
       </div>
       <span class="form-control-static">
         {{ $ctrl.idFields.suffix }}
@@ -34,6 +34,7 @@
   <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
     <label for="cp-practice">Practice Type</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"
+            ng-change="$ctrl.update()"
             ng-options="practice as practice.name for practice in $ctrl.resources.practices" required>
     </select>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpPractice.$touched) && $ctrl.form.cpPractice.$error.required">Field is required</div>
@@ -41,6 +42,7 @@
   <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
     <label for="cp-classification">Classification Type</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.classificationType" id="cp-classification" name="cpClassification"
+            ng-change="$ctrl.update()"
             ng-options="classification as classification.name for classification in $ctrl.resources.classifications" required>
     </select>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpClassification.$touched) && $ctrl.form.cpClassification.$error.required">Field is required</div>
@@ -50,6 +52,7 @@
   <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="form-group">
     <label for="cp-body">Certification Body</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.certifyingBody" id="cp-body" name="cpBody"
+            ng-change="$ctrl.update()"
             ng-options="body as body.name for body in $ctrl.resources.bodies" required>
     </select>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpBody.$touched) && $ctrl.form.cpBody.$error.required">Field is required</div>
@@ -57,7 +60,7 @@
   <div class="form-group">
     <label for="cp-cert-date">Certification Date</label>
     <div class="input-group">
-      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.certDate" is-open="$ctrl.listing.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required>
+      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.certDate" is-open="$ctrl.listing.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" ng-change="$ctrl.update()" required>
       <span class="input-group-btn">
         <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i></button>
       </span>
@@ -67,7 +70,7 @@
   </div>
   <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2011' || ($ctrl.listing.certificationEdition.name === '2014' && $ctrl.listing.chplProductNumber.startsWith('CHP-'))">
     <label for="cp-additional-software">Product wide Relied Upon Software</label>
-    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software">
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
   <table class="table table-condensed">
     <thead>
@@ -91,6 +94,7 @@
             <label><span class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></span>
               <select ng-model="statusEvent.status" required
                       ng-options="status as status.name disable when $ctrl.disabledStatus(status.name) for status in $ctrl.resources.statuses | orderBy:'name'"
+                      ng-change="$ctrl.update()"
                       name="certificationStatus{{ $index }}" class="input-sm form-control">
               </select>
             </label>
@@ -107,7 +111,7 @@
           <div class="form-group">
             <label><span class="sr-only">Change Date <span class="text-danger">*</span></span>
               <div class="input-group">
-                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="statusEvent.statusDateObject" is-open="statusEvent.statusDatePicker" close-text="Close" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="statusEvent.statusDateObject" is-open="statusEvent.statusDatePicker" close-text="Close" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" ng-change="$ctrl.update()" required>
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-ai btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
                 </span>
@@ -121,6 +125,7 @@
           <div class="form-group">
             <label><span class="sr-only">Reason for Change</span>
               <input class="input-sm form-control" type="text" ng-model="statusEvent.reason"
+                     ng-change="$ctrl.update()"
                      ng-maxlength="500" name="reasonForChange{{ $index }}">
             </label>
             <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form['reasonForChange' + $index].$touched) && $ctrl.form['reasonForChange' + $index].$error.maxlength">Field is too long</div>
@@ -134,18 +139,18 @@
   </table>
   <div class="form-group">
     <label for="cp-acb-cert-id">ACB Certification Id</label>
-    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250">
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250" ng-change="$ctrl.update()">
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
   </div>
   <div class="form-group">
     <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024" ng-change="$ctrl.update()">
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
   </div>
   <div class="form-group">
     <label for="cp-report-file-loc">Report File Location</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.certificationEdition.name === '2014'">
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.certificationEdition.name === '2014'" ng-change="$ctrl.update()">
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.required">Field is required</div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.maxlength">Field is too long</div>
@@ -158,9 +163,10 @@
         <div class="col-sm-6">
           <div class="input-group">
             <select class="form-control" ng-model="item.testingLabName" id="testing-lab-{{ item.id }}"
+                    ng-change="$ctrl.update()"
                     ng-options="option.name as option.name for option in $ctrl.resources.testingLabs | orderBy:'name'">
             </select>
-            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.testingLabs.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.testingLabs.splice($index,1); $ctrl.update()"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
           </div>
         </div>
       </div>
@@ -171,7 +177,7 @@
             <select class="form-control" ng-model="$ctrl.newTestingLab.testingLabName" id="new-testing-lab-item"
                     ng-options="option.name as option.name for option in $ctrl.resources.testingLabs">
             </select>
-            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.testingLabs, $ctrl.newTestingLab); $ctrl.newTestingLab = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.testingLabs, $ctrl.newTestingLab); $ctrl.newTestingLab = {}; $ctrl.update()"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
           </div>
         </div>
       </div>
@@ -188,7 +194,7 @@
                     ng-options="option.name as option.name for option in $ctrl.resources.accessibilityStandards.data | orderBy:'name'"
                     ng-change="item.accessibilityStandardId = option.id">
             </select>
-            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.accessibilityStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="$ctrl.listing.accessibilityStandards.splice($index,1); $ctrl.update()"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
           </div>
         </div>
       </div>
@@ -199,7 +205,7 @@
             <select class="form-control" ng-model="$ctrl.newAccessibilityStandard.accessibilityStandardName" id="new-accessibility-standard-item"
                     ng-options="option.name as option.name for option in $ctrl.resources.accessibilityStandards.data">
             </select>
-            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.accessibilityStandards, $ctrl.newAccessibilityStandard); $ctrl.newAccessibilityStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="$ctrl.addNewValue($ctrl.listing.accessibilityStandards, $ctrl.newAccessibilityStandard); $ctrl.newAccessibilityStandard = {}; $ctrl.update()"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
           </div>
         </div>
         <label class="col-sm-6 control-label" for="new-accessibility-standard-expandable-name">Add new Accessibility Standard to available options</label>
@@ -213,7 +219,7 @@
   <br />
   <div class="form-group">
     <label for="reason-for-change">Reason for Change</label>
-    <input class="input-sm form-control" type="text" ng-model="$ctrl.reason" id="reason-for-change" name="reasonForChange">
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.reason" id="reason-for-change" name="reasonForChange" ng-change="$ctrl.update()">
     If changes are made in any of the following ways, a Reason for Change is required:
     <ul>
       <li>Clinical Quality Measure Removed</li>
@@ -269,8 +275,10 @@
     <input type="checkbox" ng-model="$ctrl.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
     <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
   </div>
+  <!--
   <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
                    error-messages="$ctrl.errorMessages"
                    take-action="$ctrl.takeActionBarAction(action)">
   </chpl-action-bar>
+  -->
 </div>

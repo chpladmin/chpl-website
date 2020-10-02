@@ -1,32 +1,41 @@
-<div class="listing-edit__details">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">Edit Listing Information</h2>
+<div ng-form="$ctrl.form">
+  <div class="listing-edit__details">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">Edit Listing Information</h2>
+      </div>
+      <div class="panel-body">
+        <chpl-listing-edit
+          listing="$ctrl.listingBasic"
+          on-change="$ctrl.updateBasic(listing, message, reason)"
+          resources="$ctrl.resources"
+          show-form-errors="$ctrl.showFormErrors"
+          >
+        </chpl-listing-edit>
+      </div>
     </div>
-    <div class="panel-body">
-      <chpl-listing-edit
-        isSaving="$ctrl.isSaving"
-        listing="$ctrl.listingBasic"
-        messages="$ctrl.messages"
-        on-cancel="$ctrl.cancel()"
-        on-save="$ctrl.save(listing, reason, acknowledgeWarnings)"
-        resources="$ctrl.resources"
-        >
-      </chpl-listing-edit>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">Edit Listing Details</h2>
+      </div>
+      <div class="panel-body">
+        <chpl-listing-details-edit
+          initial-panel="additional"
+          listing="$ctrl.listingDetails"
+          on-change="$ctrl.updateDetails(listing, messages)"
+          resources="$ctrl.resources"
+          show-form-errors="$ctrl.showFormErrors"
+          >
+        </chpl-listing-details-edit>
+      </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">Edit Listing Details</h2>
-    </div>
-    <div class="panel-body">
-      <chpl-listing-details-edit
-        initial-panel="additional"
-        listing="$ctrl.listingDetails"
-        on-change="$ctrl.update(listing)"
-        resources="$ctrl.resources"
-        >
-      </chpl-listing-details-edit>
-    </div>
+  <div ng-if="$ctrl.messages.warnings && $ctrl.messages.warnings.length > 0">
+    <input type="checkbox" ng-model="$ctrl.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
+    <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
   </div>
+  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                   error-messages="$ctrl.errorMessages"
+                   take-action="$ctrl.takeActionBarAction(action)">
+  </chpl-action-bar>
 </div>

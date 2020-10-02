@@ -10,6 +10,14 @@ export const ListingEditPageComponent = {
             this.$log = $log;
             this.$q = $q;
             this.$state = $state;
+            this.errors = {
+                basic: [],
+                details: [],
+            };
+            this.warnings = {
+                basic: [],
+                details: [],
+            };
             this.networkService = networkService;
             this.resources = {};
         }
@@ -28,7 +36,17 @@ export const ListingEditPageComponent = {
             this.$state.go('^', {}, {reload: true});
         }
 
-        save (listing, reason, acknowledgeWarnings) {
+        consolidateErrors () {
+            this.errorMessages = this.errors.basic.concat(this.errors.details);
+        }
+
+        isValid () {
+            return this.form.$valid
+                && this.errors.basic.length === 0
+                && this.errors.details.length === 0;
+        }
+
+        save () {
             let that = this;
             this.isSaving = true;
             this.listingBasic.certificationResults = this.listingDetails.certificationResults;
@@ -39,16 +57,16 @@ export const ListingEditPageComponent = {
             this.listingBasic.sedTestingEndDate = this.listingDetails.sedTestingEndDate;
 
             this.listingBasic.otherAcb = this.listingDetails.otherAcb;
-            this.listingBasic.ics = this.listingDetails.ics;
+            //this.listingBasic.ics = this.listingDetails.ics;
             this.listingBasic.qmsStandards = this.listingDetails.qmsStandards;
             this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
             this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
-            that.$log.error(this.listingBasic, acknowledgeWarnings);
+            that.$log.error(this.listingBasic);
             /*
             this.networkService.updateCP({
                 listing: this.listingBasic,
-                reason: reason,
-                acknowledgeWarnings: acknowledgeWarnings,
+                reason: this.reason,
+                acknowledgeWarnings: this.acknowledgeWarnings,
             }).then(response => {
                 if (!response.status || response.status === 200) {
                     that.$state.go('^', {}, {reload: true});
@@ -77,7 +95,30 @@ export const ListingEditPageComponent = {
             */
         }
 
-        update (listing) {
+        takeActionBarAction (action) {
+            switch (action) {
+            case 'cancel':
+                this.cancel();
+                break;
+            case 'mouseover':
+                this.showFormErrors = true;
+                break;
+            case 'save':
+                this.save();
+                break;
+                //no default
+            }
+        }
+
+        updateBasic (listing, messages, reason) {
+            this.listingBasic = angular.copy(listing);
+            this.errors.basic = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+            this.warnings.basic = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+            this.consolidateErrors();
+            this.reason = reason;
+        }
+
+        updateDetails (listing, messages) {
             this.listingDetails.certificationResults = listing.certificationResults;
             this.listingDetails.cqmResults = listing.cqmResults;
             this.listingDetails.sed = listing.sed;
@@ -87,6 +128,7 @@ export const ListingEditPageComponent = {
 
             this.listingDetails.otherAcb = listing.otherAcb;
             this.listingDetails.ics = angular.copy(listing.ics);
+            this.listingBasic.ics = angular.copy(listing.ics);
             this.listingDetails.qmsStandards = angular.copy(listing.qmsStandards);
             this.listingDetails.targetedUsers = angular.copy(listing.targetedUsers);
             this.listingDetails.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
@@ -94,6 +136,9 @@ export const ListingEditPageComponent = {
                     muu.muuDate = muu.muuDateObject.getTime();
                     return muu;
                 });
+            this.errors.details = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+            this.warnings.details = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+            this.consolidateErrors();
         }
     },
 };

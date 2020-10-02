@@ -6,6 +6,7 @@ export const ListingDetailsEditComponent = {
         isConfirming: '<',
         onChange: '&',
         resources: '<',
+        showFormErrors: '<',
     },
     controller: class ListingDetailsEditComponent {
         constructor ($analytics, $log, $uibModal, featureFlags, networkService, utilService) {
@@ -67,7 +68,17 @@ export const ListingDetailsEditComponent = {
             angular.forEach(this.handlers, function (handler) {
                 handler();
             });
-            this.onChange({listing: this.listing});
+            this.update();
+        }
+
+        generateErrorMessages () {
+            this.messages = {
+                errors: [],
+                warnings: [],
+            };
+            if (this.missingIcsSource) {
+                this.messages.errors.push('Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from');
+            }
         }
 
         missingIcsSource () {
@@ -151,7 +162,8 @@ export const ListingDetailsEditComponent = {
         }
 
         sedChange (listing) {
-            this.onChange({listing: listing});
+            this.listing = listing;
+            this.update();
         }
 
         sortCqms (cqm) {
@@ -172,8 +184,12 @@ export const ListingDetailsEditComponent = {
             this.subPanelShown = this.subPanelShown === panel ? '' : panel;
         }
 
-        updateAdditional () {
-            this.onChange({listing: this.listing});
+        update () {
+            this.generateErrorMessages();
+            this.onChange({
+                listing: this.listing,
+                messages: this.messages,
+            });
         }
 
         updateCs () {
@@ -191,7 +207,7 @@ export const ListingDetailsEditComponent = {
                 }
             });
             this.listing.cqmResults = angular.copy(this.cqms);
-            this.onChange({listing: this.listing});
+            this.update();
         }
 
         ////////////////////////////////////////////////////////////////////

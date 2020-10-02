@@ -2,15 +2,13 @@ export const ListingEditComponent = {
     templateUrl: 'chpl.components/listing/edit.html',
     bindings: {
         listing: '<',
-        isSaving: '<',
-        messages: '<',
-        onSave: '&',
-        onCancel: '&',
+        onChange: '&',
         resources: '<',
+        showFormErrors: '<',
         workType: '<',
     },
     controller: class ListingEditComponent {
-        constructor ($filter, $log, $timeout, authService, networkService, utilService) {
+        constructor ($filter, $log, $timeout, authService, utilService) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
@@ -19,7 +17,6 @@ export const ListingEditComponent = {
             this.certificationStatus = utilService.certificationStatus;
             this.extendSelect = utilService.extendSelect;
             this.hasAnyRole = authService.hasAnyRole;
-            this.networkService = networkService;
             this.utilService = utilService;
         }
 
@@ -28,12 +25,6 @@ export const ListingEditComponent = {
                 this.listing = angular.copy(changes.listing.currentValue);
                 this.backupListing = angular.copy(changes.listing.currentValue);
                 this.$log.error(this.listing.otherAcb);
-            }
-            if (changes.isSaving) {
-                this.isSaving = angular.copy(changes.isSaving.currentValue);
-            }
-            if (changes.messages) {
-                this.messages = angular.copy(changes.messages.currentValue);
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
@@ -87,13 +78,27 @@ export const ListingEditComponent = {
             });
         }
 
-        cancel () {
-            this.listing = angular.copy(this.backupListing);
-            this.onCancel();
-        }
-
         disabledStatus (name) {
             return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
+        }
+
+        generateErrorMessages () {
+            this.messages = {
+                errors: [],
+                warnings: [],
+            };
+            if (this.improperFirstStatus()) {
+                this.messages.errors.push('The earliest status of this product must be "Active"');
+            }
+            if (this.idFields.ics !== this.requiredIcsCode() && this.requiredIcsCode() > 0 && this.listing.ics.parents.length > 0) {
+                this.messages.errors.push('ICS Code must be exactly one more than highest ICS code of all of this Listing\'s ICS parents; it should be "' + this.requiredIcsCode());
+            }
+            if (this.hasStatusMatches()) {
+                this.messages.errors.push('Certification status must not repeat');
+            }
+            if (this.hasDateMatches()) {
+                this.messages.errors.push('Only one change of certification status allowed per day');
+            }
         }
 
         hasDateMatches () {
@@ -113,7 +118,7 @@ export const ListingEditComponent = {
         isValid () {
             return this.isSaving
                 || !(this.form.$invalid
-                     || this.missingIcsSource()
+                     //|| this.missingIcsSource()
                      || this.hasStatusMatches()
                      || this.hasDateMatches()
                      || this.improperFirstStatus());
@@ -156,6 +161,7 @@ export const ListingEditComponent = {
 
         removePreviousStatus (statusDateObject) {
             this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== statusDateObject.getTime());
+            this.update();
         }
 
         requiredIcsCode () {
@@ -166,7 +172,7 @@ export const ListingEditComponent = {
             return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
-        save () {
+        update () {
             this.listing.certificationEvents.forEach(ce => ce.eventDate = ce.statusDateObject.getTime());
             if (this.listing.chplProductNumber.length > 12) {
                 this.listing.chplProductNumber =
@@ -177,26 +183,13 @@ export const ListingEditComponent = {
                     this.idFields.suffix;
             }
             this.listing.certificationDate = this.listing.certDate.getTime();
-            this.onSave({
+            this.generateErrorMessage();
+            this.onChange({
                 listing: this.listing,
+                messages: this.messages,
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,
             });
-        }
-
-        takeActionBarAction (action) {
-            switch (action) {
-            case 'cancel':
-                this.cancel();
-                break;
-            case 'mouseover':
-                this.showFormErrors = true;
-                break;
-            case 'save':
-                this.save();
-                break;
-                //no default
-            }
         }
 
         updateListing (listing) {
