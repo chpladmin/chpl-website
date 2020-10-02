@@ -60,6 +60,23 @@ export const ListingComponent = {
             }
         }
 
+        canViewRwtDates () {
+            if (this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                return true;
+            } else if (this.authService.hasAnyRole(['ROLE_ACB'])) {
+                let currentUser = this.authService.getCurrentUser();
+                return currentUser.organizations
+                    .filter(o => o.id === this.listing.certifyingBody.id)
+                    .length > 0;
+            } else if (this.authService.hasAnyRole(['ROLE_DEVELOPER'])) {
+                let currentUser = this.authService.getCurrentUser();
+                return currentUser.organizations
+                    .filter(d => d.id === this.listing.developer.developerId)
+                    .length > 0;
+            }
+            return false;
+        }
+
         cancel () {
             this.listing = angular.copy(this.backupListing);
             this.isEditing = false;

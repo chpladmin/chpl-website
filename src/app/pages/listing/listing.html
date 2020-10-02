@@ -113,7 +113,7 @@
             <div ng-if="$ctrl.listing.rwtPlansUrl">
               <p><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></p>
             </div>
-            <div ng-if="$ctrl.listing.rwtPlansCheckDate && ($ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
+            <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
               <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</p>
             </div>
             <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
@@ -122,7 +122,7 @@
             <div ng-if="$ctrl.listing.rwtResultsUrl">
               <p><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></p>
             </div>
-            <div ng-if="$ctrl.listing.rwtResultsCheckDate && ($ctrl.canManageAcb($ctrl.listing.certifyingBody) || $ctrl.canManageDeveloper($ctrl.listing.developer))">
+            <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
               <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</p>
             </div>
 
