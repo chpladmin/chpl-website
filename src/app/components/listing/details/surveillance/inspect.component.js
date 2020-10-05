@@ -7,9 +7,9 @@ export const SurveillanceInspectComponent = {
     },
     controller: class SurveillanceInspectController {
         constructor ($log, $uibModal, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
-            this.$uibModal = $uibModal
+            this.$uibModal = $uibModal;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.utilService = utilService;
@@ -116,7 +116,7 @@ export const SurveillanceInspectComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

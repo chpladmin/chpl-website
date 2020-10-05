@@ -28,7 +28,7 @@
                 networkService.deleteFilter.and.returnValue($q.when({}));
                 networkService.getFilterTypes.and.returnValue($q.when(Mock.filterTypes));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
 
                 el = angular.element('<chpl-saved-filter filter-type-name="Listing Report" on-apply-filter="onApplyFilter(filter)" get-filter-data="createFilterDataObject()"></chpl-saved-filter>');
 

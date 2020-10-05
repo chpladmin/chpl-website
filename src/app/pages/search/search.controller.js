@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, featureFlags, networkService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -14,7 +14,6 @@
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
-        vm.isOn = featureFlags.isOn;
         vm.loadResults = loadResults;
         vm.refreshResults = refreshResults;
         vm.registerAllowAll = registerAllowAll;
@@ -313,7 +312,7 @@
             vm.viewingPreviouslyCompared = true;
             vm.previouslyIds = [{ value: -1, selected: false}];
             angular.forEach(vm.previouslyCompared, function (id) {
-                vm.previouslyIds.push({value: id, selected: true})
+                vm.previouslyIds.push({value: id, selected: true});
             });
             if (!doNotSearch) {
                 $analytics.eventTrack('View Previously Compared', { category: 'Search' });
@@ -330,7 +329,7 @@
             vm.viewingPreviouslyViewed = true;
             vm.previouslyIds = [{ value: -1, selected: false}];
             angular.forEach(vm.previouslyViewed, function (id) {
-                vm.previouslyIds.push({value: id, selected: true})
+                vm.previouslyIds.push({value: id, selected: true});
             });
             if (!doNotSearch) {
                 $analytics.eventTrack('View Previously Viewed', { category: 'Search' });
@@ -476,7 +475,7 @@
                     let obj = {
                         value: edition.name,
                         selected: vm.defaultRefineModel.certificationEdition[edition.name],
-                    }
+                    };
                     if (edition.name === '2011' || edition.name === '2014') {
                         obj.selected = false;
                         obj.display = 'Retired | ' + obj.value;

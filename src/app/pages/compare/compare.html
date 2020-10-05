@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-class="$ctrl.isOn('ui-bump-major') ? 'new-style' : ''">
+<div class="container-fluid">
   <div class="row">
     <div class="col-sm-8">
       <h1>Compare products</h1>
@@ -10,7 +10,8 @@
   <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-sm-12">
       <div class="pull-right">
-        <input type="checkbox" name="showAllPossible" id="showAllPossible" ng-model="$ctrl.showAllPossibles"></input> <label for="showAllPossible" class="control-label">See all Certification Criteria / Clinical Quality Measures</label>
+        <input type="checkbox" name="showAllPossible" id="show-all-possible" ng-model="$ctrl.showAllPossibles"></input>
+        <label for="showAllPossible" class="control-label">See all Certification Criteria / Clinical Quality Measures</label>
       </div>
       <table class="table table-striped" aria-live="polite">
         <thead>
@@ -60,7 +61,7 @@
             <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.countOpenNonconformities }}</td>
           </tr>
           <tr>
-            <th scope="row"><a href ng-click="$ctrl.toggle('certifications')" aria-expanded="{{ $ctrl.isShowing('certifications') }}"><i class="fa fa-lg" ng-class="$ctrl.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ $ctrl.isShowing('certifications') ? 'Collapse' : 'Expand' }}</span> Certification Criteria</a></th>
+            <th scope="row"><button class="compare__toggle-section-button" id="toggle-certification-criteria" ng-click="$ctrl.toggle('certifications')" aria-expanded="{{ $ctrl.isShowing('certifications') }}"><i class="fa fa-lg" ng-class="$ctrl.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ $ctrl.isShowing('certifications') ? 'Collapse' : 'Expand' }}</span> Certification Criteria</button></th>
             <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.countCerts }} met</td>
           </tr>
           <tr ng-repeat="cert in $ctrl.sortedCerts" ng-if="$ctrl.isShowing('certifications') && ($ctrl.allCerts[cert].atLeastOne || $ctrl.showAllPossibles)" ng-class="{ 'removed' : $ctrl.allCerts[cert].removed }">
@@ -73,7 +74,7 @@
             </td>
           </tr>
           <tr>
-            <th scope="row"><a href ng-click="$ctrl.toggle('CQMs')" aria-expanded="{{ $ctrl.isShowing('CQMs') }}"><i class="fa fa-lg" ng-class="$ctrl.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ $ctrl.isShowing('CQMs') ? 'Collapse' : 'Expand' }}</span> Clinical Quality Measures</a></th>
+            <th scope="row"><button class="compare__toggle-section-button" id="toggle-cqms" ng-click="$ctrl.toggle('CQMs')" aria-expanded="{{ $ctrl.isShowing('CQMs') }}"><i class="fa fa-lg" ng-class="$ctrl.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ $ctrl.isShowing('CQMs') ? 'Collapse' : 'Expand' }}</span> Clinical Quality Measures</button></th>
             <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.countCqms }} met</td>
           </tr>
           <tr ng-repeat="cqm in $ctrl.sortedCqms" ng-if="$ctrl.isShowing('CQMs') && ($ctrl.allCqms[$ctrl.allCqms[cqm].displayId].atLeastOne || $ctrl.showAllPossibles)">

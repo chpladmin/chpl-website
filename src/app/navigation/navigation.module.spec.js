@@ -72,19 +72,19 @@
                 });
 
                 it('should pass the response through unchanged if it\'s not coming from the defined URL', function () {
-                    var headers = {config: {url: mock.falseApiUrl}, headers: function () {return [];}};
+                    var headers = {config: {url: mock.falseApiUrl}, headers: function () { return []; }};
                     var response = authInterceptor.response(headers);
                     expect(response).toBe(headers);
                 });
 
                 it('should set the token if one is found, from the correct URL', function () {
-                    var headers = {config: {url: mock.trueApiUrl}, data: '{"token":"this is my token"}', headers: function () {return [];}};
+                    var headers = {config: {url: mock.trueApiUrl}, data: '{"token":"this is my token"}', headers: function () { return []; }};
                     authInterceptor.response(headers);
                     expect(authService.saveToken).toHaveBeenCalled();
                 });
 
                 it('should not set the token if there isn\'t one, from the correct URL', function () {
-                    var headers = {config: {url: mock.trueApiUrl}, data: '{}', headers: function () {return [];}};
+                    var headers = {config: {url: mock.trueApiUrl}, data: '{}', headers: function () { return []; }};
                     authInterceptor.response(headers);
                     expect(authService.saveToken).not.toHaveBeenCalled();
                 });

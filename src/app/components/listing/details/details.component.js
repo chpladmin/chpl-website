@@ -22,6 +22,7 @@ export const ListingDetailsComponent = {
             this.sortCerts = utilService.sortCert;
             this.handlers = [];
             this.isOn = featureFlags.isOn;
+            this.drStatus = 'pending';
             this.isEditing = false;
             this.viewAllCerts = false;
             this.panelShown = 'cert';
@@ -51,19 +52,24 @@ export const ListingDetailsComponent = {
                 this.prepCqms();
             }
             if (changes.directReviews && changes.directReviews.currentValue) {
-                this.directReviews = changes.directReviews.currentValue
-                    .filter(dr => {
-                        let shouldInclude = !dr.nonConformities
-                            || dr.nonConformities.length === 0
-                            || dr.nonConformities.reduce((acc, nc) => {
-                                let shouldInclude = acc
-                                    || !nc.developerAssociatedListings
-                                    || nc.developerAssociatedListings.length === 0
-                                    || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0
-                                return shouldInclude;
-                            }, false);
-                        return shouldInclude;
-                    });
+                if (changes.directReviews.currentValue.status === 200) {
+                    this.drStatus = 'success';
+                    this.directReviews = changes.directReviews.currentValue.drs
+                        .filter(dr => {
+                            let shouldInclude = !dr.nonConformities
+                                || dr.nonConformities.length === 0
+                                || dr.nonConformities.reduce((acc, nc) => {
+                                    let shouldInclude = acc
+                                        || !nc.developerAssociatedListings
+                                        || nc.developerAssociatedListings.length === 0
+                                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0;
+                                    return shouldInclude;
+                                }, false);
+                            return shouldInclude;
+                        });
+                } else {
+                    this.drStatus = 'error';
+                }
             }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
@@ -79,12 +85,23 @@ export const ListingDetailsComponent = {
 
         prepCqms () {
             if (this.cqms) {
-                for (var i = 0; i < this.cqms.length; i++) {
-                    this.cqms[i].id = i;
+                this.cqms = this.cqms.map((cqm, idx) => {
+                    cqm.id = idx;
                     for (var j = 1; j < 5; j++) {
-                        this.cqms[i]['hasC' + j] = this.checkC(this.cqms[i], j);
+                        cqm['hasC' + j] = this.checkC(cqm, j);
                     }
-                }
+                    cqm.allVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
+                    cqm.successVersions.sort((a, b) => {
+                        let aVal = parseInt(a.substring(1), 10);
+                        let bVal = parseInt(b.substring(1), 10);
+                        return aVal - bVal;
+                    });
+                    return cqm;
+                });
             }
         }
 
@@ -187,6 +204,7 @@ export const ListingDetailsComponent = {
                     }
                 }
             });
+            this.listing.cqmResults = angular.copy(this.cqms);
             this.onChange({listing: this.listing});
         }
 
@@ -217,16 +235,16 @@ export const ListingDetailsComponent = {
                 ret = false;
                 if (cqm.criteria) {
                     for (var i = 0; i < cqm.criteria.length; i++) {
-                        ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')')
+                        ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')');
                     }
                 }
             } else {
                 ret = cqm['hasC' + num];
             }
-            return ret
+            return ret;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplListingDetails', ListingDetailsComponent);

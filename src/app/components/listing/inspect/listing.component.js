@@ -7,7 +7,7 @@ export const InspectListingComponent = {
     },
     controller: class InspectListingController {
         constructor ($log, $uibModal, authService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$uibModal = $uibModal;
             this.hasAnyRole = authService.hasAnyRole;
@@ -55,7 +55,7 @@ export const InspectListingComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplInspectListing', InspectListingComponent);

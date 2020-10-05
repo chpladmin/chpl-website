@@ -21,7 +21,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-        }
+        };
     }
 
     function aiEnhancedTextLink (scope, element, attr, ctrls) {

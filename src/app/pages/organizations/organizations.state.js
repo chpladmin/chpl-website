@@ -13,7 +13,7 @@ let states = [
         component: 'chplDevelopers',
         resolve: {
             developers: networkService => {
-                'ngInject'
+                'ngInject';
                 return networkService.getDevelopers();
             },
         },
@@ -24,23 +24,15 @@ let states = [
         component: 'chplDevelopersView',
         resolve: {
             developer: (networkService, $location, $transition$) => {
-                'ngInject'
+                'ngInject';
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else {
                     return networkService.getDeveloper($transition$.params().developerId);
                 }
             },
-            directReviews: (featureFlags, networkService, $location, $transition$) => {
-                'ngInject'
-                if (!$transition$.params().developerId) {
-                    $location.path('/organizations/developers');
-                } else if (featureFlags.isOn('direct-review')) {
-                    return networkService.getDirectReviews($transition$.params().developerId);
-                }
-            },
             products: (networkService, $location, $transition$) => {
-                'ngInject'
+                'ngInject';
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else {
@@ -68,16 +60,40 @@ let states = [
         component: 'chplDevelopersMerge',
         data: { title: 'CHPL Developers - Merge' },
     },{
+        name: 'organizations.developers.developer.product',
+        url: '/products/{productId}',
+        abstract: true,
+    },{
+        name: 'organizations.developers.developer.product.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'editProduct',
+        },
+        data: { title: 'CHPL Developers - Edit Product' },
+    },{
+        name: 'organizations.developers.developer.product.version',
+        url: '/versions/{versionId}',
+        abstract: true,
+    },{
+        name: 'organizations.developers.developer.product.version.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'editVersion',
+        },
+        data: { title: 'CHPL Developers - Edit Version' },
+    },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',
         component: 'chplOncOrganizations',
         resolve: {
             allOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAcbs(false);
             },
             editableOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAcbs(true);
             },
             roles: () => ['ROLE_ACB'],
@@ -101,7 +117,7 @@ let states = [
         component: 'chplOncOrganization',
         resolve: {
             organization: ($transition$, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAcb($transition$.params().id);
             },
         },
@@ -131,11 +147,11 @@ let states = [
         component: 'chplOncOrganizations',
         resolve: {
             allOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAtls(false);
             },
             editableOrgs: (authService, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAtls(true);
             },
             roles: () => ['ROLE_ATL'],
@@ -159,7 +175,7 @@ let states = [
         component: 'chplOncOrganization',
         resolve: {
             organization: ($transition$, networkService) => {
-                'ngInject'
+                'ngInject';
                 return networkService.getAtl($transition$.params().id);
             },
         },
@@ -187,7 +203,7 @@ let states = [
 ];
 
 function organizationsStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });

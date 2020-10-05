@@ -26,7 +26,7 @@
                     '$scope': scope,
                 });
                 scope.$digest();
-            })
+            });
         });
 
         afterEach(function () {
@@ -76,7 +76,7 @@
                 });
 
                 describe('restoration', function () {
-                    var state
+                    var state;
                     beforeEach(function () {
                         spyOn(vm, 'filterChanged');
                         vm.predicate = 'dateRange';
@@ -140,10 +140,10 @@
                     vm.before = 2;
                     vm.filterChanged();
                     expect(vm.hasChanges).toBeTruthy();
-                    vm.after = undefined
+                    vm.after = undefined;
                     vm.filterChanged();
                     expect(vm.hasChanges).toBeTruthy();
-                    vm.before = undefined
+                    vm.before = undefined;
                     vm.filterChanged();
                     expect(vm.hasChanges).toBeFalsy();
                 });

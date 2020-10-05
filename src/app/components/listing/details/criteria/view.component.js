@@ -14,7 +14,7 @@ export const CertificationCriteriaViewComponent = {
     },
     controller: class CertificationCriteriaViewController {
         constructor ($analytics, $log, $uibModal, authService, featureFlags, utilService) {
-            'ngInject'
+            'ngInject';
             this.$analytics = $analytics;
             this.$log = $log;
             this.$uibModal = $uibModal;
@@ -99,10 +99,10 @@ export const CertificationCriteriaViewComponent = {
             if (!this.showDetails) {
                 this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: this.cert.criterion.number });
             }
-            this.showDetails = !this.showDetails
+            this.showDetails = !this.showDetails;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplCertificationCriteria', CertificationCriteriaViewComponent);

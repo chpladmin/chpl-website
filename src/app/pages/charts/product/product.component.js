@@ -5,7 +5,7 @@ export const ChartsProductComponent = {
     },
     controller: class ChartsProductComponent {
         constructor ($log, featureFlags, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.utilService = utilService;
             this.isOn = featureFlags.isOn;
@@ -111,7 +111,7 @@ export const ChartsProductComponent = {
                         title: 'Number of 2015 Edition Unique Products certified to specific Cures Update Certification Criteria',
                     },
                 },
-            }
+            };
         }
 
         _getCriterionProductCountDataInChartFormat (data, edition) {
@@ -142,7 +142,7 @@ export const ChartsProductComponent = {
                 });
         }
     },
-}
+};
 
 angular.module('chpl.charts')
     .component('chplChartsProduct', ChartsProductComponent);

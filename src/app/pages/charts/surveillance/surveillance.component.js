@@ -5,7 +5,7 @@ export const ChartsSurveillanceComponent = {
     },
     controller: class ChartsSurveillanceComponent {
         constructor ($log, featureFlags, utilService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.utilService = utilService;
             this.isOn = featureFlags.isOn;
@@ -181,7 +181,7 @@ export const ChartsSurveillanceComponent = {
                         },
                     },
                 },
-            }
+            };
         }
 
         _getNonconformityCountDataInChartFormat (data, type) {
@@ -216,7 +216,7 @@ export const ChartsSurveillanceComponent = {
                 .map(obj => ({c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]}));
         }
     },
-}
+};
 
 angular.module('chpl.charts')
     .component('chplChartsSurveillance', ChartsSurveillanceComponent);

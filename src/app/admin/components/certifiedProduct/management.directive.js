@@ -28,8 +28,6 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
-        vm.editProduct = editProduct;
-        vm.editVersion = editVersion;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
@@ -68,7 +66,7 @@
             networkService.getAcbs(true).then(result => vm.allowedAcbs = result);
             networkService.getCollection('surveillanceManagement').then(result => vm.surveillanceListings = result);
             getResources();
-        }
+        };
 
         function areResourcesReady () {
             return vm.resourcesReady.searchOptions &&
@@ -103,12 +101,12 @@
                 networkService.getPendingListings()
                     .then(function (listings) {
                         vm.pendingProducts = listings.length;
-                    })
+                    });
             }
             networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.pendingSurveillances = ([].concat(surveillances.pendingSurveillance)).length;
-                })
+                });
         }
 
         function selectDeveloper () {
@@ -136,28 +134,6 @@
                 delete vm.mergeProduct.productId;
                 delete vm.mergeProduct.lastModifiedDate;
             }
-        }
-
-        function editProduct () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/product/edit.html',
-                controller: 'EditProductController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    activeProduct: function () { return vm.activeProduct; },
-                },
-            });
-            vm.productMessage = null;
-            vm.modalInstance.result.then(function (result) {
-                vm.activeProduct = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.productMessage = result;
-                }
-            });
         }
 
         function mergeProducts () {
@@ -227,27 +203,6 @@
             }
         }
 
-        function editVersion () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/version/edit.html',
-                controller: 'EditVersionController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    activeVersion: function () { return vm.activeVersion; },
-                },
-            });
-            vm.modalInstance.result.then(function (result) {
-                vm.activeVersion = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.versionMessage = result;
-                }
-            });
-        }
-
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -259,7 +214,7 @@
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
                         vm.forceRefresh = false;
-                    })
+                    });
             }
         }
 
@@ -427,7 +382,7 @@
             vm.splitProductInstance.result.then(function (result) {
                 if (isEditingListing()) {
                     vm.forceRefresh = true;
-                    refreshDevelopers()
+                    refreshDevelopers();
                 } else {
                     vm.activeProduct = result.product;
                     vm.activeVersion = '';

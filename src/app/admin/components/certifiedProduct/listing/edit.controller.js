@@ -45,7 +45,7 @@
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
             resources.qmsStandards.data = resources.qmsStandards.data
-                .concat(vm.cp.qmsStandards.filter(function (standard) { return !standard.id }).map(function (standard) {
+                .concat(vm.cp.qmsStandards.filter(function (standard) { return !standard.id; }).map(function (standard) {
                     standard.name = standard.qmsStandardName;
                     return standard;
                 }));
@@ -286,7 +286,7 @@
             if (vm.cp.product && vm.cp.product.productId && vm.cp.certificationEdition.name === '2015') {
                 networkService.getRelatedListings(vm.cp.product.productId)
                     .then(function (family) {
-                        vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
+                        vm.relatedListings = family.filter(function (item) { return item.edition === '2015'; });
                     });
             }
         }

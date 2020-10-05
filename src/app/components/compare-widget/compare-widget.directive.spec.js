@@ -97,7 +97,7 @@
                 { name: 'a name', productId: '1' },
                 { name: '2nd name', productId: '2' },
             ];
-            const products = payload.map((item) => { return {id: item.productId, name: item.name } });
+            const products = payload.map((item) => { return {id: item.productId, name: item.name }; });
 
             it('should put the items in the widget', () => {
                 $rootScope.$broadcast('compareAll', payload);

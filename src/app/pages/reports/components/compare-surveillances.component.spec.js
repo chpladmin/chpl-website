@@ -25,7 +25,7 @@
                 scope.resolve = {
                     oldSurveillance: mock.oldSurv,
                     newSurveillance: mock.newSurv,
-                }
+                };
 
                 el = angular.element('<chpl-compare-surveillances close="close($value)" dismiss="dismiss()" resolve="resolve"></chpl-compare-surveillances>');
 

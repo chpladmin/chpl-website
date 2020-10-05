@@ -3,13 +3,12 @@ export const OrganizationsComponent = {
     bindings: {
     },
     controller: class OrganizationsComponent {
-        constructor ($log, featureFlags) {
-            'ngInject'
+        constructor ($log) {
+            'ngInject';
             this.$log = $log;
-            this.isOn = featureFlags.isOn;
         }
     },
-}
+};
 
 angular.module('chpl.organizations')
     .component('chplOrganizations', OrganizationsComponent);

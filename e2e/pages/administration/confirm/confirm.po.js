@@ -7,7 +7,8 @@ const confirmElements = {
     warningCheckbox: '#acknowledge-warnings',
     confirmButton: '#inspect-confirm',
     toastContainertitle: '.ng-binding.toast-title',
-}
+    rejectButtonOnInspectListing: '#inspect-reject',
+};
 
 class ConfirmPage {
     constructor () { }
@@ -38,6 +39,14 @@ class ConfirmPage {
 
     get toastContainerTitle () {
         return $(confirmElements.toastContainertitle);
+    }
+
+    get rejectButtonOnInspectListing () {
+        return $(confirmElements.rejectButtonOnInspectListing);
+    }
+
+    rejectCheckbox (chplId) {
+        return $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input');
     }
 
     gotoConfirmListingPage (inspectListingId ) {
@@ -78,7 +87,7 @@ class ConfirmPage {
             {
                 timeout: config.longTimeout,
             }
-        )
+        );
     }
 }
 

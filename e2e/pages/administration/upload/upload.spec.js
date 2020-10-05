@@ -15,7 +15,7 @@ beforeAll(async () => {
 
 describe('Upload Page', () => {
     beforeAll(function () {
-        loginComponent.loginAsAdmin();
+        loginComponent.logIn('admin');
     });
 
     it('has correct title for upload listing component', () => {

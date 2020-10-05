@@ -1,0 +1,33 @@
+<div ng-form="$ctrl.form">
+  <div class="panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Edit Version Details</h2>
+    </div>
+    <div class="panel-body">
+      <div class="version__version-elements">
+        <div class="version__version-element">
+          <div class="data-label">
+            Product Name
+          </div>
+          <div class="read-only-data">
+            {{ $ctrl.product.name }}
+          </div>
+        </div>
+        <div class="version__version-element">
+          <div class="data-label">
+            <label for="version-name">Version <span class="text-danger">*</span></label>
+          </div>
+          <div>
+            <input class="form-control" type="text" id="version-name" name="versionName" required
+                   ng-model="$ctrl.version.version">
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.versionName.$touched) && $ctrl.form.versionName.$error.required">Field is required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                   error-messages="$ctrl.errorMessages"
+                   take-action="$ctrl.takeActionBarAction(action)">
+  </chpl-action-bar>
+</div>

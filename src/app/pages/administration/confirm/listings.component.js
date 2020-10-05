@@ -7,7 +7,7 @@ export const ConfirmListingsComponent = {
     },
     controller: class ConfirmListingsComponent {
         constructor ($log, $uibModal, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$uibModal = $uibModal;
             this.networkService = networkService;
@@ -106,7 +106,7 @@ export const ConfirmListingsComponent = {
             this.uploadingCps = this.uploadingCps.filter(l => l.id !== cpId);
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplConfirmListings', ConfirmListingsComponent);

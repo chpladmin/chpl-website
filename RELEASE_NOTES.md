@@ -1,5 +1,36 @@
 # Release Notes
 
+## Version 11.0.0
+_5 October 2020_
+
+### User Interface Updates
+* Implement major style upgrade
+
+### Features
+* Enable editing of Version in new UX
+
+### Flagged Features
+* Display message on Direct Reviews when Jira doesn't respond
+
+### Bug Fixes
+* Restore ability to edit friendly name for POC
+* Display errors when editing Users
+
+---
+
+## Version 10.53.0
+_21 September 2020_
+
+### Features
+* Add ability to handle Java 8 updated date and time datatypes
+* Show all User Actions across time in Report
+* Allow Product editing on Developer page
+
+### User Interface Updates
+* Display CQM Versions in correct order
+
+---
+
 ## Version 10.52.0
 _8 September 2020_
 

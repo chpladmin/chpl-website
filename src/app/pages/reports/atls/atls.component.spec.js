@@ -23,7 +23,7 @@ import {getActivity, getMetadata} from './history.mock';
                 networkService.getActivityById.and.callFake(id => $q.when(getActivity(id)));
                 networkService.getActivityMetadata.and.returnValue($q.when(getMetadata('atl')));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
 
                 el = angular.element('<chpl-reports-atls></chpl-reports-atls>');
 
