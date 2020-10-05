@@ -141,10 +141,15 @@
 
         function certificationStatus (listing, options) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
-                if (options && options.editing) {
-                    return $filter('orderBy')(listing.certificationEvents.map(event => { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
-                }
-                return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
+                let events = listing.certificationEvents
+                    .map(ce => {
+                        if (ce.statusDateObject && options && options.editing) {
+                            ce.eventDate = ce.statusDateObject.getTime();
+                        }
+                        return ce;
+                    })
+                    .sort((a, b) => b.eventDate - a.eventDate);
+                return events[0].status.name;
             }
             return '';
         }

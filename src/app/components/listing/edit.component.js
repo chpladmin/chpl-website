@@ -24,7 +24,6 @@ export const ListingEditComponent = {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
                 this.backupListing = angular.copy(changes.listing.currentValue);
-                this.$log.error(this.listing.otherAcb);
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
@@ -42,6 +41,7 @@ export const ListingEditComponent = {
             }
             if (this.listing && this.resources) {
                 this.prepareFields();
+                this.update();
             }
         }
 
@@ -90,6 +90,7 @@ export const ListingEditComponent = {
             if (this.improperFirstStatus()) {
                 this.messages.errors.push('The earliest status of this product must be "Active"');
             }
+            this.$log.error(this.idFields.ics, this.requiredIcsCode(), this.listing.ics.parents);
             if (this.idFields.ics !== this.requiredIcsCode() && this.requiredIcsCode() > 0 && this.listing.ics.parents.length > 0) {
                 this.messages.errors.push('ICS Code must be exactly one more than highest ICS code of all of this Listing\'s ICS parents; it should be "' + this.requiredIcsCode());
             }
@@ -183,22 +184,13 @@ export const ListingEditComponent = {
                     this.idFields.suffix;
             }
             this.listing.certificationDate = this.listing.certDate.getTime();
-            this.generateErrorMessage();
+            this.generateErrorMessages();
             this.onChange({
                 listing: this.listing,
                 messages: this.messages,
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,
             });
-        }
-
-        updateListing (listing) {
-            this.listing.certificationResults = listing.certificationResults;
-            this.listing.cqmResults = listing.cqmResults;
-            this.listing.sed = listing.sed;
-            this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
-            this.listing.sedReportFileLocation = listing.sedReportFileLocation;
-            this.listing.sedTestingEndDate = listing.sedTestingEndDate;
         }
     },
 };

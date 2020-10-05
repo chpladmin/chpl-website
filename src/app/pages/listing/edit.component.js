@@ -101,6 +101,7 @@ export const ListingEditPageComponent = {
                 this.cancel();
                 break;
             case 'mouseover':
+                this.consolidateErrors();
                 this.showFormErrors = true;
                 break;
             case 'save':
@@ -114,6 +115,7 @@ export const ListingEditPageComponent = {
             this.listingBasic = angular.copy(listing);
             this.errors.basic = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
             this.warnings.basic = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+            this.$log.error(this.errors.basic);
             this.consolidateErrors();
             this.reason = reason;
         }
@@ -138,6 +140,7 @@ export const ListingEditPageComponent = {
                 });
             this.errors.details = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
             this.warnings.details = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+            this.listingBasic = angular.copy(this.listingBasic);
             this.consolidateErrors();
         }
     },

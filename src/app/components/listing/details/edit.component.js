@@ -76,7 +76,7 @@ export const ListingDetailsEditComponent = {
                 errors: [],
                 warnings: [],
             };
-            if (this.missingIcsSource) {
+            if (this.missingIcsSource()) {
                 this.messages.errors.push('Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from');
             }
         }
