@@ -245,9 +245,14 @@
 
             if (vm.cp.rwtPlansCheckDateObject) {
                 vm.cp.rwtPlansCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtPlansCheckDateObject, 'yyyy-MM-dd');
+            } else {
+                vm.cp.rwtPlansCheckDate = null;
             }
+
             if (vm.cp.rwtResultsCheckDateObject) {
                 vm.cp.rwtResultsCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtResultsCheckDateObject, 'yyyy-MM-dd');
+            } else {
+                vm.cp.rwtResultsCheckDate = null;
             }
 
             if (vm.workType === 'manage') {
