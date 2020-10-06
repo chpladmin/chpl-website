@@ -28,7 +28,7 @@ let states = [
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else {
-                    return networkService.getDeveloper($transition$.params().developerId);
+                    return networkService.getDeveloperHierarchy($transition$.params().developerId);
                 }
             },
             products: (networkService, $location, $transition$) => {
