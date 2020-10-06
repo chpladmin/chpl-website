@@ -13,10 +13,12 @@ export const ListingEditPageComponent = {
             this.errors = {
                 basic: [],
                 details: [],
+                save: [],
             };
             this.warnings = {
                 basic: [],
                 details: [],
+                save: [],
             };
             this.networkService = networkService;
             this.resources = {};
@@ -37,7 +39,8 @@ export const ListingEditPageComponent = {
         }
 
         consolidateErrors () {
-            this.errorMessages = this.errors.basic.concat(this.errors.details);
+            this.errorMessages = this.errors.basic.concat(this.errors.details).concat(this.errors.save);
+            this.warningMessages = this.warnings.basic.concat(this.warnings.details).concat(this.warnings.save);
         }
 
         isValid () {
@@ -48,7 +51,6 @@ export const ListingEditPageComponent = {
 
         save () {
             let that = this;
-            this.isSaving = true;
             this.listingBasic.certificationResults = this.listingDetails.certificationResults;
             this.listingBasic.cqmResults = this.listingDetails.cqmResults;
             this.listingBasic.sed = this.listingDetails.sed;
@@ -57,42 +59,43 @@ export const ListingEditPageComponent = {
             this.listingBasic.sedTestingEndDate = this.listingDetails.sedTestingEndDate;
 
             this.listingBasic.otherAcb = this.listingDetails.otherAcb;
-            //this.listingBasic.ics = this.listingDetails.ics;
             this.listingBasic.qmsStandards = this.listingDetails.qmsStandards;
             this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
             this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
-            that.$log.error(this.listingBasic);
-            /*
-            this.networkService.updateCP({
+            let updateObject = {
                 listing: this.listingBasic,
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,
-            }).then(response => {
+            };
+            //that.$log.error(updateObject);
+            this.isSaving = true;
+            this.networkService.updateCP(updateObject).then(response => {
                 if (!response.status || response.status === 200) {
+                    that.listingBasic = angular.copy(response);
+                    that.listingDetails = angular.copy(response);
                     that.$state.go('^', {}, {reload: true});
                 } else {
-                    that.saveErrors = { errors: [response.error]};
-                    that.isSaving = false;
+                    that.isSaving = undefined;
+                    that.errors.save = [response.error];
+                    that.consolidateErrors();
                 }
             }, error => {
-                that.saveErrors = {
-                    errors: [],
-                    warnings: [],
-                };
+                that.isSaving = undefined;
                 if (error.data) {
+                    that.errors.save = [];
+                    that.warnings.save = [];
                     if (error.data.error && error.data.error.length > 0) {
-                        that.saveErrors.errors.push(error.data.error);
+                        that.errors.save.push(error.data.error);
                     }
                     if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-                        that.saveErrors.errors = that.saveErrors.errors.concat(error.data.errorMessages);
+                        that.errors.save = that.errors.save.concat(error.data.errorMessages);
                     }
                     if (error.data.warningMessages && error.data.warningMessages.length > 0) {
-                        that.saveErrors.warnings = that.saveErrors.warnings.concat(error.data.warningMessages);
+                        that.warnings.save = that.warnings.save.concat(error.data.warningMessages);
                     }
+                    that.consolidateErrors();
                 }
-                that.isSaving = false;
             });
-            */
         }
 
         takeActionBarAction (action, data) {
