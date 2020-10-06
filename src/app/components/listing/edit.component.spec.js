@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Listing Edit component', () => {
-        var $compile, $log, $q, authService, ctrl, el, mock, scope, utilService;
+        var $compile, $log, authService, ctrl, el, mock, scope, utilService;
 
         mock = {};
         mock.listing = {
@@ -13,7 +13,7 @@
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
-            ics: { inherits: false },
+            ics: { inherits: false, parents: [] },
             practiceType: [],
             product: { productId: 1 },
             qmsStandards: [
@@ -52,10 +52,9 @@
                 });
             });
 
-            inject((_$compile_, _$controller_, _$log_, _$q_, $rootScope, _authService_, _utilService_) => {
+            inject((_$compile_, _$controller_, _$log_, $rootScope, _authService_, _utilService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
                 utilService = _utilService_;
@@ -64,13 +63,11 @@
 
                 scope = $rootScope.$new();
                 scope.listing = angular.copy(mock.listing);
-                scope.isSaving = false;
-                scope.onCancel = jasmine.createSpy('onCancel');
-                scope.onSave = jasmine.createSpy('onSave');
+                scope.onChange = jasmine.createSpy('onChange');
                 scope.resources = angular.copy(mock.resources);
                 scope.workType = 'edit';
 
-                el = angular.element('<chpl-listing-edit listing="listing" is-saving="isSaving" on-save="onSave(listing, reason)" on-cancel="onCancel()" resources="resources" work-type="workType"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" on-change="onChange(listing, messages, reason)" resources="resources" work-type="workType"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -95,7 +92,7 @@
             cp.ics.parents = [{name: 'a parent'}];
             scope.listing = cp;
 
-            el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+            el = angular.element('<chpl-listing-edit listing="listing" on-change="onChange(listing, messages, reason)" resources="resources" work-type="workType"></chpl-listing-edit>');
 
             $compile(el)(scope);
             scope.$digest();
@@ -108,7 +105,7 @@
             cp.chplProductNumber = '15.07.07.2713.CQ01.02.00.1.170331';
             scope.listing = cp;
 
-            el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+            el = angular.element('<chpl-listing-edit listing="listing" on-change="onChange(listing, messages, reason)" resources="resources" work-type="workType"></chpl-listing-edit>');
 
             $compile(el)(scope);
             scope.$digest();
@@ -168,7 +165,7 @@
                     ics: '02',
                     suffix: '0.140303',
                 };
-                ctrl.save();
+                ctrl.update();
                 expect(ctrl.listing.chplProductNumber).toBe('14.03.03.2879.prod.vr.02.0.140303');
             });
 
@@ -181,7 +178,7 @@
                         statusDateObject: aDate,
                     },
                 ];
-                ctrl.save();
+                ctrl.update();
                 expect(ctrl.listing.certificationEvents[0].eventDate).toBe(dateValue);
             });
 
@@ -267,6 +264,58 @@
                 expect(ctrl.hasStatusMatches()).toBe(true);
                 ctrl.listing.certificationEvents[0].status.name = 'Suspended by ONC';
                 expect(ctrl.hasStatusMatches()).toBe(false);
+            });
+
+            describe('with respect to ics code calculations', () => {
+                it('should expect the code to be 00 if no parents', () => {
+                    ctrl.listing.ics.parents = [];
+                    expect(ctrl.requiredIcsCode()).toBe('00');
+                });
+
+                it('should expect the code to be 1 if one parent and parent has ICS 00', () => {
+                    ctrl.listing.ics.parents = [{chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'}];
+                    expect(ctrl.requiredIcsCode()).toBe('01');
+                });
+
+                it('should expect the code to be 1 if two parents and parents have ICS 00', () => {
+                    ctrl.listing.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'},
+                    ];
+                    expect(ctrl.requiredIcsCode()).toBe('01');
+                });
+
+                it('should expect the code to be 2 if two parents and parents have ICS 01', () => {
+                    ctrl.listing.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
+                    ];
+                    expect(ctrl.requiredIcsCode()).toBe('02');
+                });
+
+                it('should expect the code to be 3 if two parents and parents have ICS 01,02', () => {
+                    ctrl.listing.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.02.1.170331'},
+                    ];
+                    expect(ctrl.requiredIcsCode()).toBe('03');
+                });
+
+                it('should expect the code to be 10 if two parents and parents have ICS 03,09', () => {
+                    ctrl.listing.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.09.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.03.1.170331'},
+                    ];
+                    expect(ctrl.requiredIcsCode()).toBe('10');
+                });
+
+                it('should expect the code to be 18 if two parents and parents have ICS 17,11', () => {
+                    ctrl.listing.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.17.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.11.1.170331'},
+                    ];
+                    expect(ctrl.requiredIcsCode()).toBe('18');
+                });
             });
         });
     });

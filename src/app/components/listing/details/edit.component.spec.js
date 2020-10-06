@@ -23,6 +23,7 @@
             targetedUsers: [],
         };
         mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
+        mock.resources = {};
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.components', $provide => {
@@ -45,8 +46,9 @@
                 scope = $rootScope.$new();
                 scope.listing = Mock.fullListings[1];
                 scope.listing.sed = {testTasks: [], ucdProcesses: []};
+                scope.resources = mock.resources;
 
-                el = angular.element('<chpl-listing-details-edit listing="listing"></chpl-listing-details-edit>');
+                el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -79,7 +81,7 @@
                 });
 
                 it('should be able to be open to nothing', () => {
-                    el = angular.element('<chpl-listing-details-edit listing="listing" initial-panel="none"></chpl-listing-details-edit>');
+                    el = angular.element('<chpl-listing-details-edit listing="listing" initial-panel="none" resources="resources"></chpl-listing-details-edit>');
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
@@ -87,7 +89,7 @@
                 });
 
                 it('should be able to be open to surveillance', () => {
-                    el = angular.element('<chpl-listing-details-edit listing="listing" initial-panel="surveillance"></chpl-listing-details-edit>');
+                    el = angular.element('<chpl-listing-details-edit listing="listing" initial-panel="surveillance" resources="resources"></chpl-listing-details-edit>');
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
@@ -95,7 +97,17 @@
                 });
             });
 
-            describe('when deailing with ics family', () => {
+            describe('when dealing with ics family', () => {
+                beforeEach(() => {
+                    scope.listing = mock.listing;
+
+                    el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
+
+                    $compile(el)(scope);
+                    scope.$digest();
+                    ctrl = el.isolateScope().$ctrl;
+                });
+
                 it('should call the common service to get related listings', () => {
                     expect(networkService.getRelatedListings).toHaveBeenCalled();
                 });
@@ -114,7 +126,7 @@
                     cp.certificationEdition = {name: '2014'};
                     scope.listing = cp;
 
-                    el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                    el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
 
                     $compile(el)(scope);
                     scope.$digest();
@@ -128,7 +140,7 @@
                     cp.product = {productId: undefined};
                     scope.listing = cp;
 
-                    el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                    el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
 
                     $compile(el)(scope);
                     scope.$digest();
@@ -142,7 +154,7 @@
                     cp.product = undefined;
                     scope.listing = cp;
 
-                    el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+                    el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
 
                     $compile(el)(scope);
                     scope.$digest();
@@ -162,61 +174,9 @@
                     });
                 });
 
-                describe('with respect to ics code calculations', () => {
-                    it('should expect the code to be 00 if no parents', () => {
-                        ctrl.listing.ics.parents = [];
-                        expect(ctrl.requiredIcsCode()).toBe('00');
-                    });
-
-                    it('should expect the code to be 1 if one parent and parent has ICS 00', () => {
-                        ctrl.listing.ics.parents = [{chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'}];
-                        expect(ctrl.requiredIcsCode()).toBe('01');
-                    });
-
-                    it('should expect the code to be 1 if two parents and parents have ICS 00', () => {
-                        ctrl.listing.ics.parents = [
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'},
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'},
-                        ];
-                        expect(ctrl.requiredIcsCode()).toBe('01');
-                    });
-
-                    it('should expect the code to be 2 if two parents and parents have ICS 01', () => {
-                        ctrl.listing.ics.parents = [
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
-                        ];
-                        expect(ctrl.requiredIcsCode()).toBe('02');
-                    });
-
-                    it('should expect the code to be 3 if two parents and parents have ICS 01,02', () => {
-                        ctrl.listing.ics.parents = [
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.02.1.170331'},
-                        ];
-                        expect(ctrl.requiredIcsCode()).toBe('03');
-                    });
-
-                    it('should expect the code to be 10 if two parents and parents have ICS 03,09', () => {
-                        ctrl.listing.ics.parents = [
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.09.1.170331'},
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.03.1.170331'},
-                        ];
-                        expect(ctrl.requiredIcsCode()).toBe('10');
-                    });
-
-                    it('should expect the code to be 18 if two parents and parents have ICS 17,11', () => {
-                        ctrl.listing.ics.parents = [
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.17.1.170331'},
-                            {chplProductNumber: '15.07.07.2713.CQ01.02.11.1.170331'},
-                        ];
-                        expect(ctrl.requiredIcsCode()).toBe('18');
-                    });
-                });
-
                 describe('with respect to missing ICS source', () => {
                     it('should not require ics source for 2014 listings', () => {
-                        ctrl.listing.certificationEdition.name = '2015';
+                        ctrl.listing.certificationEdition.name = '2014';
                         expect(ctrl.missingIcsSource()).toBe(false);
                     });
 
