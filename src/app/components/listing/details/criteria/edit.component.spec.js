@@ -46,10 +46,6 @@
                         {'id': 2, 'name': '(a)(2)(ii)'},
                         {'id': 3, 'name': '(a)(1)(i)'},
                     ],
-                    //allowedSvaps: [
-                    //    {svapId: 1, regulatoryTextCitation: 'reg1', approvedStandardVersion: 'ver1'},
-                    //    {svapId: 2, regulatoryTextCitation: 'reg2', approvedStandardVersion: 'ver2'},
-                    //],
                     resources: mock.resources,
                     hasIcs: false,
                     isConfirming: false,
