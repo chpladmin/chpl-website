@@ -41,7 +41,7 @@ export const ListingEditComponent = {
             }
             if (this.listing && this.resources) {
                 this.prepareFields();
-                this.update();
+                this.update(true);
             }
         }
 
@@ -173,7 +173,7 @@ export const ListingEditComponent = {
             return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
-        update () {
+        update (doNotUpdateListing) {
             this.listing.certificationEvents.forEach(ce => ce.eventDate = ce.statusDateObject.getTime());
             if (this.listing.chplProductNumber.length > 12) {
                 this.listing.chplProductNumber =
@@ -186,7 +186,7 @@ export const ListingEditComponent = {
             this.listing.certificationDate = this.listing.certDate.getTime();
             this.generateErrorMessages();
             this.onChange({
-                listing: this.listing,
+                listing: doNotUpdateListing ? undefined : this.listing,
                 messages: this.messages,
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,

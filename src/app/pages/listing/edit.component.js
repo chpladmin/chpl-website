@@ -112,10 +112,11 @@ export const ListingEditPageComponent = {
         }
 
         updateBasic (listing, messages, reason) {
-            this.listingBasic = angular.copy(listing);
+            if (listing) {
+                this.listingBasic = angular.copy(listing);
+            }
             this.errors.basic = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
             this.warnings.basic = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
-            this.$log.error(this.errors.basic);
             this.consolidateErrors();
             this.reason = reason;
         }
