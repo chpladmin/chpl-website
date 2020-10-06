@@ -51,14 +51,14 @@
             describe('for callbacks', () => {
                 describe('impersonation', () => {
                     it('should redirect to dashboard for ROLE_DEVELOPER', () => {
-                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0)
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') >= 0);
                         spyOn($state, 'go');
                         ctrl.takeAction('impersonate');
                         expect($state.go).toHaveBeenCalledWith('dashboard');
                     });
 
                     it('should not redirect to dashboard for non ROLE_DEVELOPER', () => {
-                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') === -1)
+                        authService.hasAnyRole.and.callFake(roles => !roles || roles.indexOf('ROLE_DEVELOPER') === -1);
                         spyOn($state, 'go');
                         ctrl.takeAction('impersonate');
                         expect($state.go).not.toHaveBeenCalled();

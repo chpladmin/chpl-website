@@ -28,7 +28,7 @@
                 networkService.getApiActivity.and.returnValue($q.when([]));
                 networkService.getApiUsers.and.returnValue($q.when([]));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 el = angular.element('<chpl-reports-api-key-usage></chpl-reports-api-key-usage>');
                 $compile(el)(scope);
                 scope.$digest();
@@ -65,7 +65,7 @@
                     });
 
                     it('should have a function to determine if a date range is okay', () => {
-                        expect(ctrl.validDates).toBeDefined()
+                        expect(ctrl.validDates).toBeDefined();
                     });
 
                     it('should allow dates with less than the range separation', () => {

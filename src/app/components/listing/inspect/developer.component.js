@@ -9,7 +9,7 @@ export const InspectDeveloperComponent = {
     },
     controller: class InspectDeveloperController {
         constructor ($log, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
             this.choice = 'choose';
@@ -56,7 +56,7 @@ export const InspectDeveloperComponent = {
                 .then(() => that.onSelect({developerId: dev.developer.developerId}));
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('aiInspectDeveloper', InspectDeveloperComponent);

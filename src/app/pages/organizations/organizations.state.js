@@ -31,14 +31,6 @@ let states = [
                     return networkService.getDeveloper($transition$.params().developerId);
                 }
             },
-            directReviews: (featureFlags, networkService, $location, $transition$) => {
-                'ngInject';
-                if (!$transition$.params().developerId) {
-                    $location.path('/organizations/developers');
-                } else if (featureFlags.isOn('direct-review')) {
-                    return networkService.getDirectReviews($transition$.params().developerId);
-                }
-            },
             products: (networkService, $location, $transition$) => {
                 'ngInject';
                 if (!$transition$.params().developerId) {
@@ -79,6 +71,18 @@ let states = [
             action: () => 'editProduct',
         },
         data: { title: 'CHPL Developers - Edit Product' },
+    },{
+        name: 'organizations.developers.developer.product.version',
+        url: '/versions/{versionId}',
+        abstract: true,
+    },{
+        name: 'organizations.developers.developer.product.version.edit',
+        url: '/edit',
+        component: 'chplDevelopersView',
+        resolve: {
+            action: () => 'editVersion',
+        },
+        data: { title: 'CHPL Developers - Edit Version' },
     },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',

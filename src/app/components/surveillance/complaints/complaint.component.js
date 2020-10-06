@@ -17,7 +17,7 @@ export const SurveillanceComplaintComponent = {
     },
     controller: class SurveillanceComplaintComponent {
         constructor ($anchorScroll, $filter, $log, authService, featureFlags, toaster, utilService) {
-            'ngInject'
+            'ngInject';
             this.$anchorScroll = $anchorScroll;
             this.$filter = $filter;
             this.$log = $log;
@@ -26,7 +26,7 @@ export const SurveillanceComplaintComponent = {
             this.modes = {
                 EDIT: 'edit',
                 ADD: 'add',
-            }
+            };
             this.currentMode = '';
             this.edition = {};
             this.isEditionDropdownOpen = false;
@@ -247,7 +247,7 @@ export const SurveillanceComplaintComponent = {
             this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillance.id !== surveillanceToRemove.surveillance.id);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSurveillanceComplaint', SurveillanceComplaintComponent);

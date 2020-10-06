@@ -7,7 +7,7 @@ export const OncOrganizationComponent = {
     },
     controller: class OncOrganizationComponent {
         constructor ($log, $state) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
         }
@@ -62,7 +62,7 @@ export const OncOrganizationComponent = {
                 this.save();
                 break;
             case 'cancel':
-                this.cancel()
+                this.cancel();
                 break;
                 //no default
             }
@@ -76,7 +76,7 @@ export const OncOrganizationComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplOncOrganization', OncOrganizationComponent);

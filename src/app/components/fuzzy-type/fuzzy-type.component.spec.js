@@ -19,7 +19,7 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-                scope.fuzzyType = mock.type
+                scope.fuzzyType = mock.type;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
                 el = angular.element('<chpl-fuzzy-type fuzzy-type="fuzzyType" take-action="takeAction(data, action)"></chpl-fuzzy-type>');

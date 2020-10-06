@@ -7,7 +7,7 @@ export const OncOrganizationEditComponent = {
     },
     controller: class OncOrganizationEditComponent {
         constructor ($log, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.backup = {};
@@ -64,7 +64,7 @@ export const OncOrganizationEditComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplOncOrganizationEdit', OncOrganizationEditComponent);

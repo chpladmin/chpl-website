@@ -9,6 +9,7 @@
         'ngAvatar',
         'ngCytoscape',
         'ngFileUpload',
+        'ngIdle',
         'ngResource',
         'ngStorage',
         'smart-table',

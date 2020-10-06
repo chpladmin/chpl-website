@@ -22,7 +22,7 @@ export class ReportService {
                             for (k = 0; k < nested.length; k++) {
                                 nested[k].changes = this.utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
                                 if (nested[k].changes.added.length > 0) {
-                                    if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
+                                    if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>'); }
                                     else {
                                         obj.changes.push('<li>Added ' + nested[k].display + ':<ul>');
                                         for (l = 0; l < nested[k].changes.added.length; l++) {
@@ -32,7 +32,7 @@ export class ReportService {
                                     }
                                 }
                                 if (nested[k].changes.removed.length > 0) {
-                                    if (nested[k].countOnly) { obj.changes.push('<li>Removed ' + nested[k].changes.removed.length + ' ' + nested[k].display + (nested[k].changes.removed.length !== 1 ? 's' : '') + '</li>') }
+                                    if (nested[k].countOnly) { obj.changes.push('<li>Removed ' + nested[k].changes.removed.length + ' ' + nested[k].display + (nested[k].changes.removed.length !== 1 ? 's' : '') + '</li>'); }
                                     else {
                                         obj.changes.push('<li>Removed ' + nested[k].display + ':<ul>');
                                         for (l = 0; l < nested[k].changes.removed.length; l++) {

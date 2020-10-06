@@ -4,12 +4,12 @@ export const CmsComponent = {
     },
     controller: class CmsComponent {
         constructor ($log, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplCms', CmsComponent);

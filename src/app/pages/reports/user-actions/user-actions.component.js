@@ -2,7 +2,7 @@ export const ReportsUserActionsComponent = {
     templateUrl: 'chpl.reports/user-actions/user-actions.html',
     controller: class ReportsUserActionsComponent {
         constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -38,7 +38,7 @@ export const ReportsUserActionsComponent = {
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.doFilter(f)
+            this.doFilter(f);
         }
 
         onClearFilter () {
@@ -133,7 +133,7 @@ export const ReportsUserActionsComponent = {
                             that.results.push(that.prepare(item, metadataType));
                         });
                     that.loadProgress.complete += 1;
-                    that.loadProgress.total += (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1))
+                    that.loadProgress.total += (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
                     that.addPageToData(1, metadataType);
                     let filter = {};
                     filter.dataFilter = '';
@@ -149,7 +149,7 @@ export const ReportsUserActionsComponent = {
 
         addPageToData (page, metadataType) {
             let that = this;
-            if (this.isDestroyed) { return }
+            if (this.isDestroyed) { return; }
             this.networkService.getActivityMetadata(metadataType, {pageNum: page, ignoreLoadingBar: true}).then(results => {
                 results.activities.filter(item => item.responsibleUser.userId !== -2)
                     .forEach(item => {
@@ -167,7 +167,7 @@ export const ReportsUserActionsComponent = {
             return this.displayed.filter(item => item.responsibleUserFullName === user).length > 0;
         }
     },
-}
+};
 
 angular.module('chpl.reports')
     .component('chplReportsUserActions', ReportsUserActionsComponent);

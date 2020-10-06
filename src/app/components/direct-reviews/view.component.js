@@ -41,7 +41,7 @@ export const DirectReviewsComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

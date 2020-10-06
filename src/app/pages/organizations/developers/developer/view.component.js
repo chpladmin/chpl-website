@@ -3,22 +3,23 @@ export const DevelopersViewComponent = {
     bindings: {
         developer: '<',
         developers: '<',
-        directReviews: '<',
         products: '<',
         action: '@',
     },
     controller: class DevelopersViewComponent {
-        constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
+        constructor ($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
             'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.canManageDeveloper = authService.canManageDeveloper;
+            this.featureFlags = featureFlags;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
             this.backup = {};
+            this.drStatus = 'pending';
             this.splitEdit = true;
             this.movingProducts = [];
             this.activeAcbs = [];
@@ -27,7 +28,7 @@ export const DevelopersViewComponent = {
 
         $onInit () {
             let that = this;
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct') {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct' && this.action !== 'editVersion') {
                 this.loadData();
             }
             this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
@@ -35,6 +36,16 @@ export const DevelopersViewComponent = {
                 .then(options => that.searchOptions = options);
             if (this.$stateParams.productId) {
                 this.productId = this.$stateParams.productId;
+            }
+            if (this.$stateParams.versionId) {
+                this.versionId = this.$stateParams.versionId;
+            }
+            if (this.featureFlags.isOn('direct-review')) {
+                this.networkService.getDirectReviews(this.developer.developerId)
+                    .then(results => {
+                        that.drStatus = 'success';
+                        that.directReviews = results;
+                    }, () => that.drStatus = 'error');
             }
         }
 
@@ -89,6 +100,7 @@ export const DevelopersViewComponent = {
                 developerId: this.developer.developerId,
                 action: undefined,
                 productId: undefined,
+                versionId: undefined,
             }, {reload: true});
         }
 
@@ -151,6 +163,14 @@ export const DevelopersViewComponent = {
             }
         }
 
+        saveUpdate (data) {
+            if (this.versionId) {
+                this.saveVersion(data);
+            } else {
+                this.saveProduct(data);
+            }
+        }
+
         saveProduct (product) {
             let that = this;
             let request = {
@@ -166,6 +186,44 @@ export const DevelopersViewComponent = {
                             developerId: this.developer.developerId,
                             action: undefined,
                             productId: undefined,
+                            versionId: undefined,
+                        }, {reload: true});
+                    } else {
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages.push(response.data.error);
+                        } else {
+                            that.errorMessages = ['An error has occurred.'];
+                        }
+                    }
+                }, error => {
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages.push(error.data.error);
+                    } else {
+                        that.errorMessages = ['An error has occurred.'];
+                    }
+                });
+        }
+
+        saveVersion (version) {
+            let that = this;
+            let request = {
+                versionIds: [version.versionId],
+                version: version,
+                newProductId: version.productId,
+            };
+            this.errorMessages = [];
+            this.networkService.updateVersion(request)
+                .then(response => {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        this.$state.go('organizations.developers.developer', {
+                            developerId: this.developer.developerId,
+                            action: undefined,
+                            productId: undefined,
+                            versionId: undefined,
                         }, {reload: true});
                     } else {
                         if (response.data.errorMessages) {

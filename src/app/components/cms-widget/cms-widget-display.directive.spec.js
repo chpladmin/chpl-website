@@ -24,7 +24,7 @@
                     this.create = mock.create;
                     this.generatePdf = mock.generatePdf;
                     this.removeProduct = mock.removeProduct;
-                }
+                };
 
                 el = angular.element('<ai-cms-widget><ai-cms-widget-display widget="widget"></ai-cms-widget-display></ai-cms-widget>');
                 scope = $rootScope.$new();

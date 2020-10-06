@@ -126,7 +126,7 @@
                 if (!open && !closed) {
                     ret = true;
                 } else {
-                    ret = (open && openNC) || (closed && closedNC)
+                    ret = (open && openNC) || (closed && closedNC);
                 }
             }
             return ret;
@@ -178,9 +178,9 @@
                         if (never && !open && !closed) {
                             ret = ret && !openNC && !closedNC;
                         } else if (!never && open && !closed) {
-                            ret = ret && openNC
+                            ret = ret && openNC;
                         } else if (!never && !open && closed) {
-                            ret = ret && closedNC
+                            ret = ret && closedNC;
                             /*
                              * if matching more than one, need to know if matchAll is true or not
                              * if true, only valid "multiple" is !never && open && closed
@@ -243,9 +243,9 @@
                         if (never && !open && !closed) {
                             ret = ret && !openNC && !closedNC;
                         } else if (!never && open && !closed) {
-                            ret = ret && openNC
+                            ret = ret && openNC;
                         } else if (!never && !open && closed) {
-                            ret = ret && closedNC
+                            ret = ret && closedNC;
                             /*
                              * if matching more than one, need to know if matchAll is true or not
                              * if true, only valid "multiple" is !never && open && closed

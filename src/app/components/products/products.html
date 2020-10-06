@@ -35,7 +35,7 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="edit-button" uib-dropdown-menu>
                     <li class="product__product-edit-filter-item" ng-click="$ctrl.editProduct(product)">Product</li>
-                    <li class="product__product-edit-filter-item">Version (functionality coming soon)</li>
+                    <li class="product__product-edit-filter-item" ng-click="$ctrl.editVersion(product)">Version</li>
                   </ul>
                 </div>
               </div>
@@ -87,9 +87,16 @@
     </div>
   </div>
 </span>
-<span ng-if="$ctrl.activeProduct">
+<span ng-if="$ctrl.activeProduct && !$ctrl.activeVersion">
   <chpl-product-edit
     product="$ctrl.activeProduct"
     take-action="$ctrl.handleEdit(action, data)"
     ></chpl-product-edit>
+</span>
+<span ng-if="$ctrl.activeProduct && $ctrl.activeVersion">
+  <chpl-version-edit
+    version="$ctrl.activeVersion"
+    product="$ctrl.activeProduct"
+    take-action="$ctrl.handleEdit(action, data)"
+    ></chpl-version-edit>
 </span>

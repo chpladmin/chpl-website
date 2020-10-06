@@ -83,7 +83,7 @@
                 });
 
                 describe('restoration', function () {
-                    var state
+                    var state;
                     beforeEach(function () {
                         spyOn(vm, 'filterChanged');
                         vm.predicate = 'nonconformity';

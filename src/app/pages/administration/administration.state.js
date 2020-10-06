@@ -31,7 +31,7 @@ let getResources = ($q, networkService) => {
     ];
     return $q.all(promises)
         .then(response => response);
-}
+};
 
 let states = {
     'change-request': [
@@ -41,7 +41,7 @@ let states = {
             component: 'chplChangeRequestsManagement',
             resolve: {
                 changeRequests: (authService, featureFlags, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (featureFlags.isOn('change-request')) {
                         if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                             return networkService.getChangeRequests();
@@ -51,7 +51,7 @@ let states = {
                     }
                 },
                 changeRequestStatusTypes: (authService, featureFlags, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (featureFlags.isOn('change-request')) {
                         if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                             return networkService.getChangeRequestStatusTypes();
@@ -61,7 +61,7 @@ let states = {
                     }
                 },
                 changeRequestTypes: (authService, featureFlags, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (featureFlags.isOn('change-request')) {
                         if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                             return networkService.getChangeRequestTypes();
@@ -84,7 +84,7 @@ let states = {
                     params: {
                         token: trans.params().token,
                     },
-                }
+                };
             },
         },{
             name: 'administration',
@@ -97,7 +97,7 @@ let states = {
             component: 'chplAnnouncements',
             resolve: {
                 announcements: (authService, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getAnnouncements(true);
                     }
@@ -111,7 +111,7 @@ let states = {
             component: 'chplApiKeys',
             resolve: {
                 apiKeys: (authService, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'] )) {
                         return networkService.getApiUsers();
                     }
@@ -140,11 +140,11 @@ let states = {
             component: 'chplConfirmListings',
             resolve: {
                 developers: networkService => {
-                    'ngInject'
+                    'ngInject';
                     return networkService.getDevelopers().then(response => response.developers);
                 },
                 resources: ($q, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     return getResources($q, networkService);
                 },
             },
@@ -155,7 +155,7 @@ let states = {
             component: 'chplFuzzyMatching',
             resolve: {
                 fuzzyTypes: (authService, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getFuzzyTypes();
                     }
@@ -174,7 +174,7 @@ let states = {
             component: 'chplJobsBackgroundPage',
             resolve: {
                 types: networkService => {
-                    'ngInject'
+                    'ngInject';
                     return networkService.getJobTypes();
                 },
             },
@@ -185,25 +185,25 @@ let states = {
             component: 'chplJobsScheduledPage',
             resolve: {
                 acbs: networkService => {
-                    'ngInject'
+                    'ngInject';
                     return networkService.getAcbs(true);
                 },
                 jobs: (authService, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                         return networkService.getScheduleJobs();
                     }
                     return [];
                 },
                 scheduledSystemJobs: (authService, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getScheduledSystemJobs();
                     }
                     return [];
                 },
                 triggers: (authService, networkService) => {
-                    'ngInject'
+                    'ngInject';
                     if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                         return networkService.getScheduleTriggers();
                     }
@@ -218,10 +218,10 @@ let states = {
             data: { title: 'CHPL Administration - Upload' },
         },
     ],
-}
+};
 
 function administrationStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states['base'].forEach(state => {
         $stateProvider.state(state);
     });

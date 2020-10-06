@@ -19,7 +19,7 @@
             scope: { },
             controllerAs: 'vm',
             controller: 'NavigationController',
-        }
+        };
     }
 
     /** @ngInject */
@@ -32,7 +32,7 @@
             scope: { },
             controllerAs: 'vm',
             controller: 'NavigationController',
-        }
+        };
     }
 
     /** @ngInject */
@@ -92,7 +92,7 @@
                 if (vm.navShown) {
                     vm.toggleNavClosed();
                 }
-            })
+            });
             $scope.$on('$destroy', loggedIn);
 
             var loggedOut = $scope.$on('loggedOut', function () {
@@ -100,17 +100,17 @@
                 if (!vm.navShown) {
                     vm.toggleNavOpen();
                 }
-            })
+            });
             $scope.$on('$destroy', loggedOut);
 
             var impersonating = $scope.$on('impersonating', function () {
                 vm.loadAnnouncements();
-            })
+            });
             $scope.$on('$destroy', impersonating);
 
             var unimpersonating = $scope.$on('unimpersonating', function () {
                 vm.loadAnnouncements();
-            })
+            });
             $scope.$on('$destroy', unimpersonating);
 
             var flags = $rootScope.$on('flags loaded', function () {
@@ -119,7 +119,7 @@
                 }
             });
             $scope.$on('$destroy', flags);
-        }
+        };
 
         function clear () {
             $rootScope.$broadcast('ClearResults', {});
@@ -147,7 +147,7 @@
         }
 
         function toggleNavClosed () {
-            vm.navShown = false
+            vm.navShown = false;
             $rootScope.bodyClass = 'navigation-hidden';
         }
 
