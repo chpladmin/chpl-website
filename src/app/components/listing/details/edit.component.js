@@ -9,8 +9,9 @@ export const ListingDetailsEditComponent = {
         showFormErrors: '<',
     },
     controller: class ListingDetailsEditComponent {
-        constructor ($analytics, $log, $uibModal, featureFlags, networkService, utilService) {
+        constructor ($analytics, $filter, $log, $uibModal, featureFlags, networkService, utilService) {
             this.$analytics = $analytics;
+            this.$filter = $filter;
             this.$log = $log;
             this.$uibModal = $uibModal;
             this.networkService = networkService;
