@@ -90,8 +90,7 @@ export const ListingEditComponent = {
             if (this.improperFirstStatus()) {
                 this.messages.errors.push('The earliest status of this product must be "Active"');
             }
-            this.$log.error(this.idFields.ics, this.requiredIcsCode(), this.listing.ics.parents);
-            if (this.idFields.ics !== this.requiredIcsCode() && this.requiredIcsCode() > 0 && this.listing.ics.parents.length > 0) {
+            if (this.idFields && this.idFields.ics !== this.requiredIcsCode() && this.requiredIcsCode() > 0 && this.listing.ics.parents.length > 0) {
                 this.messages.errors.push('ICS Code must be exactly one more than highest ICS code of all of this Listing\'s ICS parents; it should be "' + this.requiredIcsCode());
             }
             if (this.hasStatusMatches()) {
