@@ -95,7 +95,7 @@ export const ListingEditPageComponent = {
             */
         }
 
-        takeActionBarAction (action) {
+        takeActionBarAction (action, data) {
             switch (action) {
             case 'cancel':
                 this.cancel();
@@ -106,6 +106,9 @@ export const ListingEditPageComponent = {
                 break;
             case 'save':
                 this.save();
+                break;
+            case 'updateAcknowledgement':
+                this.acknowledgeWarnings = data;
                 break;
                 //no default
             }

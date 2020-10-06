@@ -1,5 +1,6 @@
 :root {
-    --background: 196, 79, 101;
+    --background-error: 196, 79, 101;
+    --background-warning: 196, 79, 101;
 }
 
 .action-bar {
@@ -28,8 +29,24 @@
 
 .action-bar__errors {
     color: var(--red);
-    background-color: rgba(var(--background), .3);
+    background-color: rgba(var(--background-error), .3);
     text-align: center;
+}
+
+.action-bar__warnings {
+    color: var(--warning);
+    background-color: rgba(var(--background-warning), .3);
+    text-align: center;
+}
+
+.action-bar__acknowledge-warnings {
+    color: var(--warning);
+    text-align: center;
+}
+
+label.action-bar__acknowledge-warning-label {
+    display: inline;
+    color: var(--warning);
 }
 
 .action-bar__buttons {

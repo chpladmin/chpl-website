@@ -34,8 +34,9 @@
     <input type="checkbox" ng-model="$ctrl.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
     <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
   </div>
-  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+  <chpl-action-bar is-disabled="($ctrl.showFormErrors && !$ctrl.isValid()) || $ctrl.isSaving"
                    error-messages="$ctrl.errorMessages"
-                   take-action="$ctrl.takeActionBarAction(action)">
+                   warning-messages="$ctrl.warningMessages"
+                   take-action="$ctrl.takeActionBarAction(action, data)">
   </chpl-action-bar>
 </div>

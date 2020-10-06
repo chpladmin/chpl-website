@@ -270,11 +270,11 @@
       <li ng-repeat="msg in $ctrl.messages.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
     </ul>
   </div>
-  -->
   <div ng-if="$ctrl.messages.warnings && $ctrl.messages.warnings.length > 0">
     <input type="checkbox" ng-model="$ctrl.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="edit-listing__acknowledge-warning-checkbox">
     <label for="acknowledge-warnings" class="edit-listing__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> above and wish to proceed with this update</label>
   </div>
+  -->
   <!--
   <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
                    error-messages="$ctrl.errorMessages"

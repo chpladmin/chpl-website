@@ -12,7 +12,7 @@ let states = [{
             }
         },
     },
-    data: { title: 'CHPL Product Details' },
+    data: { title: 'CHPL Listing Details' },
 },{
     name: 'listing.edit',
     url: '/edit',
@@ -45,7 +45,7 @@ let states = [{
             });
         },
     },
-    data: { title: 'CHPL Product Details - Edit' },
+    data: { title: 'CHPL Listing Details - Edit' },
 },{
     name: 'product',
     url: '/product/{id}',
