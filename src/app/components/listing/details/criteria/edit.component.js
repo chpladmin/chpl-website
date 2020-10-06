@@ -81,7 +81,7 @@ export const CertificationCriteriaEditComponent = {
             switch (action.action) {
             case 'Remove':
                 this.cert.svaps = this.cert.svaps
-                    .filter(svap=> !(svap.svapId === action.item.item.svapId));
+                    .filter(svap => svap.svapId !== action.item.item.svapId);
                 break;
             case 'Add':
                 this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
