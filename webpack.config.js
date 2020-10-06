@@ -231,6 +231,7 @@ module.exports = env => {
     };
     if (env.server) {
         config.devServer = {
+            clientLogLevel: 'silent',
             disableHostCheck: true,
             port: 3000,
             proxy: {
