@@ -48,11 +48,10 @@
               </div>
             </div>
           </td>
-          <td ng-if="$ctrl.cert.testStandards && $ctrl.cert.testStandards.length > 0 && !$ctrl.canEdit()">
+          <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0 && !$ctrl.canEdit()">
             <ul>
-              <li ng-repeat="m in $ctrl.cert.testStandards">
-                <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
-                <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
+              <li ng-repeat="m in $ctrl.cert.svaps">
+                <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
               </li>
             </ul>
           </td>
