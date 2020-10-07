@@ -259,7 +259,7 @@ export const ListingHistoryComponent = {
                 } else if (!curr.rwtPlansUrl) {
                     activity.change.push('Real World Testing Plans URL removed: ' + prev.rwtPlansUrl);
                 } else {
-                    activity.change.push('Real World Testing Plans URL changed from ' + prev.rwtPlansUrl + ' to ' + curr.rwtPlansUrl)
+                    activity.change.push('Real World Testing Plans URL changed from ' + prev.rwtPlansUrl + ' to ' + curr.rwtPlansUrl);
                 }
             }
             if (prev.rwtResultsUrl !== curr.rwtResultsUrl) {
@@ -268,7 +268,7 @@ export const ListingHistoryComponent = {
                 } else if (!curr.rwtResultsUrl) {
                     activity.change.push('Real World Testing Results URL removed: ' + prev.rwtResultsUrl);
                 } else {
-                    activity.change.push('Real World Testing Results URL changed from ' + prev.rwtResultsUrl + ' to ' + curr.rwtResultsUrl)
+                    activity.change.push('Real World Testing Results URL changed from ' + prev.rwtResultsUrl + ' to ' + curr.rwtResultsUrl);
                 }
             }
         }
