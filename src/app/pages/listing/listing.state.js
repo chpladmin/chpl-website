@@ -8,10 +8,7 @@ let states = [{
             if (!$transition$.params().id) {
                 $location.path('/search');
             } else {
-                if ($transition$.from().name === 'listing.edit') {
-                    return networkService.getListing($transition$.params().id, true);
-                }
-                return networkService.getListing($transition$.params().id);
+                return networkService.getListing($transition$.params().id, $transition$.params().reload);
             }
         },
     },

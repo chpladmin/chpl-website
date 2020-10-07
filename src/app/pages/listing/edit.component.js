@@ -35,7 +35,7 @@ export const ListingEditPageComponent = {
         }
 
         cancel () {
-            this.$state.go('^', {}, {reload: true});
+            this.$state.go('^');
         }
 
         consolidateErrors () {
