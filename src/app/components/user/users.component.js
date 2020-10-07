@@ -8,7 +8,7 @@ export const UsersComponent = {
     },
     controller: class UsersComponent {
         constructor ($anchorScroll, $log, $rootScope, authService, networkService, utilService) {
-            'ngInject'
+            'ngInject';
             this.$anchorScroll = $anchorScroll;
             this.$log = $log;
             this.$rootScope = $rootScope;
@@ -39,6 +39,7 @@ export const UsersComponent = {
 
         act (action, data) {
             let that = this;
+            this.errors = undefined;
             switch (action) {
             case 'delete':
                 this.takeAction({action: 'delete', data: data});
@@ -53,8 +54,10 @@ export const UsersComponent = {
                 this.networkService.updateUser(data)
                     .then(() => {
                         that.takeAction({action: 'refresh'});
+                        that.activeUser = undefined;
+                    }, error => {
+                        that.errors = [error.data.error];
                     });
-                this.activeUser = undefined;
                 break;
             case 'cancel':
                 this.activeUser = undefined;
@@ -111,7 +114,7 @@ export const UsersComponent = {
             }).sort((a, b) => a.fullName < b.fullName ? -1 : a.fullName > b.fullName ? 1 : 0);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplUsers', UsersComponent);

@@ -150,7 +150,7 @@
 
         function clearLookupResults () {
             delete $localStorage.lookupProducts;
-            delete $localStorage.lookupProductsFormatInvalidIds
+            delete $localStorage.lookupProductsFormatInvalidIds;
             delete $localStorage.lookupProductsCertIdNotFound;
             delete $localStorage.lookupProductsCsv;
             vm.lookupProducts = null;

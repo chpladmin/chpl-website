@@ -19,7 +19,7 @@ export const DeveloperComponent = {
     },
     controller: class DeveloperComponent {
         constructor ($filter, $log, authService, featureFlags) {
-            'ngInject'
+            'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
@@ -72,7 +72,7 @@ export const DeveloperComponent = {
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
-            if (changes.isMeging) {
+            if (changes.isMerging) {
                 this.isMerging = angular.copy(changes.isMerging.currentValue);
             }
             if (changes.isSplitting) {
@@ -86,7 +86,7 @@ export const DeveloperComponent = {
                 this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
             }
             if (this.developer && this.mergingDevelopers) {
-                this.generateMergeOptions()
+                this.generateMergeOptions();
             }
         }
 
@@ -98,7 +98,7 @@ export const DeveloperComponent = {
                 return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                         || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active' // allowed for ACB iff Developer is "Active"
-                        || this.hasAnyRole(['ROLE_DEVELOPER']) && this.developer.status.status === 'Active' && this.isOn('change-request')) // allowed for DEVELOPER iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_DEVELOPER']) && this.developer.status.status === 'Active' && this.isOn('change-request')); // allowed for DEVELOPER iff Developer is "Active"
             }
             if (action === 'merge') {
                 return this.canMerge // allowed by containing component
@@ -107,7 +107,7 @@ export const DeveloperComponent = {
             if (action === 'split') {
                 return this.canSplit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
             }
         }
 
@@ -336,7 +336,7 @@ export const DeveloperComponent = {
             this.developer[predicate] = value;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplDeveloper', DeveloperComponent);

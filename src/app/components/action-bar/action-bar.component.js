@@ -1,13 +1,14 @@
 export const ActionBarComponent = {
     templateUrl: 'chpl.components/action-bar/action-bar.html',
     bindings: {
+        canDelete: '@',
         errorMessages: '<',
         isDisabled: '<',
         takeAction: '&',
     },
     controller: class ActionBarComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -23,6 +24,12 @@ export const ActionBarComponent = {
             });
         }
 
+        delete () {
+            this.takeAction({
+                action: 'delete',
+            });
+        }
+
         mouseover () {
             this.takeAction({
                 action: 'mouseover',
@@ -35,7 +42,7 @@ export const ActionBarComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplActionBar', ActionBarComponent);

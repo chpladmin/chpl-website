@@ -36,10 +36,10 @@ let states = [
 ];
 
 function resourcesStatesConfig ($stateProvider) {
-    'ngInject'
+    'ngInject';
     states.forEach(state => {
         $stateProvider.state(state);
     });
 }
 
-export { resourcesStatesConfig }
+export { resourcesStatesConfig };

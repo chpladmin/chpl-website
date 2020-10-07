@@ -20,7 +20,7 @@
                 registerRestoreState: '&?',
             },
             templateUrl: 'chpl.components/smart-table/aiNonconformityFilter.html',
-        }
+        };
     }
 
     function aiNonconformityFilterLink (scope, element, attr, ctrls) {
@@ -104,7 +104,7 @@
                     closed: false,
                     matchAll: false,
                 },
-            }
+            };
         }
     }
 })();

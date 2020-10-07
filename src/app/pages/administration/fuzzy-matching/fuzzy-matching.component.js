@@ -5,7 +5,7 @@ export const FuzzyMatchingComponent = {
     },
     controller: class FuzzyMatchingComponent {
         constructor ($log, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
             this.hasAnyRole = authService.hasAnyRole;
@@ -30,7 +30,7 @@ export const FuzzyMatchingComponent = {
                 this.networkService.updateFuzzyType(data)
                     .then(() => {
                         that.networkService.getFuzzyTypes(true)
-                            .then(response => that.fuzzyTypes = response.sort((a, b) => a.fuzzyType < b.fuzzyType ? -1 : a.fuzzyType > b.fuzzyType ? 1 : 0))
+                            .then(response => that.fuzzyTypes = response.sort((a, b) => a.fuzzyType < b.fuzzyType ? -1 : a.fuzzyType > b.fuzzyType ? 1 : 0));
                         that.activeType = undefined;
                     });
                 break;
@@ -38,7 +38,7 @@ export const FuzzyMatchingComponent = {
             }
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplFuzzyMatching', FuzzyMatchingComponent);

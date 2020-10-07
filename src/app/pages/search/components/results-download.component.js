@@ -45,14 +45,14 @@ export const ResultsDownloadComponent = {
                         if (col.transform) {
                             return col.transform(l[col.key]);
                         } else {
-                            return l[col.key]
+                            return l[col.key];
                         }
                     })));
                 this.csvData.values.push(row);
             });
         }
     },
-}
+};
 
 angular
     .module('chpl.search')

@@ -4,7 +4,7 @@ export const ResourcesDownloadComponent = {
     },
     controller: class ResourcesDownloadController {
         constructor ($log, API, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.API = API;
             this.authService = authService;
@@ -22,7 +22,7 @@ export const ResourcesDownloadComponent = {
                 { value: this.API + '/download?api_key=' + this.API_KEY + '&edition=2014&format=csv', label: '2014 CSV', display: '2014 edition summary (csv)'},
                 { value: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&type=all', label: 'Surveillance', display: 'Surveillance Activity'},
                 { value: this.API + '/surveillance/download?api_key=' + this.API_KEY, label: 'Non-Conformities', display: 'Non-Conformities'},
-            ]
+            ];
             this.definitionOptions = [
                 { value: this.API + '/download?api_key=' + this.API_KEY + '&edition=2015&definition=true', label: '2015 XML', display: '2015 edition products (xml) Definition File'},
                 { value: this.API + '/download?api_key=' + this.API_KEY + '&edition=2014&definition=true', label: '2014 XML', display: '2014 edition products (xml) Definition File'},
@@ -31,7 +31,7 @@ export const ResourcesDownloadComponent = {
                 { value: this.API + '/download?api_key=' + this.API_KEY + '&edition=2014&format=csv&definition=true', label: '2014 CSV', display: '2014 edition summary (csv) Definition File'},
                 { value: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&type=all&definition=true', label: 'Surveillance', display: 'Surveillance Activity Definition File'},
                 { value: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&definition=true', label: 'Non-Conformities', display: 'Non-Conformities Definition File'},
-            ]
+            ];
 
             if (this.showRestricted()) {
                 this.downloadOptions.splice(6, 0, { value: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&type=basic&authorization=Bearer%20' + this.getToken(), label: 'Surveillance (Basic)', display: 'Surveillance (Basic)'});
@@ -55,7 +55,7 @@ export const ResourcesDownloadComponent = {
             return this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
         }
     },
-}
+};
 
 angular
     .module('chpl.resources')

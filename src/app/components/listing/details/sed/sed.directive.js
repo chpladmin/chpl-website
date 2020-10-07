@@ -55,7 +55,7 @@
 
         this.$onInit = function () {
             _analyzeSed();
-        }
+        };
 
         function addTask () {
             vm.modalInstance = $uibModal.open({
@@ -271,7 +271,7 @@
                     var val = angular.copy(participant);
                     if (val.uniqueId) {
                         val.id = vm.allParticipants.length * -1 - 1;
-                        partMap[val.uniqueId] = val.id
+                        partMap[val.uniqueId] = val.id;
                     }
                     vm.allParticipants.push(val);
                 });
@@ -293,7 +293,7 @@
                                     criterion.found = true;
                                 }
                                 return criterion;
-                            })
+                            });
                         return item;
                     })
                     .concat([{
@@ -313,13 +313,13 @@
                     return {
                         index: 0,
                         value: Number.MIN_VALUE,
-                    }
+                    };
                 } else {
                     var vals = el[4].split(';');
                     return {
                         index: i,
                         value: vals.reduce(function (sum, cur) { return sum + vm.sortCert(cur); }, 0),
-                    }
+                    };
                 }
             });
 

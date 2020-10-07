@@ -6,7 +6,7 @@ export const ChartsDeveloperComponent = {
     },
     controller: class ChartsDeveloperComponent {
         constructor ($log, featureFlags) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.isOn = featureFlags.isOn;
             this.chartState = {
@@ -83,7 +83,7 @@ export const ChartsDeveloperComponent = {
                     return {
                         id: key,
                         name: that.listingCount.edition[key].name,
-                    }
+                    };
                 });
             this.chartState.listingCountType = this.listingCountTypes.find(t => t.name === 'Active');
         }
@@ -114,7 +114,7 @@ export const ChartsDeveloperComponent = {
                         minValue: 0,
                     },
                 },
-            }
+            };
         }
 
         _createListingCountChartClass (data, status) {
@@ -146,7 +146,7 @@ export const ChartsDeveloperComponent = {
                         minValue: 0,
                     },
                 },
-            }
+            };
         }
 
         _getListingCountChartEditionData (data, status) {
@@ -178,7 +178,7 @@ export const ChartsDeveloperComponent = {
                         Object.keys(transformedData.developer)
                             .sort()
                             .map(function (key) {
-                                return { v: transformedData.developer[key]}
+                                return { v: transformedData.developer[key]};
                             })
                     ),
             },{
@@ -187,13 +187,13 @@ export const ChartsDeveloperComponent = {
                         Object.keys(transformedData.product)
                             .sort()
                             .map(function (key) {
-                                return { v: transformedData.product[key]}
+                                return { v: transformedData.product[key]};
                             })
                     ),
             }];
         }
     },
-}
+};
 
 angular.module('chpl.charts')
     .component('chplChartsDeveloper', ChartsDeveloperComponent);

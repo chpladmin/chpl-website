@@ -5,7 +5,7 @@ export const DevelopersComponent = {
     },
     controller: class DevelopersComponent {
         constructor ($log, $state, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
@@ -33,7 +33,7 @@ export const DevelopersComponent = {
             });
         }
     },
-}
+};
 
 angular.module('chpl.organizations')
     .component('chplDevelopers', DevelopersComponent);

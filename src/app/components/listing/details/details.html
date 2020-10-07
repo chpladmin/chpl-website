@@ -146,7 +146,7 @@
     <!-- Compliance Activities -->
     <div class="panel panel-ai" feature-flag="direct-review">
       <div class="panel-heading">
-        <a href ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReview' }}" id="details-compliance-activities">
+        <a href ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' }}" id="details-compliance-activities">
           Compliance Activities<span class="pull-right"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
         </a>
       </div>
@@ -158,17 +158,27 @@
             </a>
           </div>
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'surveillance'" id="panel-surveillance-activities">
+            <p>Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing</p>
             <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
           </div>
         </div>
-        <div class="panel panel-ai">
+        <div class="panel panel-ai" ng-if="!$ctrl.hideDirectReview">
           <div class="panel-heading">
             <a href ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}" id="details-direct-reviews-activities">
-              Direct Review Activities<span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found) <i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
+              Direct Review Activities<span class="pull-right"><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="details__direct-review-error badge badge-error">error</span> <i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
             </a>
           </div>
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'directReviews'" id="panel-direct-reviews-activities">
-            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+            <span ng-if="$ctrl.drStatus === 'success'">
+              <p>Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing</p>
+              <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+            </span>
+            <span ng-if="$ctrl.drStatus === 'error'">
+              <p>Direct Review information is not currently available, please check back later</p>
+            </span>
+            <span ng-if="$ctrl.drStatus === 'pending'">
+              <p><i class="fa fa-spin fa-spinner"></i> Direct Review information is loading</p>
+            </span>
           </div>
         </div>
       </div>

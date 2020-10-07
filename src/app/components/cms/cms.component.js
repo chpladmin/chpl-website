@@ -3,7 +3,7 @@ export const CmsManagementComponent = {
     bindings: {},
     controller: class CmsManagementController {
         constructor ($log, authService, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
@@ -29,13 +29,13 @@ export const CmsManagementComponent = {
                         res.created = new Date(res.created).toISOString().substring(0, 10);
                         return res;
                     });
-                    this.cmsArray = result
+                    this.cmsArray = result;
                     this.isProcessing = false;
                     this.isReady = true;
                 });
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

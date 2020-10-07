@@ -1,7 +1,7 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    {{ $ctrl.address.line1 }}<span ng-if="$ctrl.address.line2">, {{ $ctrl.address.line2 }}</span><br />
-    {{ $ctrl.address.city }}, {{ $ctrl.address.state }} {{ $ctrl.address.zipcode }}, {{ $ctrl.address.country }}
+    <span class="sr-only">Line 1: </span>{{ $ctrl.address.line1 }}<span ng-if="$ctrl.address.line2">, <span class="sr-only">Line 2: </span>{{ $ctrl.address.line2 }}</span><br />
+    <span class="sr-only">City: </span>{{ $ctrl.address.city }}, <span class="sr-only">State: </span>{{ $ctrl.address.state }} <span class="sr-only">Zipcode: </span>{{ $ctrl.address.zipcode }}, <span class="sr-only">Country: </span>{{ $ctrl.address.country }}
   </span>
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
     <div class="flex-container">
@@ -13,7 +13,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('line1')">
-              <button class="btn btn-link address__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('line1', option)">{{ option }}</button>
             </li>
           </ul>
@@ -26,7 +26,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line2.$touched) && $ctrl.form.line2.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('line2')">
-              <button class="btn btn-link address__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('line2', option)">{{ option }}</button>
             </li>
           </ul>
@@ -42,7 +42,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('city')">
-              <button class="btn btn-link address__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('city', option)">{{ option }}</button>
             </li>
           </ul>
@@ -56,7 +56,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('state')">
-              <button class="btn btn-link address__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('state', option)">{{ option }}</button>
             </li>
           </ul>
@@ -70,7 +70,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('zipcode')">
-              <button class="btn btn-link address__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('zipcode', option)">{{ option }}</button>
             </li>
           </ul>
@@ -86,7 +86,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('country')">
-              <button class="btn btn-link address__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('country', option)">{{ option }}</button>
             </li>
           </ul>

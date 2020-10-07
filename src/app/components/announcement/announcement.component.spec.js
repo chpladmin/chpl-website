@@ -18,7 +18,7 @@
                 $log = _$log_;
 
                 scope = $rootScope.$new();
-                scope.announcement = mock.announcement
+                scope.announcement = mock.announcement;
                 scope.takeAction = jasmine.createSpy('takeAction');
 
                 el = angular.element('<chpl-announcement announcement="announcement" take-action="takeAction(data, action)"></chpl-announcement>');

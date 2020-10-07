@@ -24,7 +24,7 @@
                 $interval = _$interval_;
                 $log = _$log_;
                 $q = _$q_;
-                CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_
+                CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_;
                 Mock = _Mock_;
                 mock = {
                     searchOptions: angular.copy(Mock.searchOptions),

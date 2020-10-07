@@ -31,14 +31,6 @@ let states = [
                     return networkService.getDeveloper($transition$.params().developerId);
                 }
             },
-            directReviews: (featureFlags, networkService, $location, $transition$) => {
-                'ngInject';
-                if (!$transition$.params().developerId) {
-                    $location.path('/organizations/developers');
-                } else if (featureFlags.isOn('direct-review')) {
-                    return networkService.getDirectReviews($transition$.params().developerId);
-                }
-            },
             products: (networkService, $location, $transition$) => {
                 'ngInject';
                 if (!$transition$.params().developerId) {
@@ -52,20 +44,23 @@ let states = [
     },{
         name: 'organizations.developers.developer.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
-        resolve: {
-            action: () => 'edit',
+        views: {
+            'developer@^': 'chplDevelopersEdit',
         },
         data: { title: 'CHPL Developers - Edit' },
     },{
         name: 'organizations.developers.developer.split',
         url: '/split',
-        component: 'chplDevelopersSplit',
+        views: {
+            'view@^': 'chplDevelopersSplit',
+        },
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.developers.developer.merge',
-        url: '/merge?v',
-        component: 'chplDevelopersMerge',
+        url: '/merge',
+        views: {
+            'view@^': 'chplDevelopersMerge',
+        },
         data: { title: 'CHPL Developers - Merge' },
     },{
         name: 'organizations.developers.developer.product',
@@ -74,11 +69,28 @@ let states = [
     },{
         name: 'organizations.developers.developer.product.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
-        resolve: {
-            action: () => 'editProduct',
+        views: {
+            'products@^.^': 'chplProductsEdit',
         },
         data: { title: 'CHPL Developers - Edit Product' },
+    },{
+        name: 'organizations.developers.developer.product.merge',
+        url: '/merge',
+        views: {
+            'view@^.^': 'chplProductsMerge',
+        },
+        data: { title: 'CHPL Developers - Merge Product' },
+    },{
+        name: 'organizations.developers.developer.product.version',
+        url: '/versions/{versionId}',
+        abstract: true,
+    },{
+        name: 'organizations.developers.developer.product.version.edit',
+        url: '/edit',
+        views: {
+            'products@^.^.^': 'chplVersionsEdit',
+        },
+        data: { title: 'CHPL Developers - Edit Version' },
     },{
         name: 'organizations.onc-acbs',
         url: '/onc-acbs',

@@ -9,7 +9,7 @@
             link: aiMultiSortLink,
             restrict: 'A',
             require: '^stTable',
-        }
+        };
 
         function aiMultiSortLink (scope, element, attr, ctrl) {
 

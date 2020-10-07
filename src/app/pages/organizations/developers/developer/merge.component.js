@@ -5,20 +5,12 @@ export const DevelopersMergeComponent = {
         developers: '<',
     },
     controller: class DevelopersMergeController {
-        constructor ($log, $state, $stateParams, authService, networkService) {
+        constructor ($log, $state, authService, networkService) {
             'ngInject';
             this.$log = $log;
             this.$state = $state;
-            this.$stateParams = $stateParams;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
-            this.version = 'a';
-        }
-
-        $onInit () {
-            if (this.$stateParams && this.$stateParams.v) {
-                this.version = this.$stateParams.v;
-            }
         }
 
         $onChanges (changes) {

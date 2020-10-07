@@ -20,7 +20,7 @@
           <ul class="nav nav-pills nav-stacked">
             <li ng-class="{'active': vm.navState === 'manage' || vm.navState === 'merge'}" id="admin-nav.dpManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState === 'manage'}" id="admin-nav.dpManagement.manage" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/manage">Manage Developers &amp; Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState === 'merge'}" id="admin-nav.dpManagement.merge" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/dpManagement/merge">Merge Developers &amp; Products</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState === 'merge'}" id="admin-nav.dpManagement.merge" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/dpManagement/merge">Merge Versions</a></li>
           </ul>
         </div>
       </div>

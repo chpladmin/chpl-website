@@ -11,7 +11,7 @@ export const AddressComponent = {
     },
     controller: class AddressComponent {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.errorMessages = [];
         }
@@ -76,7 +76,7 @@ export const AddressComponent = {
                         !!this.address.country);
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplAddress', AddressComponent);

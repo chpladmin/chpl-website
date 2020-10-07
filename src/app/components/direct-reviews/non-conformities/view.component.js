@@ -33,7 +33,7 @@ export const DirectReviewsNonConformitiesComponent = {
             }
         }
     },
-}
+};
 
 angular
     .module('chpl.components')

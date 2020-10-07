@@ -194,12 +194,12 @@
 
                 it('should create a modal instance when a Listing is to be edited', () => {
                     expect(ctrl.modalInstance).toBeUndefined();
-                    ctrl.inspectCp({})
+                    ctrl.inspectCp({});
                     expect(ctrl.modalInstance).toBeDefined();
                 });
 
                 it('should resolve elements on inspect', () => {
-                    ctrl.inspectCp(2)
+                    ctrl.inspectCp(2);
                     expect($uibModal.open).toHaveBeenCalledWith(listingInspectOptions);
                     expect(actualOptions.resolve.developers()).toEqual(mock.developers);
                     expect(actualOptions.resolve.resources()).toEqual(mock.resources);

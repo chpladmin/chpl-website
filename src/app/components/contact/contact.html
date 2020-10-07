@@ -1,8 +1,8 @@
 <span>
   <span ng-if="!$ctrl.isEditing">
-    {{ $ctrl.contact.fullName }}<span ng-if="$ctrl.contact.friendlyName"> ({{ $ctrl.contact.friendlyName }})</span><span ng-if="$ctrl.contact.title">, {{ $ctrl.contact.title }}</span><br />
-    {{ $ctrl.contact.phoneNumber }}<br />
-    {{ $ctrl.contact.email }}
+    <span class="sr-only">Full name: </span>{{ $ctrl.contact.fullName }}<span ng-if="$ctrl.contact.friendlyName"> (<span class="sr-only">Friendly name: </span>{{ $ctrl.contact.friendlyName }})</span><span ng-if="$ctrl.contact.title">, <span class="sr-only">Title: </span>{{ $ctrl.contact.title }}</span><br />
+    <span class="sr-only">Phone: </span>{{ $ctrl.contact.phoneNumber }}<br />
+    <span class="sr-only">Email: </span>{{ $ctrl.contact.email }}
   </span>
 
   <span ng-if="$ctrl.isEditing" ng-form="$ctrl.form">
@@ -15,7 +15,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactFull.$touched) && $ctrl.form.contactFull.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('fullName')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('fullName', option)">{{ option }}</button>
             </li>
           </ul>
@@ -35,7 +35,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactTitle.$touched) && $ctrl.form.contactTitle.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('title')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('title', option)">{{ option }}</button>
             </li>
           </ul>
@@ -52,7 +52,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactEmail.$touched) && $ctrl.form.contactEmail.$error.email">Improper format (sample@example.com)</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('email')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('email', option)">{{ option }}</button>
             </li>
           </ul>
@@ -66,7 +66,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.contactPhoneNumber.$touched) && $ctrl.form.contactPhoneNumber.$error.maxlength">Field is too long</div>
           <ul class="list-inline" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('phoneNumber')">
-              <button class="btn btn-link contact__merge-option"
+              <button class="btn btn-link merge-option"
                       ng-click="$ctrl.selectDifference('phoneNumber', option)">{{ option }}</button>
             </li>
           </ul>

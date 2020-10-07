@@ -27,7 +27,7 @@
                 statuses: [],
                 testingLabs: [],
             },
-        }
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {

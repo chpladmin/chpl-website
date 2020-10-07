@@ -1,11 +1,12 @@
 import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
 import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
 import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
 
-let actionBar, contact, hooks, login, page, toast;
+let actionBar, actionConfirmation, contact, hooks, login, page, toast;
 
 describe('the Developers page', () => {
     beforeEach(async () => {
@@ -13,6 +14,7 @@ describe('the Developers page', () => {
         browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
         hooks = new Hooks();
         actionBar = new ActionBarComponent();
+        actionConfirmation = new ActionConfirmationComponent();
         contact = new ContactComponent();
         login = new LoginComponent();
         toast = new ToastComponent();
@@ -29,7 +31,7 @@ describe('the Developers page', () => {
             login.logOut();
         });
 
-        describe('on a specific Developer page', () => {
+        describe('when on the "Greenway Health, LLC" Developer page', () => {
             beforeEach(() => {
                 let developer = 'Greenway Health, LLC';
                 page = new DevelopersPage();
@@ -37,7 +39,7 @@ describe('the Developers page', () => {
                 page.getDeveloperPageTitle(developer).waitForDisplayed();
             });
 
-            describe('when looking at a specific Product', () => {
+            describe('when looking at "Intergy EHR"', () => {
                 let name = 'Intergy EHR';
                 let product;
                 beforeEach(() => {
@@ -79,12 +81,15 @@ describe('the Developers page', () => {
                         browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                         page.selectProduct(product);
                         page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                        expect(contact.get(product)).toEqual(poc);
+                        expect(contact.get(product)).toHaveTextContaining(poc.full);
+                        expect(contact.get(product)).toHaveTextContaining(poc.title);
+                        expect(contact.get(product)).toHaveTextContaining(poc.email);
+                        expect(contact.get(product)).toHaveTextContaining(poc.phone);
                     });
                 });
             });
 
-            describe('when planning to change a Product name', () => {
+            describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
                 let name = 'MediaDent 10.0 using SuccessEHS 7.20';
                 let product;
                 beforeEach(() => {
@@ -115,6 +120,88 @@ describe('the Developers page', () => {
                         expect(page.editProductName).toBeDisplayed();
                         expect(page.editProductName.getValue()).toBe(newName);
                     });
+                });
+            });
+        });
+
+        describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
+            let developer = 'Procentive';
+            let productName = 'Procentive';
+            let productId = '1987';
+            let product;
+
+            beforeEach(() => {
+                page = new DevelopersPage();
+                page.selectDeveloper(developer);
+                page.getDeveloperPageTitle(developer).waitForDisplayed();
+                product = page.getProduct(productName);
+                product.scrollIntoView({block: 'center', inline: 'center'});
+                browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
+                page.selectProduct(product);
+                page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+            });
+
+            describe('when editing Version "2015"', () => {
+                let version = '2015';
+
+                beforeEach(() => {
+                    page.selectVersion(product, productId, version);
+                    page.editVersion(product);
+                    page.editVersionHeader.waitForDisplayed();
+                });
+
+                it('should allow Versions to be edited', () => {
+                    let timestamp = (new Date()).getTime();
+                    let newVersion = version + ' - ' + timestamp;
+                    page.editVersionName.clearValue();
+                    page.editVersionName.setValue(newVersion);
+                    actionBar.save();
+                    page.productsHeader.waitForDisplayed();
+                    toast.clearAllToast();
+                    product = page.getProduct(productName);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
+                    page.selectVersion(product, productId, newVersion);
+                    page.editVersion(product);
+                    page.editVersionHeader.waitForDisplayed();
+                    expect(page.editVersionName).toBeDisplayed();
+                    expect(page.editVersionName.getValue()).toBe(newVersion);
+                });
+            });
+
+            describe('when editing Version "Version 2015"', () => {
+                let version = 'Version 2015';
+
+                beforeEach(() => {
+                    page.selectVersion(product, productId, version);
+                    page.editVersion(product);
+                    page.editVersionHeader.waitForDisplayed();
+                });
+
+                it('should allow cancellation', () => {
+                    let timestamp = (new Date()).getTime();
+                    let newVersion = version + ' - ' + timestamp;
+                    page.editVersionName.clearValue();
+                    page.editVersionName.setValue(newVersion);
+                    actionBar.cancel();
+                    actionConfirmation.yes.click();
+                    page.productsHeader.waitForDisplayed();
+                    product = page.getProduct(productName);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
+                    expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(newVersion);
+                    page.selectVersion(product, productId, version);
+                    page.editVersion(product);
+                    page.editVersionHeader.waitForDisplayed();
+                    expect(page.editVersionName).toBeDisplayed();
+                    expect(page.editVersionName.getValue()).toBe(version);
+                    expect(page.editVersionName.getValue()).not.toBe(newVersion);
                 });
             });
         });

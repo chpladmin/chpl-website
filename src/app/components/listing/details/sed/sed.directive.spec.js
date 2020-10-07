@@ -245,7 +245,7 @@
                         it('should have data rows', () => {
                             expect(vm.csvData.values.length).toBe(659);
                             expect(vm.csvData.values[1][0]).toBe('15.07.07.1447.EI97.62.01.1.160402');
-                            expect(vm.csvData.values[1][5]).toBe('Review Current / Historical medications')
+                            expect(vm.csvData.values[1][5]).toBe('Review Current / Historical medications');
                             expect(vm.csvData.values[1][19]).toBe('Physician');
                         });
 

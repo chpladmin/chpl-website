@@ -6,7 +6,7 @@ export const SurveillanceReportExcludedListingsComponent = {
     },
     controller: class SurveillanceReportExcludedListingComponent {
         constructor ($log, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
             this.backup = {};
@@ -60,7 +60,7 @@ export const SurveillanceReportExcludedListingsComponent = {
             this.showFormErrors = false;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSurveillanceReportExcludedListings', SurveillanceReportExcludedListingsComponent);

@@ -5,6 +5,7 @@ export const ProductsComponent = {
         onEdit: '&?',
         products: '<',
         productId: '@',
+        versionId: '@',
         searchOptions: '<',
     },
     controller: class ProductsComponent {
@@ -30,6 +31,7 @@ export const ProductsComponent = {
         }
 
         $onChanges (changes) {
+            let that = this;
             if (changes.products) {
                 this.products = changes.products.currentValue.map(p => {
                     p.loaded = false;
@@ -53,6 +55,11 @@ export const ProductsComponent = {
                 if (this.productId) {
                     this.activeProduct = this.products
                         .filter(p => p.productId === parseInt(this.productId, 10))[0];
+                    if (this.versionId) {
+                        this.networkService.getVersionsByProduct(this.productId)
+                            .then(versions => versions.filter(v => v.versionId === parseInt(that.versionId, 10))
+                                .forEach(v => that.activeVersion = v));
+                    }
                 } else {
                     this.products = this.products.map(p => {
                         this.networkService.getVersionsByProduct(p.productId)
@@ -85,11 +92,24 @@ export const ProductsComponent = {
         }
 
         editProduct (product) {
-            this.$state.go('organizations.developers.developer.product.edit', {productId: product.productId});
+            this.$state.go('organizations.developers.developer.product.edit', {
+                productId: product.productId,
+            });
         }
 
-        editVersion (version) {
-            this.$log.info(version);
+        editVersion (product) {
+            this.$state.go('organizations.developers.developer.product.version.edit', {
+                productId: product.productId,
+                versionId: product.activeVersion.versionId,
+            });
+        }
+
+        mergeProduct (product) {
+            this.$state.go('organizations.developers.developer.product.merge', {
+                productId: product.productId,
+                product: product,
+                products: this.products,
+            });
         }
 
         getListingCounts (product) {
@@ -128,8 +148,8 @@ export const ProductsComponent = {
                 .length === 0;
         }
 
-        save (product) {
-            this.onEdit({product: product});
+        save (data) {
+            this.onEdit({data: data});
         }
 
         toggleProduct (product) {

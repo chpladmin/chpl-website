@@ -6,7 +6,7 @@ export const SurveillanceNonconformityInspectComponent = {
     },
     controller: class SurveillanceNonconformityInspectController {
         constructor ($log) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
         }
 
@@ -18,7 +18,7 @@ export const SurveillanceNonconformityInspectComponent = {
             this.close();
         }
     },
-}
+};
 
 angular
     .module('chpl.components')
