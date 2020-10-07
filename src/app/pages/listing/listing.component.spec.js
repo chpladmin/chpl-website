@@ -108,6 +108,7 @@
                             name: '2015',
                         },
                     };
+                    ctrl.$state.current.name = 'listing';
                 });
 
                 it('should not allow anonymous users to edit', () => {

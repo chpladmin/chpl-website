@@ -51,7 +51,7 @@ export const ListingComponent = {
         canEdit () {
             return this.$state.current.name === 'listing'
                 && ((this.listing.certificationEdition.name === '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))
-                    || this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']));
+                    || (this.listing.certificationEdition.name !== '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])));
         }
 
         loadDirectReviews () {
