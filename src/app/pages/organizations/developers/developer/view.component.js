@@ -3,7 +3,6 @@ export const DevelopersViewComponent = {
     bindings: {
         developer: '<',
         developers: '<',
-        products: '<',
         action: '@',
     },
     controller: class DevelopersViewComponent {
@@ -72,10 +71,6 @@ export const DevelopersViewComponent = {
             if (changes.directReviews) {
                 this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
-            if (changes.products) {
-                this.products = angular.copy(changes.products.currentValue.products);
-                this.backup.products = angular.copy(this.products);
-            }
         }
 
         $onDestroy () {
@@ -85,7 +80,7 @@ export const DevelopersViewComponent = {
         can (action) {
             if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
             if (action === 'manageTracking' && !this.hasAnyRole(['ROLE_DEVELOPER'])) { return false; } // only DEVELOPER can manage tracking
-            if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
+            if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
             if (action === 'split') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
@@ -95,7 +90,6 @@ export const DevelopersViewComponent = {
         cancel () {
             this.developer = angular.copy(this.backup.developer);
             this.developers = angular.copy(this.backup.developers);
-            this.products = angular.copy(this.backup.products);
             this.$state.go('organizations.developers.developer', {
                 developerId: this.developer.developerId,
                 action: undefined,

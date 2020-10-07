@@ -31,14 +31,6 @@ let states = [
                     return networkService.getDeveloperHierarchy($transition$.params().developerId);
                 }
             },
-            products: (networkService, $location, $transition$) => {
-                'ngInject';
-                if (!$transition$.params().developerId) {
-                    $location.path('/organizations/developers');
-                } else {
-                    return networkService.getProductsByDeveloper($transition$.params().developerId);
-                }
-            },
         },
         data: { title: 'CHPL Developers' },
     },{
