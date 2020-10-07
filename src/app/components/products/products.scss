@@ -17,8 +17,8 @@
 .products__product-header {
     display: grid;
     align-items: center;
-    justify-items: end;
-    grid-template-columns: 4fr 1fr 1fr 2em;
+    justify-items: start;
+    grid-template-columns: 4fr 2fr 2fr 1fr 2em;
     background-color: var(--grey-blue);
     padding: 8px;
 }
@@ -27,8 +27,8 @@
     background-color: var(--light-grey);
 }
 
-.products__product-header-item--first {
-    justify-self: start;
+.products__product-header-item--end {
+    justify-self: end;
 }
 
 .product__product-info {
@@ -72,7 +72,7 @@
 .product__listing {
     display: grid;
     align-items: center;
-    grid-template-columns: 2fr 2fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
     background-color: var(--primary);
     margin: 8px;
 }

@@ -13,15 +13,16 @@
                 address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
                 contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
                 lastModifiedDate: null, deleted: null, transparencyAttestations: [],
+                products: [{
+                    name: 'a product',
+                }],
                 statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
                 status: {id: 1, status: 'Active'},
             },
-            developers: [
-                { name: 'a developer', transparencyAttestations: [] },
-            ],
-            products: [
-                { name: 'a product' },
-            ],
+            developers: [{
+                name: 'a developer',
+                transparencyAttestations: [],
+            }],
             stateParams: {
                 developerId: 22,
             },
@@ -77,9 +78,8 @@
                 scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
                 scope.developers = {developers: mock.developers};
-                scope.products = {products: mock.products};
 
-                el = angular.element('<chpl-developers-view allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers-view>');
+                el = angular.element('<chpl-developers-view allowed-acbs="acbs" developer="developer" developers="developers"></chpl-developers-view>');
 
                 $compile(el)(scope);
                 scope.$digest();

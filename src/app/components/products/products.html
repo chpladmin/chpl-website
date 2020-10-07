@@ -13,10 +13,11 @@
     <div class="panel-body">
       <div ng-repeat="product in $ctrl.products" class="products__product">
         <div class="products__product-header" ng-class="{'products__product-header--inactive' : !product.hasActiveListings}" ng-click="product.isOpen = !product.isOpen">
-          <div class="products__product-header-item products__product-header-item--first"><h3>{{ product.name }}</h3></div>
+          <div class="products__product-header-item"><h3>{{ product.name }}</h3></div>
+          <div class="products__product-header-item">{{ product.activeAcbs }}</div>
           <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
-          <div class="products__product-header-item">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 1">s</span></div>
-          <div class="products__product-header-item"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
+          <div class="products__product-header-item products__product-header-item--end">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 1">s</span></div>
+          <div class="products__product-header-item products__product-header-item--end"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
         </div>
         <div ng-if="product.isOpen">
           <div id="chpl-product-{{ product.productId }}">
@@ -74,6 +75,10 @@
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Edition</div>
                   <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
+                </div>
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">ONC-ACB</div>
+                  <div class="product__listing-element">{{ listing.acb.name }}</div>
                 </div>
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Date</div>

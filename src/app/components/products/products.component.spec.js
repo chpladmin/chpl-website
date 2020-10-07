@@ -13,6 +13,7 @@
                 ownerHistory: [{id: 127, developer: {developerId: 2042, developerCode: '3041', name: 'CPSI (Computer Programs and Systems),  Inc.'}, transferDate: 1552570509025}, {id: 89, developer: {developerId: 184, developerCode: '1183', name: 'CPSI (Computer Programs and Systems),  Inc.'}, transferDate: 1552505343043}],
                 versions: [{
                     listings: [{
+                        acb: {name: 'name'},
                         certificationStatus: 'Active',
                     }],
                 }],

@@ -34,9 +34,11 @@ export const ProductsComponent = {
             if (changes.products) {
                 this.products = changes.products.currentValue
                     .map(p => {
+                        p.activeAcbs = new Set();
+                        p.versions.forEach(v => v.listings.forEach(l => p.activeAcbs.add(l.acb.name)));
+                        p.activeAcbs = [...p.activeAcbs].sort((a, b) => a < b ? -1 : a > b ? 1 : 0).join(', ');
                         p.activeVersion = p.versions[0];
-                        p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0)
-                            .length > 0;
+                        p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0).length > 0;
                         return p;
                     })
                     .sort((a, b) => {
