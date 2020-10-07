@@ -2,6 +2,9 @@ export const ProductEditComponent = {
     templateUrl: 'chpl.components/products/product/edit.html',
     bindings: {
         product: '<',
+        isMerging: '<',
+        mergingProducts: '<',
+        showFormErrors: '<',
         takeAction: '&',
     },
     controller: class ProductEditComponent {
@@ -9,6 +12,7 @@ export const ProductEditComponent = {
             'ngInject';
             this.$log = $log;
             this.networkService = networkService;
+            this.mergeOptions = {};
         }
 
         $onInit () {
@@ -45,6 +49,20 @@ export const ProductEditComponent = {
                         }
                         return a.transferDate ? 1 : -1;
                     });
+                this.productBackup = angular.copy(this.product);
+            }
+            if (changes.isMerging) {
+                this.isMerging = angular.copy(changes.isMerging.currentValue);
+            }
+            if (changes.mergingProducts) {
+                this.mergingProducts = angular.copy(changes.mergingProducts.currentValue);
+                this.generateErrorMessages();
+            }
+            if (changes.showFormErrors) {
+                this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
+            }
+            if (this.product && this.mergingProducts) {
+                this.generateMergeOptions();
             }
         }
 
@@ -62,10 +80,16 @@ export const ProductEditComponent = {
 
         editContact (contact) {
             this.product.contact = angular.copy(contact);
+            this.generateErrorMessages();
         }
 
         generateErrorMessages () {
             let messages = [];
+            if (this.showFormErrors) {
+                if (this.isMerging && (!this.mergingProducts || this.mergingProducts.length === 0)) {
+                    messages.push('At least one other Product must be selected to merge');
+                }
+            }
             if (this.product) {
                 this.product.ownerHistory.forEach((o, idx, arr) => {
                     if (idx > 0) {
@@ -146,6 +170,55 @@ export const ProductEditComponent = {
                     return a.transferDate ? 1 : -1;
                 });
             this.doneAddingOwner();
+        }
+
+        /*
+         * Pill generation
+         */
+        generateMergeOptions () {
+            this.mergeOptions = {
+                name: Array.from(new Set([this.productBackup.name].concat(this.mergingProducts.map(p => p.name)))),
+            };
+            this.contactOptions = {
+                fullName: [],
+                title: [],
+                email: [],
+                phoneNumber: [],
+            };
+            this.fillMergeOptionByProduct(this.productBackup);
+            this.mergingProducts.forEach(p => this.fillMergeOptionByProduct(p));
+            this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
+            this.contactOptions.title = Array.from(new Set(this.contactOptions.title));
+            this.contactOptions.email = Array.from(new Set(this.contactOptions.email));
+            this.contactOptions.phoneNumber = Array.from(new Set(this.contactOptions.phoneNumber));
+        }
+
+        fillMergeOptionByProduct (product) {
+            if (product.contact) {
+                if (product.contact.fullName) {
+                    this.contactOptions.fullName.push(product.contact.fullName);
+                }
+                if (product.contact.title) {
+                    this.contactOptions.title.push(product.contact.title);
+                }
+                if (product.contact.email) {
+                    this.contactOptions.email.push(product.contact.email);
+                }
+                if (product.contact.phoneNumber) {
+                    this.contactOptions.phoneNumber.push(product.contact.phoneNumber);
+                }
+            }
+        }
+
+        getDifferences (predicate) {
+            if (!this.product || !this.mergeOptions[predicate]) { return; }
+            return this.mergeOptions[predicate]
+                .filter(e => e && e.length > 0 && e !== this.product[predicate])
+                .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        }
+
+        selectDifference (predicate, value) {
+            this.product[predicate] = value;
         }
     },
 };

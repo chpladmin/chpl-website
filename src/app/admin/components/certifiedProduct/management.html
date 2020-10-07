@@ -1,41 +1,5 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content">
-    <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
-      <ul class="list-inline">
-        <li><strong>What would you like to merge?</strong></li>
-        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="product"> Products</label></li>
-        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="version"> Versions</label></li>
-      </ul>
-    </div>
-    <div class="row" ng-if="vm.workType==='manage'">
-      &nbsp;
-    </div>
-    <div class="row" ng-if="vm.workType === 'upload'">
-      <div class="col-sm-12" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
-        <chpl-upload-listings on-change="vm.refreshPending()"></chpl-upload-listings>
-      </div>
-      <div class="col-sm-12">
-        <chpl-upload-surveillance on-change="vm.refreshPending()"></chpl-upload-surveillance>
-      </div>
-    </div> <!-- end upload certified products &amp; surveillance activities -->
-
-    <div class="row" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) && vm.workType === 'confirm'">
-      <div class="col-sm-12" ng-if="vm.areResourcesReady()">
-        <chpl-confirm-listings developers="vm.developers" on-change="vm.refreshPending()" resources="vm.resources"></chpl-confirm-listings>
-      </div>
-    </div> <!-- end of upload process table -->
-
-    <div class="row" ng-if="vm.workType === 'confirmSurveillance'">
-      <div class="col-sm-12">
-        <chpl-confirm-surveillance on-change="vm.refreshPending()"></chpl-confirm-surveillance>
-      </div>
-    </div> <!-- end of upload process table -->
-
-    <div class="row" ng-if="vm.workType === 'manageSurveillance'">
-      <div class="col-sm-12">
-        <chpl-surveillance-management allowed-acbs="vm.allowedAcbs" listings="vm.surveillanceListings"></chpl-surveillance-management>
-      </div>
-    </div> <!-- end of surveillance management -->
 
     <div ng-if="vm.workType === 'manage'" class="row">
       <div class="col-sm-12">
@@ -46,14 +10,14 @@
 
     <div ng-if="vm.workType === 'merge'" class="row">
       <div class="col-sm-12">
-        <p>In the 'Merge Products' module, you can merge existing health IT products, or versions of certified products. To begin, select either products, or versions, for merging.</p>
-        <p ng-if="vm.mergeType !== 'developer'">Select a desired developer from the dropdown list, and click 'Choose' to proceed.</p>
+        <p>In the 'Merge Versions' module, you can merge existing health IT versions of certified products.</p>
+        <p>Select a desired developer from the dropdown list, and click 'Choose' to proceed.</p>
       </div>
     </div>
 
     <div ng-if="vm.workType === 'manage' || vm.workType === 'merge'"> <!-- developer -->
       <div class="row">
-        <div class="col-sm-12" ng-if="vm.activeDeveloper === '' && vm.workType === 'manage'">
+        <div class="col-sm-12" ng-if="vm.activeDeveloper === ''">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
@@ -128,16 +92,12 @@
 
       <div ng-if="vm.workType === 'merge' && vm.activeDeveloper !== ''" class="row">
         <div class="col-sm-12">
-          <span ng-if="vm.mergeType === 'product' && vm.products.length > 1">
-            <p>Select the products to merge by holding the Control (CTRL) button while clicking the desired products. Then click the 'Choose Products' button.</p>
-            <p>Inspect the chosen products to be merged, and enter or edit information for the new merged Product. When you are satisfied with your changes, click the 'Save Combined Product' button, or click 'Cancel Edits' to discard your changes.</p>
-          </span>
-          <p ng-if="vm.mergeType !== 'product'">Select a desired product from the dropdown list, and click 'Choose' to proceed.</p>
+          <p>Select a desired product from the dropdown list, and click 'Choose' to proceed.</p>
         </div>
       </div>
 
-      <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== '' && vm.workType !== 'merge'"> <!-- product -->
-        <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'product'">
+      <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== ''"> <!-- product -->
+        <div class="col-sm-12">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
@@ -156,18 +116,6 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-12" ng-if="vm.mergeType === 'product' && vm.products.length > 1">
-          <label for="product-merge-select" class="control-label admin-label-spaced">Select products to merge</label>
-          <button id="clear-selection-products" class="btn btn-small btn-link pull-right" ng-click="vm.mergingProducts=[];" ng-if="vm.mergingProducts && vm.mergingProducts.length !== 0">Clear Selection(s)<span class="sr-only">of Products</span></button>
-          <select ng-model="vm.mergingProducts" multiple="true"
-                  id="product-merge-select" class="input-sm form-control"
-                  size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
-          </select>
-          <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Choose Products</button></p>
-        </div>
-        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'product' && vm.products.length <= 1">
-          <p><strong>No products are available for merge</strong></p>
-        </div> <!-- end product merge select -->
       </div> <!-- end select product -->
 
       <div class="row" ng-if="vm.activeProduct !== ''">
@@ -201,7 +149,7 @@
 
       <div ng-if="vm.workType === 'merge' && vm.activeProduct !== ''" class="row">
         <div class="col-sm-12">
-          <span ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
+          <span ng-if="vm.versions.length > 1">
             <p>Select the versions to merge by holding the Control (CTRL) button while clicking the desired versions. Then click the 'Choose Versions' button.</p>
             <p>Inspect the chosen versions to be merged, and enter or edit information for the new merged Version. When you are satisfied with your changes, click the 'Save Combined Version' button, or click 'Cancel Edits' to discard your changes.</p>
           </span>
@@ -342,6 +290,7 @@
                 <chpl-listing-details ng-if="vm.activeCP !== ''"
                                       default-all="true"
                                       edit-mode="false"
+                                      hide-direct-review="true"
                                       listing="vm.activeCP">
                 </chpl-listing-details>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
