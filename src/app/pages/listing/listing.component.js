@@ -49,11 +49,9 @@ export const ListingComponent = {
         }
 
         canEdit () {
-            if (this.listing.certificationEdition.name === '2014') {
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
-            } else {
-                return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
-            }
+            return this.$state.current.name === 'listing'
+                && ((this.listing.certificationEdition.name === '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))
+                    || this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']));
         }
 
         loadDirectReviews () {
