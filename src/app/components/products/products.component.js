@@ -92,13 +92,23 @@ export const ProductsComponent = {
         }
 
         editProduct (product) {
-            this.$state.go('organizations.developers.developer.product.edit', {productId: product.productId});
+            this.$state.go('organizations.developers.developer.product.edit', {
+                productId: product.productId,
+            });
         }
 
         editVersion (product) {
             this.$state.go('organizations.developers.developer.product.version.edit', {
                 productId: product.productId,
                 versionId: product.activeVersion.versionId,
+            });
+        }
+
+        mergeProduct (product) {
+            this.$state.go('organizations.developers.developer.product.merge', {
+                productId: product.productId,
+                product: product,
+                products: this.products,
             });
         }
 

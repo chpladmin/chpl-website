@@ -47,7 +47,7 @@ class DevelopersPage {
     }
 
     getProduct (product) {
-        return $('h3=' + product).$('..').$('..').$('..');
+        return $('.products__product-header-item--first=' + product).$('..').$('..');
     }
 
     getProductInfo (product) {
@@ -85,7 +85,7 @@ class DevelopersPage {
 
     editProduct (product) {
         this.getEditButton(product).click();
-        product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
+        product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
     }
 
     getActiveVersion (product, productId) {
@@ -98,7 +98,7 @@ class DevelopersPage {
 
     editVersion (product) {
         this.getEditButton(product).click();
-        product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[1].click();
+        product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
     }
 }
 

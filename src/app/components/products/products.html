@@ -11,14 +11,14 @@
       </div>
     </div>
     <div class="panel-body">
-      <div ng-repeat="product in $ctrl.products | orderBy: 'name'" class="products__product">
-        <div class="products__product-header" ng-click="$ctrl.toggleProduct(product)">
-          <div class="products__product-header-item products__product-header-item--first"><h3>{{ product.name }}</h3></div>
+      <div ng-repeat="product in $ctrl.products | orderBy: 'name'" class="products__product panel-ai">
+        <div class="panel-heading products__product-header" ng-click="$ctrl.toggleProduct(product)">
+          <div class="products__product-header-item products__product-header-item--first">{{ product.name }}</div>
           <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
           <div class="products__product-header-item">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 1">s</span></div>
           <div class="products__product-header-item"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
         </div>
-        <div ng-if="product.isOpen">
+        <div ng-if="product.isOpen" class="panel-body">
           <div id="chpl-product-{{ product.productId }}">
             <div class="product__product-info">
               <div class="product__product-info-item-version">
@@ -28,14 +28,23 @@
                         ng-options="v as v.version for v in product.versions">
                 </select>
               </div>
-              <div class="product__product-info-item-edit" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
-                <div uib-dropdown auto-close="outsideClick" class="btn-group">
+              <div class="product__product-info-item-action">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
                   <button class="btn btn-default dropdown-toggle" type="button" id="edit-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
                     <i class="fa fa-pencil"></i> Edit
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="edit-button" uib-dropdown-menu>
-                    <li class="product__product-edit-filter-item" ng-click="$ctrl.editProduct(product)">Product</li>
-                    <li class="product__product-edit-filter-item" ng-click="$ctrl.editVersion(product)">Version</li>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.editProduct(product)">Product</li>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.editVersion(product)">Version</li>
+                  </ul>
+                </div>
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 1)">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="merge-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
+                    <i class="fa fa-code-fork fa-rotate-180"></i> Merge
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="merge-button" uib-dropdown-menu>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.mergeProduct(product)" ng-if="$ctrl.products.length > 1">Product</li>
+                    <li class="product__product-action-filter-item" ng-if="product.versions.length > 1">Version (functionality coming soon)</li>
                   </ul>
                 </div>
               </div>
@@ -87,16 +96,18 @@
     </div>
   </div>
 </span>
-<span ng-if="$ctrl.activeProduct && !$ctrl.activeVersion">
-  <chpl-product-edit
-    product="$ctrl.activeProduct"
-    take-action="$ctrl.handleEdit(action, data)"
-    ></chpl-product-edit>
-</span>
-<span ng-if="$ctrl.activeProduct && $ctrl.activeVersion">
-  <chpl-version-edit
-    version="$ctrl.activeVersion"
-    product="$ctrl.activeProduct"
-    take-action="$ctrl.handleEdit(action, data)"
-    ></chpl-version-edit>
-</span>
+<ui-view>
+  <span ng-if="$ctrl.activeProduct && !$ctrl.activeVersion">
+    <chpl-product-edit
+      product="$ctrl.activeProduct"
+      take-action="$ctrl.handleEdit(action, data)"
+      ></chpl-product-edit>
+  </span>
+  <span ng-if="$ctrl.activeProduct && $ctrl.activeVersion">
+    <chpl-version-edit
+      version="$ctrl.activeVersion"
+      product="$ctrl.activeProduct"
+      take-action="$ctrl.handleEdit(action, data)"
+      ></chpl-version-edit>
+  </span>
+</ui-view>

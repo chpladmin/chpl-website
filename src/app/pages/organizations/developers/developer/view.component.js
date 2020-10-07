@@ -2,9 +2,8 @@ export const DevelopersViewComponent = {
     templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
-        developers: '<',
+        directReviews: '<',
         products: '<',
-        action: '@',
     },
     controller: class DevelopersViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
@@ -54,21 +53,6 @@ export const DevelopersViewComponent = {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.backup.developer = angular.copy(this.developer);
             }
-            if (changes.developers) {
-                let acbs = {};
-                let devs = changes.developers.currentValue.developers;
-                this.allDevelopers = devs.map(d => {
-                    d.transMap = {};
-                    d.transparencyAttestations.forEach(att => {
-                        d.transMap[att.acbName] = att.attestation;
-                        acbs[att.acbName] = true;
-                    });
-                    return d;
-                });
-                this.developers = devs.filter(d => d.developerId !== this.developer.developerId);
-                this.backup.developers = angular.copy(this.developers);
-                angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
-            }
             if (changes.directReviews) {
                 this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
@@ -88,7 +72,7 @@ export const DevelopersViewComponent = {
             if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
-            if (action === 'split') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
+            if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
             return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); // must be active
         }
 
@@ -124,125 +108,6 @@ export const DevelopersViewComponent = {
                 this.networkService.getChangeRequestTypes().then(response => that.changeRequestTypes = response);
                 this.networkService.getChangeRequestStatusTypes().then(response => that.changeRequestStatusTypes = response);
             }
-        }
-
-        save (developer) {
-            if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
-                this.saveRequest(developer);
-            } else {
-                let developerIds = [this.developer.developerId];
-                let that = this;
-                this.developer = developer;
-                this.errorMessages = [];
-                this.networkService.updateDeveloper({
-                    developer: this.developer,
-                    developerIds: developerIds,
-                }).then(response => {
-                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        that.developer = response;
-                        that.backup.developer = angular.copy(response);
-                        this.$state.go('^', undefined, {reload: true});
-                    } else {
-                        if (response.data.errorMessages) {
-                            that.errorMessages = response.data.errorMessages;
-                        } else if (response.data.error) {
-                            that.errorMessages.push(response.data.error);
-                        } else {
-                            that.errorMessages = ['An error has occurred.'];
-                        }
-                    }
-                }, error => {
-                    if (error.data.errorMessages) {
-                        that.errorMessages = error.data.errorMessages;
-                    } else if (error.data.error) {
-                        that.errorMessages.push(error.data.error);
-                    } else {
-                        that.errorMessages = ['An error has occurred.'];
-                    }
-                });
-            }
-        }
-
-        saveUpdate (data) {
-            if (this.versionId) {
-                this.saveVersion(data);
-            } else {
-                this.saveProduct(data);
-            }
-        }
-
-        saveProduct (product) {
-            let that = this;
-            let request = {
-                productIds: [product.productId],
-                product: product,
-                newDeveloperId: product.developerId,
-            };
-            this.errorMessages = [];
-            this.networkService.updateProduct(request)
-                .then(response => {
-                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        this.$state.go('organizations.developers.developer', {
-                            developerId: this.developer.developerId,
-                            action: undefined,
-                            productId: undefined,
-                            versionId: undefined,
-                        }, {reload: true});
-                    } else {
-                        if (response.data.errorMessages) {
-                            that.errorMessages = response.data.errorMessages;
-                        } else if (response.data.error) {
-                            that.errorMessages.push(response.data.error);
-                        } else {
-                            that.errorMessages = ['An error has occurred.'];
-                        }
-                    }
-                }, error => {
-                    if (error.data.errorMessages) {
-                        that.errorMessages = error.data.errorMessages;
-                    } else if (error.data.error) {
-                        that.errorMessages.push(error.data.error);
-                    } else {
-                        that.errorMessages = ['An error has occurred.'];
-                    }
-                });
-        }
-
-        saveVersion (version) {
-            let that = this;
-            let request = {
-                versionIds: [version.versionId],
-                version: version,
-                newProductId: version.productId,
-            };
-            this.errorMessages = [];
-            this.networkService.updateVersion(request)
-                .then(response => {
-                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        this.$state.go('organizations.developers.developer', {
-                            developerId: this.developer.developerId,
-                            action: undefined,
-                            productId: undefined,
-                            versionId: undefined,
-                        }, {reload: true});
-                    } else {
-                        if (response.data.errorMessages) {
-                            that.errorMessages = response.data.errorMessages;
-                        } else if (response.data.error) {
-                            that.errorMessages.push(response.data.error);
-                        } else {
-                            that.errorMessages = ['An error has occurred.'];
-                        }
-                    }
-                }, error => {
-                    if (error.data.errorMessages) {
-                        that.errorMessages = error.data.errorMessages;
-                    } else if (error.data.error) {
-                        that.errorMessages.push(error.data.error);
-                    } else {
-                        that.errorMessages = ['An error has occurred.'];
-                    }
-                });
         }
 
         takeAction (action) {
