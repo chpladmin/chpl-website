@@ -72,7 +72,7 @@ export const DeveloperComponent = {
             if (changes.isInvalid) {
                 this.isInvalid = angular.copy(changes.isInvalid.currentValue);
             }
-            if (changes.isMeging) {
+            if (changes.isMerging) {
                 this.isMerging = angular.copy(changes.isMerging.currentValue);
             }
             if (changes.isSplitting) {

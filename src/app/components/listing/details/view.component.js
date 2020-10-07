@@ -3,6 +3,7 @@ export const ListingDetailsViewComponent = {
     bindings: {
         listing: '<',
         directReviews: '<',
+        hideDirectReview: '<',
         initialPanel: '@',
         isConfirming: '<',
         viewAllCerts: '<defaultAll',

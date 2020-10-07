@@ -1,4 +1,4 @@
-<ui-view>
+<div ui-view="view">
   <div class="row" ng-if="$ctrl.action === 'confirmation'">
     <div class="col-md-10 col-md-offset-1">
       <chpl-confirmation take-action="$ctrl.closeConfirmation()" text="{{ $ctrl.confirmationText }}"></chpl-confirmation>
@@ -14,16 +14,14 @@
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
-      <chpl-developer developer="$ctrl.developer"
-                      allowed-acbs="$ctrl.allowedAcbs"
-                      can-edit="$ctrl.can('edit')"
-                      can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
-                      can-split="$ctrl.can('split-developer')"
-                      is-editing="$ctrl.action === 'edit'"
-                      on-cancel="$ctrl.cancel()"
-                      on-edit="$ctrl.save(developer)"
-                      take-action="$ctrl.takeAction(action)"
-                      ></chpl-developer>
+      <div ui-view="developer">
+        <chpl-developer developer="$ctrl.developer"
+                        can-edit="$ctrl.can('edit')"
+                        can-merge="$ctrl.can('merge')"
+                        can-split="$ctrl.can('split-developer')"
+                        take-action="$ctrl.takeAction(action)"
+                        ></chpl-developer>
+      </div>
       <div feature-flag="role-developer">
         <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
           <div class="panel-heading">
@@ -69,12 +67,12 @@
           </span>
         </div>
       </div>
-      <chpl-products products="$ctrl.products"
-                     product-id="{{ $ctrl.productId }}"
-                     search-options="$ctrl.searchOptions"
-                     on-cancel="$ctrl.cancel()"
-                     on-edit="$ctrl.saveProduct(product)"
-                     ></chpl-products>
+      <div ui-view="products">
+        <chpl-products products="$ctrl.products"
+                       search-options="$ctrl.searchOptions"
+                       on-cancel="$ctrl.cancel()"
+                       ></chpl-products>
+      </div>
     </div>
   </div>
-</ui-view>
+</div>

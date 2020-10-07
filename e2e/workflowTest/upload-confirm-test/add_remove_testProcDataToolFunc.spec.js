@@ -16,7 +16,7 @@ beforeAll(() => {
     loginComponent = new LoginComponent();
     hooks = new Hooks();
     hooks.open('#/administration/upload');
-    loginComponent.loginAsACB();
+    loginComponent.logIn('acb');
 });
 
 describe('an ACB user', () => {
@@ -24,7 +24,7 @@ describe('an ACB user', () => {
     beforeEach(function () {
         hooks.open('#/administration/upload');
         uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
-        uploadPage.waitForSuccessfulUpload();
+        uploadPage.waitForSuccessfulUpload('AQA1');
         hooks.open('#/administration/confirm/listings');
     });
 

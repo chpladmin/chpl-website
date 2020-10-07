@@ -123,7 +123,7 @@
             <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
           </div>
         </div>
-        <div class="panel panel-ai">
+        <div class="panel panel-ai" ng-if="!$ctrl.hideDirectReview">
           <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}">
             <div class="listing-details__element-header-title">Direct Review Activities</div>
             <div><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="listing-details__direct-review-error badge badge-error">error</span></div>
