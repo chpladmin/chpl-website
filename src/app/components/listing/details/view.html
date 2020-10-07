@@ -3,9 +3,10 @@
     Loading...<i class="fa fa-spin fa-spinner"></i>
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
-    <p class="">
-      <input type="checkbox" ng-model="$ctrl.viewAllCerts" id="viewAllCerts"></input>
-      <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
+    <p class="text-right">
+      <button class="btn btn-default" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
+        <i class="fa" ng-class="$ctrl.viewAllCerts ? 'fa-toggle-on' : 'fa-toggle-off'"></i> Viewing {{ $ctrl.viewAllCerts ? 'all' : 'only attested to' }} Certification Criteria / Clinical Quality Measures
+      </button>
     </p>
 
     <!-- Certification Criteria -->
