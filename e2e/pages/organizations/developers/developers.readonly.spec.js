@@ -40,13 +40,21 @@ describe('the Developers page', () => {
             beforeEach(() => {
                 product = page.getProduct(name);
                 product.scrollIntoView({block: 'center', inline: 'center'});
-                browser.waitUntil(() => page.getVersionCount(product).getText() === '5 Versions');
+                browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
                 page.selectProduct(product);
                 page.getProductInfo(product).waitForDisplayed({timeout: 55000});
             });
 
             it('should have product Contact information', () => {
                 expect(contact.get(product)).toHaveTextContaining('Tamara Grassle');
+            });
+
+            it('should have ACB name', () => {
+                expect(page.getAcbName(product).getText()).toBe('UL LLC');
+            });
+
+            it('should have ACB name', () => {
+                expect(page.getListingCount(product).getText()).toBe('6 listings');
             });
         });
     });
@@ -74,5 +82,22 @@ describe('the Developers page', () => {
         it('should not have an edit button', () => {
             expect(page.getEditButton(product)).not.toExist();
         });
+    });
+});
+
+describe('When user is on the Developer page for a Developer that doesnt exist', () => {
+    beforeEach(async () => {
+        browser.setWindowSize(1600, 1024);
+        browser.setWindowRect(0, 0, 1600, 1024);
+        contact = new ContactComponent();
+        page = new DevelopersPage();
+        hooks = new Hooks();
+        const dummyDeveloperId = '0000';
+        await hooks.open('#/organizations/developers/' + dummyDeveloperId);
+    });
+
+    it('it should go to Home page', () => {
+        hooks.waitForSpinnerToDisappear();
+        expect(browser.getUrl()).toContain('#/search');
     });
 });
