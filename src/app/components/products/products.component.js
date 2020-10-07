@@ -56,11 +56,13 @@ export const ProductsComponent = {
                         return status;
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
-                this.currentFilter = this.statusItems;
             }
             if (this.products && this.productId) {
                 this.activeProduct = this.products
                     .filter(p => p.productId === parseInt(this.productId, 10))[0];
+            }
+            if (this.products && this.statusItems) {
+                this.doFilter(this.statusItems);
             }
         }
 
@@ -70,7 +72,6 @@ export const ProductsComponent = {
         }
 
         doFilter (items) {
-            this.currentFilter = items;
             this.products.forEach(p => {
                 p.versions.forEach(v => {
                     if (v.listings) {
