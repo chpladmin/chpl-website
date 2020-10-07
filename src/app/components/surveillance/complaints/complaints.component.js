@@ -8,7 +8,7 @@ export const SurveillanceComplaintsComponent = {
     },
     controller: class SurveillanceComplaintsComponent {
         constructor ($log, featureFlags, networkService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.networkService = networkService;
             this.isOn = featureFlags.isOn;
@@ -20,7 +20,7 @@ export const SurveillanceComplaintsComponent = {
                 acbItems: [],
                 complaintStatusTypeItems: [],
                 complainantTypeItems: [],
-            }
+            };
             this.hasChanges = {};
         }
 
@@ -296,7 +296,7 @@ export const SurveillanceComplaintsComponent = {
             this.tableController = tableController;
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSurveillanceComplaints', SurveillanceComplaintsComponent);

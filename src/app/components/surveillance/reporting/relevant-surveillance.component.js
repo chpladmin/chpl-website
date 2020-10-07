@@ -9,7 +9,7 @@ export const SurveillanceReportRelevantSurveillanceComponent = {
     },
     controller: class SurveillanceReportRelevantSurveillanceComponent {
         constructor ($log, authService) {
-            'ngInject'
+            'ngInject';
             this.$log = $log;
             this.hasAnyRole = authService.hasAnyRole;
         }
@@ -25,10 +25,10 @@ export const SurveillanceReportRelevantSurveillanceComponent = {
                 this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
             }
             if (this.surveillanceOutcomes) {
-                this.surveillanceOutcomes.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                this.surveillanceOutcomes.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (this.surveillanceProcessTypes) {
-                this.surveillanceProcessTypes.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                this.surveillanceProcessTypes.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
         }
 
@@ -40,7 +40,7 @@ export const SurveillanceReportRelevantSurveillanceComponent = {
             this.onCancel();
         }
     },
-}
+};
 
 angular.module('chpl.components')
     .component('chplSurveillanceReportRelevantSurveillance', SurveillanceReportRelevantSurveillanceComponent);

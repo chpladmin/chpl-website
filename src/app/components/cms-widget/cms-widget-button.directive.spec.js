@@ -20,7 +20,7 @@
                 aiCmsWidgetDefinition.controller = function () {
                     this.isInList = mock.isInList;
                     this.toggleProduct = mock.toggleProduct;
-                }
+                };
 
                 el = angular.element('<ai-cms-widget><ai-cms-widget-button product-id="3" product-name="test"></ai-cms-widget-button></ai-cms-widget>');
 

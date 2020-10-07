@@ -12,7 +12,7 @@
                 Authority: 'ROLE_ADMIN',
                 Identity: [31, 'username', 'Full Name', 3, 'admin'],
             },
-        }
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.services');

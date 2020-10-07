@@ -13,7 +13,7 @@ beforeAll(async () => {
 
 describe('When uploading a listing as ONC-ACB', () => {
     beforeAll(function () {
-        loginComponent.loginAsACB();
+        loginComponent.logIn('acb');
     });
 
     it('can upload v19 template', () => {

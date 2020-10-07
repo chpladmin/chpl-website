@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 11.0.0
+_5 October 2020_
+
+### User Interface Updates
+* Implement major style upgrade
+
+### Features
+* Enable editing of Version in new UX
+
+### Flagged Features
+* Display message on Direct Reviews when Jira doesn't respond
+
+### Bug Fixes
+* Restore ability to edit friendly name for POC
+* Display errors when editing Users
+
+---
+
 ## Version 10.53.0
 _21 September 2020_
 

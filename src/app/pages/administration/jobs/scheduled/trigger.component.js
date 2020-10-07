@@ -10,7 +10,7 @@ export const JobsScheduledTriggerComponent = {
     },
     controller: class JobsScheduledJobComponent {
         constructor ($interval, $log) {
-            'ngInject'
+            'ngInject';
             this.$interval = $interval;
             this.$log = $log;
             this.selectedDateTime = new Date();
@@ -21,7 +21,7 @@ export const JobsScheduledTriggerComponent = {
             let that = this;
             let tick = () => {
                 that.now = Date.now();
-            }
+            };
             tick();
             this.$interval(tick, 1000);
         }
@@ -140,7 +140,7 @@ export const JobsScheduledTriggerComponent = {
             return ret;
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsScheduledTrigger', JobsScheduledTriggerComponent);

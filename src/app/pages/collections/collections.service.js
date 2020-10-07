@@ -8,7 +8,7 @@
     function collectionsService ($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
         var service = {
             translate: translate,
-        }
+        };
         return service;
 
         ////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@
                     decertificationDate: array[i].decertificationDate,
                     developer: array[i].developerName,
                     mainSearch: array[i].developerName,
-                }
+                };
                 for (var j = 0; j < array[i].acbNames.length; j++) {
                     dev.acb.push(array[i].acbNames[j]);
                 }
@@ -198,7 +198,7 @@
                         acbAttestations: joinAttestations(array[i].acbAttestations),
                         transparencyAttestationUrls: array[i].transparencyAttestationUrls ? array[i].transparencyAttestationUrls.split(SPLIT_PRIMARY) : [],
                         acb: findAcbs(array[i].acbAttestations),
-                    }
+                    };
                     ret.push(dev);
                 }
             }
@@ -219,7 +219,7 @@
         }
 
         function findAcbs (atts) {
-            var ret = []
+            var ret = [];
             if (atts) {
                 var items = atts.split(SPLIT_PRIMARY);
                 var item;

@@ -28,7 +28,7 @@
                 networkService.getActivityMetadata.and.returnValue($q.when(mock));
                 networkService.getActivityById.and.returnValue($q.when(mock.activity));
 
-                scope = $rootScope.$new()
+                scope = $rootScope.$new();
                 el = angular.element('<chpl-reports-users></chpl-reports-users>');
                 $compile(el)(scope);
                 scope.$digest();
@@ -154,7 +154,7 @@
                 expect(filter.startDate).toBe(ctrl.activityRange.startDate);
                 expect(filter.endDate).toBe(ctrl.activityRange.endDate);
                 expect(filter.dataFilter).toBe(ctrl.filterText);
-            })
+            });
         });
     });
 })();

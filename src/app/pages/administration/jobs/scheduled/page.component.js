@@ -8,7 +8,7 @@ export const JobsScheduledPageComponent = {
     },
     controller: class JobsScheduledPageComponent {
         constructor ($anchorScroll, $log, authService, networkService, toaster) {
-            'ngInject'
+            'ngInject';
             this.$anchorScroll = $anchorScroll;
             this.$log = $log;
             this.networkService = networkService;
@@ -47,7 +47,7 @@ export const JobsScheduledPageComponent = {
             case 'scheduleOneTime':
                 this.activeTrigger = {
                     job: data,
-                }
+                };
                 this.mode = 'editTrigger';
                 this.isRecurring = false;
                 break;
@@ -125,7 +125,7 @@ export const JobsScheduledPageComponent = {
                             type: 'success',
                             title: 'Job created',
                             body: 'One time job scheduled',
-                        })
+                        });
                         that.cancel();
                         this.refreshSystemTriggers();
                     }, error => {
@@ -167,7 +167,7 @@ export const JobsScheduledPageComponent = {
             this.networkService.getScheduledSystemJobs().then(results => that.scheduledSystemJobs = results.results);
         }
     },
-}
+};
 
 angular.module('chpl.administration')
     .component('chplJobsScheduledPage', JobsScheduledPageComponent);

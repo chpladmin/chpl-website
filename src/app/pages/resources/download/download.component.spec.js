@@ -74,7 +74,7 @@
                 ctrl.downloadOption = 1;
                 ctrl.definitionOption = 'a';
 
-                ctrl.downloadOption = 2
+                ctrl.downloadOption = 2;
                 ctrl.changeDownload();
                 expect(ctrl.definitionOption).toBe('b');
             });

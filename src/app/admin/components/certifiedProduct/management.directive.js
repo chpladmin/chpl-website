@@ -28,7 +28,6 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
-        vm.editVersion = editVersion;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
@@ -59,7 +58,7 @@
             if (angular.isUndefined(vm.workType)) {
                 vm.workType = 'manage';
             }
-            vm.mergeType = 'developer';
+            vm.mergeType = 'version';
             vm.resources = {};
             vm.forceRefresh = false;
             vm.refreshDevelopers();
@@ -205,27 +204,6 @@
             }
         }
 
-        function editVersion () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/version/edit.html',
-                controller: 'EditVersionController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    activeVersion: function () { return vm.activeVersion; },
-                },
-            });
-            vm.modalInstance.result.then(function (result) {
-                vm.activeVersion = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.versionMessage = result;
-                }
-            });
-        }
-
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -333,7 +311,7 @@
                 vm.activeProduct = '';
                 vm.activeVersion = '';
                 vm.activeCP = '';
-                vm.mergeType = 'developer';
+                vm.mergeType = 'version';
                 vm.workType = workType;
             }
         }

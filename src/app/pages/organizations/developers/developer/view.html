@@ -1,7 +1,12 @@
-<ui-view>
+<div ui-view="view">
   <div class="row" ng-if="$ctrl.action === 'confirmation'">
     <div class="col-md-10 col-md-offset-1">
       <chpl-confirmation take-action="$ctrl.closeConfirmation()" text="{{ $ctrl.confirmationText }}"></chpl-confirmation>
+    </div>
+  </div>
+  <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
+    <div class="col-sm-12">
+      <h1>Developer Information</h1>
     </div>
   </div>
   <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
@@ -9,16 +14,14 @@
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
-      <chpl-developer developer="$ctrl.developer"
-                      allowed-acbs="$ctrl.allowedAcbs"
-                      can-edit="$ctrl.can('edit')"
-                      can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
-                      can-split="$ctrl.can('split-developer')"
-                      is-editing="$ctrl.action === 'edit'"
-                      on-cancel="$ctrl.cancel()"
-                      on-edit="$ctrl.save(developer)"
-                      take-action="$ctrl.takeAction(action)"
-                      ></chpl-developer>
+      <div ui-view="developer">
+        <chpl-developer developer="$ctrl.developer"
+                        can-edit="$ctrl.can('edit')"
+                        can-merge="$ctrl.can('merge')"
+                        can-split="$ctrl.can('split-developer')"
+                        take-action="$ctrl.takeAction(action)"
+                        ></chpl-developer>
+      </div>
       <div feature-flag="role-developer">
         <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
           <div class="panel-heading">
@@ -45,20 +48,31 @@
       <div class="panel panel-default" feature-flag="direct-review">
         <div class="panel-heading">
           <div class="panel-title">
-            <span class="pull-right">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
-            <h2>Direct Review Activities</h2>
-          </div>
-          <div class="panel-body">
-            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+            <span class="pull-right">
+              <span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span>
+              <span class="developer__direct-review-error badge badge-error" ng-if="$ctrl.drStatus === 'error'">error</span>
+            </span>
+            <h2 class="panel-title">Direct Review Activities</h2>
           </div>
         </div>
+        <div class="panel-body">
+          <span ng-if="$ctrl.drStatus === 'success'">
+            <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+          </span>
+          <span ng-if="$ctrl.drStatus === 'error'">
+            <p>Direct Review information is not currently available, please check back later</p>
+          </span>
+          <span ng-if="$ctrl.drStatus === 'pending'">
+            <p><i class="fa fa-spin fa-spinner"></i> Direct Review information is loading</p>
+          </span>
+        </div>
       </div>
-      <chpl-products products="$ctrl.products"
-                     product-id="{{ $ctrl.productId }}"
-                     search-options="$ctrl.searchOptions"
-                     on-cancel="$ctrl.cancel()"
-                     on-edit="$ctrl.saveProduct(product)"
-                     ></chpl-products>
+      <div ui-view="products">
+        <chpl-products products="$ctrl.products"
+                       search-options="$ctrl.searchOptions"
+                       on-cancel="$ctrl.cancel()"
+                       ></chpl-products>
+      </div>
     </div>
   </div>
-</ui-view>
+</div>

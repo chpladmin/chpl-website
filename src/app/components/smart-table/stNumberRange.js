@@ -31,11 +31,11 @@
                             }
 
                             scope.$apply(function () {
-                                table.search(query, predicateName)
+                                table.search(query, predicateName);
                             });
                         });
                     });
                 },
             };
-        })
+        });
 })();

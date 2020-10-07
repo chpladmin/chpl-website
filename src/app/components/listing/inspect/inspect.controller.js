@@ -187,8 +187,8 @@
 
         function populateDeveloperSystemRequirements () {
             if (vm.developer) {
-                const DOES_NOT_EXIST_MSG = ' does not yet exist in the system.'
-                const EXISTS_MSG = ' exists in the system.'
+                const DOES_NOT_EXIST_MSG = ' does not yet exist in the system.';
+                const EXISTS_MSG = ' exists in the system.';
                 const PLEASE_SAVE_MSG = ' Please select \'Save as Developer Information\' to continue.';
                 if (vm.isBlank(vm.developer.name)) {
                     vm.systemRequirements.push('A developer name' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
@@ -227,7 +227,7 @@
             if (vm.product && vm.product.productId) {
                 networkService.getRelatedListings(vm.product.productId)
                     .then(function (family) {
-                        vm.resources.relatedListings = family.filter(function (item) { return item.edition === '2015' });
+                        vm.resources.relatedListings = family.filter(function (item) { return item.edition === '2015'; });
                     });
             }
         }

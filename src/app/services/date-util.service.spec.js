@@ -15,7 +15,7 @@
             inject((_$log_, _DateUtil_) => {
                 $log = _$log_;
                 date = _DateUtil_;
-            })
+            });
         });
 
         afterEach(() => {
