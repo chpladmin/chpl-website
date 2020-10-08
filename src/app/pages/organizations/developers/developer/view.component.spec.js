@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Developers View component', () => {
+    describe('the Developer View component', () => {
         var $compile, $log, $q, $rootScope, $state, authService, ctrl, el, mock, networkService, scope, toaster;
 
         mock = {
@@ -19,10 +19,6 @@
                 statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
                 status: {id: 1, status: 'Active'},
             },
-            developers: [{
-                name: 'a developer',
-                transparencyAttestations: [],
-            }],
             stateParams: {
                 developerId: 22,
             },
@@ -77,9 +73,8 @@
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
-                scope.developers = {developers: mock.developers};
 
-                el = angular.element('<chpl-developers-view allowed-acbs="acbs" developer="developer" developers="developers"></chpl-developers-view>');
+                el = angular.element('<chpl-developer-view allowed-acbs="acbs" developer="developer"></chpl-developer-view>');
 
                 $compile(el)(scope);
                 scope.$digest();

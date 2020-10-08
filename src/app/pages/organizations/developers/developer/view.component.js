@@ -1,11 +1,10 @@
-export const DevelopersViewComponent = {
+export const DeveloperViewComponent = {
     templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
-        developers: '<',
         directReviews: '<',
     },
-    controller: class DevelopersViewComponent {
+    controller: class DeveloperViewComponent {
         constructor ($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
             'ngInject';
             this.$log = $log;
@@ -74,7 +73,6 @@ export const DevelopersViewComponent = {
 
         cancel () {
             this.developer = angular.copy(this.backup.developer);
-            this.developers = angular.copy(this.backup.developers);
             this.$state.go('organizations.developers.developer', {
                 developerId: this.developer.developerId,
                 action: undefined,
@@ -217,4 +215,4 @@ export const DevelopersViewComponent = {
 };
 
 angular.module('chpl.organizations')
-    .component('chplDevelopersView', DevelopersViewComponent);
+    .component('chplDeveloperView', DeveloperViewComponent);

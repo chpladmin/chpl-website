@@ -21,7 +21,7 @@ let states = [
     },{
         name: 'organizations.developers.developer',
         url: '/{developerId}',
-        component: 'chplDevelopersView',
+        component: 'chplDeveloperView',
         resolve: {
             developer: (networkService, $location, $transition$) => {
                 'ngInject';
