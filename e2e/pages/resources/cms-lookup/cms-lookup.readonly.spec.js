@@ -1,13 +1,13 @@
 import CmsLookupPage from './cms-lookup.po';
 import Hooks from '../../../utilities/hooks';
 
+const inputs = require('./cms-lookup-dp');
 const config = require('../../../config/mainConfig');
 const path = require('path');
 const fs = require('fs');
 
 let cmsLookup, hooks;
-var listingIds = ['15.07.07.1447.BE02.01.00.1.160815','15.07.07.1447.BE01.02.01.1.161014','15.07.07.1447.EP03.02.03.1.161209','15.07.07.1447.EP03.03.04.1.170403'];
-const cmsId = '0015EYE3ZT3QFP4';
+const invalidCmsId = '000000AAAAAA';
 
 beforeAll(async () => {
     cmsLookup = new CmsLookupPage();
@@ -16,35 +16,65 @@ beforeAll(async () => {
 });
 
 describe('On cms reverse look up page', () => {
-    describe('When searching for a CMS ID which was generated before', () => {
+    for (var i in inputs) {
+        let testName = inputs[i].testName;
+        describe(`When searching for a CMS ID which was generated before for  ${testName}`, () => {
+            beforeAll( () => {
+                cmsLookup.searchField.clearValue();
+                cmsLookup.searchField.addValue(inputs[i].cmsId);
+                cmsLookup.searchIdButton.click();
+                hooks.waitForSpinnerToDisappear();
+            });
+
+            it('should show correct listings for the CMS ID', () => {
+                browser.waitUntil( () => $(cmsLookup.lookupResultsTable).isDisplayed());
+                var ls = [];
+                var length = $$('//*[@id="lookupCertIdResults"]/tbody/tr').length;
+                for ( var j = 1; j <= length; j++ ) {
+                    ls.push($('//*[@id="lookupCertIdResults"]/tbody/tr[' + j + ']/td[6]').getText());
+                }
+                assert.equal(ls.toString(),inputs[i].listingIds.toString());
+            });
+
+            it('should have download results button and download file should contain correct listings Ids', () => {
+                cmsLookup.downloadResultsButton.scrollAndClick();
+                const fileName = 'CMS_ID.' + inputs[i].cmsId + '.csv';
+                const filePath = path.join(global.downloadDir, fileName);
+                browser.waitForFileExists(filePath,config.timeout);
+                assert.isTrue(fs.existsSync(filePath));
+                const fileContents = fs.readFileSync(filePath, 'utf-8');
+                var isInclude = false;
+                for ( var k = 0; k < inputs[i].listingIds.length; k ++) {
+                    if (fileContents.includes(inputs[i].listingIds[k])) {
+                        isInclude = true;
+                    }
+                }
+                assert.isTrue(isInclude);
+            });
+        });
+    }
+});
+
+describe('On cms reverse look up page', () => {
+    describe('When searching for invalid CMS ID which doesnt exist', () => {
         beforeAll( () => {
-            cmsLookup.searchField.addValue(cmsId);
+            cmsLookup.searchField.clearValue();
+            cmsLookup.searchField.addValue(invalidCmsId);
             cmsLookup.searchIdButton.click();
             hooks.waitForSpinnerToDisappear();
         });
 
-        it('should show correct listings for the CMS ID', () => {
-            var ls = [];
-            for ( var i = 1; i <= 4; i++ ) {
-                ls.push($('//*[@id="lookupCertIdResults"]/tbody/tr[' + i + ']/td[6]').getText());
-            }
-            assert.equal(ls.toString(),listingIds.toString());
+        it('should show correct message', () => {
+            assert.equal(cmsLookup.certidLookupErrorText.getText(),'"' + invalidCmsId + '" is not a valid CMS EHR Certification ID format.');
         });
 
-        it('should have download results button and download file should contain correct listings Ids', () => {
-            cmsLookup.downloadResultsButton.scrollAndClick();
-            const fileName = 'CMS_ID.' + cmsId + '.csv';
-            const filePath = path.join(global.downloadDir, fileName);
-            browser.waitForFileExists(filePath,config.timeout);
-            assert.isTrue(fs.existsSync(filePath));
-            const fileContents = fs.readFileSync(filePath, 'utf-8');
-            var isInclude = false;
-            for ( var k = 0; k < listingIds.length; k ++) {
-                if (fileContents.includes(listingIds[k])) {
-                    isInclude = true;
-                }
-            }
-            assert.isTrue(isInclude);
+        it('should not display look up results table', () => {
+            assert.isFalse(cmsLookup.lookupResultsTable.isExisting());
+        });
+
+        it('should not have download results button', () => {
+            assert.isFalse(cmsLookup.downloadResultsButton.isExisting());
         });
     });
 });
+
