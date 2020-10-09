@@ -35,6 +35,7 @@ export const ListingEditComponent = {
                             return standard;
                         })
                 );
+                this.resources.testingLabs = this.resources.testingLabs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (changes.workType) {
                 this.workType = angular.copy(changes.workType.currentValue);
@@ -190,6 +191,46 @@ export const ListingEditComponent = {
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,
             });
+        }
+
+        // item list
+        cancelNewItem (type) {
+            this.newItem[type] = undefined;
+            this.addingItem[type] = false;
+        }
+
+        filterListEditItems (type, items) {
+            switch (type) {
+            case 'oncAtls':
+                return items
+                    .filter(i => !this.listing.testingLabs.filter(tl => tl.testingLabName === i.name).length);
+            default:
+                this.$log.error('filter', type, items);
+            }
+        }
+
+        removeItem (type, item) {
+            switch (type) {
+            case 'oncAtls':
+                this.listing.testingLabs = this.listing.testingLabs.filter(l => l.testingLabName !== item.testingLabName);
+                this.update();
+                break;
+            default:
+                this.$log.error('remove', type, item);
+            }
+        }
+
+        saveNewItem (type) {
+            switch (type) {
+            case 'oncAtls':
+                this.addNewValue(this.listing.testingLabs, this.newItem['oncAtls']);
+                this.listing.testingLabs = this.listing.testingLabs.sort((a, b) => a.testingLabName < b.testingLabName ? -1 : a.testingLabName > b.testingLabName ? 1 : 0);
+                this.cancelNewItem(type);
+                this.update();
+                break;
+            default:
+                this.$log.error('add', type);
+            }
         }
     },
 };

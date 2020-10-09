@@ -1,0 +1,29 @@
+.list-edit__container {
+    display: grid;
+    grid-template-columns: 2fr 6em;
+    margin: 0 8px;
+    background: var(--light-grey);
+}
+
+.list-edit__header--end {
+    grid-column-start: 1;
+    grid-column-end: -1;
+}
+
+.list-edit__item {
+    align-self: center;
+}
+
+.list-edit__item--adding {
+    align-self: start;
+}
+
+.list-edit__item--end {
+    justify-self: end;
+    grid-column-end: -1;
+}
+
+.list-edit__list-edit-add-new {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
