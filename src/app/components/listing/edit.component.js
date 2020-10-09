@@ -164,10 +164,12 @@ export const ListingEditComponent = {
             }
         }
 
+        /*
         removePreviousStatus (statusDateObject) {
             this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== statusDateObject.getTime());
             this.update();
         }
+        */
 
         requiredIcsCode () {
             let code = this.listing.ics.parents
@@ -219,34 +221,42 @@ export const ListingEditComponent = {
             switch (type) {
             case 'accessibilityStandards':
                 this.listing.accessibilityStandards = this.listing.accessibilityStandards.filter(l => l.accessibilityStandardName !== item.accessibilityStandardName);
-                this.update();
+                break;
+            case 'certificationEvents':
+                this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== item.statusDateObject.getTime());
                 break;
             case 'oncAtls':
                 this.listing.testingLabs = this.listing.testingLabs.filter(l => l.testingLabName !== item.testingLabName);
-                this.update();
                 break;
             default:
                 this.$log.error('remove', type, item);
             }
+            this.update();
         }
 
         saveNewItem (type) {
             switch (type) {
             case 'accessibilityStandards':
-                this.addNewValue(this.listing.accessibilityStandards, this.newItem['accessibilityStandards']);
+                this.addNewValue(this.listing.accessibilityStandards, this.newItem[type]);
                 this.listing.accessibilityStandards = this.listing.accessibilityStandards.sort((a, b) => a.accessibilityStandardName < b.accessibilityStandardName ? -1 : a.accessibilityStandardName > b.accessibilityStandardName ? 1 : 0);
-                this.cancelNewItem(type);
-                this.update();
+                break;
+            case 'certificationEvents':
+                this.listing.certificationEvents.push({
+                    status: this.newItem[type].status,
+                    statusDateObject: this.newItem[type].statusDateObject,
+                    reason: this.newItem[type].reason,
+                });
+                this.listing.accessibilityStandards = this.listing.accessibilityStandards.sort((a, b) => a.accessibilityStandardName < b.accessibilityStandardName ? -1 : a.accessibilityStandardName > b.accessibilityStandardName ? 1 : 0);
                 break;
             case 'oncAtls':
-                this.addNewValue(this.listing.testingLabs, this.newItem['oncAtls']);
+                this.addNewValue(this.listing.testingLabs, this.newItem[type]);
                 this.listing.testingLabs = this.listing.testingLabs.sort((a, b) => a.testingLabName < b.testingLabName ? -1 : a.testingLabName > b.testingLabName ? 1 : 0);
-                this.cancelNewItem(type);
-                this.update();
                 break;
             default:
                 this.$log.error('add', type);
             }
+            this.cancelNewItem(type);
+            this.update();
         }
     },
 };
