@@ -53,7 +53,7 @@ describe('the Developers page', () => {
                 expect(page.getAcbName(product).getText()).toBe('UL LLC');
             });
 
-            it('should have ACB name', () => {
+            it('should have listings count', () => {
                 expect(page.getListingCount(product).getText()).toBe('6 listings');
             });
         });
@@ -85,18 +85,14 @@ describe('the Developers page', () => {
     });
 });
 
-describe('When user is on the Developer page for a Developer that doesnt exist', () => {
+describe('When a user is on the Developer page for a Developer that doesn\'t exist', () => {
     beforeEach(async () => {
-        browser.setWindowSize(1600, 1024);
-        browser.setWindowRect(0, 0, 1600, 1024);
-        contact = new ContactComponent();
-        page = new DevelopersPage();
         hooks = new Hooks();
         const dummyDeveloperId = '0000';
         await hooks.open('#/organizations/developers/' + dummyDeveloperId);
     });
 
-    it('it should go to Home page', () => {
+    it('should go to Home page', () => {
         hooks.waitForSpinnerToDisappear();
         expect(browser.getUrl()).toContain('#/search');
     });
