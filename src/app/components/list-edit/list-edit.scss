@@ -1,8 +1,12 @@
 .list-edit__container {
     display: grid;
     grid-template-columns: 2fr 6em;
-    margin: 0 8px;
+    margin: 0 8px 8px;
     background: var(--light-grey);
+}
+
+.list-edit__container-2 {
+    grid-template-columns: 2fr 1fr 6em;
 }
 
 .list-edit__header--end {

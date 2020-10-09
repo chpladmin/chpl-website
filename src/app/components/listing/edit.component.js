@@ -18,6 +18,9 @@ export const ListingEditComponent = {
             this.extendSelect = utilService.extendSelect;
             this.hasAnyRole = authService.hasAnyRole;
             this.utilService = utilService;
+            this.newItem = {};
+            this.addingItem = {};
+            this.creatingItem = {};
         }
 
         $onChanges (changes) {
@@ -27,6 +30,7 @@ export const ListingEditComponent = {
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
+                this.resources.accessibilityStandards = this.resources.accessibilityStandards.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
                 this.resources.qmsStandards.data = this.resources.qmsStandards.data.concat(
                     this.listing.qmsStandards
                         .filter(standard => !standard.id)
@@ -197,13 +201,15 @@ export const ListingEditComponent = {
         cancelNewItem (type) {
             this.newItem[type] = undefined;
             this.addingItem[type] = false;
+            this.creatingItem[type] = false;
         }
 
         filterListEditItems (type, items) {
             switch (type) {
+            case 'accessibilityStandards':
+                return items.filter(i => !this.listing.accessibilityStandards.filter(as => as.accessibilityStandardName === i.name).length);
             case 'oncAtls':
-                return items
-                    .filter(i => !this.listing.testingLabs.filter(tl => tl.testingLabName === i.name).length);
+                return items.filter(i => !this.listing.testingLabs.filter(tl => tl.testingLabName === i.name).length);
             default:
                 this.$log.error('filter', type, items);
             }
@@ -211,6 +217,10 @@ export const ListingEditComponent = {
 
         removeItem (type, item) {
             switch (type) {
+            case 'accessibilityStandards':
+                this.listing.accessibilityStandards = this.listing.accessibilityStandards.filter(l => l.accessibilityStandardName !== item.accessibilityStandardName);
+                this.update();
+                break;
             case 'oncAtls':
                 this.listing.testingLabs = this.listing.testingLabs.filter(l => l.testingLabName !== item.testingLabName);
                 this.update();
@@ -222,6 +232,12 @@ export const ListingEditComponent = {
 
         saveNewItem (type) {
             switch (type) {
+            case 'accessibilityStandards':
+                this.addNewValue(this.listing.accessibilityStandards, this.newItem['accessibilityStandards']);
+                this.listing.accessibilityStandards = this.listing.accessibilityStandards.sort((a, b) => a.accessibilityStandardName < b.accessibilityStandardName ? -1 : a.accessibilityStandardName > b.accessibilityStandardName ? 1 : 0);
+                this.cancelNewItem(type);
+                this.update();
+                break;
             case 'oncAtls':
                 this.addNewValue(this.listing.testingLabs, this.newItem['oncAtls']);
                 this.listing.testingLabs = this.listing.testingLabs.sort((a, b) => a.testingLabName < b.testingLabName ? -1 : a.testingLabName > b.testingLabName ? 1 : 0);
