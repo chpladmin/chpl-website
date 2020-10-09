@@ -77,7 +77,7 @@
     <div class="list-edit--span-2 data-label">Reason for status change</div>
     <div ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
       {{ item.status.name }}
-      <div class="text-danger" ng-if="!$first && $ctrl.matchesPreviousStatus(item)">Certification Status must differ from previous Status</div>
+      <div class="text-danger" ng-if="!$last && $ctrl.matchesPreviousStatus(item)">Certification Status must differ from previous Status</div>
       <div class="text-danger" ng-if="$first && $ctrl.mayCauseSuspension($ctrl.certificationStatus($ctrl.listing, {editing: true}))">Setting this product to this status may trigger a ban by ONC</div>
       <div class="text-danger" ng-if="$first && $ctrl.certificationStatus($ctrl.listing, {editing: true}) === 'Terminated by ONC'">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
       <div class="text-danger" ng-if="$first && $ctrl.certificationStatus($ctrl.listing, {editing: true}) === 'Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>

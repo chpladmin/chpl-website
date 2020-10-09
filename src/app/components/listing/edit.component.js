@@ -76,12 +76,14 @@ export const ListingEditComponent = {
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
         }
 
+        /*
         addPreviousStatus () {
             this.listing.certificationEvents.push({
                 statusDateObject: new Date(),
                 status: {},
             });
         }
+        */
 
         disabledStatus (name) {
             return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
