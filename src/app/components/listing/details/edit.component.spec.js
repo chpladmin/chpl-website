@@ -165,18 +165,6 @@
                     expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
                 });
 
-                describe('when disabling related options', () => {
-                    it('should disable itself', () => {
-                        expect(ctrl.disabledParent({ chplProductNumber: 'CHP-123123'})).toBe(true);
-                    });
-
-                    it('should disable ones that are already parents', () => {
-                        expect(ctrl.disabledParent({ chplProductNumber: '123'})).toBe(false);
-                        ctrl.listing.ics.parents = [{ chplProductNumber: '123' }];
-                        expect(ctrl.disabledParent({ chplProductNumber: '123'})).toBe(true);
-                    });
-                });
-
                 describe('with respect to missing ICS source', () => {
                     it('should not require ics source for 2014 listings', () => {
                         ctrl.listing.certificationEdition.name = '2014';
