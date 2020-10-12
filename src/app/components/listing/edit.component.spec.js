@@ -6,6 +6,7 @@
 
         mock = {};
         mock.listing = {
+            accessibilityStandards: [],
             certificationEdition: {name: '2015'},
             certificationEvents: [
                 { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' }},
@@ -21,9 +22,12 @@
                 {id: null, qmsStandardName: 'nullname'},
             ],
             targetedUsers: [],
+            testingLabs: [],
         };
         mock.resources = {
-            accessibilityStandards: [{id: 1, name: 'name1'}],
+            accessibilityStandards: {data: [
+                {id: 1, name: 'name1'},
+            ]},
             bodies: [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}],
             classifications: [{id: 1, name: 'name1'}],
             practices: [{id: 1, name: 'name1'}],
@@ -193,22 +197,6 @@
         describe('when handling certification status history', () => {
             it('should add statusEventObjects for each statusDate in history', () => {
                 expect(ctrl.listing.certificationEvents[0].statusDateObject).toEqual(new Date(ctrl.listing.certificationEvents[0].eventDate));
-            });
-
-            it('should remove previous statuses', () => {
-                ctrl.addPreviousStatus();
-                ctrl.addPreviousStatus();
-                ctrl.addPreviousStatus();
-                var initLength = ctrl.listing.certificationEvents.length;
-                ctrl.removePreviousStatus(ctrl.listing.certificationEvents[0].statusDateObject);
-                expect(ctrl.listing.certificationEvents.length).toBe(initLength - 1);
-            });
-
-            it('should add an empty status', () => {
-                var initLength = ctrl.listing.certificationEvents.length;
-                ctrl.addPreviousStatus();
-                expect(ctrl.listing.certificationEvents.length).toBe(initLength + 1);
-                expect(ctrl.listing.certificationEvents[ctrl.listing.certificationEvents.length - 1].statusDateObject).toBeDefined();
             });
 
             it('should know when the "earliest" status is not "Active"', () => {
