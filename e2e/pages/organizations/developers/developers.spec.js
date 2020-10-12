@@ -65,6 +65,10 @@ describe('the Developers page', () => {
                         expect(page.editProductName.getValue()).toBe(name);
                     });
 
+                    it('should not have friendly name text box under POC', () => {
+                        expect(contact.friendlyName.isDisplayed()).toBe(false);
+                    });
+
                     it('should allow editing of the POC', () => {
                         let timestamp = (new Date()).getTime();
                         let poc = {
