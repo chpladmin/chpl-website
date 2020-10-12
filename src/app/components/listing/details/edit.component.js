@@ -25,6 +25,9 @@ export const ListingDetailsEditComponent = {
             this.drStatus = 'pending';
             this.viewAllCerts = true;
             this.panelShown = 'cert';
+            this.newItem = {};
+            this.addingItem = {};
+            this.creatingItem = {};
         }
 
         $onInit () {
@@ -47,6 +50,7 @@ export const ListingDetailsEditComponent = {
             }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
+                this.resources.targetedUsers = this.resources.targetedUsers.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (this.listing && this.resources) {
                 this.prepareFields();
@@ -208,6 +212,46 @@ export const ListingDetailsEditComponent = {
                 }
             });
             this.listing.cqmResults = angular.copy(this.cqms);
+            this.update();
+        }
+
+        // item list
+        cancelNewItem (type) {
+            this.newItem[type] = undefined;
+            this.addingItem[type] = false;
+            this.creatingItem[type] = false;
+        }
+
+        filterListEditItems (type, items) {
+            switch (type) {
+            case 'targetedUsers':
+                return items.filter(i => !this.listing.targetedUsers.filter(tu => tu.targetedUserName === i.name).length);
+            default:
+                this.$log.error('filter', type, items);
+            }
+        }
+
+        removeItem (type, item) {
+            switch (type) {
+            case 'targetedUsers':
+                this.listing.targetedUsers = this.listing.targetedUsers.filter(l => l.targetedUserName !== item.targetedUserName);
+                break;
+            default:
+                this.$log.error('remove', type, item);
+            }
+            this.update();
+        }
+
+        saveNewItem (type) {
+            switch (type) {
+            case 'targetedUsers':
+                this.addNewValue(this.listing.targetedUsers, this.newItem[type]);
+                this.listing.targetedUsers = this.listing.targetedUsers.sort((a, b) => a.targetedUserName < b.targetedUserName ? -1 : a.targetedUserName > b.targetedUserName ? 1 : 0);
+                break;
+            default:
+                this.$log.error('add', type);
+            }
+            this.cancelNewItem(type);
             this.update();
         }
 

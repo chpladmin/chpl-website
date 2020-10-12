@@ -76,15 +76,6 @@ export const ListingEditComponent = {
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
         }
 
-        /*
-        addPreviousStatus () {
-            this.listing.certificationEvents.push({
-                statusDateObject: new Date(),
-                status: {},
-            });
-        }
-        */
-
         disabledStatus (name) {
             return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
         }
@@ -125,7 +116,6 @@ export const ListingEditComponent = {
         isValid () {
             return this.isSaving
                 || !(this.form.$invalid
-                     //|| this.missingIcsSource()
                      || this.hasStatusMatches()
                      || this.hasDateMatches()
                      || this.improperFirstStatus());
@@ -165,13 +155,6 @@ export const ListingEditComponent = {
             default: return false;
             }
         }
-
-        /*
-        removePreviousStatus (statusDateObject) {
-            this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== statusDateObject.getTime());
-            this.update();
-        }
-        */
 
         requiredIcsCode () {
             let code = this.listing.ics.parents
@@ -248,7 +231,6 @@ export const ListingEditComponent = {
                     statusDateObject: this.newItem[type].statusDateObject,
                     reason: this.newItem[type].reason,
                 });
-                this.listing.accessibilityStandards = this.listing.accessibilityStandards.sort((a, b) => a.accessibilityStandardName < b.accessibilityStandardName ? -1 : a.accessibilityStandardName > b.accessibilityStandardName ? 1 : 0);
                 break;
             case 'oncAtls':
                 this.addNewValue(this.listing.testingLabs, this.newItem[type]);

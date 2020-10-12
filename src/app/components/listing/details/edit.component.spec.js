@@ -23,7 +23,9 @@
             targetedUsers: [],
         };
         mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
-        mock.resources = {};
+        mock.resources = {
+            targetedUsers: {data: []},
+        };
 
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl.components', $provide => {
