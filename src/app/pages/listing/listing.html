@@ -98,14 +98,12 @@
             <h2 class="product-heading">Relied Upon Software</h2>
             <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
           </div>
-          <span ng-if="$ctrl.listing.transparencyAttestation">
-            <div class="product-element" id="listing-information-mandatory-disclosures-url">
-              <h2 class="product-heading">Mandatory Disclosures URL</h2>
-              <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
-              <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
-              <div class="clearfix"></div>
-            </div>
-          </span>
+          <div class="product-element" id="listing-information-mandatory-disclosures-url">
+            <h2 class="product-heading">Mandatory Disclosures URL</h2>
+            <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
+            <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+            <div class="clearfix"></div>
+          </div>
         </div>
         <div class="col-sm-8" id="listing-information-details">
           <chpl-listing-details initial-panel="{{ $ctrl.initialPanel }}"
