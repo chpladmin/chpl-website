@@ -17,8 +17,6 @@ export const ListingDetailsEditComponent = {
             this.networkService = networkService;
             this.utilService = utilService;
             this.addNewValue = utilService.addNewValue;
-            this.extendSelect = utilService.extendSelect;
-            this.muuCount = utilService.muuCount;
             this.sortCerts = utilService.sortCert;
             this.handlers = [];
             this.isOn = featureFlags.isOn;
@@ -50,23 +48,12 @@ export const ListingDetailsEditComponent = {
             }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
+                this.resources.qmsStandards = this.resources.qmsStandards.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
                 this.resources.targetedUsers = this.resources.targetedUsers.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (this.listing && this.resources) {
                 this.prepareFields();
             }
-        }
-
-        addPreviousMuu () {
-            this.listing.meaningfulUseUserHistory.push({
-                muuDateObject: new Date(),
-                muuCount: 0,
-            });
-        }
-
-        disabledParent (listing) {
-            return this.listing.ics.parents
-                .reduce((disabled, current) => disabled || current.chplProductNumber === listing.chplProductNumber, !!(this.listing.chplProductNumber === listing.chplProductNumber));
         }
 
         hasEdited () {
@@ -115,7 +102,7 @@ export const ListingDetailsEditComponent = {
             if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015') {
                 let that = this;
                 this.networkService.getRelatedListings(this.listing.product.productId)
-                    .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
+                    .then(family => that.relatedListings = family.filter(item => item.edition === '2015' && item.id !== that.listing.id));
             }
         }
 
@@ -150,10 +137,6 @@ export const ListingDetailsEditComponent = {
                 });
             };
             return removeHandler;
-        }
-
-        removePreviousMuu (muuDateObject) {
-            this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.filter(muu => muu.muuDateObject.getTime() !== muuDateObject.getTime());
         }
 
         saveCert (cert) {
@@ -224,6 +207,10 @@ export const ListingDetailsEditComponent = {
 
         filterListEditItems (type, items) {
             switch (type) {
+            case 'ics':
+                return items.filter(i => !this.listing.ics.parents.filter(l => l.chplProductNumber === i.chplProductNumber).length);
+            case 'qmsStandards':
+                return items.filter(i => !this.listing.qmsStandards.filter(qs => qs.qmsStandardName === i.name).length);
             case 'targetedUsers':
                 return items.filter(i => !this.listing.targetedUsers.filter(tu => tu.targetedUserName === i.name).length);
             default:
@@ -233,6 +220,15 @@ export const ListingDetailsEditComponent = {
 
         removeItem (type, item) {
             switch (type) {
+            case 'ics':
+                this.listing.ics.parents = this.listing.ics.parents.filter(l => l.chplProductNumber !== item.chplProductNumber);
+                break;
+            case 'meaningfulUseUserHistory':
+                this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.filter(event => event.muuDateObject.getTime() !== item.muuDateObject.getTime());
+                break;
+            case 'qmsStandards':
+                this.listing.qmsStandards = this.listing.qmsStandards.filter(l => l.qmsStandardName !== item.qmsStandardName);
+                break;
             case 'targetedUsers':
                 this.listing.targetedUsers = this.listing.targetedUsers.filter(l => l.targetedUserName !== item.targetedUserName);
                 break;
@@ -244,6 +240,20 @@ export const ListingDetailsEditComponent = {
 
         saveNewItem (type) {
             switch (type) {
+            case 'ics':
+                this.addNewValue(this.listing.ics.parents, this.newItem[type]);
+                this.listing.ics.parents = this.listing.ics.parents.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+                break;
+            case 'meaningfulUseUserHistory':
+                this.listing.meaningfulUseUserHistory.push({
+                    muuCount: this.newItem[type].muuCount,
+                    muuDateObject: this.newItem[type].muuDateObject,
+                });
+                break;
+            case 'qmsStandards':
+                this.addNewValue(this.listing.qmsStandards, this.newItem[type]);
+                this.listing.qmsStandards = this.listing.qmsStandards.sort((a, b) => a.qmsStandardName < b.qmsStandardName ? -1 : a.qmsStandardName > b.qmsStandardName ? 1 : 0);
+                break;
             case 'targetedUsers':
                 this.addNewValue(this.listing.targetedUsers, this.newItem[type]);
                 this.listing.targetedUsers = this.listing.targetedUsers.sort((a, b) => a.targetedUserName < b.targetedUserName ? -1 : a.targetedUserName > b.targetedUserName ? 1 : 0);

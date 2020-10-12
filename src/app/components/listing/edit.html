@@ -72,7 +72,7 @@
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
   <div class="list-edit__container list-edit__container-3">
-    <div class="data-label">Certification Status History</div>
+    <div class="data-label">Certification Status</div>
     <div class="data-label">Effective Date</div>
     <div class="list-edit--span-2 data-label">Reason for status change</div>
     <div ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
@@ -119,7 +119,7 @@
     </div>
     <div class="list-edit__item--end" ng-if="$ctrl.addingItem['certificationEvents']">
       <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('certificationEvents')" ng-mouseover="$ctrl.showFormErrors = true"
-              ng-disabled="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNew.$touched) && $ctrl.form.certificationEventAddNew.$error.required"><i class="fa fa-save"></i></button>
+              ng-disabled="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewStatus.$touched || $ctrl.form.certificationEventAddNewDate.$touched || $ctrl.form.certificationEventAddNewReason.$touched) && ($ctrl.form.certificationEventAddNewStatus.$error.required || $ctrl.form.certificationEventAddNewStatus.$error.required)"><i class="fa fa-save"></i></button>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('certificationEvents')"><i class="fa fa-times"></i></button>
     </div>
     <div ng-if="!$ctrl.addingItem['certificationEvents']">

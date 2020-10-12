@@ -14,6 +14,10 @@
     grid-template-columns: 2fr 1fr 1fr 6em;
 }
 
+.list-edit__container-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 6em;
+}
+
 .list-edit--span-2 {
     grid-column-end: span 2;
 }
