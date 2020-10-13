@@ -39,6 +39,16 @@ describe('the Developers page', () => {
                 page.getDeveloperPageTitle(developer).waitForDisplayed();
             });
 
+            describe('when editing developer information', () => {
+                beforeEach(() => {
+                    page.editDeveloper.click();
+                });
+
+                it('should not have friendly name text box under POC', () => {
+                    expect(contact.friendlyName.isDisplayed()).toBe(false);
+                });
+            });
+
             describe('when looking at "Intergy EHR"', () => {
                 let name = 'Intergy EHR';
                 let product;
