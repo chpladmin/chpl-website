@@ -1,34 +1,17 @@
 .list-edit__container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)) 6em;
-    //grid-template-columns: 1fr 6em;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) 6em;
     margin: 0 8px 8px;
     background: var(--light-grey);
     align-items: center;
-}
-
-.list-edit__container-2 {
-    //grid-template-columns: 2fr 1fr 6em;
-    grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)) 6em;
-}
-
-.list-edit__container-3 {
-    //grid-template-columns: 2fr 1fr 1fr 6em;
-}
-
-.list-edit__container-4 {
-    //grid-template-columns: 1fr 1fr 1fr 1fr 6em;
 }
 
 .list-edit--span-2 {
     grid-column-end: span 2;
 }
 
-.list-edit--span-3 {
-    grid-column-end: span 3;
-}
-
 .list-edit__item--end {
+    grid-column-end: -1;
     justify-self: end;
 }
 

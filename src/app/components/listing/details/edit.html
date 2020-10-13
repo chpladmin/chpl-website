@@ -166,22 +166,22 @@
           <input type="checkbox" ng-model="$ctrl.listing.ics.inherits" id="cp-ics" ng-change="$ctrl.update()">
         </div>
         <div ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.listing.ics.inherits">
-          <div class="list-edit__container list-edit__container-2">
-            <div class="list-edit--span-3 data-label">Inherits From</div>
+          <div class="list-edit__container">
+            <div class="list-edit--span-2 data-label">Inherits From</div>
             <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.ics.parents track by $index">
               {{ item.chplProductNumber }}
             </div>
             <div class="list-edit__item--end" ng-repeat-end>
               <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('ics', item)"><i class="fa fa-times"></i></button>
             </div>
-            <div ng-if="$ctrl.addingItem['ics'] && !$ctrl.creatingItem['ics'] && $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length > 0">
+            <div class="list-edit__row-start" ng-if="$ctrl.addingItem['ics'] && !$ctrl.creatingItem['ics'] && $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length > 0">
               <div class="data-element sr-only"><label for="ics-add-new">Add new ICS Source</label></div>
               <select class="form-control" ng-model="$ctrl.newItem['ics'].chplProductNumber"
                       id="ics-add-new" name="icsAddNew" required
                       ng-options="option.chplProductNumber as (option.chplProductNumber + ' (' + (option.certificationDate | date : 'mediumDate' : 'UTC') + ')') for option in $ctrl.filterListEditItems('ics', $ctrl.relatedListings) | orderBy:'certificationDate'">
               </select>
             </div>
-            <div ng-if="$ctrl.addingItem['ics'] && ($ctrl.creatingItem['ics'] || $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length === 0)">
+            <div class="list-edit__row-start" ng-if="$ctrl.addingItem['ics'] && ($ctrl.creatingItem['ics'] || $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length === 0)">
               <div class="data-element sr-only"><label for="ics-add-new">Add new ICS Source (different Product)</label></div>
               <input type="text" class="form-control" ng-model="$ctrl.newItem['ics'].chplProductNumber"
                      ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/"
@@ -203,10 +203,10 @@
             </div>
           </div>
         </div>
-        <div class="list-edit__container list-edit__container-4">
+        <div class="list-edit__container">
           <div class="data-label list-edit--span-2">QMS Standard</div>
           <div class="data-label">QMS Modification</div>
-          <div class="data-label list-edit--span-2">QMS Applicable Criteria</div>
+          <div class="data-label">QMS Applicable Criteria</div>
           <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.qmsStandards track by $index">
             {{ item.qmsStandardName }}
           </div>
@@ -219,7 +219,7 @@
           <div class="list-edit__item--end" ng-repeat-end>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('qmsStandards', item)"><i class="fa fa-times"></i></button>
           </div>
-          <div ng-if="$ctrl.addingItem['qmsStandards'] && !$ctrl.creatingItem['qmsStandards']">
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['qmsStandards'] && !$ctrl.creatingItem['qmsStandards']">
             <div class="data-element sr-only"><label for="qms-standard-add-new">Add new Qms Standard</label></div>
             <select class="form-control" ng-model="$ctrl.newItem['qmsStandards'].qmsStandardName"
                     id="qms-standard-add-new" name="qmsStandardAddNew" required
@@ -253,15 +253,15 @@
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['qmsStandards'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
-        <div class="list-edit__container list-edit__container-2">
-          <div class="list-edit--span-3 data-label">Targeted Users</div>
-          <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.targetedUsers track by $index">
+        <div class="list-edit__container">
+          <div class="list-edit--span-2 data-label">Targeted Users</div>
+          <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.targetedUsers track by $index">
             {{ item.targetedUserName }}
           </div>
           <div class="list-edit__item--end" ng-repeat-end>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('targetedUsers', item)"><i class="fa fa-times"></i></button>
           </div>
-          <div ng-if="$ctrl.addingItem['targetedUsers'] && !$ctrl.creatingItem['targetedUsers']">
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['targetedUsers'] && !$ctrl.creatingItem['targetedUsers']">
             <div class="data-element sr-only"><label for="targeted-user-add-new">Add new Targeted User</label></div>
             <select class="form-control" ng-model="$ctrl.newItem['targetedUsers'].targetedUserName"
                     id="targeted-user-add-new" name="targetedUserAddNew" required
@@ -285,9 +285,9 @@
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['targetedUsers'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
-        <div class="list-edit__container list-edit__container-2">
+        <div class="list-edit__container">
           <div class="data-label">Estimated Number of Meaningful Use Users</div>
-          <div class="list-edit--span-2 data-label">Effective Date</div>
+          <div class="data-label">Effective Date</div>
           <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
             {{ item.muuCount }}
           </div>
@@ -298,7 +298,7 @@
           <div class="list-edit__item--end" ng-repeat-end>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('meaningfulUseUserHistory', item)"><i class="fa fa-times"></i></button>
           </div>
-          <div ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
             <label for="meaningful-use-user-history-add-new-value" class="sr-only"><span ng-if="$first">Current </span>Meaningful Use User Count</label>
             <input type="number" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuCount"
                    id="meaningful-use-user-history-add-new-value" name="meaningfulUseUserHistoryAddNewValue"
