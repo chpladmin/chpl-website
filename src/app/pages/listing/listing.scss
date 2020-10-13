@@ -1,6 +1,6 @@
 .listing__header {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .listing__header-name {
@@ -8,19 +8,19 @@
 }
 
 .listing__header-info {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
 }
 
 .listing__details {
     display: grid;
-    grid-template-columns: minmax(750px, 1fr) minmax(450px, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     align-items: start;
 }
 
 .listing__basic-information {
     display: grid;
-    grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 12px 8px;
 }
 
@@ -30,6 +30,6 @@
 
 .listing-edit__details {
     display: grid;
-    grid-template-columns: minmax(750px, 1fr) minmax(450px, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     align-items: start;
 }

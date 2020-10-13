@@ -4,7 +4,7 @@
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
     <p class="text-right">
-      <button class="btn btn-default" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
+      <button class="btn btn-default btn--wrap" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
         <i class="fa" ng-class="$ctrl.viewAllCerts ? 'fa-toggle-on' : 'fa-toggle-off'"></i> Viewing {{ $ctrl.viewAllCerts ? 'all' : 'only attested to' }} Certification Criteria / Clinical Quality Measures
       </button>
     </p>

@@ -951,6 +951,11 @@ label {
     border-color: var(--darkblue);
     border-width: 2px;
     border-radius: 16px;
+    white-space: normal;
+}
+
+.btn--wrap {
+    white-space: normal;
 }
 
 .swagger-ui {

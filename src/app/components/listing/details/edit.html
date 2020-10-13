@@ -4,7 +4,7 @@
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
     <p class="text-right">
-      <button class="btn btn-default" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
+      <button class="btn btn-default btn--wrap" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
         <i class="fa" ng-class="$ctrl.viewAllCerts ? 'fa-toggle-on' : 'fa-toggle-off'"></i> Viewing {{ $ctrl.viewAllCerts ? 'all' : 'only attested to' }} Certification Criteria / Clinical Quality Measures
       </button>
     </p>
@@ -168,7 +168,7 @@
         <div ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.listing.ics.inherits">
           <div class="list-edit__container list-edit__container-2">
             <div class="list-edit--span-3 data-label">Inherits From</div>
-            <div class="list-edit--span-2" ng-repeat-start="item in $ctrl.listing.ics.parents track by $index">
+            <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.ics.parents track by $index">
               {{ item.chplProductNumber }}
             </div>
             <div class="list-edit__item--end" ng-repeat-end>
@@ -188,17 +188,17 @@
                      id="ics-add-new" name="icsAddNew" required>
             </div>
             <div ng-if="$ctrl.addingItem['ics'] && $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length > 0">
-              <button class="btn btn-default" ng-click="$ctrl.creatingItem['ics'] = !$ctrl.creatingItem['ics']"><i class="fa" ng-class="$ctrl.creatingItem['ics'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>Add new ICS Source ({{ $ctrl.creatingItem['ics'] ? 'other Product' : 'same Product' }})</button>
+              <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['ics'] = !$ctrl.creatingItem['ics']"><i class="fa" ng-class="$ctrl.creatingItem['ics'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>Add new ICS Source ({{ $ctrl.creatingItem['ics'] ? 'other Product' : 'same Product' }})</button>
             </div>
             <div ng-if="$ctrl.addingItem['ics'] && $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length === 0">
-              <button class="btn btn-default" disabled><i class="fa fa-toggle-on"></i>Add new ICS Source (other Product)</button>
+              <button class="btn btn-default btn--wrap" disabled><i class="fa fa-toggle-on"></i>Add new ICS Source (other Product)</button>
             </div>
             <div class="list-edit__item--end" ng-if="$ctrl.addingItem['ics']">
               <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('ics')" ng-mouseover="$ctrl.showFormErrors = true"
                       ng-disabled="($ctrl.showFormErrors || $ctrl.form.icsAddNew.$touched) && $ctrl.form.icsAddNew.$error.required"><i class="fa fa-save"></i></button>
               <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('ics')"><i class="fa fa-times"></i></button>
             </div>
-            <div ng-if="!$ctrl.addingItem['ics'] && $ctrl.relatedListings">
+            <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['ics'] && $ctrl.relatedListings">
               <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['ics'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
             </div>
           </div>
@@ -207,7 +207,7 @@
           <div class="data-label list-edit--span-2">QMS Standard</div>
           <div class="data-label">QMS Modification</div>
           <div class="data-label list-edit--span-2">QMS Applicable Criteria</div>
-          <div class="list-edit--span-2" ng-repeat-start="item in $ctrl.listing.qmsStandards track by $index">
+          <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.qmsStandards track by $index">
             {{ item.qmsStandardName }}
           </div>
           <div>
@@ -232,7 +232,7 @@
                    id="qms-standard-add-new" name="qmsStandardAddNew" required>
           </div>
           <div ng-if="$ctrl.addingItem['qmsStandards']">
-            <button class="btn btn-default" ng-click="$ctrl.creatingItem['qmsStandards'] = !$ctrl.creatingItem['qmsStandards']"><i class="fa" ng-class="$ctrl.creatingItem['qmsStandards'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['qmsStandards'] ? 'Create new' : 'Add existing' }} QMS Standard</button>
+            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['qmsStandards'] = !$ctrl.creatingItem['qmsStandards']"><i class="fa" ng-class="$ctrl.creatingItem['qmsStandards'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['qmsStandards'] ? 'Create new' : 'Add existing' }} QMS Standard</button>
           </div>
           <div ng-if="$ctrl.addingItem['qmsStandards']">
             <div class="data-element sr-only"><label for="qms-standard-modification">QMS Modification</label></div>
@@ -249,13 +249,13 @@
                     ng-disabled="($ctrl.showFormErrors || $ctrl.form.qmsStandardAddNew.$touched) && $ctrl.form.qmsStandardAddNew.$error.required"><i class="fa fa-save"></i></button>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('qmsStandards')"><i class="fa fa-times"></i></button>
           </div>
-          <div ng-if="!$ctrl.addingItem['qmsStandards'] && $ctrl.filterListEditItems('qmsStandards', $ctrl.resources.qmsStandards).length > 0">
+          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['qmsStandards'] && $ctrl.filterListEditItems('qmsStandards', $ctrl.resources.qmsStandards).length > 0">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['qmsStandards'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
         <div class="list-edit__container list-edit__container-2">
           <div class="list-edit--span-3 data-label">Targeted Users</div>
-          <div class="list-edit--span-2" ng-repeat-start="item in $ctrl.listing.targetedUsers track by $index">
+          <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.targetedUsers track by $index">
             {{ item.targetedUserName }}
           </div>
           <div class="list-edit__item--end" ng-repeat-end>
@@ -274,21 +274,21 @@
                    id="targeted-user-add-new" name="targetedUserAddNew" required>
           </div>
           <div ng-if="$ctrl.addingItem['targetedUsers']">
-            <button class="btn btn-default" ng-click="$ctrl.creatingItem['targetedUsers'] = !$ctrl.creatingItem['targetedUsers']"><i class="fa" ng-class="$ctrl.creatingItem['targetedUsers'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['targetedUsers'] ? 'Create new' : 'Add existing' }} targeted user</button>
+            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['targetedUsers'] = !$ctrl.creatingItem['targetedUsers']"><i class="fa" ng-class="$ctrl.creatingItem['targetedUsers'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['targetedUsers'] ? 'Create new' : 'Add existing' }} targeted user</button>
           </div>
           <div class="list-edit__item--end" ng-if="$ctrl.addingItem['targetedUsers']">
             <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('targetedUsers')" ng-mouseover="$ctrl.showFormErrors = true"
                     ng-disabled="($ctrl.showFormErrors || $ctrl.form.targetedUserAddNew.$touched) && $ctrl.form.targetedUserAddNew.$error.required"><i class="fa fa-save"></i></button>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('targetedUsers')"><i class="fa fa-times"></i></button>
           </div>
-          <div ng-if="!$ctrl.addingItem['targetedUsers'] && $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers).length > 0">
+          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['targetedUsers'] && $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers).length > 0">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['targetedUsers'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
         <div class="list-edit__container list-edit__container-2">
           <div class="data-label">Estimated Number of Meaningful Use Users</div>
           <div class="list-edit--span-2 data-label">Effective Date</div>
-          <div ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
+          <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
             {{ item.muuCount }}
           </div>
           <div>
@@ -321,7 +321,7 @@
                     ><i class="fa fa-save"></i></button>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('meaningfulUseUserHistory')"><i class="fa fa-times"></i></button>
           </div>
-          <div ng-if="!$ctrl.addingItem['meaningfulUseUserHistory']">
+          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['meaningfulUseUserHistory']">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['meaningfulUseUserHistory'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
