@@ -151,6 +151,45 @@
       <label for="cp-other-acb">Other ACB</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cp-other-acb">
     </div>
+    <div ng-if="vm.cp.rwtEligibilityYear">
+      Real World Testing
+      <div class="form-horizontal">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-6 control-label" for="rwt-plans-url">Plans URL</label>
+            <div class="col-sm-6">
+              <input class="input-sm form-control" type="url" ng-model="vm.cp.rwtPlansUrl" id="rwt-plans-url" name="rwtPlansUrl" ng-maxlength="1024">
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansUrl.$touched && vm.editForm.rwtPlansUrl.$error.url">Improper format (http://www.example.com)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansUrl.$touched && vm.editForm.rwtPlansUrl.$error.maxlength">Field is too long</div>
+            </div>
+            <label class="col-sm-6 control-label" for="rwt-plans-check-date">Plans Last ONC-ACB Completeness Check</label>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.rwtPlansCheckDateObject" is-open="vm.cp.rwtPlansCheckDateDatePicker" close-text="Close" id="rwt-plans-check-date" name="rwtPlansCheckDate">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+              <div class="text-danger" ng-if="vm.editForm.rwtPlansCheckDate.$touched && vm.editForm.rwtPlansCheckDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+            </div>
+            <label class="col-sm-6 control-label" for="rwt-results-url">Results URL</label>
+            <div class="col-sm-6">
+              <input class="form-control" type="url" ng-model="vm.cp.rwtResultsUrl" id="rwt-results-url" name="rwtResultsUrl" ng-maxlength="1024">
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsUrl.$touched && vm.editForm.rwtResultsUrl.$error.url">Improper format (http://www.example.com)</div>
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsUrl.$touched && vm.editForm.rwtResultsUrl.$error.maxlength">Field is too long</div>
+            </div>
+            <label class="col-sm-6 control-label" for="rwt-results-check-date">Results Last ONC-ACB Completeness Check</label>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.rwtResultsCheckDateObject" is-open="vm.cp.rwtResultsCheckDateDatePicker" close-text="Close" id="rwt-results-check-date" name="rwtResultsCheckDate">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+              <div class="text-danger" ng-if="vm.editForm.rwtResultsCheckDate.$touched && vm.editForm.rwtResultsCheckDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+            </div>
+        </div>
+      </div>
+    </div>
     <div class="form-group">
       <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
       <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">

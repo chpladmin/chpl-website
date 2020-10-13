@@ -4,7 +4,7 @@ export const ListingComponent = {
         listing: '<',
     },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, authService, featureFlags, networkService, utilService) {
+        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, featureFlags, networkService, utilService) {
             'ngInject';
             this.$localStorage = $localStorage;
             this.$log = $log;
@@ -12,6 +12,7 @@ export const ListingComponent = {
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.$uibModal = $uibModal;
+            this.DateUtil = DateUtil;
             this.authService = authService;
             this.isOn = featureFlags.isOn;
             this.networkService = networkService;
@@ -52,6 +53,23 @@ export const ListingComponent = {
             return this.$state.current.name === 'listing'
                 && ((this.listing.certificationEdition.name === '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))
                     || (this.listing.certificationEdition.name !== '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])));
+        }
+
+        canViewRwtDates () {
+            if (this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                return true;
+            } else if (this.authService.hasAnyRole(['ROLE_ACB'])) {
+                let currentUser = this.authService.getCurrentUser();
+                return currentUser.organizations
+                    .filter(o => o.id === this.listing.certifyingBody.id)
+                    .length > 0;
+            } else if (this.authService.hasAnyRole(['ROLE_DEVELOPER'])) {
+                let currentUser = this.authService.getCurrentUser();
+                return currentUser.organizations
+                    .filter(d => d.id === this.listing.developer.developerId)
+                    .length > 0;
+            }
+            return false;
         }
 
         loadDirectReviews () {

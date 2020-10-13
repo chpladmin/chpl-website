@@ -21,9 +21,8 @@ class DateUtil {
     getDisplayDateFormat (date, fallback) {
         if (typeof(date) === 'number') {
             return this.$filter('date')(date, 'mediumDate', 'UTC');
-        }
-        if (date && date.month && date.dayOfMonth && date.year) {
-            return this._localDateTimeToString(this._datePartsToLocalDate(date.year, this._monthNameToNumber(date.month), date.dayOfMonth));
+        } else if (typeof(date) === 'string' && this._isLocalDate(date)) {
+            return this.localDateToString(date, 'MMM d, y');
         }
         return fallback || 'N/A';
     }
@@ -64,6 +63,21 @@ class DateUtil {
         return this._timestampToZonedDateTime(timestamp).format(formatter);
     }
 
+    localDateToTimestamp (localDateString) {
+        let localDate = jsJoda.LocalDate.parse(localDateString);
+        let localTime = jsJoda.LocalTime.MIDNIGHT;
+        return jsJoda.ZonedDateTime.of3(localDate, localTime, this._ZONE_ID).toInstant().toEpochMilli();
+    }
+
+    localDateToString (localDateString, format) {
+        format = format || 'MM/dd/yyyy';
+        if (localDateString) {
+            return this.timestampToString(this.localDateToTimestamp(localDateString), format);
+        } else {
+            return null;
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////
 
     _localTimeFromTimeOfDay (timeOfDay) {
@@ -79,49 +93,16 @@ class DateUtil {
         }
     }
 
-    _localDateTimeToString (date, format) {
-        format = format || 'MMM d, y';
-        let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
-        return date.format(formatter);
-    }
-
     _timestampToZonedDateTime (dateLong) {
         return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this._ZONE_ID);
     }
 
-    _datePartsToLocalDate (year, month, day) {
-        return jsJoda.LocalDate.of(year, month, day);
-    }
-
-    _monthNameToNumber (monthName) {
-        //js-joda month IS NOT indexed starting with 0
-        switch (monthName.toUpperCase()) {
-        case 'JANUARY':
-            return 1;
-        case 'FEBRUARY':
-            return 2;
-        case 'MARCH':
-            return 3;
-        case 'APRIL':
-            return 4;
-        case 'MAY':
-            return 5;
-        case 'JUNE':
-            return 6;
-        case 'JULY':
-            return 7;
-        case 'AUGUST':
-            return 8;
-        case 'SEPTEMBER':
-            return 9;
-        case 'OCTOBER':
-            return 10;
-        case 'NOVEMBER':
-            return 11;
-        case 'DECEMBER':
-            return 12;
-        default:
-            return null;
+    _isLocalDate (dateToTest) {
+        try {
+            jsJoda.LocalDate.parse(dateToTest);
+            return true;
+        } catch (err) {
+            return false;
         }
     }
 }

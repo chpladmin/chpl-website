@@ -137,6 +137,21 @@
                 <div class="data-label">ONC-Authorized Testing Laborator{{ $ctrl.listing.testingLabs.length === 1 ? 'y' : 'ies' }}</div>
                 <div class="read-only-data" ng-repeat="atl in $ctrl.listing.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</div>
               </div>
+              <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
+                <div class="data-label">Real World Testing</div>
+              </div>
+              <div ng-if="$ctrl.listing.rwtPlansUrl">
+                <div class="data-label">Plans</div>
+                <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></div>
+              </div>
+              <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
+                <div class="data-label">Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</div>
+                <div class="read-only-data">Results</div>
+              </div>
+              <div ng-if="$ctrl.listing.rwtResultsUrl">
+                <div class="data-label"><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></div>
+                <div class="read-only-data">Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
+              </div>
             </div>
           </div>
         </div>

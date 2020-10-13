@@ -8,11 +8,12 @@ export const ListingEditComponent = {
         workType: '<',
     },
     controller: class ListingEditComponent {
-        constructor ($filter, $log, $timeout, authService, utilService) {
+        constructor ($filter, $log, $timeout, DateUtil, authService, utilService) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$timeout = $timeout;
+            this.DateUtil = DateUtil;
             this.addNewValue = utilService.addNewValue;
             this.certificationStatus = utilService.certificationStatus;
             this.extendSelect = utilService.extendSelect;
@@ -77,6 +78,12 @@ export const ListingEditComponent = {
             }
             */
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
+            if (this.listing.rwtPlansCheckDate) {
+                this.listing.rwtPlansCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlansCheckDate));
+            }
+            if (this.listing.rwtResultsCheckDate) {
+                this.listing.rwtResultsCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtResultsCheckDate));
+            }
         }
 
         disabledStatus (name) {
@@ -178,12 +185,21 @@ export const ListingEditComponent = {
                     this.idFields.suffix;
             }
             this.listing.certificationDate = this.listing.certDate.getTime();
+            if (this.listing.rwtPlansCheckDateObject) {
+                this.listing.rwtPlansCheckDate = this.DateUtil.timestampToString(this.listing.rwtPlansCheckDateObject.getTime(), 'yyyy-MM-dd');
+            } else {
+                this.listing.rwtPlansCheckDate = null;
+            }
+            if (this.listing.rwtResultsCheckDateObject) {
+                this.listing.rwtResultsCheckDate = this.DateUtil.timestampToString(this.listing.rwtResultsCheckDateObject.getTime(), 'yyyy-MM-dd');
+            } else {
+                this.listing.rwtResultsCheckDate = null;
+            }
             this.generateErrorMessages();
             this.onChange({
                 listing: doNotUpdateListing ? undefined : this.listing,
                 messages: this.messages,
                 reason: this.reason,
-                acknowledgeWarnings: this.acknowledgeWarnings,
             });
         }
 
