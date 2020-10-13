@@ -26,9 +26,12 @@ export const UploadRealWorldTestingComponent = {
                 item.data = {
                     file: this.file,
                 };
+                this.uploadMessage = null;
+                this.uploadErrors = null;
                 let that = this;
                 this.Upload.upload(item).then(response => {
-                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.data.user.email + ' when processing is complete.';
+                    that.$log.info(response);
+                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.data.email + ' when processing is complete.';
                     that.uploadErrors = [];
                     that.uploadSuccess = true;
                     that.file = undefined;
@@ -42,6 +45,7 @@ export const UploadRealWorldTestingComponent = {
                     that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
                     that.$log.info('progress: ' + that.progressPercentage + '% ' + event.config.data.file.name);
                 });
+
             }
         }
     },
