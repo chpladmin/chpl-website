@@ -15,6 +15,12 @@
     background-color: var(--danger) !important;
 }
 
+.listing-details__additional-information {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px 8px;
+}
+
 .cert-bloc {
     display: inline-block;
     vertical-align: top;
