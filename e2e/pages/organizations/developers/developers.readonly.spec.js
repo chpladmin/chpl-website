@@ -40,7 +40,6 @@ describe('the Developers page', () => {
             beforeEach(() => {
                 product = page.getProduct(name);
                 product.scrollIntoView({block: 'center', inline: 'center'});
-                browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
                 page.selectProduct(product);
                 page.getProductInfo(product).waitForDisplayed({timeout: 55000});
             });
@@ -70,7 +69,6 @@ describe('the Developers page', () => {
             page.getDeveloperPageTitle(developer).waitForDisplayed();
             product = page.getProduct(productName);
             product.scrollIntoView({block: 'center', inline: 'center'});
-            browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
             page.selectProduct(product);
             page.getProductInfo(product).waitForDisplayed({timeout: 55000});
         });
