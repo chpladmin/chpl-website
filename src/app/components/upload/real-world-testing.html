@@ -6,7 +6,6 @@
     CSV files only
     <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
       {{ $ctrl.uploadMessage }}
-      <a ng-if="$ctrl.showConfirmLink" ui-sref="surveillance.confirm()">Confirm Surveillance</a>
       <ul ng-if="$ctrl.uploadErrors.length > 0" ng-class="'bg-danger'">
         <li ng-repeat="error in $ctrl.uploadErrors">{{ error }}</li>
       </ul>
