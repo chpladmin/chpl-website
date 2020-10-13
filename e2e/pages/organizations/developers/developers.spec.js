@@ -55,7 +55,6 @@ describe('the Developers page', () => {
                 beforeEach(() => {
                     product = page.getProduct(name);
                     product.scrollIntoView({block: 'center', inline: 'center'});
-                    browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                     page.selectProduct(product);
                     page.getProductInfo(product).waitForDisplayed({timeout: 55000});
                 });
@@ -92,7 +91,6 @@ describe('the Developers page', () => {
                         page.productsHeader.waitForDisplayed();
                         toast.clearAllToast();
                         product.scrollIntoView({block: 'center', inline: 'center'});
-                        browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                         page.selectProduct(product);
                         page.getProductInfo(product).waitForDisplayed({timeout: 55000});
                         expect(contact.get(product)).toHaveTextContaining(poc.full);
@@ -109,7 +107,6 @@ describe('the Developers page', () => {
                 beforeEach(() => {
                     product = page.getProduct(name);
                     product.scrollIntoView({block: 'center', inline: 'center'});
-                    browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
                     page.selectProduct(product);
                     page.getProductInfo(product).waitForDisplayed({timeout: 55000});
                     page.editProduct(product);
@@ -150,7 +147,6 @@ describe('the Developers page', () => {
                 page.getDeveloperPageTitle(developer).waitForDisplayed();
                 product = page.getProduct(productName);
                 product.scrollIntoView({block: 'center', inline: 'center'});
-                browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
                 page.selectProduct(product);
                 page.getProductInfo(product).waitForDisplayed({timeout: 55000});
             });
@@ -174,7 +170,6 @@ describe('the Developers page', () => {
                     toast.clearAllToast();
                     product = page.getProduct(productName);
                     product.scrollIntoView({block: 'center', inline: 'center'});
-                    browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
                     page.selectProduct(product);
                     page.getProductInfo(product).waitForDisplayed({timeout: 55000});
                     expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
@@ -205,7 +200,6 @@ describe('the Developers page', () => {
                     page.productsHeader.waitForDisplayed();
                     product = page.getProduct(productName);
                     product.scrollIntoView({block: 'center', inline: 'center'});
-                    browser.waitUntil(() => page.getVersionCount(product).getText() === '3 Versions');
                     page.selectProduct(product);
                     page.getProductInfo(product).waitForDisplayed({timeout: 55000});
                     expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
