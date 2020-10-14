@@ -4,6 +4,7 @@ const elements = {
     downloadResults: '//*[@id="main-content"]/div[2]/div/div/button',
     lookupResultsTable: '#lookupCertIdResults',
     certidLookupError: '.cert-id-lookup-error',
+    lookupResultsTableRows: '//*[@id="lookupCertIdResults"]/tbody/tr',
 };
 
 class CmsLookupPage {
@@ -27,6 +28,10 @@ class CmsLookupPage {
 
     get certidLookupErrorText () {
         return $(elements.certidLookupError);
+    }
+
+    get rowsLookupResultsTable () {
+        return $$(elements.lookupResultsTableRows);
     }
 }
 

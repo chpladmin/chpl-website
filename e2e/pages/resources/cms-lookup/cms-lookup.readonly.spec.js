@@ -29,11 +29,11 @@ describe('On cms reverse look up page', () => {
             it('should show correct listings for the CMS ID', () => {
                 browser.waitUntil( () => $(cmsLookup.lookupResultsTable).isDisplayed());
                 var ls = [];
-                var length = $$('//*[@id="lookupCertIdResults"]/tbody/tr').length;
+                var length = cmsLookup.rowsLookupResultsTable.length;
                 for ( var j = 1; j <= length; j++ ) {
                     ls.push($('//*[@id="lookupCertIdResults"]/tbody/tr[' + j + ']/td[6]').getText());
                 }
-                assert.equal(ls.toString(),inputs[i].listingIds.toString());
+                assert.equal(ls.toString(),inputs[i].chplProductNumbers.toString());
             });
 
             it('should have download results button and download file should contain correct listings Ids', () => {
@@ -44,8 +44,8 @@ describe('On cms reverse look up page', () => {
                 assert.isTrue(fs.existsSync(filePath));
                 const fileContents = fs.readFileSync(filePath, 'utf-8');
                 var isInclude = false;
-                for ( var k = 0; k < inputs[i].listingIds.length; k ++) {
-                    if (fileContents.includes(inputs[i].listingIds[k])) {
+                for ( var k = 0; k < inputs[i].chplProductNumbers.length; k ++) {
+                    if (fileContents.includes(inputs[i].chplProductNumbers[k])) {
                         isInclude = true;
                     }
                 }
