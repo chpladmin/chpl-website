@@ -77,6 +77,11 @@ export const ListingDetailsComponent = {
             }
         }
 
+        g1g2Change (measures) {
+            this.listing.mipsMeasures = measures;
+            this.onChange({listing: this.listing});
+        }
+
         hasEdited () {
             angular.forEach(this.handlers, function (handler) {
                 handler();

@@ -127,6 +127,16 @@
         </a>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'g1g2'" id="panel-g1g2">
+        <span ng-if="!$ctrl.isEditing">
+          <chpl-g1g2-view measures="$ctrl.listing.mipsMeasures"></chpl-g1g2-view>
+        </span>
+        <span ng-if="$ctrl.isEditing">
+          <chpl-g1g2-edit
+            measures="$ctrl.listing.mipsMeasures"
+            on-change="$ctrl.g1g2Change(measures)"
+            >
+          </chpl-g1g2-edit>
+        </span>
         <ai-g1g2 listing="$ctrl.listing"></ai-g1g2>
       </div>
     </div>
