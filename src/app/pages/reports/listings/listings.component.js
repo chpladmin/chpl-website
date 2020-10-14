@@ -239,7 +239,7 @@ export const ReportsListingsComponent = {
                     }
                 }
                 if (obj.changes.length > 0) {
-                    this.$log.info(ret);
+                    ret.push(obj);
                 }
             }
             return ret;
