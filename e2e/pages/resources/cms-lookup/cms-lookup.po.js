@@ -37,7 +37,7 @@ class CmsLookupPage {
     chplProductNumberFromTable (rowNumber) {
         return $('//*[@id="lookupCertIdResults"]/tbody/tr[' + rowNumber + ']/td[6]');
     }
-    
+
 }
 
 export default CmsLookupPage;
