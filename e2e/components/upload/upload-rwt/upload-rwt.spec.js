@@ -12,17 +12,21 @@ beforeAll(async () => {
 });
 
 describe('When uploading rwt file as ONC-ACB', () => {
-    beforeAll(function () {
+    beforeEach(function () {
         loginComponent.logIn('acb');
     });
 
+    afterEach(function () {
+        loginComponent.logOut();
+    });
+
     it('can upload valid format of rwt file', () => {
-        uploadRwtComponent.uploadRwt('../../../resources/RWT_Upload_File.xlsx');
-        assert.include(uploadRwtComponent.fileUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+        uploadRwtComponent.uploadRwt('../../../resources/RWT_Upload_File.csv');
+        assert.include(uploadRwtComponent.fileUploadText.getText(),'was uploaded successfully. The file will be processed and an email will be sent to', 'File has uploaded successfully');
     });
 
     it('cant upload invalid format of rwt file', () => {
         uploadRwtComponent.uploadRwt('../../../resources/2015_v18_AQA2.csv');
-        assert.include(uploadRwtComponent.fileUploadText.getText(),'');
+        assert.include(uploadRwtComponent.fileUploadText.getText(),'was not uploaded successfully.');
     });
 });

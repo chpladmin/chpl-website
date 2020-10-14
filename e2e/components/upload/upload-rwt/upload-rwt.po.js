@@ -1,9 +1,9 @@
 const uploadElements = {
-    root: 'chpl-upload-listings',
+    root: 'chpl-upload-real-world-testing',
     title: '.panel-title',
-    chooseUploadRwt: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
+    chooseUploadRwt: '//*[@id="ngf-label-upload-button-rwt"]/input[@id="ngf-upload-button-rwt"]',
     uploadButton: '.btn.btn-ai-success',
-    fileUploadText: '//chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
+    fileUploadText: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-real-world-testing/div/div[2]/div',
 };
 
 const path = require('path');
