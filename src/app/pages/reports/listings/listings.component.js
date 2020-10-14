@@ -206,6 +206,15 @@ export const ReportsListingsComponent = {
                 if (testFunctionality.length > 0) {
                     obj.changes.push('<li>Test Functionality changes<ul>' + testFunctionality.join('') + '</li>');
                 }
+                var svapKeys = [{key: 'regulatoryTextCitation', display: 'SVAP'}];
+                var svap = this.ReportService.compareArray(prev[i].svaps, curr[i].svaps, svapKeys, 'regulatoryTextCitation');
+                if (svap.length > 0) {
+                    obj.changes.push('<li>SVAP changes<ul>');
+                    for (j = 0; j < svap.length; j++) {
+                        obj.changes.push(svap[j].changes.join(''));
+                    }
+                    obj.changes.push('</ul></li>');
+                }
                 var testToolsUsedKeys = [{key: 'testToolVersion', display: 'Test Tool Version'}];
                 var testToolsUsed = this.ReportService.compareArray(prev[i].testToolsUsed, curr[i].testToolsUsed, testToolsUsedKeys, 'testToolName');
                 for (j = 0; j < testToolsUsed.length; j++) {
@@ -230,7 +239,7 @@ export const ReportsListingsComponent = {
                     }
                 }
                 if (obj.changes.length > 0) {
-                    ret.push(obj);
+                    this.$log.info(ret);
                 }
             }
             return ret;
