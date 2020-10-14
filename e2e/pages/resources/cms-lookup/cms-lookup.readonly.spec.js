@@ -31,7 +31,7 @@ describe('On cms reverse look up page', () => {
                 var ls = [];
                 var length = cmsLookup.rowsLookupResultsTable.length;
                 for ( var j = 1; j <= length; j++ ) {
-                    ls.push($('//*[@id="lookupCertIdResults"]/tbody/tr[' + j + ']/td[6]').getText());
+                    ls.push(cmsLookup.chplProductNumberFromTable(j)).getText();
                 }
                 assert.equal(ls.toString(),inputs[i].chplProductNumbers.toString());
             });

@@ -33,6 +33,11 @@ class CmsLookupPage {
     get rowsLookupResultsTable () {
         return $$(elements.lookupResultsTableRows);
     }
+
+    chplProductNumberFromTable (rowNumber) {
+        return $('//*[@id="lookupCertIdResults"]/tbody/tr[' + rowNumber + ']/td[6]');
+    }
+    
 }
 
 export default CmsLookupPage;
