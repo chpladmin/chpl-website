@@ -137,6 +137,14 @@
                 <div class="data-label">ONC-Authorized Testing Laborator{{ $ctrl.listing.testingLabs.length === 1 ? 'y' : 'ies' }}</div>
                 <div class="read-only-data" ng-repeat="atl in $ctrl.listing.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</div>
               </div>
+              <div ng-if="$ctrl.listing.accessibilityStandards && $ctrl.listing.accessibilityStandards.length !== 0">
+                <div class="data-label">Accessibility Standard<span ng-if="$ctrl.listing.accessibilityStandards.length !== 1">s</span></div>
+                <div class="read-only-data">
+                  <ul>
+                    <li ng-repeat="standard in $ctrl.listing.accessibilityStandards | orderBy:accessibilityStandardName">{{ standard.accessibilityStandardName }}</li>
+                  </ul>
+                </div>
+              </div>
               <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
                 <div>
                   <div class="data-label">Real World Testing</div>
