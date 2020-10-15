@@ -161,7 +161,7 @@
                   <div class="data-label">Results</div>
                   <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></div>
                 </div>
-                <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
+                <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                   <div class="data-label">Last ONC-ACB Completeness Check</div>
                   <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
                 </div>
