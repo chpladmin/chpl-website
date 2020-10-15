@@ -4,18 +4,17 @@ export const ChartsProductComponent = {
         criterionProduct: '<',
     },
     controller: class ChartsProductComponent {
-        constructor ($log, featureFlags, utilService) {
+        constructor ($log, utilService) {
             'ngInject';
             this.$log = $log;
             this.utilService = utilService;
-            this.isOn = featureFlags.isOn;
             this.criteriaTypes = [
                 'All',
                 2015,
                 '2015 Cures Update',
             ];
             this.chartState = {
-                criteriaType: this.isOn('effective-rule-date-plus-three-months') ? 'All' : 2014,
+                criteriaType: 'All',
             };
         }
 

@@ -13,15 +13,7 @@
     <p>The 2011 and 2014 editions have been retired and have no "{{ $ctrl.chartState.listingCountType.name }}" listings.</p>
   </div>
 </div>
-<div class="row" feature-flag="effective-rule-date-plus-three-months" feature-flag-hide>
-  <div class="col-sm-6">
-    <div google-chart="" chart="$ctrl.listingCount.edition['' + $ctrl.chartState.listingCountType.id].chart" class="column-chart"></div>
-  </div>
-  <div class="col-sm-6">
-    <div google-chart="" chart="$ctrl.listingCount.class['' + $ctrl.chartState.listingCountType.id].chart" class="column-chart"></div>
-  </div>
-</div>
-<div class="row" feature-flag="effective-rule-date-plus-three-months">
+<div class="row">
   <div class="col-sm-6">
     <div google-chart="" chart="$ctrl.listingCount.edition['' + $ctrl.chartState.listingCountType.id].chart" class="column-chart"></div>
   </div>
