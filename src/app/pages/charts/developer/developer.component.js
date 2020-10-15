@@ -5,10 +5,9 @@ export const ChartsDeveloperComponent = {
         listingCountData: '<',
     },
     controller: class ChartsDeveloperComponent {
-        constructor ($log, featureFlags) {
+        constructor ($log) {
             'ngInject';
             this.$log = $log;
-            this.isOn = featureFlags.isOn;
             this.chartState = {
                 isStacked: 'false',
             };
@@ -121,12 +120,8 @@ export const ChartsDeveloperComponent = {
             return {
                 type: 'ColumnChart',
                 data: {
-                    cols: this.isOn('effective-rule-date-plus-three-months') ? [
+                    cols: [
                         { label: 'Number of Developers and Products with "' + status + '" Listings', type: 'string'},
-                        { label: 'Certification Edition 2015', type: 'number'},
-                    ] : [
-                        { label: 'Number of Developers and Products with "' + status + '" Listings', type: 'string'},
-                        { label: 'Certification Edition 2014', type: 'number'},
                         { label: 'Certification Edition 2015', type: 'number'},
                     ],
                     rows: this._getListingCountChartClassData(data, status),

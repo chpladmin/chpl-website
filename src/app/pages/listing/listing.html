@@ -98,6 +98,12 @@
             <h2 class="product-heading">Relied Upon Software</h2>
             <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
           </div>
+          <div class="product-element" id="listing-information-mandatory-disclosures-url">
+            <h2 class="product-heading">Mandatory Disclosures URL</h2>
+            <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
+            <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+            <div class="clearfix"></div>
+          </div>
           <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
             <h2 class="product-heading">Real World Testing</h2>
             <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
@@ -118,16 +124,22 @@
             <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
               <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</p>
             </div>
-
-          </div>
-          <span ng-if="$ctrl.listing.transparencyAttestation">
-            <div class="product-element" id="listing-information-mandatory-disclosures-url">
-              <h2 class="product-heading">Mandatory Disclosures URL</h2>
-              <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
-              <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
-              <div class="clearfix"></div>
+            <div ng-if="$ctrl.listing.rwtPlansUrl">
+              <p><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></p>
             </div>
-          </span>
+            <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
+              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</p>
+            </div>
+            <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
+              <label for="rwtRsultsURL">Results</label>
+            </div>
+            <div ng-if="$ctrl.listing.rwtResultsUrl">
+              <p><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></p>
+            </div>
+            <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
+              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</p>
+            </div>
+          </div>
         </div>
         <div class="col-sm-8" id="listing-information-details">
           <chpl-listing-details initial-panel="{{ $ctrl.initialPanel }}"

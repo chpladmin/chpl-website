@@ -27,7 +27,7 @@
                 {id: null, nonconformityCount: 13, nonconformityType: '170.314 (c)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
                 {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(13)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
                 {id: null, nonconformityCount: 9, nonconformityType: '170.314 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
-                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (c)(2) (Cures Update)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
                 {id: null, nonconformityCount: 63, nonconformityType: 'Other Non-Conformity', deleted: false, lastModifiedUser: -2,creationDate: 1531422312250, lastModifiedDate: 1531422312250},
             ]},
         };
@@ -72,15 +72,15 @@
             });
 
             it('should filter data by nonconformity type', () => {
-                expect(ctrl.nonconformityCounts[2014].data.rows.length).toBe(16);
-                expect(ctrl.nonconformityCounts[2015].data.rows.length).toBe(5);
-                expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(24);
+                expect(ctrl.nonconformityCounts[2014].data.rows.length).toBe(0);
+                expect(ctrl.nonconformityCounts[2015].data.rows.length).toBe(4);
+                expect(ctrl.nonconformityCounts['2015 Cures Update'].data.rows.length).toBe(1);
+                expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(8);
                 expect(ctrl.nonconformityCounts['Program'].data.rows.length).toBe(3);
-                expect(ctrl.nonconformityCounts['All'].data.rows.length).toBe(24);
             });
 
             it('should format the data correctly', () => {
-                expect(ctrl.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
+                expect(ctrl.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
             });
         });
     });
