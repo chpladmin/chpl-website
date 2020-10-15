@@ -16,12 +16,12 @@ beforeAll(async () => {
 });
 
 describe('On cms reverse look up page', () => {
-    for (const i in inputs) {
-        let testName = inputs[i].testName;
+    inputs.forEach(input => {
+        let testName = input.testName;
         describe(`When searching for a CMS ID which was generated before for  ${testName}`, () => {
             beforeAll( () => {
                 cmsLookup.searchField.clearValue();
-                cmsLookup.searchField.addValue(inputs[i].cmsId);
+                cmsLookup.searchField.addValue(input.cmsId);
                 cmsLookup.searchIdButton.click();
                 hooks.waitForSpinnerToDisappear();
             });
@@ -33,26 +33,26 @@ describe('On cms reverse look up page', () => {
                 for ( var j = 1; j <= length; j++ ) {
                     ls.push(cmsLookup.chplProductNumberFromTable(j).getText());
                 }
-                assert.equal(ls.toString(),inputs[i].chplProductNumbers.toString());
+                assert.equal(ls.toString(),input.chplProductNumbers.toString());
             });
 
             it('should have download results button and download file should contain correct listings Ids', () => {
                 cmsLookup.downloadResultsButton.scrollAndClick();
-                const fileName = 'CMS_ID.' + inputs[i].cmsId + '.csv';
+                const fileName = 'CMS_ID.' + input.cmsId + '.csv';
                 const filePath = path.join(global.downloadDir, fileName);
                 browser.waitForFileExists(filePath,config.timeout);
                 assert.isTrue(fs.existsSync(filePath));
                 const fileContents = fs.readFileSync(filePath, 'utf-8');
-                var isInclude = 0;
-                for ( var k = 0; k < inputs[i].chplProductNumbers.length; k ++) {
-                    if (fileContents.includes(inputs[i].chplProductNumbers[k])) {
-                        isInclude ++;
+                var count = 0;
+                for ( var k = 0; k < input.chplProductNumbers.length; k ++) {
+                    if (fileContents.includes(input.chplProductNumbers[k])) {
+                        count ++;
                     }
                 }
-                assert.equal(isInclude,inputs[i].chplProductNumbers.length, 'All chpl product numbers arent present in the download file');
+                assert.equal(count,input.chplProductNumbers.length, 'All chpl product numbers aren\'t present in the download file');
             });
         });
-    }
+    });
 });
 
 describe('On cms reverse look up page', () => {
