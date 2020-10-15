@@ -54,7 +54,6 @@
           <div class="panel-heading">
             <h2 class="panel-title">Listing Information</h2>
           </div>
-<<<<<<< HEAD
           <div class="panel-body">
             <div class="listing__basic-information">
               <div>
@@ -139,49 +138,27 @@
                 <div class="read-only-data" ng-repeat="atl in $ctrl.listing.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</div>
               </div>
               <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
-                <div class="data-label">Real World Testing</div>
+                <div>
+                  <div class="data-label">Real World Testing</div>
+                </div>
+                <div ng-if="$ctrl.listing.rwtPlansUrl">
+                  <div class="data-label">Plans</div>
+                  <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></div>
+                </div>
+                <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
+                  <div class="data-label">Last ONC-ACB Completeness Check</div>
+                  <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</div>
+                </div>
+                <div ng-if="$ctrl.listing.rwtResultsUrl">
+                  <div class="data-label">Results</div>
+                  <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></div>
+                </div>
+                <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
+                  <div class="data-label">Last ONC-ACB Completeness Check</div>
+                  <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
+                </div>
               </div>
-              <div ng-if="$ctrl.listing.rwtPlansUrl">
-                <div class="data-label">Plans</div>
-                <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></div>
-              </div>
-              <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
-                <div class="data-label">Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</div>
-                <div class="read-only-data">Results</div>
-              </div>
-              <div ng-if="$ctrl.listing.rwtResultsUrl">
-                <div class="data-label"><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></div>
-                <div class="read-only-data">Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
-              </div>
             </div>
-=======
-          <div class="product-element" id="listing-information-mandatory-disclosures-url">
-            <h2 class="product-heading">Mandatory Disclosures URL</h2>
-            <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
-            <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
-            <div class="clearfix"></div>
-          </div>
-          <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
-            <h2 class="product-heading">Real World Testing</h2>
-            <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
-              <label for="rwtPlansUrl">Plans</label>
-            </div>
-            <div ng-if="$ctrl.listing.rwtPlansUrl">
-              <p><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></p>
-            </div>
-            <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
-              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</p>
-            </div>
-            <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
-              <label for="rwtRsultsURL">Results</label>
-            </div>
-            <div ng-if="$ctrl.listing.rwtResultsUrl">
-              <p><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></p>
-            </div>
-            <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
-              <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</p>
-            </div>
->>>>>>> staging
           </div>
         </div>
         <div class="panel panel-default">
