@@ -3,32 +3,11 @@
     <p class="lead">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
   <div class="main-content" id="main-content" tabindex="-1" ng-if="$ctrl.listing">
-    <div class="row">
-      <div class="col-sm-12 text-right">
-        <div class="btn-group">
-          <div class="btn-group">
-            <ai-cms-widget-button
-              product-id="{{ $ctrl.listing.id }}"
-              product-name="{{ $ctrl.listing.product.name }}"
-              ng-if="$ctrl.listing.certificationEdition.name === '2015'"></ai-cms-widget-button>
-          </div>
-          <div class="btn-group">
-            <ai-compare-widget-button
-              product-id="{{ $ctrl.listing.id }}"
-              product-name="{{ $ctrl.listing.product.name }}"></ai-compare-widget-button>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="listing__header">
       <div>
         <h1 class="listing__header-name">{{ $ctrl.listing.product.name }}</h1>
       </div>
       <div class="listing__header-info">
-        <div>
-          <div class="data-label">Certification Date</div>
-          <div class="read-only-data">{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
-        </div>
         <div>
           <div class="data-label">Last modified Date</div>
           <div class="read-only-data">{{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
@@ -44,13 +23,26 @@
           <a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a>
         </div>
         <div>
-          <a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a><br /><strong>ARE WE KEEPING THIS?</strong>
+          <a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a>
+        </div>
+        <div class="btn-group">
+          <div class="btn-group">
+            <ai-cms-widget-button
+              product-id="{{ $ctrl.listing.id }}"
+              product-name="{{ $ctrl.listing.product.name }}"
+              ng-if="$ctrl.listing.certificationEdition.name === '2015'"></ai-cms-widget-button>
+          </div>
+          <div class="btn-group">
+            <ai-compare-widget-button
+              product-id="{{ $ctrl.listing.id }}"
+              product-name="{{ $ctrl.listing.product.name }}"></ai-compare-widget-button>
+          </div>
         </div>
       </div>
     </div>
     <ui-view>
       <div class="listing__details">
-        <div class="panel panel-default">
+        <div class="listing__details-basic panel panel-default">
           <div class="panel-heading">
             <h2 class="panel-title">Listing Information</h2>
           </div>
@@ -72,7 +64,7 @@
               </div>
               <div>
                 <div class="data-label">ONC-Authorized Certification Body</div>
-                <div class="read-only-data">{{ $ctrl.listing.certifyingBody.name }}<br /><strong>Why isn't this as large as the ONC-ATL section?</strong></div>
+                <div class="read-only-data">{{ $ctrl.listing.certifyingBody.name }}</div>
               </div>
               <div>
                 <div class="data-label">Certification Status</div>
@@ -80,7 +72,7 @@
               </div>
               <div>
                 <div class="data-label">Certification Date</div>
-                <div class="read-only-data">{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}<br /><strong>Why is this here twice?</strong></div>
+                <div class="read-only-data">{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
               </div>
               <div ng-if="$ctrl.listing.acbCertificationId">
                 <div class="data-label">ONC-ACB Certification ID</div>
@@ -169,7 +161,7 @@
             </div>
           </div>
         </div>
-        <div class="panel panel-default">
+        <div class="listing__details-additional panel panel-default">
           <div class="panel-heading">
             <h2 class="panel-title">Listing Details</h2>
           </div>

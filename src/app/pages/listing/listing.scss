@@ -13,9 +13,19 @@
 }
 
 .listing__details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
     align-items: start;
+    flex-wrap: wrap;
+}
+
+.listing__details-basic {
+    flex-grow: 1;
+    min-width: 300px;
+}
+
+.listing__details-additional {
+    flex-grow: 2;
+    min-width: 300px;
 }
 
 .listing__basic-information {
