@@ -57,7 +57,7 @@
             });
 
             it('should generate a list of available MIPS types', () => {
-                expect(ctrl.allTypes).toEqual(['G1', 'G2']);
+                expect(ctrl.allTypes).toEqual([{name: 'G1'}, {name: 'G2'}]);
             });
 
             describe('when sorting', () => {
@@ -145,7 +145,8 @@
             describe('when filtering available measures', () => {
                 it('should filter out ones that don\'t have the required test', () => {
                     ctrl.newItem['mipsMeasures'] = {selectedTestAbbr: 'RT1'};
-                    expect(ctrl.filteredMeasures().length).toBe(1);
+                    ctrl.updateAllowedMeasures();
+                    expect(ctrl.allowedMeasures.length).toBe(1);
                 });
             });
         });

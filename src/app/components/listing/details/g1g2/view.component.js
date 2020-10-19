@@ -10,7 +10,7 @@ export const G1G2ViewComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.measures) {
+            if (changes.measures && changes.measures.currentValue) {
                 this.measures = changes.measures.currentValue.map(m => m);
             }
         }
