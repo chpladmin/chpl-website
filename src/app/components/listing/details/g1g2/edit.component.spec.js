@@ -51,6 +51,60 @@
                 ctrl.update();
                 expect(scope.onChange).toHaveBeenCalledWith(mock.measures);
             });
+
+            describe('when sorting measures', () => {
+                let a, b;
+
+                beforeEach(() => {
+                    a = {
+                        g: '1',
+                        domain: 'EP',
+                        test: 'RT1',
+                        name: 'A name',
+                    };
+                    b = {
+                        g: '1',
+                        domain: 'EP',
+                        test: 'RT1',
+                        name: 'A name',
+                    };
+                });
+
+                it('should not sort identical ones', () => {
+                    expect(ctrl.measureSort(a, b)).toBe(0);
+                });
+
+                it ('should sort by g1/g2', () => {
+                    b.g = '2';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it ('should sort by domain', () => {
+                    b.domain = 'Medicaid';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it ('should sort by test', () => {
+                    b.test = 'RT7';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it ('should sort by test, ignoring the RT part', () => {
+                    b.test = 'RT10';
+                    b.test = 'RT2';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it ('should sort by name', () => {
+                    b.name = 'B\'s name';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+            });
         });
     });
 })();

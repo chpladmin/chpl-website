@@ -1,3 +1,45 @@
-<div>
+<div class="list-edit__container">
+  <div class="data-label">Required Test</div>
+  <div class="data-label">Domain</div>
+  <div class="data-label">G1/G2?</div>
+  <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.measures track by $index">
+    {{ item.test }}
+  </div>
+  <div>
+    {{ item.domain
+  </div>
+  <div>
+    {{ item.g }}
+  </div>
+  <div class="list-edit__item--end" ng-repeat-end>
+    <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('mipsMeasures', item)"><i class="fa fa-times"></i></button>
+  </div>
+  <div class="list-edit__row-start" ng-if="$ctrl.addingItem['mipsMeasures']">
+    <label for="mips-measure-add-new-test" class="sr-only">Required Test</label>
+    <select ng-model="$ctrl.newItem['mipsMeasures'].test" required
+            ng-options="item as item.test for item in $ctrl.allMeasures"
+            id="mips-measure-add-new-test" name="mipsMeasureAddNewTest" class="input-sm form-control">
+    </select>
+  </div>
+  <div ng-if="$ctrl.addingItem['mipsMeasures']">
+    <label for="mips-measure-add-new-domain" class="sr-only">Domain</label>
+    <select ng-model="$ctrl.newItem['mipsMeasures'].domain" required
+            ng-options="item as item.domain for item in $ctrl.allMeasures"
+            id="mips-measure-add-new-domain" name="mipsMeasureAddNewDomain" class="input-sm form-control">
+    </select>
+  </div>
+  <div ng-if="$ctrl.addingItem['mipsMeasures']">
+    <label for="mips-measure-add-new-g" class="sr-only">G1 / G2 ?</label>
+    <input type="radio" id="mips-measure-add-new-g-1" name="mispMeasureAddNewG" value="1" required>G1</input>
+    <input type="radio" id="mips-measure-add-new-g-2" name="mispMeasureAddNewG" value="2" required>G2</input>
+  </div>
+  <div class="list-edit__item--end" ng-if="$ctrl.addingItem['mipsMeasures']">
+    <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('mipsMeasures')" ng-mouseover="$ctrl.showFormErrors = true"
+            ng-disabled="($ctrl.showFormErrors || $ctrl.form.mipsMeasureAddNewTest.$touched || $ctrl.form.mipsMeasureAddNewDate.$touched || $ctrl.form.mipsMeasure.addNewG.$touched) && ($ctrl.form.mipsMeasureAddNewTest.$error.required || $ctrl.form.mipsMeasureAddNewDomain.$error.required || $ctrl.form.mipsMeasureAddNewG.$error.required)"><i class="fa fa-save"></i></button>
+    <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('mipsMeasures')"><i class="fa fa-times"></i></button>
+  </div>
+  <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['mipsMeasures']">
+    <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['mipsMeasures'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
+  </div>
   <pre>{{ $ctrl.measures | json }}</pre>
 </div>
