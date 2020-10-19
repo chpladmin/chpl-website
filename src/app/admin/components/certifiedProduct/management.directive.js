@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, authService, networkService, utilService) {
+    function VpManagementController ($log, $uibModal, API, DateUtil, authService, networkService, utilService) {
         var vm = this;
 
         vm.areResourcesReady = areResourcesReady;
@@ -35,6 +35,7 @@
         vm.isDeveloperBanned = isDeveloperBanned;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
+        vm.DateUtil = DateUtil;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
         vm.refreshDevelopers = refreshDevelopers;
@@ -57,7 +58,7 @@
             if (angular.isUndefined(vm.workType)) {
                 vm.workType = 'manage';
             }
-            vm.mergeType = 'developer';
+            vm.mergeType = 'version';
             vm.resources = {};
             vm.forceRefresh = false;
             vm.refreshDevelopers();
@@ -310,7 +311,7 @@
                 vm.activeProduct = '';
                 vm.activeVersion = '';
                 vm.activeCP = '';
-                vm.mergeType = 'developer';
+                vm.mergeType = 'version';
                 vm.workType = workType;
             }
         }

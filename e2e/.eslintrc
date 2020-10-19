@@ -9,7 +9,8 @@
         "by": false,
         "$": false,
         "$$": false,
-        "__dirname": false
+        "__dirname": false,
+        "global": false
     },
     "parser": "babel-eslint",
     "rules": {

@@ -17,7 +17,7 @@
     <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="warning" ng-if="widget.searchResult.metPercentages.criteriaMet < 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
     <uib-progressbar max="100" value="widget.searchResult.metPercentages.criteriaMet" type="success" ng-if="widget.searchResult.metPercentages.criteriaMet === 100" title="{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met">{{ widget.searchResult.metPercentages.criteriaMet }}% Base Criteria Met</uib-progressbar>
   </div>
-  <div ng-if="widget.searchResult.missingAnd.length">
+  <div class="cms-widget__missing-and" ng-if="widget.searchResult.missingAnd.length">
     Please select a product or products that contain the following criteria:
     <ul class="list-unstyled">
       <li ng-repeat="criteria in widget.searchResult.missingAnd">
@@ -25,30 +25,11 @@
       </li>
     </ul>
   </div>
-  <div ng-if="widget.searchResult.missingOr.length">
+  <div class="cms-widget__missing-or" ng-if="widget.searchResult.missingOr.length">
     <span ng-if="widget.searchResult.missingAnd.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingAnd.length === 0">Please select a product</span> with at least 1 criteria from the following group<span ng-if="widget.searchResult.missingOr.length > 1">s</span>:
     <ul class="list-unstyled">
       <li ng-repeat="criterias in widget.searchResult.missingOr">
         [<span>{{ criterias.join(', ') }}</span>]
-      </li>
-    </ul>
-  </div>
-  <div ng-if="widget.searchResult.missingCombo.length">
-    <span ng-if="widget.searchResult.missingAnd.length > 0 || widget.searchResult.missingOr.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingAnd.length === 0 && widget.searchResult.missingOr.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
-    <ul class="list-unstyled">
-      <li ng-repeat="criterias in widget.searchResult.missingCombo">
-        [<span>{{ criterias.join(', ') }}</span>]
-      </li>
-    </ul>
-  </div>
-  <div ng-repeat="maps in widget.searchResult.missingXOr">
-    <ul class="list-unstyled">
-      <li ng-repeat="(number, criterias) in maps">
-        <div ng-if="number > 0">
-          <span>Please select {{ number }} from the following:</span>
-          [<span>{{ criterias.join(', ') }}</span>]
-          <span><strong>{{$parent.$parent.$last ? '' : 'OR'}}</strong></span>
-        </div>
       </li>
     </ul>
   </div>

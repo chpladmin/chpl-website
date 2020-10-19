@@ -1,14 +1,22 @@
 <div ng-form="$ctrl.form">
   <div class="panel-default">
     <div class="panel-heading products__products-header">
-      <div class="products__products-header-item"><h2>Edit Product Details</h2></div>
+      <div class="products__products-header-item"><h2 class="panel-title">Edit Product Details</h2></div>
     </div>
     <div class="panel-body">
       <div class="product__edit-information-product">
-        <div class="product__data-label data-label"><label for="product-name">Product Name</label></div>
+        <div class="product__data-label data-label"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
         <div>
           <input class="form-control" type="text" id="product-name" name="productName"
-                 ng-model="$ctrl.product.name">
+                 ng-model="$ctrl.product.name" required ng-maxlength="300">
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.maxlength">Field is too long</div>
+          <ul class="list-inline">
+            <li ng-repeat="option in $ctrl.getDifferences('name')">
+              <button class="btn btn-link merge-option"
+                      ng-click="$ctrl.selectDifference('name', option)">{{ option }}</button>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="product__history-of-product">
@@ -76,6 +84,7 @@
                     is-editing="true"
                     ignore-friendly-name="false"
                     on-change="$ctrl.editContact(contact)"
+                    merge-options="$ctrl.contactOptions"
                     show-form-errors="$ctrl.showFormErrors"></chpl-contact>
     </div>
   </div>
