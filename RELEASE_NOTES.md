@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 11.1.0
+_19 October 2020_
+
+### Features
+* Add ability to validate and save Real World Testing data
+* Allow Product merge in new UI/UX
+
+### Bug Fixes
+* Display correct chart data for logged in users
+* Display Mandatory Disclosures URL
+
+### Flagged Bug Fixes
+* Display Direct Reviews on appropriate Listing screens
+
+---
+
 ## Version 11.0.0
 _5 October 2020_
 
