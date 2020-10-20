@@ -12,6 +12,16 @@
     grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
 }
 
+.listing__enhanced-label {
+    font-size: 1.25em;
+    font-weight: 600;
+}
+
+.listing__enhanced-label--small {
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
 .listing__details {
     display: flex;
     align-items: start;
@@ -32,7 +42,8 @@
 
 .listing__basic-information {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    //grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: 12px 8px;
 }
 
