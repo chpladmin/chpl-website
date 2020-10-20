@@ -35,10 +35,64 @@ export const G1G2EditComponent = {
                     .map(t => t)
                     .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
             }
+            if (!this.measures) {
+                this.fakeData();
+            }
         }
 
-        filteredMeasures () {
-            return this.allMeasures.filter(m => m.requiredTestAbbr === this.newItem['mipsMeasures'].selectedTestAbbr);
+        fakeData () {
+            const mipsMeasures = [{
+                mipsDomain: { domain: 'EC' },
+                requiredTestAbbr: 'RT1',
+                requiredTest: 'Required Test 1: Something something 1',
+                name: 'Doing a thing with stuff',
+                criteriaSelectionRequired: false,
+                allowedCriteria: [],
+            },{
+                mipsDomain: { domain: 'EC' },
+                requiredTestAbbr: 'RT10',
+                requiredTest: 'Required Test 10: Something another something',
+                name: 'Doing another thing with stuff',
+                criteriaSelectionRequired: false,
+                allowedCriteria: [],
+            },{
+                mipsDomain: { domain: 'EH' },
+                requiredTestAbbr: 'RT3',
+                requiredTest: 'Required Test 3: Anything',
+                name: 'Doing a thing with stuff again',
+                criteriaSelectionRequired: false,
+                allowedCriteria: [],
+            }];
+            const mipsTypes = [{
+                name: 'G1',
+            },{
+                name: 'G2',
+            }];
+
+            let changes = {
+                resources: {
+                    currentValue: {
+                        mipsMeasures: mipsMeasures,
+                        mipsTypes: mipsTypes,
+                    },
+                },
+                measures: {
+                    currentValue: [{
+                        mipsMeasure: angular.copy(mipsMeasures[0]),
+                        mipsType: angular.copy(mipsTypes[0]),
+                        criteria: [],
+                    },{
+                        mipsMeasure: angular.copy(mipsMeasures[1]),
+                        mipsType: angular.copy(mipsTypes[1]),
+                        criteria: [],
+                    },{
+                        mipsMeasure: angular.copy(mipsMeasures[2]),
+                        mipsType: angular.copy(mipsTypes[0]),
+                        criteria: [],
+                    }],
+                },
+            };
+            this.$onChanges(changes);
         }
 
         measureSort (a, b) {
