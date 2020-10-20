@@ -41,6 +41,11 @@ export const G1G2EditComponent = {
             }
         }
 
+        cancelNewItem (type) {
+            this.ManageList.cancel(type);
+            this.allowedMeasures = [];
+        }
+
         fakeData () {
             const mipsMeasures = [{
                 mipsDomain: { domain: 'EC' },
@@ -111,20 +116,7 @@ export const G1G2EditComponent = {
                 0;
         }
 
-        update () {
-            this.onChange({measures: this.measures});
-        }
-
-        updateAllowedMeasures () {
-            this.allowedMeasures = this.allMeasures.filter(m => m.requiredTestAbbr === this.ManageList.newItem['mipsMeasures'].selectedTestAbbr);
-        }
-
-        cancelNewItem (type) {
-            this.ManageList.cancel(type);
-            this.allowedMeasures = [];
-        }
-
-        removeItem (type, item) {
+        removeItem (item) {
             this.measures = this.measures
                 .filter(m => !(m.mipsType.name === item.mipsType.name
                                && m.mipsMeasure.mipsDomain.domain === item.mipsMeasure.mipsDomain.domain
@@ -142,6 +134,14 @@ export const G1G2EditComponent = {
             this.ManageList.newItem[type].type = this.allTypes.filter(t => t.name === this.ManageList.newItem[type].typeName)[0];
             this.measures.push(this.ManageList.add(type, create));
             this.update();
+        }
+
+        update () {
+            this.onChange({measures: this.measures});
+        }
+
+        updateAllowedMeasures () {
+            this.allowedMeasures = this.allMeasures.filter(m => m.requiredTestAbbr === this.ManageList.newItem['mipsMeasures'].selectedTestAbbr);
         }
     },
 };

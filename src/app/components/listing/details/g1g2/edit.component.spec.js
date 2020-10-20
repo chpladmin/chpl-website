@@ -3,14 +3,15 @@
 
     fdescribe('the G1/G2 edit component', () => {
 
-        var $compile, $log, Mock, ctrl, el, scope;
+        var $compile, $log, ManageList, Mock, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.components', 'chpl.mock');
+            angular.mock.module('chpl.components', 'chpl.mock', 'chpl.services');
 
-            inject((_$compile_, _$log_, $rootScope, _Mock_) => {
+            inject((_$compile_, _$log_, $rootScope, _ManageList_, _Mock_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                ManageList = _ManageList_;
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
@@ -147,6 +148,40 @@
                     ctrl.ManageList.newItem['mipsMeasures'] = {selectedTestAbbr: 'RT1'};
                     ctrl.updateAllowedMeasures();
                     expect(ctrl.allowedMeasures.length).toBe(1);
+                });
+            });
+
+            describe('while managing measures', () => {
+                it('should allow cancellation', () => {
+                    let type = 'fizz';
+                    spyOn(ManageList, 'cancel');
+                    ctrl.allowedMeasures = [1, 2];
+                    ctrl.cancelNewItem(type);
+                    expect(ManageList.cancel).toHaveBeenCalledWith(type);
+                    expect(ctrl.allowedMeasures).toEqual([]);
+                });
+
+                it('should support removing measures', () => {
+                    let init = ctrl.measures.length;
+                    ctrl.removeItem(Mock.certifiedProductMipsMeasures[1]);
+                    expect(ctrl.measures.length).toBe(init - 1);
+                });
+
+                it('should save new measures', () => {
+                    spyOn(ctrl, 'update');
+                    spyOn(ManageList, 'add');
+                    ManageList.newItem['mipsMeasures'] = {};
+                    ctrl.saveNewItem();
+                    expect(ctrl.update).toHaveBeenCalled();
+                    expect(ManageList.add).toHaveBeenCalledWith('mipsMeasures', jasmine.any(Function));
+                });
+
+                it('should update the newItem data on save', () => {
+                    ManageList.newItem['mipsMeasures'] = {};
+                    ManageList.newItem['mipsMeasures'].typeName = 'G1';
+                    spyOn(ManageList, 'add').and.stub();
+                    ctrl.saveNewItem();
+                    expect(ManageList.newItem['mipsMeasures'].type.name).toBe('G1');
                 });
             });
         });
