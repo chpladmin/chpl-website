@@ -63,10 +63,10 @@ class ListingEditComponent {
         this.editcertifiedProduct.click();
         if (cures) {
             //click on Edit for on the criteria
-            $('//*[@id="criteria_' + editCriteriaId + '_details_header_cures"]/span[3]/span/button/i').click();
+            $('//*[@id="criteria_' + editCriteriaId + '_details_header_cures"]/div/div[2]/span/button/i').click();
         }
         else {
-            $('//*[@id="criteria_' + editCriteriaId + '_details_header"]/span[3]/span/button/i').click();
+            $('//*[@id="criteria_' + editCriteriaId + '_details_header"]/div/div[2]/span/button/i').click();
         }
     }
 
