@@ -196,6 +196,28 @@
           <div class="data-label">Other ACB</div>
           <div class="read-only-data">{{ $ctrl.listing.otherAcb }}</div>
         </div>
+
+
+        <div class="listing-details__additional-information-qms" ng-if="$ctrl.listing.qmsStandards && $ctrl.listing.qmsStandards.length > 0">
+          <div class="listing-details__additional-information-qms-header data-label">QMS Testing</div>
+          <div class="listing-details__additional-information-qms-item" ng-repeat="qms in $ctrl.listing.qmsStandards | orderBy:'qmsStandardName'">
+            <div>
+              <div class="data-label">QMS Standard</div>
+              <div class="read-only-data">{{ qms.qmsStandardName }}</div>
+            </div>
+            <div>
+              <div class="data-label">QMS Applicable Criteria</div>
+              <div class="read-only-data">{{ qms.applicableCriteria }}</div>
+            </div>
+            <div class="listing-details__additional-information-qms-modification">
+              <div class="data-label">QMS Modification</div>
+              <div class="read-only-data">{{ qms.qmsModification }}</div>
+            </div>
+          </div>
+        </div>
+
+
+
         <div ng-if="$ctrl.listing.targetedUsers && $ctrl.listing.targetedUsers.length > 0" id="panel-additional-information-developer-identified-targeted-user">
           <div class="data-label">Developer Identified Targeted User<span ng-if="$ctrl.listing.targetedUsers.length > 1">s</span></div>
           <div class="read-only-data">
