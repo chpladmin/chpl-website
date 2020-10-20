@@ -1,0 +1,20 @@
+.manage-list__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) 6em;
+    margin: 0 8px 8px;
+    background: var(--light-grey);
+    align-items: center;
+}
+
+.manage-list--span-2 {
+    grid-column-end: span 2;
+}
+
+.manage-list__item--end {
+    grid-column-end: -1;
+    justify-self: end;
+}
+
+.manage-list__row-start {
+    grid-column-start: 1;
+}

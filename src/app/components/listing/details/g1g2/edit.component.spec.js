@@ -144,7 +144,7 @@
 
             describe('when filtering available measures', () => {
                 it('should filter out ones that don\'t have the required test', () => {
-                    ctrl.newItem['mipsMeasures'] = {selectedTestAbbr: 'RT1'};
+                    ctrl.ManageList.newItem['mipsMeasures'] = {selectedTestAbbr: 'RT1'};
                     ctrl.updateAllowedMeasures();
                     expect(ctrl.allowedMeasures.length).toBe(1);
                 });

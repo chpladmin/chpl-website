@@ -6,9 +6,10 @@ export const G1G2EditComponent = {
         onChange: '&',
     },
     controller: class G1G2EditComponent {
-        constructor ($log) {
+        constructor ($log, ManageList) {
             'ngInject';
             this.$log = $log;
+            this.ManageList = ManageList;
             this.addingItem = {
                 mipsMeasures: false,
             };
@@ -33,7 +34,7 @@ export const G1G2EditComponent = {
                     .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
                 this.allTypes = changes.resources.currentValue.mipsTypes
                     .map(t => t)
-                    .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (!this.measures) {
                 this.fakeData();
@@ -115,43 +116,31 @@ export const G1G2EditComponent = {
         }
 
         updateAllowedMeasures () {
-            this.allowedMeasures = this.allMeasures.filter(m => m.requiredTestAbbr === this.newItem['mipsMeasures'].selectedTestAbbr);
+            this.allowedMeasures = this.allMeasures.filter(m => m.requiredTestAbbr === this.ManageList.newItem['mipsMeasures'].selectedTestAbbr);
         }
 
-        // item list
         cancelNewItem (type) {
-            this.newItem[type] = {};
-            this.addingItem[type] = false;
+            this.ManageList.cancel(type);
             this.allowedMeasures = [];
         }
 
         removeItem (type, item) {
-            switch (type) {
-            case 'mipsMeasures':
-                this.measures = this.measures
-                    .filter(m => !(m.mipsType.name === item.mipsType.name
-                                   && m.mipsMeasure.mipsDomain.domain === item.mipsMeasure.mipsDomain.domain
-                                   && m.mipsMeasure.requiredTestAbbr === item.mipsMeasure.requiredTestAbbr));
-                break;
-            default:
-                this.$log.error('remove', type, item);
-            }
+            this.measures = this.measures
+                .filter(m => !(m.mipsType.name === item.mipsType.name
+                               && m.mipsMeasure.mipsDomain.domain === item.mipsMeasure.mipsDomain.domain
+                               && m.mipsMeasure.requiredTestAbbr === item.mipsMeasure.requiredTestAbbr));
             this.update();
         }
 
-        saveNewItem (type) {
-            switch (type) {
-            case 'mipsMeasures':
-                this.measures.push({
-                    mipsMeasure: this.newItem[type].measure,
-                    mipsType: this.allTypes.filter(t => t.name === this.newItem[type].typeName)[0],
-                    criteria: this.newItem[type].criteria,
-                });
-                break;
-            default:
-                this.$log.error('add', type);
-            }
-            this.cancelNewItem(type);
+        saveNewItem () {
+            let type = 'mipsMeasures';
+            let create = object => ({
+                mipsMeasure: object.measure,
+                mipsType: object.type,
+                criteria: object.criteria,
+            });
+            this.ManageList.newItem[type].type = this.allTypes.filter(t => t.name === this.ManageList.newItem[type].typeName)[0];
+            this.measures.push(this.ManageList.add(type, create));
             this.update();
         }
     },
