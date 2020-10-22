@@ -396,6 +396,10 @@ export class NetworkService {
         return this.apiGET('/data/mips-measures');
     }
 
+    getMipsMeasureTypes () {
+        return this.apiGET('/data/mips-measure-types');
+    }
+
     getNonconformityStatisticsCount () {
         return this.apiGET('/statistics/nonconformity_criteria_count');
     }

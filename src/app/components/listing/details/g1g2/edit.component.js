@@ -31,14 +31,11 @@ export const G1G2EditComponent = {
                     .map(m => m)
                     .sort((a, b) => this.measureSort(a, b));
                 this.allTests = changes.resources.currentValue.mipsMeasures.data
-                    .map(m => m.requiredTestAbbr)
+                    .map(m => m.abbreviation)
                     .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
-                this.allTypes = [];
-                /*
-                this.allTypes = changes.resources.currentValue.mipsTypes
+                this.allTypes = changes.resources.currentValue.mipsMeasureTypes.data
                     .map(t => t)
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-                    */
             }
         }
 
