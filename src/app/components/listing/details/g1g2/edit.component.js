@@ -36,9 +36,6 @@ export const G1G2EditComponent = {
                     .map(t => t)
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
-            if (!this.measures) {
-                this.fakeData();
-            }
         }
 
         cancelNewItem (type) {
@@ -46,90 +43,35 @@ export const G1G2EditComponent = {
             this.allowedMeasures = [];
         }
 
-        fakeData () {
-            const mipsMeasures = [{
-                mipsDomain: { domain: 'EC' },
-                requiredTestAbbr: 'RT1',
-                requiredTest: 'Required Test 1: Something something 1',
-                name: 'Doing a thing with stuff',
-                criteriaSelectionRequired: false,
-                allowedCriteria: [],
-            },{
-                mipsDomain: { domain: 'EC' },
-                requiredTestAbbr: 'RT10',
-                requiredTest: 'Required Test 10: Something another something',
-                name: 'Doing another thing with stuff',
-                criteriaSelectionRequired: false,
-                allowedCriteria: [],
-            },{
-                mipsDomain: { domain: 'EH' },
-                requiredTestAbbr: 'RT3',
-                requiredTest: 'Required Test 3: Anything',
-                name: 'Doing a thing with stuff again',
-                criteriaSelectionRequired: false,
-                allowedCriteria: [],
-            }];
-            const mipsTypes = [{
-                name: 'G1',
-            },{
-                name: 'G2',
-            }];
-
-            let changes = {
-                resources: {
-                    currentValue: {
-                        mipsMeasures: mipsMeasures,
-                        mipsTypes: mipsTypes,
-                    },
-                },
-                measures: {
-                    currentValue: [{
-                        mipsMeasure: angular.copy(mipsMeasures[0]),
-                        mipsType: angular.copy(mipsTypes[0]),
-                        criteria: [],
-                    },{
-                        mipsMeasure: angular.copy(mipsMeasures[1]),
-                        mipsType: angular.copy(mipsTypes[1]),
-                        criteria: [],
-                    },{
-                        mipsMeasure: angular.copy(mipsMeasures[2]),
-                        mipsType: angular.copy(mipsTypes[0]),
-                        criteria: [],
-                    }],
-                },
-            };
-            this.$onChanges(changes);
-        }
-
         measureSort (a, b) {
-            if (!a.mipsType) {
-                a = {mipsType: 0, mipsMeasure: a};
+            if (!a.measurementType) {
+                a = {measurementType: 0, measure: a};
             }
-            if (!b.mipsType) {
-                b = {mipsType: 0, mipsMeasure: b};
+            if (!b.measurementType) {
+                b = {measurementType: 0, measure: b};
             }
             let getNum = test => parseInt(test.substring(2, 10));
-            return a.mipsType.name < b.mipsType.name ? -1 : a.mipsType.name > b.mipsType.name ? 1 :
-                a.mipsMeasure.mipsDomain.domain < b.mipsMeasure.mipsDomain.domain ? -1 : a.mipsMeasure.mipsDomain.domain > b.mipsMeasure.mipsDomain.domain ? 1 :
-                getNum(a.mipsMeasure.requiredTestAbbr) < getNum(b.mipsMeasure.requiredTestAbbr) ? -1 : getNum(a.mipsMeasure.requiredTestAbbr) > getNum(b.mipsMeasure.requiredTestAbbr) ? 1 :
-                a.mipsMeasure.name < b.mipsMeasure.name ? -1 : a.mipsMeasure.name > b.mipsMeasure.name ? 1 :
+            return a.measurementType.name < b.measurementType.name ? -1 : a.measurementType.name > b.measurementType.name ? 1 :
+                a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
+                getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
+                a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :
                 0;
         }
 
         removeItem (item) {
             this.measures = this.measures
-                .filter(m => !(m.mipsType.name === item.mipsType.name
-                               && m.mipsMeasure.mipsDomain.domain === item.mipsMeasure.mipsDomain.domain
-                               && m.mipsMeasure.requiredTestAbbr === item.mipsMeasure.requiredTestAbbr));
+                .filter(m => !(m.measurementType.name === item.measurementType.name
+                               && m.measure.domain.name === item.measure.domain.name
+                               && m.measure.abbreviation === item.measure.abbreviation));
             this.update();
         }
 
         saveNewItem () {
             let type = 'mipsMeasures';
             let create = object => ({
-                mipsMeasure: object.measure,
-                mipsType: object.type,
-                criteria: object.criteria,
+                measure: object.measure,
+                measurementType: object.type,
+                associatedCriteria: object.criteria,
             });
             this.ManageList.newItem[type].type = this.allTypes.filter(t => t.name === this.ManageList.newItem[type].typeName)[0];
             this.measures.push(this.ManageList.add(type, create));
@@ -141,7 +83,7 @@ export const G1G2EditComponent = {
         }
 
         updateAllowedMeasures () {
-            this.allowedMeasures = this.allMeasures.filter(m => m.requiredTestAbbr === this.ManageList.newItem['mipsMeasures'].selectedTestAbbr);
+            this.allowedMeasures = this.allMeasures.filter(m => m.abbreviation === this.ManageList.newItem['mipsMeasures'].selectedAbbreviation);
         }
     },
 };
