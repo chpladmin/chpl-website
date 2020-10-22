@@ -172,7 +172,7 @@
               {{ item.chplProductNumber }}
             </div>
             <div class="list-edit__item--end" ng-repeat-end>
-              <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('ics', item)"><i class="fa fa-times"></i></button>
+              <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('ics', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
             </div>
             <div class="list-edit__row-start" ng-if="$ctrl.addingItem['ics'] && !$ctrl.creatingItem['ics'] && $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length > 0">
               <div class="data-element sr-only"><label for="ics-add-new">Add new ICS Source</label></div>
@@ -196,7 +196,7 @@
             <div class="list-edit__item--end" ng-if="$ctrl.addingItem['ics']">
               <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('ics')" ng-mouseover="$ctrl.showFormErrors = true"
                       ng-disabled="($ctrl.showFormErrors || $ctrl.form.icsAddNew.$touched) && $ctrl.form.icsAddNew.$error.required"><i class="fa fa-save"></i></button>
-              <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('ics')"><i class="fa fa-times"></i></button>
+              <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('ics')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
             </div>
             <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['ics'] && $ctrl.relatedListings">
               <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['ics'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
@@ -217,7 +217,7 @@
             {{ item.applicableCriteria }}
           </div>
           <div class="list-edit__item--end" ng-repeat-end>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('qmsStandards', item)"><i class="fa fa-times"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('qmsStandards', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
           <div class="list-edit__row-start" ng-if="$ctrl.addingItem['qmsStandards'] && !$ctrl.creatingItem['qmsStandards']">
             <div class="data-element sr-only"><label for="qms-standard-add-new">Add new Qms Standard</label></div>
@@ -247,7 +247,7 @@
           <div class="list-edit__item--end" ng-if="$ctrl.addingItem['qmsStandards']">
             <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('qmsStandards')" ng-mouseover="$ctrl.showFormErrors = true"
                     ng-disabled="($ctrl.showFormErrors || $ctrl.form.qmsStandardAddNew.$touched) && $ctrl.form.qmsStandardAddNew.$error.required"><i class="fa fa-save"></i></button>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('qmsStandards')"><i class="fa fa-times"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('qmsStandards')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
           </div>
           <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['qmsStandards'] && $ctrl.filterListEditItems('qmsStandards', $ctrl.resources.qmsStandards).length > 0">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['qmsStandards'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
@@ -259,7 +259,7 @@
             {{ item.targetedUserName }}
           </div>
           <div class="list-edit__item--end" ng-repeat-end>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('targetedUsers', item)"><i class="fa fa-times"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('targetedUsers', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
           <div class="list-edit__row-start" ng-if="$ctrl.addingItem['targetedUsers'] && !$ctrl.creatingItem['targetedUsers']">
             <div class="data-element sr-only"><label for="targeted-user-add-new">Add new Targeted User</label></div>
@@ -279,7 +279,7 @@
           <div class="list-edit__item--end" ng-if="$ctrl.addingItem['targetedUsers']">
             <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('targetedUsers')" ng-mouseover="$ctrl.showFormErrors = true"
                     ng-disabled="($ctrl.showFormErrors || $ctrl.form.targetedUserAddNew.$touched) && $ctrl.form.targetedUserAddNew.$error.required"><i class="fa fa-save"></i></button>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('targetedUsers')"><i class="fa fa-times"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('targetedUsers')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
           </div>
           <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['targetedUsers'] && $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers).length > 0">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['targetedUsers'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
@@ -296,7 +296,7 @@
             <div class="text-danger" ng-if="$ctrl.matchesPreviousMuuDate(item)">Only one value allowed per day</div>
           </div>
           <div class="list-edit__item--end" ng-repeat-end>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('meaningfulUseUserHistory', item)"><i class="fa fa-times"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('meaningfulUseUserHistory', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
           <div class="list-edit__row-start" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
             <label for="meaningful-use-user-history-add-new-value" class="sr-only"><span ng-if="$first">Current </span>Meaningful Use User Count</label>
@@ -311,7 +311,7 @@
                      is-open="muuEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
                      id="meaningful-use-user-history-add-new-date" name="meaningfulUseUserHistoryAddNewDate" required>
               <span class="input-group-btn">
-                <button type="button" class="btn btn-default btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
               </span>
             </div>
           </div>
@@ -319,7 +319,7 @@
             <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('meaningfulUseUserHistory')" ng-mouseover="$ctrl.showFormErrors = true"
                     ng-disabled="($ctrl.showFormErrors || $ctrl.form.meaningFullUseUserAddNewValue.$touched || $ctrl.form.meaningfulUseUserHistoryAddNewDate) && ($ctrl.form.meaningfulUseUserHistoryAddNewValue.$error.required || $ctrl.form.meaningfulUseUserHistoryAddNewDate.$error.required)"
                     ><i class="fa fa-save"></i></button>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('meaningfulUseUserHistory')"><i class="fa fa-times"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('meaningfulUseUserHistory')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
           </div>
           <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['meaningfulUseUserHistory']">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['meaningfulUseUserHistory'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>

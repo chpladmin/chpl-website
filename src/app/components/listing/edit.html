@@ -61,7 +61,7 @@
     <div class="input-group">
       <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.certDate" is-open="$ctrl.listing.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" ng-change="$ctrl.update()" required>
       <span class="input-group-btn">
-        <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i></button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
       </span>
     </div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.required">Field is required</div>
@@ -91,7 +91,7 @@
       {{ item.reason }}
     </div>
     <div class="list-edit__item--end" ng-repeat-end>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('certificationEvents', item)"><i class="fa fa-times"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('certificationEvents', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
     </div>
     <div class="list-edit__row-start" ng-if="$ctrl.addingItem['certificationEvents']">
       <label for="certification-event-add-new-status" class="sr-only"><span ng-if="$first">Current </span>Certification Status</label>
@@ -107,7 +107,7 @@
                is-open="statusEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
                id="certification-event-add-new-date" name="certificationEventAddNewDate" required>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
     </div>
@@ -120,7 +120,7 @@
     <div class="list-edit__item--end" ng-if="$ctrl.addingItem['certificationEvents']">
       <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('certificationEvents')" ng-mouseover="$ctrl.showFormErrors = true"
               ng-disabled="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewStatus.$touched || $ctrl.form.certificationEventAddNewDate.$touched || $ctrl.form.certificationEventAddNewReason.$touched) && ($ctrl.form.certificationEventAddNewStatus.$error.required || $ctrl.form.certificationEventAddNewStatus.$error.required)"><i class="fa fa-save"></i></button>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('certificationEvents')"><i class="fa fa-times"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('certificationEvents')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
     </div>
     <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['certificationEvents']">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['certificationEvents'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
@@ -150,7 +150,7 @@
       {{ item.testingLabName }}
     </div>
     <div class="list-edit__item--end" ng-repeat-end>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('oncAtls', item)"><i class="fa fa-times"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('oncAtls', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
     </div>
     <div class="list-edit__row-start" ng-if="$ctrl.addingItem['oncAtls']">
       <div class="data-label sr-only"><label for="testing-lab-add-new">Add new Testing Lab</label></div>
@@ -161,7 +161,7 @@
     <div class="list-edit__item--end" ng-if="$ctrl.addingItem['oncAtls']">
       <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('oncAtls')" ng-mouseover="$ctrl.showFormErrors = true"
               ng-disabled="($ctrl.showFormErrors || $ctrl.form.testingLabAddNew.$touched) && $ctrl.form.testingLabAddNew.$error.required"><i class="fa fa-save"></i></button>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('oncAtls')"><i class="fa fa-times"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('oncAtls')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
     </div>
     <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['oncAtls'] && $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs).length > 0">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['oncAtls'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
@@ -173,7 +173,7 @@
       {{ item.accessibilityStandardName }}
     </div>
     <div class="list-edit__item--end" ng-repeat-end>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('accessibilityStandards', item)"><i class="fa fa-times"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('accessibilityStandards', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
     </div>
     <div class="list-edit__row-start" ng-if="$ctrl.addingItem['accessibilityStandards'] && !$ctrl.creatingItem['accessibilityStandards']">
       <div class="data-element sr-only"><label for="accessibility-standard-add-new">Add new Accessibility Standard</label></div>
@@ -191,7 +191,7 @@
     <div class="list-edit__item--end" ng-if="$ctrl.addingItem['accessibilityStandards']">
       <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('accessibilityStandards')" ng-mouseover="$ctrl.showFormErrors = true"
               ng-disabled="($ctrl.showFormErrors || $ctrl.form.accessibilityStandardAddNew.$touched) && $ctrl.form.accessibilityStandardAddNew.$error.required"><i class="fa fa-save"></i></button>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('accessibilityStandards')"><i class="fa fa-times"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('accessibilityStandards')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
     </div>
     <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['accessibilityStandards'] && $ctrl.filterListEditItems('accessibilityStandards', $ctrl.resources.accessibilityStandards).length > 0">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['accessibilityStandards'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
@@ -216,7 +216,7 @@
                is-open="$ctrl.listing.rwtPlansCheckDateDatePicker" close-text="Close"
                id="rwt-plans-check-date" name="rwtPlansCheckDate" ng-change="$ctrl.update()">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
     </div>
@@ -235,7 +235,7 @@
                is-open="$ctrl.listing.rwtResultsCheckDateDatePicker" close-text="Close"
                id="rwt-results-check-date" name="rwtResultsCheckDate" ng-change="$ctrl.update()">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
     </div>
