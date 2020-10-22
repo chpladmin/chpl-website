@@ -1,6 +1,6 @@
 const elements = {
     realWortldTestingHeader: 'h2=Real World Testing',
-}
+};
 
 class ListingPage {
     constructor () { }
