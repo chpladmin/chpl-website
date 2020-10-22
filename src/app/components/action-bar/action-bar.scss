@@ -31,12 +31,16 @@
     color: var(--red);
     background-color: rgba(var(--background-error), .3);
     text-align: center;
+    max-height: 30vh;
+    overflow-y: scroll;
 }
 
 .action-bar__warnings {
     color: var(--warning);
     background-color: rgba(var(--background-warning), .3);
     text-align: center;
+    max-height: 30vh;
+    overflow-y: scroll;
 }
 
 .action-bar__acknowledge-warnings {
