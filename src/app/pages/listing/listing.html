@@ -25,13 +25,12 @@
         <div>
           <a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a>
         </div>
-        <div ng-if="$ctrl.listing.certificationEdition.name === '2015'">
+        <div>
           <ai-cms-widget-button
+            ng-if="$ctrl.listing.certificationEdition.name === '2015'"
             product-id="{{ $ctrl.listing.id }}"
             product-name="{{ $ctrl.listing.product.name }}"
             ></ai-cms-widget-button>
-        </div>
-        <div>
           <ai-compare-widget-button
             product-id="{{ $ctrl.listing.id }}"
             product-name="{{ $ctrl.listing.product.name }}"
