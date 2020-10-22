@@ -392,6 +392,10 @@ export class NetworkService {
         return this.apiGET('/statistics/listing_count');
     }
 
+    getMipsMeasures () {
+        return this.apiGET('/data/mips-measures');
+    }
+
     getNonconformityStatisticsCount () {
         return this.apiGET('/statistics/nonconformity_criteria_count');
     }

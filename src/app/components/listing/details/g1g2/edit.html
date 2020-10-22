@@ -48,7 +48,7 @@
     <span ng-repeat="criteria in $ctrl.ManageList.newItem['mipsMeasures'].measure.allowedCriteria">
       <label for="mips-measure-add-new-criteria-{{ criteria.id }}" class="sr-only">{{ criteria.number }}?</label>
       <input type="checkbox" ng-model="$ctrl.ManageList.newItem['mipsMeasures'].criteria"
-             ng-disabled="!$ctrl.ManageList.newItem['mipsMeasures'].selectedTestAbbr"
+             ng-disabled="!$ctrl.ManageList.newItem['mipsMeasures'].selectedAbbreviation"
              id="mips-measure-add-new-criteria-{{ criteria.id }}" name="mispMeasureAddNewCriteria{{ criteria.id }}" value="{{ criteria.id }}">{{ criteria.number }}</input>
     </span>
   </div>

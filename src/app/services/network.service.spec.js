@@ -955,6 +955,14 @@
                 $httpBackend.flush();
             });
 
+            it('should getMipsMeasures', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/mips-measures$/).respond(200, {data: 'response'});
+                networkService.getMipsMeasures().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getNonconformityStatisticsCount', () => {
                 $httpBackend.expectGET(/^\/rest\/statistics\/nonconformity_criteria_count$/).respond(200, {data: 'response'});
                 networkService.getNonconformityStatisticsCount().then(response => {

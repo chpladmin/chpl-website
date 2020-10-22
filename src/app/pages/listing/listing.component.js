@@ -120,6 +120,7 @@ export const ListingComponent = {
                     }),
                 this.networkService.getAccessibilityStandards().then(response => that.resources.accessibilityStandards = response),
                 this.networkService.getAtls(false).then(response => that.resources.testingLabs = response.atls),
+                this.networkService.getMipsMeasures().then(response => that.resources.mipsMeasures = response),
                 this.networkService.getQmsStandards().then(response => that.resources.qmsStandards = response),
                 this.networkService.getTargetedUsers().then(response => that.resources.targetedUsers = response),
                 this.networkService.getTestData().then(response => that.resources.testData = response),
