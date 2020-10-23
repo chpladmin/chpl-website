@@ -65,6 +65,16 @@ export const G1G2EditComponent = {
                 0;
         }
 
+        readyForAdd () {
+            return this.ManageList.newItem['mipsMeasures']
+                && this.ManageList.newItem['mipsMeasures'].selectedAbbreviation
+                && this.ManageList.newItem['mipsMeasures'].measure
+                && this.ManageList.newItem['mipsMeasures'].typeName
+                && (!this.ManageList.newItem['mipsMeasures'].measure.requiresCriteriaSelection
+                    || (this.ManageList.newItem['mipsMeasures'].selectedCriteria
+                        && Object.keys(this.ManageList.newItem['mipsMeasures'].selectedCriteria).reduce((acc, key) => acc || this.ManageList.newItem['mipsMeasures'].selectedCriteria[key], false)));
+        }
+
         removeItem (item) {
             this.measures = this.measures
                 .filter(m => !(m.measurementType.name === item.measurementType.name
@@ -81,6 +91,12 @@ export const G1G2EditComponent = {
                 associatedCriteria: object.criteria,
             });
             this.ManageList.newItem[type].type = this.allTypes.filter(t => t.name === this.ManageList.newItem[type].typeName)[0];
+            if (this.ManageList.newItem[type].measure.requiresCriteriaSelection) {
+                this.ManageList.newItem[type].criteria = this.ManageList.newItem[type].measure.allowedCriteria
+                    .filter(cc => this.ManageList.newItem[type].selectedCriteria[cc.id] && this.ManageList.newItem[type].selectedCriteria[cc.id].selected);
+            } else {
+                this.ManageList.newItem[type].criteria = this.ManageList.newItem[type].measure.allowedCriteria;
+            }
             this.measures.push(this.ManageList.add(type, create));
             this.update();
         }
