@@ -59,8 +59,8 @@ export const G1G2EditComponent = {
             }
             let getNum = test => parseInt(test.substring(2), 10);
             return a.measurementType.name < b.measurementType.name ? -1 : a.measurementType.name > b.measurementType.name ? 1 :
-                a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
                 getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
+                a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
                 a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :
                 0;
         }
