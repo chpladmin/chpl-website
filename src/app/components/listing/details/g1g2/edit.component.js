@@ -30,9 +30,11 @@ export const G1G2EditComponent = {
                 this.allMeasures = changes.resources.currentValue.mipsMeasures.data
                     .map(m => m)
                     .sort((a, b) => this.measureSort(a, b));
-                this.allTests = changes.resources.currentValue.mipsMeasures.data
-                    .map(m => m.abbreviation)
-                    .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+                this.allTests = [... new Set(
+                    changes.resources.currentValue.mipsMeasures.data
+                        .map(m => m.abbreviation)
+                        .sort((a, b) => this.testSort(a, b))
+                )];
                 this.allTypes = changes.resources.currentValue.mipsMeasureTypes.data
                     .map(t => t)
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
@@ -44,6 +46,10 @@ export const G1G2EditComponent = {
             this.allowedMeasures = [];
         }
 
+        clearCriteria () {
+            this.ManageList.newItem['mipsMeasures'].criteria = {};
+        }
+
         measureSort (a, b) {
             if (!a.measurementType) {
                 a = {measurementType: 0, measure: a};
@@ -51,7 +57,7 @@ export const G1G2EditComponent = {
             if (!b.measurementType) {
                 b = {measurementType: 0, measure: b};
             }
-            let getNum = test => parseInt(test.substring(2, 10));
+            let getNum = test => parseInt(test.substring(2), 10);
             return a.measurementType.name < b.measurementType.name ? -1 : a.measurementType.name > b.measurementType.name ? 1 :
                 a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
                 getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
@@ -79,12 +85,19 @@ export const G1G2EditComponent = {
             this.update();
         }
 
+        testSort (first, second) {
+            let a = parseInt(first.substring(2), 10);
+            let b = parseInt(second.substring(2), 10);
+            return a - b;
+        }
+
         update () {
             this.onChange({measures: this.measures});
         }
 
         updateAllowedMeasures () {
             this.allowedMeasures = this.allMeasures.filter(m => m.abbreviation === this.ManageList.newItem['mipsMeasures'].selectedAbbreviation);
+            this.clearCriteria();
         }
     },
 };

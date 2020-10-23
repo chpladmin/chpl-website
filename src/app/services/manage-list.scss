@@ -10,11 +10,11 @@
     grid-column-end: span 2;
 }
 
+.manage-list__item--start {
+    grid-column-start: 1;
+}
+
 .manage-list__item--end {
     grid-column-end: -1;
     justify-self: end;
-}
-
-.manage-list__row-start {
-    grid-column-start: 1;
 }

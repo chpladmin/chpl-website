@@ -3,8 +3,7 @@
   <div class="data-label">Domain</div>
   <div class="data-label">G1/G2?</div>
   <div class="data-label">Associated Criteria</div>
-  <div class="manage-list__row-start" ng-repeat-start="item in $ctrl.measures track by $index">
-    <pre>{{ item | json }}</pre>
+  <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.measures track by $index">
     {{ item.measure.abbreviation }}: {{ item.measure.requiredTest }}
   </div>
   <div>
@@ -21,7 +20,7 @@
   <div class="manage-list__item--end" ng-repeat-end>
     <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem(item)"><i class="fa fa-times"></i></button>
   </div>
-  <div class="manage-list__row-start" ng-if="$ctrl.ManageList.addingItem['mipsMeasures']">
+  <div class="manage-list__item--start" ng-if="$ctrl.ManageList.addingItem['mipsMeasures']">
     <label for="mips-measure-add-new-test" class="sr-only">Required Test</label>
     <select ng-model="$ctrl.ManageList.newItem['mipsMeasures'].selectedAbbreviation" required
             ng-options="item for item in $ctrl.allTests" ng-change="$ctrl.updateAllowedMeasures()"
@@ -33,6 +32,7 @@
     <select ng-model="$ctrl.ManageList.newItem['mipsMeasures'].measure" required
             ng-options="item as item.domain.name for item in $ctrl.allowedMeasures"
             ng-disabled="!$ctrl.ManageList.newItem['mipsMeasures'].selectedAbbreviation"
+            ng-change="$ctrl.clearCriteria()"
             id="mips-measure-add-new-domain" name="mipsMeasureAddNewDomain" class="input-sm form-control">
     </select>
   </div>
@@ -45,20 +45,25 @@
     </span>
   </div>
   <div ng-if="$ctrl.ManageList.addingItem['mipsMeasures']">
-    <span ng-repeat="criteria in $ctrl.ManageList.newItem['mipsMeasures'].measure.allowedCriteria">
+    <ul ng-if="!$ctrl.ManageList.newItem['mipsMeasures'].measure.requiresCriteriaSelection">
+      <li ng-repeat="criteria in $ctrl.ManageList.newItem['mipsMeasures'].measure.allowedCriteria">{{ criteria.number }}: {{ criteria.title }}</li>
+    </ul>
+    <div ng-repeat="criteria in $ctrl.ManageList.newItem['mipsMeasures'].measure.allowedCriteria" ng-if="$ctrl.ManageList.newItem['mipsMeasures'].measure.requiresCriteriaSelection">
       <label for="mips-measure-add-new-criteria-{{ criteria.id }}" class="sr-only">{{ criteria.number }}?</label>
-      <input type="checkbox" ng-model="$ctrl.ManageList.newItem['mipsMeasures'].criteria"
+      <input type="checkbox" ng-model="$ctrl.ManageList.newItem['mipsMeasures'].criteria[criteria.id].selected"
              ng-disabled="!$ctrl.ManageList.newItem['mipsMeasures'].selectedAbbreviation"
              id="mips-measure-add-new-criteria-{{ criteria.id }}" name="mispMeasureAddNewCriteria{{ criteria.id }}" value="{{ criteria.id }}">{{ criteria.number }}</input>
-    </span>
+    </div>
   </div>
   <div class="manage-list__item--end" ng-if="$ctrl.ManageList.addingItem['mipsMeasures']">
     <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('mipsMeasures')" ng-mouseover="$ctrl.showFormErrors = true"
             ng-disabled="($ctrl.showFormErrors || $ctrl.form.mipsMeasureAddNewTest.$touched || $ctrl.form.mipsMeasureAddNewDate.$touched || $ctrl.form.mipsMeasure.addNewG.$touched) && ($ctrl.form.mipsMeasureAddNewTest.$error.required || $ctrl.form.mipsMeasureAddNewDomain.$error.required || $ctrl.form.mipsMeasureAddNewG.$error.required)"><i class="fa fa-save"></i></button>
     <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('mipsMeasures')"><i class="fa fa-times"></i></button>
   </div>
-  <div class="manage-list__row-start" ng-if="!$ctrl.ManageList.addingItem['mipsMeasures']">
+  <div class="manage-list__item--start" ng-if="!$ctrl.ManageList.addingItem['mipsMeasures']">
     <button class="btn btn-sm btn-link" ng-click="$ctrl.ManageList.addingItem['mipsMeasures'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
   </div>
-  <pre>{{ $ctrl.ManageList | json }}</pre>
+  <div class="manage-list__item--start manage-list--span-2">
+    <pre>{{ $ctrl.ManageList | json }}</pre>
+  </div>
 </div>
