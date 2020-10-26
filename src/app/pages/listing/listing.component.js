@@ -137,9 +137,6 @@ export const ListingComponent = {
 
         saveEdit (listing, reason, acknowledgeWarnings) {
             let that = this;
-            that.$log.info(listing);
-            that.$log.info(reason, acknowledgeWarnings);
-            /*
             this.isSaving = true;
             this.networkService.updateCP({
                 listing: listing,
@@ -172,7 +169,6 @@ export const ListingComponent = {
                 }
                 that.isSaving = false;
             });
-            */
         }
 
         takeDeveloperAction (action, developerId) {
