@@ -153,6 +153,27 @@ export class ReportService {
                 compare: (p, c) => p.muuCount !== c.muuCount,
                 change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
             };
+        case 'mipsMeasures':
+            return {
+                sort: (p, c) => {
+                    p.crit = p.associatedCriteria.map(c => c.id).join('|');
+                    return p.measurementType.id < c.measurementType.id ? -1 : p.measurementType.id > c.measurementType.id ? 1 :
+                        p.measure.id < c.measure.id ? -1 : p.measure.id > c.measure.id ? 1 :
+                        p.measure.crit < c.measure.crit ? -1 : p.measure.crit > c.measure.crit ? 1 :
+                        0;
+                },
+                write: t => 'Measure "' + t.measure.abbreviation + ': ' + t.measure.requiredTest + '", for ' + t.measurementType.name + ' with criteria: ' + t.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
+                compare: (p, c) => {
+                    p.crit = p.associatedCriteria.map(c => c.id).join('|');
+                    return p.measurementType.id === c.measurementType.id
+                        && p.measure.id === c.measure.id
+                        && p.measure.crit !== c.measure.crit;
+                },
+                change: (p, c) => 'Measure "' + p.measure.abbreviation + ': ' + p.measure.requiredTest
+                    + '", for ' + p.measurementType.name + ' changed from criteria: '
+                    + p.associatedCriteria.map(c => c.number + ': ' + c.title).join(', ')
+                    + ' to: ' + c.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
+            };
         case 'qmsStandards':
             return {
                 sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,

@@ -688,6 +688,10 @@ export const ReportsListingsComponent = {
                             activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
                         }
                     }
+                    var mipsMeasures = this.ReportService.compare(item.originalData.mipsMeasures, item.newData.mipsMeasures, 'mipsMeasures');
+                    if (mipsMeasures.length > 0) {
+                        activity.details.push('G1/G2 measure changes:<ul>' + mipsMeasures.join('') + '</ul>');
+                    }
                     if (item.originalData.testingLabs) {
                         var testingLabsKeys = [];
                         var testingLabs = this.ReportService.compareArray(item.originalData.testingLabs, item.newData.testingLabs, testingLabsKeys, 'testingLabName');
