@@ -141,19 +141,19 @@
                   <div class="data-label listing__enhanced-label">Real World Testing</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansUrl">
-                  <div class="data-label listing__enhanced-label">Plans</div>
+                  <div class="data-label listing__enhanced-label--small">Plans</div>
                   <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtPlansUrl }}" name="rwtPlansUrl" id="rwt-plans-url">{{ $ctrl.listing.rwtPlansUrl }}</a></div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
-                  <div class="data-label listing__enhanced-label">Last ONC-ACB Completeness Check</div>
+                  <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>
                   <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsUrl">
-                  <div class="data-label listing__enhanced-label">Results</div>
+                  <div class="data-label listing__enhanced-label--small">Results</div>
                   <div class="read-only-data"><a ai-a href="{{ $ctrl.listing.rwtResultsUrl }}" name="rwtResultsUrl" id="rwt-results-url">{{ $ctrl.listing.rwtResultsUrl }}</a></div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
-                  <div class="data-label listing__enhanced-label">Last ONC-ACB Completeness Check</div>
+                  <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>
                   <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
                 </div>
               </div>
