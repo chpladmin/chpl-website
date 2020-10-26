@@ -28,7 +28,13 @@ export const G1G2EditComponent = {
             if (changes.resources && changes.resources.currentValue) {
                 this.$log.info(changes.resources.currentValue.mipsTypes);
                 this.allMeasures = changes.resources.currentValue.mipsMeasures.data
-                    .map(m => m)
+                    .map(m => {
+                        m.displayName = m.domain.name;
+                        if (m.removed) {
+                            m.displayName = 'Removed | ' + m.displayName;
+                        }
+                        return m;
+                    })
                     .sort((a, b) => this.measureSort(a, b));
                 this.allTests = [... new Set(
                     changes.resources.currentValue.mipsMeasures.data

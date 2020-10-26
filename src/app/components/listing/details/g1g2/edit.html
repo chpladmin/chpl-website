@@ -32,7 +32,7 @@
   <div ng-if="$ctrl.ManageList.addingItem['mipsMeasures']">
     <label for="mips-measure-add-new-domain" class="sr-only">Domain</label>
     <select ng-model="$ctrl.ManageList.newItem['mipsMeasures'].measure" required
-            ng-options="item as item.domain.name for item in $ctrl.allowedMeasures"
+            ng-options="item as item.displayName for item in $ctrl.allowedMeasures"
             ng-disabled="!$ctrl.ManageList.newItem['mipsMeasures'].selectedAbbreviation"
             ng-change="$ctrl.clearCriteria()"
             id="mips-measure-add-new-domain" name="mipsMeasureAddNewDomain" class="input-sm form-control">
