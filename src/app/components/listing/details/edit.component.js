@@ -99,7 +99,7 @@ export const ListingDetailsEditComponent = {
                 this.listing.meaningfulUseUserHistory = [];
             }
 
-            if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015') {
+            if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015' && !this.relatedListings) {
                 let that = this;
                 this.networkService.getRelatedListings(this.listing.product.productId)
                     .then(family => that.relatedListings = family.filter(item => item.edition === '2015' && item.id !== that.listing.id));
