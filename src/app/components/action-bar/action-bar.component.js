@@ -32,7 +32,7 @@ export const ActionBarComponent = {
                     .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
                 let needToShow = this.warningMessages.reduce((acc, m) => acc || !this.previousWarnings.includes(m), this.previousWarnings.length !== this.warningMessages.length);
                 if (needToShow) {
-                    this.showWarnings = true;
+                    this.showErrors = true;
                 }
                 this.previousWarnings = angular.copy(this.warningMessages);
             }
