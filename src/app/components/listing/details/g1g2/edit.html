@@ -15,7 +15,7 @@
     {{ item.measurementType.name }}
   </div>
   <div>
-    <ul class="list-unstyled">
+    <ul>
       <li ng-repeat="criteria in item.associatedCriteria">{{ criteria.number }}: {{ criteria.title }}</li>
     </ul>
   </div>
@@ -54,7 +54,7 @@
       <input type="checkbox" ng-model="$ctrl.ManageList.newItem['mipsMeasures'].selectedCriteria[criteria.id].selected"
              ng-disabled="!$ctrl.ManageList.newItem['mipsMeasures'].selectedAbbreviation"
              id="mips-measure-add-new-criteria-{{ criteria.id }}" name="mispMeasureAddNewCriteria{{ criteria.id }}" value="{{ criteria.id }}"></input>
-      <label for="mips-measure-add-new-criteria-{{ criteria.id }}">{{ criteria.number }}: {{ criteria.title }}?</label>
+      <label for="mips-measure-add-new-criteria-{{ criteria.id }}">{{ criteria.display }}</label>
     </div>
   </div>
   <div class="manage-list__item--end" ng-if="$ctrl.ManageList.addingItem['mipsMeasures']">
@@ -64,8 +64,5 @@
   </div>
   <div class="manage-list__item--start" ng-if="!$ctrl.ManageList.addingItem['mipsMeasures']">
     <button class="btn btn-sm btn-link" ng-click="$ctrl.ManageList.addingItem['mipsMeasures'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
-  </div>
-  <div class="manage-list__item--start manage-list--span-2">
-    <pre>{{ $ctrl.ManageList | json }}</pre>
   </div>
 </div>

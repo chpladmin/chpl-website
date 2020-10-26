@@ -6,16 +6,11 @@ export const G1G2EditComponent = {
         onChange: '&',
     },
     controller: class G1G2EditComponent {
-        constructor ($log, ManageList) {
+        constructor ($log, ManageList, utilService) {
             'ngInject';
             this.$log = $log;
             this.ManageList = ManageList;
-            this.addingItem = {
-                mipsMeasures: false,
-            };
-            this.newItem = {
-                mipsMeasures: {},
-            };
+            this.util = utilService;
             this.allowedMeasures = [];
         }
 
@@ -26,13 +21,21 @@ export const G1G2EditComponent = {
                     .sort((a, b) => this.measureSort(a, b));
             }
             if (changes.resources && changes.resources.currentValue) {
-                this.$log.info(changes.resources.currentValue.mipsTypes);
                 this.allMeasures = changes.resources.currentValue.mipsMeasures.data
                     .map(m => {
                         m.displayName = m.domain.name;
                         if (m.removed) {
                             m.displayName = 'Removed | ' + m.displayName;
                         }
+                        m.allowedCriteria = m.allowedCriteria
+                            .map(c => {
+                                c.display = c.number;
+                                if (c.title.indexOf('Cures Update') > -1) {
+                                    c.display += ' (Cures Update)';
+                                }
+                                return c;
+                            })
+                            .sort(this.util.sortCertActual);
                         return m;
                     })
                     .sort((a, b) => this.measureSort(a, b));
