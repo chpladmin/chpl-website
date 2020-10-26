@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Manage List service', () => {
+    describe('the Manage List service', () => {
         var $log, service;
 
         beforeEach(() => {

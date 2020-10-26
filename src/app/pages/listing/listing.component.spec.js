@@ -43,6 +43,8 @@
                     $delegate.getAtls = jasmine.createSpy('getAtls');
                     $delegate.getDirectReviews = jasmine.createSpy('getDirectReviews');
                     $delegate.getListing = jasmine.createSpy('getListing');
+                    $delegate.getMipsMeasures = jasmine.createSpy('getMipsMeasures');
+                    $delegate.getMipsMeasureTypes = jasmine.createSpy('getMipsMeasureTypes');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getSingleListingActivityMetadata = jasmine.createSpy('getSingleListingActivityMetadata');
@@ -76,6 +78,8 @@
                 networkService.getAtls.and.returnValue($q.when({}));
                 networkService.getDirectReviews.and.returnValue($q.when([]));
                 networkService.getListing.and.returnValue($q.when(mock.products));
+                networkService.getMipsMeasures.and.returnValue($q.when({}));
+                networkService.getMipsMeasureTypes.and.returnValue($q.when({}));
                 networkService.getQmsStandards.and.returnValue($q.when({}));
                 networkService.getSearchOptions.and.returnValue($q.when({}));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));

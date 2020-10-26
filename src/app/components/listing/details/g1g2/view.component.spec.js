@@ -3,21 +3,18 @@
 
     describe('the G1/G2 view component', () => {
 
-        var $compile, $log, ctrl, el, mock, scope;
-
-        mock = {
-            measures: [{id: 1}],
-        };
+        var $compile, $log, Mock, ctrl, el, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.components');
+            angular.mock.module('chpl.components', 'chpl.mock');
 
-            inject((_$compile_, _$log_, $rootScope) => {
+            inject((_$compile_, _$log_, $rootScope, _Mock_) => {
                 $compile = _$compile_;
                 $log = _$log_;
+                Mock = _Mock_;
 
                 scope = $rootScope.$new();
-                scope.measures = mock.measures;
+                scope.measures = Mock.listingMeasures;
                 el = angular.element('<chpl-g1g2-view measures="measures"></chpl-g1g2-view>');
 
                 $compile(el)(scope);
@@ -43,7 +40,16 @@
         describe('controller', () => {
             it('should have isolate scope object with instanciate members', () => {
                 expect(ctrl).toEqual(jasmine.any(Object));
-                expect(ctrl.measures).toEqual(mock.measures);
+            });
+
+            it('should sort measures', () => {
+                expect(ctrl.measures[0].measure.name).toBe('Doing a thing with stuff');
+                expect(ctrl.measures[1].measure.name).toBe('Doing a thing with stuff again');
+                expect(ctrl.measures[2].measure.name).toBe('Doing another thing with stuff');
+            });
+
+            it('should build a display value for associated criteria', () => {
+                expect(ctrl.measures[1].displayCriteria).toBe('a5; b5');
             });
         });
     });

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the G1/G2 edit component', () => {
+    describe('the G1/G2 edit component', () => {
 
         var $compile, $log, ManageList, Mock, ctrl, el, scope;
 
@@ -15,11 +15,11 @@
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
-                scope.measures = Mock.certifiedProductMipsMeasures;
+                scope.measures = Mock.listingMeasures;
                 scope.onChange = jasmine.createSpy('onChange');
                 scope.resources = {
-                    mipsMeasures: Mock.mipsMeasures,
-                    mipsTypes: Mock.mipsTypes,
+                    mipsMeasures: {data: Mock.measures},
+                    mipsMeasureTypes: {data: Mock.measurementTypes},
                 };
                 el = angular.element('<chpl-g1g2-edit measures="measures" on-change="onChange(measures)" resources="resources"></chpl-g1g2-edit>');
 
@@ -54,7 +54,7 @@
             });
 
             it('should generate a list of available tests', () => {
-                expect(ctrl.allTests).toEqual(['RT1', 'RT10', 'RT3']);
+                expect(ctrl.allTests).toEqual(['RT1', 'RT3', 'RT10']);
             });
 
             it('should generate a list of available MIPS types', () => {
@@ -66,8 +66,8 @@
 
                 describe('measure results', () => {
                     beforeEach(() => {
-                        a = angular.copy(Mock.certifiedProductMipsMeasures[0]);
-                        b = angular.copy(Mock.certifiedProductMipsMeasures[0]);
+                        a = angular.copy(Mock.listingMeasures[0]);
+                        b = angular.copy(Mock.listingMeasures[0]);
                     });
 
                     it('should not sort identical ones', () => {
@@ -75,32 +75,32 @@
                     });
 
                     it('should sort by g1/g2', () => {
-                        b.mipsType.name = 'G2';
+                        b.measurementType.name = 'G2';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by domain', () => {
-                        b.mipsMeasure.mipsDomain.domain = 'Medicaid';
+                        b.measure.domain.name = 'Medicaid';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by test', () => {
-                        b.mipsMeasure.requiredTestAbbr = 'RT2';
+                        b.measure.abbreviation = 'RT2';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by test, ignoring the RT part', () => {
-                        a.mipsMeasure.requiredTestAbbr = 'RT2';
-                        b.mipsMeasure.requiredTestAbbr = 'RT10';
+                        a.measure.abbreviation = 'RT2';
+                        b.measure.abbreviation = 'RT10';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by name', () => {
-                        b.mipsMeasure.name = 'Never done sorting';
+                        b.measure.name = 'Never done sorting';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
@@ -108,8 +108,8 @@
 
                 describe('available measures', () => {
                     beforeEach(() => {
-                        a = angular.copy(Mock.mipsMeasures[0]);
-                        b = angular.copy(Mock.mipsMeasures[0]);
+                        a = angular.copy(Mock.measures[0]);
+                        b = angular.copy(Mock.measures[0]);
                     });
 
                     it('should not sort identical ones', () => {
@@ -117,20 +117,20 @@
                     });
 
                     it('should sort by domain', () => {
-                        b.mipsDomain.domain = 'Medicaid';
+                        b.domain.name = 'Medicaid';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by test', () => {
-                        b.requiredTestAbbr = 'RT2';
+                        b.abbreviation = 'RT2';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by test, ignoring the RT part', () => {
-                        a.requiredTestAbbr = 'RT2';
-                        b.requiredTestAbbr = 'RT10';
+                        a.abbreviation = 'RT2';
+                        b.abbreviation = 'RT10';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
                         expect(ctrl.measureSort(b, a)).toBe(1);
                     });
@@ -145,7 +145,7 @@
 
             describe('when filtering available measures', () => {
                 it('should filter out ones that don\'t have the required test', () => {
-                    ctrl.ManageList.newItem['mipsMeasures'] = {selectedTestAbbr: 'RT1'};
+                    ctrl.ManageList.newItem['mipsMeasures'] = {selectedAbbreviation: 'RT1'};
                     ctrl.updateAllowedMeasures();
                     expect(ctrl.allowedMeasures.length).toBe(1);
                 });
@@ -163,21 +163,21 @@
 
                 it('should support removing measures', () => {
                     let init = ctrl.measures.length;
-                    ctrl.removeItem(Mock.certifiedProductMipsMeasures[1]);
+                    ctrl.removeItem(Mock.listingMeasures[1]);
                     expect(ctrl.measures.length).toBe(init - 1);
                 });
 
                 it('should save new measures', () => {
                     spyOn(ctrl, 'update');
                     spyOn(ManageList, 'add');
-                    ManageList.newItem['mipsMeasures'] = {};
+                    ManageList.newItem['mipsMeasures'] = {measure: {}};
                     ctrl.saveNewItem();
                     expect(ctrl.update).toHaveBeenCalled();
                     expect(ManageList.add).toHaveBeenCalledWith('mipsMeasures', jasmine.any(Function));
                 });
 
                 it('should update the newItem data on save', () => {
-                    ManageList.newItem['mipsMeasures'] = {};
+                    ManageList.newItem['mipsMeasures'] = {measure: {}};
                     ManageList.newItem['mipsMeasures'].typeName = 'G1';
                     spyOn(ManageList, 'add').and.stub();
                     ctrl.saveNewItem();

@@ -1,44 +1,47 @@
-const mipsMeasures = [{
-    mipsDomain: { domain: 'EC' },
-    requiredTestAbbr: 'RT1',
+const measures = [{
+    domain: { name: 'EC' },
+    abbreviation: 'RT1',
     requiredTest: 'Required Test 1: Something yet',
     name: 'Doing a thing with stuff',
-    criteriaSelectionRequired: false,
+    requiresCriteriaSelection: false,
     allowedCriteria: [],
+    removed: false,
 },{
-    mipsDomain: { domain: 'EC' },
-    requiredTestAbbr: 'RT10',
+    domain: { name: 'EC' },
+    abbreviation: 'RT10',
     requiredTest: 'Required Test 10: Something else',
     name: 'Doing another thing with stuff',
-    criteriaSelectionRequired: false,
+    requiresCriteriaSelection: false,
     allowedCriteria: [],
+    removed: false,
 },{
-    mipsDomain: { domain: 'EH' },
-    requiredTestAbbr: 'RT3',
+    domain: { name: 'EH' },
+    abbreviation: 'RT3',
     requiredTest: 'Required Test 3: Anything',
     name: 'Doing a thing with stuff again',
-    criteriaSelectionRequired: false,
+    requiresCriteriaSelection: false,
     allowedCriteria: [],
+    removed: false,
 }];
 
-const mipsTypes = [{
+const measurementTypes = [{
     name: 'G1',
 },{
     name: 'G2',
 }];
 
-const certifiedProductMipsMeasures = [{
-    mipsMeasure: angular.copy(mipsMeasures[0]),
-    mipsType: angular.copy(mipsTypes[0]),
-    criteria: [],
+const listingMeasures = [{
+    associatedCriteria: [],
+    measure: angular.copy(measures[0]),
+    measurementType: angular.copy(measurementTypes[0]),
 },{
-    mipsMeasure: angular.copy(mipsMeasures[1]),
-    mipsType: angular.copy(mipsTypes[1]),
-    criteria: [],
+    associatedCriteria: [],
+    measure: angular.copy(measures[1]),
+    measurementType: angular.copy(measurementTypes[1]),
 },{
-    mipsMeasure: angular.copy(mipsMeasures[2]),
-    mipsType: angular.copy(mipsTypes[0]),
-    criteria: [],
+    associatedCriteria: [{number: 'a5'}, {number: 'b5'}],
+    measure: angular.copy(measures[2]),
+    measurementType: angular.copy(measurementTypes[0]),
 }];
 
-export {mipsMeasures, mipsTypes, certifiedProductMipsMeasures };
+export {measures, measurementTypes, listingMeasures };
