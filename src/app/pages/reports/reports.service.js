@@ -156,7 +156,8 @@ export class ReportService {
         case 'mipsMeasures':
             return {
                 sort: (p, c) => {
-                    p.crit = p.associatedCriteria.map(c => c.id).join('|');
+                    p.crit = p.associatedCriteria.map(cc => cc.id).join('|');
+                    c.crit = c.associatedCriteria.map(cc => cc.id).join('|');
                     return p.measurementType.id < c.measurementType.id ? -1 : p.measurementType.id > c.measurementType.id ? 1 :
                         p.measure.id < c.measure.id ? -1 : p.measure.id > c.measure.id ? 1 :
                         p.measure.crit < c.measure.crit ? -1 : p.measure.crit > c.measure.crit ? 1 :
@@ -164,10 +165,11 @@ export class ReportService {
                 },
                 write: t => 'Measure "' + t.measure.abbreviation + ': ' + t.measure.requiredTest + '", for ' + t.measurementType.name + ' with criteria: ' + t.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
                 compare: (p, c) => {
-                    p.crit = p.associatedCriteria.map(c => c.id).join('|');
+                    p.crit = p.associatedCriteria.map(cc => cc.id).join('|');
+                    c.crit = c.associatedCriteria.map(cc => cc.id).join('|');
                     return p.measurementType.id === c.measurementType.id
                         && p.measure.id === c.measure.id
-                        && p.measure.crit !== c.measure.crit;
+                        && p.crit !== c.crit;
                 },
                 change: (p, c) => 'Measure "' + p.measure.abbreviation + ': ' + p.measure.requiredTest
                     + '", for ' + p.measurementType.name + ' changed from criteria: '
