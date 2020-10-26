@@ -12,10 +12,10 @@
       <tr ng-repeat="measure in $ctrl.measures">
         <td ng-class="{ 'removed' : measure.measure.removed }">
           <button ng-if="measure.measure.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-          <span ng-if="measure.measure.removed">Removed | </span>{{ measure.measure.requiredTest }}
+          <span ng-if="measure.measure.removed">Removed | </span>{{ measure.measure.name }}
           <div ng-if="measure.measure.removed" class="clearfix"></div>
         </td>
-        <td>{{ measure.measure.name }}</td>
+        <td>{{ measure.measure.requiredTest }}</td>
         <td>{{ measure.measurementType.name }}</td>
         <td>{{ measure.displayCriteria }}</td>
       </tr>
