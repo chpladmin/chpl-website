@@ -89,7 +89,8 @@ export const G1G2EditComponent = {
             this.measures = this.measures
                 .filter(m => !(m.measurementType.name === item.measurementType.name
                                && m.measure.domain.name === item.measure.domain.name
-                               && m.measure.abbreviation === item.measure.abbreviation));
+                               && m.measure.abbreviation === item.measure.abbreviation
+                               && m.associatedCriteria.map(cc => cc.id).join('|') === item.associatedCriteria.map(cc => cc.id).join('|')));
             this.update();
         }
 
