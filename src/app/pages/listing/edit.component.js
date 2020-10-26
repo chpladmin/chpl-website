@@ -67,13 +67,12 @@ export const ListingEditPageComponent = {
                 reason: this.reason,
                 acknowledgeWarnings: this.acknowledgeWarnings,
             };
-            //that.$log.error(updateObject);
             this.isSaving = true;
             this.networkService.updateCP(updateObject).then(response => {
                 if (!response.status || response.status === 200) {
                     that.listingBasic = angular.copy(response);
                     that.listingDetails = angular.copy(response);
-                    that.$state.go('^', {}, {reload: true});
+                    that.$state.go('^', {forceReload: true}, {reload: true});
                 } else {
                     that.isSaving = undefined;
                     that.errors.save = [response.error];

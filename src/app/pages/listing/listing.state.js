@@ -2,13 +2,16 @@ let states = [{
     name: 'listing',
     url: '/listing/{id}?panel',
     component: 'chplListing',
+    params: {
+        forceReload: {squash: true, value: null},
+    },
     resolve: {
         listing: (networkService, $location, $transition$) => {
             'ngInject';
             if (!$transition$.params().id) {
                 $location.path('/search');
             } else {
-                return networkService.getListing($transition$.params().id, $transition$.params().reload);
+                return networkService.getListing($transition$.params().id, $transition$.params().forceReload);
             }
         },
     },
