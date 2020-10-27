@@ -42,14 +42,54 @@
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
 
-            it('should sort measures', () => {
-                expect(ctrl.measures[0].measure.name).toBe('Doing a thing with stuff');
-                expect(ctrl.measures[1].measure.name).toBe('Doing a thing with stuff again');
-                expect(ctrl.measures[2].measure.name).toBe('Doing another thing with stuff');
+            describe('on changes', () => {
+                it('should build a display value for associated criteria', () => {
+                    expect(ctrl.measures[1].displayCriteria).toBe('a5; b5');
+                });
+
+                it('should not update anything if there are no changes', () => {
+                    let measures = [1, 2];
+                    ctrl.measures = measures;
+                    ctrl.$onChanges({});
+                    expect(ctrl.measures).toBe(measures);
+                });
             });
 
-            it('should build a display value for associated criteria', () => {
-                expect(ctrl.measures[1].displayCriteria).toBe('a5; b5');
+            describe('when sorting measures', () => {
+                let a, b;
+
+                beforeEach(() => {
+                    a = angular.copy(Mock.listingMeasures[0]);
+                    b = angular.copy(Mock.listingMeasures[0]);
+                });
+
+                it('should not sort identical ones', () => {
+                    expect(ctrl.measureSort(a, b)).toBe(0);
+                });
+
+                it('should sort removed last', () => {
+                    b.measure.removed = true;
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it('should sort by g1/g2', () => {
+                    b.measurementType.name = 'G2';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it('should sort by measure name', () => {
+                    b.measure.name = 'Very last measure';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
+
+                it('should sort by required test', () => {
+                    b.measure.requiredTest = 'Required Test 9: Last test';
+                    expect(ctrl.measureSort(a, b)).toBe(-1);
+                    expect(ctrl.measureSort(b, a)).toBe(1);
+                });
             });
         });
     });

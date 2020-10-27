@@ -74,6 +74,12 @@
                         expect(ctrl.measureSort(a, b)).toBe(0);
                     });
 
+                    it('should sort removed last', () => {
+                        b.measure.removed = true;
+                        expect(ctrl.measureSort(a, b)).toBe(-1);
+                        expect(ctrl.measureSort(b, a)).toBe(1);
+                    });
+
                     it('should sort by g1/g2', () => {
                         b.measurementType.name = 'G2';
                         expect(ctrl.measureSort(a, b)).toBe(-1);
@@ -114,6 +120,12 @@
 
                     it('should not sort identical ones', () => {
                         expect(ctrl.measureSort(a, b)).toBe(0);
+                    });
+
+                    it('should sort removed last', () => {
+                        b.removed = true;
+                        expect(ctrl.measureSort(a, b)).toBe(-1);
+                        expect(ctrl.measureSort(b, a)).toBe(1);
                     });
 
                     it('should sort by domain', () => {
