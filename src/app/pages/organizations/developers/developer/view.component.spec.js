@@ -34,6 +34,7 @@
                 $provide.factory('chplProductsDirective', () => ({}));
                 $provide.factory('chplChangeRequestsDirective', () => ({}));
                 $provide.decorator('authService', $delegate => {
+                    $delegate.canManageDeveloper = jasmine.createSpy('canManageDeveloper');
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
 
                     return $delegate;
@@ -59,6 +60,7 @@
                 $rootScope = _$rootScope_;
                 $state = _$state_;
                 authService = _authService_;
+                authService.canManageDeveloper.and.returnValue(true);
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.getAcbs.and.returnValue($q.when({acbs: mock.acbs}));
