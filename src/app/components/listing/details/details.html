@@ -123,7 +123,7 @@
     <div class="panel panel-ai" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
       <div class="panel-heading">
         <a href ng-click="$ctrl.showPanel('g1g2')" aria-expanded="{{ $ctrl.panelShown === 'g1g2' }}" id="details-g1g2">
-          Successfully Tested G1/G2 Measures<span class="pull-right"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
+          Successfully Tested G1/G2 Measures<span class="pull-right">({{ $ctrl.listing.mipsMeasures && $ctrl.listing.mipsMeasures.length ? $ctrl.listing.mipsMeasures.length : 0 }} found) <i class="fa fa-lg" ng-class="$ctrl.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
         </a>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'g1g2'" id="panel-g1g2">
