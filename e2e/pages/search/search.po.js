@@ -2,15 +2,24 @@ const searchpageElements = {
     chplResource: '#resource-toggle',
     overview: '=Overview',
     compareWidget: '#compare-widget-toggle',
-    browseAll: '//button[text()=" Browse all"]',
+    browseAllOnHomePage: '//button[text()=" Browse all"]',
     searchListing: '#searchField',
-    apiInfo: '//div/a[text()="API Info for 2015 Ed. Products"]',
-    sedInfo: '//div/a[text()="SED Info for 2015 Ed. Products"]',
-    correctiveAction: '//div/a[text()="Products: Corrective Action"]',
-    decertifiedProducts: '//div/a[text()="Decertified Products"]',
-    inactiveCertificates: '//div/a[text()="Inactive Certificates"]',
-    bannedDevelopers: '//div/a[text()="Banned Developers"]',
-    charts: '//div/a[text()="Charts"]',
+    pagination: '//table/thead/tr[1]/td/div/div/div/div',
+    browseAll: '//a[text()="Browse all"]',
+    clearFilters: '//a[text()="Clear Filters"]',
+    downloadResultsCustomize: '//button[text()="Download 50 result"]',
+    downloadResults: 'button#dropdown-download-button',
+    moreFilter: '#filter-more-button',
+    moreDeveloper: '#developerRefine',
+    moreProduct: '#productRefine',
+    moreVersion: '#versionRefine',
+    moreCertificationEndDate: '#before',
+    morePracticeTypeDropdown: '#st-select-distinct-practiceType',
+    surveillanceNeverHadFilter: '#filter-has-never-had-surveillance',
+    criteria2015FilterExpand: '//a[text()=" View 2015 Certification Criteria "]',
+    criteria2015FilterOption: '#filter-list-1',
+    edition2014FilterOption: 'input#filter-list-2014',
+    statusRetiredFilterOption: 'input#filter-list-Retired',
 };
 
 class SearchPage {
@@ -29,39 +38,90 @@ class SearchPage {
     }
 
     get browseAllButton () {
-        return $(searchpageElements.browseAll);
+        return $(searchpageElements.browseAllOnHomePage);
     }
 
     get searchListing () {
         return $(searchpageElements.searchListing);
     }
 
-    get apiInfoButton () {
-        return $(searchpageElements.apiInfo);
+    get pagination () {
+        return $(searchpageElements.pagination);
     }
 
-    get sedInfoButton () {
-        return $(searchpageElements.sedInfo);
+    get browseAll () {
+        return $(searchpageElements.browseAll);
     }
 
-    get correctiveActionButton () {
-        return $(searchpageElements.correctiveAction);
+    get clearFilters () {
+        return $(searchpageElements.clearFilters);
     }
 
-    get decertifiedProductsButton () {
-        return $(searchpageElements.decertifiedProducts);
+    get downloadResultsCustomizeButton () {
+        return $(searchpageElements.downloadResultsCustomize);
     }
 
-    get inactiveCertificatesButton () {
-        return $(searchpageElements.inactiveCertificates);
+    get downloadResultsButton () {
+        return $(searchpageElements.downloadResults);
     }
 
-    get bannedDevelopersButton () {
-        return $(searchpageElements.bannedDevelopers);
+    get moreFilterButton () {
+        return $(searchpageElements.moreFilter);
     }
 
-    get chartsButton () {
-        return $(searchpageElements.charts);
+    get moreDeveloperFilter () {
+        return $(searchpageElements.moreDeveloper);
+    }
+
+    get moreProductFilter () {
+        return $(searchpageElements.moreProduct);
+    }
+
+    get moreVersionFilter () {
+        return $(searchpageElements.moreVersion);
+    }
+
+    get moreCertificationEndDateFilter () {
+        return $(searchpageElements.moreCertificationEndDate);
+    }
+
+    get morePracticeTypeDropdownOptions () {
+        return $(searchpageElements.morePracticeTypeDropdown);
+    }
+
+    get surveillanceNeverHadFilter () {
+        return $(searchpageElements.surveillanceNeverHadFilter);
+    }
+
+    get criteria2015FilterExpand () {
+        return $(searchpageElements.criteria2015FilterExpand);
+    }
+
+    get criteria2015FilterOption () {
+        return $(searchpageElements.criteria2015FilterOption);
+    }
+
+    get edition2014FilterOption () {
+        return $(searchpageElements.edition2014FilterOption);
+    }
+    
+    get statusRetiredFilterOption () {
+        return $(searchpageElements.statusRetiredFilterOption);
+    }
+
+    moreOncAcbFilterOptions (acbName) {
+        return $('#filter-list-' + acbName);
+    }
+    moreCqmFilterOptions (cmsName) {
+        return $('#filter-list-' + cmsName);
+    }
+
+    moreFilterExpand (filterOption) {
+        return $('//a[text()="' + filterOption + '"]');
+    }
+
+    expandFilterOptions (filterName) {
+        return $('#filter-' + filterName + '-button');
     }
 
     gotoResourcePage () {
@@ -74,12 +134,25 @@ class SearchPage {
         this.searchListing.addValue(chplId);
     }
 
-    listingTableRowCount () {
+    listingTableFirstPageRowCount () {
         return $$('//table/tbody/tr').length;
     }
 
-    getColumnText (rowNumber, columnNumber){
-        return $('//table/tbody/tr[' + rowNumber +']/td[' + columnNumber +']').getText();
+    listingTotalCount () {
+        return parseInt(this.pagination.getText().slice(-11,-8));
+    }
+
+    getColumnText (rowNumber, columnNumber) {
+        return $('//table/tbody/tr[' + rowNumber + ']/td[' + columnNumber + ']').getText();
+    }
+    // There is no spinner or other indication on search page to make browser wait until listing results are updating
+    // Hoping with redesigning of search page, this timeout won't be needed
+    waitForUpdatedListingResultsCount () {
+        browser.pause(5000);
+    }
+
+    homeSearchPageButtons (buttonName) {
+        return $('//div/a[text()="' + buttonName + '"]');
     }
 }
 

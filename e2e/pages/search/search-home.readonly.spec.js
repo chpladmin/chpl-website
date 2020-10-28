@@ -16,9 +16,9 @@ beforeAll(async () => {
     await hooks.open('#/search');
 });
 
-describe('Search page', () => {
+describe('Search home page', () => {
 
-    it('should have search listing bar', () => {
+    it('should have search for a listing text bar', () => {
         assert.isTrue(page.searchListing.isDisplayed());
     });
 
@@ -28,88 +28,89 @@ describe('Search page', () => {
 
 });
 
-describe('On Search page- "API Info for 2015 Ed. Products" button', () => {
+describe('On search home page- "API Info for 2015 Ed. Products" button', () => {
 
     it('should be displayed', () => {
-        assert.isTrue(page.apiInfoButton.isDisplayed());
+        assert.isTrue(page.homeSearchPageButtons('API Info for 2015 Ed. Products').isDisplayed());
     });
     it('should be clickable', () => {
-        assert.isTrue(page.apiInfoButton.isDisplayed());
+        assert.isTrue(page.homeSearchPageButtons('API Info for 2015 Ed. Products').isDisplayed());
     });
     it('should have correct link to API documentation page', () => {
-        assert.equal(page.apiInfoButton.getAttribute('href'),browser.options.baseUrl + apiInfoLink);
+        assert.equal(page.homeSearchPageButtons('API Info for 2015 Ed. Products').getAttribute('href'),browser.options.baseUrl + apiInfoLink);
     });
 });
 
-describe('On Search page- "SED Info for 2015 Ed. Products" button', () => {
+describe('On search home page- "SED Info for 2015 Ed. Products" button', () => {
 
     it('should be displayed', () => {
-        assert.equal(page.sedInfoButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('SED Info for 2015 Ed. Products').isDisplayed(),true);
     });
     it('should be clickable', () => {
-        assert.equal(page.sedInfoButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('SED Info for 2015 Ed. Products').isDisplayed(),true);
     });
     it('should have correct link to SED information page', () => {
-        assert.equal(page.sedInfoButton.getAttribute('href'),browser.options.baseUrl + sedInfoLink);
+        assert.equal(page.homeSearchPageButtons('SED Info for 2015 Ed. Products').getAttribute('href'),browser.options.baseUrl + sedInfoLink);
     });
 });
-describe('On Search page- "Products: Corrective Action" button', () => {
+
+describe('On search home page- "Products: Corrective Action" button', () => {
 
     it('should be displayed', () => {
-        assert.equal(page.correctiveActionButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Products: Corrective Action').isDisplayed(),true);
     });
     it('should be clickable', () => {
-        assert.equal(page.correctiveActionButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Products: Corrective Action').isDisplayed(),true);
     });
     it('should have correct link to Corrective action page', () => {
-        assert.equal(page.correctiveActionButton.getAttribute('href'),browser.options.baseUrl + correctiveActionLink);
+        assert.equal(page.homeSearchPageButtons('Products: Corrective Action').getAttribute('href'),browser.options.baseUrl + correctiveActionLink);
     });
 });
-describe('On Search page- "Decertified Products" button', () => {
+describe('On search home page- "Decertified Products" button', () => {
 
     it('should be displayed', () => {
-        assert.equal(page.decertifiedProductsButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Decertified Products').isDisplayed(),true);
     });
     it('should be clickable', () => {
-        assert.equal(page.decertifiedProductsButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Decertified Products').isDisplayed(),true);
     });
     it('should have correct link to Decertified Products page', () => {
-        assert.equal(page.decertifiedProductsButton.getAttribute('href'),browser.options.baseUrl + decertifiedProductsLink);
+        assert.equal(page.homeSearchPageButtons('Decertified Products').getAttribute('href'),browser.options.baseUrl + decertifiedProductsLink);
     });
 });
-describe('On Search page- "Inactive Certificates" button', () => {
+describe('On search home page- "Inactive Certificates" button', () => {
 
     it('should be displayed', () => {
-        assert.equal(page.inactiveCertificatesButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Inactive Certificates').isDisplayed(),true);
     });
     it('should be clickable', () => {
-        assert.equal(page.inactiveCertificatesButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Inactive Certificates').isDisplayed(),true);
     });
     it('should have correct link to Inactive Certificates page', () => {
-        assert.equal(page.inactiveCertificatesButton.getAttribute('href'),browser.options.baseUrl + inactiveCertificatesLink);
+        assert.equal(page.homeSearchPageButtons('Inactive Certificates').getAttribute('href'),browser.options.baseUrl + inactiveCertificatesLink);
     });
 });
-describe('On Search page- "Banned Developers" button', () => {
+describe('On search home page- "Banned Developers" button', () => {
 
     it('should be displayed', () => {
-        assert.equal(page.bannedDevelopersButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Banned Developers').isDisplayed(),true);
     });
     it('should be clickable', () => {
-        assert.equal(page.bannedDevelopersButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Banned Developers').isDisplayed(),true);
     });
     it('should have correct link to Banned Developers page', () => {
-        assert.equal(page.bannedDevelopersButton.getAttribute('href'),browser.options.baseUrl + bannedDevelopersLink);
+        assert.equal(page.homeSearchPageButtons('Banned Developers').getAttribute('href'),browser.options.baseUrl + bannedDevelopersLink);
     });
 });
-describe('On Search page- "Charts" button', () => {
+describe('On search home page- "Charts" button', () => {
 
     it('should be displayed', () => {
-        assert.equal(page.chartsButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Charts').isDisplayed(),true);
     });
     it('should be clickable', () => {
-        assert.equal(page.chartsButton.isDisplayed(),true);
+        assert.equal(page.homeSearchPageButtons('Charts').isDisplayed(),true);
     });
     it('should have correct link to Charts page', () => {
-        assert.equal(page.chartsButton.getAttribute('href'),browser.options.baseUrl + chartsLink);
+        assert.equal(page.homeSearchPageButtons('Charts').getAttribute('href'),browser.options.baseUrl + chartsLink);
     });
 });
