@@ -104,7 +104,7 @@ class SearchPage {
     get edition2014FilterOption () {
         return $(searchpageElements.edition2014FilterOption);
     }
-    
+
     get statusRetiredFilterOption () {
         return $(searchpageElements.statusRetiredFilterOption);
     }
