@@ -14,7 +14,7 @@ beforeEach(async () => {
     await hooks.open('#/resources/download');
 });
 
-describe('the Download page - 2011/2014/2015 Edition products section', () => {
+describe('the Download page - 2015/2014/2011 Edition products section', () => {
 
     it('should have correct information about 2015 edition products file', () => {
         assert.include(page.productsFileText.getText(),productFile2015);
@@ -27,7 +27,7 @@ describe('the Download page - 2011/2014/2015 Edition products section', () => {
     });
 });
 
-describe('the Download page - 2014/2015 Edition summary section', () => {
+describe('the Download page - 2015/2014 Edition summary section', () => {
 
     it('should have correct information about 2015 edition summary file', () => {
         assert.include(page.summaryFileText.getText(),summaryFile2015);
