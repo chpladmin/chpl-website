@@ -86,6 +86,11 @@ export const ListingComponent = {
                 .then(data => {
                     that.loading = false;
                     that.listing = data;
+                    // TODO: Remove this if block after API is updated
+                    if (that.listing.mipsMeasures) {
+                        that.listing.measures = that.listing.mipsMeasures;
+                    }
+                    // END TODO
                     that.backupListing = angular.copy(that.listing);
                     if (that.isOn('direct-review')) {
                         that.loadDirectReviews();
