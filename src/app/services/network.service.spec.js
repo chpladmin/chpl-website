@@ -955,17 +955,17 @@
                 $httpBackend.flush();
             });
 
-            it('should getMipsMeasures', () => {
-                $httpBackend.expectGET(/^\/rest\/data\/mips-measures$/).respond(200, {data: 'response'});
-                networkService.getMipsMeasures().then(response => {
+            it('should getMeasures', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/measures$/).respond(200, {data: 'response'});
+                networkService.getMeasures().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
             });
 
-            it('should getMipsMeasureTypess', () => {
-                $httpBackend.expectGET(/^\/rest\/data\/mips-measure-types$/).respond(200, {data: 'response'});
-                networkService.getMipsMeasureTypes().then(response => {
+            it('should getMeasureTypess', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/measure-types$/).respond(200, {data: 'response'});
+                networkService.getMeasureTypes().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();

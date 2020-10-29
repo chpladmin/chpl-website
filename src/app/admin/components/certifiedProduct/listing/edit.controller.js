@@ -294,7 +294,7 @@
         function updateListing (listing) {
             vm.cp.certificationResults = listing.certificationResults;
             vm.cp.cqmResults = listing.cqmResults;
-            vm.cp.mipsMeasures = listing.mipsMeasures;
+            vm.cp.measures = listing.measures;
             vm.cp.sed = listing.sed;
             vm.cp.sedIntendedUserDescription = listing.sedIntendedUserDescription;
             vm.cp.sedReportFileLocation = listing.sedReportFileLocation;

@@ -78,7 +78,7 @@ export const ListingDetailsComponent = {
         }
 
         g1g2Change (measures) {
-            this.listing.mipsMeasures = measures;
+            this.listing.measures = measures;
             this.onChange({listing: this.listing});
         }
 

@@ -24,7 +24,7 @@ const measures = [{
     removed: false,
 }];
 
-const measurementTypes = [{
+const measureTypes = [{
     name: 'G1',
 },{
     name: 'G2',
@@ -33,15 +33,15 @@ const measurementTypes = [{
 const listingMeasures = [{
     associatedCriteria: [],
     measure: angular.copy(measures[0]),
-    measurementType: angular.copy(measurementTypes[0]),
+    measurementType: angular.copy(measureTypes[0]),
 },{
     associatedCriteria: [],
     measure: angular.copy(measures[1]),
-    measurementType: angular.copy(measurementTypes[1]),
+    measurementType: angular.copy(measureTypes[1]),
 },{
     associatedCriteria: [{number: 'a5'}, {number: 'b5'}],
     measure: angular.copy(measures[2]),
-    measurementType: angular.copy(measurementTypes[0]),
+    measurementType: angular.copy(measureTypes[0]),
 }];
 
-export {measures, measurementTypes, listingMeasures };
+export {measures, measureTypes, listingMeasures };

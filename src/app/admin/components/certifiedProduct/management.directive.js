@@ -74,8 +74,8 @@
                 vm.resourcesReady.atls &&
                 vm.resourcesReady.qmsStandards &&
                 vm.resourcesReady.accessibilityStandards &&
-                vm.resourcesReady.mipsMeasures &&
-                vm.resourcesReady.mipsTypes &&
+                vm.resourcesReady.measures &&
+                vm.resourcesReady.measureTypes &&
                 vm.resourcesReady.ucdProcesses &&
                 vm.resourcesReady.testProcedures &&
                 vm.resourcesReady.testData &&
@@ -409,8 +409,8 @@
                 atls: false,
                 qmsStandards: false,
                 accessibilityStandards: false,
-                mipsMeasures: false,
-                mipsTypes: false,
+                measures: false,
+                measureTypes: false,
                 ucdProcesses: false,
                 testProcedures: false,
                 testData: false,
@@ -448,16 +448,16 @@
                     vm.resourcesReady.accessibilityStandards = true;
                 });
 
-            networkService.getMipsMeasures()
+            networkService.getMeasures()
                 .then(function (response) {
-                    vm.resources.mipsMeasures = response;
-                    vm.resourcesReady.mipsMeasures = true;
+                    vm.resources.measures = response;
+                    vm.resourcesReady.measures = true;
                 });
 
-            networkService.getMipsMeasureTypes()
+            networkService.getMeasureTypes()
                 .then(function (response) {
-                    vm.resources.mipsMeasureTypes = response;
-                    vm.resourcesReady.mipsMeasureTypes = true;
+                    vm.resources.measureTypes = response;
+                    vm.resourcesReady.measureTypes = true;
                 });
 
             networkService.getUcdProcesses()

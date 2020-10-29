@@ -21,7 +21,7 @@ export const G1G2EditComponent = {
                     .sort((a, b) => this.measureSort(a, b));
             }
             if (changes.resources && changes.resources.currentValue) {
-                this.allMeasures = changes.resources.currentValue.mipsMeasures.data
+                this.allMeasures = changes.resources.currentValue.measures.data
                     .map(m => {
                         m.displayName = m.domain.name;
                         if (m.removed) {
@@ -40,11 +40,11 @@ export const G1G2EditComponent = {
                     })
                     .sort((a, b) => this.measureSort(a, b));
                 this.allTests = [... new Set(
-                    changes.resources.currentValue.mipsMeasures.data
+                    changes.resources.currentValue.measures.data
                         .map(m => m.abbreviation)
                         .sort((a, b) => this.testSort(a, b))
                 )];
-                this.allTypes = changes.resources.currentValue.mipsMeasureTypes.data
+                this.allTypes = changes.resources.currentValue.measureTypes.data
                     .map(t => t)
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
@@ -56,7 +56,7 @@ export const G1G2EditComponent = {
         }
 
         clearCriteria () {
-            this.ManageList.newItem['mipsMeasures'].criteria = {};
+            this.ManageList.newItem['measures'].criteria = {};
         }
 
         measureSort (a, b) {
@@ -76,13 +76,13 @@ export const G1G2EditComponent = {
         }
 
         readyForAdd () {
-            return this.ManageList.newItem['mipsMeasures']
-                && this.ManageList.newItem['mipsMeasures'].selectedAbbreviation
-                && this.ManageList.newItem['mipsMeasures'].measure
-                && this.ManageList.newItem['mipsMeasures'].typeName
-                && (!this.ManageList.newItem['mipsMeasures'].measure.requiresCriteriaSelection
-                    || (this.ManageList.newItem['mipsMeasures'].selectedCriteria
-                        && Object.keys(this.ManageList.newItem['mipsMeasures'].selectedCriteria).reduce((acc, key) => acc || this.ManageList.newItem['mipsMeasures'].selectedCriteria[key], false)));
+            return this.ManageList.newItem['measures']
+                && this.ManageList.newItem['measures'].selectedAbbreviation
+                && this.ManageList.newItem['measures'].measure
+                && this.ManageList.newItem['measures'].typeName
+                && (!this.ManageList.newItem['measures'].measure.requiresCriteriaSelection
+                    || (this.ManageList.newItem['measures'].selectedCriteria
+                        && Object.keys(this.ManageList.newItem['measures'].selectedCriteria).reduce((acc, key) => acc || this.ManageList.newItem['measures'].selectedCriteria[key], false)));
         }
 
         removeItem (item) {
@@ -95,7 +95,7 @@ export const G1G2EditComponent = {
         }
 
         saveNewItem () {
-            let type = 'mipsMeasures';
+            let type = 'measures';
             let create = object => ({
                 measure: object.measure,
                 measurementType: object.type,
@@ -123,7 +123,7 @@ export const G1G2EditComponent = {
         }
 
         updateAllowedMeasures () {
-            this.allowedMeasures = this.allMeasures.filter(m => m.abbreviation === this.ManageList.newItem['mipsMeasures'].selectedAbbreviation);
+            this.allowedMeasures = this.allMeasures.filter(m => m.abbreviation === this.ManageList.newItem['measures'].selectedAbbreviation);
             this.clearCriteria();
         }
     },

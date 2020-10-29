@@ -153,7 +153,7 @@ export class ReportService {
                 compare: (p, c) => p.muuCount !== c.muuCount,
                 change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
             };
-        case 'mipsMeasures':
+        case 'measures':
             return {
                 sort: (p, c) => {
                     p.crit = p.associatedCriteria.map(cc => cc.id).join('|');
