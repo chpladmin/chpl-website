@@ -15,9 +15,7 @@
     {{ item.measurementType.name }}
   </div>
   <div>
-    <ul>
-      <li ng-repeat="criteria in item.associatedCriteria">{{ criteria.number }}: {{ criteria.title }}</li>
-    </ul>
+    {{ item.displayCriteria }}
   </div>
   <div class="manage-list__item--end" ng-repeat-end>
     <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem(item)"><i class="fa fa-times"></i></button>
@@ -47,14 +45,14 @@
     </span>
   </div>
   <div ng-if="$ctrl.ManageList.addingItem['measures']">
-    <ul ng-if="!$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
-      <li ng-repeat="criteria in $ctrl.ManageList.newItem['measures'].measure.allowedCriteria">{{ criteria.number }}: {{ criteria.title }}</li>
-    </ul>
-    <div ng-repeat="criteria in $ctrl.ManageList.newItem['measures'].measure.allowedCriteria" ng-if="$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
-      <input type="checkbox" ng-model="$ctrl.ManageList.newItem['measures'].selectedCriteria[criteria.id].selected"
+    <span ng-if="!$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
+      {{ $ctrl.ManageList.newItem['measures'].measure.displayCriteria.join(';') }}
+    </span>
+    <div ng-repeat="criteria in $ctrl.ManageList.newItem['measures'].measure.displayCriteria" ng-if="$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
+      <input type="checkbox" ng-model="$ctrl.ManageList.newItem['measures'].selectedCriteria[criteria].selected"
              ng-disabled="!$ctrl.ManageList.newItem['measures'].selectedAbbreviation"
-             id="measure-add-new-criteria-{{ criteria.id }}" name="measureAddNewCriteria{{ criteria.id }}" value="{{ criteria.id }}"></input>
-      <label for="measure-add-new-criteria-{{ criteria.id }}">{{ criteria.display }}</label>
+             id="measure-add-new-criteria-{{ criteria }}" name="measureAddNewCriteria{{ criteria }}" value="{{ criteria }}"></input>
+      <label for="measure-add-new-criteria-{{ criteria }}">{{ criteria }}</label>
     </div>
   </div>
   <div class="manage-list__item--end" ng-if="$ctrl.ManageList.addingItem['measures']">

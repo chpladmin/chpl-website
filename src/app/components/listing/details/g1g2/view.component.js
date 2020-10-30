@@ -13,6 +13,7 @@ export const G1G2ViewComponent = {
             if (changes.measures && changes.measures.currentValue) {
                 this.measures = changes.measures.currentValue
                     .map(m => {
+                        //m.displayCriteria = [... new Set(m.associatedCriteria.map(c => c.number))].join('; ');
                         m.displayCriteria = m.associatedCriteria.map(c => c.number).join('; ');
                         return m;
                     })

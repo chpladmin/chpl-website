@@ -393,11 +393,11 @@ export class NetworkService {
     }
 
     getMeasures () {
-        return this.apiGET('/data/measures');
+        return this.apiGET('/data/mips-measures');
     }
 
     getMeasureTypes () {
-        return this.apiGET('/data/measure-types');
+        return this.apiGET('/data/mips-measure-types');
     }
 
     getNonconformityStatisticsCount () {

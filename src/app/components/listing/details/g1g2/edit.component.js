@@ -17,7 +17,10 @@ export const G1G2EditComponent = {
         $onChanges (changes) {
             if (changes.measures && changes.measures.currentValue) {
                 this.measures = changes.measures.currentValue
-                    .map(m => m)
+                    .map(m => {
+                        m.displayCriteria = [... new Set(m.associatedCriteria.map(c => c.number))].join('; ');
+                        return m;
+                    })
                     .sort((a, b) => this.measureSort(a, b));
             }
             if (changes.resources && changes.resources.currentValue) {
@@ -27,15 +30,8 @@ export const G1G2EditComponent = {
                         if (m.removed) {
                             m.displayName = 'Removed | ' + m.displayName;
                         }
-                        m.allowedCriteria = m.allowedCriteria
-                            .map(c => {
-                                c.display = c.number;
-                                if (c.title.indexOf('Cures Update') > -1) {
-                                    c.display += ' (Cures Update)';
-                                }
-                                return c;
-                            })
-                            .sort(this.util.sortCertActual);
+                        m.displayCriteria = [... new Set(m.allowedCriteria.map(c => c.number))]
+                            .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b));
                         return m;
                     })
                     .sort((a, b) => this.measureSort(a, b));
@@ -90,7 +86,7 @@ export const G1G2EditComponent = {
                 .filter(m => !(m.measurementType.name === item.measurementType.name
                                && m.measure.domain.name === item.measure.domain.name
                                && m.measure.abbreviation === item.measure.abbreviation
-                               && m.associatedCriteria.map(cc => cc.id).join('|') === item.associatedCriteria.map(cc => cc.id).join('|')));
+                               && m.displayCriteria === item.displayCriteria));
             this.update();
         }
 
@@ -100,11 +96,13 @@ export const G1G2EditComponent = {
                 measure: object.measure,
                 measurementType: object.type,
                 associatedCriteria: object.criteria,
+                displayCriteria: [... new Set(object.criteria.map(c => c.number))]
+                    .join('; '),
             });
             this.ManageList.newItem[type].type = this.allTypes.filter(t => t.name === this.ManageList.newItem[type].typeName)[0];
             if (this.ManageList.newItem[type].measure.requiresCriteriaSelection) {
                 this.ManageList.newItem[type].criteria = this.ManageList.newItem[type].measure.allowedCriteria
-                    .filter(cc => this.ManageList.newItem[type].selectedCriteria[cc.id] && this.ManageList.newItem[type].selectedCriteria[cc.id].selected);
+                    .filter(cc => this.ManageList.newItem[type].selectedCriteria[cc.number] && this.ManageList.newItem[type].selectedCriteria[cc.number].selected);
             } else {
                 this.ManageList.newItem[type].criteria = this.ManageList.newItem[type].measure.allowedCriteria;
             }
