@@ -242,7 +242,6 @@ export const ListingEditComponent = {
             this.listing.certificationResults = listing.certificationResults;
             this.listing.cqmResults = listing.cqmResults;
             this.listing.measures = listing.measures;
-            this.listing.mipsMeasures = listing.measures;
             this.listing.sed = listing.sed;
             this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
             this.listing.sedReportFileLocation = listing.sedReportFileLocation;

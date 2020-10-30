@@ -4,17 +4,19 @@ export const G1G2ViewComponent = {
         measures: '<',
     },
     controller: class G1G2ViewComponent {
-        constructor ($log) {
+        constructor ($log, utilService) {
             'ngInject';
             this.$log = $log;
+            this.util = utilService;
         }
 
         $onChanges (changes) {
             if (changes.measures && changes.measures.currentValue) {
                 this.measures = changes.measures.currentValue
                     .map(m => {
-                        //m.displayCriteria = [... new Set(m.associatedCriteria.map(c => c.number))].join('; ');
-                        m.displayCriteria = m.associatedCriteria.map(c => c.number).join('; ');
+                        m.displayCriteria = [... new Set(m.associatedCriteria.map(c => c.number))]
+                            .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
+                            .join('; ');
                         return m;
                     })
                     .sort((a, b) => this.measureSort(a, b));
