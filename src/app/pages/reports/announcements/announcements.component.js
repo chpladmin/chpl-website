@@ -45,7 +45,7 @@ export const ReportsAnnouncementsComponent = {
 
         onApplyFilter (filterObj) {
             let f = angular.fromJson(filterObj);
-            this.dofilter(f);
+            this.doFilter(f);
         }
 
         onClearFilter () {
