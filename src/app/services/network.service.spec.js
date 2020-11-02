@@ -963,7 +963,7 @@
                 $httpBackend.flush();
             });
 
-            it('should getMeasureTypess', () => {
+            it('should getMeasureTypes', () => {
                 $httpBackend.expectGET(/^\/rest\/data\/measure-types$/).respond(200, {data: 'response'});
                 networkService.getMeasureTypes().then(response => {
                     expect(response.data).toEqual('response');

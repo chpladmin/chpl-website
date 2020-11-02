@@ -274,24 +274,6 @@
                         ctrl.cert.g2MacraMeasures = undefined;
                     });
 
-                    //TODO: enable if these should show; remove if no longer necessary
-                    xit('should show if there are g1 macra measures', () => {
-                        expect(ctrl.showViewDetailsLink()).toBe(false);
-                        ctrl.cert.g1MacraMeasures = [];
-                        expect(ctrl.showViewDetailsLink()).toBe(false);
-                        ctrl.cert.g1MacraMeasures = [1];
-                        expect(ctrl.showViewDetailsLink()).toBe(true);
-                    });
-
-                    //TODO: enable if these should show; remove if no longer necessary
-                    xit('should show if there are g2 macra measures', () => {
-                        expect(ctrl.showViewDetailsLink()).toBe(false);
-                        ctrl.cert.g2MacraMeasures = [];
-                        expect(ctrl.showViewDetailsLink()).toBe(false);
-                        ctrl.cert.g2MacraMeasures = [2];
-                        expect(ctrl.showViewDetailsLink()).toBe(true);
-                    });
-
                     it('should show if g1Success is non-null', () => {
                         ctrl.cert.g1Success = false;
                         expect(ctrl.showViewDetailsLink()).toBe(true);
