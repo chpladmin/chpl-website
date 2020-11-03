@@ -6,6 +6,11 @@
         var $componentController, $log, $q, $stateParams, $uibModal, actualOptions, authService, ctrl, featureFlags, mock, networkService, scope;
         mock = {};
         mock.activity = {};
+        mock.listing = {
+            developer: {
+                developerId: 'id',
+            },
+        };
         mock.productId = 123123;
         mock.products = [{ developer: 'Developer', product: 'Product' }];
         mock.fakeModal = {
@@ -75,7 +80,7 @@
                 networkService.getAccessibilityStandards.and.returnValue($q.when({}));
                 networkService.getAtls.and.returnValue($q.when({}));
                 networkService.getDirectReviews.and.returnValue($q.when([]));
-                networkService.getListing.and.returnValue($q.when(mock.products));
+                networkService.getListing.and.returnValue($q.when(mock.listing));
                 networkService.getQmsStandards.and.returnValue($q.when({}));
                 networkService.getSearchOptions.and.returnValue($q.when({}));
                 networkService.getSingleListingActivityMetadata.and.returnValue($q.when(mock.activity));
@@ -137,8 +142,8 @@
                         expect(ctrl.loading).toBe(false);
                     });
 
-                    it('should load product data', () => {
-                        expect(ctrl.listing).toEqual(mock.products);
+                    it('should load listing data', () => {
+                        expect(ctrl.listing).toEqual(mock.listing);
                     });
                 });
             });
