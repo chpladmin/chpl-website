@@ -5,9 +5,10 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
+    function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, DateUtil, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
         var vm = this;
 
+        vm.DateUtil = DateUtil;
         vm.addPreviousMuu = addPreviousMuu;
         vm.addPreviousStatus = addPreviousStatus;
         vm.addNewValue = utilService.addNewValue;
@@ -80,6 +81,12 @@
                 });
             } else {
                 vm.cp.meaningfulUseUserHistory = [];
+            }
+            if (vm.cp.rwtPlansCheckDate) {
+                vm.cp.rwtPlansCheckDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtPlansCheckDate);
+            }
+            if (vm.cp.rwtResultsCheckDate) {
+                vm.cp.rwtResultsCheckDateObject = vm.DateUtil.localDateToTimestamp(vm.cp.rwtResultsCheckDate);
             }
 
             vm.attachModel();
@@ -235,6 +242,19 @@
                     vm.idFields.suffix;
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
+
+            if (vm.cp.rwtPlansCheckDateObject) {
+                vm.cp.rwtPlansCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtPlansCheckDateObject, 'yyyy-MM-dd');
+            } else {
+                vm.cp.rwtPlansCheckDate = null;
+            }
+
+            if (vm.cp.rwtResultsCheckDateObject) {
+                vm.cp.rwtResultsCheckDate = vm.DateUtil.timestampToString(vm.cp.rwtResultsCheckDateObject, 'yyyy-MM-dd');
+            } else {
+                vm.cp.rwtResultsCheckDate = null;
+            }
+
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
                 networkService.updateCP({

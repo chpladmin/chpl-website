@@ -28,11 +28,7 @@
 
         describe('when converting dates to display form', () => {
             it('should convert a "Date" object into standard form', () => {
-                let localDate = {
-                    month: 'SEPTEMBER',
-                    dayOfMonth: 9,
-                    year: 2020,
-                };
+                let localDate = '2020-09-09';
                 expect(date.getDisplayDateFormat(localDate)).toBe('Sep 9, 2020');
             });
 

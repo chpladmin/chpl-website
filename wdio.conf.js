@@ -1,4 +1,9 @@
 const config= require('./e2e/config/mainConfig');
+const path = require('path');
+const fs = require('fs');
+
+// Store the directory path in a global, which allows us to access this path inside our tests
+global.downloadDir = path.join(`${__dirname}`, 'test_reports/e2e/');
 
 exports.config = {
     //
@@ -22,7 +27,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        'e2e/**/*spec.js',
+        'e2e/**/*.spec.js',
     ],
     suites: {
         components: [
@@ -71,6 +76,11 @@ exports.config = {
         browserName: config.browser,
         'goog:chromeOptions': {
             args: ['--headless', '--dissable-gpu', '--no-sandbox'],
+            prefs: {
+                'directory_upgrade': true,
+                'prompt_for_download': false,
+                'download.default_directory': downloadDir
+            }
         },
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -174,8 +184,13 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+        // make sure download directory exists
+        if (!fs.existsSync(downloadDir)){
+            // if it doesn't exist, create it
+            fs.mkdirSync(downloadDir);
+        }
+    },
     /**
      * Gets executed just before initialising the webdriver session and test framework. It allows you
      * to manipulate configurations depending on the capability or spec.
@@ -185,7 +200,7 @@ exports.config = {
      */
     beforeSession: function (config, capabilities, specs) {
         require('@babel/register');
-      },
+    },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -194,11 +209,13 @@ exports.config = {
      */
     before: function (capabilities, specs) {
         assert = require('chai').assert;
+
         browser.addCommand("waitAndClick", function () {
             // `this` is return value of $(selector)
             this.waitForDisplayed()
             this.click()
         }, true)
+
         //element wrapped in div is not clickable solution
         browser.addCommand("scrollAndClick", function () {
         // `this` is return value of $(selector)
@@ -208,6 +225,33 @@ exports.config = {
         this.scrollIntoView();
         browser.execute(runInBrowser,this);
         }, true)
+
+        browser.addCommand("waitForFileExists", function (filePath, timeout) {
+            return new Promise(function (resolve, reject) {
+            var timer = setTimeout(function () {
+                watcher.close();
+                reject(new Error('File did not exist and was not created before the timeout.'));
+            }, timeout);
+          
+            fs.access(filePath, fs.constants.R_OK, function (err) {
+                if (!err) {
+                    clearTimeout(timer);
+                    watcher.close();
+                    resolve();
+                }
+            });
+          
+            var dir = path.dirname(filePath);
+            var basename = path.basename(filePath);
+            var watcher = fs.watch(dir, function (eventType, filename) {
+                if (eventType === 'rename' && filename === basename) {
+                    clearTimeout(timer);
+                    watcher.close();
+                    resolve();
+                }
+            });
+        });
+    });
     },
     /**
      * Runs before a WebdriverIO command gets executed.

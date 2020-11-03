@@ -603,6 +603,10 @@ export const ReportsListingsComponent = {
                     {key: 'sedTesting', display: 'SED Tested'},
                     {key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date'},
                     {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
+                    {key: 'rwtPlansUrl', display: 'Real World Testing Plans URL'},
+                    {key: 'rwtPlansCheckDate', display: 'Real World Testing Plans Last Completeness Check Date', filter: 'date'},
+                    {key: 'rwtResultsUrl', display: 'Real World Testing Results URL'},
+                    {key: 'rwtResultsCheckDate', display: 'Real World Testing Results Last Completeness Check Date', filter: 'date'},
                 ];
                 var nestedKeys = [
                     {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
