@@ -139,7 +139,7 @@ class SearchPage {
     }
 
     listingTotalCount () {
-        return parseInt(this.pagination.getText().slice(-11,-8));
+        return parseInt(this.pagination.getText().split(' ')[4], 10);
     }
 
     getColumnText (rowNumber, columnNumber) {
