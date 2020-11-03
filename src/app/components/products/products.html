@@ -74,11 +74,11 @@
               <p ng-if="$ctrl.noVisibleListings(product)">No Listings match the filter</p>
               <div class="product__listing" ng-repeat="listing in product.activeVersion.listings | filter:{displayed:true}">
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL Product Number</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL&nbsp;Product&nbsp;Number</div>
                   <div class="product__listing-element"><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Status</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Status</div>
                   <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i><span class="sr-only"> {{ listing.certificationStatus }} tooltip</span></a> {{ listing.certificationStatus }}</div>
                 </div>
                 <div class="product__listing-data-item">
@@ -86,11 +86,11 @@
                   <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">ONC-ACB</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">ONC&#8209;ACB</div>
                   <div class="product__listing-element">{{ listing.acb.name }}</div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Date</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Date</div>
                   <div class="product__listing-element">{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
                 </div>
               </div>

@@ -70,23 +70,21 @@
 
 .product__listings {
     margin: 8px;
+    overflow-x: auto;
 }
 
 .product__listing {
     display: grid;
-    align-items: center;
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 1fr 2fr 1fr;
     background-color: var(--primary);
     margin: 8px;
 }
 
 .product__data-label {
     background: white;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px;
 }
 
 .product__listing-element {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px;
 }
