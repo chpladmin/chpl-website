@@ -1,5 +1,5 @@
 import ListingPage from './listing.po';
-import Hooks from '../../utilities/hooks'
+import Hooks from '../../utilities/hooks';
 
 let hooks, page;
 
@@ -16,7 +16,7 @@ describe('the Listing page', () => {
 
         it('should not have Real World Testing section', () => {
             expect(page.realWortldTestingHeader).not.toExist();
-        })
+        });
     });
 
     describe('when a 2015 edition listing without RWT criteria is loaded', () => {
@@ -26,7 +26,7 @@ describe('the Listing page', () => {
 
         it('should not have Real World Testing section', () => {
             expect(page.realWortldTestingHeader).not.toExist();
-        })
+        });
     });
 
     describe('when a 2015 edition listing that has been withdrawn', () => {
@@ -36,6 +36,6 @@ describe('the Listing page', () => {
 
         it('should not have Real World Testing section', () => {
             expect(page.realWortldTestingHeader).not.toExist();
-        })
+        });
     });
 });
