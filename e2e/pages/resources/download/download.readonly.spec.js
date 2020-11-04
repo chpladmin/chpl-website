@@ -7,6 +7,9 @@ const productFile2014 = 'The 2014 Edition Products file is updated monthly.';
 const productFile2011 = 'The 2011 Edition Products file is updated quarterly.';
 const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
 const summaryFile2014 = 'The 2014 Edition Summary file is updated monthly.';
+const directReview = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
+const surveillanceNonConformity = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.';
+const surveillanceActivity = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
 
 beforeEach(async () => {
     page = new DownloadPage();
@@ -37,3 +40,15 @@ describe('the Download page - 2015/2014 Edition summary section', () => {
     });
 });
 
+describe('the Download page - compliance activities section', () => {
+
+    it('should have correct information about Surveillance Activity', () => {
+        assert.include(page.complianceActivityBullet.getText(),surveillanceActivity);
+    });
+    it('should have correct information about Surveillance Non-Conformities', () => {
+        assert.include(page.complianceActivityBullet.getText(),surveillanceNonConformity);
+    });
+    it('should have correct information about Direct Review Activity', () => {
+        assert.include(page.complianceActivityBullet.getText(),directReview);
+    });
+});
