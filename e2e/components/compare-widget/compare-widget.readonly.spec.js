@@ -8,7 +8,7 @@ let ListingId2 = 9861;
 let search1 = '2216';//using developer code to search listing
 let search2 = '1757';//using developer code to search listing
 
-beforeEach(async () => {
+beforeAll(async() => {
     search = new SearchPage();
     compare = new CompareWidgetComponent();
     hooks = new Hooks();
