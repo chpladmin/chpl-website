@@ -16,7 +16,7 @@
           <div class="products__product-header-item products__product-header-item--first">{{ product.name }}</div>
           <div class="products__product-header-item">{{ product.activeAcbs }}</div>
           <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
-          <div class="products__product-header-item products__product-header-item--end">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 1">s</span></div>
+          <div class="products__product-header-item products__product-header-item--end">{{ product.versions ? product.versions.length - 1 : 0 }} Version<span ng-if="product.versions.length !== 2">s</span></div>
           <div class="products__product-header-item products__product-header-item--end"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
         </div>
         <div ng-if="product.isOpen" class="panel-body">
@@ -36,7 +36,8 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="edit-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.editProduct(product)">Product</li>
-                    <li class="product__product-action-filter-item" ng-click="$ctrl.editVersion(product)">Version</li>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.editVersion(product)" ng-if="product.activeVersion.version !== 'All'">Version</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All'">Version</li>
                   </ul>
                 </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 1)">
@@ -45,7 +46,7 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="merge-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.mergeProduct(product)" ng-if="$ctrl.products.length > 1">Product</li>
-                    <li class="product__product-action-filter-item" ng-if="product.versions.length > 1">Version (functionality coming soon)</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.versions.length > 1">Version (functionality coming soon)</li>
                   </ul>
                 </div>
               </div>

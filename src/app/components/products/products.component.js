@@ -34,8 +34,16 @@ export const ProductsComponent = {
             if (changes.products) {
                 this.products = changes.products.currentValue
                     .map(p => {
+                        let all = {
+                            version: 'All',
+                            listings: [],
+                        }
                         p.activeAcbs = new Set();
-                        p.versions.forEach(v => v.listings.forEach(l => p.activeAcbs.add(l.acb.name)));
+                        p.versions.forEach(v => {
+                            v.listings.forEach(l => p.activeAcbs.add(l.acb.name));
+                            all.listings = all.listings.concat(v.listings);
+                        });
+                        p.versions.unshift(all);
                         p.activeAcbs = [...p.activeAcbs].sort((a, b) => a < b ? -1 : a > b ? 1 : 0).join(', ');
                         p.activeVersion = p.versions[0];
                         p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0).length > 0;
@@ -107,11 +115,13 @@ export const ProductsComponent = {
         }
 
         getListingCounts (product) {
-            let counts = product.versions.reduce((acc, v) => {
-                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
-                acc.total += v.listings.length;
-                return acc;
-            }, {active: 0, total: 0});
+            let counts = product.versions
+                .filter(v => v.version !== 'All')
+                .reduce((acc, v) => {
+                    acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
+                    acc.total += v.listings.length;
+                    return acc;
+                }, {active: 0, total: 0});
             let ret = '';
             if (counts.active > 0) {
                 ret += counts.active + ' active / ';

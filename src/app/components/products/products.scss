@@ -52,6 +52,10 @@
     padding: 8px;
 }
 
+.product__product-action-filter-item--disabled {
+    cursor: not-allowed;
+}
+
 .product__product-action-filter-item:hover,
 .product__product-action-filter-item:focus,
 .product__product-action-filter-item:active {
