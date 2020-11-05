@@ -44,6 +44,7 @@
                     $delegate.getChangeRequestTypes = jasmine.createSpy('getChangeRequestTypes');
                     $delegate.getChangeRequestStatusTypes = jasmine.createSpy('getChangeRequestStatusTypes');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
+                    $delegate.getDirectReviews = jasmine.createSpy('getDirectReviews');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getUsersAtDeveloper = jasmine.createSpy('getUsersAtDeveloper');
                     $delegate.inviteUser = jasmine.createSpy('inviteUser');
@@ -66,6 +67,7 @@
                 networkService.getChangeRequestTypes.and.returnValue($q.when([]));
                 networkService.getChangeRequestStatusTypes.and.returnValue($q.when([]));
                 networkService.getDeveloper.and.returnValue($q.when(mock.developer));
+                networkService.getDirectReviews.and.returnValue($q.when([]));
                 networkService.getUsersAtDeveloper.and.returnValue($q.when({users: mock.users}));
                 networkService.getSearchOptions.and.returnValue($q.when([]));
                 networkService.inviteUser.and.returnValue($q.when({}));
@@ -108,12 +110,37 @@
 
             describe('during initialization', () => {
                 it('should get data', () => {
+                    expect(networkService.getDirectReviews.calls.count()).toBe(1);
+                    expect(networkService.getDirectReviews).toHaveBeenCalledWith(636);
                     expect(networkService.getSearchOptions.calls.count()).toBe(1);
                     expect(networkService.getUsersAtDeveloper).toHaveBeenCalledWith(22);
                     expect(networkService.getUsersAtDeveloper.calls.count()).toBe(1);
                     expect(networkService.getChangeRequests.calls.count()).toBe(1);
                     expect(networkService.getChangeRequestTypes.calls.count()).toBe(1);
                     expect(networkService.getChangeRequestStatusTypes.calls.count()).toBe(1);
+                });
+
+                describe('of direct reviews', () => {
+                    it('should set status on success', () => {
+                        networkService.getDirectReviews.and.returnValue($q.when([1, 2]));
+                        ctrl.drStatus = 'unknown';
+                        ctrl.$onInit();
+                        scope.$digest();
+                        expect(ctrl.drStatus).toBe('success');
+                        expect(ctrl.directReviews).toEqual([1, 2]);
+                    });
+
+                    it('should set status on success', () => {
+                        let response = $q.defer();
+                        networkService.getDirectReviews.and.returnValue(response.promise);
+                        ctrl.drStatus = 'unknown';
+                        ctrl.directReviews = undefined;
+                        response.reject();
+                        ctrl.$onInit();
+                        scope.$digest();
+                        expect(ctrl.drStatus).toBe('error');
+                        expect(ctrl.directReviews).toBeUndefined();
+                    });
                 });
             });
 
