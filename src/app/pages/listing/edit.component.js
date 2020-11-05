@@ -35,7 +35,7 @@ export const ListingEditPageComponent = {
         }
 
         cancel () {
-            this.$state.go('^');
+            this.$state.go('^.^');
         }
 
         consolidateErrors () {
@@ -72,7 +72,7 @@ export const ListingEditPageComponent = {
                 if (!response.status || response.status === 200) {
                     that.listingBasic = angular.copy(response);
                     that.listingDetails = angular.copy(response);
-                    that.$state.go('^', {forceReload: true}, {reload: true});
+                    that.$state.go('^.^', {forceReload: true}, {reload: true});
                 } else {
                     that.isSaving = undefined;
                     that.errors.save = [response.error];

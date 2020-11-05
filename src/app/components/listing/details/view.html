@@ -3,10 +3,9 @@
     Loading...<i class="fa fa-spin fa-spinner"></i>
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
-    <p class="text-right">
-      <button class="btn btn-default btn--wrap" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
-        <i class="fa" ng-class="$ctrl.viewAllCerts ? 'fa-toggle-on' : 'fa-toggle-off'"></i> Viewing {{ $ctrl.viewAllCerts ? 'all' : 'only attested to' }} Certification Criteria / Clinical Quality Measures
-      </button>
+    <p>
+      <input type="checkbox" ng-model="$ctrl.viewAllCerts" id="viewAllCerts"></input>
+      <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
     </p>
 
     <!-- Certification Criteria -->
@@ -146,60 +145,53 @@
       </div>
     </div>
 
+
     <!-- Additional Information -->
     <div class="panel panel-ai">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}">
         <div class="listing-details__element-header-title">Additional Information</div>
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
-      <div class="panel-body listing-details__additional-information animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
-        <div ng-if="$ctrl.listing.certificationEdition.name === '2014'" id="panel-additional-information-test-results-summary">
-          <div class="data-label">Test Results Summary</div>
-          <div class="read-only-data">
-            <a ai-a ng-if="$ctrl.listing.reportFileLocation" href="{{ $ctrl.listing.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.reportFileLocation }">{{ $ctrl.listing.reportFileLocation }}</a>
-            <p ng-if="!$ctrl.listing.reportFileLocation">No report on file</p>
-          </div>
-        </div>
-        <div ng-if="$ctrl.listing.ics !== null" id="panel-additional-information-certification-history">
-          <div class="data-label">Certification History</div>
-          <div class="read-only-data">
-            <p ng-if="$ctrl.listing.ics.inherits !== null">Inherited Certification Status (ICS): {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
-            <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
-          </div>
-        </div>
-        <div ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
-          <div class="data-label">Inherits from</div>
-          <div class="read-only-data">
-            <ul>
-              <li ng-repeat="listing in $ctrl.listing.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
-                <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
-                <span ng-if="listing.id"><a ui-sref="listing({ id:listing.id, panel: 'additional'})">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div ng-if="$ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0">
-          <div class="data-label">ICS Source for</div>
-          <div class="read-only-data">
-            <ul>
-              <li ng-repeat="listing in $ctrl.listing.ics.children | orderBy: ['certificationDate','chplProductNumber']">
-                <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
-                <span ng-if="listing.id"><a ui-sref="listing({ id:listing.id, panel: 'additional'})">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div ng-if="!$ctrl.isConfirming && (($ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0) || ($ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0))">
-          <button class="btn btn-primary" ng-click="$ctrl.viewIcsFamily()">View ICS Relationships</button>
-        </div>
-        <div ng-if="$ctrl.listing.otherAcb" id="panel-additional-information-other-acb">
-          <div class="data-label">Other ACB</div>
-          <div class="read-only-data">{{ $ctrl.listing.otherAcb }}</div>
-        </div>
+      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
+        <span ng-if="$ctrl.listing.certificationEdition.name === '2014'" id="panel-additional-information-test-results-summary">
+          <h4>Test Results Summary</h4>
+          <a ai-a ng-if="$ctrl.listing.reportFileLocation" href="{{ $ctrl.listing.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.reportFileLocation }">{{ $ctrl.listing.reportFileLocation }}</a>
+          <p ng-if="!$ctrl.listing.reportFileLocation">No report on file</p>
+        </span>
+        <span ng-if="$ctrl.listing.ics !== null" id="panel-additional-information-certification-history">
+          <h4>Certification History</h4>
+          <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
+          <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
+        </span>
+        <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
+          <h5>Inherits from</h5>
+          <ul>
+            <li ng-repeat="listing in $ctrl.listing.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
+              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
+            </li>
+          </ul>
+        </span>
+        <span ng-if="$ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0">
+          <h5>ICS Source for</h5>
+          <ul>
+            <li ng-repeat="listing in $ctrl.listing.ics.children | orderBy: ['certificationDate','chplProductNumber']">
+              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
+            </li>
+          </ul>
+        </span>
+        <span ng-if="!$ctrl.isConfirming && (($ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0) || ($ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0))">
+          <button class="btn btn-ai-success" ng-click="$ctrl.viewIcsFamily()">View ICS Relationships</button>
+        </span>
+        <span ng-if="$ctrl.listing.otherAcb" id="panel-additional-information-other-acb">
+          <h4>Other ACB</h4>
+          <p>{{ $ctrl.listing.otherAcb }}</p>
+        </span>
 
 
         <div class="listing-details__additional-information-qms" ng-if="$ctrl.listing.qmsStandards && $ctrl.listing.qmsStandards.length > 0">
-          <div class="listing-details__additional-information-qms-header data-label">QMS Testing</div>
+          <h4>QMS Testing</h4>
           <div class="listing-details__additional-information-qms-item" ng-repeat="qms in $ctrl.listing.qmsStandards | orderBy:'qmsStandardName'">
             <div>
               <div class="data-label">QMS Standard</div>
@@ -217,23 +209,20 @@
         </div>
 
 
-
-        <div ng-if="$ctrl.listing.targetedUsers && $ctrl.listing.targetedUsers.length > 0" id="panel-additional-information-developer-identified-targeted-user">
-          <div class="data-label">Developer Identified Targeted User<span ng-if="$ctrl.listing.targetedUsers.length > 1">s</span></div>
-          <div class="read-only-data">
-            <ul>
-              <li ng-repeat="user in $ctrl.listing.targetedUsers">{{ user.targetedUserName }}</li>
-            </ul>
-          </div>
-        </div>
-        <div ng-if="$ctrl.listing.meaningfulUseUserHistory && $ctrl.listing.meaningfulUseUserHistory.length > 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
-          <div class="data-label">Estimated Number of Meaningful Use Users</div>
-          <div class="read-only-data">{{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuCount }}, last updated on {{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</div>
-        </div>
-        <div ng-if="!$ctrl.listing.meaningfulUseUserHistory || $ctrl.listing.meaningfulUseUserHistory.length === 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
-          <div class="data-label">Estimated Number of Meaningful Use Users</div>
-          <div class="read-only-data">No Meaningful Use Users data exists</div>
-        </div>
+        <span ng-if="$ctrl.listing.targetedUsers && $ctrl.listing.targetedUsers.length > 0" id="panel-additional-information-developer-identified-targeted-user">
+          <h4>Developer Identified Targeted User<span ng-if="$ctrl.listing.targetedUsers.length > 1">s</span></h4>
+          <ul>
+            <li ng-repeat="user in $ctrl.listing.targetedUsers">{{ user.targetedUserName }}</li>
+          </ul>
+        </span>
+        <span ng-if="$ctrl.listing.meaningfulUseUserHistory && $ctrl.listing.meaningfulUseUserHistory.length > 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
+          <h4>Estimated Number of Meaningful Use Users</h4>
+          <p>{{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuCount }}, last updated on {{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</p>
+        </span>
+        <span ng-if="!$ctrl.listing.meaningfulUseUserHistory || $ctrl.listing.meaningfulUseUserHistory.length === 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
+          <h4>Estimated Number of Meaningful Use Users</h4>
+          <p>No Meaningful Use Users data exists</p>
+        </span>
       </div>
     </div>
   </div>

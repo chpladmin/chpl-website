@@ -17,7 +17,12 @@ let states = [{
     },
     data: { title: 'CHPL Listing Details' },
 },{
-    name: 'listing.edit',
+    name: 'listing.view',
+    url: '/view',
+    component: 'chplListingViewPage',
+    data: { title: 'CHPL Listing Details - View' },
+},{
+    name: 'listing.view.edit',
     url: '/edit',
     component: 'chplListingEditPage',
     resolve: {
