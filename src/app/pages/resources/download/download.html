@@ -47,7 +47,6 @@
         <div class="resources-download__download-option">
           <label class="sr-only" for="downloadSelect">Select which collection of information to download</label>
           <select id="downloadSelect" name="downloadSelect" ng-model="$ctrl.downloadOption" class="form-control"
-                  ng-change="$ctrl.changeDownload()"
                   ng-options="o as o.display for o in $ctrl.downloadOptions">
           </select>
         </div>
