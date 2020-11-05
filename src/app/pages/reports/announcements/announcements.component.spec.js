@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Reports.Announcements component', () => {
+    xdescribe('the Reports.Announcements component', () => {
 
         var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 

@@ -10,6 +10,9 @@
             certificationEdition: {
                 name: '2015',
             },
+            developer: {
+                developerId: 'id',
+            },
         };
         mock.productId = 123123;
         mock.products = [{ developer: 'Developer', product: 'Product' }];
