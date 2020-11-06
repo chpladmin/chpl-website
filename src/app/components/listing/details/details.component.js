@@ -13,7 +13,7 @@ export const ListingDetailsComponent = {
         viewAllCerts: '<defaultAll',
     },
     controller: class ListingDetailsComponent {
-        constructor ($analytics, $log, $uibModal, featureFlags, networkService, utilService) {
+        constructor ($analytics, $log, $uibModal, networkService, utilService) {
             this.$analytics = $analytics;
             this.$log = $log;
             this.$uibModal = $uibModal;
@@ -22,7 +22,6 @@ export const ListingDetailsComponent = {
             this.muuCount = utilService.muuCount;
             this.sortCerts = utilService.sortCert;
             this.handlers = [];
-            this.isOn = featureFlags.isOn;
             this.drStatus = 'pending';
             this.isEditing = false;
             this.viewAllCerts = false;
@@ -32,7 +31,7 @@ export const ListingDetailsComponent = {
         $onInit () {
             if (this.initialPanel) {
                 if (this.initialPanel !== 'none') {
-                    if (this.isOn('direct-review') && (this.initialPanel === 'surveillance' || this.initialPanel === 'directReviews')) {
+                    if (this.initialPanel === 'surveillance' || this.initialPanel === 'directReviews') {
                         this.panelShown = 'compliance';
                         this.subPanelShown = this.initialPanel;
                     } else {

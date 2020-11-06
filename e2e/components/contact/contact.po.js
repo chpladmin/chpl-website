@@ -4,6 +4,7 @@ const elements = {
     editTitle: '#contactTitle',
     editEmail: '#contactEmail',
     editPhone: '#contactPhoneNumber',
+    friendlyName: '#contactFriendly',
 };
 
 class ContactComponent {
@@ -27,6 +28,10 @@ class ContactComponent {
 
     get editPhone () {
         return $(elements.editPhone);
+    }
+
+    get friendlyName () {
+        return $(elements.friendlyName);
     }
 
     set (contact) {

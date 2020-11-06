@@ -9,6 +9,7 @@ const elements = {
     editProductName: '#product-name',
     activeVersion: '#active-version',
     editVersionName: '#version-name',
+    editDeveloper: 'button#developer-component-edit',
 };
 
 class DevelopersPage {
@@ -64,6 +65,10 @@ class DevelopersPage {
 
     get editVersionName () {
         return $(elements.editVersionName);
+    }
+
+    get editDeveloper () {
+        return $(elements.editDeveloper);
     }
 
     selectDeveloper (developerName) {

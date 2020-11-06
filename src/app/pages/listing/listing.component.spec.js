@@ -6,6 +6,11 @@
         var $componentController, $log, $q, $stateParams, $uibModal, actualOptions, authService, ctrl, featureFlags, mock, networkService, scope;
         mock = {};
         mock.activity = {};
+        mock.listing = {
+            developer: {
+                developerId: 'id',
+            },
+        };
         mock.productId = 123123;
         mock.products = [{ developer: 'Developer', product: 'Product' }];
         mock.fakeModal = {
@@ -141,8 +146,8 @@
                         expect(ctrl.loading).toBe(false);
                     });
 
-                    it('should load product data', () => {
-                        expect(ctrl.listing).toEqual(mock.products);
+                    it('should load listing data', () => {
+                        expect(ctrl.listing).toEqual(mock.listing);
                     });
                 });
             });

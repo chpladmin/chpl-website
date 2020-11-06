@@ -1,11 +1,10 @@
 export const ReportsUsersComponent = {
     templateUrl: 'chpl.reports/users/users.html',
     controller: class ReportsUsersComponent {
-        constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+        constructor ($filter, $log, ReportService, networkService, utilService) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
-            this.$scope = $scope;
             this.ReportService = ReportService;
             this.networkService = networkService;
             this.utilService = utilService;

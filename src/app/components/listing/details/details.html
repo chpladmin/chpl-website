@@ -141,20 +141,8 @@
       </div>
     </div>
 
-    <!-- Surveillance -->
-    <div class="panel panel-ai" feature-flag="direct-review" feature-flag-hide>
-      <div class="panel-heading">
-        <a href ng-click="$ctrl.showPanel('surveillance')" aria-expanded="{{ $ctrl.panelShown === 'surveillance' }}" id="details-surveillance-activities">
-          Surveillance Activities<span class="pull-right">({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found) <i class="fa fa-lg" ng-class="$ctrl.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-        </a>
-      </div>
-      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'surveillance'" id="panel-surveillance-activities">
-        <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
-      </div>
-    </div>
-
     <!-- Compliance Activities -->
-    <div class="panel panel-ai" feature-flag="direct-review">
+    <div class="panel panel-ai">
       <div class="panel-heading">
         <a href ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' }}" id="details-compliance-activities">
           Compliance Activities<span class="pull-right"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>

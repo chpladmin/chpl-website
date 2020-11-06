@@ -87,9 +87,7 @@ export const ListingComponent = {
                     that.loading = false;
                     that.listing = data;
                     that.backupListing = angular.copy(that.listing);
-                    if (that.isOn('direct-review')) {
-                        that.loadDirectReviews();
-                    }
+                    that.loadDirectReviews();
                 }, () => {
                     that.loading = false;
                 });
