@@ -1,21 +1,16 @@
 const downloadElements = {
-    productsFile: '//*[@id="main-content"]/div[2]/div[1]/ul/li[1]/ul/li[1]',
-    summaryFile: '//*[@id="main-content"]/div[2]/div[1]/ul/li[1]/ul/li[2]',
-    complianceActivityBullet: '//*[@id="main-content"]/div[2]/div[1]/ul/li[2]',
+    downloadListing: '.resources-download__listings',
+    complianceActivityBullet: '.resources-download__compliance',
 };
 
 class DownloadPage {
     constructor () { }
 
-    get productsFileText () {
-        return $(downloadElements.productsFile);
+    get downloadListingText () {
+        return $(downloadElements.downloadListing);
     }
 
-    get summaryFileText () {
-        return $(downloadElements.summaryFile);
-    }
-
-    get complianceActivityBullet () {
+    get complianceActivityText () {
         return $(downloadElements.complianceActivityBullet);
     }
 

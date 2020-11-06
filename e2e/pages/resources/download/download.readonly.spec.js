@@ -20,35 +20,35 @@ beforeEach(async () => {
 describe('the Download page - 2015/2014/2011 Edition products section', () => {
 
     it('should have correct information about 2015 edition products file', () => {
-        assert.include(page.productsFileText.getText(),productFile2015);
+        assert.include(page.downloadListingText.getText(),productFile2015);
     });
     it('should have correct information about 2014 edition products file', () => {
-        assert.include(page.productsFileText.getText(),productFile2014);
+        assert.include(page.downloadListingText.getText(),productFile2014);
     });
     it('should have correct information about 2011 edition products file', () => {
-        assert.include(page.productsFileText.getText(),productFile2011);
+        assert.include(page.downloadListingText.getText(),productFile2011);
     });
 });
 
 describe('the Download page - 2015/2014 Edition summary section', () => {
 
     it('should have correct information about 2015 edition summary file', () => {
-        assert.include(page.summaryFileText.getText(),summaryFile2015);
+        assert.include(page.downloadListingText.getText(),summaryFile2015);
     });
     it('should have correct information about 2014 edition summary file', () => {
-        assert.include(page.summaryFileText.getText(),summaryFile2014);
+        assert.include(page.downloadListingText.getText(),summaryFile2014);
     });
 });
 
 describe('the Download page - compliance activities section', () => {
 
     it('should have correct information about Surveillance Activity', () => {
-        assert.include(page.complianceActivityBullet.getText(),surveillanceActivity);
+        assert.include(page.complianceActivityText.getText(),surveillanceActivity);
     });
     it('should have correct information about Surveillance Non-Conformities', () => {
-        assert.include(page.complianceActivityBullet.getText(),surveillanceNonConformity);
+        assert.include(page.complianceActivityText.getText(),surveillanceNonConformity);
     });
     it('should have correct information about Direct Review Activity', () => {
-        assert.include(page.complianceActivityBullet.getText(),directReview);
+        assert.include(page.complianceActivityText.getText(),directReview);
     });
 });
