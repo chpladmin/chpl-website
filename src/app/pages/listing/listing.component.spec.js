@@ -82,7 +82,7 @@
                 networkService.getAccessibilityStandards.and.returnValue($q.when({}));
                 networkService.getAtls.and.returnValue($q.when({}));
                 networkService.getDirectReviews.and.returnValue($q.when([]));
-                networkService.getListing.and.returnValue($q.when(mock.products));
+                networkService.getListing.and.returnValue($q.when(mock.listing));
                 networkService.getMeasures.and.returnValue($q.when({}));
                 networkService.getMeasureTypes.and.returnValue($q.when({}));
                 networkService.getQmsStandards.and.returnValue($q.when({}));
