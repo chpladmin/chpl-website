@@ -13,7 +13,7 @@ const version = '19';
 const totalListing = 500;
 const PRODUCT_COL_IDX = 3;
 const DEVELOPER_COL_IDX = 2;
-const CHPLID_COL_IDX = 6;
+const CHPL_PRODUCT_NUMBER_COL_IDX = 6;
 const STATUS_COL_IDX = 7;
 const EDITION_COL_IDX = 1;
 
@@ -114,215 +114,216 @@ describe('On search page - ', () => {
         it('should show filtered listing results', () => {
             var count = page.listingTableFirstPageRowCount();
             for (var i = 1; i <= count; i++) {
-                assert.include(page.getColumnText(i,CHPLID_COL_IDX),chplId);
+                assert.include(page.getColumnText(i,CHPL_PRODUCT_NUMBER_COL_IDX),chplId);
             }
         });
     });
+    describe('When using ', () => {
+        describe('certification status filter as "Retired" ', () => {
+            beforeEach(() => {
+                countBefore = page.listingTotalCount();
+                page.expandFilterOptions('status').click();
+                page.statusRetiredFilterOption.click();
+                page.waitForUpdatedListingResultsCount();
+            });
 
-    describe('When using certification status filter as "Retired" ', () => {
-        beforeEach(() => {
-            countBefore = page.listingTotalCount();
-            page.expandFilterOptions('status').click();
-            page.statusRetiredFilterOption.click();
-            page.waitForUpdatedListingResultsCount();
-        });
+            afterEach(() => {
+                page.clearFilters.click();
+            });
 
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isAbove(countAfter,countBefore);
-        });
-
-        it('should at least show 1 retired listing', () => {
-            let isInclude = false;
-            for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-                if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
-                    isInclude = true;
-                    break;
-                }
-            }
-            assert.equal(true, isInclude);
-        });
-    });
-
-    describe('When using certification edition filter as 2014', () => {
-        beforeEach(() => {
-            countBefore = page.listingTotalCount();
-            page.expandFilterOptions('edition').click();
-            page.edition2014FilterOption.click();
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isAbove(countAfter,countBefore);
-        });
-
-        it('should at least show 1 2014 listing', () => {
-            let isInclude = false;
-            for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-                if (page.getColumnText(i,EDITION_COL_IDX).includes('2014')) {
-                    isInclude = true;
-                    break;
-                }
-            }
-            assert.equal(true, isInclude);
-        });
-    });
-
-    describe('When using certification criteria filter as 170.315 (A)(1)', () => {
-        beforeEach(() => {
-            page.waitForUpdatedListingResultsCount();
-            countBefore = page.listingTotalCount();
-            page.expandFilterOptions('criteria').click();
-            page.criteria2015FilterExpand.click();
-            page.criteria2015FilterOption.click();
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isBelow(countAfter,countBefore);
-        });
-    });
-
-    describe('When using surveillance activity filter as has never had surveillance', () => {
-        beforeEach(() => {
-            page.waitForUpdatedListingResultsCount();
-            countBefore = page.listingTotalCount();
-            page.expandFilterOptions('surveillance').click();
-            page.surveillanceNeverHadFilter.click();
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isBelow(countAfter,countBefore);
-        });
-    });
-
-    describe('When using More filter on 2014/2015 CQM', () => {
-        beforeEach(() => {
-            countBefore = page.listingTotalCount();
-            page.moreFilterButton.click();
-            page.moreFilterExpand(' View Clinical Quality Measures ').click();
-            page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
-            page.moreCqmFilterOptions('CMS2').click();
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isBelow(countAfter,countBefore);
-        });
-    });
-
-    describe('When using More filter on ONC/ACBs', () => {
-        beforeEach(() => {
-            page.waitForUpdatedListingResultsCount();
-            countBefore = page.listingTotalCount();
-            page.moreFilterButton.click();
-            page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
-            page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isBelow(countAfter,countBefore);
-        });
-    });
-
-    describe('When using More filter on Practice Type', () => {
-        beforeEach(() => {
-            countBefore = page.listingTotalCount();
-            page.moreFilterButton.click();
-            page.moreFilterExpand(' View Practice Type ').scrollAndClick();
-            page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should filter listing results', () => {
-            if (!page.pagination.isExisting()) {
-                countAfter = 0;
-            } else {
+            it('should filter listing results', () => {
                 countAfter = page.listingTotalCount();
-            }
-            assert.isBelow(countAfter,countBefore);
-        });
-    });
+                assert.isAbove(countAfter,countBefore);
+            });
 
-    describe('When using More filter on Certification Date', () => {
-        beforeEach(() => {
-            page.waitForUpdatedListingResultsCount();
-            countBefore = page.listingTotalCount();
-            page.moreFilterButton.click();
-            page.moreFilterExpand(' View Certification Date ').click();
-            page.moreCertificationEndDateFilter.addValue('01/01/2019');
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
+            it('should at least show 1 retired listing', () => {
+                let isInclude = false;
+                for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+                    if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
+                        isInclude = true;
+                        break;
+                    }
+                }
+                assert.isTrue(isInclude);
+            });
         });
 
-        it('should filter listing results', () => {
-            countAfter = page.listingTotalCount();
-            assert.isBelow(countAfter,countBefore);
-        });
-    });
+        describe('When using certification edition filter as 2014', () => {
+            beforeEach(() => {
+                countBefore = page.listingTotalCount();
+                page.expandFilterOptions('edition').click();
+                page.edition2014FilterOption.click();
+                page.waitForUpdatedListingResultsCount();
+            });
 
-    describe('When using More filter on Developer/ Product/ Version', () => {
-        beforeEach(() => {
-            countBefore = page.listingTotalCount();
-            page.moreFilterButton.click();
-            page.moreDeveloperFilter.addValue(developerName);
-            page.moreProductFilter.addValue(productName);
-            page.moreVersionFilter.addValue(version);
-            page.waitForUpdatedListingResultsCount();
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTotalCount();
+                assert.isAbove(countAfter,countBefore);
+            });
+
+            it('should at least show 1 2014 listing', () => {
+                let isInclude = false;
+                for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+                    if (page.getColumnText(i,EDITION_COL_IDX).includes('2014')) {
+                        isInclude = true;
+                        break;
+                    }
+                }
+                assert.isTrue(isInclude);
+            });
         });
 
-        afterEach(() => {
-            page.clearFilters.click();
+        describe('When using certification criteria filter as 170.315 (A)(1)', () => {
+            beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
+                countBefore = page.listingTotalCount();
+                page.expandFilterOptions('criteria').click();
+                page.criteria2015FilterExpand.click();
+                page.criteria2015FilterOption.click();
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTotalCount();
+                assert.isBelow(countAfter,countBefore);
+            });
         });
 
-        it('should filter listing results', () => {
-            countAfter = page.listingTableFirstPageRowCount();
-            assert.isBelow(countAfter,countBefore);
+        describe('When using surveillance activity filter as has never had surveillance', () => {
+            beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
+                countBefore = page.listingTotalCount();
+                page.expandFilterOptions('surveillance').click();
+                page.surveillanceNeverHadFilter.click();
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTotalCount();
+                assert.isBelow(countAfter,countBefore);
+            });
         });
-        it('should filter listing results', () => {
-            for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-                assert.include(page.getColumnText(i,2),developerName);
-                assert.include(page.getColumnText(i,3),productName);
-                assert.include(page.getColumnText(i,4),version);
-            }
+
+        describe('When using More filter on 2014/2015 CQM', () => {
+            beforeEach(() => {
+                countBefore = page.listingTotalCount();
+                page.moreFilterButton.click();
+                page.moreFilterExpand(' View Clinical Quality Measures ').click();
+                page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
+                page.moreCqmFilterOptions('CMS2').click();
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTotalCount();
+                assert.isBelow(countAfter,countBefore);
+            });
+        });
+
+        describe('When using More filter on ONC/ACBs', () => {
+            beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
+                countBefore = page.listingTotalCount();
+                page.moreFilterButton.click();
+                page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
+                page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTotalCount();
+                assert.isBelow(countAfter,countBefore);
+            });
+        });
+
+        describe('When using More filter on Practice Type', () => {
+            beforeEach(() => {
+                countBefore = page.listingTotalCount();
+                page.moreFilterButton.click();
+                page.moreFilterExpand(' View Practice Type ').scrollAndClick();
+                page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                if (!page.pagination.isExisting()) {
+                    countAfter = 0;
+                } else {
+                    countAfter = page.listingTotalCount();
+                }
+                assert.isBelow(countAfter,countBefore);
+            });
+        });
+
+        describe('When using More filter on Certification Date', () => {
+            beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
+                countBefore = page.listingTotalCount();
+                page.moreFilterButton.click();
+                page.moreFilterExpand(' View Certification Date ').click();
+                page.moreCertificationEndDateFilter.addValue('01/01/2019');
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTotalCount();
+                assert.isBelow(countAfter,countBefore);
+            });
+        });
+
+        describe('When using More filter on Developer/ Product/ Version', () => {
+            beforeEach(() => {
+                countBefore = page.listingTotalCount();
+                page.moreFilterButton.click();
+                page.moreDeveloperFilter.addValue(developerName);
+                page.moreProductFilter.addValue(productName);
+                page.moreVersionFilter.addValue(version);
+                page.waitForUpdatedListingResultsCount();
+            });
+
+            afterEach(() => {
+                page.clearFilters.click();
+            });
+
+            it('should filter listing results', () => {
+                countAfter = page.listingTableFirstPageRowCount();
+                assert.isBelow(countAfter,countBefore);
+            });
+            it('should show correct Developer/ Product/ Version name as searched for', () => {
+                for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+                    assert.include(page.getColumnText(i,2),developerName);
+                    assert.include(page.getColumnText(i,3),productName);
+                    assert.include(page.getColumnText(i,4),version);
+                }
+            });
         });
     });
     describe('After searching for a listing', () => {
@@ -344,9 +345,9 @@ describe('On search page - ', () => {
         });
     });
 
-    describe('When using Download Results', () => {
+    describe('When clicking on Download Results', () => {
         beforeEach(() => {
-            page.downloadResultsButton.click();
+            page.downloadResultsButton.scrollAndClick();
             page.downloadResultsCustomizeButton.scrollAndClick();
         });
 
