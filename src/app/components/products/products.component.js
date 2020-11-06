@@ -37,7 +37,7 @@ export const ProductsComponent = {
                         let all = {
                             version: 'All',
                             listings: [],
-                        }
+                        };
                         p.activeAcbs = new Set();
                         p.versions.forEach(v => {
                             v.listings.forEach(l => p.activeAcbs.add(l.acb.name));

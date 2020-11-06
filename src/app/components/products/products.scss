@@ -73,15 +73,18 @@
 }
 
 .product__listings {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 2fr 1fr;
     margin: 8px;
     overflow-x: auto;
 }
 
 .product__listing {
-    display: grid;
-    grid-template-columns: 2fr 2fr 1fr 2fr 1fr;
+    display: contents;
+}
+
+.product__listing-data-item {
     background-color: var(--primary);
-    margin: 8px;
 }
 
 .product__data-label {
