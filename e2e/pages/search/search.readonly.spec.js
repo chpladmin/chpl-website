@@ -18,8 +18,7 @@ const STATUS_COL_IDX = 7;
 const EDITION_COL_IDX = 1;
 
 describe('On search page - ', () => {
-    var countBefore;
-    var countAfter;
+
     beforeEach(async () => {
         page = new SearchPage();
         hooks = new Hooks();
@@ -119,6 +118,8 @@ describe('On search page - ', () => {
         });
     });
     describe('When using ', () => {
+        var countBefore;
+        var countAfter;
         describe('certification status filter as "Retired" ', () => {
             beforeEach(() => {
                 countBefore = page.listingTotalCount();
