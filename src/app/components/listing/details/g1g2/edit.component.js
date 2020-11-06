@@ -58,15 +58,15 @@ export const G1G2EditComponent = {
         }
 
         measureSort (a, b) {
-            if (!a.measurementType) {
-                a = {measurementType: 0, measure: a};
+            if (!a.measureType) {
+                a = {measureType: 0, measure: a};
             }
-            if (!b.measurementType) {
-                b = {measurementType: 0, measure: b};
+            if (!b.measureType) {
+                b = {measureType: 0, measure: b};
             }
             let getNum = test => parseInt(test.substring(2), 10);
             return a.measure.removed !== b.measure.removed ? (a.measure.removed ? 1 : -1) :
-                a.measurementType.name < b.measurementType.name ? -1 : a.measurementType.name > b.measurementType.name ? 1 :
+                a.measureType.name < b.measureType.name ? -1 : a.measureType.name > b.measureType.name ? 1 :
                 getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
                 a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
                 a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :
@@ -85,7 +85,7 @@ export const G1G2EditComponent = {
 
         removeItem (item) {
             this.measures = this.measures
-                .filter(m => !(m.measurementType.name === item.measurementType.name
+                .filter(m => !(m.measureType.name === item.measureType.name
                                && m.measure.domain.name === item.measure.domain.name
                                && m.measure.abbreviation === item.measure.abbreviation
                                && m.displayCriteria === item.displayCriteria));
@@ -96,7 +96,7 @@ export const G1G2EditComponent = {
             let type = 'measures';
             let create = object => ({
                 measure: object.measure,
-                measurementType: object.type,
+                measureType: object.type,
                 associatedCriteria: object.criteria,
                 displayCriteria: [... new Set(object.criteria.map(c => c.number))]
                     .join('; '),

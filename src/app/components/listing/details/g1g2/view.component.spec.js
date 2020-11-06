@@ -74,7 +74,7 @@
                 });
 
                 it('should sort by g1/g2', () => {
-                    b.measurementType.name = 'G2';
+                    b.measureType.name = 'G2';
                     expect(ctrl.measureSort(a, b)).toBe(-1);
                     expect(ctrl.measureSort(b, a)).toBe(1);
                 });
