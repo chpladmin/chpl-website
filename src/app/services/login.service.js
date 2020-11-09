@@ -14,6 +14,7 @@
             getCurrentUser: getCurrentUser,
             getFullname: getFullname,
             getToken: getToken,
+            getUserId: getUserId,
             getUsername: getUsername,
             hasAnyRole: hasAnyRole,
             isImpersonating: isImpersonating,
@@ -85,6 +86,17 @@
 
         function getToken () {
             return $localStorage.jwtToken;
+        }
+
+        function getUserId () {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+                var token = getToken();
+                var identity = parseJwt(token).Identity;
+                return identity[0];
+            } else {
+                logout();
+                return '';
+            }
         }
 
         function getUsername () {

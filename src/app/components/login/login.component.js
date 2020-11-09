@@ -177,7 +177,7 @@ export const LoginComponent = {
             this.message = '';
             this.networkService.login({userName: this.userName, password: this.password})
                 .then(() => {
-                    that.networkService.getUserByUsername(that.authService.getUsername())
+                    that.networkService.getUserById(that.authService.getUserId())
                         .then(user => {
                             that.authService.saveCurrentUser(user);
                             that.Idle.watch();

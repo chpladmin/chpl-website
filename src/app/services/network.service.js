@@ -616,6 +616,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getUserById (id) {
+        return this.apiGET('/users/beta/' + id + '/details');
+    }
+
     getUserByUsername (uname) {
         return this.apiGET('/users/' + uname + '/details');
     }
