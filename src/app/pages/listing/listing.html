@@ -99,18 +99,6 @@
               <h2 class="product-heading">Relied Upon Software</h2>
               <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
             </div>
-            <div class="product-element" id="listing-information-mandatory-disclosures-url">
-              <h2 class="product-heading">Mandatory Disclosures URL</h2>
-              <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
-              <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
-              <div class="clearfix"></div>
-            </div>
-            <div ng-if="$ctrl.listing.accessibilityStandards && $ctrl.listing.accessibilityStandards.length !== 0">
-              <div class="product-element" id="listing-information-accessibility-standards">
-                <h2 class="product-heading">Accessibility Standard<span ng-if="$ctrl.listing.accessibilityStandards.length !== 1">s</span></h2>
-                <p ng-repeat="standard in $ctrl.listing.accessibilityStandards | orderBy:accessibilityStandardName">{{ standard.accessibilityStandardName }}</p>
-              </div>
-            </div>
             <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
               <h2 class="product-heading">Real World Testing</h2>
               <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
@@ -131,6 +119,12 @@
               <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                 <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</p>
               </div>
+            </div>
+            <div class="product-element" id="listing-information-mandatory-disclosures-url">
+              <h2 class="product-heading">Mandatory Disclosures URL</h2>
+              <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
+              <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+              <div class="clearfix"></div>
             </div>
           </div>
           <div class="col-sm-8" id="listing-information-details">

@@ -48,6 +48,7 @@ export const ListingDetailsEditComponent = {
             }
             if (changes.resources && changes.resources.currentValue) {
                 this.resources = angular.copy(changes.resources.currentValue);
+                this.resources.accessibilityStandards = this.resources.accessibilityStandards.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
                 this.resources.qmsStandards = this.resources.qmsStandards.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
                 this.resources.targetedUsers = this.resources.targetedUsers.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
@@ -207,6 +208,8 @@ export const ListingDetailsEditComponent = {
 
         filterListEditItems (type, items) {
             switch (type) {
+            case 'accessibilityStandards':
+                return items.filter(i => !this.listing.accessibilityStandards.filter(as => as.accessibilityStandardName === i.name).length);
             case 'ics':
                 return items.filter(i => !this.listing.ics.parents.filter(l => l.chplProductNumber === i.chplProductNumber).length);
             case 'qmsStandards':
@@ -220,6 +223,9 @@ export const ListingDetailsEditComponent = {
 
         removeItem (type, item) {
             switch (type) {
+            case 'accessibilityStandards':
+                this.listing.accessibilityStandards = this.listing.accessibilityStandards.filter(l => l.accessibilityStandardName !== item.accessibilityStandardName);
+                break;
             case 'ics':
                 this.listing.ics.parents = this.listing.ics.parents.filter(l => l.chplProductNumber !== item.chplProductNumber);
                 break;
@@ -240,6 +246,10 @@ export const ListingDetailsEditComponent = {
 
         saveNewItem (type) {
             switch (type) {
+            case 'accessibilityStandards':
+                this.addNewValue(this.listing.accessibilityStandards, this.newItem[type]);
+                this.listing.accessibilityStandards = this.listing.accessibilityStandards.sort((a, b) => a.accessibilityStandardName < b.accessibilityStandardName ? -1 : a.accessibilityStandardName > b.accessibilityStandardName ? 1 : 0);
+                break;
             case 'ics':
                 this.addNewValue(this.listing.ics.parents, this.newItem[type]);
                 this.listing.ics.parents = this.listing.ics.parents.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);

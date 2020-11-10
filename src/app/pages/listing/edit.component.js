@@ -58,6 +58,7 @@ export const ListingEditPageComponent = {
             this.listingBasic.sedReportFileLocation = this.listingDetails.sedReportFileLocation;
             this.listingBasic.sedTestingEndDate = this.listingDetails.sedTestingEndDate;
 
+            this.listingBasic.accessibilityStandards = this.listingDetails.accessibilityStandards;
             this.listingBasic.otherAcb = this.listingDetails.otherAcb;
             this.listingBasic.qmsStandards = this.listingDetails.qmsStandards;
             this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
@@ -134,6 +135,7 @@ export const ListingEditPageComponent = {
             this.listingDetails.sedReportFileLocation = listing.sedReportFileLocation;
             this.listingDetails.sedTestingEndDate = listing.sedTestingEndDate;
 
+            this.listingDetails.accessibilityStandards = angular.copy(listing.accessibilityStandards);
             this.listingDetails.otherAcb = listing.otherAcb;
             this.listingDetails.ics = angular.copy(listing.ics);
             this.listingBasic.ics = angular.copy(listing.ics);

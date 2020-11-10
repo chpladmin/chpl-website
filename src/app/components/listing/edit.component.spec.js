@@ -124,17 +124,6 @@
             });
         });
 
-        it('should add QMS standards in the cp to the available standards on load', () => {
-            expect(ctrl.resources.qmsStandards.data.map(item => {
-                delete item.$$hashKey;
-                return item;
-            })).toEqual([
-                {id: 1, name: 'name1'},
-                {id: 2, name: 'name2'},
-                {id: null, qmsStandardName: 'nullname', name: 'nullname'},
-            ]);
-        });
-
         it('should know which statuses should be disabled', () => {
             ctrl.workType = 'edit';
             expect(ctrl.disabledStatus('Pending')).toBe(true);

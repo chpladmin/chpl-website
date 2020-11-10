@@ -31,15 +31,6 @@ export const ListingEditComponent = {
             }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
-                this.resources.accessibilityStandards = this.resources.accessibilityStandards.data.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-                this.resources.qmsStandards.data = this.resources.qmsStandards.data.concat(
-                    this.listing.qmsStandards
-                        .filter(standard => !standard.id)
-                        .map(standard => {
-                            standard.name = standard.qmsStandardName;
-                            return standard;
-                        })
-                );
                 this.resources.testingLabs = this.resources.testingLabs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (changes.workType) {
@@ -212,8 +203,6 @@ export const ListingEditComponent = {
 
         filterListEditItems (type, items) {
             switch (type) {
-            case 'accessibilityStandards':
-                return items.filter(i => !this.listing.accessibilityStandards.filter(as => as.accessibilityStandardName === i.name).length);
             case 'oncAtls':
                 return items.filter(i => !this.listing.testingLabs.filter(tl => tl.testingLabName === i.name).length);
             default:
@@ -223,9 +212,6 @@ export const ListingEditComponent = {
 
         removeItem (type, item) {
             switch (type) {
-            case 'accessibilityStandards':
-                this.listing.accessibilityStandards = this.listing.accessibilityStandards.filter(l => l.accessibilityStandardName !== item.accessibilityStandardName);
-                break;
             case 'certificationEvents':
                 this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== item.statusDateObject.getTime());
                 break;
@@ -240,10 +226,6 @@ export const ListingEditComponent = {
 
         saveNewItem (type) {
             switch (type) {
-            case 'accessibilityStandards':
-                this.addNewValue(this.listing.accessibilityStandards, this.newItem[type]);
-                this.listing.accessibilityStandards = this.listing.accessibilityStandards.sort((a, b) => a.accessibilityStandardName < b.accessibilityStandardName ? -1 : a.accessibilityStandardName > b.accessibilityStandardName ? 1 : 0);
-                break;
             case 'certificationEvents':
                 this.listing.certificationEvents.push({
                     status: this.newItem[type].status,

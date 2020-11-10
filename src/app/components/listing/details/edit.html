@@ -286,6 +286,36 @@
           </div>
         </div>
         <div class="list-edit__container">
+          <div class="list-edit--span-2 data-label">Accessibility Standards</div>
+          <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.accessibilityStandards track by $index">
+            {{ item.accessibilityStandardName }}
+          </div>
+          <div class="list-edit__item--end" ng-repeat-end>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('accessibilityStandards', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
+          </div>
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['accessibilityStandards'] && !$ctrl.creatingItem['accessibilityStandards']">
+            <div class="data-element sr-only"><label for="accessibility-standard-add-new">Add new Accessibility Standard</label></div>
+            <select class="form-control" ng-model="$ctrl.newItem['accessibilityStandards'].accessibilityStandardName" id="accessibility-standard-add-new" name="accessibilityStandardAddNew" required
+                    ng-options="option.name as option.name for option in $ctrl.filterListEditItems('accessibilityStandards', $ctrl.resources.accessibilityStandards)">
+            </select>
+          </div>
+          <div ng-if="$ctrl.addingItem['accessibilityStandards'] && $ctrl.creatingItem['accessibilityStandards']">
+            <div class="data-element sr-only"><label for="accessibility-standard-add-new">Create new Accessibility Standard</label></div>
+            <input type="text" class="form-control" ng-model="$ctrl.newItem['accessibilityStandards'].accessibilityStandardName" id="accessibility-standard-add-new" name="accessibilityStandardAddNew" required>
+          </div>
+          <div ng-if="$ctrl.addingItem['accessibilityStandards']">
+            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['accessibilityStandards'] = !$ctrl.creatingItem['accessibilityStandards']"><i class="fa" ng-class="$ctrl.creatingItem['accessibilityStandards'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['accessibilityStandards'] ? 'Create new' : 'Add existing' }} accessibility standard</button>
+          </div>
+          <div class="list-edit__item--end" ng-if="$ctrl.addingItem['accessibilityStandards']">
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('accessibilityStandards')" ng-mouseover="$ctrl.showFormErrors = true"
+                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.accessibilityStandardAddNew.$touched) && $ctrl.form.accessibilityStandardAddNew.$error.required"><i class="fa fa-save"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('accessibilityStandards')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
+          </div>
+          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['accessibilityStandards'] && $ctrl.filterListEditItems('accessibilityStandards', $ctrl.resources.accessibilityStandards).length > 0">
+            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['accessibilityStandards'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
+          </div>
+        </div>
+        <div class="list-edit__container">
           <div class="data-label">Estimated Number of Meaningful Use Users</div>
           <div class="data-label">Effective Date</div>
           <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
