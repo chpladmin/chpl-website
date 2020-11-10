@@ -29,7 +29,7 @@
                 });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.changePassword = jasmine.createSpy('changePassword');
-                    $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
+                    $delegate.getUserById = jasmine.createSpy('getUserById');
                     $delegate.keepalive = jasmine.createSpy('keepalive');
                     $delegate.login = jasmine.createSpy('login');
                     $delegate.emailResetPassword = jasmine.createSpy('emailResetPassword');
@@ -59,7 +59,7 @@
                 networkService = _networkService_;
                 networkService.changePassword.and.returnValue($q.when({passwordUpdated: true}));
                 networkService.emailResetPassword.and.returnValue($q.when({}));
-                networkService.getUserByUsername.and.returnValue($q.when(mock.response));
+                networkService.getUserById.and.returnValue($q.when(mock.response));
                 networkService.keepalive.and.returnValue($q.when({}));
                 networkService.login.and.returnValue($q.when({}));
                 networkService.resetPassword.and.returnValue($q.when({}));

@@ -1374,14 +1374,6 @@
                 $httpBackend.flush();
             });
 
-            it('should getUserByUsername', () => {
-                $httpBackend.expectGET(/^\/rest\/users\/admin\/details$/).respond(200, {data: 'response'});
-                networkService.getUserByUsername('admin').then(response => {
-                    expect(response.data).toEqual('response');
-                });
-                $httpBackend.flush();
-            });
-
             it('should getUsers', () => {
                 $httpBackend.expectGET(/^\/rest\/users$/).respond(200, {data: 'response'});
                 networkService.getUsers().then(response => {
@@ -1455,8 +1447,8 @@
             });
 
             it('should impersonateUser', () => {
-                $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
-                networkService.impersonateUser({subjectName: 'name'}).then(response => {
+                $httpBackend.expectGET(/^\/rest\/auth\/beta\/impersonate\?id=id$/).respond(200, {data: 'response'});
+                networkService.impersonateUser({userId: 'id'}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
