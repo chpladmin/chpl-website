@@ -56,6 +56,14 @@ class DevelopersPage {
     }
 
     getVersionCount (product) {
+        return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
+    }
+
+    getAcbName (product) {
+        return product.$('.products__product-header').$$('.products__product-header-item')[1];
+    }
+
+    getListingCount (product) {
         return product.$('.products__product-header').$$('.products__product-header-item')[2];
     }
 
