@@ -36,7 +36,7 @@ export const CreateUserComponent = {
 
         authorizeUser () {
             if ((this.authorizeDetails.userName && this.authorizeDetails.password) || this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && this.authorizeDetails.hash) {
-                const userId = this.authService.getUserId();
+                const userId = this.authorizeDetails.userName || this.authService.getUserId();
                 this.networkService.authorizeUser(this.authorizeDetails, userId)
                     .then(() => {
                         this.$location.path('/administration');
