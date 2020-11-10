@@ -13,8 +13,8 @@ export class NetworkService {
         };
     }
 
-    authorizeUser (userAuthorization, email) {
-        return this.apiPOST('/users/' + email + '/authorize', userAuthorization);
+    authorizeUser (userAuthorization, userId) {
+        return this.apiPOST('/users/' + userId + '/authorize', userAuthorization);
     }
 
     changePassword (userObj) {

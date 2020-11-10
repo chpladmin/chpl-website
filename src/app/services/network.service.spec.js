@@ -177,8 +177,8 @@
 
         describe('for specific endpoints', () => {
             it('should authorizeUser', () => {
-                $httpBackend.expectPOST(/^\/rest\/users\/username\/authorize$/, 'payload').respond(200, {data: 'response'});
-                networkService.authorizeUser('payload', 'username').then(response => {
+                $httpBackend.expectPOST(/^\/rest\/users\/userId\/authorize$/, 'payload').respond(200, {data: 'response'});
+                networkService.authorizeUser('payload', 'userId').then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
