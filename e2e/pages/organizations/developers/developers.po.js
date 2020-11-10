@@ -9,6 +9,7 @@ const elements = {
     editProductName: '#product-name',
     activeVersion: '#active-version',
     editVersionName: '#version-name',
+    editDeveloper: 'button#developer-component-edit',
 };
 
 class DevelopersPage {
@@ -55,6 +56,14 @@ class DevelopersPage {
     }
 
     getVersionCount (product) {
+        return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
+    }
+
+    getAcbName (product) {
+        return product.$('.products__product-header').$$('.products__product-header-item')[1];
+    }
+
+    getListingCount (product) {
         return product.$('.products__product-header').$$('.products__product-header-item')[2];
     }
 
@@ -64,6 +73,10 @@ class DevelopersPage {
 
     get editVersionName () {
         return $(elements.editVersionName);
+    }
+
+    get editDeveloper () {
+        return $(elements.editDeveloper);
     }
 
     selectDeveloper (developerName) {
