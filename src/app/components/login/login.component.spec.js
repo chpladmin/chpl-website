@@ -387,7 +387,7 @@
                     ctrl.userName = 'test';
                     ctrl.email = 'email';
                     ctrl.sendReset();
-                    expect(networkService.emailResetPassword).toHaveBeenCalledWith({userName: 'test', email: 'email'});
+                    expect(networkService.emailResetPassword).toHaveBeenCalledWith({email: 'email'});
                 });
 
                 it('should start clear the form and report a message on success', () => {

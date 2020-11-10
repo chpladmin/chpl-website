@@ -109,7 +109,7 @@
 
             it('should call "authorizeUser" if the user tries to log in', () => {
                 ctrl.authorizeUser();
-                expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, 31);
+                expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, '');
             });
 
             it('should redirect to /administration after authorizeUser is finished', () => {
