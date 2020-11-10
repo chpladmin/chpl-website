@@ -13,8 +13,8 @@ export class NetworkService {
         };
     }
 
-    authorizeUser (userAuthorization, username) {
-        return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
+    authorizeUser (userAuthorization, email) {
+        return this.apiPOST('/users/' + email + '/authorize', userAuthorization);
     }
 
     changePassword (userObj) {
@@ -654,7 +654,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
+        return this.apiGET('/auth/beta/impersonate?id=' + user.userId);
     }
 
     initiateSurveillance (surveillance) {

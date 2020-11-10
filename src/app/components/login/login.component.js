@@ -231,7 +231,7 @@ export const LoginComponent = {
                 .then(token => {
                     that.authService.saveToken(token.token);
                     that.clear();
-                    that.networkService.getUserByUsername(that.authService.getUsername())
+                    that.networkService.getUserById(that.authService.getUserId())
                         .then(user => {
                             that.authService.saveCurrentUser(user);
                             that.$rootScope.$broadcast('unimpersonating');
