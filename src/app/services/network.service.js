@@ -620,10 +620,6 @@ export class NetworkService {
         return this.apiGET('/users/beta/' + id + '/details');
     }
 
-    getUserByUsername (uname) {
-        return this.apiGET('/users/' + uname + '/details');
-    }
-
     getUsers () {
         return this.apiGET('/users');
     }

@@ -39,7 +39,7 @@ export const LoginComponent = {
                 if (this.authService.getCurrentUser()) {
                     this._updateExtras();
                 } else {
-                    this.networkService.getUserByUsername(this.authService.getUsername())
+                    this.networkService.getUserById(this.authService.getUserId())
                         .then(user => {
                             that.authService.saveCurrentUser(user);
                             that._updateExtras();
