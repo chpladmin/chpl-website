@@ -214,7 +214,7 @@ export const LoginComponent = {
 
         sendReset () {
             let that = this;
-            this.networkService.emailResetPassword({userName: this.userName, email: this.email})
+            this.networkService.emailResetPassword({email: this.email})
                 .then(() => {
                     that.clear();
                     that.messageClass = that.pClass;
