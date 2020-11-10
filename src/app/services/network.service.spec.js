@@ -838,6 +838,14 @@
                 $httpBackend.flush();
             });
 
+            it('should getDeveloperHierarchy', () => {
+                $httpBackend.expectGET(/^\/rest\/developers\/payload\/hierarchy$/).respond(200, {data: 'response'});
+                networkService.getDeveloperHierarchy('payload').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getDevelopers', () => {
                 $httpBackend.expectGET(/^\/rest\/developers$/).respond(200, {data: 'response'});
                 networkService.getDevelopers().then(response => {

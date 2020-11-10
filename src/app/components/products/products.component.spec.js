@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Products component', () => {
-        var $compile, $log, $q, ctrl, el, mock, networkService, scope;
+        var $compile, $log, ctrl, el, mock, scope;
 
         mock = {
             developers: [],
@@ -11,6 +11,12 @@
                 contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
                 owner: {developerId: 2042, developerCode: '3041', name: 'CPSI (Computer Programs and Systems),  Inc.'},
                 ownerHistory: [{id: 127, developer: {developerId: 2042, developerCode: '3041', name: 'CPSI (Computer Programs and Systems),  Inc.'}, transferDate: 1552570509025}, {id: 89, developer: {developerId: 184, developerCode: '1183', name: 'CPSI (Computer Programs and Systems),  Inc.'}, transferDate: 1552505343043}],
+                versions: [{
+                    listings: [{
+                        acb: {name: 'name'},
+                        certificationStatus: 'Active',
+                    }],
+                }],
             }],
             searchOptions: {
                 certificationStatuses: [
@@ -20,21 +26,11 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.components', $provide => {
-                $provide.decorator('networkService', $delegate => {
-                    $delegate.getProductsByVersion = jasmine.createSpy('getProductsByVersion');
-                    $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
-                    return $delegate;
-                });
-            });
+            angular.mock.module('chpl.components');
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
+            inject((_$compile_, _$log_, $rootScope) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
-                networkService = _networkService_;
-                networkService.getProductsByVersion.and.returnValue($q.when([]));
-                networkService.getVersionsByProduct.and.returnValue($q.when([]));
 
                 scope = $rootScope.$new();
                 scope.developers = mock;
