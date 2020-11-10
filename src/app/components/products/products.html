@@ -11,12 +11,13 @@
       </div>
     </div>
     <div class="panel-body">
-      <div ng-repeat="product in $ctrl.products | orderBy: 'name'" class="products__product panel-ai">
-        <div class="panel-heading products__product-header" ng-click="$ctrl.toggleProduct(product)">
+      <div ng-repeat="product in $ctrl.products" class="products__product panel-ai">
+        <div class="panel-heading products__product-header" ng-class="{'products__product-header--inactive' : !product.hasActiveListings}" ng-click="product.isOpen = !product.isOpen">
           <div class="products__product-header-item products__product-header-item--first">{{ product.name }}</div>
+          <div class="products__product-header-item">{{ product.activeAcbs }}</div>
           <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
-          <div class="products__product-header-item">{{ product.versions ? product.versions.length : 0 }} Version<span ng-if="product.versions.length !== 1">s</span></div>
-          <div class="products__product-header-item"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
+          <div class="products__product-header-item products__product-header-item--end">{{ product.versions ? product.versions.length - 1 : 0 }} Version<span ng-if="product.versions.length !== 2">s</span></div>
+          <div class="products__product-header-item products__product-header-item--end"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
         </div>
         <div ng-if="product.isOpen" class="panel-body">
           <div id="chpl-product-{{ product.productId }}">
@@ -35,7 +36,8 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="edit-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.editProduct(product)">Product</li>
-                    <li class="product__product-action-filter-item" ng-click="$ctrl.editVersion(product)">Version</li>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.editVersion(product)" ng-if="product.activeVersion.version !== 'All'">Version</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All'">Version</li>
                   </ul>
                 </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 1)">
@@ -44,7 +46,7 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="merge-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.mergeProduct(product)" ng-if="$ctrl.products.length > 1">Product</li>
-                    <li class="product__product-action-filter-item" ng-if="product.versions.length > 1">Version (functionality coming soon)</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.versions.length > 1">Version (functionality coming soon)</li>
                   </ul>
                 </div>
               </div>
@@ -73,11 +75,11 @@
               <p ng-if="$ctrl.noVisibleListings(product)">No Listings match the filter</p>
               <div class="product__listing" ng-repeat="listing in product.activeVersion.listings | filter:{displayed:true}">
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL Product Number</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL&nbsp;Product&nbsp;Number</div>
                   <div class="product__listing-element"><a ui-sref="listing({ id: listing.id })">{{ listing.chplProductNumber }}</a></div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Status</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Status</div>
                   <div class="product__listing-element"><a href uib-tooltip="{{ listing.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><i class="fa" ng-class="$ctrl.statusFont(listing.certificationStatus)"></i><span class="sr-only"> {{ listing.certificationStatus }} tooltip</span></a> {{ listing.certificationStatus }}</div>
                 </div>
                 <div class="product__listing-data-item">
@@ -85,7 +87,11 @@
                   <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification Date</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">ONC&#8209;ACB</div>
+                  <div class="product__listing-element">{{ listing.acb.name }}</div>
+                </div>
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Date</div>
                   <div class="product__listing-element">{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
                 </div>
               </div>
