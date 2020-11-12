@@ -25,7 +25,11 @@ export const ProductsMergeComponent = {
             if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.products = this.developer.products
-                    .filter(d => d.productId !== parseInt(this.$stateParams.productId, 10))
+                    .filter(d => d.productId !== parseInt(this.$stateParams.productId, 10) && !d.deleted)
+                    .map(d => {
+                        d.selected = false;
+                        return d;
+                    })
                     .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
         }
