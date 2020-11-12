@@ -4,7 +4,7 @@ export const ListingComponent = {
         listing: '<',
     },
     controller: class ListingComponent {
-        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, featureFlags, networkService, utilService) {
+        constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
             'ngInject';
             this.$localStorage = $localStorage;
             this.$log = $log;
@@ -14,7 +14,6 @@ export const ListingComponent = {
             this.$uibModal = $uibModal;
             this.DateUtil = DateUtil;
             this.authService = authService;
-            this.isOn = featureFlags.isOn;
             this.networkService = networkService;
             this.utilService = utilService;
             this.certificationStatus = utilService.certificationStatus;
@@ -30,9 +29,7 @@ export const ListingComponent = {
             if (changes.listing) {
                 this.listing = changes.listing.currentValue;
                 this.backupListing = angular.copy(this.listing);
-                if (this.isOn('direct-review')) {
-                    this.loadDirectReviews();
-                }
+                this.loadDirectReviews();
                 if (this.$localStorage.previouslyViewed) {
                     this.previouslyViewed = this.$localStorage.previouslyViewed;
 
