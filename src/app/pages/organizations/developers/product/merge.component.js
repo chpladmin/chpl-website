@@ -18,14 +18,15 @@ export const ProductsMergeComponent = {
             this.networkService.getProduct(this.$stateParams.productId)
                 .then(response => {
                     that.product = response;
-                    that.products = that.products.filter(d => d.productId !== that.product.productId);
                 });
         }
 
         $onChanges (changes) {
             if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
-                this.products = angular.copy(this.developer.products);
+                this.products = this.developer.products
+                    .filter(d => d.productId !== parseInt(this.$stateParams.productId, 10))
+                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
         }
 
