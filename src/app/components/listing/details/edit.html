@@ -146,8 +146,11 @@
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
         <div class="form-group">
-          <label for="cp-other-acb">Other ACB</label>
-          <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.otherAcb" id="cp-other-acb" ng-change="$ctrl.update()">
+          <label for="cp-report-file-loc">Report File Location</label>
+          <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.certificationEdition.name === '2014'" ng-change="$ctrl.update()">
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.maxlength">Field is too long</div>
         </div>
         <div class="form-group">
           <label for="cp-ics">Inherited Certification Status</label>
@@ -189,6 +192,82 @@
             <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['ics'] && $ctrl.relatedListings">
               <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['ics'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
             </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cp-other-acb">Other ACB</label>
+          <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.otherAcb" id="cp-other-acb" ng-change="$ctrl.update()">
+        </div>
+        <div class="list-edit__container">
+          <div class="list-edit--span-2 data-label">Targeted Users</div>
+          <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.targetedUsers track by $index">
+            {{ item.targetedUserName }}
+          </div>
+          <div class="list-edit__item--end" ng-repeat-end>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('targetedUsers', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
+          </div>
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['targetedUsers'] && !$ctrl.creatingItem['targetedUsers']">
+            <div class="data-element sr-only"><label for="targeted-user-add-new">Add new Targeted User</label></div>
+            <select class="form-control" ng-model="$ctrl.newItem['targetedUsers'].targetedUserName"
+                    id="targeted-user-add-new" name="targetedUserAddNew" required
+                    ng-options="option.name as option.name for option in $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers)">
+            </select>
+          </div>
+          <div ng-if="$ctrl.addingItem['targetedUsers'] && $ctrl.creatingItem['targetedUsers']">
+            <div class="data-element sr-only"><label for="targeted-user-add-new">Create new Targeted User</label></div>
+            <input type="text" class="form-control" ng-model="$ctrl.newItem['targetedUsers'].targetedUserName"
+                   id="targeted-user-add-new" name="targetedUserAddNew" required>
+          </div>
+          <div ng-if="$ctrl.addingItem['targetedUsers']">
+            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['targetedUsers'] = !$ctrl.creatingItem['targetedUsers']"><i class="fa" ng-class="$ctrl.creatingItem['targetedUsers'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['targetedUsers'] ? 'Create new' : 'Add existing' }} targeted user</button>
+          </div>
+          <div class="list-edit__item--end" ng-if="$ctrl.addingItem['targetedUsers']">
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('targetedUsers')" ng-mouseover="$ctrl.showFormErrors = true"
+                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.targetedUserAddNew.$touched) && $ctrl.form.targetedUserAddNew.$error.required"><i class="fa fa-save"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('targetedUsers')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
+          </div>
+          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['targetedUsers'] && $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers).length > 0">
+            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['targetedUsers'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
+          </div>
+        </div>
+        <div class="list-edit__container">
+          <div class="data-label">Estimated Number of Meaningful Use Users</div>
+          <div class="data-label">Effective Date</div>
+          <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
+            {{ item.muuCount }}
+          </div>
+          <div>
+            {{ item.muuDate | date : 'mediumDate' : 'GMT' }}
+            <div class="text-danger" ng-if="$ctrl.matchesPreviousMuuDate(item)">Only one value allowed per day</div>
+          </div>
+          <div class="list-edit__item--end" ng-repeat-end>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('meaningfulUseUserHistory', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
+          </div>
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
+            <label for="meaningful-use-user-history-add-new-value" class="sr-only"><span ng-if="$first">Current </span>Meaningful Use User Count</label>
+            <input type="number" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuCount"
+                   id="meaningful-use-user-history-add-new-value" name="meaningfulUseUserHistoryAddNewValue"
+                   class="input-sm form-control" required></input>
+          </div>
+          <div ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
+            <label class="sr-only" for="meaningful-use-user-history-add-new-date">Add new Effective Date</label>
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuDateObject"
+                     is-open="muuEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
+                     id="meaningful-use-user-history-add-new-date" name="meaningfulUseUserHistoryAddNewDate" required>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
+              </span>
+            </div>
+          </div>
+          <div class="list-edit__item--end" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('meaningfulUseUserHistory')" ng-mouseover="$ctrl.showFormErrors = true"
+                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.meaningFullUseUserAddNewValue.$touched || $ctrl.form.meaningfulUseUserHistoryAddNewDate) && ($ctrl.form.meaningfulUseUserHistoryAddNewValue.$error.required || $ctrl.form.meaningfulUseUserHistoryAddNewDate.$error.required)"
+                    ><i class="fa fa-save"></i></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('meaningfulUseUserHistory')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
+          </div>
+          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['meaningfulUseUserHistory']">
+            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['meaningfulUseUserHistory'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
         <div class="list-edit__container">
@@ -242,38 +321,6 @@
           </div>
         </div>
         <div class="list-edit__container">
-          <div class="list-edit--span-2 data-label">Targeted Users</div>
-          <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.targetedUsers track by $index">
-            {{ item.targetedUserName }}
-          </div>
-          <div class="list-edit__item--end" ng-repeat-end>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('targetedUsers', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
-          </div>
-          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['targetedUsers'] && !$ctrl.creatingItem['targetedUsers']">
-            <div class="data-element sr-only"><label for="targeted-user-add-new">Add new Targeted User</label></div>
-            <select class="form-control" ng-model="$ctrl.newItem['targetedUsers'].targetedUserName"
-                    id="targeted-user-add-new" name="targetedUserAddNew" required
-                    ng-options="option.name as option.name for option in $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers)">
-            </select>
-          </div>
-          <div ng-if="$ctrl.addingItem['targetedUsers'] && $ctrl.creatingItem['targetedUsers']">
-            <div class="data-element sr-only"><label for="targeted-user-add-new">Create new Targeted User</label></div>
-            <input type="text" class="form-control" ng-model="$ctrl.newItem['targetedUsers'].targetedUserName"
-                   id="targeted-user-add-new" name="targetedUserAddNew" required>
-          </div>
-          <div ng-if="$ctrl.addingItem['targetedUsers']">
-            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['targetedUsers'] = !$ctrl.creatingItem['targetedUsers']"><i class="fa" ng-class="$ctrl.creatingItem['targetedUsers'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['targetedUsers'] ? 'Create new' : 'Add existing' }} targeted user</button>
-          </div>
-          <div class="list-edit__item--end" ng-if="$ctrl.addingItem['targetedUsers']">
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('targetedUsers')" ng-mouseover="$ctrl.showFormErrors = true"
-                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.targetedUserAddNew.$touched) && $ctrl.form.targetedUserAddNew.$error.required"><i class="fa fa-save"></i></button>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('targetedUsers')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
-          </div>
-          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['targetedUsers'] && $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers).length > 0">
-            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['targetedUsers'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
-          </div>
-        </div>
-        <div class="list-edit__container">
           <div class="list-edit--span-2 data-label">Accessibility Standards</div>
           <div class="list-edit__row-start list-edit--span-2" ng-repeat-start="item in $ctrl.listing.accessibilityStandards track by $index">
             {{ item.accessibilityStandardName }}
@@ -301,46 +348,6 @@
           </div>
           <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['accessibilityStandards'] && $ctrl.filterListEditItems('accessibilityStandards', $ctrl.resources.accessibilityStandards).length > 0">
             <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['accessibilityStandards'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
-          </div>
-        </div>
-        <div class="list-edit__container">
-          <div class="data-label">Estimated Number of Meaningful Use Users</div>
-          <div class="data-label">Effective Date</div>
-          <div class="list-edit__row-start" ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
-            {{ item.muuCount }}
-          </div>
-          <div>
-            {{ item.muuDate | date : 'mediumDate' : 'GMT' }}
-            <div class="text-danger" ng-if="$ctrl.matchesPreviousMuuDate(item)">Only one value allowed per day</div>
-          </div>
-          <div class="list-edit__item--end" ng-repeat-end>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('meaningfulUseUserHistory', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
-          </div>
-          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
-            <label for="meaningful-use-user-history-add-new-value" class="sr-only"><span ng-if="$first">Current </span>Meaningful Use User Count</label>
-            <input type="number" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuCount"
-                   id="meaningful-use-user-history-add-new-value" name="meaningfulUseUserHistoryAddNewValue"
-                   class="input-sm form-control" required></input>
-          </div>
-          <div ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
-            <label class="sr-only" for="meaningful-use-user-history-add-new-date">Add new Effective Date</label>
-            <div class="input-group">
-              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuDateObject"
-                     is-open="muuEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
-                     id="meaningful-use-user-history-add-new-date" name="meaningfulUseUserHistoryAddNewDate" required>
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
-              </span>
-            </div>
-          </div>
-          <div class="list-edit__item--end" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('meaningfulUseUserHistory')" ng-mouseover="$ctrl.showFormErrors = true"
-                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.meaningFullUseUserAddNewValue.$touched || $ctrl.form.meaningfulUseUserHistoryAddNewDate) && ($ctrl.form.meaningfulUseUserHistoryAddNewValue.$error.required || $ctrl.form.meaningfulUseUserHistoryAddNewDate.$error.required)"
-                    ><i class="fa fa-save"></i></button>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('meaningfulUseUserHistory')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
-          </div>
-          <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['meaningfulUseUserHistory']">
-            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['meaningfulUseUserHistory'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
       </div>

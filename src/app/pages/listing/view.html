@@ -123,19 +123,6 @@
                 <div class="data-label listing__enhanced-label">Relied Upon Software</div>
                 <div class="read-only-data">{{ $ctrl.listing.productAdditionalSoftware }}</div>
               </div>
-              <div ng-if="$ctrl.listing.transparencyAttestation">
-                <div class="data-label listing__enhanced-label">Mandatory Disclosures URL</div>
-                <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
-                <p class="read-only-data" ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
-              </div>
-              <div ng-if="$ctrl.listing.accessibilityStandards && $ctrl.listing.accessibilityStandards.length !== 0">
-                <div class="data-label listing__enhanced-label">Accessibility Standard<span ng-if="$ctrl.listing.accessibilityStandards.length !== 1">s</span></div>
-                <div class="read-only-data">
-                  <ul>
-                    <li ng-repeat="standard in $ctrl.listing.accessibilityStandards | orderBy:accessibilityStandardName">{{ standard.accessibilityStandardName }}</li>
-                  </ul>
-                </div>
-              </div>
               <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
                 <div>
                   <div class="data-label listing__enhanced-label">Real World Testing</div>

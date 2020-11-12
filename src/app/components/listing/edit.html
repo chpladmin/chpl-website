@@ -30,32 +30,12 @@
   <div ng-if="!$ctrl.idFields">
     <strong>CHPL Product Number:</strong> {{ $ctrl.listing.chplProductNumber }}
   </div>
-  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
-    <label for="cp-practice">Practice Type</label>
-    <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"
-            ng-change="$ctrl.update()"
-            ng-options="practice as practice.name for practice in $ctrl.resources.practices" required>
-    </select>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpPractice.$touched) && $ctrl.form.cpPractice.$error.required">Field is required</div>
-  </div>
-  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
-    <label for="cp-classification">Classification Type</label>
-    <select class="input-sm form-control" ng-model="$ctrl.listing.classificationType" id="cp-classification" name="cpClassification"
-            ng-change="$ctrl.update()"
-            ng-options="classification as classification.name for classification in $ctrl.resources.classifications" required>
-    </select>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpClassification.$touched) && $ctrl.form.cpClassification.$error.required">Field is required</div>
+  <div class="form-group">
+    <label for="cp-acb-cert-id">ACB Certification Id</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250" ng-change="$ctrl.update()">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
   </div>
   <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
-  <div ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} </div>
-  <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="form-group">
-    <label for="cp-body">Certification Body</label>
-    <select class="input-sm form-control" ng-model="$ctrl.listing.certifyingBody" id="cp-body" name="cpBody"
-            ng-change="$ctrl.update()"
-            ng-options="body as body.name for body in $ctrl.resources.bodies" required>
-    </select>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpBody.$touched) && $ctrl.form.cpBody.$error.required">Field is required</div>
-  </div>
   <div class="form-group">
     <label for="cp-cert-date">Certification Date</label>
     <div class="input-group">
@@ -66,10 +46,6 @@
     </div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.required">Field is required</div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
-  </div>
-  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2011' || ($ctrl.listing.certificationEdition.name === '2014' && $ctrl.listing.chplProductNumber.startsWith('CHP-'))">
-    <label for="cp-additional-software">Product wide Relied Upon Software</label>
-    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
   <div class="list-edit__container">
     <div class="data-label">Certification Status</div>
@@ -126,23 +102,30 @@
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['certificationEvents'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
     </div>
   </div>
-  <div class="form-group">
-    <label for="cp-acb-cert-id">ACB Certification Id</label>
-    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250" ng-change="$ctrl.update()">
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
+  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+    <label for="cp-practice">Practice Type</label>
+    <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"
+            ng-change="$ctrl.update()"
+            ng-options="practice as practice.name for practice in $ctrl.resources.practices" required>
+    </select>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpPractice.$touched) && $ctrl.form.cpPractice.$error.required">Field is required</div>
   </div>
-  <div class="form-group">
-    <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024" ng-change="$ctrl.update()">
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
+  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+    <label for="cp-classification">Classification Type</label>
+    <select class="input-sm form-control" ng-model="$ctrl.listing.classificationType" id="cp-classification" name="cpClassification"
+            ng-change="$ctrl.update()"
+            ng-options="classification as classification.name for classification in $ctrl.resources.classifications" required>
+    </select>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpClassification.$touched) && $ctrl.form.cpClassification.$error.required">Field is required</div>
   </div>
-  <div class="form-group">
-    <label for="cp-report-file-loc">Report File Location</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.certificationEdition.name === '2014'" ng-change="$ctrl.update()">
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.required">Field is required</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.maxlength">Field is too long</div>
+  <div ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} </div>
+  <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" class="form-group">
+    <label for="cp-body">Certification Body</label>
+    <select class="input-sm form-control" ng-model="$ctrl.listing.certifyingBody" id="cp-body" name="cpBody"
+            ng-change="$ctrl.update()"
+            ng-options="body as body.name for body in $ctrl.resources.bodies" required>
+    </select>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpBody.$touched) && $ctrl.form.cpBody.$error.required">Field is required</div>
   </div>
   <div class="list-edit__container">
     <div class="data-label">Testing Lab</div>
@@ -166,6 +149,10 @@
     <div class="list-edit__row-start" ng-if="!$ctrl.addingItem['oncAtls'] && $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs).length > 0">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['oncAtls'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
     </div>
+  </div>
+  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2011' || ($ctrl.listing.certificationEdition.name === '2014' && $ctrl.listing.chplProductNumber.startsWith('CHP-'))">
+    <label for="cp-additional-software">Product wide Relied Upon Software</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
   <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.rwtEligibilityYear">
     <div class="edit-listing__rwt-container-header">
@@ -209,6 +196,12 @@
         </span>
       </div>
     </div>
+  </div>
+  <div class="form-group">
+    <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024" ng-change="$ctrl.update()">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
   </div>
   <br />
   <div class="form-group">
