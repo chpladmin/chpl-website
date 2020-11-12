@@ -2,7 +2,6 @@ export const ProductsMergeComponent = {
     templateUrl: 'chpl.organizations/developers/product/merge.html',
     bindings: {
         developer: '<',
-        products: '<',
     },
     controller: class ProductsMergeController {
         constructor ($log, $state, $stateParams, authService, networkService) {
@@ -26,15 +25,7 @@ export const ProductsMergeComponent = {
         $onChanges (changes) {
             if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
-            }
-            if (changes.products && changes.products.currentValue) {
-                this.products = changes.products.currentValue.products
-                    .filter(d => !d.deleted)
-                    .map(d => {
-                        d.selected = false;
-                        return d;
-                    })
-                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+                this.products = angular.copy(this.developer.products);
             }
         }
 
