@@ -144,6 +144,11 @@
                   <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
                 </div>
               </div>
+              <div>
+                <div class="data-label listing__enhanced-label">Mandatory Disclosures URL</div>
+                <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
+                <p class="read-only-data" ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+              </div>
             </div>
           </div>
         </div>
