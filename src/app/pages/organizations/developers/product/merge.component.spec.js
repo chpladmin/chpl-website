@@ -6,8 +6,9 @@
 
         mock = {
             product: {},
-            products: [],
-            developer: {},
+            developer: {
+                products: [],
+            },
         };
 
         beforeEach(() => {
@@ -36,7 +37,7 @@
                 scope.developer = mock.developer;
                 scope.products = { products: mock.products };
 
-                el = angular.element('<chpl-products-merge developer="developer" products="products"></chpl-products-merge>');
+                el = angular.element('<chpl-products-merge developer="developer"></chpl-products-merge>');
 
                 $compile(el)(scope);
                 scope.$digest();

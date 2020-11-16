@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 11.2.0
+_16 November 2020_
+
+### Features
+* Use updated UI/UX for Announcements Report
+* Remove friendly name for developer and product POC
+* Display information about all Listings on Developer page on load
+
+### User Interface Updates
+* Indicate "Charts" are no longer in beta
+* Add relevant ONC-ACB(s) to Product list on Developer page
+
+### Bug Fixes
+* Redirect to home page if requested Developer doesn't exist
+
+---
+
 ## Version 11.1.0
 _19 October 2020_
 

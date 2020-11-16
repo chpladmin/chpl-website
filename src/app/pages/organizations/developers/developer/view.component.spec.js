@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Developers View component', () => {
+    describe('the Developer View component', () => {
         var $compile, $log, $q, $rootScope, $state, authService, ctrl, el, mock, networkService, scope, toaster;
 
         mock = {
@@ -13,15 +13,12 @@
                 address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
                 contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
                 lastModifiedDate: null, deleted: null, transparencyAttestations: [],
+                products: [{
+                    name: 'a product',
+                }],
                 statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
                 status: {id: 1, status: 'Active'},
             },
-            developers: [
-                { name: 'a developer', transparencyAttestations: [] },
-            ],
-            products: [
-                { name: 'a product' },
-            ],
             stateParams: {
                 developerId: 22,
             },
@@ -44,6 +41,7 @@
                     $delegate.getChangeRequestTypes = jasmine.createSpy('getChangeRequestTypes');
                     $delegate.getChangeRequestStatusTypes = jasmine.createSpy('getChangeRequestStatusTypes');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
+                    $delegate.getDirectReviews = jasmine.createSpy('getDirectReviews');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getUsersAtDeveloper = jasmine.createSpy('getUsersAtDeveloper');
                     $delegate.inviteUser = jasmine.createSpy('inviteUser');
@@ -66,6 +64,7 @@
                 networkService.getChangeRequestTypes.and.returnValue($q.when([]));
                 networkService.getChangeRequestStatusTypes.and.returnValue($q.when([]));
                 networkService.getDeveloper.and.returnValue($q.when(mock.developer));
+                networkService.getDirectReviews.and.returnValue($q.when([]));
                 networkService.getUsersAtDeveloper.and.returnValue($q.when({users: mock.users}));
                 networkService.getSearchOptions.and.returnValue($q.when([]));
                 networkService.inviteUser.and.returnValue($q.when({}));
@@ -76,10 +75,8 @@
                 scope = $rootScope.$new();
                 scope.acbs = {acbs: mock.acbs};
                 scope.developer = mock.developer;
-                scope.developers = {developers: mock.developers};
-                scope.products = {products: mock.products};
 
-                el = angular.element('<chpl-developers-view allowed-acbs="acbs" developer="developer" developers="developers" products="products"></chpl-developers-view>');
+                el = angular.element('<chpl-developer-view allowed-acbs="acbs" developer="developer"></chpl-developer-view>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -108,12 +105,37 @@
 
             describe('during initialization', () => {
                 it('should get data', () => {
+                    expect(networkService.getDirectReviews.calls.count()).toBe(1);
+                    expect(networkService.getDirectReviews).toHaveBeenCalledWith(636);
                     expect(networkService.getSearchOptions.calls.count()).toBe(1);
                     expect(networkService.getUsersAtDeveloper).toHaveBeenCalledWith(22);
                     expect(networkService.getUsersAtDeveloper.calls.count()).toBe(1);
                     expect(networkService.getChangeRequests.calls.count()).toBe(1);
                     expect(networkService.getChangeRequestTypes.calls.count()).toBe(1);
                     expect(networkService.getChangeRequestStatusTypes.calls.count()).toBe(1);
+                });
+
+                describe('of direct reviews', () => {
+                    it('should set status on success', () => {
+                        networkService.getDirectReviews.and.returnValue($q.when([1, 2]));
+                        ctrl.drStatus = 'unknown';
+                        ctrl.$onInit();
+                        scope.$digest();
+                        expect(ctrl.drStatus).toBe('success');
+                        expect(ctrl.directReviews).toEqual([1, 2]);
+                    });
+
+                    it('should set status on success', () => {
+                        let response = $q.defer();
+                        networkService.getDirectReviews.and.returnValue(response.promise);
+                        ctrl.drStatus = 'unknown';
+                        ctrl.directReviews = undefined;
+                        response.reject();
+                        ctrl.$onInit();
+                        scope.$digest();
+                        expect(ctrl.drStatus).toBe('error');
+                        expect(ctrl.directReviews).toBeUndefined();
+                    });
                 });
             });
 

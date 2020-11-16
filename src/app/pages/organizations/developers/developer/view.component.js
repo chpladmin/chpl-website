@@ -1,19 +1,17 @@
-export const DevelopersViewComponent = {
+export const DeveloperViewComponent = {
     templateUrl: 'chpl.organizations/developers/developer/view.html',
     bindings: {
         developer: '<',
         directReviews: '<',
-        products: '<',
     },
-    controller: class DevelopersViewComponent {
-        constructor ($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
+    controller: class DeveloperViewComponent {
+        constructor ($log, $scope, $state, $stateParams, authService, networkService, toaster) {
             'ngInject';
             this.$log = $log;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.canManageDeveloper = authService.canManageDeveloper;
-            this.featureFlags = featureFlags;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
             this.toaster = toaster;
@@ -39,13 +37,11 @@ export const DevelopersViewComponent = {
             if (this.$stateParams.versionId) {
                 this.versionId = this.$stateParams.versionId;
             }
-            if (this.featureFlags.isOn('direct-review')) {
-                this.networkService.getDirectReviews(this.developer.developerId)
-                    .then(results => {
-                        that.drStatus = 'success';
-                        that.directReviews = results;
-                    }, () => that.drStatus = 'error');
-            }
+            this.networkService.getDirectReviews(this.developer.developerId)
+                .then(results => {
+                    that.drStatus = 'success';
+                    that.directReviews = results;
+                }, () => that.drStatus = 'error');
         }
 
         $onChanges (changes) {
@@ -56,10 +52,6 @@ export const DevelopersViewComponent = {
             if (changes.directReviews) {
                 this.directReviews = angular.copy(changes.directReviews.currentValue);
             }
-            if (changes.products) {
-                this.products = angular.copy(changes.products.currentValue.products);
-                this.backup.products = angular.copy(this.products);
-            }
         }
 
         $onDestroy () {
@@ -69,7 +61,7 @@ export const DevelopersViewComponent = {
         can (action) {
             if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
             if (action === 'manageTracking' && !this.hasAnyRole(['ROLE_DEVELOPER'])) { return false; } // only DEVELOPER can manage tracking
-            if (action === 'split-developer' && this.products.length < 2) { return false; } // cannot split developer without at least two products
+            if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
             if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
             if (action === 'merge') { return false; } // if not above roles, can't merge
             if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
@@ -78,8 +70,6 @@ export const DevelopersViewComponent = {
 
         cancel () {
             this.developer = angular.copy(this.backup.developer);
-            this.developers = angular.copy(this.backup.developers);
-            this.products = angular.copy(this.backup.products);
             this.$state.go('organizations.developers.developer', {
                 developerId: this.developer.developerId,
                 action: undefined,
@@ -222,4 +212,4 @@ export const DevelopersViewComponent = {
 };
 
 angular.module('chpl.organizations')
-    .component('chplDevelopersView', DevelopersViewComponent);
+    .component('chplDeveloperView', DeveloperViewComponent);

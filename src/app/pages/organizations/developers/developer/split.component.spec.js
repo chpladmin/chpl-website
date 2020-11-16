@@ -5,8 +5,9 @@
         var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope, toaster;
 
         mock = {
-            developer: {},
-            products: [],
+            developer: {
+                products: [],
+            },
             goodResponse: {
                 job: {
                     jobDataMap: {
@@ -43,9 +44,8 @@
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
-                scope.products = {products: mock.products};
 
-                el = angular.element('<chpl-developers-split developer="developer" products="products"></chpl-developers-split>');
+                el = angular.element('<chpl-developers-split developer="developer"></chpl-developers-split>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -147,7 +147,9 @@
                 networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
                 ctrl.splitDeveloper = {
                     newDeveloper: {},
-                    oldDeveloper: {},
+                    oldDeveloper: {
+                        products: [],
+                    },
                     newProducts: [],
                     oldProducts: [],
                 };
