@@ -6,10 +6,11 @@ export const ConfirmListingsComponent = {
         resources: '<',
     },
     controller: class ConfirmListingsComponent {
-        constructor ($log, $uibModal, authService, networkService) {
+        constructor ($log, $uibModal, authService, featureFlags, networkService) {
             'ngInject';
             this.$log = $log;
             this.$uibModal = $uibModal;
+            this.featureFlags = featureFlags;
             this.networkService = networkService;
             this.hasAnyRole = authService.hasAnyRole;
             this.massReject = {};
@@ -20,6 +21,11 @@ export const ConfirmListingsComponent = {
             this.networkService.getPendingListings().then(listings => {
                 that.uploadingCps = listings;
             });
+            if (this.featureFlags.isOn('enhanced-upload')) {
+                this.networkService.getPendingListings(true).then(listings => {
+                    that.uploadingListings = listings;
+                });
+            }
         }
 
         $onChanges (changes) {

@@ -436,7 +436,10 @@ export class NetworkService {
         return this.apiGET('/statistics/participant_professional_experience_count');
     }
 
-    getPendingListings () {
+    getPendingListings (beta) {
+        if (beta) {
+            return this.apiGET('/certified_products/pending/metadata/beta');
+        }
         return this.apiGET('/certified_products/pending/metadata');
     }
 

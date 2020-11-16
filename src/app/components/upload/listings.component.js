@@ -2,6 +2,7 @@ export const UploadListingsComponent = {
     templateUrl: 'chpl.components/upload/listings.html',
     bindings: {
         onChange: '&',
+        beta: '@',
     },
     controller: class UploadListingsComponent {
         constructor ($filter, $log, API, Upload, authService, networkService) {
@@ -17,6 +18,12 @@ export const UploadListingsComponent = {
                     'API-Key': authService.getApiKey(),
                 },
             };
+        }
+
+        $onInit () {
+            if (this.beta) {
+                this.item.url += '/beta';
+            }
         }
 
         upload () {
