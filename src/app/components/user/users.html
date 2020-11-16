@@ -16,10 +16,10 @@
     </div>
     <div class="col-md-2" ng-form="$ctrl.form">
       <div uib-dropdown auto-close="outsideClick" is-open="$ctrl.invitationOpen">
-        <button class="btn btn-default dropdown-toggle" type="button" id="invite-user-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true"
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="invite-user-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true"
                 uib-tooltip="Invite a User" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-user-plus"></i><span class="sr-only">Invite a User</span>
         </button>
-        <div class="dropdown-menu dropdown-menu-large" aria-labeledby="invite-user-button" uib-dropdown-menu>
+        <div class="dropdown-menu dropdown-menu-large users__invite-a-user" aria-labeledby="invite-user-button" uib-dropdown-menu>
           <h2>Invite a User</h2>
           <div class="form-group">
             <label class="control-label" for="invite-email">Email <span class="text-danger">*</span></label>
@@ -35,7 +35,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button class="btn btn-ai-success btn-small pull-right" id="invite-user"
+              <button class="btn btn-primary btn-small pull-right" id="invite-user"
                       ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
                       ng-mouseover="$ctrl.showFormErrors = true"
                       ng-click="$ctrl.inviteUser()"><i class="fa fa-envelope"></i><span class="sr-only"> Send invitation</span></button>
