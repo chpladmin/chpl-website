@@ -2,7 +2,6 @@ export const DevelopersSplitComponent = {
     templateUrl: 'chpl.organizations/developers/developer/split.html',
     bindings: {
         developer: '<',
-        products: '<',
     },
     controller: class DevelopersSplitController {
         constructor ($log, $state, authService, networkService, toaster) {
@@ -30,9 +29,7 @@ export const DevelopersSplitComponent = {
         $onChanges (changes) {
             if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
-            }
-            if (changes.products) {
-                this.products = angular.copy(changes.products.currentValue.products);
+                this.products = angular.copy(this.developer.products);
             }
         }
 
