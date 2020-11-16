@@ -34,7 +34,7 @@ class UsersPage {
     get enabledCheckbox () {
         return $(userElements.enabledCheckbox);
     }
-    
+
     get pwChangeCheckbox () {
         return $(userElements.pwChangeCheckbox);
     }

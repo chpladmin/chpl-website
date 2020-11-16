@@ -55,7 +55,7 @@ describe('when logging in', () => {
         component.logoutButton.waitForDisplayed();
         expect(component.toggleLoginComponent.getText()).toBe('AQA ONC STAFF');
     });
-    
+
     it('should be able to log in as developer with an email address', () => {
         component.logInWithEmail('developer');
         component.logoutButton.waitForDisplayed();
