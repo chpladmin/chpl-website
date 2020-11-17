@@ -14,11 +14,11 @@
     margin-bottom: 0;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
     display: grid;
-    grid-template-cols: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
 }
 
 .action-bar__error-toggle {
-    color: var(--dark);
+    color: var(--red);
     text-align: center;
     text-transform: uppercase;
     padding-top: 8px;
