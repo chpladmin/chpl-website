@@ -12,7 +12,7 @@ export const UploadListingsComponent = {
             this.Upload = Upload;
             this.networkService = networkService;
             this.item = {
-                url: API + '/certified_products/upload',
+                url: API,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),
                     'API-Key': authService.getApiKey(),
@@ -22,7 +22,9 @@ export const UploadListingsComponent = {
 
         $onInit () {
             if (this.beta) {
-                this.item.url += '/beta';
+                this.item.url += '/listings/upload';
+            } else {
+                this.item.url += '/certified_products/upload';
             }
         }
 

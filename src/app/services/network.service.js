@@ -438,7 +438,7 @@ export class NetworkService {
 
     getPendingListings (beta) {
         if (beta) {
-            return this.apiGET('/certified_products/pending/metadata/beta');
+            return this.apiGET('/listings/pending');
         }
         return this.apiGET('/certified_products/pending/metadata');
     }
