@@ -1,6 +1,6 @@
 :root {
     --background-error: 196, 79, 101;
-    --background-warning: 196, 79, 101;
+    --background-warning: 247, 233, 187;
 }
 
 .action-bar {
@@ -13,39 +13,40 @@
     z-index: 1035;
     margin-bottom: 0;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, .1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-cols: 1fr 1fr;
 }
 
 .action-bar__error-toggle {
-    color: var(--red);
+    color: var(--dark);
     text-align: center;
     text-transform: uppercase;
     padding-top: 8px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--dark);
+    grid-column: 1 / 3;
 }
 
 .action-bar__errors {
-    color: var(--red);
+    color: var(--dark);
     background-color: rgba(var(--background-error), .3);
-    text-align: center;
     max-height: 30vh;
     overflow-y: scroll;
+    grid-column: 1 / 2;
 }
 
 .action-bar__warnings {
-    color: var(--warning);
+    color: var(--dark);
     background-color: rgba(var(--background-warning), .3);
-    text-align: center;
     max-height: 30vh;
     overflow-y: scroll;
+    grid-column: 2 / 3;
 }
 
 .action-bar__acknowledge-warnings {
     color: var(--warning);
     text-align: center;
+    grid-column: 1 / 3;
 }
 
 label.action-bar__acknowledge-warning-label {
@@ -56,6 +57,7 @@ label.action-bar__acknowledge-warning-label {
 .action-bar__buttons {
     display: flex;
     justify-content: center;
+    grid-column: 1 / 3;
 }
 
 .action-bar__button {
