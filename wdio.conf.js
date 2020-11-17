@@ -170,6 +170,11 @@ exports.config = {
             outputDir: './test_reports/e2e/',
             outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
         }],
+        ['allure', {
+            outputDir: './test_reports/e2e/allure-results',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false,
+        }],
     ],
 
     // =====
