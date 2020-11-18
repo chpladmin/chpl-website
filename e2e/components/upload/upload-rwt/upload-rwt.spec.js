@@ -26,7 +26,7 @@ describe('When uploading rwt file as ONC-ACB', () => {
     });
 
     it('cant upload invalid format of rwt file', () => {
-        uploadRwtComponent.uploadRwt('../../../resources/2015_v18_AQA2.csv');
+        uploadRwtComponent.uploadRwt('../../../resources/APIDoc_File.xlsx');
         assert.include(uploadRwtComponent.fileUploadText.getText(),'was not uploaded successfully.');
     });
 });
