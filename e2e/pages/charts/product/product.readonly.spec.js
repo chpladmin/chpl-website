@@ -13,6 +13,8 @@ beforeAll(async () => {
 describe('on charts page - Unique product chart', () => {
 
     it('should only show 2015 edition products', () => {
+        //stale element error
+        browser.pause(5000);
         assert.include(page.chartTitle.getText(),2015);
         assert.notInclude(page.chartTitle.getText(),2014);
     });
