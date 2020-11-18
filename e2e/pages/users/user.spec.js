@@ -20,6 +20,13 @@ describe('ONC STAFF can ', () => {
         page.userManagementButton.click();
     });
 
+    afterAll(function () {
+        page.lockedCheckbox.scrollAndClick();
+        page.enabledCheckbox.scrollAndClick();
+        page.pwChangeCheckbox.scrollAndClick();
+        actionBarComponent.save();
+    });
+
     it('change title successfully', () => {
         page.editUser('AQA ONC STAFF');
         page.userTitle.clearValue();
