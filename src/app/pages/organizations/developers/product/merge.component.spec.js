@@ -5,17 +5,21 @@
         var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
 
         mock = {
-            product: {},
             developer: {
-                products: [],
+                developerId: 22,
+                products: [{productId: 32}, {productId: 39}, {productId: 44}],
+            },
+            stateParams: {
+                developerId: 22,
+                productId: 32,
             },
         };
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
+                $provide.factory('$stateParams', () => mock.stateParams);
                 $provide.factory('chplProductEditDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
                     return $delegate;
                 });
@@ -27,7 +31,6 @@
                 $q = _$q_;
                 $state = _$state_;
                 networkService = _networkService_;
-                networkService.getProduct.and.returnValue($q.when(mock.product));
                 networkService.updateProduct.and.returnValue($q.when({
                     product: 'a product',
                     productId: 32,
@@ -35,7 +38,6 @@
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
-                scope.products = { products: mock.products };
 
                 el = angular.element('<chpl-products-merge developer="developer"></chpl-products-merge>');
 
@@ -68,34 +70,27 @@
         describe('when a product merge is saved', () => {
             it('should navigate back to the developer on a good response', () => {
                 spyOn($state, 'go');
-                let product = {
-                    productId: 'an id',
-                };
-                ctrl.developer = { developerId: 'dev ID' };
-                ctrl.selectedProducts = [{productId: 1}, {productId: 2}];
+                let product = {productId: 32};
+                ctrl.selectedProducts = [{productId: 39}];
                 networkService.updateProduct.and.returnValue($q.when({productId: 200}));
                 ctrl.merge(product);
                 scope.$digest();
                 expect($state.go).toHaveBeenCalledWith(
                     'organizations.developers.developer',
-                    { developerId: 'dev ID' },
+                    { developerId: 22 },
                     { reload: true },
                 );
             });
 
             it('should pass the the merging product data to the network service', () => {
-                let product = {
-                    productId: 'an id',
-                };
-                ctrl.product = product;
-                ctrl.developer = { developerId: 'dev ID' };
-                ctrl.selectedProducts = [{productId: 1}, {productId: 2}];
+                let product = {productId: 32};
+                ctrl.selectedProducts = [{productId: 39}];
                 networkService.updateProduct.and.returnValue($q.when({productId: 200}));
                 ctrl.merge(product);
                 expect(networkService.updateProduct).toHaveBeenCalledWith({
                     product: product,
-                    productIds: [1, 2, 'an id'],
-                    newDeveloperId: 'dev ID',
+                    productIds: [39, 32],
+                    newDeveloperId: 22,
                 });
             });
         });
