@@ -36,7 +36,11 @@ export const UploadListingsComponent = {
                 };
                 let that = this;
                 this.Upload.upload(item).then(response => {
-                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                    if (this.beta) {
+                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending products are ready for confirmation.';
+                    } else {
+                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                    }
                     if (response.headers.warning === '299 - "Deprecated upload template"') {
                         that.uploadWarnings = ['The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.'];
                     }
