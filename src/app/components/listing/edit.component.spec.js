@@ -50,7 +50,7 @@
                     return $delegate;
                 });
                 $provide.decorator('utilService', $delegate => {
-                    $delegate.certificationStatus = jasmine.createSpy('certificationStatus');
+                    $delegate.certificationStatusWhenEditing = jasmine.createSpy('certificationStatusWhenEditing');
                     $delegate.extendSelect = jasmine.createSpy('extendSelect');
                     return $delegate;
                 });
@@ -62,7 +62,7 @@
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
                 utilService = _utilService_;
-                utilService.certificationStatus.and.returnValue('Active');
+                utilService.certificationStatusWhenEditing.and.returnValue('Active');
                 utilService.extendSelect.and.returnValue([]);
 
                 scope = $rootScope.$new();
@@ -205,10 +205,10 @@
             });
 
             it('should leverage the util service to get the status', () => {
-                let count = utilService.certificationStatus.calls.count();
-                let status = ctrl.certificationStatus(mock.listing, {editing: true});
+                let count = utilService.certificationStatusWhenEditing.calls.count();
+                let status = ctrl.certificationStatusWhenEditing(mock.listing);
                 expect(status).toBe('Active');
-                expect(utilService.certificationStatus.calls.count()).toBe(count + 1);
+                expect(utilService.certificationStatusWhenEditing.calls.count()).toBe(count + 1);
             });
         });
 

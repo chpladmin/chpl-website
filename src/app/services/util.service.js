@@ -12,7 +12,7 @@
             addressRequired: addressRequired,
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
-            certificationStatus: certificationStatus,
+            certificationStatusWhenEditing: certificationStatusWhenEditing,
             extendSelect: extendSelect,
             findModel: findModel,
             isBlank: isBlank,
@@ -139,11 +139,11 @@
 
         }
 
-        function certificationStatus (listing, options) {
+        function certificationStatusWhenEditing (listing) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
                 let events = listing.certificationEvents
                     .map(ce => {
-                        if (ce.statusDateObject && options && options.editing) {
+                        if (ce.statusDateObject) {
                             ce.eventDate = ce.statusDateObject.getTime();
                         }
                         return ce;
