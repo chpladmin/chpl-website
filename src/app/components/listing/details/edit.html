@@ -213,7 +213,7 @@
                     ng-options="option.name as option.name for option in $ctrl.filterListEditItems('targetedUsers', $ctrl.resources.targetedUsers)">
             </select>
           </div>
-          <div ng-if="$ctrl.addingItem['targetedUsers'] && $ctrl.creatingItem['targetedUsers']">
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['targetedUsers'] && $ctrl.creatingItem['targetedUsers']">
             <div class="data-element sr-only"><label for="targeted-user-add-new">Create new Targeted User</label></div>
             <input type="text" class="form-control" ng-model="$ctrl.newItem['targetedUsers'].targetedUserName"
                    id="targeted-user-add-new" name="targetedUserAddNew" required>
@@ -293,7 +293,7 @@
                     ng-options="option.name as option.name for option in $ctrl.filterListEditItems('qmsStandards', $ctrl.resources.qmsStandards)">
             </select>
           </div>
-          <div ng-if="$ctrl.addingItem['qmsStandards'] && $ctrl.creatingItem['qmsStandards']">
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['qmsStandards'] && $ctrl.creatingItem['qmsStandards']">
             <div class="data-element sr-only"><label for="qms-standard-add-new">Create new Qms Standard</label></div>
             <input type="text" class="form-control" ng-model="$ctrl.newItem['qmsStandards'].qmsStandardName"
                    id="qms-standard-add-new" name="qmsStandardAddNew" required>
@@ -334,7 +334,7 @@
                     ng-options="option.name as option.name for option in $ctrl.filterListEditItems('accessibilityStandards', $ctrl.resources.accessibilityStandards)">
             </select>
           </div>
-          <div ng-if="$ctrl.addingItem['accessibilityStandards'] && $ctrl.creatingItem['accessibilityStandards']">
+          <div class="list-edit__row-start" ng-if="$ctrl.addingItem['accessibilityStandards'] && $ctrl.creatingItem['accessibilityStandards']">
             <div class="data-element sr-only"><label for="accessibility-standard-add-new">Create new Accessibility Standard</label></div>
             <input type="text" class="form-control" ng-model="$ctrl.newItem['accessibilityStandards'].accessibilityStandardName" id="accessibility-standard-add-new" name="accessibilityStandardAddNew" required>
           </div>
