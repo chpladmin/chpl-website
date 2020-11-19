@@ -40,13 +40,14 @@
                     <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All'">Version</li>
                   </ul>
                 </div>
-                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 1)">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 2)">
                   <button class="btn btn-default dropdown-toggle" type="button" id="merge-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
                     <i class="fa fa-code-fork fa-rotate-180"></i> Merge
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="merge-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.mergeProduct(product)" ng-if="$ctrl.products.length > 1">Product</li>
-                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.versions.length > 1">Version (functionality coming soon)</li>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.mergeVersion(product)" ng-if="product.activeVersion.version !== 'All' && product.versions.length > 2">Version</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All' || product.versions.length === 2">Version</li>
                   </ul>
                 </div>
               </div>
