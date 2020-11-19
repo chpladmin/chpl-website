@@ -1,309 +1,272 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content">
 
-    <div ng-if="vm.workType === 'manage'" class="row">
+    <div class="row">
       <div class="col-sm-12">
-          <p>In the 'Manage Developers and Products' module, you can manage existing health IT developers and certified products. To edit developer or product information, begin by selecting the desired developer below. To edit information about that developer, click the 'Edit Developer' button, and make any desired changes. Once you are satisfied with your changes, click the 'Save Developer' button, or click 'Cancel Edits' to discard your changes.</p>
-          <p>To make changes to a certified product or a version of a product, continue by selecting the desired product and version, and click the corresponding 'Edit Product' or 'Edit Version' button.</p>
+        <p>In the 'Manage Developers and Products' module, you can manage existing health IT developers and certified products. To edit developer or product information, begin by selecting the desired developer below. To edit information about that developer, click the 'Edit Developer' button, and make any desired changes. Once you are satisfied with your changes, click the 'Save Developer' button, or click 'Cancel Edits' to discard your changes.</p>
+        <p>To make changes to a certified product or a version of a product, continue by selecting the desired product and version, and click the corresponding 'Edit Product' or 'Edit Version' button.</p>
       </div>
     </div>
 
-    <div ng-if="vm.workType === 'merge'" class="row">
-      <div class="col-sm-12">
-        <p>In the 'Merge Versions' module, you can merge existing health IT versions of certified products.</p>
-        <p>Select a desired developer from the dropdown list, and click 'Choose' to proceed.</p>
+    <div class="row">
+      <div class="col-sm-12" ng-if="vm.activeDeveloper === ''">
+        <div class="form-horizontal">
+          <div class="form-group admin-label-spaced">
+            <div class="col-sm-3">
+              <label for="developer-select" class="control-label">Developer</label>
+            </div>
+            <div class="col-sm-7">
+              <select ng-model="vm.developerSelect"
+                      id="developer-select" class="form-control col-sm-8"
+                      ng-options="v.name for v in vm.developers | orderBy: 'name'">
+                <option value="" selected disabled>Select a developer</option>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-default form-control" ng-click="vm.selectDeveloper()">Choose</button>
+            </div>
+          </div>
+        </div>
       </div>
+    </div> <!-- end select developer -->
+
+    <div class="row" ng-if="vm.activeDeveloper !== ''">
+      <div class="col-sm-12">
+        <h3 ng-if="vm.inspectingCp">System developer information</h3>
+        <div class="panel panel-ai panel-admin">
+          <div class="panel-heading">
+            <span>Active Developer</span>
+            <span class="pull-right">
+              <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)">
+                <span ng-if="vm.products.length > 1">
+                  <a ui-sref="organizations.developers.developer.split({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-scissors"></i> Split Developer</a> |
+                </span>
+                <a ui-sref="organizations.developers.developer.edit({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |
+                <a ui-sref="organizations.developers.developer.merge({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-code-fork fa-rotate-180"></i> Merge Developer</a> |
+                <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+              </span>
+            </span>
+          </div>
+          <div class="panel-body">
+            <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
+            <div ng-if="!vm.activeDeveloper.statusEvents || vm.activeDeveloper.statusEvents.length === 0">{{ vm.activeDeveloper.status.status }}</div>
+            <table ng-if="vm.activeDeveloper.statusEvents && vm.activeDeveloper.statusEvents.length > 0" class="table table-condensed">
+              <thead>
+                <tr>
+                  <th scope="col">Status History</th>
+                  <th scope="col">Effective date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="status in vm.activeDeveloper.statusEvents | orderBy:'-statusDate'">
+                  <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
+                  <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              Line 1: {{ vm.activeDeveloper.address.line1 }}<br />
+              Line 2: {{ vm.activeDeveloper.address.line2 }}<br />
+              City: {{ vm.activeDeveloper.address.city }}<br />
+              State: {{ vm.activeDeveloper.address.state }}<br />
+              Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
+              Country: {{ vm.activeDeveloper.address.country }}<br />
+              Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
+              Self-developer: {{ vm.activeDeveloper.selfDeveloper ? 'Yes' : 'No' }}<br />
+              <strong>Contact information</strong><br />
+              <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
+            </div>
+            <p ng-if="vm.developerMessage !== undefined" class="bg-danger">{{ vm.developerMessage }}</p>
+          </div>
+        </div>
+      </div> <!-- end system developer -->
+    </div> <!-- end active developer -->
+
+    <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== ''"> <!-- product -->
+      <div class="col-sm-12">
+        <div class="form-horizontal">
+          <div class="form-group admin-label-spaced">
+            <div class="col-sm-3">
+              <label for="product-select" class="control-label admin-label-spaced">Product</label>
+            </div>
+            <div class="col-sm-7">
+              <select ng-model="vm.productSelect"
+                      id="product-select" class="form-control"
+                      ng-options="p.name for p in vm.products | orderBy: 'name'">
+                <option value="" selected disabled>Select a product</option>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end select product -->
+
+    <div class="row" ng-if="vm.activeProduct !== ''">
+      <div class="col-sm-12">
+        <div class="panel panel-ai panel-admin">
+          <div class="panel-heading">
+            <span>Active Product</span>
+            <span class="pull-right">
+              <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)">
+                <span ng-if="vm.versions.length > 1">
+                  <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
+                </span>
+              </span>
+              <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)">
+                <a ui-sref="organizations.developers.developer.product.edit({ developerId: vm.activeDeveloper.developerId, productId: vm.activeProduct.productId })"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |
+              </span>
+              <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+            </span>
+          </div>
+          <div class="panel-body">
+            <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
+            <span ng-if="vm.activeProduct.contact">
+              <strong>Contact information</strong><br />
+              <ai-contact contact="vm.activeProduct.contact"></ai-contact>
+            </span>
+            <p ng-if="vm.productMessage !== undefined" ng-repeat="msg in vm.productMessage | orderBy:'toString()'" class="bg-danger">{{ msg }}</p>
+          </div>
+        </div>
+      </div> <!-- end system product -->
     </div>
 
-    <div ng-if="vm.workType === 'manage' || vm.workType === 'merge'"> <!-- developer -->
-      <div class="row">
-        <div class="col-sm-12" ng-if="vm.activeDeveloper === ''">
-          <div class="form-horizontal">
-            <div class="form-group admin-label-spaced">
+    <div class="row" ng-if="vm.activeProduct !== '' && vm.activeDeveloper !== '' && vm.activeVersion === ''"> <!-- version -->
+      <div class="col-sm-12">
+        <div class="form-horizontal">
+          <div class="form-group admin-label-spaced">
+            <div class="col-sm-3">
+              <label for="version-select" class="control-label admin-label-spaced">Version</label>
+            </div>
+            <div class="col-sm-7">
+              <select ng-model="vm.versionSelect"
+                      id="version-select" class="form-control"
+                      ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
+                <option value="" selected disabled>Select a version</option>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end select version -->
+
+    <div class="row" ng-if="vm.activeVersion !== ''">
+      <div class="col-sm-12">
+        <div class="panel panel-ai panel-admin">
+          <div class="panel-heading">
+            <span>Active Version</span>
+            <span class="pull-right">
+              <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)">
+                <a ui-sref="organizations.developers.developer.product.version.edit({ developerId: vm.activeDeveloper.developerId, productId: vm.activeProduct.productId, versionId: vm.activeVersion.versionId })"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |
+              </span>
+              <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+            </span>
+          </div>
+          <div class="panel-body">
+            <div>{{ vm.activeVersion.version }} <em class="pull-right">Last modified date: {{ vm.activeVersion.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
+            <p ng-if="vm.versionMessage !== undefined" class="bg-danger">{{ vm.versionMessage }}</p>
+          </div>
+        </div>
+      </div> <!-- end system version -->
+    </div>
+
+    <div class="row" ng-if="vm.activeVersion !== ''">
+      <div class="col-sm-12">
+        <div class="form-horizontal" ng-if="vm.activeCP === ''">
+          <div class="form-group admin-label-spaced">
+            <span ng-if="vm.cps.length > 0">
               <div class="col-sm-3">
-                <label for="developer-select" class="control-label">Developer</label>
+                <label for="cp-select" class="control-label admin-label-spaced">Certified Product</label>
               </div>
               <div class="col-sm-7">
-                <select ng-model="vm.developerSelect"
-                        id="developer-select" class="form-control col-sm-8"
-                        ng-options="v.name for v in vm.developers | orderBy: 'name'">
-                  <option value="" selected disabled>Select a developer</option>
+                <select ng-model="vm.cpSelect" id="cp-select" class="input-sm form-control">
+                  <option value="" selected disabled>Select a Certified Product</option>
+                  <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</option>
                 </select>
               </div>
               <div class="col-sm-2">
-                <button class="btn btn-default form-control" ng-click="vm.selectDeveloper()">Choose</button>
+                <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose</button>
               </div>
+            </span>
+            <div class="col-sm-12" ng-if="vm.cps.length === 0">
+              <p><strong>No Certified Products are available for edit</strong></p>
             </div>
           </div>
         </div>
-      </div> <!-- end select developer -->
-
-      <div class="row" ng-if="vm.activeDeveloper !== ''">
-        <div class="col-sm-12">
-          <h3 ng-if="vm.inspectingCp">System developer information</h3>
+        <div ng-if="vm.activeCP !== ''">
           <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
-              <span>Active Developer</span>
-              <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
-                  <span ng-if="vm.products.length > 1">
-                    <a ui-sref="organizations.developers.developer.split({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-scissors"></i> Split Developer</a> |
-                  </span>
-                  <a ui-sref="organizations.developers.developer.edit({ developerId: vm.activeDeveloper.developerId })"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |
-                  <a ui-sref="organizations.developers.developer.merge({ developerId: vm.activeDeveloper.developerId })"><i class="fa  fa-code-fork fa-rotate-180"></i> Merge Developer</a> |
-                  <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
-                </span>
+              <span>Active Listing</span>
+              <span class="pull-right" ng-if="vm.activeCP.id">
+                <a ui-sref="reports.listings({ productId: vm.activeCP.id })"><i class="fa fa-calendar"></i> View Listing History</a> |
+                <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
+                <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
+                <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
-            <div class="panel-body">
-              <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
-              <div ng-if="!vm.activeDeveloper.statusEvents || vm.activeDeveloper.statusEvents.length === 0">{{ vm.activeDeveloper.status.status }}</div>
-              <table ng-if="vm.activeDeveloper.statusEvents && vm.activeDeveloper.statusEvents.length > 0" class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th scope="col">Status History</th>
-                    <th scope="col">Effective date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="status in vm.activeDeveloper.statusEvents | orderBy:'-statusDate'">
-                    <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
-                    <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-                Line 1: {{ vm.activeDeveloper.address.line1 }}<br />
-                Line 2: {{ vm.activeDeveloper.address.line2 }}<br />
-                City: {{ vm.activeDeveloper.address.city }}<br />
-                State: {{ vm.activeDeveloper.address.state }}<br />
-                Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
-                Country: {{ vm.activeDeveloper.address.country }}<br />
-                Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
-                Self-developer: {{ vm.activeDeveloper.selfDeveloper ? 'Yes' : 'No' }}<br />
-                <strong>Contact information</strong><br />
-                <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
-              </div>
-              <p ng-if="vm.developerMessage !== undefined" class="bg-danger">{{ vm.developerMessage }}</p>
+            <div class="panel-body" ng-if="!vm.activeCP.id">
+              Loading <i class="fa fa-spin fa-spinner"></i>
             </div>
-          </div>
-        </div> <!-- end system developer -->
-      </div> <!-- end active developer -->
-
-      <div ng-if="vm.workType === 'merge' && vm.activeDeveloper !== ''" class="row">
-        <div class="col-sm-12">
-          <p>Select a desired product from the dropdown list, and click 'Choose' to proceed.</p>
-        </div>
-      </div>
-
-      <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== ''"> <!-- product -->
-        <div class="col-sm-12">
-          <div class="form-horizontal">
-            <div class="form-group admin-label-spaced">
-              <div class="col-sm-3">
-                <label for="product-select" class="control-label admin-label-spaced">Product</label>
-              </div>
-              <div class="col-sm-7">
-                <select ng-model="vm.productSelect"
-                        id="product-select" class="form-control"
-                        ng-options="p.name for p in vm.products | orderBy: 'name'">
-                  <option value="" selected disabled>Select a product</option>
-                </select>
-              </div>
-              <div class="col-sm-2">
-                <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- end select product -->
-
-      <div class="row" ng-if="vm.activeProduct !== ''">
-        <div class="col-sm-12">
-          <div class="panel panel-ai panel-admin">
-            <div class="panel-heading">
-              <span>Active Product</span>
-              <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
-                  <span ng-if="vm.versions.length > 1">
-                    <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
-                  </span>
-                </span>
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
-                  <a ui-sref="organizations.developers.developer.product.edit({ developerId: vm.activeDeveloper.developerId, productId: vm.activeProduct.productId })"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |
-                </span>
-                <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
-              </span>
-            </div>
-            <div class="panel-body">
-              <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
-              <span ng-if="vm.activeProduct.contact">
-                <strong>Contact information</strong><br />
-                <ai-contact contact="vm.activeProduct.contact"></ai-contact>
-              </span>
-              <p ng-if="vm.productMessage !== undefined" ng-repeat="msg in vm.productMessage | orderBy:'toString()'" class="bg-danger">{{ msg }}</p>
-            </div>
-          </div>
-        </div> <!-- end system product -->
-      </div>
-
-      <div ng-if="vm.workType === 'merge' && vm.activeProduct !== ''" class="row">
-        <div class="col-sm-12">
-          <span ng-if="vm.versions.length > 1">
-            <p>Select the versions to merge by holding the Control (CTRL) button while clicking the desired versions. Then click the 'Choose Versions' button.</p>
-            <p>Inspect the chosen versions to be merged, and enter or edit information for the new merged Version. When you are satisfied with your changes, click the 'Save Combined Version' button, or click 'Cancel Edits' to discard your changes.</p>
-          </span>
-          <p ng-if="vm.mergeType !== 'version'">Select a desired version from the dropdown list, and click 'Choose' to proceed.</p>
-        </div>
-      </div>
-
-      <div class="row" ng-if="vm.activeProduct !== '' && vm.activeDeveloper !== '' && vm.activeVersion === '' && (vm.mergeType !== 'product' || vm.workType !== 'merge')"> <!-- version -->
-        <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'version'">
-          <div class="form-horizontal">
-            <div class="form-group admin-label-spaced">
-              <div class="col-sm-3">
-                <label for="version-select" class="control-label admin-label-spaced">Version</label>
-              </div>
-              <div class="col-sm-7">
-                <select ng-model="vm.versionSelect"
-                        id="version-select" class="form-control"
-                        ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
-                  <option value="" selected disabled>Select a version</option>
-                </select>
-              </div>
-              <div class="col-sm-2">
-                <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-12" ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
-          <label for="version-merge-select" class="control-label admin-label-spaced">Select versions to merge</label>
-          <button id="clear-selection-versions" class="btn btn-small btn-link pull-right" ng-click="vm.mergingVersions=[];" ng-if="vm.mergingVersions && vm.mergingVersions.length !== 0">Clear Selection(s)<span class="sr-only">of Versions</span></button>
-          <select ng-model="vm.mergingVersions" multiple="true"
-                  id="version-merge-select" class="input-sm form-control"
-                  size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
-          </select>
-          <p><button ng-disabled="vm.mergingVersions.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeVersions()">Choose Versions</button></p>
-        </div>
-        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'version' && vm.versions.length <= 1">
-          <p><strong>No versions are available for merge</strong></p>
-        </div> <!-- end version merge select -->
-      </div> <!-- end select version -->
-
-      <div class="row" ng-if="vm.activeVersion !== ''">
-        <div class="col-sm-12">
-          <div class="panel panel-ai panel-admin">
-            <div class="panel-heading">
-              <span>Active Version</span>
-              <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)">
-                  <a ui-sref="organizations.developers.developer.product.version.edit({ developerId: vm.activeDeveloper.developerId, productId: vm.activeProduct.productId, versionId: vm.activeVersion.versionId })"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |
-                </span>
-                <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
-              </span>
-            </div>
-            <div class="panel-body">
-              <div>{{ vm.activeVersion.version }} <em class="pull-right">Last modified date: {{ vm.activeVersion.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
-              <p ng-if="vm.versionMessage !== undefined" class="bg-danger">{{ vm.versionMessage }}</p>
-            </div>
-          </div>
-        </div> <!-- end system version -->
-      </div>
-
-      <div class="row" ng-if="vm.activeVersion !== '' && vm.workType !== 'merge'">
-        <div class="col-sm-12">
-          <div class="form-horizontal" ng-if="vm.activeCP === ''">
-            <div class="form-group admin-label-spaced">
-              <span ng-if="vm.cps.length > 0">
-                <div class="col-sm-3">
-                  <label for="cp-select" class="control-label admin-label-spaced">Certified Product</label>
-                </div>
-                <div class="col-sm-7">
-                  <select ng-model="vm.cpSelect" id="cp-select" class="input-sm form-control">
-                    <option value="" selected disabled>Select a Certified Product</option>
-                    <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</option>
-                  </select>
-                </div>
-                <div class="col-sm-2">
-                  <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose</button>
-                </div>
-              </span>
-              <div class="col-sm-12" ng-if="vm.cps.length === 0">
-                <p><strong>No Certified Products are available for edit</strong></p>
-              </div>
-            </div>
-          </div>
-          <div ng-if="vm.activeCP !== ''">
-            <div class="panel panel-ai panel-admin">
-              <div class="panel-heading">
-                <span>Active Listing</span>
-                <span class="pull-right" ng-if="vm.activeCP.id">
-                  <a ui-sref="reports.listings({ productId: vm.activeCP.id })"><i class="fa fa-calendar"></i> View Listing History</a> |
-                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
-                  <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
-                  <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
-                </span>
-              </div>
-              <div class="panel-body" ng-if="!vm.activeCP.id">
-                Loading <i class="fa fa-spin fa-spinner"></i>
-              </div>
-              <div class="panel-body" ng-if="vm.activeCP.id">
-                <span>
-                  <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
-                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>
-                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br /></span>
-                  <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <span ng-if="vm.activeCP.curesUpdate">Cures Update</span> <br />
-                  <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
-                  <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                  <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>
-                  <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
-                  <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
-                  <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
-                  <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
-                  <ul>
-                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
-                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
-                  </ul>
-                  <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
-                  <ul>
-                    <li ng-repeat="qms in vm.activeCP.qmsStandards"><strong>Standard:</strong> {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification"><strong><br />Modification:</strong> {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> <strong><br />Applicable Criteria:</strong> {{ qms.applicableCriteria }}</span></li>
-                  </ul>
-                  <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
-                  <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
-                  <strong>SED Intended Users:</strong> {{ vm.activeCP.sedIntendedUserDescription ? vm.activeCP.sedIntendedUserDescription : 'None' }} <br />
-                  <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Testing Lab<span ng-if="vm.activeCP.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.activeCP.testingLabs || vm.activeCP.testingLabs.length === 0">None<br /></span>
-                  <ul ng-if="vm.activeCP.testingLabs && vm.activeCP.testingLabs.length !== 0">
-                    <li ng-repeat="atl in vm.activeCP.testingLabs">{{ atl.testingLabName }}</li>
-                  </ul>
-                  <span ng-if="vm.activeCP.rwtPlansUrl || vm.activeCP.rwtPlansCheckDate || vm.activeCP.rwtResultsUrl || vm.activeCP.rwtResultsCheckDate">
+            <div class="panel-body" ng-if="vm.activeCP.id">
+              <span>
+                <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
+                <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>
+                <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br /></span>
+                <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <span ng-if="vm.activeCP.curesUpdate">Cures Update</span> <br />
+                <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
+                <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
+                <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>
+                <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
+                <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
+                <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
+                <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
+                <ul>
+                  <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
+                  <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
+                </ul>
+                <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+                <ul>
+                  <li ng-repeat="qms in vm.activeCP.qmsStandards"><strong>Standard:</strong> {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification"><strong><br />Modification:</strong> {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> <strong><br />Applicable Criteria:</strong> {{ qms.applicableCriteria }}</span></li>
+                </ul>
+                <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
+                <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
+                <strong>SED Intended Users:</strong> {{ vm.activeCP.sedIntendedUserDescription ? vm.activeCP.sedIntendedUserDescription : 'None' }} <br />
+                <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
+                <strong>Testing Lab<span ng-if="vm.activeCP.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.activeCP.testingLabs || vm.activeCP.testingLabs.length === 0">None<br /></span>
+                <ul ng-if="vm.activeCP.testingLabs && vm.activeCP.testingLabs.length !== 0">
+                  <li ng-repeat="atl in vm.activeCP.testingLabs">{{ atl.testingLabName }}</li>
+                </ul>
+                <span ng-if="vm.activeCP.rwtPlansUrl || vm.activeCP.rwtPlansCheckDate || vm.activeCP.rwtResultsUrl || vm.activeCP.rwtResultsCheckDate">
                   <strong>Real World Testing</strong><br/>
-                    <ul>
-                      <li ng-if="vm.activeCP.rwtPlansUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlansUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlansCheckDate) }}</li>
-                      <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsCheckDate) }}</li>
-                    </ul>
-                  </span>
-                  <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
                   <ul>
-                    <li ng-repeat="std in vm.activeCP.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
-                  </ul>
-                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? '' : 'None' }} <br />
-                  <ul>
-                    <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
+                    <li ng-if="vm.activeCP.rwtPlansUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlansUrl }}</li>
+                    <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlansCheckDate) }}</li>
+                    <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
+                    <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsCheckDate) }}</li>
                   </ul>
                 </span>
-                <br />
-                <chpl-listing-details ng-if="vm.activeCP !== ''"
-                                      default-all="true"
-                                      edit-mode="false"
-                                      hide-direct-review="true"
-                                      listing="vm.activeCP">
-                </chpl-listing-details>
-                <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
-              </div>
+                <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
+                <ul>
+                  <li ng-repeat="std in vm.activeCP.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
+                </ul>
+                <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? '' : 'None' }} <br />
+                <ul>
+                  <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
+                </ul>
+              </span>
+              <br />
+              <chpl-listing-details ng-if="vm.activeCP !== ''"
+                                    default-all="true"
+                                    edit-mode="false"
+                                    hide-direct-review="true"
+                                    listing="vm.activeCP">
+              </chpl-listing-details>
+              <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
             </div>
           </div>
         </div>

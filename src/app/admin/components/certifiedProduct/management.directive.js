@@ -9,7 +9,6 @@
                 replace: true,
                 templateUrl: 'chpl.admin/components/certifiedProduct/management.html',
                 bindToController: {
-                    workType: '=?',
                     pendingProducts: '=?',
                     pendingSurveillances: '=?',
                     productId: '=',
@@ -24,20 +23,17 @@
     function VpManagementController ($log, $uibModal, API, DateUtil, authService, networkService, utilService) {
         var vm = this;
 
+        vm.DateUtil = DateUtil;
         vm.areResourcesReady = areResourcesReady;
         vm.certificationStatus = utilService.certificationStatus;
-        vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
         vm.hasAnyRole = authService.hasAnyRole;
+        vm.isDeveloperBanned = isDeveloperBanned;
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
         vm.isProductEditable = isProductEditable;
-        vm.isDeveloperBanned = isDeveloperBanned;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
-        vm.DateUtil = DateUtil;
-        vm.mergeProducts = mergeProducts;
-        vm.mergeVersions = mergeVersions;
         vm.refreshDevelopers = refreshDevelopers;
         vm.refreshPending = refreshPending;
         vm.searchForSurveillance = searchForSurveillance;
@@ -55,10 +51,6 @@
             vm.activeProduct = '';
             vm.activeVersion = '';
             vm.activeCP = '';
-            if (angular.isUndefined(vm.workType)) {
-                vm.workType = 'manage';
-            }
-            vm.mergeType = 'version';
             vm.resources = {};
             vm.forceRefresh = false;
             vm.refreshDevelopers();
@@ -89,10 +81,8 @@
                     vm.developers = developers.developers;
                     prepCodes();
 
-                    if (isEditingListing() && vm.workType === 'manage') {
+                    if (isEditingListing()) {
                         vm.loadCp();
-                    } else if (isEditingListing() && vm.workType === 'manageSurveillance') {
-                        vm.loadSurveillance();
                     }
                 });
         }
@@ -117,9 +107,6 @@
                     .then(function (products) {
                         vm.products = products.products;
                     });
-                vm.mergeDeveloper = angular.copy(vm.activeDeveloper);
-                delete vm.mergeDeveloper.developerId;
-                delete vm.mergeDeveloper.lastModifiedDate;
             }
         }
 
@@ -131,63 +118,7 @@
                     .then(function (versions) {
                         vm.versions = versions;
                     });
-                vm.mergeProduct = angular.copy(vm.activeProduct);
-                delete vm.mergeProduct.productId;
-                delete vm.mergeProduct.lastModifiedDate;
             }
-        }
-
-        function mergeProducts () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/product/merge.html',
-                controller: 'MergeProductController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    products: function () { return vm.mergingProducts; },
-                    developerId: function () { return vm.activeDeveloper.developerId; },
-                },
-            });
-            vm.modalInstance.result.then(function () {
-                vm.productMessage = null;
-                networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
-                    .then(function (products) {
-                        vm.products = products.products;
-                    });
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.productMessage = result;
-                }
-            });
-        }
-
-        function mergeVersions () {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/version/merge.html',
-                controller: 'MergeVersionController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    versions: function () { return vm.mergingVersions; },
-                    productId: function () { return vm.activeProduct.productId; },
-                },
-            });
-            vm.modalInstance.result.then(function () {
-                vm.productMessage = null;
-                networkService.getVersionsByProduct(vm.activeProduct.productId)
-                    .then(function (versions) {
-                        vm.versions = versions;
-                    });
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.productMessage = result;
-                }
-            });
         }
 
         function selectVersion () {
@@ -198,9 +129,6 @@
                     .then(function (cps) {
                         vm.cps = cps;
                     });
-                vm.mergeVersion = angular.copy(vm.activeVersion);
-                delete vm.mergeVersion.versionId;
-                delete vm.mergeVersion.lastModifiedDate;
             }
         }
 
@@ -242,7 +170,7 @@
                     isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
                     isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
                     resources: function () { return resources; },
-                    workType: function () { return vm.workType; },
+                    workType: function () { return 'manage'; },
                 },
             });
             vm.modalInstance.result.then(function (result) {
@@ -303,17 +231,6 @@
                         vm.loadSurveillance();
                     }
                 });
-        }
-
-        function doWork (workType) {
-            if (vm.workType !== workType) {
-                vm.activeDeveloper = '';
-                vm.activeProduct = '';
-                vm.activeVersion = '';
-                vm.activeCP = '';
-                vm.mergeType = 'version';
-                vm.workType = workType;
-            }
         }
 
         function loadCp () {

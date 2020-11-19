@@ -17,13 +17,6 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.navState = $stateParams.section || 'manage';
-
-            if ($stateParams.subSection) {
-                vm.navState = $stateParams.subSection;
-            } else if (vm.navState === 'dpManagement') {
-                vm.navState = 'manage';
-            }
             if ($stateParams.productId) {
                 if (vm.isOn('listing-edit')) {
                     $state.go('listing', {id: $stateParams.productId});
