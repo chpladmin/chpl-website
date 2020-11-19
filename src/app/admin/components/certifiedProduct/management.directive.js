@@ -279,7 +279,7 @@
             }
             if (cp.certificationEvents) {
                 return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
-                    || ((cp.currentStatus.name !== 'Suspended by ONC' && cp.currentStatus.name !== 'Terminated by ONC') &&
+                    || ((cp.currentStatus.status.name !== 'Suspended by ONC' && cp.currentStatus.status.name !== 'Terminated by ONC') &&
                     vm.isDeveloperMergeable(vm.activeDeveloper));
             } else {
                 return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))

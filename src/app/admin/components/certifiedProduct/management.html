@@ -257,7 +257,7 @@
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                   <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>
-                  <strong>Status:</strong> {{ vm.activeCP.currentStatus.name) }}<br />
+                  <strong>Status:</strong> {{ vm.activeCP.currentStatus.status.name) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
