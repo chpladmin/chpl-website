@@ -38,7 +38,7 @@
           </tr>
           <tr>
             <th scope="row">Certification Status</th>
-            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.currentStatus }}</td>
+            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.currentStatus.name }}</td>
           </tr>
           <tr ng-if="$ctrl.hasNon2015">
             <th scope="row">Practice Type</th>
