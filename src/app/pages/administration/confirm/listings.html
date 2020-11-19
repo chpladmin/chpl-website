@@ -84,7 +84,7 @@
                     confirm-ok="Yes"
                     confirm-cancel="No"
                     confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                    ng-click="$ctrl.massRejectPendingListingsVeta()"><i class="fa fa-trash-o"></i> Reject</button>
+                    ng-click="$ctrl.massRejectPendingListingsBeta()"><i class="fa fa-trash-o"></i> Reject</button>
           </th>
         </tr>
       </tfoot>
@@ -95,9 +95,9 @@
           <td>{{ listing.product }}</td>
           <td>{{ listing.version }}</td>
           <td>{{ $ctrl.DateUtil.getDisplayDateFormat(listing.certificationDate) }}</td>
-          <td>{{ listing.errorCount }} error<span ng-if="cp.errorCount !== 1">s</span> / {{ listing.warningCount }} warning<span ng-if="cp.warningCount !== 1">s</span></td>
+          <td>{{ listing.errorCount }} error<span ng-if="listing.errorCount !== 1">s</span> / {{ listing.warningCount }} warning<span ng-if="listing.warningCount !== 1">s</span></td>
           <td class="text-center">
-            <button class="btn btn-ai-success btn-block" ng-click="$ctrl.inspectListingBeta(cp.id)"
+            <button class="btn btn-ai-success btn-block" ng-click="$ctrl.inspectListing(listing.id)"
                     id="pending-listing-inspect-{{ listing.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
           </td>
           <td class="text-center">
