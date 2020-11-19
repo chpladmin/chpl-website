@@ -281,9 +281,9 @@
                   <strong>Real World Testing</strong><br/>
                     <ul>
                       <li ng-if="vm.activeCP.rwtPlansUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlansUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlansCheckDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.getDisplayDateFormat(vm.activeCP.rwtPlansCheckDate) }}</li>
                       <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsCheckDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.getDisplayDateFormat(vm.activeCP.rwtResultsCheckDate) }}</li>
                     </ul>
                   </span>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />

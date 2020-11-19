@@ -133,7 +133,7 @@
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
                   <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>
-                  <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtPlansCheckDate) }}</div>
+                  <div class="read-only-data">{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtPlansCheckDate) }}</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsUrl">
                   <div class="data-label listing__enhanced-label--small">Results</div>
@@ -141,7 +141,7 @@
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                   <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>
-                  <div class="read-only-data">{{ $ctrl.DateUtil.localDateToString($ctrl.listing.rwtResultsCheckDate) }}</div>
+                  <div class="read-only-data">{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtResultsCheckDate) }}</div>
                 </div>
               </div>
               <div>
