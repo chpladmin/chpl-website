@@ -77,6 +77,7 @@ export const ConfirmListingsComponent = {
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
+                    beta: () => false,
                     developers: () => that.developers,
                     inspectingCp: () => that.networkService.getPendingListingById(cpId),
                     isAcbAdmin: () => that.hasAnyRole(['ROLE_ACB']),

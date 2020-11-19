@@ -182,6 +182,7 @@
                         backdrop: 'static',
                         keyboard: false,
                         resolve: {
+                            beta: jasmine.any(Function),
                             developers: jasmine.any(Function),
                             inspectingCp: jasmine.any(Function),
                             isAcbAdmin: jasmine.any(Function),
