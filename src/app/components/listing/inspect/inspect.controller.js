@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, networkService, resources, utilService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, beta, developers, inspectingCp, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -38,6 +38,7 @@
             vm.cp = angular.copy(inspectingCp);
             vm.stage = 'dev';
 
+            vm.beta = beta;
             vm.developers = developers;
             vm.products = [];
             vm.versions = [];
@@ -108,20 +109,37 @@
         }
 
         function reject () {
-            networkService.rejectPendingCp(vm.cp.id)
-                .then(function () {
-                    $uibModalInstance.close({status: 'rejected'});
-                }, function (error) {
-                    if (error.data.contact) {
-                        $uibModalInstance.close({
-                            contact: error.data.contact,
-                            objectId: error.data.objectId,
-                            status: 'resolved',
-                        });
-                    } else {
-                        vm.errorMessages = error.data.errorMessages;
-                    }
-                });
+            if (vm.beta) {
+                networkService.rejectPendingListing(vm.cp.id)
+                    .then(function () {
+                        $uibModalInstance.close({status: 'rejected'});
+                    }, function (error) {
+                        if (error.data.contact) {
+                            $uibModalInstance.close({
+                                contact: error.data.contact,
+                                objectId: error.data.objectId,
+                                status: 'resolved',
+                            });
+                        } else {
+                            vm.errorMessages = error.data.errorMessages;
+                        }
+                    });
+            } else {
+                networkService.rejectPendingCp(vm.cp.id)
+                    .then(function () {
+                        $uibModalInstance.close({status: 'rejected'});
+                    }, function (error) {
+                        if (error.data.contact) {
+                            $uibModalInstance.close({
+                                contact: error.data.contact,
+                                objectId: error.data.objectId,
+                                status: 'resolved',
+                            });
+                        } else {
+                            vm.errorMessages = error.data.errorMessages;
+                        }
+                    });
+            }
         }
 
         function editListing (listing) {

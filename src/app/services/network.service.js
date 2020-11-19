@@ -447,6 +447,10 @@ export class NetworkService {
         return this.apiGET('/certified_products/pending/' + id);
     }
 
+    getPendingListingByIdBeta (id) {
+        return this.apiGET('/listings/pending/' + id);
+    }
+
     getPractices () {
         return this.apiGET('/data/practice_types');
     }
@@ -684,6 +688,10 @@ export class NetworkService {
         return this.apiDELETE('/certified_products/pending', {ids: ids});
     }
 
+    massRejectPendingListingsBeta (ids) {
+        return this.apiDELETE('/listings/pending', {ids: ids});
+    }
+
     massRejectPendingSurveillance (ids) {
         return this.apiDELETE('/surveillance/pending', {ids: ids});
     }
@@ -706,6 +714,10 @@ export class NetworkService {
 
     rejectPendingCp (cpId) {
         return this.apiDELETE('/certified_products/pending/' + cpId);
+    }
+
+    rejectPendingListing (id) {
+        return this.apiDELETE('/listings/pending/' + id);
     }
 
     rejectPendingSurveillance (survId) {
