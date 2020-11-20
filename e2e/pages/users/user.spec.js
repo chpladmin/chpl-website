@@ -21,29 +21,44 @@ describe('ONC STAFF can ', () => {
     });
 
     afterAll(function () {
+        loginComponent.logOut();
+    });
+
+    it('change title successfully', () => {
+        page.editUser('AQA ONC STAFF');
+        let title = 'Mr' + (new Date()).getDate();
+        page.userTitle.clearValue();
+        page.userTitle.addValue(title);
+        actionBarComponent.save();
+        assert.include(page.userInformation('AQA ONC STAFF').getText(),title);
+    });
+
+    it('change phone number successfully', () => {
+        page.editUser('AQA ONC STAFF');
+        let number = (new Date()).getTime() % 1000000;
+        page.userPhoneNumber.clearValue();
+        page.userPhoneNumber.addValue(number);
+        actionBarComponent.save();
+        assert.include(page.userInformation('AQA ONC STAFF').getText(),number);
+    });
+
+});
+
+describe('ADMIN can ', () => {
+    beforeAll(function () {
+        loginComponent.logInWithEmail('admin');
+        page.usersButton.click();
+        page.userManagementButton.click();
+    });
+
+    afterAll(function () {
         page.lockedCheckbox.scrollAndClick();
         page.enabledCheckbox.scrollAndClick();
         page.pwChangeCheckbox.scrollAndClick();
         actionBarComponent.save();
     });
 
-    it('change title successfully', () => {
-        page.editUser('AQA ONC STAFF');
-        page.userTitle.clearValue();
-        page.userTitle.addValue('Mr');
-        actionBarComponent.save();
-        assert.include(page.userInformation('AQA ONC STAFF').getText(),'Mr');
-    });
-
-    it('change phone number successfully', () => {
-        page.editUser('AQA ONC STAFF');
-        page.userPhoneNumber.clearValue();
-        page.userPhoneNumber.addValue('000-000-0000');
-        actionBarComponent.save();
-        assert.include(page.userInformation('AQA ONC STAFF').getText(),'000-000-0000');
-    });
-
-    it('change status of locked , enabled, password change on next login successfully', () => {
+    it('change status of locked , enabled, password change on next login successfully for ROLE_ONC_STAFF', () => {
         page.editUser('AQA ONC STAFF');
         page.lockedCheckbox.scrollAndClick();
         page.enabledCheckbox.scrollAndClick();
