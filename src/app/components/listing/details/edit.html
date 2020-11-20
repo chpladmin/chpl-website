@@ -3,8 +3,8 @@
     Loading...<i class="fa fa-spin fa-spinner"></i>
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
-    <p class="text-right">
-      <button class="btn btn-default btn--wrap" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
+    <p>
+      <button class="btn btn-secondary btn--wrap" ng-click="$ctrl.viewAllCerts = !$ctrl.viewAllCerts" id="view-all-certs">
         <i class="fa" ng-class="$ctrl.viewAllCerts ? 'fa-toggle-on' : 'fa-toggle-off'"></i> Viewing {{ $ctrl.viewAllCerts ? 'all' : 'only attested to' }} Certification Criteria / Clinical Quality Measures
       </button>
     </p>
@@ -256,7 +256,7 @@
                      is-open="muuEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
                      id="meaningful-use-user-history-add-new-date" name="meaningfulUseUserHistoryAddNewDate" required>
               <span class="input-group-btn">
-                <button type="button" class="btn btn-default btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
+                <button type="button" class="btn btn-secondary btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
               </span>
             </div>
           </div>

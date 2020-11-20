@@ -8,22 +8,15 @@
         <h1 class="listing__header-name">{{ $ctrl.listing.product.name }}</h1>
       </div>
       <div class="listing__header-info">
-        <div>
-          <div class="data-label">Last modified Date</div>
-          <div class="read-only-data">{{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</div>
-        </div>
-        <div>
-          <button class="btn btn-default" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i> Listing History</button>
-        </div>
-        <div ng-if="$ctrl.canEdit()">
-          <a feature-flag="listing-edit" feature-flag-hide ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit</a>
-          <button feature-flag="listing-edit" class="btn btn-default" ui-sref=".edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
-        </div>
         <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB', 'ROLE_ONC'])">
           <a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a>
         </div>
         <div>
-          <a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a>
+          <button class="btn btn-secondary" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i> Listing History</button>
+        </div>
+        <div ng-if="$ctrl.canEdit()">
+          <a feature-flag="listing-edit" feature-flag-hide ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit</a>
+          <button feature-flag="listing-edit" class="btn btn-default" ui-sref=".edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
         </div>
         <div>
           <ai-cms-widget-button

@@ -35,14 +35,16 @@
     color: var(--dark);
     background-color: rgba(var(--background-error), .3);
     max-height: 30vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding: 8px;
 }
 
 .action-bar__warnings {
     color: var(--dark);
     background-color: rgba(var(--background-warning), .3);
     max-height: 30vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding: 8px;
 }
 
 .action-bar__acknowledge-warnings {

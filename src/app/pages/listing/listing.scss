@@ -10,6 +10,7 @@
 .listing__header-info {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+    justify-items: end;
 }
 
 .listing__enhanced-label {

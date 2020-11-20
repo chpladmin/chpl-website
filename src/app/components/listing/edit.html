@@ -41,7 +41,7 @@
     <div class="input-group">
       <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.certDate" is-open="$ctrl.listing.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" ng-change="$ctrl.update()" required>
       <span class="input-group-btn">
-        <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
+        <button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
       </span>
     </div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.required">Field is required</div>
@@ -83,7 +83,7 @@
                is-open="statusEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
                id="certification-event-add-new-date" name="certificationEventAddNewDate" required>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
+          <button type="button" class="btn btn-secondary btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
     </div>
