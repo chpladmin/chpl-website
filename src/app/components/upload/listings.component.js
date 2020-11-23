@@ -5,12 +5,13 @@ export const UploadListingsComponent = {
         beta: '@',
     },
     controller: class UploadListingsComponent {
-        constructor ($filter, $log, API, Upload, authService, networkService) {
+        constructor ($filter, $log, API, Upload, authService, networkService, toaster) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.Upload = Upload;
             this.networkService = networkService;
+            this.toaster = toaster;
             this.item = {
                 url: API,
                 headers: {
@@ -37,7 +38,11 @@ export const UploadListingsComponent = {
                 let that = this;
                 this.Upload.upload(item).then(response => {
                     if (this.beta) {
-                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending products are ready for confirmation.';
+                        that.toaster.pop({
+                            type: 'success',
+                            title: 'Success',
+                            body: 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending products are ready for confirmation.',
+                        });
                     } else {
                         that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
                     }
@@ -49,7 +54,15 @@ export const UploadListingsComponent = {
                     that.file = undefined;
                     that.onChange();
                 }, response => {
-                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
+                    if (this.beta) {
+                        that.toaster.pop({
+                            type: 'danger',
+                            title: 'Error',
+                            body: 'File "' + response.config.data.file.name + '" was not uploaded successfully.',
+                        });
+                    } else {
+                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
+                    }
                     if (response.data.errorMessages
                         && response.data.errorMessages.length === 1
                         && response.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
