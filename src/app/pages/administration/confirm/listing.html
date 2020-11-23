@@ -1,40 +1,48 @@
 <div class="listing-inspect">
-  <div>
-    <h1>Header</h1>
+  <div ng-switch="$ctrl.stage">
+    <h1 ng-switch-when="developer">Developer</h1>
+    <h1 ng-switch-when="product">Product</h1>
+    <h1 ng-switch-when="version">Version</h1>
+    <h1 ng-switch-when="listing">Listing</h1>
+    <h2>{{ $ctrl.listing.chplProductNumber }}</h2>
   </div>
-  <div>
-    <ai-inspect-developer
-      developer="$ctrl.developer"
-      developers="$ctrl.developers"
-      listing="$ctrl.cp"
-      on-select="$ctrl.selectInspectingDeveloper(developerId)"
-      set-choice="$ctrl.setDeveloperChoice(choice)"
-      ng-if="$ctrl.stage === 'dev'"
-      ></ai-inspect-developer>
-
-    <ai-inspect-product
-      pending-product="$ctrl.cp.product"
-      developer="$ctrl.cp.developer"
-      on-select="$ctrl.selectInspectingProduct(productId)"
-      set-choice="$ctrl.setProductChoice(choice)"
-      ng-if="$ctrl.stage === 'prd'"
-      ></ai-inspect-product>
-
-    <ai-inspect-version
-      pending-version="$ctrl.cp.version"
-      product="$ctrl.cp.product"
-      on-select="$ctrl.selectInspectingVersion(versionId)"
-      set-choice="$ctrl.setVersionChoice(choice)"
-      ng-if="$ctrl.stage === 'ver'"
-      ></ai-inspect-version>
-
-    <chpl-inspect-listing
-      listing="$ctrl.cp"
-      on-change="$ctrl.editListing(listing)"
-      resources="$ctrl.resources"
-      ng-if="$ctrl.stage === 'cp'"
-      ></chpl-inspect-listing>
+  <div ng-switch="$ctrl.stage">
+    <div ng-switch-when="developer">
+      <chpl-confirm-developer
+        developer="$ctrl.developer"
+        developers="$ctrl.developers"
+        listing="$ctrl.listing"
+        on-select="$ctrl.selectInspectingDeveloper(developerId)"
+        set-choice="$ctrl.setDeveloperChoice(choice)"
+        ></chpl-confirm-developer>
+    </div>
+    <div ng-switch-when="product">
+      <ai-inspect-product
+        pending-product="$ctrl.listing.product"
+        developer="$ctrl.listing.developer"
+        on-select="$ctrl.selectInspectingProduct(productId)"
+        set-choice="$ctrl.setProductChoice(choice)"
+        ></ai-inspect-product>
+    </div>
+    <div ng-switch-when="version">
+      <ai-inspect-version
+        pending-version="$ctrl.listing.version"
+        product="$ctrl.listing.product"
+        on-select="$ctrl.selectInspectingVersion(versionId)"
+        set-choice="$ctrl.setVersionChoice(choice)"
+        ></ai-inspect-version>
+    </div>
+    <div ng-switch-when="listing">
+      <chpl-inspect-listing
+        listing="$ctrl.listing"
+        on-change="$ctrl.editListing(listing)"
+        resources="$ctrl.resources"
+        ></chpl-inspect-listing>
+    </div>
   </div>
-  <chpl-action-bar>
+  <chpl-action-bar can-act="$ctrl.canAct(action)"
+                   error-messages="$ctrl.errorMessages"
+                   is-wizard="true"
+                   take-action="$ctrl.takeAction(action)">
   </chpl-action-bar>
 </div>
