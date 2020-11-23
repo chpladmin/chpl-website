@@ -6,9 +6,10 @@ export const ConfirmListingsComponent = {
         resources: '<',
     },
     controller: class ConfirmListingsComponent {
-        constructor ($log, $uibModal, DateUtil, authService, featureFlags, networkService) {
+        constructor ($log, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
             'ngInject';
             this.$log = $log;
+            this.$state = $state;
             this.$uibModal = $uibModal;
             this.DateUtil = DateUtil;
             this.featureFlags = featureFlags;
@@ -101,37 +102,7 @@ export const ConfirmListingsComponent = {
         }
 
         inspectListing (listingId) {
-            let that = this;
-
-            this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.components/listing/inspect/inspect.html',
-                controller: 'InspectController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    beta: () => true,
-                    developers: () => that.developers,
-                    inspectingCp: () => that.networkService.getPendingListingByIdBeta(listingId),
-                    isAcbAdmin: () => that.hasAnyRole(['ROLE_ACB']),
-                    isChplAdmin: () => that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']),
-                    resources: () => that.resources,
-                },
-                size: 'lg',
-            });
-            this.modalInstance.result.then(result => {
-                if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
-                    if (result.developerCreated) {
-                        this.developers.push(result.developer);
-                    }
-                    this.clearPendingListingBeta(listingId);
-                    this.onChange();
-                    if (result.status === 'resolved') {
-                        this.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
-                    }
-                }
-            });
+            this.$state.go('.listing', {id: listingId});
         }
 
         massRejectPendingListings () {

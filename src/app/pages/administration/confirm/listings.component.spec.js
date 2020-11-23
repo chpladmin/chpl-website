@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Confirm Listing component', () => {
+    describe('the Confirm Listings component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, mock, networkService, scope;
 
         mock = {

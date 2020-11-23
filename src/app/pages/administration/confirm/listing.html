@@ -1,0 +1,40 @@
+<div class="listing-inspect">
+  <div>
+    <h1>Header</h1>
+  </div>
+  <div>
+    <ai-inspect-developer
+      developer="$ctrl.developer"
+      developers="$ctrl.developers"
+      listing="$ctrl.cp"
+      on-select="$ctrl.selectInspectingDeveloper(developerId)"
+      set-choice="$ctrl.setDeveloperChoice(choice)"
+      ng-if="$ctrl.stage === 'dev'"
+      ></ai-inspect-developer>
+
+    <ai-inspect-product
+      pending-product="$ctrl.cp.product"
+      developer="$ctrl.cp.developer"
+      on-select="$ctrl.selectInspectingProduct(productId)"
+      set-choice="$ctrl.setProductChoice(choice)"
+      ng-if="$ctrl.stage === 'prd'"
+      ></ai-inspect-product>
+
+    <ai-inspect-version
+      pending-version="$ctrl.cp.version"
+      product="$ctrl.cp.product"
+      on-select="$ctrl.selectInspectingVersion(versionId)"
+      set-choice="$ctrl.setVersionChoice(choice)"
+      ng-if="$ctrl.stage === 'ver'"
+      ></ai-inspect-version>
+
+    <chpl-inspect-listing
+      listing="$ctrl.cp"
+      on-change="$ctrl.editListing(listing)"
+      resources="$ctrl.resources"
+      ng-if="$ctrl.stage === 'cp'"
+      ></chpl-inspect-listing>
+  </div>
+  <chpl-action-bar>
+  </chpl-action-bar>
+</div>

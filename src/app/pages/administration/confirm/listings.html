@@ -1,4 +1,4 @@
-<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
+<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" ui-view>
   <div class="col-md-12">
     <h2>View Products in the process of upload</h2>
     <p ng-if="!$ctrl.uploadingCps || $ctrl.uploadingCps.length === 0">No products currently in queue</p>
