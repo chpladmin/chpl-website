@@ -1,15 +1,19 @@
 <div class="col-sm-12" ng-form="$ctrl.editForm" ng-class="{ 'removed' : $ctrl.cert.criterion.removed }">
-  <div ng-if="$ctrl.isEditing || $ctrl.cert.success || $ctrl.viewAll" id="criteria_{{ $ctrl.cert.criterion.number }}_details_header{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
-    <i class="fa fa-lg" ng-class="{'fa-check-square-o': $ctrl.cert.success && !$ctrl.cert.hasVersion, 'fa-square-o': !$ctrl.cert.success}"></i>
-    <span class="sr-only">{{ $ctrl.cert.success ? 'meets' : 'does not meet'}}</span>
-    <span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span> <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></span>
-    <span class="pull-right">
-      <button class="btn btn-link" ng-click="$ctrl.toggleCriteria()" aria-expanded="{{ $ctrl.showDetails }}" ng-if="$ctrl.showViewDetailsLink()" id="criteria_{{ $ctrl.cert.criterion.number }}_details_link{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">{{ $ctrl.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.cert.criterion.number }}</span></button>
-      <span ng-if="$ctrl.canEdit()">
-        <a href uib-tooltip="Criteria has phantom data" tooltip-trigger="'mouseenter focus click'"><span ng-if="!$ctrl.cert.success && ctrl.hasPhantomData()"><i class="fa fa-exclamation-triangle status-warning"></i></span></a>
-        <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
-      </span>
-    </span>
+  <div class="criteria__container" ng-if="$ctrl.isEditing || $ctrl.cert.success || $ctrl.viewAll" id="criteria_{{ $ctrl.cert.criterion.number }}_details_header{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+    <div class="criteria__header">
+      <div class="criteria__header-title">
+        <i class="fa fa-lg" ng-class="{'fa-check-square-o': $ctrl.cert.success && !$ctrl.cert.hasVersion, 'fa-square-o': !$ctrl.cert.success}"></i>
+        <span class="sr-only">{{ $ctrl.cert.success ? 'meets' : 'does not meet'}}</span>
+        <span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span> <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></span>
+      </div>
+      <div class="criteria__header-toggle">
+        <button class="btn btn-link" ng-click="$ctrl.toggleCriteria()" aria-expanded="{{ $ctrl.showDetails }}" ng-if="$ctrl.showViewDetailsLink()" id="criteria_{{ $ctrl.cert.criterion.number }}_details_link{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">{{ $ctrl.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.cert.criterion.number }}</span></button>
+        <span ng-if="$ctrl.canEdit()">
+          <a href uib-tooltip="Criteria has phantom data" tooltip-trigger="'mouseenter focus click'"><span ng-if="!$ctrl.cert.success && ctrl.hasPhantomData()"><i class="fa fa-exclamation-triangle status-warning"></i></span></a>
+          <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
+        </span>
+      </div>
+    </div>
     <div ng-if="$ctrl.showDetails">
       <div ng-if="$ctrl.cert.additionalSoftware && $ctrl.cert.additionalSoftware.length > 0">
         <ai-additional-software additional-software="$ctrl.cert.additionalSoftware" is-editing="false"></ai-additional-software>

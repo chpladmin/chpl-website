@@ -97,9 +97,9 @@
             }
             if (col.isLink) {
                 if (col.initialPanel) {
-                    ret = '<a href="#/product/' + cp.id + '/' + col.initialPanel + '">' + ret + '</a>';
+                    ret = '<a href="#/listing/' + cp.id + '?panel=' + col.initialPanel + '">' + ret + '</a>';
                 } else {
-                    ret = '<a href="#/product/' + cp.id + '">' + ret + '</a>';
+                    ret = '<a href="#/listing/' + cp.id + '">' + ret + '</a>';
                 }
             }
             return ret;

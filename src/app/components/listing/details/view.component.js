@@ -1,18 +1,14 @@
-export const ListingDetailsComponent = {
-    templateUrl: 'chpl.components/listing/details/details.html',
+export const ListingDetailsViewComponent = {
+    templateUrl: 'chpl.components/listing/details/view.html',
     bindings: {
         listing: '<',
         directReviews: '<',
-        editMode: '<',
         hideDirectReview: '<',
         initialPanel: '@',
         isConfirming: '<',
-        isEditing: '<',
-        onChange: '&',
-        resources: '<',
         viewAllCerts: '<defaultAll',
     },
-    controller: class ListingDetailsComponent {
+    controller: class ListingDetailsViewComponent {
         constructor ($analytics, $log, $uibModal, networkService, utilService) {
             this.$analytics = $analytics;
             this.$log = $log;
@@ -21,9 +17,7 @@ export const ListingDetailsComponent = {
             this.utilService = utilService;
             this.muuCount = utilService.muuCount;
             this.sortCerts = utilService.sortCert;
-            this.handlers = [];
             this.drStatus = 'pending';
-            this.isEditing = false;
             this.viewAllCerts = false;
             this.panelShown = 'cert';
         }
@@ -71,21 +65,6 @@ export const ListingDetailsComponent = {
                     this.drStatus = 'error';
                 }
             }
-            if (changes.resources && changes.resources.currentValue) {
-                this.resources = angular.copy(changes.resources.currentValue);
-            }
-        }
-
-        g1g2Change (measures) {
-            this.listing.measures = measures;
-            this.onChange({listing: this.listing});
-        }
-
-        hasEdited () {
-            angular.forEach(this.handlers, function (handler) {
-                handler();
-            });
-            this.onChange({listing: this.listing});
         }
 
         prepCqms () {
@@ -108,31 +87,6 @@ export const ListingDetailsComponent = {
                     return cqm;
                 });
             }
-        }
-
-        registerSed (handler) {
-            let that = this;
-            this.handlers.push(handler);
-            var removeHandler = function () {
-                that.handlers = that.handlers.filter(function (aHandler) {
-                    return aHandler !== handler;
-                });
-            };
-            return removeHandler;
-        }
-
-        saveCert (cert) {
-            for (let i = 0; i < this.listing.certificationResults.length; i++) {
-                if (this.listing.certificationResults[i].number === cert.number
-                    && this.listing.certificationResults[i].title === cert.title) {
-                    this.listing.certificationResults[i] = cert;
-                }
-            }
-            this.updateCs();
-        }
-
-        sedChange (listing) {
-            this.onChange({listing: listing});
         }
 
         sortCqms (cqm) {
@@ -192,27 +146,6 @@ export const ListingDetailsComponent = {
             this.subPanelShown = this.subPanelShown === panel ? '' : panel;
         }
 
-        updateCs () {
-            this.cqms.forEach(cqm => {
-                cqm.criteria = [];
-                if (cqm.success || cqm.successVersions.length > 0) {
-                    for (var j = 1; j < 5; j++) {
-                        if (cqm['hasC' + j]) {
-                            let number = '170.315 (c)(' + j + ')';
-                            //let criterion = this.listing.certificationResults.find(cert => cert.number === number && cert.success) || {};
-                            //criterion = criterion.criterion;
-                            cqm.criteria.push({
-                                certificationNumber: number,
-                                //criterion: criterion,
-                            });
-                        }
-                    }
-                }
-            });
-            this.listing.cqmResults = angular.copy(this.cqms);
-            this.onChange({listing: this.listing});
-        }
-
         viewIcsFamily () {
             let that = this;
             this.networkService.getIcsFamily(this.listing.id).then(function (family) {
@@ -252,4 +185,4 @@ export const ListingDetailsComponent = {
 };
 
 angular.module('chpl.components')
-    .component('chplListingDetails', ListingDetailsComponent);
+    .component('chplListingDetailsView', ListingDetailsViewComponent);

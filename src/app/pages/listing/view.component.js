@@ -1,9 +1,9 @@
-export const ListingComponent = {
-    templateUrl: 'chpl.listing/listing.html',
+export const ListingViewPage = {
+    templateUrl: 'chpl.listing/view.html',
     bindings: {
         listing: '<',
     },
-    controller: class ListingComponent {
+    controller: class ListingViewPage {
         constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
             'ngInject';
             this.$localStorage = $localStorage;
@@ -105,4 +105,4 @@ export const ListingComponent = {
 
 angular
     .module('chpl.listing')
-    .component('chplListing', ListingComponent);
+    .component('chplListingViewPage', ListingViewPage);
