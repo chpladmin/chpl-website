@@ -202,7 +202,7 @@
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'new';
                     ctrl.changePassword();
-                    expect(networkService.changePassword).toHaveBeenCalledWith({userName: '', oldPassword: 'old', newPassword: 'new'});
+                    expect(networkService.changePassword).toHaveBeenCalledWith({oldPassword: 'old', newPassword: 'new'});
                 });
 
                 it('should report a message and clear the form on success', () => {
