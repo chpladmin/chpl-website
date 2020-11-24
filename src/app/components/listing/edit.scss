@@ -6,3 +6,12 @@ label.edit-listing__acknowledge-warning-label {
 input[type="checkbox"].edit-listing__acknowledge-warning-checkbox {
     margin: 10px 5px 10px 0;
 }
+
+.edit-listing__rwt-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.edit-listing__rwt-container-header {
+    grid-column: 1 / -1;
+}

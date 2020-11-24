@@ -1,6 +1,40 @@
-.details__direct-review-error {
+.listing-details__element-header {
+    display: flex;
+}
+
+.listing-details__element-header-title {
+    flex: 1;
+}
+
+.listing-details__element-header-toggle {
+    padding-left: 8px;
+}
+
+.listing-details__direct-review-error {
     color: var(--white) !important;
     background-color: var(--danger) !important;
+}
+
+.listing-details__additional-information {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px 8px;
+}
+
+.listing-details__additional-information-qms-header {
+    font-weight: 700;
+}
+
+.listing-details__additional-information-qms-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--light-grey);
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.listing-details__additional-information-qms-modification {
+    grid-column: 1 / -1;
 }
 
 .cert-bloc {

@@ -5,7 +5,7 @@
         .controller('IcsFamilyDetailController', IcsFamilyDetailController);
 
     /** @ngInject */
-    function IcsFamilyDetailController ($location, $log, $uibModalInstance, active, listing) {
+    function IcsFamilyDetailController ($log, $state, $uibModalInstance, active, listing) {
         var vm = this;
 
         vm.close = close;
@@ -25,7 +25,10 @@
         }
 
         function navigate () {
-            $location.path('/product/' + vm.listing.id + '/additional');
+            $state.go('listing', {
+                id: vm.listing.id,
+                panel: 'additional',
+            });
             $uibModalInstance.close('navigated');
         }
     }
