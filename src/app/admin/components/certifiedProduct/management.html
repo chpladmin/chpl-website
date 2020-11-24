@@ -245,28 +245,21 @@
                   <strong>Real World Testing</strong><br/>
                   <ul>
                     <li ng-if="vm.activeCP.rwtPlansUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlansUrl }}</li>
-                    <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlansCheckDate) }}</li>
+                    <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.getDisplayDateFormat(vm.activeCP.rwtPlansCheckDate) }}</li>
                     <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                    <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsCheckDate) }}</li>
+                    <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.getDisplayDateFormat(vm.activeCP.rwtResultsCheckDate) }}</li>
                   </ul>
                 </span>
                 <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
-                <ul>
-                  <li ng-repeat="std in vm.activeCP.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
-                </ul>
                 <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? '' : 'None' }} <br />
                 <ul>
                   <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
                 </ul>
-              </span>
-              <br />
-              <chpl-listing-details ng-if="vm.activeCP !== ''"
-                                    default-all="true"
-                                    edit-mode="false"
-                                    hide-direct-review="true"
-                                    listing="vm.activeCP">
-              </chpl-listing-details>
-              <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
+                <chpl-listing-details-view listing="vm.activeCP"
+                                           hide-direct-review="true"
+                                           >
+                </chpl-listing-details-view>
+                <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
             </div>
           </div>
         </div>
