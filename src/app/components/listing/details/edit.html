@@ -110,6 +110,7 @@
     <div class="panel panel-ai" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('g1g2')" aria-expanded="{{ $ctrl.panelShown === 'g1g2' }}">
         <div class="listing-details__element-header-title">Successfully Tested G1/G2 Measures</div>
+        <div>({{ $ctrl.listing.measures && $ctrl.listing.measures.length ? $ctrl.listing.measures.length : 0 }} found)</div>
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'g1g2'" id="panel-g1g2">
