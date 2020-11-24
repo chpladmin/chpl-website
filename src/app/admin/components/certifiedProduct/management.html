@@ -257,7 +257,7 @@
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                   <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>
-                  <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
+                  <strong>Status:</strong> {{ vm.activeCP.currentStatus.status.name) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
@@ -281,9 +281,9 @@
                   <strong>Real World Testing</strong><br/>
                     <ul>
                       <li ng-if="vm.activeCP.rwtPlansUrl"><strong>Plans Url:</strong> {{ vm.activeCP.rwtPlansUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtPlansCheckDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtPlansCheckDate"><strong>Plans Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.getDisplayDateFormat(vm.activeCP.rwtPlansCheckDate) }}</li>
                       <li ng-if="vm.activeCP.rwtResultsUrl"><strong>Results Url:</strong> {{ vm.activeCP.rwtResultsUrl }}</li>
-                      <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.localDateToString(vm.activeCP.rwtResultsCheckDate) }}</li>
+                      <li ng-if="vm.activeCP.rwtResultsCheckDate"><strong>Results Last ONC-ACB Completeness Check:</strong> {{ vm.DateUtil.getDisplayDateFormat(vm.activeCP.rwtResultsCheckDate) }}</li>
                     </ul>
                   </span>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
@@ -296,12 +296,10 @@
                   </ul>
                 </span>
                 <br />
-                <chpl-listing-details ng-if="vm.activeCP !== ''"
-                                      default-all="true"
-                                      edit-mode="false"
-                                      hide-direct-review="true"
-                                      listing="vm.activeCP">
-                </chpl-listing-details>
+                <chpl-listing-details-view listing="vm.activeCP"
+                                           hide-direct-review="true"
+                                           >
+                </chpl-listing-details-view>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
               </div>
             </div>
