@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the CHPL Listing component', () => {
+    describe('the CHPL Listing view page', () => {
 
         var $compile, $log, $q, $uibModal, actualOptions, authService, ctrl, el, featureFlags, mock, networkService, scope;
         mock = {};
@@ -70,7 +70,7 @@
                 scope = $rootScope.$new();
                 scope.listing = mock.listing;
 
-                el = angular.element('<chpl-listing listing="listing"></chpl-listing>');
+                el = angular.element('<chpl-listing-view-page listing="listing"></chpl-listing-view-page>');
 
                 $compile(el)(scope);
                 scope.$digest();
