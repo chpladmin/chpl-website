@@ -93,7 +93,7 @@ export const LoginComponent = {
             if (this.misMatchPasswords()) {
                 this.message = 'Passwords do not match. Please try again';
             } else {
-                this.networkService.changePassword({userName: this.userName, oldPassword: this.password, newPassword: this.newPassword})
+                this.networkService.changePassword({oldPassword: this.password, newPassword: this.newPassword})
                     .then(response => {
                         if (response.passwordUpdated) {
                             that.clear();
