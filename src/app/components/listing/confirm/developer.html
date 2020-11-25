@@ -16,7 +16,7 @@
   </div>
   <div class="confirm__developer" ng-if="$ctrl.listing.developer.developerId" ng-class="{'confirm__developer--active' : $ctrl.choice === 'choose'}">
     <div class="confirm__header"><h3>System information</h3></div>
-    <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.developer.name }}</h4></div>
+    <div class="confirm__header confirm__header--highlight"><span class="pull-right">Last Modified: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span><h4>{{ $ctrl.developer.name }}</h4></div>
     <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.developer.developerCode }}</div></div>
     <div><div class="data-label">Self-developer</div><div class="read-only-data">{{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}</div></div>
     <div><div class="data-label">Line 1</div><div class="read-only-data">{{ $ctrl.developer.address.line1 }}</div></div>
@@ -34,7 +34,6 @@
       <button class="btn" ng-class="$ctrl.choice === 'choose' ? 'btn-primary' : 'btn-secondary'"
               ng-click="$ctrl.toggle()" ng-disabled="$ctrl.choice === 'choose'">Keep this information</button>
     </div>
-    Last Modified Date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
   </div>
   <div class="confirm__developer" ng-class="{'confirm__developer--active' : $ctrl.choice === 'create'}">
     <div class="confirm__header"><h3>Uploaded information</h3></div>
@@ -55,9 +54,7 @@
     <div class="confirm__footer">
       <button class="btn" ng-class="$ctrl.choice === 'create' ? 'btn-primary' : 'btn-secondary'"
               ng-click="$ctrl.toggle()" ng-disabled="$ctrl.choice === 'create'">Use this information</button>
-      <button class="btn btn-default btn-block" ng-click="$ctrl.saveInspectingDeveloper()">Save as Developer Information</button>
-    </div>
-    <div class="panel-footer" ng-if="$ctrl.listing.developer.developerId">
+      <button class="btn btn-default" ng-click="$ctrl.saveInspectingDeveloper()">Save as Developer Information</button>
     </div>
   </div>
 </div>
