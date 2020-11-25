@@ -28,6 +28,14 @@ export const ConfirmDeveloperComponent = {
             this.setChoice({choice: this.choice});
         }
 
+        toggle () {
+            if (this.choice === 'choose') {
+                this.choice = 'create';
+            } else {
+                this.choice = 'choose';
+            }
+        }
+
         selectConfirmingDeveloper () {
             this.listing.developer.developerId = this.developerSelect.developerId;
             this.onSelect({developerId: this.developerSelect.developerId});

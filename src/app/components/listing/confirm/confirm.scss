@@ -1,0 +1,33 @@
+.confirm {
+    display: flex;
+}
+
+.confirm__not-found {
+    display: grid;
+    flex: 1;
+    grid-gap: 4px;
+}
+
+.confirm__developer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    flex: 1;
+    grid-gap: 4px;
+}
+
+.confirm__developer--active {
+    border: 2px solid var(--blue);
+}
+
+.confirm__header {
+    grid-column: 1 / -1;
+}
+
+.confirm__header--highlight {
+    background: var(--grey-blue);
+}
+
+.confirm__footer {
+    grid-column: 1 / -1;
+    justify-self: center;
+}

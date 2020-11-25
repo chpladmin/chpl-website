@@ -1,87 +1,63 @@
-<div>
-  <div class="row">
-    <div class="col-sm-6" ng-if="!$ctrl.listing.developer.developerId" id="developer-new">
-      <h3>System developer information</h3>
-      <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-      <div class="panel panel-ai">
-        <div class="panel-heading">
-          This developer <strong>"{{ $ctrl.listing.developer.name }}"</strong> does not currently exist in the Open Data CHPL.
-        </div>
-        <div class="panel-body">
-          <div class="row admin-label-spaced">
-            <ul class="list-inline">
-              <li><label><input id="select-developer" type="radio" name="developer-choice" ng-model="$ctrl.choice" value="choose" ng-change="$ctrl.setChoice({choice: $ctrl.choice})"> Select existing developer</label></li>
-              <li><label><input id="create-developer" type="radio" name="developer-choice" ng-model="$ctrl.choice" value="create" ng-change="$ctrl.setChoice({choice: $ctrl.choice})"> Create new developer</label></li>
-            </ul>
-          </div>
-          <div ng-if="$ctrl.choice === 'choose'">
-            <label for="developer-select" class="control-label admin-label-spaced">Select a developer</label>
-            <select ng-model="$ctrl.developerSelect"
-                    id="developer-select" class="input-sm form-control"
-                    ng-options="v.name for v in $ctrl.developers | orderBy: 'name'">
-            </select>
-            <p><button class="btn btn-default btn-block" ng-click="$ctrl.selectConfirmingDeveloper()">Select Developer</button></p>
-          </div>
-          <div ng-if="$ctrl.choice === 'create'">
-            Uploaded developer information will be used to create a new developer
-          </div>
-        </div>
-      </div>
+<div class="confirm">
+  <div class="confirm__not-found" ng-if="!$ctrl.listing.developer.developerId">
+    <div class="confirm__header"><h3>System information</h3></div>
+    <div class="confirm__header confirm__header--highlight"><h4>No matches found</h4></div>
+    <div>
+      <label for="developer-select" class="control-label admin-label-spaced">Select a developer</label>
+      <select ng-model="$ctrl.developerSelect"
+              id="developer-select" class="input-sm form-control"
+              ng-options="v.name for v in $ctrl.developers | orderBy: 'name'">
+      </select>
+      <button class="btn btn-default" ng-click="$ctrl.selectConfirmingDeveloper()">Select Developer</button>
     </div>
-    <div class="col-sm-6" ng-if="$ctrl.listing.developer.developerId" id="developer-system">
-      <h3>System developer information</h3>
-      <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-      <chpl-developer
-        developer="$ctrl.developer">
-      </chpl-developer>
-      <div class="panel panel-ai">
-        <div class="panel-heading">
-          {{ $ctrl.developer.name }}
-        </div>
-        <div class="panel-body">
-          Developer Code: {{ $ctrl.developer.developerCode }}<br />
-          Developer Status: {{ $ctrl.developer.status.status }}<br />
-          Self-developer: {{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
-          Line 1: {{ $ctrl.developer.address.line1 }}<br />
-          Line 2: {{ $ctrl.developer.address.line2 }}<br />
-          City: {{ $ctrl.developer.address.city }}<br />
-          State: {{ $ctrl.developer.address.state }}<br />
-          Zip: {{ $ctrl.developer.address.zipcode }}<br />
-          Country: {{ $ctrl.developer.address.country }}<br />
-          Website: {{ $ctrl.developer.website }}<br />
-          <strong>Contact information</strong><br />
-          <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
-          <br />
-          Last Modified Date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-        </div>
-      </div>
+    <div class="confirm__footer">
+      <button class="btn btn-secondary" disabled>Keep this information</button>
     </div>
-    <div class="col-sm-6" id="developer-uploaded">
-      <h3>Uploaded developer information</h3>
-      <p>This is the developer information from your Upload File.<span ng-if="$ctrl.listing.developer.developerId"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
-      <chpl-developer
-        developer="$ctrl.listing.developer">
-      </chpl-developer>
-      <div class="panel panel-ai">
-        <div class="panel-heading">
-          {{ $ctrl.listing.developer.name }}
-        </div>
-        <div class="panel-body">
-          Self-developer: {{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}<br />
-          Line 1: {{ $ctrl.listing.developer.address.line1 }}<br />
-          Line 2: {{ $ctrl.listing.developer.address.line2 }}<br />
-          City: {{ $ctrl.listing.developer.address.city }}<br />
-          State: {{ $ctrl.listing.developer.address.state }}<br />
-          Zip: {{ $ctrl.listing.developer.address.zipcode }}<br />
-          Country: {{ $ctrl.listing.developer.address.country }}<br />
-          Website: {{ $ctrl.listing.developer.website }}<br />
-          <strong>Contact information</strong><br />
-          <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
-        </div>
-        <div class="panel-footer" ng-if="$ctrl.listing.developer.developerId">
-          <button class="btn btn-default btn-block" ng-click="$ctrl.saveInspectingDeveloper()">Save as Developer Information</button>
-        </div>
-      </div>
+  </div>
+  <div class="confirm__developer" ng-if="$ctrl.listing.developer.developerId" ng-class="{'confirm__developer--active' : $ctrl.choice === 'choose'}">
+    <div class="confirm__header"><h3>System information</h3></div>
+    <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.developer.name }}</h4></div>
+    <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.developer.developerCode }}</div></div>
+    <div><div class="data-label">Self-developer</div><div class="read-only-data">{{ $ctrl.developer.selfDeveloper ? 'Yes' : 'No' }}</div></div>
+    <div><div class="data-label">Line 1</div><div class="read-only-data">{{ $ctrl.developer.address.line1 }}</div></div>
+    <div><div class="data-label">Line 2</div><div class="read-only-data">{{ $ctrl.developer.address.line2 }}</div></div>
+    <div><div class="data-label">City</div><div class="read-only-data">{{ $ctrl.developer.address.city }}</div></div>
+    <div><div class="data-label">State</div><div class="read-only-data">{{ $ctrl.developer.address.state }}</div></div>
+    <div><div class="data-label">Zip</div><div class="read-only-data">{{ $ctrl.developer.address.zipcode }}</div></div>
+    <div><div class="data-label">Country</div><div class="read-only-data">{{ $ctrl.developer.address.country }}</div></div>
+    <div><div class="data-label">Name</div><div class="read-only-data">{{ $ctrl.developer.contact.fullName }}</div></div>
+    <div><div class="data-label">Title</div><div class="read-only-data">{{ $ctrl.developer.contact.title }}</div></div>
+    <div><div class="data-label">Phone</div><div class="read-only-data">{{ $ctrl.developer.contact.phoneNumber }}</div></div>
+    <div><div class="data-label">Email</div><div class="read-only-data">{{ $ctrl.developer.contact.email }}</div></div>
+    <div><div class="data-label">Website</div><div class="read-only-data">{{ $ctrl.developer.website }}</div></div>
+    <div class="confirm__footer">
+      <button class="btn" ng-class="$ctrl.choice === 'choose' ? 'btn-primary' : 'btn-secondary'"
+              ng-click="$ctrl.toggle()" ng-disabled="$ctrl.choice === 'choose'">Keep this information</button>
+    </div>
+    Last Modified Date: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
+  </div>
+  <div class="confirm__developer" ng-class="{'confirm__developer--active' : $ctrl.choice === 'create'}">
+    <div class="confirm__header"><h3>Uploaded information</h3></div>
+    <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.listing.developer.name }}</h4></div>
+    <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.listing.developer.developerCode }}</div></div>
+    <div><div class="data-label">Self-developer</div><div class="read-only-data">{{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</div></div>
+    <div><div class="data-label">Line 1</div><div class="read-only-data">{{ $ctrl.listing.developer.address.line1 }}</div></div>
+    <div><div class="data-label">Line 2</div><div class="read-only-data">{{ $ctrl.listing.developer.address.line2 }}</div></div>
+    <div><div class="data-label">City</div><div class="read-only-data">{{ $ctrl.listing.developer.address.city }}</div></div>
+    <div><div class="data-label">State</div><div class="read-only-data">{{ $ctrl.listing.developer.address.state }}</div></div>
+    <div><div class="data-label">Zip</div><div class="read-only-data">{{ $ctrl.listing.developer.address.zipcode }}</div></div>
+    <div><div class="data-label">Country</div><div class="read-only-data">{{ $ctrl.listing.developer.address.country }}</div></div>
+    <div><div class="data-label">Name</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.fullName }}</div></div>
+    <div><div class="data-label">Title</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.title }}</div></div>
+    <div><div class="data-label">Phone</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.phoneNumber }}</div></div>
+    <div><div class="data-label">Email</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.email }}</div></div>
+    <div><div class="data-label">Website</div><div class="read-only-data">{{ $ctrl.listing.developer.website }}</div></div>
+    <div class="confirm__footer">
+      <button class="btn" ng-class="$ctrl.choice === 'create' ? 'btn-primary' : 'btn-secondary'"
+              ng-click="$ctrl.toggle()" ng-disabled="$ctrl.choice === 'create'">Use this information</button>
+      <button class="btn btn-default btn-block" ng-click="$ctrl.saveInspectingDeveloper()">Save as Developer Information</button>
+    </div>
+    <div class="panel-footer" ng-if="$ctrl.listing.developer.developerId">
     </div>
   </div>
 </div>
