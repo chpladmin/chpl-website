@@ -241,6 +241,16 @@ export const ConfirmListingComponent = {
             this.$state.go('^', {}, {reload: true});
         }
 
+        getStage () {
+            switch (this.stage) {
+            case 'developer': return 1;
+            case 'product': return 2;
+            case 'version': return 3;
+            case 'listing': return 4;
+                //no default
+            }
+        }
+
         loadFamily () {
             let that = this;
             if (this.product && this.product.productId) {

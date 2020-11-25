@@ -1,10 +1,21 @@
 <div class="listing-inspect">
-  <div ng-switch="$ctrl.stage">
-    <h1 ng-switch-when="developer">Developer</h1>
-    <h1 ng-switch-when="product">Product</h1>
-    <h1 ng-switch-when="version">Version</h1>
-    <h1 ng-switch-when="listing">Listing</h1>
-    <h2>{{ $ctrl.listing.chplProductNumber }}</h2>
+  <div ng-switch="$ctrl.stage" class="listing-inspect__header">
+    <div>
+      <h1 ng-switch-when="developer">Developer</h1>
+      <h1 ng-switch-when="product">Product</h1>
+      <h1 ng-switch-when="version">Version</h1>
+      <h1 ng-switch-when="listing">Listing</h1>
+      <h2>Inspecting Listing: {{ $ctrl.listing.chplProductNumber }}</h2>
+    </div>
+    <div>
+      <uib-progressbar
+        class="progress-striped active"
+        type="info"
+        value="$ctrl.getStage()"
+        max="4"
+        title="{{ $ctrl.stage }}">{{ $ctrl.stage }}
+      </uib-progressbar>
+    </div>
   </div>
   <div ng-switch="$ctrl.stage">
     <div ng-switch-when="developer">

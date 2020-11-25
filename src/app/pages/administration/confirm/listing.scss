@@ -2,3 +2,9 @@
     display: grid;
     grid-template-rows: auto 1fr;
 }
+
+.listing-inspect__header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+}
