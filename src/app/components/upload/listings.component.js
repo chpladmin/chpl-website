@@ -41,7 +41,7 @@ export const UploadListingsComponent = {
                         that.toaster.pop({
                             type: 'success',
                             title: 'Success',
-                            body: 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending products are ready for confirmation.',
+                            body: 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending product' + (response.data.length > 1 ? 's are' : ' is') + ' ready for confirmation.',
                         });
                     } else {
                         that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
@@ -54,15 +54,6 @@ export const UploadListingsComponent = {
                     that.file = undefined;
                     that.onChange();
                 }, response => {
-                    if (this.beta) {
-                        that.toaster.pop({
-                            type: 'danger',
-                            title: 'Error',
-                            body: 'File "' + response.config.data.file.name + '" was not uploaded successfully.',
-                        });
-                    } else {
-                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
-                    }
                     if (response.data.errorMessages
                         && response.data.errorMessages.length === 1
                         && response.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
@@ -82,6 +73,15 @@ export const UploadListingsComponent = {
                         });
                     } else {
                         that.uploadErrors = response.data.errorMessages;
+                    }
+                    if (this.beta) {
+                        that.toaster.pop({
+                            type: 'error',
+                            title: 'Error',
+                            body: 'File "' + response.config.data.file.name + '" was not uploaded successfully. ' + that.uploadErrors,
+                        });
+                    } else {
+                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
                     }
                     that.uploadWarnings = [];
                     that.uploadSuccess = false;
