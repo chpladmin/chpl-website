@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Listing Details component', () => {
+    describe('the Listing Details View component', () => {
         var $compile, $log, Mock, ctrl, el, networkService, scope;
 
         beforeEach(() => {
@@ -24,7 +24,7 @@
                 scope.listing = Mock.fullListings[1];
                 scope.listing.sed = {testTasks: [], ucdProcesses: []};
 
-                el = angular.element('<chpl-listing-details listing="listing"></chpl-listing-details-certs>');
+                el = angular.element('<chpl-listing-details-view listing="listing"></chpl-listing-details-view>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -57,19 +57,20 @@
                 });
 
                 it('should be able to be open to nothing', () => {
-                    el = angular.element('<chpl-listing-details listing="listing" initial-panel="none"></chpl-listing-details>');
+                    el = angular.element('<chpl-listing-details-view listing="listing" initial-panel="none"></chpl-listing-details-view>');
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
                     expect(ctrl.panelShown).toBeUndefined();
                 });
 
-                it('should be able to be open to surveillance', () => {
-                    el = angular.element('<chpl-listing-details listing="listing" initial-panel="surveillance"></chpl-listing-details>');
+                it('should be able to be open to compliance/surveillance', () => {
+                    el = angular.element('<chpl-listing-details-view listing="listing" initial-panel="surveillance"></chpl-listing-details-view>');
                     $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
-                    expect(ctrl.panelShown).toBe('surveillance');
+                    expect(ctrl.panelShown).toBe('compliance');
+                    expect(ctrl.subPanelShown).toBe('surveillance');
                 });
             });
         });

@@ -40,7 +40,7 @@
       <div class="non-conformity__data-element">
       <div class="non-conformity__data-element" ng-if="!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0">None</div>
         <ul class="non-conformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
-          <li ng-repeat="dal in nc.developerAssociatedListings"><a ui-sref="listing({id: dal.id, initialPanel: 'directReviews'})">{{ dal.chplProductNumber }}</a></li>
+          <li ng-repeat="dal in nc.developerAssociatedListings"><a ui-sref="listing({id: dal.id, panel: 'directReviews'})">{{ dal.chplProductNumber }}</a></li>
         </ul>
       </div>
     </div>

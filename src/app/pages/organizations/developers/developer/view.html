@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
@@ -30,13 +30,14 @@
           <div class="panel-body">
             <chpl-users users="$ctrl.users"
                         roles="$ctrl.roles"
+                        column-count="1"
                         take-action="$ctrl.takeUserAction(action, data)"
                         ></chpl-users>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <div ng-if="$ctrl.can('manageTracking')">
         <chpl-change-requests change-requests="$ctrl.changeRequests"
                               change-request-types="$ctrl.changeRequestTypes"
@@ -45,7 +46,7 @@
                               take-action="$ctrl.takeCrAction(action, data)"
                               ></chpl-change-requests>
       </div>
-      <div class="panel panel-default" feature-flag="direct-review">
+      <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-title">
             <span class="pull-right">
@@ -68,7 +69,7 @@
         </div>
       </div>
       <div ui-view="products">
-        <chpl-products products="$ctrl.products"
+        <chpl-products products="$ctrl.developer.products"
                        search-options="$ctrl.searchOptions"
                        on-cancel="$ctrl.cancel()"
                        ></chpl-products>

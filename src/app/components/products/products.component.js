@@ -31,13 +31,30 @@ export const ProductsComponent = {
         }
 
         $onChanges (changes) {
-            let that = this;
             if (changes.products) {
-                this.products = changes.products.currentValue.map(p => {
-                    p.loaded = false;
-                    p.isOpen = false;
-                    return p;
-                });
+                this.products = changes.products.currentValue
+                    .map(p => {
+                        let all = {
+                            version: 'All',
+                            listings: [],
+                        };
+                        p.activeAcbs = new Set();
+                        p.versions.forEach(v => {
+                            v.listings.forEach(l => p.activeAcbs.add(l.acb.name));
+                            all.listings = all.listings.concat(v.listings);
+                        });
+                        p.versions.unshift(all);
+                        p.activeAcbs = [...p.activeAcbs].sort((a, b) => a < b ? -1 : a > b ? 1 : 0).join(', ');
+                        p.activeVersion = p.versions[0];
+                        p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0).length > 0;
+                        return p;
+                    })
+                    .sort((a, b) => {
+                        if (a.hasActiveListings !== b.hasActiveListings) {
+                            return a.hasActiveListings ? -1 : 1;
+                        }
+                        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+                    });
             }
             if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {
                 this.statusItems = changes.searchOptions.currentValue.certificationStatuses
@@ -49,27 +66,13 @@ export const ProductsComponent = {
                         return status;
                     })
                     .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
-                this.currentFilter = this.statusItems;
             }
-            if (this.products) {
-                if (this.productId) {
-                    this.activeProduct = this.products
-                        .filter(p => p.productId === parseInt(this.productId, 10))[0];
-                    if (this.versionId) {
-                        this.networkService.getVersionsByProduct(this.productId)
-                            .then(versions => versions.filter(v => v.versionId === parseInt(that.versionId, 10))
-                                .forEach(v => that.activeVersion = v));
-                    }
-                } else {
-                    this.products = this.products.map(p => {
-                        this.networkService.getVersionsByProduct(p.productId)
-                            .then(versions => {
-                                p.versions = versions
-                                    .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
-                            });
-                        return p;
-                    });
-                }
+            if (this.products && this.productId) {
+                this.activeProduct = this.products
+                    .filter(p => p.productId === parseInt(this.productId, 10))[0];
+            }
+            if (this.products && this.statusItems) {
+                this.doFilter(this.statusItems);
             }
         }
 
@@ -79,7 +82,6 @@ export const ProductsComponent = {
         }
 
         doFilter (items) {
-            this.currentFilter = items;
             this.products.forEach(p => {
                 p.versions.forEach(v => {
                     if (v.listings) {
@@ -113,12 +115,13 @@ export const ProductsComponent = {
         }
 
         getListingCounts (product) {
-            if (!product.loaded) { return ''; }
-            let counts = product.versions.reduce((acc, v) => {
-                acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
-                acc.total += v.listings.length;
-                return acc;
-            }, {active: 0, total: 0});
+            let counts = product.versions
+                .filter(v => v.version !== 'All')
+                .reduce((acc, v) => {
+                    acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
+                    acc.total += v.listings.length;
+                    return acc;
+                }, {active: 0, total: 0});
             let ret = '';
             if (counts.active > 0) {
                 ret += counts.active + ' active / ';
@@ -150,27 +153,6 @@ export const ProductsComponent = {
 
         save (data) {
             this.onEdit({data: data});
-        }
-
-        toggleProduct (product) {
-            this.products = this.products
-                .map(p => {
-                    if (p.productId === product.productId) {
-                        if (!p.loaded) {
-                            let promises = p.versions.map(v => this.networkService.getProductsByVersion(v.versionId, false).then(listings => v.listings = listings));
-                            this.$q.all(promises)
-                                .then(() => {
-                                    p.activeVersion = p.versions[0];
-                                    p.loaded = true;
-                                    p.isOpen = !p.isOpen;
-                                    this.doFilter(this.currentFilter);
-                                });
-                        } else {
-                            p.isOpen = !p.isOpen;
-                        }
-                    }
-                    return p;
-                });
         }
 
         viewCertificationStatusLegend () {

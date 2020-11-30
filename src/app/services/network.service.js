@@ -332,6 +332,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getDeveloperHierarchy (developerId) {
+        return this.apiGET('/developers/' + developerId + '/hierarchy');
+    }
+
     getDevelopers (showDeleted) {
         if (showDeleted) {
             return this.apiGET('/developers?showDeleted=true');
