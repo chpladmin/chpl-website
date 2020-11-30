@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.3.0
+_30 November 2020_
+
+### Features
+* Add upload for Real World Testing
+
+### Flagged Features
+* Allow basic editing of Listing in new UX
+
+### User Interface Updates
+* Rearrange basic information for Listings
+
+---
+
 ## Version 11.2.0
 _16 November 2020_
 
