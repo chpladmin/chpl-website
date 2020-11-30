@@ -23,7 +23,7 @@ describe('the Developers page', () => {
 
     describe('when logged in as an ACB', () => {
         beforeEach(() => {
-            login.logIn('acb');
+            login.logIn('admin');
             login.logoutButton.waitForDisplayed();
         });
 
@@ -46,6 +46,55 @@ describe('the Developers page', () => {
 
                 it('should not have friendly name text box under POC', () => {
                     expect(contact.friendlyName.isDisplayed()).toBe(false);
+                });
+            });
+
+            describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
+                let name = 'Greenway Intergy Meaningful Use Edition';
+                let productId = 837;
+                let version = 'v11';
+                let product;
+                let timestamp = (new Date()).getTime();
+                beforeEach(() => {
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    page.selectVersion(product, productId, version);
+                });
+
+                it('should allow cancellation', () => {
+                    page.mergeButton.click();
+                    page.getVersionMerge();
+                    page.versionName.addValue(timestamp);
+                    actionBar.cancel();
+                    actionConfirmation.yes.click();
+                    page.productsHeader.waitForDisplayed();
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
+                    expect(page.getVersionCount(product).getText()).toBe('7 Versions');
+                });
+                it('version name is required field', () => {
+                    page.mergeButton.click();
+                    page.getVersionMerge();
+                    page.moveVersionToBeMerged(0);
+                    page.versionName.clearValue();
+                    expect(page.errorMessage.getText()).toBe('Field is required');
+                });
+                it('should create new version successfully', () => {
+                    page.mergeButton.click();
+                    page.getVersionMerge();
+                    page.moveVersionToBeMerged(0);
+                    page.versionName.clearValue();
+                    page.versionName.addValue(version + timestamp);
+                    actionBar.save();
+                    page.productsHeader.waitForDisplayed();
+                    toast.clearAllToast();
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
+                    expect(page.getVersionCount(product).getText()).toBe('8 Versions');
                 });
             });
 
@@ -99,6 +148,7 @@ describe('the Developers page', () => {
                         expect(contact.get(product)).toHaveTextContaining(poc.phone);
                     });
                 });
+
             });
 
             describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
