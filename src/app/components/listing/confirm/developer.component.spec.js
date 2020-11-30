@@ -6,7 +6,16 @@
 
         mock = {
             listing: {
-                developer: { developerId: 1},
+                developer: {
+                    developerId: 1,
+                    website: 'http://www.example.com',
+                    address: {
+                        line1: 'line 1',
+                    },
+                    contact: {
+                        fullName: undefined,
+                    },
+                },
                 transparencyAttestation: 'Affirmative',
                 certifyingBody: {
                     code: '04',
@@ -15,7 +24,13 @@
                 },
             },
             developer: {
-                address: {},
+                website: 'https://www.example.com',
+                address: {
+                    line1: undefined,
+                },
+                contact: {
+                    fullName: 'a name',
+                },
             },
             developers: [],
         };
@@ -73,6 +88,21 @@
                     ctrl.saveConfirmingDeveloper();
                     scope.$digest();
                     expect(networkService.updateDeveloper).toHaveBeenCalled();
+                });
+            });
+
+            describe('when parsing differences', () => {
+                it('should know when something was added', () => {
+                    expect(ctrl.listing.developer.styles.line1).toBe('confirm__item--added');
+                });
+
+                it('should know when something was removed', () => {
+                    expect(ctrl.developer.styles.fullName).toBe('confirm__item--removed');
+                });
+
+                it('should know when something was modified', () => {
+                    expect(ctrl.developer.styles.website).toBe('confirm__item--modified');
+                    expect(ctrl.listing.developer.styles.website).toBe('confirm__item--modified');
                 });
             });
         });
