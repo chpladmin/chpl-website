@@ -70,7 +70,7 @@
             describe('when saving new developer', () => {
                 it('should call the network service', () => {
                     ctrl.listing.developer = angular.copy(ctrl.developer);
-                    ctrl.saveInspectingDeveloper();
+                    ctrl.saveConfirmingDeveloper();
                     scope.$digest();
                     expect(networkService.updateDeveloper).toHaveBeenCalled();
                 });

@@ -11,7 +11,7 @@
         };
 
         beforeEach(() => {
-            angular.mock.module('chpl.administration', $provide => {
+            angular.mock.module('chpl.administration', 'chpl.mock', $provide => {
                 $provide.decorator('networkService', $delegate => {
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');

@@ -65,19 +65,9 @@
             });
 
             describe('when using callbacks', () => {
-                it('should handle cancel', () => {
-                    ctrl.cancel();
+                it('should handle acting', () => {
+                    ctrl.act('cancel');
                     expect(scope.takeAction).toHaveBeenCalledWith('cancel');
-                });
-
-                it('should handle save', () => {
-                    ctrl.save();
-                    expect(scope.takeAction).toHaveBeenCalledWith('save');
-                });
-
-                it('should handle mouseover', () => {
-                    ctrl.mouseover();
-                    expect(scope.takeAction).toHaveBeenCalledWith('mouseover');
                 });
             });
         });
