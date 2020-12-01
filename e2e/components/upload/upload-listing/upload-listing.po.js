@@ -32,11 +32,14 @@ class UploadListingComponent {
         return $(uploadElements.chooseUploadListingBeta);
     }
 
+    get root () {
+        return $$(uploadElements.root);
+    }
+
     uploadListingBeta (uploadfilePath) {
         const filePath = path.join(__dirname, uploadfilePath);
         this.chooseUploadListingBetaButton.addValue(browser.uploadFile(filePath));
-        this.uploadButton.waitAndClick();
-        //browser.waitUntil( () => this.listingUploadText.isDisplayed());
+        $$(uploadElements.root)[1].$(uploadElements.uploadButton).click();
     }
 
     uploadListing (uploadfilePath) {

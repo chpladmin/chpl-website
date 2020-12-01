@@ -4,7 +4,7 @@ import Hooks from '../../../utilities/hooks';
 
 let hooks, loginComponent, uploadListingComponent;
 
-beforeAll(async () => {
+beforeEach(async () => {
     uploadListingComponent = new UploadListingComponent();
     loginComponent = new LoginComponent();
     hooks = new Hooks();
@@ -12,8 +12,17 @@ beforeAll(async () => {
 });
 
 describe('When uploading a listing as ONC-ACB', () => {
-    beforeAll(function () {
-        loginComponent.logIn('acb');
+    beforeEach(function () {
+        loginComponent.logInWithEmail('acb');
+    });
+
+    afterEach(function () {
+        loginComponent.logOut();
+    });
+
+    it('can\'t upload a file which doesn\'t match current template', () => {
+        uploadListingComponent.uploadListing('../../../resources/upload-listing-beta/2015_WithCriteria.csv');
+        assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully. Available templates are:');
     });
 
     it('can upload v19 template', () => {
@@ -25,4 +34,9 @@ describe('When uploading a listing as ONC-ACB', () => {
         uploadListingComponent.uploadListing('../../../resources/2015_v18_AQA2.csv');
         assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     });
+
+    // it("can't upload a file owned by different ACB", () => {
+    //     uploadListingComponent.uploadListing('../../../resources/2015_v19_AQA5.csv');
+    //     assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully. Available templates are:');
+    // });
 });
