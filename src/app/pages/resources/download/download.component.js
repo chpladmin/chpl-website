@@ -20,7 +20,7 @@ export const ResourcesDownloadComponent = {
                 { data: this.API + '/download?api_key=' + this.API_KEY + '&edition=2015&format=csv', definition: this.API + '/download?api_key=' + this.API_KEY + '&edition=2015&format=csv&definition=true', label: '2015 CSV', display: '2015 edition summary (csv)'},
                 { data: this.API + '/download?api_key=' + this.API_KEY + '&edition=2014&format=csv', definition: this.API + '/download?api_key=' + this.API_KEY + '&edition=2014&format=csv&definition=true', label: '2014 CSV', display: '2014 edition summary (csv)'},
                 { data: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&type=all', definition: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&type=all&definition=true', label: 'Surveillance', display: 'Surveillance Activity'},
-                { data: this.API + '/surveillance/download?api_key=' + this.API_KEY, definition: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&definition=true', label: 'Non-Conformities', display: 'Non-Conformities'},
+                { data: this.API + '/surveillance/download?api_key=' + this.API_KEY, definition: this.API + '/surveillance/download?api_key=' + this.API_KEY + '&definition=true', label: 'Surveillance Non-Conformities', display: 'Surveillance Non-Conformities'},
                 { data: this.API + '/developers/direct-reviews/download?api_key=' + this.API_KEY, definition: this.API + '/developers/direct-reviews/download?api_key=' + this.API_KEY + '&definition=true', label: 'Direct Review Activity', display: 'Direct Review Activity'},
             ];
             if (this.showRestricted()) {
