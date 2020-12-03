@@ -80,7 +80,7 @@ export const G1G2EditComponent = {
                 && this.ManageList.newItem['measures'].typeName
                 && (!this.ManageList.newItem['measures'].measure.requiresCriteriaSelection
                     || (this.ManageList.newItem['measures'].selectedCriteria
-                        && Object.keys(this.ManageList.newItem['measures'].selectedCriteria).reduce((acc, key) => acc || this.ManageList.newItem['measures'].selectedCriteria[key], false)));
+                        && Object.keys(this.ManageList.newItem['measures'].selectedCriteria).filter(key => this.ManageList.newItem['measures'].selectedCriteria[key].selected).length > 0));
         }
 
         removeItem (item) {
