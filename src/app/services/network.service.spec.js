@@ -947,9 +947,9 @@
                 $httpBackend.flush();
             });
 
-            xit('should getListingBasic', () => {
+            it('should getListingBasic', () => {
                 $httpBackend.expectGET(/^\/rest\/certified_products\/payload$/).respond(200, { data: 'response' });
-                networkService.getListing('payload').then(response => {
+                networkService.getListingBasic('payload').then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1526,8 +1526,15 @@
                 $httpBackend.flush();
             });
 
-            xit('should modifyACB', () => {
-                $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, {});
+            it('should mergeDevelopers', () => {
+                $httpBackend.expectPOST(/^\/rest\/developers\/merge$/).respond(200, {data: 'response'});
+                networkService.mergeDevelopers('payload').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should modifyACB', () => {
                 $httpBackend.expectPUT(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
                 networkService.modifyACB({id: 'id'}).then(response => {
                     expect(response.data).toEqual('response');
@@ -1696,8 +1703,8 @@
             });
 
             it('should updateDeveloper', () => {
-                $httpBackend.expectPUT(/^\/rest\/developers$/).respond(200, {data: 'response'});
-                networkService.updateDeveloper('payload').then(response => {
+                $httpBackend.expectPUT(/^\/rest\/developers\/id$/).respond(200, {data: 'response'});
+                networkService.updateDeveloper({developerId: 'id'}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();

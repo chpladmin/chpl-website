@@ -42,13 +42,11 @@ export const DevelopersEditComponent = {
             if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
                 this.saveRequest(developer);
             } else {
-                let developerIds = [this.developer.developerId];
                 let that = this;
                 this.developer = developer;
                 this.errorMessages = [];
                 this.networkService.updateDeveloper({
                     developer: this.developer,
-                    developerIds: developerIds,
                 }).then(response => {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         that.developer = response;
