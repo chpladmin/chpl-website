@@ -30,12 +30,12 @@ module.exports = [
         message: 'Error',
     },
     {
-        testName: 'extra bogus columns',
+        testName: 'required columns with extra bogus columns',
         path: '../../../resources/upload-listing-beta/2015_BogusColumns.csv' ,
         message: 'Success',
     },
     {
-        testName: 'some of the data missing',
+        testName: 'some of the required column data missing',
         path: '../../../resources/upload-listing-beta/2015_CHPLIDMissing.csv' ,
         message: 'Error',
     },

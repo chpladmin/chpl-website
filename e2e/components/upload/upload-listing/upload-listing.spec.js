@@ -34,9 +34,4 @@ describe('When uploading a listing as ONC-ACB', () => {
         uploadListingComponent.uploadListing('../../../resources/2015_v18_AQA2.csv');
         assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
     });
-
-    // it("can't upload a file owned by different ACB", () => {
-    //     uploadListingComponent.uploadListing('../../../resources/2015_v19_AQA5.csv');
-    //     assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully. Available templates are:');
-    // });
 });

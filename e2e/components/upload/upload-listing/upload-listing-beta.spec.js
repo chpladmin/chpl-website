@@ -18,13 +18,13 @@ beforeEach(async () => {
 describe('When ONC-ACB uploads - ', () => {
     beforeEach(function () {
         loginComponent.logInWithEmail('acb');
-
     });
 
     afterEach(function () {
         toast.clearAllToast();
         loginComponent.logOut();
     });
+
     inputs.forEach(input => {
         let testName = input.testName;
         let path = input.path;
