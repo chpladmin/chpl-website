@@ -48,6 +48,10 @@ export const G1G2EditComponent = {
             }
         }
 
+        $onDestroy () {
+            this.ManageList.cancel('measures');
+        }
+
         cancelNewItem (type) {
             this.ManageList.cancel(type);
             this.allowedMeasures = [];
