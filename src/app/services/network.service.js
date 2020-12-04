@@ -778,7 +778,7 @@ export class NetworkService {
     }
 
     updateDeveloper (developer) {
-        return this.apiPUT('/developers/' + developer.developerId , developer);
+        return this.apiPUT('/developers/' + developer.developerId, developer);
     }
 
     updateFuzzyType (fuzzyType) {

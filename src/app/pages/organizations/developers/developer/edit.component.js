@@ -45,9 +45,7 @@ export const DevelopersEditComponent = {
                 let that = this;
                 this.developer = developer;
                 this.errorMessages = [];
-                this.networkService.updateDeveloper({
-                    developer: this.developer,
-                }).then(response => {
+                this.networkService.updateDeveloper(this.developer).then(response => {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         that.developer = response;
                         that.backup.developer = angular.copy(response);
