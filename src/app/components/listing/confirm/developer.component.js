@@ -4,15 +4,15 @@ export const ConfirmDeveloperComponent = {
         developer: '<',
         developers: '<',
         listing: '<',
-        onSelect: '&',
-        setChoice: '&',
+        //onSelect: '&',
+        //setChoice: '&',
     },
     controller: class ConfirmDeveloperController {
         constructor ($log, networkService) {
             'ngInject';
             this.$log = $log;
             this.networkService = networkService;
-            this.choice = 'choose';
+            //this.choice = 'choose';
         }
 
         $onChanges (changes) {
@@ -25,7 +25,7 @@ export const ConfirmDeveloperComponent = {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
             }
-            this.setChoice({choice: this.choice});
+            //this.setChoice({choice: this.choice});
             if (this.developer && this.listing) {
                 this.analyzeDifferences();
             }
@@ -39,12 +39,18 @@ export const ConfirmDeveloperComponent = {
                 this.listing.developer.styles.selfDeveloper = 'confirm__item--modified';
             }
             this.applyStyles('website', this.developer.website, this.listing.developer.website);
+            if (!this.developer.address) {
+                this.developer.address = {};
+            }
             this.applyStyles('line1', this.developer.address.line1, this.listing.developer.address.line1);
             this.applyStyles('line2', this.developer.address.line2, this.listing.developer.address.line2);
             this.applyStyles('city', this.developer.address.city, this.listing.developer.address.city);
             this.applyStyles('state', this.developer.address.state, this.listing.developer.address.state);
             this.applyStyles('zipcode', this.developer.address.zipcode, this.listing.developer.address.zipcode);
             this.applyStyles('country', this.developer.address.country, this.listing.developer.address.country);
+            if (!this.developer.contact) {
+                this.developer.contact = {};
+            }
             this.applyStyles('fullName', this.developer.contact.fullName, this.listing.developer.contact.fullName);
             this.applyStyles('title', this.developer.contact.title, this.listing.developer.contact.title);
             this.applyStyles('email', this.developer.contact.email, this.listing.developer.contact.email);

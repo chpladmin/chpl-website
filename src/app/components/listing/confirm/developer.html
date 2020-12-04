@@ -13,7 +13,7 @@
       <button class="btn btn-secondary" ng-click="$ctrl.selectConfirmingDeveloper()">Select Developer</button>
     </div>
   </div>
-  <div class="confirm__developer" ng-if="$ctrl.listing.developer.developerId" ng-class="{'confirm__developer--active' : $ctrl.choice === 'choose'}">
+  <div class="confirm__developer">
     <div class="confirm__header"><h3>System information</h3></div>
     <div class="confirm__header confirm__header--highlight"><span class="pull-right">Last Modified: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span><h4>{{ $ctrl.developer.name }}</h4></div>
     <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.developer.developerCode }}</div></div>
@@ -34,27 +34,57 @@
               ng-click="$ctrl.toggle()" ng-disabled="$ctrl.choice === 'choose'">Keep this information</button>
     </div>
   </div>
-  <div class="confirm__developer" ng-class="{'confirm__developer--active' : ($ctrl.choice === 'create' || !$ctrl.listing.developer.developerId)}">
+  <div class="confirm__developer">
     <div class="confirm__header"><h3>Uploaded information</h3></div>
     <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.listing.developer.name }}</h4></div>
     <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.listing.developer.developerCode }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.selfDeveloper"><div class="data-label">Self-developer</div><div class="read-only-data">{{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.line1"><div class="data-label">Line 1</div><div class="read-only-data">{{ $ctrl.listing.developer.address.line1 }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.line2"><div class="data-label">Line 2</div><div class="read-only-data">{{ $ctrl.listing.developer.address.line2 }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.city"><div class="data-label">City</div><div class="read-only-data">{{ $ctrl.listing.developer.address.city }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.state"><div class="data-label">State</div><div class="read-only-data">{{ $ctrl.listing.developer.address.state }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.zipcode"><div class="data-label">Zip</div><div class="read-only-data">{{ $ctrl.listing.developer.address.zipcode }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.country"><div class="data-label">Country</div><div class="read-only-data">{{ $ctrl.listing.developer.address.country }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.fullName"><div class="data-label">Name</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.fullName }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.title"><div class="data-label">Title</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.title }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.phoneNumber"><div class="data-label">Phone</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.phoneNumber }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.email"><div class="data-label">Email</div><div class="read-only-data">{{ $ctrl.listing.developer.contact.email }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.website"><div class="data-label">Website</div><div class="read-only-data">{{ $ctrl.listing.developer.website }}</div></div>
-    <div class="confirm__footer">
-      <button class="btn btn-primary"
-              ng-click="$ctrl.toggle()" ng-if="$ctrl.choice === 'choose'">Use this information</button>
-      <button class="btn btn-primary"
-              ng-click="$ctrl.saveInspectingDeveloper()" ng-if="$ctrl.choice === 'create'">Update Developer Information</button>
+    <div ng-class="$ctrl.listing.developer.styles.selfDeveloper">
+      <div class="data-label">Self-developer</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.line1">
+      <div class="data-label">Line 1</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.address.line1 }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.line2">
+      <div class="data-label">Line 2</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.address.line2 }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.city">
+      <div class="data-label">City</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.address.city }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.state">
+      <div class="data-label">State</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.address.state }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.zipcode">
+      <div class="data-label">Zip</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.address.zipcode }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.country">
+      <div class="data-label">Country</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.address.country }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.fullName">
+      <div class="data-label">Name</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.contact.fullName }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.title">
+      <div class="data-label">Title</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.contact.title }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.phoneNumber">
+      <div class="data-label">Phone</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.contact.phoneNumber }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.email">
+      <div class="data-label">Email</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.contact.email }}</div>
+    </div>
+    <div ng-class="$ctrl.listing.developer.styles.website">
+      <div class="data-label">Website</div>
+      <div class="read-only-data">{{ $ctrl.listing.developer.website }}</div>
     </div>
   </div>
 </div>

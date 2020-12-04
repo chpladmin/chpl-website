@@ -19,10 +19,11 @@
     grid-gap: 4px;
 }
 
+/*
 .confirm__developer--active {
     border: 2px solid var(--blue);
 }
-
+*/
 .confirm__header {
     grid-column: 1 / -1;
 }
@@ -43,7 +44,9 @@
     background-color: rgba(var(--background-warning), .3);
 }
 
+/*
 .confirm__footer {
     grid-column: 1 / -1;
     justify-self: center;
 }
+*/
