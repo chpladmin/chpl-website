@@ -5,7 +5,8 @@
   <div class="data-label">Associated Criteria</div>
   <div class="manage-list__item--start" ng-class="{ 'removed' : item.measure.removed }" ng-repeat-start="item in $ctrl.measures track by $index">
     <button ng-if="item.measure.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-    <span ng-if="item.measure.removed">Removed | </span> {{ item.measure.abbreviation }}: {{ item.measure.requiredTest }}
+    <span ng-if="item.measure.removed">Removed | </span>
+    {{ item.measure.abbreviation ? (item.measure.abbreviation + ': ' + item.measure.requiredTest) : item.measure.name }}
     <div ng-if="item.measure.removed" class="clearfix"></div>
   </div>
   <div>

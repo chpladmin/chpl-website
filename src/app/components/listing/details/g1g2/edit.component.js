@@ -64,6 +64,9 @@ export const G1G2EditComponent = {
             if (!b.measureType) {
                 b = {measureType: 0, measure: b};
             }
+            if (!a.measure.id || !b.measure.id) {
+                return a.measure.id ? 1 : -1;
+            }
             let getNum = test => parseInt(test.substring(2), 10);
             return a.measure.removed !== b.measure.removed ? (a.measure.removed ? 1 : -1) :
                 a.measureType.name < b.measureType.name ? -1 : a.measureType.name > b.measureType.name ? 1 :

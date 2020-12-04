@@ -24,6 +24,9 @@ export const G1G2ViewComponent = {
         }
 
         measureSort (a, b) {
+            if (!a.measure.id || !b.measure.id) {
+                return a.measure.id ? 1 : -1;
+            }
             return a.measure.removed !== b.measure.removed ? (a.measure.removed ? 1 : -1) :
                 a.measureType.name < b.measureType.name ? -1 : a.measureType.name > b.measureType.name ? 1 :
                 a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :

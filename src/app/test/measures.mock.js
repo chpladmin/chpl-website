@@ -1,4 +1,5 @@
 const measures = [{
+    id: 1,
     domain: { name: 'EC' },
     abbreviation: 'RT1',
     requiredTest: 'Required Test 1: Something yet',
@@ -7,6 +8,7 @@ const measures = [{
     allowedCriteria: [],
     removed: false,
 },{
+    id: 2,
     domain: { name: 'EC' },
     abbreviation: 'RT10',
     requiredTest: 'Required Test 10: Something else',
@@ -15,6 +17,7 @@ const measures = [{
     allowedCriteria: [],
     removed: false,
 },{
+    id: 3,
     domain: { name: 'EH' },
     abbreviation: 'RT3',
     requiredTest: 'Required Test 3: Anything',
