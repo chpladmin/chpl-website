@@ -88,9 +88,9 @@ export const G1G2EditComponent = {
 
         removeItem (item) {
             this.measures = this.measures
-                .filter(m => !(m.measureType.name === item.measureType.name
-                               && m.measure.domain.name === item.measure.domain.name
-                               && m.measure.abbreviation === item.measure.abbreviation
+                .filter(m => !(m.id === item.id
+                               && m.measureType.name === item.measureType.name
+                               && m.measure.name === item.measure.name
                                && m.displayCriteria === item.displayCriteria));
             this.update();
         }
