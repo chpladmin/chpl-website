@@ -99,7 +99,6 @@ describe('the Developers page', () => {
                         expect(contact.get(product)).toHaveTextContaining(poc.phone);
                     });
                 });
-
             });
 
             describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
@@ -226,6 +225,10 @@ describe('the Developers page', () => {
         });
 
         describe('when on the "Greenway Health, LLC" Developer page', () => {
+            const name = 'Greenway Intergy Meaningful Use Edition';
+            const productId = 837;
+            let product, version;
+            let timestamp = (new Date()).getTime();
             beforeEach(() => {
                 let developer = 'Greenway Health, LLC';
                 page = new DevelopersPage();
@@ -234,11 +237,7 @@ describe('the Developers page', () => {
             });
 
             describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
-                let name = 'Greenway Intergy Meaningful Use Edition';
-                let productId = 837;
-                let version = 'v11';
-                let product;
-                let timestamp = (new Date()).getTime();
+                version = 'v11';
                 let newVersion = version + ' - ' + timestamp;
                 beforeEach(() => {
                     product = page.getProduct(name);
@@ -250,7 +249,7 @@ describe('the Developers page', () => {
 
                 it('should allow cancellation', () => {
                     page.mergeButton.click();
-                    page.getVersionMerge();
+                    page.versionMergeButton.click();
                     page.versionName.addValue(newVersion);
                     actionBar.cancel();
                     actionConfirmation.yes.click();
@@ -260,16 +259,29 @@ describe('the Developers page', () => {
                     browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
                     expect(page.getVersionCount(product).getText()).toBe('7 Versions');
                 });
+
                 it('version name is required field', () => {
                     page.mergeButton.click();
-                    page.getVersionMerge();
+                    page.versionMergeButton.click();
                     page.moveVersionToBeMerged(0);
                     page.versionName.clearValue();
                     expect(page.errorMessage.getText()).toBe('Field is required');
                 });
+            });
+            describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
+                version = 'v10.10';
+                let newVersion = version + ' - ' + timestamp;
+                beforeEach(() => {
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    page.selectVersion(product, productId, version);
+                });
+
                 it('should create new version successfully', () => {
                     page.mergeButton.click();
-                    page.getVersionMerge();
+                    page.versionMergeButton.click();
                     page.moveVersionToBeMerged(0);
                     page.versionName.clearValue();
                     page.versionName.addValue(newVersion);

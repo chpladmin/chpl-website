@@ -117,8 +117,8 @@ class DevelopersPage {
         product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
     }
 
-    getVersionMerge () {
-        $$('.product__product-action-filter-item.ng-scope')[2].click();
+    get versionMergeButton () {
+        return $$('.product__product-action-filter-item.ng-scope')[2];
     }
 
     get mergeButton () {
