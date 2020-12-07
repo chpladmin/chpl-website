@@ -32,7 +32,7 @@ describe('When ONC-ACB uploads - ', () => {
 
         it(`${testName} - shows ${message} status of upload`, () => {
             browser.pause(2000); //Finding beta component exist or not doesnt work without this pause
-            if (uploadListingComponent.root.length > 1) {
+            if (uploadListingComponent.uploadBetaButton.isDisplayed()) {
                 uploadListingComponent.uploadListingBeta(path);
                 assert.equal(toast.toastTitle.getText(), message);
             }
