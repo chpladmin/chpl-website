@@ -39,7 +39,7 @@ export const ConfirmListingComponent = {
         canAct (action) {
             switch (action) {
             case 'confirm': return this.stage === 'listing';
-            case 'next': return !this.isDisabled();
+            case 'next': return this.showFormErrors && this.form.$pristine && !this.isDisabled();
             case 'previous': return this.stage !== 'developer';
                 // no default
             }
@@ -53,13 +53,22 @@ export const ConfirmListingComponent = {
             }
         }
 
-        selectInspectingDeveloper (developerId) {
-            this.listing.developer.developerId = developerId;
-            this.loadDev();
-        }
-
-        setDeveloperChoice (choice) {
-            this.developerChoice = choice;
+        takeDeveloperAction (action, developerId) {
+            switch (action) {
+            case 'select':
+                this.listing.developer.developerId = developerId;
+                if (developerId) {
+                    this.loadDev();
+                } else {
+                    this.developer = undefined;
+                }
+                break;
+            case 'cancel':
+                break;
+                //no default
+            }
+            this.form.$setPristine();
+            this.showFormErrors = false;
         }
 
         selectInspectingProduct (productId) {
@@ -79,11 +88,12 @@ export const ConfirmListingComponent = {
         }
 
         takeAction (action) {
-            this.$log.info(action);
             switch (action) {
             case 'cancel': this.cancel();
                 break;
             case 'confirm': this.confirm();
+                break;
+            case 'mouseover': this.showFormErrors = true;
                 break;
             case 'next': this.next();
                 break;
@@ -183,57 +193,13 @@ export const ConfirmListingComponent = {
         isDisabled () {
             switch (this.stage) {
             case 'developer':
-                return (this.developerChoice === 'choose' && !this.listing.developer.developerId) || !this.isSystemDevContactInfoValid();
+                return this.form.$invalid;
             case 'product':
                 return (this.productChoice === 'choose' && !this.listing.product.productId);
             case 'version':
                 return (this.versionChoice === 'choose' && !this.listing.version.versionId);
             default:
                 return true;
-            }
-        }
-
-        isSystemDevContactInfoValid () {
-            this.systemRequirements = [];
-            if ((this.developerChoice === 'create')
-                || (this.developer
-                    && this.developer.name
-                    && this.developer.website
-                    && (this.developer.contact && this.developer.contact.fullName && this.developer.contact.email && this.developer.contact.phoneNumber)
-                    && (this.developer.address && this.developer.address.line1 && this.developer.address.city && this.developer.address.state && this.developer.address.zipcode))) {
-                return true;
-            }
-            this.populateDeveloperSystemRequirements();
-            return false;
-        }
-
-        populateDeveloperSystemRequirements () {
-            if (this.developer) {
-                const DOES_NOT_EXIST_MSG = ' does not yet exist in the system.';
-                const EXISTS_MSG = ' exists in the system.';
-                const PLEASE_SAVE_MSG = ' Please select \'Save as Developer Information\' to continue.';
-                if (!this.developer.name) {
-                    this.systemRequirements.push('A developer name' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
-                }
-                if (!this.developer.website) {
-                    this.systemRequirements.push('A developer website' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
-                }
-                if (this.developer.contact) {
-                    if (!this.developer.contact.fullName || !this.developer.contact.email
-                        || !this.developer.contact.phoneNumber) {
-                        this.systemRequirements.push('At least one type of required developer contact information' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
-                    }
-                } else {
-                    this.systemRequirements.push('None of the required developer contact information' + EXISTS_MSG + PLEASE_SAVE_MSG);
-                }
-                if (this.developer.address) {
-                    if (!this.developer.address.line1 || !this.developer.address.city
-                        || !this.developer.address.state || !this.developer.address.zipcode) {
-                        this.systemRequirements.push('At least one type of required developer address information' + DOES_NOT_EXIST_MSG + PLEASE_SAVE_MSG);
-                    }
-                } else {
-                    this.systemRequirements.push('None of the required developer address information' + EXISTS_MSG + PLEASE_SAVE_MSG);
-                }
             }
         }
 

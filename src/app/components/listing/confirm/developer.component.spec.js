@@ -32,7 +32,10 @@
                     fullName: 'a name',
                 },
             },
-            developers: [],
+            developers: [{
+                name: 'a',
+                developerId: 1,
+            }],
         };
 
         beforeEach(() => {

@@ -2,14 +2,6 @@
     display: flex;
 }
 
-.confirm__not-found {
-    flex: 1;
-    margin: 8px;
-    padding: 4px;
-    display: grid;
-    grid-gap: 4px;
-}
-
 .confirm__developer {
     flex: 1;
     margin: 8px;
@@ -18,12 +10,6 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 4px;
 }
-
-/*
-.confirm__developer--active {
-    border: 2px solid var(--blue);
-}
-*/
 
 .confirm__header {
     grid-column: 1 / -1;
@@ -48,4 +34,8 @@
 .confirm__footer {
     grid-column: 1 / -1;
     justify-self: center;
+}
+
+.confirm__footer--start {
+    justify-self: start;
 }

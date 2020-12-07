@@ -4,30 +4,42 @@ export const ConfirmDeveloperComponent = {
         developer: '<',
         developers: '<',
         listing: '<',
-        //onSelect: '&',
-        //setChoice: '&',
+        takeAction: '&',
+        showFormErrors: '<',
     },
     controller: class ConfirmDeveloperController {
         constructor ($log, networkService) {
             'ngInject';
             this.$log = $log;
             this.networkService = networkService;
-            //this.choice = 'choose';
+            this.backup = {};
         }
 
         $onChanges (changes) {
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
+                this.backup.developer = angular.copy(this.developer);
             }
-            if (changes.developers) {
-                this.developers = angular.copy(changes.developers.currentValue);
+            if (changes.developers && changes.developers.currentValue) {
+                this.developers = changes.developers.currentValue
+                    .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+                this.developers.splice(0, 0, {
+                    name: '--- Create a new Developer ---',
+                    developerId: undefined,
+                });
             }
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
             }
-            //this.setChoice({choice: this.choice});
+            if (this.developer && this.developers) {
+                this.developerSelect = this.developers.find(d => d.developerId === this.developer.developerId);
+            }
             if (this.developer && this.listing) {
                 this.analyzeDifferences();
+            }
+            if (!this.developer && this.listing) {
+                this.developerSelect = this.developers.find(d => d.developerId === undefined);
+                this.developer = angular.copy(this.listing.developer);
             }
         }
 
@@ -88,40 +100,43 @@ export const ConfirmDeveloperComponent = {
             }
         }
 
-        toggle () {
-            if (this.choice === 'choose') {
-                this.choice = 'create';
-            } else {
-                this.choice = 'choose';
-            }
-        }
-
         selectConfirmingDeveloper () {
             this.listing.developer.developerId = this.developerSelect.developerId;
-            this.onSelect({developerId: this.developerSelect.developerId});
+            this.takeAction({action: 'select', developerId: this.developerSelect.developerId});
+            this.form.$setPristine();
         }
 
         saveConfirmingDeveloper () {
             var dev = {
                 developer: {
-                    address: this.listing.developer.address,
-                    contact: this.listing.developer.contact,
+                    address: this.developer.address,
+                    contact: this.developer.contact,
                     developerCode: this.developer.developerCode,
-                    developerId: this.listing.developer.developerId,
-                    name: this.listing.developer.name,
-                    selfDeveloper: this.listing.developer.selfDeveloper,
+                    developerId: this.developer.developerId,
+                    name: this.developer.name,
+                    selfDeveloper: this.developer.selfDeveloper,
                     status: this.developer.status,
                     statusEvents: this.developer.statusEvents,
-                    website: this.listing.developer.website,
+                    website: this.developer.website,
                 },
-                developerIds: [this.listing.developer.developerId],
+                developerIds: [this.developer.developerId],
             };
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
             }
             let that = this;
             this.networkService.updateDeveloper(dev)
-                .then(() => that.onSelect({developerId: dev.developer.developerId}));
+                .then(() => {
+                    that.takeAction({action: 'select', developerId: dev.developer.developerId});
+                    that.form.$setPristine();
+                });
+        }
+
+        undoEdits () {
+            this.developer = angular.copy(this.backup.developer);
+            this.form.$setPristine();
+            this.analyzeDifferences();
+            this.takeAction({action: 'clear'});
         }
     },
 };

@@ -1,4 +1,4 @@
-<div class="listing-inspect">
+<div class="listing-inspect" ng-form="$ctrl.form">
   <div ng-switch="$ctrl.stage" class="listing-inspect__header">
     <div>
       <h1 ng-switch-when="developer">Developer</h1>
@@ -23,7 +23,8 @@
         developer="$ctrl.developer"
         developers="$ctrl.developers"
         listing="$ctrl.listing"
-        on-select="$ctrl.selectInspectingDeveloper(developerId)"
+        show-form-errors="$ctrl.showFormErrors"
+        take-action="$ctrl.takeDeveloperAction(action, developerId)"
         set-choice="$ctrl.setDeveloperChoice(choice)"
         ></chpl-confirm-developer>
     </div>

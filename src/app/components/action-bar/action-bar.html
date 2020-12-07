@@ -48,7 +48,7 @@
               ng-mouseover="$ctrl.act('mouseover')">Save</button>
     </div>
   </div>
-  <div class="action-bar__buttons" ng-if="$ctrl.isWizard">
+  <div class="action-bar__buttons" ng-if="$ctrl.isWizard" ng-mouseover="$ctrl.act('mouseover')">
     <div class="action-bar__button">
       <button class="btn btn-secondary" id="action-bar-cancel"
               confirm="Are you sure you wish to cancel? Your changes will not be saved."
@@ -63,7 +63,7 @@
               ng-disabled="!$ctrl.can('previous')"><i class="fa fa-caret-left"></i> Previous</button>
     </div>
     <div class="action-bar__button" ng-if="!$ctrl.can('confirm')">
-      <button class="btn btn-primary" id="action-bar-save"
+      <button class="btn btn-primary" id="action-bar-next"
               ng-click="$ctrl.act('next')"
               ng-disabled="!$ctrl.can('next')">Next <i class="fa fa-caret-right"></i></button>
     </div>
