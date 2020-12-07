@@ -23,7 +23,7 @@
             angular.mock.module('chpl.organizations', $provide => {
                 $provide.factory('chplDeveloperDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.mergeDeveloper = jasmine.createSpy('mergeDeveloper');
+                    $delegate.mergeDevelopers = jasmine.createSpy('mergeDeveloper');
                     return $delegate;
                 });
             });
@@ -35,7 +35,7 @@
                 $state = _$state_;
                 toaster = _toaster_;
                 networkService = _networkService_;
-                networkService.mergeDeveloper.and.returnValue($q.when(mock.goodResponse));
+                networkService.mergeDevelopers.and.returnValue($q.when(mock.goodResponse));
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
@@ -97,7 +97,7 @@
 
             it('should pass the the merging developer data to the network service', () => {
                 ctrl.merge(developer);
-                expect(networkService.mergeDeveloper).toHaveBeenCalledWith({
+                expect(networkService.mergeDevelopers).toHaveBeenCalledWith({
                     developer: developer,
                     developerIds: [1, 2, 'an id'],
                 });

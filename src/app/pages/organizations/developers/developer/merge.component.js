@@ -47,7 +47,7 @@ export const DevelopersMergeComponent = {
             };
             mergeDeveloperObject.developerIds.push(this.developer.developerId);
             let that = this;
-            this.networkService.mergeDeveloper(mergeDeveloperObject)
+            this.networkService.mergeDevelopers(mergeDeveloperObject)
                 .then(response => {
                     if (!response.status || response.status === 200) {
                         that.toaster.pop({
