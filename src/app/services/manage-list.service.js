@@ -1,3 +1,6 @@
+/*
+ * Note for future users, make sure "cancel" is called in the $onDestroy block of any component that uses this service
+ */
 class ManageList {
     constructor ($log) {
         'ngInject';
