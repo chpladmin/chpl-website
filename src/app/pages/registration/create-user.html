@@ -72,20 +72,46 @@
             <button class="btn btn-default"
                     ng-mouseover="$ctrl.showFormErrors = true; $ctrl.setExtras()"
                     ng-click="$ctrl.createUser()" ng-disabled="($ctrl.createUserForm.$invalid || $ctrl.misMatchPasswords()) && $ctrl.showFormErrors">Create account</button>
-            <p>Or <button class="btn btn-default" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">sign in to your existing account</button></p>
-            <p>If you require accessibility assistance please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a></p>
+          </div>
+        </div>
+        <div class="flex-container">
+          <div class="flex-item center">
+            Or <button class="btn btn-default" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">sign in to your existing account</button>
+          </div>
+        </div>
+        <div class="flex-container">
+          <div class="flex-item center">
+            If you require accessibility assistance please use the <a href="https://www.healthit.gov/form/healthit-feedback-form">Health IT Feedback Form</a>
           </div>
         </div>
       </div>
       <div class="row" ng-if="$ctrl.isSignInMode()" ng-form="$ctrl.authorizeUserForm">
         <div class="col-md-12">
-          <p>Sign into your existing account</p>
-          <label for="authorize-username" class="control-label">Username <span class="text-danger">*</span></label>
-          <input type="text" id="authorize-username" ng-model="$ctrl.authorizeDetails.userName" class="form-control" required />
-          <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
-          <input type="password" id="authorize-password" ng-model="$ctrl.authorizeDetails.password" class="form-control" required />
-          <button class="btn btn-default btn-block" ng-click="$ctrl.authorizeUser()" ng-disabled="$ctrl.authorizeUserForm.$invalid">Sign into your account</button>
-          <p>Or <button class="btn btn-default" ng-click="$ctrl.changeDisplayMode('CREATE-ACCOUNT')">create a new account</button></p>
+          <div class="flex-container">
+            <div class="flex-item">Sign into your existing account</div>
+          </div>
+          <div class="flex-container">
+            <div class="flex-item">
+              <label for="authorize-username" class="control-label">Username <span class="text-danger">*</span></label>
+              <input type="text" id="authorize-username" ng-model="$ctrl.authorizeDetails.userName" class="form-control" required />
+            </div>
+          </div>
+          <div class="flex-container">
+            <div class="flex-item">
+              <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
+              <input type="password" id="authorize-password" ng-model="$ctrl.authorizeDetails.password" class="form-control" required />
+            </div>
+          </div>
+          <div class="flex-container">
+            <div class="flex-item">
+              <button class="btn btn-default btn-block" ng-click="$ctrl.authorizeUser()" ng-disabled="$ctrl.authorizeUserForm.$invalid">Sign into your account</button>
+            </div>
+          </div>
+          <div class="flex-container">
+            <div class="flex-item">
+              Or <button class="btn btn-default" ng-click="$ctrl.changeDisplayMode('CREATE-ACCOUNT')">create a new account</button>
+            </div>
+          </div>
         </div>
         <div class="col-md-8 col-md-offset-2" ng-if="$ctrl.message.value">
           <p class="alert alert-danger">{{ $ctrl.message.value }}</p>
