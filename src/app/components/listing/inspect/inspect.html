@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) || (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) ||
+    <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) || (vm.warningMessages && vm.warningMessages.length !== 0) || (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) ||
       (vm.cp.warningMessages && vm.cp.warningMessages.length !== 0) || (vm.systemRequirements && vm.systemRequirements.length !== 0)">
       <div class="col-sm-12 text-left bg-danger">
         <div ng-if="vm.cp.errorMessages && vm.cp.errorMessages.length !== 0">
@@ -62,7 +62,7 @@
       </div>
       <div ng-if="vm.stage === 'cp' && vm.warningMessages && vm.warningMessages.length !== 0" class="col-sm-12 text-left">
         <input type="checkbox" ng-model="vm.acknowledgeWarnings" id="acknowledge-warnings" name="acknowledgeWarnings" class="inspect__acknowledge-warning-checkbox">
-        <label for="acknowledge-warnings" class="inspect__acknowledge-warning-label">I have reviewed the warning<span ng-if="vm.warningMessages.length !== 1">s</span> above and wish to proceed with this update</label>
+        <label for="acknowledge-warnings" class="inspect__acknowledge-warning-label">I have reviewed the warning<span ng-if="vm.warningMessages.length !== 1">s</span> above and wish to proceed with this confirmation</label>
       </div>
     </div>
     <button class="btn btn-warning btn-large pull-left" id="inspect-previous"
