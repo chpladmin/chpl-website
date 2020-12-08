@@ -21,7 +21,6 @@ export const ReportsApiKeysComponent = {
                 total: 0,
                 complete: 0,
             };
-            this.downloadProgress = { complete: 0 };
             this.pageSize = 50;
         }
 
