@@ -32,7 +32,7 @@ class LoginComponent {
     }
 
     openLoginComponent () {
-        this.toggleLoginComponent.click();
+        this.toggleLoginComponent.scrollAndClick();
     }
 
     logIn (user) {
