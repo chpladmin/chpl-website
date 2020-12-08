@@ -1,6 +1,8 @@
 import ProductChartsPage from './product.po';
 import Hooks from '../../../utilities/hooks';
 
+const config = require('../../../config/mainConfig');
+
 let hooks, page;
 
 beforeAll(async () => {
@@ -13,6 +15,7 @@ beforeAll(async () => {
 describe('on charts page - Unique product chart', () => {
 
     it('should only show 2015 edition products', () => {
+        browser.waitUntil(() => page.chartTitle.isDisplayed(), config.shortTimeout);
         assert.include(page.chartTitle.getText(),2015);
         assert.notInclude(page.chartTitle.getText(),2014);
     });

@@ -28,16 +28,6 @@
         </div>
         <div class="flex-container">
           <div class="flex-item">
-            <label for="username" class="control-label">Username <span class="text-danger">*</span></label>
-            <div>
-              <input type="text" id="username" name="username" ng-model="$ctrl.userDetails.user.subjectName" class="form-control" required ng-maxlength="25" ng-change="$ctrl.setExtras()" />
-              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.username.$touched) && $ctrl.createUserForm.username.$error.required">Field is required</div>
-              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.createUserForm.username.$touched) && $ctrl.createUserForm.username.$error.maxlength">Field is too long</div>
-            </div>
-          </div>
-        </div>
-        <div class="flex-container">
-          <div class="flex-item">
             <label for="password" class="control-label">Password <span class="text-danger">*</span></label>
             <div>
               <input type="password" id="password" name="password" ng-model="$ctrl.userDetails.user.password" class="form-control" required ng-change="$ctrl.setExtras()"
