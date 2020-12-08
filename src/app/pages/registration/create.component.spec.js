@@ -26,7 +26,7 @@
         beforeEach(() => {
             angular.mock.module('chpl.registration', $provide => {
                 $provide.decorator('authService', $delegate => {
-                    $delegate.getUsername = jasmine.createSpy('getUsername');
+                    $delegate.getUserId = jasmine.createSpy('getUserId');
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
@@ -43,7 +43,7 @@
                 $q = _$q_;
                 $location = _$location_;
                 authService = _authService_;
-                authService.getUsername.and.returnValue('username');
+                authService.getUserId.and.returnValue(31);
                 authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.authorizeUser.and.returnValue($q.when({}));
