@@ -36,8 +36,8 @@ export const CreateUserComponent = {
 
         authorizeUser () {
             if ((this.authorizeDetails.userName && this.authorizeDetails.password) || this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && this.authorizeDetails.hash) {
-                const username = this.authorizeDetails.userName || this.authService.getUsername();
-                this.networkService.authorizeUser(this.authorizeDetails, username)
+                const userId = this.authorizeDetails.userName || this.authService.getUserId();
+                this.networkService.authorizeUser(this.authorizeDetails, userId)
                     .then(() => {
                         this.$location.path('/administration');
                     }, error => {
@@ -100,7 +100,6 @@ export const CreateUserComponent = {
         validateUser () {
             var valid = true;
             valid = valid && this.userDetails.hash && this.userDetails.hash.length > 0;
-            valid = valid && this.userDetails.user.subjectName && this.userDetails.user.subjectName.length > 0;
             valid = valid && this.userDetails.user.password && this.userDetails.user.password.length > 0;
             valid = valid && this.userDetails.user.fullName && this.userDetails.user.fullName.length > 0;
             valid = valid && this.userDetails.user.email && this.userDetails.user.email.length > 0;
@@ -111,7 +110,6 @@ export const CreateUserComponent = {
 
         setExtras () {
             let vals = ['chpl'];
-            if (this.userDetails.user.subjectName) { vals.push(this.userDetails.user.subjectName); }
             if (this.userDetails.user.fullName) { vals.push(this.userDetails.user.fullName); }
             if (this.userDetails.user.friendlyName) { vals.push(this.userDetails.user.friendlyName); }
             if (this.userDetails.user.email) { vals.push(this.userDetails.user.email); }

@@ -39,18 +39,9 @@
             expect(auth.getToken()).toBe('fake token');
         });
 
-        it('should get a username when logged in', () => {
-            auth.saveToken(buildToken(mock.user));
-            expect(auth.getUsername()).toBe('username');
-        });
-
         it('should get a fullname when logged in', () => {
             auth.saveToken(buildToken(mock.user));
             expect(auth.getFullname()).toBe('Full Name');
-        });
-
-        it('should not get a username when not logged in', () => {
-            expect(auth.getUsername()).toBe('');
         });
 
         it('should not get a username when not logged in', () => {

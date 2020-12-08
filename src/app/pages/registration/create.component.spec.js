@@ -109,7 +109,7 @@
 
             it('should call "authorizeUser" if the user tries to log in', () => {
                 ctrl.authorizeUser();
-                expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, 'username');
+                expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, 31);
             });
 
             it('should redirect to /administration after authorizeUser is finished', () => {
@@ -125,7 +125,7 @@
                 ctrl.userDetails = angular.copy(mock.validUser);
                 ctrl.userDetails.user.friendlyName = 'friendly';
                 ctrl.setExtras();
-                expect(ctrl.extras).toEqual(['chpl', 'subjectName', 'fullName', 'friendly', 'email@email.email', 'phone']);
+                expect(ctrl.extras).toEqual(['chpl', 'fullName', 'friendly', 'email@email.email', 'phone']);
             });
 
             it('should be in CREATE-ACCOUNT mode', () => {
