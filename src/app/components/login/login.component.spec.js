@@ -29,7 +29,7 @@
                 });
                 $provide.decorator('networkService', $delegate => {
                     $delegate.changePassword = jasmine.createSpy('changePassword');
-                    $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
+                    $delegate.getUserById = jasmine.createSpy('getUserById');
                     $delegate.keepalive = jasmine.createSpy('keepalive');
                     $delegate.login = jasmine.createSpy('login');
                     $delegate.emailResetPassword = jasmine.createSpy('emailResetPassword');
@@ -59,7 +59,7 @@
                 networkService = _networkService_;
                 networkService.changePassword.and.returnValue($q.when({passwordUpdated: true}));
                 networkService.emailResetPassword.and.returnValue($q.when({}));
-                networkService.getUserByUsername.and.returnValue($q.when(mock.response));
+                networkService.getUserById.and.returnValue($q.when(mock.response));
                 networkService.keepalive.and.returnValue($q.when({}));
                 networkService.login.and.returnValue($q.when({}));
                 networkService.resetPassword.and.returnValue($q.when({}));
@@ -202,7 +202,7 @@
                     ctrl.newPassword = 'new';
                     ctrl.confirmPassword = 'new';
                     ctrl.changePassword();
-                    expect(networkService.changePassword).toHaveBeenCalledWith({userName: '', oldPassword: 'old', newPassword: 'new'});
+                    expect(networkService.changePassword).toHaveBeenCalledWith({oldPassword: 'old', newPassword: 'new'});
                 });
 
                 it('should report a message and clear the form on success', () => {
@@ -387,7 +387,7 @@
                     ctrl.userName = 'test';
                     ctrl.email = 'email';
                     ctrl.sendReset();
-                    expect(networkService.emailResetPassword).toHaveBeenCalledWith({userName: 'test', email: 'email'});
+                    expect(networkService.emailResetPassword).toHaveBeenCalledWith({email: 'email'});
                 });
 
                 it('should start clear the form and report a message on success', () => {
