@@ -116,20 +116,20 @@ describe('when logged in as an Admin', () => {
     describe('when on the "Greenway Health, LLC" Developer page', () => {
         const name = 'Greenway Intergy Meaningful Use Edition';
         const productId = 837;
-        let product, version;
-        let timestamp = (new Date()).getTime();
+        let newVersion, product, timestamp, version;
         beforeEach(() => {
             let developer = 'Greenway Health, LLC';
+            timestamp = (new Date()).getTime();
             page = new DevelopersPage();
             page.selectDeveloper(developer);
             page.getDeveloperPageTitle(developer).waitForDisplayed();
         });
 
         describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
-            version = 'v11';
             const versionToBeMerged = 'v10';
-            let newVersion = version + ' - ' + timestamp;
             beforeEach(() => {
+                version = 'v11';
+                newVersion = version + ' - ' + timestamp;
                 product = page.getProduct(name);
                 product.scrollIntoView({block: 'center', inline: 'center'});
                 page.selectProduct(product);
