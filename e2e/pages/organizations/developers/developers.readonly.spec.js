@@ -1,18 +1,25 @@
 import DevelopersPage from './developers.po';
 import ContactComponent from '../../../components/contact/contact.po';
 import Hooks from '../../../utilities/hooks';
+import LoginComponent from '../../../components/login/login.po';
+import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
 
-let contact, hooks, page;
+let actionBar, actionConfirmation, contact, hooks,login, page;
+
+beforeEach(async () => {
+    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
+    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
+    contact = new ContactComponent();
+    login = new LoginComponent();
+    page = new DevelopersPage();
+    actionBar = new ActionBarComponent();
+    actionConfirmation = new ActionConfirmationComponent();
+    hooks = new Hooks();
+    await hooks.open('#/organizations/developers');
+});
 
 describe('the Developers page', () => {
-    beforeEach(async () => {
-        browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-        browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
-        contact = new ContactComponent();
-        page = new DevelopersPage();
-        hooks = new Hooks();
-        await hooks.open('#/organizations/developers');
-    });
 
     it('should load a Developer', () => {
         page.selectDeveloper('Greenway Health, LLC');
@@ -93,5 +100,65 @@ describe('When a user is on the Developer page for a Developer that doesn\'t exi
     it('should go to Home page', () => {
         hooks.waitForSpinnerToDisappear();
         expect(browser.getUrl()).toContain('#/search');
+    });
+});
+
+describe('when logged in as an Admin', () => {
+    beforeEach(() => {
+        login.logInWithEmail('admin');
+        login.logoutButton.waitForDisplayed();
+    });
+
+    afterEach(() => {
+        login.logOut();
+    });
+
+    describe('when on the "Greenway Health, LLC" Developer page', () => {
+        const name = 'Greenway Intergy Meaningful Use Edition';
+        const productId = 837;
+        let product, version;
+        let timestamp = (new Date()).getTime();
+        beforeEach(() => {
+            let developer = 'Greenway Health, LLC';
+            page = new DevelopersPage();
+            page.selectDeveloper(developer);
+            page.getDeveloperPageTitle(developer).waitForDisplayed();
+        });
+
+        describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
+            version = 'v11';
+            const versionToBeMerged = 'v10';
+            let newVersion = version + ' - ' + timestamp;
+            beforeEach(() => {
+                product = page.getProduct(name);
+                product.scrollIntoView({block: 'center', inline: 'center'});
+                page.selectProduct(product);
+                page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                page.selectVersion(product, productId, version);
+            });
+
+            it('should allow cancellation', () => {
+                page.mergeButton.click();
+                page.versionMergeButton.click();
+                page.versionName.clearValue();
+                page.versionName.addValue(newVersion);
+                actionBar.cancel();
+                actionConfirmation.yes.click();
+                page.productsHeader.waitForDisplayed();
+                product = page.getProduct(name);
+                product.scrollIntoView({block: 'center', inline: 'center'});
+                page.selectProduct(product);
+                page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
+            });
+
+            it('version name is required field', () => {
+                page.mergeButton.click();
+                page.versionMergeButton.click();
+                page.moveVersionToBeMerged(versionToBeMerged);
+                page.versionName.clearValue();
+                expect(page.errorMessage.getText()).toBe('Field is required');
+            });
+        });
     });
 });

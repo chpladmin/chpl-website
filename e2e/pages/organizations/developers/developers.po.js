@@ -13,6 +13,7 @@ const elements = {
     merge: '#merge-button',
     versionName: '#version-name',
     errorMessage: '.text-danger.ng-scope',
+    versionList: '.selectable-item.ng-scope.selectable-item',
 };
 
 class DevelopersPage {
@@ -129,8 +130,13 @@ class DevelopersPage {
         return $(elements.versionName);
     }
 
-    moveVersionToBeMerged (i) {
-        $$('.selectable-item.ng-scope.selectable-item--odd')[i].click();
+    moveVersionToBeMerged (versionName) {
+        const count = $$(elements.versionList).length;
+        for (var i = 0; i < count; i++) {
+            if ($$(elements.versionList)[i].getText() === versionName) {
+                $$(elements.versionList)[i].click();
+            }
+        }
     }
 
     get errorMessage () {

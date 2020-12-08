@@ -216,7 +216,7 @@ describe('the Developers page', () => {
     });
     describe('when logged in as an Admin', () => {
         beforeEach(() => {
-            login.logIn('admin');
+            login.logInWithEmail('admin');
             login.logoutButton.waitForDisplayed();
         });
 
@@ -237,39 +237,8 @@ describe('the Developers page', () => {
             });
 
             describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
-                version = 'v11';
-                let newVersion = version + ' - ' + timestamp;
-                beforeEach(() => {
-                    product = page.getProduct(name);
-                    product.scrollIntoView({block: 'center', inline: 'center'});
-                    page.selectProduct(product);
-                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-                    page.selectVersion(product, productId, version);
-                });
-
-                it('should allow cancellation', () => {
-                    page.mergeButton.click();
-                    page.versionMergeButton.click();
-                    page.versionName.addValue(newVersion);
-                    actionBar.cancel();
-                    actionConfirmation.yes.click();
-                    page.productsHeader.waitForDisplayed();
-                    product = page.getProduct(name);
-                    product.scrollIntoView({block: 'center', inline: 'center'});
-                    browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
-                    expect(page.getVersionCount(product).getText()).toBe('7 Versions');
-                });
-
-                it('version name is required field', () => {
-                    page.mergeButton.click();
-                    page.versionMergeButton.click();
-                    page.moveVersionToBeMerged(0);
-                    page.versionName.clearValue();
-                    expect(page.errorMessage.getText()).toBe('Field is required');
-                });
-            });
-            describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
                 version = 'v10.10';
+                const versionToBeMerged = 'v9.30';
                 let newVersion = version + ' - ' + timestamp;
                 beforeEach(() => {
                     product = page.getProduct(name);
@@ -282,7 +251,7 @@ describe('the Developers page', () => {
                 it('should create new version successfully', () => {
                     page.mergeButton.click();
                     page.versionMergeButton.click();
-                    page.moveVersionToBeMerged(0);
+                    page.moveVersionToBeMerged(versionToBeMerged);
                     page.versionName.clearValue();
                     page.versionName.addValue(newVersion);
                     actionBar.save();
@@ -290,8 +259,11 @@ describe('the Developers page', () => {
                     toast.clearAllToast();
                     product = page.getProduct(name);
                     product.scrollIntoView({block: 'center', inline: 'center'});
-                    browser.waitUntil(() => page.getVersionCount(product).isDisplayed());
-                    expect(page.getVersionCount(product).getText()).toBe('6 Versions');
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
+                    expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(version);
+                    expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(versionToBeMerged);
                 });
             });
         });
