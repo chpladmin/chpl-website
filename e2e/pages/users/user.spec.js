@@ -52,9 +52,15 @@ describe('ADMIN can ', () => {
     });
 
     afterAll(function () {
-        page.lockedCheckbox.scrollAndClick();
-        page.enabledCheckbox.scrollAndClick();
-        page.pwChangeCheckbox.scrollAndClick();
+        if (page.lockedCheckbox.isSelected()) {
+            page.lockedCheckbox.scrollAndClick();
+        }
+        if (!page.enabledCheckbox.isSelected()) {
+            page.enabledCheckbox.scrollAndClick();
+        }
+        if (page.pwChangeCheckbox.isSelected()) {
+            page.pwChangeCheckbox.scrollAndClick();
+        }
         actionBarComponent.save();
     });
 
