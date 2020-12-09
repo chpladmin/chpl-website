@@ -35,7 +35,8 @@
             <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0">
               <ul>
                 <li ng-repeat="m in $ctrl.cert.svaps">
-                  <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ (m.replaced ? 'Replaced | ' : '') + m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <button class="direct-review__tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'" ng-if="m.replaced"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
                 </li>
               </ul>
             </td>

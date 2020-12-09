@@ -270,7 +270,7 @@ export const CertificationCriteriaEditComponent = {
 
         _setSvapDisplayText () {
             if (Array.isArray(this.cert.allowedSvaps)) {
-                this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
+                this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: (svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
             }
         }
 
