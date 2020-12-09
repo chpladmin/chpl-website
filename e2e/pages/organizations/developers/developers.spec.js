@@ -239,7 +239,7 @@ describe('the Developers page', () => {
             describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
                 version = 'v10.10';
                 const versionToBeMerged = 'v9.30';
-                let newVersion = version + ' - ' + timestamp;
+                let newVersion = 'New version - ' + timestamp;
                 beforeEach(() => {
                     product = page.getProduct(name);
                     product.scrollIntoView({block: 'center', inline: 'center'});
