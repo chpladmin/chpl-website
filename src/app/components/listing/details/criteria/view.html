@@ -52,41 +52,11 @@
             </td>
             <td>{{ $ctrl.cert.g1Success ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.g1MacraMeasures" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Measures_G1{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
-            <td>
-              Measure<span ng-if="$ctrl.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated numerator recording certification criterion (170.315(g)(1))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.315(g)(1)).</span><i class="fa fa-info-circle fa-lg"></i></button>
-            </td>
-            <td ng-if="$ctrl.cert.g1MacraMeasures.length > 0">
-              <ul>
-                <li ng-repeat="meas in $ctrl.cert.g1MacraMeasures | orderBy:'abbreviation'" ng-class="{ 'removed' : meas.removed }" ng-if="meas.name">
-                  <button ng-if="meas.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-                  <a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'" ng-class="{ 'removed' : meas.removed }"><span ng-if="meas.removed">Removed | </span>{{ meas.name }}</a>
-                  <div ng-if="meas.removed" class="clearfix"></div>
-                </li>
-              </ul>
-            </td>
-            <td ng-if="$ctrl.cert.g1MacraMeasures.length === 0">None</td>
-          </tr>
           <tr ng-if="$ctrl.cert.g2Success != null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Measure_G2{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Measure Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.314(g)(2))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.314(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ $ctrl.cert.g2Success ? 'True' : 'False' }}</td>
-          </tr>
-          <tr ng-if="$ctrl.cert.g2MacraMeasures" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Measures_G2{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
-            <td>
-              Measure<span ng-if="$ctrl.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
-            </td>
-            <td ng-if="$ctrl.cert.g2MacraMeasures.length > 0">
-              <ul>
-                <li ng-repeat="meas in $ctrl.cert.g2MacraMeasures | orderBy:'abbreviation'" ng-class="{ 'removed' : meas.removed }" ng-if="meas.name">
-                  <button ng-if="meas.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
-                  <a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'" ng-class="{ 'removed' : meas.removed }"><span ng-if="meas.removed">Removed | </span>{{ meas.name }}</a>
-                  <div ng-if="meas.removed" class="clearfix"></div>
-                </li>
-              </ul>
-            </td>
-            <td ng-if="$ctrl.cert.g2MacraMeasures.length === 0">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Functionality_Tested{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
