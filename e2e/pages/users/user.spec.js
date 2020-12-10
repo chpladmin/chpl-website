@@ -35,7 +35,7 @@ describe('ONC STAFF can ', () => {
 
     it('change phone number successfully', () => {
         page.editUser('AQA ONC STAFF');
-        let number = (new Date()).getTime() % 1000000;
+        const number = (new Date()).getTime() % 1000000;
         page.userPhoneNumber.clearValue();
         page.userPhoneNumber.addValue(number);
         actionBarComponent.save();
