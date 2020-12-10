@@ -95,6 +95,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: config.logLevel,
+    specFileRetries: 2, //Retry logic
     //outputDir: `${__dirname}/e2e/logs`,
     //
     // Set specific log levels per logger

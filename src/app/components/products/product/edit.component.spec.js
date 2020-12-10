@@ -16,6 +16,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
+                $provide.factory('chplActionBarDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     return $delegate;

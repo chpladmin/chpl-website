@@ -1,0 +1,25 @@
+.list-edit__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) 6em;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: var(--light-grey);
+    align-items: start;
+
+    .btn-link {
+        padding: 4px 0;
+    }
+}
+
+.list-edit--span-2 {
+    grid-column-end: span 2;
+}
+
+.list-edit__item--end {
+    grid-column-end: -1;
+    justify-self: end;
+}
+
+.list-edit__row-start {
+    grid-column-start: 1;
+}
