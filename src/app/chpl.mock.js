@@ -2,6 +2,7 @@ import {allCps} from './test/all-cps.mock';
 import {collections} from './test/collections.mock';
 import {fullListings} from './test/full-listings.mock';
 import {listingActivity, listingActivityMetadata} from './test/listing-activity.mock';
+import {measures, measureTypes, listingMeasures} from './test/measures.mock';
 import {pendingListings} from './test/pending-listings.mock';
 import {searchOptions} from './test/search-options.mock';
 import {sed} from './test/sed.mock';
@@ -56,6 +57,9 @@ import {sed} from './test/sed.mock';
         mock.fullListings = angular.copy(fullListings);
         mock.listingActivity = angular.copy(listingActivity);
         mock.listingActivityMetadata = angular.copy(listingActivityMetadata);
+        mock.listingMeasures = angular.copy(listingMeasures);
+        mock.measures = angular.copy(measures);
+        mock.measureTypes = angular.copy(measureTypes);
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
             dismiss: jasmine.createSpy('dismiss'),
