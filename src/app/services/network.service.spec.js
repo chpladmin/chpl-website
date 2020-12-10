@@ -984,6 +984,22 @@
                 $httpBackend.flush();
             });
 
+            it('should getMeasures', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/measures$/).respond(200, {data: 'response'});
+                networkService.getMeasures().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getMeasureTypes', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/measure-types$/).respond(200, {data: 'response'});
+                networkService.getMeasureTypes().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getNonconformityStatisticsCount', () => {
                 $httpBackend.expectGET(/^\/rest\/statistics\/nonconformity_criteria_count$/).respond(200, {data: 'response'});
                 networkService.getNonconformityStatisticsCount().then(response => {

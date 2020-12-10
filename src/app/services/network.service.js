@@ -396,6 +396,14 @@ export class NetworkService {
         return this.apiGET('/statistics/listing_count');
     }
 
+    getMeasures () {
+        return this.apiGET('/data/measures');
+    }
+
+    getMeasureTypes () {
+        return this.apiGET('/data/measure-types');
+    }
+
     getNonconformityStatisticsCount () {
         return this.apiGET('/statistics/nonconformity_criteria_count');
     }
