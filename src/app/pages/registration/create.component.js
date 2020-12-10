@@ -29,13 +29,13 @@ export const CreateUserComponent = {
                 this.userDetails.hash = changes.hash.currentValue;
                 this.authorizeDetails.hash = changes.hash.currentValue;
             }
-            if (this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+            if (this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 this.authorizeUser();
             }
         }
 
         authorizeUser () {
-            if ((this.authorizeDetails.userName && this.authorizeDetails.password) || this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && this.authorizeDetails.hash) {
+            if ((this.authorizeDetails.userName && this.authorizeDetails.password) || this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER']) && this.authorizeDetails.hash) {
                 const userId = this.authorizeDetails.userName || this.authService.getUserId();
                 this.networkService.authorizeUser(this.authorizeDetails, userId)
                     .then(() => {
