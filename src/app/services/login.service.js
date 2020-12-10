@@ -14,7 +14,7 @@
             getCurrentUser: getCurrentUser,
             getFullname: getFullname,
             getToken: getToken,
-            getUsername: getUsername,
+            getUserId: getUserId,
             hasAnyRole: hasAnyRole,
             isImpersonating: isImpersonating,
             logout: logout,
@@ -65,7 +65,7 @@
         }
 
         function getFullname () {
-            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 if (identity.length === 3) {
@@ -87,11 +87,11 @@
             return $localStorage.jwtToken;
         }
 
-        function getUsername () {
-            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+        function getUserId () {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                return identity[1];
+                return identity[0];
             } else {
                 logout();
                 return '';

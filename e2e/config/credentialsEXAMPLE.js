@@ -14,4 +14,12 @@ module.exports = {
         email: 'email address',
         password: 'insert password here',
     },
+    oncstaff: {
+        email: 'email address',
+        password: 'insert password here',
+    },
+    developer: {
+        email: 'email address',
+        password: 'insert password here',
+    },
 };

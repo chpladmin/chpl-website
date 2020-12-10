@@ -60,6 +60,7 @@ export const ListingEditPageComponent = {
 
             this.listingBasic.accessibilityStandards = this.listingDetails.accessibilityStandards;
             this.listingBasic.otherAcb = this.listingDetails.otherAcb;
+            this.listingBasic.measures = this.listingDetails.measures;
             this.listingBasic.qmsStandards = this.listingDetails.qmsStandards;
             this.listingBasic.reportFileLocation = this.listingDetails.reportFileLocation;
             this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
@@ -140,6 +141,7 @@ export const ListingEditPageComponent = {
             this.listingDetails.otherAcb = listing.otherAcb;
             this.listingDetails.ics = angular.copy(listing.ics);
             this.listingBasic.ics = angular.copy(listing.ics);
+            this.listingDetails.measures = angular.copy(listing.measures);
             this.listingDetails.qmsStandards = angular.copy(listing.qmsStandards);
             this.listingDetails.reportFileLocation = listing.reportFileLocation;
             this.listingDetails.targetedUsers = angular.copy(listing.targetedUsers);
