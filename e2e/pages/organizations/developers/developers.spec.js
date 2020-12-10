@@ -234,6 +234,7 @@ describe('the Developers page', () => {
                 page = new DevelopersPage();
                 page.selectDeveloper(developer);
                 page.getDeveloperPageTitle(developer).waitForDisplayed();
+                hooks.waitForSpinnerToDisappear();
             });
 
             describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
