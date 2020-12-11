@@ -95,7 +95,7 @@
         <li ng-if="$ctrl.isNonconformityRequired()">At least one Non-Conformity must be documented</li>
       </ul>
     </div>
-    <button ng-disabled="($ctrl.editForm.$invalid || $ctrl.isNonconformityRequired()) && $ctrl.showFormErrors && $ctrl.disableValidation"
+    <button ng-disabled="($ctrl.editForm.$invalid || $ctrl.isNonconformityRequired()) && $ctrl.showFormErrors && !$ctrl.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="$ctrl.showFormErrors = true"
             ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
