@@ -34,6 +34,7 @@ describe('When ONC-ACB uploads - ', () => {
             browser.pause(2000); //Finding beta component exist or not doesnt work without this pause
             if (uploadListingComponent.uploadBetaButton.isDisplayed()) {
                 uploadListingComponent.uploadListingBeta(path);
+                browser.waitUntil( () => toast.toastTitle.isDisplayed());
                 assert.equal(toast.toastTitle.getText(), message);
             }
         });
