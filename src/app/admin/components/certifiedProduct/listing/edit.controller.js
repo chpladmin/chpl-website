@@ -294,10 +294,22 @@
         function updateListing (listing) {
             vm.cp.certificationResults = listing.certificationResults;
             vm.cp.cqmResults = listing.cqmResults;
+            vm.cp.measures = listing.measures;
             vm.cp.sed = listing.sed;
             vm.cp.sedIntendedUserDescription = listing.sedIntendedUserDescription;
             vm.cp.sedReportFileLocation = listing.sedReportFileLocation;
             vm.cp.sedTestingEndDate = listing.sedTestingEndDate;
+            vm.cp.accessibilityStandards = listing.accessibilityStandards;
+            vm.cp.otherAcb = listing.otherAcb;
+            vm.cp.ics = listing.ics;
+            vm.cp.qmsStandards = listing.qmsStandards;
+            vm.cp.reportFileLocation = listing.reportFileLocation;
+            vm.cp.targetedUsers = listing.targetedUsers;
+            vm.cp.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
+                .map(muu => {
+                    muu.muuDate = muu.muuDateObject.getTime();
+                    return muu;
+                });
         }
 
         ////////////////////////////////////////////////////////////////////

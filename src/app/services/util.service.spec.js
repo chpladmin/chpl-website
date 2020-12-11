@@ -437,37 +437,17 @@
             });
         });
 
-        describe('when deriving the current certification status', () => {
-            it('should use the most recent status as "current"', () => {
-                var cp = {
-                    certificationEvents: [
-                        { status: { name: 'Active' }, eventDate: 4 },
-                        { status: { name: 'Inactive' }, eventDate: 6 },
-                        { status: { name: 'Closed' }, eventDate: 2 },
-                    ],
-                };
-                expect(util.certificationStatus(cp)).toBe('Inactive');
-                cp.certificationEvents[1].eventDate = 1;
-                expect(util.certificationStatus(cp)).toBe('Active');
-            });
-
-            it('should return "" if no events exist', () => {
-                var cp = {
-                    certificationEvents: [],
-                };
-                expect(util.certificationStatus(cp)).toBe('');
-            });
-
+        describe('when deriving the current certification status during editing', () => {
             it('should return "" if the field is null/undefined/missing', () => {
                 var cp = {};
-                expect(util.certificationStatus(cp)).toBe('');
+                expect(util.certificationStatusWhenEditing(cp)).toBe('');
                 cp.certificationEvents = undefined;
-                expect(util.certificationStatus(cp)).toBe('');
+                expect(util.certificationStatusWhenEditing(cp)).toBe('');
                 cp.certificationEvents = [];
-                expect(util.certificationStatus(cp)).toBe('');
+                expect(util.certificationStatusWhenEditing(cp)).toBe('');
             });
 
-            it('should use the most recent status as "current" when editing', () => {
+            it('should use the most recent status as "current"', () => {
                 var cp = {
                     certificationEvents: [
                         { status: { name: 'Active' }, statusDateObject: new Date('1/1/2018') },
@@ -475,9 +455,9 @@
                         { status: { name: 'Closed' }, statusDateObject: new Date('3/3/2018') },
                     ],
                 };
-                expect(util.certificationStatus(cp, {editing: true})).toBe('Closed');
+                expect(util.certificationStatusWhenEditing(cp)).toBe('Closed');
                 cp.certificationEvents[0].statusDateObject = new Date('4/4/2018');
-                expect(util.certificationStatus(cp, {editing: true})).toBe('Active');
+                expect(util.certificationStatusWhenEditing(cp)).toBe('Active');
             });
         });
 

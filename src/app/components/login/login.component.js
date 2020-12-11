@@ -34,12 +34,12 @@ export const LoginComponent = {
         $onInit () {
             let that = this;
             this.clear();
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 this.Idle.watch();
                 if (this.authService.getCurrentUser()) {
                     this._updateExtras();
                 } else {
-                    this.networkService.getUserByUsername(this.authService.getUsername())
+                    this.networkService.getUserById(this.authService.getUserId())
                         .then(user => {
                             that.authService.saveCurrentUser(user);
                             that._updateExtras();
@@ -56,7 +56,7 @@ export const LoginComponent = {
 
             let keepalive = this.$scope.$on('Keepalive', () => {
                 this.$log.info('Keepalive');
-                if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+                if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                     if (this.activity === this.activityEnum.RESET || this.activity === this.activityEnum.LOGIN) {
                         this.activity = this.activityEnum.NONE;
                     }
@@ -93,7 +93,7 @@ export const LoginComponent = {
             if (this.misMatchPasswords()) {
                 this.message = 'Passwords do not match. Please try again';
             } else {
-                this.networkService.changePassword({userName: this.userName, oldPassword: this.password, newPassword: this.newPassword})
+                this.networkService.changePassword({oldPassword: this.password, newPassword: this.newPassword})
                     .then(response => {
                         if (response.passwordUpdated) {
                             that.clear();
@@ -151,7 +151,7 @@ export const LoginComponent = {
         }
 
         clear () {
-            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+            if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 this.activity = this.activityEnum.NONE;
             } else {
                 this.activity = this.activityEnum.LOGIN;
@@ -177,7 +177,7 @@ export const LoginComponent = {
             this.message = '';
             this.networkService.login({userName: this.userName, password: this.password})
                 .then(() => {
-                    that.networkService.getUserByUsername(that.authService.getUsername())
+                    that.networkService.getUserById(that.authService.getUserId())
                         .then(user => {
                             that.authService.saveCurrentUser(user);
                             that.Idle.watch();
@@ -214,7 +214,7 @@ export const LoginComponent = {
 
         sendReset () {
             let that = this;
-            this.networkService.emailResetPassword({userName: this.userName, email: this.email})
+            this.networkService.emailResetPassword({email: this.email})
                 .then(() => {
                     that.clear();
                     that.messageClass = that.pClass;
@@ -231,7 +231,7 @@ export const LoginComponent = {
                 .then(token => {
                     that.authService.saveToken(token.token);
                     that.clear();
-                    that.networkService.getUserByUsername(that.authService.getUsername())
+                    that.networkService.getUserById(that.authService.getUserId())
                         .then(user => {
                             that.authService.saveCurrentUser(user);
                             that.$rootScope.$broadcast('unimpersonating');

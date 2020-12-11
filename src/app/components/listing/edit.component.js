@@ -2,26 +2,26 @@ export const ListingEditComponent = {
     templateUrl: 'chpl.components/listing/edit.html',
     bindings: {
         listing: '<',
-        isSaving: '<',
-        messages: '<',
-        onSave: '&',
-        onCancel: '&',
+        onChange: '&',
         resources: '<',
+        showFormErrors: '<',
         workType: '<',
     },
     controller: class ListingEditComponent {
-        constructor ($filter, $log, $timeout, DateUtil, authService, networkService, utilService) {
+        constructor ($filter, $log, $timeout, DateUtil, authService, utilService) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.$timeout = $timeout;
             this.DateUtil = DateUtil;
             this.addNewValue = utilService.addNewValue;
-            this.certificationStatus = utilService.certificationStatus;
+            this.certificationStatusWhenEditing = utilService.certificationStatusWhenEditing;
             this.extendSelect = utilService.extendSelect;
             this.hasAnyRole = authService.hasAnyRole;
-            this.networkService = networkService;
             this.utilService = utilService;
+            this.newItem = {};
+            this.addingItem = {};
+            this.creatingItem = {};
         }
 
         $onChanges (changes) {
@@ -29,36 +29,21 @@ export const ListingEditComponent = {
                 this.listing = angular.copy(changes.listing.currentValue);
                 this.backupListing = angular.copy(changes.listing.currentValue);
             }
-            if (changes.isSaving) {
-                this.isSaving = angular.copy(changes.isSaving.currentValue);
-            }
-            if (changes.messages) {
-                this.messages = angular.copy(changes.messages.currentValue);
-            }
             if (changes.resources) {
                 this.resources = angular.copy(changes.resources.currentValue);
-                this.resources.qmsStandards.data = this.resources.qmsStandards.data.concat(
-                    this.listing.qmsStandards
-                        .filter(standard => !standard.id)
-                        .map(standard => {
-                            standard.name = standard.qmsStandardName;
-                            return standard;
-                        })
-                );
+                this.resources.testingLabs = this.resources.testingLabs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             }
             if (changes.workType) {
                 this.workType = angular.copy(changes.workType.currentValue);
             }
             if (this.listing && this.resources) {
-                this._prepareFields();
+                this.prepareFields();
+                this.update(true);
             }
         }
 
-        _prepareFields () {
+        prepareFields () {
             this.listing.certDate = new Date(this.listing.certificationDate);
-            if (angular.isUndefined(this.listing.ics.parents)) {
-                this.listing.ics.parents = [];
-            }
             if (this.listing.chplProductNumber.length > 12) {
                 let idFields = this.listing.chplProductNumber.split('.');
                 this.idFields = {
@@ -69,31 +54,20 @@ export const ListingEditComponent = {
                     suffix: idFields[7] + '.' + idFields[8],
                 };
             }
-            this.listing.certificationEvents.forEach(ce => {
+            this.listing.certificationEvents = this.listing.certificationEvents.map(ce => {
                 ce.statusDateObject = new Date(ce.eventDate);
-                ce.status = this.utilService.findModel(ce.status, this.resources.statuses);
+                return ce;
+                //ce.status = this.utilService.findModel(ce.status, this.resources.statuses);
             });
-            if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
-                this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map(muu => {
-                    muu.muuDateObject = new Date(muu.muuDate);
-                    return muu;
-                });
-            } else {
-                this.listing.meaningfulUseUserHistory = [];
-            }
 
             this.listing.practiceType = this.utilService.findModel(this.listing.practiceType, this.resources.practices);
             this.listing.classificationType = this.utilService.findModel(this.listing.classificationType, this.resources.classifications);
             this.listing.certifyingBody = this.utilService.findModel(this.listing.certifyingBody, this.resources.bodies);
+            /*
             if (this.listing.testingLab) {
                 this.listing.testingLab = this.utilService.findModel(this.listing.testingLab, this.resources.testingLabs);
             }
-
-            if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015') {
-                let that = this;
-                this.networkService.getRelatedListings(this.listing.product.productId)
-                    .then(family => that.relatedListings = family.filter(item => item.edition === '2015'));
-            }
+            */
             this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
             if (this.listing.rwtPlansCheckDate) {
                 this.listing.rwtPlansCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlansCheckDate));
@@ -103,32 +77,27 @@ export const ListingEditComponent = {
             }
         }
 
-        addPreviousMuu () {
-            this.listing.meaningfulUseUserHistory.push({
-                muuDateObject: new Date(),
-                muuCount: 0,
-            });
-        }
-
-        addPreviousStatus () {
-            this.listing.certificationEvents.push({
-                statusDateObject: new Date(),
-                status: {},
-            });
-        }
-
-        cancel () {
-            this.listing = angular.copy(this.backupListing);
-            this.onCancel();
-        }
-
-        disabledParent (listing) {
-            return this.listing.ics.parents
-                .reduce((disabled, current) => disabled || current.chplProductNumber === listing.chplProductNumber, !!(this.listing.chplProductNumber === listing.chplProductNumber));
-        }
-
         disabledStatus (name) {
             return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
+        }
+
+        generateErrorMessages () {
+            this.messages = {
+                errors: [],
+                warnings: [],
+            };
+            if (this.improperFirstStatus()) {
+                this.messages.errors.push('The earliest status of this product must be "Active"');
+            }
+            if (this.idFields && this.idFields.ics !== this.requiredIcsCode() && this.requiredIcsCode() > 0 && this.listing.ics.parents.length > 0) {
+                this.messages.errors.push('ICS Code must be exactly one more than highest ICS code of all of this Listing\'s ICS parents; it should be "' + this.requiredIcsCode());
+            }
+            if (this.hasStatusMatches()) {
+                this.messages.errors.push('Certification status must not repeat');
+            }
+            if (this.hasDateMatches()) {
+                this.messages.errors.push('Only one change of certification status allowed per day');
+            }
         }
 
         hasDateMatches () {
@@ -145,21 +114,20 @@ export const ListingEditComponent = {
             return this.workType === 'confirm' ? false : this.$filter('orderBy')(this.listing.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
         }
 
+        isValid () {
+            return this.isSaving
+                || !(this.form.$invalid
+                     || this.hasStatusMatches()
+                     || this.hasDateMatches()
+                     || this.improperFirstStatus());
+        }
+
         matchesPreviousDate (event) {
             let orderedStatus = this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject');
             let statusLoc = orderedStatus.indexOf(event);
             if (statusLoc > 0) {
                 let test = this.$filter('date')(event.statusDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC');
                 return test;
-            }
-            return false;
-        }
-
-        matchesPreviousMuuDate (muu) {
-            let orderedMuu = this.$filter('orderBy')(this.listing.meaningfulUseUserHistory, 'muuDateObject');
-            let muuLoc = orderedMuu.indexOf(muu);
-            if (muuLoc > 0) {
-                return (this.$filter('date')(muu.muuDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedMuu[muuLoc - 1].muuDateObject, 'mediumDate', 'UTC'));
             }
             return false;
         }
@@ -189,18 +157,6 @@ export const ListingEditComponent = {
             }
         }
 
-        missingIcsSource () {
-            return this.listing.certificationEdition.name === '2015' && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
-        }
-
-        removePreviousStatus (statusDateObject) {
-            this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== statusDateObject.getTime());
-        }
-
-        removePreviousMuu (muuDateObject) {
-            this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.filter(muu => muu.muuDateObject.getTime() !== muuDateObject.getTime());
-        }
-
         requiredIcsCode () {
             let code = this.listing.ics.parents
                 .map(item => parseInt(item.chplProductNumber.split('.')[6], 10))
@@ -209,9 +165,8 @@ export const ListingEditComponent = {
             return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
-        save () {
+        update (doNotUpdateListing) {
             this.listing.certificationEvents.forEach(ce => ce.eventDate = ce.statusDateObject.getTime());
-            this.listing.meaningfulUseUserHistory.forEach(muu => muu.muuDate = muu.muuDateObject.getTime());
             if (this.listing.chplProductNumber.length > 12) {
                 this.listing.chplProductNumber =
                     this.idFields.prefix + '.' +
@@ -231,20 +186,72 @@ export const ListingEditComponent = {
             } else {
                 this.listing.rwtResultsCheckDate = null;
             }
-            this.onSave({
-                listing: this.listing,
+            this.generateErrorMessages();
+            this.onChange({
+                listing: doNotUpdateListing ? undefined : this.listing,
+                messages: this.messages,
                 reason: this.reason,
-                acknowledgeWarnings: this.acknowledgeWarnings,
             });
         }
 
         updateListing (listing) {
             this.listing.certificationResults = listing.certificationResults;
             this.listing.cqmResults = listing.cqmResults;
+            this.listing.measures = listing.measures;
             this.listing.sed = listing.sed;
             this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
             this.listing.sedReportFileLocation = listing.sedReportFileLocation;
             this.listing.sedTestingEndDate = listing.sedTestingEndDate;
+        }
+
+        // item list
+        cancelNewItem (type) {
+            this.newItem[type] = undefined;
+            this.addingItem[type] = false;
+            this.creatingItem[type] = false;
+        }
+
+        filterListEditItems (type, items) {
+            switch (type) {
+            case 'oncAtls':
+                return items.filter(i => !this.listing.testingLabs.filter(tl => tl.testingLabName === i.name).length);
+            default:
+                this.$log.error('filter', type, items);
+            }
+        }
+
+        removeItem (type, item) {
+            switch (type) {
+            case 'certificationEvents':
+                this.listing.certificationEvents = this.listing.certificationEvents.filter(event => event.statusDateObject.getTime() !== item.statusDateObject.getTime());
+                break;
+            case 'oncAtls':
+                this.listing.testingLabs = this.listing.testingLabs.filter(l => l.testingLabName !== item.testingLabName);
+                break;
+            default:
+                this.$log.error('remove', type, item);
+            }
+            this.update();
+        }
+
+        saveNewItem (type) {
+            switch (type) {
+            case 'certificationEvents':
+                this.listing.certificationEvents.push({
+                    status: this.newItem[type].status,
+                    statusDateObject: this.newItem[type].statusDateObject,
+                    reason: this.newItem[type].reason,
+                });
+                break;
+            case 'oncAtls':
+                this.addNewValue(this.listing.testingLabs, this.newItem[type]);
+                this.listing.testingLabs = this.listing.testingLabs.sort((a, b) => a.testingLabName < b.testingLabName ? -1 : a.testingLabName > b.testingLabName ? 1 : 0);
+                break;
+            default:
+                this.$log.error('add', type);
+            }
+            this.cancelNewItem(type);
+            this.update();
         }
     },
 };

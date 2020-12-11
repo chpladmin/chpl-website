@@ -95,6 +95,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: config.logLevel,
+    specFileRetries: 2, //Retry logic
     //outputDir: `${__dirname}/e2e/logs`,
     //
     // Set specific log levels per logger
@@ -169,6 +170,11 @@ exports.config = {
         ['junit', {
             outputDir: './test_reports/e2e/',
             outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
+        }],
+        ['allure', {
+            outputDir: './test_reports/e2e/allure-results',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false,
         }],
     ],
 

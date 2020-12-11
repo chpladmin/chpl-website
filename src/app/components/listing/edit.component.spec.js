@@ -2,10 +2,11 @@
     'use strict';
 
     describe('the Listing Edit component', () => {
-        var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope, utilService;
+        var $compile, $log, authService, ctrl, el, mock, scope, utilService;
 
         mock = {};
         mock.listing = {
+            accessibilityStandards: [],
             certificationEdition: {name: '2015'},
             certificationEvents: [
                 { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' }},
@@ -13,7 +14,7 @@
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
-            ics: { inherits: false },
+            ics: { inherits: false, parents: [] },
             practiceType: [],
             product: { productId: 1 },
             qmsStandards: [
@@ -21,9 +22,12 @@
                 {id: null, qmsStandardName: 'nullname'},
             ],
             targetedUsers: [],
+            testingLabs: [],
         };
         mock.resources = {
-            accessibilityStandards: [{id: 1, name: 'name1'}],
+            accessibilityStandards: {data: [
+                {id: 1, name: 'name1'},
+            ]},
             bodies: [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}],
             classifications: [{id: 1, name: 'name1'}],
             practices: [{id: 1, name: 'name1'}],
@@ -38,7 +42,6 @@
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
         };
-        mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
 
         beforeEach(() => {
             angular.mock.module('chpl.components', $provide => {
@@ -46,38 +49,29 @@
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
-                $provide.decorator('networkService', $delegate => {
-                    $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
-                    return $delegate;
-                });
                 $provide.decorator('utilService', $delegate => {
-                    $delegate.certificationStatus = jasmine.createSpy('certificationStatus');
+                    $delegate.certificationStatusWhenEditing = jasmine.createSpy('certificationStatusWhenEditing');
                     $delegate.extendSelect = jasmine.createSpy('extendSelect');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$controller_, _$log_, _$q_, $rootScope, _authService_, _networkService_, _utilService_) => {
+            inject((_$compile_, _$controller_, _$log_, $rootScope, _authService_, _utilService_) => {
                 $compile = _$compile_;
                 $log = _$log_;
-                $q = _$q_;
                 authService = _authService_;
                 authService.hasAnyRole.and.returnValue(true);
-                networkService = _networkService_;
-                networkService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
                 utilService = _utilService_;
-                utilService.certificationStatus.and.returnValue('Active');
+                utilService.certificationStatusWhenEditing.and.returnValue('Active');
                 utilService.extendSelect.and.returnValue([]);
 
                 scope = $rootScope.$new();
                 scope.listing = angular.copy(mock.listing);
-                scope.isSaving = false;
-                scope.onCancel = jasmine.createSpy('onCancel');
-                scope.onSave = jasmine.createSpy('onSave');
+                scope.onChange = jasmine.createSpy('onChange');
                 scope.resources = angular.copy(mock.resources);
                 scope.workType = 'edit';
 
-                el = angular.element('<chpl-listing-edit listing="listing" is-saving="isSaving" on-save="onSave(listing, reason)" on-cancel="onCancel()" resources="resources" work-type="workType"></chpl-listing-edit>');
+                el = angular.element('<chpl-listing-edit listing="listing" on-change="onChange(listing, messages, reason)" resources="resources" work-type="workType"></chpl-listing-edit>');
 
                 $compile(el)(scope);
                 scope.$digest();
@@ -102,7 +96,7 @@
             cp.ics.parents = [{name: 'a parent'}];
             scope.listing = cp;
 
-            el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+            el = angular.element('<chpl-listing-edit listing="listing" on-change="onChange(listing, messages, reason)" resources="resources" work-type="workType"></chpl-listing-edit>');
 
             $compile(el)(scope);
             scope.$digest();
@@ -115,7 +109,7 @@
             cp.chplProductNumber = '15.07.07.2713.CQ01.02.00.1.170331';
             scope.listing = cp;
 
-            el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
+            el = angular.element('<chpl-listing-edit listing="listing" on-change="onChange(listing, messages, reason)" resources="resources" work-type="workType"></chpl-listing-edit>');
 
             $compile(el)(scope);
             scope.$digest();
@@ -130,82 +124,123 @@
             });
         });
 
-        it('should add QMS standards in the cp to the available standards on load', () => {
-            expect(ctrl.resources.qmsStandards.data.map(item => {
-                delete item.$$hashKey;
-                return item;
-            })).toEqual([
-                {id: 1, name: 'name1'},
-                {id: 2, name: 'name2'},
-                {id: null, qmsStandardName: 'nullname', name: 'nullname'},
-            ]);
+        it('should know which statuses should be disabled', () => {
+            ctrl.workType = 'edit';
+            expect(ctrl.disabledStatus('Pending')).toBe(true);
+            expect(ctrl.disabledStatus('Active')).toBe(false);
+            ctrl.workType = 'confirm';
+            expect(ctrl.disabledStatus('Pending')).toBe(false);
+            expect(ctrl.disabledStatus('Active')).toBe(true);
         });
 
-        describe('when deailing with ics family', () => {
-            it('should call the common service to get related listings', () => {
-                expect(networkService.getRelatedListings).toHaveBeenCalled();
+        xit('should attach the model for the select boxes', () => {
+            ctrl.listing.practiceType = {id: 1};
+            ctrl.listing.classificationType = {id: 1};
+            ctrl.listing.certifyingBody = {id: 2};
+            ctrl.listing.certificationStatus = {id: 1};
+            ctrl.attachModel();
+            expect(ctrl.listing.practiceType).toEqual(mock.resources.practices[0]);
+            expect(ctrl.listing.classificationType).toEqual(mock.resources.classifications[0]);
+            expect(ctrl.listing.certifyingBody).toEqual(mock.resources.bodies[1]);
+            expect(ctrl.listing.testingLab).not.toEqual(mock.resources.testingLabs[0]);
+            ctrl.listing.testingLab = {id: 1};
+            ctrl.attachModel();
+            expect(ctrl.listing.testingLab).toEqual(mock.resources.testingLabs[0]);
+        });
+
+        describe('when saving a Listing', () => {
+            it('should combine values to make the chpl product number if required', () => {
+                ctrl.listing.chplProductNumber = '15.04.04.2879.Your.09.2.1.170530';
+                ctrl.idFields = {
+                    prefix: '14.03.03.2879',
+                    prod: 'prod',
+                    ver: 'vr',
+                    ics: '02',
+                    suffix: '0.140303',
+                };
+                ctrl.update();
+                expect(ctrl.listing.chplProductNumber).toBe('14.03.03.2879.prod.vr.02.0.140303');
             });
 
-            it('should load the related listings on load, without the 2014 ones', () => {
-                expect(ctrl.relatedListings).toEqual([mock.relatedListings[0]]);
+            it('should add date longs from the date objects', () => {
+                var aDate = new Date('1/1/2009');
+                var dateValue = aDate.getTime();
+                ctrl.listing.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: aDate,
+                    },
+                ];
+                ctrl.update();
+                expect(ctrl.listing.certificationEvents[0].eventDate).toBe(dateValue);
             });
 
-            it('should build an icsParents object if the Listing doesn\'t come with one', () => {
-                expect(ctrl.listing.ics.parents).toEqual([]);
-            });
-
-            it('should not load family if the listing is 2014', () => {
-                var callCount = networkService.getRelatedListings.calls.count();
-                var cp = angular.copy(mock.listing);
-                cp.certificationEdition = {name: '2014'};
-                scope.listing = cp;
-
-                el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
-
-                $compile(el)(scope);
-                scope.$digest();
-                ctrl = el.isolateScope().$ctrl;
-                expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
-            });
-
-            it('should not load family if the product has no productId', () => {
-                var callCount = networkService.getRelatedListings.calls.count();
-                var cp = angular.copy(mock.listing);
-                cp.product = {productId: undefined};
-                scope.listing = cp;
-
-                el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
-
-                $compile(el)(scope);
-                scope.$digest();
-                ctrl = el.isolateScope().$ctrl;
-                expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
-            });
-
-            it('should not load family if the product does not exist', () => {
-                var callCount = networkService.getRelatedListings.calls.count();
-                var cp = angular.copy(mock.listing);
-                cp.product = undefined;
-                scope.listing = cp;
-
-                el = angular.element('<chpl-listing-edit listing="listing" work-type="workType" callbacks="callbacks" resources="resources"></chpl-listing-edit>');
-
-                $compile(el)(scope);
-                scope.$digest();
-                ctrl = el.isolateScope().$ctrl;
-                expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
-            });
-
-            describe('when disabling related options', () => {
-                it('should disable itself', () => {
-                    expect(ctrl.disabledParent({ chplProductNumber: 'CHP-123123'})).toBe(true);
+            describe('that is pending', () => {
+                xit('should close it\'s modal with the current Listing', () => {
+                    ctrl.workType = 'confirm';
+                    ctrl.save();
                 });
+            });
+        });
 
-                it('should disable ones that are already parents', () => {
-                    expect(ctrl.disabledParent({ chplProductNumber: '123'})).toBe(false);
-                    ctrl.listing.ics.parents = [{ chplProductNumber: '123' }];
-                    expect(ctrl.disabledParent({ chplProductNumber: '123'})).toBe(true);
-                });
+        describe('when handling certification status history', () => {
+            it('should add statusEventObjects for each statusDate in history', () => {
+                expect(ctrl.listing.certificationEvents[0].statusDateObject).toEqual(new Date(ctrl.listing.certificationEvents[0].eventDate));
+            });
+
+            it('should know when the "earliest" status is not "Active"', () => {
+                ctrl.listing.certificationEvents = [
+                    { statusDateObject: new Date('1/1/2018'), status: { name: 'Withdrawn by Developer' } },
+                    { statusDateObject: new Date('2/2/2018'), status: { name: 'Active' } },
+                ];
+                expect(ctrl.improperFirstStatus()).toBe(true);
+                ctrl.listing.certificationEvents[1].statusDateObject = new Date('1/1/2017');
+                expect(ctrl.improperFirstStatus()).toBe(false);
+            });
+
+            it('should not error on improper first status when confirming', () => {
+                ctrl.workType = 'confirm';
+                ctrl.listing.certificationEvents = [];
+                expect(ctrl.improperFirstStatus()).toBe(false);
+            });
+
+            it('should leverage the util service to get the status', () => {
+                let count = utilService.certificationStatusWhenEditing.calls.count();
+                let status = ctrl.certificationStatusWhenEditing(mock.listing);
+                expect(status).toBe('Active');
+                expect(utilService.certificationStatusWhenEditing.calls.count()).toBe(count + 1);
+            });
+        });
+
+        describe('when validating the form', () => {
+            it('should know when two status events were on the same day', () => {
+                ctrl.listing.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },{
+                        status: {name: 'Suspended by ONC'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },
+                ];
+                expect(ctrl.hasDateMatches()).toBe(true);
+                ctrl.listing.certificationEvents[0].statusDateObject = new Date('2/2/2002');
+                expect(ctrl.hasDateMatches()).toBe(false);
+            });
+
+            it('should know when two status events are the same and consecutive', () => {
+                ctrl.listing.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },{
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('2/2/2009'),
+                    },
+                ];
+                expect(ctrl.hasStatusMatches()).toBe(true);
+                ctrl.listing.certificationEvents[0].status.name = 'Suspended by ONC';
+                expect(ctrl.hasStatusMatches()).toBe(false);
             });
 
             describe('with respect to ics code calculations', () => {
@@ -258,170 +293,6 @@
                     ];
                     expect(ctrl.requiredIcsCode()).toBe('18');
                 });
-            });
-
-            describe('with respect to missing ICS source', () => {
-                it('should not require ics source for 2014 listings', () => {
-                    ctrl.listing.certificationEdition.name = '2015';
-                    expect(ctrl.missingIcsSource()).toBe(false);
-                });
-
-                it('should not require ics source if the listing does not inherit', () => {
-                    expect(ctrl.missingIcsSource()).toBe(false);
-                });
-
-                it('should require ics source if the listing inherits without parents', () => {
-                    ctrl.listing.ics.inherits = true;
-                    expect(ctrl.missingIcsSource()).toBe(true);
-                });
-
-                it('should require ics source if the listing inherits without parents and without space for parents', () => {
-                    ctrl.listing.ics.inherits = true;
-                    ctrl.listing.ics.parents = [];
-                    expect(ctrl.missingIcsSource()).toBe(true);
-                });
-
-                it('should not require ics source if the listing inherits and has parents', () => {
-                    ctrl.listing.ics.inherits = true;
-                    ctrl.listing.ics.parents = [1, 2];
-                    expect(ctrl.missingIcsSource()).toBe(false);
-                });
-            });
-        });
-
-        it('should know which statuses should be disabled', () => {
-            ctrl.workType = 'edit';
-            expect(ctrl.disabledStatus('Pending')).toBe(true);
-            expect(ctrl.disabledStatus('Active')).toBe(false);
-            ctrl.workType = 'confirm';
-            expect(ctrl.disabledStatus('Pending')).toBe(false);
-            expect(ctrl.disabledStatus('Active')).toBe(true);
-        });
-
-        xit('should attach the model for the select boxes', () => {
-            ctrl.listing.practiceType = {id: 1};
-            ctrl.listing.classificationType = {id: 1};
-            ctrl.listing.certifyingBody = {id: 2};
-            ctrl.listing.certificationStatus = {id: 1};
-            ctrl.attachModel();
-            expect(ctrl.listing.practiceType).toEqual(mock.resources.practices[0]);
-            expect(ctrl.listing.classificationType).toEqual(mock.resources.classifications[0]);
-            expect(ctrl.listing.certifyingBody).toEqual(mock.resources.bodies[1]);
-            expect(ctrl.listing.testingLab).not.toEqual(mock.resources.testingLabs[0]);
-            ctrl.listing.testingLab = {id: 1};
-            ctrl.attachModel();
-            expect(ctrl.listing.testingLab).toEqual(mock.resources.testingLabs[0]);
-        });
-
-        describe('when saving a Listing', () => {
-            it('should combine values to make the chpl product number if required', () => {
-                ctrl.listing.chplProductNumber = '15.04.04.2879.Your.09.2.1.170530';
-                ctrl.idFields = {
-                    prefix: '14.03.03.2879',
-                    prod: 'prod',
-                    ver: 'vr',
-                    ics: '02',
-                    suffix: '0.140303',
-                };
-                ctrl.save();
-                expect(ctrl.listing.chplProductNumber).toBe('14.03.03.2879.prod.vr.02.0.140303');
-            });
-
-            it('should add date longs from the date objects', () => {
-                var aDate = new Date('1/1/2009');
-                var dateValue = aDate.getTime();
-                ctrl.listing.certificationEvents = [
-                    {
-                        status: {name: 'Active'},
-                        statusDateObject: aDate,
-                    },
-                ];
-                ctrl.save();
-                expect(ctrl.listing.certificationEvents[0].eventDate).toBe(dateValue);
-            });
-
-            describe('that is pending', () => {
-                xit('should close it\'s modal with the current Listing', () => {
-                    ctrl.workType = 'confirm';
-                    ctrl.save();
-                });
-            });
-        });
-
-        describe('when handling certification status history', () => {
-            it('should add statusEventObjects for each statusDate in history', () => {
-                expect(ctrl.listing.certificationEvents[0].statusDateObject).toEqual(new Date(ctrl.listing.certificationEvents[0].eventDate));
-            });
-
-            it('should remove previous statuses', () => {
-                ctrl.addPreviousStatus();
-                ctrl.addPreviousStatus();
-                ctrl.addPreviousStatus();
-                var initLength = ctrl.listing.certificationEvents.length;
-                ctrl.removePreviousStatus(ctrl.listing.certificationEvents[0].statusDateObject);
-                expect(ctrl.listing.certificationEvents.length).toBe(initLength - 1);
-            });
-
-            it('should add an empty status', () => {
-                var initLength = ctrl.listing.certificationEvents.length;
-                ctrl.addPreviousStatus();
-                expect(ctrl.listing.certificationEvents.length).toBe(initLength + 1);
-                expect(ctrl.listing.certificationEvents[ctrl.listing.certificationEvents.length - 1].statusDateObject).toBeDefined();
-            });
-
-            it('should know when the "earliest" status is not "Active"', () => {
-                ctrl.listing.certificationEvents = [
-                    { statusDateObject: new Date('1/1/2018'), status: { name: 'Withdrawn by Developer' } },
-                    { statusDateObject: new Date('2/2/2018'), status: { name: 'Active' } },
-                ];
-                expect(ctrl.improperFirstStatus()).toBe(true);
-                ctrl.listing.certificationEvents[1].statusDateObject = new Date('1/1/2017');
-                expect(ctrl.improperFirstStatus()).toBe(false);
-            });
-
-            it('should not error on improper first status when confirming', () => {
-                ctrl.workType = 'confirm';
-                ctrl.listing.certificationEvents = [];
-                expect(ctrl.improperFirstStatus()).toBe(false);
-            });
-
-            it('should leverage the util service to get the status', () => {
-                let count = utilService.certificationStatus.calls.count();
-                let status = ctrl.certificationStatus(mock.listing, {editing: true});
-                expect(status).toBe('Active');
-                expect(utilService.certificationStatus.calls.count()).toBe(count + 1);
-            });
-        });
-
-        describe('when validating the form', () => {
-            it('should know when two status events were on the same day', () => {
-                ctrl.listing.certificationEvents = [
-                    {
-                        status: {name: 'Active'},
-                        statusDateObject: new Date('1/1/2009'),
-                    },{
-                        status: {name: 'Suspended by ONC'},
-                        statusDateObject: new Date('1/1/2009'),
-                    },
-                ];
-                expect(ctrl.hasDateMatches()).toBe(true);
-                ctrl.listing.certificationEvents[0].statusDateObject = new Date('2/2/2002');
-                expect(ctrl.hasDateMatches()).toBe(false);
-            });
-
-            it('should know when two status events are the same and consecutive', () => {
-                ctrl.listing.certificationEvents = [
-                    {
-                        status: {name: 'Active'},
-                        statusDateObject: new Date('1/1/2009'),
-                    },{
-                        status: {name: 'Active'},
-                        statusDateObject: new Date('2/2/2009'),
-                    },
-                ];
-                expect(ctrl.hasStatusMatches()).toBe(true);
-                ctrl.listing.certificationEvents[0].status.name = 'Suspended by ONC';
-                expect(ctrl.hasStatusMatches()).toBe(false);
             });
         });
     });
