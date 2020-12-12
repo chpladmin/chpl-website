@@ -947,11 +947,9 @@ label {
     background-color: var(--success);
 }
 
-.merge-option {
-    border-color: var(--darkblue);
-    border-width: 2px;
-    border-radius: 16px;
-    white-space: normal;
+.merge-options {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .btn--wrap {
