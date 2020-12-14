@@ -64,6 +64,11 @@ export const ListingDetailsEditComponent = {
             this.update();
         }
 
+        g1g2Change (measures) {
+            this.listing.measures = measures;
+            this.update();
+        }
+
         generateErrorMessages () {
             this.messages = {
                 errors: [],

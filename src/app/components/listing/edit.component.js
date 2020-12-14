@@ -194,6 +194,16 @@ export const ListingEditComponent = {
             });
         }
 
+        updateListing (listing) {
+            this.listing.certificationResults = listing.certificationResults;
+            this.listing.cqmResults = listing.cqmResults;
+            this.listing.measures = listing.measures;
+            this.listing.sed = listing.sed;
+            this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
+            this.listing.sedReportFileLocation = listing.sedReportFileLocation;
+            this.listing.sedTestingEndDate = listing.sedTestingEndDate;
+        }
+
         // item list
         cancelNewItem (type) {
             this.newItem[type] = undefined;

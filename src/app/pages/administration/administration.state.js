@@ -10,6 +10,10 @@ let getResources = ($q, networkService) => {
             })),
         networkService.getAtls(false)
             .then(response => ({ testingLabs: response.atls })),
+        networkService.getMeasures()
+            .then(response => ({ measures: response })),
+        networkService.getMeasureTypes()
+            .then(response => ({ measureTypes: response})),
         networkService.getQmsStandards()
             .then(response => ({ qmsStandards: response })),
         networkService.getAccessibilityStandards()
