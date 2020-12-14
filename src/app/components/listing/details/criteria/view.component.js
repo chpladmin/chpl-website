@@ -88,11 +88,9 @@ export const CertificationCriteriaViewComponent = {
 
         showViewDetailsLink () {
             return (this.cert.success && this.cert.additionalSoftware !== null) ||
-                ((!this.cert.success) &&
-                 ((this.cert.g1MacraMeasures && this.cert.g1MacraMeasures.length > 0) ||
-                  (this.cert.g2MacraMeasures && this.cert.g2MacraMeasures.length > 0)) ||
-                 this.cert.g1Success !== null ||
-                 this.cert.g2Success !== null);
+                (!this.cert.success &&
+                 (this.cert.g1Success !== null ||
+                  this.cert.g2Success !== null));
         }
 
         toggleCriteria () {
