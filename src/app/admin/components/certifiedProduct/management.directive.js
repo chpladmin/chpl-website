@@ -66,6 +66,8 @@
                 vm.resourcesReady.atls &&
                 vm.resourcesReady.qmsStandards &&
                 vm.resourcesReady.accessibilityStandards &&
+                vm.resourcesReady.measures &&
+                vm.resourcesReady.measureTypes &&
                 vm.resourcesReady.ucdProcesses &&
                 vm.resourcesReady.testProcedures &&
                 vm.resourcesReady.testData &&
@@ -324,6 +326,8 @@
                 atls: false,
                 qmsStandards: false,
                 accessibilityStandards: false,
+                measures: false,
+                measureTypes: false,
                 ucdProcesses: false,
                 testProcedures: false,
                 testData: false,
@@ -359,6 +363,18 @@
                 .then(function (response) {
                     vm.resources.accessibilityStandards = response;
                     vm.resourcesReady.accessibilityStandards = true;
+                });
+
+            networkService.getMeasures()
+                .then(function (response) {
+                    vm.resources.measures = response;
+                    vm.resourcesReady.measures = true;
+                });
+
+            networkService.getMeasureTypes()
+                .then(function (response) {
+                    vm.resources.measureTypes = response;
+                    vm.resourcesReady.measureTypes = true;
                 });
 
             networkService.getUcdProcesses()
