@@ -9,6 +9,7 @@ const elements = {
     editProductName: '#product-name',
     activeVersion: '#active-version',
     editVersionName: '#version-name',
+    editDeveloper: 'button#developer-component-edit',
 };
 
 class DevelopersPage {
@@ -47,7 +48,7 @@ class DevelopersPage {
     }
 
     getProduct (product) {
-        return $('h3=' + product).$('..').$('..').$('..');
+        return $('.products__product-header-item--first=' + product).$('..').$('..');
     }
 
     getProductInfo (product) {
@@ -55,6 +56,14 @@ class DevelopersPage {
     }
 
     getVersionCount (product) {
+        return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
+    }
+
+    getAcbName (product) {
+        return product.$('.products__product-header').$$('.products__product-header-item')[1];
+    }
+
+    getListingCount (product) {
         return product.$('.products__product-header').$$('.products__product-header-item')[2];
     }
 
@@ -64,6 +73,10 @@ class DevelopersPage {
 
     get editVersionName () {
         return $(elements.editVersionName);
+    }
+
+    get editDeveloper () {
+        return $(elements.editDeveloper);
     }
 
     selectDeveloper (developerName) {
@@ -85,7 +98,7 @@ class DevelopersPage {
 
     editProduct (product) {
         this.getEditButton(product).click();
-        product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[0].click();
+        product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
     }
 
     getActiveVersion (product, productId) {
@@ -98,7 +111,7 @@ class DevelopersPage {
 
     editVersion (product) {
         this.getEditButton(product).click();
-        product.$('.product__product-info-item-edit').$('.dropdown-menu').$$('li')[1].click();
+        product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
     }
 }
 

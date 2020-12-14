@@ -25,7 +25,7 @@ let states = [
     },{
         name: 'resources.download',
         url: '/download',
-        component: 'aiResourcesDownload',
+        component: 'chplResourcesDownload',
         data: { title: 'Download the CHPL' },
     },{
         name: 'resources.overview',

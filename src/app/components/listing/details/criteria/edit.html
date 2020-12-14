@@ -94,27 +94,9 @@
           <td><label class="control-label" for="data_g1Success{{ $ctrl.cert.number }}">Measure Successfully Tested for G1</label></td>
           <td><select class="form-control input-sm" id="data_g1Success{{ $ctrl.cert.number }}" name="data_g1Success" ng_model="$ctrl.cert.g1Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.g1MacraMeasures">
-          <td><label class="control-label" for="data_g1MacraMeasures{{ $ctrl.cert.number }}">Measure<span ng-if="$ctrl.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</label></td>
-          <td>
-            <button id="clear-selection-g1macrameasures" class="btn btn-small btn-link pull-right" ng-click="$ctrl.cert.g1MacraMeasures=[];" ng-if="$ctrl.cert.g1MacraMeasures && $ctrl.cert.g1MacraMeasures.length !== 0 && $ctrl.canEdit()">Clear Selection(s)<span class="sr-only">of G1 Macra Measures</span></button>
-            <select multiple data-ng-attr-size="{{ $ctrl.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm"
-                    id="data_g1MacraMeasures{{ $ctrl.cert.number }}" name="data_g1MacraMeasures" ng_model="$ctrl.cert.g1MacraMeasures" ng-disabled="!$ctrl.canEdit()"
-                    ng-options="m as ((m.removed ? 'Removed | ' : '') + m.abbreviation) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
-          </td>
-        </tr>
         <tr ng-if="$ctrl.cert.g2Success !== null">
           <td><label class="control-label" for="data_g2Success{{ $ctrl.cert.number }}">Measure Successfully Tested for G2</label></td>
           <td><select class="form-control input-sm" id="data_g2Success{{ $ctrl.cert.number }}" name="data_g2Success" ng_model="$ctrl.cert.g2Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
-        </tr>
-        <tr ng-if="$ctrl.cert.g2MacraMeasures">
-          <td><label class="control-label" for="data_g2MacraMeasures{{ $ctrl.cert.number }}">Measure<span ng-if="$ctrl.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</label></td>
-          <td>
-            <button id="clear-selection-g2macrameasures" class="btn btn-small btn-link pull-right" ng-click="$ctrl.cert.g2MacraMeasures=[];" ng-if="$ctrl.cert.g2MacraMeasures && $ctrl.cert.g2MacraMeasures.length !== 0 && $ctrl.canEdit()">Clear Selection(s)<span class="sr-only">of G2 Macra Measures</span></button>
-            <select multiple data-ng-attr-size="{{ $ctrl.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm"
-                    id="data_g2MacraMeasures{{ $ctrl.cert.number }}" name="data_g2MacraMeasures" ng_model="$ctrl.cert.g2MacraMeasures" ng-disabled="!$ctrl.canEdit()"
-                    ng-options="m as ((m.removed ? 'Removed | ' : '') + m.abbreviation) for m in $ctrl.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select>
-          </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null && $ctrl.sortedTestFunctionalities.length > 0">
           <td>Functionality Tested</td>

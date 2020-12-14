@@ -177,8 +177,8 @@
 
         describe('for specific endpoints', () => {
             it('should authorizeUser', () => {
-                $httpBackend.expectPOST(/^\/rest\/users\/username\/authorize$/, 'payload').respond(200, {data: 'response'});
-                networkService.authorizeUser('payload', 'username').then(response => {
+                $httpBackend.expectPOST(/^\/rest\/users\/userId\/authorize$/, 'payload').respond(200, {data: 'response'});
+                networkService.authorizeUser('payload', 'userId').then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -838,6 +838,14 @@
                 $httpBackend.flush();
             });
 
+            it('should getDeveloperHierarchy', () => {
+                $httpBackend.expectGET(/^\/rest\/developers\/payload\/hierarchy$/).respond(200, {data: 'response'});
+                networkService.getDeveloperHierarchy('payload').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getDevelopers', () => {
                 $httpBackend.expectGET(/^\/rest\/developers$/).respond(200, {data: 'response'});
                 networkService.getDevelopers().then(response => {
@@ -950,6 +958,22 @@
             it('should getListingCountStatistics', () => {
                 $httpBackend.expectGET(/^\/rest\/statistics\/listing_count$/).respond(200, {data: 'response'});
                 networkService.getListingCountStatistics().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getMeasures', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/measures$/).respond(200, {data: 'response'});
+                networkService.getMeasures().then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getMeasureTypes', () => {
+                $httpBackend.expectGET(/^\/rest\/data\/measure-types$/).respond(200, {data: 'response'});
+                networkService.getMeasureTypes().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1374,14 +1398,6 @@
                 $httpBackend.flush();
             });
 
-            it('should getUserByUsername', () => {
-                $httpBackend.expectGET(/^\/rest\/users\/admin\/details$/).respond(200, {data: 'response'});
-                networkService.getUserByUsername('admin').then(response => {
-                    expect(response.data).toEqual('response');
-                });
-                $httpBackend.flush();
-            });
-
             it('should getUsers', () => {
                 $httpBackend.expectGET(/^\/rest\/users$/).respond(200, {data: 'response'});
                 networkService.getUsers().then(response => {
@@ -1455,8 +1471,8 @@
             });
 
             it('should impersonateUser', () => {
-                $httpBackend.expectGET(/^\/rest\/auth\/impersonate\?username=name$/).respond(200, {data: 'response'});
-                networkService.impersonateUser({subjectName: 'name'}).then(response => {
+                $httpBackend.expectGET(/^\/rest\/auth\/beta\/impersonate\?id=id$/).respond(200, {data: 'response'});
+                networkService.impersonateUser({userId: 'id'}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();

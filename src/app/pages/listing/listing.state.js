@@ -1,11 +1,61 @@
 let states = [{
     name: 'listing',
-    url: '/listing/{id}/{initialPanel}',
-    params: {
-        initialPanel: {squash: true, value: null},
-    },
+    url: '/listing/{id}?panel',
     component: 'chplListing',
-    data: { title: 'CHPL Product Details' },
+    params: {
+        forceReload: {squash: true, value: null},
+    },
+    resolve: {
+        listing: (networkService, $location, $transition$) => {
+            'ngInject';
+            if (!$transition$.params().id) {
+                $location.path('/search');
+            } else {
+                return networkService.getListing($transition$.params().id, $transition$.params().forceReload);
+            }
+        },
+    },
+    data: { title: 'CHPL Listing Details' },
+},{
+    name: 'listing.view',
+    url: '/view',
+    component: 'chplListingViewPage',
+    data: { title: 'CHPL Listing Details - View' },
+},{
+    name: 'listing.view.edit',
+    url: '/edit',
+    component: 'chplListingEditPage',
+    resolve: {
+        resources: ($q, networkService) => {
+            'ngInject';
+            let resources = {};
+            return $q.all([
+                networkService.getSearchOptions()
+                    .then(response => {
+                        resources.bodies = response.acbs;
+                        resources.classifications = response.productClassifications;
+                        resources.editions = response.editions;
+                        resources.practices = response.practiceTypes;
+                        resources.statuses = response.certificationStatuses;
+                    }),
+                networkService.getAccessibilityStandards().then(response => resources.accessibilityStandards = response),
+                networkService.getAtls(false).then(response => resources.testingLabs = response.atls),
+                networkService.getMeasures().then(response => resources.measures = response),
+                networkService.getMeasureTypes().then(response => resources.measureTypes = response),
+                networkService.getQmsStandards().then(response => resources.qmsStandards = response),
+                networkService.getTargetedUsers().then(response => resources.targetedUsers = response),
+                networkService.getTestData().then(response => resources.testData = response),
+                networkService.getTestFunctionality().then(response => resources.testFunctionalities = response),
+                networkService.getTestProcedures().then(response => resources.testProcedures = response),
+                networkService.getTestStandards().then(response => resources.testStandards = response),
+                networkService.getTestTools().then(response => resources.testTools = response),
+                networkService.getUcdProcesses().then(response => resources.ucdProcesses = response),
+            ]).then(() => {
+                return resources;
+            });
+        },
+    },
+    data: { title: 'CHPL Listing Details - Edit' },
 },{
     name: 'product',
     url: '/product/{id}',
@@ -19,13 +69,13 @@ let states = [{
     },
 },{
     name: 'product.initial-panel',
-    url: '/{initialPanel}',
+    url: '?panel',
     redirectTo: trans => {
         return {
             state: 'listing',
             params: {
                 id: trans.params().id,
-                initialPanel: trans.params().initialPanel,
+                panel: trans.params().panel,
             },
         };
     },

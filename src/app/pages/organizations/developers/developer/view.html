@@ -1,4 +1,4 @@
-<ui-view>
+<div ui-view="view">
   <div class="row" ng-if="$ctrl.action === 'confirmation'">
     <div class="col-md-10 col-md-offset-1">
       <chpl-confirmation take-action="$ctrl.closeConfirmation()" text="{{ $ctrl.confirmationText }}"></chpl-confirmation>
@@ -10,20 +10,18 @@
     </div>
   </div>
   <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
-      <chpl-developer developer="$ctrl.developer"
-                      allowed-acbs="$ctrl.allowedAcbs"
-                      can-edit="$ctrl.can('edit')"
-                      can-merge="$ctrl.can('merge') && $ctrl.developers.length > 0"
-                      can-split="$ctrl.can('split-developer')"
-                      is-editing="$ctrl.action === 'edit'"
-                      on-cancel="$ctrl.cancel()"
-                      on-edit="$ctrl.save(developer)"
-                      take-action="$ctrl.takeAction(action)"
-                      ></chpl-developer>
+      <div ui-view="developer">
+        <chpl-developer developer="$ctrl.developer"
+                        can-edit="$ctrl.can('edit')"
+                        can-merge="$ctrl.can('merge')"
+                        can-split="$ctrl.can('split-developer')"
+                        take-action="$ctrl.takeAction(action)"
+                        ></chpl-developer>
+      </div>
       <div feature-flag="role-developer">
         <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
           <div class="panel-heading">
@@ -32,13 +30,14 @@
           <div class="panel-body">
             <chpl-users users="$ctrl.users"
                         roles="$ctrl.roles"
+                        column-count="1"
                         take-action="$ctrl.takeUserAction(action, data)"
                         ></chpl-users>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <div ng-if="$ctrl.can('manageTracking')">
         <chpl-change-requests change-requests="$ctrl.changeRequests"
                               change-request-types="$ctrl.changeRequestTypes"
@@ -47,7 +46,7 @@
                               take-action="$ctrl.takeCrAction(action, data)"
                               ></chpl-change-requests>
       </div>
-      <div class="panel panel-default" feature-flag="direct-review">
+      <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-title">
             <span class="pull-right">
@@ -69,13 +68,12 @@
           </span>
         </div>
       </div>
-      <chpl-products products="$ctrl.products"
-                     product-id="{{ $ctrl.productId }}"
-                     version-id="{{ $ctrl.versionId }}"
-                     search-options="$ctrl.searchOptions"
-                     on-cancel="$ctrl.cancel()"
-                     on-edit="$ctrl.saveUpdate(data)"
-                     ></chpl-products>
+      <div ui-view="products">
+        <chpl-products products="$ctrl.developer.products"
+                       search-options="$ctrl.searchOptions"
+                       on-cancel="$ctrl.cancel()"
+                       ></chpl-products>
+      </div>
     </div>
   </div>
-</ui-view>
+</div>

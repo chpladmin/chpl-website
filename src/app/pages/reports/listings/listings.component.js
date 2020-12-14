@@ -612,6 +612,10 @@ export const ReportsListingsComponent = {
                     {key: 'sedTesting', display: 'SED Tested'},
                     {key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date'},
                     {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
+                    {key: 'rwtPlansUrl', display: 'Real World Testing Plans URL'},
+                    {key: 'rwtPlansCheckDate', display: 'Real World Testing Plans Last Completeness Check Date', filter: 'date'},
+                    {key: 'rwtResultsUrl', display: 'Real World Testing Results URL'},
+                    {key: 'rwtResultsCheckDate', display: 'Real World Testing Results Last Completeness Check Date', filter: 'date'},
                 ];
                 var nestedKeys = [
                     {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
@@ -692,6 +696,10 @@ export const ReportsListingsComponent = {
                         if (meaningfulUseUserHistory.length > 0) {
                             activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
                         }
+                    }
+                    var measures = this.ReportService.compare(item.originalData.measures, item.newData.measures, 'measures');
+                    if (measures.length > 0) {
+                        activity.details.push('G1/G2 measure changes:<ul>' + measures.join('') + '</ul>');
                     }
                     if (item.originalData.testingLabs) {
                         var testingLabsKeys = [];

@@ -3,15 +3,17 @@
     Loading...<i class="fa fa-spin fa-spinner"></i>
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
-    <p class="">
+    <p>
       <input type="checkbox" ng-model="$ctrl.viewAllCerts" id="viewAllCerts"></input>
       <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
     </p>
 
     <!-- Certification Criteria -->
     <div class="panel panel-ai">
-      <div class="panel-heading">
-        <a href="" ng-click="$ctrl.showPanel('cert')" aria-expanded="{{ $ctrl.panelShown === 'cert' }}" id="details-certification-criteria">Certification Criteria<span class="pull-right">({{ $ctrl.countCerts }} met) <i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-left'"></i></span></a>
+      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('cert')" aria-expanded="{{ $ctrl.panelShown === 'cert' }}">
+        <div class="listing-details__element-header-title">Certification Criteria</div>
+        <div>({{ $ctrl.countCerts }} met)</div>
+        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
         <div ng-repeat="n in $ctrl.listing.certificationResults | orderBy:$ctrl.sortCerts track by n.criterion.id">
@@ -20,11 +22,7 @@
                                        cert="n"
                                        has-ics="$ctrl.listing.ics.inherits"
                                        is-confirming="$ctrl.isConfirming"
-                                       is-editing="$ctrl.isEditing"
-                                       on-change="$ctrl.saveCert(cert)"
                                        qms-standards="$ctrl.listing.qmsStandards"
-                                       refresh-sed="$ctrl.hasEdited()"
-                                       resources="$ctrl.resources"
                                        view-all="$ctrl.viewAllCerts">
           </chpl-certification-criteria>
         </div>
@@ -33,8 +31,10 @@
 
     <!-- CQMs -->
     <div class="panel panel-ai">
-      <div class="panel-heading">
-        <a href="" ng-click="$ctrl.showPanel('cqm')" aria-expanded="{{ $ctrl.panelShown === 'cqm' }}" id="details-cqm">Clinical Quality Measures<span class="pull-right">({{ $ctrl.countCqms }} met) <i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-left'"></i></span></a>
+      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('cqm')" aria-expanded="{{ $ctrl.panelShown === 'cqm' }}">
+        <div class="listing-details__element-header-title">Clinical Quality Measures</div>
+        <div>({{ $ctrl.countCqms }} met)</div>
+        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cqm'" id="panel-cqm">
         <p>Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
@@ -49,7 +49,7 @@
               <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(4)</th>
             </tr>
           </thead>
-          <tbody ng-if="!$ctrl.isEditing">
+          <tbody>
             <tr ng-if="$ctrl.viewAllCerts || n.success" ng-repeat="n in $ctrl.cqms | orderBy:$ctrl.sortCqms track by $index">
               <td class="text-center">
                 <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
@@ -63,57 +63,21 @@
               <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC4 ? 'meets' : 'does not meet'}} 170.317 (c)(4)</span><i class="fa fa-lg" ng-class="n.hasC4 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
             </tr>
           </tbody>
-          <tbody ng-if="$ctrl.isEditing">
-            <tr ng-if="$ctrl.viewAllCerts || n.success" ng-repeat="n in $ctrl.cqms | orderBy:$ctrl.sortCqms track by $index">
-              <td class="text-center">
-                <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
-                <span class="cert-bloc" ng-if="n.cmsId">
-                  <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
-                          ng-options="version for version in n.allVersions" ng-change="$ctrl.updateCs()">
-                    <option value=""></option>
-                  </select>
-                </span>
-              </td>
-              <td>
-                <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
-              </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
-                <input type="checkbox" class="form-control" ng-model="n.hasC1" id="data_c1_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
-              </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
-                <input type="checkbox" class="form-control" ng-model="n.hasC2" id="data_c2_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
-              </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
-                <input type="checkbox" class="form-control" ng-model="n.hasC3" id="data_c3_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
-              </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
-                <input type="checkbox" class="form-control" ng-model="n.hasC4" id="data_c4_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
-              </td>
-            </tr>
-          </tbody>
         </table>
       </div>
     </div>
 
     <!-- SED -->
     <div class="panel panel-ai" ng-if="$ctrl.listing.certificationEdition.name !== '2011'">
-      <div class="panel-heading">
-        <a href ng-click="$ctrl.showPanel('sed')" aria-expanded="{{ $ctrl.panelShown === 'sed' }}" id="details-sed">
-          Safety Enhanced Design (SED)
-          <span class="pull-right">
-            ({{ $ctrl.sedCriteriaCount ? $ctrl.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="$ctrl.listing.certificationEdition.name === '2015'"> / {{ $ctrl.sedTaskCount ? $ctrl.sedTaskCount : 0 }} Testing Task<span ng-if="$ctrl.sedTaskCount !== 1">s</span></span>)
-            <i class="fa fa-lg" ng-class="$ctrl.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-left'"></i>
-          </span>
-        </a>
+      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('sed')" aria-expanded="{{ $ctrl.panelShown === 'sed' }}">
+        <div class="listing-details__element-header-title">Safety Enhanced Design (SED)</div>
+        <div>({{ $ctrl.sedCriteriaCount ? $ctrl.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="$ctrl.listing.certificationEdition.name === '2015'"> / {{ $ctrl.sedTaskCount ? $ctrl.sedTaskCount : 0 }} Testing Task<span ng-if="$ctrl.sedTaskCount !== 1">s</span></span>)</div>
+        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-show="$ctrl.panelShown === 'sed'" id="panel-sed">
         <ai-sed
           criteria-count="$ctrl.sedCriteriaCount"
-          edit-mode="$ctrl.isEditing"
           listing="$ctrl.listing"
-          on-change="$ctrl.sedChange(listing)"
-          refresh="$ctrl.registerSed(handler)"
-          resources="$ctrl.resources"
           task-count="$ctrl.sedTaskCount">
         </ai-sed>
       </div>
@@ -121,52 +85,39 @@
 
     <!-- G1/G2 Measures -->
     <div class="panel panel-ai" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
-      <div class="panel-heading">
-        <a href ng-click="$ctrl.showPanel('g1g2')" aria-expanded="{{ $ctrl.panelShown === 'g1g2' }}" id="details-g1g2">
-          Successfully Tested G1/G2 Measures<span class="pull-right"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-        </a>
+      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('g1g2')" aria-expanded="{{ $ctrl.panelShown === 'g1g2' }}">
+        <div class="listing-details__element-header-title">Successfully Tested G1/G2 Measures</div>
+        <div>({{ $ctrl.listing.measures && $ctrl.listing.measures.length ? $ctrl.listing.measures.length : 0 }} found)</div>
+        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'g1g2'" id="panel-g1g2">
-        <ai-g1g2 listing="$ctrl.listing"></ai-g1g2>
-      </div>
-    </div>
-
-    <!-- Surveillance -->
-    <div class="panel panel-ai" feature-flag="direct-review" feature-flag-hide>
-      <div class="panel-heading">
-        <a href ng-click="$ctrl.showPanel('surveillance')" aria-expanded="{{ $ctrl.panelShown === 'surveillance' }}" id="details-surveillance-activities">
-          Surveillance Activities<span class="pull-right">({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found) <i class="fa fa-lg" ng-class="$ctrl.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-        </a>
-      </div>
-      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'surveillance'" id="panel-surveillance-activities">
-        <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
+        <chpl-g1g2-view measures="$ctrl.listing.measures"></chpl-g1g2-view>
       </div>
     </div>
 
     <!-- Compliance Activities -->
-    <div class="panel panel-ai" feature-flag="direct-review">
-      <div class="panel-heading">
-        <a href ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' }}" id="details-compliance-activities">
-          Compliance Activities<span class="pull-right"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-        </a>
+    <div class="panel panel-ai">
+      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' }}">
+        <div class="listing-details__element-header-title">Compliance Activities</div>
+        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'compliance'" id="panel-compliance-activities">
         <div class="panel panel-ai">
-          <div class="panel-heading">
-            <a href ng-click="$ctrl.showSubPanel('surveillance')" aria-expanded="{{ $ctrl.subPanelShown === 'surveillance' }}" id="details-surveillance-activities">
-              Surveillance Activities<span class="pull-right">({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found) <i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-            </a>
+          <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showSubPanel('surveillance')" aria-expanded="{{ $ctrl.subPanelShown === 'surveillance' }}">
+            <div class="listing-details__element-header-title">Surveillance Activities</div>
+            <div>({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found)</div>
+            <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
           </div>
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'surveillance'" id="panel-surveillance-activities">
             <p>Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing</p>
             <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
           </div>
         </div>
-        <div class="panel panel-ai">
-          <div class="panel-heading">
-            <a href ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}" id="details-direct-reviews-activities">
-              Direct Review Activities<span class="pull-right"><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="details__direct-review-error badge badge-error">error</span> <i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-            </a>
+        <div class="panel panel-ai" ng-if="!$ctrl.hideDirectReview">
+          <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}">
+            <div class="listing-details__element-header-title">Direct Review Activities</div>
+            <div><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="listing-details__direct-review-error badge badge-error">error</span></div>
+            <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
           </div>
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'directReviews'" id="panel-direct-reviews-activities">
             <span ng-if="$ctrl.drStatus === 'success'">
@@ -184,12 +135,12 @@
       </div>
     </div>
 
+
     <!-- Additional Information -->
-    <div class="panel panel-ai" ng-if="!$ctrl.isEditing">
-      <div class="panel-heading">
-        <a href="" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}" id="details-additional-information">
-          Additional Information<span class="pull-right"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-left'"></i></span>
-        </a>
+    <div class="panel panel-ai">
+      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}">
+        <div class="listing-details__element-header-title">Additional Information</div>
+        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
         <span ng-if="$ctrl.listing.certificationEdition.name === '2014'" id="panel-additional-information-test-results-summary">

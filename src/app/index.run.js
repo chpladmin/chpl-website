@@ -84,5 +84,8 @@ import { states as administrationStates } from './pages/administration/administr
             }
         });
 
+        $transitions.onError({to: 'organizations.developers.**'}, transition => {
+            transition.router.stateService.go('search');
+        });
     }
 })();

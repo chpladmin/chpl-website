@@ -1,0 +1,57 @@
+<div class="flex-container">
+  <div class="flex-item">
+    <h1>{{ $ctrl.developer.name }}</h1>
+  </div>
+</div>
+<div class="flex-container">
+  <div class="flex-item panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Add Products to Merge</h2>
+    </div>
+    <div class="panel-body">
+      <label for="selected-to-merge" class="sr-only">Add product to merge</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+          <i class="fa fa-search"></i>
+        </span>
+        <input type="text" ng-model="$ctrl.selectedToMerge" class="form-control" id="selected-to-merge" name="selectedToMerge" placeholder="Enter Product name..."
+               ng-blur="$ctrl.noneFound = false"
+               uib-typeahead="product.name as product.name for product in $ctrl.products | filter:$viewValue | filter:{selected:false} | limitTo:8"
+               typeahead-no-results="$ctrl.noneFound" typeahead-on-select="$ctrl.selectProduct($item, $model, $label, $event)"
+               typeahead-editable="false" typeahead-show-hint="true">
+      </div>
+      <div ng-if="$ctrl.noneFound">
+        <i class="fa fa-cancel"></i> No Results Found
+      </div>
+      <div ng-repeat="product in $ctrl.products"
+           class="selectable-item" ng-class="{ 'selectable-item--selected' : product.selected }" ng-class-even="'selectable-item--even'" ng-class-odd="'selectable-item--odd'"
+           ng-click="$ctrl.selectProduct(product)">
+        <div>{{ product.name }}</div>
+        <div ng-if="!product.selected"><i class="fa fa-arrow-right"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-item panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Products Merging</h2>
+    </div>
+    <div class="panel-body">
+      <div class="selected-item selected-item--primary">
+        <div>{{ $ctrl.product.name }}</div>
+      </div>
+      <div ng-repeat="product in $ctrl.selectedProducts | orderBy: 'name' track by $index"
+           class="selected-item selected-item--secondary"
+           ng-click="$ctrl.selectProduct(product)">
+        <div>{{ product.name }}</div>
+        <div><i class="fa fa-close"></i></div>
+      </div>
+      <h3>New Merged Product</h3>
+      <chpl-product-edit product="$ctrl.product"
+                         ng-if="$ctrl.product"
+                         is-merging="true"
+                         merging-products="$ctrl.selectedProducts"
+                         take-action="$ctrl.takeAction(action, data)"
+                         ></chpl-product-edit>
+    </div>
+  </div>
+</div>

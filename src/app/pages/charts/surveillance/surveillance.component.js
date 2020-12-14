@@ -4,27 +4,16 @@ export const ChartsSurveillanceComponent = {
         nonconformityCriteriaCount: '<',
     },
     controller: class ChartsSurveillanceComponent {
-        constructor ($log, featureFlags, utilService) {
+        constructor ($log, utilService) {
             'ngInject';
             this.$log = $log;
             this.utilService = utilService;
-            this.isOn = featureFlags.isOn;
-            if (this.isOn('effective-rule-date-plus-three-months')) {
-                this.nonconformityTypes = [
-                    'All',
-                    2015,
-                    '2015 Cures Update',
-                    'Program',
-                ];
-            } else {
-                this.nonconformityTypes = [
-                    'All',
-                    2014,
-                    2015,
-                    '2015 Cures Update',
-                    'Program',
-                ];
-            }
+            this.nonconformityTypes = [
+                'All',
+                2015,
+                '2015 Cures Update',
+                'Program',
+            ];
             this.chartState = {
                 yAxis: '',
                 nonconformityCountType: 'All',
@@ -196,8 +185,6 @@ export const ChartsSurveillanceComponent = {
                 })
                 .filter(obj => {
                     switch (type) {
-                    case 2014:
-                        return obj.nonconformityType.includes('170.314');
                     case 2015:
                         return (obj.nonconformityType.includes('170.315') && !obj.nonconformityType.includes('Cures Update'));
                     case '2015 Cures Update':
@@ -205,11 +192,9 @@ export const ChartsSurveillanceComponent = {
                     case 'Program':
                         return obj.nonconformityType.includes('170.523') || obj.nonconformityType.includes('Other');
                     case 'All':
-                        if (this.isOn('effective-rule-date-plus-three-months')) {
-                            return !obj.nonconformityType.includes('170.314');
-                        }
-                        return true;
-                        // no default
+                        return !obj.nonconformityType.includes('170.314');
+                    default:
+                        return false;
                     }
                 })
                 .sort((a, b) => this.utilService.sortCertActual(a, b))

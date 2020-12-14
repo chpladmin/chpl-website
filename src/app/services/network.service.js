@@ -13,8 +13,8 @@ export class NetworkService {
         };
     }
 
-    authorizeUser (userAuthorization, username) {
-        return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
+    authorizeUser (userAuthorization, userId) {
+        return this.apiPOST('/users/' + userId + '/authorize', userAuthorization);
     }
 
     changePassword (userObj) {
@@ -332,6 +332,10 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
+    getDeveloperHierarchy (developerId) {
+        return this.apiGET('/developers/' + developerId + '/hierarchy');
+    }
+
     getDevelopers (showDeleted) {
         if (showDeleted) {
             return this.apiGET('/developers?showDeleted=true');
@@ -390,6 +394,14 @@ export class NetworkService {
 
     getListingCountStatistics () {
         return this.apiGET('/statistics/listing_count');
+    }
+
+    getMeasures () {
+        return this.apiGET('/data/measures');
+    }
+
+    getMeasureTypes () {
+        return this.apiGET('/data/measure-types');
     }
 
     getNonconformityStatisticsCount () {
@@ -616,8 +628,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getUserByUsername (uname) {
-        return this.apiGET('/users/' + uname + '/details');
+    getUserById (id) {
+        return this.apiGET('/users/beta/' + id + '/details');
     }
 
     getUsers () {
@@ -650,7 +662,7 @@ export class NetworkService {
     }
 
     impersonateUser (user) {
-        return this.apiGET('/auth/impersonate?username=' + user.subjectName);
+        return this.apiGET('/auth/beta/impersonate?id=' + user.userId);
     }
 
     initiateSurveillance (surveillance) {

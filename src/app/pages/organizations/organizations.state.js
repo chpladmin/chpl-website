@@ -21,22 +21,14 @@ let states = [
     },{
         name: 'organizations.developers.developer',
         url: '/{developerId}',
-        component: 'chplDevelopersView',
+        component: 'chplDeveloperView',
         resolve: {
             developer: (networkService, $location, $transition$) => {
                 'ngInject';
                 if (!$transition$.params().developerId) {
                     $location.path('/organizations/developers');
                 } else {
-                    return networkService.getDeveloper($transition$.params().developerId);
-                }
-            },
-            products: (networkService, $location, $transition$) => {
-                'ngInject';
-                if (!$transition$.params().developerId) {
-                    $location.path('/organizations/developers');
-                } else {
-                    return networkService.getProductsByDeveloper($transition$.params().developerId);
+                    return networkService.getDeveloperHierarchy($transition$.params().developerId);
                 }
             },
         },
@@ -44,20 +36,23 @@ let states = [
     },{
         name: 'organizations.developers.developer.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
-        resolve: {
-            action: () => 'edit',
+        views: {
+            'developer@^': 'chplDevelopersEdit',
         },
         data: { title: 'CHPL Developers - Edit' },
     },{
         name: 'organizations.developers.developer.split',
         url: '/split',
-        component: 'chplDevelopersSplit',
+        views: {
+            'view@^': 'chplDevelopersSplit',
+        },
         data: { title: 'CHPL Developers - Split' },
     },{
         name: 'organizations.developers.developer.merge',
-        url: '/merge?v',
-        component: 'chplDevelopersMerge',
+        url: '/merge',
+        views: {
+            'view@^': 'chplDevelopersMerge',
+        },
         data: { title: 'CHPL Developers - Merge' },
     },{
         name: 'organizations.developers.developer.product',
@@ -66,11 +61,17 @@ let states = [
     },{
         name: 'organizations.developers.developer.product.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
-        resolve: {
-            action: () => 'editProduct',
+        views: {
+            'products@^.^': 'chplProductsEdit',
         },
         data: { title: 'CHPL Developers - Edit Product' },
+    },{
+        name: 'organizations.developers.developer.product.merge',
+        url: '/merge',
+        views: {
+            'view@^.^': 'chplProductsMerge',
+        },
+        data: { title: 'CHPL Developers - Merge Product' },
     },{
         name: 'organizations.developers.developer.product.version',
         url: '/versions/{versionId}',
@@ -78,9 +79,8 @@ let states = [
     },{
         name: 'organizations.developers.developer.product.version.edit',
         url: '/edit',
-        component: 'chplDevelopersView',
-        resolve: {
-            action: () => 'editVersion',
+        views: {
+            'products@^.^.^': 'chplVersionsEdit',
         },
         data: { title: 'CHPL Developers - Edit Version' },
     },{

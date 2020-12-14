@@ -8,12 +8,13 @@
     function authService ($localStorage, $log, $rootScope, $window, API_KEY) {
         var service = {
             canImpersonate: canImpersonate,
+            canManageAcb: canManageAcb,
             canManageDeveloper: canManageDeveloper,
             getApiKey: getApiKey,
             getCurrentUser: getCurrentUser,
             getFullname: getFullname,
             getToken: getToken,
-            getUsername: getUsername,
+            getUserId: getUserId,
             hasAnyRole: hasAnyRole,
             isImpersonating: isImpersonating,
             logout: logout,
@@ -31,6 +32,19 @@
             return !isImpersonating() &&
                 ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
                  || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
+        }
+
+        function canManageAcb (acb) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                return true;
+            }
+            if (hasAnyRole(['ROLE_ACB'])) {
+                let currentUser = getCurrentUser();
+                return currentUser.organizations
+                    .filter(o => o.id === acb.id)
+                    .length > 0;
+            }
+            return false;
         }
 
         function canManageDeveloper (developer) {
@@ -51,7 +65,7 @@
         }
 
         function getFullname () {
-            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 if (identity.length === 3) {
@@ -73,11 +87,11 @@
             return $localStorage.jwtToken;
         }
 
-        function getUsername () {
-            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+        function getUserId () {
+            if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                return identity[1];
+                return identity[0];
             } else {
                 logout();
                 return '';
