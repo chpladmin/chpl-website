@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.4.0
+_14 December 2020_
+
+### Features
+* Enable ROLE_ONC_STAFF user type
+* Make "username" not required for new users
+* Let users download Direct Review activity
+* Display and edit updated g1g2 measures
+
+### Bug Fixes
+* Allow users to confirm Listings with acknowledged warnings
+
+---
+
 ## Version 11.3.0
 _30 November 2020_
 
