@@ -49,6 +49,18 @@ describe('when logging in', () => {
         component.logoutButton.waitForDisplayed();
         expect(component.toggleLoginComponent.getText()).toBe('AQA ACB');
     });
+
+    it('should be able to log in as ONC_STAFF with an email address', () => {
+        component.logInWithEmail('oncstaff');
+        component.logoutButton.waitForDisplayed();
+        expect(component.toggleLoginComponent.getText()).toBe('AQA ONC STAFF');
+    });
+
+    xit('should be able to log in as developer with an email address', () => {
+        component.logInWithEmail('developer');
+        component.logoutButton.waitForDisplayed();
+        expect(component.toggleLoginComponent.getText()).toBe('AQA Developers');
+    });
 });
 
 describe('when logging out', () => {

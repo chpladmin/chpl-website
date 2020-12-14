@@ -11,11 +11,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-8 resources-download__description">
         <p>
-          To download a list of certified health IT products or surveillance activities listed on the CHPL, please select one of the following, and then click the download button:
+          To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.
           <ul>
-            <li>Certified Health IT Products
+            <li class="resources-download__listings">Certified Health IT Products
               <ul>
                 <li><strong>2015/2014/2011 Edition Products:</strong> Entire collection of a specified certification edition's certified products, including all data elements. Available as an XML file.
                   <ul>
@@ -32,39 +32,35 @@
                 </li>
               </ul>
             </li>
-            <li>Surveillance
+            <li class="resources-download__compliance">Compliance Activities
               <ul>
                 <li><strong>Surveillance Activity:</strong> Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.</li>
                 <li ng-if="$ctrl.showRestricted()"><strong>Surveillance (Basic):</strong> Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.</li>
-                <li><strong>Non-Conformities:</strong> Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.</li>
+                <li><strong>Surveillance Non-Conformities:</strong> Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.</li>
+                <li><strong>Direct Review Activity:</strong> Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.</li>
               </ul>
             </li>
           </ul>
         </p>
       </div>
-      <div class="col-sm-4" ng-form="$ctrl.downloadForm">
-        <div class="input-group">
-          <label class="sr-only" for="downloadSelect">Select which set of products to download</label>
+      <div class="col-sm-4 resources-download__download-collection" ng-form="$ctrl.downloadForm">
+        <div class="resources-download__download-option">
+          <label class="sr-only" for="downloadSelect">Select which collection of information to download</label>
           <select id="downloadSelect" name="downloadSelect" ng-model="$ctrl.downloadOption" class="form-control"
-                  ng-change="$ctrl.changeDownload()"
                   ng-options="o as o.display for o in $ctrl.downloadOptions">
           </select>
-          <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ $ctrl.downloadOption.value }}" id="downloadChplLink"
-               analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: $ctrl.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
-          </span>
         </div>
-        <div class="input-group">
-          <label class="sr-only" for="definitionSelect">Select which download defintion file to download</label>
-          <select id="definitionSelect" ng-model="$ctrl.definitionOption" class="form-control"
-                  ng-options="o as o.display for o in $ctrl.definitionOptions">
-          </select>
-          <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ $ctrl.definitionOption.value }}" id="downloadChplDefinitionLink"
-               analytics-on="click" analytics-event="Download CHPL Defintion" analytics-properties="{ category: 'Download CHPL', label: $ctrl.definitionOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Definition</span></a>
-          </span>
+        <div class="resources-download__download-data">
+          <a type="button" class="btn btn-primary btn-block" href="{{ $ctrl.downloadOption.data }}" id="downloadChplLink"
+             analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: $ctrl.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span> Data File</a>
         </div>
-        <small>The XML definition files were last modified on October 19, 2020.</small>
+        <div class="resources-download__download-definition">
+          <a type="button" class="btn btn-primary btn-block" href="{{ $ctrl.downloadOption.definition }}" id="downloadChplDefinitionLink"
+             analytics-on="click" analytics-event="Download CHPL Definition" analytics-properties="{ category: 'Download CHPL', label: $ctrl.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span> Definition File</a>
+        </div>
+        <div class="resources-download__last-modified">
+          <small>The XML definition files were last modified on December 14, 2020.</small>
+        </div>
       </div>
     </div>
   </div>

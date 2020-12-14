@@ -688,6 +688,10 @@ export const ReportsListingsComponent = {
                             activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
                         }
                     }
+                    var measures = this.ReportService.compare(item.originalData.measures, item.newData.measures, 'measures');
+                    if (measures.length > 0) {
+                        activity.details.push('G1/G2 measure changes:<ul>' + measures.join('') + '</ul>');
+                    }
                     if (item.originalData.testingLabs) {
                         var testingLabsKeys = [];
                         var testingLabs = this.ReportService.compareArray(item.originalData.testingLabs, item.newData.testingLabs, testingLabsKeys, 'testingLabName');
