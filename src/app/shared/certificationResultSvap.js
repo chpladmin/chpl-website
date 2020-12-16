@@ -8,6 +8,7 @@
                     'svapId': svap.svapId,
                     'regulatoryTextCitation': svap.regulatoryTextCitation,
                     'approvedStandardVersion': svap.approvedStandardVersion,
+                    'replaced': svap.replaced,
                 };
             };
 
