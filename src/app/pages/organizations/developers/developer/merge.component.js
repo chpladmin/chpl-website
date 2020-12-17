@@ -60,7 +60,11 @@ export const DevelopersMergeComponent = {
                         });
                     }
                 }, error => {
-                    that.$log.error(error);
+                    that.toaster.pop({
+                        type: 'error',
+                        title: 'Merge error',
+                        body: error.data.error,
+                    });
                 });
         }
 
