@@ -72,7 +72,7 @@ export const UploadListingsComponent = {
                             }
                         });
                     } else {
-                        that.uploadErrors = response.data.errorMessages;
+                        that.uploadErrors = response.data.errorMessages || response.data.error;
                     }
                     if (this.beta) {
                         that.toaster.pop({
