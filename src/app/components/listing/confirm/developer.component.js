@@ -107,6 +107,33 @@ export const ConfirmDeveloperComponent = {
         }
 
         saveConfirmingDeveloper () {
+            this.saveConfirmingDeveloperWithoutOcd3531();
+        }
+
+        saveConfirmingDeveloperWithOcd3531 () {
+            let developer = {
+                address: this.developer.address,
+                contact: this.developer.contact,
+                developerCode: this.developer.developerCode,
+                developerId: this.developer.developerId,
+                name: this.developer.name,
+                selfDeveloper: this.developer.selfDeveloper,
+                status: this.developer.status,
+                statusEvents: this.developer.statusEvents,
+                website: this.developer.website,
+            };
+            if (!developer.address.country) {
+                developer.address.country = 'USA';
+            }
+            let that = this;
+            this.networkService.updateDeveloper(developer)
+                .then(() => {
+                    that.takeAction({action: 'select', developerId: developer.developerId});
+                    that.form.$setPristine();
+                });
+        }
+
+        saveConfirmingDeveloperWithoutOcd3531 () {
             var dev = {
                 developer: {
                     address: this.developer.address,

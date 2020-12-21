@@ -34,6 +34,33 @@ export const InspectDeveloperComponent = {
         }
 
         saveInspectingDeveloper () {
+            this.saveInspectingDeveloperWithoutOcd3531();
+        }
+
+        saveInspectingDeveloperWithOcd3531 () {
+            let developer = {
+                address: this.listing.developer.address,
+                contact: this.listing.developer.contact,
+                developerCode: this.developer.developerCode,
+                developerId: this.listing.developer.developerId,
+                name: this.listing.developer.name,
+                selfDeveloper: this.listing.developer.selfDeveloper,
+                status: this.developer.status,
+                statusEvents: this.developer.statusEvents,
+                website: this.listing.developer.website,
+            };
+            if (!developer.address.country) {
+                developer.address.country = 'USA';
+            }
+            let that = this;
+            this.networkService.updateDeveloper(developer)
+                .then(() => {
+                    that.takeAction({action: 'select', developerId: developer.developerId});
+                    that.form.$setPristine();
+                });
+        }
+
+        saveInspectingDeveloperWithoutOcd3531 () {
             var dev = {
                 developer: {
                     address: this.listing.developer.address,
