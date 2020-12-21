@@ -33,7 +33,7 @@
             <td>{{ $ctrl.cert.gap ? 'True' : 'False' }}</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Svap{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
-            <td>
+            <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0">
               Standards Version Advancement Process <button class="btn btn-link btn-xs pull-right" uib-tooltip="Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0">
@@ -44,7 +44,6 @@
                 </li>
               </ul>
             </td>
-            <td ng-if="!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
