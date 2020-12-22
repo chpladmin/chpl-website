@@ -40,7 +40,10 @@
               <ul>
                 <li ng-repeat="m in $ctrl.cert.svaps">
                   <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ (m.replaced ? 'Replaced | ' : '') + m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
-                  <button class="tooltip-button btn btn-link" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'" ng-if="m.replaced"><span class="sr-only">TBD</span><i class="fa fa-info-circle"></i></button>
+                  <button class="tooltip-button btn btn-link" uib-tooltip="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program." 
+                    tooltip-trigger="'mouseenter focus click'" ng-if="m.replaced">
+                    <span class="sr-only">This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.</span><i class="fa fa-info-circle"></i>
+                  </button>
                 </li>
               </ul>
             </td>
