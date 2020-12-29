@@ -152,7 +152,7 @@ export class ReportService {
         case 'criteria':
             ret = {
                 sort: (p, c) => p.number < c.number ? -1 : p.number > c.number ? 1 : p.title < c.title ? -1 : p.title > c.title ? 1 : 0,
-                write: c => c.number + ': ' + c.title,
+                write: c => c.number + ': ' + c.title.replace(/\(Cures Update\)/, '<span class="cures-update">(Cures Update)</span>'),
             };
             break;
         case 'meaningfulUseUserHistory':

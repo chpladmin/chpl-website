@@ -232,7 +232,7 @@
                 const after = mock.criteria.filter(c => c.title.indexOf('Cures') > -1);
                 expect(service.compare(before, after, 'criteria')).toEqual([
                     '<li>Removed 170.315 (b)(2): Clinical Information Reconciliation and Incorporation</li>',
-                    '<li>Added 170.315 (b)(2): Clinical Information Reconciliation and Incorporation (Cures Update)</li>',
+                    '<li>Added 170.315 (b)(2): Clinical Information Reconciliation and Incorporation <span class="cures-update">(Cures Update)</span></li>',
                 ]);
             });
         });
