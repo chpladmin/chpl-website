@@ -123,10 +123,9 @@ export class ReportService {
     }
 
     getOptions (key) {
-        let ret;
         switch (key) {
         case 'additionalSoftware':
-            ret = {
+            return {
                 sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
                 write: s => 'Relied Upon Software "' + s.name + '"',
                 compare: (p, c) => p.version !== c.version || p.grouping !== c.grouping || p.certifiedProductNumber !== c.certifiedProductNumber || p.justification !== c.justification,
@@ -148,23 +147,20 @@ export class ReportService {
                     return ret;
                 },
             };
-            break;
         case 'criteria':
-            ret = {
+            return {
                 sort: (p, c) => p.number < c.number ? -1 : p.number > c.number ? 1 : p.title < c.title ? -1 : p.title > c.title ? 1 : 0,
                 write: c => c.number + ': ' + c.title.replace(/\(Cures Update\)/, '<span class="cures-update">(Cures Update)</span>'),
             };
-            break;
         case 'meaningfulUseUserHistory':
-            ret = {
+            return {
                 sort: (p, c) => p.muuDate - c.muuDate,
                 write: m => 'MUU Count of ' + m.muuCount + ' on ' + this.$filter('date')(m.muuDate, 'mediumDate', 'UTC'),
                 compare: (p, c) => p.muuCount !== c.muuCount,
                 change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
             };
-            break;
         case 'measures':
-            ret = {
+            return {
                 sort: (p, c) => {
                     p.crit = p.associatedCriteria.map(cc => cc.id).join('|');
                     c.crit = c.associatedCriteria.map(cc => cc.id).join('|');
@@ -186,27 +182,23 @@ export class ReportService {
                     + p.associatedCriteria.map(c => c.number + ': ' + c.title).join(', ')
                     + ' to: ' + c.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
             };
-            break;
         case 'qmsStandards':
-            ret = {
+            return {
                 sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,
                 write: q => 'QMS Standard "' + q.qmsStandardName + '" with modification "' + q.qmsModification + '" applicable to criteria: "' + q.applicableCriteria + '"',
             };
-            break;
         case 'targetedUsers':
-            ret = {
+            return {
                 sort: (p, c) => p.targetedUserName < c.targetedUserName ? -1 : p.targetedUserName > c.targetedUserName ? 1 : 0,
                 write: t => 'Targeted User "' + t.targetedUserName + '"',
             };
-            break;
         case 'testFunctionality':
-            ret = {
+            return {
                 sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
                 write: f => 'Test Functionality "' + f.name + '"',
             };
-            break;
         default:
-            ret = {
+            return {
                 sort: (p, c) => {
                     const key = Object.keys(p).filter((k, idx, arr) => typeof arr[k] === 'string').sort((a, b) => a < b ? -1 : a > b ? 1 : 0)[0];
                     return p[key] < c[key] ? -1 : p[key] > c[key] ? 1 : 0;
@@ -214,7 +206,6 @@ export class ReportService {
                 write: o => '<pre>' + angular.toJson(o) + '</pre>',
             };
         }
-        return ret;
     }
 
     compareItem (oldData, newData, key, display, filter) {
