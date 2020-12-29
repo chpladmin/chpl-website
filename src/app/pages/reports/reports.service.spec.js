@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Report Utility service', () => {
+    describe('the Report Utility service', () => {
         var $log, mock, service;
 
         mock = {
@@ -227,7 +227,7 @@
         });
 
         describe('when comparing criteria', () => {
-            fit('should report differences between cures update criteria', () => {
+            it('should report differences between cures update criteria', () => {
                 const before = mock.criteria.filter(c => c.title.indexOf('Cures') === -1);
                 const after = mock.criteria.filter(c => c.title.indexOf('Cures') > -1);
                 expect(service.compare(before, after, 'criteria')).toEqual([
