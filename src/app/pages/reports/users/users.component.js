@@ -82,17 +82,17 @@ export const ReportsUsersComponent = {
                 if (this.isActivityRoleChange(item)) {
                     action = item.description;
                 } else if (this.isActivityDeletedUser(item)) {
-                    action = 'User ' + item.originalData.subjectName + ' was deleted';
+                    action = 'User ' + (item.originalData.subjectName || item.originalData.email)  + ' was deleted';
                     let changedOrgDescription = this.getOrganizationActionDescriptionIfChanged(item);
                     if (changedOrgDescription !== null && changedOrgDescription !== '') {
                         action += '<ul>' + changedOrgDescription + '</ul>';
                     }
                 } else if (this.isActivityNewUser(item)) {
-                    action = 'User ' + item.newData.subjectName + ' was created.';
+                    action = 'User ' + (item.newData.subjectName || item.newData.email) + ' was created.';
                 } else if (this.isActivtyConfirmUser(item)) {
-                    action = 'User ' + item.newData.subjectName + ' was confirmed.';
+                    action = 'User ' + (item.newData.subjectName || item.newData.email) + ' was confirmed.';
                 } else if (item.originalData && item.newData) {
-                    action = 'User ' + item.newData.subjectName + ' was updated.';
+                    action = 'User ' + (item.newData.subjectName || item.newData.email) + ' was updated.';
                     action += this.getUpdateActivity(item);
                 }
 
