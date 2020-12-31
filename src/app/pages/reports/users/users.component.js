@@ -82,7 +82,7 @@ export const ReportsUsersComponent = {
                 if (this.isActivityRoleChange(item)) {
                     action = item.description;
                 } else if (this.isActivityDeletedUser(item)) {
-                    action = 'User ' + (item.originalData.subjectName || item.originalData.email)  + ' was deleted';
+                    action = 'User ' + (item.originalData.subjectName || item.originalData.email) + ' was deleted';
                     let changedOrgDescription = this.getOrganizationActionDescriptionIfChanged(item);
                     if (changedOrgDescription !== null && changedOrgDescription !== '') {
                         action += '<ul>' + changedOrgDescription + '</ul>';
