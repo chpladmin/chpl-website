@@ -827,6 +827,11 @@ p {
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
 }
 
+.panel-default--nested {
+    margin: 8px 0;
+    box-shadow: none;
+}
+
 .panel-body {
     padding: 10px 10px 10px 15px;
 }

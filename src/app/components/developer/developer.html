@@ -54,7 +54,7 @@
   <!-- end view -->
 
   <span ng-if="$ctrl.isEditing">
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-class="{'panel-default--nested' : $ctrl.isMerging }">
       <div class="panel-heading"
            ng-if="!$ctrl.isChangeRequest">
         <h2 class="panel-title" ng-if="!$ctrl.isSplitting">{{ $ctrl.developer.name }}</h2>

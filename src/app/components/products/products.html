@@ -37,7 +37,10 @@
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="edit-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.editProduct(product)">Product</li>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.editVersion(product)" ng-if="product.activeVersion.version !== 'All'">Version</li>
-                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All'">Version</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All'">
+                      Version<br />
+                      (Select a specific Version to edit)
+                    </li>
                   </ul>
                 </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 2)">
@@ -47,7 +50,11 @@
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="merge-button" uib-dropdown-menu>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.mergeProduct(product)" ng-if="$ctrl.products.length > 1">Product</li>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.mergeVersion(product)" ng-if="product.activeVersion.version !== 'All' && product.versions.length > 2">Version</li>
-                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All' || product.versions.length === 2">Version</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All' || product.versions.length === 2">
+                      Version<br />
+                      <span ng-if="product.versions.length === 2">(Cannot merge Versions when Product only has one Version)</span>
+                      <span ng-if="product.versions.length !== 2">(Select a specific Version to merge)</span>
+                    </li>
                   </ul>
                 </div>
               </div>
