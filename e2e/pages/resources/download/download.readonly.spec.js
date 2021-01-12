@@ -3,7 +3,7 @@ import Hooks from '../../../utilities/hooks';
 
 let hooks, page;
 const productFile2015 = 'The 2015 Edition Products file is updated nightly.';
-const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file is updated quarterly.';
+const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
 const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
 const summaryFile2014 = 'The 2014 Edition Summary file is updated quarterly.';
 const directReview = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
