@@ -32,11 +32,11 @@
             </td>
             <td>{{ $ctrl.cert.gap ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Svap{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
-            <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps.length > 0" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Svap{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+            <td>
               Standards Version Advancement Process <button class="btn btn-link btn-xs pull-right" uib-tooltip="Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
-            <td ng-if="$ctrl.cert.svaps && $ctrl.cert.svaps.length > 0">
+            <td>
               <ul>
                 <li ng-repeat="m in $ctrl.cert.svaps">
                   <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ (m.replaced ? 'Replaced | ' : '') + m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
