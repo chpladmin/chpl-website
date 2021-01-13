@@ -47,7 +47,7 @@ describe('the Download page - compliance activities section', () => {
     it('should have correct information about Surveillance Non-Conformities', () => {
         assert.include(page.complianceActivityText.getText(),surveillanceNonConformity);
     });
-    
+
     it('should have correct information about Direct Review Activity', () => {
         assert.include(page.complianceActivityText.getText(),directReview);
     });
