@@ -2,32 +2,40 @@
     'use strict';
 
     describe('the Developer Merge component', () => {
-        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
+        var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope, toaster;
 
         mock = {
             developer: {},
             developers: [],
+            goodResponse: {
+                job: {
+                    jobDataMap: {
+                        user: {
+                            email: 'fake',
+                        },
+                    },
+                },
+                status: 200,
+            },
         };
 
         beforeEach(() => {
             angular.mock.module('chpl.organizations', $provide => {
                 $provide.factory('chplDeveloperDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
-                    $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
+                    $delegate.mergeDevelopers = jasmine.createSpy('mergeDeveloper');
                     return $delegate;
                 });
             });
 
-            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
+            inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_, _toaster_) => {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
                 $state = _$state_;
+                toaster = _toaster_;
                 networkService = _networkService_;
-                networkService.updateDeveloper.and.returnValue($q.when({
-                    developer: 'a developer',
-                    developerId: 32,
-                }));
+                networkService.mergeDevelopers.and.returnValue($q.when(mock.goodResponse));
 
                 scope = $rootScope.$new();
                 scope.developer = mock.developer;
@@ -62,27 +70,34 @@
         });
 
         describe('when a developer merge is saved', () => {
-            it('should navigate back to the developer on a good response', () => {
-                spyOn($state, 'go');
-                let developer = {developerId: 'an id'};
+            let developer;
+            beforeEach(() => {
+                developer = {developerId: 'an id'};
+                ctrl.developer = developer;
                 ctrl.selectedDevelopers = [{developerId: 1}, {developerId: 2}];
-                networkService.updateDeveloper.and.returnValue($q.when({developerId: 200}));
+            });
+
+            it('should navigate back to the developers page on a good response', () => {
+                spyOn($state, 'go');
                 ctrl.merge(developer);
                 scope.$digest();
-                expect($state.go).toHaveBeenCalledWith(
-                    'organizations.developers.developer',
-                    { developerId: 200 },
-                    { reload: true },
-                );
+                expect($state.go).toHaveBeenCalledWith('organizations.developers', {}, {reload: true});
+            });
+
+            it('should pop a notice on success', () => {
+                spyOn(toaster, 'pop');
+                ctrl.merge(developer);
+                scope.$digest();
+                expect(toaster.pop).toHaveBeenCalledWith({
+                    type: 'success',
+                    title: 'Merge submitted',
+                    body: 'Your action has been submitted and you\'ll get an email at fake when it\'s done',
+                });
             });
 
             it('should pass the the merging developer data to the network service', () => {
-                let developer = {developerId: 'an id'};
-                ctrl.developer = developer;
-                ctrl.selectedDevelopers = [{developerId: 1}, {developerId: 2}];
-                networkService.updateDeveloper.and.returnValue($q.when({developerId: 200}));
                 ctrl.merge(developer);
-                expect(networkService.updateDeveloper).toHaveBeenCalledWith({
+                expect(networkService.mergeDevelopers).toHaveBeenCalledWith({
                     developer: developer,
                     developerIds: [1, 2, 'an id'],
                 });

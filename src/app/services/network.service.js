@@ -693,6 +693,10 @@ export class NetworkService {
         return this.apiDELETE('/surveillance/pending', {ids: ids});
     }
 
+    mergeDevelopers (mergeDeveloperObject) {
+        return this.apiPOST('/developers/merge', mergeDeveloperObject);
+    }
+
     modifyACB (acb) {
         return this.apiPUT('/acbs/' + acb.id, acb);
     }
@@ -781,8 +785,8 @@ export class NetworkService {
         return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
     }
 
-    updateDeveloper (developerObject) {
-        return this.apiPUT('/developers', developerObject);
+    updateDeveloper (developer) {
+        return this.apiPUT('/developers/' + developer.developerId, developer);
     }
 
     updateFuzzyType (fuzzyType) {
