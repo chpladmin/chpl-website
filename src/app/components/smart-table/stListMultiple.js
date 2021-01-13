@@ -204,12 +204,17 @@
         }
 
         function selectAll () {
+            let hasRetired = false;
             angular.forEach(vm.distinctItems, function (item) {
                 if (!item.isSelected) {
                     item.isSelected = true;
+                    hasRetired = hasRetired || item.retired;
                     vm.selected.push(item.value);
                 }
             });
+            if (hasRetired && vm.triggerShowRetired) {
+                vm.triggerShowRetired();
+            }
             vm.matchAll = false;
             vm.filterChanged();
             vm.storeState();
