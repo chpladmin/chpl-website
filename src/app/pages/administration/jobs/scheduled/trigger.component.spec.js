@@ -5,7 +5,7 @@
         let $compile, $log, ctrl, el, mock, scope;
 
         mock = {
-            trigger: {job: {description: 'Sends an error report for all Listings breaking Surveillance rules within the last day, by specific ACB', group: 'chplJobs', name: 'ONC-ACB Overnight Broken Surveillance Rules Report', frequency: 'DAILY', jobDataMap: {acbSpecific: true, type: 'Overnight', authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ACB', frequency: 'DAILY'}}},
+            trigger: {job: {description: 'Sends an error report for all Listings breaking Surveillance rules within the last day, by specific ACB', group: 'chplJobs', name: 'ONC-ACB Overnight Broken Surveillance Rules Report', frequency: 'DAILY', jobDataMap: {acbSpecific: true, type: 'Overnight', authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ONC_STAFF;ROLE_ACB', frequency: 'DAILY'}}},
             acbs: [{id: 3}],
         };
 

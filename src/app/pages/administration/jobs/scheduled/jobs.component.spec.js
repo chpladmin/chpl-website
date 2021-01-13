@@ -7,8 +7,8 @@
         mock = {
             jobs: [
                 {description: 'Send email to API key holders where a warning email has been sent, after x days of inactivity, and delete the key', group: 'systemJobs', name: 'apiKeyDeleteJob', frequency: null, jobDataMap: {}},
-                {description: 'Sends an error report for all Listings breaking ICS rules', group: 'chplJobs', name: 'ONC Inherited Certification Status Errors Report', frequency: 'DAILY', jobDataMap: {authorities: 'ROLE_ADMIN;ROLE_ONC', frequency: 'DAILY'}},
-                {description: 'Sends an error report for all Listings breaking Surveillance rules within the last day, by specific ACB', group: 'chplJobs', name: 'ONC-ACB Overnight Broken Surveillance Rules Report', frequency: 'DAILY', jobDataMap: {acbSpecific: true, type: 'Overnight', authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ACB', frequency: 'DAILY'}},
+                {description: 'Sends an error report for all Listings breaking ICS rules', group: 'chplJobs', name: 'ONC Inherited Certification Status Errors Report', frequency: 'DAILY', jobDataMap: {authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ONC_STAFF', frequency: 'DAILY'}},
+                {description: 'Sends an error report for all Listings breaking Surveillance rules within the last day, by specific ACB', group: 'chplJobs', name: 'ONC-ACB Overnight Broken Surveillance Rules Report', frequency: 'DAILY', jobDataMap: {acbSpecific: true, type: 'Overnight', authorities: 'ROLE_ADMIN;ROLE_ONC;ROLE_ONC_STAFF;ROLE_ACB', frequency: 'DAILY'}},
             ],
         };
 
