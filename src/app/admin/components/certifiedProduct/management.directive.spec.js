@@ -162,14 +162,6 @@
             expect(networkService.getProductsByDeveloper).toHaveBeenCalled();
         });
 
-        it('should create a mergeDeveloper if more than one developer is selected', function () {
-            expect(vm.mergeDeveloper).toBeUndefined();
-            vm.developerSelect = {developer: 'developer1'};
-            vm.mergingDevelopers = [{developer: 'developer2'}];
-            vm.selectDeveloper();
-            expect(vm.mergeDeveloper).toEqual({developer: 'developer1'});
-        });
-
         it('shouldn\'t do anything if no product is selected', function () {
             vm.selectProduct();
             expect(vm.activeProduct).toBe('');
@@ -183,15 +175,6 @@
             vm.selectProduct();
             expect(vm.activeProduct).toEqual({product: 'product1', developerId: '123'});
             expect(networkService.getVersionsByProduct).toHaveBeenCalled();
-        });
-
-        it('should create a mergeProduct if more than one product is selected', function () {
-            expect(vm.mergeProduct).toBeUndefined();
-            vm.activeDeveloper = {developerId: '123'};
-            vm.productSelect = {product: 'product1'};
-            vm.mergingProducts = [{product: 'product1'}, {product: 'product2'}];
-            vm.selectProduct();
-            expect(vm.mergeProduct).toEqual({product: 'product1', developerId: '123'});
         });
 
         describe('splitting a Product', function () {
@@ -276,7 +259,7 @@
                 expect(actualOptions.resolve.isAcbAdmin()).toEqual(true);
                 expect(actualOptions.resolve.isChplAdmin()).toEqual(true);
                 expect(actualOptions.resolve.resources()).toEqual(vm.resources);
-                expect(actualOptions.resolve.workType()).toEqual(vm.workType);
+                expect(actualOptions.resolve.workType()).toEqual('manage');
                 el.isolateScope().$digest();
             });
 
