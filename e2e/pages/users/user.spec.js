@@ -39,6 +39,7 @@ describe('ONC STAFF can ', () => {
         page.userPhoneNumber.clearValue();
         page.userPhoneNumber.addValue(number);
         actionBarComponent.save();
+        browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(number));
         assert.include(page.userInformation('AQA ONC Staff').getText(),number);
     });
 });
