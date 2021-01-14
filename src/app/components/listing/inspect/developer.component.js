@@ -51,8 +51,7 @@ export const InspectDeveloperComponent = {
             let that = this;
             this.networkService.updateDeveloper(developer)
                 .then(() => {
-                    that.takeAction({action: 'select', developerId: developer.developerId});
-                    that.form.$setPristine();
+                    that.onSelect({developerId: developer.developerId});
                 });
         }
     },
