@@ -40,7 +40,7 @@ export const ConfirmListingComponent = {
         canAct (action) {
             switch (action) {
             case 'confirm': return this.stage === 'listing';
-            case 'next': return this.showFormErrors && this.form.$pristine && !this.isDisabled();
+            case 'next': return this.showFormErrors && (this.form.$pristine || !this.pending.developer.developerId) && !this.isDisabled();
             case 'previous': return this.stage !== 'developer';
                 // no default
             }
