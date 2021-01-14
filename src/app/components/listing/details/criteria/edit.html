@@ -30,7 +30,7 @@
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null && $ctrl.cert.allowedSvaps.length > 0">
-          <td ng-if="($ctrl.cert.svaps && $ctrl.cert.svaps.length > 0) || $ctrl.canEdit()">Standards Version Advancement Process</td>
+          <td>Standards Version Advancement Process</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
               <div class="form-group form-group-sm">
@@ -55,6 +55,7 @@
               </li>
             </ul>
           </td>
+          <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
           <td>Test Standard</td>
