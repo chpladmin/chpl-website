@@ -53,6 +53,8 @@
 }
 
 .product__product-action-filter-item--disabled {
+    background-color: var(--light-grey);
+    font-style: italic;
     cursor: not-allowed;
 }
 
