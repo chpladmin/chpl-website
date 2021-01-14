@@ -26,7 +26,7 @@ export const ConfirmListingsComponent = {
             });
             if (this.featureFlags.isOn('enhanced-upload')) {
                 this.networkService.getPendingListings(true).then(listings => {
-                    that.uploadingListings = listings;
+                    that.uploadedListings = listings;
                 });
             }
         }
@@ -95,7 +95,7 @@ export const ConfirmListingsComponent = {
                     this.clearPendingListing(cpId);
                     this.onChange();
                     if (result.status === 'resolved') {
-                        this.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
+                        this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
                     }
                 }
             });
@@ -121,7 +121,7 @@ export const ConfirmListingsComponent = {
                 }, error => {
                     that.onChange();
                     if (error.data.errors && error.data.errors.length > 0) {
-                        that.uploadingListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
+                        that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
                     }
                 });
         }
@@ -142,7 +142,7 @@ export const ConfirmListingsComponent = {
                 }, error => {
                     that.onChange();
                     if (error.data.errors && error.data.errors.length > 0) {
-                        that.uploadingListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
+                        that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
                     }
                 });
         }
@@ -152,7 +152,7 @@ export const ConfirmListingsComponent = {
         }
 
         clearPendingListingBeta (cpId) {
-            this.uploadingListings = this.uploadingListings.filter(l => l.id !== cpId);
+            this.uploadedListings = this.uploadedListings.filter(l => l.id !== cpId);
         }
     },
 };

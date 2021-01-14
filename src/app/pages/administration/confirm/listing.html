@@ -20,9 +20,9 @@
   <div ng-switch="$ctrl.stage">
     <div ng-switch-when="developer">
       <chpl-confirm-developer
-        developer="$ctrl.developer"
+        developer="$ctrl.pending.developer"
         developers="$ctrl.developers"
-        listing="$ctrl.listing"
+        listing="$ctrl.uploaded"
         show-form-errors="$ctrl.showFormErrors"
         take-action="$ctrl.takeDeveloperAction(action, developerId)"
         set-choice="$ctrl.setDeveloperChoice(choice)"
@@ -30,23 +30,23 @@
     </div>
     <div ng-switch-when="product">
       <ai-inspect-product
-        pending-product="$ctrl.listing.product"
-        developer="$ctrl.listing.developer"
+        pending-product="$ctrl.uploaded.product"
+        developer="$ctrl.pending.developer"
         on-select="$ctrl.selectInspectingProduct(productId)"
         set-choice="$ctrl.setProductChoice(choice)"
         ></ai-inspect-product>
     </div>
     <div ng-switch-when="version">
       <ai-inspect-version
-        pending-version="$ctrl.listing.version"
-        product="$ctrl.listing.product"
+        pending-version="$ctrl.uploaded.version"
+        product="$ctrl.pending.product"
         on-select="$ctrl.selectInspectingVersion(versionId)"
         set-choice="$ctrl.setVersionChoice(choice)"
         ></ai-inspect-version>
     </div>
     <div ng-switch-when="listing">
       <chpl-inspect-listing
-        listing="$ctrl.listing"
+        listing="$ctrl.uploaded"
         on-change="$ctrl.editListing(listing)"
         resources="$ctrl.resources"
         ></chpl-inspect-listing>

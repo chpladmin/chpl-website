@@ -2,9 +2,9 @@
   <div class="col-md-12">
     <h2>View Products in the process of upload</h2>
     <p ng-if="!$ctrl.uploadingCps || $ctrl.uploadingCps.length === 0">No products currently in queue</p>
-    <div ng-if="$ctrl.uploadingListingsMessages">
+    <div ng-if="$ctrl.uploadedListingsMessages">
       <ul>
-        <li ng-repeat="message in $ctrl.uploadingListingsMessages">{{ message }}</li>
+        <li ng-repeat="message in $ctrl.uploadedListingsMessages">{{ message }}</li>
       </ul>
     </div>
     <table class="table table-striped" ng-if="$ctrl.uploadingCps.length > 0" id="pending-listings-table">
@@ -55,13 +55,13 @@
   </div>
   <div class="col-md-12" feature-flag="enhanced-upload">
     <h2>View (Beta) Products in the process of upload</h2>
-    <p ng-if="!$ctrl.uploadingListings || $ctrl.uploadingListings.length === 0">No products currently in queue</p>
-    <div ng-if="$ctrl.uploadingListingsMessages">
+    <p ng-if="!$ctrl.uploadedListings || $ctrl.uploadedListings.length === 0">No products currently in queue</p>
+    <div ng-if="$ctrl.uploadedListingsMessages">
       <ul>
-        <li ng-repeat="message in $ctrl.uploadingListingsMessages">{{ message }}</li>
+        <li ng-repeat="message in $ctrl.uploadedListingsMessages">{{ message }}</li>
       </ul>
     </div>
-    <table class="table table-striped" ng-if="$ctrl.uploadingListings.length > 0" id="pending-listings-table-beta">
+    <table class="table table-striped" ng-if="$ctrl.uploadedListings.length > 0" id="pending-listings-table-beta">
       <thead>
         <tr>
           <th scope="col">CHPL ID</th>
@@ -89,7 +89,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="listing in $ctrl.uploadingListings | orderBy: 'certificationDate' track by listing.id">
+        <tr ng-repeat="listing in $ctrl.uploadedListings | orderBy: 'certificationDate' track by listing.id">
           <td>{{ listing.chplProductNumber }}</td>
           <td>{{ listing.developer }}</td>
           <td>{{ listing.product }}</td>
