@@ -22,7 +22,7 @@ beforeAll( () => {
 describe('listing with no confirm warnings and no errors', () => {
     // **Run once before each test case**
     beforeEach(function () {
-        uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+        uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA3.csv');
         uploadPage.waitForSuccessfulUpload('AQA3');
         hooks.open('#/administration/confirm/listings');
     });
@@ -43,7 +43,7 @@ describe('listing with warnings on confirm and no errors', () => {
 
     beforeAll(function () {
         hooks.open('#/administration/upload');
-        uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
+        uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA4.csv');
         uploadPage.waitForSuccessfulUpload('AQA4');
         hooks.open('#/administration/confirm/listings');
         hooks.waitForSpinnerToDisappear();

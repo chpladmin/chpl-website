@@ -23,7 +23,7 @@ describe('an ACB user', () => {
     // **Run once before each test case**
     beforeEach(function () {
         hooks.open('#/administration/upload');
-        uploadPage.uploadListing('../../../resources/2015_v19_AQA1.csv');
+        uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
         uploadPage.waitForSuccessfulUpload('AQA1');
         hooks.open('#/administration/confirm/listings');
     });

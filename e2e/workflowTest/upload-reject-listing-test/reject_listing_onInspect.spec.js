@@ -16,7 +16,7 @@ beforeAll( () => {
     hooks = new Hooks();
     hooks.open('#/administration/upload');
     loginComponent.logIn('acb');
-    uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+    uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA3.csv');
     uploadPage.waitForSuccessfulUpload('AQA3');
     hooks.open('#/administration/confirm/listings');
 });

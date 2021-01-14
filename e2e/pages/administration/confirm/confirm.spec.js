@@ -26,7 +26,7 @@ describe('when user is on confirm listing page', () => {
 
     describe('and uploading a listing', () => {
         beforeEach(() => {
-            uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+            uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA3.csv');
             uploadPage.waitForSuccessfulUpload('AQA3');
         });
 
@@ -39,9 +39,9 @@ describe('when user is on confirm listing page', () => {
 
     describe('and uploading multiple listing', () => {
         beforeEach(() => {
-            uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+            uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA3.csv');
             uploadPage.waitForSuccessfulUpload('AQA3');
-            uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
+            uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA4.csv');
             uploadPage.waitForSuccessfulUpload('AQA4');
         });
 
