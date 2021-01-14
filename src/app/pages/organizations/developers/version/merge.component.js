@@ -1,9 +1,9 @@
-export const ProductsMergeComponent = {
-    templateUrl: 'chpl.organizations/developers/product/merge.html',
+export const VersionsMergeComponent = {
+    templateUrl: 'chpl.organizations/developers/version/merge.html',
     bindings: {
         developer: '<',
     },
-    controller: class ProductsMergeController {
+    controller: class VersionsMergeController {
         constructor ($log, $state, $stateParams, authService, networkService) {
             'ngInject';
             this.$log = $log;
@@ -18,13 +18,15 @@ export const ProductsMergeComponent = {
                 this.developer = angular.copy(changes.developer.currentValue);
                 this.product = this.developer.products
                     .find(p => p.productId === parseInt(this.$stateParams.productId, 10));
-                this.products = this.developer.products
-                    .filter(d => d.productId !== parseInt(this.$stateParams.productId, 10) && !d.deleted)
-                    .map(d => {
-                        d.selected = false;
-                        return d;
+                this.version = this.product.versions
+                    .find(v => v.versionId === parseInt(this.$stateParams.versionId, 10));
+                this.versions = this.product.versions
+                    .filter(v => v.versionId !== parseInt(this.$stateParams.versionId, 10))
+                    .map(v => {
+                        v.selected = false;
+                        return v;
                     })
-                    .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+                    .sort((a, b) => a.version < b.version ? -1 : a.version > b.version ? 1 : 0);
             }
         }
 
@@ -36,15 +38,15 @@ export const ProductsMergeComponent = {
             });
         }
 
-        merge (product) {
-            let productToSave = {
-                product: product,
-                productIds: this.selectedProducts.map(d => d.productId),
-                newDeveloperId: this.developer.developerId,
+        merge (version) {
+            let versionToSave = {
+                version: version,
+                versionIds: this.selectedVersions.map(d => d.versionId),
+                newProductId: this.product.productId,
             };
-            productToSave.productIds.push(this.product.productId);
+            versionToSave.versionIds.push(this.version.versionId);
             let that = this;
-            this.networkService.updateProduct(productToSave)
+            this.networkService.updateVersion(versionToSave)
                 .then(() => {
                     that.$state.go('organizations.developers.developer', {
                         developerId: that.developer.developerId,
@@ -56,13 +58,13 @@ export const ProductsMergeComponent = {
                 });
         }
 
-        selectProduct (product) {
-            this.products
-                .filter(d => d.productId === product.productId)
+        selectVersion (version) {
+            this.versions
+                .filter(d => d.versionId === version.versionId)
                 .forEach(d => d.selected = !d.selected);
-            this.selectedProducts = this.products
+            this.selectedVersions = this.versions
                 .filter(d => d.selected)
-                .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+                .sort((a, b) => a.version < b.version ? -1 : a.version > b.version ? 1 : 0);
             this.selectedToMerge = null;
         }
 
@@ -82,4 +84,4 @@ export const ProductsMergeComponent = {
 
 angular
     .module('chpl.organizations')
-    .component('chplProductsMerge', ProductsMergeComponent);
+    .component('chplVersionsMerge', VersionsMergeComponent);

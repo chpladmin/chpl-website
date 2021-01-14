@@ -827,6 +827,11 @@ p {
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
 }
 
+.panel-default--nested {
+    margin: 8px 0;
+    box-shadow: none;
+}
+
 .panel-body {
     padding: 10px 10px 10px 15px;
 }
@@ -948,11 +953,9 @@ label {
     background-color: var(--success);
 }
 
-.merge-option {
-    border-color: var(--darkblue);
-    border-width: 2px;
-    border-radius: 16px;
-    white-space: normal;
+.merge-options {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .btn--wrap {
