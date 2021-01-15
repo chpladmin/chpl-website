@@ -54,18 +54,18 @@ export const ConfirmListingComponent = {
             }
         }
 
-        takeDeveloperAction (action, developerId) {
+        takeDeveloperAction (action, payload) {
             switch (action) {
+            case 'clear':
+                break;
             case 'select':
-                this.pending.developer.developerId = developerId;
-                if (developerId) {
+                this.pending.developer.developerId = payload;
+                if (payload) {
                     this.loadDev();
                 } else {
                     this.pending.developer = angular.copy(this.uploaded.developer);
                     this.pending.developer.developerId = undefined;
                 }
-                break;
-            case 'cancel':
                 break;
                 //no default
             }
