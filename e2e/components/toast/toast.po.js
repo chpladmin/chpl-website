@@ -1,5 +1,6 @@
 const elements = {
     container: '#toast-container',
+    title: '.toast-title',
 };
 
 class ToastComponent {
@@ -7,6 +8,14 @@ class ToastComponent {
 
     clearAllToast () {
         $(elements.container).$$('div').forEach(toast => toast.click());
+    }
+
+    get title () {
+        return $(elements.title);
+    }
+
+    get toastContainer () {
+        return $(elements.container);
     }
 }
 

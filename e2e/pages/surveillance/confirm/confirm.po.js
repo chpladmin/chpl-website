@@ -4,6 +4,7 @@ const confirmElements = {
     rejectOnInspect: '//button[text()=" Reject"]',
     rejectButton: '#pending-listing-reject-all',
     table: '//*[@id="pending-surveillance-table"]',
+    confirm: '//button[text()=" Confirm"]',
 };
 
 class ConfirmPage {
@@ -17,12 +18,12 @@ class ConfirmPage {
         return $(confirmElements.table);
     }
 
-    get tableRowCount () {
-        return $(confirmElements.table).$('tbody').$$('tr');
+    get confirmButton () {
+        return $(confirmElements.confirm);
     }
 
-    inspectButton (chplId) {
-        $('//button[@id="pending-surveillance-inspect-' + chplId + '"]').click();
+    get tableRowCount () {
+        return $(confirmElements.table).$('tbody').$$('tr');
     }
 
     get rejectOnInspectButton () {
@@ -54,6 +55,10 @@ class ConfirmPage {
 
     findSurveillancetoReject (chplId) {
         return $('//td[text()="' + chplId + '"]');
+    }
+
+    inspectButton (chplId) {
+        $('//button[@id="pending-surveillance-inspect-' + chplId + '"]').scrollAndClick();
     }
 }
 
