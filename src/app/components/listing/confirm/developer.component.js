@@ -1,11 +1,11 @@
 export const ConfirmDeveloperComponent = {
     templateUrl: 'chpl.components/listing/confirm/developer.html',
     bindings: {
-        developer: '<',
         developers: '<',
-        listing: '<',
-        takeAction: '&',
+        pending: '<',
         showFormErrors: '<',
+        takeAction: '&',
+        uploaded: '<',
     },
     controller: class ConfirmDeveloperController {
         constructor ($log, networkService) {
@@ -15,71 +15,76 @@ export const ConfirmDeveloperComponent = {
             this.backup = {};
         }
 
-        $onChanges (changes) {
-            if (changes.developer) {
-                this.developer = angular.copy(changes.developer.currentValue);
-                this.backup.developer = angular.copy(this.developer);
-            }
-            if (changes.developers && changes.developers.currentValue) {
-                this.developers = changes.developers.currentValue
-                    .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+        $onInit () {
+            this.$log.info('init');
+            if (this.developers) {
                 this.developers.splice(0, 0, {
                     name: '--- Create a new Developer ---',
                     developerId: undefined,
                 });
+                if (this.pending) {
+                    this.pendingSelect = this.developers.find(d => d.developerId === this.pending.developerId);
+                } else if (this.uploaded) {
+                    this.pendingSelect = this.developers.find(d => d.developerId === undefined);
+                    this.pending = angular.copy(this.uploaded);
+                }
             }
-            if (changes.listing) {
-                this.listing = angular.copy(changes.listing.currentValue);
+        }
+
+        $onChanges (changes) {
+            if (changes.developers && changes.developers.currentValue) {
+                this.developers = changes.developers.currentValue
+                    .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
             }
-            if (this.developer && this.developers) {
-                this.developerSelect = this.developers.find(d => d.developerId === this.developer.developerId);
+            if (changes.pending) {
+                this.pending = angular.copy(changes.pending.currentValue);
+                this.backup.pending = angular.copy(this.pending);
             }
-            if (this.developer && this.listing) {
+            if (changes.uploaded) {
+                this.uploaded = angular.copy(changes.uploaded.currentValue);
+            }
+            if (this.pending && this.uploaded) {
                 this.analyzeDifferences();
-            }
-            if (!this.developer && this.listing) {
-                this.developerSelect = this.developers.find(d => d.developerId === undefined);
-                this.developer = angular.copy(this.listing.developer);
             }
         }
 
         analyzeDifferences () {
-            this.developer.styles = {};
-            this.listing.developer.styles = {};
-            if (this.developer.selfDeveloper !== this.listing.developer.selfDeveloper) {
-                this.developer.styles.selfDeveloper = 'confirm__item--modified';
-                this.listing.developer.styles.selfDeveloper = 'confirm__item--modified';
+            this.pending.styles = {};
+            this.uploaded.styles = {};
+            if (this.pending.selfDeveloper !== this.uploaded.selfDeveloper) {
+                this.pending.styles.selfDeveloper = 'confirm__item--modified';
+                this.uploaded.styles.selfDeveloper = 'confirm__item--modified';
             }
-            this.applyStyles('website', this.developer.website, this.listing.developer.website);
-            if (!this.developer.address) {
-                this.developer.address = {};
+            this.applyStyles('website', this.pending.website, this.uploaded.website);
+            if (!this.pending.address) {
+                this.pending.address = {};
             }
-            this.applyStyles('line1', this.developer.address.line1, this.listing.developer.address.line1);
-            this.applyStyles('line2', this.developer.address.line2, this.listing.developer.address.line2);
-            this.applyStyles('city', this.developer.address.city, this.listing.developer.address.city);
-            this.applyStyles('state', this.developer.address.state, this.listing.developer.address.state);
-            this.applyStyles('zipcode', this.developer.address.zipcode, this.listing.developer.address.zipcode);
-            this.applyStyles('country', this.developer.address.country, this.listing.developer.address.country);
-            if (!this.developer.contact) {
-                this.developer.contact = {};
+            this.applyStyles('line1', this.pending.address.line1, this.uploaded.address.line1);
+            this.applyStyles('line2', this.pending.address.line2, this.uploaded.address.line2);
+            this.applyStyles('city', this.pending.address.city, this.uploaded.address.city);
+            this.applyStyles('state', this.pending.address.state, this.uploaded.address.state);
+            this.applyStyles('zipcode', this.pending.address.zipcode, this.uploaded.address.zipcode);
+            this.applyStyles('country', this.pending.address.country, this.uploaded.address.country);
+            if (!this.pending.contact) {
+                this.pending.contact = {};
             }
-            this.applyStyles('fullName', this.developer.contact.fullName, this.listing.developer.contact.fullName);
-            this.applyStyles('title', this.developer.contact.title, this.listing.developer.contact.title);
-            this.applyStyles('email', this.developer.contact.email, this.listing.developer.contact.email);
-            this.applyStyles('phoneNumber', this.developer.contact.phoneNumber, this.listing.developer.contact.phoneNumber);
+            this.applyStyles('fullName', this.pending.contact.fullName, this.uploaded.contact.fullName);
+            this.applyStyles('title', this.pending.contact.title, this.uploaded.contact.title);
+            this.applyStyles('email', this.pending.contact.email, this.uploaded.contact.email);
+            this.applyStyles('phoneNumber', this.pending.contact.phoneNumber, this.uploaded.contact.phoneNumber);
         }
 
         applyStyles (key, system, upload) {
             switch (this.differenceClass(system, upload)) {
             case 'modified':
-                this.developer.styles[key] = 'confirm__item--modified';
-                this.listing.developer.styles[key] = 'confirm__item--modified';
+                this.pending.styles[key] = 'confirm__item--modified';
+                this.uploaded.styles[key] = 'confirm__item--modified';
                 break;
             case 'added':
-                this.listing.developer.styles[key] = 'confirm__item--added';
+                this.uploaded.styles[key] = 'confirm__item--added';
                 break;
             case 'removed':
-                this.developer.styles[key] = 'confirm__item--removed';
+                this.pending.styles[key] = 'confirm__item--removed';
                 break;
                 // no default
             }
@@ -101,22 +106,22 @@ export const ConfirmDeveloperComponent = {
         }
 
         selectConfirmingDeveloper () {
-            this.listing.developer.developerId = this.developerSelect.developerId;
-            this.takeAction({action: 'select', developerId: this.developerSelect.developerId});
+            this.uploaded.developerId = this.pendingSelect.developerId;
+            this.takeAction({action: 'select', payload: this.pendingSelect.developerId});
             this.form.$setPristine();
         }
 
         saveConfirmingDeveloper () {
             let developer = {
-                address: this.developer.address,
-                contact: this.developer.contact,
-                developerCode: this.developer.developerCode,
-                developerId: this.developer.developerId,
-                name: this.developer.name,
-                selfDeveloper: this.developer.selfDeveloper,
-                status: this.developer.status,
-                statusEvents: this.developer.statusEvents,
-                website: this.developer.website,
+                address: this.pending.address,
+                contact: this.pending.contact,
+                developerCode: this.pending.developerCode,
+                developerId: this.pending.developerId,
+                name: this.pending.name,
+                selfDeveloper: this.pending.selfDeveloper,
+                status: this.pending.status,
+                statusEvents: this.pending.statusEvents,
+                website: this.pending.website,
             };
             if (!developer.address.country) {
                 developer.address.country = 'USA';
@@ -124,13 +129,13 @@ export const ConfirmDeveloperComponent = {
             let that = this;
             this.networkService.updateDeveloper(developer)
                 .then(() => {
-                    that.takeAction({action: 'select', developerId: developer.developerId});
+                    that.takeAction({action: 'select', payload: developer.developerId});
                     that.form.$setPristine();
                 });
         }
 
         undoEdits () {
-            this.developer = angular.copy(this.backup.developer);
+            this.pending = angular.copy(this.backup.pending);
             this.form.$setPristine();
             this.analyzeDifferences();
             this.takeAction({action: 'clear'});

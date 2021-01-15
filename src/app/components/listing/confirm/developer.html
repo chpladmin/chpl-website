@@ -1,19 +1,19 @@
 <div class="confirm" ng-form="$ctrl.form">
   <div class="confirm__developer">
     <div class="confirm__header"><h3>System information</h3></div>
-    <div class="confirm__header confirm__header--highlight" ng-if="$ctrl.listing.developer.developerId"><span class="pull-right">Last Modified: {{ $ctrl.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span><h4>{{ $ctrl.developer.name }}</h4></div>
-    <div class="confirm__header confirm__header--highlight" ng-if="!$ctrl.listing.developer.developerId"><h4>No matches found</h4></div>
+    <div class="confirm__header confirm__header--highlight" ng-if="$ctrl.uploaded.developerId"><span class="pull-right">Last Modified: {{ $ctrl.pending.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span><h4>{{ $ctrl.pending.name }}</h4></div>
+    <div class="confirm__header confirm__header--highlight" ng-if="!$ctrl.uploaded.developerId"><h4>No matches found</h4></div>
     <div>
       <div class="data-label">Developer Code</div>
-      <div class="read-only-data">{{ $ctrl.developer.developerCode }}</div>
+      <div class="read-only-data">{{ $ctrl.pending.developerCode }}</div>
     </div>
-    <div ng-class="$ctrl.developer.styles.selfDeveloper">
+    <div ng-class="$ctrl.pending.styles.selfDeveloper">
       <div class="data-label">Self-developer</div>
       <div class="flex-container">
         <div class="flex-item">
           <label>
             <input type="radio"
-                   ng-model="$ctrl.developer.selfDeveloper" ng-value="true"
+                   ng-model="$ctrl.pending.selfDeveloper" ng-value="true"
                    id="self-developer-yes" name="selfDeveloper">
             Yes
           </label>
@@ -21,190 +21,190 @@
         <div class="flex-item">
           <label>
             <input type="radio"
-                   ng-model="$ctrl.developer.selfDeveloper" ng-value="false"
+                   ng-model="$ctrl.pending.selfDeveloper" ng-value="false"
                    id="self-developer-yes" name="selfDeveloper">
             No
           </label>
         </div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.line1">
+    <div ng-class="$ctrl.pending.styles.line1">
       <div class="data-label">
         <label class="control-label" for="line1">Line 1</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.address.line1" name="line1" id="line1" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.line1" name="line1" id="line1" ng-maxlength="250" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.line2">
+    <div ng-class="$ctrl.pending.styles.line2">
       <div class="data-label">
         <label class="control-label" for="line2">Line 2</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.address.line2" name="line2" id="line2" ng-maxlength="250" />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.line2" name="line2" id="line2" ng-maxlength="250" />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line2.$touched) && $ctrl.form.line2.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.city">
+    <div ng-class="$ctrl.pending.styles.city">
       <div class="data-label">
         <label class="control-label" for="city">City</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.address.city" name="city" id="city" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.city" name="city" id="city" ng-maxlength="250" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.state">
+    <div ng-class="$ctrl.pending.styles.state">
       <div class="data-label">
         <label class="control-label" for="state">State</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.address.state" name="state" id="state" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.state" name="state" id="state" ng-maxlength="250" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.zipcode">
+    <div ng-class="$ctrl.pending.styles.zipcode">
       <div class="data-label">
         <label class="control-label" for="zipcode">Zip</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.address.zipcode" name="zipcode" id="zipcode" ng-maxlength="25" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.zipcode" name="zipcode" id="zipcode" ng-maxlength="25" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.country">
+    <div ng-class="$ctrl.pending.styles.country">
       <div class="data-label">
         <label class="control-label" for="country">Country</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.address.country" name="country" id="country" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.country" name="country" id="country" ng-maxlength="250" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.fullName">
+    <div ng-class="$ctrl.pending.styles.fullName">
       <div class="data-label">
         <label class="control-label" for="full-name">Name</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.contact.fullName" name="fullName" id="full-name" ng-maxlength="500" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.fullName" name="fullName" id="full-name" ng-maxlength="500" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.fullName.$touched) && $ctrl.form.fullName.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.fullName.$touched) && $ctrl.form.fullName.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.title">
+    <div ng-class="$ctrl.pending.styles.title">
       <div class="data-label">
         <label class="control-label" for="title">Title</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.contact.title" name="title" id="title" />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.title" name="title" id="title" />
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.phoneNumber">
+    <div ng-class="$ctrl.pending.styles.phoneNumber">
       <div class="data-label">
         <label class="control-label" for="phone-number">Phone</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.developer.contact.phoneNumber" name="phoneNumber" id="phone-number" ng-maxlegnth="100" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.phoneNumber" name="phoneNumber" id="phone-number" ng-maxlength="100" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.phoneNumber.$touched) && $ctrl.form.phoneNumber.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.phoneNumber.$touched) && $ctrl.form.phoneNumber.$error.maxlength">Field is too long</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.email">
+    <div ng-class="$ctrl.pending.styles.email">
       <div class="data-label">
         <label class="control-label" for="email">Email</label>
       </div>
       <div>
-        <input class="form-control" type="email" ng-model="$ctrl.developer.contact.email" name="email" id="email" ng-maxlength="250" required />
+        <input class="form-control" type="email" ng-model="$ctrl.pending.contact.email" name="email" id="email" ng-maxlength="250" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.maxlength">Field is too long</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.email">Improper format (sample@example.com)</div>
       </div>
     </div>
-    <div ng-class="$ctrl.developer.styles.website">
+    <div ng-class="$ctrl.pending.styles.website">
       <div>
         <label class="control-label" for="website">Website</label>
       </div>
       <div>
-        <input class="form-control" type="url" ng-model="$ctrl.developer.website" name="website" id="website" ng-maxlength="300" required />
+        <input class="form-control" type="url" ng-model="$ctrl.pending.website" name="website" id="website" ng-maxlength="300" required />
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.website.$touched) && $ctrl.form.website.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.website.$touched) && $ctrl.form.website.$error.maxlength">Field is too long</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.website.$touched) && $ctrl.form.website.$error.url">Improper format (http://www.example.com)</div>
       </div>
     </div>
-    <div class="confirm__footer" ng-if="!$ctrl.form.$pristine && $ctrl.developer.developerId">
+    <div class="confirm__footer" ng-if="!$ctrl.form.$pristine && $ctrl.pending.developerId">
       <button class="btn btn-primary"
               ng-click="$ctrl.saveConfirmingDeveloper()">Save updated information</button>
       <button class="btn btn-secondary"
               ng-click="$ctrl.undoEdits()">Undo edits</button>
     </div>
-    <div class="confirm__footer" ng-if="!$ctrl.developer.developerId">
+    <div class="confirm__footer" ng-if="!$ctrl.pending.developerId">
       This information will be used to create a new Developer
     </div>
     <div class="confirm__footer confirm__footer--start">
       <label for="developer-select" class="control-label">Select a developer</label>
-      <select ng-model="$ctrl.developerSelect" ng-change="$ctrl.selectConfirmingDeveloper()"
-              id="developer-select" name="developerSelect" class="form-control"
+      <select ng-model="$ctrl.pendingSelect" ng-change="$ctrl.selectConfirmingDeveloper()"
+              id="pending-select" name="pendingSelect" class="form-control"
               ng-options="v.name for v in $ctrl.developers">
       </select>
     </div>
   </div>
   <div class="confirm__developer">
     <div class="confirm__header"><h3>Uploaded information</h3></div>
-    <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.listing.developer.name }}</h4></div>
-    <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.listing.developer.developerCode }}</div></div>
-    <div ng-class="$ctrl.listing.developer.styles.selfDeveloper">
+    <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.uploaded.name }}</h4></div>
+    <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.uploaded.developerCode }}</div></div>
+    <div ng-class="$ctrl.uploaded.styles.selfDeveloper">
       <div class="data-label">Self-developer</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.selfDeveloper ? 'Yes' : 'No' }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.selfDeveloper ? 'Yes' : 'No' }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.line1">
+    <div ng-class="$ctrl.uploaded.styles.line1">
       <div class="data-label">Line 1</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.address.line1 }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.address.line1 }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.line2">
+    <div ng-class="$ctrl.uploaded.styles.line2">
       <div class="data-label">Line 2</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.address.line2 }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.address.line2 }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.city">
+    <div ng-class="$ctrl.uploaded.styles.city">
       <div class="data-label">City</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.address.city }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.address.city }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.state">
+    <div ng-class="$ctrl.uploaded.styles.state">
       <div class="data-label">State</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.address.state }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.address.state }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.zipcode">
+    <div ng-class="$ctrl.uploaded.styles.zipcode">
       <div class="data-label">Zip</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.address.zipcode }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.address.zipcode }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.country">
+    <div ng-class="$ctrl.uploaded.styles.country">
       <div class="data-label">Country</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.address.country }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.address.country }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.fullName">
+    <div ng-class="$ctrl.uploaded.styles.fullName">
       <div class="data-label">Name</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.contact.fullName }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.contact.fullName }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.title">
+    <div ng-class="$ctrl.uploaded.styles.title">
       <div class="data-label">Title</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.contact.title }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.contact.title }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.phoneNumber">
+    <div ng-class="$ctrl.uploaded.styles.phoneNumber">
       <div class="data-label">Phone</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.contact.phoneNumber }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.contact.phoneNumber }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.email">
+    <div ng-class="$ctrl.uploaded.styles.email">
       <div class="data-label">Email</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.contact.email }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.contact.email }}</div>
     </div>
-    <div ng-class="$ctrl.listing.developer.styles.website">
+    <div ng-class="$ctrl.uploaded.styles.website">
       <div class="data-label">Website</div>
-      <div class="read-only-data">{{ $ctrl.listing.developer.website }}</div>
+      <div class="read-only-data">{{ $ctrl.uploaded.website }}</div>
     </div>
   </div>
 </div>

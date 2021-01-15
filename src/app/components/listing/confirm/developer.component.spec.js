@@ -55,11 +55,11 @@
                 networkService.updateDeveloper.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
-                scope.listing = mock.listing;
-                scope.developer = mock.developer;
                 scope.developers = mock.developers;
+                scope.pending = mock.developer;
+                scope.uploaded = mock.listing.developer;
 
-                el = angular.element('<chpl-confirm-developer listing="listing" developer="developer" developer="developers"></chpl-confirm-developer>');
+                el = angular.element('<chpl-confirm-developer developer="developers" pending="pending" uploaded="uploaded"></chpl-confirm-developer>');
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -87,7 +87,7 @@
 
             describe('when saving new developer', () => {
                 it('should call the network service', () => {
-                    ctrl.listing.developer = angular.copy(ctrl.developer);
+                    ctrl.pending = angular.copy(ctrl.uploaded);
                     ctrl.saveConfirmingDeveloper();
                     scope.$digest();
                     expect(networkService.updateDeveloper).toHaveBeenCalled();
@@ -96,16 +96,16 @@
 
             describe('when parsing differences', () => {
                 it('should know when something was added', () => {
-                    expect(ctrl.listing.developer.styles.line1).toBe('confirm__item--added');
+                    expect(ctrl.uploaded.styles.line1).toBe('confirm__item--added');
                 });
 
                 it('should know when something was removed', () => {
-                    expect(ctrl.developer.styles.fullName).toBe('confirm__item--removed');
+                    expect(ctrl.pending.styles.fullName).toBe('confirm__item--removed');
                 });
 
                 it('should know when something was modified', () => {
-                    expect(ctrl.developer.styles.website).toBe('confirm__item--modified');
-                    expect(ctrl.listing.developer.styles.website).toBe('confirm__item--modified');
+                    expect(ctrl.pending.styles.website).toBe('confirm__item--modified');
+                    expect(ctrl.uploaded.styles.website).toBe('confirm__item--modified');
                 });
             });
         });
