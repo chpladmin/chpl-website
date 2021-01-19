@@ -1,12 +1,12 @@
 (() => {
     'use strict';
 
-    describe('the Reports.ApiKeys component', () => {
+    xdescribe('the Reports.ApiKeys component', () => {
 
         var $compile, $log, $q, ctrl, el, networkService, scope;
 
         beforeEach(() => {
-            angular.mock.module('chpl.mock', 'chpl.reports', $provide => {
+            angular.mock.module('chpl.reports', $provide => {
                 $provide.factory('chplSavedFilterDirective', () => ({}));
                 $provide.decorator('networkService', $delegate => {
                     $delegate.getActivityMetadata = jasmine.createSpy('getActivityMetadata');
@@ -19,7 +19,6 @@
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
-
                 networkService = _networkService_;
                 networkService.getActivityMetadata.and.returnValue($q.when([]));
                 networkService.getActivityById.and.returnValue($q.when({}));
