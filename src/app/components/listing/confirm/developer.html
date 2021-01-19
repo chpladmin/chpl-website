@@ -14,7 +14,7 @@
           <label>
             <input type="radio"
                    ng-model="$ctrl.pending.selfDeveloper" ng-value="true"
-                   id="self-developer-yes" name="selfDeveloper">
+                   id="self-developer-yes" name="selfDeveloper" disabled>
             Yes
           </label>
         </div>
@@ -22,7 +22,7 @@
           <label>
             <input type="radio"
                    ng-model="$ctrl.pending.selfDeveloper" ng-value="false"
-                   id="self-developer-yes" name="selfDeveloper">
+                   id="self-developer-yes" name="selfDeveloper" disabled>
             No
           </label>
         </div>
@@ -33,7 +33,7 @@
         <label class="control-label" for="line1">Line 1</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.address.line1" name="line1" id="line1" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.line1" name="line1" id="line1" ng-maxlength="250" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.maxlength">Field is too long</div>
       </div>
@@ -43,7 +43,7 @@
         <label class="control-label" for="line2">Line 2</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.address.line2" name="line2" id="line2" ng-maxlength="250" />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.line2" name="line2" id="line2" ng-maxlength="250" disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line2.$touched) && $ctrl.form.line2.$error.maxlength">Field is too long</div>
       </div>
     </div>
@@ -52,7 +52,7 @@
         <label class="control-label" for="city">City</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.address.city" name="city" id="city" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.city" name="city" id="city" ng-maxlength="250" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.maxlength">Field is too long</div>
       </div>
@@ -62,7 +62,7 @@
         <label class="control-label" for="state">State</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.address.state" name="state" id="state" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.state" name="state" id="state" ng-maxlength="250" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.maxlength">Field is too long</div>
       </div>
@@ -72,7 +72,7 @@
         <label class="control-label" for="zipcode">Zip</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.address.zipcode" name="zipcode" id="zipcode" ng-maxlength="25" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.zipcode" name="zipcode" id="zipcode" ng-maxlength="25" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.maxlength">Field is too long</div>
       </div>
@@ -82,7 +82,7 @@
         <label class="control-label" for="country">Country</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.address.country" name="country" id="country" ng-maxlength="250" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.address.country" name="country" id="country" ng-maxlength="250" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.maxlength">Field is too long</div>
       </div>
@@ -92,7 +92,7 @@
         <label class="control-label" for="full-name">Name</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.fullName" name="fullName" id="full-name" ng-maxlength="500" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.fullName" name="fullName" id="full-name" ng-maxlength="500" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.fullName.$touched) && $ctrl.form.fullName.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.fullName.$touched) && $ctrl.form.fullName.$error.maxlength">Field is too long</div>
       </div>
@@ -102,7 +102,7 @@
         <label class="control-label" for="title">Title</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.title" name="title" id="title" />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.title" name="title" id="title" disabled/>
       </div>
     </div>
     <div ng-class="$ctrl.pending.styles.phoneNumber">
@@ -110,7 +110,7 @@
         <label class="control-label" for="phone-number">Phone</label>
       </div>
       <div>
-        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.phoneNumber" name="phoneNumber" id="phone-number" ng-maxlength="100" required />
+        <input class="form-control" type="text" ng-model="$ctrl.pending.contact.phoneNumber" name="phoneNumber" id="phone-number" ng-maxlength="100" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.phoneNumber.$touched) && $ctrl.form.phoneNumber.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.phoneNumber.$touched) && $ctrl.form.phoneNumber.$error.maxlength">Field is too long</div>
       </div>
@@ -120,7 +120,7 @@
         <label class="control-label" for="email">Email</label>
       </div>
       <div>
-        <input class="form-control" type="email" ng-model="$ctrl.pending.contact.email" name="email" id="email" ng-maxlength="250" required />
+        <input class="form-control" type="email" ng-model="$ctrl.pending.contact.email" name="email" id="email" ng-maxlength="250" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.maxlength">Field is too long</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.email.$touched) && $ctrl.form.email.$error.email">Improper format (sample@example.com)</div>
@@ -131,7 +131,7 @@
         <label class="control-label" for="website">Website</label>
       </div>
       <div>
-        <input class="form-control" type="url" ng-model="$ctrl.pending.website" name="website" id="website" ng-maxlength="300" required />
+        <input class="form-control" type="url" ng-model="$ctrl.pending.website" name="website" id="website" ng-maxlength="300" required disabled/>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.website.$touched) && $ctrl.form.website.$error.required">Field is required</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.website.$touched) && $ctrl.form.website.$error.maxlength">Field is too long</div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.website.$touched) && $ctrl.form.website.$error.url">Improper format (http://www.example.com)</div>
@@ -150,7 +150,7 @@
       <label for="developer-select" class="control-label">Select a developer</label>
       <select ng-model="$ctrl.pendingSelect" ng-change="$ctrl.selectConfirmingDeveloper()"
               id="pending-select" name="pendingSelect" class="form-control"
-              ng-options="v.name for v in $ctrl.developers">
+              ng-options="v.name for v in $ctrl.developers" disabled>
       </select>
     </div>
   </div>

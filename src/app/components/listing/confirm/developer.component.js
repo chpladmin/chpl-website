@@ -30,6 +30,7 @@ export const ConfirmDeveloperComponent = {
                     this.pending = angular.copy(this.uploaded);
                 }
             }
+            this.fillBlanks(); // temporary code until editing is ready
         }
 
         $onChanges (changes) {
@@ -47,6 +48,7 @@ export const ConfirmDeveloperComponent = {
             if (this.pending && this.uploaded) {
                 this.analyzeDifferences();
             }
+            this.fillBlanks(); // temporary code until editing is ready
         }
 
         analyzeDifferences () {
@@ -104,6 +106,29 @@ export const ConfirmDeveloperComponent = {
             if (upload) {
                 return 'added';
             }
+        }
+
+        fillBlanks () {
+            if (this.pending.selfDeveloper === undefined) {
+                this.pending.selfDeveloper = this.uploaded.selfDeveloper;
+            }
+            this.pending.website = this.pending.website || this.uploaded.website;
+            if (!this.pending.address) {
+                this.pending.address = {};
+            }
+            this.pending.address.line1 = this.pending.address.line1 || this.uploaded.address.line1;
+            this.pending.address.line2 = this.pending.address.line2 || this.uploaded.address.line2;
+            this.pending.address.city = this.pending.address.city || this.uploaded.address.city;
+            this.pending.address.state = this.pending.address.state || this.uploaded.address.state;
+            this.pending.address.zipcode = this.pending.address.zipcode || this.uploaded.address.zipcode;
+            this.pending.address.country = this.pending.address.country || this.uploaded.address.country || 'USA';
+            if (!this.pending.contact) {
+                this.pending.contact = {};
+            }
+            this.pending.contact.fullName = this.pending.contact.fullName || this.uploaded.contact.fullName;
+            this.pending.contact.title = this.pending.contact.title || this.uploaded.contact.title;
+            this.pending.contact.email = this.pending.contact.email || this.uploaded.contact.email;
+            this.pending.contact.phoneNumber = this.pending.contact.phoneNumber || this.uploaded.contact.phoneNumber;
         }
 
         selectConfirmingDeveloper () {
