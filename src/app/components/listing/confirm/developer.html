@@ -1,5 +1,5 @@
 <div class="confirm" ng-form="$ctrl.form">
-  <div class="confirm__developer">
+  <div class="confirm__container">
     <div class="confirm__header"><h3>System information</h3></div>
     <div class="confirm__header confirm__header--highlight" ng-if="$ctrl.uploaded.developerId"><span class="pull-right">Last Modified: {{ $ctrl.pending.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</span><h4>{{ $ctrl.pending.name }}</h4></div>
     <div class="confirm__header confirm__header--highlight" ng-if="!$ctrl.uploaded.developerId"><h4>No matches found</h4></div>
@@ -154,7 +154,7 @@
       </select>
     </div>
   </div>
-  <div class="confirm__developer">
+  <div class="confirm__container">
     <div class="confirm__header"><h3>Uploaded information</h3></div>
     <div class="confirm__header confirm__header--highlight"><h4>{{ $ctrl.uploaded.name }}</h4></div>
     <div><div class="data-label">Developer Code</div><div class="read-only-data">{{ $ctrl.uploaded.developerCode }}</div></div>

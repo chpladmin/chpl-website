@@ -23,25 +23,25 @@
         developers="$ctrl.developers"
         pending="$ctrl.pending.developer"
         show-form-errors="$ctrl.showFormErrors"
-        take-action="$ctrl.takeDeveloperAction(action, developerId)"
+        take-action="$ctrl.takeDeveloperAction(action, payload)"
         uploaded="$ctrl.uploaded.developer"
         ></chpl-confirm-developer>
     </div>
     <div ng-switch-when="product">
-      <ai-inspect-product
-        pending-product="$ctrl.uploaded.product"
+      <chpl-confirm-product
         developer="$ctrl.pending.developer"
-        on-select="$ctrl.selectInspectingProduct(productId)"
-        set-choice="$ctrl.setProductChoice(choice)"
-        ></ai-inspect-product>
+        show-form-errors="$ctrl.showFormErrors"
+        take-action="$ctrl.takeProductAction(action, payload)"
+        uploaded="$ctrl.uploaded.product"
+        ></chpl-confirm-product>
     </div>
     <div ng-switch-when="version">
-      <ai-inspect-version
-        pending-version="$ctrl.uploaded.version"
+      <chpl-confirm-version
         product="$ctrl.pending.product"
-        on-select="$ctrl.selectInspectingVersion(versionId)"
-        set-choice="$ctrl.setVersionChoice(choice)"
-        ></ai-inspect-version>
+        show-form-errors="$ctrl.showFormErrors"
+        take-action="$ctrl.takeVersionAction(action, payload)"
+        uploaded="$ctrl.uploaded.version"
+        ></chpl-confirm-version>
     </div>
     <div ng-switch-when="listing">
       <chpl-inspect-listing
