@@ -16,12 +16,13 @@ export const ConfirmDeveloperComponent = {
         }
 
         $onInit () {
-            this.$log.info('init');
             if (this.developers) {
-                this.developers.splice(0, 0, {
-                    name: '--- Create a new Developer ---',
-                    developerId: undefined,
-                });
+                if (!this.developers.find(d => d.developerId === undefined)) {
+                    this.developers.splice(0, 0, {
+                        name: '--- Create a new Developer ---',
+                        developerId: undefined,
+                    });
+                }
                 if (this.pending) {
                     this.pendingSelect = this.developers.find(d => d.developerId === this.pending.developerId);
                 } else if (this.uploaded) {
