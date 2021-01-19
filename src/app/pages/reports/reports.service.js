@@ -118,7 +118,8 @@ export class ReportService {
     }
 
     compare (previous, current, key) {
-        return this.compareArrays(previous, current, this.getOptions(key));
+        let options = this.getOptions(key);
+        return this.compareArrays(previous, current, options);
     }
 
     getOptions (key) {
@@ -145,6 +146,11 @@ export class ReportService {
                     ret += '</ul>';
                     return ret;
                 },
+            };
+        case 'criteria':
+            return {
+                sort: (p, c) => p.number < c.number ? -1 : p.number > c.number ? 1 : p.title < c.title ? -1 : p.title > c.title ? 1 : 0,
+                write: c => c.number + ': ' + c.title.replace(/\(Cures Update\)/, '<span class="cures-update">(Cures Update)</span>'),
             };
         case 'meaningfulUseUserHistory':
             return {

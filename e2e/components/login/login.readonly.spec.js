@@ -53,7 +53,7 @@ describe('when logging in', () => {
     it('should be able to log in as ONC_STAFF with an email address', () => {
         component.logInWithEmail('oncstaff');
         component.logoutButton.waitForDisplayed();
-        expect(component.toggleLoginComponent.getText()).toBe('AQA ONC STAFF');
+        expect(component.toggleLoginComponent.getText()).toBe('AQA ONC Staff');
     });
 
     xit('should be able to log in as developer with an email address', () => {
