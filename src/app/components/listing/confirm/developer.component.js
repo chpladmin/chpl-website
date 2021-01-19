@@ -77,8 +77,8 @@ export const ConfirmDeveloperComponent = {
             this.applyStyles('phoneNumber', this.pending.contact.phoneNumber, this.uploaded.contact.phoneNumber);
         }
 
-        applyStyles (key, system, upload) {
-            switch (this.differenceClass(system, upload)) {
+        applyStyles (key, pending, uploaded) {
+            switch (this.differenceClass(pending, uploaded)) {
             case 'modified':
                 this.pending.styles[key] = 'confirm__item--modified';
                 this.uploaded.styles[key] = 'confirm__item--modified';
@@ -93,17 +93,17 @@ export const ConfirmDeveloperComponent = {
             }
         }
 
-        differenceClass (system, upload) {
-            if (system === upload) {
+        differenceClass (pending, uploaded) {
+            if (pending === uploaded) {
                 return '';
             }
-            if (system && upload) {
+            if (pending && uploaded) {
                 return 'modified';
             }
-            if (system) {
+            if (pending) {
                 return 'removed';
             }
-            if (upload) {
+            if (uploaded) {
                 return 'added';
             }
         }
