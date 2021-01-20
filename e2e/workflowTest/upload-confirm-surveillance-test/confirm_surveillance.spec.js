@@ -30,6 +30,6 @@ describe('User can confirm', () => {
         confirmPage.yesConfirmation.click();
         hooks.waitForSpinnerToDisappear();
         browser.waitUntil( () => toast.toastContainer.isDisplayed());
-        assert.equal(toast.title.getText() , 'Update processing');
+        assert.equal(toast.toastTitle.getText() , 'Update processing');
     });
 });

@@ -10,7 +10,7 @@ class ToastComponent {
         $(elements.container).$$('div').forEach(toast => toast.click());
     }
 
-    get title () {
+    get toastTitle () {
         return $(elements.title);
     }
 
