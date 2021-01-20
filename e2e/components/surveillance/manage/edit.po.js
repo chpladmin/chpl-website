@@ -11,6 +11,16 @@ const elements = {
     save: '//button[text()=" Save"]',
     remove: '//*[@ng-click="$ctrl.deleteRequirement(req)"]',
     error: '.text-danger.text-left',
+    newRequirement: '//*[@ng-click="$ctrl.addRequirement()"]',
+    requirementType: '#requirement-type',
+    requirementResult: '#result',
+    newNonConformity: '//*[@ng-click="$ctrl.addNonconformity()"]',
+    nonconformityType: '#nonconformity-type',
+    nonconformityStatus: '#nonconformity-status',
+    determinationDate: '#date-of-determination',
+    summary: '#summary',
+    findings: '#findings',
+
 };
 
 class EditComponent {
@@ -60,8 +70,52 @@ class EditComponent {
         return $(elements.error);
     }
 
+    get newRequirementButton () {
+        return $(elements.newRequirement);
+    }
+
+    get requirementType () {
+        return $(elements.requirementType);
+    }
+
+    get requirementResult () {
+        return $(elements.requirementResult);
+    }
+
+    get newNonConformityButton () {
+        return $(elements.newNonConformity);
+    }
+
+    get nonconformityType () {
+        return $(elements.nonconformityType);
+    }
+
+    get nonconformityStatus () {
+        return $(elements.nonconformityStatus);
+    }
+
+    get determinationDate () {
+        return $(elements.determinationDate);
+    }
+
+    get summary () {
+        return $(elements.summary);
+    }
+
+    get findings () {
+        return $(elements.findings);
+    }
+
+    requirementTable () {
+        return $(elements.requirementTable).$('tbody').$$('tr');
+    }
+
     requirementName (i) {
         return $(elements.requirementTable).$('tbody').$('tr').$$('td')[i];
+    }
+
+    nonconformityTable () {
+        return $('.table.ng-scope').$('tbody').$$('tr');
     }
 
 }
