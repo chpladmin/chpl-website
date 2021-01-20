@@ -9,7 +9,7 @@ const elements = {
     surveillanceType: '#surveillance-type',
     siteSurveilled: '#sites-surveilled',
     save: '//button[text()=" Save"]',
-    remove: '//*[@ng-click="$ctrl.deleteRequirement(req)"]',
+    removeRequirement: '//*[@ng-click="$ctrl.deleteRequirement(req)"]',
     error: '.text-danger.text-left',
     newRequirement: '//*[@ng-click="$ctrl.addRequirement()"]',
     requirementType: '#requirement-type',
@@ -20,7 +20,8 @@ const elements = {
     determinationDate: '#date-of-determination',
     summary: '#summary',
     findings: '#findings',
-
+    editRequirement: '//*[@ng-click="$ctrl.editRequirement(req)"]',
+    removeNonconformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
 };
 
 class EditComponent {
@@ -63,7 +64,7 @@ class EditComponent {
     }
 
     get removeButton () {
-        return $(elements.remove);
+        return $(elements.removeRequirement);
     }
 
     get errorMessages () {
@@ -104,6 +105,14 @@ class EditComponent {
 
     get findings () {
         return $(elements.findings);
+    }
+
+    get editRequirement () {
+        return $(elements.editRequirement);
+    }
+
+    get removeNonconformity () {
+        return $(elements.removeNonconformity);
     }
 
     requirementTable () {
