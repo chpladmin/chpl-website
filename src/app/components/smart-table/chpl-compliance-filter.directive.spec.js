@@ -1,24 +1,24 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Surveillance Filter', function () {
+    describe('the Compliance Filter', () => {
         var $analytics, $compile, $localStorage, $log, el, scope, vm;
 
         var stateKey = 'testState';
 
-        beforeEach(function () {
+        beforeEach(() => {
             angular.mock.module('chpl.components');
 
-            inject(function (_$analytics_, _$compile_, _$localStorage_, _$log_, $q, $rootScope) {
+            inject((_$analytics_, _$compile_, _$localStorage_, _$log_, $q, $rootScope) => {
                 $analytics = _$analytics_;
                 $compile = _$compile_;
                 $localStorage = _$localStorage_;
                 delete($localStorage[stateKey]);
                 $log = _$log_;
 
-                el = angular.element('<ai-surveillance-filter st-table ' +
+                el = angular.element('<ai-compliance-filter st-table ' +
                                      'register-clear-filter="cfFun" register-restore-state="rsFun" register-allow-all="aaFun"' +
-                                     '></ai-surveillance-filter>');
+                                     '></ai-compliance-filter>');
                 scope = $rootScope.$new();
                 scope.cfFun = jasmine.createSpy('clearFilter');
                 scope.rsFun = jasmine.createSpy('restoreState');
@@ -29,39 +29,39 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        describe('directive', function () {
-            it('should be compiled', function () {
+        describe('directive', () => {
+            it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });
 
-            it('should pick up the initial State', function () {
-                el = angular.element('<ai-surveillance-filter st-table ' +
+            it('should pick up the initial State', () => {
+                el = angular.element('<ai-compliance-filter st-table ' +
                                      'initial-state="initState" ' +
                                      'register-clear-filter="cfFun" register-restore-state="rsFun" register-allow-all="aaFun"' +
-                                     '></ai-surveillance-filter>');
-                scope.initState = {surveillance: 'has-had', NC: {}};
+                                     '></ai-compliance-filter>');
+                scope.initState = {compliance: 'has-had', NC: {}};
                 $compile(el)(scope);
                 scope.$digest();
                 vm = el.isolateScope().vm;
-                expect(vm.query).toEqual({surveillance: 'has-had', NC: {}});
+                expect(vm.query).toEqual({compliance: 'has-had', NC: {}});
             });
         });
 
-        describe('controller', function () {
-            it('should have isolate scope object with instanciate members', function () {
+        describe('controller', () => {
+            it('should have isolate scope object with instanciate members', () => {
                 expect(vm).toEqual(jasmine.any(Object));
                 expect(vm.query).toEqual({NC: {}});
             });
 
-            it('should be able to clear the filter', function () {
+            it('should be able to clear the filter', () => {
                 vm.query = 'before';
                 spyOn(vm, 'filterChanged');
                 vm.clearFilter();
@@ -69,7 +69,7 @@
                 expect(vm.filterChanged).toHaveBeenCalled();
             });
 
-            it('should be able to allow all', function () {
+            it('should be able to allow all', () => {
                 vm.query = 'fake';
                 spyOn(vm, 'filterChanged');
                 vm.allowAll();
@@ -77,8 +77,8 @@
                 expect(vm.filterChanged).toHaveBeenCalled();
             });
 
-            describe('with respect to state', function () {
-                it('should store it', function () {
+            describe('with respect to state', () => {
+                it('should store it', () => {
                     vm.tableCtrl = {
                         tableState: jasmine.createSpy('tableState'),
                     };
@@ -92,41 +92,41 @@
                     expect(vm.tableCtrl.tableState).toHaveBeenCalled();
                 });
 
-                describe('restoration', function () {
+                describe('restoration', () => {
                     var state;
-                    beforeEach(function () {
+                    beforeEach(() => {
                         spyOn(vm, 'filterChanged');
                         state = {
                             search: {
                                 predicateObject: {
-                                    surveillance: {NC: {}},
+                                    compliance: {NC: {}},
                                 },
                             },
                         };
                     });
 
-                    it('should trigger a filterChanged event', function () {
+                    it('should trigger a filterChanged event', () => {
                         vm.restoreState(state);
                         expect(vm.filterChanged).toHaveBeenCalled();
                     });
 
-                    it('should not trigger a filterChanged event if there\'s no stored predicate', function () {
+                    it('should not trigger a filterChanged event if there\'s no stored predicate', () => {
                         state.search.predicateObject = {};
                         vm.restoreState(state);
                         expect(vm.filterChanged).not.toHaveBeenCalled();
                     });
 
-                    it('should restore the element\'s value', function () {
-                        state.search.predicateObject.surveillance = 'searchTerm';
+                    it('should restore the element\'s value', () => {
+                        state.search.predicateObject.compliance = 'searchTerm';
                         vm.restoreState(state);
                         expect(vm.query).toEqual('searchTerm');
                     });
                 });
             });
 
-            describe('when the filter is triggered', function () {
+            describe('when the filter is triggered', () => {
                 var query;
-                beforeEach(function () {
+                beforeEach(() => {
                     vm.tableCtrl = {
                         search: jasmine.createSpy('search'),
                         tableState: jasmine.createSpy('tableState'),
@@ -136,63 +136,63 @@
                     query = {NC: {}};
                 });
 
-                describe('and there are no changes', function () {
-                    it('should delete the tableState surveillance object', function () {
+                describe('and there are no changes', () => {
+                    it('should delete the tableState compliance object', () => {
                         var tableState = {
                             search: {
                                 predicateObject: {
-                                    surveillance: 'a surveillance',
+                                    compliance: 'a compliance',
                                 },
                             },
                         };
                         vm.tableCtrl.tableState.and.returnValue(tableState);
                         vm.filterChanged();
-                        expect(tableState.search.predicateObject.surveillance).toBeUndefined();
+                        expect(tableState.search.predicateObject.compliance).toBeUndefined();
                     });
 
-                    it('should call the tableCtrl.search', function () {
+                    it('should call the tableCtrl.search', () => {
                         vm.filterChanged();
                         expect(vm.tableCtrl.search).toHaveBeenCalled();
                     });
 
-                    it('should not store state', function () {
+                    it('should not store state', () => {
                         vm.filterChanged();
                         expect(vm.storeState).not.toHaveBeenCalled();
                     });
 
-                    it('should store state if nameSpace is defined', function () {
+                    it('should store state if nameSpace is defined', () => {
                         vm.nameSpace = stateKey;
                         vm.filterChanged();
                         expect(vm.storeState).toHaveBeenCalled();
                     });
 
-                    it('should not track analytics', function () {
+                    it('should not track analytics', () => {
                         spyOn($analytics, 'eventTrack');
                         vm.filterChanged();
                         expect($analytics.eventTrack).not.toHaveBeenCalled();
                     });
 
-                    it('should report that there are no changes', function () {
+                    it('should report that there are no changes', () => {
                         vm.filterChanged();
                         expect(vm.hasChanges).toBe(false);
                     });
                 });
 
-                describe('and there is no initial state', function () {
-                    describe('and there are changes', function () {
-                        beforeEach(function () {
-                            query.surveillance = 'has-had';
+                describe('and there is no initial state', () => {
+                    describe('and there are changes', () => {
+                        beforeEach(() => {
+                            query.compliance = 'has-had';
                             vm.query = query;
                         });
 
-                        it('should track anlytics', function () {
+                        it('should track anlytics', () => {
                             spyOn($analytics, 'eventTrack');
                             vm.filterChanged();
-                            expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Has had Surveillance'});
-                            vm.query.surveillance = 'never';
+                            expect($analytics.eventTrack).toHaveBeenCalledWith('Compliance Filter', {category: 'Search', label: 'Has had Compliance'});
+                            vm.query.compliance = 'never';
                             vm.filterChanged();
-                            expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Never Surveilled'});
-                            vm.query.surveillance = '';
+                            expect($analytics.eventTrack).toHaveBeenCalledWith('Compliance Filter', {category: 'Search', label: 'Never Surveilled'});
+                            vm.query.compliance = '';
                             vm.query.NC = {
                                 never: true,
                                 open: true,
@@ -200,25 +200,25 @@
                                 matchAll: true,
                             };
                             vm.filterChanged();
-                            expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Never had a Nonconformity,Open Nonconformity,Closed Nonconformity,Matching All'});
+                            expect($analytics.eventTrack).toHaveBeenCalledWith('Compliance Filter', {category: 'Search', label: 'Never had a Nonconformity,Open Nonconformity,Closed Nonconformity,Matching All'});
                         });
 
-                        it('should report changes', function () {
+                        it('should report changes', () => {
                             vm.filterChanged();
                             expect(vm.hasChanges).toBe(true);
                         });
 
-                        it('should call the tableCtrl.search function', function () {
+                        it('should call the tableCtrl.search function', () => {
                             vm.filterChanged();
-                            expect(vm.tableCtrl.search).toHaveBeenCalledWith(query, 'surveillance');
+                            expect(vm.tableCtrl.search).toHaveBeenCalledWith(query, 'compliance');
                         });
                     });
                 });
 
-                describe('and there is an initial state', function () {
-                    beforeEach(function () {
+                describe('and there is an initial state', () => {
+                    beforeEach(() => {
                         vm.initialState = {
-                            surveillance: 'has-had',
+                            compliance: 'has-had',
                             NC: {
                                 never: true,
                                 open: true,
@@ -228,16 +228,16 @@
                         };
                     });
 
-                    it('should call the tableCtrl.search function', function () {
+                    it('should call the tableCtrl.search function', () => {
                         vm.filterChanged();
-                        expect(vm.tableCtrl.search).toHaveBeenCalledWith(query, 'surveillance');
+                        expect(vm.tableCtrl.search).toHaveBeenCalledWith(query, 'compliance');
                     });
 
-                    describe('and there are changes', function () {
-                        it('should track anlytics', function () {
+                    describe('and there are changes', () => {
+                        it('should track anlytics', () => {
                             spyOn($analytics, 'eventTrack');
                             vm.query = {
-                                surveillance: 'never',
+                                compliance: 'never',
                                 NC: {
                                     never: false,
                                     open: false,
@@ -246,9 +246,9 @@
                                 matchAll: false,
                             };
                             vm.filterChanged();
-                            expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Never Surveilled,Cleared Never had a Nonconformity,Cleared Open Nonconformity,Cleared Closed Nonconformity,Matching Any'});
+                            expect($analytics.eventTrack).toHaveBeenCalledWith('Compliance Filter', {category: 'Search', label: 'Never Surveilled,Cleared Never had a Nonconformity,Cleared Open Nonconformity,Cleared Closed Nonconformity,Matching Any'});
                             vm.initialState = {
-                                surveillance: 'never',
+                                compliance: 'never',
                                 NC: {
                                     never: false,
                                     open: false,
@@ -257,7 +257,7 @@
                                 matchAll: false,
                             };
                             vm.query = {
-                                surveillance: 'has-had',
+                                compliance: 'has-had',
                                 NC: {
                                     never: true,
                                     open: true,
@@ -266,7 +266,7 @@
                                 matchAll: true,
                             };
                             vm.filterChanged();
-                            expect($analytics.eventTrack).toHaveBeenCalledWith('Surveillance Filter', {category: 'Search', label: 'Has had Surveillance,Never had a Nonconformity,Open Nonconformity,Closed Nonconformity,Matching All'});
+                            expect($analytics.eventTrack).toHaveBeenCalledWith('Compliance Filter', {category: 'Search', label: 'Has had Compliance,Never had a Nonconformity,Open Nonconformity,Closed Nonconformity,Matching All'});
                             vm.initialState = {
                                 NC: {},
                             };
@@ -277,8 +277,8 @@
                             expect($analytics.eventTrack.calls.count()).toBe(2);
                         });
 
-                        it('should report changes', function () {
-                            vm.query.surveillance = '';
+                        it('should report changes', () => {
+                            vm.query.compliance = '';
                             vm.filterChanged();
                             expect(vm.hasChanges).toBe(true);
                         });

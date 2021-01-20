@@ -55,69 +55,6 @@
             expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(3);
         });
 
-        xdescribe('surveillance section', () => { //ignoring because mock data doesn't support these tests, until mock data can be updated
-            it('should filter on "never"', () => {
-                var survFilter = {surveillance: 'never'};
-                expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
-            });
-
-            it('should filter on "has-had"', () => {
-                var survFilter = {surveillance: 'has-had'};
-                expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(4);
-            });
-
-            describe('when "has-had" the nonconformity subsection', () => {
-                it('should filter on "no NCs"', () => {
-                    var survFilter = {surveillance: 'has-had', NC: {never: true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
-                });
-
-                it('should filter on "closed NCs"', () => {
-                    var survFilter = {surveillance: 'has-had', NC: {closed: true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
-                });
-
-                it('should filter on "open NCs"', () => {
-                    var survFilter = {surveillance: 'has-had', NC: {open: true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
-                });
-
-                describe('when matching all', () => {
-                    it('should filter on "no NCs & open"', () => {
-                        var survFilter = {surveillance: 'has-had', matchAll: true, NC: {never: true, open: true}};
-                        expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(0);
-                    });
-
-                    it('should filter on "closed & open"', () => {
-                        var survFilter = {surveillance: 'has-had', matchAll: true, NC: {closed: true, open: true}};
-                        expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(0);
-                    });
-                });
-
-                describe('when matching any with multiples', () => {
-                    it('should filter on "open & closed NCs"', () => {
-                        var survFilter = {surveillance: 'has-had', NC: {open: true, closed: true}};
-                        expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
-                    });
-
-                    it('should filter on "never & closed NCs"', () => {
-                        var survFilter = {surveillance: 'has-had', NC: {never: true, closed: true}};
-                        expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
-                    });
-
-                    it('should filter on "never & open NCs"', () => {
-                        var survFilter = {surveillance: 'has-had', NC: {never: true, open: true}};
-                        expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
-                    });
-
-                    it('should filter on "never, closed & open NCs"', () => {
-                        var survFilter = {surveillance: 'has-had', NC: {never: true, closed: true, open: true}};
-                        expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(4);
-                    });
-                });
-            });
-        });
-
         describe('full surveillance section', () => {
             it('should filter on "never"', () => {
                 var survFilter = {surveillance: {status: 'never'}};

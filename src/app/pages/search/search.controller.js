@@ -89,8 +89,13 @@
                 { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
                 { display: 'Surveillance', enabled: false, columns: [
                     { display: 'Total Surveillance', key: 'surveillanceCount' },
-                    { display: 'Open Nonconformities', key: 'openNonconformityCount' },
-                    { display: 'Closed Nonconformtities', key: 'closedNonconformityCount' },
+                    { display: 'Open Nonconformities', key: 'openSurveillanceNonconformityCount' },
+                    { display: 'Closed Nonconformtities', key: 'closedSurveillanceNonconformityCount' },
+                ]},
+                { display: 'Compliance', enabled: false, columns: [
+                    { display: 'Total Compliance', key: 'complianceCount' },
+                    { display: 'Open Nonconformities', key: 'openComplianceNonconformityCount' },
+                    { display: 'Closed Nonconformtities', key: 'closedComplianceNonconformityCount' },
                 ]},
             ];
 
@@ -400,10 +405,10 @@
                     results[i].mainSearch += '|' + results[i].previousDevelopers;
                     results[i].developerSearch += '|' + results[i].previousDevelopers;
                 }
-                results[i].surveillance = angular.toJson({
-                    surveillanceCount: results[i].surveillanceCount,
-                    openNonconformityCount: results[i].openNonconformityCount,
-                    closedNonconformityCount: results[i].closedNonconformityCount,
+                results[i].compliance = angular.toJson({
+                    complianceCount: results[i].surveillanceCount + results[i].complianceCount,
+                    openNonconformityCount: results[i].openSurveillanceNonconformityCount + results[i].openComplianceNonconformityCount,
+                    closedNonconformityCount: results[i].closedSurveillanceNonconformityCount + results[i].closedComplianceNonconformityCount,
                 });
                 results[i].criteriaMet = SPLIT_PRIMARY + results[i].criteriaMet + SPLIT_PRIMARY;
             }

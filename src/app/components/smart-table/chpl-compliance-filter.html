@@ -1,16 +1,16 @@
 <li>
-  <label for="filter-has-never-had-surveillance">
-    <input type="radio" ng-model="vm.query.surveillance" id="filter-has-never-had-surveillance" name="surveillance" value="never" ng-change="vm.filterChanged()">
-    <span ng-class="{ 'emphasis': vm.query.surveillance === 'never' }">Has never had a surveillance activity</span>
+  <label for="filter-has-never-had-compliance">
+    <input type="radio" ng-model="vm.query.compliance" id="filter-has-never-had-compliance" name="compliance" value="never" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis': vm.query.compliance === 'never' }">Has never had a compliance activity</span>
   </label>
 </li>
 <li>
-  <label for="filter-has-had-surveillance">
-    <input type="radio" ng-model="vm.query.surveillance" id="filter-has-had-surveillance" name="surveillance" value="has-had" ng-change="vm.filterChanged()">
-    <span ng-class="{ 'emphasis': vm.query.surveillance === 'has-had' }">Has had a surveillance activity <i class="fa" ng-class="vm.query.surveillance === 'has-had' ? 'fa-caret-down' : 'fa-caret-right'"></i></span>
+  <label for="filter-has-had-compliance">
+    <input type="radio" ng-model="vm.query.compliance" id="filter-has-had-compliance" name="compliance" value="has-had" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis': vm.query.compliance === 'has-had' }">Has had a compliance activity <i class="fa" ng-class="vm.query.compliance === 'has-had' ? 'fa-caret-down' : 'fa-caret-right'"></i></span>
   </label>
 </li>
-<span ng-if="vm.query.surveillance === 'has-had'">
+<span ng-if="vm.query.compliance === 'has-had'">
   <li class="text-center">
     <button ng-click="vm.query.matchAll = !vm.query.matchAll; vm.filterChanged()" class="btn btn-default" ng-class="{ 'emphasis' : vm.query.matchAll }">
       Matching <strong>Any</strong> <i class="fa" ng-class="vm.query.matchAll ? 'fa-toggle-on' : 'fa-toggle-off'"></i> <strong>All</strong>
@@ -35,10 +35,10 @@
     </label>
   </li>
 </span>
-<li class="text-center" ng-if="vm.query.surveillance">
+<li class="text-center" ng-if="vm.query.compliance">
   <span>
     <a href ng-click="vm.clearFilter(); $event.stopPropagation();">
-      Clear Surveillance Activity Filter
+      Clear Compliance Activity Filter
     </a>
   </span>
 </li>

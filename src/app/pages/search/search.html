@@ -147,16 +147,16 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
-            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-surveillance-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Surveillance Activity <i class="fa fa-filter"></i>
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-compliance-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.categoryChanged['compliance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Compliance Activity <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-surveillance-button" uib-dropdown-menu>
-              <ai-surveillance-filter
-                has-changes="vm.categoryChanged['surveillance']"
+            <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-compliance-button" uib-dropdown-menu>
+              <chpl-compliance-filter
+                has-changes="vm.categoryChanged['compliance']"
                 register-clear-filter="vm.registerClearFilter(clearFilter)"
                 register-restore-state="vm.registerRestoreState(restoreState)"
                 register-allow-all="vm.registerAllowAll(allowAll)"
-                name-space="searchTableState"></ai-surveillance-filter>
+                name-space="searchTableState"></chpl-compliance-filter>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">

@@ -1,3 +1,5 @@
+import { compliance } from './filters/compliance';
+
 (function () {
     'use strict';
     angular.module('chpl.components')
@@ -158,56 +160,7 @@
             let separator = expected.separator ? expected.separator : '';
 
             if (typeof expected.surveillance === 'string') {
-                if (!actual) {
-                    return false;
-                }
-                surv = angular.fromJson(actual);
-                if (expected.surveillance === 'never') {
-                    ret = surv.surveillanceCount === 0;
-                } else {
-                    ret = surv.surveillanceCount !== 0;
-                    if (expected.NC) {
-                        never = expected.NC.never;
-                        open = expected.NC.open;
-                        closed = expected.NC.closed;
-                        openNC = surv.openNonconformityCount > 0;
-                        closedNC = surv.closedNonconformityCount > 0;
-                        /*
-                         * matching one of the posibles
-                         */
-                        if (never && !open && !closed) {
-                            ret = ret && !openNC && !closedNC;
-                        } else if (!never && open && !closed) {
-                            ret = ret && openNC;
-                        } else if (!never && !open && closed) {
-                            ret = ret && closedNC;
-                            /*
-                             * if matching more than one, need to know if matchAll is true or not
-                             * if true, only valid "multiple" is !never && open && closed
-                             */
-                        } else if (expected.matchAll && !never && open && closed) {
-                            ret = ret && openNC && closedNC;
-                        } else if (expected.matchAll) {
-                            ret = false;
-                            /*
-                             * now matching "matchAny" with multiples
-                             */
-                        } else if (never && open && !closed) {
-                            ret = ret && openNC && !closedNC;
-                        } else if (never && !open && closed) {
-                            ret = ret && !openNC && closedNC;
-                        } else if (!never && open && closed) {
-                            ret = ret && (openNC || closedNC);
-                        }
-                        /*
-                         * triple multiples on matchAny
-                         * never && open && closed
-                         * !never && !open && !closed
-                         * fall back to "all", and the original return value
-                         */
-                    }
-                }
-                return ret;
+                return false;
             }
 
             // expanded surveillance filter
@@ -319,6 +272,11 @@
                     //boolean match
                     if (expected.boolean) {
                         return booleanComparator(actual, expected);
+                    }
+
+                    //compliance match
+                    if (expected.compliance) {
+                        return compliance(actual, expected);
                     }
 
                     //surveillance match
