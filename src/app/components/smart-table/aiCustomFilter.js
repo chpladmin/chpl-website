@@ -1,5 +1,6 @@
 import { boolean } from './filters/boolean';
 import { compliance } from './filters/compliance';
+import { distinct } from './filters/distinct';
 import { dateRange } from './filters/date-range';
 import { matchAll} from './filters/match-all';
 import { matchAny} from './filters/match-any';
@@ -12,14 +13,6 @@ import { matchAny} from './filters/match-any';
     /** @ngInject */
     function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
         let filterFilter = $filter('filter');
-
-        let distinctComparator = (actual, expected) => {
-            if (!actual || actual.toLowerCase() !== expected.distinct.toLowerCase()) {
-                return false;
-            }
-
-            return true;
-        };
 
         let nonconformityComparator = (actual, expected) => {
             let closed, closedNC, open, openNC, ret;
@@ -175,7 +168,7 @@ import { matchAny} from './filters/match-any';
                 if (angular.isObject(expected)) {
                     //exact match
                     if (expected.distinct) {
-                        return distinctComparator(actual, expected);
+                        return distinct(actual, expected);
                     }
 
                     //boolean match
