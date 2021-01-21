@@ -36,22 +36,6 @@ import { matchAny} from './filters/match-any';
             return ret;
         };
 
-        let rangeComparator = (actual, expected) => {
-            if (expected.lower) {
-                if (actual > expected.lower) {
-                    return false;
-                }
-            }
-
-            if (expected.higher) {
-                if (actual < expected.higher) {
-                    return false;
-                }
-            }
-
-            return true;
-        };
-
         let standardComparator = (obj, text) => {
             text = ('' + text).toLowerCase();
             return ('' + obj).toLowerCase().indexOf(text) > -1;
@@ -204,11 +188,6 @@ import { matchAny} from './filters/match-any';
                     //date range
                     if (expected.before || expected.after) {
                         return dateRange(actual, expected);
-                    }
-
-                    // range comparator
-                    if (expected.lower || expected.higher) {
-                        return rangeComparator(actual, expected);
                     }
 
                     return true;
