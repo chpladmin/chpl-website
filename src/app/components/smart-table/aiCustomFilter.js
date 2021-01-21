@@ -1,5 +1,6 @@
 import { boolean } from './filters/boolean';
 import { compliance } from './filters/compliance';
+import { dateRange } from './filters/date-range';
 
 (function () {
     'use strict';
@@ -9,36 +10,6 @@ import { compliance } from './filters/compliance';
     /** @ngInject */
     function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
         let filterFilter = $filter('filter');
-
-        let dateRangeComparator = (actual, expected) => {
-            let higherLimit, itemDate, lowerLimit, queryDate;
-
-            try {
-                if (expected.before) {
-                    higherLimit = expected.before;
-
-                    itemDate = new Date(actual);
-                    queryDate = new Date(higherLimit);
-                    if (itemDate > queryDate) {
-                        return false;
-                    }
-                }
-
-                if (expected.after) {
-                    lowerLimit = expected.after;
-
-                    itemDate = new Date(actual);
-                    queryDate = new Date(lowerLimit);
-                    if (itemDate < queryDate) {
-                        return false;
-                    }
-                }
-
-                return true;
-            } catch (e) {
-                return false;
-            }
-        };
 
         let distinctComparator = (actual, expected) => {
             if (!actual || actual.toLowerCase() !== expected.distinct.toLowerCase()) {
@@ -286,7 +257,7 @@ import { compliance } from './filters/compliance';
 
                     //date range
                     if (expected.before || expected.after) {
-                        return dateRangeComparator(actual, expected);
+                        return dateRange(actual, expected);
                     }
 
                     // range comparator
