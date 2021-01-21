@@ -33,7 +33,7 @@ describe('when user is on confirm surveillance page', () => {
             hooks.open('#/surveillance/confirm');
             hooks.waitForSpinnerToDisappear();
             confirmPage.rejectCheckbox(rejectListingId1);
-            confirmPage.rejectButton.waitAndClick();
+            confirmPage.rejectButton.scrollAndClick();
             confirmPage.yesConfirmation.scrollAndClick();
             assert.isFalse(confirmPage.findSurveillancetoReject(rejectListingId1).isDisplayed());
         });

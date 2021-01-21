@@ -148,7 +148,7 @@ class SearchPage {
     // There is no spinner or other indication on search page to make browser wait until listing results are updating
     // Hoping with redesigning of search page, this timeout won't be needed
     waitForUpdatedListingResultsCount () {
-        browser.pause(10000);
+        browser.pause(15000);
     }
 
     homeSearchPageButtons (buttonName) {

@@ -24,6 +24,7 @@ describe('When user rejects a surveillance activity while inspecting uploaded su
         browser.waitUntil( () => confirmPage.table.isDisplayed());
         var countBefore = confirmPage.tableRowCount.length;
         confirmPage.inspectButton(listingId);
+        hooks.waitForSpinnerToDisappear();
         confirmPage.rejectOnInspectButton.click();
         confirmPage.yesConfirmation.click();
         hooks.waitForSpinnerToDisappear();

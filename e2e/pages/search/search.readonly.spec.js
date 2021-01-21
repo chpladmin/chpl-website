@@ -5,7 +5,7 @@ let hooks, page;
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config/mainConfig');
-const developerName = 'Allscripts';
+const developerName = 'AT&T JY MERGE';
 const productName = 'TouchWork';
 const acbId = '170008R01';
 const chplId = '15.99.04.3078.Ninj.01.00.0.200629';
@@ -28,6 +28,7 @@ describe('On search page - ', () => {
     describe('When browsing all listings', () => {
         beforeEach(() => {
             page.browseAllButton.click();
+            hooks.waitForSpinnerToDisappear();
             page.waitForUpdatedListingResultsCount();
         });
 
@@ -151,6 +152,7 @@ describe('On search page - ', () => {
 
         describe('When using certification edition filter as 2014', () => {
             beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
                 countBefore = page.listingTotalCount();
                 page.expandFilterOptions('edition').click();
                 page.edition2014FilterOption.click();
@@ -219,6 +221,7 @@ describe('On search page - ', () => {
 
         describe('When using More filter on 2014/2015 CQM', () => {
             beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
                 countBefore = page.listingTotalCount();
                 page.moreFilterButton.click();
                 page.moreFilterExpand(' View Clinical Quality Measures ').click();
@@ -259,6 +262,7 @@ describe('On search page - ', () => {
 
         describe('When using More filter on Practice Type', () => {
             beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
                 countBefore = page.listingTotalCount();
                 page.moreFilterButton.click();
                 page.moreFilterExpand(' View Practice Type ').scrollAndClick();
@@ -302,6 +306,7 @@ describe('On search page - ', () => {
 
         describe('When using More filter on Developer/ Product/ Version', () => {
             beforeEach(() => {
+                page.waitForUpdatedListingResultsCount();
                 countBefore = page.listingTotalCount();
                 page.moreFilterButton.click();
                 page.moreDeveloperFilter.addValue(developerName);
