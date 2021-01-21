@@ -9,7 +9,7 @@ export class ReportService {
     compareArray (prev, curr, keys, root, nested, altRoot) {
         var ret = [];
         var change, i, j, k, l;
-        if (prev !== null) {
+        if (prev !== null && prev !== undefined) {
             for (i = 0; i < prev.length; i++) {
                 for (j = 0; j < curr.length; j++) {
                     var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
