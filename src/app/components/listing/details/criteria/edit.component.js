@@ -6,7 +6,7 @@ export const CertificationCriteriaEditComponent = {
         dismiss: '&',
     },
     controller: class CertificationCriteriaEditController {
-        constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+        constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultSvap, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
@@ -19,6 +19,7 @@ export const CertificationCriteriaEditComponent = {
             this.CertificationResultTestProcedure = CertificationResultTestProcedure;
             this.CertificationResultTestStandard = CertificationResultTestStandard;
             this.CertificationResultTestTool = CertificationResultTestTool;
+            this.CertificationResultSvap = CertificationResultSvap;
         }
 
         $onInit () {
@@ -48,8 +49,10 @@ export const CertificationCriteriaEditComponent = {
             this.newTestStandards = this._getNewTestStandards();
             this.selectedTestToolKeys = this._getSelectedTestToolKeys();
             this.sortedTestFunctionalities = this._getSortedTestFunctionalities();
+            this.selectedSvapKeys = this._getSelectedSvapKeys();
             this._setAvailableTestValues();
             this._setTestToolDropDownText();
+            this._setSvapDisplayText();
         }
 
         cancel () {
@@ -72,6 +75,19 @@ export const CertificationCriteriaEditComponent = {
 
         save () {
             this.close({$value: this.cert});
+        }
+
+        svapOnChange (action) {
+            switch (action.action) {
+            case 'Remove':
+                this.cert.svaps = this.cert.svaps
+                    .filter(svap => svap.svapId !== action.item.item.svapId);
+                break;
+            case 'Add':
+                this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
+                break;
+            // no default
+            }
         }
 
         testDataOnChange (action) {
@@ -178,6 +194,13 @@ export const CertificationCriteriaEditComponent = {
         ////////////////////////////////////////////////////////////////////
 
         // setup helper functions
+        _getSelectedSvapKeys () {
+            if (!this.cert.svaps) {
+                return [];
+            }
+            return this.cert.svaps.map(s => ({key: s.svapId}));
+        }
+
         _getSelectedTestDataKeys () {
             if (!this.cert.testDataUsed) {
                 return [];
@@ -243,6 +266,12 @@ export const CertificationCriteriaEditComponent = {
             let title = this.cert.title;
             this.availableTestData = this.resources.testData.data.filter(item => item.criteria.number === number && item.criteria.title === title);
             this.availableTestProcedures = this.resources.testProcedures.data.filter(item => item.criteria.number === number && item.criteria.title === title);
+        }
+
+        _setSvapDisplayText () {
+            if (Array.isArray(this.cert.allowedSvaps)) {
+                this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: (svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
+            }
         }
 
         _setTestToolDropDownText () {

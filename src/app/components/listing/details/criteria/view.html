@@ -32,6 +32,22 @@
             </td>
             <td>{{ $ctrl.cert.gap ? 'True' : 'False' }}</td>
           </tr>
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps.length > 0" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Svap{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+            <td>
+              Standards Version Advancement Process <button class="btn btn-link btn-xs pull-right" uib-tooltip="Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td>
+              <ul>
+                <li ng-repeat="m in $ctrl.cert.svaps">
+                  <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ (m.replaced ? 'Replaced | ' : '') + m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <button class="tooltip-button btn btn-link" uib-tooltip="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program."
+                    tooltip-trigger="'mouseenter focus click'" ng-if="m.replaced">
+                    <span class="sr-only">This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.</span><i class="fa fa-info-circle"></i>
+                  </button>
+                </li>
+              </ul>
+            </td>
+          </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Standard <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet a certification criterion where additional, optional standards are permitted." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The standard(s) used to meet a certification criterion where additional, optional standards are permitted.</span><i class="fa fa-info-circle fa-lg"></i></button>
