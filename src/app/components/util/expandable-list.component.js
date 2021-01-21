@@ -126,6 +126,7 @@ export const ExpandableListComponent = {
 
         _createSelectedItem (item) {
             var selectedItem = {'item': item};
+            selectedItem.item.name = selectedItem.item[this.itemText];
 
             if (this.additionalInput) {
                 selectedItem.additionalInputValue = '';
