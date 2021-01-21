@@ -1,6 +1,8 @@
 import { boolean } from './filters/boolean';
 import { compliance } from './filters/compliance';
 import { dateRange } from './filters/date-range';
+import { matchAll} from './filters/match-all';
+import { matchAny} from './filters/match-any';
 
 (function () {
     'use strict';
@@ -17,55 +19,6 @@ import { dateRange } from './filters/date-range';
             }
 
             return true;
-        };
-
-        let matchAnyComparator = (actual, expected) => {
-            let separator = expected.separator ? expected.separator : '';
-
-            if (expected.matchAny.items.length === 0) {
-                return true;
-            }
-
-            if (!actual) {
-                return false;
-            }
-
-            for (let i = 0; i < expected.matchAny.items.length; i++) {
-                if (
-                    (separator + actual + separator).toLowerCase() === (separator + expected.matchAny.items[i] + separator).toLowerCase()
-                        ||
-                        (
-                            !expected.matchAny.matchFull
-                                &&
-                                (separator + actual + separator).toLowerCase().indexOf((separator + expected.matchAny.items[i] + separator).toLowerCase()) > -1
-                        )
-                ) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        let matchAllComparator = (actual, expected) => {
-            let ret;
-            let separator = expected.separator ? expected.separator : '';
-
-            if (expected.matchAll.items.length === 0) {
-                return true;
-            }
-
-            if (!actual) {
-                return false;
-            }
-
-            ret = true;
-            for (let i = 0; i < expected.matchAll.items.length; i++) {
-                ret = ret && ((separator + actual + separator).toLowerCase() === (separator + expected.matchAll.items[i] + separator).toLowerCase()
-                              || (separator + actual + separator).toLowerCase().indexOf((separator + expected.matchAll.items[i] + separator).toLowerCase()) > -1);
-            }
-
-            return ret;
         };
 
         let nonconformityComparator = (actual, expected) => {
@@ -247,12 +200,12 @@ import { dateRange } from './filters/date-range';
 
                     //matchAny
                     if (expected.matchAny) {
-                        return matchAnyComparator(actual, expected);
+                        return matchAny(actual, expected);
                     }
 
                     //matchAll
                     if (expected.matchAll) {
-                        return matchAllComparator(actual, expected);
+                        return matchAll(actual, expected);
                     }
 
                     //date range
