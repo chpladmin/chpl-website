@@ -1,3 +1,4 @@
+import { boolean } from './filters/boolean';
 import { compliance } from './filters/compliance';
 
 (function () {
@@ -8,22 +9,6 @@ import { compliance } from './filters/compliance';
     /** @ngInject */
     function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
         let filterFilter = $filter('filter');
-
-        let booleanComparator = (actual, expected) => {
-            if (expected.boolean === 'Any') {
-                return true;
-            }
-
-            if (actual && expected.boolean === 'True') {
-                return true;
-            }
-
-            if (!actual && expected.boolean === 'False') {
-                return true;
-            }
-
-            return false;
-        };
 
         let dateRangeComparator = (actual, expected) => {
             let higherLimit, itemDate, lowerLimit, queryDate;
@@ -271,7 +256,7 @@ import { compliance } from './filters/compliance';
 
                     //boolean match
                     if (expected.boolean) {
-                        return booleanComparator(actual, expected);
+                        return boolean(actual, expected);
                     }
 
                     //compliance match
