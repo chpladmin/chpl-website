@@ -135,7 +135,7 @@ describe('On Surveillance edit page - ACB can not', () => {
         let testName = input.testName;
 
         it(`${testName} as non conformity without adding non conformity`, () => {
-            edit.editSurveillance.click();
+            edit.editSurveillance();
             edit.newRequirementButton.click();
             edit.requirementType.selectByVisibleText(input.type);
             if (input.type === 'Other Requirement') {
