@@ -19,7 +19,7 @@ describe('ONC-Staff user can see', () => {
 
     it('correct background jobs', () => {
         var actualResult = [];
-        var expectedResult = ['Export Annual Report','Export Quarterly Report','MUU Upload','Surveillance Upload'];
+        var expectedResult = ['MUU Upload','Surveillance Upload','Export Quarterly Report','Export Annual Report'];
         var length = background.backgroundJobRowsCount;
         for ( var j = 0; j < length; j++ ) {
             actualResult.push(background.backgroundJobNames(j).getText());
