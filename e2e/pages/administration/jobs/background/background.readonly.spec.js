@@ -11,13 +11,13 @@ beforeEach(async () => {
     await hooks.open('#/search');
 });
 
-describe('ONC-Staff user can see', () => {
+describe('When an ONC-Staff user is logged in', () => {
     beforeEach(function () {
         loginComponent.logInWithEmail('oncstaff');
         hooks.open('#/administration/jobs/background');
     });
 
-    it('correct background jobs', () => {
+    it('should see the right set of background jobs', () => {
         var actualResult = [];
         var expectedResult = ['MUU Upload','Surveillance Upload','Export Quarterly Report','Export Annual Report'];
         var length = background.backgroundJobRowsCount;

@@ -11,13 +11,13 @@ beforeEach(async () => {
     await hooks.open('#/search');
 });
 
-describe('ONC-Staff user can see', () => {
+describe('When an ONC-Staff user is logged in', () => {
     beforeEach(function () {
         loginComponent.logInWithEmail('oncstaff');
         hooks.open('#/administration/jobs/scheduled');
     });
 
-    it('correct scheduled jobs', () => {
+    it('should see the right set of scheduled jobs', () => {
         var actualResult = [];
         var expectedResult = ['All Broken Surveillance Rules Report','Developer Access Report','Inherited Certification Status Errors Report','Overnight Broken Surveillance Rules Report','Pending \'Change Request\' Report','Questionable Activity Report','Questionable URL Report','Summary Statistics Email','Trigger Developer Ban Notification'];
         var length = scheduled.scheduledJobRowsCount;
