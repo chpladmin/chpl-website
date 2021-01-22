@@ -22,13 +22,25 @@ const elements = {
     findings: '#findings',
     editRequirement: '//*[@ng-click="$ctrl.editRequirement(req)"]',
     removeNonconformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
+    approvalDate: '#cap-approval-date',
+    ncStartDate: '#cap-start-date',
+    completeDate: '#cap-must-complete-date',
+    sites: '#sites-passed',
+    totalSites: '#total-sites',
+    explanation: '#developer-explanation',
+    resolution: '#resolution',
+    reuirementCapability: '#requirement-capability',
 };
 
-class EditComponent {
+class SurveillanceEditComponent {
     constructor () { }
 
     get cancel () {
         return $(elements.cancel);
+    }
+
+    get reuirementCapability () {
+        return $(elements.reuirementCapability);
     }
 
     get surveillanceDetails () {
@@ -107,6 +119,34 @@ class EditComponent {
         return $(elements.findings);
     }
 
+    get approvalDate () {
+        return $(elements.approvalDate);
+    }
+
+    get ncStartDate () {
+        return $(elements.ncStartDate);
+    }
+
+    get completeDate () {
+        return $(elements.completeDate);
+    }
+
+    get sites () {
+        return $(elements.sites);
+    }
+
+    get totalSites () {
+        return $(elements.totalSites);
+    }
+
+    get resolution () {
+        return $(elements.resolution);
+    }
+
+    get explanation () {
+        return $(elements.explanation);
+    }
+
     get editRequirement () {
         return $(elements.editRequirement);
     }
@@ -127,6 +167,30 @@ class EditComponent {
         return $('.table.ng-scope').$('tbody').$$('tr');
     }
 
+    addNonConformity (details , type) {
+        this.nonconformityType.selectByVisibleText(details.type);
+        this.nonconformityStatus.selectByVisibleText(details.status);
+        this.determinationDate.setValue(details.determinationDate);
+        this.approvalDate.setValue(details.approvalDate);
+        this.ncStartDate.setValue(details.startDate);
+        this.completeDate.setValue(details.completeDate);
+        if (type === 'Randomized') {
+            this.sites.setValue(details.sites);
+            this.totalSites.setValue(details.totalSites); }
+        this.summary.setValue(details.summary);
+        this.findings.setValue(details.findings);
+        this.explanation.setValue(details.explanation);
+        if (this.resolution.isEnabled()) {
+            this.resolution.setValue(details.resolution);
+        }
+    }
+
+    editSurveillance () {
+        this.editButton.click();
+        if (!$('#edit-surveillance-label').isDisplayed()) {
+            this.editButton.click();
+        }
+    }
 }
 
-export default EditComponent;
+export default SurveillanceEditComponent;

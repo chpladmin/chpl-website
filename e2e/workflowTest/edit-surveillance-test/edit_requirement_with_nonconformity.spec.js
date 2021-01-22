@@ -2,7 +2,7 @@ import UploadSurveillanceComponent from '../../components/upload/upload-surveill
 import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import EditComponent from '../../components/surveillance/manage/edit.po';
+import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanceEdit.po';
 import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, upload;
@@ -11,7 +11,7 @@ const error = 'At least one Non-Conformity must be documented';
 
 beforeAll(async () => {
     loginComponent = new LoginComponent();
-    edit = new EditComponent();
+    edit = new SurveillanceEditComponent();
     confirmPage = new ConfirmPage();
     upload = new UploadSurveillanceComponent();
     hooks = new Hooks();
@@ -28,7 +28,7 @@ describe('On Surveillance edit page - when ACB removes non conformity from a req
         browser.waitUntil( () => confirmPage.table.isDisplayed());
         confirmPage.inspectButton(listingId);
         hooks.waitForSpinnerToDisappear();
-        edit.editButton.scrollAndClick();
+        edit.editSurveillance();
         hooks.waitForSpinnerToDisappear();
         edit.editRequirement.click();
         edit.removeNonconformity.click();

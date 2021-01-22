@@ -5,6 +5,7 @@ const confirmElements = {
     rejectButton: '#pending-listing-reject-all',
     table: '//*[@id="pending-surveillance-table"]',
     confirm: '//button[text()=" Confirm"]',
+    errorOnConfirm: '.bg-danger',
 };
 
 class ConfirmPage {
@@ -36,6 +37,10 @@ class ConfirmPage {
 
     get rejectButton () {
         return $(confirmElements.rejectButton);
+    }
+
+    get errorOnConfirm () {
+        return $(confirmElements.errorOnConfirm);
     }
 
     rejectCheckbox (chplId) {

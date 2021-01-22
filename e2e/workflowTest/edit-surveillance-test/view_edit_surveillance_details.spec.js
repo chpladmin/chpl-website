@@ -2,7 +2,7 @@ import UploadSurveillanceComponent from '../../components/upload/upload-surveill
 import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import EditComponent from '../../components/surveillance/manage/edit.po';
+import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanceEdit.po';
 import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, upload;
@@ -15,7 +15,7 @@ beforeEach(async () => {
     confirmPage = new ConfirmPage();
     upload = new UploadSurveillanceComponent();
     hooks = new Hooks();
-    edit = new EditComponent();
+    edit = new SurveillanceEditComponent();
     hooks.open('#/surveillance/upload');
     loginComponent.logInWithEmail('acb');
     upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
@@ -46,7 +46,7 @@ describe('ACB can -', () => {
     });
 
     it('edit uploaded surveillance activity details', () => {
-        edit.editButton.click();
+        edit.editSurveillance();
         let surveillanceDetails = {
             startDate: '10/10/2019',
             startDateInDetails: 'Oct 10, 2019',
@@ -70,7 +70,7 @@ describe('ACB can -', () => {
 
 describe('When user removes all requirements on uploaded surveillance activity', () => {
     it('it shows an error to have at least one requirement', () => {
-        edit.editButton.click();
+        edit.editSurveillance();
         edit.removeButton.click();
         edit.saveButton.click();
         assert.include(edit.errorMessages.getText(),error);

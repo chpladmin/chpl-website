@@ -2,27 +2,22 @@ import UploadSurveillanceComponent from '../../components/upload/upload-surveill
 import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import EditComponent from '../../components/surveillance/manage/edit.po';
+import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanceEdit.po';
 import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
-const inputs = require('../../components/surveillance/manage/requirement-dp');
+const listingId1 = '15.04.04.2496.ARIA.16.03.1.200623';
+const inputs = require('../../components/surveillance/edit/requirement-dp');
 
 beforeEach(async () => {
     loginComponent = new LoginComponent();
-    edit = new EditComponent();
+    edit = new SurveillanceEditComponent();
     confirmPage = new ConfirmPage();
     upload = new UploadSurveillanceComponent();
     hooks = new Hooks();
     hooks.open('#/surveillance/upload');
     loginComponent.logInWithEmail('acb');
-    upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
-    hooks.open('#/surveillance/confirm');
-    hooks.waitForSpinnerToDisappear();
-    browser.waitUntil( () => confirmPage.table.isDisplayed());
-    confirmPage.inspectButton(listingId);
-    hooks.waitForSpinnerToDisappear();
 });
 
 afterEach(() =>{
@@ -42,13 +37,22 @@ afterEach(() =>{
 });
 
 describe('On Surveillance edit page - ACB can', () => {
+    beforeEach(() =>{
+        upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
+        hooks.open('#/surveillance/confirm');
+        hooks.waitForSpinnerToDisappear();
+        browser.waitUntil( () => confirmPage.table.isDisplayed());
+        confirmPage.inspectButton(listingId);
+        hooks.waitForSpinnerToDisappear();
+    });
+
     inputs.forEach(input => {
         let testName = input.testName;
 
         it(`${testName} without non conformity`, () => {
 
             var countBefore = edit.requirementTable().length;
-            edit.editButton.click();
+            edit.editSurveillance();
             edit.newRequirementButton.click();
             edit.requirementType.selectByVisibleText(input.type);
             if (input.type === 'Other Requirement') {
@@ -68,19 +72,33 @@ describe('On Surveillance edit page - ACB can', () => {
 });
 
 describe('On Surveillance edit page - ACB can', () => {
+    beforeEach(() =>{
+        upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
+        hooks.open('#/surveillance/confirm');
+        hooks.waitForSpinnerToDisappear();
+        browser.waitUntil( () => confirmPage.table.isDisplayed());
+        confirmPage.inspectButton(listingId);
+        hooks.waitForSpinnerToDisappear();
+    });
+
     inputs.forEach(input => {
         let testName = input.testName;
 
-        it(`${testName} with non conformity`, () => {
+        it(`${testName} with non conformity to reactive surveillance activity`, () => {
             let nonconformitydetails = {
                 type: '170.314 (a)(1): Computerized provider order entry',
                 status: 'Open',
-                date: '01/01/2020',
+                determinationDate: '01/01/2020',
                 summary: 'test summary',
                 findings: 'test findings',
+                approvalDate: '01/01/2020',
+                startDate: '01/01/2019',
+                completeDate: '01/01/2020',
+                explanation: 'Test explanation',
+                resolution: 'Test resolution',
             };
             var countBefore = edit.requirementTable().length;
-            edit.editButton.click();
+            edit.editSurveillance();
             edit.newRequirementButton.click();
             edit.requirementType.selectByVisibleText(input.type);
             if (input.type === 'Other Requirement') {
@@ -92,11 +110,9 @@ describe('On Surveillance edit page - ACB can', () => {
             }
             edit.requirementResult.selectByVisibleText('Non-Conformity');
             edit.newNonConformityButton.click();
-            edit.nonconformityType.selectByVisibleText(nonconformitydetails.type);
-            edit.nonconformityStatus.selectByVisibleText(nonconformitydetails.status);
-            edit.determinationDate.setValue(nonconformitydetails.date);
-            edit.summary.setValue(nonconformitydetails.summary);
-            edit.findings.setValue(nonconformitydetails.findings);
+            edit.addNonConformity(nonconformitydetails , 'Reactive');
+            assert.isFalse(edit.sites.isEnabled());
+            assert.isFalse(edit.totalSites.isEnabled());
             edit.saveButton.scrollAndClick();
             assert.equal(edit.nonconformityTable().length,1);
             edit.saveButton.scrollAndClick();
@@ -106,11 +122,20 @@ describe('On Surveillance edit page - ACB can', () => {
     });
 });
 describe('On Surveillance edit page - ACB can not', () => {
+    beforeEach(() =>{
+        upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
+        hooks.open('#/surveillance/confirm');
+        hooks.waitForSpinnerToDisappear();
+        browser.waitUntil( () => confirmPage.table.isDisplayed());
+        confirmPage.inspectButton(listingId);
+        hooks.waitForSpinnerToDisappear();
+    });
+
     inputs.forEach(input => {
         let testName = input.testName;
 
         it(`${testName} as non conformity without adding non conformity`, () => {
-            edit.editButton.click();
+            edit.editSurveillance.click();
             edit.newRequirementButton.click();
             edit.requirementType.selectByVisibleText(input.type);
             if (input.type === 'Other Requirement') {
@@ -126,4 +151,55 @@ describe('On Surveillance edit page - ACB can not', () => {
         });
     });
 
+});
+
+describe('On Surveillance edit page - ACB can', () => {
+    beforeEach(() =>{
+        upload.uploadSurveillance('../../../resources/surveillance/SAQA3.csv');
+        hooks.open('#/surveillance/confirm');
+        hooks.waitForSpinnerToDisappear();
+        browser.waitUntil( () => confirmPage.table.isDisplayed());
+        confirmPage.inspectButton(listingId1);
+        hooks.waitForSpinnerToDisappear();
+    });
+
+    inputs.forEach(input => {
+        let testName = input.testName;
+
+        it(`${testName} with non conformity to randomized surveillance activity`, () => {
+            let nonconformitydetails = {
+                type: '170.314 (a)(1): Computerized provider order entry',
+                status: 'Closed',
+                determinationDate: '01/01/2020',
+                summary: 'Test summary',
+                findings: 'Test findings',
+                approvalDate: '01/01/2020',
+                startDate: '01/01/2019',
+                completeDate: '01/01/2020',
+                sites: '2',
+                totalSites: '2',
+                explanation: 'Test explanation',
+                resolution: 'Test resolution',
+            };
+            var countBefore = edit.requirementTable().length;
+            edit.editSurveillance();
+            edit.newRequirementButton.click();
+            edit.requirementType.selectByVisibleText(input.type);
+            if (input.type === 'Other Requirement') {
+                $(input.capabilitySelector).setValue(input.capability);
+            }
+            else
+            {
+                $(input.capabilitySelector).selectByVisibleText(input.capability);
+            }
+            edit.requirementResult.selectByVisibleText('Non-Conformity');
+            edit.newNonConformityButton.click();
+            edit.addNonConformity(nonconformitydetails , 'Randomized');
+            edit.saveButton.scrollAndClick();
+            assert.equal(edit.nonconformityTable().length,1);
+            edit.saveButton.scrollAndClick();
+            var countAfter = edit.requirementTable().length;
+            assert.equal(countAfter,countBefore + 1);
+        });
+    });
 });
