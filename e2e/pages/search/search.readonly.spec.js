@@ -329,17 +329,26 @@ describe('the search page', () => {
         });
     });
 
-    describe('when using the Download Results feature', () => {
-        beforeEach(() => {
-            page.downloadResultsButton.scrollAndClick();
-            page.downloadResultsCustomizeButton.scrollAndClick();
-        });
-
+    describe('when downloading results', () => {
         it('should download a file', () => {
+            page.downloadResultsButton.scrollAndClick();
+            page.downloadResultsAction.scrollAndClick();
             const fileName = 'search-results.csv';
             const filePath = path.join(global.downloadDir, fileName);
             browser.waitForFileExists(filePath,config.timeout);
             expect(fs.existsSync(filePath)).toBe(true);
+        });
+
+        describe('with more than 50 results', () => {
+            it('should indicate it will download however many results there are', () => {
+                browser.saveScreenshot('test_reports/e2e/0.png');
+                page.pageSize.selectByVisibleText('250');
+                browser.saveScreenshot('test_reports/e2e/1.png');
+                page.downloadResultsButton.scrollAndClick();
+                browser.saveScreenshot('test_reports/e2e/2.png');
+                expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
+                browser.saveScreenshot('test_reports/e2e/3.png');
+            });
         });
     });
 });
