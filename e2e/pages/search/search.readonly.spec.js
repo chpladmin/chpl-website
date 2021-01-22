@@ -276,7 +276,7 @@ describe('the search page', () => {
                 });
             });
 
-            describe('More -> Certification Date', () => {
+            describe('Certification Date', () => {
                 it('should filter listing results', () => {
                     page.moreFilterExpand(' View Certification Date ').click();
                     page.moreCertificationEndDateFilter.addValue('01/01/2019');
@@ -341,13 +341,9 @@ describe('the search page', () => {
 
         describe('with more than 50 results', () => {
             it('should indicate it will download however many results there are', () => {
-                browser.saveScreenshot('test_reports/e2e/0.png');
                 page.pageSize.selectByVisibleText('250');
-                browser.saveScreenshot('test_reports/e2e/1.png');
                 page.downloadResultsButton.scrollAndClick();
-                browser.saveScreenshot('test_reports/e2e/2.png');
                 expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
-                browser.saveScreenshot('test_reports/e2e/3.png');
             });
         });
     });
