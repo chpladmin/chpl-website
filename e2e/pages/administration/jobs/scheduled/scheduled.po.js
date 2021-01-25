@@ -5,11 +5,11 @@ const scheduledElements = {
 class ScheduledPage {
     constructor () { }
 
-    get scheduledJobRowsCount () {
-        return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr').length;
+    get scheduledJobRows () {
+        return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr');
     }
 
-    scheduledJobNames (rowNumber) {
+    scheduledJobName (rowNumber) {
         return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr')[rowNumber].$$('td')[0];
     }
 

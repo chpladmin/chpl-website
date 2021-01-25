@@ -5,11 +5,11 @@ const backgroundElements = {
 class BackgroundPage {
     constructor () { }
 
-    get backgroundJobRowsCount () {
-        return $(backgroundElements.backgroundJobsRoot).$('tbody').$$('tr').length;
+    get backgroundJobRows () {
+        return $(backgroundElements.backgroundJobsRoot).$('tbody').$$('tr');
     }
 
-    backgroundJobNames (rowNumber) {
+    backgroundJobName (rowNumber) {
         return $(backgroundElements.backgroundJobsRoot).$('tbody').$$('tr')[rowNumber].$$('td')[0];
     }
 
