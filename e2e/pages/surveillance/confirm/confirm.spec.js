@@ -15,7 +15,7 @@ beforeEach(async () => {
     await hooks.open('#/surveillance/upload');
 });
 
-describe('when user is on confirm surveillance page', () => {
+describe('when ACB user is on confirm surveillance page', () => {
     beforeEach(() => {
         loginComponent.logInWithEmail('acb');
     });

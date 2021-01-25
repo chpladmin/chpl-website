@@ -22,9 +22,9 @@ beforeAll(async () => {
     hooks.waitForSpinnerToDisappear();
 });
 
-describe('On Surveillance edit page - when ACB removes non conformity from a requirement with non conformity', () => {
+describe('when inspecting uploaded surveillance activity, ACB user', () => {
 
-    it('shows an error', () => {
+    it('should not allow to remove non conformity from a requirement with non conformity', () => {
         browser.waitUntil( () => confirmPage.table.isDisplayed());
         confirmPage.inspectButton(listingId);
         hooks.waitForSpinnerToDisappear();

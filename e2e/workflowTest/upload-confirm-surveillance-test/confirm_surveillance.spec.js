@@ -42,7 +42,7 @@ describe('User can confirm', () => {
         confirmPage.confirmButton.click();
         confirmPage.yesConfirmation.click();
         hooks.waitForSpinnerToDisappear();
-        browser.waitUntil( () => toast.toastContainer.isDisplayed());
+        browser.waitUntil( () => toast.toastTitle.isDisplayed());
         assert.equal(toast.toastTitle.getText() , 'Update processing');
     });
 });

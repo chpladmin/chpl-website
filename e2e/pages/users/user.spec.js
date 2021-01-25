@@ -30,6 +30,7 @@ describe('ONC STAFF can ', () => {
         page.userTitle.clearValue();
         page.userTitle.addValue(title);
         actionBarComponent.save();
+        browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(title));
         assert.include(page.userInformation('AQA ONC STAFF').getText(),title);
     });
 

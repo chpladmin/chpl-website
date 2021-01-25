@@ -27,25 +27,22 @@ beforeEach(async () => {
 });
 
 afterEach(() =>{
-    edit.cancel.click();
-    confirmPage.yesConfirmation.click();
-    if (edit.cancel.isDisplayed())
-    {
+    do {
         edit.cancel.click();
         confirmPage.yesConfirmation.click();
-    }
+    } while (edit.cancel.isDisplayed());
     loginComponent.logOut();
 });
 
-describe('ACB can -', () => {
+describe('when inspecting uploaded surveillance activity, ACB user', () => {
 
-    it('view uploaded surveillance activity details', () => {
+    it('should be able to view surveillance activity details', () => {
         assert.equal(edit.inspectTitle.getText(), 'Inspect Surveillance Activity');
         assert.include(edit.surveillanceDetails.getText(), listingId);
         assert.equal(edit.requirementName(1).getText(),requirement);
     });
 
-    it('edit uploaded surveillance activity details', () => {
+    it('should be able to edit surveillance activity details', () => {
         edit.editSurveillance();
         let surveillanceDetails = {
             startDate: '10/10/2019',
@@ -68,8 +65,8 @@ describe('ACB can -', () => {
 
 });
 
-describe('When user removes all requirements on uploaded surveillance activity', () => {
-    it('it shows an error to have at least one requirement', () => {
+describe('when inspecting uploaded surveillance activity, ACB user', () => {
+    it('should not be allowed to remove all requirements', () => {
         edit.editSurveillance();
         edit.removeButton.click();
         edit.saveButton.click();

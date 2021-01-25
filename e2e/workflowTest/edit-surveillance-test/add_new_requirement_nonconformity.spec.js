@@ -21,22 +21,14 @@ beforeEach(async () => {
 });
 
 afterEach(() =>{
-    edit.cancel.click();
-    confirmPage.yesConfirmation.click();
-    if (edit.cancel.isDisplayed())
-    {
+    do {
         edit.cancel.click();
         confirmPage.yesConfirmation.click();
-    }
-    if (edit.cancel.isDisplayed())
-    {
-        edit.cancel.click();
-        confirmPage.yesConfirmation.click();
-    }
+    } while (edit.cancel.isDisplayed());
     loginComponent.logOut();
 });
 
-describe('On Surveillance edit page - ACB can', () => {
+describe('when inspecting uploaded surveillance activity, ACB user', () => {
     beforeEach(() =>{
         upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
         hooks.open('#/surveillance/confirm');
@@ -49,7 +41,7 @@ describe('On Surveillance edit page - ACB can', () => {
     inputs.forEach(input => {
         let testName = input.testName;
 
-        it(`${testName} without non conformity`, () => {
+        it(`should be able to ${testName} without non conformity`, () => {
 
             var countBefore = edit.requirementTable().length;
             edit.editSurveillance();
@@ -68,23 +60,8 @@ describe('On Surveillance edit page - ACB can', () => {
             var countAfter = edit.requirementTable().length;
             assert.equal(countAfter,countBefore + 1);
         });
-    });
-});
 
-describe('On Surveillance edit page - ACB can', () => {
-    beforeEach(() =>{
-        upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
-        hooks.open('#/surveillance/confirm');
-        hooks.waitForSpinnerToDisappear();
-        browser.waitUntil( () => confirmPage.table.isDisplayed());
-        confirmPage.inspectButton(listingId);
-        hooks.waitForSpinnerToDisappear();
-    });
-
-    inputs.forEach(input => {
-        let testName = input.testName;
-
-        it(`${testName} with non conformity to reactive surveillance activity`, () => {
+        it(`should be able to ${testName} with non conformity to reactive surveillance activity`, () => {
             let nonconformitydetails = {
                 type: '170.314 (a)(1): Computerized provider order entry',
                 status: 'Open',
@@ -119,22 +96,8 @@ describe('On Surveillance edit page - ACB can', () => {
             var countAfter = edit.requirementTable().length;
             assert.equal(countAfter,countBefore + 1);
         });
-    });
-});
-describe('On Surveillance edit page - ACB can not', () => {
-    beforeEach(() =>{
-        upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
-        hooks.open('#/surveillance/confirm');
-        hooks.waitForSpinnerToDisappear();
-        browser.waitUntil( () => confirmPage.table.isDisplayed());
-        confirmPage.inspectButton(listingId);
-        hooks.waitForSpinnerToDisappear();
-    });
 
-    inputs.forEach(input => {
-        let testName = input.testName;
-
-        it(`${testName} as non conformity without adding non conformity`, () => {
+        it(`should not be able to ${testName} as non conformity without adding non conformity`, () => {
             edit.editSurveillance();
             edit.newRequirementButton.click();
             edit.requirementType.selectByVisibleText(input.type);
@@ -150,10 +113,9 @@ describe('On Surveillance edit page - ACB can not', () => {
             assert.include(edit.errorMessages.getText(),'At least one Non-Conformity must be documented');
         });
     });
-
 });
 
-describe('On Surveillance edit page - ACB can', () => {
+describe('when inspecting uploaded surveillance activity, ACB user', () => {
     beforeEach(() =>{
         upload.uploadSurveillance('../../../resources/surveillance/SAQA3.csv');
         hooks.open('#/surveillance/confirm');
@@ -166,7 +128,7 @@ describe('On Surveillance edit page - ACB can', () => {
     inputs.forEach(input => {
         let testName = input.testName;
 
-        it(`${testName} with non conformity to randomized surveillance activity`, () => {
+        it(`should be able to ${testName} with non conformity to randomized surveillance activity`, () => {
             let nonconformitydetails = {
                 type: '170.314 (a)(1): Computerized provider order entry',
                 status: 'Closed',
