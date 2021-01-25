@@ -11,9 +11,9 @@
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.line1" id="line1" name="line1" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line1.$touched) && $ctrl.form.line1.$error.maxlength">Field is too long</div>
-          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('line1')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('line1', option)">{{ option }}</button>
             </li>
           </ul>
@@ -24,9 +24,9 @@
         <div>
           <input class="input-sm form-control" type="text" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.line2" id="line2" name="line2" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.line2.$touched) && $ctrl.form.line2.$error.maxlength">Field is too long</div>
-          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('line2')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('line2', option)">{{ option }}</button>
             </li>
           </ul>
@@ -40,9 +40,9 @@
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.city" id="city" name="city" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.city.$touched) && $ctrl.form.city.$error.maxlength">Field is too long</div>
-          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('city')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('city', option)">{{ option }}</button>
             </li>
           </ul>
@@ -54,9 +54,9 @@
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.state" id="state" name="state" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.state.$touched) && $ctrl.form.state.$error.maxlength">Field is too long</div>
-          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('state')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('state', option)">{{ option }}</button>
             </li>
           </ul>
@@ -68,9 +68,9 @@
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.zipcode" id="zipcode" name="zipcode" ng-maxlength="25" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.zipcode.$touched) && $ctrl.form.zipcode.$error.maxlength">Field is too long</div>
-          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('zipcode')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('zipcode', option)">{{ option }}</button>
             </li>
           </ul>
@@ -84,9 +84,9 @@
           <input class="input-sm form-control" type="text" ng-required="$ctrl.valuesRequired()" ng-disabled="$ctrl.isDisabled" ng-model="$ctrl.address.country" id="country" name="country" ng-maxlength="250" ng-change="$ctrl.update()"></input>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.country.$touched) && $ctrl.form.country.$error.maxlength">Field is too long</div>
-          <ul class="list-inline" ng-if="$ctrl.mergeOptions">
+          <ul class="list-inline merge-options" ng-if="$ctrl.mergeOptions">
             <li ng-repeat="option in $ctrl.getDifferences('country')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('country', option)">{{ option }}</button>
             </li>
           </ul>
