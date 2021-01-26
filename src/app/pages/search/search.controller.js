@@ -89,13 +89,13 @@
                 { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
                 { display: 'Surveillance', enabled: false, columns: [
                     { display: 'Total Surveillance', key: 'surveillanceCount' },
-                    { display: 'Open Nonconformities', key: 'openSurveillanceNonconformityCount' },
-                    { display: 'Closed Nonconformtities', key: 'closedSurveillanceNonconformityCount' },
+                    { display: 'Open Surveillance Nonconformities', key: 'openSurveillanceNonconformityCount' },
+                    { display: 'Closed Surveillance Nonconformities', key: 'closedSurveillanceNonconformityCount' },
                 ]},
-                { display: 'Compliance', enabled: false, columns: [
-                    { display: 'Total Compliance', key: 'complianceCount' },
-                    { display: 'Open Nonconformities', key: 'openComplianceNonconformityCount' },
-                    { display: 'Closed Nonconformtities', key: 'closedComplianceNonconformityCount' },
+                { display: 'Direct Review', enabled: false, columns: [
+                    { display: 'Total Direct Reviews', key: 'directReviewCount' },
+                    { display: 'Open Direct Review Nonconformities', key: 'openDirectReviewNonconformityCount' },
+                    { display: 'Closed Direct Review Nonconformities', key: 'closedDirectReviewNonconformityCount' },
                 ]},
             ];
 
