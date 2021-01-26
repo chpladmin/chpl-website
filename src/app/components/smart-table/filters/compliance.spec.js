@@ -2,15 +2,13 @@
 import { compliance } from './compliance';
 
 const mock = {
-    /* eslint-disable quotes, key-spacing */
     collection: [
-        {"compliance":"{\"complianceCount\":0,\"openNonconformityCount\":0,\"closedNonconformityCount\":0}"},
-        {"compliance":"{\"complianceCount\":1,\"openNonconformityCount\":0,\"closedNonconformityCount\":0}"},
-        {"compliance":"{\"complianceCount\":1,\"openNonconformityCount\":0,\"closedNonconformityCount\":1}"},
-        {"compliance":"{\"complianceCount\":1,\"openNonconformityCount\":1,\"closedNonconformityCount\":0}"},
-        {"compliance":"{\"complianceCount\":2,\"openNonconformityCount\":1,\"closedNonconformityCount\":1}"},
+        '{"complianceCount":0,"openNonconformityCount":0,"closedNonconformityCount":0}',
+        '{"complianceCount":1,"openNonconformityCount":0,"closedNonconformityCount":0}',
+        '{"complianceCount":1,"openNonconformityCount":0,"closedNonconformityCount":1}',
+        '{"complianceCount":1,"openNonconformityCount":1,"closedNonconformityCount":0}',
+        '{"complianceCount":2,"openNonconformityCount":1,"closedNonconformityCount":1}',
     ],
-    /* eslint-enable quotes, key-spacing */
 };
 
 fdescribe('the compliance filter', () => {
@@ -75,13 +73,13 @@ fdescribe('the compliance filter', () => {
             it('should filter on "never | closed NCs"', () => {
                 const filter = {compliance: 'has-had', NC: {never: true, closed: true}};
                 let results = mock.collection.map(c => compliance(c, filter));
-                expect(results).toEqual([false, false, true, false, false]);
+                expect(results).toEqual([false, true, true, false, false]);
             });
 
             it('should filter on "never | open NCs"', () => {
                 const filter = {compliance: 'has-had', NC: {never: true, open: true}};
                 let results = mock.collection.map(c => compliance(c, filter));
-                expect(results).toEqual([false, false, false, true, false]);
+                expect(results).toEqual([false, true, false, true, false]);
             });
 
             it('should filter on "never, closed | open NCs"', () => {
