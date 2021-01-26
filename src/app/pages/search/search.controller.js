@@ -406,9 +406,9 @@
                     results[i].developerSearch += '|' + results[i].previousDevelopers;
                 }
                 results[i].compliance = angular.toJson({
-                    complianceCount: results[i].surveillanceCount + results[i].complianceCount,
-                    openNonconformityCount: results[i].openSurveillanceNonconformityCount + results[i].openComplianceNonconformityCount,
-                    closedNonconformityCount: results[i].closedSurveillanceNonconformityCount + results[i].closedComplianceNonconformityCount,
+                    complianceCount: results[i].surveillanceCount + results[i].directReviewCount,
+                    openNonconformityCount: results[i].openSurveillanceNonconformityCount + results[i].openDirectReviewNonconformityCount,
+                    closedNonconformityCount: results[i].closedSurveillanceNonconformityCount + results[i].closedDirectReviewNonconformityCount,
                 });
                 results[i].criteriaMet = SPLIT_PRIMARY + results[i].criteriaMet + SPLIT_PRIMARY;
             }
