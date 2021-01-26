@@ -214,4 +214,61 @@ describe('the Developers page', () => {
             });
         });
     });
+    describe('when logged in as an Admin', () => {
+        beforeEach(() => {
+            login.logInWithEmail('admin');
+            login.logoutButton.waitForDisplayed();
+        });
+
+        afterEach(() => {
+            login.logOut();
+        });
+
+        describe('when on the "Greenway Health, LLC" Developer page', () => {
+            const name = 'Greenway Intergy Meaningful Use Edition';
+            const productId = 837;
+            let newVersion, product, timestamp, version;
+
+            beforeEach(() => {
+                let developer = 'Greenway Health, LLC';
+                timestamp = (new Date()).getTime();
+                page = new DevelopersPage();
+                page.selectDeveloper(developer);
+                page.getDeveloperPageTitle(developer).waitForDisplayed();
+                hooks.waitForSpinnerToDisappear();
+            });
+
+            describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
+                version = 'v10.10';
+                const versionToBeMerged = 'v9.30';
+
+                beforeEach(() => {
+                    newVersion = 'New version - ' + timestamp;
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    page.selectVersion(product, productId, version);
+                });
+
+                it('should create new version successfully', () => {
+                    page.mergeButton.click();
+                    page.versionMergeButton.click();
+                    page.moveVersionToBeMerged(versionToBeMerged);
+                    page.versionName.clearValue();
+                    page.versionName.addValue(newVersion);
+                    actionBar.save();
+                    page.productsHeader.waitForDisplayed();
+                    toast.clearAllToast();
+                    product = page.getProduct(name);
+                    product.scrollIntoView({block: 'center', inline: 'center'});
+                    page.selectProduct(product);
+                    page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+                    expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
+                    expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(version);
+                    expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(versionToBeMerged);
+                });
+            });
+        });
+    });
 });

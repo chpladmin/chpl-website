@@ -1,5 +1,5 @@
 <div ng-form="$ctrl.form">
-  <div class="panel-default">
+  <div class="panel-default" ng-class="{'panel-default--nested' : $ctrl.isMerging }">
     <div class="panel-heading products__products-header">
       <div class="products__products-header-item"><h2 class="panel-title">Edit Product Details</h2></div>
     </div>
@@ -11,9 +11,9 @@
                  ng-model="$ctrl.product.name" required ng-maxlength="300">
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.maxlength">Field is too long</div>
-          <ul class="list-inline">
+          <ul class="list-inline merge-options">
             <li ng-repeat="option in $ctrl.getDifferences('name')">
-              <button class="btn btn-link merge-option"
+              <button class="btn btn-secondary"
                       ng-click="$ctrl.selectDifference('name', option)">{{ option }}</button>
             </li>
           </ul>

@@ -206,6 +206,15 @@ export const ReportsListingsComponent = {
                 if (testFunctionality.length > 0) {
                     obj.changes.push('<li>Test Functionality changes<ul>' + testFunctionality.join('') + '</li>');
                 }
+                var svapKeys = [{key: 'regulatoryTextCitation', display: 'SVAP'}];
+                var svap = this.ReportService.compareArray(prev[i].svaps, curr[i].svaps, svapKeys, 'regulatoryTextCitation');
+                if (svap.length > 0) {
+                    obj.changes.push('<li>SVAP changes<ul>');
+                    for (j = 0; j < svap.length; j++) {
+                        obj.changes.push(svap[j].changes.join(''));
+                    }
+                    obj.changes.push('</ul></li>');
+                }
                 var testToolsUsedKeys = [{key: 'testToolVersion', display: 'Test Tool Version'}];
                 var testToolsUsed = this.ReportService.compareArray(prev[i].testToolsUsed, curr[i].testToolsUsed, testToolsUsedKeys, 'testToolName');
                 for (j = 0; j < testToolsUsed.length; j++) {
@@ -345,18 +354,43 @@ export const ReportsListingsComponent = {
 
         compareSed (prev, curr) {
             var i, j, k, ret = [];
+            let c, change, changes, p;
 
+            let pUcd = prev.ucdProcesses.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+            let cUcd = curr.ucdProcesses.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
             var ucdProcessesKeys = [{key: 'details', display: 'UCD Process Details'}];
-            var ucdProcessesNested = [
-                {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
-            ];
-            var ucdProcesses = this.ReportService.compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
-            for (i = 0; i < ucdProcesses.length; i++) {
-                ret.push('<li>UCD Process Name "' + ucdProcesses[i].name + '" changes<ul>' + ucdProcesses[i].changes.join('') + '</ul></li>');
+            p = 0;
+            c = 0;
+            while (pUcd[p] || cUcd[c]) {
+                if (pUcd.length === p || pUcd[p].name > cUcd[c].name) {
+                    ret.push('<li>UCD Process Name "' + cUcd[c].name + '" was added</li>');
+                    c++;
+                } else if (cUcd.length === c || pUcd[p].name < cUcd[c].name) {
+                    ret.push('<li>UCD Process Name "' + pUcd[p].name + '" was removed</li>');
+                    p++;
+                } else {
+                    changes = [];
+                    for (i = 0; i < ucdProcessesKeys.length; i++) {
+                        change = this.ReportService.compareItem(pUcd[p], cUcd[c], ucdProcessesKeys[i].key, ucdProcessesKeys[i].display);
+                        if (change) {
+                            changes.push(change);
+                        }
+                    }
+                    change = this.ReportService.compare(pUcd[p].criteria, cUcd[c].criteria, 'criteria');
+                    if (change.length > 0) {
+                        changes.push('<li>Certification Criteria changes:<ul>' + change.join('') + '</ul></li>');
+                    }
+                    if (changes.length > 0) {
+                        ret.push('<li>UCD Process Name "' + pUcd[p].name + '" changes<ul>' + changes.join('') + '</ul></li>');
+                    }
+                    p++;
+                    c++;
+                }
             }
 
+            let pTask = prev.testTasks.sort((a, b) => a.description < b.description ? -1 : a.description > b.description ? 1 : 0);
+            let cTask = curr.testTasks.sort((a, b) => a.description < b.description ? -1 : a.description > b.description ? 1 : 0);
             var taskKeys = [
-                {key: 'description', display: 'Description'},
                 {key: 'taskErrors', display: 'Task Errors'},
                 {key: 'taskErrorsStddev', display: 'Task Errors Standard Deviation'},
                 {key: 'taskPathDeviationObserved', display: 'Task Path Deviation Observed'},
@@ -371,13 +405,56 @@ export const ReportsListingsComponent = {
                 {key: 'taskTimeDeviationOptimalAvg', display: 'Task Time Deviation Optimal Average'},
                 {key: 'taskTimeStddev', display: 'Task Time Standard Deviation'},
             ];
-            var taskNested = [
-                {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
-                {key: 'testParticipants', display: 'Test Participant', value: 'id', compareId: 'id', countOnly: true},
-            ];
-            var tasks = this.ReportService.compareArray(prev.testTasks, curr.testTasks, taskKeys, 'id', taskNested, 'description');
-            for (i = 0; i < tasks.length; i++) {
-                ret.push('<li>Task Description "' + tasks[i].name + '" changes<ul>' + tasks[i].changes.join('') + '</ul></li>');
+            p = 0;
+            c = 0;
+            while (pTask[p] || cTask[c]) {
+                if (pTask.length === p || pTask[p].description > cTask[c].description) {
+                    ret.push('<li>Task Description "' + cTask[c].description + '" was added</li>');
+                    c++;
+                } else if (cTask.length === c || pTask[p].description < cTask[c].description) {
+                    ret.push('<li>Task Description "' + pTask[p].description + '" was removed</li>');
+                    p++;
+                } else {
+                    changes = [];
+                    for (i = 0; i < taskKeys.length; i++) {
+                        change = this.ReportService.compareItem(pTask[p], cTask[c], taskKeys[i].key, taskKeys[i].display);
+                        if (change) {
+                            changes.push(change);
+                        }
+                    }
+                    change = this.ReportService.compare(pTask[p].criteria, cTask[c].criteria, 'criteria');
+                    if (change.length > 0) {
+                        changes.push('<li>Certification Criteria changes:<ul>' + change.join('') + '</ul></li>');
+                    }
+                    j = 0;
+                    k = 0;
+                    let added = 0, removed = 0;
+                    let pParts = pTask[p].testParticipants.sort((a, b) => a.id - b.id);
+                    let cParts = cTask[c].testParticipants.sort((a, b) => a.id - b.id);
+                    while (pParts[j] || cParts[k]) {
+                        if (pParts.length === j || pParts[j].id > cParts[k].id) {
+                            added++;
+                            k++;
+                        } else if (cParts.length === k || pParts[j].id < cParts[k].id) {
+                            removed++;
+                            j++;
+                        } else {
+                            j++;
+                            k++;
+                        }
+                    }
+                    if (added) {
+                        changes.push('<li>Added ' + added + ' Test Participant' + (added > 1 ? 's' : ''));
+                    }
+                    if (removed) {
+                        changes.push('<li>Removed ' + removed + ' Test Participant' + (removed > 1 ? 's' : ''));
+                    }
+                    if (changes.length > 0) {
+                        ret.push('<li>Task Description "' + pTask[p].description + '" changes<ul>' + changes.join('') + '</ul></li>');
+                    }
+                    p++;
+                    c++;
+                }
             }
 
             var found, part, task;

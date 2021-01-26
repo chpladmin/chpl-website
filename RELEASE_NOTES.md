@@ -1,5 +1,29 @@
 # Release Notes
 
+## Version 11.5.0
+_25 January 2021_
+
+### Features
+* Edit SVAP information for specific criteria in listing details
+* Display accurate responsible user information for User Reports
+* Turn on all retired items when "Select all" is used with retired options
+* Display API Key Management report in new style
+* Tell user about Developer Merge processing
+* Support Version merge on Developers page
+
+### Flagged Features
+* Display RWT upload only when RWT is available
+
+### User Interface Updates
+* Indicate new quarterly frequency of 2014 Download File Generation
+
+### Bug Fixes
+* Display "Cures Update" information on relelvant SED updates in Listing reports
+* Require at least one Non-conformity when Surveillance Result is "Non-Conformity"
+* Restore "link to edit" from Listing Reports
+
+---
+
 ## Version 11.4.0
 _14 December 2020_
 

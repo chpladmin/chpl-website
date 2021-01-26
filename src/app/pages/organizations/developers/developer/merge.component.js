@@ -5,12 +5,13 @@ export const DevelopersMergeComponent = {
         developers: '<',
     },
     controller: class DevelopersMergeController {
-        constructor ($log, $state, authService, networkService) {
+        constructor ($log, $state, authService, networkService, toaster) {
             'ngInject';
             this.$log = $log;
             this.$state = $state;
             this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
+            this.toaster = toaster;
         }
 
         $onChanges (changes) {
@@ -40,21 +41,30 @@ export const DevelopersMergeComponent = {
         }
 
         merge (developer) {
-            let developerToSave = {
+            let mergeDeveloperObject = {
                 developer: developer,
                 developerIds: this.selectedDevelopers.map(d => d.developerId),
             };
-            developerToSave.developerIds.push(this.developer.developerId);
+            mergeDeveloperObject.developerIds.push(this.developer.developerId);
             let that = this;
-            this.networkService.updateDeveloper(developerToSave)
+            this.networkService.mergeDevelopers(mergeDeveloperObject)
                 .then(response => {
-                    that.$state.go('organizations.developers.developer', {
-                        developerId: response.developerId,
-                    }, {
-                        reload: true,
-                    });
+                    if (!response.status || response.status === 200) {
+                        that.toaster.pop({
+                            type: 'success',
+                            title: 'Merge submitted',
+                            body: 'Your action has been submitted and you\'ll get an email at ' + response.job.jobDataMap.user.email + ' when it\'s done',
+                        });
+                        that.$state.go('organizations.developers', {}, {
+                            reload: true,
+                        });
+                    }
                 }, error => {
-                    that.$log.error(error);
+                    that.toaster.pop({
+                        type: 'error',
+                        title: 'Merge error',
+                        body: error.data.error,
+                    });
                 });
         }
 

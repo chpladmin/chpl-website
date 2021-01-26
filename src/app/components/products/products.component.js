@@ -109,8 +109,13 @@ export const ProductsComponent = {
         mergeProduct (product) {
             this.$state.go('organizations.developers.developer.product.merge', {
                 productId: product.productId,
-                product: product,
-                products: this.products,
+            });
+        }
+
+        mergeVersion (product) {
+            this.$state.go('organizations.developers.developer.product.version.merge', {
+                productId: product.productId,
+                versionId: product.activeVersion.versionId,
             });
         }
 
