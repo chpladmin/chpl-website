@@ -10,7 +10,7 @@ const mock = {
 
 let filter;
 
-fdescribe('the distinct filter', () => {
+describe('the distinct filter', () => {
     beforeEach(() => {
         filter = {
             distinct: undefined,

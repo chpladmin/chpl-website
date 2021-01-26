@@ -7,7 +7,7 @@ const mock = {
     ],
 };
 
-fdescribe('the boolean filter', () => {
+describe('the boolean filter', () => {
     it('should not allow "blanks"', () => {
         const filter = {boolean: 'True'};
         let results = boolean(undefined, filter);

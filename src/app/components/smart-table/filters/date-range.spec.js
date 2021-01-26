@@ -7,7 +7,7 @@ const mock = {
     ],
 };
 
-fdescribe('the dateRange filter', () => {
+describe('the dateRange filter', () => {
     it('should allow blank ranges"', () => {
         const filter = {};
         let results = mock.collection.map(c => dateRange(c, filter));

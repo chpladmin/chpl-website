@@ -10,7 +10,7 @@ const mock = {
 
 let filter;
 
-fdescribe('the matchAll filter', () => {
+describe('the matchAll filter', () => {
     beforeEach(() => {
         filter = {
             matchAll: {

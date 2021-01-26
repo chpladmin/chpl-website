@@ -10,7 +10,7 @@ const mock = {
 
 let filter;
 
-fdescribe('the matchAny filter', () => {
+describe('the matchAny filter', () => {
     beforeEach(() => {
         filter = {
             matchAny: {

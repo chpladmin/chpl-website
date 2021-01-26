@@ -11,7 +11,7 @@ const mock = {
     ],
 };
 
-fdescribe('the compliance filter', () => {
+describe('the compliance filter', () => {
     it('should not allow listings without compliance data', () => {
         const filter = {compliance: 'never'};
         let results = compliance(undefined, filter);

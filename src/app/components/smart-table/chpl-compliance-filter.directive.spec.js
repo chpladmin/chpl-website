@@ -16,9 +16,9 @@
                 delete($localStorage[stateKey]);
                 $log = _$log_;
 
-                el = angular.element('<ai-compliance-filter st-table ' +
+                el = angular.element('<chpl-compliance-filter st-table ' +
                                      'register-clear-filter="cfFun" register-restore-state="rsFun" register-allow-all="aaFun"' +
-                                     '></ai-compliance-filter>');
+                                     '></chpl-compliance-filter>');
                 scope = $rootScope.$new();
                 scope.cfFun = jasmine.createSpy('clearFilter');
                 scope.rsFun = jasmine.createSpy('restoreState');
@@ -43,10 +43,10 @@
             });
 
             it('should pick up the initial State', () => {
-                el = angular.element('<ai-compliance-filter st-table ' +
+                el = angular.element('<chpl-compliance-filter st-table ' +
                                      'initial-state="initState" ' +
                                      'register-clear-filter="cfFun" register-restore-state="rsFun" register-allow-all="aaFun"' +
-                                     '></ai-compliance-filter>');
+                                     '></chpl-compliance-filter>');
                 scope.initState = {compliance: 'has-had', NC: {}};
                 $compile(el)(scope);
                 scope.$digest();
