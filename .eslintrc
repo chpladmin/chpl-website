@@ -4,6 +4,7 @@
     ],
     "extends": [
         "eslint:recommended",
+        "plugin:react/recommended"
     ],
     "env": {
         "browser": true,
@@ -13,8 +14,8 @@
     },
     "globals": {
         "angular": true,
-        "module": true,
         "inject": true,
+        "module": true,
     },
     "parser": "babel-eslint",
     "rules": {
