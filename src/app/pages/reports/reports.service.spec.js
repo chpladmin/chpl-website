@@ -9,6 +9,10 @@
                 {name: 'Microsoft Word', version: '1', grouping: 'A', certifiedProductNumber: 'CHP-20202', justification: 'A reason'},
                 {name: 'LotusNotes', version: '1', grouping: 'A', certifiedProductNumber: 'CHP-20202', justification: 'A reason'},
             ],
+            criteria: [
+                { number: '170.315 (b)(2)', title: 'Clinical Information Reconciliation and Incorporation (Cures Update)' },
+                { number: '170.315 (b)(2)', title: 'Clinical Information Reconciliation and Incorporation' },
+            ],
             qmsStandards: [
                 {qmsStandardName: 'Modified QMS/Mapped', qmsModification: 'ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes.', applicableCriteria: 'All'},
                 {qmsStandardName: 'Modified QMS/Mapped', qmsModification: 'ISO 9001:9.2 Internal audit;Each team member receives bi-yearly \'Scaled Agile SAFe Team Self-Assessment\' to score and comment on:l Healthiness of Product Ownershipl Healthiness of Release Planningl Sprint Healthl Team Healthl Technical Health', applicableCriteria: 'All'},
@@ -219,6 +223,17 @@
             it('should report removals to an empty array', () => {
                 const before = [].concat(angular.copy(mock.testFunctionality[0]));
                 expect(service.compare(before, [], 'testFunctionality')).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
+            });
+        });
+
+        describe('when comparing criteria', () => {
+            it('should report differences between cures update criteria', () => {
+                const before = mock.criteria.filter(c => c.title.indexOf('Cures') === -1);
+                const after = mock.criteria.filter(c => c.title.indexOf('Cures') > -1);
+                expect(service.compare(before, after, 'criteria')).toEqual([
+                    '<li>Removed 170.315 (b)(2): Clinical Information Reconciliation and Incorporation</li>',
+                    '<li>Added 170.315 (b)(2): Clinical Information Reconciliation and Incorporation <span class="cures-update">(Cures Update)</span></li>',
+                ]);
             });
         });
     });

@@ -119,7 +119,7 @@ export const SurveillanceRequirementEditComponent = {
         }
 
         isNonconformityRequired () {
-            return this.requirement.result.name === 'Non-Conformity' &&
+            return (this.requirement.result && this.requirement.result.name === 'Non-Conformity') &&
                 (!this.requirement.nonconformities || this.requirement.nonconformities.length === 0);
         }
 
