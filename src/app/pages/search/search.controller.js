@@ -156,6 +156,7 @@
         function loadResults () {
             networkService.getAll().then(function (response) {
                 var results = angular.copy(response.results);
+                vm.directReviewsAvailable = response.directReviewsAvailable;
                 vm.allCps = [];
                 incrementTable(parseAllResults(results));
             }, function (error) {

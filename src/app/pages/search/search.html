@@ -146,7 +146,7 @@
               </li>
             </ul>
           </div>
-          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+          <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="vm.directReviewsAvailable">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-compliance-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['compliance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Compliance Activity <i class="fa fa-filter"></i>
             </button>
@@ -157,6 +157,17 @@
                 register-restore-state="vm.registerRestoreState(restoreState)"
                 register-allow-all="vm.registerAllowAll(allowAll)"
                 name-space="searchTableState"></chpl-compliance-filter>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="!vm.directReviewsAvailable">
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-compliance-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              Compliance Activity <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-compliance-button" uib-dropdown-menu>
+              <div>
+                <p>Compliance Activity is currently unavailable. Please check back later.</p>
+                <p>Surveillance and Direct Reviews can be downloaded from the <a ui-sref="resources.download">CHPL Download</a> page</p>
+              </div>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
