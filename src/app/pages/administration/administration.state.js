@@ -220,6 +220,21 @@ let states = {
             url: '/upload',
             component: 'chplUpload',
             data: { title: 'CHPL Administration - Upload' },
+        },{
+            name: 'administration.svaps',
+            url: '/svaps',
+            component: 'chplSvapsPage',
+            resolve: {
+                svaps: (authService) => {  //, networkService) => {
+                    'ngInject';
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+                        //return networkService.getScheduleJobs();
+                        return [];
+                    }
+                    return [];
+                },
+            },
+            data: { title: 'CHPL Administration - SVAPs' },
         },
     ],
 };

@@ -1,0 +1,81 @@
+<div ng-form="$ctrl.form">
+  <div class="manage-list__container">
+    <div class="data-label">Regulatory Text Citation</div>
+    <div class="data-label">Applicable Criteria</div>
+    <div class="data-label">Approved Standard Version</div>
+    <div class="data-label">Replaced</div>
+
+    <!--
+    <div class="manage-list__item--start" ng-class="{ 'removed' : item.measure.removed }" ng-repeat-start="item in $ctrl.measures track by $index">
+      <button ng-if="item.measure.removed" class="btn btn-link btn-xs pull-right" uib-tooltip="This MACRA Measure has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This MACRA Measure has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
+      <span ng-if="item.measure.removed">Removed | </span>
+      {{ item.measure.abbreviation ? (item.measure.abbreviation + ': ' + item.measure.requiredTest) : item.measure.name }}
+      <div ng-if="item.measure.removed" class="clearfix"></div>
+    </div>
+    <div>
+      {{ item.measure.domain.name }}
+    </div>
+    <div>
+      {{ item.measureType.name }}
+    </div>
+    <div>
+      {{ item.displayCriteria }}
+    </div>
+    <div class="manage-list__item--end" ng-repeat-end>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem(item)"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="manage-list__item--start" ng-if="$ctrl.ManageList.addingItem['measures']">
+      <label for="measure-add-new-test" class="sr-only">Required Test</label>
+      <select ng-model="$ctrl.ManageList.newItem['measures'].selectedAbbreviation" required
+              ng-options="item for item in $ctrl.allTests" ng-change="$ctrl.updateAllowedMeasures()"
+              id="measure-add-new-test" name="measureAddNewTest" class="input-sm form-control">
+      </select>
+    </div>
+    <div ng-if="$ctrl.ManageList.addingItem['measures']">
+      <label for="measure-add-new-domain" class="sr-only">Domain</label>
+      <select ng-model="$ctrl.ManageList.newItem['measures'].measure" required
+              ng-options="item as item.displayName for item in $ctrl.allowedMeasures"
+              ng-disabled="!$ctrl.ManageList.newItem['measures'].selectedAbbreviation"
+              ng-change="$ctrl.clearCriteria()"
+              id="measure-add-new-domain" name="measureAddNewDomain" class="input-sm form-control">
+      </select>
+    </div>
+    <div ng-if="$ctrl.ManageList.addingItem['measures']">
+      <span ng-repeat="type in $ctrl.allTypes">
+        <label for="measure-add-new-type-{{ type.name }}" class="sr-only">{{ type.name }}?</label>
+        <input type="radio" ng-model="$ctrl.ManageList.newItem['measures'].typeName"
+                ng-disabled="!$ctrl.ManageList.newItem['measures'].selectedAbbreviation"
+                id="measure-add-new-type-{{ type.name }}" name="measureAddNewType{{ type.name }}" value="{{ type.name }}" required>{{ type.name }}</input>
+      </span>
+    </div>
+    <div ng-if="$ctrl.ManageList.addingItem['measures']">
+      <span ng-if="!$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
+        {{ $ctrl.ManageList.newItem['measures'].measure.displayCriteria.join(';') }}
+      </span>
+      <div ng-repeat="criteria in $ctrl.ManageList.newItem['measures'].measure.displayCriteria" ng-if="$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
+        <input type="checkbox" ng-model="$ctrl.ManageList.newItem['measures'].selectedCriteria[criteria].selected"
+                ng-disabled="!$ctrl.ManageList.newItem['measures'].selectedAbbreviation"
+                id="measure-add-new-criteria-{{ criteria }}" name="measureAddNewCriteria{{ criteria }}" value="{{ criteria }}"></input>
+        <label for="measure-add-new-criteria-{{ criteria }}">{{ criteria }}</label>
+      </div>
+    </div>
+    <div class="manage-list__item--end" ng-if="$ctrl.ManageList.addingItem['measures']">
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('measures')" ng-mouseover="$ctrl.showFormErrors = true"
+              ng-disabled="!$ctrl.readyForAdd()"><i class="fa fa-save"></i></button>
+      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('measures')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="manage-list__item--start" ng-if="!$ctrl.ManageList.addingItem['measures']">
+      <button class="btn btn-sm btn-link" ng-click="$ctrl.ManageList.addingItem['measures'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
+    </div>
+    -->
+  </div>
+  <chpl-action-bar />
+  <!--
+  <chpl-action-bar is-disabled="($ctrl.showFormErrors && !$ctrl.isValid()) || $ctrl.isSaving"
+                    error-messages="$ctrl.errorMessages"
+                    warning-messages="$ctrl.warningMessages"
+                    take-action="$ctrl.takeActionBarAction(action, data)">
+  </chpl-action-bar>
+  -->
+</div>
+  
