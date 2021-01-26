@@ -5,7 +5,7 @@ const compliance = (input, rules) => {
     if (!input) {
         return false;
     }
-    listing = angular.fromJson(input.compliance);
+    listing = angular.fromJson(input);
     if (rules.compliance === 'never') {
         return listing.complianceCount === 0;
     }
@@ -43,10 +43,10 @@ const compliance = (input, rules) => {
      * now matching "matchAny" with at least two checkboxes selected
      */
     if (never && open && !closed) {
-        return hasOpenNc && !hasClosedNc;
+        return !hasClosedNc;
     }
     if (never && !open && closed) {
-        return !hasOpenNc && hasClosedNc;
+        return !hasOpenNc;
     }
     if (!never && open && closed) {
         return hasOpenNc || hasClosedNc;
