@@ -225,11 +225,10 @@ let states = {
             url: '/svaps',
             component: 'chplSvapsPage',
             resolve: {
-                svaps: (authService) => {  //, networkService) => {
+                svaps: (authService, networkService) => {
                     'ngInject';
-                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-                        //return networkService.getScheduleJobs();
-                        return [];
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+                        return networkService.getSvaps();
                     }
                     return [];
                 },

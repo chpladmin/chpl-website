@@ -582,6 +582,9 @@ export class NetworkService {
         return this.apiGET('/data/surveillance-process-types');
     }
 
+    getSvaps () {
+        return this.apiGET('/svaps');
+    }
     getTargetedUsers () {
         return this.apiGET('/data/targeted_users');
     }
