@@ -1,4 +1,6 @@
-import { ChplEllipsis, reactToAngularComponent } from './util/';
+import { ChplEllipsis } from './util/';
+import { ChplFuzzyType } from './fuzzy-type/';
+import { reactToAngularComponent } from '../services/angular-react-helper.jsx';
 
 angular
     .module('chpl.components', [
@@ -17,4 +19,6 @@ angular
         'ui.bootstrap',
         'ui.router',
     ])
-    .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis));
+    .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
+    .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
+;
