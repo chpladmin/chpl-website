@@ -2,21 +2,34 @@ export const SvapsComponent = {
     templateUrl: 'chpl.administration/svaps/svaps.html',
     bindings: {
         svaps: '<',
+        availableCriteria: '<',
     },
     controller: class SvapsComponent {
-        constructor ($log, networkService) {
+        constructor ($log, networkService, utilService) {
             'ngInject';
             this.$log = $log;
             this.networkService = networkService;
+            this.sortCerts = utilService.sortCert;
 
             this.svap = null;
             this.isEditting = false;
         }
 
         $onChanges (changes) {
+            this.$log.info(changes);
             if (changes.svaps) {
                 this.svaps = angular.copy(changes.svaps.currentValue);
             }
+            if (changes.availableCriteria) {
+                this.availableCriteria = angular.copy(changes.availableCriteria.currentValue.criteria);
+                //TODO - this may need to be removed...  Do we have smaller list?
+                this.availableCriteria = this.availableCriteria.filter(crit => crit.certificationEditionId === 3);
+            }
+        }
+
+        addSvap () {
+            this.svap = {};
+            this.isEditting = true;
         }
 
         editSvap (svap) {
@@ -26,23 +39,38 @@ export const SvapsComponent = {
 
         cancel () {
             let that = this;
-            this.$log.info('in cancel');
             this.svap = null;
             this.isEditting = false;
             this.networkService.getSvaps()
-                    .then(response => that.svaps = response);
+                .then(response => that.svaps = response);
         }
 
         save () {
             this.$log.info('in save');
             let that = this;
-            this.networkService.updateSvap(this.svap)
+            if (this.svap.svapId) {
+                this.networkService.updateSvap(this.svap)
                     .then(() => {
-                        that.$log.info('saved - getting all the svaps');
                         that.cancel();
                     }, error => {
-                        //that.errorMessages = [error.data.error ? error.data.error : error.statusText];
+                        that.errors = error.data.errorMessages;
                     });
+            } else {
+                this.networkService.createSvap(this.svap)
+                    .then(() => {
+                        that.cancel();
+                    }, error => {
+                        that.errors = error.data.errorMessages;
+                    });
+            }
+        }
+        removeCriteriaFromSvap (criterion) {
+            this.svap.criteria = this.svap.criteria.filter(crit => crit.id !== criterion.id);
+        }
+
+        selectCriteriaForSvap () {
+            this.svap.criteria.push(angular.copy(this.selectedCriteria));
+            this.selectedCriteria = null;
         }
 
         takeActionBarAction (action) {
@@ -57,7 +85,6 @@ export const SvapsComponent = {
                 this.showFormErrors = true;
                 break;
             case 'save':
-                this.$log.info('in takeActionBarAction - save');
                 this.save();
                 break;
                 //no default

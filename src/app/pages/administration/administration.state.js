@@ -232,6 +232,10 @@ let states = {
                     }
                     return [];
                 },
+                availableCriteria: (networkService) => {
+                    'ngInject';
+                    return networkService.getCriteria();
+                },
             },
             data: { title: 'CHPL Administration - SVAPs' },
         },

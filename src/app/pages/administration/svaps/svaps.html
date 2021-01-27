@@ -1,4 +1,5 @@
 <div ng-form="$ctrl.form">
+  <h2>SVAP Maintenance</h2>
   <div class="manage-list__container" ng-if="!$ctrl.isEditting">
     <div class="data-label">Regulatory Text Citation</div>
     <div class="data-label">Applicable Criteria</div>
@@ -21,6 +22,9 @@
     <div class="manage-list__item--end" ng-repeat-end>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.editSvap(svap)"><i class="fa fa-pencil"></i></button>
     </div>
+    <div class="manage-list__item--start">
+      <button class="btn btn-sm btn-link" ng-click="$ctrl.addSvap()"><i class="fa fa-plus-circle"></i> Add Item</button>
+    </div>
   </div>
 
   <div ng-if="$ctrl.isEditting" class="panel panel-default">
@@ -37,8 +41,11 @@
         <div class="flex-item">
           <label class="control-label">Criteria</label>
           <div ng-repeat="criterion in $ctrl.svap.criteria track by $index">
-            {{ criterion.number }}
+            {{ criterion.number }} <button class="btn btn-link btn-sm" ng-click="$ctrl.removeCriteriaFromSvap(criterion)"><i class="fa fa-times"></i></button>
           </div>
+          <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.selectedCriteria"
+              ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.availableCriteria | orderBy: $ctrl.sortCert track by criteria.id"
+              ng-change="$ctrl.selectCriteriaForSvap()"></select>
         </div>
         <div class="flex-item">
           <label class="control-label" for="svap-edit-approved-standard-version">Approved Standard Version<span class="text-danger">*</span></label>
@@ -52,11 +59,11 @@
           <label class="control-label" for="svap-edit-replaced">Replaced<span class="text-danger">*</span></label>
           <div>
             <input type="checkbox" ng-model="$ctrl.svap.replaced" id="svap-edit-replaced" name="svapEditReplaced"></input>
-          </div>  
+          </div>
         </div>
       </div>
     </div>
-       
+
     <chpl-action-bar can-delete="true"
               error-messages="$ctrl.errors"
               is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
@@ -64,4 +71,3 @@
     </chpl-action-bar>
   </div>
 </div>
-  

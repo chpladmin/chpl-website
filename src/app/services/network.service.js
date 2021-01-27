@@ -83,6 +83,10 @@ export class NetworkService {
         return this.apiPOST('/schedules/triggers', trigger);
     }
 
+    createSvap (svap) {
+        return this.apiPOST('/svaps', svap);
+    }
+
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
     }
