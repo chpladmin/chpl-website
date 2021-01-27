@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default function ChplEllipsis () {
+const ChplEllipsis = () => {
     return <div>Hello Ellipsis</div>;
-}
+};
+
+export { ChplEllipsis };

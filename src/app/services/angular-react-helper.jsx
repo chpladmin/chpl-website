@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export function reactToAngularComponent (Component) {
+const reactToAngularComponent = (Component) => {
     return {
         controller: function ($element) {
             'ngInject';
@@ -13,4 +13,6 @@ export function reactToAngularComponent (Component) {
             };
         },
     };
-}
+};
+
+export { reactToAngularComponent };

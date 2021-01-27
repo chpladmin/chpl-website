@@ -1,7 +1,7 @@
-(function () {
-    'use strict';
+import { ChplEllipsis, reactToAngularComponent } from './util/';
 
-    angular.module('chpl.components', [
+angular
+    .module('chpl.components', [
         'angularMoment',
         'angulartics',
         'chpl.services',
@@ -16,5 +16,5 @@
         'toaster',
         'ui.bootstrap',
         'ui.router',
-    ]);
-})();
+    ])
+    .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis));
