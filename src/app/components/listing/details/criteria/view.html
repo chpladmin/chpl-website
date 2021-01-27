@@ -39,7 +39,7 @@
             <td>
               <ul>
                 <li ng-repeat="m in $ctrl.cert.svaps">
-                  <span ng-if="m.approvedStandardVersion"><ai-ellipsis text="{{ (m.replaced ? 'Replaced | ' : '') + m.regulatoryTextCitation + ' ' + m.approvedStandardVersion }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <span ng-if="m.approvedStandardVersion"><chpl-ellipsis-bridge text="(m.replaced ? 'Replaced | ' : '') + m.regulatoryTextCitation + ' ' + m.approvedStandardVersion" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge></span>
                   <button class="tooltip-button btn btn-link" uib-tooltip="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program."
                     tooltip-trigger="'mouseenter focus click'" ng-if="m.replaced">
                     <span class="sr-only">This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.</span><i class="fa fa-info-circle"></i>
@@ -55,7 +55,7 @@
             <td ng-if="$ctrl.cert.testStandards && $ctrl.cert.testStandards.length > 0">
               <ul>
                 <li ng-repeat="m in $ctrl.cert.testStandards">
-                  <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <span ng-if="m.testStandardDescription"><chpl-ellipsis-bridge text="m.testStandardDescription" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge></span>
                   <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
                 </li>
               </ul>
@@ -82,7 +82,7 @@
               <ul>
                 <li ng-repeat="m in $ctrl.cert.testFunctionality">
                   <span ng-if="!m.description">{{ m.name }}</span>
-                  <ai-ellipsis ng-if="m.description" text="{{ m.description }}" max-length="100" word-boundaries="true"></ai-ellipsis>
+                  <chpl-ellipsis-bridge ng-if="m.description" text="m.description" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
                   <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
                 </li>
               </ul>
@@ -106,7 +106,7 @@
               <ul class="list-unstyled">
                 <li ng-repeat="qms in $ctrl.qmsStandards">
                   <strong>Standard: </strong>{{ qms.qmsStandardName }}<br />
-                  <strong>Description: </strong><span ng-if="!qms.qmsModification">N/A</span><ai-ellipsis ng-if="qms.qmsModification" text="{{ qms.qmsModification }}" max-length="32" word-boundaries="true"></ai-ellipsis><br />
+                  <strong>Description: </strong><span ng-if="!qms.qmsModification">N/A</span><chpl-ellipsis-bridge ng-if="qms.qmsModification" text="qms.qmsModification" max-length="32" word-boundaries="true"></chpl-ellipsis-bridge><br />
                   <strong>Applicable Criteria: </strong>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}
                 </li>
               </ul>

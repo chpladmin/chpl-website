@@ -45,7 +45,7 @@ class ChplEllipsis extends React.Component {
               { this.state.isShortened ? this.state.displayText : this.props.text }
               { this.state.isShortened &&
                 <button className="btn btn-link btn-xs" data-tip data-for="ellipsis" onClick={ this.toggle }>
-                  <ReactTooltip id="ellipsis">{ this.props.text }</ReactTooltip>
+                  <ReactTooltip id="ellipsis" effect="solid">{ this.props.text }</ReactTooltip>
                   <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
                 </button>
               }
