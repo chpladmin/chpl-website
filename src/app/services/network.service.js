@@ -121,6 +121,10 @@ export class NetworkService {
         return this.apiDELETE('/surveillance/' + survId + '/document/' + docId);
     }
 
+    deleteSvap (svap) {
+        return this.apiDELETE('/svaps', svap);
+    }
+
     deleteUser (userId) {
         return this.apiDELETE('/users/' + userId);
     }
