@@ -39,24 +39,22 @@ class ChplEllipsis extends React.Component {
     }
 
     render () {
-        /* eslint-disable indent */
         return (
-            <span>
-              { this.state.isShortened ? this.state.displayText : this.props.text }
-              { this.state.isShortened &&
-                <button className="btn btn-link btn-xs" data-tip data-for="ellipsis" onClick={ this.toggle }>
-                  <ReactTooltip id="ellipsis" effect="solid">{ this.props.text }</ReactTooltip>
-                  <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
-                </button>
-              }
-              { !this.state.isShortened && this.state.canShorten &&
-                <button className="btn btn-link btn-xs" onClick={ this.toggle }>
-                  <i className="fa fa-arrow-left"></i><span className="sr-only">Minimize description</span>
-                </button>
-              }
-            </span>
+          <span>
+            { this.state.isShortened ? this.state.displayText : this.props.text }
+            { this.state.isShortened &&
+              <button className="btn btn-link btn-xs" data-tip data-for="ellipsis" onClick={ this.toggle }>thing
+                <ReactTooltip id="ellipsis" effect="solid">{ this.props.text }</ReactTooltip>
+                <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
+              </button>
+            }
+            { !this.state.isShortened && this.state.canShorten &&
+              <button className="btn btn-link btn-xs" onClick={ this.toggle }>
+                <i className="fa fa-arrow-left"></i><span className="sr-only">Minimize description</span>
+              </button>
+            }
+          </span>
         );
-        /* eslint-enable indent */
     }
 }
 
