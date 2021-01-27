@@ -8,10 +8,30 @@ class ChplFuzzyType extends React.Component {
     }
 
     render () {
+        /* eslint-disable indent,react/jsx-indent */
         return (
-          <span>
-            { this.props.fuzzyType.fuzzyType }
-          </span>
+            <div id={ 'fuzzy-type-' + this.props.fuzzyType.fuzzyType }>
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <h4 className="panel-title">{ this.props.fuzzyType.fuzzyType }</h4>
+                </div>
+                <div className="panel-body">
+                  <span className="pull-right">
+                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + this.props.fuzzyType.fuzzyType + '-edit'}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
+                  </span>
+                  Choices
+                  <ul>
+                    {
+                        this.props.fuzzyType.choices
+                        .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+                        .map(choice => (
+                            <li key={ choice }>{ choice }</li>
+                        ))
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
         );
     }
 }
