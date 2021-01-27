@@ -5,7 +5,7 @@ let hooks, page;
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config/mainConfig');
-const developerName = 'AT&T JY MERGE';
+const developerName = 'Allscripts';
 const productName = 'TouchWork';
 const acbId = '170008R01';
 const chplId = '15.99.04.3078.Ninj.01.00.0.200629';
