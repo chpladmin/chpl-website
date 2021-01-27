@@ -4,13 +4,13 @@ export const SvapsComponent = {
         svaps: '<',
     },
     controller: class SvapsComponent {
-        constructor ($log) {
+        constructor ($log, networkService) {
             'ngInject';
             this.$log = $log;
+            this.networkService = networkService;
+
             this.svap = null;
             this.isEditting = false;
-
-            this.$log.info(this.isEditting);
         }
 
         $onChanges (changes) {
@@ -22,13 +22,27 @@ export const SvapsComponent = {
         editSvap (svap) {
             this.svap = svap;
             this.isEditting = true;
-            this.$log.info(this.isEditting);
         }
 
         cancel () {
+            let that = this;
+            this.$log.info('in cancel');
             this.svap = null;
             this.isEditting = false;
-            this.$log.info(this.isEditting);
+            this.networkService.getSvaps()
+                    .then(response => that.svaps = response);
+        }
+
+        save () {
+            this.$log.info('in save');
+            let that = this;
+            this.networkService.updateSvap(this.svap)
+                    .then(() => {
+                        that.$log.info('saved - getting all the svaps');
+                        that.cancel();
+                    }, error => {
+                        //that.errorMessages = [error.data.error ? error.data.error : error.statusText];
+                    });
         }
 
         takeActionBarAction (action) {
@@ -43,6 +57,7 @@ export const SvapsComponent = {
                 this.showFormErrors = true;
                 break;
             case 'save':
+                this.$log.info('in takeActionBarAction - save');
                 this.save();
                 break;
                 //no default

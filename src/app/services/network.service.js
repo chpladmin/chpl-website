@@ -824,6 +824,10 @@ export class NetworkService {
         return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
     }
 
+    updateSvap (svap) {
+        return this.apiPUT('/svaps', svap);
+    }
+
     updateUser (user) {
         return this.apiPUT('/users/' + user.userId, user);
     }

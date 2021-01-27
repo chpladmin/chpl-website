@@ -23,24 +23,40 @@
     </div>
   </div>
 
-  <div ng-if="$ctrl.isEditting">
-    <div>
-      <label for="svap-edit-regulatory-text-citation" class="sr-only">Regulatory Text Citation</label>
-      <input type="text" ng-model="$ctrl.editableSvap.regulatoryTextCitation"
-            id="svap-edit-regulatory-text-citation" name="svapEditRegulatoryTextCitation" required>
-    </div>
-    <div>
-      <div ng-if="svap.svapId !== $ctrl.editableSvap.svapId" ng-repeat="criterion in svap.criteria track by $index">
-        {{ criterion.number }}
+  <div ng-if="$ctrl.isEditting" class="panel panel-default">
+    <div class="panel-body">
+      <div class="flex-container">
+        <div class="flex-item">
+          <label class="control-label" for="svap-edit-regulatory-text-citation">Regulatory Text Citation<span class="text-danger">*</span></label>
+          <div>
+            <input class="input-sm form-control" type="text" ng-model="$ctrl.svap.regulatoryTextCitation"
+                    id="svap-edit-regulatory-text-citation" name="svapEditRegulatoryTextCitation" required>
+            <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.svapEditRegulatoryTextCitation.$touched) && $ctrl.form.svapEditRegulatoryTextCitation.$error.required">Field is required</div>
+          </div>
+        </div>
+        <div class="flex-item">
+          <label class="control-label">Criteria</label>
+          <div ng-repeat="criterion in $ctrl.svap.criteria track by $index">
+            {{ criterion.number }}
+          </div>
+        </div>
+        <div class="flex-item">
+          <label class="control-label" for="svap-edit-approved-standard-version">Approved Standard Version<span class="text-danger">*</span></label>
+          <div>
+            <textarea class="input-sm form-control" id="svap-edit-approved-standard-version" name="svapEditApprovedStandardVersion" rows="3"
+                    ng-model="$ctrl.svap.approvedStandardVersion" required></textarea>
+                    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.svapEditRegulatoryTextCitation.$touched) && $ctrl.form.svapEditApprovedStandardVersion.$error.required">Field is required</div>
+          </div>
+        </div>
+        <div class="flex-item">
+          <label class="control-label" for="svap-edit-replaced">Replaced<span class="text-danger">*</span></label>
+          <div>
+            <input type="checkbox" ng-model="$ctrl.svap.replaced" id="svap-edit-replaced" name="svapEditReplaced"></input>
+          </div>  
+        </div>
       </div>
     </div>
-    <div>
-      <textarea class="input-sm form-control" id="svap-edit-approved-standard-version" name="svapEditApprovedStandardVersion" rows="3"
-            ng-model="$ctrl.editableSvap.approvedStandardVersion" required></textarea>
-    </div>
-    <div>
-      in edit mode
-    </div>
+       
     <chpl-action-bar can-delete="true"
               error-messages="$ctrl.errors"
               is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
