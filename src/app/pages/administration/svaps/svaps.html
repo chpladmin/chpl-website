@@ -63,11 +63,11 @@
         </div>
       </div>
     </div>
-
     <chpl-action-bar can-delete="true"
               error-messages="$ctrl.errors"
               is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-              take-action="$ctrl.takeActionBarAction(action)">
+              take-action="$ctrl.takeActionBarAction(action)"
+              max-message-characters="100">
     </chpl-action-bar>
   </div>
 </div>

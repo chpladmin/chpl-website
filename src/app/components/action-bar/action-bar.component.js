@@ -6,6 +6,7 @@ export const ActionBarComponent = {
         isDisabled: '<',
         takeAction: '&',
         warningMessages: '<',
+        maxMessageCharacters: '<',
     },
     controller: class ActionBarComponent {
         constructor ($log) {

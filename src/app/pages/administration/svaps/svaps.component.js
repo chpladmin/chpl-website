@@ -80,7 +80,7 @@ export const SvapsComponent = {
 
         selectCriteriaForSvap () {
             if (!Array.isArray(this.svap.criteria)) {
-                this.svap.criteria = [];    
+                this.svap.criteria = [];
             }
             this.svap.criteria.push(angular.copy(this.selectedCriteria));
             this.selectedCriteria = null;
