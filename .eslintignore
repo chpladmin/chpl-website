@@ -3,3 +3,4 @@
 **/swagger*.js
 **/index.constants.js
 **/lib/*
+**/*.mock.js

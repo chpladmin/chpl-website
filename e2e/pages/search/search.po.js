@@ -5,9 +5,10 @@ const searchpageElements = {
     browseAllOnHomePage: '//button[text()=" Browse all"]',
     searchListing: '#searchField',
     pagination: '//table/thead/tr[1]/td/div/div/div/div',
+    pageSize: '#pageSizeTop',
     browseAll: '//a[text()="Browse all"]',
     clearFilters: '//a[text()="Clear Filters"]',
-    downloadResultsCustomize: '//button[text()="Download 50 result"]',
+    downloadResultsAction: '#results-download-button',
     downloadResults: 'button#dropdown-download-button',
     moreFilter: '#filter-more-button',
     moreDeveloper: '#developerRefine',
@@ -49,6 +50,10 @@ class SearchPage {
         return $(searchpageElements.pagination);
     }
 
+    get pageSize () {
+        return $(searchpageElements.pageSize);
+    }
+
     get browseAll () {
         return $(searchpageElements.browseAll);
     }
@@ -57,8 +62,8 @@ class SearchPage {
         return $(searchpageElements.clearFilters);
     }
 
-    get downloadResultsCustomizeButton () {
-        return $(searchpageElements.downloadResultsCustomize);
+    get downloadResultsAction () {
+        return $(searchpageElements.downloadResultsAction);
     }
 
     get downloadResultsButton () {

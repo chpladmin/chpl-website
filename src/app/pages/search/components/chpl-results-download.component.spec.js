@@ -37,9 +37,8 @@ describe('the search results download component,', () => {
             scope = $rootScope.$new();
             scope.listings = Mock.allCps;
             scope.categories = mock.categories;
-            scope.maxSize = 50;
 
-            el = angular.element('<ai-results-download listings="listings" categories="categories" max-size="{{ scope.maxSize }}"></ai-results-download>');
+            el = angular.element('<chpl-results-download listings="listings" categories="categories"></chpl-results-download>');
 
             $compile(el)(scope);
             scope.$digest();
