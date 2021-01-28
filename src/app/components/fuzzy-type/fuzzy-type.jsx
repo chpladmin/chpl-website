@@ -1,6 +1,7 @@
 /* eslint-disable no-console,angular/log */
 import React from 'react';
 import { arrayOf, func, shape, string } from 'prop-types';
+import { getAngularService } from './';
 
 class ChplFuzzyType extends React.Component {
     constructor (props) {
@@ -8,6 +9,7 @@ class ChplFuzzyType extends React.Component {
         this.state = {
             isEditing: false,
         };
+        this.$log = getAngularService('$log');
         this.toggle = this.toggle.bind(this);
     }
 

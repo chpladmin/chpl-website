@@ -30,4 +30,18 @@ const reactToAngularComponent = Component => {
     };
 };
 
-export { reactToAngularComponent };
+const getAngularService = name => {
+    const injector = angular.element(document.body).injector();
+    if (!injector || !injector.get) {
+        throw new Error(`Couldn't find angular injector to get "${name}" service`);
+    }
+
+    const service = injector.get(name);
+    if (!service) {
+        throw new Error(`Couldn't find "${name}" angular service`);
+    }
+
+    return service;
+};
+
+export { getAngularService, reactToAngularComponent };
