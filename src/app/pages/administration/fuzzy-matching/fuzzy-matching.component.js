@@ -18,6 +18,8 @@ export const FuzzyMatchingComponent = {
         }
 
         takeAction (data, action) {
+            /* eslint-disable no-console,angular/log */
+            console.log(this);
             let that = this;
             switch (action) {
             case 'edit':

@@ -6,7 +6,7 @@
     <div class="row">
       <div ng-class="$ctrl.activeType ? 'col-md-6 col-md-offset-3' : 'col-md-4'" ng-repeat="type in $ctrl.fuzzyTypes">
         <span ng-show="!$ctrl.activeType || type.id === $ctrl.activeType.id">
-          <chpl-fuzzy-type-bridge fuzzy-type="type" take-action="$ctrl.takeAction(data, action)"></chpl-fuzzy-type-bridge>
+          <chpl-fuzzy-type-bridge fuzzy-type="type" take-action="::$ctrl.takeAction"></chpl-fuzzy-type-bridge>
           <chpl-fuzzy-type fuzzy-type="type" take-action="$ctrl.takeAction(data, action)"></chpl-fuzzy-type>
         </span>
       </div>
