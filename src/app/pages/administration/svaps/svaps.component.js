@@ -29,8 +29,8 @@ export const SvapsComponent = {
 
         addSvap () {
             this.svap = {};
+            this.errors = [];
             this.options = {maxMessageCharacters: 50, canDelete: false};
-            this.$log.info(this.options);
             this.isEditting = true;
         }
 
@@ -46,8 +46,8 @@ export const SvapsComponent = {
 
         editSvap (svap) {
             this.svap = svap;
+            this.errors = [];
             this.options = {maxMessageCharacters: 50, canDelete: true};
-            this.$log.info(this.options);
             this.isEditting = true;
         }
 
