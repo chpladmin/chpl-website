@@ -12,20 +12,14 @@ class ChplFuzzyType extends React.Component {
     }
 
     toggle () {
+        if (this.state.isEditing) {
+            this.props.takeAction(this.props.fuzzyType, 'cancel');
+        } else {
+            this.props.takeAction(this.props.fuzzyType, 'edit');
+        }
         this.setState(state => ({
             isEditing: !state.isEditing,
         }));
-        if (this.state.isEditing) {
-            this.props.takeAction({
-                data: this.props.fuzzyType,
-                action: 'edit',
-            });
-        } else {
-            this.props.takeAction({
-                data: this.props.fuzzyType,
-                action: 'cancel',
-            });
-        }
     }
 
     render () {
