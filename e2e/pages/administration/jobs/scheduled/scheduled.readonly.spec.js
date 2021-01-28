@@ -19,7 +19,7 @@ describe('when an ONC-Staff user is logged in', () => {
 
     it('should see the right set of scheduled jobs', () => {
         var actualResult = [];
-        var expectedResult = ['All Broken Surveillance Rules Report','Developer Access Report','Inherited Certification Status Errors Report','Overnight Broken Surveillance Rules Report','Pending "Change Request" Report','Questionable Activity Report','Questionable URL Report','Real World Testing Email Report','Summary Statistics Email','Trigger Developer Ban Notification'];
+        var expectedResult = ['All Broken Surveillance Rules Report','Developer Access Report','Inherited Certification Status Errors Report','Listing Validation Email Report','Overnight Broken Surveillance Rules Report','Pending "Change Request" Report','Questionable Activity Report','Questionable URL Report','Real World Testing Email Report','Summary Statistics Email','Trigger Developer Ban Notification'];
         var length = scheduled.scheduledJobRows.length;
         for ( var j = 0; j < length; j++ ) {
             actualResult.push(scheduled.scheduledJobName(j).getText());
