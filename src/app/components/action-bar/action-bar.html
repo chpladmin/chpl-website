@@ -8,7 +8,7 @@
     <div class="action-bar__errors" ng-if="$ctrl.showErrors && $ctrl.errorMessages && $ctrl.errorMessages.length > 0">
       <strong>Error<span ng-if="$ctrl.errorMessages.length !== 1">s</span></strong>
       <ul class="action-bar__error-messages">
-        <li ng-if="!$ctrl.maxMessageCharacters" ng-repeat="message in $ctrl.errorMessages">{{ message }}- 1</li>
+        <li ng-if="!$ctrl.maxMessageCharacters" ng-repeat="message in $ctrl.errorMessages">{{ message }}</li>
         <li ng-if="$ctrl.maxMessageCharacters" ng-repeat="message in $ctrl.errorMessages"><ai-ellipsis text="{{ message }}" max-length="{{ $ctrl.maxMessageCharacters }}"></ai-ellipsis></li>
       </ul>
     </div>
