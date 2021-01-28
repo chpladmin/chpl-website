@@ -15,6 +15,7 @@
     "test:auto": "karma start",
     "test:ahrq": "karma start --single-run --ahrq",
     "test:ci": "karma start --single-run --no-colors",
+    "lint": "eslint src/app e2e",
     "e2e": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:lint": "eslint e2e",
     "e2e:clean": "rm test_reports/e2e/* || true",

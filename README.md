@@ -69,6 +69,8 @@ If a single spec file should be tested, instead of all of them, the command `yar
 
 To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
 
+When debugging, taking screenshots can be useful. The command `browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
+
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/
