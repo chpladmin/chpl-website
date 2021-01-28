@@ -11,6 +11,7 @@ export const UserComponent = {
             'ngInject';
             this.$log = $log;
             this.canImpersonate = authService.canImpersonate;
+            this.options = {canDelete: true};
         }
 
         $onChanges (changes) {
