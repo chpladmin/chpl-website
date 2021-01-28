@@ -13,10 +13,10 @@ export const SvapsComponent = {
 
             this.svap = null;
             this.isEditting = false;
+            this.options = {};
         }
 
         $onChanges (changes) {
-            this.$log.info(changes);
             if (changes.svaps) {
                 this.svaps = angular.copy(changes.svaps.currentValue);
             }
@@ -29,6 +29,8 @@ export const SvapsComponent = {
 
         addSvap () {
             this.svap = {};
+            this.options = {maxMessageCharacters: 50, canDelete: false};
+            this.$log.info(this.options);
             this.isEditting = true;
         }
 
@@ -44,6 +46,8 @@ export const SvapsComponent = {
 
         editSvap (svap) {
             this.svap = svap;
+            this.options = {maxMessageCharacters: 50, canDelete: true};
+            this.$log.info(this.options);
             this.isEditting = true;
         }
 

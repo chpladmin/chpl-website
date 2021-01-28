@@ -1,12 +1,13 @@
 export const ActionBarComponent = {
     templateUrl: 'chpl.components/action-bar/action-bar.html',
     bindings: {
-        canDelete: '@',
+        //canDelete: '@',
         errorMessages: '<',
         isDisabled: '<',
         takeAction: '&',
         warningMessages: '<',
-        maxMessageCharacters: '<',
+        //maxMessageCharacters: '@',
+        options: '<',
     },
     controller: class ActionBarComponent {
         constructor ($log) {
@@ -25,7 +26,6 @@ export const ActionBarComponent = {
                 if (needToShow) {
                     this.showErrors = true;
                 }
-                this.previousErrors = angular.copy(this.errorMessages);
             }
             if (changes.warningMessages && changes.warningMessages.currentValue) {
                 this.warningMessages = changes.warningMessages.currentValue
@@ -35,7 +35,10 @@ export const ActionBarComponent = {
                 if (needToShow) {
                     this.showErrors = true;
                 }
-                this.previousWarnings = angular.copy(this.warningMessages);
+            }
+            if (changes.options && changes.options.currentValue) {
+                this.maxMessageCharacters = changes.options.currentValue.maxMessageCharacters;
+                this.canDelete = changes.options.currentValue.canDelete;
             }
         }
 
