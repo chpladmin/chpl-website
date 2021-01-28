@@ -3,6 +3,10 @@ import React from 'react';
 import { arrayOf, func, shape, string } from 'prop-types';
 import { getAngularService } from './';
 
+const dependencies = {
+    getChplLogService: () => require('../../services/services-bridge.jsx').default,
+};
+
 class ChplFuzzyType extends React.Component {
     constructor (props) {
         super(props);
@@ -10,6 +14,7 @@ class ChplFuzzyType extends React.Component {
             isEditing: false,
         };
         this.$log = getAngularService('$log');
+        this.chplLog = dependencies.getChplLogService();
         this.toggle = this.toggle.bind(this);
     }
 
