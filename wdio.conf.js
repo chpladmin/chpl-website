@@ -227,7 +227,7 @@ exports.config = {
         var runInBrowser = function (argument) {
             argument.click();
         };
-        this.scrollIntoView();
+        this.scrollIntoView({block: 'center', inline: 'center'});
         browser.execute(runInBrowser,this);
         }, true)
 

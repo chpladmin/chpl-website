@@ -48,7 +48,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             edit.editSurveillance();
             edit.addRequirement(input.type, input.capability, 'No Non-Conformity');
             do {
-                edit.saveButton.scrollAndClick();
+                edit.saveButton.click();
             } while (!confirmPage.confirmButton.isClickable());
             var countAfter = edit.requirementTableRows().length;
             assert.equal(countAfter,countBefore + 1);
@@ -76,7 +76,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             edit.saveButton.scrollAndClick();
             assert.equal(edit.nonconformityTableRows().length,1);
             do {
-                edit.saveButton.scrollAndClick();
+                edit.saveButton.click();
             } while (!confirmPage.confirmButton.isClickable());
             var countAfter = edit.requirementTableRows().length;
             assert.equal(countAfter,countBefore + 1);
@@ -85,7 +85,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
         it(`should not be able to ${testName} as non conformity without adding non conformity`, () => {
             edit.editSurveillance();
             edit.addRequirement(input.type, input.capability, 'Non-Conformity');
-            edit.saveButton.scrollAndClick();
+            edit.saveButton.click();
             assert.include(edit.errorMessages.getText(),error);
         });
     });
@@ -126,7 +126,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             edit.saveButton.scrollAndClick();
             assert.equal(edit.nonconformityTableRows().length,1);
             do {
-                edit.saveButton.scrollAndClick();
+                edit.saveButton.click();
             } while (!confirmPage.confirmButton.isClickable());
             var countAfter = edit.requirementTableRows().length;
             assert.equal(countAfter,countBefore + 1);

@@ -9,7 +9,7 @@ const fs = require('fs');
 let cmsLookup, hooks;
 const invalidCmsId = '000000AAAAAA';
 
-beforeAll(async () => {
+beforeEach(async () => {
     cmsLookup = new CmsLookupPage();
     hooks = new Hooks();
     await hooks.open('#/resources/cms-lookup');
@@ -19,7 +19,7 @@ describe('On cms reverse look up page', () => {
     inputs.forEach(input => {
         let testName = input.testName;
         describe(`When searching for a CMS ID which was generated before for  ${testName}`, () => {
-            beforeAll( () => {
+            beforeEach( () => {
                 cmsLookup.searchField.clearValue();
                 cmsLookup.searchField.addValue(input.cmsId);
                 cmsLookup.searchIdButton.click();
@@ -40,6 +40,9 @@ describe('On cms reverse look up page', () => {
                 cmsLookup.downloadResultsButton.scrollAndClick();
                 const fileName = 'CMS_ID.' + input.cmsId + '.csv';
                 const filePath = path.join(global.downloadDir, fileName);
+                if (!fs.existsSync(filePath)) {
+                    cmsLookup.downloadResultsButton.scrollAndClick();
+                }
                 browser.waitForFileExists(filePath,config.timeout);
                 assert.isTrue(fs.existsSync(filePath));
                 const fileContents = fs.readFileSync(filePath, 'utf-8');
@@ -57,7 +60,7 @@ describe('On cms reverse look up page', () => {
 
 describe('On cms reverse look up page', () => {
     describe('When searching for invalid CMS ID which doesnt exist', () => {
-        beforeAll( () => {
+        beforeEach( () => {
             cmsLookup.searchField.clearValue();
             cmsLookup.searchField.addValue(invalidCmsId);
             cmsLookup.searchIdButton.click();
