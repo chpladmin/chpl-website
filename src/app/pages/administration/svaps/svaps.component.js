@@ -10,6 +10,7 @@ export const SvapsComponent = {
             this.$log = $log;
             this.networkService = networkService;
             this.sortCerts = utilService.sortCert;
+            this.isCures = utilService.isCures;
 
             this.svap = null;
             this.isEditting = false;

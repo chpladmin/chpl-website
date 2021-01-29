@@ -10,7 +10,7 @@
     </div>
     <div>
       <div ng-repeat="criterion in svap.criteria track by $index">
-        {{ criterion.number }}
+        {{ criterion.number + (criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '') }}
       </div>
     </div>
     <div>
@@ -30,7 +30,7 @@
   <div ng-if="$ctrl.isEditting" class="panel panel-default">
     <div class="panel-body">
       <div class="flex-container">
-        <div class="flex-item">
+        <div class="flex-item.narrow">
           <label class="control-label" for="svap-edit-regulatory-text-citation">Regulatory Text Citation<span class="text-danger">*</span></label>
           <div>
             <input class="input-sm form-control" type="text" ng-model="$ctrl.svap.regulatoryTextCitation"
@@ -41,10 +41,10 @@
         <div class="flex-item">
           <label class="control-label">Criteria</label>
           <div ng-repeat="criterion in $ctrl.svap.criteria track by $index">
-            {{ criterion.number }} <button class="btn btn-link btn-sm" ng-click="$ctrl.removeCriteriaFromSvap(criterion)"><i class="fa fa-times"></i></button>
+            {{ criterion.number + (criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '') }} <button class="btn btn-link btn-sm" ng-click="$ctrl.removeCriteriaFromSvap(criterion)"><i class="fa fa-times"></i></button>
           </div>
           <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.selectedCriteria"
-              ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.availableCriteria | orderBy: $ctrl.sortCert track by criteria.id"
+              ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.availableCriteria | orderBy: $ctrl.sortCerts track by criteria.id"
               ng-change="$ctrl.selectCriteriaForSvap()"></select>
         </div>
         <div class="flex-item">
@@ -55,7 +55,7 @@
                     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.svapEditRegulatoryTextCitation.$touched) && $ctrl.form.svapEditApprovedStandardVersion.$error.required">Field is required</div>
           </div>
         </div>
-        <div class="flex-item">
+        <div class="flex-item.narrow">
           <label class="control-label" for="svap-edit-replaced">Replaced<span class="text-danger">*</span></label>
           <div>
             <input type="checkbox" ng-model="$ctrl.svap.replaced" id="svap-edit-replaced" name="svapEditReplaced"></input>
