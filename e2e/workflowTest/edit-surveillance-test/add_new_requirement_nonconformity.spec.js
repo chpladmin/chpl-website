@@ -9,6 +9,7 @@ let confirmPage, edit, hooks, loginComponent, upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
 const listingId1 = '15.04.04.2496.ARIA.16.03.1.200623';
 const inputs = require('../../components/surveillance/edit/requirement-dp');
+const error = 'At least one Non-Conformity must be documented';
 
 beforeEach(async () => {
     loginComponent = new LoginComponent();
@@ -21,10 +22,10 @@ beforeEach(async () => {
 });
 
 afterEach(() =>{
-    do {
-        edit.cancel.click();
+    while (edit.cancel.isClickable()) {
+        edit.cancel.scrollAndClick();
         confirmPage.yesConfirmation.click();
-    } while (edit.cancel.isDisplayed());
+    }
     loginComponent.logOut();
 });
 
@@ -43,21 +44,13 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 
         it(`should be able to ${testName} without non conformity`, () => {
 
-            var countBefore = edit.requirementTable().length;
+            var countBefore = edit.requirementTableRows().length;
             edit.editSurveillance();
-            edit.newRequirementButton.click();
-            edit.requirementType.selectByVisibleText(input.type);
-            if (input.type === 'Other Requirement') {
-                $(input.capabilitySelector).setValue(input.capability);
-            }
-            else
-            {
-                $(input.capabilitySelector).selectByVisibleText(input.capability);
-            }
-            edit.requirementResult.selectByVisibleText('No Non-Conformity');
-            edit.saveButton.click();
-            edit.saveButton.click();
-            var countAfter = edit.requirementTable().length;
+            edit.addRequirement(input.type, input.capability, 'No Non-Conformity');
+            do {
+                edit.saveButton.scrollAndClick();
+            } while (!confirmPage.confirmButton.isClickable());
+            var countAfter = edit.requirementTableRows().length;
             assert.equal(countAfter,countBefore + 1);
         });
 
@@ -74,43 +67,26 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
                 explanation: 'Test explanation',
                 resolution: 'Test resolution',
             };
-            var countBefore = edit.requirementTable().length;
+            var countBefore = edit.requirementTableRows().length;
             edit.editSurveillance();
-            edit.newRequirementButton.click();
-            edit.requirementType.selectByVisibleText(input.type);
-            if (input.type === 'Other Requirement') {
-                $(input.capabilitySelector).setValue(input.capability);
-            }
-            else
-            {
-                $(input.capabilitySelector).selectByVisibleText(input.capability);
-            }
-            edit.requirementResult.selectByVisibleText('Non-Conformity');
-            edit.newNonConformityButton.click();
+            edit.addRequirement(input.type, input.capability, 'Non-Conformity');
             edit.addNonConformity(nonconformitydetails , 'Reactive');
             assert.isFalse(edit.sites.isEnabled());
             assert.isFalse(edit.totalSites.isEnabled());
             edit.saveButton.scrollAndClick();
-            assert.equal(edit.nonconformityTable().length,1);
-            edit.saveButton.scrollAndClick();
-            var countAfter = edit.requirementTable().length;
+            assert.equal(edit.nonconformityTableRows().length,1);
+            do {
+                edit.saveButton.scrollAndClick();
+            } while (!confirmPage.confirmButton.isClickable());
+            var countAfter = edit.requirementTableRows().length;
             assert.equal(countAfter,countBefore + 1);
         });
 
         it(`should not be able to ${testName} as non conformity without adding non conformity`, () => {
             edit.editSurveillance();
-            edit.newRequirementButton.click();
-            edit.requirementType.selectByVisibleText(input.type);
-            if (input.type === 'Other Requirement') {
-                $(input.capabilitySelector).setValue(input.capability);
-            }
-            else
-            {
-                $(input.capabilitySelector).selectByVisibleText(input.capability);
-            }
-            edit.requirementResult.selectByVisibleText('Non-Conformity');
-            edit.saveButton.click();
-            assert.include(edit.errorMessages.getText(),'At least one Non-Conformity must be documented');
+            edit.addRequirement(input.type, input.capability, 'Non-Conformity');
+            edit.saveButton.scrollAndClick();
+            assert.include(edit.errorMessages.getText(),error);
         });
     });
 });
@@ -143,24 +119,16 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
                 explanation: 'Test explanation',
                 resolution: 'Test resolution',
             };
-            var countBefore = edit.requirementTable().length;
+            var countBefore = edit.requirementTableRows().length;
             edit.editSurveillance();
-            edit.newRequirementButton.click();
-            edit.requirementType.selectByVisibleText(input.type);
-            if (input.type === 'Other Requirement') {
-                $(input.capabilitySelector).setValue(input.capability);
-            }
-            else
-            {
-                $(input.capabilitySelector).selectByVisibleText(input.capability);
-            }
-            edit.requirementResult.selectByVisibleText('Non-Conformity');
-            edit.newNonConformityButton.click();
+            edit.addRequirement(input.type, input.capability, 'Non-Conformity');
             edit.addNonConformity(nonconformitydetails , 'Randomized');
             edit.saveButton.scrollAndClick();
-            assert.equal(edit.nonconformityTable().length,1);
-            edit.saveButton.scrollAndClick();
-            var countAfter = edit.requirementTable().length;
+            assert.equal(edit.nonconformityTableRows().length,1);
+            do {
+                edit.saveButton.scrollAndClick();
+            } while (!confirmPage.confirmButton.isClickable());
+            var countAfter = edit.requirementTableRows().length;
             assert.equal(countAfter,countBefore + 1);
         });
     });

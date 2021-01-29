@@ -9,7 +9,7 @@ let confirmPage, edit, hooks, loginComponent, upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
 const error = 'At least one Non-Conformity must be documented';
 
-beforeAll(async () => {
+beforeEach(async () => {
     loginComponent = new LoginComponent();
     edit = new SurveillanceEditComponent();
     confirmPage = new ConfirmPage();
@@ -30,10 +30,9 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
         hooks.waitForSpinnerToDisappear();
         edit.editSurveillance();
         hooks.waitForSpinnerToDisappear();
-        edit.editRequirement.click();
-        edit.removeNonconformity.click();
+        edit.editRequirement.scrollAndClick();
+        edit.removeNonconformity.scrollAndClick();
         edit.saveButton.click();
         assert.include(edit.errorMessages.getText(),error);
-
     });
 });

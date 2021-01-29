@@ -58,7 +58,7 @@ class LoginComponent {
             this.openLoginComponent();
         }
         this.logoutButton.waitForDisplayed();
-        this.logoutButton.waitAndClick();
+        this.logoutButton.scrollAndClick();
     }
 }
 

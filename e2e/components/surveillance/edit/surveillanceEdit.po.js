@@ -29,7 +29,7 @@ const elements = {
     totalSites: '#total-sites',
     explanation: '#developer-explanation',
     resolution: '#resolution',
-    reuirementCapability: '#requirement-capability',
+    requirementCapability: '//*[@name="requirement"]',
 };
 
 class SurveillanceEditComponent {
@@ -39,8 +39,8 @@ class SurveillanceEditComponent {
         return $(elements.cancel);
     }
 
-    get reuirementCapability () {
-        return $(elements.reuirementCapability);
+    get requirementCapability () {
+        return $(elements.requirementCapability);
     }
 
     get surveillanceDetails () {
@@ -155,7 +155,7 @@ class SurveillanceEditComponent {
         return $(elements.removeNonconformity);
     }
 
-    requirementTable () {
+    requirementTableRows () {
         return $(elements.requirementTable).$('tbody').$$('tr');
     }
 
@@ -163,11 +163,12 @@ class SurveillanceEditComponent {
         return $(elements.requirementTable).$('tbody').$('tr').$$('td')[i];
     }
 
-    nonconformityTable () {
+    nonconformityTableRows () {
         return $('.table.ng-scope').$('tbody').$$('tr');
     }
 
     addNonConformity (details , type) {
+        this.newNonConformityButton.click();
         this.nonconformityType.selectByVisibleText(details.type);
         this.nonconformityStatus.selectByVisibleText(details.status);
         this.determinationDate.setValue(details.determinationDate);
@@ -190,6 +191,19 @@ class SurveillanceEditComponent {
         if (!$('#edit-surveillance-label').isDisplayed()) {
             this.editButton.click();
         }
+    }
+
+    addRequirement (type, capability, result) {
+        this.newRequirementButton.click();
+        this.requirementType.selectByVisibleText(type);
+        if (type === 'Other Requirement') {
+            this.requirementCapability.setValue(capability);
+        }
+        else
+        {
+            this.requirementCapability.selectByVisibleText(capability);
+        }
+        this.requirementResult.selectByVisibleText(result);
     }
 }
 

@@ -1,20 +1,17 @@
 module.exports = [
     {
-        testName: 'Add Certified Capability requirement',
+        testName: 'add Certified Capability requirement',
         type: 'Certified Capability',
-        capabilitySelector: '#requirement-capability',
         capability: '170.315 (a)(1): Computerized Provider Order Entry (CPOE) - Medications',
     },
     {
-        testName: 'Add Other requirement',
+        testName: 'add Other requirement',
         type: 'Other Requirement',
-        capabilitySelector: '#requirement-other',
         capability: 'Test Other requirement',
     },
     {
-        testName: 'Add Transparency or Disclosure Requirement',
+        testName: 'add Transparency or Disclosure requirement',
         type: 'Transparency or Disclosure Requirement',
-        capabilitySelector: '#requirement-transparency',
         capability: '170.523 (k)(1)',
     },
 ];

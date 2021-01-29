@@ -27,10 +27,10 @@ beforeEach(async () => {
 });
 
 afterEach(() =>{
-    do {
-        edit.cancel.click();
+    while (edit.cancel.isClickable()) {
+        edit.cancel.scrollAndClick();
         confirmPage.yesConfirmation.click();
-    } while (edit.cancel.isDisplayed());
+    }
     loginComponent.logOut();
 });
 
@@ -68,7 +68,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
     it('should not be allowed to remove all requirements', () => {
         edit.editSurveillance();
-        edit.removeButton.click();
+        edit.removeButton.scrollAndClick();
         edit.saveButton.click();
         assert.include(edit.errorMessages.getText(),error);
     });
