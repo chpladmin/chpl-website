@@ -293,14 +293,14 @@ export class NetworkService {
         case 'complaintListings':
             return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
         case 'correctiveAction':
-            return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonConformityCount,closedNonConformityCount');
+            return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount');
         case 'decertifiedProducts':
         case 'inactiveCertificates':
             return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
         case 'sed':
             return this.apiGET('/collections/certified-products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
         case 'surveillanceManagement':
-            return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonConformityCount,closedNonConformityCount,surveillanceDates');
+            return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
         case 'transparencyAttestations':
             return this.apiGET('/collections/developers');
             //no default

@@ -101,8 +101,8 @@
                         <th scope="col" class="search-header" ai-multi-sort="certificationStatus">Certification Status</th>
                         <th scope="col" class="search-header" ai-multi-sort="openSurveillanceCount" st-descending-first="true"># Open Surveillances</th>
                         <th scope="col" class="search-header" ai-multi-sort="closedSurveillanceCount" st-descending-first="true"># Closed Surveillances</th>
-                        <th scope="col" class="search-header" ai-multi-sort="openNonConformityCount" st-descending-first="true" st-sort-default="['-openNonConformityCount', '-edition', 'developer']"># Open NCs</th>
-                        <th scope="col" class="search-header" ai-multi-sort="closedNonConformityCount" st-descending-first="true"># Closed NCs</th>
+                        <th scope="col" class="search-header" ai-multi-sort="openSurveillanceNonConformityCount" st-descending-first="true" st-sort-default="['-openSurveillanceNonConformityCount', '-edition', 'developer']"># Open NCs</th>
+                        <th scope="col" class="search-header" ai-multi-sort="closedSurveillanceNonConformityCount" st-descending-first="true"># Closed NCs</th>
                       </tr>
                     </thead>
                     <tfoot ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
@@ -134,8 +134,8 @@
                         <td>{{ listing.certificationStatus }}</td>
                         <td>{{ listing.openSurveillanceCount }}</td>
                         <td>{{ listing.closedSurveillanceCount }}</td>
-                        <td>{{ listing.openNonConformityCount }}</td>
-                        <td>{{ listing.closedNonConformityCount }}</td>
+                        <td>{{ listing.openSurveillanceNonConformityCount }}</td>
+                        <td>{{ listing.closedSurveillanceNonConformityCount }}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -20,8 +20,8 @@
                 { predicate: 'version', display: 'Version', sortType: 'multi' },
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', isLink: true, initialPanel: 'surveillance' },
                 { predicate: 'acb', display: 'ONC-ACB', sortType: 'multi' },
-                { predicate: 'openNonConformityCount', display: '# Open NCs', sortType: 'multi', descendingFirst: true, sortDefault: ['-openNonConformityCount', '-edition', 'developer'] },
-                { predicate: 'closedNonConformityCount', display: '# Closed NCs', sortType: 'multi', descendingFirst: true },
+                { predicate: 'openSurveillanceNonConformityCount', display: '# Open NCs', sortType: 'multi', descendingFirst: true, sortDefault: ['-openNonConformityCount', '-edition', 'developer'] },
+                { predicate: 'closedSurveillanceNonConformityCount', display: '# Closed NCs', sortType: 'multi', descendingFirst: true },
             ];
             vm.filters = ['acb', 'certificationStatus', 'edition', 'nonconformities'];
             vm.refineModel = {

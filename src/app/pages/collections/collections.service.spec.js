@@ -58,7 +58,7 @@
             });
 
             it('should generate a nonconformity json element', () => {
-                expect(results[0].nonconformities).toEqual('{"openNonconformityCount":0,"closedNonconformityCount":3}');
+                expect(results[0].nonconformities).toEqual('{"openSurveillanceNonConformityCount":0,"closedSurveillanceNonConformityCount":3}');
             });
         });
 

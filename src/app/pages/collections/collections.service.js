@@ -108,13 +108,13 @@
             for (var i = 0; i < array.length; i ++) {
                 cp = array[i];
 
-                if (cp.surveillanceCount > 0 && (cp.openNonconformityCount > 0 || cp.closedNonconformityCount > 0)) {
+                if (cp.surveillanceCount > 0 && (cp.openSurveillanceNonConformityCount > 0 || cp.closedSurveillanceNonConformityCount > 0)) {
 
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
                     cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
                     cp.nonconformities = angular.toJson({
-                        openNonconformityCount: cp.openNonconformityCount,
-                        closedNonconformityCount: cp.closedNonconformityCount,
+                        openSurveillanceNonConformityCount: cp.openSurveillanceNonConformityCount,
+                        closedSurveillanceNonConformityCount: cp.closedSurveillanceNonConformityCount,
                     });
 
                     ret.push(cp);

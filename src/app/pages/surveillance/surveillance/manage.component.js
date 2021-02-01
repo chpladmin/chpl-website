@@ -81,8 +81,8 @@ export const SurveillanceManagementComponent = {
                     l.surveillance = angular.toJson({
                         openSurveillanceCount: l.openSurveillanceCount,
                         closedSurveillanceCount: l.closedSurveillanceCount,
-                        openNonConformityCount: l.openNonConformityCount,
-                        closedNonConformityCount: l.closedNonConformityCount,
+                        openSurveillanceNonConformityCount: l.openSurveillanceNonConformityCount,
+                        closedSurveillanceNonConformityCount: l.closedSurveillanceNonConformityCount,
                         surveillanceDates: l.surveillanceDates,
                     });
                     return l;
