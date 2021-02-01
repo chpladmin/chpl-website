@@ -234,7 +234,7 @@ let states = {
                 },
                 availableCriteria: (networkService) => {
                     'ngInject';
-                    return networkService.getCriteria();
+                    return networkService.getCertificationCriteriaForSvap();
                 },
             },
             data: { title: 'CHPL Administration - SVAPs' },

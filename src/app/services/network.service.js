@@ -259,6 +259,10 @@ export class NetworkService {
         return this.apiGET('/data/certification_bodies');
     }
 
+    getCertificationCriteriaForSvap () {
+        return this.apiGET('/svaps/criteria');
+    }
+
     getCertificationStatuses () {
         return this.apiGET('/data/certification_statuses');
     }

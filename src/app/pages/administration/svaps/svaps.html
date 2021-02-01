@@ -46,6 +46,7 @@
           <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.selectedCriteria"
               ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.getCriteriaForSelectableList() | orderBy: $ctrl.sortCerts track by criteria.id"
               ng-change="$ctrl.selectCriteriaForSvap()"></select>
+              <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.svap.criteria && $ctrl.svap.criteria.length === 0">At least one criteria must be selected</div>
         </div>
         <div class="flex-item">
           <label class="control-label" for="svap-edit-approved-standard-version">Approved Standard Version<span class="text-danger">*</span></label>

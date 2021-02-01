@@ -22,16 +22,17 @@ export const SvapsComponent = {
                 this.svaps = angular.copy(changes.svaps.currentValue);
             }
             if (changes.availableCriteria) {
-                this.availableCriteria = angular.copy(changes.availableCriteria.currentValue.criteria);
-                //TODO - this may need to be removed...  Do we have smaller list?
+                this.$log.info(changes.availableCriteria);
+                this.availableCriteria = angular.copy(changes.availableCriteria.currentValue);
                 this.availableCriteria = this.availableCriteria.filter(crit => crit.certificationEditionId === 3);
             }
+            this.$log.info(this.availableCriteria);
         }
 
         addSvap () {
             this.svap = {};
             this.errors = [];
-            this.options = {maxMessageCharacters: 50, canDelete: false};
+            this.options = {maxMessageCharacters: 100, canDelete: false};
             this.isEditting = true;
         }
 
@@ -48,7 +49,7 @@ export const SvapsComponent = {
         editSvap (svap) {
             this.svap = svap;
             this.errors = [];
-            this.options = {maxMessageCharacters: 50, canDelete: true};
+            this.options = {maxMessageCharacters: 100, canDelete: true};
             this.isEditting = true;
         }
 
@@ -85,12 +86,7 @@ export const SvapsComponent = {
                 return this.availableCriteria.filter(crit => !this.svap.criteria.map(c => c.id).includes(crit.id));
             } else {
                 return this.availableCriteria;
-            }    
-            
-        }
-
-        addCriteriaToSelectableList (criteria) {
-            this.availableCriteria.push(criteria);
+            }
         }
 
         removeCriteriaFromSvap (criterion) {
