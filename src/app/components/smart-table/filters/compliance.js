@@ -18,8 +18,8 @@ const compliance = (input, rules) => {
     never = rules.NC.never;
     open = rules.NC.open;
     closed = rules.NC.closed;
-    hasOpenNc = listing.openNonconformityCount > 0;
-    hasClosedNc = listing.closedNonconformityCount > 0;
+    hasOpenNc = listing.openNonConformityCount > 0;
+    hasClosedNc = listing.closedNonConformityCount > 0;
     /*
      * matching only one of the possibles
      */

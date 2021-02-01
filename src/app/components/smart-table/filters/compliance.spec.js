@@ -3,11 +3,11 @@ import { compliance } from './compliance';
 
 const mock = {
     collection: [
-        '{"complianceCount":0,"openNonconformityCount":0,"closedNonconformityCount":0}',
-        '{"complianceCount":1,"openNonconformityCount":0,"closedNonconformityCount":0}',
-        '{"complianceCount":1,"openNonconformityCount":0,"closedNonconformityCount":1}',
-        '{"complianceCount":1,"openNonconformityCount":1,"closedNonconformityCount":0}',
-        '{"complianceCount":2,"openNonconformityCount":1,"closedNonconformityCount":1}',
+        '{"complianceCount":0,"openNonConformityCount":0,"closedNonConformityCount":0}',
+        '{"complianceCount":1,"openNonConformityCount":0,"closedNonConformityCount":0}',
+        '{"complianceCount":1,"openNonConformityCount":0,"closedNonConformityCount":1}',
+        '{"complianceCount":1,"openNonConformityCount":1,"closedNonConformityCount":0}',
+        '{"complianceCount":2,"openNonConformityCount":1,"closedNonConformityCount":1}',
     ],
 };
 

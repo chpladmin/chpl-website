@@ -57,7 +57,6 @@
             vm.refreshPending();
 
             networkService.getAcbs(true).then(result => vm.allowedAcbs = result);
-            networkService.getCollection('surveillanceManagement').then(result => vm.surveillanceListings = result);
             getResources();
         };
 

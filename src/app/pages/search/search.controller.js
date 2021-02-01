@@ -89,13 +89,13 @@
                 { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
                 { display: 'Surveillance', enabled: false, columns: [
                     { display: 'Total Surveillance', key: 'surveillanceCount' },
-                    { display: 'Open Surveillance Nonconformities', key: 'openSurveillanceNonconformityCount' },
-                    { display: 'Closed Surveillance Nonconformities', key: 'closedSurveillanceNonconformityCount' },
+                    { display: 'Open Surveillance Non-conformities', key: 'openSurveillanceNonConformityCount' },
+                    { display: 'Closed Surveillance Non-conformities', key: 'closedSurveillanceNonConformityCount' },
                 ]},
                 { display: 'Direct Review', enabled: false, columns: [
                     { display: 'Total Direct Reviews', key: 'directReviewCount' },
-                    { display: 'Open Direct Review Nonconformities', key: 'openDirectReviewNonconformityCount' },
-                    { display: 'Closed Direct Review Nonconformities', key: 'closedDirectReviewNonconformityCount' },
+                    { display: 'Open Direct Review Non-conformities', key: 'openDirectReviewNonConformityCount' },
+                    { display: 'Closed Direct Review Non-conformities', key: 'closedDirectReviewNonConformityCount' },
                 ]},
             ];
 
@@ -408,8 +408,8 @@
                 }
                 results[i].compliance = angular.toJson({
                     complianceCount: results[i].surveillanceCount + results[i].directReviewCount,
-                    openNonconformityCount: results[i].openSurveillanceNonconformityCount + results[i].openDirectReviewNonconformityCount,
-                    closedNonconformityCount: results[i].closedSurveillanceNonconformityCount + results[i].closedDirectReviewNonconformityCount,
+                    openNonConformityCount: results[i].openSurveillanceNonConformityCount + results[i].openDirectReviewNonConformityCount,
+                    closedNonConformityCount: results[i].closedSurveillanceNonConformityCount + results[i].closedDirectReviewNonConformityCount,
                 });
                 results[i].criteriaMet = SPLIT_PRIMARY + results[i].criteriaMet + SPLIT_PRIMARY;
             }
