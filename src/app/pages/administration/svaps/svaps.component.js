@@ -79,6 +79,20 @@ export const SvapsComponent = {
                     });
             }
         }
+
+        getCriteriaForSelectableList () {
+            if (Array.isArray(this.svap.criteria)) {
+                return this.availableCriteria.filter(crit => !this.svap.criteria.map(c => c.id).includes(crit.id));
+            } else {
+                return this.availableCriteria;
+            }    
+            
+        }
+
+        addCriteriaToSelectableList (criteria) {
+            this.availableCriteria.push(criteria);
+        }
+
         removeCriteriaFromSvap (criterion) {
             this.svap.criteria = this.svap.criteria.filter(crit => crit.id !== criterion.id);
         }
