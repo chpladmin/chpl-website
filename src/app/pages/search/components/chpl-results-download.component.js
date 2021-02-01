@@ -1,9 +1,8 @@
 export const ResultsDownloadComponent = {
-    templateUrl: 'chpl.search/components/results-download.html',
+    templateUrl: 'chpl.search/components/chpl-results-download.html',
     bindings: {
         listings: '<',
         categories: '<',
-        maxSize: '@?',
     },
     controller: class ResultsDownloadController {
         constructor ($log, utilService) {
@@ -21,9 +20,6 @@ export const ResultsDownloadComponent = {
             }
             if (changes.categories) {
                 this.categories = angular.copy(changes.categories.currentValue);
-            }
-            if (changes.maxSize) {
-                this.maxSize = changes.maxSize.currentValue || 50;
             }
         }
 
@@ -56,4 +52,4 @@ export const ResultsDownloadComponent = {
 
 angular
     .module('chpl.search')
-    .component('aiResultsDownload', ResultsDownloadComponent);
+    .component('chplResultsDownload', ResultsDownloadComponent);

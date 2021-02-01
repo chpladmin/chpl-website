@@ -338,7 +338,7 @@
               <span class="sr-only">Download Results</span> <i class="fa fa-download"></i>
             </button>
             <ul class="list-unstyled dropdown-menu dropdown-menu-large" aria-labeledby="dropdown-download-button" uib-dropdown-menu>
-              <ai-results-download listings="vm.displayedCps" categories="vm.downloadResultsCategories" max-size="50"></ai-results-download>
+              <chpl-results-download listings="vm.displayedCps" categories="vm.downloadResultsCategories"></chpl-results-download>
             </ul>
           </div>
         </div>
@@ -397,7 +397,7 @@
                       <label for="pageSizeTop" class="sr-only">Show how many results</label>
                       Showing up to&nbsp;
                       <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
-                              ng-options="v as v for v in [50,100,250]">
+                              ng-options="v as v for v in [50,100,250,1000]">
                       </select>
                       &nbsp;results per page
                     </div>
