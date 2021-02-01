@@ -152,7 +152,7 @@ describe('the search page', () => {
         });
     });
 
-    describe('when searching via filters', () => {
+    describe('when filtering', () => {
         var countBefore;
         var countAfter;
         beforeEach(() => {
@@ -164,7 +164,7 @@ describe('the search page', () => {
             page.clearFilters.click();
         });
 
-        describe('using certification status as "Retired" ', () => {
+        describe('using certification status as "Retired"', () => {
             beforeEach(() => {
                 page.expandFilterOptions('status').click();
                 page.statusRetiredFilterOption.click();
@@ -226,22 +226,61 @@ describe('the search page', () => {
             });
         });
 
-        describe('using surveillance activity "never had surveillance"', () => {
-            it('should filter listing results', () => {
-                page.expandFilterOptions('surveillance').click();
-                page.surveillanceNeverHadFilter.click();
+        describe('with compliance activity', () => {
+            beforeEach(() => {
+                page.expandFilterOptions('compliance').click();
+            });
+
+            it('should filter listing results on "has never had a compliance activity"', () => {
+                page.complianceNeverHadActivityFilter.click();
                 page.waitForUpdatedListingResultsCount();
                 countAfter = page.listingTotalCount();
                 expect(countAfter).toBeLessThan(countBefore);
             });
+
+            it('should filter listing results on "has had a compliance activity"', () => {
+                page.complianceHasHadActivityFilter.click();
+                page.waitForUpdatedListingResultsCount();
+                countAfter = page.listingTotalCount();
+                expect(countAfter).toBeLessThan(countBefore);
+            });
+
+            describe('while in the "has had a compliance activity" filter', () => {
+                beforeEach(() => {
+                    page.complianceHasHadActivityFilter.click();
+                    page.waitForUpdatedListingResultsCount();
+                    countBefore = page.listingTotalCount();
+                });
+
+                it('should filter listing results on "never had"', () => {
+                    page.complianceNeverHadNonConformityFilter.click();
+                    page.waitForUpdatedListingResultsCount();
+                    countAfter = page.listingTotalCount();
+                    expect(countAfter).toBeLessThan(countBefore);
+                });
+
+                it('should filter listing results on "open"', () => {
+                    page.complianceOpenNonConformityFilter.click();
+                    page.waitForUpdatedListingResultsCount();
+                    countAfter = page.listingTotalCount();
+                    expect(countAfter).toBeLessThan(countBefore);
+                });
+
+                it('should filter listing results on "closed"', () => {
+                    page.complianceClosedNonConformityFilter.click();
+                    page.waitForUpdatedListingResultsCount();
+                    countAfter = page.listingTotalCount();
+                    expect(countAfter).toBeLessThan(countBefore);
+                });
+            });
         });
 
-        describe('the "More" filter', () => {
+        describe('in the "More" dropdown', () => {
             beforeEach(() => {
                 page.moreFilterButton.click();
             });
 
-            describe('CQMs 2014/2015 CQMs', () => {
+            describe('the "Clinical Quality Measures" filter', () => {
                 it('should filter listing results', () => {
                     page.moreFilterExpand(' View Clinical Quality Measures ').click();
                     page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
@@ -252,7 +291,7 @@ describe('the search page', () => {
                 });
             });
 
-            describe('ONC/ACBs', () => {
+            describe('the "ONC/ACBs" filter', () => {
                 it('should filter listing results', () => {
                     page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
                     page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
@@ -262,21 +301,17 @@ describe('the search page', () => {
                 });
             });
 
-            describe('Practice Type', () => {
+            describe('the "Practice Type" filter', () => {
                 it('should filter listing results', () => {
                     page.moreFilterExpand(' View Practice Type ').scrollAndClick();
                     page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
                     page.waitForUpdatedListingResultsCount();
-                    if (!page.pagination.isExisting()) {
-                        countAfter = 0;
-                    } else {
-                        countAfter = page.listingTotalCount();
-                    }
+                    countAfter = page.listingTotalCount();
                     expect(countAfter).toBeLessThan(countBefore);
                 });
             });
 
-            describe('Certification Date', () => {
+            describe('the "Certification Date" filter', () => {
                 it('should filter listing results', () => {
                     page.moreFilterExpand(' View Certification Date ').click();
                     page.moreCertificationEndDateFilter.addValue('01/01/2019');
@@ -286,7 +321,7 @@ describe('the search page', () => {
                 });
             });
 
-            describe('Developer / Product / Version', () => {
+            describe('the "Developer / Product / Version" filters', () => {
                 beforeEach(() => {
                     page.moreDeveloperFilter.addValue(developerName);
                     page.moreProductFilter.addValue(productName);
@@ -330,6 +365,12 @@ describe('the search page', () => {
     });
 
     describe('when downloading results', () => {
+        it('should indicate it will download however many results there are', () => {
+            page.pageSize.selectByVisibleText('250');
+            page.downloadResultsButton.scrollAndClick();
+            expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
+        });
+
         it('should download a file', () => {
             page.downloadResultsButton.scrollAndClick();
             page.downloadResultsAction.scrollAndClick();
@@ -339,11 +380,39 @@ describe('the search page', () => {
             expect(fs.existsSync(filePath)).toBe(true);
         });
 
-        describe('with more than 50 results', () => {
-            it('should indicate it will download however many results there are', () => {
-                page.pageSize.selectByVisibleText('250');
+        describe('the download options', () => {
+            beforeEach(() => {
                 page.downloadResultsButton.scrollAndClick();
-                expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
+            });
+
+            it('should include some by default', () => {
+                let active = new Set(
+                    page.downloadResultsOptions
+                        .filter(o => page.isDownloadResultsOptionSelected(o))
+                        .map(o => page.getDownloadResultsOptionText(o).toLowerCase())
+                );
+                expect(active.size).toBe(6);
+                expect(active.has('edition')).toBe(true);
+                expect(active.has('product data')).toBe(true);
+                expect(active.has('certification date')).toBe(true);
+                expect(active.has('chpl id')).toBe(true);
+                expect(active.has('status')).toBe(true);
+                expect(active.has('details')).toBe(true);
+            });
+
+            it('should not include some by default', () => {
+                let inactive = new Set(
+                    page.downloadResultsOptions
+                        .filter(o => !page.isDownloadResultsOptionSelected(o))
+                        .map(o => page.getDownloadResultsOptionText(o).toLowerCase())
+                );
+                expect(inactive.size).toBe(6);
+                expect(inactive.has('onc-acb')).toBe(true);
+                expect(inactive.has('practice type')).toBe(true);
+                expect(inactive.has('certification criteria')).toBe(true);
+                expect(inactive.has('clinical quality measures')).toBe(true);
+                expect(inactive.has('surveillance')).toBe(true);
+                expect(inactive.has('direct review')).toBe(true);
             });
         });
     });
