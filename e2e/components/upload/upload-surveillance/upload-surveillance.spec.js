@@ -25,7 +25,7 @@ describe('When uploading a surveillane activity as ONC-ACB', () => {
         assert.include(uploadSurveillanceComponent.surveillanceUploadText.getText(),'was uploaded successfully.', 'File has uploaded successfully');
     });
 
-    it('can\'t upload valid file format of surveillance activity file', () => {
+    it('can\'t upload invalid file format of surveillance activity file', () => {
         uploadSurveillanceComponent.uploadSurveillance('../../../resources/surveillance/SurveillanceInvalid.csv');
         assert.include(uploadSurveillanceComponent.surveillanceUploadText.getText(),'was not uploaded successfully.', 'File has not uploaded successfully');
     });

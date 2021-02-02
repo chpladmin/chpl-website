@@ -85,7 +85,12 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
         it(`should not be able to ${testName} as non conformity without adding non conformity`, () => {
             edit.editSurveillance();
             edit.addRequirement(input.type, input.capability, 'Non-Conformity');
-            edit.saveButton.click();
+            browser.saveScreenshot('./test_reports/e2e/0.png');
+            do {
+                edit.saveButton.click();
+                browser.saveScreenshot('./test_reports/e2e/1.png');
+            } while (!edit.errorMessages.isDisplayed());
+            browser.saveScreenshot('./test_reports/e2e/2.png');
             assert.include(edit.errorMessages.getText(),error);
         });
     });
