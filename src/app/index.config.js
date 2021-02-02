@@ -11,17 +11,14 @@
     function config ($analyticsProvider, $breadcrumbProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
-        /*
-        $analyticsProvider.developerMode(false);
+        // Enable/disable analytics debug tracking
         if (ENABLE_LOGGING) {
-            $analyticsProvider.registerPageTrack(function (path) {
-                console.log('Page tracking: ', path);
-            });
-            $analyticsProvider.registerEventTrack(function (action, properties) {
-                console.log('Event tracking: ', action, properties);
-            });
+            /* eslint-disable no-console,angular/log */
+            $analyticsProvider.developerMode(false);
+            $analyticsProvider.registerPageTrack(path => console.log({path}));
+            $analyticsProvider.registerEventTrack((action, properties) => console.log({action, properties}));
+            /* eslint-enable no-console,angular/log */
         }
-        */
 
         $breadcrumbProvider.setOptions({
             includeAbstract: true,
