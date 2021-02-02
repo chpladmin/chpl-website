@@ -563,6 +563,10 @@ option[disabled] {
     width: 100%;
 }
 
+.dropdown__text-block {
+    padding: 10px;
+}
+
 .animate-if.ng-enter {
     transition: all cubic-bezier(.25, .46, .45, .94) .5s;
 }
