@@ -6,11 +6,13 @@
 
         mock = {};
         mock.listing = {
+            certificationResults: [],
             certificationEdition: {name: '2015'},
             certificationEvents: [
                 { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' }},
             ],
             certifyingBody: [],
+            cqmResults: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
             ics: { inherits: false },

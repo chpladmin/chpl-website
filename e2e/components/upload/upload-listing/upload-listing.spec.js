@@ -4,7 +4,7 @@ import Hooks from '../../../utilities/hooks';
 
 let hooks, loginComponent, uploadListingComponent;
 
-beforeAll(async () => {
+beforeEach(async () => {
     uploadListingComponent = new UploadListingComponent();
     loginComponent = new LoginComponent();
     hooks = new Hooks();
@@ -12,8 +12,17 @@ beforeAll(async () => {
 });
 
 describe('When uploading a listing as ONC-ACB', () => {
-    beforeAll(function () {
-        loginComponent.logIn('acb');
+    beforeEach(function () {
+        loginComponent.logInWithEmail('acb');
+    });
+
+    afterEach(function () {
+        loginComponent.logOut();
+    });
+
+    it('can\'t upload a file which doesn\'t match current template', () => {
+        uploadListingComponent.uploadListing('../../../resources/upload-listing-beta/2015_WithCriteria.csv');
+        assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully. Available templates are:');
     });
 
     it('can upload v19 template', () => {

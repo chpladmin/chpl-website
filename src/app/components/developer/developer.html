@@ -10,7 +10,7 @@
       <div class="panel-body">
         <div class="developer__developer-information">
           <div class="developer__developer-column" ng-if="!$ctrl.isChangeRequest">
-            <div>
+            <div ng-if="$ctrl.developer.developerCode">
               <div class="data-label">Developer code</div>
               <div class="read-only-data">{{ $ctrl.developer.developerCode }}</div>
             </div>
@@ -29,11 +29,11 @@
             </div>
           </div>
           <div class="developer__developer-column">
-            <div ng-if="$ctrl.developer.contact">
+            <div ng-if="$ctrl.hasContact()">
               <div class="data-label">Contact</div>
               <chpl-contact contact="$ctrl.developer.contact"></chpl-contact>
             </div>
-            <div ng-if="$ctrl.developer.address">
+            <div ng-if="$ctrl.hasAddress()">
               <div class="data-label">Address</div>
               <chpl-address address="$ctrl.developer.address"></chpl-address>
             </div>
