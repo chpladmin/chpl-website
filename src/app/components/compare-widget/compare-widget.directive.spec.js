@@ -5,9 +5,9 @@
         var $compile, $localStorage, $log, $rootScope, el, mock, vm;
         mock = {
             products: [
-                {id: 1, name: 'name1'},
-                {id: 2, name: 'name2'},
-                {id: 3, name: 'name3'},
+                {id: 1, name: 'name1', chplProductNumber: undefined},
+                {id: 2, name: 'name2', chplProductNumber: undefined},
+                {id: 3, name: 'name3', chplProductNumber: undefined},
             ],
         };
 
@@ -94,10 +94,10 @@
 
         describe('when listening for the "compare all" event', () => {
             const payload = [
-                { name: 'a name', productId: '1' },
-                { name: '2nd name', productId: '2' },
+                { name: 'a name', productId: '1', chplProductNumber: undefined },
+                { name: '2nd name', productId: '2', chplProductNumber: undefined },
             ];
-            const products = payload.map((item) => { return {id: item.productId, name: item.name }; });
+            const products = payload.map((item) => { return {id: item.productId, name: item.name, chplProductNumber: item.chplProductNumber }; });
 
             it('should put the items in the widget', () => {
                 $rootScope.$broadcast('compareAll', payload);
