@@ -8,18 +8,25 @@ const dependencies = {
 
 function ChplFuzzyType ({fuzzyType, takeAction}) {
     const [isEditing, setEditing] = useState(false);
+    const [choices, setChoices] = useState(fuzzyType.choices);
     const $log = getAngularService('$log');
     const chplLog = dependencies.getChplLogService();
 
-    const toggle = () => {
-        setEditing(!isEditing);
-        if (isEditing) {
-            $log.info({isEditing});
-            takeAction(fuzzyType, 'cancel');
-        } else {
-            chplLog.info({isEditing});
-            takeAction(fuzzyType, 'edit');
-        }
+    const cancel = () => {
+        setEditing(false);
+        setChoices(fuzzyType.choices);
+        takeAction(fuzzyType, 'cancel');
+    };
+
+    const edit = () => {
+        chplLog.info('edit');
+        setEditing(true);
+        takeAction(fuzzyType, 'edit');
+    };
+
+    const remove = choice => {
+        $log.info({choice});
+        setChoices(choices.filter(c => c !== choice));
     };
 
     return (
@@ -33,12 +40,12 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
               { !isEditing &&
                 <>
                   <span className="pull-right">
-                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => toggle()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
+                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
                   </span>
                   Choices
                   <ul>
                     {
-                        fuzzyType.choices
+                        choices
                         .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
                         .map(choice => (
                             <li key={ choice }>{ choice }</li>
@@ -50,18 +57,23 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
               { isEditing &&
                 <>
                   <span className="pull-right">
-                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-cancel'} onClick={() => toggle()}><i className="fa fa-close"></i><span className="sr-only"> Cancel Edit Fuzzy Type</span></button>
+                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-cancel'} onClick={() => cancel()}><i className="fa fa-close"></i><span className="sr-only"> Cancel Edit Fuzzy Type</span></button>
                   </span>
                   Choices (for editing)
-                  <ul>
-                    {
-                        fuzzyType.choices
-                        .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                        .map(choice => (
-                            <li key={ choice }>{ choice }</li>
-                        ))
-                    }
-                  </ul>
+                  <form>
+                    <ul>
+                      {
+                          choices
+                          .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+                          .map(choice => (
+                              <>
+                                <input type="text" key={choice} id={choice} value={choice} readOnly />
+                                <button onClick={() => remove(choice)}><i className="fa fa-trash"></i></button>
+                              </>
+                          ))
+                      }
+                    </ul>
+                </form>
                 </>
               }
             </div>
