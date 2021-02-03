@@ -412,7 +412,7 @@
                         <a ui-sref="listing({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
                       </div>
                       <div class="text-center">
-                        <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>
+                        <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-compare-widget-button>
                       </div>
                       <div class="text-center" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
                         <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-cms-widget-button>
