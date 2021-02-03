@@ -50,7 +50,9 @@ export const InspectDeveloperComponent = {
             }
             let that = this;
             this.networkService.updateDeveloper(developer)
-                .then(() => that.onSelect({developerId: developer.developerId}));
+                .then(() => {
+                    that.onSelect({developerId: developer.developerId});
+                });
         }
     },
 };

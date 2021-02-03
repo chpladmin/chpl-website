@@ -26,14 +26,14 @@
       <label for="acknowledge-warnings" class="action-bar__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> and wish to proceed with this update</label>
     </span>
   </div>
-  <div class="action-bar__buttons">
-    <div class="action-bar__button" ng-if="$ctrl.canDelete">
+  <div class="action-bar__buttons" ng-if="!$ctrl.isWizard">
+    <div class="action-bar__button" ng-if="$ctrl.can('delete')">
       <button class="btn btn-danger" id="action-bar-delete"
               confirm="Are you sure you wish to delete?"
               confirm-ok="Yes"
               confirm-cancel="No"
               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="$ctrl.delete()">Delete</button>
+              ng-click="$ctrl.act('delete')">Delete</button>
     </div>
     <div class="action-bar__button">
       <button class="btn btn-default" id="action-bar-cancel"
@@ -41,12 +41,45 @@
               confirm-ok="Yes"
               confirm-cancel="No"
               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="$ctrl.cancel()">Cancel</button>
+              ng-click="$ctrl.act('cancel')">Cancel</button>
     </div>
     <div class="action-bar__button">
-      <button class="btn btn-primary" id="action-bar-save" ng-click="$ctrl.save()"
+      <button class="btn btn-primary" id="action-bar-save"
+              ng-click="$ctrl.act('save')"
               ng-disabled="$ctrl.isDisabled"
-              ng-mouseover="$ctrl.mouseover()">Save</button>
+              ng-mouseover="$ctrl.act('mouseover')">Save</button>
+    </div>
+  </div>
+  <div class="action-bar__buttons" ng-if="$ctrl.isWizard" ng-mouseover="$ctrl.act('mouseover')">
+    <div class="action-bar__button">
+      <button class="btn btn-secondary" id="action-bar-cancel"
+              confirm="Are you sure you wish to cancel? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="$ctrl.act('cancel')">Cancel</button>
+    </div>
+    <div class="action-bar__button">
+      <button class="btn btn-secondary" id="action-bar-previous"
+              ng-click="$ctrl.act('previous')"
+              ng-disabled="!$ctrl.can('previous')"><i class="fa fa-caret-left"></i> Previous</button>
+    </div>
+    <div class="action-bar__button" ng-if="!$ctrl.can('confirm')">
+      <button class="btn btn-primary" id="action-bar-next"
+              ng-click="$ctrl.act('next')"
+              ng-disabled="!$ctrl.can('next')">Next <i class="fa fa-caret-right"></i></button>
+    </div>
+    <div class="action-bar__button" ng-if="$ctrl.can('confirm')">
+      <button class="btn btn-primary" id="action-bar-confirm"
+              ng-click="$ctrl.act('confirm')">Confirm</button>
+    </div>
+    <div class="action-bar__button">
+      <button class="btn btn-danger" id="action-bar-reject"
+              confirm="Are you sure you wish to reject?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="$ctrl.act('reject')">Reject</button>
     </div>
   </div>
 </div>

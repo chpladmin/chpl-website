@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-    <chpl-action-bar can-delete="true"
+    <chpl-action-bar can-act="$ctrl.canActionBar(action)"
               error-messages="$ctrl.errors"
               is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
               take-action="$ctrl.takeActionBarAction(action)"

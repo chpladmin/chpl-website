@@ -14,7 +14,7 @@ export const SvapsComponent = {
 
             this.svap = null;
             this.isEditting = false;
-            this.options = {};
+            this.options = {maxMessageCharacters: 100};
         }
 
         $onChanges (changes) {
@@ -22,17 +22,14 @@ export const SvapsComponent = {
                 this.svaps = angular.copy(changes.svaps.currentValue);
             }
             if (changes.availableCriteria) {
-                this.$log.info(changes.availableCriteria);
                 this.availableCriteria = angular.copy(changes.availableCriteria.currentValue);
                 this.availableCriteria = this.availableCriteria.filter(crit => crit.certificationEditionId === 3);
             }
-            this.$log.info(this.availableCriteria);
         }
 
         addSvap () {
             this.svap = {};
             this.errors = [];
-            this.options = {maxMessageCharacters: 100, canDelete: false};
             this.isEditting = true;
         }
 
@@ -49,7 +46,6 @@ export const SvapsComponent = {
         editSvap (svap) {
             this.svap = svap;
             this.errors = [];
-            this.options = {maxMessageCharacters: 100, canDelete: true};
             this.isEditting = true;
         }
 
@@ -115,6 +111,17 @@ export const SvapsComponent = {
                 this.save();
                 break;
                 //no default
+            }
+        }
+
+        canActionBar (action) {
+            this.$log.info('can called');
+            this.$log.info(action);
+            if (action === 'delete') {
+                //If the current svap has an id, we can delete since it is an existing svap
+                return this.svap.svapId;
+            } else {
+                return true;
             }
         }
     },

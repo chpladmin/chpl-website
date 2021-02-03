@@ -1,12 +1,12 @@
 export const ActionBarComponent = {
     templateUrl: 'chpl.components/action-bar/action-bar.html',
     bindings: {
-        //canDelete: '@',
+        canAct: '&',
         errorMessages: '<',
         isDisabled: '<',
+        isWizard: '@',
         takeAction: '&',
         warningMessages: '<',
-        //maxMessageCharacters: '@',
         options: '<',
     },
     controller: class ActionBarComponent {
@@ -42,27 +42,18 @@ export const ActionBarComponent = {
             }
         }
 
-        cancel () {
+        act (action) {
             this.takeAction({
-                action: 'cancel',
+                action: action,
             });
         }
 
-        delete () {
-            this.takeAction({
-                action: 'delete',
-            });
-        }
-
-        mouseover () {
-            this.takeAction({
-                action: 'mouseover',
-            });
-        }
-
-        save () {
-            this.takeAction({
-                action: 'save',
+        can (action) {
+            this.$log.info('here 1 ' + action);
+            this.$log.info(this.canAct);
+            this.$log.info(this.takeAction);
+            return this.canAct({
+                action: action,
             });
         }
 

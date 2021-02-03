@@ -2,21 +2,31 @@ export const UploadListingsComponent = {
     templateUrl: 'chpl.components/upload/listings.html',
     bindings: {
         onChange: '&',
+        beta: '@',
     },
     controller: class UploadListingsComponent {
-        constructor ($filter, $log, API, Upload, authService, networkService) {
+        constructor ($filter, $log, API, Upload, authService, networkService, toaster) {
             'ngInject';
             this.$filter = $filter;
             this.$log = $log;
             this.Upload = Upload;
             this.networkService = networkService;
+            this.toaster = toaster;
             this.item = {
-                url: API + '/certified_products/upload',
+                url: API,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),
                     'API-Key': authService.getApiKey(),
                 },
             };
+        }
+
+        $onInit () {
+            if (this.beta) {
+                this.item.url += '/listings/upload';
+            } else {
+                this.item.url += '/certified_products/upload';
+            }
         }
 
         upload () {
@@ -27,7 +37,15 @@ export const UploadListingsComponent = {
                 };
                 let that = this;
                 this.Upload.upload(item).then(response => {
-                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                    if (this.beta) {
+                        that.toaster.pop({
+                            type: 'success',
+                            title: 'Success',
+                            body: 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending product' + (response.data.length > 1 ? 's are' : ' is') + ' ready for confirmation.',
+                        });
+                    } else {
+                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                    }
                     if (response.headers.warning === '299 - "Deprecated upload template"') {
                         that.uploadWarnings = ['The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.'];
                     }
@@ -36,7 +54,6 @@ export const UploadListingsComponent = {
                     that.file = undefined;
                     that.onChange();
                 }, response => {
-                    that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
                     if (response.data.errorMessages
                         && response.data.errorMessages.length === 1
                         && response.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
@@ -55,7 +72,16 @@ export const UploadListingsComponent = {
                             }
                         });
                     } else {
-                        that.uploadErrors = response.data.errorMessages;
+                        that.uploadErrors = response.data.errorMessages || response.data.error;
+                    }
+                    if (this.beta) {
+                        that.toaster.pop({
+                            type: 'error',
+                            title: 'Error',
+                            body: 'File "' + response.config.data.file.name + '" was not uploaded successfully. ' + that.uploadErrors,
+                        });
+                    } else {
+                        that.uploadMessage = 'File "' + response.config.data.file.name + '" was not uploaded successfully.';
                     }
                     that.uploadWarnings = [];
                     that.uploadSuccess = false;

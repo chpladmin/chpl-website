@@ -456,12 +456,19 @@ export class NetworkService {
         return this.apiGET('/statistics/participant_professional_experience_count');
     }
 
-    getPendingListings () {
+    getPendingListings (beta) {
+        if (beta) {
+            return this.apiGET('/listings/pending');
+        }
         return this.apiGET('/certified_products/pending/metadata');
     }
 
     getPendingListingById (id) {
         return this.apiGET('/certified_products/pending/' + id);
+    }
+
+    getPendingListingByIdBeta (id) {
+        return this.apiGET('/listings/pending/' + id);
     }
 
     getPractices () {
@@ -704,6 +711,10 @@ export class NetworkService {
         return this.apiDELETE('/certified_products/pending', {ids: ids});
     }
 
+    massRejectPendingListingsBeta (ids) {
+        return this.apiDELETE('/listings/pending', {ids: ids});
+    }
+
     massRejectPendingSurveillance (ids) {
         return this.apiDELETE('/surveillance/pending', {ids: ids});
     }
@@ -730,6 +741,10 @@ export class NetworkService {
 
     rejectPendingCp (cpId) {
         return this.apiDELETE('/certified_products/pending/' + cpId);
+    }
+
+    rejectPendingListing (id) {
+        return this.apiDELETE('/listings/pending/' + id);
     }
 
     rejectPendingSurveillance (survId) {
