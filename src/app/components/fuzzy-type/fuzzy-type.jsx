@@ -37,45 +37,44 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
               <h4 className="panel-title">{ fuzzyType.fuzzyType }</h4>
             </div>
             <div className="panel-body">
-              { !isEditing &&
-                <>
-                  <span className="pull-right">
-                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
-                  </span>
-                  Choices
-                  <ul>
-                    {
-                        choices
-                        .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                        .map(choice => (
-                            <li key={ choice }>{ choice }</li>
-                        ))
-                    }
-                  </ul>
-                </>
-              }
-              { isEditing &&
-                <>
-                  <span className="pull-right">
-                    <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-cancel'} onClick={() => cancel()}><i className="fa fa-close"></i><span className="sr-only"> Cancel Edit Fuzzy Type</span></button>
-                  </span>
-                  Choices (for editing)
-                  <form>
+              { isEditing ? (
+                  <>
+                    <span className="pull-right">
+                      <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-cancel'} onClick={() => cancel()}><i className="fa fa-close"></i><span className="sr-only"> Cancel Edit Fuzzy Type</span></button>
+                    </span>
+                    Choices (for editing)
+                    <form>
+                      <ul>
+                        {
+                            choices
+                            .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+                            .map(choice => (
+                                <>
+                                  <input type="text" key={choice} id={choice} value={choice} readOnly />
+                                  <button onClick={() => remove(choice)}><i className="fa fa-trash"></i></button>
+                                </>
+                            ))
+                        }
+                      </ul>
+                    </form>
+                  </>
+              ) : (
+                  <>
+                    <span className="pull-right">
+                      <button className="btn btn-link btn-small" id={ 'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
+                    </span>
+                    Choices
                     <ul>
                       {
                           choices
                           .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
                           .map(choice => (
-                              <>
-                                <input type="text" key={choice} id={choice} value={choice} readOnly />
-                                <button onClick={() => remove(choice)}><i className="fa fa-trash"></i></button>
-                              </>
+                              <li key={ choice }>{ choice }</li>
                           ))
                       }
                     </ul>
-                </form>
-                </>
-              }
+                  </>
+              ) }
             </div>
           </div>
         </div>
