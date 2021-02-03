@@ -1,0 +1,59 @@
+<div class="listing-inspect" ng-form="$ctrl.form">
+  <div ng-switch="$ctrl.stage" class="listing-inspect__header">
+    <div>
+      <h1 ng-switch-when="developer">Developer</h1>
+      <h1 ng-switch-when="product">Product</h1>
+      <h1 ng-switch-when="version">Version</h1>
+      <h1 ng-switch-when="listing">Listing</h1>
+      <h2>Inspecting Listing: {{ $ctrl.listing.chplProductNumber }}</h2>
+    </div>
+    <div>
+      <uib-progressbar
+        class="progress-striped active"
+        type="info"
+        value="$ctrl.getStage()"
+        max="4"
+        title="{{ $ctrl.stage }}">{{ $ctrl.stage }}
+      </uib-progressbar>
+    </div>
+  </div>
+  <div ng-switch="$ctrl.stage">
+    <div ng-switch-when="developer">
+      <chpl-confirm-developer
+        developers="$ctrl.developers"
+        pending="$ctrl.pending.developer"
+        show-form-errors="$ctrl.showFormErrors"
+        take-action="$ctrl.takeDeveloperAction(action, payload)"
+        uploaded="$ctrl.uploaded.developer"
+        ></chpl-confirm-developer>
+    </div>
+    <div ng-switch-when="product">
+      <chpl-confirm-product
+        developer="$ctrl.pending.developer"
+        show-form-errors="$ctrl.showFormErrors"
+        take-action="$ctrl.takeProductAction(action, payload)"
+        uploaded="$ctrl.uploaded.product"
+        ></chpl-confirm-product>
+    </div>
+    <div ng-switch-when="version">
+      <chpl-confirm-version
+        product="$ctrl.pending.product"
+        show-form-errors="$ctrl.showFormErrors"
+        take-action="$ctrl.takeVersionAction(action, payload)"
+        uploaded="$ctrl.uploaded.version"
+        ></chpl-confirm-version>
+    </div>
+    <div ng-switch-when="listing">
+      <chpl-inspect-listing
+        listing="$ctrl.uploaded"
+        on-change="$ctrl.editListing(listing)"
+        resources="$ctrl.resources"
+        ></chpl-inspect-listing>
+    </div>
+  </div>
+  <chpl-action-bar can-act="$ctrl.canAct(action)"
+                   error-messages="$ctrl.errorMessages"
+                   is-wizard="true"
+                   take-action="$ctrl.takeAction(action)">
+  </chpl-action-bar>
+</div>
