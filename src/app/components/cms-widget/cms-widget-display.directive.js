@@ -24,8 +24,8 @@
                 scope.generatePdf = function () {
                     widgetController.generatePdf();
                 };
-                scope.removeProduct = function (id) {
-                    widgetController.removeProduct(id);
+                scope.removeProduct = function (id, number) {
+                    widgetController.removeProduct(id, number);
                 };
             },
         };

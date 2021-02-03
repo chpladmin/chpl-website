@@ -22,7 +22,7 @@
                     this.toggleProduct = mock.toggleProduct;
                 };
 
-                el = angular.element('<ai-cms-widget><ai-cms-widget-button product-id="3" product-name="test"></ai-cms-widget-button></ai-cms-widget>');
+                el = angular.element('<ai-cms-widget><ai-cms-widget-button product-id="3" product-name="test" chpl-product-number="prodNum"></ai-cms-widget-button></ai-cms-widget>');
 
                 $compile(el)($rootScope.$new());
                 $rootScope.$digest();
@@ -43,7 +43,7 @@
 
         it('should call the parent controller on click', function () {
             el.find('button').triggerHandler('click');
-            expect(mock.toggleProduct).toHaveBeenCalledWith('3');
+            expect(mock.toggleProduct).toHaveBeenCalledWith('3', 'prodNum');
         });
 
         it('should call the parent controller when being compiled to know if the product is in the list', function () {
