@@ -48,6 +48,7 @@
                 vm = $controller('InspectController', {
                     $scope: scope,
                     $uibModalInstance: Mock.modalInstance,
+                    beta: false,
                     developers: Mock.developers,
                     inspectingCp: mock.inspectingCp,
                     resources: mock.resources,

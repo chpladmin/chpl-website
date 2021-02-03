@@ -9,7 +9,7 @@ import { states as administrationStates } from './pages/administration/administr
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock ($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
+    function runBlock ($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService, toaster) {
 
         let loadFlags = () => {
             // get flag state from API
@@ -86,6 +86,15 @@ import { states as administrationStates } from './pages/administration/administr
 
         $transitions.onError({to: 'organizations.developers.**'}, transition => {
             transition.router.stateService.go('search');
+        });
+
+        $transitions.onError({}, transition => {
+            let message = transition.promise.$$state.value.detail.data.error;
+            toaster.pop({
+                type: 'error',
+                title: 'Error',
+                body: message,
+            });
         });
     }
 })();
