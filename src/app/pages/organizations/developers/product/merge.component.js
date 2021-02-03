@@ -13,17 +13,11 @@ export const ProductsMergeComponent = {
             this.networkService = networkService;
         }
 
-        $onInit () {
-            let that = this;
-            this.networkService.getProduct(this.$stateParams.productId)
-                .then(response => {
-                    that.product = response;
-                });
-        }
-
         $onChanges (changes) {
             if (changes.developer && changes.developer.currentValue) {
                 this.developer = angular.copy(changes.developer.currentValue);
+                this.product = this.developer.products
+                    .find(p => p.productId === parseInt(this.$stateParams.productId, 10));
                 this.products = this.developer.products
                     .filter(d => d.productId !== parseInt(this.$stateParams.productId, 10) && !d.deleted)
                     .map(d => {

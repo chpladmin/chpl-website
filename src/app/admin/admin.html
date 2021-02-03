@@ -18,16 +18,13 @@
       <div class="col-sm-3 admin-nav" id="admin-nav">
         <div class="panel panel-ai">
           <ul class="nav nav-pills nav-stacked">
-            <li ng-class="{'active': vm.navState === 'manage' || vm.navState === 'merge'}" id="admin-nav.dpManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState === 'manage'}" id="admin-nav.dpManagement.manage" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement/manage">Manage Developers &amp; Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState === 'merge'}" id="admin-nav.dpManagement.merge" ng-if="(vm.navState === 'manage' || vm.navState === 'merge') && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/dpManagement/merge">Merge Versions</a></li>
+            <li class="active" id="admin-nav.dpManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
+            <li class="subnav animate-if active" id="admin-nav.dpManagement.manage"><a href="#/admin/dpManagement/manage">Manage Developers &amp; Products</a></li>
           </ul>
         </div>
       </div>
       <div class="col-sm-9 admin-inner-tab" id="main-content" tabindex="-1">
-        <ai-vp-management ng-if="vm.navState === 'manage' || vm.navState === 'merge'"
-                          work-type="vm.navState"
-                          product-id="vm.productId"></ai-vp-management>
+        <ai-vp-management product-id="vm.productId"></ai-vp-management>
       </div>
     </div>
   </section> <!-- end authenticated user section -->

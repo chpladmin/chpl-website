@@ -556,6 +556,14 @@
                 $httpBackend.flush();
             });
 
+            it('should getActivityById', () => {
+                $httpBackend.expectGET(/^\/rest\/activity\/id$/).respond(200, {data: 'response'});
+                networkService.getActivityById('id').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getActivityMetadata', () => {
                 var aDate = new Date();
                 $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys$/).respond(200, {data: 'response'});
@@ -583,11 +591,24 @@
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
+                $httpBackend.expectGET(/^\/rest\/activity\/metadata\/api-keys\?pageSize=12+$/).respond(200, {data: 'response'});
+                networkService.getActivityMetadata('api-keys', {pageSize: 12}).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
             });
 
-            it('should getApiUsers', () => {
+            it('should getApiUsers including deleted', () => {
                 $httpBackend.expectGET(/^\/rest\/key\?includeDeleted=true$/).respond(200, {data: 'response'});
                 networkService.getApiUsers(true).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getApiUsers except deleted', () => {
+                $httpBackend.expectGET(/^\/rest\/key\?includeDeleted=false$/).respond(200, {data: 'response'});
+                networkService.getApiUsers().then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -947,9 +968,9 @@
                 $httpBackend.flush();
             });
 
-            xit('should getListingBasic', () => {
+            it('should getListingBasic', () => {
                 $httpBackend.expectGET(/^\/rest\/certified_products\/payload$/).respond(200, { data: 'response' });
-                networkService.getListing('payload').then(response => {
+                networkService.getListingBasic('payload').then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1211,9 +1232,25 @@
                 $httpBackend.flush();
             });
 
+            it('should getSingleDeveloperActivityMetadata with end date', () => {
+                $httpBackend.expectGET(/^\/rest\/activity\/metadata\/developers\/payload\?end=end$/).respond(200, {data: 'response'});
+                networkService.getSingleDeveloperActivityMetadata('payload', {end: 'end'}).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getSingleListingActivityMetadata', () => {
                 $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload$/).respond(200, {data: 'response'});
                 networkService.getSingleListingActivityMetadata('payload').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getSingleListingActivityMetadata with end date', () => {
+                $httpBackend.expectGET(/^\/rest\/activity\/metadata\/listings\/payload\?end=end$/).respond(200, {data: 'response'});
+                networkService.getSingleListingActivityMetadata('payload', {end: 'end'}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1227,9 +1264,25 @@
                 $httpBackend.flush();
             });
 
+            it('should getSingleProductActivityMetadata with end date', () => {
+                $httpBackend.expectGET(/^\/rest\/activity\/metadata\/products\/payload\?end=end$/).respond(200, {data: 'response'});
+                networkService.getSingleProductActivityMetadata('payload', {end: 'end'}).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should getSingleVersionActivityMetadata', () => {
                 $httpBackend.expectGET(/^\/rest\/activity\/metadata\/versions\/payload$/).respond(200, {data: 'response'});
                 networkService.getSingleVersionActivityMetadata('payload').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should getSingleVersionActivityMetadata with end date', () => {
+                $httpBackend.expectGET(/^\/rest\/activity\/metadata\/versions\/payload\?end=end$/).respond(200, {data: 'response'});
+                networkService.getSingleVersionActivityMetadata('payload', {end: 'end'}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();
@@ -1534,8 +1587,15 @@
                 $httpBackend.flush();
             });
 
-            xit('should modifyACB', () => {
-                $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, {});
+            it('should mergeDevelopers', () => {
+                $httpBackend.expectPOST(/^\/rest\/developers\/merge$/).respond(200, {data: 'response'});
+                networkService.mergeDevelopers('payload').then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
+            it('should modifyACB', () => {
                 $httpBackend.expectPUT(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
                 networkService.modifyACB({id: 'id'}).then(response => {
                     expect(response.data).toEqual('response');
@@ -1639,6 +1699,14 @@
                 $httpBackend.flush();
             });
 
+            it('should splitDeveloper', () => {
+                $httpBackend.expectPOST(/^\/rest\/developers\/1\/split$/).respond(200, {data: 'response'});
+                networkService.splitDeveloper({oldDeveloper: {developerId: 1}}).then(response => {
+                    expect(response.data).toEqual('response');
+                });
+                $httpBackend.flush();
+            });
+
             it('should splitProduct', () => {
                 $httpBackend.expectPOST(/^\/rest\/products\/1\/split$/).respond(200, {data: 'response'});
                 networkService.splitProduct({oldProduct: {productId: 1}}).then(response => {
@@ -1704,8 +1772,8 @@
             });
 
             it('should updateDeveloper', () => {
-                $httpBackend.expectPUT(/^\/rest\/developers$/).respond(200, {data: 'response'});
-                networkService.updateDeveloper('payload').then(response => {
+                $httpBackend.expectPUT(/^\/rest\/developers\/id$/).respond(200, {data: 'response'});
+                networkService.updateDeveloper({developerId: 'id'}).then(response => {
                     expect(response.data).toEqual('response');
                 });
                 $httpBackend.flush();

@@ -34,26 +34,25 @@ export const InspectDeveloperComponent = {
         }
 
         saveInspectingDeveloper () {
-            var dev = {
-                developer: {
-                    address: this.listing.developer.address,
-                    contact: this.listing.developer.contact,
-                    developerCode: this.developer.developerCode,
-                    developerId: this.listing.developer.developerId,
-                    name: this.listing.developer.name,
-                    selfDeveloper: this.listing.developer.selfDeveloper,
-                    status: this.developer.status,
-                    statusEvents: this.developer.statusEvents,
-                    website: this.listing.developer.website,
-                },
-                developerIds: [this.listing.developer.developerId],
+            let developer = {
+                address: this.listing.developer.address,
+                contact: this.listing.developer.contact,
+                developerCode: this.developer.developerCode,
+                developerId: this.listing.developer.developerId,
+                name: this.listing.developer.name,
+                selfDeveloper: this.listing.developer.selfDeveloper,
+                status: this.developer.status,
+                statusEvents: this.developer.statusEvents,
+                website: this.listing.developer.website,
             };
-            if (!dev.developer.address.country) {
-                dev.developer.address.country = 'USA';
+            if (!developer.address.country) {
+                developer.address.country = 'USA';
             }
             let that = this;
-            this.networkService.updateDeveloper(dev)
-                .then(() => that.onSelect({developerId: dev.developer.developerId}));
+            this.networkService.updateDeveloper(developer)
+                .then(() => {
+                    that.onSelect({developerId: developer.developerId});
+                });
         }
     },
 };

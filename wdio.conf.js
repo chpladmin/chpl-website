@@ -95,7 +95,6 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: config.logLevel,
-    specFileRetries: 2, //Retry logic
     //outputDir: `${__dirname}/e2e/logs`,
     //
     // Set specific log levels per logger
@@ -238,7 +237,7 @@ exports.config = {
                 watcher.close();
                 reject(new Error('File did not exist and was not created before the timeout.'));
             }, timeout);
-          
+
             fs.access(filePath, fs.constants.R_OK, function (err) {
                 if (!err) {
                     clearTimeout(timer);
@@ -246,7 +245,7 @@ exports.config = {
                     resolve();
                 }
             });
-          
+
             var dir = path.dirname(filePath);
             var basename = path.basename(filePath);
             var watcher = fs.watch(dir, function (eventType, filename) {

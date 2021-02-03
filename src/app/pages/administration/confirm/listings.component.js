@@ -6,13 +6,17 @@ export const ConfirmListingsComponent = {
         resources: '<',
     },
     controller: class ConfirmListingsComponent {
-        constructor ($log, $uibModal, authService, networkService) {
+        constructor ($log, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
             'ngInject';
             this.$log = $log;
+            this.$state = $state;
             this.$uibModal = $uibModal;
+            this.DateUtil = DateUtil;
+            this.featureFlags = featureFlags;
             this.networkService = networkService;
             this.hasAnyRole = authService.hasAnyRole;
             this.massReject = {};
+            this.massRejectBeta = {};
         }
 
         $onInit () {
@@ -20,6 +24,11 @@ export const ConfirmListingsComponent = {
             this.networkService.getPendingListings().then(listings => {
                 that.uploadingCps = listings;
             });
+            if (this.featureFlags.isOn('enhanced-upload')) {
+                this.networkService.getPendingListings(true).then(listings => {
+                    that.uploadedListings = listings;
+                });
+            }
         }
 
         $onChanges (changes) {
@@ -48,6 +57,16 @@ export const ConfirmListingsComponent = {
             return ret;
         }
 
+        getNumberOfListingsToRejectBeta () {
+            var ret = 0;
+            angular.forEach(this.massRejectBeta, value => {
+                if (value) {
+                    ret += 1;
+                }
+            });
+            return ret;
+        }
+
         inspectCp (cpId) {
             let that = this;
 
@@ -59,6 +78,7 @@ export const ConfirmListingsComponent = {
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
+                    beta: () => false,
                     developers: () => that.developers,
                     inspectingCp: () => that.networkService.getPendingListingById(cpId),
                     isAcbAdmin: () => that.hasAnyRole(['ROLE_ACB']),
@@ -75,10 +95,14 @@ export const ConfirmListingsComponent = {
                     this.clearPendingListing(cpId);
                     this.onChange();
                     if (result.status === 'resolved') {
-                        this.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
+                        this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
                     }
                 }
             });
+        }
+
+        inspectListing (listingId) {
+            this.$state.go('.listing', {id: listingId});
         }
 
         massRejectPendingListings () {
@@ -97,13 +121,38 @@ export const ConfirmListingsComponent = {
                 }, error => {
                     that.onChange();
                     if (error.data.errors && error.data.errors.length > 0) {
-                        that.uploadingListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
+                        that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
+                    }
+                });
+        }
+
+        massRejectPendingListingsBeta () {
+            let that = this;
+            var idsToReject = [];
+            angular.forEach(this.massRejectBeta, (value, key) => {
+                if (value) {
+                    idsToReject.push(parseInt(key));
+                    this.clearPendingListingBeta(parseInt(key));
+                    delete(this.massReject[key]);
+                }
+            });
+            this.networkService.massRejectPendingListingsBeta(idsToReject)
+                .then(() => {
+                    that.onChange();
+                }, error => {
+                    that.onChange();
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
                     }
                 });
         }
 
         clearPendingListing (cpId) {
             this.uploadingCps = this.uploadingCps.filter(l => l.id !== cpId);
+        }
+
+        clearPendingListingBeta (cpId) {
+            this.uploadedListings = this.uploadedListings.filter(l => l.id !== cpId);
         }
     },
 };
