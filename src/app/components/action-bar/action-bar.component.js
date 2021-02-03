@@ -49,9 +49,6 @@ export const ActionBarComponent = {
         }
 
         can (action) {
-            this.$log.info('here 1 ' + action);
-            this.$log.info(this.canAct);
-            this.$log.info(this.takeAction);
             return this.canAct({
                 action: action,
             });

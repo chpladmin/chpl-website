@@ -115,8 +115,6 @@ export const SvapsComponent = {
         }
 
         canActionBar (action) {
-            this.$log.info('can called');
-            this.$log.info(action);
             if (action === 'delete') {
                 //If the current svap has an id, we can delete since it is an existing svap
                 return this.svap.svapId;
