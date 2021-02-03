@@ -14,14 +14,14 @@ const elements = {
     newRequirement: '//*[@ng-click="$ctrl.addRequirement()"]',
     requirementType: '#requirement-type',
     requirementResult: '#result',
-    newNonConformity: '//*[@ng-click="$ctrl.addNonconformity()"]',
-    nonconformityType: '#nonconformity-type',
-    nonconformityStatus: '#nonconformity-status',
+    newnonConformity: '//*[@ng-click="$ctrl.addNonconformity()"]',
+    nonConformityType: '#nonconformity-type',
+    nonConformityStatus: '#nonconformity-status',
     determinationDate: '#date-of-determination',
     summary: '#summary',
     findings: '#findings',
     editRequirement: '//*[@ng-click="$ctrl.editRequirement(req)"]',
-    removeNonconformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
+    removenonConformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
     approvalDate: '#cap-approval-date',
     ncStartDate: '#cap-start-date',
     completeDate: '#cap-must-complete-date',
@@ -95,16 +95,16 @@ class SurveillanceEditComponent {
         return $(elements.requirementResult);
     }
 
-    get newNonConformityButton () {
-        return $(elements.newNonConformity);
+    get newnonConformityButton () {
+        return $(elements.newnonConformity);
     }
 
-    get nonconformityType () {
-        return $(elements.nonconformityType);
+    get nonConformityType () {
+        return $(elements.nonConformityType);
     }
 
-    get nonconformityStatus () {
-        return $(elements.nonconformityStatus);
+    get nonConformityStatus () {
+        return $(elements.nonConformityStatus);
     }
 
     get determinationDate () {
@@ -163,14 +163,14 @@ class SurveillanceEditComponent {
         return $(elements.requirementTable).$('tbody').$('tr').$$('td')[i];
     }
 
-    nonconformityTableRows () {
+    nonConformityTableRows () {
         return $('.table.ng-scope').$('tbody').$$('tr');
     }
 
-    addNonConformity (details , type) {
-        this.newNonConformityButton.click();
-        this.nonconformityType.selectByVisibleText(details.type);
-        this.nonconformityStatus.selectByVisibleText(details.status);
+    addnonConformity (details , type) {
+        this.newnonConformityButton.click();
+        this.nonConformityType.selectByVisibleText(details.type);
+        this.nonConformityStatus.selectByVisibleText(details.status);
         this.determinationDate.setValue(details.determinationDate);
         this.approvalDate.setValue(details.approvalDate);
         this.ncStartDate.setValue(details.startDate);

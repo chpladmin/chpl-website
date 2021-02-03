@@ -3,7 +3,7 @@ import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import ToastComponent from '../../components/toast/toast.po';
-import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanceEdit.po';
+import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
 import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, toast, upload;
@@ -69,8 +69,8 @@ describe('User can\'t confirm', () => {
 
 describe('User can\'t confirm', () => {
 
-    it('surveillance activity when they add non conformity type which listing is not attested to', () => {
-        let nonconformitydetails = {
+    it('surveillance activity when they add non-conformity type which listing is not attested to', () => {
+        let nonConformitydetails = {
             type: '170.315 (g)(10): Standardized API for Patient and Population Services',
             status: 'Open',
             determinationDate: '01/01/2020',
@@ -87,7 +87,7 @@ describe('User can\'t confirm', () => {
         hooks.waitForSpinnerToDisappear();
         edit.editSurveillance();
         edit.editRequirement.scrollAndClick();
-        edit.addNonConformity(nonconformitydetails , 'Reactive');
+        edit.addnonConformity(nonConformitydetails , 'Reactive');
         do {
             edit.saveButton.scrollAndClick();
         } while (!confirmPage.confirmButton.isClickable());

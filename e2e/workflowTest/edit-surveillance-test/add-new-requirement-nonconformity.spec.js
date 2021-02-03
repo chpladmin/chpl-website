@@ -2,7 +2,7 @@ import UploadSurveillanceComponent from '../../components/upload/upload-surveill
 import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanceEdit.po';
+import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
 import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, upload;
@@ -42,7 +42,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     inputs.forEach(input => {
         let testName = input.testName;
 
-        it(`should be able to ${testName} without non conformity`, () => {
+        it(`should be able to ${testName} without non-conformity`, () => {
 
             var countBefore = edit.requirementTableRows().length;
             edit.editSurveillance();
@@ -54,8 +54,8 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             assert.equal(countAfter,countBefore + 1);
         });
 
-        it(`should be able to ${testName} with non conformity to reactive surveillance activity`, () => {
-            let nonconformitydetails = {
+        it(`should be able to ${testName} with non-conformity to reactive surveillance activity`, () => {
+            let nonConformitydetails = {
                 type: '170.314 (a)(1): Computerized provider order entry',
                 status: 'Open',
                 determinationDate: '01/01/2020',
@@ -70,11 +70,11 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             var countBefore = edit.requirementTableRows().length;
             edit.editSurveillance();
             edit.addRequirement(input.type, input.capability, 'Non-Conformity');
-            edit.addNonConformity(nonconformitydetails , 'Reactive');
+            edit.addnonConformity(nonConformitydetails , 'Reactive');
             assert.isFalse(edit.sites.isEnabled());
             assert.isFalse(edit.totalSites.isEnabled());
             edit.saveButton.scrollAndClick();
-            assert.equal(edit.nonconformityTableRows().length,1);
+            assert.equal(edit.nonConformityTableRows().length,1);
             do {
                 edit.saveButton.click();
             } while (!confirmPage.confirmButton.isClickable());
@@ -82,7 +82,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             assert.equal(countAfter,countBefore + 1);
         });
 
-        it(`should not be able to ${testName} as non conformity without adding non conformity`, () => {
+        it(`should not be able to ${testName} as non conformity without adding non-conformity`, () => {
             edit.editSurveillance();
             edit.addRequirement(input.type, input.capability, 'Non-Conformity');
             do {
@@ -106,8 +106,8 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     inputs.forEach(input => {
         let testName = input.testName;
 
-        it(`should be able to ${testName} with non conformity to randomized surveillance activity`, () => {
-            let nonconformitydetails = {
+        it(`should be able to ${testName} with non-conformity to randomized surveillance activity`, () => {
+            let nonConformitydetails = {
                 type: '170.314 (a)(1): Computerized provider order entry',
                 status: 'Closed',
                 determinationDate: '01/01/2020',
@@ -124,9 +124,9 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
             var countBefore = edit.requirementTableRows().length;
             edit.editSurveillance();
             edit.addRequirement(input.type, input.capability, 'Non-Conformity');
-            edit.addNonConformity(nonconformitydetails , 'Randomized');
+            edit.addnonConformity(nonConformitydetails , 'Randomized');
             edit.saveButton.scrollAndClick();
-            assert.equal(edit.nonconformityTableRows().length,1);
+            assert.equal(edit.nonConformityTableRows().length,1);
             do {
                 edit.saveButton.click();
             } while (!confirmPage.confirmButton.isClickable());

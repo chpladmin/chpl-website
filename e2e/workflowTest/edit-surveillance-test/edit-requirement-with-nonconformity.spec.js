@@ -24,14 +24,14 @@ beforeEach(async () => {
 
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
 
-    it('should not allow to remove non conformity from a requirement with non conformity', () => {
+    it('should not allow to remove non-conformity from a requirement with non-conformity', () => {
         browser.waitUntil( () => confirmPage.table.isDisplayed());
         confirmPage.inspectButton(listingId);
         hooks.waitForSpinnerToDisappear();
         edit.editSurveillance();
         hooks.waitForSpinnerToDisappear();
         edit.editRequirement.scrollAndClick();
-        edit.removeNonconformity.scrollAndClick();
+        edit.removenonConformity.scrollAndClick();
         edit.saveButton.click();
         assert.include(edit.errorMessages.getText(),error);
     });

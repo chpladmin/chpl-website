@@ -2,7 +2,7 @@ import UploadSurveillanceComponent from '../../components/upload/upload-surveill
 import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanceEdit.po';
+import SurveillanceEditComponent from '../../components/surveillance/edit/surveillanc-edit.po';
 import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, upload;
