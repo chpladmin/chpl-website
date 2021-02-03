@@ -62,7 +62,6 @@ export const SvapsComponent = {
         }
 
         save () {
-            this.$log.info('in save');
             let that = this;
             if (this.svap.svapId) {
                 this.networkService.updateSvap(this.svap)
