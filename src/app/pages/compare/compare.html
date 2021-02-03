@@ -91,7 +91,9 @@
           </tr>
           <tr>
             <th scope="row">View listing details</th>
-            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'"><a ui-sref="listing({id: listing.id })">details</a></td>
+            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">
+              <a ui-sref="listing({id: listing.id })" analytics-on="click" analytics-category="Compare Page" analytics-event="Go to Listing Details page" analytics-label="{{ listing.chplProductNumber }}">details</a>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -1,8 +1,9 @@
 export const CompareComponent = {
     templateUrl: 'chpl.compare/compare.html',
     controller: class CompareComponent {
-        constructor ($filter, $log, $scope, $stateParams, networkService, utilService) {
+        constructor ($analytics, $filter, $log, $scope, $stateParams, networkService, utilService) {
             'ngInject';
+            this.$analytics = $analytics;
             this.$filter = $filter;
             this.$log = $log;
             this.$scope = $scope;
@@ -98,6 +99,10 @@ export const CompareComponent = {
         }
 
         toggle (elem) {
+            if (!this.isShowing(elem)) {
+                let event = (elem === 'certifications' ? 'View Criteria Details' : 'View CQM Details');
+                this.$analytics.eventTrack(event, { category: 'Compare Page' });
+            }
             this.openCert = this.openCert === elem ? '' : elem;
         }
 
