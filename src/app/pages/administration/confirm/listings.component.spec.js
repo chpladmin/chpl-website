@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Confirm Listing component', () => {
+    describe('the Confirm Listings component', () => {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -145,14 +145,14 @@
                     ]}}));
                     ctrl.massRejectPendingListings();
                     scope.$digest();
-                    expect(ctrl.uploadingListingsMessages.length).toEqual(3);
+                    expect(ctrl.uploadedListingsMessages.length).toEqual(3);
                 });
 
                 it('should not have error messages if rejection fails in a different way', () => {
                     networkService.massRejectPendingListings.and.returnValue($q.reject({data: {'errors': undefined}}));
                     ctrl.massRejectPendingListings();
                     scope.$digest();
-                    expect(ctrl.uploadingListingsMessages).toBeUndefined();
+                    expect(ctrl.uploadedListingsMessages).toBeUndefined();
                 });
 
                 it('should know how many Listings are ready to be rejected', () => {
@@ -182,6 +182,7 @@
                         backdrop: 'static',
                         keyboard: false,
                         resolve: {
+                            beta: jasmine.any(Function),
                             developers: jasmine.any(Function),
                             inspectingCp: jasmine.any(Function),
                             isAcbAdmin: jasmine.any(Function),
@@ -244,7 +245,7 @@
                     };
                     ctrl.inspectCp(1);
                     ctrl.modalInstance.close(result);
-                    expect(ctrl.uploadingListingsMessages[0]).toEqual('Product with ID: "id" has already been resolved by "fname"');
+                    expect(ctrl.uploadedListingsMessages[0]).toEqual('Product with ID: "id" has already been resolved by "fname"');
                 });
             });
         });
