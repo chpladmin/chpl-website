@@ -17,19 +17,21 @@ function ChplEllipsis ({text, maxLength, wordBoundaries}) {
     }
 
     return (
-      <span>
-        { isShortened ? display : text }
-        { isShortened ? (
-          <button className="btn btn-link btn-xs" data-tip data-for="ellipsis" onClick={() => setShortened(false)}>
-            <ReactTooltip id="ellipsis" effect="solid">{ text }</ReactTooltip>
-            <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
-          </button>
-        ) : (
-          <button className="btn btn-link btn-xs" onClick={() => setShortened(true)}>
-            <i className="fa fa-arrow-left"></i><span className="sr-only">Minimize description</span>
-          </button>
-        ) }
-      </span>
+        /* eslint-disable indent,react/jsx-indent */
+        <span>
+          { isShortened ? display : text }
+          { isShortened ? (
+              <button className="btn btn-link btn-xs" data-tip data-for="ellipsis" onClick={() => setShortened(false)}>
+                <ReactTooltip id="ellipsis" effect="solid">{ text }</ReactTooltip>
+                <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
+              </button>
+          ) : (
+              <button className="btn btn-link btn-xs" onClick={() => setShortened(true)}>
+                <i className="fa fa-arrow-left"></i><span className="sr-only">Minimize description</span>
+              </button>
+          ) }
+        </span>
+        /* eslint-enable indent,react/jsx-indent */
     );
 }
 
