@@ -31,6 +31,7 @@ describe('ONC STAFF can ', () => {
         page.userTitle.addValue(title);
         actionBarComponent.save();
         browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(title));
+        hooks.waitForSpinnerToDisappear();
         assert.include(page.userInformation('AQA ONC Staff').getText(),title);
     });
 
@@ -40,6 +41,7 @@ describe('ONC STAFF can ', () => {
         page.userPhoneNumber.clearValue();
         page.userPhoneNumber.addValue(number);
         actionBarComponent.save();
+        hooks.waitForSpinnerToDisappear();
         browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(number));
         assert.include(page.userInformation('AQA ONC Staff').getText(),number);
     });

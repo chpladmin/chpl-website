@@ -34,6 +34,9 @@ export const DeveloperComponent = {
             }
             if (changes.developer) {
                 this.developer = angular.copy(changes.developer.currentValue);
+                if (!this.developer) {
+                    this.developer = {};
+                }
                 if (!this.developer.contact) {
                     this.developer.contact = {};
                 }
@@ -210,6 +213,20 @@ export const DeveloperComponent = {
                 }
             }
             this.errorMessages = messages;
+        }
+
+        hasContact () {
+            return this.developer.contact
+                && (this.developer.contact.fullName || this.developer.contact.friendlyName
+                    || this.developer.contact.email || this.developer.contact.phoneNumber
+                    || this.developer.contact.title);
+        }
+
+        hasAddress () {
+            return this.developer.address
+                && (this.developer.address.line1 || this.developer.address.line2
+                    || this.developer.address.city || this.developer.address.state
+                    || this.developer.address.zipcode || this.developer.address.country);
         }
 
         isValid () {
