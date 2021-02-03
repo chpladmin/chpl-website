@@ -25,6 +25,10 @@ export const UserComponent = {
             }
         }
 
+        can (action) {
+            return action === 'delete';
+        }
+
         cancel () {
             this.takeAction({
                 action: 'cancel',

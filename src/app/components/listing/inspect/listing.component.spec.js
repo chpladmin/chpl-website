@@ -21,6 +21,7 @@
 
         beforeEach(() => {
             angular.mock.module('chpl.components', 'chpl.mock', $provide => {
+                $provide.factory('chplListingDetailsViewDirective', () => ({}));
                 $provide.decorator('utilService', $delegate => {
                     $delegate.certificationStatus = jasmine.createSpy('certificationStatus');
 
