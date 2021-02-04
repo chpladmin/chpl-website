@@ -20,7 +20,6 @@ export const SvapsComponent = {
                 this.svaps = angular.copy(changes.svaps.currentValue);
             }
             if (changes.availableCriteria) {
-                this.availableCriteria = angular.copy(changes.availableCriteria.currentValue);
                 this.availableCriteria = this.availableCriteria.filter(crit => crit.certificationEditionId === 3);
             }
         }
