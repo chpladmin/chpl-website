@@ -58,7 +58,10 @@
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
-          <td>Test Standard</td>
+          <td>
+            <span ng-if="!$ctrl.isOn('svap-effective-date')">Standard</span>
+            <span ng-if="$ctrl.isOn('svap-effective-date')">Optional Standard</span>
+          </td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
               <div class="form-group form-group-sm">
