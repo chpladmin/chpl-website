@@ -59,7 +59,7 @@
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
           <td>
-            <span ng-if="!$ctrl.isOn('svap-effective-date')">Standard</span>
+            <span ng-if="!$ctrl.isOn('svap-effective-date')">Test Standard</span>
             <span ng-if="$ctrl.isOn('svap-effective-date')">Optional Standard</span>
           </td>
           <td ng-if="$ctrl.canEdit()">
