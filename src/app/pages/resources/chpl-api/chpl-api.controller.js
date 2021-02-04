@@ -1,24 +1,24 @@
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('chpl.resources')
-        .controller('ChplApiController', ChplApiController);
+  angular.module('chpl.resources')
+    .controller('ChplApiController', ChplApiController);
 
-    /** @ngInject */
-    function ChplApiController ($location, $log, API) {
-        var vm = this;
+  /** @ngInject */
+  function ChplApiController ($location, $log, API) {
+    var vm = this;
 
-        activate();
+    activate();
 
-        ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
-        function activate () {
-            vm.API = API;
-            if (vm.API === '/rest') {
-                vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
-            } else {
-                vm.swaggerUrl = vm.API + '/api-docs';
-            }
-        }
+    function activate () {
+      vm.API = API;
+      if (vm.API === '/rest') {
+        vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
+      } else {
+        vm.swaggerUrl = vm.API + '/api-docs';
+      }
     }
+  }
 })();
