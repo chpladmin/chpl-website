@@ -1,147 +1,147 @@
 const elements = {
-    developersSelect: '#developer-select',
-    developersButton: '#developer-button',
-    directReviewsHeader: 'h2=Direct Review Activities',
-    productsHeader: 'h2=Products',
-    editProductsHeader: 'h2=Edit Product Details',
-    editVersionHeader: 'h2=Edit Version Details',
-    products: '.products__product',
-    editProductName: '#product-name',
-    activeVersion: '#active-version',
-    editVersionName: '#version-name',
-    editDeveloper: 'button#developer-component-edit',
-    merge: '#merge-button',
-    versionName: '#version-name',
-    errorMessage: '.text-danger.ng-scope',
-    versionList: '.selectable-item.ng-scope.selectable-item',
+  developersSelect: '#developer-select',
+  developersButton: '#developer-button',
+  directReviewsHeader: 'h2=Direct Review Activities',
+  productsHeader: 'h2=Products',
+  editProductsHeader: 'h2=Edit Product Details',
+  editVersionHeader: 'h2=Edit Version Details',
+  products: '.products__product',
+  editProductName: '#product-name',
+  activeVersion: '#active-version',
+  editVersionName: '#version-name',
+  editDeveloper: 'button#developer-component-edit',
+  merge: '#merge-button',
+  versionName: '#version-name',
+  errorMessage: '.text-danger.ng-scope',
+  versionList: '.selectable-item.ng-scope.selectable-item',
 };
 
 class DevelopersPage {
-    constructor () { }
+  constructor () { }
 
-    get developersSelect () {
-        return $(elements.developersSelect);
-    }
+  get developersSelect () {
+    return $(elements.developersSelect);
+  }
 
-    get developersButton () {
-        return $(elements.developersButton);
-    }
+  get developersButton () {
+    return $(elements.developersButton);
+  }
 
-    getDeveloperPageTitle (developer) {
-        return $('h2=' + developer);
-    }
+  getDeveloperPageTitle (developer) {
+    return $('h2=' + developer);
+  }
 
-    get directReviewsHeader () {
-        return $(elements.directReviewsHeader);
-    }
+  get directReviewsHeader () {
+    return $(elements.directReviewsHeader);
+  }
 
-    get productsHeader () {
-        return $(elements.productsHeader);
-    }
+  get productsHeader () {
+    return $(elements.productsHeader);
+  }
 
-    get editProductsHeader () {
-        return $(elements.editProductsHeader);
-    }
+  get editProductsHeader () {
+    return $(elements.editProductsHeader);
+  }
 
-    get editVersionHeader () {
-        return $(elements.editVersionHeader);
-    }
+  get editVersionHeader () {
+    return $(elements.editVersionHeader);
+  }
 
-    get products () {
-        return $$(elements.products);
-    }
+  get products () {
+    return $$(elements.products);
+  }
 
-    getProduct (product) {
-        return $('.products__product-header-item--first=' + product).$('..').$('..');
-    }
+  getProduct (product) {
+    return $('.products__product-header-item--first=' + product).$('..').$('..');
+  }
 
-    getProductInfo (product) {
-        return product.$('.product__product-info');
-    }
+  getProductInfo (product) {
+    return product.$('.product__product-info');
+  }
 
-    getVersionCount (product) {
-        return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
-    }
+  getVersionCount (product) {
+    return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
+  }
 
-    getAcbName (product) {
-        return product.$('.products__product-header').$$('.products__product-header-item')[1];
-    }
+  getAcbName (product) {
+    return product.$('.products__product-header').$$('.products__product-header-item')[1];
+  }
 
-    getListingCount (product) {
-        return product.$('.products__product-header').$$('.products__product-header-item')[2];
-    }
+  getListingCount (product) {
+    return product.$('.products__product-header').$$('.products__product-header-item')[2];
+  }
 
-    get editProductName () {
-        return $(elements.editProductName);
-    }
+  get editProductName () {
+    return $(elements.editProductName);
+  }
 
-    get editVersionName () {
-        return $(elements.editVersionName);
-    }
+  get editVersionName () {
+    return $(elements.editVersionName);
+  }
 
-    get editDeveloper () {
-        return $(elements.editDeveloper);
-    }
+  get editDeveloper () {
+    return $(elements.editDeveloper);
+  }
 
-    selectDeveloper (developerName) {
-        this.developersSelect.selectByVisibleText(developerName);
-        this.developersButton.click();
-    }
+  selectDeveloper (developerName) {
+    this.developersSelect.selectByVisibleText(developerName);
+    this.developersButton.click();
+  }
 
-    getEditButton (product) {
-        return product.$('.product__product-info').$('#edit-button');
-    }
+  getEditButton (product) {
+    return product.$('.product__product-info').$('#edit-button');
+  }
 
-    selectProduct (product) {
-        product.$('.products__product-header').click();
-    }
+  selectProduct (product) {
+    product.$('.products__product-header').click();
+  }
 
-    selectVersion (product, productId, versionName) {
-        product.$(elements.activeVersion + '-' + productId).selectByVisibleText(versionName);
-    }
+  selectVersion (product, productId, versionName) {
+    product.$(elements.activeVersion + '-' + productId).selectByVisibleText(versionName);
+  }
 
-    editProduct (product) {
-        this.getEditButton(product).click();
-        product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
-    }
+  editProduct (product) {
+    this.getEditButton(product).click();
+    product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
+  }
 
-    getActiveVersion (product, productId) {
-        return product.$(elements.activeVersion + '-' + productId);
-    }
+  getActiveVersion (product, productId) {
+    return product.$(elements.activeVersion + '-' + productId);
+  }
 
-    getActiveContact (product) {
-        return product.$('chpl-contact');
-    }
+  getActiveContact (product) {
+    return product.$('chpl-contact');
+  }
 
-    editVersion (product) {
-        this.getEditButton(product).click();
-        product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
-    }
+  editVersion (product) {
+    this.getEditButton(product).click();
+    product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
+  }
 
-    get versionMergeButton () {
-        return $$('.product__product-action-filter-item.ng-scope')[2];
-    }
+  get versionMergeButton () {
+    return $$('.product__product-action-filter-item.ng-scope')[2];
+  }
 
-    get mergeButton () {
-        return $(elements.merge);
-    }
+  get mergeButton () {
+    return $(elements.merge);
+  }
 
-    get versionName () {
-        return $(elements.versionName);
-    }
+  get versionName () {
+    return $(elements.versionName);
+  }
 
-    moveVersionToBeMerged (versionName) {
-        const count = $$(elements.versionList).length;
-        for (var i = 0; i < count; i++) {
-            if ($$(elements.versionList)[i].getText() === versionName) {
-                $$(elements.versionList)[i].click();
-            }
-        }
+  moveVersionToBeMerged (versionName) {
+    const count = $$(elements.versionList).length;
+    for (var i = 0; i < count; i++) {
+      if ($$(elements.versionList)[i].getText() === versionName) {
+        $$(elements.versionList)[i].click();
+      }
     }
+  }
 
-    get errorMessage () {
-        return $(elements.errorMessage);
-    }
+  get errorMessage () {
+    return $(elements.errorMessage);
+  }
 }
 
 export default DevelopersPage;
