@@ -238,7 +238,7 @@ let states = {
             resolve: {
                 svaps: (authService, networkService) => {
                     'ngInject';
-                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+                    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                         return networkService.getSvaps();
                     }
                     return [];
