@@ -26,6 +26,7 @@ export const ActionBarComponent = {
                 if (needToShow) {
                     this.showErrors = true;
                 }
+                this.previousErrors = angular.copy(this.errorMessages);
             }
             if (changes.warningMessages && changes.warningMessages.currentValue) {
                 this.warningMessages = changes.warningMessages.currentValue
@@ -35,6 +36,7 @@ export const ActionBarComponent = {
                 if (needToShow) {
                     this.showErrors = true;
                 }
+                this.previousErrors = angular.copy(this.errorMessages);
             }
             if (changes.options && changes.options.currentValue) {
                 this.maxMessageCharacters = changes.options.currentValue.maxMessageCharacters;
