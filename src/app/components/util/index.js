@@ -1,3 +1,3 @@
-import { ChplEllipsis } from './ellipsis.jsx';
+import {ChplEllipsis} from './ellipsis.jsx';
 
-export { ChplEllipsis };
+export {ChplEllipsis};
