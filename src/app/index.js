@@ -5,10 +5,10 @@ import './index.scss';
 import '../assets/favicons/favicons';
 
 function importAll (r) {
-    r.keys().forEach(r);
+  r.keys().forEach(r);
 }
 importAll(
-    require.context('./', true, /^.*\/.*\.scss$/)
+  require.context('./', true, /^.*\/.*\.scss$/)
 );
 
 import angular from 'angular';
@@ -61,42 +61,42 @@ import users from './pages/users/index';
 require('./index.constants');
 
 const dependencies = [
-    'angular-loading-bar',
-    'angulartics',
-    'angulartics.google.tagmanager',
-    'feature-flags',
-    'googlechart',
-    'ncy-angular-breadcrumb',
-    'ngAnimate',
-    'ngAria',
-    'ngCytoscape',
-    'ngFileSaver',
-    'ngResource',
-    'ngStorage',
-    'ngSanitize',
-    'smart-table',
-    'toaster',
-    'ui.bootstrap',
-    'ui.router',
-    'zxcvbn',
-    administration.name,
-    compare.name,
-    listing.name,
-    organizations.name,
-    reports.name,
-    resources.name,
-    services.name,
-    surveillance.name,
-    users.name,
-    'chpl.admin',
-    'chpl.charts',
-    'chpl.collections',
-    'chpl.components',
-    'chpl.constants',
-    'chpl.navigation',
-    'chpl.registration',
-    'chpl.search',
-    'chpl.shared',
+  'angular-loading-bar',
+  'angulartics',
+  'angulartics.google.tagmanager',
+  'feature-flags',
+  'googlechart',
+  'ncy-angular-breadcrumb',
+  'ngAnimate',
+  'ngAria',
+  'ngCytoscape',
+  'ngFileSaver',
+  'ngResource',
+  'ngStorage',
+  'ngSanitize',
+  'smart-table',
+  'toaster',
+  'ui.bootstrap',
+  'ui.router',
+  'zxcvbn',
+  administration.name,
+  compare.name,
+  listing.name,
+  organizations.name,
+  reports.name,
+  resources.name,
+  services.name,
+  surveillance.name,
+  users.name,
+  'chpl.admin',
+  'chpl.charts',
+  'chpl.collections',
+  'chpl.components',
+  'chpl.constants',
+  'chpl.navigation',
+  'chpl.registration',
+  'chpl.search',
+  'chpl.shared',
 ];
 
 const appModule = angular.module('chpl', dependencies);
