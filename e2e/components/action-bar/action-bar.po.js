@@ -1,18 +1,18 @@
 const elements = {
-    cancel: '#action-bar-cancel',
-    save: '#action-bar-save',
+  cancel: '#action-bar-cancel',
+  save: '#action-bar-save',
 };
 
 class ActionBarComponent {
-    constructor () { }
+  constructor () { }
 
-    cancel () {
-        $(elements.cancel).click();
-    }
+  cancel () {
+    $(elements.cancel).click();
+  }
 
-    save () {
-        $(elements.save).click();
-    }
+  save () {
+    $(elements.save).click();
+  }
 }
 
 export default ActionBarComponent;

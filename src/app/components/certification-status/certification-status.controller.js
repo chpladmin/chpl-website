@@ -1,26 +1,26 @@
 (function () {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('chpl.components')
-        .controller('CertificationStatusController', CertificationStatusController);
+  angular
+    .module('chpl.components')
+    .controller('CertificationStatusController', CertificationStatusController);
 
-    /** @ngInject */
-    function CertificationStatusController ($log, $uibModalInstance, utilService) {
-        var vm = this;
+  /** @ngInject */
+  function CertificationStatusController ($log, $uibModalInstance, utilService) {
+    var vm = this;
 
-        vm.cancel = cancel;
-        vm.statusFont = utilService.statusFont;
+    vm.cancel = cancel;
+    vm.statusFont = utilService.statusFont;
 
-        activate();
+    activate();
 
-        ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
-        function activate () {
-        }
-
-        function cancel () {
-            $uibModalInstance.dismiss('certification status');
-        }
+    function activate () {
     }
+
+    function cancel () {
+      $uibModalInstance.dismiss('certification status');
+    }
+  }
 })();

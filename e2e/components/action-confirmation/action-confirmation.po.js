@@ -1,18 +1,18 @@
 const elements = {
-    yes: '//button[text()="Yes"]',
-    no: '//button[text()="No"]',
+  yes: '//button[text()="Yes"]',
+  no: '//button[text()="No"]',
 };
 
 class ActionConfirmationComponent {
-    constructor () { }
+  constructor () { }
 
-    get yes () {
-        return $(elements.yes);
-    }
+  get yes () {
+    return $(elements.yes);
+  }
 
-    get no () {
-        return $(elements.no);
-    }
+  get no () {
+    return $(elements.no);
+  }
 }
 
 export default ActionConfirmationComponent;
