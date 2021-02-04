@@ -1,6 +1,6 @@
 <div ng-form="$ctrl.form">
   <h2>SVAP Maintenance</h2>
-  <div class="manage-list__container" ng-if="!$ctrl.isEditting">
+  <div class="manage-list__container" ng-if="!$ctrl.isEditing">
     <div class="data-label">Regulatory Text Citation</div>
     <div class="data-label">Applicable Criteria</div>
     <div class="data-label">Approved Standard Version</div>
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div ng-if="$ctrl.isEditting" class="panel panel-default">
+  <div ng-if="$ctrl.isEditing" class="panel panel-default">
     <div class="panel-body">
       <div class="flex-container">
         <div class="flex-item">

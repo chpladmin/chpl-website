@@ -155,7 +155,7 @@
             describe('when entering add mode', () => {
                 beforeEach(() => {
                     ctrl.svap = null;
-                    ctrl.isEditting = false;
+                    ctrl.isediting = false;
                     ctrl.errors = [1,2];
                     ctrl.addSvap();
                 });
@@ -168,15 +168,15 @@
                     expect(ctrl.errors.length).toBe(0);
                 });
 
-                it('should set mode to editting', () => {
-                    expect(ctrl.isEditting).toBe(true);
+                it('should set mode to editing', () => {
+                    expect(ctrl.isediting).toBe(true);
                 });
             });
 
             describe('when deleting an svap', () => {
                 beforeEach(() => {
                     ctrl.svap = {svapId: 3};
-                    ctrl.isEditting = true;
+                    ctrl.isediting = true;
                     ctrl.delete();
                 });
                 it('should call the svap delete endpoint', () => {
@@ -186,7 +186,7 @@
 
             describe('when entering edit mode', () => {
                 beforeEach(() => {
-                    ctrl.isEditting = true;
+                    ctrl.isediting = true;
                     ctrl.editSvap(mock.svaps[1]);
                 });
 
@@ -198,14 +198,14 @@
                     expect(ctrl.errors.length).toBe(0);
                 });
 
-                it('should set mode to editting', () => {
-                    expect(ctrl.isEditting).toBe(true);
+                it('should set mode to editing', () => {
+                    expect(ctrl.isediting).toBe(true);
                 });
             });
 
             describe('when cancelling out of edit or adding of svap', () => {
                 beforeEach(() => {
-                    ctrl.isEditting = true;
+                    ctrl.isediting = true;
                     ctrl.svap = {svapId: 3};
                     ctrl.cancel();
                 });
@@ -214,8 +214,8 @@
                     expect(ctrl.svap).toBeNull();
                 });
 
-                it('should set mode to editting', () => {
-                    expect(ctrl.isEditting).toBe(false);
+                it('should set mode to editing', () => {
+                    expect(ctrl.isediting).toBe(false);
                 });
 
                 it('should refresh the list of svaps', () => {
@@ -225,9 +225,9 @@
 
             describe('when saving', () => {
 
-                describe('when editting an svap', () => {
+                describe('when editing an svap', () => {
                     beforeEach(() => {
-                        ctrl.isEditting = true;
+                        ctrl.isediting = true;
                         ctrl.svap = {svapId: 3};
                         ctrl.errors = null;
                     });
@@ -260,7 +260,7 @@
 
                 describe('when adding an svap', () => {
                     beforeEach(() => {
-                        ctrl.isEditting = true;
+                        ctrl.isediting = true;
                         ctrl.svap = {regulatoryTextCitation: 'this is some text'};
                         ctrl.errors = null;
                     });
@@ -293,7 +293,7 @@
                         expect(ctrl.getCriteriaForSelectableList().length).toBe(4);
                     });
 
-                    it('should return the available list, without the criteria associated to the current svap', () => {
+         f           it('should return the available list, without the criteria associated to the current svap', () => {
                         ctrl.svap = angular.copy(mock.svaps[0]);
                         ctrl.availableCriteria = angular.copy(mock.availableCriteria);
                         expect(ctrl.getCriteriaForSelectableList().length).toBe(2);

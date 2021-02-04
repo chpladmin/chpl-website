@@ -12,8 +12,6 @@ export const SvapsComponent = {
             this.sortCerts = utilService.sortCert;
             this.isCures = utilService.isCures;
 
-            this.svap = null;
-            this.isEditting = false;
             this.options = {maxMessageCharacters: 100};
         }
 
@@ -30,7 +28,7 @@ export const SvapsComponent = {
         addSvap () {
             this.svap = {};
             this.errors = [];
-            this.isEditting = true;
+            this.isEditing = true;
         }
 
         delete () {
@@ -46,13 +44,13 @@ export const SvapsComponent = {
         editSvap (svap) {
             this.svap = svap;
             this.errors = [];
-            this.isEditting = true;
+            this.isEditing = true;
         }
 
         cancel () {
             let that = this;
             this.svap = null;
-            this.isEditting = false;
+            this.isEditing = false;
             this.networkService.getSvaps()
                 .then(response => that.svaps = response);
         }
