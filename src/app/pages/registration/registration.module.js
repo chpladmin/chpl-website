@@ -1,5 +1,5 @@
 export default angular
-    .module('chpl.registration', [
-        'chpl.services',
-        'feature-flags',
-    ]);
+  .module('chpl.registration', [
+    'chpl.services',
+    'feature-flags',
+  ]);

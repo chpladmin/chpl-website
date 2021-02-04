@@ -31,7 +31,7 @@
         "eol-last": ["error"],
         "eqeqeq": ["error"],
         "func-call-spacing": ["error"],
-        "indent": ["error", 4, {
+        "indent": ["error", 2, {
             "flatTernaryExpressions": true,
             "ignoredNodes": ["JSXElement", "JSXElement > *", "JSXAttribute", "JSXIdentifier", "JSXNamespacedName", "JSXMemberExpression", "JSXSpreadAttribute", "JSXExpressionContainer", "JSXOpeningElement", "JSXClosingElement", "JSXText", "JSXEmptyExpression", "JSXSpreadChild", "ReturnStatement"],
          }],
@@ -57,6 +57,5 @@
         "angular/file-name": ["off"],
         "angular/function-type": ["off"],
         "angular/service-name": ["off"],
-        "react/jsx-indent": ["error", 2],
     }
 }
