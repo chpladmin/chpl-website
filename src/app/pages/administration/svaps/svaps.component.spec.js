@@ -242,7 +242,7 @@
                         expect(networkService.updateSvap).toHaveBeenCalledTimes(1);
                     });
 
-                    xit('should cancel out of edit mode on success', () => {
+                    it('should cancel out of edit mode on success', () => {
                         scope.cancel = jasmine.createSpy('cancel');
                         networkService.updateSvap.and.returnValue($q.when({status: 200}));
                         ctrl.save();
@@ -270,7 +270,7 @@
                         expect(networkService.createSvap).toHaveBeenCalledTimes(1);
                     });
 
-                    xit('should cancel out of edit mode on success', () => {
+                    it('should cancel out of edit mode on success', () => {
                         scope.cancel = jasmine.createSpy('cancel');
                         networkService.createSvap.and.returnValue($q.when({status: 200}));
                         ctrl.save();
