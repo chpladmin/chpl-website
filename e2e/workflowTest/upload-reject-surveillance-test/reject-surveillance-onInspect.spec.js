@@ -18,7 +18,7 @@ beforeEach(async () => {
     hooks.waitForSpinnerToDisappear();
 });
 
-describe('When user rejects a surveillance activity while inspecting uploaded surveillance', () => {
+describe('when user rejects a surveillance activity while inspecting uploaded surveillance', () => {
 
     it('should allow activity to get rejected', () => {
         browser.waitUntil( () => confirmPage.table.isDisplayed());

@@ -11,7 +11,7 @@ beforeEach(async () => {
     await hooks.open('#/surveillance/upload');
 });
 
-describe('When uploading a surveillane activity as ONC-ACB', () => {
+describe('when uploading a surveillance activity as ONC-ACB', () => {
     beforeEach(function () {
         loginComponent.logInWithEmail('acb');
     });

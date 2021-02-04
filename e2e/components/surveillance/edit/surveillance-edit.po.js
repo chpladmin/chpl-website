@@ -198,9 +198,7 @@ class SurveillanceEditComponent {
         this.requirementType.selectByVisibleText(type);
         if (type === 'Other Requirement') {
             this.requirementCapability.setValue(capability);
-        }
-        else
-        {
+        } else {
             this.requirementCapability.selectByVisibleText(capability);
         }
         this.requirementResult.selectByVisibleText(result);
