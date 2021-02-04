@@ -27,7 +27,6 @@ export const UserComponent = {
         }
 
         can (action) {
-            this.$log.info('here ' + action);
             return action === 'delete';
         }
 
