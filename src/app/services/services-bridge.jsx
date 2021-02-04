@@ -1,4 +1,4 @@
-import { getAngularService } from './angular-react-helper.jsx';
+import {getAngularService} from './angular-react-helper.jsx';
 
 class chplLogService {
     constructor () {

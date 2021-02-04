@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { arrayOf, func, shape, string } from 'prop-types';
-import { getAngularService } from './';
+import React, {useState} from 'react';
+import {arrayOf, func, shape, string} from 'prop-types';
+import {getAngularService} from './';
 
 const dependencies = {
     getChplLogService: () => require('../../services/services-bridge.jsx').default,
@@ -69,19 +69,19 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
                           choices
                           .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
                           .map(choice => (
-                              <li key={ choice }>{ choice }</li>
+                              <li key={choice}>{choice}</li>
                           ))
                       }
                     </ul>
                   </>
-              ) }
+              )}
             </div>
           </div>
         </div>
     );
 }
 
-export { ChplFuzzyType };
+export {ChplFuzzyType};
 
 ChplFuzzyType.propTypes = {
     fuzzyType: shape({
