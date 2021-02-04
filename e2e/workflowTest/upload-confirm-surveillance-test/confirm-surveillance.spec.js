@@ -36,9 +36,9 @@ afterEach(() => {
     loginComponent.logOut();
 });
 
-describe('User can confirm', () => {
+describe('when confirming surveillance, ACB', () => {
 
-    it('surveillance activity successfully', () => {
+    it('should be able to confirm surveillance', () => {
         browser.waitUntil( () => confirmPage.table.isDisplayed());
         confirmPage.inspectButton(listingId);
         confirmPage.confirmButton.scrollAndClick();
@@ -49,9 +49,9 @@ describe('User can confirm', () => {
     });
 });
 
-describe('User can\'t confirm', () => {
+describe('when confirming surveillance, ACB', () => {
 
-    it('surveillance activity when they add certified requirement which listing is not attested to', () => {
+    it('should not be able to confirm when the surveillance has a requirement the listing does not attest to', () => {
         browser.waitUntil( () => confirmPage.table.isDisplayed());
         confirmPage.inspectButton(listingId);
         hooks.waitForSpinnerToDisappear();
@@ -67,9 +67,9 @@ describe('User can\'t confirm', () => {
     });
 });
 
-describe('User can\'t confirm', () => {
+describe('when confirming surveillance, ACB', () => {
 
-    it('surveillance activity when they add non-conformity type which listing is not attested to', () => {
+    it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
         let nonConformitydetails = {
             type: '170.315 (g)(10): Standardized API for Patient and Population Services',
             status: 'Open',
