@@ -30,6 +30,23 @@ export const SvapsComponent = {
             this.isEditing = true;
         }
 
+        canActionBar (action) {
+            if (action === 'delete') {
+                //If the current svap has an id, we can delete since it is an existing svap
+                return this.svap.svapId;
+            } else {
+                return true;
+            }
+        }
+
+        cancel () {
+            let that = this;
+            this.svap = null;
+            this.isEditing = false;
+            this.networkService.getSvaps()
+                .then(response => that.svaps = response);
+        }
+
         delete () {
             let that = this;
             this.networkService.deleteSvap(this.svap)
@@ -46,12 +63,12 @@ export const SvapsComponent = {
             this.isEditing = true;
         }
 
-        cancel () {
-            let that = this;
-            this.svap = null;
-            this.isEditing = false;
-            this.networkService.getSvaps()
-                .then(response => that.svaps = response);
+        getCriteriaForSelectableList () {
+            if (Array.isArray(this.svap.criteria)) {
+                return this.availableCriteria.filter(crit => !this.svap.criteria.map(c => c.id).includes(crit.id));
+            } else {
+                return this.availableCriteria;
+            }
         }
 
         save () {
@@ -70,14 +87,6 @@ export const SvapsComponent = {
                     }, error => {
                         that.errors = error.data.errorMessages;
                     });
-            }
-        }
-
-        getCriteriaForSelectableList () {
-            if (Array.isArray(this.svap.criteria)) {
-                return this.availableCriteria.filter(crit => !this.svap.criteria.map(c => c.id).includes(crit.id));
-            } else {
-                return this.availableCriteria;
             }
         }
 
@@ -108,15 +117,6 @@ export const SvapsComponent = {
                 this.save();
                 break;
                 //no default
-            }
-        }
-
-        canActionBar (action) {
-            if (action === 'delete') {
-                //If the current svap has an id, we can delete since it is an existing svap
-                return this.svap.svapId;
-            } else {
-                return true;
             }
         }
     },
