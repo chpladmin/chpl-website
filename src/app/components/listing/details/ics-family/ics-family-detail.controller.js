@@ -1,35 +1,35 @@
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('chpl.components')
-        .controller('IcsFamilyDetailController', IcsFamilyDetailController);
+  angular.module('chpl.components')
+    .controller('IcsFamilyDetailController', IcsFamilyDetailController);
 
-    /** @ngInject */
-    function IcsFamilyDetailController ($log, $state, $uibModalInstance, active, listing) {
-        var vm = this;
+  /** @ngInject */
+  function IcsFamilyDetailController ($log, $state, $uibModalInstance, active, listing) {
+    var vm = this;
 
-        vm.close = close;
-        vm.navigate = navigate;
+    vm.close = close;
+    vm.navigate = navigate;
 
-        activate();
+    activate();
 
-        ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
-        function activate () {
-            vm.active = active;
-            vm.listing = listing;
-        }
-
-        function close () {
-            $uibModalInstance.close('closed');
-        }
-
-        function navigate () {
-            $state.go('listing', {
-                id: vm.listing.id,
-                panel: 'additional',
-            });
-            $uibModalInstance.close('navigated');
-        }
+    function activate () {
+      vm.active = active;
+      vm.listing = listing;
     }
+
+    function close () {
+      $uibModalInstance.close('closed');
+    }
+
+    function navigate () {
+      $state.go('listing', {
+        id: vm.listing.id,
+        panel: 'additional',
+      });
+      $uibModalInstance.close('navigated');
+    }
+  }
 })();
