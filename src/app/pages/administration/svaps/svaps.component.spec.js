@@ -179,6 +179,7 @@
                     ctrl.isEditing = true;
                     ctrl.delete();
                 });
+
                 it('should call the svap delete endpoint', () => {
                     expect(networkService.deleteSvap).toHaveBeenCalledWith(ctrl.svap);
                 });
@@ -224,7 +225,6 @@
             });
 
             describe('when saving', () => {
-
                 describe('when editing an svap', () => {
                     beforeEach(() => {
                         ctrl.isEditing = true;

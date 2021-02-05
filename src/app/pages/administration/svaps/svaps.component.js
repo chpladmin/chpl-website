@@ -25,7 +25,7 @@ export const SvapsComponent = {
         }
 
         addSvap () {
-            this.svap = {};
+            this.svap = {criteria: []};
             this.errors = [];
             this.isEditing = true;
         }
@@ -64,11 +64,7 @@ export const SvapsComponent = {
         }
 
         getCriteriaForSelectableList () {
-            if (Array.isArray(this.svap.criteria)) {
-                return this.availableCriteria.filter(crit => !this.svap.criteria.map(c => c.id).includes(crit.id));
-            } else {
-                return this.availableCriteria;
-            }
+            return this.availableCriteria.filter(crit => !this.svap.criteria.map(c => c.id).includes(crit.id));
         }
 
         save () {
@@ -95,9 +91,6 @@ export const SvapsComponent = {
         }
 
         selectCriteriaForSvap () {
-            if (!Array.isArray(this.svap.criteria)) {
-                this.svap.criteria = [];
-            }
             this.svap.criteria.push(angular.copy(this.selectedCriteria));
             this.selectedCriteria = null;
         }
