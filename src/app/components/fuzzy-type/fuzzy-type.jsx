@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {arrayOf, func, shape, string} from 'prop-types';
 import {getAngularService} from './';
 
+import {ChplActionBar} from '../action-bar/';
+
 const dependencies = {
   getChplLogService: () => require('../../services/services-bridge.jsx').default,
 };
@@ -13,6 +15,15 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
   const [newFuzzyType, setNewFuzzyType] = useState(undefined);
   const $log = getAngularService('$log');
   const chplLog = dependencies.getChplLogService();
+
+  const act = action => {
+    switch (action) {
+    case 'cancel':
+      cancel();
+      break;
+      //no default
+    }
+  };
 
   const cancel = () => {
     setEditing(false);
@@ -52,9 +63,6 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
         <div className="panel-body">
           {isEditing ? (
             <>
-              <span className="pull-right">
-                <button className="btn btn-link btn-small" id={'fuzzy-type-' + fuzzyType.fuzzyType + '-cancel'} onClick={() => cancel()}><i className="fa fa-close"></i><span className="sr-only"> Cancel Edit Fuzzy Type</span></button>
-              </span>
               Choices (for editing)
               <form onSubmit={() => {}}>
                 <ul>
@@ -82,6 +90,11 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
               ) : (
                 <button className="btn" id="add-fuzzy-type" onClick={() => setAdding(true)}><i className="fa fa-plus"></i> Add</button>
               ) }
+              <ChplActionBar
+                errorMessages={['1', '2']}
+                warningMessages={['a', 'b']}
+                takeAction={act}
+              />
             </>
           ) : (
             <>
