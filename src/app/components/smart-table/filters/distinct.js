@@ -1,9 +1,9 @@
 const distinct = (input, rules) => {
-    if (!input || input.toLowerCase() !== rules.distinct.toLowerCase()) {
-        return false;
-    }
+  if (!input || input.toLowerCase() !== rules.distinct.toLowerCase()) {
+    return false;
+  }
 
-    return true;
+  return true;
 };
 
 export { distinct };

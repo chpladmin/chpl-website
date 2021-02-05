@@ -1,15 +1,15 @@
 class Hooks {
-    constructor () { }
+  constructor () { }
 
-    open (path) {
-        browser.maximizeWindow();
-        browser.setWindowSize(1600, 1024);
-        browser.url(path);
-    }
+  open (path) {
+    browser.maximizeWindow();
+    browser.setWindowSize(1600, 1024);
+    browser.url(path);
+  }
 
-    waitForSpinnerToDisappear () {
-        browser.waitUntil( () => !$('#loading-bar-spinner').isDisplayed());
-    }
+  waitForSpinnerToDisappear () {
+    browser.waitUntil( () => !$('#loading-bar-spinner').isDisplayed());
+  }
 }
 
 export default Hooks;

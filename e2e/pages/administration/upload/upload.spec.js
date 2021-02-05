@@ -6,24 +6,24 @@ import Hooks from '../../../utilities/hooks';
 let hooks, loginComponent, uploadAPIDocumentationComponent, uploadListingComponent;
 
 beforeAll(async () => {
-    uploadListingComponent = new UploadListingComponent();
-    uploadAPIDocumentationComponent = new UploadAPIDocumentationComponent();
-    loginComponent = new LoginComponent();
-    hooks = new Hooks();
-    await hooks.open('#/administration/upload');
+  uploadListingComponent = new UploadListingComponent();
+  uploadAPIDocumentationComponent = new UploadAPIDocumentationComponent();
+  loginComponent = new LoginComponent();
+  hooks = new Hooks();
+  await hooks.open('#/administration/upload');
 });
 
 describe('Upload Page', () => {
-    beforeAll(function () {
-        loginComponent.logIn('admin');
-    });
+  beforeAll(function () {
+    loginComponent.logIn('admin');
+  });
 
-    it('has correct title for upload listing component', () => {
-        assert.include(uploadListingComponent.title.getText(),'Upload Certified Products');
-    });
+  it('has correct title for upload listing component', () => {
+    assert.include(uploadListingComponent.title.getText(),'Upload Certified Products');
+  });
 
-    it('has correct title for upload api documentation component', () => {
-        assert.include(uploadAPIDocumentationComponent.title.getText(),'Upload API Documentation Information');
-    });
+  it('has correct title for upload api documentation component', () => {
+    assert.include(uploadAPIDocumentationComponent.title.getText(),'Upload API Documentation Information');
+  });
 
 });

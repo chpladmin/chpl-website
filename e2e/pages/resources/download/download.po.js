@@ -1,18 +1,18 @@
 const downloadElements = {
-    downloadListing: '.resources-download__listings',
-    complianceActivityBullet: '.resources-download__compliance',
+  downloadListing: '.resources-download__listings',
+  complianceActivityBullet: '.resources-download__compliance',
 };
 
 class DownloadPage {
-    constructor () { }
+  constructor () { }
 
-    get downloadListingText () {
-        return $(downloadElements.downloadListing);
-    }
+  get downloadListingText () {
+    return $(downloadElements.downloadListing);
+  }
 
-    get complianceActivityText () {
-        return $(downloadElements.complianceActivityBullet);
-    }
+  get complianceActivityText () {
+    return $(downloadElements.complianceActivityBullet);
+  }
 
 }
 

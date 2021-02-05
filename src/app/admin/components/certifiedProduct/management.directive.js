@@ -1,445 +1,445 @@
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('chpl.admin')
-        .controller('VpManagementController', VpManagementController)
-        .directive('aiVpManagement', function () {
-            return {
-                restrict: 'E',
-                replace: true,
-                templateUrl: 'chpl.admin/components/certifiedProduct/management.html',
-                bindToController: {
-                    pendingProducts: '=?',
-                    pendingSurveillances: '=?',
-                    productId: '=',
-                },
-                scope: {},
-                controllerAs: 'vm',
-                controller: 'VpManagementController',
-            };
+  angular.module('chpl.admin')
+    .controller('VpManagementController', VpManagementController)
+    .directive('aiVpManagement', function () {
+      return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'chpl.admin/components/certifiedProduct/management.html',
+        bindToController: {
+          pendingProducts: '=?',
+          pendingSurveillances: '=?',
+          productId: '=',
+        },
+        scope: {},
+        controllerAs: 'vm',
+        controller: 'VpManagementController',
+      };
+    });
+
+  /** @ngInject */
+  function VpManagementController ($log, $uibModal, API, DateUtil, authService, networkService, utilService) {
+    var vm = this;
+
+    vm.DateUtil = DateUtil;
+    vm.areResourcesReady = areResourcesReady;
+    vm.certificationStatus = utilService.certificationStatus;
+    vm.editCertifiedProduct = editCertifiedProduct;
+    vm.hasAnyRole = authService.hasAnyRole;
+    vm.isDeveloperBanned = isDeveloperBanned;
+    vm.isDeveloperEditable = isDeveloperEditable;
+    vm.isDeveloperMergeable = isDeveloperMergeable;
+    vm.isProductEditable = isProductEditable;
+    vm.loadCp = loadCp;
+    vm.loadSurveillance = loadSurveillance;
+    vm.refreshDevelopers = refreshDevelopers;
+    vm.refreshPending = refreshPending;
+    vm.searchForSurveillance = searchForSurveillance;
+    vm.selectCp = selectCp;
+    vm.selectDeveloper = selectDeveloper;
+    vm.selectProduct = selectProduct;
+    vm.selectVersion = selectVersion;
+    vm.splitProduct = splitProduct;
+    vm.ternaryFilter = utilService.ternaryFilter;
+
+    ////////////////////////////////////////////////////////////////////
+
+    this.$onInit = function () {
+      vm.activeDeveloper = '';
+      vm.activeProduct = '';
+      vm.activeVersion = '';
+      vm.activeCP = '';
+      vm.resources = {};
+      vm.forceRefresh = false;
+      vm.refreshDevelopers();
+      vm.refreshPending();
+
+      networkService.getAcbs(true).then(result => vm.allowedAcbs = result);
+      getResources();
+    };
+
+    function areResourcesReady () {
+      return vm.resourcesReady.searchOptions &&
+        vm.resourcesReady.atls &&
+        vm.resourcesReady.qmsStandards &&
+        vm.resourcesReady.accessibilityStandards &&
+        vm.resourcesReady.measures &&
+        vm.resourcesReady.measureTypes &&
+        vm.resourcesReady.ucdProcesses &&
+        vm.resourcesReady.testProcedures &&
+        vm.resourcesReady.testData &&
+        vm.resourcesReady.testStandards &&
+        vm.resourcesReady.testFunctionality &&
+        vm.resourcesReady.testTools &&
+        vm.resourcesReady.targetedUsers;
+    }
+
+    function refreshDevelopers () {
+      networkService.getDevelopers()
+        .then(function (developers) {
+          vm.developers = developers.developers;
+          prepCodes();
+
+          if (isEditingListing()) {
+            vm.loadCp();
+          }
+        });
+    }
+
+    function refreshPending () {
+      if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
+        networkService.getPendingListings()
+          .then(function (listings) {
+            vm.pendingProducts = listings.length;
+          });
+      }
+      networkService.getUploadingSurveillances()
+        .then(function (surveillances) {
+          vm.pendingSurveillances = ([].concat(surveillances.pendingSurveillance)).length;
+        });
+    }
+
+    function selectDeveloper () {
+      if (vm.developerSelect) {
+        vm.activeDeveloper = vm.developerSelect;
+        networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
+          .then(function (products) {
+            vm.products = products.products;
+          });
+      }
+    }
+
+    function selectProduct () {
+      if (vm.productSelect) {
+        vm.activeProduct = vm.productSelect;
+        vm.activeProduct.developerId = vm.activeDeveloper.developerId;
+        networkService.getVersionsByProduct(vm.activeProduct.productId)
+          .then(function (versions) {
+            vm.versions = versions;
+          });
+      }
+    }
+
+    function selectVersion () {
+      if (vm.versionSelect) {
+        vm.activeVersion = vm.versionSelect;
+        vm.activeVersion.productId = vm.activeProduct.productId;
+        networkService.getProductsByVersion(vm.activeVersion.versionId, true)
+          .then(function (cps) {
+            vm.cps = cps;
+          });
+      }
+    }
+
+    function selectCp () {
+      if (vm.cpSelect) {
+        vm.activeCP = {};
+        vm.activeCP.certifyingBody = {};
+        vm.activeCP.practiceType = {};
+        vm.activeCP.classificationType = {};
+        networkService.getListing(vm.cpSelect, vm.forceRefresh)
+          .then(function (cp) {
+            vm.activeCP = cp;
+            vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
+            vm.forceRefresh = false;
+          });
+      }
+    }
+
+    function editCertifiedProduct () {
+      var resources = angular.copy(vm.resources);
+      var filteredFunctionality = resources.testFunctionalities.data.filter(function (item) {
+        return !item.year || item.year === vm.activeCP.certificationEdition.name;
+      });
+      resources.testFunctionalities.data = filteredFunctionality;
+      var filteredTestStandards = resources.testStandards.data.filter(function (item) {
+        return !item.year || item.year === vm.activeCP.certificationEdition.name;
+      });
+      resources.testStandards.data = filteredTestStandards;
+      vm.modalInstance = $uibModal.open({
+        templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
+        controller: 'EditCertifiedProductController',
+        controllerAs: 'vm',
+        animation: false,
+        backdrop: 'static',
+        keyboard: false,
+        size: 'lg',
+        resolve: {
+          activeCP: function () { return vm.activeCP; },
+          isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
+          isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
+          resources: function () { return resources; },
+          workType: function () { return 'manage'; },
+        },
+      });
+      vm.modalInstance.result.then(function (result) {
+        vm.activeCP = result;
+        getResources();
+        vm.productId = result.id;
+        vm.refreshDevelopers();
+        vm.forceRefresh = true;
+        vm.loadCp();
+      }, function (result) {
+        if (result !== 'cancelled') {
+          vm.cpMessage = result;
+        } else {
+          $log.info(result);
+        }
+      });
+    }
+
+    function isDeveloperEditable (dev) {
+      return dev.status.status === 'Active' || vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+    }
+
+    function isDeveloperMergeable (dev) {
+      return dev.status.status === 'Active';
+    }
+
+    function isDeveloperBanned (dev) {
+      return dev.status.status === 'Under certification ban by ONC';
+    }
+
+    function isProductEditable (cp) {
+      if (cp.certificationEdition.name === '2014' && vm.hasAnyRole(['ROLE_ACB'])) {
+        return false;
+      }
+      if (cp.certificationEvents) {
+        return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
+          || ((cp.currentStatus.status.name !== 'Suspended by ONC' && cp.currentStatus.status.name !== 'Terminated by ONC') &&
+              vm.isDeveloperMergeable(vm.activeDeveloper));
+      } else {
+        return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
+          || vm.isDeveloperMergeable(vm.activeDeveloper);
+      }
+    }
+
+    function searchForSurveillance () {
+      var query = {
+        pageNumber: 0,
+        pageSize: '50',
+        searchTerm: vm.surveillanceSearch.query,
+      };
+      vm.surveillanceProduct = null;
+      vm.surveillanceSearch.results = null;
+      networkService.search(query)
+        .then(function (response) {
+          vm.surveillanceSearch.results = response.results;
+          if (vm.surveillanceSearch.results.length === 1) {
+            vm.productId = vm.surveillanceSearch.results[0].id;
+            vm.loadSurveillance();
+          }
+        });
+    }
+
+    function loadCp () {
+      networkService.getListing(vm.productId, vm.forceRefresh)
+        .then(function (result) {
+          for (var i = 0; i < vm.developers.length; i++) {
+            if (result.developer.developerId === vm.developers[i].developerId) {
+              vm.developerSelect = vm.developers[i];
+              break;
+            }
+          }
+          vm.activeDeveloper = vm.developerSelect;
+          networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
+            .then(function (products) {
+              vm.products = products.products;
+              for (var i = 0; i < vm.products.length; i++) {
+                if (result.product.productId === vm.products[i].productId) {
+                  vm.productSelect = vm.products[i];
+                  break;
+                }
+              }
+              vm.activeProduct = vm.productSelect;
+              vm.activeProduct.developerId = vm.activeDeveloper.developerId;
+              networkService.getVersionsByProduct(vm.activeProduct.productId)
+                .then(function (versions) {
+                  vm.versions = versions;
+                  for (var i = 0; i < vm.versions.length; i++) {
+                    if (result.version.versionId === vm.versions[i].versionId) {
+                      vm.versionSelect = vm.versions[i];
+                      break;
+                    }
+                  }
+                  vm.activeVersion = vm.versionSelect;
+                  vm.activeVersion.productId = vm.activeProduct.productId;
+                  networkService.getProductsByVersion(vm.activeVersion.versionId, true)
+                    .then(function (cps) {
+                      vm.cps = cps;
+                      vm.cpSelect = result.id;
+                      vm.selectCp();
+                    });
+                });
+            });
+        });
+    }
+
+    function loadSurveillance () {
+      networkService.getListing(vm.productId, vm.forceRefresh)
+        .then(function (result) {
+          vm.surveillanceProduct = result;
+        });
+    }
+
+    function splitProduct () {
+      vm.splitProductInstance = $uibModal.open({
+        templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
+        controller: 'SplitProductController',
+        controllerAs: 'vm',
+        animation: false,
+        backdrop: 'static',
+        keyboard: false,
+        size: 'lg',
+        resolve: {
+          product: function () { return vm.activeProduct; },
+          versions: function () { return vm.versions; },
+        },
+      });
+      vm.splitProductInstance.result.then(function (result) {
+        if (isEditingListing()) {
+          vm.forceRefresh = true;
+          refreshDevelopers();
+        } else {
+          vm.activeProduct = result.product;
+          vm.activeVersion = '';
+          vm.products.push(result.newProduct);
+          vm.versions = result.versions;
+        }
+      }, function (result) {
+        if (result !== 'cancelled') {
+          vm.productMessage = result;
+        } else {
+          $log.info('split cancelled');
+        }
+      });
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    function getResources () {
+      vm.resourcesReady = {
+        searchOptions: false,
+        atls: false,
+        qmsStandards: false,
+        accessibilityStandards: false,
+        measures: false,
+        measureTypes: false,
+        ucdProcesses: false,
+        testProcedures: false,
+        testData: false,
+        testStandards: false,
+        testFunctionality: false,
+        testTools: false,
+        targetedUsers: false,
+      };
+
+      networkService.getSearchOptions()
+        .then(function (options) {
+          vm.resources.bodies = options.acbs;
+          vm.resources.classifications = options.productClassifications;
+          vm.resources.editions = options.editions;
+          vm.resources.practices = options.practiceTypes;
+          vm.resources.statuses = options.certificationStatuses;
+          vm.resourcesReady.searchOptions = true;
         });
 
-    /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, DateUtil, authService, networkService, utilService) {
-        var vm = this;
+      networkService.getAtls(false)
+        .then(function (data) {
+          vm.resources.testingLabs = data.atls;
+          vm.resourcesReady.atls = true;
+        });
 
-        vm.DateUtil = DateUtil;
-        vm.areResourcesReady = areResourcesReady;
-        vm.certificationStatus = utilService.certificationStatus;
-        vm.editCertifiedProduct = editCertifiedProduct;
-        vm.hasAnyRole = authService.hasAnyRole;
-        vm.isDeveloperBanned = isDeveloperBanned;
-        vm.isDeveloperEditable = isDeveloperEditable;
-        vm.isDeveloperMergeable = isDeveloperMergeable;
-        vm.isProductEditable = isProductEditable;
-        vm.loadCp = loadCp;
-        vm.loadSurveillance = loadSurveillance;
-        vm.refreshDevelopers = refreshDevelopers;
-        vm.refreshPending = refreshPending;
-        vm.searchForSurveillance = searchForSurveillance;
-        vm.selectCp = selectCp;
-        vm.selectDeveloper = selectDeveloper;
-        vm.selectProduct = selectProduct;
-        vm.selectVersion = selectVersion;
-        vm.splitProduct = splitProduct;
-        vm.ternaryFilter = utilService.ternaryFilter;
+      networkService.getQmsStandards()
+        .then(function (response) {
+          vm.resources.qmsStandards = response;
+          vm.resourcesReady.qmsStandards = true;
+        });
 
-        ////////////////////////////////////////////////////////////////////
+      networkService.getAccessibilityStandards()
+        .then(function (response) {
+          vm.resources.accessibilityStandards = response;
+          vm.resourcesReady.accessibilityStandards = true;
+        });
 
-        this.$onInit = function () {
-            vm.activeDeveloper = '';
-            vm.activeProduct = '';
-            vm.activeVersion = '';
-            vm.activeCP = '';
-            vm.resources = {};
-            vm.forceRefresh = false;
-            vm.refreshDevelopers();
-            vm.refreshPending();
+      networkService.getMeasures()
+        .then(function (response) {
+          vm.resources.measures = response;
+          vm.resourcesReady.measures = true;
+        });
 
-            networkService.getAcbs(true).then(result => vm.allowedAcbs = result);
-            getResources();
-        };
+      networkService.getMeasureTypes()
+        .then(function (response) {
+          vm.resources.measureTypes = response;
+          vm.resourcesReady.measureTypes = true;
+        });
 
-        function areResourcesReady () {
-            return vm.resourcesReady.searchOptions &&
-                vm.resourcesReady.atls &&
-                vm.resourcesReady.qmsStandards &&
-                vm.resourcesReady.accessibilityStandards &&
-                vm.resourcesReady.measures &&
-                vm.resourcesReady.measureTypes &&
-                vm.resourcesReady.ucdProcesses &&
-                vm.resourcesReady.testProcedures &&
-                vm.resourcesReady.testData &&
-                vm.resourcesReady.testStandards &&
-                vm.resourcesReady.testFunctionality &&
-                vm.resourcesReady.testTools &&
-                vm.resourcesReady.targetedUsers;
-        }
+      networkService.getUcdProcesses()
+        .then(function (response) {
+          vm.resources.ucdProcesses = response;
+          vm.resourcesReady.ucdProcesses = true;
+        });
 
-        function refreshDevelopers () {
-            networkService.getDevelopers()
-                .then(function (developers) {
-                    vm.developers = developers.developers;
-                    prepCodes();
+      networkService.getTestProcedures()
+        .then(function (response) {
+          vm.resources.testProcedures = response;
+          vm.resourcesReady.testProcedures = true;
+        });
 
-                    if (isEditingListing()) {
-                        vm.loadCp();
-                    }
-                });
-        }
+      networkService.getTestData()
+        .then(function (response) {
+          vm.resources.testData = response;
+          vm.resourcesReady.testData = true;
+        });
 
-        function refreshPending () {
-            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
-                networkService.getPendingListings()
-                    .then(function (listings) {
-                        vm.pendingProducts = listings.length;
-                    });
-            }
-            networkService.getUploadingSurveillances()
-                .then(function (surveillances) {
-                    vm.pendingSurveillances = ([].concat(surveillances.pendingSurveillance)).length;
-                });
-        }
+      networkService.getTestStandards()
+        .then(function (response) {
+          vm.resources.testStandards = response;
+          vm.resourcesReady.testStandards = true;
+        });
 
-        function selectDeveloper () {
-            if (vm.developerSelect) {
-                vm.activeDeveloper = vm.developerSelect;
-                networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
-                    .then(function (products) {
-                        vm.products = products.products;
-                    });
-            }
-        }
+      networkService.getTestFunctionality()
+        .then(function (response) {
+          vm.resources.testFunctionalities = response;
+          vm.resourcesReady.testFunctionality = true;
+        });
 
-        function selectProduct () {
-            if (vm.productSelect) {
-                vm.activeProduct = vm.productSelect;
-                vm.activeProduct.developerId = vm.activeDeveloper.developerId;
-                networkService.getVersionsByProduct(vm.activeProduct.productId)
-                    .then(function (versions) {
-                        vm.versions = versions;
-                    });
-            }
-        }
+      networkService.getTestTools()
+        .then(function (response) {
+          vm.resources.testTools = response;
+          vm.resourcesReady.testTools = true;
+        });
 
-        function selectVersion () {
-            if (vm.versionSelect) {
-                vm.activeVersion = vm.versionSelect;
-                vm.activeVersion.productId = vm.activeProduct.productId;
-                networkService.getProductsByVersion(vm.activeVersion.versionId, true)
-                    .then(function (cps) {
-                        vm.cps = cps;
-                    });
-            }
-        }
-
-        function selectCp () {
-            if (vm.cpSelect) {
-                vm.activeCP = {};
-                vm.activeCP.certifyingBody = {};
-                vm.activeCP.practiceType = {};
-                vm.activeCP.classificationType = {};
-                networkService.getListing(vm.cpSelect, vm.forceRefresh)
-                    .then(function (cp) {
-                        vm.activeCP = cp;
-                        vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
-                        vm.forceRefresh = false;
-                    });
-            }
-        }
-
-        function editCertifiedProduct () {
-            var resources = angular.copy(vm.resources);
-            var filteredFunctionality = resources.testFunctionalities.data.filter(function (item) {
-                return !item.year || item.year === vm.activeCP.certificationEdition.name;
-            });
-            resources.testFunctionalities.data = filteredFunctionality;
-            var filteredTestStandards = resources.testStandards.data.filter(function (item) {
-                return !item.year || item.year === vm.activeCP.certificationEdition.name;
-            });
-            resources.testStandards.data = filteredTestStandards;
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
-                controller: 'EditCertifiedProductController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    activeCP: function () { return vm.activeCP; },
-                    isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
-                    isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
-                    resources: function () { return resources; },
-                    workType: function () { return 'manage'; },
-                },
-            });
-            vm.modalInstance.result.then(function (result) {
-                vm.activeCP = result;
-                getResources();
-                vm.productId = result.id;
-                vm.refreshDevelopers();
-                vm.forceRefresh = true;
-                vm.loadCp();
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.cpMessage = result;
-                } else {
-                    $log.info(result);
-                }
-            });
-        }
-
-        function isDeveloperEditable (dev) {
-            return dev.status.status === 'Active' || vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
-        }
-
-        function isDeveloperMergeable (dev) {
-            return dev.status.status === 'Active';
-        }
-
-        function isDeveloperBanned (dev) {
-            return dev.status.status === 'Under certification ban by ONC';
-        }
-
-        function isProductEditable (cp) {
-            if (cp.certificationEdition.name === '2014' && vm.hasAnyRole(['ROLE_ACB'])) {
-                return false;
-            }
-            if (cp.certificationEvents) {
-                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
-                    || ((cp.currentStatus.status.name !== 'Suspended by ONC' && cp.currentStatus.status.name !== 'Terminated by ONC') &&
-                    vm.isDeveloperMergeable(vm.activeDeveloper));
-            } else {
-                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && (vm.isDeveloperMergeable(vm.activeDeveloper) || vm.isDeveloperBanned(vm.activeDeveloper)))
-                || vm.isDeveloperMergeable(vm.activeDeveloper);
-            }
-        }
-
-        function searchForSurveillance () {
-            var query = {
-                pageNumber: 0,
-                pageSize: '50',
-                searchTerm: vm.surveillanceSearch.query,
-            };
-            vm.surveillanceProduct = null;
-            vm.surveillanceSearch.results = null;
-            networkService.search(query)
-                .then(function (response) {
-                    vm.surveillanceSearch.results = response.results;
-                    if (vm.surveillanceSearch.results.length === 1) {
-                        vm.productId = vm.surveillanceSearch.results[0].id;
-                        vm.loadSurveillance();
-                    }
-                });
-        }
-
-        function loadCp () {
-            networkService.getListing(vm.productId, vm.forceRefresh)
-                .then(function (result) {
-                    for (var i = 0; i < vm.developers.length; i++) {
-                        if (result.developer.developerId === vm.developers[i].developerId) {
-                            vm.developerSelect = vm.developers[i];
-                            break;
-                        }
-                    }
-                    vm.activeDeveloper = vm.developerSelect;
-                    networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
-                        .then(function (products) {
-                            vm.products = products.products;
-                            for (var i = 0; i < vm.products.length; i++) {
-                                if (result.product.productId === vm.products[i].productId) {
-                                    vm.productSelect = vm.products[i];
-                                    break;
-                                }
-                            }
-                            vm.activeProduct = vm.productSelect;
-                            vm.activeProduct.developerId = vm.activeDeveloper.developerId;
-                            networkService.getVersionsByProduct(vm.activeProduct.productId)
-                                .then(function (versions) {
-                                    vm.versions = versions;
-                                    for (var i = 0; i < vm.versions.length; i++) {
-                                        if (result.version.versionId === vm.versions[i].versionId) {
-                                            vm.versionSelect = vm.versions[i];
-                                            break;
-                                        }
-                                    }
-                                    vm.activeVersion = vm.versionSelect;
-                                    vm.activeVersion.productId = vm.activeProduct.productId;
-                                    networkService.getProductsByVersion(vm.activeVersion.versionId, true)
-                                        .then(function (cps) {
-                                            vm.cps = cps;
-                                            vm.cpSelect = result.id;
-                                            vm.selectCp();
-                                        });
-                                });
-                        });
-                });
-        }
-
-        function loadSurveillance () {
-            networkService.getListing(vm.productId, vm.forceRefresh)
-                .then(function (result) {
-                    vm.surveillanceProduct = result;
-                });
-        }
-
-        function splitProduct () {
-            vm.splitProductInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
-                controller: 'SplitProductController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    product: function () { return vm.activeProduct; },
-                    versions: function () { return vm.versions; },
-                },
-            });
-            vm.splitProductInstance.result.then(function (result) {
-                if (isEditingListing()) {
-                    vm.forceRefresh = true;
-                    refreshDevelopers();
-                } else {
-                    vm.activeProduct = result.product;
-                    vm.activeVersion = '';
-                    vm.products.push(result.newProduct);
-                    vm.versions = result.versions;
-                }
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.productMessage = result;
-                } else {
-                    $log.info('split cancelled');
-                }
-            });
-        }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function getResources () {
-            vm.resourcesReady = {
-                searchOptions: false,
-                atls: false,
-                qmsStandards: false,
-                accessibilityStandards: false,
-                measures: false,
-                measureTypes: false,
-                ucdProcesses: false,
-                testProcedures: false,
-                testData: false,
-                testStandards: false,
-                testFunctionality: false,
-                testTools: false,
-                targetedUsers: false,
-            };
-
-            networkService.getSearchOptions()
-                .then(function (options) {
-                    vm.resources.bodies = options.acbs;
-                    vm.resources.classifications = options.productClassifications;
-                    vm.resources.editions = options.editions;
-                    vm.resources.practices = options.practiceTypes;
-                    vm.resources.statuses = options.certificationStatuses;
-                    vm.resourcesReady.searchOptions = true;
-                });
-
-            networkService.getAtls(false)
-                .then(function (data) {
-                    vm.resources.testingLabs = data.atls;
-                    vm.resourcesReady.atls = true;
-                });
-
-            networkService.getQmsStandards()
-                .then(function (response) {
-                    vm.resources.qmsStandards = response;
-                    vm.resourcesReady.qmsStandards = true;
-                });
-
-            networkService.getAccessibilityStandards()
-                .then(function (response) {
-                    vm.resources.accessibilityStandards = response;
-                    vm.resourcesReady.accessibilityStandards = true;
-                });
-
-            networkService.getMeasures()
-                .then(function (response) {
-                    vm.resources.measures = response;
-                    vm.resourcesReady.measures = true;
-                });
-
-            networkService.getMeasureTypes()
-                .then(function (response) {
-                    vm.resources.measureTypes = response;
-                    vm.resourcesReady.measureTypes = true;
-                });
-
-            networkService.getUcdProcesses()
-                .then(function (response) {
-                    vm.resources.ucdProcesses = response;
-                    vm.resourcesReady.ucdProcesses = true;
-                });
-
-            networkService.getTestProcedures()
-                .then(function (response) {
-                    vm.resources.testProcedures = response;
-                    vm.resourcesReady.testProcedures = true;
-                });
-
-            networkService.getTestData()
-                .then(function (response) {
-                    vm.resources.testData = response;
-                    vm.resourcesReady.testData = true;
-                });
-
-            networkService.getTestStandards()
-                .then(function (response) {
-                    vm.resources.testStandards = response;
-                    vm.resourcesReady.testStandards = true;
-                });
-
-            networkService.getTestFunctionality()
-                .then(function (response) {
-                    vm.resources.testFunctionalities = response;
-                    vm.resourcesReady.testFunctionality = true;
-                });
-
-            networkService.getTestTools()
-                .then(function (response) {
-                    vm.resources.testTools = response;
-                    vm.resourcesReady.testTools = true;
-                });
-
-            networkService.getTargetedUsers()
-                .then(function (response) {
-                    vm.resources.targetedUsers = response;
-                    vm.resourcesReady.targetedUsers = true;
-                });
-        }
-
-        function isEditingListing () {
-            if (vm.productId) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function prepCodes () {
-            var values = {};
-            for (var i = 0; i < vm.developers.length; i++) {
-                vm.developers[i].transMap = {};
-                for (var j = 0; j < vm.developers[i].transparencyAttestations.length; j++) {
-                    vm.developers[i].transMap[vm.developers[i].transparencyAttestations[j].acbName] = vm.developers[i].transparencyAttestations[j].attestation;
-                    values[vm.developers[i].transparencyAttestations[j].acbName] = true;
-                }
-            }
-            vm.activeAcbs = [];
-            angular.forEach(values, function (value, key) {
-                vm.activeAcbs.push(key);
-            });
-        }
+      networkService.getTargetedUsers()
+        .then(function (response) {
+          vm.resources.targetedUsers = response;
+          vm.resourcesReady.targetedUsers = true;
+        });
     }
+
+    function isEditingListing () {
+      if (vm.productId) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function prepCodes () {
+      var values = {};
+      for (var i = 0; i < vm.developers.length; i++) {
+        vm.developers[i].transMap = {};
+        for (var j = 0; j < vm.developers[i].transparencyAttestations.length; j++) {
+          vm.developers[i].transMap[vm.developers[i].transparencyAttestations[j].acbName] = vm.developers[i].transparencyAttestations[j].attestation;
+          values[vm.developers[i].transparencyAttestations[j].acbName] = true;
+        }
+      }
+      vm.activeAcbs = [];
+      angular.forEach(values, function (value, key) {
+        vm.activeAcbs.push(key);
+      });
+    }
+  }
 })();

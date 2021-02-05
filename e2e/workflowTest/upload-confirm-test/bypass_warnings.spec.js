@@ -11,72 +11,72 @@ const listingIdWithWarning = '15.04.04.1722.AQA4.03.01.1.200620';
 
 // **Run once before the first test case**
 beforeAll( () => {
-    uploadPage = new UploadPage();
-    confirmPage = new ConfirmPage();
-    loginComponent = new LoginComponent();
-    hooks = new Hooks();
-    hooks.open('#/administration/upload');
-    loginComponent.logIn('acb');
+  uploadPage = new UploadPage();
+  confirmPage = new ConfirmPage();
+  loginComponent = new LoginComponent();
+  hooks = new Hooks();
+  hooks.open('#/administration/upload');
+  loginComponent.logIn('acb');
 });
 
 describe('listing with no confirm warnings and no errors', () => {
-    // **Run once before each test case**
-    beforeEach(function () {
-        uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
-        uploadPage.waitForSuccessfulUpload('AQA3');
-        hooks.open('#/administration/confirm/listings');
-    });
+  // **Run once before each test case**
+  beforeEach(function () {
+    uploadPage.uploadListing('../../../resources/2015_v19_AQA3.csv');
+    uploadPage.waitForSuccessfulUpload('AQA3');
+    hooks.open('#/administration/confirm/listings');
+  });
 
-    it('should not show warning bypass checkbox and confirm works successfully', () => {
-        confirmPage.gotoConfirmListingPage(listingIdNoWarningError);
-        confirmPage.confirmListing();
-        assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
-        confirmPage.waitForSuccessfulConfirm();
-        assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
-    });
-    afterEach(function () {
-        browser.refresh();
-    });
+  it('should not show warning bypass checkbox and confirm works successfully', () => {
+    confirmPage.gotoConfirmListingPage(listingIdNoWarningError);
+    confirmPage.confirmListing();
+    assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
+    confirmPage.waitForSuccessfulConfirm();
+    assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
+  });
+  afterEach(function () {
+    browser.refresh();
+  });
 });
 
 describe('listing with warnings on confirm and no errors', () => {
 
-    beforeAll(function () {
-        hooks.open('#/administration/upload');
-        uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
-        uploadPage.waitForSuccessfulUpload('AQA4');
-        hooks.open('#/administration/confirm/listings');
-        hooks.waitForSpinnerToDisappear();
-    });
+  beforeAll(function () {
+    hooks.open('#/administration/upload');
+    uploadPage.uploadListing('../../../resources/2015_v19_AQA4.csv');
+    uploadPage.waitForSuccessfulUpload('AQA4');
+    hooks.open('#/administration/confirm/listings');
+    hooks.waitForSpinnerToDisappear();
+  });
 
-    it('should show warning bypass checkbox while confirming', () => {
-        confirmPage.gotoConfirmListingPage(listingIdWithWarning);
-        confirmPage.confirmListing();
-        hooks.waitForSpinnerToDisappear();
-        assert.isTrue(confirmPage.warningCheckbox.isDisplayed());
-    });
+  it('should show warning bypass checkbox while confirming', () => {
+    confirmPage.gotoConfirmListingPage(listingIdWithWarning);
+    confirmPage.confirmListing();
+    hooks.waitForSpinnerToDisappear();
+    assert.isTrue(confirmPage.warningCheckbox.isDisplayed());
+  });
 
-    it('should not get confirmed until bypasscheckbox is checked', () => {
-        confirmPage.gotoConfirmListingPage(listingIdWithWarning);
-        confirmPage.confirmListing();
-        browser.waitUntil( () => confirmPage.warningCheckbox.isDisplayed());
-        confirmPage.confirmListing();
-        hooks.waitForSpinnerToDisappear();
-        assert.isTrue(confirmPage.confirmButton.isDisplayed());
-    });
+  it('should not get confirmed until bypasscheckbox is checked', () => {
+    confirmPage.gotoConfirmListingPage(listingIdWithWarning);
+    confirmPage.confirmListing();
+    browser.waitUntil( () => confirmPage.warningCheckbox.isDisplayed());
+    confirmPage.confirmListing();
+    hooks.waitForSpinnerToDisappear();
+    assert.isTrue(confirmPage.confirmButton.isDisplayed());
+  });
 
-    it('should get confirm if user checks checkbox for bypass warnings', () => {
-        confirmPage.gotoConfirmListingPage(listingIdWithWarning);
-        confirmPage.confirmListing();
-        hooks.waitForSpinnerToDisappear();
-        confirmPage.warningCheckbox.click();
-        confirmPage.confirmListing();
-        confirmPage.waitForSuccessfulConfirm();
-        assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
-    });
+  it('should get confirm if user checks checkbox for bypass warnings', () => {
+    confirmPage.gotoConfirmListingPage(listingIdWithWarning);
+    confirmPage.confirmListing();
+    hooks.waitForSpinnerToDisappear();
+    confirmPage.warningCheckbox.click();
+    confirmPage.confirmListing();
+    confirmPage.waitForSuccessfulConfirm();
+    assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
+  });
 
-    afterEach(function () {
-        browser.refresh();
-    });
+  afterEach(function () {
+    browser.refresh();
+  });
 
 });

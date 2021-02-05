@@ -1,32 +1,32 @@
 const elements = {
-    compareWidget: '#compare-widget-toggle',
-    compareProducts: '//button[text()="Compare products"]',
-    removeProducts: '//button[text()="Remove all products"]',
+  compareWidget: '#compare-widget-toggle',
+  compareProducts: '//button[text()="Compare products"]',
+  removeProducts: '//button[text()="Remove all products"]',
 };
 
 class CompareWidgetComponent {
-    constructor () { }
+  constructor () { }
 
-    get compareWidget () {
-        return $(elements.compareWidget);
-    }
+  get compareWidget () {
+    return $(elements.compareWidget);
+  }
 
-    get compareProductsButton () {
-        return $(elements.compareProducts);
-    }
+  get compareProductsButton () {
+    return $(elements.compareProducts);
+  }
 
-    get removeProductsButton () {
-        return $(elements.removeProducts);
-    }
+  get removeProductsButton () {
+    return $(elements.removeProducts);
+  }
 
-    compareButton (listingId) {
-        return $('#toggle-compare-' + listingId);
-    }
+  compareButton (listingId) {
+    return $('#toggle-compare-' + listingId);
+  }
 
-    addListingToCompare (listingId) {
-        this.compareButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
-        this.compareButton(listingId).click();
-    }
+  addListingToCompare (listingId) {
+    this.compareButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
+    this.compareButton(listingId).click();
+  }
 }
 
 export default CompareWidgetComponent;
