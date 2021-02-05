@@ -47,9 +47,6 @@ describe('when confirming surveillance, ACB', () => {
         browser.waitUntil( () => toast.toastTitle.isDisplayed());
         assert.equal(toast.toastTitle.getText() , 'Update processing');
     });
-});
-
-describe('when confirming surveillance, ACB', () => {
 
     it('should not be able to confirm when the surveillance has a requirement the listing does not attest to', () => {
         browser.waitUntil( () => confirmPage.table.isDisplayed());
@@ -65,9 +62,6 @@ describe('when confirming surveillance, ACB', () => {
         browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
         assert.include(confirmPage.errorOnConfirm.getText(),error1);
     });
-});
-
-describe('when confirming surveillance, ACB', () => {
 
     it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
         let nonConformitydetails = {
