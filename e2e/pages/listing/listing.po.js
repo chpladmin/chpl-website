@@ -1,13 +1,13 @@
 const elements = {
-    realWortldTestingHeader: 'h2=Real World Testing',
+  realWortldTestingHeader: 'h2=Real World Testing',
 };
 
 class ListingPage {
-    constructor () { }
+  constructor () { }
 
-    get realWorldTestingHeader () {
-        return $(elements.realWorldTestingHeader);
-    }
+  get realWorldTestingHeader () {
+    return $(elements.realWorldTestingHeader);
+  }
 }
 
 export default ListingPage;

@@ -1,25 +1,25 @@
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('chpl.components')
-        .controller('EditAdditionalSoftwareController', EditAdditionalSoftwareController);
+  angular.module('chpl.components')
+    .controller('EditAdditionalSoftwareController', EditAdditionalSoftwareController);
 
-    /** @ngInject */
-    function EditAdditionalSoftwareController ($uibModalInstance, software) {
-        var vm = this;
-        vm.sw = angular.copy(software);
+  /** @ngInject */
+  function EditAdditionalSoftwareController ($uibModalInstance, software) {
+    var vm = this;
+    vm.sw = angular.copy(software);
 
-        vm.save = save;
-        vm.cancel = cancel;
+    vm.save = save;
+    vm.cancel = cancel;
 
-        ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
-        function save () {
-            $uibModalInstance.close(vm.sw);
-        }
-
-        function cancel () {
-            $uibModalInstance.dismiss('cancelled');
-        }
+    function save () {
+      $uibModalInstance.close(vm.sw);
     }
+
+    function cancel () {
+      $uibModalInstance.dismiss('cancelled');
+    }
+  }
 })();
