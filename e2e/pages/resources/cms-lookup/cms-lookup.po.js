@@ -1,42 +1,42 @@
 const elements = {
-    searchId: '#lookupCertificationIdButton',
-    searchField: '#certIdsField',
-    downloadResults: '//*[@id="main-content"]/div[2]/div/div/button',
-    lookupResultsTable: '#lookupCertIdResults',
-    certidLookupError: '.cert-id-lookup-error',
-    lookupResultsTableRows: '//*[@id="lookupCertIdResults"]/tbody/tr',
+  searchId: '#lookupCertificationIdButton',
+  searchField: '#certIdsField',
+  downloadResults: '//*[@id="main-content"]/div[2]/div/div/button',
+  lookupResultsTable: '#lookupCertIdResults',
+  certidLookupError: '.cert-id-lookup-error',
+  lookupResultsTableRows: '//*[@id="lookupCertIdResults"]/tbody/tr',
 };
 
 class CmsLookupPage {
-    constructor () { }
+  constructor () { }
 
-    get searchIdButton () {
-        return $(elements.searchId);
-    }
+  get searchIdButton () {
+    return $(elements.searchId);
+  }
 
-    get searchField () {
-        return $(elements.searchField);
-    }
+  get searchField () {
+    return $(elements.searchField);
+  }
 
-    get downloadResultsButton () {
-        return $(elements.downloadResults);
-    }
+  get downloadResultsButton () {
+    return $(elements.downloadResults);
+  }
 
-    get lookupResultsTable () {
-        return $(elements.lookupResultsTable);
-    }
+  get lookupResultsTable () {
+    return $(elements.lookupResultsTable);
+  }
 
-    get certidLookupErrorText () {
-        return $(elements.certidLookupError);
-    }
+  get certidLookupErrorText () {
+    return $(elements.certidLookupError);
+  }
 
-    get rowsLookupResultsTable () {
-        return $$(elements.lookupResultsTableRows);
-    }
+  get rowsLookupResultsTable () {
+    return $$(elements.lookupResultsTableRows);
+  }
 
-    chplProductNumberFromTable (rowNumber) {
-        return $('//*[@id="lookupCertIdResults"]/tbody/tr[' + rowNumber + ']/td[6]');
-    }
+  chplProductNumberFromTable (rowNumber) {
+    return $('//*[@id="lookupCertIdResults"]/tbody/tr[' + rowNumber + ']/td[6]');
+  }
 }
 
 export default CmsLookupPage;

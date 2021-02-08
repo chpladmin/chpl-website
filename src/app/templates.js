@@ -17,12 +17,12 @@ ctxs.push({module: 'chpl.surveillance', ctx: require.context('./pages/surveillan
 ctxs.push({module: 'chpl.users', ctx: require.context('./pages/users/', true, /.*\.html$/)});
 
 ctxs.forEach(obj => {
-    angular.module(obj.module).run([
-        '$templateCache',
-        function ($templateCache) {
-            obj.ctx.keys().forEach(key => {
-                $templateCache.put(key.replace('./', `${ obj.module }/`), obj.ctx(key));
-            });
-        },
-    ]);
+  angular.module(obj.module).run([
+    '$templateCache',
+    function ($templateCache) {
+      obj.ctx.keys().forEach(key => {
+        $templateCache.put(key.replace('./', `${ obj.module }/`), obj.ctx(key));
+      });
+    },
+  ]);
 });

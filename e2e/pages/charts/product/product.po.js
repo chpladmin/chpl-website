@@ -1,23 +1,23 @@
 const productChartsElements = {
-    chartTitle: 'svg > g:nth-child(3) > text:nth-child(1)',
-    viewCertificationCriteriaDropdown: '//label/select',
-    nonconformityChart: '//button[text()="Nonconformity charts"]',
+  chartTitle: 'svg > g:nth-child(3) > text:nth-child(1)',
+  viewCertificationCriteriaDropdown: '//label/select',
+  nonconformityChart: '//button[text()="Nonconformity charts"]',
 };
 
 class ProductChartsPage {
-    constructor () { }
+  constructor () { }
 
-    get chartTitle () {
-        return $(productChartsElements.chartTitle);
-    }
+  get chartTitle () {
+    return $(productChartsElements.chartTitle);
+  }
 
-    get viewCertificationCriteriaDropdown () {
-        return $(productChartsElements.viewCertificationCriteriaDropdown);
-    }
+  get viewCertificationCriteriaDropdown () {
+    return $(productChartsElements.viewCertificationCriteriaDropdown);
+  }
 
-    get nonconformityChartButton () {
-        return $(productChartsElements.nonconformityChart);
-    }
+  get nonconformityChartButton () {
+    return $(productChartsElements.nonconformityChart);
+  }
 
 }
 

@@ -1,23 +1,23 @@
 const overviewElements = {
-    oncacbatlTable: 'h2=ONC-ACB and ONC-ATL Information',
-    rowValue: '#acbAtlTable tbody tr',
-    colValue: '#acbAtlTable thead tr th',
+  oncacbatlTable: 'h2=ONC-ACB and ONC-ATL Information',
+  rowValue: '#acbAtlTable tbody tr',
+  colValue: '#acbAtlTable thead tr th',
 };
 
 class OverviewPage {
-    constructor () { }
+  constructor () { }
 
-    get acbatlTable () {
-        return $(overviewElements.oncacbatlTable);
-    }
+  get acbatlTable () {
+    return $(overviewElements.oncacbatlTable);
+  }
 
-    get acbatlTableRow () {
-        return $$(overviewElements.rowValue);
-    }
+  get acbatlTableRow () {
+    return $$(overviewElements.rowValue);
+  }
 
-    get acbatlTableCol () {
-        return $$(overviewElements.colValue);
-    }
+  get acbatlTableCol () {
+    return $$(overviewElements.colValue);
+  }
 
 }
 
