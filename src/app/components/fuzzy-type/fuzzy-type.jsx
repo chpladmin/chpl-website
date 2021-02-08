@@ -103,11 +103,7 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
                   <button className="btn" id="add-fuzzy-type" onClick={() => setAdding(true)}><i className="fa fa-plus"></i> Add</button>
                 ) }
               </form>
-              <ChplActionBar
-                errorMessages={['1', '2']}
-                warningMessages={['a', 'b']}
-                takeAction={act}
-              />
+              <ChplActionBar takeAction={act} />
             </>
           ) : (
             <>

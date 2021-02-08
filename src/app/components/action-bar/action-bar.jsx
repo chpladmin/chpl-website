@@ -17,10 +17,9 @@ function ChplActionBar ({
   const [showMessages, setShowMessages] = useState(false);
   const [warnings] = useState(warningMessages ? warningMessages.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
   //const $log = dependencies.getChplLogService();
-  const $log = () => {};
 
   const act = (action) => {
-    $log.info({type: 'act', action});
+    console.log({type: 'act', action});
     if (takeAction) {
       takeAction(action);
     }
@@ -31,7 +30,7 @@ function ChplActionBar ({
     if (takeAction) {
       takeAction('updateAcknowledgement', acknowledgeWarnings);
     }
-    $log.info({type: 'updateAcknowledgeWarnings', acknowledgeWarnings});
+    console.log({type: 'updateAcknowledgeWarnings', acknowledgeWarnings});
   };
 
   const submit = event => {
