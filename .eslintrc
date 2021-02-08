@@ -57,5 +57,13 @@
         "angular/file-name": ["off"],
         "angular/function-type": ["off"],
         "angular/service-name": ["off"],
-    }
+    },
+    "overrides": [
+    {
+    "files": ["*.jsx", "*.spec.js"],
+    "rules": {
+    "no-console": ["off"],
+    },
+    },
+    ],
 }
