@@ -223,12 +223,12 @@ exports.config = {
 
         //element wrapped in div is not clickable solution
         browser.addCommand("scrollAndClick", function () {
-        // `this` is return value of $(selector)
-        var runInBrowser = function (argument) {
-            argument.click();
-        };
-        this.scrollIntoView({block: 'center', inline: 'center'});
-        browser.execute(runInBrowser,this);
+            // `this` is return value of $(selector)
+            var runInBrowser = function (argument) {
+                argument.click();
+            };
+            this.scrollIntoView({block: 'center', inline: 'center'});
+            browser.execute(runInBrowser,this);
         }, true)
 
         browser.addCommand("waitForFileExists", function (filePath, timeout) {
