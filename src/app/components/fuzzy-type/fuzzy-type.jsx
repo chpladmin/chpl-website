@@ -21,6 +21,9 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
     case 'cancel':
       cancel();
       break;
+    case 'save':
+      save();
+      break;
       //no default
     }
   };
@@ -53,8 +56,18 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
     setChoices(choices.filter(c => c !== choice));
   };
 
+  const save = () => {
+    takeAction({
+      ...fuzzyType,
+      choices: choices,
+    }, 'save');
+  };
+
+  const submit = event => {
+    event.preventDefault();
+  };
+
   return (
-    /* eslint-disable indent,react/jsx-indent */
     <div id={'fuzzy-type-' + fuzzyType.fuzzyType}>
       <div className="panel panel-default">
         <div className="panel-heading">
@@ -64,32 +77,32 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
           {isEditing ? (
             <>
               Choices (for editing)
-              <form onSubmit={() => {}}>
+              <form onSubmit={submit}>
                 <ul>
                   {
                     choices
-                    .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                    .map(choice => (
-                      <li key={choice}>
-                        {choice}
-                        <button onClick={() => remove(choice)}><i className="fa fa-trash"></i></button>
-                      </li>
-                    ))
+                      .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+                      .map(choice => (
+                        <li key={choice}>
+                          {choice}
+                          <button onClick={() => remove(choice)}><i className="fa fa-trash"></i></button>
+                        </li>
+                      ))
                   }
                 </ul>
+                {isAdding ? (
+                  <>
+                    <label>
+                      Add new Fuzzy Type
+                      <input type="text" onChange={handleChange} />
+                    </label>
+                    <button className="btn btn-primary" id="add-fuzzy-type" onClick={handleAdd}>Save</button>
+                    <button className="btn btn-default" id="cancel-add-fuzzy-type" onClick={() => setAdding(false)}>Cancel</button>
+                  </>
+                ) : (
+                  <button className="btn" id="add-fuzzy-type" onClick={() => setAdding(true)}><i className="fa fa-plus"></i> Add</button>
+                ) }
               </form>
-              {isAdding ? (
-                <>
-                  <label>
-                    Add new Fuzzy Type
-                    <input type="text" onChange={handleChange} />
-                  </label>
-                  <button className="btn btn-primary" id="add-fuzzy-type" onClick={handleAdd}>Save</button>
-                  <button className="btn btn-default" id="cancel-add-fuzzy-type" onClick={() => setAdding(false)}>Cancel</button>
-                </>
-              ) : (
-                <button className="btn" id="add-fuzzy-type" onClick={() => setAdding(true)}><i className="fa fa-plus"></i> Add</button>
-              ) }
               <ChplActionBar
                 errorMessages={['1', '2']}
                 warningMessages={['a', 'b']}
@@ -105,10 +118,10 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
               <ul>
                 {
                   choices
-                  .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                  .map(choice => (
-                    <li key={choice}>{choice}</li>
-                  ))
+                    .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+                    .map(choice => (
+                      <li key={choice}>{choice}</li>
+                    ))
                 }
               </ul>
             </>

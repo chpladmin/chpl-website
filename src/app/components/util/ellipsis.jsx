@@ -19,7 +19,6 @@ function ChplEllipsis ({text, maxLength, wordBoundaries}) {
   }
 
   return (
-    /* eslint-disable indent,react/jsx-indent */
     <span>
       {isShortened ? display : text}
       {display !== text && isShortened &&
@@ -34,7 +33,6 @@ function ChplEllipsis ({text, maxLength, wordBoundaries}) {
        </button>
       }
     </span>
-    /* eslint-enable indent,react/jsx-indent */
   );
 }
 
