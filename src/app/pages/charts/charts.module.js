@@ -1,6 +1,6 @@
 export default angular
-    .module('chpl.charts', [
-        'chpl.services',
-        'googlechart',
-        'ui.bootstrap',
-    ]);
+  .module('chpl.charts', [
+    'chpl.services',
+    'googlechart',
+    'ui.bootstrap',
+  ]);

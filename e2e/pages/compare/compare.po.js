@@ -1,35 +1,35 @@
 const elements = {
-    showAllPossible: '#show-all-possible',
-    certificationCriteria: '#toggle-certification-criteria',
-    clinicalQualityMeasures: '#toggle-cqms',
-    allCCCQM: '.compare-rowCert.ng-binding',
+  showAllPossible: '#show-all-possible',
+  certificationCriteria: '#toggle-certification-criteria',
+  clinicalQualityMeasures: '#toggle-cqms',
+  allCCCQM: '.compare-rowCert.ng-binding',
 };
 
 class ComparePage {
-    constructor () { }
+  constructor () { }
 
-    get showAllCheckbox () {
-        return $(elements.showAllPossible);
-    }
+  get showAllCheckbox () {
+    return $(elements.showAllPossible);
+  }
 
-    get certificationCriteriaLink () {
-        return $(elements.certificationCriteria);
-    }
+  get certificationCriteriaLink () {
+    return $(elements.certificationCriteria);
+  }
 
-    get clinicalQualityMeasuresLink () {
-        return $(elements.clinicalQualityMeasures);
-    }
+  get clinicalQualityMeasuresLink () {
+    return $(elements.clinicalQualityMeasures);
+  }
 
-    get allCCCQM () {
-        $(elements.allCCCQM).waitForDisplayed();
-        return $$(elements.allCCCQM);
-    }
+  get allCCCQM () {
+    $(elements.allCCCQM).waitForDisplayed();
+    return $$(elements.allCCCQM);
+  }
 
-    checkShowAllCheckbox () {
-        if (!this.showAllCheckbox.isSelected()) {
-            this.showAllCheckbox.click();
-        }
+  checkShowAllCheckbox () {
+    if (!this.showAllCheckbox.isSelected()) {
+      this.showAllCheckbox.click();
     }
+  }
 }
 
 export default ComparePage;

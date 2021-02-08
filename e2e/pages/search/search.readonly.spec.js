@@ -7,356 +7,344 @@ const fs = require('fs');
 const config = require('../../config/mainConfig');
 const developerName = 'Allscripts';
 const productName = 'TouchWork';
-const acbId = '170008R01';
-const chplId = '15.99.04.3078.Ninj.01.00.0.200629';
 const version = '19';
 const totalListing = 500;
 const PRODUCT_COL_IDX = 3;
 const DEVELOPER_COL_IDX = 2;
-const CHPL_PRODUCT_NUMBER_COL_IDX = 6;
 const STATUS_COL_IDX = 7;
 const EDITION_COL_IDX = 1;
 
-describe('On search page - ', () => {
+describe('the search page', () => {
+  beforeEach(async () => {
+    page = new SearchPage();
+    hooks = new Hooks();
+    await hooks.open('#/search');
+  });
 
-    beforeEach(async () => {
-        page = new SearchPage();
-        hooks = new Hooks();
-        await hooks.open('#/search');
+  describe('when on the base page', () => {
+    it('should have search for a listing text bar', () => {
+      expect(page.searchListing.isDisplayed()).toBe(true);
     });
 
-    describe('When browsing all listings', () => {
+    it('should have "Browse all" button', () => {
+      expect(page.browseAllButton.isDisplayed()).toBe(true);
+    });
+
+    describe('the button', () => {
+      const buttons = [
+        {title: 'API Info for 2015 Ed. Products', link: '#/collections/api-documentation'},
+        {title: 'Banned Developers', link: '#/collections/developers'},
+        {title: 'Charts', link: '#/charts'},
+        {title: 'Decertified Products', link: '#/collections/products'},
+        {title: 'Inactive Certificates', link: '#/collections/inactive'},
+        {title: 'Products: Corrective Action', link: '#/collections/corrective-action'},
+        {title: 'SED Info for 2015 Ed. Products', link: '#/collections/sed'},
+      ];
+
+      buttons.forEach(button => {
+        describe(`"${button.title}"`, () => {
+          it('should be displayed', () => {
+            expect(page.homeSearchPageButtons(button.title).isDisplayed()).toBe(true);
+          });
+
+          it('should be clickable', () => {
+            expect(page.homeSearchPageButtons(button.title).isClickable()).toBe(true);
+          });
+
+          it('should have the correct link to the page', () => {
+            expect(page.homeSearchPageButtons(button.title).getAttribute('href')).toBe(browser.options.baseUrl + button.link);
+          });
+        });
+      });
+    });
+  });
+
+  describe('when browsing all listings', () => {
+    beforeEach(() => {
+      page.browseAllButton.click();
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    it('should show all listings (more than 500)', () => {
+      var count = page.listingTotalCount();
+      expect(count).toBeGreaterThan(totalListing);
+    });
+  });
+
+  describe('When observing listing details button', () => {
+    beforeEach(() => {
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    it('button should go to details page for the listing', () => {
+      expect($$('.btn-primary.btn-sm')[1].getAttribute('href')).toContain('/listing/');
+    });
+  });
+
+  describe('when searching listings by developer', () => {
+    beforeEach(() => {
+      page.searchForListing(developerName);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    afterEach(() => {
+      page.clearFilters.click();
+    });
+
+    it('should only show listings that match the developer', () => {
+      var count = page.listingTableFirstPageRowCount();
+      for (var i = 1; i <= count; i++) {
+        expect(page.getColumnText(i,DEVELOPER_COL_IDX)).toContain(developerName);
+      }
+    });
+  });
+
+  describe('when searching listings by product', () => {
+    beforeEach(() => {
+      page.searchForListing(productName);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    afterEach(() => {
+      page.clearFilters.click();
+    });
+
+    it('should only show listings that match the product', () => {
+      var count = page.listingTableFirstPageRowCount();
+      for (var i = 1; i <= count; i++) {
+        expect(page.getColumnText(i,PRODUCT_COL_IDX)).toContain(productName);
+      }
+    });
+  });
+
+  describe('when searching listings by ONC-ACB ID', () => {
+    const acbId = '170008R01';
+    beforeEach(() => {
+      page.searchForListing(acbId);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    afterEach(() => {
+      page.clearFilters.click();
+    });
+
+    it('should only the listing that has that ACB ID', () => {
+      var count = page.listingTableFirstPageRowCount();
+      expect(count).toBe(1);
+    });
+
+  });
+
+  describe('when searching listings by CHPL ID', () => {
+    const chplId = '15.99.04.3078.Ninj.01.00.0.200629';
+    beforeEach(() => {
+      page.searchForListing(chplId);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    afterEach(() => {
+      page.clearFilters.click();
+    });
+
+    it('should show only the listing that has that CHPL ID', () => {
+      var count = page.listingTableFirstPageRowCount();
+      expect(count).toBe(1);
+    });
+  });
+
+  describe('when searching via filters', () => {
+    var countBefore;
+    var countAfter;
+    beforeEach(() => {
+      page.waitForUpdatedListingResultsCount();
+      countBefore = page.listingTotalCount();
+    });
+
+    afterEach(() => {
+      page.clearFilters.click();
+    });
+
+    describe('using certification status as "Retired" ', () => {
+      beforeEach(() => {
+        page.expandFilterOptions('status').click();
+        page.statusRetiredFilterOption.click();
+        page.waitForUpdatedListingResultsCount();
+      });
+
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeGreaterThan(countBefore);
+      });
+
+      it('should at least show 1 retired listing', () => {
+        let isInclude = false;
+        for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+          if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
+            isInclude = true;
+            break;
+          }
+        }
+        expect(isInclude).toBe(true);
+      });
+    });
+
+    describe('using certification edition 2014', () => {
+      beforeEach(() => {
+        page.expandFilterOptions('edition').click();
+        page.edition2014FilterOption.click();
+        page.waitForUpdatedListingResultsCount();
+      });
+
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeGreaterThan(countBefore);
+      });
+
+      it('should at least show 1 2014 listing', () => {
+        let isInclude = false;
+        for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+          if (page.getColumnText(i,EDITION_COL_IDX).includes('2014')) {
+            isInclude = true;
+            break;
+          }
+        }
+        expect(isInclude).toBe(true);
+      });
+    });
+
+    describe('using certification criteria 170.315 (a)(1)', () => {
+      beforeEach(() => {
+        page.expandFilterOptions('criteria').click();
+        page.criteria2015FilterExpand.click();
+        page.criteria2015FilterOption.click();
+        page.waitForUpdatedListingResultsCount();
+      });
+
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
+      });
+    });
+
+    describe('using surveillance activity "never had surveillance"', () => {
+      it('should filter listing results', () => {
+        page.expandFilterOptions('surveillance').click();
+        page.surveillanceNeverHadFilter.click();
+        page.waitForUpdatedListingResultsCount();
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
+      });
+    });
+
+    describe('the "More" filter', () => {
+      beforeEach(() => {
+        page.moreFilterButton.click();
+      });
+
+      describe('CQMs 2014/2015 CQMs', () => {
+        it('should filter listing results', () => {
+          page.moreFilterExpand(' View Clinical Quality Measures ').click();
+          page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
+          page.moreCqmFilterOptions('CMS2').click();
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.listingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+      });
+
+      describe('ONC/ACBs', () => {
+        it('should filter listing results', () => {
+          page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
+          page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.listingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+      });
+
+      describe('Practice Type', () => {
+        it('should filter listing results', () => {
+          page.moreFilterExpand(' View Practice Type ').scrollAndClick();
+          page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
+          page.waitForUpdatedListingResultsCount();
+          if (!page.pagination.isExisting()) {
+            countAfter = 0;
+          } else {
+            countAfter = page.listingTotalCount();
+          }
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+      });
+
+      describe('Certification Date', () => {
+        it('should filter listing results', () => {
+          page.moreFilterExpand(' View Certification Date ').click();
+          page.moreCertificationEndDateFilter.addValue('01/01/2019');
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.listingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+      });
+
+      describe('Developer / Product / Version', () => {
         beforeEach(() => {
-            page.browseAllButton.click();
-            page.waitForUpdatedListingResultsCount();
+          page.moreDeveloperFilter.addValue(developerName);
+          page.moreProductFilter.addValue(productName);
+          page.moreVersionFilter.addValue(version);
+          page.waitForUpdatedListingResultsCount();
         });
 
-        it('should show all listing (more than 500)', () => {
-            var count = page.listingTotalCount();
-            assert.isAbove(count,totalListing);
+        it('should filter listing results', () => {
+          countAfter = page.listingTableFirstPageRowCount();
+          expect(countAfter).toBeLessThan(countBefore);
         });
+
+        it('should show correct Developer/ Product/ Version name as searched for', () => {
+          for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+            expect(page.getColumnText(i,2)).toContain(developerName);
+            expect(page.getColumnText(i,3)).toContain(productName);
+            expect(page.getColumnText(i,4)).toContain(version);
+          }
+        });
+      });
+    });
+  });
+
+  describe('after searching for a listing', () => {
+    beforeEach(() => {
+      page.searchForListing(developerName);
+      page.waitForUpdatedListingResultsCount();
     });
 
-    describe('When observing listing details button', () => {
-        beforeEach(() => {
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        it('button should go to details page for the listing', () => {
-            assert.include($$('.btn-primary.btn-sm')[1].getAttribute('href'),'/listing/');
-        });
+    it('should clear all filtered results and show all listings with the "clear filters" button', () => {
+      page.clearFilters.click();
+      page.waitForUpdatedListingResultsCount();
+      expect(page.listingTotalCount()).toBeGreaterThan(900);
     });
 
-    describe('When searching listings by developer', () => {
-        beforeEach(() => {
-            page.searchForListing(developerName);
-            page.waitForUpdatedListingResultsCount();
-        });
+    it('should show all listings with the "browse all" button', () => {
+      page.browseAll.click();
+      page.waitForUpdatedListingResultsCount();
+      expect(page.listingTotalCount()).toBeGreaterThan(900);
+    });
+  });
 
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should show filtered listing results', () => {
-            var count = page.listingTableFirstPageRowCount();
-            for (var i = 1; i <= count; i++) {
-                assert.include(page.getColumnText(i,DEVELOPER_COL_IDX),developerName);
-            }
-        });
+  describe('when downloading results', () => {
+    it('should download a file', () => {
+      page.downloadResultsButton.scrollAndClick();
+      page.downloadResultsAction.scrollAndClick();
+      const fileName = 'search-results.csv';
+      const filePath = path.join(global.downloadDir, fileName);
+      browser.waitForFileExists(filePath,config.timeout);
+      expect(fs.existsSync(filePath)).toBe(true);
     });
 
-    describe('When searching listings by product', () => {
-        beforeEach(() => {
-            page.searchForListing(productName);
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should show filtered listing results', () => {
-            var count = page.listingTableFirstPageRowCount();
-            for (var i = 1; i <= count; i++) {
-                assert.include(page.getColumnText(i,PRODUCT_COL_IDX),productName);
-            }
-        });
+    describe('with more than 50 results', () => {
+      it('should indicate it will download however many results there are', () => {
+        page.pageSize.selectByVisibleText('250');
+        page.downloadResultsButton.scrollAndClick();
+        expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
+      });
     });
-
-    describe('When searching listings by ONC-ACB ID', () => {
-        beforeEach(() => {
-            page.searchForListing(acbId);
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should show filtered listing results', () => {
-            var count = page.listingTableFirstPageRowCount();
-            assert.equal(count,1);
-        });
-
-    });
-
-    describe('When searching listings by CHPL ID', () => {
-        beforeEach(() => {
-            page.searchForListing(chplId);
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        afterEach(() => {
-            page.clearFilters.click();
-        });
-
-        it('should show filtered listing results', () => {
-            var count = page.listingTableFirstPageRowCount();
-            for (var i = 1; i <= count; i++) {
-                assert.include(page.getColumnText(i,CHPL_PRODUCT_NUMBER_COL_IDX),chplId);
-            }
-        });
-    });
-    describe('When using ', () => {
-        var countBefore;
-        var countAfter;
-        describe('certification status filter as "Retired" ', () => {
-            beforeEach(() => {
-                countBefore = page.listingTotalCount();
-                page.expandFilterOptions('status').click();
-                page.statusRetiredFilterOption.click();
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isAbove(countAfter,countBefore);
-            });
-
-            it('should at least show 1 retired listing', () => {
-                let isInclude = false;
-                for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-                    if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
-                        isInclude = true;
-                        break;
-                    }
-                }
-                assert.isTrue(isInclude);
-            });
-        });
-
-        describe('When using certification edition filter as 2014', () => {
-            beforeEach(() => {
-                countBefore = page.listingTotalCount();
-                page.expandFilterOptions('edition').click();
-                page.edition2014FilterOption.click();
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isAbove(countAfter,countBefore);
-            });
-
-            it('should at least show 1 2014 listing', () => {
-                let isInclude = false;
-                for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-                    if (page.getColumnText(i,EDITION_COL_IDX).includes('2014')) {
-                        isInclude = true;
-                        break;
-                    }
-                }
-                assert.isTrue(isInclude);
-            });
-        });
-
-        describe('When using certification criteria filter as 170.315 (A)(1)', () => {
-            beforeEach(() => {
-                page.waitForUpdatedListingResultsCount();
-                countBefore = page.listingTotalCount();
-                page.expandFilterOptions('criteria').click();
-                page.criteria2015FilterExpand.click();
-                page.criteria2015FilterOption.click();
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isBelow(countAfter,countBefore);
-            });
-        });
-
-        describe('When using surveillance activity filter as has never had surveillance', () => {
-            beforeEach(() => {
-                page.waitForUpdatedListingResultsCount();
-                countBefore = page.listingTotalCount();
-                page.expandFilterOptions('surveillance').click();
-                page.surveillanceNeverHadFilter.click();
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isBelow(countAfter,countBefore);
-            });
-        });
-
-        describe('When using More filter on 2014/2015 CQM', () => {
-            beforeEach(() => {
-                countBefore = page.listingTotalCount();
-                page.moreFilterButton.click();
-                page.moreFilterExpand(' View Clinical Quality Measures ').click();
-                page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
-                page.moreCqmFilterOptions('CMS2').click();
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isBelow(countAfter,countBefore);
-            });
-        });
-
-        describe('When using More filter on ONC/ACBs', () => {
-            beforeEach(() => {
-                page.waitForUpdatedListingResultsCount();
-                countBefore = page.listingTotalCount();
-                page.moreFilterButton.click();
-                page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
-                page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isBelow(countAfter,countBefore);
-            });
-        });
-
-        describe('When using More filter on Practice Type', () => {
-            beforeEach(() => {
-                countBefore = page.listingTotalCount();
-                page.moreFilterButton.click();
-                page.moreFilterExpand(' View Practice Type ').scrollAndClick();
-                page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                if (!page.pagination.isExisting()) {
-                    countAfter = 0;
-                } else {
-                    countAfter = page.listingTotalCount();
-                }
-                assert.isBelow(countAfter,countBefore);
-            });
-        });
-
-        describe('When using More filter on Certification Date', () => {
-            beforeEach(() => {
-                page.waitForUpdatedListingResultsCount();
-                countBefore = page.listingTotalCount();
-                page.moreFilterButton.click();
-                page.moreFilterExpand(' View Certification Date ').click();
-                page.moreCertificationEndDateFilter.addValue('01/01/2019');
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTotalCount();
-                assert.isBelow(countAfter,countBefore);
-            });
-        });
-
-        describe('When using More filter on Developer/ Product/ Version', () => {
-            beforeEach(() => {
-                countBefore = page.listingTotalCount();
-                page.moreFilterButton.click();
-                page.moreDeveloperFilter.addValue(developerName);
-                page.moreProductFilter.addValue(productName);
-                page.moreVersionFilter.addValue(version);
-                page.waitForUpdatedListingResultsCount();
-            });
-
-            afterEach(() => {
-                page.clearFilters.click();
-            });
-
-            it('should filter listing results', () => {
-                countAfter = page.listingTableFirstPageRowCount();
-                assert.isBelow(countAfter,countBefore);
-            });
-            it('should show correct Developer/ Product/ Version name as searched for', () => {
-                for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-                    assert.include(page.getColumnText(i,2),developerName);
-                    assert.include(page.getColumnText(i,3),productName);
-                    assert.include(page.getColumnText(i,4),version);
-                }
-            });
-        });
-    });
-    describe('After searching for a listing', () => {
-        beforeEach(() => {
-            page.searchForListing(developerName);
-            page.waitForUpdatedListingResultsCount();
-        });
-
-        it('Clear filters button should clear all filtered results and show all listings', () => {
-            page.clearFilters.click();
-            page.waitForUpdatedListingResultsCount();
-            assert.isAbove(page.listingTotalCount(),900);
-        });
-
-        it('Browse all button should show all listings', () => {
-            page.browseAll.click();
-            page.waitForUpdatedListingResultsCount();
-            assert.isAbove(page.listingTotalCount(),900);
-        });
-    });
-
-    describe('When clicking on Download Results', () => {
-        beforeEach(() => {
-            page.downloadResultsButton.scrollAndClick();
-            page.downloadResultsCustomizeButton.scrollAndClick();
-        });
-
-        it('should download file', () => {
-            const fileName = 'search-results.csv';
-            const filePath = path.join(global.downloadDir, fileName);
-            browser.waitForFileExists(filePath,config.timeout);
-            assert.isTrue(fs.existsSync(filePath));
-        });
-    });
+  });
 });

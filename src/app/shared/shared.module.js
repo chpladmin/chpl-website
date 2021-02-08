@@ -1,6 +1,6 @@
 (function () {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('chpl.shared', []);
+  angular
+    .module('chpl.shared', []);
 })();
