@@ -107,7 +107,7 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
                   <div className="manage-list__item--start">
                     <label>
                       <span className="sr-only">Add new Fuzzy Type</span>
-                      <input type="text" onChange={handleChange}/>
+                      <input type="text" className="input-sm form-control" onChange={handleChange}/>
                       { showFormErrors && isDisabled() &&
                         'required'
                       }
