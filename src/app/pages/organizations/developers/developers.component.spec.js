@@ -1,50 +1,50 @@
 (() => {
-    'use strict';
+  'use strict';
 
-    describe('the Developers component', () => {
-        var $compile, $log, ctrl, el, mock, scope;
+  describe('the Developers component', () => {
+    var $compile, $log, ctrl, el, mock, scope;
 
-        mock = {
-            developers: [
-                { name: 'a developer', transparencyAttestations: [] },
-            ],
-        };
+    mock = {
+      developers: [
+        { name: 'a developer', transparencyAttestations: [] },
+      ],
+    };
 
-        beforeEach(() => {
-            angular.mock.module('chpl.organizations');
-            inject((_$compile_, _$log_, $rootScope) => {
-                $compile = _$compile_;
-                $log = _$log_;
+    beforeEach(() => {
+      angular.mock.module('chpl.organizations');
+      inject((_$compile_, _$log_, $rootScope) => {
+        $compile = _$compile_;
+        $log = _$log_;
 
-                scope = $rootScope.$new();
-                scope.developers = {developers: mock.developers};
+        scope = $rootScope.$new();
+        scope.developers = {developers: mock.developers};
 
-                el = angular.element('<chpl-developers developers="developers"></chpl-developers>');
+        el = angular.element('<chpl-developers developers="developers"></chpl-developers>');
 
-                $compile(el)(scope);
-                scope.$digest();
-                ctrl = el.isolateScope().$ctrl;
-            });
-        });
-
-        afterEach(() => {
-            if ($log.debug.logs.length > 0) {
-                /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
-                /* eslint-enable no-console,angular/log */
-            }
-        });
-
-        describe('view', () => {
-            it('should be compiled', () => {
-                expect(el.html()).not.toEqual(null);
-            });
-        });
-
-        describe('controller', () => {
-            it('should exist', () => {
-                expect(ctrl).toEqual(jasmine.any(Object));
-            });
-        });
+        $compile(el)(scope);
+        scope.$digest();
+        ctrl = el.isolateScope().$ctrl;
+      });
     });
+
+    afterEach(() => {
+      if ($log.debug.logs.length > 0) {
+        /* eslint-disable no-console,angular/log */
+        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        /* eslint-enable no-console,angular/log */
+      }
+    });
+
+    describe('view', () => {
+      it('should be compiled', () => {
+        expect(el.html()).not.toEqual(null);
+      });
+    });
+
+    describe('controller', () => {
+      it('should exist', () => {
+        expect(ctrl).toEqual(jasmine.any(Object));
+      });
+    });
+  });
 })();
