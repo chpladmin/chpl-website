@@ -9,10 +9,11 @@ const dependencies = {
 };
 
 function ChplFuzzyType ({fuzzyType, takeAction}) {
-  const [choices, setChoices] = useState(fuzzyType.choices);
+  const [choices, setChoices] = useState(fuzzyType.choices.sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
   const [isAdding, setAdding] = useState(false);
   const [isEditing, setEditing] = useState(false);
   const [newFuzzyType, setNewFuzzyType] = useState(undefined);
+  const [showFormErrors, setShowFormErrors] = useState(false);
   const $log = getAngularService('$log');
   const chplLog = dependencies.getChplLogService();
 
@@ -30,9 +31,15 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
 
   const cancel = () => {
     setEditing(false);
-    setChoices(fuzzyType.choices);
+    setChoices(fuzzyType.choices.sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
     setNewFuzzyType(undefined);
     takeAction(fuzzyType, 'cancel');
+  };
+
+  const cancelAdd = () => {
+    setAdding(false);
+    setNewFuzzyType(undefined);
+    setShowFormErrors(false);
   };
 
   const edit = () => {
@@ -42,7 +49,7 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
   };
 
   const handleAdd = () => {
-    setChoices([].concat(choices).concat(newFuzzyType));
+    setChoices([].concat(choices).concat(newFuzzyType).sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
     setAdding(false);
     setNewFuzzyType(undefined);
   };
@@ -51,9 +58,13 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
     setNewFuzzyType(event.target.value);
   };
 
+  const isDisabled = () => {
+    return !newFuzzyType;
+  };
+
   const remove = choice => {
     $log.info({choice});
-    setChoices(choices.filter(c => c !== choice));
+    setChoices(choices.filter(c => c !== choice).sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
   };
 
   const save = () => {
@@ -69,59 +80,76 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
 
   return (
     <div id={'fuzzy-type-' + fuzzyType.fuzzyType}>
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <h4 className="panel-title">{fuzzyType.fuzzyType}</h4>
-        </div>
-        <div className="panel-body">
-          {isEditing ? (
-            <>
-              Choices (for editing)
-              <form onSubmit={submit}>
-                <ul>
-                  {
-                    choices
-                      .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                      .map(choice => (
-                        <li key={choice}>
-                          {choice}
-                          <button onClick={() => remove(choice)}><i className="fa fa-trash"></i></button>
-                        </li>
-                      ))
-                  }
-                </ul>
-                {isAdding ? (
+    <div className="panel panel-default">
+    <div className="panel-heading">
+    <h4 className="panel-title">{fuzzyType.fuzzyType}</h4>
+    </div>
+    <div className="panel-body">
+      {isEditing ? (
+        <>
+          <form onSubmit={submit}>
+            <div className="manage-list__container">
+              <div className="data-label">Choice</div>
+              {
+                choices.map(choice => (
                   <>
-                    <label>
-                      Add new Fuzzy Type
-                      <input type="text" onChange={handleChange} />
-                    </label>
-                    <button className="btn btn-primary" id="add-fuzzy-type" onClick={handleAdd}>Save</button>
-                    <button className="btn btn-default" id="cancel-add-fuzzy-type" onClick={() => setAdding(false)}>Cancel</button>
+                    <div className="manage-list__item--start">{choice}</div>
+                    <div className="manage-list__item--end">
+                      <button className="btn btn-link btn-sm" onClick={() => remove(choice)}>
+                        <i className="fa fa-times"></i>
+                      </button>
+                    </div>
                   </>
-                ) : (
-                  <button className="btn" id="add-fuzzy-type" onClick={() => setAdding(true)}><i className="fa fa-plus"></i> Add</button>
-                ) }
-              </form>
-              <ChplActionBar takeAction={act} />
-            </>
-          ) : (
-            <>
-              <span className="pull-right">
-                <button className="btn btn-link btn-small" id={'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
-              </span>
-              Choices
-              <ul>
-                {
-                  choices
-                    .sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                    .map(choice => (
-                      <li key={choice}>{choice}</li>
-                    ))
-                }
-              </ul>
-            </>
-          )}
+                ))
+              }
+              {isAdding ? (
+                <>
+                  <div className="manage-list__item--start">
+                    <label>
+                      <span className="sr-only">Add new Fuzzy Type</span>
+                      <input type="text" onChange={handleChange}/>
+                      { showFormErrors && isDisabled() &&
+                        'required'
+                      }
+                    </label>
+                  </div>
+                  <div className="manage-list__item--end">
+                    <button className="btn btn-link btn-sm"
+                            onClick={handleAdd} onMouseOver={() => setShowFormErrors(true)}
+                            disabled={isDisabled()}>
+                      <i className="fa fa-save"></i>
+                    </button>
+                    <button className="btn btn-link btn-sm" onClick={() => cancelAdd()}>
+                      <i className="fa fa-times"></i>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="manage-list__item--start">
+                  <button className="btn btn-sm btn-link" onClick={() => setAdding(true)}>
+                    <i className="fa fa-plus-circle"></i> Add Item
+                  </button>
+                </div>
+              ) }
+            </div>
+          </form>
+          <ChplActionBar takeAction={act} />
+        </>
+      ) : (
+        <>
+          <span className="pull-right">
+            <button className="btn btn-link btn-small" id={'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
+          </span>
+          Choices
+          <ul>
+            {
+              choices.map(choice => (
+                <li key={choice}>{choice}</li>
+              ))
+            }
+          </ul>
+        </>
+      )}
         </div>
       </div>
     </div>
