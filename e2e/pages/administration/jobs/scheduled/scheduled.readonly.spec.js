@@ -15,6 +15,7 @@ describe('when an ONC-Staff user is logged in', () => {
     beforeEach(function () {
         loginComponent.logInWithEmail('oncstaff');
         hooks.open('#/administration/jobs/scheduled');
+        browser.pause(2000); //Have to add this wait as jobs gets in order in micro seconds
     });
 
     it('should see the right set of scheduled jobs', () => {

@@ -83,10 +83,18 @@ class CmsWidgetComponent {
         return $('#toggle-cms-' + listingId);
     }
 
+<<<<<<< Updated upstream
     addListingToCms (listingId) {
         this.certIdButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
         this.certIdButton(listingId).click();
     }
+=======
+  addListingToCms (listingId) {
+    this.certIdButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
+    browser.pause(2000);
+    this.certIdButton(listingId).click();
+  }
+>>>>>>> Stashed changes
 }
 
 export default CmsWidgetComponent;
