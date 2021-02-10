@@ -51,14 +51,14 @@ export const ListingDetailsViewComponent = {
           this.directReviews = changes.directReviews.currentValue.drs
             .filter(dr => {
               let shouldInclude = !dr.nonConformities
-                                || dr.nonConformities.length === 0
-                                || dr.nonConformities.reduce((acc, nc) => {
-                                  let shouldInclude = acc
-                                        || !nc.developerAssociatedListings
-                                        || nc.developerAssociatedListings.length === 0
-                                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0;
-                                  return shouldInclude;
-                                }, false);
+                  || dr.nonConformities.length === 0
+                  || dr.nonConformities.reduce((acc, nc) => {
+                    let shouldInclude = acc
+                        || !nc.developerAssociatedListings
+                        || nc.developerAssociatedListings.length === 0
+                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0;
+                    return shouldInclude;
+                  }, false);
               return shouldInclude;
             });
         } else {
@@ -123,7 +123,7 @@ export const ListingDetailsViewComponent = {
         case 'sed':
           this.$analytics.eventTrack('Viewed SED information', { category: 'Listing Details', label: this.listing.chplProductNumber});
           break;
-                    // no default
+          // no default
         }
       }
 
@@ -134,16 +134,20 @@ export const ListingDetailsViewComponent = {
       if (this.subPanelShown !== panel) {
         switch (panel) {
         case 'surveillance':
-          this.$analytics.eventTrack('Viewed Surveillance information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+          this.$analytics.eventTrack('Viewed Surveillance information', { category: 'Listing Details', label: this.listing.chplProductNumber });
           break;
         case 'directReviews':
-          this.$analytics.eventTrack('Viewed Direct Review information', { category: 'Listing Details', label: this.listing.chplProductNumber});
+          this.$analytics.eventTrack('Viewed Direct Review information', { category: 'Listing Details', label: this.listing.chplProductNumber });
           break;
-                    // no default
+          // no default
         }
       }
 
       this.subPanelShown = this.subPanelShown === panel ? '' : panel;
+    }
+
+    toggleViewAllCerts () {
+      this.$analytics.eventTrack('Toggle See All Certification Criteria/Clinical Quality Measures', { category: 'Listing Details' });
     }
 
     viewIcsFamily () {

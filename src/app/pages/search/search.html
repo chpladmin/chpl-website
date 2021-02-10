@@ -386,6 +386,7 @@
                       <label for="pageSizeTop" class="sr-only">Show how many results</label>
                       Showing up to&nbsp;
                       <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                              ng-change="vm.changeItemsPerPage()"
                               ng-options="v as v for v in [50,100,250,1000]">
                       </select>
                       &nbsp;results per page

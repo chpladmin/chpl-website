@@ -4,8 +4,9 @@ export const ListingComponent = {
     listing: '<',
   },
   controller: class ListingComponent {
-    constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
+    constructor ($analytics, $localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$localStorage = $localStorage;
       this.$log = $log;
       this.$q = $q;
@@ -88,6 +89,7 @@ export const ListingComponent = {
     }
 
     viewListingHistory () {
+      this.$analytics.eventTrack('Open Listing History', { category: 'Listing Details' });
       let that = this;
       this.$uibModal.open({
         component: 'chplListingHistory',

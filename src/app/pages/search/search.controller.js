@@ -9,6 +9,7 @@
     var vm = this;
 
     vm.browseAll = browseAll;
+    vm.changeItemsPerPage = changeItemsPerPage;
     vm.clear = clear;
     vm.clearPreviouslyCompared = clearPreviouslyCompared;
     vm.clearPreviouslyViewed = clearPreviouslyViewed;
@@ -109,6 +110,10 @@
       vm.triggerClearFilters();
       vm.activeSearch = true;
       setTimestamp();
+    }
+
+    function changeItemsPerPage () {
+      $analytics.eventTrack('Change Results Per Page', { category: 'Search', label: vm.filterItems.pageSize });
     }
 
     function clear () {
@@ -292,6 +297,7 @@
     }
 
     function viewCertificationStatusLegend () {
+      $analytics.eventTrack('View Certification Status Icon Legend', { category: 'Search' });
       vm.viewCertificationStatusLegendInstance = $uibModal.open({
         templateUrl: 'chpl.components/certification-status/certification-status.html',
         controller: 'CertificationStatusController',
@@ -503,7 +509,7 @@
         .sort(utilService.sortCertActual)
         .forEach(crit => {
           obj = {
-            value: crit.id,
+            value: crit.number + (utilService.isCures(crit) ? ' (Cures Update)' : ''),
             selected: false,
             display: (crit.removed ? 'Removed | ' : '') + crit.number + ': ' + crit.title,
             removed: crit.removed,

@@ -6,8 +6,9 @@ export const LoginComponent = {
     pClassFail: '@',
   },
   controller: class LoginComponent {
-    constructor ($log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
+    constructor ($analytics, $log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$log = $log;
       this.$rootScope = $rootScope;
       this.$scope = $scope;
@@ -179,6 +180,7 @@ export const LoginComponent = {
         .then(() => {
           that.networkService.getUserById(that.authService.getUserId())
             .then(user => {
+              that.$analytics.eventTrack('Log In', { category: 'Authentication' });
               that.authService.saveCurrentUser(user);
               that.Idle.watch();
               that.Keepalive.ping();
@@ -216,6 +218,7 @@ export const LoginComponent = {
       let that = this;
       this.networkService.emailResetPassword({email: this.email})
         .then(() => {
+          that.$analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
           that.clear();
           that.messageClass = that.pClass;
           that.message = 'Password email sent; please check your email';

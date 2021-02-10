@@ -7,8 +7,9 @@ export const CreateUserComponent = {
     hash: '<',
   },
   controller: class CreateUserComponent {
-    constructor ($location, $log, authService, networkService, utilService) {
+    constructor ($analytics, $location, $log, authService, networkService, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$location = $location;
       this.$log = $log;
       this.authService = authService;
@@ -39,6 +40,7 @@ export const CreateUserComponent = {
         const userId = this.authorizeDetails.userName || this.authService.getUserId();
         this.networkService.authorizeUser(this.authorizeDetails, userId)
           .then(() => {
+            this.$analytics.eventTrack('Log In To Your Account', { category: 'Authentication' });
             this.$location.path('/administration');
           }, error => {
             if (error.status === 401) {
@@ -64,6 +66,7 @@ export const CreateUserComponent = {
       if (this.validateUser()) {
         this.networkService.createInvitedUser(this.userDetails)
           .then(() => {
+            this.$analytics.eventTrack('Create Account', { category: 'Authentication' });
             this.message.value = 'Your account has been created. Please check your email to confirm your account';
             this.userDetails = {user: {}};
             this.changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
