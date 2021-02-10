@@ -90,8 +90,13 @@
         { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
         { display: 'Surveillance', enabled: false, columns: [
           { display: 'Total Surveillance', key: 'surveillanceCount' },
-          { display: 'Open Nonconformities', key: 'openNonconformityCount' },
-          { display: 'Closed Nonconformtities', key: 'closedNonconformityCount' },
+          { display: 'Open Surveillance Non-conformities', key: 'openSurveillanceNonConformityCount' },
+          { display: 'Closed Surveillance Non-conformities', key: 'closedSurveillanceNonConformityCount' },
+        ]},
+        { display: 'Direct Review', enabled: false, columns: [
+          { display: 'Total Direct Reviews', key: 'directReviewCount' },
+          { display: 'Open Direct Review Non-conformities', key: 'openDirectReviewNonConformityCount' },
+          { display: 'Closed Direct Review Non-conformities', key: 'closedDirectReviewNonConformityCount' },
         ]},
       ];
 
@@ -156,6 +161,7 @@
     function loadResults () {
       networkService.getAll().then(function (response) {
         var results = angular.copy(response.results);
+        vm.directReviewsAvailable = response.directReviewsAvailable;
         vm.allCps = [];
         incrementTable(parseAllResults(results));
       }, function (error) {
@@ -406,10 +412,10 @@
           results[i].mainSearch += '|' + results[i].previousDevelopers;
           results[i].developerSearch += '|' + results[i].previousDevelopers;
         }
-        results[i].surveillance = angular.toJson({
-          surveillanceCount: results[i].surveillanceCount,
-          openNonconformityCount: results[i].openNonconformityCount,
-          closedNonconformityCount: results[i].closedNonconformityCount,
+        results[i].compliance = angular.toJson({
+          complianceCount: results[i].surveillanceCount + results[i].directReviewCount,
+          openNonConformityCount: results[i].openSurveillanceNonConformityCount + results[i].openDirectReviewNonConformityCount,
+          closedNonConformityCount: results[i].closedSurveillanceNonConformityCount + results[i].closedDirectReviewNonConformityCount,
         });
         results[i].criteriaMet = SPLIT_PRIMARY + results[i].criteriaMet + SPLIT_PRIMARY;
       }
