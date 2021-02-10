@@ -3,6 +3,7 @@
         ["@babel/preset-env", {
             "useBuiltIns":"usage",
             "include":["es6.promise","es7.promise.finally"],
+            "corejs":"2.0",
             "debug":true
         }]
     ]
