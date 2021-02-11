@@ -5,7 +5,7 @@
     <div class="data-label">Approved Standard Version</div>
     <div class="data-label">Applicable Criteria</div>
     <div class="data-label">Replaced</div>
-    <div class="manage-list__item--start" ng-repeat-start="svap in $ctrl.svaps | orderBy: 'regulatoryTextCitation' track by $index">
+    <div class="manage-list__item--start" ng-repeat-start="svap in $ctrl.svaps | orderBy: ['regulatoryTextCitation', 'approvedStandardVersion'] track by $index">
         {{ svap.regulatoryTextCitation }}
     </div>
     <div>
