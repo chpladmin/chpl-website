@@ -54,6 +54,16 @@ let states = {
             }
           }
         },
+        changeRequestStatusTypes: (authService, featureFlags, networkService) => {
+          'ngInject';
+          if (featureFlags.isOn('change-request')) {
+            if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+              return networkService.getChangeRequestStatusTypes();
+            } else {
+              return [];
+            }
+          }
+        },
         changeRequestTypes: (authService, featureFlags, networkService) => {
           'ngInject';
           if (featureFlags.isOn('change-request')) {
