@@ -4,19 +4,24 @@ const searchpageElements = {
   compareWidget: '#compare-widget-toggle',
   browseAllOnHomePage: '//button[text()=" Browse all"]',
   searchListing: '#searchField',
-  pagination: '//table/thead/tr[1]/td/div/div/div/div',
+  pagination: '.pagination--results-found',
   pageSize: '#pageSizeTop',
   browseAll: '//a[text()="Browse all"]',
   clearFilters: '//a[text()="Clear Filters"]',
   downloadResultsAction: '#results-download-button',
   downloadResults: 'button#dropdown-download-button',
+  downloadResultsDropdown: '//chpl-results-download',
   moreFilter: '#filter-more-button',
   moreDeveloper: '#developerRefine',
   moreProduct: '#productRefine',
   moreVersion: '#versionRefine',
   moreCertificationEndDate: '#before',
   morePracticeTypeDropdown: '#st-select-distinct-practiceType',
-  surveillanceNeverHadFilter: '#filter-has-never-had-surveillance',
+  complianceNeverHadActivityFilter: '//label/span[text()="Has never had a compliance activity"]',
+  complianceHasHadActivityFilter: '#filter-has-had-compliance',
+  complianceNeverHadNonConformityFilter: '//label/span[text()="Never had a Non-conformity"]',
+  complianceOpenNonConformityFilter: '//label/span[text()="Open Non-conformity"]',
+  complianceClosedNonConformityFilter: '//label/span[text()="Closed Non-conformity"]',
   criteria2015FilterExpand: '//a[text()=" View 2015 Certification Criteria "]',
   criteria2015FilterOption: '#filter-list-1',
   edition2014FilterOption: 'input#filter-list-2014',
@@ -70,6 +75,18 @@ class SearchPage {
     return $(searchpageElements.downloadResults);
   }
 
+  get downloadResultsOptions () {
+    return $(searchpageElements.downloadResultsDropdown).$$('li label');
+  }
+
+  isDownloadResultsOptionSelected (item) {
+    return item.$('input').isSelected();
+  }
+
+  getDownloadResultsOptionText (item) {
+    return item.getText();
+  }
+
   get moreFilterButton () {
     return $(searchpageElements.moreFilter);
   }
@@ -94,8 +111,24 @@ class SearchPage {
     return $(searchpageElements.morePracticeTypeDropdown);
   }
 
-  get surveillanceNeverHadFilter () {
-    return $(searchpageElements.surveillanceNeverHadFilter);
+  get complianceNeverHadActivityFilter () {
+    return $(searchpageElements.complianceNeverHadActivityFilter);
+  }
+
+  get complianceHasHadActivityFilter () {
+    return $(searchpageElements.complianceHasHadActivityFilter);
+  }
+
+  get complianceNeverHadNonConformityFilter () {
+    return $(searchpageElements.complianceNeverHadNonConformityFilter);
+  }
+
+  get complianceOpenNonConformityFilter () {
+    return $(searchpageElements.complianceOpenNonConformityFilter);
+  }
+
+  get complianceClosedNonConformityFilter () {
+    return $(searchpageElements.complianceClosedNonConformityFilter);
   }
 
   get criteria2015FilterExpand () {
@@ -117,6 +150,7 @@ class SearchPage {
   moreOncAcbFilterOptions (acbName) {
     return $('#filter-list-' + acbName);
   }
+
   moreCqmFilterOptions (cmsName) {
     return $('#filter-list-' + cmsName);
   }
@@ -144,16 +178,27 @@ class SearchPage {
   }
 
   listingTotalCount () {
-    return parseInt(this.pagination.getText().split(' ')[4], 10);
+    if (this.pagination.isExisting()) {
+      return parseInt((this.pagination).$('div div').getText().split(' ')[4], 10);
+    }
+    return 0;
   }
 
   getColumnText (rowNumber, columnNumber) {
     return $('//table/tbody/tr[' + rowNumber + ']/td[' + columnNumber + ']').getText();
   }
-  // There is no spinner or other indication on search page to make browser wait until listing results are updating
-  // Hoping with redesigning of search page, this timeout won't be needed
+
+  /*
+   * Check the count of listings, wait a bit, then check again. If it's changed, repeat, else return
+   */
   waitForUpdatedListingResultsCount () {
-    browser.pause(10000);
+    let start;
+    let next;
+    do {
+      start = this.listingTotalCount();
+      browser.pause(2000);
+      next = this.listingTotalCount();
+    } while (start !== next);
   }
 
   homeSearchPageButtons (buttonName) {

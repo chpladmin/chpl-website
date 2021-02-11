@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 11.6.0
+_8 February 2021_
+
+### Features
+* Allow download of up to 1000 results on the Search page
+* Display errors if API reports them during state change
+
+### Flagged Features
+* Implement new workflow for Inspect/Confirm
+* Allow upload of Listings with variable column sets
+
+---
+
 ## Version 11.5.0
 _25 January 2021_
 
