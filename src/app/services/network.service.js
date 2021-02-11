@@ -180,7 +180,7 @@ export class NetworkService {
   }
 
   getAll () {
-    return this.apiGET('/collections/certified_products');
+    return this.apiGET('/collections/certified-products');
   }
 
   getAnnouncement (announcementId) {
@@ -287,23 +287,23 @@ export class NetworkService {
   getCollection (type) {
     switch (type) {
     case 'apiDocumentation':
-      return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
+      return this.apiGET('/collections/certified-products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
     case 'bannedDevelopers':
       return this.apiGET('/collections/decertified-developers');
     case 'complaintListings':
-      return this.apiGET('/collections/certified_products?fields=id,acb,chplProductNumber,developer,product');
+      return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
     case 'correctiveAction':
-      return this.apiGET('/collections/certified_products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+      return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount');
     case 'decertifiedProducts':
     case 'inactiveCertificates':
-      return this.apiGET('/collections/certified_products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
+      return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
     case 'sed':
-      return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
+      return this.apiGET('/collections/certified-products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
     case 'surveillanceManagement':
-      return this.apiGET('/collections/certified_products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openNonconformityCount,closedNonconformityCount,surveillanceDates');
+      return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
     case 'transparencyAttestations':
       return this.apiGET('/collections/developers');
-            //no default
+      //no default
     }
   }
 
@@ -408,12 +408,12 @@ export class NetworkService {
     return this.apiGET('/statistics/nonconformity_criteria_count');
   }
 
-  getScheduleTriggers () {
-    return this.apiGET('/schedules/triggers');
-  }
-
   getScheduledSystemJobs () {
     return this.apiGET('/schedules/triggers?jobType=system');
+  }
+
+  getScheduleTriggers () {
+    return this.apiGET('/schedules/triggers');
   }
 
   getScheduleJobs () {

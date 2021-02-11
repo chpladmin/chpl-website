@@ -29,7 +29,7 @@
         return sed(data.results, data.certificationCriteria);
       case 'transparencyAttestations':
         return transparencyAttestations(data);
-                // no default
+        // no default
       }
     }
 
@@ -38,21 +38,21 @@
     ////////////////////////////////////////////////////////////////////
 
     /*
-         * Listings are part of this collection if:
-         * - 2015 Edition and
-         * - at least one of:
-         *   - 170.315 (g)(7)
-         *   - 170.315 (g)(8)
-         *   - 170.315 (g)(9)
-         *   - 170.315 (g)(10)
-         */
+     * Listings are part of this collection if:
+     * - 2015 Edition and
+     * - at least one of:
+     *   - 170.315 (g)(7)
+     *   - 170.315 (g)(8)
+     *   - 170.315 (g)(9)
+     *   - 170.315 (g)(10)
+     */
     function apiDocumentation (listings, certificationCriteria) {
       let applicableCriteria = certificationCriteria
         .filter(cc => ((cc.number === '170.315 (g)(7)' && cc.title === 'Application Access - Patient Selection')
-                               || (cc.number === '170.315 (g)(8)' && cc.title === 'Application Access - Data Category')
-                               || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request')
-                               || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request (Cures Update)')
-                               || (cc.number === '170.315 (g)(10)' && cc.title === 'Standardized API for Patient and Population Services')))
+                         || (cc.number === '170.315 (g)(8)' && cc.title === 'Application Access - Data Category')
+                         || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request')
+                         || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request (Cures Update)')
+                         || (cc.number === '170.315 (g)(10)' && cc.title === 'Standardized API for Patient and Population Services')))
         .map(cc => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
       let ret = listings.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
         .map(listing => {
@@ -75,8 +75,8 @@
     }
 
     /*
-         * All developers found are included, but need to be transformed
-         */
+     * All developers found are included, but need to be transformed
+     */
     function bannedDevelopers (array) {
       var ret = [];
       var dev;
@@ -96,25 +96,25 @@
     }
 
     /*
-         * Listings are part of this collection if:
-         * - Surveillance Count > 0 and
-         * - at least one of:
-         *   - Open NC Count > 0
-         *   - Closed NC Count > 0
-         */
+     * Listings are part of this collection if:
+     * - Surveillance Count > 0 and
+     * - at least one of:
+     *   - Open NC Count > 0
+     *   - Closed NC Count > 0
+     */
     function correctiveActions (array) {
       var ret = [];
       var cp;
       for (var i = 0; i < array.length; i ++) {
         cp = array[i];
 
-        if (cp.surveillanceCount > 0 && (cp.openNonconformityCount > 0 || cp.closedNonconformityCount > 0)) {
+        if (cp.surveillanceCount > 0 && (cp.openSurveillanceNonConformityCount > 0 || cp.closedSurveillanceNonConformityCount > 0)) {
 
           cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
           cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
           cp.nonconformities = angular.toJson({
-            openNonconformityCount: cp.openNonconformityCount,
-            closedNonconformityCount: cp.closedNonconformityCount,
+            openSurveillanceNonConformityCount: cp.openSurveillanceNonConformityCount,
+            closedSurveillanceNonConformityCount: cp.closedSurveillanceNonConformityCount,
           });
 
           ret.push(cp);
@@ -124,13 +124,13 @@
     }
 
     /*
-         * Listings are part of this collection if:
-         * - 2014 or 2015 Edition and
-         * - at least one of:
-         *   - Withdrawn by Developer Under Surveillance/Review
-         *   - Withdrawn by ONC-ACB
-         *   - Terminated by ONC
-         */
+     * Listings are part of this collection if:
+     * - 2014 or 2015 Edition and
+     * - at least one of:
+     *   - Withdrawn by Developer Under Surveillance/Review
+     *   - Withdrawn by ONC-ACB
+     *   - Terminated by ONC
+     */
     function decertifiedProducts (array ) {
       var ret = [];
       var cp;
@@ -153,9 +153,9 @@
     }
 
     /*
-         * Listings are part of this collection if:
-         * - Certification status = Withdrawn by Developer
-         */
+     * Listings are part of this collection if:
+     * - Certification status = Withdrawn by Developer
+     */
     function inactiveCertificates (array ) {
       return array
         .filter(cp => cp.certificationStatus === 'Withdrawn by Developer')
@@ -167,9 +167,9 @@
     }
 
     /*
-         * Listings are part of this collection if:
-         *   they have 170.315 (g)(3)
-         */
+     * Listings are part of this collection if:
+     *   they have 170.315 (g)(3)
+     */
     function sed (array, certificationCriteria) {
       let applicableCriteria = certificationCriteria
         .filter(cc => (cc.number === '170.315 (g)(3)' && cc.title === 'Safety-Enhanced Design'))
@@ -183,15 +183,15 @@
     }
 
     /*
-         * Only developers with Listings that are Active or Suspended by ONC/ONC-ACB are included, and need to be transformed
-         */
+     * Only developers with Listings that are Active or Suspended by ONC/ONC-ACB are included, and need to be transformed
+     */
     function transparencyAttestations (array) {
       var ret = [];
       var dev;
       for (var i = 0; i < array.length; i ++) {
         if (array[i].listingCounts.active > 0 ||
-                    array[i].listingCounts.suspendedByOncAcb > 0 ||
-                    array[i].listingCounts.suspendedByOnc > 0) {
+            array[i].listingCounts.suspendedByOncAcb > 0 ||
+            array[i].listingCounts.suspendedByOnc > 0) {
           dev = {
             name: array[i].name,
             mainSearch: array[i].name,
