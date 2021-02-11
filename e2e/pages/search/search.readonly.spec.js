@@ -152,7 +152,7 @@ describe('the search page', () => {
     });
   });
 
-  describe('when searching via filters', () => {
+  describe('when filtering', () => {
     var countBefore;
     var countAfter;
     beforeEach(() => {
@@ -212,6 +212,30 @@ describe('the search page', () => {
       });
     });
 
+    describe('using certification status as "Retired"', () => {
+      beforeEach(() => {
+        page.expandFilterOptions('status').click();
+        page.statusRetiredFilterOption.click();
+        page.waitForUpdatedListingResultsCount();
+      });
+
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeGreaterThan(countBefore);
+      });
+
+      it('should at least show 1 retired listing', () => {
+        let isInclude = false;
+        for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
+          if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
+            isInclude = true;
+            break;
+          }
+        }
+        expect(isInclude).toBe(true);
+      });
+    });
+
     describe('using certification criteria 170.315 (a)(1)', () => {
       beforeEach(() => {
         page.expandFilterOptions('criteria').click();
@@ -226,22 +250,61 @@ describe('the search page', () => {
       });
     });
 
-    describe('using surveillance activity "never had surveillance"', () => {
-      it('should filter listing results', () => {
-        page.expandFilterOptions('surveillance').click();
-        page.surveillanceNeverHadFilter.click();
+    describe('with compliance activity', () => {
+      beforeEach(() => {
+        page.expandFilterOptions('compliance').click();
+      });
+
+      it('should filter listing results on "has never had a compliance activity"', () => {
+        page.complianceNeverHadActivityFilter.click();
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
+
+      it('should filter listing results on "has had a compliance activity"', () => {
+        page.complianceHasHadActivityFilter.click();
+        page.waitForUpdatedListingResultsCount();
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
+      });
+
+      describe('while in the "has had a compliance activity" filter', () => {
+        beforeEach(() => {
+          page.complianceHasHadActivityFilter.click();
+          page.waitForUpdatedListingResultsCount();
+          countBefore = page.listingTotalCount();
+        });
+
+        it('should filter listing results on "never had"', () => {
+          page.complianceNeverHadNonConformityFilter.click();
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.listingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+
+        it('should filter listing results on "open"', () => {
+          page.complianceOpenNonConformityFilter.click();
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.listingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+
+        it('should filter listing results on "closed"', () => {
+          page.complianceClosedNonConformityFilter.click();
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.listingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
+      });
     });
 
-    describe('the "More" filter', () => {
+    describe('in the "More" dropdown', () => {
       beforeEach(() => {
         page.moreFilterButton.click();
       });
 
-      describe('CQMs 2014/2015 CQMs', () => {
+      describe('the "Clinical Quality Measures" filter', () => {
         it('should filter listing results', () => {
           page.moreFilterExpand(' View Clinical Quality Measures ').click();
           page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
@@ -252,7 +315,7 @@ describe('the search page', () => {
         });
       });
 
-      describe('ONC/ACBs', () => {
+      describe('the "ONC/ACBs" filter', () => {
         it('should filter listing results', () => {
           page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
           page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
@@ -262,21 +325,17 @@ describe('the search page', () => {
         });
       });
 
-      describe('Practice Type', () => {
+      describe('the "Practice Type" filter', () => {
         it('should filter listing results', () => {
           page.moreFilterExpand(' View Practice Type ').scrollAndClick();
           page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
           page.waitForUpdatedListingResultsCount();
-          if (!page.pagination.isExisting()) {
-            countAfter = 0;
-          } else {
-            countAfter = page.listingTotalCount();
-          }
+          countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
         });
       });
 
-      describe('Certification Date', () => {
+      describe('the "Certification Date" filter', () => {
         it('should filter listing results', () => {
           page.moreFilterExpand(' View Certification Date ').click();
           page.moreCertificationEndDateFilter.addValue('01/01/2019');
@@ -286,7 +345,7 @@ describe('the search page', () => {
         });
       });
 
-      describe('Developer / Product / Version', () => {
+      describe('the "Developer / Product / Version" filters', () => {
         beforeEach(() => {
           page.moreDeveloperFilter.addValue(developerName);
           page.moreProductFilter.addValue(productName);
