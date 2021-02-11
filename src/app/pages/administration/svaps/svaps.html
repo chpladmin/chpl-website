@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="flex-item">
-          <label class="control-label">Criteria</label>
+          <label class="control-label">Criteria<span class="text-danger">*</span></label>
           <div ng-repeat="criterion in $ctrl.svap.criteria | orderBy: $ctrl.sortCerts track by $index">
             {{ criterion.number + (criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '') }} <button class="btn btn-link btn-sm" ng-click="$ctrl.removeCriteriaFromSvap(criterion)"><i class="fa fa-times"></i></button>
           </div>
@@ -57,7 +57,7 @@
           </div>
         </div>
         <div class="flex-item.narrow">
-          <label class="control-label" for="svap-edit-replaced">Replaced<span class="text-danger">*</span></label>
+          <label class="control-label" for="svap-edit-replaced">Replaced</label>
           <div>
             <input type="checkbox" ng-model="$ctrl.svap.replaced" id="svap-edit-replaced" name="svapEditReplaced"></input>
           </div>

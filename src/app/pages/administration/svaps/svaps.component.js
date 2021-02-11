@@ -5,10 +5,11 @@ export const SvapsComponent = {
     availableCriteria: '<',
   },
   controller: class SvapsComponent {
-    constructor ($log, networkService, utilService) {
+    constructor ($log, networkService, toaster, utilService) {
       'ngInject';
       this.$log = $log;
       this.networkService = networkService;
+      this.toaster = toaster;
       this.sortCerts = utilService.sortCert;
       this.isCures = utilService.isCures;
 
@@ -51,6 +52,10 @@ export const SvapsComponent = {
       let that = this;
       this.networkService.deleteSvap(this.svap)
         .then(() => {
+          that.toaster.pop({
+            type: 'success',
+            body: 'SVAP was successfully deleted.',
+          });
           that.cancel();
         }, error => {
           that.errors = error.data.errorMessages;
@@ -76,6 +81,10 @@ export const SvapsComponent = {
       if (this.svap.svapId) {
         this.networkService.updateSvap(this.svap)
           .then(() => {
+            that.toaster.pop({
+              type: 'success',
+              body: 'SVAP was successfully updated.',
+            });
             that.cancel();
           }, error => {
             that.errors = error.data.errorMessages;
@@ -83,6 +92,10 @@ export const SvapsComponent = {
       } else {
         this.networkService.createSvap(this.svap)
           .then(() => {
+            that.toaster.pop({
+              type: 'success',
+              body: 'SVAP was successfully added.',
+            });
             that.cancel();
           }, error => {
             that.errors = error.data.errorMessages;
