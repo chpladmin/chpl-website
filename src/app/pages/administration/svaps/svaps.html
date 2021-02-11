@@ -2,19 +2,19 @@
   <h2>SVAP Maintenance</h2>
   <div class="manage-list__container" ng-if="!$ctrl.isEditing">
     <div class="data-label">Regulatory Text Citation</div>
-    <div class="data-label">Applicable Criteria</div>
     <div class="data-label">Approved Standard Version</div>
+    <div class="data-label">Applicable Criteria</div>
     <div class="data-label">Replaced</div>
     <div class="manage-list__item--start" ng-repeat-start="svap in $ctrl.svaps | orderBy: 'regulatoryTextCitation' track by $index">
         {{ svap.regulatoryTextCitation }}
     </div>
     <div>
+        {{ svap.approvedStandardVersion }}
+    </div>
+    <div>
       <div ng-repeat="criterion in svap.criteria | orderBy: $ctrl.sortCerts track by $index">
         {{ criterion.number + (criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '') }}
       </div>
-    </div>
-    <div>
-        {{ svap.approvedStandardVersion }}
     </div>
     <div>
         {{ svap.replaced ? 'Yes' : 'No' }}
@@ -39,22 +39,25 @@
           </div>
         </div>
         <div class="flex-item">
-          <label class="control-label">Criteria<span class="text-danger">*</span></label>
-          <div ng-repeat="criterion in $ctrl.svap.criteria | orderBy: $ctrl.sortCerts track by $index">
-            {{ criterion.number + (criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '') }} <button class="btn btn-link btn-sm" ng-click="$ctrl.removeCriteriaFromSvap(criterion)"><i class="fa fa-times"></i></button>
-          </div>
-          <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.selectedCriteria"
-              ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.getCriteriaForSelectableList() | orderBy: $ctrl.sortCerts track by criteria.id"
-              ng-change="$ctrl.selectCriteriaForSvap()"></select>
-              <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.svap.criteria && $ctrl.svap.criteria.length === 0">At least one criteria must be selected</div>
-        </div>
-        <div class="flex-item">
           <label class="control-label" for="svap-edit-approved-standard-version">Approved Standard Version<span class="text-danger">*</span></label>
           <div>
             <textarea class="input-sm form-control" id="svap-edit-approved-standard-version" name="svapEditApprovedStandardVersion" rows="3"
                     ng-model="$ctrl.svap.approvedStandardVersion" required></textarea>
                     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.svapEditRegulatoryTextCitation.$touched) && $ctrl.form.svapEditApprovedStandardVersion.$error.required">Field is required</div>
           </div>
+        </div>
+        <div class="flex-item">
+          <label class="control-label">Criteria<span class="text-danger">*</span></label>
+          <div ng-repeat="criterion in $ctrl.svap.criteria | orderBy: $ctrl.sortCerts track by $index">
+            {{ criterion.number + (criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '') }} <button
+              class="btn btn-link btn-sm" ng-click="$ctrl.removeCriteriaFromSvap(criterion)"><i
+                class="fa fa-times"></i></button>
+          </div>
+          <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.selectedCriteria"
+            ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.getCriteriaForSelectableList() | orderBy: $ctrl.sortCerts track by criteria.id"
+            ng-change="$ctrl.selectCriteriaForSvap()"></select>
+          <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.svap.criteria && $ctrl.svap.criteria.length === 0">At
+            least one criteria must be selected</div>
         </div>
         <div class="flex-item.narrow">
           <label class="control-label" for="svap-edit-replaced">Replaced</label>
