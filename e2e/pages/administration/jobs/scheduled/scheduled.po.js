@@ -1,17 +1,17 @@
 const scheduledElements = {
-    scheduledJobsRoot: 'chpl-jobs-scheduled-jobs',
+  scheduledJobsRoot: 'chpl-jobs-scheduled-jobs',
 };
 
 class ScheduledPage {
-    constructor () { }
+  constructor () { }
 
-    get scheduledJobRows () {
-        return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr');
-    }
+  get scheduledJobRows () {
+    return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr');
+  }
 
-    scheduledJobName (rowNumber) {
-        return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr')[rowNumber].$$('td')[0];
-    }
+  scheduledJobName (rowNumber) {
+    return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr')[rowNumber].$$('td')[0];
+  }
 
 }
 
