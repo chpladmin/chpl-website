@@ -12,82 +12,82 @@ const error1 = 'The requirement \'170.315 (g)(10)\' is not valid for requirement
 const error2 = 'Nonconformity type \'170.315 (g)(10)\' must match either a criterion the surveilled product has attested to or one of the following: \'170.523 (k)(1)\', \'170.523 (k)(2)\', \'170.523 (l)\', or \'Other Non-Conformity\'.';
 
 beforeEach(async () => {
-    loginComponent = new LoginComponent();
-    toast = new ToastComponent();
-    edit = new SurveillanceEditComponent();
-    confirmPage = new ConfirmPage();
-    upload = new UploadSurveillanceComponent();
-    hooks = new Hooks();
-    hooks.open('#/surveillance/upload');
-    loginComponent.logInWithEmail('acb');
-    upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
-    hooks.open('#/surveillance/confirm');
-    hooks.waitForSpinnerToDisappear();
+  loginComponent = new LoginComponent();
+  toast = new ToastComponent();
+  edit = new SurveillanceEditComponent();
+  confirmPage = new ConfirmPage();
+  upload = new UploadSurveillanceComponent();
+  hooks = new Hooks();
+  hooks.open('#/surveillance/upload');
+  loginComponent.logInWithEmail('acb');
+  upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
+  hooks.open('#/surveillance/confirm');
+  hooks.waitForSpinnerToDisappear();
 });
 
 afterEach(() => {
-    if (toast.toastContainer.isDisplayed()) {
-        toast.clearAllToast();
-    }
-    else if (edit.cancel.isClickable()) {
-        edit.cancel.scrollAndClick();
-        confirmPage.yesConfirmation.click();
-    }
-    loginComponent.logOut();
+  if (toast.toastContainer.isDisplayed()) {
+    toast.clearAllToast();
+  }
+  else if (edit.cancel.isClickable()) {
+    edit.cancel.scrollAndClick();
+    confirmPage.yesConfirmation.click();
+  }
+  loginComponent.logOut();
 });
 
 describe('when confirming surveillance, ACB', () => {
 
-    it('should be able to confirm surveillance', () => {
-        browser.waitUntil( () => confirmPage.table.isDisplayed());
-        confirmPage.inspectButton(listingId);
-        confirmPage.confirmButton.scrollAndClick();
-        confirmPage.yesConfirmation.scrollAndClick();
-        hooks.waitForSpinnerToDisappear();
-        browser.waitUntil( () => toast.toastTitle.isDisplayed());
-        assert.equal(toast.toastTitle.getText() , 'Update processing');
-    });
+  it('should be able to confirm surveillance', () => {
+    browser.waitUntil( () => confirmPage.table.isDisplayed());
+    confirmPage.inspectButton(listingId);
+    confirmPage.confirmButton.scrollAndClick();
+    confirmPage.yesConfirmation.scrollAndClick();
+    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil( () => toast.toastTitle.isDisplayed());
+    assert.equal(toast.toastTitle.getText() , 'Update processing');
+  });
 
-    it('should not be able to confirm when the surveillance has a requirement the listing does not attest to', () => {
-        browser.waitUntil( () => confirmPage.table.isDisplayed());
-        confirmPage.inspectButton(listingId);
-        hooks.waitForSpinnerToDisappear();
-        edit.editSurveillance();
-        edit.addRequirement('Certified Capability', '170.315 (g)(10): Standardized API for Patient and Population Services', 'No Non-Conformity');
-        do {
-            edit.saveButton.scrollAndClick();
-        } while (!confirmPage.confirmButton.isClickable());
-        confirmPage.confirmButton.scrollAndClick();
-        confirmPage.yesConfirmation.scrollAndClick();
-        browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
-        assert.include(confirmPage.errorOnConfirm.getText(),error1);
-    });
+  it('should not be able to confirm when the surveillance has a requirement the listing does not attest to', () => {
+    browser.waitUntil( () => confirmPage.table.isDisplayed());
+    confirmPage.inspectButton(listingId);
+    hooks.waitForSpinnerToDisappear();
+    edit.editSurveillance();
+    edit.addRequirement('Certified Capability', '170.315 (g)(10): Standardized API for Patient and Population Services', 'No Non-Conformity');
+    do {
+      edit.saveButton.scrollAndClick();
+    } while (!confirmPage.confirmButton.isClickable());
+    confirmPage.confirmButton.scrollAndClick();
+    confirmPage.yesConfirmation.scrollAndClick();
+    browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
+    assert.include(confirmPage.errorOnConfirm.getText(),error1);
+  });
 
-    it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
-        let nonConformitydetails = {
-            type: '170.315 (g)(10): Standardized API for Patient and Population Services',
-            status: 'Open',
-            determinationDate: '01/01/2020',
-            summary: 'test summary',
-            findings: 'test findings',
-            approvalDate: '01/01/2020',
-            startDate: '01/01/2019',
-            completeDate: '01/01/2020',
-            explanation: 'Test explanation',
-            resolution: 'Test resolution',
-        };
-        browser.waitUntil( () => confirmPage.table.isDisplayed());
-        confirmPage.inspectButton(listingId);
-        hooks.waitForSpinnerToDisappear();
-        edit.editSurveillance();
-        edit.editRequirement.scrollAndClick();
-        edit.addnonConformity(nonConformitydetails , 'Reactive');
-        do {
-            edit.saveButton.scrollAndClick();
-        } while (!confirmPage.confirmButton.isClickable());
-        confirmPage.confirmButton.scrollAndClick();
-        confirmPage.yesConfirmation.scrollAndClick();
-        browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
-        assert.include(confirmPage.errorOnConfirm.getText(),error2);
-    });
+  it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
+    let nonConformitydetails = {
+      type: '170.315 (g)(10): Standardized API for Patient and Population Services',
+      status: 'Open',
+      determinationDate: '01/01/2020',
+      summary: 'test summary',
+      findings: 'test findings',
+      approvalDate: '01/01/2020',
+      startDate: '01/01/2019',
+      completeDate: '01/01/2020',
+      explanation: 'Test explanation',
+      resolution: 'Test resolution',
+    };
+    browser.waitUntil( () => confirmPage.table.isDisplayed());
+    confirmPage.inspectButton(listingId);
+    hooks.waitForSpinnerToDisappear();
+    edit.editSurveillance();
+    edit.editRequirement.scrollAndClick();
+    edit.addnonConformity(nonConformitydetails , 'Reactive');
+    do {
+      edit.saveButton.scrollAndClick();
+    } while (!confirmPage.confirmButton.isClickable());
+    confirmPage.confirmButton.scrollAndClick();
+    confirmPage.yesConfirmation.scrollAndClick();
+    browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
+    assert.include(confirmPage.errorOnConfirm.getText(),error2);
+  });
 });
