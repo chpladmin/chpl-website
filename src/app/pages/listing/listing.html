@@ -120,8 +120,13 @@
                 <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtResultsCheckDate) }}</p>
               </div>
             </div>
-            <div class="product-element" id="listing-information-mandatory-disclosures-url">
-              <h2 class="product-heading">Mandatory Disclosures URL</h2>
+            <div class="product-element" id="listing-information-svap-notice" ng-if="$ctrl.listing.svapNoticeUrl">
+              <h2 class="product-heading">Standards Version Advancement Process Notice</h2>
+              <a ai-a ng-if="$ctrl.listing.svapNoticeUrl" href="{{ $ctrl.listing.svapNoticeUrl }}" analytics-on="click" analytics-event="SVAP Notice" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.svapNoticeUrl }">{{ $ctrl.listing.svapNoticeUrl }}</a>
+              <div class="clearfix"></div>
+            </div>
+            <div class="product-element" id="listing-information-mandatory-disclosures">
+              <h2 class="product-heading">Mandatory Disclosures</h2>
               <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
               <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
               <div class="clearfix"></div>
