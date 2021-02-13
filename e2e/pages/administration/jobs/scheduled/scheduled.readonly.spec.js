@@ -1,6 +1,7 @@
 import LoginComponent from '../../../../components/login/login.po';
 import ScheduledPage from './scheduled.po';
 import Hooks from '../../../../utilities/hooks';
+import { assert } from 'chai';
 
 let hooks, loginComponent, scheduled;
 
@@ -19,13 +20,21 @@ describe('when an ONC-Staff user is logged in', () => {
   });
 
   it('should see the right set of scheduled jobs', () => {
-    var actualResult = [];
-    var expectedResult = ['All Broken Surveillance Rules Report','Developer Access Report','Inherited Certification Status Errors Report','Listing Validation Email Report','Overnight Broken Surveillance Rules Report','Pending "Change Request" Report','Questionable Activity Report','Questionable URL Report','Real World Testing Email Report','Summary Statistics Email','Trigger Developer Ban Notification'];
+    var actualResult = new Set([]);
+    var expectedResult = new Set(['All Broken Surveillance Rules Report','Developer Access Report','Inherited Certification Status Errors Report','Listing Validation Email Report','Overnight Broken Surveillance Rules Report','Pending "Change Request" Report','Questionable Activity Report','Questionable URL Report','Real World Testing Email Report','Summary Statistics Email','Trigger Developer Ban Notification']);
     var length = scheduled.scheduledJobRows.length;
     for ( var j = 0; j < length; j++ ) {
-      actualResult.push(scheduled.scheduledJobName(j).getText());
+      actualResult.add(scheduled.scheduledJobName(j).getText());
     }
-    assert.equal(actualResult.toString(),expectedResult.toString());
+    var isExist;
+    assert.equal(actualResult.size,expectedResult.size);
+    for (var value of actualResult) {
+      if (!expectedResult.has(value)) {
+        return isExist = false;
+      }
+      return isExist = true;
+    }
+    assert.isTrue(isExist);
   });
 
 });

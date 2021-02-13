@@ -85,7 +85,6 @@ class CmsWidgetComponent {
 
   addListingToCms (listingId) {
     this.certIdButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
-    browser.pause(2000);
     this.certIdButton(listingId).click();
   }
 

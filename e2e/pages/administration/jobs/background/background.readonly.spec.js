@@ -25,7 +25,15 @@ describe('when an ONC-Staff user is logged in', () => {
     for ( var j = 0; j < length; j++ ) {
       actualResult.push(background.backgroundJobName(j).getText());
     }
-    assert.equal(actualResult.toString(),expectedResult.toString());
+    var isExist;
+    assert.equal(actualResult.size,expectedResult.size);
+    for (var value of actualResult) {
+      if (!expectedResult.has(value)) {
+        return isExist = false;
+      }
+      return isExist = true;
+    }
+    assert.isTrue(isExist);
   });
 
 });
