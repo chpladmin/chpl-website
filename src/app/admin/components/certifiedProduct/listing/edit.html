@@ -214,6 +214,12 @@
       </div>
     </div>
     <div class="form-group">
+      <label for="cp-svap-notice-url">Standards Version Advancement Process Notice</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.svapNoticeUrl" id="cp-svap-notice-url" name="cpSvapNoticeUrl" ng-maxlength="1024">
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpSvapNoticeUrl.$touched) && vm.editForm.SvapNoticeUrl.$error.url">Improper format (http://www.example.com)</div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpSvapNoticeUrl.$touched) && vm.editForm.cpSvapNoticeUrl.$error.maxlength">Field is too long</div>
+    </div>
+    <div class="form-group">
       <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
       <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">
       <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
