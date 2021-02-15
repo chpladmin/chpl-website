@@ -90,12 +90,12 @@ let states = {
           },
         };
       },
-    }, {
+    },{
       name: 'administration',
       url: '/administration?token',
       component: 'chplAdministration',
       data: { title: 'CHPL Administration' },
-    }, {
+    },{
       name: 'administration.announcements',
       url: '/announcements',
       component: 'chplAnnouncements',
@@ -109,7 +109,7 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - Announcements' },
-    }, {
+    },{
       name: 'administration.api-keys',
       url: '/api-keys',
       component: 'chplApiKeys',
@@ -123,22 +123,22 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - API Keys' },
-    }, {
+    },{
       name: 'administration.change-requests',
       url: '/change-requests',
       template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
       data: { title: 'CHPL Administration - Change Requests' },
-    }, {
+    },{
       name: 'administration.cms',
       url: '/cms',
       component: 'chplCms',
       data: { title: 'CHPL Administration - CMS' },
-    }, {
+    },{
       name: 'administration.confirm',
       abstract: true,
       url: '/confirm',
       template: '<ui-view/>',
-    }, {
+    },{
       name: 'administration.confirm.listings',
       url: '/listings',
       component: 'chplConfirmListings',
@@ -153,7 +153,7 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - Confirm Listings' },
-    }, {
+    },{
       name: 'administration.confirm.listings.listing',
       url: '/{id}/confirm',
       component: 'chplConfirmListing',
@@ -164,7 +164,7 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - Confirm Listing' },
-    }, {
+    },{
       name: 'administration.fuzzy-matching',
       url: '/fuzzy-matching',
       component: 'chplFuzzyMatching',
@@ -178,12 +178,12 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - Fuzzy Matching' },
-    }, {
+    },{
       name: 'administration.jobs',
       abstract: true,
       url: '/jobs',
       template: '<ui-view/>',
-    }, {
+    },{
       name: 'administration.jobs.background',
       url: '/background',
       component: 'chplJobsBackgroundPage',
@@ -194,7 +194,7 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - Jobs - Background' },
-    }, {
+    },{
       name: 'administration.jobs.scheduled',
       url: '/scheduled',
       component: 'chplJobsScheduledPage',
@@ -226,12 +226,12 @@ let states = {
         },
       },
       data: { title: 'CHPL Administration - Jobs - Scheduled' },
-    }, {
+    },{
       name: 'administration.upload',
       url: '/upload',
       component: 'chplUpload',
       data: { title: 'CHPL Administration - Upload' },
-    }, {
+    },{
       name: 'administration.svaps',
       url: '/svaps',
       component: 'chplSvapsPage',
