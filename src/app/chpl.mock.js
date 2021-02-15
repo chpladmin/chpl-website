@@ -157,6 +157,88 @@ import {sed} from './test/sed.mock';
             surveillanceRequirements: {"criteriaOptions2014":[{"id":61,"name":"170.314 (a)(1)","description":null},{"id":62,"name":"170.314 (a)(2)","description":null},{"id":63,"name":"170.314 (a)(3)","description":null},{"id":64,"name":"170.314 (a)(4)","description":null},{"id":65,"name":"170.314 (a)(5)","description":null},{"id":66,"name":"170.314 (a)(6)","description":null},{"id":67,"name":"170.314 (a)(7)","description":null},{"id":68,"name":"170.314 (a)(8)","description":null},{"id":69,"name":"170.314 (a)(9)","description":null},{"id":70,"name":"170.314 (a)(10)","description":null},{"id":71,"name":"170.314 (a)(11)","description":null},{"id":72,"name":"170.314 (a)(12)","description":null},{"id":73,"name":"170.314 (a)(13)","description":null},{"id":74,"name":"170.314 (a)(14)","description":null},{"id":75,"name":"170.314 (a)(15)","description":null},{"id":76,"name":"170.314 (a)(16)","description":null},{"id":77,"name":"170.314 (a)(17)","description":null},{"id":78,"name":"170.314 (a)(18)","description":null},{"id":79,"name":"170.314 (a)(19)","description":null},{"id":80,"name":"170.314 (a)(20)","description":null},{"id":81,"name":"170.314 (b)(1)","description":null},{"id":82,"name":"170.314 (b)(2)","description":null},{"id":83,"name":"170.314 (b)(3)","description":null},{"id":84,"name":"170.314 (b)(4)","description":null},{"id":85,"name":"170.314 (b)(5)(A)","description":null},{"id":86,"name":"170.314 (b)(5)(B)","description":null},{"id":87,"name":"170.314 (b)(6)","description":null},{"id":88,"name":"170.314 (b)(7)","description":null},{"id":89,"name":"170.314 (b)(8)","description":null},{"id":90,"name":"170.314 (b)(9)","description":null},{"id":91,"name":"170.314 (c)(1)","description":null},{"id":92,"name":"170.314 (c)(2)","description":null},{"id":93,"name":"170.314 (c)(3)","description":null},{"id":94,"name":"170.314 (d)(1)","description":null},{"id":95,"name":"170.314 (d)(2)","description":null},{"id":96,"name":"170.314 (d)(3)","description":null},{"id":97,"name":"170.314 (d)(4)","description":null},{"id":98,"name":"170.314 (d)(5)","description":null},{"id":99,"name":"170.314 (d)(6)","description":null},{"id":100,"name":"170.314 (d)(7)","description":null},{"id":101,"name":"170.314 (d)(8)","description":null},{"id":102,"name":"170.314 (d)(9)","description":null},{"id":103,"name":"170.314 (e)(1)","description":null},{"id":104,"name":"170.314 (e)(2)","description":null},{"id":105,"name":"170.314 (e)(3)","description":null},{"id":106,"name":"170.314 (f)(1)","description":null},{"id":107,"name":"170.314 (f)(2)","description":null},{"id":108,"name":"170.314 (f)(3)","description":null},{"id":109,"name":"170.314 (f)(4)","description":null},{"id":110,"name":"170.314 (f)(5)","description":null},{"id":111,"name":"170.314 (f)(6)","description":null},{"id":112,"name":"170.314 (f)(7)","description":null},{"id":113,"name":"170.314 (g)(1)","description":null},{"id":114,"name":"170.314 (g)(2)","description":null},{"id":115,"name":"170.314 (g)(3)","description":null},{"id":116,"name":"170.314 (g)(4)","description":null},{"id":117,"name":"170.314 (h)(1)","description":null},{"id":118,"name":"170.314 (h)(2)","description":null},{"id":119,"name":"170.314 (h)(3)","description":null}],"criteriaOptions2015":[{"id":1,"name":"170.315 (a)(1)","description":null},{"id":2,"name":"170.315 (a)(2)","description":null},{"id":3,"name":"170.315 (a)(3)","description":null},{"id":4,"name":"170.315 (a)(4)","description":null},{"id":5,"name":"170.315 (a)(5)","description":null},{"id":6,"name":"170.315 (a)(6)","description":null},{"id":7,"name":"170.315 (a)(7)","description":null},{"id":8,"name":"170.315 (a)(8)","description":null},{"id":9,"name":"170.315 (a)(9)","description":null},{"id":10,"name":"170.315 (a)(10)","description":null},{"id":11,"name":"170.315 (a)(11)","description":null},{"id":12,"name":"170.315 (a)(12)","description":null},{"id":13,"name":"170.315 (a)(13)","description":null},{"id":14,"name":"170.315 (a)(14)","description":null},{"id":15,"name":"170.315 (a)(15)","description":null},{"id":16,"name":"170.315 (b)(1)","description":null},{"id":17,"name":"170.315 (b)(2)","description":null},{"id":18,"name":"170.315 (b)(3)","description":null},{"id":19,"name":"170.315 (b)(4)","description":null},{"id":20,"name":"170.315 (b)(5)","description":null},{"id":21,"name":"170.315 (b)(6)","description":null},{"id":22,"name":"170.315 (b)(7)","description":null},{"id":23,"name":"170.315 (b)(8)","description":null},{"id":24,"name":"170.315 (b)(9)","description":null},{"id":25,"name":"170.315 (c)(1)","description":null},{"id":26,"name":"170.315 (c)(2)","description":null},{"id":27,"name":"170.315 (c)(3)","description":null},{"id":28,"name":"170.315 (c)(4)","description":null},{"id":29,"name":"170.315 (d)(1)","description":null},{"id":30,"name":"170.315 (d)(2)","description":null},{"id":31,"name":"170.315 (d)(3)","description":null},{"id":32,"name":"170.315 (d)(4)","description":null},{"id":33,"name":"170.315 (d)(5)","description":null},{"id":34,"name":"170.315 (d)(6)","description":null},{"id":35,"name":"170.315 (d)(7)","description":null},{"id":36,"name":"170.315 (d)(8)","description":null},{"id":37,"name":"170.315 (d)(9)","description":null},{"id":38,"name":"170.315 (d)(10)","description":null},{"id":39,"name":"170.315 (d)(11)","description":null},{"id":40,"name":"170.315 (e)(1)","description":null},{"id":41,"name":"170.315 (e)(2)","description":null},{"id":42,"name":"170.315 (e)(3)","description":null},{"id":43,"name":"170.315 (f)(1)","description":null},{"id":44,"name":"170.315 (f)(2)","description":null},{"id":45,"name":"170.315 (f)(3)","description":null},{"id":46,"name":"170.315 (f)(4)","description":null},{"id":47,"name":"170.315 (f)(5)","description":null},{"id":48,"name":"170.315 (f)(6)","description":null},{"id":49,"name":"170.315 (f)(7)","description":null},{"id":50,"name":"170.315 (g)(1)","description":null},{"id":51,"name":"170.315 (g)(2)","description":null},{"id":52,"name":"170.315 (g)(3)","description":null},{"id":53,"name":"170.315 (g)(4)","description":null},{"id":54,"name":"170.315 (g)(5)","description":null},{"id":55,"name":"170.315 (g)(6)","description":null},{"id":56,"name":"170.315 (g)(7)","description":null},{"id":57,"name":"170.315 (g)(8)","description":null},{"id":58,"name":"170.315 (g)(9)","description":null},{"id":59,"name":"170.315 (h)(1)","description":null},{"id":60,"name":"170.315 (h)(2)","description":null}],"transparencyOptions":["170.523 (k)(1)","170.523 (k)(2)"]},
             nonconformityTypes: {"expandable":false,"data":[{"id":74,"name":"170.314 (a)(14)","description":null},{"id":89,"name":"170.314 (b)(8)","description":null},{"id":38,"name":"170.315 (d)(10)","description":null},{"id":118,"name":"170.314 (h)(2)","description":null},{"id":23,"name":"170.315 (b)(8)","description":null},{"id":102,"name":"170.314 (d)(9)","description":null},{"id":37,"name":"170.315 (d)(9)","description":null},{"id":106,"name":"170.314 (f)(1)","description":null},{"id":60,"name":"170.315 (h)(2)","description":null},{"id":43,"name":"170.315 (f)(1)","description":null},{"id":64,"name":"170.314 (a)(4)","description":null},{"id":4,"name":"170.315 (a)(4)","description":null},{"id":null,"name":"Other Non-Conformity","description":null},{"id":75,"name":"170.314 (a)(15)","description":null},{"id":56,"name":"170.315 (g)(7)","description":null},{"id":73,"name":"170.314 (a)(13)","description":null},{"id":88,"name":"170.314 (b)(7)","description":null},{"id":15,"name":"170.315 (a)(15)","description":null},{"id":16,"name":"170.315 (b)(1)","description":null},{"id":39,"name":"170.315 (d)(11)","description":null},{"id":85,"name":"170.314 (b)(5)(A)","description":null},{"id":119,"name":"170.314 (h)(3)","description":null},{"id":24,"name":"170.315 (b)(9)","description":null},{"id":36,"name":"170.315 (d)(8)","description":null},{"id":63,"name":"170.314 (a)(3)","description":null},{"id":5,"name":"170.315 (a)(5)","description":null},{"id":59,"name":"170.315 (h)(1)","description":null},{"id":28,"name":"170.315 (c)(4)","description":null},{"id":44,"name":"170.315 (f)(2)","description":null},{"id":94,"name":"170.314 (d)(1)","description":null},{"id":55,"name":"170.315 (g)(6)","description":null},{"id":87,"name":"170.314 (b)(6)","description":null},{"id":116,"name":"170.314 (g)(4)","description":null},{"id":21,"name":"170.315 (b)(6)","description":null},{"id":80,"name":"170.314 (a)(20)","description":null},{"id":14,"name":"170.315 (a)(14)","description":null},{"id":null,"name":"170.523 (k)(2)","description":null},{"id":96,"name":"170.314 (d)(3)","description":null},{"id":46,"name":"170.315 (f)(4)","description":null},{"id":86,"name":"170.314 (b)(5)(B)","description":null},{"id":35,"name":"170.315 (d)(7)","description":null},{"id":62,"name":"170.314 (a)(2)","description":null},{"id":2,"name":"170.315 (a)(2)","description":null},{"id":108,"name":"170.314 (f)(3)","description":null},{"id":27,"name":"170.315 (c)(3)","description":null},{"id":45,"name":"170.315 (f)(3)","description":null},{"id":95,"name":"170.314 (d)(2)","description":null},{"id":58,"name":"170.315 (g)(9)","description":null},{"id":77,"name":"170.314 (a)(17)","description":null},{"id":22,"name":"170.315 (b)(7)","description":null},{"id":13,"name":"170.315 (a)(13)","description":null},{"id":null,"name":"170.523 (k)(1)","description":null},{"id":97,"name":"170.314 (d)(4)","description":null},{"id":117,"name":"170.314 (h)(1)","description":null},{"id":47,"name":"170.315 (f)(5)","description":null},{"id":34,"name":"170.315 (d)(6)","description":null},{"id":107,"name":"170.314 (f)(2)","description":null},{"id":61,"name":"170.314 (a)(1)","description":null},{"id":3,"name":"170.315 (a)(3)","description":null},{"id":26,"name":"170.315 (c)(2)","description":null},{"id":69,"name":"170.314 (a)(9)","description":null},{"id":57,"name":"170.315 (g)(8)","description":null},{"id":76,"name":"170.314 (a)(16)","description":null},{"id":19,"name":"170.315 (b)(4)","description":null},{"id":51,"name":"170.315 (g)(2)","description":null},{"id":114,"name":"170.314 (g)(2)","description":null},{"id":40,"name":"170.315 (e)(1)","description":null},{"id":70,"name":"170.314 (a)(10)","description":null},{"id":84,"name":"170.314 (b)(4)","description":null},{"id":103,"name":"170.314 (e)(1)","description":null},{"id":12,"name":"170.315 (a)(12)","description":null},{"id":48,"name":"170.315 (f)(6)","description":null},{"id":98,"name":"170.314 (d)(5)","description":null},{"id":33,"name":"170.315 (d)(5)","description":null},{"id":111,"name":"170.314 (f)(6)","description":null},{"id":25,"name":"170.315 (c)(1)","description":null},{"id":79,"name":"170.314 (a)(19)","description":null},{"id":68,"name":"170.314 (a)(8)","description":null},{"id":8,"name":"170.315 (a)(8)","description":null},{"id":11,"name":"170.315 (a)(11)","description":null},{"id":20,"name":"170.315 (b)(5)","description":null},{"id":50,"name":"170.315 (g)(1)","description":null},{"id":115,"name":"170.314 (g)(3)","description":null},{"id":41,"name":"170.315 (e)(2)","description":null},{"id":83,"name":"170.314 (b)(3)","description":null},{"id":91,"name":"170.314 (c)(1)","description":null},{"id":49,"name":"170.315 (f)(7)","description":null},{"id":99,"name":"170.314 (d)(6)","description":null},{"id":32,"name":"170.315 (d)(4)","description":null},{"id":110,"name":"170.314 (f)(5)","description":null},{"id":1,"name":"170.315 (a)(1)","description":null},{"id":109,"name":"170.314 (f)(4)","description":null},{"id":67,"name":"170.314 (a)(7)","description":null},{"id":92,"name":"170.314 (c)(2)","description":null},{"id":9,"name":"170.315 (a)(9)","description":null},{"id":42,"name":"170.315 (e)(3)","description":null},{"id":78,"name":"170.314 (a)(18)","description":null},{"id":10,"name":"170.315 (a)(10)","description":null},{"id":53,"name":"170.315 (g)(4)","description":null},{"id":72,"name":"170.314 (a)(12)","description":null},{"id":82,"name":"170.314 (b)(2)","description":null},{"id":105,"name":"170.314 (e)(3)","description":null},{"id":17,"name":"170.315 (b)(2)","description":null},{"id":31,"name":"170.315 (d)(3)","description":null},{"id":100,"name":"170.314 (d)(7)","description":null},{"id":66,"name":"170.314 (a)(6)","description":null},{"id":6,"name":"170.315 (a)(6)","description":null},{"id":93,"name":"170.314 (c)(3)","description":null},{"id":54,"name":"170.315 (g)(5)","description":null},{"id":71,"name":"170.314 (a)(11)","description":null},{"id":52,"name":"170.315 (g)(3)","description":null},{"id":113,"name":"170.314 (g)(1)","description":null},{"id":81,"name":"170.314 (b)(1)","description":null},{"id":104,"name":"170.314 (e)(2)","description":null},{"id":null,"name":"170.523 (l)","description":null},{"id":18,"name":"170.315 (b)(3)","description":null},{"id":30,"name":"170.315 (d)(2)","description":null},{"id":101,"name":"170.314 (d)(8)","description":null},{"id":90,"name":"170.314 (b)(9)","description":null},{"id":112,"name":"170.314 (f)(7)","description":null},{"id":65,"name":"170.314 (a)(5)","description":null},{"id":29,"name":"170.315 (d)(1)","description":null},{"id":7,"name":"170.315 (a)(7)","description":null}]},
         };
+
+        mock.svaps = [{
+					'svapId': 3,
+					'regulatoryTextCitation': '170.204(a)(2)',
+					'approvedStandardVersion': 'Web Content Accessibility Guidelines (WCAG) 2.1, June 05, 2018 (Level AA Conformance)',
+					'replaced': false,
+					'criteria': [{
+						'id': 178,
+						'number': '170.315 (e)(1)',
+						'title': 'View, Download, and Transmit to 3rd Party (Cures Update)',
+						'certificationEditionId': 3,
+						'certificationEdition': '2015',
+						'description': null,
+						'removed': false,
+					},{
+						'id': 8,
+						'number':
+							'170.315 (a)(8)',
+						'title': 'Medication Allergy List',
+						'certificationEditionId': 3,
+						'certificationEdition': '2015',
+						'description': null,
+						'removed': true,
+					}],
+      	},{
+					'svapId': 2,
+					'regulatoryTextCitation': '170.204(a)(1)',
+					'approvedStandardVersion': 'Web Content Accessibility Guidelines (WCAG) 2.1, June 05, 2018 (Level A Conformance)',
+					'replaced': false,
+					'criteria': [{
+						'id': 5,
+						'number': '170.315 (a)(5)',
+						'title': 'Demographics',
+						'certificationEditionId': 3,
+						'certificationEdition': '2015',
+						'description': null,
+						'removed': false,
+					}, {
+						'id': 50,
+						'number': '170.315 (g)(1)',
+						'title': 'Automated Numerator Recording',
+						'certificationEditionId': 3,
+						'certificationEdition': '2015',
+						'description': null,
+						'removed': false,
+					}],
+				}],
+				mock.availableCriteria = [{
+					'id': 178,
+					'number': '170.315 (e)(1)',
+					'title': 'View, Download, and Transmit to 3rd Party (Cures Update)',
+					'certificationEditionId': 3,
+					'certificationEdition': '2015',
+					'description': null,
+					'removed': false,
+				},{
+					'id': 8,
+					'number':
+						'170.315 (a)(8)',
+					'title': 'Medication Allergy List',
+					'certificationEditionId': 3,
+					'certificationEdition': '2015',
+					'description': null,
+					'removed': true,
+				},{
+					'id': 5,
+					'number': '170.315 (a)(5)',
+					'title': 'Demographics',
+					'certificationEditionId': 3,
+					'certificationEdition': '2015',
+					'description': null,
+					'removed': false,
+				},{
+					'id': 50,
+					'number': '170.315 (g)(1)',
+					'title': 'Automated Numerator Recording',
+					'certificationEditionId': 3,
+					'certificationEdition': '2015',
+					'description': null,
+					'removed': false,
+				}];
+
         return mock;
     }
 })();

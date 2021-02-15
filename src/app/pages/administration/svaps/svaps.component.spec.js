@@ -2,93 +2,10 @@
   'use strict';
 
   describe('the SVAP Administration page', () => {
-    let $compile, $log, $q, ctrl, el, mock, networkService, scope;
-
-    mock = {
-      svaps: [{
-        'svapId': 3,
-        'regulatoryTextCitation': '170.204(a)(2)',
-        'approvedStandardVersion': 'Web Content Accessibility Guidelines (WCAG) 2.1, June 05, 2018 (Level AA Conformance)',
-        'replaced': false,
-        'criteria': [{
-          'id': 178,
-          'number': '170.315 (e)(1)',
-          'title': 'View, Download, and Transmit to 3rd Party (Cures Update)',
-          'certificationEditionId': 3,
-          'certificationEdition': '2015',
-          'description': null,
-          'removed': false,
-        }, {
-          'id': 8,
-          'number':
-            '170.315 (a)(8)',
-          'title': 'Medication Allergy List',
-          'certificationEditionId': 3,
-          'certificationEdition': '2015',
-          'description': null,
-          'removed': true,
-        }],
-      }, {
-        'svapId': 2,
-        'regulatoryTextCitation': '170.204(a)(1)',
-        'approvedStandardVersion': 'Web Content Accessibility Guidelines (WCAG) 2.1, June 05, 2018 (Level A Conformance)',
-        'replaced': false,
-        'criteria': [{
-          'id': 5,
-          'number': '170.315 (a)(5)',
-          'title': 'Demographics',
-          'certificationEditionId': 3,
-          'certificationEdition': '2015',
-          'description': null,
-          'removed': false,
-        }, {
-          'id': 50,
-          'number': '170.315 (g)(1)',
-          'title': 'Automated Numerator Recording',
-          'certificationEditionId': 3,
-          'certificationEdition': '2015',
-          'description': null,
-          'removed': false,
-        }],
-      }],
-      availableCriteria: [{
-        'id': 178,
-        'number': '170.315 (e)(1)',
-        'title': 'View, Download, and Transmit to 3rd Party (Cures Update)',
-        'certificationEditionId': 3,
-        'certificationEdition': '2015',
-        'description': null,
-        'removed': false,
-      }, {
-        'id': 8,
-        'number':
-          '170.315 (a)(8)',
-        'title': 'Medication Allergy List',
-        'certificationEditionId': 3,
-        'certificationEdition': '2015',
-        'description': null,
-        'removed': true,
-      }, {
-        'id': 5,
-        'number': '170.315 (a)(5)',
-        'title': 'Demographics',
-        'certificationEditionId': 3,
-        'certificationEdition': '2015',
-        'description': null,
-        'removed': false,
-      }, {
-        'id': 50,
-        'number': '170.315 (g)(1)',
-        'title': 'Automated Numerator Recording',
-        'certificationEditionId': 3,
-        'certificationEdition': '2015',
-        'description': null,
-        'removed': false,
-      }],
-    };
+    let $compile, $log, $q, Mock, ctrl, el, networkService, scope;
 
     beforeEach(() => {
-      angular.mock.module('chpl.administration', $provide => {
+      angular.mock.module('chpl.administration', 'chpl.mock', $provide => {
         $provide.decorator('networkService', $delegate => {
           $delegate.deleteSvap = jasmine.createSpy('deleteSvap');
           $delegate.updateSvap = jasmine.createSpy('updateSvap');
@@ -98,10 +15,11 @@
         });
       });
 
-      inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
+      inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
         $compile = _$compile_;
         $log = _$log_;
         $q = _$q_;
+        Mock = _Mock_;
         networkService = _networkService_;
         networkService.deleteSvap.and.returnValue($q.when({}));
         networkService.updateSvap.and.returnValue($q.when({}));
@@ -109,8 +27,8 @@
         networkService.getSvaps.and.returnValue($q.when({}));
 
         scope = $rootScope.$new();
-        scope.svaps = mock.svaps;
-        scope.availableCriteria = mock.availableCriteria;
+        scope.svaps = Mock.svaps;
+        scope.availableCriteria = Mock.availableCriteria;
 
         el = angular.element('<chpl-svaps-page svaps="svaps" available-criteria="availableCriteria"></chpl-svaps-page>');
 
@@ -188,11 +106,11 @@
       describe('when entering edit mode', () => {
         beforeEach(() => {
           ctrl.isEditing = true;
-          ctrl.editSvap(mock.svaps[1]);
+          ctrl.editSvap(Mock.svaps[1]);
         });
 
         it('should set the selected svap', () => {
-          expect(ctrl.svap).toEqual(mock.svaps[1]);
+          expect(ctrl.svap).toEqual(Mock.svaps[1]);
         });
 
         it('should clear any existing errors', () => {
@@ -289,47 +207,47 @@
         describe('when getting the list of available criteria', () => {
           it('should return the whole available list when there is no current svap', () => {
             ctrl.svap = null;
-            ctrl.availableCriteria = angular.copy(mock.availableCriteria);
+            ctrl.availableCriteria = angular.copy(Mock.availableCriteria);
             expect(ctrl.getCriteriaForSelectableList().length).toBe(4);
           });
 
           it('should return the whole available list when there are no criteria associated with current svap', () => {
             ctrl.svap = { criteria: [] };
-            ctrl.availableCriteria = angular.copy(mock.availableCriteria);
+            ctrl.availableCriteria = angular.copy(Mock.availableCriteria);
             expect(ctrl.getCriteriaForSelectableList().length).toBe(4);
           });
 
           it('should return the available list, without the criteria associated to the current svap', () => {
-            ctrl.svap = angular.copy(mock.svaps[0]);
-            ctrl.availableCriteria = angular.copy(mock.availableCriteria);
+            ctrl.svap = angular.copy(Mock.svaps[0]);
+            ctrl.availableCriteria = angular.copy(Mock.availableCriteria);
             expect(ctrl.getCriteriaForSelectableList().length).toBe(2);
           });
         });
 
         describe('when removing a criteria from the current svap', () => {
           it('should remove the criteria from the list', () => {
-            ctrl.svap = angular.copy(mock.svaps[0]);
-            ctrl.removeCriteriaFromSvap(angular.copy(mock.availableCriteria[0]));
+            ctrl.svap = angular.copy(Mock.svaps[0]);
+            ctrl.removeCriteriaFromSvap(angular.copy(Mock.availableCriteria[0]));
             expect(ctrl.svap.criteria.length).toBe(1);
           });
 
           it('should do nothing if the criteria is not in the current svap', () => {
-            ctrl.svap = angular.copy(mock.svaps[0]);
-            ctrl.removeCriteriaFromSvap(angular.copy(mock.availableCriteria[3]));
+            ctrl.svap = angular.copy(Mock.svaps[0]);
+            ctrl.removeCriteriaFromSvap(angular.copy(Mock.availableCriteria[3]));
             expect(ctrl.svap.criteria.length).toBe(2);
           });
         });
 
         describe('when a criteria is selected', () => {
           it('should be added to the current svap', () => {
-            ctrl.svap = angular.copy(mock.svaps[0]);
-            ctrl.selectCriteriaForSvap(angular.copy(mock.availableCriteria[3]));
+            ctrl.svap = angular.copy(Mock.svaps[0]);
+            ctrl.selectCriteriaForSvap(angular.copy(Mock.availableCriteria[3]));
             expect(ctrl.svap.criteria.length).toBe(3);
           });
 
           it('should clear out the currently selected criteria', () => {
-            ctrl.svap = angular.copy(mock.svaps[0]);
-            ctrl.selectCriteriaForSvap(angular.copy(mock.availableCriteria[3]));
+            ctrl.svap = angular.copy(Mock.svaps[0]);
+            ctrl.selectCriteriaForSvap(angular.copy(Mock.availableCriteria[3]));
             expect(ctrl.selectedCriteria).toBeNull();
           });
         });
