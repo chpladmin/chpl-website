@@ -24,7 +24,7 @@
         networkService.deleteSvap.and.returnValue($q.when({}));
         networkService.updateSvap.and.returnValue($q.when({}));
         networkService.createSvap.and.returnValue($q.when({}));
-        networkService.getSvaps.and.returnValue($q.when({}));
+        networkService.getSvaps.and.returnValue($q.when([]));
 
         scope = $rootScope.$new();
         scope.svaps = Mock.svaps;
@@ -160,12 +160,12 @@
             expect(networkService.updateSvap).toHaveBeenCalledTimes(1);
           });
 
-          xit('should cancel out of edit mode on success', () => {
-            scope.cancel = jasmine.createSpy('cancel');
+          it('should cancel out of edit mode on success', () => {
             networkService.updateSvap.and.returnValue($q.when({ status: 200 }));
             ctrl.save();
             scope.$digest();
-            expect(scope.cancel).toHaveBeenCalled();
+            //This gets called in the 'cancel' method, so we can use it as an indicator that 'cancel' was called
+            expect(networkService.getSvaps).toHaveBeenCalled();
           });
 
           it('should set the errors on failure', () => {
@@ -188,12 +188,12 @@
             expect(networkService.createSvap).toHaveBeenCalledTimes(1);
           });
 
-          xit('should cancel out of edit mode on success', () => {
-            scope.cancel = jasmine.createSpy('cancel');
+          it('should cancel out of edit mode on success', () => {
             networkService.createSvap.and.returnValue($q.when({ status: 200 }));
             ctrl.save();
             scope.$digest();
-            expect(scope.cancel).toHaveBeenCalled();
+            //This gets called in the 'cancel' method, so we can use it as an indicator that 'cancel' was called
+            expect(networkService.getSvaps).toHaveBeenCalled();
           });
 
           it('should set the errors on failure', () => {
