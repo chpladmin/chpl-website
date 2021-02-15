@@ -19,7 +19,7 @@ describe('when an ONC-Staff user is logged in', () => {
   });
 
   it('should see the right set of background jobs', () => {
-    var actualResult = new Set([]);;
+    var actualResult = new Set([]);
     var expectedResult = new Set(['Export Annual Report','Export Quarterly Report','MUU Upload','Surveillance Upload']);
     var length = background.backgroundJobRows.length;
     for ( var j = 0; j < length; j++ ) {
