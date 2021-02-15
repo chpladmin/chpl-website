@@ -1,36 +1,16 @@
 import React, {useState} from 'react';
 import {arrayOf, bool, func, shape, string} from 'prop-types';
-//import {getAngularService} from './';
 
-//const dependencies = {
-//  getChplLogService: () => require('../../services/services-bridge.jsx').default,
-//};
-
-function ChplActionBar ({
-  errorMessages,
-  isDisabled,
-  takeAction,
-  warningMessages,
-}) {
-  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
-  const [errors] = useState(errorMessages ? errorMessages.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
-  const [showMessages, setShowMessages] = useState(false);
-  const [warnings] = useState(warningMessages ? warningMessages.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
-  //const $log = dependencies.getChplLogService();
+function ChplActionBar (props) {
+  const [errors] = useState(props.errors ? props.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
+  const [showMessages, setShowMessages] = useState((props.errors && props.errors.length > 0) || (props.warnings && props.warnings.length > 0));
+  const [warnings] = useState(props.warnings ? props.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
 
   const act = (action) => {
     console.log({type: 'act', action});
-    if (takeAction) {
-      takeAction(action);
+    if (props.takeAction) {
+      props.takeAction(action);
     }
-  };
-
-  const handleAcknowledgement = event => {
-    setAcknowledgeWarnings(event.target.value);
-    if (takeAction) {
-      takeAction('updateAcknowledgement', acknowledgeWarnings);
-    }
-    console.log({type: 'updateAcknowledgeWarnings', acknowledgeWarnings});
   };
 
   const submit = event => {
@@ -77,12 +57,6 @@ function ChplActionBar ({
                 </>
               }
             </div>
-            { warnings && warnings.length > 0 &&
-              <div className="action-bar__acknowledge-warnings">
-                <input type="checkbox" id="acknowledge-warnings" name="acknowledgeWarnings" className="edit-listing__acknowledge-warning-checkbox" onChange={handleAcknowledgement} />
-                <label htmlFor="acknowledge-warnings" className="action-bar__acknowledge-warning-label">I have reviewed the warning(s) and wish to proceed with this update</label>
-              </div>
-            }
           </>
         }
         <div className="action-bar__buttons">
@@ -100,7 +74,7 @@ function ChplActionBar ({
           <div className="action-bar__button">
             <button className="btn btn-primary" id="action-bar-save"
                     onClick={() => act('save')}
-                    disabled={isDisabled}
+                    disabled={props.isDisabled}
                     onMouseOver={() => act('mouseover')}>Save</button>
           </div>
         </div>
@@ -112,11 +86,8 @@ function ChplActionBar ({
 export {ChplActionBar};
 
 ChplActionBar.propTypes = {
-  errorMessages: arrayOf(string),
+  errors: arrayOf(string),
   isDisabled: bool,
-  options: shape({
-    isWizard: bool,
-  }),
   takeAction: func,
-  warningMessages: arrayOf(string),
+  warnings: arrayOf(string),
 };
