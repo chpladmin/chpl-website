@@ -87,6 +87,7 @@ class CmsWidgetComponent {
     this.certIdButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
     this.certIdButton(listingId).click();
   }
+
 }
 
 export default CmsWidgetComponent;

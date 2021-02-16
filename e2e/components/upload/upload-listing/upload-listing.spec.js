@@ -26,12 +26,12 @@ describe('When uploading a listing as ONC-ACB', () => {
   });
 
   it('can upload v19 template', () => {
-    uploadListingComponent.uploadListing('../../../resources/2015_v19_AQA1.csv');
+    uploadListingComponent.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
     assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
   });
 
   it('can upload v18 template', () => {
-    uploadListingComponent.uploadListing('../../../resources/2015_v18_AQA2.csv');
+    uploadListingComponent.uploadListing('../../../resources/listings/2015_v18_AQA2.csv');
     assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
   });
 });

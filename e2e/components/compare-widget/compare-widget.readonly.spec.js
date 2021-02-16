@@ -32,6 +32,7 @@ describe('on compare widget', () => {
   describe('if there is exactly 1 listing added for compare', () => {
     beforeAll(() => {
       search.searchForListing(search2);
+      hooks.waitForSpinnerToDisappear();
       compare.addListingToCompare(ListingId2);
     });
 
@@ -55,8 +56,10 @@ describe('on compare widget', () => {
   describe('if there are at least 2 listings added for compare', () => {
     beforeAll(() => {
       search.searchForListing(search1);
+      hooks.waitForSpinnerToDisappear();
       compare.addListingToCompare(ListingId1);
       search.searchForListing(search2);
+      hooks.waitForSpinnerToDisappear();
       compare.addListingToCompare(ListingId2);
     });
 
