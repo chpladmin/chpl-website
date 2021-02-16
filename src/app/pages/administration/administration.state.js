@@ -205,21 +205,21 @@ let states = {
         },
         jobs: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
             return networkService.getScheduleJobs();
           }
           return [];
         },
         scheduledSystemJobs: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
             return networkService.getScheduledSystemJobs();
           }
           return [];
         },
         triggers: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
             return networkService.getScheduleTriggers();
           }
           return [];
