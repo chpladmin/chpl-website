@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import {arrayOf, bool, func, shape, string} from 'prop-types';
+import {arrayOf, bool, func, string} from 'prop-types';
 
 function ChplActionBar (props) {
-  const [errors] = useState(props.errors ? props.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
-  const [showMessages, setShowMessages] = useState((props.errors && props.errors.length > 0) || (props.warnings && props.warnings.length > 0));
-  const [warnings] = useState(props.warnings ? props.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0) : []);
+  const [showMessages, setShowMessages] = useState(true);
 
   const act = (action) => {
     console.log({type: 'act', action});
@@ -20,35 +18,45 @@ function ChplActionBar (props) {
   return (
     <form onSubmit={submit}>
       <div className="action-bar">
-        { ((errors && errors.length > 0) || (warnings && warnings.length > 0)) &&
+        { ((props.errors && props.errors.length > 0) || (props.warnings && props.warnings.length > 0)) &&
           <div className="action-bar__error-toggle">
             <span onClick={() => setShowMessages(!showMessages)}>
-              Errors and Warnings <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`}></i>
+              { props.errors && props.errors.length > 0 &&
+                <>Error{ props.errors.length > 1 && 's'} </>
+              }
+              { props.errors && props.errors.length > 0 && props.warnings && props.warnings.length > 0 &&
+                <>and </>
+              }
+              { props.warnings && props.warnings.length > 0 &&
+                <>Warning{ props.warnings.length > 1 && 's'} </>
+              }
+              <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`}></i>
             </span>
           </div>
         }
         { showMessages &&
           <>
             <div className="action-bar__messages">
-              { errors && errors.length > 0 &&
+              { props.errors && props.errors.length > 0 &&
                 <div className="action-bar__errors">
-                  <strong>Error(s)</strong>
+                  <strong>Error{ props.errors.length > 1 && 's'}</strong>
                   <ul className="action-bar__error-messages">
                     {
-                      errors.map(message => (
-                        <li key={message}>{message}</li>
-                      ))
+                      props.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+                        .map(message => (
+                          <li key={message}>{message}</li>
+                        ))
                     }
                   </ul>
                 </div>
               }
-              { warnings && warnings.length > 0 &&
+              { props.warnings && props.warnings.length > 0 &&
                 <>
                   <div className="action-bar__warnings">
-                    <strong>Warning(s)</strong>
+                    <strong>Warning{ props.warnings.length > 1 && 's'}</strong>
                     <ul className="action-bar__warning-messages">
                       {
-                        warnings.map(message => (
+                        props.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0).map(message => (
                           <li key={message}>{message}</li>
                         ))
                       }

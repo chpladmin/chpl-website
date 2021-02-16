@@ -8,8 +8,10 @@ const dependencies = {
   getChplLogService: () => require('../../services/services-bridge.jsx').default,
 };
 
-function ChplFuzzyType ({fuzzyType, takeAction}) {
-  const [choices, setChoices] = useState(fuzzyType.choices.sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
+function ChplFuzzyType (props) {
+  const [choices, setChoices] = useState(props.fuzzyType.choices.sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
+  const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const [isAdding, setAdding] = useState(false);
   const [isEditing, setEditing] = useState(false);
   const [newFuzzyType, setNewFuzzyType] = useState(undefined);
@@ -31,9 +33,11 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
 
   const cancel = () => {
     setEditing(false);
-    setChoices(fuzzyType.choices.sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
+    setErrors([]);
+    setWarnings([]);
+    setChoices(props.fuzzyType.choices.sort((a, b) => a < b ? -1 : a > b ? 1 : 0));
     setNewFuzzyType(undefined);
-    takeAction(fuzzyType, 'cancel');
+    props.takeAction(props.fuzzyType, 'cancel');
   };
 
   const cancelAdd = () => {
@@ -45,7 +49,7 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
   const edit = () => {
     chplLog.info('edit');
     setEditing(true);
-    takeAction(fuzzyType, 'edit');
+    props.takeAction(props.fuzzyType, 'edit');
   };
 
   const handleAdd = () => {
@@ -68,8 +72,8 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
   };
 
   const save = () => {
-    takeAction({
-      ...fuzzyType,
+    props.takeAction({
+      ...props.fuzzyType,
       choices: choices,
     }, 'save');
   };
@@ -79,10 +83,10 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
   };
 
   return (
-    <div id={'fuzzy-type-' + fuzzyType.fuzzyType}>
+    <div id={'fuzzy-type-' + props.fuzzyType.fuzzyType}>
     <div className="panel panel-default">
     <div className="panel-heading">
-    <h4 className="panel-title">{fuzzyType.fuzzyType}</h4>
+    <h4 className="panel-title">{props.fuzzyType.fuzzyType}</h4>
     </div>
     <div className="panel-body">
       {isEditing ? (
@@ -133,12 +137,12 @@ function ChplFuzzyType ({fuzzyType, takeAction}) {
               ) }
             </div>
           </form>
-          <ChplActionBar takeAction={act} />
+          <ChplActionBar takeAction={act} errors={errors} warnings={warnings}/>
         </>
       ) : (
         <>
           <span className="pull-right">
-            <button className="btn btn-link btn-small" id={'fuzzy-type-' + fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
+            <button className="btn btn-link btn-small" id={'fuzzy-type-' + props.fuzzyType.fuzzyType + '-edit'} onClick={() => edit()}><i className="fa fa-pencil-square-o"></i><span className="sr-only"> Edit Fuzzy Type</span></button>
           </span>
           Choices
           <ul>
