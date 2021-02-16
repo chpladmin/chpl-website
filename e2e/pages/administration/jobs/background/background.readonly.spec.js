@@ -18,13 +18,10 @@ describe('when an ONC-Staff user is logged in', () => {
   });
 
   it('should see the right set of background jobs', () => {
-    const expected = ['Fake Export Annual Report','Export Quarterly Report','MUU Upload','Surveillance Upload'];
-    // expect to have the right number of jobs
+    const expected = ['Export Annual Report','Export Quarterly Report','MUU Upload','Surveillance Upload'];
     assert.equal(background.backgroundJobRows.length,expected.length);
-
     // get the existing jobs into a de-duplicated array of jobs
     let rows = [...new Set(background.backgroundJobRows.map(row => row.getText()))];
-
     // for each of the expected jobs
     expected.forEach(exp => {
       // count how many existing jobs start with the expected job's name (the page object is actually getting the text for the row. A better option would be to get just the text for the cell, but given that page object, this is at least asserting that we're close to the right text)
