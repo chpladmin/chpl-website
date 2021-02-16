@@ -25,11 +25,56 @@ describe('the ChplActionBar component', () => {
     expect(container.textContent).not.toBeUndefined();
   });
 
-  it('should indicate there are errors', () => {
-    act(() => {
-      let errors = ['b', 'a'];
-      render(<ChplActionBar errorMessages={errors} />, container);
+  describe('when there are errors and/or warnings', () => {
+    it('should indicate there are more than one error', () => {
+      act(() => {
+        let errors = ['b', 'a'];
+        render(<ChplActionBar errors={errors} />, container);
+      });
+      let text = container.textContent;
+      const expected = 'Errors';
+      expect(text.startsWith(expected)).toBe(true, `expected: "${expected}" got: "${text}"`);
     });
-    expect(container.textContent.startsWith('Errors and Warnings')).toBe(true);
+
+    it('should indicate there is exactly one error', () => {
+      act(() => {
+        let errors = ['b'];
+        render(<ChplActionBar errors={errors} />, container);
+      });
+      let text = container.textContent;
+      const expected = 'Error';
+      expect(text.startsWith(expected)).toBe(true, `expected: "${expected}" got: "${text}"`);
+    });
+
+    it('should indicate there are more than one warning', () => {
+      act(() => {
+        let warnings = ['b', 'a'];
+        render(<ChplActionBar warnings={warnings} />, container);
+      });
+      let text = container.textContent;
+      const expected = 'Warnings';
+      expect(text.startsWith(expected)).toBe(true, `expected: "${expected}" got: "${text}"`);
+    });
+
+    it('should indicate there is exactly one warning', () => {
+      act(() => {
+        let warnings = ['b'];
+        render(<ChplActionBar warnings={warnings} />, container);
+      });
+      let text = container.textContent;
+      const expected = 'Warning';
+      expect(text.startsWith(expected)).toBe(true, `expected: "${expected}" got: "${text}"`);
+    });
+
+    it('should indicate there are errors and warnings', () => {
+      act(() => {
+        let errors = ['c', 'd'];
+        let warnings = ['b', 'a'];
+        render(<ChplActionBar errors={errors} warnings={warnings} />, container);
+      });
+      let text = container.textContent;
+      const expected = 'Errors and Warnings';
+      expect(text.startsWith(expected)).toBe(true, `expected: "${expected}" got: "${text}"`);
+    });
   });
 });
