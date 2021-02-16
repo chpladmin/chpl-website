@@ -13,7 +13,7 @@ let getResources = ($q, networkService) => {
     networkService.getMeasures()
       .then(response => ({ measures: response })),
     networkService.getMeasureTypes()
-      .then(response => ({ measureTypes: response})),
+      .then(response => ({ measureTypes: response })),
     networkService.getQmsStandards()
       .then(response => ({ qmsStandards: response })),
     networkService.getAccessibilityStandards()
@@ -116,7 +116,7 @@ let states = {
       resolve: {
         apiKeys: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'] )) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
             return networkService.getApiUsers();
           }
           return [];
@@ -205,21 +205,21 @@ let states = {
         },
         jobs: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
             return networkService.getScheduleJobs();
           }
           return [];
         },
         scheduledSystemJobs: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
             return networkService.getScheduledSystemJobs();
           }
           return [];
         },
         triggers: (authService, networkService) => {
           'ngInject';
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
             return networkService.getScheduleTriggers();
           }
           return [];
@@ -231,6 +231,24 @@ let states = {
       url: '/upload',
       component: 'chplUpload',
       data: { title: 'CHPL Administration - Upload' },
+    },{
+      name: 'administration.svaps',
+      url: '/svaps',
+      component: 'chplSvapsPage',
+      resolve: {
+        svaps: (authService, networkService) => {
+          'ngInject';
+          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+            return networkService.getSvaps();
+          }
+          return [];
+        },
+        availableCriteria: (networkService) => {
+          'ngInject';
+          return networkService.getCertificationCriteriaForSvap();
+        },
+      },
+      data: { title: 'CHPL Administration - SVAPs' },
     },
   ],
 };

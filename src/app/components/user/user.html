@@ -77,7 +77,8 @@
         </div>
       </div>
     </div>
-    <chpl-action-bar can="$ctrl.can(action)"
+    <chpl-action-bar options="$ctrl.options"
+                     can-act="$ctrl.can(action)"
                      error-messages="$ctrl.errors"
                      is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
                      take-action="$ctrl.takeActionBarAction(action)">

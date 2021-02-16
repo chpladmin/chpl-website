@@ -394,6 +394,9 @@ describe('the search page', () => {
       page.downloadResultsAction.scrollAndClick();
       const fileName = 'search-results.csv';
       const filePath = path.join(global.downloadDir, fileName);
+      if (!fs.existsSync(filePath)) {
+        page.downloadResultsAction.scrollAndClick();
+      }
       browser.waitForFileExists(filePath,config.timeout);
       expect(fs.existsSync(filePath)).toBe(true);
     });

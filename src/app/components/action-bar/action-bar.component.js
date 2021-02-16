@@ -7,6 +7,7 @@ export const ActionBarComponent = {
     isWizard: '@',
     takeAction: '&',
     warningMessages: '<',
+    options: '<',
   },
   controller: class ActionBarComponent {
     constructor ($log) {
@@ -36,6 +37,10 @@ export const ActionBarComponent = {
           this.showErrors = true;
         }
         this.previousWarnings = angular.copy(this.warningMessages);
+      }
+      if (changes.options && changes.options.currentValue) {
+        this.maxMessageCharacters = changes.options.currentValue.maxMessageCharacters;
+        this.canDelete = changes.options.currentValue.canDelete;
       }
     }
 
