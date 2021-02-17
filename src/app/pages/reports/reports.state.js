@@ -20,11 +20,6 @@ let states = [{
   component: 'chplReportsApiKeys',
   data: { title: 'CHPL Reports - Api Key Management' },
 },{
-  name: 'reports.api-key-usage',
-  url: '/api-key-usage',
-  component: 'chplReportsApiKeyUsage',
-  data: { title: 'CHPL Reports - Api Key Usage' },
-},{
   name: 'reports.atls',
   url: '/onc-atls',
   component: 'chplReportsAtls',
