@@ -152,8 +152,7 @@ exports.config = {
                 return;
             }
             var message = assertion.error.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            var filename = encodeURIComponent(`${test.fullTitle.replace(/\s+/g, '-')}-${browserName}-${timestamp}`.replace(/[/]/g, '__')).replace(/%../, '.').toLowerCase();
-            var location = `${__dirname}/test_reports/e2e/assertionError_` + message + '_' + filename + '.png';
+            var location = `${__dirname}/test_reports/e2e/assertionError_` + message + '.png';
             browser.saveScreenshot(location);
         }
     },
