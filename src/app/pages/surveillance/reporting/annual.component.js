@@ -39,9 +39,9 @@ export const SurveillanceReportAnnualComponent = {
     generateReport () {
       let that = this;
       this.networkService.generateAnnualSurveillanceReport(this.report.id)
-        .then(results => {
-          let name = results.user.friendlyName ? results.user.friendlyName : results.user.fullName;
-          let email = results.user.email;
+        .then(response => {
+          let name = response.job.jobDataMap.user.friendlyName || response.job.jobDataMap.user.fullName;
+          let email = response.job.jobDataMap.user.email;
           that.toaster.pop({
             type: 'success',
             title: 'Report is being generated',
