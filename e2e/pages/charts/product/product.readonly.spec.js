@@ -16,6 +16,9 @@ describe('on charts page - Unique product chart', () => {
 
   it('should only show 2015 edition products', () => {
     browser.waitUntil(() => page.chartTitle.isDisplayed(), config.shortTimeout);
+    if (!page.chartTitle.isDisplayed()) {
+      browser.refresh();//stale element exception needs page refresh
+    }
     assert.include(page.chartTitle.getText(),2015);
     assert.notInclude(page.chartTitle.getText(),2014);
   });

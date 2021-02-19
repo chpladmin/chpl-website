@@ -13,6 +13,10 @@ class ScheduledPage {
     return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr')[rowNumber].$$('td')[0];
   }
 
+  get scheduledJobTable () {
+    return $(scheduledElements.scheduledJobsRoot).$('tbody');
+  }
+
 }
 
 export default ScheduledPage;
