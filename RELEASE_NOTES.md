@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 11.7.0
+_22 February 2021_
+
+### Features
+* Enable Standards Version Advancement Process Administration
+* Expand Surveillance Filter on Search page to consider Direct Reviews
+* Allow ROLE_ONC_STAFF to see & manage Background and Scheduled Jobs
+
+### Flagged Features
+* Change "Standard" to "Optional Standard"
+
+---
+
 ## Version 11.6.0
 _8 February 2021_
 
