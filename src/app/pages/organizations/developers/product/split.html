@@ -10,11 +10,10 @@
         <div class="products__products-header-item"><h2 class="panel-title">Original Product</h2></div>
       </div>
       <div class="panel-body">
-        <h3>Product Name</h3>
-        <div>{{ $ctrl.product.name }}</div>
+        <div class="data-label">Product Name</div>
+        <div class="read-only-data">{{ $ctrl.product.name }}</div>
         <span ng-if="$ctrl.product.contact">
-          <hr />
-          <h4>Contact Information</h4>
+          <div class="data-label">Contact Information</div>
           <chpl-contact contact="$ctrl.product.contact"
                         ignore-friendly-name="true"></chpl-contact>
         </span>
