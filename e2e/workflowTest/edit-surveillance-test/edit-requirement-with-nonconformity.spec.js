@@ -31,7 +31,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     edit.editSurveillance();
     hooks.waitForSpinnerToDisappear();
     edit.editRequirement.scrollAndClick();
-    edit.removenonConformity.scrollAndClick();
+    edit.removeNonConformity.scrollAndClick();
     edit.saveButton.click();
     assert.include(edit.errorMessages.getText(),error);
   });

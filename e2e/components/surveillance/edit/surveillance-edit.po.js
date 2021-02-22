@@ -21,7 +21,7 @@ const elements = {
   summary: '#summary',
   findings: '#findings',
   editRequirement: '//*[@ng-click="$ctrl.editRequirement(req)"]',
-  removenonConformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
+  removeNonConformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
   approvalDate: '#cap-approval-date',
   ncStartDate: '#cap-start-date',
   completeDate: '#cap-must-complete-date',
@@ -151,8 +151,8 @@ class SurveillanceEditComponent {
     return $(elements.editRequirement);
   }
 
-  get removenonConformity () {
-    return $(elements.removenonConformity);
+  get removeNonConformity () {
+    return $(elements.removeNonConformity);
   }
 
   requirementTableRows () {
