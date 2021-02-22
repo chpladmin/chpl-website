@@ -3,6 +3,7 @@ export const ProductEditComponent = {
   bindings: {
     product: '<',
     isMerging: '<',
+    isSplitting: '<',
     mergingProducts: '<',
     showFormErrors: '<',
     takeAction: '&',
@@ -53,6 +54,9 @@ export const ProductEditComponent = {
       }
       if (changes.isMerging) {
         this.isMerging = angular.copy(changes.isMerging.currentValue);
+      }
+      if (changes.isSplitting) {
+        this.isSplitting = angular.copy(changes.isSplitting.currentValue);
       }
       if (changes.mergingProducts) {
         this.mergingProducts = angular.copy(changes.mergingProducts.currentValue);

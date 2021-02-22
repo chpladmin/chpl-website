@@ -1,0 +1,63 @@
+<div class="flex-container">
+  <div class="flex-item">
+    <h1>Split {{ $ctrl.product.name }}</h1>
+  </div>
+</div>
+<div class="flex-container">
+  <div class="flex-item">
+    <div class="panel-default">
+      <div class="panel-heading products__products-header">
+        <div class="products__products-header-item"><h2 class="panel-title">Original Product</h2></div>
+      </div>
+      <div class="panel-body">
+        <h3>Product Name</h3>
+        <div>{{ $ctrl.product.name }}</div>
+        <span ng-if="$ctrl.product.contact">
+          <hr />
+          <h4>Contact Information</h4>
+          <chpl-contact contact="$ctrl.product.contact"
+                        ignore-friendly-name="true"></chpl-contact>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="flex-item">
+    <chpl-product-edit product="$ctrl.newProduct"
+                       is-editing="true"
+                       is-splitting="true"
+                       is-invalid="$ctrl.versions.length === 0 || $ctrl.movingVersions.length === 0"
+                       take-action="$ctrl.takeAction(action, data)"
+                       on-cancel="$ctrl.cancel()"
+                       on-edit="$ctrl.split(product)"></chpl-product-edit>
+  </div>
+</div>
+<div class="flex-container">
+  <div class="flex-item panel panel-default">
+    <div class="panel-body">
+      <h5>Versions staying with original Product</h5>
+      <div class="bg-danger" ng-if="$ctrl.versions.length === 0">At least one Version must stay with original Product</div>
+      <div class="flex-container container-striped" ng-class-even="'even'" ng-class-odd="'odd'" ng-repeat="version in $ctrl.versions | orderBy: 'version'">
+        <div class="flex-item cross-axis-align-center">
+          {{ version.version }}
+        </div>
+        <div class="flex-item text-right narrowest">
+          <button class="btn btn-default" id="products-version-move-new-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-item panel panel-default">
+    <div class="panel-body">
+      <h5>Versions moving to new Product</h5>
+      <div class="bg-danger" ng-if="$ctrl.movingVersions.length === 0">At least one Version must be selected to move</div>
+      <div class="flex-container container-striped" ng-class-even="'even'" ng-class-odd="'odd'" ng-repeat="version in $ctrl.movingVersions | orderBy: 'version'">
+        <div class="flex-item cross-axis-align-center">
+          {{ version.version }}
+        </div>
+        <div class="flex-item text-right narrowest">
+          <button class="btn btn-default" id="products-version-move-old-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
