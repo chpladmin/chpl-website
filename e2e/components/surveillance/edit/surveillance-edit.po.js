@@ -151,8 +151,8 @@ class SurveillanceEditComponent {
     return $(elements.editRequirement);
   }
 
-  get removeNonconformity () {
-    return $(elements.removeNonconformity);
+  get removenonConformity () {
+    return $(elements.removenonConformity);
   }
 
   requirementTableRows () {
