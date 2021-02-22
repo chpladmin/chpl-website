@@ -11,6 +11,8 @@ export const ProductsSplitComponent = {
       this.$stateParams = $stateParams;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
+      this.movingVersions = [];
+      this.newProduct = {};
     }
 
     $onChanges (changes) {
@@ -28,15 +30,34 @@ export const ProductsSplitComponent = {
       }
     }
 
-    /*
-      cancel () {
-      this.$state.go('organizations.developers.developer', {
-      developerId: this.developer.developerId,
-      }, {
-      reload: true,
-      });
+    takeAction (action, data) {
+      this.$log.info({action, data});
+      switch (action) {
+      case 'cancel':
+        this.cancel();
+        break;
+        // no default
       }
-    */
+    }
+
+    cancel () {
+      this.$state.go('organizations.developers.developer', {
+        developerId: this.developer.developerId,
+      }, {
+        reload: true,
+      });
+    }
+
+    toggleMove (version, toNew) {
+      if (toNew) {
+        this.movingVersions.push(this.versions.find(ver => ver.versionId === version.versionId));
+        this.versions = this.versions.filter(ver => ver.versionId !== version.versionId);
+      } else {
+        this.versions.push(this.movingVersions.find(ver => ver.versionId === version.versionId));
+        this.movingVersions = this.movingVersions.filter(ver => ver.versionId !== version.versionId);
+      }
+    }
+
     /*
       split (product) {
       let productToSave = {

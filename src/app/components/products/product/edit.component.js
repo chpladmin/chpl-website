@@ -32,7 +32,7 @@ export const ProductEditComponent = {
     }
 
     $onChanges (changes) {
-      if (changes.product) {
+      if (changes.product && changes.product.currentValue) {
         this.product = angular.copy(changes.product.currentValue);
         this.product.ownerHistory = this.product.ownerHistory
           .filter(o => o.transferDate)
@@ -94,7 +94,7 @@ export const ProductEditComponent = {
           messages.push('At least one other Product must be selected to merge');
         }
       }
-      if (this.product) {
+      if (this.product && !this.isSplitting) {
         this.product.ownerHistory.forEach((o, idx, arr) => {
           if (idx > 0) {
             if (arr[idx].developer.name === arr[idx - 1].developer.name) {

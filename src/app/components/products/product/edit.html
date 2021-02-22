@@ -5,8 +5,8 @@
       <div class="products__products-header-item" ng-if="$ctrl.isSplitting"><h2 class="panel-title">New Product</h2></div>
     </div>
     <div class="panel-body">
-      <div ng-class="{'product__edit-information-product' : !$ctrl.isSplitting">
-        <div class="data-label" ng-class="{'product__data-label' : !$ctrl.isSplitting"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
+      <div ng-class="{'product__edit-information-product' : !$ctrl.isSplitting}">
+        <div class="data-label" ng-class="{'product__data-label' : !$ctrl.isSplitting}"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
         <div>
           <input class="form-control" type="text" id="product-name" name="productName"
                  ng-model="$ctrl.product.name" required ng-maxlength="300">
