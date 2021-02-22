@@ -67,6 +67,8 @@ By default, E2E tests will be executed against http://localhost:3000/. This URL 
 
 If a single spec file should be tested, instead of all of them, the command `yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
 
+To change the loglevel, test could be run as `yarn e2e --l info`
+
 To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
 
 When debugging, taking screenshots can be useful. The command `browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root

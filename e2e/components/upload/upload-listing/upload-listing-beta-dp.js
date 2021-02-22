@@ -1,12 +1,12 @@
 module.exports = [
   {
     testName: 'v19 template',
-    path: '../../../resources/2015_v19_AQA1.csv',
+    path: '../../../resources/listings/2015_v19_AQA1.csv',
     message: 'Success',
   },
   {
     testName: 'v18 template',
-    path: '../../../resources/2015_v18_AQA2.csv',
+    path: '../../../resources/listings/2015_v18_AQA2.csv',
     message: 'Success',
   },
   {

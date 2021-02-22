@@ -11,6 +11,7 @@ export const UserComponent = {
       'ngInject';
       this.$log = $log;
       this.canImpersonate = authService.canImpersonate;
+      this.options = { canDelete: true };
     }
 
     $onChanges (changes) {
@@ -77,7 +78,7 @@ export const UserComponent = {
       case 'save':
         this.save();
         break;
-                //no default
+      //no default
       }
     }
   },

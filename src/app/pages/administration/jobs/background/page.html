@@ -1,4 +1,4 @@
-<span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+<span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])">
   <div class="row">
     <div class="col-sm-12">
       <h2>Background Jobs</h2>
@@ -15,7 +15,7 @@
     </div>
   </div>
 </span>
-<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])">
   <div class="col-md-6 col-md-offset-3 jumbotron">
     <chpl-login form-class=""
                 p-class="bg-success lead"
