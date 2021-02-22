@@ -18,6 +18,7 @@ export const SurveillanceReportQuarterComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.options = { canDelete: true };
     }
 
     $onChanges (changes) {
@@ -43,6 +44,10 @@ export const SurveillanceReportQuarterComponent = {
       this.onSave({report: this.report});
     }
 
+    can (action) {
+      return action === 'delete';
+    }
+
     cancel () {
       this.report = angular.copy(this.backup.report);
       this.onCancel();
@@ -50,6 +55,21 @@ export const SurveillanceReportQuarterComponent = {
 
     delete () {
       this.takeAction({report: this.report, action: 'delete'});
+    }
+
+    takeActionBarAction (action) {
+      switch (action) {
+      case 'cancel':
+        this.cancel();
+        break;
+      case 'delete':
+        this.delete();
+        break;
+      case 'save':
+        this.save();
+        break;
+      //no default
+      }
     }
 
     generateReport () {

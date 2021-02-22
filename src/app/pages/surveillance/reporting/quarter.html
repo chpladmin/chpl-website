@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-sm-12">
       <span class="pull-right">
-        <button class="btn" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()">
+        <button class="btn btn-secondary" id="surveillance-report-download-{{ $ctrl.report.id }}" ng-click="$ctrl.generateReport()">
           <i class="fa fa-download"></i> Download Quarterly Surveillance Report
         </button>
       </span>
@@ -39,21 +39,10 @@
         <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclosure requirements, as required of the ONC-ACB under 45 CFR &sect; 170.523(k):</p>
         <textarea class="form-control" id="disclosure-requirements" name="transparencyDisclosure" ng-model="$ctrl.report.transparencyDisclosureSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <span class="pull-right">
-            <button class="btn btn-primary" id="quarterly-surveillance-save" ng-click="$ctrl.save()" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Save Quarterly Report </button>
-            <button class="btn btn-secondary" id="quarterly-suveillance-cancel" ng-click="$ctrl.cancel()">Cancel</button>
-            <button class="btn btn-danger" id="quarterly-suveillance-delete"
-                    confirm="Are you sure you wish to delete this Quarterly Surveillance Report?"
-                    confirm-ok="Yes"
-                    confirm-cancel="No"
-                    confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                    ng-if="$ctrl.report.id && $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
-                    ng-click="$ctrl.delete()">Delete</button>
-          </span>
-        </div>
-      </div>
+      <chpl-action-bar options="$ctrl.options"
+                       can-act="$ctrl.can(action)"
+                       take-action="$ctrl.takeActionBarAction(action)">
+      </chpl-action-bar>
       <hr />
       <div class="panel panel-default">
         <div class="panel-heading clickable" ng-click="$ctrl.areListingsShown = !$ctrl.areListingsShown" id="relevant-listings-header">
