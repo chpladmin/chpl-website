@@ -11,14 +11,13 @@ class ProductChartsPage {
     return $(productChartsElements.chartTitle);
   }
 
-  get viewCertificationCriteriaDropdown () {
-    return $(productChartsElements.viewCertificationCriteriaDropdown);
+  get viewCertificationCriteriaDropdownOptions () {
+    return $(productChartsElements.viewCertificationCriteriaDropdown).$$('option');
   }
 
   get nonconformityChartButton () {
     return $(productChartsElements.nonconformityChart);
   }
-
 }
 
 export default ProductChartsPage;

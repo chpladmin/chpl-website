@@ -1,48 +1,48 @@
 import ProductChartsPage from './product.po';
 import Hooks from '../../../utilities/hooks';
 
-const config = require('../../../config/mainConfig');
-
 let hooks, page;
 
-beforeAll(async () => {
-  page = new ProductChartsPage();
-  hooks = new Hooks();
-  hooks.open('#/charts');
-  await hooks.waitForSpinnerToDisappear();
-});
-
-describe('on charts page - Unique product chart', () => {
-
-  it('should only show 2015 edition products', () => {
-    browser.waitUntil(() => page.chartTitle.isDisplayed(), config.shortTimeout);
-    if (!page.chartTitle.isDisplayed()) {
-      browser.refresh();//stale element exception needs page refresh
-    }
-    assert.include(page.chartTitle.getText(),2015);
-    assert.notInclude(page.chartTitle.getText(),2014);
-  });
-  it('should only have all,2015,2015 cures options in "view certification criteria" dropdown', () => {
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'All');
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'2015');
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'2015 Cures Update');
-    assert.notInclude(page.viewCertificationCriteriaDropdown.getText(),'2014');
+describe('the charts page', () => {
+  beforeAll(async () => {
+    page = new ProductChartsPage();
+    hooks = new Hooks();
+    hooks.open('#/charts');
+    await hooks.waitForSpinnerToDisappear();
   });
 
-});
+  describe('unique product charts', () => {
+    beforeEach(() => {
+      hooks.waitForSpinnerToDisappear();
+    });
 
-describe('on charts page - Nonconformity chart', () => {
-  beforeEach( () => {
-    page.nonconformityChartButton.click();
-    hooks.waitForSpinnerToDisappear();
+    it('should only show 2015 edition products', () => {
+      expect(page.chartTitle.getText()).toBe('Number of 2015 Edition Unique Products certified to specific Certification Criteria');
+    });
+
+    it('should have the right options in the "view certification criteria" dropdown', () => {
+      const expected = new Set(['All', '2015', '2015 Cures Update']);
+      expect(page.viewCertificationCriteriaDropdownOptions.length).toBe(expected.size);
+      let options = [...new Set(page.viewCertificationCriteriaDropdownOptions.map(item => item.getText()))];
+      options.forEach(option => {
+        expect(expected.has(option)).toBe(true, 'did not find expected option: "' + option + '"');
+      });
+    });
   });
 
-  it('should only have all,2015,2015 cures,program options in "view certification criteria" dropdown', () => {
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'All');
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'2015');
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'2015 Cures Update');
-    assert.include(page.viewCertificationCriteriaDropdown.getText(),'Program');
-    assert.notInclude(page.viewCertificationCriteriaDropdown.getText(),'2014');
-  });
+  describe('non-conformity charts', () => {
+    beforeEach( () => {
+      page.nonconformityChartButton.click();
+      hooks.waitForSpinnerToDisappear();
+    });
 
+    it('should have the right options in the "view certification criteria" dropdown', () => {
+      const expected = new Set(['All', '2015', '2015 Cures Update', 'Program']);
+      expect(page.viewCertificationCriteriaDropdownOptions.length).toBe(expected.size);
+      let options = [...new Set(page.viewCertificationCriteriaDropdownOptions.map(item => item.getText()))];
+      options.forEach(option => {
+        expect(expected.has(option)).toBe(true, 'did not find expected option: "' + option + '"');
+      });
+    });
+  });
 });
