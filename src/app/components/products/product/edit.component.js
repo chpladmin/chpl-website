@@ -3,7 +3,6 @@ export const ProductEditComponent = {
   bindings: {
     product: '<',
     isMerging: '<',
-    isSplitting: '<',
     mergingProducts: '<',
     showFormErrors: '<',
     takeAction: '&',
@@ -55,9 +54,6 @@ export const ProductEditComponent = {
       if (changes.isMerging) {
         this.isMerging = angular.copy(changes.isMerging.currentValue);
       }
-      if (changes.isSplitting) {
-        this.isSplitting = angular.copy(changes.isSplitting.currentValue);
-      }
       if (changes.mergingProducts) {
         this.mergingProducts = angular.copy(changes.mergingProducts.currentValue);
         this.generateErrorMessages();
@@ -94,7 +90,7 @@ export const ProductEditComponent = {
           messages.push('At least one other Product must be selected to merge');
         }
       }
-      if (this.product && !this.isSplitting) {
+      if (this.product) {
         this.product.ownerHistory.forEach((o, idx, arr) => {
           if (idx > 0) {
             if (arr[idx].developer.name === arr[idx - 1].developer.name) {

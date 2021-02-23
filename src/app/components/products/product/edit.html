@@ -1,12 +1,11 @@
 <div ng-form="$ctrl.form">
   <div class="panel-default" ng-class="{'panel-default--nested' : $ctrl.isMerging }">
     <div class="panel-heading products__products-header">
-      <div class="products__products-header-item" ng-if="!$ctrl.isSplitting"><h2 class="panel-title">Edit Product Details</h2></div>
-      <div class="products__products-header-item" ng-if="$ctrl.isSplitting"><h2 class="panel-title">New Product</h2></div>
+      <div class="products__products-header-item"><h2 class="panel-title">Edit Product Details</h2></div>
     </div>
     <div class="panel-body">
-      <div ng-class="{'product__edit-information-product' : !$ctrl.isSplitting}">
-        <div class="data-label" ng-class="{'product__data-label' : !$ctrl.isSplitting}"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
+      <div class="product__edit-information-product">
+        <div class="data-label product__data-label'"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
         <div>
           <input class="form-control" type="text" id="product-name" name="productName"
                  ng-model="$ctrl.product.name" required ng-maxlength="300">
@@ -20,7 +19,7 @@
           </ul>
         </div>
       </div>
-      <div class="product__history-of-product" ng-if="!$ctrl.isSplitting">
+      <div class="product__history-of-product">
         <div class="product__history-of-product-header">
           <div class="product__data-label data-label">
             Product Owner
@@ -77,10 +76,8 @@
           <button class="btn btn-sm btn-link" ng-click="$ctrl.addingOwner = true"><i class="fa fa-plus-circle"></i> Add Product Owner</button>
         </div>
       </div>
-      <div ng-if="!$ctrl.isSplitting">
-        <hr />
-        <h4>Contact Information</h4>
-      </div>
+      <hr />
+      <h4>Contact Information</h4>
       <chpl-contact contact="$ctrl.product.contact"
                     is-editing="true"
                     ignore-friendly-name="true"

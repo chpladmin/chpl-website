@@ -4,23 +4,29 @@ export const ProductsSplitComponent = {
     developer: '<',
   },
   controller: class ProductsSplitController {
-    constructor ($log, $state, $stateParams, authService, networkService) {
+    constructor ($log, $state, $stateParams, authService, networkService, toaster) {
       'ngInject';
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
-      this.movingVersions = [];
-      this.newProduct = {};
+      this.toaster = toaster;
+      this.request = {
+        newProductCode: undefined,
+        newProductName: undefined,
+        newVersions: [],
+        oldProduct: undefined,
+        oldVersions: [],
+      };
     }
 
     $onChanges (changes) {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
-        this.product = this.developer.products
+        this.request.oldProduct = this.developer.products
           .find(p => p.productId === parseInt(this.$stateParams.productId, 10));
-        this.versions = this.product.versions
+        this.request.oldVersions = this.request.oldProduct.versions
           .filter(v => !v.deleted)
           .map(v => {
             v.selected = false;
@@ -30,13 +36,18 @@ export const ProductsSplitComponent = {
       }
     }
 
-    takeAction (action, data) {
-      this.$log.info({action, data});
+    takeActionBarAction (action) {
       switch (action) {
       case 'cancel':
         this.cancel();
         break;
-        // no default
+      case 'mouseover':
+        this.showFormErrors = true;
+        break;
+      case 'save':
+        this.save();
+        break;
+        //no default
       }
     }
 
@@ -50,61 +61,38 @@ export const ProductsSplitComponent = {
 
     toggleMove (version, toNew) {
       if (toNew) {
-        this.movingVersions.push(this.versions.find(ver => ver.versionId === version.versionId));
-        this.versions = this.versions.filter(ver => ver.versionId !== version.versionId);
+        this.request.newVersions.push(this.request.oldVersions.find(ver => ver.versionId === version.versionId));
+        this.request.oldVersions = this.request.oldVersions.filter(ver => ver.versionId !== version.versionId);
       } else {
-        this.versions.push(this.movingVersions.find(ver => ver.versionId === version.versionId));
-        this.movingVersions = this.movingVersions.filter(ver => ver.versionId !== version.versionId);
+        this.request.oldVersions.push(this.request.newVersions.find(ver => ver.versionId === version.versionId));
+        this.request.newVersions = this.request.newVersions.filter(ver => ver.versionId !== version.versionId);
       }
     }
 
-    /*
-      split (product) {
-      let productToSave = {
-      product: product,
-      productIds: this.selectedProducts.map(d => d.productId),
-      newDeveloperId: this.developer.developerId,
-      };
-      productToSave.productIds.push(this.product.productId);
+    isValid () {
+      return this.form.$valid
+        && this.request.newVersions && this.request.newVersions.length > 0
+        && this.request.oldVersions && this.request.oldVersions.length > 0;
+    }
+
+    save () {
       let that = this;
-      this.networkService.updateProduct(productToSave)
-      .then(() => {
-      that.$state.go('organizations.developers.developer', {
-      developerId: that.developer.developerId,
-      }, {
-      reload: true,
-      });
-      }, error => {
-      that.$log.error(error);
-      });
-      }
-    */
-    /*
-
-      selectProduct (product) {
-      this.products
-      .filter(d => d.productId === product.productId)
-      .forEach(d => d.selected = !d.selected);
-      this.selectedProducts = this.products
-      .filter(d => d.selected)
-      .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-      this.selectedToSplit = null;
-      }
-    */
-    /*
-
-      takeAction (action, data) {
-      switch (action) {
-      case 'cancel':
-      this.cancel();
-      break;
-      case 'edit':
-      this.split(data);
-      break;
-      //no default
-      }
-      }
-    */
+      this.networkService.splitProduct(this.request)
+        .then(() => {
+          that.toaster.pop({
+            type: 'success',
+            title: 'Split successful',
+            body: 'Your action has been completed',
+          });
+          that.$state.go('organizations.developers.developer', {
+            developerId: that.developer.developerId,
+          }, {
+            reload: true,
+          });
+        }, error => {
+          that.errors = [error.data.error];
+        });
+    }
   },
 };
 
