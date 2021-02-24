@@ -112,6 +112,12 @@ class DevelopersPage {
     product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
   }
 
+  splitProduct (product) {
+    this.getSplitButton(product).click();
+    let btn = product.$$('li').filter(itm => itm.getText() === 'Product')[0];
+    btn.click();
+  }
+
   getActiveVersion (product, productId) {
     return product.$(elements.activeVersion + '-' + productId);
   }

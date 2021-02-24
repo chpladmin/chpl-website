@@ -1,17 +1,21 @@
 import DevelopersPage from './developers.po';
+import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
 import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let contact, hooks, login, page;
+let actionBar, actionConfirmation, contact, hooks, login, page;
 
 describe('the Product part of the Developers page', () => {
   beforeEach(async () => {
     browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
     browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     page = new DevelopersPage();
-    login = new LoginComponent();
+    actionBar = new ActionBarComponent();
+    actionConfirmation = new ActionConfirmationComponent();
     contact = new ContactComponent();
+    login = new LoginComponent();
     hooks = new Hooks();
     await hooks.open('#/organizations/developers');
   });
@@ -137,6 +141,18 @@ describe('the Product part of the Developers page', () => {
 
         it('should have a product split', () => {
           expect(page.getSplitButton(product)).toExist();
+        });
+
+        it('should allow cancellation of a split', () => {
+          let productCount = page.products.length;
+          page.splitProduct(product);
+          page.editProductName.clearValue();
+          page.editProductName.setValue(Math.random());
+          actionBar.cancel();
+          actionConfirmation.yes.click();
+          page.productsHeader.waitForDisplayed();
+          expect(page.getProduct(productName)).toExist();
+          expect(page.products.length).toBe(productCount);
         });
       });
     });
