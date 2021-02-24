@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import ReactTooltip from 'react-tooltip';
+import {makeStyles} from '@material-ui/core/styles';
+import {Tooltip} from '@material-ui/core';
 import {bool, number, string} from 'prop-types';
 
 function ChplEllipsis (props) {
@@ -22,10 +23,11 @@ function ChplEllipsis (props) {
     <span>
       {isShortened ? display : props.text}
       {display !== props.text && isShortened &&
-       <button className="btn btn-link btn-xs" data-tip data-for="ellipsis" onClick={() => setShortened(false)}>
-         <ReactTooltip id="ellipsis" effect="solid">{props.text}</ReactTooltip>
-         <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
-       </button>
+       <BootstrapTooltip title={props.text}>
+         <button className="btn btn-link btn-xs" onClick={() => setShortened(false)}>
+           <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
+         </button>
+       </BootstrapTooltip>
       }
       {display !== props.text && !isShortened &&
        <button className="btn btn-link btn-xs" onClick={() => setShortened(true)}>
