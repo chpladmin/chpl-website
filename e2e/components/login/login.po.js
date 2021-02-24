@@ -45,6 +45,7 @@ class LoginComponent {
   }
 
   logInWithEmail (user) {
+    console.warn('this call is deprecated; use "logIn()" instead');
     this.logIn(user);
   }
 
