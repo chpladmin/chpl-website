@@ -96,6 +96,10 @@ class DevelopersPage {
     return product.$('.product__product-info').$('#merge-button');
   }
 
+  getSplitButton (product) {
+    return product.$('.product__product-info').$('#split-button');
+  }
+
   selectProduct (product) {
     product.$('.products__product-header').click();
   }
