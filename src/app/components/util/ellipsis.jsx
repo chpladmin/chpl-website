@@ -3,6 +3,23 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Tooltip} from '@material-ui/core';
 import {bool, number, string} from 'prop-types';
 
+const useStylesBootstrap = makeStyles((theme) => ({
+  arrow: {
+    color: theme.palette.common.black,
+  },
+  tooltip: {
+    backgroundColor: theme.palette.common.black,
+    textAlign: 'center',
+    fontSize: '12px',
+  },
+}));
+
+function BootstrapTooltip (props) {
+  const classes = useStylesBootstrap();
+
+  return <Tooltip arrow placement="top" classes={classes} {...props} />;
+}
+
 function ChplEllipsis (props) {
   const [isShortened, setShortened] = useState(true);
 
