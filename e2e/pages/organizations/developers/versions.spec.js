@@ -147,8 +147,7 @@ describe('the Version part of the Developers page', () => {
         });
 
         it('should create new version successfully', () => {
-          page.mergeButton.click();
-          page.versionMergeButton.click();
+          page.mergeVersion(product);
           page.moveVersionToBeMerged(versionToBeMerged);
           page.versionName.clearValue();
           page.versionName.addValue(newVersion);

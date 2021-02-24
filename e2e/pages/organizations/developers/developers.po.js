@@ -10,7 +10,6 @@ const elements = {
   activeVersion: '#active-version',
   editVersionName: '#version-name',
   editDeveloper: 'button#developer-component-edit',
-  //merge: '#merge-button',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
   versionList: '.selectable-item.ng-scope.selectable-item',
@@ -135,11 +134,6 @@ class DevelopersPage {
   get versionMergeButton () {
     return $$('.product__product-action-filter-item.ng-scope')[2];
   }
-
-  /*
-  get mergeButton () {
-    return $(elements.merge);
-  }*/
 
   get versionName () {
     return $(elements.versionName);
