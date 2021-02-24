@@ -10,7 +10,7 @@ const elements = {
   activeVersion: '#active-version',
   editVersionName: '#version-name',
   editDeveloper: 'button#developer-component-edit',
-  merge: '#merge-button',
+  //merge: '#merge-button',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
   versionList: '.selectable-item.ng-scope.selectable-item',
@@ -92,6 +92,10 @@ class DevelopersPage {
     return product.$('.product__product-info').$('#edit-button');
   }
 
+  getMergeButton (product) {
+    return product.$('.product__product-info').$('#merge-button');
+  }
+
   selectProduct (product) {
     product.$('.products__product-header').click();
   }
@@ -118,13 +122,20 @@ class DevelopersPage {
     product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
   }
 
+  mergeVersion (product) {
+    this.getMergeButton(product).click();
+    let btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
+    btn.click();
+  }
+
   get versionMergeButton () {
     return $$('.product__product-action-filter-item.ng-scope')[2];
   }
 
+  /*
   get mergeButton () {
     return $(elements.merge);
-  }
+  }*/
 
   get versionName () {
     return $(elements.versionName);
