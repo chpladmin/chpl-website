@@ -39,18 +39,13 @@ class LoginComponent {
     if (!this.usernameInput.isDisplayed()) {
       this.openLoginComponent();
     }
-    this.usernameInput.addValue(credentials[user].username);
+    this.usernameInput.addValue(credentials[user].email || credentials[user].username);
     this.passwordInput.addValue(credentials[user].password);
     this.loginButton.scrollAndClick();
   }
 
   logInWithEmail (user) {
-    if (!this.usernameInput.isDisplayed()) {
-      this.openLoginComponent();
-    }
-    this.usernameInput.addValue(credentials[user].email);
-    this.passwordInput.addValue(credentials[user].password);
-    this.loginButton.scrollAndClick();
+    this.logIn(user);
   }
 
   logOut () {
