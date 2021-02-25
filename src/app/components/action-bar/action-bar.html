@@ -26,7 +26,13 @@
       <label for="acknowledge-warnings" class="action-bar__acknowledge-warning-label">I have reviewed the warning<span ng-if="$ctrl.messages.warnings.length !== 1">s</span> and wish to proceed with this update</label>
     </span>
   </div>
-  <div class="action-bar__buttons" ng-if="!$ctrl.isWizard">
+  <div class="action-bar__buttons" ng-if="$ctrl.isNotification">
+    <div class="action-bar__button">
+      <button class="btn btn-primary" id="action-bar-close"
+              ng-click="$ctrl.act('cancel')">Close</button>
+    </div>
+  </div>
+  <div class="action-bar__buttons" ng-if="!$ctrl.isWizard && !$ctrl.isNotification">
     <div class="action-bar__button" ng-if="$ctrl.can('delete')">
       <button class="btn btn-danger" id="action-bar-delete"
               confirm="Are you sure you wish to delete?"

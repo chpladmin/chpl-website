@@ -18,7 +18,6 @@ export const SurveillanceReportQuarterComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
-      this.options = { canDelete: true };
     }
 
     $onChanges (changes) {
@@ -45,7 +44,7 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     can (action) {
-      return action === 'delete';
+      return action === 'delete' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']);
     }
 
     cancel () {

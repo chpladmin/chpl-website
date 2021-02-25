@@ -30,8 +30,8 @@
       </div>
     </div>
   </div>
-  <chpl-action-bar options="$ctrl.options"
-                   can-act="$ctrl.can(action)"
+  <chpl-action-bar can-act="$ctrl.can(action)"
+                   is-notification="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
                    take-action="$ctrl.takeActionBarAction(action)">
   </chpl-action-bar>
 </div>
