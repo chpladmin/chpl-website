@@ -7,8 +7,9 @@ export const UsersComponent = {
     takeAction: '&',
   },
   controller: class UsersComponent {
-    constructor ($anchorScroll, $log, $rootScope, authService, networkService, utilService) {
+    constructor ($analytics, $anchorScroll, $log, $rootScope, authService, networkService, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$anchorScroll = $anchorScroll;
       this.$log = $log;
       this.$rootScope = $rootScope;
@@ -66,6 +67,7 @@ export const UsersComponent = {
       case 'impersonate':
         this.networkService.impersonateUser(data)
           .then(token => {
+            that.$analytics.eventTrack('Impersonate User', { category: 'Authentication' });
             that.authService.saveToken(token.token);
             that.networkService.getUserById(that.authService.getUserId())
               .then(user => {

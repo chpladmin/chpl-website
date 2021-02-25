@@ -97,6 +97,7 @@ export const LoginComponent = {
         this.networkService.changePassword({oldPassword: this.password, newPassword: this.newPassword})
           .then(response => {
             if (response.passwordUpdated) {
+              that.$analytics.eventTrack('Change Password', { category: 'Authentication' });
               that.clear();
               that.messageClass = that.pClass;
               that.message = 'Password successfully changed';
@@ -201,6 +202,7 @@ export const LoginComponent = {
 
     logout () {
       this.authService.logout();
+      this.$analytics.eventTrack('Log Out', { category: 'Authentication' });
       this.clear();
       this.Idle.unwatch();
       this.$rootScope.$broadcast('loggedOut');
