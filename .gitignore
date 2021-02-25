@@ -13,4 +13,5 @@ ready-for-test.sh
 ready-for-integration.sh
 reset-qa.sh
 reset-local.sh
+update-pr.sh
 e2e/config/credentials.js

@@ -21,7 +21,8 @@
             <li ng-repeat="atl in $ctrl.listing.testingLabs">{{ atl.testingLabName }}</li>
           </ul>
         </span>
-        <strong>Mandatory Disclosures URL:</strong> {{ $ctrl.listing.transparencyAttestationUrl ? $ctrl.listing.transparencyAttestationUrl : 'None' }} <br />
+        <strong>Standards Version Advancement Process Notice:</strong> {{ $ctrl.listing.svapNoticeUrl ? $ctrl.listing.svapNoticeUrl : 'None' }} <br />
+        <strong>Mandatory Disclosures:</strong> {{ $ctrl.listing.transparencyAttestationUrl ? $ctrl.listing.transparencyAttestationUrl : 'None' }} <br />
         <br />
         <chpl-listing-details-view is-confirming="true"
                                    hide-direct-review="true"
