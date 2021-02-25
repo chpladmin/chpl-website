@@ -40,6 +40,9 @@ describe('On cms reverse look up page', () => {
         cmsLookup.downloadResultsButton.scrollAndClick();
         const fileName = 'CMS_ID.' + input.cmsId + '.csv';
         const filePath = path.join(global.downloadDir, fileName);
+        if (!fs.existsSync(filePath)) {
+          cmsLookup.downloadResultsButton.scrollAndClick();
+        }
         browser.waitForFileExists(filePath,config.timeout);
         assert.isTrue(fs.existsSync(filePath));
         const fileContents = fs.readFileSync(filePath, 'utf-8');

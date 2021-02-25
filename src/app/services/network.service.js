@@ -83,6 +83,10 @@ export class NetworkService {
     return this.apiPOST('/schedules/triggers', trigger);
   }
 
+  createSvap (svap) {
+    return this.apiPOST('/svaps', svap);
+  }
+
   deleteAnnouncement (announcementId) {
     return this.apiDELETE('/announcements/' + announcementId);
   }
@@ -117,6 +121,9 @@ export class NetworkService {
     return this.apiDELETE('/surveillance/' + survId + '/document/' + docId);
   }
 
+  deleteSvap (svap) {
+    return this.apiDELETE('/svaps', svap);
+  }
   deleteUser (userId) {
     return this.apiDELETE('/users/' + userId);
   }
@@ -204,24 +211,6 @@ export class NetworkService {
     return this.apiGET('/surveillance-report/annual/' + reportId);
   }
 
-  getApiActivity (options) {
-    var params = [];
-    var queryParams = '';
-    if (angular.isDefined(options.pageNumber)) { params.push('pageNumber=' + options.pageNumber); }
-    if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
-    if (options.startDate) { params.push('start=' + options.startDate.getTime()); }
-    if (options.endDate) { params.push('end=' + options.endDate.getTime()); }
-    if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
-    if (options.filter && options.filter.key) {
-      var tmp = 'filter=';
-      if (!options.showOnly) { tmp += '!'; }
-      tmp += options.filter.key;
-      params.push(tmp);
-    }
-    if (params.length > 0) { queryParams = '?' + params.join('&'); }
-    return this.apiGET('/key/activity' + queryParams);
-  }
-
   getApiDocumentationDate () {
     return this.apiGET('/files/api_documentation/details');
   }
@@ -249,6 +238,10 @@ export class NetworkService {
 
   getCertBodies () {
     return this.apiGET('/data/certification_bodies');
+  }
+
+  getCertificationCriteriaForSvap () {
+    return this.apiGET('/svaps/criteria');
   }
 
   getCertificationStatuses () {
@@ -589,6 +582,10 @@ export class NetworkService {
     return this.apiGET('/data/surveillance-process-types');
   }
 
+  getSvaps () {
+    return this.apiGET('/svaps');
+  }
+
   getTargetedUsers () {
     return this.apiGET('/data/targeted_users');
   }
@@ -836,6 +833,9 @@ export class NetworkService {
     return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
   }
 
+  updateSvap (svap) {
+    return this.apiPUT('/svaps', svap);
+  }
   updateUser (user) {
     return this.apiPUT('/users/' + user.userId, user);
   }

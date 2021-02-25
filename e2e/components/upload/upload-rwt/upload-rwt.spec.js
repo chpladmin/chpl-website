@@ -21,12 +21,12 @@ describe('When uploading rwt file as ONC-ACB', () => {
   });
 
   it('can upload valid format of rwt file', () => {
-    uploadRwtComponent.uploadRwt('../../../resources/RWT_Upload_File.csv');
+    uploadRwtComponent.uploadRwt('../../../resources/rwt/RWT_Upload_File.csv');
     assert.include(uploadRwtComponent.fileUploadText.getText(),'was uploaded successfully. The file will be processed and an email will be sent to', 'File has uploaded successfully');
   });
 
   it('cant upload invalid format of rwt file', () => {
-    uploadRwtComponent.uploadRwt('../../../resources/APIDoc_File.xlsx');
+    uploadRwtComponent.uploadRwt('../../../resources/apiDoc/APIDoc_File.xlsx');
     assert.include(uploadRwtComponent.fileUploadText.getText(),'was not uploaded successfully.');
   });
 });

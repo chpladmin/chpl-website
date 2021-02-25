@@ -214,7 +214,13 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
+      <label for="cp-svap-notice-url">Standards Version Advancement Process Notice</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.svapNoticeUrl" id="cp-svap-notice-url" name="cpSvapNoticeUrl" ng-maxlength="1024">
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpSvapNoticeUrl.$touched) && vm.editForm.cpSvapNoticeUrl.$error.url">Improper format (http://www.example.com)</div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpSvapNoticeUrl.$touched) && vm.editForm.cpSvapNoticeUrl.$error.maxlength">Field is too long</div>
+    </div>
+    <div class="form-group">
+      <label for="cp-transparency-att-url">Mandatory Disclosures</label>
       <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">
       <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
@@ -258,8 +264,10 @@
         <li ng-if="vm.hasStatusMatches()">Certification status must not repeat</li>
         <li ng-if="vm.hasDateMatches()">Only one change of certification status allowed per day</li>
         <li ng-if="vm.editForm.cpAcbCertId.$error.maxlength">ACB Certification ID is too long</li>
-        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Mandatory Disclosures URL is an invalid format (http://www.example.com)</li>
-        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.maxlength">Mandatory Disclosures URL is too long</li>
+        <li ng-if="vm.editForm.cpSvapNoticeUrl.$error.url">Standards Version Advancement Process Notice is an invalid format (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpSvapNoticeUrl.$error.maxlength">Standards Version Advancement Process Notice is too long</li>
+        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Mandatory Disclosures is an invalid format (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.maxlength">Mandatory Disclosures is too long</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.required">Report File Location URL is required</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.maxlength">Report File Locaiton URL is too long</li>

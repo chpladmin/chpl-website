@@ -13,6 +13,11 @@ class ToastComponent {
   get toastTitle () {
     return $(elements.title);
   }
+
+  get toastContainer () {
+    return $(elements.container);
+  }
+
 }
 
 export default ToastComponent;
