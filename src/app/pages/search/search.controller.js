@@ -26,6 +26,7 @@
     vm.reloadResults = reloadResults;
     vm.statusFont = utilService.statusFont;
     vm.stopCacheRefresh = stopCacheRefresh;
+    vm.trackEntry = trackEntry;
     vm.triggerAllowAll = triggerAllowAll;
     vm.triggerClearFilters = triggerClearFilters;
     vm.triggerRestoreState = triggerRestoreState;
@@ -251,6 +252,12 @@
         $interval.cancel(vm.stopCacheRefreshPromise);
         vm.stopCacheRefreshPromise = undefined;
       }
+    }
+
+    function trackEntry (type, value) {
+      if (!value) { return; }
+      let event = 'Enter value into ' + type + ' Search';
+      $analytics.eventTrack(event, { category: 'Search', label: value });
     }
 
     function triggerAllowAll () {

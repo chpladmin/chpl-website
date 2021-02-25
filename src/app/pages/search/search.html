@@ -16,6 +16,7 @@
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
                    ng-model="vm.query" ng-change="vm.activeSearch = true"
+                   ng-blur="vm.trackEntry('Main', vm.query)"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
             <span class="input-group-btn">
               <button ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="btn btn-default" ng-click="vm.browseAll()"><i class="fa fa-ellipsis-h"></i> Browse all</button>
@@ -279,6 +280,8 @@
                       placeholder="Developer"
                       ai-enhanced-text
                       has-changes="vm.categoryChanged['developer']"
+                      ng-model="vm.developerQuery"
+                      ng-blur="vm.trackEntry('Developer', vm.developerQuery)"
                       predicate="developerSearch"
                       register-clear-filter="vm.registerClearFilter(clearFilter)"
                       register-restore-state="vm.registerRestoreState(restoreState)"
@@ -301,6 +304,8 @@
                       placeholder="Product"
                       ai-enhanced-text
                       has-changes="vm.categoryChanged['product']"
+                      ng-model="vm.productQuery"
+                      ng-blur="vm.trackEntry('Product', vm.productQuery)"
                       predicate="product"
                       register-clear-filter="vm.registerClearFilter(clearFilter)"
                       register-restore-state="vm.registerRestoreState(restoreState)"
@@ -323,6 +328,8 @@
                       placeholder="Version"
                       ai-enhanced-text
                       has-changes="vm.categoryChanged['version']"
+                      ng-model="vm.versionQuery"
+                      ng-blur="vm.trackEntry('Version', vm.versionQuery)"
                       predicate="version"
                       register-clear-filter="vm.registerClearFilter(clearFilter)"
                       register-restore-state="vm.registerRestoreState(restoreState)"
