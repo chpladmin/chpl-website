@@ -684,6 +684,7 @@ export const ReportsListingsComponent = {
           {key: 'rwtPlansCheckDate', display: 'Real World Testing Plans Last Completeness Check Date', filter: 'date'},
           {key: 'rwtResultsUrl', display: 'Real World Testing Results URL'},
           {key: 'rwtResultsCheckDate', display: 'Real World Testing Results Last Completeness Check Date', filter: 'date'},
+          {key: 'svapNoticeUrl', display: 'SVAP Notice URL'},
         ];
         var nestedKeys = [
           {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},

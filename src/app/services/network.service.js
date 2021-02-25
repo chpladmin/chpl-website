@@ -211,24 +211,6 @@ export class NetworkService {
     return this.apiGET('/surveillance-report/annual/' + reportId);
   }
 
-  getApiActivity (options) {
-    var params = [];
-    var queryParams = '';
-    if (angular.isDefined(options.pageNumber)) { params.push('pageNumber=' + options.pageNumber); }
-    if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
-    if (options.startDate) { params.push('start=' + options.startDate.getTime()); }
-    if (options.endDate) { params.push('end=' + options.endDate.getTime()); }
-    if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
-    if (options.filter && options.filter.key) {
-      var tmp = 'filter=';
-      if (!options.showOnly) { tmp += '!'; }
-      tmp += options.filter.key;
-      params.push(tmp);
-    }
-    if (params.length > 0) { queryParams = '?' + params.join('&'); }
-    return this.apiGET('/key/activity' + queryParams);
-  }
-
   getApiDocumentationDate () {
     return this.apiGET('/files/api_documentation/details');
   }
