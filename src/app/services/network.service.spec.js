@@ -536,34 +536,6 @@
         $httpBackend.flush();
       });
 
-      xit('should getApiActivity', () => {
-        $httpBackend.expectGET(/^\/rest\/key\/activity$/).respond(200, {data: 'response'});
-        networkService.getApiActivity({}).then(response => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/key\/activity\?pageNumber=1&pageSize=2&start=\d+&end=\d+&dateAscending=true&filter=!apiKeyFilter$/).respond(200, {data: 'response'});
-        networkService.getApiActivity({
-          pageNumber: 1,
-          pageSize: 2,
-          startDate: new Date(),
-          endDate: new Date(),
-          dateAscending: true,
-          filter: 'apiKeyFilter',
-        }).then(response => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/key\/activity\?filter=apiKeyFilter$/).respond(200, {data: 'response'});
-        networkService.getApiActivity({
-          filter: 'apiKeyFilter',
-          showOnly: true,
-        }).then(response => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getApiDocumentationDate', () => {
         $httpBackend.expectGET(/^\/rest\/files\/api_documentation\/details$/).respond(200, {data: 'response'});
         networkService.getApiDocumentationDate().then(response => {
