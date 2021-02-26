@@ -11,11 +11,12 @@ describe('the Product part of the Developers page', () => {
   beforeEach(async () => {
     browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
     browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
-    hooks = new Hooks();
+    page = new DevelopersPage();
     actionBar = new ActionBarComponent();
     contact = new ContactComponent();
     login = new LoginComponent();
     toast = new ToastComponent();
+    hooks = new Hooks();
     await hooks.open('#/organizations/developers');
   });
 
@@ -32,7 +33,6 @@ describe('the Product part of the Developers page', () => {
     describe('when on the "Greenway Health, LLC" Developer page', () => {
       beforeEach(() => {
         let developer = 'Greenway Health, LLC';
-        page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
       });
@@ -119,6 +119,77 @@ describe('the Product part of the Developers page', () => {
             expect(page.editProductName).toBeDisplayed();
             expect(page.editProductName.getValue()).toBe(newName);
           });
+        });
+      });
+    });
+  });
+
+  describe('when logged in as an Admin', () => {
+    beforeEach(() => {
+      login.logIn('admin');
+      login.logoutButton.waitForDisplayed();
+    });
+
+    afterEach(() => {
+      login.logOut();
+    });
+
+    describe('when on the "Medical Information Technology, Inc. (MEDITECH)" Developer page', () => {
+      const developer = 'Medical Information Technology, Inc. (MEDITECH)';
+      let product;
+
+      beforeEach(() => {
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+      });
+
+      describe('when on the "MEDITECH MAGIC Oncology" product', () => {
+        const productName = 'MEDITECH MAGIC Oncology';
+
+        beforeEach(() => {
+          product = page.getProduct(productName);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        it('should have a product split', () => {
+          expect(page.getSplitButton(product)).toExist();
+        });
+
+        it('should allow a split to happen', () => {
+          // arrange
+          let productCount = page.products.length;
+          const newName = productName + ' - split - ' + (new Date()).getTime();
+          const newCode = newName.substring(newName.length - 4);
+          const movingVersionId = '6266';
+          page.splitProduct(product);
+          page.editProductName.setValue(newName);
+          page.editProductCode.setValue(newCode);
+          page.moveVersion(movingVersionId);
+
+          // act
+          actionBar.save();
+          page.productsHeader.waitForDisplayed();
+
+          // assert product list is updated
+          expect(page.getProduct(productName)).toExist();
+          expect(page.getProduct(newName)).toExist();
+          expect(page.products.length).toBe(productCount + 1);
+
+          // assert old product is updated
+          product = page.getProduct(productName);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          expect(page.getVersionCount(product).getText()).toBe('1 Version');
+
+          // assert new product is correct
+          product = page.getProduct(newName);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          expect(page.getVersionCount(product).getText()).toBe('1 Version');
         });
       });
     });

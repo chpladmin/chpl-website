@@ -7,6 +7,7 @@ const elements = {
   editVersionHeader: 'h2=Edit Version Details',
   products: '.products__product',
   editProductName: '#product-name',
+  editProductCode: '#product-code',
   activeVersion: '#active-version',
   editVersionName: '#version-name',
   editDeveloper: 'button#developer-component-edit',
@@ -74,6 +75,10 @@ class DevelopersPage {
     return $(elements.editProductName);
   }
 
+  get editProductCode () {
+    return $(elements.editProductCode);
+  }
+
   get editVersionName () {
     return $(elements.editVersionName);
   }
@@ -116,6 +121,10 @@ class DevelopersPage {
     this.getSplitButton(product).click();
     let btn = product.$$('li').filter(itm => itm.getText() === 'Product')[0];
     btn.click();
+  }
+
+  moveVersion (id) {
+    $('#products-version-move-new-' + id).click();
   }
 
   getActiveVersion (product, productId) {
