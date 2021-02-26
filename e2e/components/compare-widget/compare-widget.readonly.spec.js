@@ -32,7 +32,7 @@ describe('on compare widget', () => {
   describe('if there is exactly 1 listing added for compare', () => {
     beforeAll(() => {
       search.searchForListing(search2);
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search2));
       compare.addListingToCompare(ListingId2);
     });
 
@@ -56,10 +56,10 @@ describe('on compare widget', () => {
   describe('if there are at least 2 listings added for compare', () => {
     beforeAll(() => {
       search.searchForListing(search1);
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search1));
       compare.addListingToCompare(ListingId1);
       search.searchForListing(search2);
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search2));
       compare.addListingToCompare(ListingId2);
     });
 
