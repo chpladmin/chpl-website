@@ -1,3 +1,0 @@
-<span>
-  {{ $ctrl.isShortened ? $ctrl.displayText : $ctrl.text }} <span ng-if="$ctrl.isShortened"><button class="btn btn-link btn-xs" uib-tooltip="{{ $ctrl.text }}" ng-click="$ctrl.isShortened = false; $ctrl.canExpand = true"><i class="fa fa-ellipsis-h"></i><span class="sr-only">Expand description</span></button></span><button class="btn btn-link btn-xs" ng-click="$ctrl.isShortened = true" ng-if="!$ctrl.isShortened && $ctrl.canExpand"><i class="fa fa-arrow-left"></i><span class="sr-only">Minimize description</span></button>
-</span>

@@ -4,11 +4,13 @@ export const FuzzyMatchingComponent = {
     fuzzyTypes: '<',
   },
   controller: class FuzzyMatchingComponent {
-    constructor ($log, authService, networkService) {
+    constructor ($log, $scope, authService, networkService) {
       'ngInject';
       this.$log = $log;
+      this.$scope = $scope;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
+      this.takeAction = this.takeAction.bind(this);
     }
 
     $onChanges (changes) {
@@ -34,8 +36,10 @@ export const FuzzyMatchingComponent = {
             that.activeType = undefined;
           });
         break;
-                //no default
+        //no default
+
       }
+      this.$scope.$apply();
     }
   },
 };
