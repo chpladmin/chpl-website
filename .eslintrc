@@ -4,7 +4,13 @@
     ],
     "extends": [
         "eslint:recommended",
+        "plugin:react/recommended"
     ],
+    "settings": {
+        "react": {
+            "version": "detect",
+        },
+    },
     "env": {
         "browser": true,
         "jasmine": true,
@@ -13,8 +19,8 @@
     },
     "globals": {
         "angular": true,
-        "module": true,
         "inject": true,
+        "module": true,
     },
     "parser": "babel-eslint",
     "rules": {
@@ -25,7 +31,10 @@
         "eol-last": ["error"],
         "eqeqeq": ["error"],
         "func-call-spacing": ["error"],
-        "indent": ["error", 2, { "flatTernaryExpressions": true }],
+        "indent": ["error", 2, {
+            "flatTernaryExpressions": true,
+            "ignoredNodes": ["JSXElement", "JSXElement > *", "JSXAttribute", "JSXIdentifier", "JSXNamespacedName", "JSXMemberExpression", "JSXSpreadAttribute", "JSXExpressionContainer", "JSXOpeningElement", "JSXClosingElement", "JSXText", "JSXEmptyExpression", "JSXSpreadChild", "ReturnStatement"],
+         }],
         "key-spacing": ["error"],
         "keyword-spacing": ["error"],
         "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
@@ -48,5 +57,13 @@
         "angular/file-name": ["off"],
         "angular/function-type": ["off"],
         "angular/service-name": ["off"],
-    }
+    },
+    "overrides": [
+    {
+    "files": ["*.jsx", "*.spec.js"],
+    "rules": {
+    "no-console": ["off"],
+    },
+    },
+    ],
 }
