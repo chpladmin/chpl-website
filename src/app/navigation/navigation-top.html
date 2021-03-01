@@ -30,12 +30,12 @@
           <li class="dropdown" uib-dropdown is-open="vm.resourcesIsOpen">
             <a href class="dropdown-toggle" id="resource-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.resourcesIsOpen">CHPL Resources <span class="fa" ng-class="vm.resourcesIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="resource-toggle" id="resource-dropdown-menu">
-              <li><a ui-sref="resources.overview">Overview</a></li>
+              <li><a ui-sref="resources.overview" analytics-on="click" analytics-event="Go to Overview Page" analytics-properties="{ category: 'Navigation' }">Overview</a></li>
               <li><a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide <i class="fa fa-download text-right"></i></a></li>
-              <li><a ui-sref="resources.cms-lookup">CMS ID Reverse Lookup</a></li>
-              <li><a ui-sref="resources.download">Download the CHPL</a></li>
-              <li><a ui-sref="resources.chpl-api">CHPL API</a></li>
-              <li><a href="https://www.healthit.gov/form/healthit-feedback-form">Contact Us</a></li>
+              <li><a ui-sref="resources.cms-lookup" analytics-on="click" analytics-event="Go to CMS ID Reverse Lookup Page" analytics-properties="{ category: 'Navigation' }">CMS ID Reverse Lookup</a></li>
+              <li><a ui-sref="resources.download" analytics-on="click" analytics-event="Go to Download the CHPL Page" analytics-properties="{ category: 'Navigation' }">Download the CHPL</a></li>
+              <li><a ui-sref="resources.chpl-api" analytics-on="click" analytics-event="Go to CHPL API Page" analytics-properties="{ category: 'Navigation' }">CHPL API</a></li>
+              <li><a href="https://www.healthit.gov/form/healthit-feedback-form" analytics-on="click" analytics-event="Go to Contact Us Page" analytics-properties="{ category: 'Navigation' }">Contact Us</a></li>
             </ul>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.collectionsIsOpen">

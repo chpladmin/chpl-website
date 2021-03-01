@@ -89,7 +89,7 @@ export const ListingComponent = {
     }
 
     viewListingHistory () {
-      this.$analytics.eventTrack('Open Listing History', { category: 'Listing Details' });
+      this.$analytics.eventTrack('Open Listing History', { category: 'Listing Details', label: this.listing.chplProductNumber });
       let that = this;
       this.$uibModal.open({
         component: 'chplListingHistory',

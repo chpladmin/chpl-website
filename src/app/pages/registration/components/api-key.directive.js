@@ -21,7 +21,7 @@
   }
 
   /** @ngInject */
-  function ApiKeyController ($log, networkService) {
+  function ApiKeyController ($analytics, $log, networkService) {
     var vm = this;
 
     vm.loadUsers = loadUsers;
@@ -48,6 +48,8 @@
 
     function register () {
       if (vm.user.name && vm.user.email) {
+        let label = '...@' + vm.user.email.split('@')[1];
+        $analytics.eventTrack('Register For API Key', { category: 'CHPL API', label: label });
         networkService.registerApi(vm.user)
           .then(function (result) {
             vm.key = result.keyRegistered;

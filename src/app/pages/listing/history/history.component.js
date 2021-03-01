@@ -79,7 +79,7 @@ export const ListingHistoryComponent = {
     }
 
     goToApi () {
-      this.$analytics.eventTrack('Go To API Page', { category: 'Listing Details' });
+      this.$analytics.eventTrack('Go To API Page', { category: 'Listing Details', label: this.listing.chplProductNumber });
       this.$state.go('resources.chpl-api');
       this.cancel();
     }
