@@ -10,6 +10,11 @@ module.exports = [
     message: 'Success',
   },
   {
+    testName: 'v20 template',
+    path: '../../../resources/listings/2015_v20_AQA5.csv',
+    message: 'Success',
+  },
+  {
     testName: 'only required columns template',
     path: '../../../resources/upload-listing-beta/2015_RequiredColumns.csv' ,
     message: 'Success',
