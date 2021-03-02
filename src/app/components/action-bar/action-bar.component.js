@@ -4,6 +4,7 @@ export const ActionBarComponent = {
     canAct: '&',
     errorMessages: '<',
     isDisabled: '<',
+    isNotification: '<',
     isWizard: '@',
     takeAction: '&',
     warningMessages: '<',
