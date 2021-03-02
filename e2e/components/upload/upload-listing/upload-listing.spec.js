@@ -22,7 +22,7 @@ describe('When uploading a listing as ONC-ACB', () => {
 
   it('can\'t upload a file which doesn\'t match current template', () => {
     uploadListingComponent.uploadListing('../../../resources/upload-listing-beta/2015_WithCriteria.csv');
-    assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully. Available templates are:');
+    assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully');
   });
 
   it('can upload v19 template', () => {
