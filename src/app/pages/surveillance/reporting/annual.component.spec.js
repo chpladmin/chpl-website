@@ -7,9 +7,13 @@
     mock = {
       report: {id: 1},
       response: {
-        user: {
-          fullName: 'A Name',
-          email: 'email',
+        job: {
+          jobDataMap: {
+            user: {
+              fullName: 'A Name',
+              email: 'email',
+            },
+          },
         },
       },
     };
@@ -82,7 +86,7 @@
           expect(toaster.pop).toHaveBeenCalledWith({
             type: 'success',
             title: 'Report is being generated',
-            body: `Annual Surveillance report is being generated, and will be emailed to ${mock.response.user.fullName} at ${mock.response.user.email} when ready.`,
+            body: 'Annual Surveillance report is being generated, and will be emailed to A Name at email when ready.',
           });
         });
 
