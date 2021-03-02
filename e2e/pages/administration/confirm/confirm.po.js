@@ -8,6 +8,7 @@ const confirmElements = {
   confirmButton: '#inspect-confirm',
   toastContainertitle: '.ng-binding.toast-title',
   rejectButtonOnInspectListing: '#inspect-reject',
+  errorMessage: '.bg-danger',
 };
 
 class ConfirmPage {
@@ -43,6 +44,10 @@ class ConfirmPage {
 
   get rejectButtonOnInspectListing () {
     return $(confirmElements.rejectButtonOnInspectListing);
+  }
+
+  get errorMessage () {
+    return $(confirmElements.errorMessage);
   }
 
   rejectCheckbox (chplId) {
