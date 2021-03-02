@@ -121,6 +121,7 @@ describe('the search page', () => {
     const acbId = '170008R01';
     beforeEach(() => {
       page.searchForListing(acbId);
+      hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
     });
 

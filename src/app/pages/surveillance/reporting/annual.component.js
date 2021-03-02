@@ -27,6 +27,10 @@ export const SurveillanceReportAnnualComponent = {
       this.onSave({report: this.report});
     }
 
+    can (action) {
+      return action === 'delete' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']);
+    }
+
     cancel () {
       this.report = angular.copy(this.backup.report);
       this.onCancel();
@@ -36,12 +40,27 @@ export const SurveillanceReportAnnualComponent = {
       this.takeAction({report: this.report, action: 'delete'});
     }
 
+    takeActionBarAction (action) {
+      switch (action) {
+      case 'cancel':
+        this.cancel();
+        break;
+      case 'delete':
+        this.delete();
+        break;
+      case 'save':
+        this.save();
+        break;
+      //no default
+      }
+    }
+
     generateReport () {
       let that = this;
       this.networkService.generateAnnualSurveillanceReport(this.report.id)
-        .then(results => {
-          let name = results.user.friendlyName ? results.user.friendlyName : results.user.fullName;
-          let email = results.user.email;
+        .then(response => {
+          let name = response.job.jobDataMap.user.friendlyName || response.job.jobDataMap.user.fullName;
+          let email = response.job.jobDataMap.user.email;
           that.toaster.pop({
             type: 'success',
             title: 'Report is being generated',

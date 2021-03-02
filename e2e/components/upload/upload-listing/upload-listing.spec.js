@@ -22,7 +22,7 @@ describe('When uploading a listing as ONC-ACB', () => {
 
   it('can\'t upload a file which doesn\'t match current template', () => {
     uploadListingComponent.uploadListing('../../../resources/upload-listing-beta/2015_WithCriteria.csv');
-    assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully. Available templates are:');
+    assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully');
   });
 
   it('can upload v19 template', () => {
@@ -32,6 +32,11 @@ describe('When uploading a listing as ONC-ACB', () => {
 
   it('can upload v18 template', () => {
     uploadListingComponent.uploadListing('../../../resources/listings/2015_v18_AQA2.csv');
+    assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+  });
+
+  it('can upload v20 template', () => {
+    uploadListingComponent.uploadListing('../../../resources/listings/2015_v20_AQA5.csv');
     assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
   });
 });
