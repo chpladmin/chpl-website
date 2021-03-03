@@ -1,5 +1,6 @@
 import { ChplEllipsis } from './util/';
 import { ChplFuzzyType } from './fuzzy-type/';
+import { ChplUploadListings } from './upload/';
 import { reactToAngularComponent } from '../services/angular-react-helper.jsx';
 
 angular
@@ -21,4 +22,5 @@ angular
   ])
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
+  .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
 ;
