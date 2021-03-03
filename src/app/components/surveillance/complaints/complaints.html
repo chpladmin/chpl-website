@@ -100,7 +100,7 @@
         <table class="table table-condensed" id="complaints-table">
           <thead>
             <tr>
-              <td colspan="7" class="text-center">
+              <td colspan="{{ ($ctrl.displayAdd || $ctrl.displayDelete) ? '7' : '6' }}" class="text-center">
                 <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
               </td>
             </tr>
@@ -111,12 +111,12 @@
               <th scope="col" class="search-header" st-sort="acbComplaintId" st-skip-natural="true">ONC-ACB Complaint Id</th>
               <th scope="col" class="search-header" st-sort="oncComplaintId" st-skip-natural="true">ONC Complaint Id</th>
               <th scope="col" class="search-header" st-sort="complainantTypeName" st-skip-natural="true">Complainant Type</th>
-              <th scope="col">Actions</th>
+              <th scope="col" ng-if="$ctrl.displayAdd || $ctrl.displayDelete">Actions</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
-              <td colspan="7" class="text-center">
+              <td colspan="{{ ($ctrl.displayAdd || $ctrl.displayDelete) ? '7' : '6' }}" class="text-center">
                 <div class="text-right">
                   <label for="pageSizeTop" class="sr-only">Show how many results</label>
                   Showing up to&nbsp;
@@ -144,8 +144,12 @@
                 {{ complaint.complainantType.name }}
                 <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
               </td>
-              <td>
-                <button class="btn btn-link" ng-click="$ctrl.selectComplaint(complaint)" title="Edit Complaint" id="edit-complaint-{{ complaint.id }}"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
+              <td ng-if="$ctrl.displayEdit || $ctrl.displayDelete">
+                <button class="btn btn-link"
+                        ng-click="$ctrl.selectComplaint(complaint)"
+                        ng-if="$ctrl.displayEdit"
+                        title="Edit Complaint"
+                        id="edit-complaint-{{ complaint.id }}"><i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
                 <button class="btn btn-danger btn-link"
                         title="Delete Complaint"
                         id="delete-complaint-{{ complaint.id }}"
