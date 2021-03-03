@@ -147,7 +147,11 @@ export const ListingDetailsViewComponent = {
     }
 
     toggleViewAllCerts () {
-      this.$analytics.eventTrack('Toggle See All Certification Criteria/Clinical Quality Measures', { category: 'Listing Details' });
+      if (this.viewAllCerts) {
+        this.$analytics.eventTrack('See All Certification Criteria/Clinical Quality Measures', { category: 'Listing Details', label: this.listing.chplProductNumber });
+      } else {
+        this.$analytics.eventTrack('See Only Certified Certification Criteria/Clinical Quality Measures', { category: 'Listing Details', label: this.listing.chplProductNumber });
+      }
     }
 
     viewIcsFamily () {
