@@ -73,6 +73,13 @@ let states = [
     },
     data: { title: 'CHPL Developers - Merge Product' },
   },{
+    name: 'organizations.developers.developer.product.split',
+    url: '/split',
+    views: {
+      'view@^.^': 'chplProductsSplit',
+    },
+    data: { title: 'CHPL Developers - Split Product' },
+  },{
     name: 'organizations.developers.developer.product.version',
     url: '/versions/{versionId}',
     abstract: true,
