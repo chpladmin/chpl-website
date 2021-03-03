@@ -24,6 +24,7 @@
         "indent": ["error"],
         "key-spacing": ["error"],
         "keyword-spacing": ["error"],
+        "no-console": "off",
         "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
         "no-multiple-empty-lines": ["error", { "max": 1 }],
         "no-self-compare": ["error"],

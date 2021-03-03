@@ -1,0 +1,79 @@
+<span ng-form="$ctrl.form">
+  <div class="flex-container">
+    <div class="flex-item">
+      <h1>Split {{ $ctrl.request.oldProduct.name }}</h1>
+    </div>
+  </div>
+  <div class="flex-container">
+    <div class="flex-item">
+      <div class="panel-default">
+        <div class="panel-heading products__products-header">
+          <div class="products__products-header-item"><h2 class="panel-title">Original Product</h2></div>
+        </div>
+        <div class="panel-body">
+          <div class="data-label">Product Name</div>
+          <div class="read-only-data">{{ $ctrl.request.oldProduct.name }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-item">
+      <div class="panel-default">
+        <div class="panel-heading products__products-header">
+          <div class="products__products-header-item"><h2 class="panel-title">New Product</h2></div>
+        </div>
+        <div class="panel-body">
+          <div class="product__edit-information-product">
+            <div class="data-label"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
+            <div>
+              <input class="form-control" type="text" id="product-name" name="productName"
+                     ng-model="$ctrl.request.newProductName" required ng-maxlength="300">
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productName.$touched) && $ctrl.form.productName.$error.maxlength">Field is too long</div>
+            </div>
+            <div class="data-label"><label for="product-code">Product Code <span class="text-danger">*</span></label></div>
+            <div>
+              <input class="form-control" type="text" id="product-code" name="productCode"
+                     ng-pattern="/^[A-Za-z0-9_]{4}$/" ng-model="$ctrl.request.newProductCode" required>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productCode.$touched) && $ctrl.form.productCode.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.productCode.$touched) && !$ctrl.form.productCode.$error.required && !$ctrl.form.productCode.$valid">Product Code must consist of letters, numbers and/or "_", and be 4 characters long</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-container">
+    <div class="flex-item panel panel-default">
+      <div class="panel-body">
+        <h5>Versions staying with original Product</h5>
+        <div class="bg-danger" ng-if="$ctrl.request.oldVersions.length === 0">At least one Version must stay with original Product</div>
+        <div class="flex-container container-striped" ng-class-even="'even'" ng-class-odd="'odd'" ng-repeat="version in $ctrl.request.oldVersions | orderBy: 'version'">
+          <div class="flex-item cross-axis-align-center">
+            {{ version.version }}
+          </div>
+          <div class="flex-item text-right narrowest">
+            <button class="btn btn-default" id="products-version-move-new-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-item panel panel-default">
+      <div class="panel-body">
+        <h5>Versions moving to new Product</h5>
+        <div class="bg-danger" ng-if="$ctrl.request.newVersions.length === 0">At least one Version must be selected to move</div>
+        <div class="flex-container container-striped" ng-class-even="'even'" ng-class-odd="'odd'" ng-repeat="version in $ctrl.request.newVersions | orderBy: 'version'">
+          <div class="flex-item cross-axis-align-center">
+            {{ version.version }}
+          </div>
+          <div class="flex-item text-right narrowest">
+            <button class="btn btn-default" id="products-version-move-old-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"
+                   error-messages="$ctrl.errors"
+                   take-action="$ctrl.takeActionBarAction(action)">
+  </chpl-action-bar>
+</span>
