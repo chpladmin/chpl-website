@@ -16,19 +16,6 @@
     mock.certificationStatuses = ['Active', 'Retired'];
     mock.uploadingCps = {pendingCertifiedProducts: []};
     mock.uploadingSurveillances = {surveillances: []};
-    mock.fakeModalOptions = {
-      templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
-      controller: 'SplitProductController',
-      controllerAs: 'vm',
-      animation: false,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
-      resolve: {
-        product: jasmine.any(Function),
-        versions: jasmine.any(Function),
-      },
-    };
 
     beforeEach(function () {
       angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
@@ -175,54 +162,6 @@
       vm.selectProduct();
       expect(vm.activeProduct).toEqual({product: 'product1', developerId: '123'});
       expect(networkService.getVersionsByProduct).toHaveBeenCalled();
-    });
-
-    describe('splitting a Product', function () {
-      it('should create a modal instance when a Product is to be split', function () {
-        vm.activeProduct = mock.products[0];
-        expect(vm.splitProductInstance).toBeUndefined();
-        vm.splitProduct();
-        expect(vm.splitProductInstance).toBeDefined();
-      });
-
-      it('should resolve the product & associated versions on a split', function () {
-        var product = mock.products[0];
-        vm.activeProduct = product;
-        vm.versions = [1,2,3];
-        vm.splitProduct();
-        expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-        expect(actualOptions.resolve.product()).toEqual(mock.products[0]);
-        expect(actualOptions.resolve.versions()).toEqual([1,2,3]);
-      });
-
-      it('should set the activeProduct and versions to match the returned data', function () {
-        var product = mock.products[0];
-        vm.products = [1,2];
-        vm.activeProduct = product;
-        vm.versions = [1,2,3];
-        vm.splitProduct();
-        vm.splitProductInstance.close({product: 'product', versions: [1,2], newProduct: 'new'});
-        expect(vm.activeProduct).toEqual('product');
-        expect(vm.versions).toEqual([1,2]);
-        expect(vm.products[2]).toEqual('new');
-      });
-
-      it('should log a cancelled modal', function () {
-        var logCount = $log.info.logs.length;
-        var product = mock.products[0];
-        vm.activeProduct = product;
-        vm.splitProduct();
-        vm.splitProductInstance.dismiss('cancelled');
-        expect($log.info.logs.length).toBe(logCount + 1);
-      });
-
-      it('should report messages if they were sent back', function () {
-        var product = mock.products[0];
-        vm.activeProduct = product;
-        vm.splitProduct();
-        vm.splitProductInstance.dismiss('split messages');
-        expect(vm.productMessage).toBe('split messages');
-      });
     });
 
     describe('editing a Listing', function () {

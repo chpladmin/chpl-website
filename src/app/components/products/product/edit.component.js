@@ -31,7 +31,7 @@ export const ProductEditComponent = {
     }
 
     $onChanges (changes) {
-      if (changes.product) {
+      if (changes.product && changes.product.currentValue) {
         this.product = angular.copy(changes.product.currentValue);
         this.product.ownerHistory = this.product.ownerHistory
           .filter(o => o.transferDate)
