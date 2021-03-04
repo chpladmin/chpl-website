@@ -1,3 +1,25 @@
+import React/*, { useState }*/ from 'react';
+import {ThemeProvider} from '@material-ui/core/styles';
+//import Button from '@material-ui/core/Button';
+//import Snackbar from '@material-ui/core/Snackbar';
+//import MuiAlert from '@material-ui/lab/Alert';
+import theme from '../../../themes/theme';
+//import { getAngularService } from './';
+
+function ChplConfirmListings () {
+
+  return (
+    <ThemeProvider theme={theme}>
+    <div>Text</div>
+    </ThemeProvider>
+  );
+}
+
+export { ChplConfirmListings };
+
+ChplConfirmListings.propTypes = {};
+
+/*
 <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" ui-view>
   <div class="col-md-12">
     <h2>View Products in the process of upload</h2>
@@ -54,7 +76,6 @@
     </table>
   </div>
   <div class="col-md-12" feature-flag="enhanced-upload">
-    <chpl-confirm-listings-bridge></chpl-confirm-listings-bridge>
     <h2>View (Beta) Products in the process of upload</h2>
     <p ng-if="!$ctrl.uploadedListings || $ctrl.uploadedListings.length === 0">No products currently in queue</p>
     <div ng-if="$ctrl.uploadedListingsMessages">
@@ -117,3 +138,4 @@
     </chpl-login>
   </div>
 </div>
+*/
