@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import {ThemeProvider} from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import {getAngularService} from './';
+import theme from '../../themes/theme';
+import { getAngularService } from './';
 
 function ChplUploadListings () {
   const [file, setFile] = useState(undefined);
   const [toastMessage, setToastMessage] = useState('');
   const [toastOpen, setToastOpen] = useState(false);
-  const [uploadErrors] = useState([]);
-  const [uploadMessage] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState(true);
-  const [uploadWarnings] = useState([]);
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -60,65 +60,61 @@ function ChplUploadListings () {
   };
 
   return (
-    <div className="panel panel-default">
-      <div className="panel-heading">
-        <h3 className="panel-title">Upload Certified Products (Beta)</h3>
-      </div>
-      <div className="panel-body">
-        CSV files only
-        {uploadMessage &&
-         <div className={uploadSuccess ? 'bg-success' : 'bg-danger'}>
-           {uploadMessage}
-           {uploadErrors &&
-            <ul className="bg-danger">
-              {uploadErrors.map(e => <li key={e}>{e}</li>)}
-            </ul>
-           }
-           {uploadWarnings &&
-            <ul className="bg-warning list-unstyled">
-              {uploadWarnings.map(w => <li key={w}>{w}</li>)}
-            </ul>
-           }
-         </div>
-        }
-        <form className="form form-horizontal">
+    <ThemeProvider theme={theme}>
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h3 className="panel-title">Upload Certified Products (Beta)</h3>
+        </div>
+        <div className="panel-body">
+          CSV files only
           <div className="row">
-            <div className={file ? 'col-sm-3' : 'col-sm-12'}>
-              <input type="file" onChange={onFileChange} />
+            <div className={ file ? 'col-sm-3' : 'col-sm-12' }>
+              <Button color="primary"
+                      variant={ file ? 'outlined' : 'contained' }
+                      component="label">
+                Choose file to upload
+                <input type="file"
+                       onChange={ onFileChange }
+                       style={{ display: 'none' }}/>
+              </Button>
             </div>
-            {file &&
-             <>
-               <div className="col-sm-3">
-                 <strong>Filename: </strong>{file.name}
-               </div>
-               <div className="col-sm-3">
-                 <strong>File size: </strong>{file.size}
-               </div>
-               <div className="col-sm-3">
-                 <button type="button" className="btn btn-ai-success" onClick={uploadFile}>
-                   <i className="fa fa-cloud-upload"></i> Upload
-                 </button>
-                 <button type="button" className="btn btn-danger" onClick={clearFile}>
-                   <i className="fa fa-trash-o"></i> Remove
-                 </button>
-               </div>
-             </>
+            { file &&
+              <>
+                <div className="col-sm-3">
+                  <strong>Filename:</strong> { file.name }
+                </div>
+                <div className="col-sm-3">
+                  <strong>File size:</strong> { file.size }
+                </div>
+                <div className="col-sm-3">
+                  <Button color="primary"
+                          variant="contained"
+                          onClick={ uploadFile }>
+                    <i className="fa fa-cloud-upload"></i> Upload
+                  </Button>
+                  <Button color="warning"
+                          variant="contained"
+                          onClick={ clearFile }>
+                    <i className="fa fa-trash-o"></i> Remove
+                  </Button>
+                </div>
+              </>
             }
           </div>
-        </form>
+        </div>
+        <Snackbar open={ toastOpen }
+                  onClose={ handleToastClose }
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+          <MuiAlert onClose={ handleToastClose } severity={ uploadSuccess ? 'success' : 'error' }>
+            { toastMessage }
+          </MuiAlert>
+        </Snackbar>
       </div>
-      <Snackbar open={toastOpen}
-                onClose={handleToastClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right'}}>
-        <MuiAlert onClose={handleToastClose} severity={uploadSuccess ? 'success' : 'error'}>
-          {toastMessage}
-        </MuiAlert>
-      </Snackbar>
-    </div>
+    </ThemeProvider>
   );
 }
 
-export {ChplUploadListings};
+export { ChplUploadListings };
 
 ChplUploadListings.propTypes = {};
 
