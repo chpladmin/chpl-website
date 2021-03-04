@@ -31,7 +31,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Lato, sans-serif',
-    fontSize: '14px',
+    //fontSize: '14px', // the default in material-ui is 14px, and this value is required to be a number
     h1: {
       fontSize: '3.5em',
       fontWeight: 800,

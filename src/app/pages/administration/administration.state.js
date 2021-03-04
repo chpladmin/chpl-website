@@ -78,6 +78,32 @@ let states = {
       data: { title: 'CHPL Administration - Change Requests' },
     },
   ],
+  'enhanced-upload': [
+    {
+      name: 'administration.confirm.listings',
+      url: '/listings',
+      component: 'chplConfirmListings',
+      resolve: {
+        developers: networkService => {
+          'ngInject';
+          return networkService.getDevelopers().then(response => response.developers);
+        },
+        resources: ($q, networkService) => {
+          'ngInject';
+          return getResources($q, networkService);
+        },
+        uploadingCps: ($q, networkService) => {
+          'ngInject';
+          return networkService.getPendingListings().then(response => response);
+        },
+        uploadedListings: ($q, networkService) => {
+          'ngInject';
+          return networkService.getPendingListings(true);
+        },
+      },
+      data: { title: 'CHPL Administration - Confirm Listings' },
+    },
+  ],
   'base': [
     {
       name: 'authorizePasswordReset',
@@ -150,6 +176,10 @@ let states = {
         resources: ($q, networkService) => {
           'ngInject';
           return getResources($q, networkService);
+        },
+        uploadingCps: ($q, networkService) => {
+          'ngInject';
+          return networkService.getPendingListings().then(response => response);
         },
       },
       data: { title: 'CHPL Administration - Confirm Listings' },

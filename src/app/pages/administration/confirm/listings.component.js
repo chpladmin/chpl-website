@@ -4,6 +4,8 @@ export const ConfirmListingsComponent = {
     developers: '<',
     onChange: '&',
     resources: '<',
+    uploadingCps: '<',
+    uploadedListings: '<',
   },
   controller: class ConfirmListingsComponent {
     constructor ($log, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
@@ -19,18 +21,6 @@ export const ConfirmListingsComponent = {
       this.massRejectBeta = {};
     }
 
-    $onInit () {
-      let that = this;
-      this.networkService.getPendingListings().then(listings => {
-        that.uploadingCps = listings;
-      });
-      if (this.featureFlags.isOn('enhanced-upload')) {
-        this.networkService.getPendingListings(true).then(listings => {
-          that.uploadedListings = listings;
-        });
-      }
-    }
-
     $onChanges (changes) {
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
@@ -44,6 +34,12 @@ export const ConfirmListingsComponent = {
           });
           this.resources = resObj;
         }
+      }
+      if (changes.uploadingCps) {
+        this.uploadingCps = angular.copy(changes.uploadingCps.currentValue);
+      }
+      if (changes.uploadedListings) {
+        this.uploadedListings = angular.copy(changes.uploadedListings.currentValue);
       }
     }
 
