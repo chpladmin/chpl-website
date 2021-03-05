@@ -15,6 +15,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import theme from '../../../themes/theme';
 import { getAngularService } from './';
+import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers.jsx';
 
 import { acb } from '../../../shared/prop-types/';
 
@@ -85,12 +86,28 @@ function ChplConfirmListings (props) {
     setToastOpen(false);
   };
 
+  const handleTableSort = () => {
+
+  };
+
+  const headers = [
+    {text: 'Action', property: 'action', sortable: false},
+    {text: 'CHPL Product Number', property: 'chplProductNumber', sortable: false},
+    {text: 'Developer', property: 'developer', sortable: false},
+    {text: 'Product', property: 'product', sortable: false},
+    {text: 'Version', property: 'version', sortable: false},
+    {text: 'Certification Date', property: 'certificationDate', sortable: false},
+    {text: 'Status', property: 'status', sortable: false},
+    {text: 'Reject Listing?', property: 'reject', sortable: false},
+  ];
+
   return (
     <ThemeProvider theme={ theme }>
       { props.listings?.length > 0
         ? <>
             <TableContainer component={ Paper }>
               <Table size="small">
+                <ChplSortableHeaders headers={ headers } onTableSort={ handleTableSort } />
                 <TableFooter>
                   <TableRow>
                     <TableCell colSpan={ 7 } />
