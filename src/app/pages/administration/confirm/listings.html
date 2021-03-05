@@ -56,20 +56,6 @@
   <div class="col-md-12" feature-flag="enhanced-upload">
     <h2>View (Beta) Products in the process of upload</h2>
     <chpl-confirm-listings-bridge listings="$ctrl.uploadedListings" on-process="::$ctrl.handleProcess" on-update="::$ctrl.handleUpdate"></chpl-confirm-listings-bridge>
-    <table class="table" ng-if="$ctrl.uploadedListings.length > 0" id="pending-listings-table-beta">
-      <thead>
-        <tr>
-          <th scope="col">CHPL ID</th>
-          <th scope="col">Developer</th>
-          <th scope="col">Product</th>
-          <th scope="col">Version</th>
-          <th scope="col">Certification date</th>
-          <th scope="col">Status</th>
-          <th scope="col">Action</th>
-          <th scope="col">Mass Reject</th>
-        </tr>
-      </thead>
-    </table>
   </div>
 </div>
 <div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">

@@ -13,10 +13,10 @@ import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
+
 import theme from '../../../themes/theme';
 import { getAngularService } from './';
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers.jsx';
-
 import { acb } from '../../../shared/prop-types/';
 
 const useStyles = makeStyles(() => ({
@@ -80,6 +80,10 @@ function ChplConfirmListings (props) {
     }
   };
 
+  const handleTableSort = (event, property, orderDirection) => {
+    setListings(listings.sort(listingSortComparator(orderDirection + property)).map(listing => listing));
+  };
+
   const handleToastClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -99,19 +103,15 @@ function ChplConfirmListings (props) {
     };
   };
 
-  const handleTableSort = (event, property, orderDirection) => {
-    setListings(listings.sort(listingSortComparator(orderDirection + property)).map(listing => listing));
-  };
-
   const headers = [
-    {text: 'Action', property: 'action', sortable: false},
+    {text: 'Action', invisible: true},
     {text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true},
     {text: 'Developer', property: 'developer', sortable: true},
     {text: 'Product', property: 'product', sortable: true},
     {text: 'Version', property: 'version', sortable: true},
-    {text: 'Certification Date', property: 'certificationDate', sortable: false},
-    {text: 'Status', property: 'status', sortable: false},
-    {text: 'Reject Listing?', property: 'reject', sortable: false},
+    {text: 'Certification Date', property: 'certificationDate', sortable: true},
+    {text: 'Status'},
+    {text: 'Reject Listing', invisible: true},
   ];
 
   return (
@@ -133,7 +133,8 @@ function ChplConfirmListings (props) {
                               onClick={ handleReject }
                               startIcon={ <DeleteIcon/> }
                               disabled={ idsToReject.length === 0 }>
-                        Reject { (idsToReject.length > 0) ? idsToReject.length : '' } selected</Button>
+                        Reject { (idsToReject.length > 0) ? idsToReject.length : '' } selected
+                      </Button>
                     </TableCell>
                   </TableRow>
                 </TableFooter>
