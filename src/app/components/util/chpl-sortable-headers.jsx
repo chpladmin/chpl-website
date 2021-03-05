@@ -22,11 +22,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplSortableHeaders (props) {
-  const {order, orderBy, onTableSort} = props;
+  const [order, setOrder] = React.useState(props.order);
+  const [orderBy, setOrderBy] = React.useState(props.orderBy);
   const classes = useStyles();
 
   const createSortHandler = (property) => (event) => {
-    onTableSort(event, property);
+    const isAsc = orderBy === property && order === 'asc';
+    const orderDirection = order === 'asc' ? '' : '-';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+    props.onTableSort(event, property, orderDirection);
   };
 
   return (

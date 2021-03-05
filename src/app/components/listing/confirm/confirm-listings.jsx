@@ -99,9 +99,8 @@ function ChplConfirmListings (props) {
     };
   };
 
-  const handleTableSort = (property, order) => {
-    const orderDirection = order === 'asc' ? '' : '-';
-    setListings(listings.sort(listingSortComparator(orderDirection + property)));
+  const handleTableSort = (event, property, orderDirection) => {
+    setListings(listings.sort(listingSortComparator(orderDirection + property)).map(listing => listing));
   };
 
   const headers = [
@@ -117,11 +116,14 @@ function ChplConfirmListings (props) {
 
   return (
     <ThemeProvider theme={ theme }>
-      { props.listings?.length > 0
+      { listings?.length > 0
         ? <>
             <TableContainer component={ Paper }>
               <Table size="small">
-                <ChplSortableHeaders headers={ headers } onTableSort={ handleTableSort } />
+                <ChplSortableHeaders headers={ headers }
+                                     onTableSort={ handleTableSort }
+                                     order='asc'
+                                     orderBy='chplProductNumber' />
                 <TableFooter>
                   <TableRow>
                     <TableCell colSpan={ 7 } />
