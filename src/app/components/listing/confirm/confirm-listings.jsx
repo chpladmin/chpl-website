@@ -15,6 +15,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import theme from '../../../themes/theme';
 import { getAngularService } from './';
+import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers.jsx';
 
 import { acb } from '../../../shared/prop-types/';
 
@@ -33,6 +34,7 @@ function ChplConfirmListings (props) {
   const [toastMessage, setToastMessage] = useState('');
   const [toastOpen, setToastOpen] = useState(false);
   const [rejectSuccess, setRejectSuccess] = useState(true);
+  const [listings, setListings] = useState(props.listings);
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const classes = useStyles();
@@ -85,12 +87,43 @@ function ChplConfirmListings (props) {
     setToastOpen(false);
   };
 
+  const listingSortComparator = (property) => {
+    let sortOrder = 1;
+    if (property[0] === '-') {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return (a,b) => {
+      var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+    };
+  };
+
+  const handleTableSort = (event, property, orderDirection) => {
+    setListings(listings.sort(listingSortComparator(orderDirection + property)).map(listing => listing));
+  };
+
+  const headers = [
+    {text: 'Action', property: 'action', sortable: false},
+    {text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true},
+    {text: 'Developer', property: 'developer', sortable: true},
+    {text: 'Product', property: 'product', sortable: true},
+    {text: 'Version', property: 'version', sortable: true},
+    {text: 'Certification Date', property: 'certificationDate', sortable: false},
+    {text: 'Status', property: 'status', sortable: false},
+    {text: 'Reject Listing?', property: 'reject', sortable: false},
+  ];
+
   return (
     <ThemeProvider theme={ theme }>
-      { props.listings?.length > 0
+      { listings?.length > 0
         ? <>
             <TableContainer component={ Paper }>
               <Table size="small">
+                <ChplSortableHeaders headers={ headers }
+                                     onTableSort={ handleTableSort }
+                                     order='asc'
+                                     orderBy='chplProductNumber' />
                 <TableFooter>
                   <TableRow>
                     <TableCell colSpan={ 7 } />
@@ -105,7 +138,7 @@ function ChplConfirmListings (props) {
                   </TableRow>
                 </TableFooter>
                 <TableBody>
-                  { props.listings
+                  { listings
                     .map(listing => (
                       <TableRow key={ listing.id } >
                         <TableCell>
