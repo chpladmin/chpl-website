@@ -37,7 +37,6 @@
         });
 
         $provide.decorator('networkService', $delegate => {
-          $delegate.getPendingListings = jasmine.createSpy('getPendingListings');
           $delegate.getPendingListingById = jasmine.createSpy('getPendingListingById');
           $delegate.massRejectPendingListings = jasmine.createSpy('massRejectPendingListings');
 
@@ -58,14 +57,14 @@
         authService = _authService_;
         authService.hasAnyRole.and.returnValue(true);
         networkService = _networkService_;
-        networkService.getPendingListings.and.returnValue($q.when(mock.pendingListings));
         networkService.getPendingListingById.and.returnValue($q.when(mock.pendingListings[0]));
         networkService.massRejectPendingListings.and.returnValue($q.when({}));
 
         scope = $rootScope.$new();
         scope.developers = mock.developers;
         scope.resources = mock.resources;
-        el = angular.element('<chpl-confirm-listings developers="developers" resources="resources"></chpl-confirm-listings>');
+        scope.pendingListings = mock.pendingListings;
+        el = angular.element('<chpl-confirm-listings developers="developers" resources="resources" uploading-cps="pendingListings"></chpl-confirm-listings>');
 
         $compile(el)(scope);
         scope.$digest();
@@ -94,7 +93,6 @@
 
       describe('when loading', () => {
         it('should get the pending listing metadata', () => {
-          expect(networkService.getPendingListings).toHaveBeenCalled();
           expect(ctrl.uploadingCps.length).toBe(2);
         });
 
