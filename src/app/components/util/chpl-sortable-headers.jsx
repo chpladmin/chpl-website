@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplSortableHeaders (props) {
-  const {order, orderBy, onRequestSort} = props;
+  const {order, orderBy, onTableSort} = props;
   const classes = useStyles();
 
   const createSortHandler = (property) => (event) => {
