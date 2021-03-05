@@ -37,6 +37,7 @@
         });
 
         $provide.decorator('networkService', $delegate => {
+          $delegate.getPendingListings = jasmine.createSpy('getPendingListings');
           $delegate.getPendingListingById = jasmine.createSpy('getPendingListingById');
           $delegate.massRejectPendingListings = jasmine.createSpy('massRejectPendingListings');
 
@@ -57,6 +58,7 @@
         authService = _authService_;
         authService.hasAnyRole.and.returnValue(true);
         networkService = _networkService_;
+        networkService.getPendingListings.and.returnValue($q.when(mock.pendingListings));
         networkService.getPendingListingById.and.returnValue($q.when(mock.pendingListings[0]));
         networkService.massRejectPendingListings.and.returnValue($q.when({}));
 

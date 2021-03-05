@@ -2,15 +2,15 @@ export const ConfirmListingsComponent = {
   templateUrl: 'chpl.administration/confirm/listings.html',
   bindings: {
     developers: '<',
-    onChange: '&',
     resources: '<',
     uploadingCps: '<',
     uploadedListings: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
+    constructor ($log, $scope, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
       'ngInject';
       this.$log = $log;
+      this.$scope = $scope;
       this.$state = $state;
       this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
@@ -18,7 +18,8 @@ export const ConfirmListingsComponent = {
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
       this.massReject = {};
-      this.massRejectBeta = {};
+      this.handleProcess = this.handleProcess.bind(this);
+      this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     $onChanges (changes) {
@@ -53,14 +54,12 @@ export const ConfirmListingsComponent = {
       return ret;
     }
 
-    getNumberOfListingsToRejectBeta () {
-      var ret = 0;
-      angular.forEach(this.massRejectBeta, value => {
-        if (value) {
-          ret += 1;
-        }
-      });
-      return ret;
+    handleProcess (listingId) {
+      this.$state.go('.listing', {id: listingId});
+    }
+
+    handleUpdate () {
+      this.onChange();
     }
 
     inspectCp (cpId) {
@@ -122,33 +121,15 @@ export const ConfirmListingsComponent = {
         });
     }
 
-    massRejectPendingListingsBeta () {
+    onChange () {
       let that = this;
-      var idsToReject = [];
-      angular.forEach(this.massRejectBeta, (value, key) => {
-        if (value) {
-          idsToReject.push(parseInt(key));
-          this.clearPendingListingBeta(parseInt(key));
-          delete(this.massReject[key]);
-        }
+      this.networkService.getPendingListings(true).then(listings => {
+        that.uploadedListings = angular.copy(listings);
       });
-      this.networkService.massRejectPendingListingsBeta(idsToReject)
-        .then(() => {
-          that.onChange();
-        }, error => {
-          that.onChange();
-          if (error.data.errors && error.data.errors.length > 0) {
-            that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
-          }
-        });
     }
 
     clearPendingListing (cpId) {
       this.uploadingCps = this.uploadingCps.filter(l => l.id !== cpId);
-    }
-
-    clearPendingListingBeta (cpId) {
-      this.uploadedListings = this.uploadedListings.filter(l => l.id !== cpId);
     }
   },
 };

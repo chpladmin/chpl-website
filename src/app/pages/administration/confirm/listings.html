@@ -54,15 +54,9 @@
     </table>
   </div>
   <div class="col-md-12" feature-flag="enhanced-upload">
-    <chpl-confirm-listings-bridge></chpl-confirm-listings-bridge>
     <h2>View (Beta) Products in the process of upload</h2>
-    <p ng-if="!$ctrl.uploadedListings || $ctrl.uploadedListings.length === 0">No products currently in queue</p>
-    <div ng-if="$ctrl.uploadedListingsMessages">
-      <ul>
-        <li ng-repeat="message in $ctrl.uploadedListingsMessages">{{ message }}</li>
-      </ul>
-    </div>
-    <table class="table table-striped" ng-if="$ctrl.uploadedListings.length > 0" id="pending-listings-table-beta">
+    <chpl-confirm-listings-bridge listings="$ctrl.uploadedListings" on-process="::$ctrl.handleProcess" on-update="::$ctrl.handleUpdate"></chpl-confirm-listings-bridge>
+    <table class="table" ng-if="$ctrl.uploadedListings.length > 0" id="pending-listings-table-beta">
       <thead>
         <tr>
           <th scope="col">CHPL ID</th>
@@ -75,37 +69,6 @@
           <th scope="col">Mass Reject</th>
         </tr>
       </thead>
-      <tfoot>
-        <tr>
-          <th colspan="7">&nbsp;</th>
-          <th>
-            <button class="btn btn-danger btn-block"
-                    ng-disabled="$ctrl.getNumberOfListingsToRejectBeta() < 1"
-                    confirm="Are you sure you wish to remove {{ $ctrl.getNumberOfListingsToRejectBeta() }} product{{ $ctrl.getNumberOfListingsToRejectBeta() > 1 ? 's' : '' }} from the queue?"
-                    confirm-ok="Yes"
-                    confirm-cancel="No"
-                    confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                    ng-click="$ctrl.massRejectPendingListingsBeta()"><i class="fa fa-trash-o"></i> Reject</button>
-          </th>
-        </tr>
-      </tfoot>
-      <tbody>
-        <tr ng-repeat="listing in $ctrl.uploadedListings | orderBy: 'certificationDate' track by listing.id">
-          <td>{{ listing.chplProductNumber }}</td>
-          <td>{{ listing.developer }}</td>
-          <td>{{ listing.product }}</td>
-          <td>{{ listing.version }}</td>
-          <td>{{ $ctrl.DateUtil.getDisplayDateFormat(listing.certificationDate) }}</td>
-          <td>{{ listing.errorCount }} error<span ng-if="listing.errorCount !== 1">s</span> / {{ listing.warningCount }} warning<span ng-if="listing.warningCount !== 1">s</span></td>
-          <td class="text-center">
-            <button class="btn btn-ai-success btn-block" ng-click="$ctrl.inspectListing(listing.id)"
-                    id="pending-listing-inspect-{{ listing.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
-          </td>
-          <td class="text-center">
-            <input type="checkbox" class="form-control" ng-model="$ctrl.massRejectBeta[listing.id]" id="pending-listing-reject-checkbox-{{ listing.id }}">
-          </td>
-        </tr>
-      </tbody>
     </table>
   </div>
 </div>
