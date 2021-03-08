@@ -31,9 +31,10 @@
   }
 
   /** @ngInject */
-  function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
+  function CollectionController ($analytics, $filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
     var vm = this;
 
+    vm.changeItemsPerPage = changeItemsPerPage;
     vm.hasResults = hasResults;
     vm.isCategoryChanged = isCategoryChanged;
     vm.isFilterActive = isFilterActive;
@@ -43,6 +44,7 @@
     vm.registerClearFilter = registerClearFilter;
     vm.registerSearch = registerSearch;
     vm.stopCacheRefresh = stopCacheRefresh;
+    vm.trackEntry = trackEntry;
     vm.triggerClearFilters = triggerClearFilters;
     vm.triggerSearch = triggerSearch;
 
@@ -62,6 +64,10 @@
         setFilterInfo();
       });
     };
+
+    function changeItemsPerPage () {
+      $analytics.eventTrack('Change Results Per Page', { category: vm.analyticsCategory, label: vm.filterItems.pageSize });
+    }
 
     function hasResults () {
       return angular.isDefined(vm.allCps);
@@ -141,6 +147,12 @@
         $interval.cancel(vm.stopCacheRefreshPromise);
         vm.stopCacheRefreshPromise = undefined;
       }
+    }
+
+    function trackEntry (value) {
+      if (!value) { return; }
+      let event = 'Enter value into Search';
+      $analytics.eventTrack(event, { category: vm.analyticsCategory, label: value });
     }
 
     function triggerClearFilters () {

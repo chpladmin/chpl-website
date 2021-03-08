@@ -19,6 +19,7 @@
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
             <input type="text" class="form-control input-sm" id="generalFilter" placeholder="{{ vm.searchText }}"
+                   ng-model="vm.query" ng-blur="vm.trackEntry(vm.query)"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)">
             <label for="generalFilter"><span class="sr-only">{{ vm.searchText }}</span></label>
           </div>
@@ -157,6 +158,7 @@
                     <label for="pageSizeTop" class="sr-only">Show how many results</label>
                     Showing up to&nbsp;
                     <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                            ng-change="vm.changeItemsPerPage()"
                             ng-options="v as v for v in [50,100,250]">
                     </select>
                     &nbsp;results per page
