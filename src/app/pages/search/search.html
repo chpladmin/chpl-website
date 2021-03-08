@@ -44,7 +44,8 @@
                 register-show-retired="vm.registerShowRetired(showRetired)"
                 trigger-show-retired="vm.triggerShowRetired()"
                 match-full="true"
-                name-space="searchTableState"></st-list-multiple>
+                name-space="searchTableState"
+                analytics="{category: 'Search', eventTitle: 'Certification Status'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -63,7 +64,8 @@
                 register-restore-state="vm.registerRestoreState(restoreState)"
                 register-show-retired="vm.registerShowRetired(showRetired)"
                 trigger-show-retired="vm.triggerShowRetired()"
-                name-space="searchTableState"></st-list-multiple>
+                name-space="searchTableState"
+                analytics="{category: 'Search', eventTitle: 'Certification Edition'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -88,7 +90,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
@@ -107,7 +109,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
@@ -125,7 +127,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015Cures = !vm.show2015Cures">
@@ -143,7 +145,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -198,7 +200,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'CQM'}"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -216,7 +218,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'CQM'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -234,7 +236,8 @@
                   register-restore-state="vm.registerRestoreState(restoreState)"
                   register-show-retired="vm.registerShowRetired(showRetired)"
                   trigger-show-retired="vm.triggerShowRetired()"
-                  name-space="searchTableState"></st-list-multiple>
+                  name-space="searchTableState"
+                  analytics="{category: 'Search', eventTitle: 'ONC-ACB'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showPracticeType = !vm.showPracticeType">

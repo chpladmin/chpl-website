@@ -14,7 +14,7 @@
         matchFull: '@?',
         nameSpace: '@?',
         separator: '@?',
-        trackAnalytics: '@?',
+        analytics: '=?',
         triggerShowRetired: '&?',
       },
       controller: 'ListMultipleController',
@@ -53,7 +53,7 @@
       }
       var clearFilter = scope.registerClearFilter({
         clearFilter: function () {
-          ctrl.clearFilter();
+          ctrl.clearFilter(true);
         },
       });
       scope.$on('$destroy', clearFilter);
@@ -132,30 +132,26 @@
     }
 
     function allowAll () {
-      var restoreAnalytics = false;
-      if (vm.trackAnalytics) {
-        vm.trackAnalaytics = false;
-        restoreAnalytics = true;
-      }
-      angular.forEach(vm.distinctItems, function (item) {
+      vm.distinctItems.forEach(item => {
         if (item.isSelected) {
           item.isSelected = false;
-          vm.toggleSelection(item, true, true);
+          vm.toggleSelection(item, true, true, true);
         }
       });
-      if (restoreAnalytics) {
-        vm.trackAnalaytics = true;
-      }
       vm.matchAll = false;
       vm.filterChanged();
       vm.storeState();
     }
 
-    function clearFilter () {
-      angular.forEach(vm.distinctItems, function (item) {
+    function clearFilter (dontTrackAnalytics) {
+      if (vm.analytics && !dontTrackAnalytics) {
+        let event = 'Reset ' + vm.analytics.eventTitle + ' Filter';
+        $analytics.eventTrack(event, { category: vm.analytics.category });
+      }
+      vm.distinctItems.forEach(item => {
         if (item.isSelected !== item.selected) {
           item.isSelected = item.selected;
-          vm.toggleSelection(item, true, true);
+          vm.toggleSelection(item, true, true, true);
         }
       });
       vm.matchAll = false;
@@ -205,6 +201,10 @@
 
     function selectAll () {
       let hasRetired = false;
+      if (vm.analytics) {
+        let event = 'Show all Listings Ignoring ' + vm.analytics.eventTitle;
+        $analytics.eventTrack(event, { category: vm.analytics.category });
+      }
       angular.forEach(vm.distinctItems, function (item) {
         if (!item.isSelected) {
           item.isSelected = true;
@@ -238,23 +238,22 @@
       }
     }
 
-    function toggleSelection (item, dontSearch, dontTriggerRetired) {
+    function toggleSelection (item, dontSearch, dontTriggerRetired, dontTrackAnalytics) {
       var index = vm.selected.indexOf(item.value);
       if (index > -1) {
         vm.selected.splice(index, 1);
+        if (vm.analytics && !dontTrackAnalytics) {
+          let event = 'Hide Listings with ' + vm.analytics.eventTitle;
+          $analytics.eventTrack(event, { category: vm.analytics.category, label: item.value });
+        }
       } else {
         vm.selected.push(item.value);
         if (!dontTriggerRetired && item.retired && vm.triggerShowRetired) {
           vm.triggerShowRetired();
         }
-        if (vm.trackAnalytics) {
-          var event;
-          switch (vm.predicate) {
-          case 'criteriaMet': event = 'Certification Criteria Filter'; break;
-          case 'cqmsMet': event = 'CQM Filter'; break;
-          default: event = 'Other';
-          }
-          $analytics.eventTrack(event, { category: 'Search', label: item.value });
+        if (vm.analytics && !dontTrackAnalytics) {
+          let event = 'Show Listings with ' + vm.analytics.eventTitle;
+          $analytics.eventTrack(event, { category: vm.analytics.category, label: item.value });
         }
       }
       if (!dontSearch) {

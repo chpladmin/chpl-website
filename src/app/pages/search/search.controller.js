@@ -522,7 +522,8 @@
         .sort(utilService.sortCertActual)
         .forEach(crit => {
           obj = {
-            value: crit.number + (utilService.isCures(crit) ? ' (Cures Update)' : ''),
+            //value: crit.number + (utilService.isCures(crit) ? ' (Cures Update)' : ''),
+            value: crit.id,
             selected: false,
             display: (crit.removed ? 'Removed | ' : '') + crit.number + ': ' + crit.title,
             removed: crit.removed,
