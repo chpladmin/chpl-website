@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body">
       <div class="product__edit-information-product">
-        <div class="product__data-label data-label"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
+        <div class="data-label product__data-label'"><label for="product-name">Product Name <span class="text-danger">*</span></label></div>
         <div>
           <input class="form-control" type="text" id="product-name" name="productName"
                  ng-model="$ctrl.product.name" required ng-maxlength="300">
@@ -76,10 +76,8 @@
           <button class="btn btn-sm btn-link" ng-click="$ctrl.addingOwner = true"><i class="fa fa-plus-circle"></i> Add Product Owner</button>
         </div>
       </div>
-      <hr>
-      <div>
-        <h4>Contact Information</h4>
-      </div>
+      <hr />
+      <h4>Contact Information</h4>
       <chpl-contact contact="$ctrl.product.contact"
                     is-editing="true"
                     ignore-friendly-name="true"

@@ -34,7 +34,7 @@ module.exports = env => {
         module: {
             rules: [{
                 enforce: 'post',
-                test: /\.js/,
+                test: /\.js$/,
                 exclude: [
                         /specs\.js/,
                         /\.spec\.js/,
@@ -47,7 +47,7 @@ module.exports = env => {
                     options: { esModules: true },
                 },
             },{
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 exclude: [
                         /node_modules/,
                         /\.mock\.js/,
@@ -56,7 +56,9 @@ module.exports = env => {
                     loader: 'babel-loader',
                     options: {
                         plugins: [BabelPluginAngularjsAnnotate],
-                    }
+                        presets:['@babel/preset-env'],
+                        presets:['@babel/preset-react'],
+                    },
                 },{
                     loader: 'eslint-loader',
                     options: {

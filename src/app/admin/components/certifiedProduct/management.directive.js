@@ -41,7 +41,6 @@
     vm.selectDeveloper = selectDeveloper;
     vm.selectProduct = selectProduct;
     vm.selectVersion = selectVersion;
-    vm.splitProduct = splitProduct;
     vm.ternaryFilter = utilService.ternaryFilter;
 
     ////////////////////////////////////////////////////////////////////
@@ -282,39 +281,6 @@
         .then(function (result) {
           vm.surveillanceProduct = result;
         });
-    }
-
-    function splitProduct () {
-      vm.splitProductInstance = $uibModal.open({
-        templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
-        controller: 'SplitProductController',
-        controllerAs: 'vm',
-        animation: false,
-        backdrop: 'static',
-        keyboard: false,
-        size: 'lg',
-        resolve: {
-          product: function () { return vm.activeProduct; },
-          versions: function () { return vm.versions; },
-        },
-      });
-      vm.splitProductInstance.result.then(function (result) {
-        if (isEditingListing()) {
-          vm.forceRefresh = true;
-          refreshDevelopers();
-        } else {
-          vm.activeProduct = result.product;
-          vm.activeVersion = '';
-          vm.products.push(result.newProduct);
-          vm.versions = result.versions;
-        }
-      }, function (result) {
-        if (result !== 'cancelled') {
-          vm.productMessage = result;
-        } else {
-          $log.info('split cancelled');
-        }
-      });
     }
 
     ////////////////////////////////////////////////////////////////////

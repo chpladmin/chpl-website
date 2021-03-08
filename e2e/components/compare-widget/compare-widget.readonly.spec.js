@@ -33,6 +33,7 @@ describe('on compare widget', () => {
     beforeAll(() => {
       search.searchForListing(search2);
       hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search2));
       compare.addListingToCompare(ListingId2);
     });
 
@@ -57,9 +58,11 @@ describe('on compare widget', () => {
     beforeAll(() => {
       search.searchForListing(search1);
       hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search1));
       compare.addListingToCompare(ListingId1);
       search.searchForListing(search2);
       hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search2));
       compare.addListingToCompare(ListingId2);
     });
 

@@ -112,7 +112,7 @@
             <span class="pull-right">
               <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)">
                 <span ng-if="vm.versions.length > 1">
-                  <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
+                  <a ui-sref="organizations.developers.developer.product.split({ developerId: vm.activeDeveloper.developerId, productId: vm.activeProduct.productId })"><i class="fa fa-scissors"></i> Split Product</a> |
                 </span>
               </span>
               <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)">

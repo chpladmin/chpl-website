@@ -59,7 +59,7 @@ describe('on cms widget', () => {
   describe('if a listing added meet 80% of base criteria (View with partial products selected) - ', () => {
     beforeAll(() => {
       search.searchForListing(search1);
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search1));
       cms.addListingToCms(listingId1);
       hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
@@ -112,10 +112,10 @@ describe('on cms widget', () => {
   describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
     beforeAll(() => {
       search.searchForListing(search1);
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search1));
       cms.addListingToCms(listingId1);
       search.searchForListing(search2);
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => search.getColumnText(1,6).includes(search2));
       cms.addListingToCms(listingId2);
       hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();

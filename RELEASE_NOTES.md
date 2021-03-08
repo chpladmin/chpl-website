@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 11.8.0
+_8 March 2021_
+
+### Features
+* Allow split of Product in new UX
+* Update Surveillance Reporting for 2021 requirements
+* Remove unused API Call Usage report
+* Support display & edit of SVAP Notice
+
+---
+
 ## Version 11.7.0
 _22 February 2021_
 
