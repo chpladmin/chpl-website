@@ -59,18 +59,6 @@
                 analytics="{category: vm.analyticsCategory, eventTitle: 'Certification Edition'}"></st-list-multiple>
             </ul>
           </div>
-          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationDate')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationDate" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['certificationDate']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-              Certification Date <i class="fa fa-filter"></i>
-            </button>
-            <ul class="dropdown-menu-large" aria-labeledby="filter-button-certificationDate" uib-dropdown-menu>
-              <ai-date-range
-                predicate="certificationDate"
-                has-changes="vm.categoryChanged['certificationDate']"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
-            </ul>
-          </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('decertificationDate')">
             <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-decertificationDate" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['decertificationDate']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
@@ -80,7 +68,8 @@
               <ai-date-range
                 predicate="decertificationDate"
                 has-changes="vm.categoryChanged['decertificationDate']"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'Decertification Date'}"></ai-date-range>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationStatus')">

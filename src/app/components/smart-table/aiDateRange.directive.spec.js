@@ -159,7 +159,7 @@
           it('should run analytics if turned on', function () {
             var dateObj = new Date();
             vm.after = dateObj;
-            vm.trackAnalytics = true;
+            vm.analytics = {eventTitle: 'test'};
             spyOn($analytics, 'eventTrack');
             vm.filterChanged();
             expect($analytics.eventTrack).toHaveBeenCalled();
@@ -177,7 +177,7 @@
           it('should run analytics if turned on', function () {
             var dateObj = new Date();
             vm.before = dateObj;
-            vm.trackAnalytics = true;
+            vm.analytics = {eventTitle: 'test'};
             spyOn($analytics, 'eventTrack');
             vm.filterChanged();
             expect($analytics.eventTrack).toHaveBeenCalled();
