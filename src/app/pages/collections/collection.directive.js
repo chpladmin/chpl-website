@@ -102,11 +102,12 @@
         ret = $filter('date')(ret,'mediumDate','UTC');
       }
       if (col.isLink) {
+        let link = '<a ui-sref="listing({id: ' + cp.id;
         if (col.initialPanel) {
-          ret = '<a href="#/listing/' + cp.id + '?panel=' + col.initialPanel + '">' + ret + '</a>';
-        } else {
-          ret = '<a href="#/listing/' + cp.id + '">' + ret + '</a>';
+          link += ', panel: \'' + col.initialPanel + '\'';
         }
+        link += '})" analytics-on="click" analytics-event="Go to Listing Details Page" analytics-properties="{ category: \'' + vm.analyticsCategory + '\' }">' + ret + '</a>';
+        ret = link;
       }
       return ret;
     }
