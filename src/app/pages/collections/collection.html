@@ -37,7 +37,8 @@
                 fixed-items="vm.filterItems.acbItems"
                 has-changes="vm.categoryChanged['acb']"
                 register-allow-all="vm.registerAllowAll(allowAll)"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'ONC-ACB'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('edition')">
@@ -53,7 +54,8 @@
                 fixed-items="vm.filterItems.editionItemsCures"
                 has-changes="vm.categoryChanged['edition']"
                 register-allow-all="vm.registerAllowAll(allowAll)"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'Certification Edition'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationDate')">
@@ -108,7 +110,8 @@
                 has-changes="vm.categoryChanged['certificationStatus']"
                 register-allow-all="vm.registerAllowAll(allowAll)"
                 register-clear-filter="vm.registerClearFilter(clearFilter)"
-                match-full="true"></st-list-multiple>
+                match-full="true"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'Certification Status'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('nonconformities')">

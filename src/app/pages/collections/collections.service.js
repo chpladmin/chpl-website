@@ -7,11 +7,30 @@
   /** @ngInject */
   function collectionsService ($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
     var service = {
+      getAnalyticsCategory: getAnalyticsCategory,
       translate: translate,
     };
     return service;
 
     ////////////////////////////////////////////////////////////////////
+
+    function getAnalyticsCategory (key) {
+      switch (key) {
+      case 'apiDocumentation':
+        return 'API Information for 2015 Edition Products';
+      case 'bannedDevelopers':
+        return 'Banned Developer';
+      case 'correctiveAction':
+        return 'Products: Corrective Action Status';
+      case 'decertifiedProducts':
+        return 'Decertified Products';
+      case 'inactiveCertificates':
+        return 'Inactive Certificates';
+      case 'sed':
+        return 'SED Information for 2015 Edition Products';
+        // no default
+      }
+    }
 
     function translate (key, data) {
       switch (key) {

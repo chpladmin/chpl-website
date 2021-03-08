@@ -109,6 +109,7 @@
       networkService.getCollection(vm.collectionKey).then(function (response) {
         response.certificationCriteria = vm.options.certificationCriteria;
         vm.allCps = collectionsService.translate(vm.collectionKey, response);
+        vm.analyticsCategory = collectionsService.getAnalyticsCategory(vm.collectionKey);
         vm.isPreLoading = false;
       }, function (error) {
         $log.debug(error);
