@@ -182,9 +182,6 @@
       if (vm.isFilterActive('certificationStatus')) {
         vm.filterItems.statusItems = angular.copy(vm.refineModel.certificationStatus);
       }
-      if (vm.isFilterActive('acbAttestations')) {
-        vm.filterItems.acbAttestations = angular.copy(vm.refineModel.acbAttestations);
-      }
       if (vm.isFilterActive('edition')) {
         vm.filterItems.editionItemsCures = [
           { value: '2015', selected: true },

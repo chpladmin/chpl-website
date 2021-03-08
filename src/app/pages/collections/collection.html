@@ -82,21 +82,6 @@
                 register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
             </ul>
           </div>
-          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('acbAttestations')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acbAttestations" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['acbAttestations']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-              Attestation <i class="fa fa-filter"></i>
-            </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-button-acbAttestations" uib-dropdown-menu>
-              <st-list-multiple
-                collection="vm.allCps"
-                predicate="acbAttestations"
-                fixed-items="vm.filterItems.acbAttestations"
-                has-changes="vm.categoryChanged['acbAttestations']"
-                register-allow-all="vm.registerAllowAll(allowAll)"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
-            </ul>
-          </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationStatus')">
             <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationStatus" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
