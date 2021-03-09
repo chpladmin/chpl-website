@@ -134,10 +134,11 @@
       <span ng-repeat="listing in $ctrl.complaint.listings | orderBy: 'chplProductNumber'">
         <button class="btn btn-primary btn-sm"
                 ng-click="$ctrl.removeListing(listing)"
+                ng-disabled="!$ctrl.canEdit"
                 id="remove-listing-{{ listing.listingId }}">
           <span class="sr-only">Remove item </span>
           {{ listing.chplProductNumber }}
-          <i class="fa fa-times"></i>
+          <i class="fa fa-times" ng-if="$ctrl.canEdit"></i></i>
         </button>
         &nbsp;
       </span>
@@ -170,10 +171,11 @@
       <span ng-repeat="surveillance in $ctrl.complaint.surveillances ">
         <button class="btn btn-primary btn-sm"
                 ng-click="$ctrl.removeSurveillance(surveillance)"
+                ng-disabled="!$ctrl.canEdit"
                 id="remove-listing-{{ surveillance.surveillance.id }}">
           <span class="sr-only">Remove </span>
           {{ surveillance.surveillance.chplProductNumber }} - {{ surveillance.surveillance.friendlyId }}
-          <i class="fa fa-times"></i>
+          <i class="fa fa-times" ng-if="$ctrl.canEdit"></i>
         </button>
       </span>
       &nbsp;
