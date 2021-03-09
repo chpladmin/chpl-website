@@ -1,11 +1,11 @@
 export const SurveillanceComplaintComponent = {
   templateUrl: 'chpl.components/surveillance/complaints/complaint.html',
   bindings: {
+    canEdit: '<',
     complaint: '<',
     complainantTypes: '<',
     certificationBodies: '<',
     criteria: '<',
-    displayHeader: '<',
     editions: '<',
     errorMessages: '<',
     listings: '<',

@@ -21,7 +21,7 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     $onInit () {
-      this.displayEdit = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']));
+      this.displayEdit = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ACB']));
     }
 
     $onChanges (changes) {

@@ -10,9 +10,9 @@ export const ComplaintsReporting = {
     }
 
     $onInit () {
-      this.displayAdd = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']));
-      this.displayDelete = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']));
-      this.displayEdit = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']));
+      this.displayAdd = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ACB']));
+      this.displayDelete = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ACB']));
+      this.displayEdit = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ACB']));
     }
   },
 };

@@ -1,9 +1,4 @@
 <div id="chpl-complaint" class="container-fluid" ng-form="$ctrl.form">
-  <div ng-if="$ctrl.displayHeader">
-    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.EDIT">Edit Complaint</h2>
-    <h2 ng-if="$ctrl.currentMode === $ctrl.modes.ADD">Add Complaint</h2>
-    <div ncy-breadcrumb></div>
-  </div>
   <div class="form-group">
     <label class="control-label" for="certification-body">ONC-ACB<span class="text-danger">*</span></label>
     <div ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" name="certificationBody" class="read-only-data">
@@ -27,6 +22,7 @@
                uib-datepicker-popup="MM/dd/yyyy"
                popup-placement="bottom-left"
                is-open="$ctrl.receivedDatePicker"
+               ng-disabled="!$ctrl.canEdit"
                close-text="Close"></input>
         <div class="input-group-btn">
           <button type="button" class="btn input-group-btn-adjust" ng-click="$ctrl.receivedDatePicker = true"><i class="fa fa-calendar"></i></button>
@@ -44,6 +40,7 @@
                name="closedDate" id="closed-date" placeholder="MM/dd/yyyy"
                ng-model-options="{ timezone: 'UTC' }"
                uib-datepicker-popup="MM/dd/yyyy"
+               ng-disabled="!$ctrl.canEdit"
                popup-placement="bottom-left"
                is-open="$ctrl.closedDatePicker" close-text="Close"></input>
         <div class="input-group-btn">
@@ -56,20 +53,20 @@
   <div class="form-group">
     <label class="control-label" for="acb-complaint-id">ONC-ACB Complaint ID<span class="text-danger">*</span></label>
     <div>
-      <input class="form-control" type="text" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id" name="acbComplaintId" required></input>
+      <input class="form-control" type="text" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.acbComplaintId" id="acb-complaint-id" name="acbComplaintId" required></input>
       <div class="text-danger" ng-if="$ctrl.form.acbComplaintId.$touched && $ctrl.form.acbComplaintId.$error.required">ONC-ACB Complaint ID is required</div>
     </div>
   </div>
   <div class="form-group">
     <label class="control-label" for="onc-complaint-id">ONC Complaint ID (if applicable)</label>
     <div>
-      <input class="form-control" type="text" ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id" name="oncComplaintId"></input>
+      <input class="form-control" type="text" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.oncComplaintId" id="onc-complaint-id" name="oncComplaintId"></input>
     </div>
   </div>
   <div class="form-group">
     <label class="control-label" for="complainant-type">Complainant Type<span class="text-danger">*</span></label>
     <div>
-      <select ng-model="$ctrl.complaint.complainantType" id="complainant-type" name="complainantType" class="form-control" required
+      <select ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.complainantType" id="complainant-type" name="complainantType" class="form-control" required
               ng-options="ct.name for ct in $ctrl.complainantTypes | orderBy: 'name' track by ct.id">
       </select>
       <div class="text-danger" ng-if="$ctrl.form.complainantType.$touched && $ctrl.form.complainantType.$error.required">Complainant Type is required</div>
@@ -78,14 +75,14 @@
   <div class="form-group" ng-if="$ctrl.complaint.complainantType.name === 'Other - [Please Describe]'">
     <label class="control-label" for="complainant-type-other">Complainant Type - Other Description<span class="text-danger">*</span></label>
     <div>
-      <input class="form-control" type="text" ng-model="$ctrl.complaint.complainantTypeOther" id="complainant-type-other" name="complainantTypeOther" required></input>
+      <input class="form-control" type="text" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.complainantTypeOther" id="complainant-type-other" name="complainantTypeOther" required></input>
       <div class="text-danger" ng-if="$ctrl.form.complainantTypeOther.$touched && $ctrl.form.complainantTypeOther.$error.required">Complainant Type - Other Description is required</div>
     </div>
   </div>
   <div class="form-group">
     <label class="control-label" for="summary">Complaint Summary<span class="text-danger">*</span></label>
     <div>
-      <textarea class="form-control" ng-model="$ctrl.complaint.summary" name="summary" id="summary" required></textarea>
+      <textarea class="form-control" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.summary" name="summary" id="summary" required></textarea>
       <div class="text-danger" ng-if="$ctrl.form.summary.$touched && $ctrl.form.summary.$error.required">Complaint Summary is required</div>
     </div>
   </div>
@@ -97,9 +94,10 @@
     <div class="selected-items-container" ng-if="$ctrl.complaint.criteria && $ctrl.complaint.criteria.length !== 0">
       <span ng-repeat="criterion in $ctrl.complaint.criteria">
         <button class="btn btn-primary btn-sm"
+                ng-disabled="!$ctrl.canEdit"
                 ng-click="$ctrl.removeCriterion(criterion)"
                 id="remove-criteria-{{ criterion.certificationCriterion.id }}">
-          <span class="sr-only">Remove </span> {{ (criterion.certificationCriterion.removed ? 'Removed |' : '') + criterion.certificationCriterion.number }}: {{ criterion.certificationCriterion.title }} <i class="fa fa-times"></i>
+          <span class="sr-only">Remove </span> {{ (criterion.certificationCriterion.removed ? 'Removed |' : '') + criterion.certificationCriterion.number }}: {{ criterion.certificationCriterion.title }} <i class="fa fa-times" ng-if="$ctrl.canEdit"></i>
         </button>
         &nbsp;
       </span>
@@ -115,7 +113,7 @@
           </li>
         </ul>
       </div>
-      <select id="criteria" name="criteria" class="form-control" ng-model="$ctrl.criterion"
+      <select id="criteria" name="criteria" class="form-control" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.criterion"
               ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in $ctrl.filteredCriteria | orderBy: $ctrl.sortCert track by criteria.id"
               ng-change="$ctrl.selectCriteria()">
       </select>
@@ -124,7 +122,7 @@
   <div class="form-group">
     <label class="control-label" for="actions">Actions/Response</label>
     <div>
-      <textarea class="form-control" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
+      <textarea class="form-control" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.actions" name="actions" id="actions"></textarea>
     </div>
   </div>
   <div class="form-group">
@@ -157,6 +155,7 @@
            class="form-control"
            placeholder="Start Typing CHPL Product Number"
            autocomplete="off"
+           ng-disabled="!$ctrl.canEdit"
            ng-model="$ctrl.listing"
            uib-typeahead="listing.chplProductNumber for listing in $ctrl.filteredListings | orderBy: 'chplProductNumber' | filter:{'chplProductNumber':$viewValue}:$ctrl.startsWith | limitTo:10"
            typeahead-template-url="listingCustomTemplate.html"
@@ -179,14 +178,15 @@
       </span>
       &nbsp;
     </div>
-    <select id="surveilances" name="surveillances" class="form-control" ng-model="$ctrl.surveillance"
+    <select id="surveilances" name="surveillances" class="form-control" ng-disabled="!$ctrl.canEdit"
+            ng-model="$ctrl.surveillance"
             ng-options="(surveillance.friendlyId + ' - ' + surveillance.chplProductNumber ) for surveillance in $ctrl.surveillances | orderBy: ['chplProductNumber', 'friendlyId'] track by surveillance.id"
             ng-change="$ctrl.selectSurveillance()">
     </select>
   </div>
   <div class="form-group" feature-flag="complaints-flag-for-onc-review">
     <label class="checkbox-inline" for="flag-for-onc-review">
-      <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-model="$ctrl.complaint.flagForOncReview">
+      <input type="checkbox" id="flag-for-onc-review" name="flagForOncReview" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.flagForOncReview">
       Flag for ONC Review
     </label>
   </div>
@@ -196,7 +196,7 @@
       <div class="form-group">
         <label class="checkbox-inline" for="complainant-contacted">
           <input type="checkbox" id="complainant-contacted" name="complainantContacted"
-                 ng-model="$ctrl.complaint.complainantContacted"> Complainant Contacted
+                 ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.complainantContacted"> Complainant Contacted
         </label>
       </div>
     </div>
@@ -204,7 +204,7 @@
       <div class="form-group">
         <label class="checkbox-inline" for="developer-contacted">
           <input type="checkbox" id="developer-contacted" name="developerContacted"
-                 ng-model="$ctrl.complaint.developerContacted"> Developer Contacted
+                 ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.developerContacted"> Developer Contacted
         </label>
       </div>
     </div>
@@ -213,7 +213,7 @@
     <div class="col-md-3">
       <div class="form-group">
         <label class="checkbox-inline" for="onc-atl-contacted">
-          <input type="checkbox" id="onc-atl-contacted" name="oncAtlContacted" ng-model="$ctrl.complaint.oncAtlContacted">
+          <input type="checkbox" id="onc-atl-contacted" name="oncAtlContacted" ng-disabled="!$ctrl.canEdit" ng-model="$ctrl.complaint.oncAtlContacted">
           ONC-ATL Contacted
         </label>
       </div>
@@ -239,10 +239,16 @@
     </ul>
   </div>
   <div class="pull-right">
-    <button class="btn" id="save-complaint" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-            ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.saveComplaint($ctrl.complaint)">
-      Save Complaint
-    </button>
-    <button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Cancel</button>
+    <span ng-if="$ctrl.canEdit">
+      <button class="btn" id="save-complaint" ng-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+
+              ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.saveComplaint($ctrl.complaint)">
+        Save Complaint
+      </button>
+      <button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Cancel</button>
+    </span>
+    <span ng-if="!$ctrl.canEdit">
+      <button class="btn btn-link" ng-click="$ctrl.cancelEdit()">Close</button>
+    </span>
   </div>
 </div>
