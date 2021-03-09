@@ -26,6 +26,7 @@
     <label>
       View the number of Developers and Products with Certification Status:
       <select ng-model="$ctrl.chartState.listingCountType"
+              ng-change="$ctrl.updateStatus()"
               ng-options="option as option.name for option in $ctrl.listingCountTypes | orderBy: 'name'">
       </select>
     </label>

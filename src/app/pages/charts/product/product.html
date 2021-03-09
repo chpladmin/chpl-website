@@ -9,6 +9,7 @@
     <label>
       View Certification Criteria with respect to the 2015 Cures rule
       <select ng-model="$ctrl.chartState.criteriaType"
+              ng-change="$ctrl.updateType()"
               ng-options="option for option in $ctrl.criteriaTypes">
       </select>
     </label>

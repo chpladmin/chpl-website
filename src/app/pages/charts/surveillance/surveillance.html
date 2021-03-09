@@ -8,6 +8,7 @@
     <label>
       View the number of Non-conformities with type of Program Requirements Surveilled:
       <select ng-model="$ctrl.chartState.nonconformityCountType"
+              ng-change="$ctrl.updateType()"
               ng-options="option for option in $ctrl.nonconformityTypes">
       </select>
     </label>
