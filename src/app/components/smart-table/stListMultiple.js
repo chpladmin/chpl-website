@@ -244,7 +244,7 @@
         vm.selected.splice(index, 1);
         if (vm.analytics && !dontTrackAnalytics) {
           let event = 'Hide Listings with ' + vm.analytics.eventTitle;
-          $analytics.eventTrack(event, { category: vm.analytics.category, label: item.value });
+          $analytics.eventTrack(event, { category: vm.analytics.category, label: item.analyticsLabel || item.value });
         }
       } else {
         vm.selected.push(item.value);
@@ -253,7 +253,7 @@
         }
         if (vm.analytics && !dontTrackAnalytics) {
           let event = 'Show Listings with ' + vm.analytics.eventTitle;
-          $analytics.eventTrack(event, { category: vm.analytics.category, label: item.value });
+          $analytics.eventTrack(event, { category: vm.analytics.category, label: item.analyticsLabel || item.value });
         }
       }
       if (!dontSearch) {
