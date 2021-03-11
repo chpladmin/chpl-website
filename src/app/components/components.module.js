@@ -1,5 +1,6 @@
 import { ChplEllipsis } from './util/';
 import { ChplFuzzyType } from './fuzzy-type/';
+import { ChplApiKeyRegistration } from './api-key/api-key-registration.jsx';
 import { reactToAngularComponent } from '../services/angular-react-helper.jsx';
 
 angular
@@ -21,4 +22,5 @@ angular
   ])
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
+  .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
 ;
