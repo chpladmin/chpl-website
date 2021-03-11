@@ -1,6 +1,9 @@
 const downloadElements = {
   downloadListing: '.resources-download__listings',
   complianceActivityBullet: '.resources-download__compliance',
+  download: '#downloadSelect',
+  definitionFile: '#downloadChplDefinitionLink',
+  dataFile: '#downloadChplLink',
 };
 
 class DownloadPage {
@@ -12,6 +15,18 @@ class DownloadPage {
 
   get complianceActivityText () {
     return $(downloadElements.complianceActivityBullet);
+  }
+
+  get downloadDropdown () {
+    return $(downloadElements.download);
+  }
+
+  get definitionFile () {
+    return $(downloadElements.definitionFile);
+  }
+
+  get dataFile () {
+    return $(downloadElements.dataFile);
   }
 
 }
