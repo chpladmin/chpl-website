@@ -1,11 +1,12 @@
 import DownloadPage from './download.po';
 import Hooks from '../../../utilities/hooks';
+import config from '../../../config/mainConfig';
 
 const path = require('path');
 const fs = require('fs');
 const inputs = require('./download-dp');
 
-let hooks, page;
+let filePath, hooks, page;
 const productFile2015 = 'The 2015 Edition Products file is updated nightly.';
 const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
 const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
@@ -57,22 +58,50 @@ describe('the Download page - compliance activities section', () => {
   });
 });
 
-describe('When downloading definition file', () => {
+inputs.forEach(input => {
+  let file = input.file;
+  let definitionFileName = input.definitionFileName;
+  let dataFileName = input.dataFileName;
+  let dfSize = input.dfSize;
+  let fileExtension = input.fileExtension;
+  let dSize = input.dSize;
+  let days = input.days;
+  describe(`When downloading ${file} definition file`, () => {
 
-  inputs.forEach(input => {
-    let file = input.file;
-    let downloadedFileName = input.downloadedFileName;
-    let size = input.size;
-
-    it(`${file} - should download successfully with correct file size`, () => {
-      page.downloadDropdown.selectByVisibleText(file);
-      page.definitionFile.scrollAndClick();
-      const filePath = path.join(global.downloadDir, downloadedFileName);
-      browser.waitForFileExists(filePath,10000);
-      expect(fs.existsSync(filePath)).toBe.true;
-      var stat = fs.statSync(filePath);
-      expect(stat.size).toBeGreaterThan(size);
+    it(`should download file successfully with file size more than ${dfSize} KB`, () => {
+      if (!(file.includes('2014 edition products (xml)') || file.includes('2011 edition products (xml)'))) {
+        page.downloadDropdown.selectByVisibleText(file);
+        page.definitionFile.scrollAndClick();
+        filePath = path.join(global.downloadDir, definitionFileName);
+        browser.waitForFileExists(filePath,10000);
+        expect(fs.existsSync(filePath)).toBe.true;
+        var stat = fs.statSync(filePath);
+        expect(stat.size).toBeGreaterThan(dfSize);
+      }
     });
   });
 
+  describe(`When downloading ${file} data file`, () => {
+    let fileName;
+
+    it(`should download file successfully with file size more than ${dSize} KB`, () => {
+      page.downloadDropdown.selectByVisibleText(file);
+      page.dataFile.scrollAndClick();
+      browser.pause(config.timeout);
+      let dirCont = fs.readdirSync( global.downloadDir );
+      fileName = dirCont.filter( file => file.match(new RegExp(dataFileName + `.*.(${fileExtension})`))).toString();
+      filePath = path.join(global.downloadDir, fileName);
+      expect(fs.existsSync(filePath)).toBe.true;
+      var stat = fs.statSync(filePath);
+      expect(stat.size).toBeGreaterThan(dSize);
+    });
+
+    it(`should not be older than ${days} days `, () => {
+      var actualDate = new Date(fileName.slice((fileName.length - 19),-11).replace(/(\d{4})(\d{2})(\d{2})/,'$1-$2-$3'));
+      var currentDate = new Date();
+      var actualDays = (actualDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+      expect(parseInt(actualDays)).toBeLessThanOrEqual(days);
+    });
+
+  });
 });
