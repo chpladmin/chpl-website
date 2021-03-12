@@ -57,6 +57,7 @@
           <tr>
             <td colspan="4">
               <button class="btn btn-ai-success"
+                      analytics-on="click" analytics-event="Download SED Details" analytics-properties="{ category: vm.analyticsCategory, label: vm.listing.chplProductNumber }"
                       ng-click="vm.getCsv()">
                 <i class="fa fa-cloud-download"></i> Download SED Details
               </button>

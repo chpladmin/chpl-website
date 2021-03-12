@@ -3,8 +3,9 @@ export const OverviewComponent = {
   bindings: {
   },
   controller: class OverviewController {
-    constructor ($anchorScroll, $location, $log, $rootScope, networkService) {
+    constructor ($analytics, $anchorScroll, $location, $log, $rootScope, networkService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$anchorScroll = $anchorScroll;
       this.$location = $location;
       this.$log = $log;
@@ -49,6 +50,7 @@ export const OverviewComponent = {
     }
 
     toTop () {
+      this.$analytics.eventTrack('Jump to top of Overview', { category: 'Navigation' });
       this.$location.hash('');
       this.$anchorScroll();
     }

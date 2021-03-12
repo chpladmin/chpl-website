@@ -19,6 +19,7 @@
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
             <input type="text" class="form-control input-sm" id="generalFilter" placeholder="{{ vm.searchText }}"
+                   ng-model="vm.query" ng-blur="vm.trackEntry(vm.query)"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)">
             <label for="generalFilter"><span class="sr-only">{{ vm.searchText }}</span></label>
           </div>
@@ -37,7 +38,8 @@
                 fixed-items="vm.filterItems.acbItems"
                 has-changes="vm.categoryChanged['acb']"
                 register-allow-all="vm.registerAllowAll(allowAll)"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'ONC-ACB'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('edition')">
@@ -53,19 +55,8 @@
                 fixed-items="vm.filterItems.editionItemsCures"
                 has-changes="vm.categoryChanged['edition']"
                 register-allow-all="vm.registerAllowAll(allowAll)"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
-            </ul>
-          </div>
-          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationDate')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationDate" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['certificationDate']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-              Certification Date <i class="fa fa-filter"></i>
-            </button>
-            <ul class="dropdown-menu-large" aria-labeledby="filter-button-certificationDate" uib-dropdown-menu>
-              <ai-date-range
-                predicate="certificationDate"
-                has-changes="vm.categoryChanged['certificationDate']"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'Certification Edition'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('decertificationDate')">
@@ -77,22 +68,8 @@
               <ai-date-range
                 predicate="decertificationDate"
                 has-changes="vm.categoryChanged['decertificationDate']"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
-            </ul>
-          </div>
-          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('acbAttestations')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acbAttestations" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['acbAttestations']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a>
-              Attestation <i class="fa fa-filter"></i>
-            </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-button-acbAttestations" uib-dropdown-menu>
-              <st-list-multiple
-                collection="vm.allCps"
-                predicate="acbAttestations"
-                fixed-items="vm.filterItems.acbAttestations"
-                has-changes="vm.categoryChanged['acbAttestations']"
-                register-allow-all="vm.registerAllowAll(allowAll)"
-                register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+                register-clear-filter="vm.registerClearFilter(clearFilter)"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'Decertification Date'}"></ai-date-range>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationStatus')">
@@ -108,7 +85,8 @@
                 has-changes="vm.categoryChanged['certificationStatus']"
                 register-allow-all="vm.registerAllowAll(allowAll)"
                 register-clear-filter="vm.registerClearFilter(clearFilter)"
-                match-full="true"></st-list-multiple>
+                match-full="true"
+                analytics="{category: vm.analyticsCategory, eventTitle: 'Certification Status'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('nonconformities')">
@@ -169,6 +147,7 @@
                     <label for="pageSizeTop" class="sr-only">Show how many results</label>
                     Showing up to&nbsp;
                     <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                            ng-change="vm.changeItemsPerPage()"
                             ng-options="v as v for v in [50,100,250]">
                     </select>
                     &nbsp;results per page

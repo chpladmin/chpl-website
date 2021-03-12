@@ -5,7 +5,7 @@
     .controller('ViewSedModalController', ViewSedModalController);
 
   /** @ngInject */
-  function ViewSedModalController ($uibModal, $uibModalInstance, id, networkService) {
+  function ViewSedModalController ($analytics, $uibModal, $uibModalInstance, id, networkService) {
     var vm = this;
 
     vm.close = close;
@@ -16,7 +16,8 @@
 
     function activate () {
       networkService.getListing(id)
-        .then(function (data) {
+        .then(data => {
+          $analytics.eventTrack('Open SED Information', { category: 'SED Information for 2015 Edition Products', label: data.chplProductNumber });
           vm.listing = data;
         });
     }

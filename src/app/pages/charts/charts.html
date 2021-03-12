@@ -11,10 +11,10 @@
           The charts are a dynamic display of the data currently on the CHPL. If there are any questions or comments regarding this feature, please submit them through the <a href="https://inquiry.healthit.gov/">Health IT Feedback and Inquiry Portal</a>
         </p>
         <ul class="nav nav-tabs">
-          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'product'}"><button class="btn btn-link" ng-click="$ctrl.chartState.tab = 'product'">Unique Product charts</button></li>
-          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'developer'}"><button class="btn btn-link" ng-click="$ctrl.chartState.tab = 'developer'">Developer charts</button></li>
-          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'sed'}"><button class="btn btn-link" ng-click="$ctrl.chartState.tab = 'sed'">SED Participant charts</button></li>
-          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'nonconformity'}"><button class="btn btn-link" ng-click="$ctrl.chartState.tab = 'nonconformity'">Nonconformity charts</button></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'product'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('product')">Unique Product charts</button></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'developer'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('developer')">Developer charts</button></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'sed'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('sed')">SED Participant charts</button></li>
+          <li role="presentation" ng-class="{'active': $ctrl.chartState.tab === 'nonconformity'}"><button class="btn btn-link" ng-click="$ctrl.changeTab('nonconformity')">Nonconformity charts</button></li>
         </ul>
       </div>
     </div>

@@ -7,11 +7,30 @@
   /** @ngInject */
   function collectionsService ($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
     var service = {
+      getAnalyticsCategory: getAnalyticsCategory,
       translate: translate,
     };
     return service;
 
     ////////////////////////////////////////////////////////////////////
+
+    function getAnalyticsCategory (key) {
+      switch (key) {
+      case 'apiDocumentation':
+        return 'API Information for 2015 Edition Products';
+      case 'bannedDevelopers':
+        return 'Banned Developer';
+      case 'correctiveAction':
+        return 'Products: Corrective Action Status';
+      case 'decertifiedProducts':
+        return 'Decertified Products';
+      case 'inactiveCertificates':
+        return 'Inactive Certificates';
+      case 'sed':
+        return 'SED Information for 2015 Edition Products';
+        // no default
+      }
+    }
 
     function translate (key, data) {
       switch (key) {
@@ -27,8 +46,6 @@
         return inactiveCertificates(data.results);
       case 'sed':
         return sed(data.results, data.certificationCriteria);
-      case 'transparencyAttestations':
-        return transparencyAttestations(data);
         // no default
       }
     }
@@ -180,73 +197,6 @@
           return listing;
         });
       return ret;
-    }
-
-    /*
-     * Only developers with Listings that are Active or Suspended by ONC/ONC-ACB are included, and need to be transformed
-     */
-    function transparencyAttestations (array) {
-      var ret = [];
-      var dev;
-      for (var i = 0; i < array.length; i ++) {
-        if (array[i].listingCounts.active > 0 ||
-            array[i].listingCounts.suspendedByOncAcb > 0 ||
-            array[i].listingCounts.suspendedByOnc > 0) {
-          dev = {
-            name: array[i].name,
-            mainSearch: array[i].name,
-            acbAttestations: joinAttestations(array[i].acbAttestations),
-            transparencyAttestationUrls: array[i].transparencyAttestationUrls ? array[i].transparencyAttestationUrls.split(SPLIT_PRIMARY) : [],
-            acb: findAcbs(array[i].acbAttestations),
-          };
-          ret.push(dev);
-        }
-      }
-      return ret;
-    }
-
-    ////////////////////////////////////////////////////////////////////
-    // helper functions
-    ////////////////////////////////////////////////////////////////////
-
-    function expandAttestation (att, acb) {
-      switch (att) {
-      case 'Affirmative': return '<span class="text-success">Supports (' + acb + ')</span>';
-      case 'Negative': return '<span class="text-danger">Declined to Support (' + acb + ')</span>';
-      case 'N/A': return '<span class="text-muted">Not Applicable (' + acb + ')</span>';
-      default: return att;
-      }
-    }
-
-    function findAcbs (atts) {
-      var ret = [];
-      if (atts) {
-        var items = atts.split(SPLIT_PRIMARY);
-        var item;
-        for (var i = 0; i < items.length; i++) {
-          item = items[i].split(':');
-          ret.push(item[0]);
-        }
-      }
-      return ret.join(SPLIT_PRIMARY);
-    }
-
-    function joinAttestations (atts) {
-      var ret = [];
-      if (atts) {
-        var items = atts.split(SPLIT_PRIMARY);
-        var item;
-        for (var i = 0; i < items.length; i++) {
-          item = items[i].split(':');
-          if (item[1]) {
-            ret.push(expandAttestation(item[1], item[0]));
-          }
-        }
-      }
-      if (ret.length === 0) {
-        ret.push('<span class="text-danger">Has not fulfilled requirement</span>');
-      }
-      return ret.join('<br />');
     }
   }
 })();
