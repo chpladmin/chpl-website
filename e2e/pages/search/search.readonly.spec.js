@@ -62,7 +62,7 @@ describe('the search page', () => {
   describe('when browsing all listings', () => {
     beforeEach(() => {
       page.browseAllButton.click();
-      if(!page.downloadResultsButton.isDisplayed()){
+      if (!page.downloadResultsButton.isDisplayed()) {
         page.browseAllButton.click();
       }
       page.waitForUpdatedListingResultsCount();
