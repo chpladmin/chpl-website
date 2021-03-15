@@ -4,7 +4,7 @@ import Hooks from '../../../utilities/hooks';
 
 let hooks, loginComponent, uploadRwtComponent;
 
-beforeAll(async () => {
+beforeEach(async () => {
   uploadRwtComponent = new UploadRwtComponent();
   loginComponent = new LoginComponent();
   hooks = new Hooks();
