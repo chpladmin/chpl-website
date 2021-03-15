@@ -62,6 +62,9 @@ describe('the search page', () => {
   describe('when browsing all listings', () => {
     beforeEach(() => {
       page.browseAllButton.click();
+      if(!page.downloadResultsButton.isDisplayed()){
+        page.browseAllButton.click();
+      }
       page.waitForUpdatedListingResultsCount();
     });
 
@@ -84,6 +87,7 @@ describe('the search page', () => {
   describe('when searching listings by developer', () => {
     beforeEach(() => {
       page.searchForListing(developerName);
+      hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
     });
 
@@ -102,6 +106,7 @@ describe('the search page', () => {
   describe('when searching listings by product', () => {
     beforeEach(() => {
       page.searchForListing(productName);
+      hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
     });
 
@@ -140,6 +145,7 @@ describe('the search page', () => {
     const chplId = '15.99.04.3078.Ninj.01.00.0.200629';
     beforeEach(() => {
       page.searchForListing(chplId);
+      hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
     });
 
@@ -157,6 +163,7 @@ describe('the search page', () => {
     var countBefore;
     var countAfter;
     beforeEach(() => {
+      hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
       countBefore = page.listingTotalCount();
     });
