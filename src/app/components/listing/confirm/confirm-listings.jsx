@@ -11,6 +11,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from './';
@@ -36,8 +37,20 @@ function ChplConfirmListings (props) {
   const classes = useStyles();
 
   const getStatus = listing => {
-    return listing.errorCount + ' error' + (listing.errorCount !== 1 ? 's' : '')
-      + ' / ' + listing.warningCount + ' warning' + (listing.warningCount !== 1 ? 's' : '');
+    return (
+      <>
+        { listing.errorCount !== null && listing.warningCount !== null
+          ? <>
+              { listing.errorCount + ' error' + (listing.errorCount !== 1 ? 's' : '') }
+              <br />
+              { listing.warningCount + ' warning' + (listing.warningCount !== 1 ? 's' : '') }
+            </>
+          : <>
+              <CircularProgress />
+            </>
+        }
+      </>
+    );
   };
 
   const handleProcess = listing => {

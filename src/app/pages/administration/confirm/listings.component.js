@@ -4,14 +4,14 @@ export const ConfirmListingsComponent = {
     developers: '<',
     resources: '<',
     uploadingCps: '<',
-    uploadedListings: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $scope, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
+    constructor ($log, $scope, $state, $timeout, $uibModal, DateUtil, authService, featureFlags, networkService) {
       'ngInject';
       this.$log = $log;
       this.$scope = $scope;
       this.$state = $state;
+      this.$timeout = $timeout;
       this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
       this.featureFlags = featureFlags;
@@ -20,6 +20,12 @@ export const ConfirmListingsComponent = {
       this.massReject = {};
       this.handleProcess = this.handleProcess.bind(this);
       this.handleUpdate = this.handleUpdate.bind(this);
+    }
+
+    $onInit () {
+      if (this.featureFlags.isOn('enhanced-upload')) {
+        this.loadListings(this);
+      }
     }
 
     $onChanges (changes) {
@@ -38,9 +44,6 @@ export const ConfirmListingsComponent = {
       }
       if (changes.uploadingCps) {
         this.uploadingCps = angular.copy(changes.uploadingCps.currentValue);
-      }
-      if (changes.uploadedListings) {
-        this.uploadedListings = angular.copy(changes.uploadedListings.currentValue);
       }
     }
 
@@ -98,6 +101,16 @@ export const ConfirmListingsComponent = {
 
     inspectListing (listingId) {
       this.$state.go('.listing', {id: listingId});
+    }
+
+    loadListings (that) {
+      that.networkService.getPendingListings(true).then(response => {
+        that.uploadedListings = response;
+        let refresh = that.uploadedListings.reduce((refresh, l) => refresh || l.errorCount === null || l.warningCount === null, false);
+        if (refresh) {
+          that.$timeout(that.loadListings, 1000, true, that);
+        }
+      });
     }
 
     massRejectPendingListings () {

@@ -80,29 +80,6 @@ let states = {
   ],
   'enhanced-upload': [
     {
-      name: 'administration.confirm.listings',
-      url: '/listings',
-      component: 'chplConfirmListings',
-      resolve: {
-        developers: networkService => {
-          'ngInject';
-          return networkService.getDevelopers().then(response => response.developers);
-        },
-        resources: ($q, networkService) => {
-          'ngInject';
-          return getResources($q, networkService);
-        },
-        uploadingCps: ($q, networkService) => {
-          'ngInject';
-          return networkService.getPendingListings().then(response => response);
-        },
-        uploadedListings: ($q, networkService) => {
-          'ngInject';
-          return networkService.getPendingListings(true);
-        },
-      },
-      data: { title: 'CHPL Administration - Confirm Listings' },
-    },{
       name: 'administration.confirm.listings.listing',
       url: '/{id}/confirm',
       component: 'chplConfirmListing',

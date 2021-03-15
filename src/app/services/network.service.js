@@ -439,7 +439,7 @@ export class NetworkService {
 
   getPendingListings (beta) {
     if (beta) {
-      return this.apiGET('/listings/pending');
+      return this.apiGET('/listings/pending', {ignoreLoadingBar: true});
     }
     return this.apiGET('/certified_products/pending/metadata');
   }
