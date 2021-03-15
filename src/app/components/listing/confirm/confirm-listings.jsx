@@ -126,9 +126,7 @@ function ChplConfirmListings (props) {
             <TableContainer component={ Paper }>
               <Table size="small">
                 <ChplSortableHeaders headers={ headers }
-                                     onTableSort={ handleTableSort }
-                                     order='asc'
-                                     orderBy='chplProductNumber' />
+                                     onTableSort={ handleTableSort } />
                 <TableFooter>
                   <TableRow>
                     <TableCell colSpan={ 7 } />
