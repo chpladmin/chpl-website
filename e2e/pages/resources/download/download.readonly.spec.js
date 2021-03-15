@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const inputs = require('./download-dp');
 
-let filePath, hooks, page;
+let hooks, page;
 const productFile2015 = 'The 2015 Edition Products file is updated nightly.';
 const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
 const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
@@ -66,6 +66,10 @@ inputs.forEach(input => {
   let fileExtension = input.fileExtension;
   let dSize = input.dSize;
   let days = input.days;
+  let dfLines = input.dfLines;
+  let dLines = input.dLines;
+  let fileContents, filePath;
+
   describe(`When downloading ${file} definition file`, () => {
 
     it(`should download file successfully with file size more than ${dfSize} KB`, () => {
@@ -79,6 +83,14 @@ inputs.forEach(input => {
         expect(stat.size).toBeGreaterThan(dfSize);
       }
     });
+    if (fileExtension.includes('csv')) {
+
+      it(`should have at-least ${dfLines} rows in the file`, () => {
+        fileContents = fs.readFileSync(filePath, 'utf-8');
+        var actualLines = fileContents.split('\n').length;
+        expect(actualLines).toBeGreaterThanOrEqual(dfLines);
+      });
+    }
   });
 
   describe(`When downloading ${file} data file`, () => {
@@ -87,7 +99,7 @@ inputs.forEach(input => {
     it(`should download file successfully with file size more than ${dSize} KB`, () => {
       page.downloadDropdown.selectByVisibleText(file);
       page.dataFile.scrollAndClick();
-      browser.pause(config.timeout);
+      browser.pause(config.timeout); // can't add explicit timeout as file name is dynamic here
       let dirCont = fs.readdirSync( global.downloadDir );
       fileName = dirCont.filter( file => file.match(new RegExp(dataFileName + `.*.(${fileExtension})`))).toString();
       filePath = path.join(global.downloadDir, fileName);
@@ -99,9 +111,18 @@ inputs.forEach(input => {
     it(`should not be older than ${days} days `, () => {
       var actualDate = new Date(fileName.slice((fileName.length - 19),-11).replace(/(\d{4})(\d{2})(\d{2})/,'$1-$2-$3'));
       var currentDate = new Date();
-      var actualDays = (actualDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
-      expect(parseInt(actualDays)).toBeLessThanOrEqual(days);
+      var diffDays = (actualDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+      expect(parseInt(diffDays)).toBeLessThanOrEqual(days);
     });
+
+    if (fileExtension.includes('csv')) {
+
+      it(`should have at-least ${dLines} rows in the file`, () => {
+        fileContents = fs.readFileSync(filePath, 'utf-8');
+        var actualLines = fileContents.split('\n').length;
+        expect(actualLines).toBeGreaterThanOrEqual(dLines);
+      });
+    }
 
   });
 });

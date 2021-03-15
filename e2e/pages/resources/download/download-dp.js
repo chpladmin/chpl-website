@@ -7,6 +7,7 @@ module.exports = [
     dfSize: '95000',
     dSize: '400000',
     days: '1',
+
   },
   {
     file: '2014 edition products (xml)',
@@ -34,6 +35,8 @@ module.exports = [
     dfSize: '14000',
     dSize: '900',
     days: '1',
+    dfLines: 100,
+    dLines: 1300,
   },
   {
     file: '2014 edition summary (csv)',
@@ -43,6 +46,8 @@ module.exports = [
     dfSize: '9000',
     dSize: '2800',
     days: '92',
+    dfLines: 85,
+    dLines: 5250,
   },
   {
     file: 'Surveillance Activity',
@@ -52,6 +57,8 @@ module.exports = [
     dfSize: '7000',
     dSize: '900',
     days: '1',
+    dfLines: 30,
+    dLines: 1700,
   },
   {
     file: 'Surveillance Non-Conformities',
@@ -61,6 +68,8 @@ module.exports = [
     dfSize: '7000',
     dSize: '800',
     days: '1',
+    dfLines: 30,
+    dLines: 1200,
   },
   {
     file: 'Direct Review Activity',
@@ -70,5 +79,7 @@ module.exports = [
     dfSize: '3000',
     dSize: '10',
     days: '1',
+    dfLines: 20,
+    dLines: 50,
   },
 ];
