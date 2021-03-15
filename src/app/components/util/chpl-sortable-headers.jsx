@@ -36,7 +36,7 @@ function ChplSortableHeaders (props) {
   return (
     <TableHead>
       <TableRow>
-        {props.headers.map(headCell => (
+        { props.headers.map(headCell => (
           headCell.sortable
             ? <TableCell key={ headCell.property }
                          align="left"

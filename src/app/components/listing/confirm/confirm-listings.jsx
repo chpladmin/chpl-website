@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { arrayOf, func, number, shape, string } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Button, Checkbox, makeStyles } from '@material-ui/core';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -31,12 +29,10 @@ const useStyles = makeStyles(() => ({
 
 function ChplConfirmListings (props) {
   const [idsToReject, setIdsToReject] = useState([]);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastOpen, setToastOpen] = useState(false);
-  const [rejectSuccess, setRejectSuccess] = useState(true);
   const [listings, setListings] = useState(props.listings);
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
+  const toaster = getAngularService('toaster');
   const classes = useStyles();
 
   const getStatus = listing => {
@@ -52,14 +48,14 @@ function ChplConfirmListings (props) {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
         props.onUpdate();
-        setRejectSuccess(true);
-        setToastOpen(true);
         let message = 'Rejected ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '');
-        setToastMessage(message);
+        toaster.pop({
+          type: 'success',
+          title: 'Success',
+          body: message,
+        });
         setIdsToReject([]);
       }, error => {
-        setRejectSuccess(false);
-        setToastOpen(true);
         let message = 'Rejection of ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '') + ' failed';
         if (error?.data?.errorMessages) {
           message += '. ' + error.data.errorMessages.join(', ');
@@ -67,8 +63,11 @@ function ChplConfirmListings (props) {
         if (error?.data?.error) {
           message += '. ' + error.data.error;
         }
-        setToastMessage(message);
-        console.log(error);
+        toaster.pop({
+          type: 'error',
+          title: 'Error',
+          body: message,
+        });
       });
   };
 
@@ -82,13 +81,6 @@ function ChplConfirmListings (props) {
 
   const handleTableSort = (event, property, orderDirection) => {
     setListings(listings.sort(listingSortComparator(orderDirection + property)).map(listing => listing));
-  };
-
-  const handleToastClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setToastOpen(false);
   };
 
   const listingSortComparator = (property) => {
@@ -168,13 +160,6 @@ function ChplConfirmListings (props) {
           </>
         : <div>None found</div>
       }
-      <Snackbar open={ toastOpen }
-                onClose={ handleToastClose }
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
-        <MuiAlert onClose={ handleToastClose } severity={ rejectSuccess ? 'success' : 'error' }>
-          { toastMessage }
-        </MuiAlert>
-      </Snackbar>
     </ThemeProvider>
   );
 }
