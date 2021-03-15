@@ -220,30 +220,6 @@ describe('the search page', () => {
       });
     });
 
-    describe('using certification status as "Retired"', () => {
-      beforeEach(() => {
-        page.expandFilterOptions('status').click();
-        page.statusRetiredFilterOption.click();
-        page.waitForUpdatedListingResultsCount();
-      });
-
-      it('should filter listing results', () => {
-        countAfter = page.listingTotalCount();
-        expect(countAfter).toBeGreaterThan(countBefore);
-      });
-
-      it('should at least show 1 retired listing', () => {
-        let isInclude = false;
-        for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-          if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
-            isInclude = true;
-            break;
-          }
-        }
-        expect(isInclude).toBe(true);
-      });
-    });
-
     describe('using certification criteria 170.315 (a)(1)', () => {
       beforeEach(() => {
         page.expandFilterOptions('criteria').click();
@@ -261,6 +237,10 @@ describe('the search page', () => {
     describe('with compliance activity', () => {
       beforeEach(() => {
         page.expandFilterOptions('compliance').click();
+      });
+
+      afterEach(() => {
+        page.clearFilters.click();
       });
 
       it('should filter listing results on "has never had a compliance activity"', () => {
@@ -282,6 +262,10 @@ describe('the search page', () => {
           page.complianceHasHadActivityFilter.click();
           page.waitForUpdatedListingResultsCount();
           countBefore = page.listingTotalCount();
+        });
+
+        afterEach(() => {
+          page.clearFilters.click();
         });
 
         it('should filter listing results on "never had"', () => {
@@ -310,6 +294,10 @@ describe('the search page', () => {
     describe('in the "More" dropdown', () => {
       beforeEach(() => {
         page.moreFilterButton.click();
+      });
+
+      afterEach(() => {
+        page.clearFilters.click();
       });
 
       describe('the "Clinical Quality Measures" filter', () => {
