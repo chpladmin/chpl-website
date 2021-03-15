@@ -4,14 +4,12 @@ const theme = createMuiTheme({
   root: {
     width: '100%',
     display: 'flex',
-    '& > * + *': {
-      marginBottom: '',
-    },
   },
   spacing: 4,
+
   palette: {
     background: {
-      default: '#000000',
+      default: '#f9f9f9',
     },
     primary: {
       light: '#599bde',
@@ -20,18 +18,15 @@ const theme = createMuiTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      light: '#8f1c3b',
-      main: '#c44f65',
-      dark: '#8f1c3b',
-      contrastText: '#ffffff',
-    },
-    warning: {
-      main: '#ff9800',
+      light: '#ffffff',
+      main: '#f5f9fd',
+      dark: '#c2c6ca',
+      contrastText: '#000000',
     },
   },
+
   typography: {
     fontFamily: 'Lato, sans-serif',
-    //fontSize: '14px', // the default in material-ui is 14px, and this value is required to be a number
     h1: {
       fontSize: '3.5em',
       fontWeight: 800,
@@ -53,14 +48,107 @@ const theme = createMuiTheme({
       fontWeight: 800,
     },
     h6: {
-      fontSize: '1.25em',
+      fontSize: '1.3em',
       fontWeight: 400,
     },
+    body1: {
+      fontSize: '1.2em',
+      lineHeight: '1.3em',
+    },
+    body2: {
+      fontSize: '1em',
+    },
   },
+
   overrides: {
     MuiButton: {
       root: {
-        margin: '4px',
+        boxShadow: 'none',
+        fontSize: 14,
+        '&:hover': {
+          boxShadow: 'none',
+        },
+      },
+      contained: {
+        backgroundColor: '#eeeeee',
+        boxShadow: 'none',
+        fontSize: 14,
+        '&:hover, selected': {
+          boxShadow: 'none',
+        },
+      },
+      containedSecondary: {
+        border: '.5px solid #156dac',
+        backgroundColor: '#ffffff',
+        fontSize: 14,
+        color: '#156dac',
+        '&:hover': {
+          backgroundColor: 'rgb(245, 249, 253, 0.9)',
+        },
+        '&: selected': {
+          backgroundColor: '#599bde',
+        },
+      },
+    },
+    MuiListItem: {
+      root: {
+        '&:hover': {
+          backgroundColor: '#eeeeee',
+        },
+      },
+    },
+    MuiCheckbox: {
+      root: {
+        color: '#156dac',
+      },
+      colorSecondary: {
+        color: '#156dac',
+        '&$checked': {
+          color: '#156dac',
+        },
+      },
+    },
+    MuiCard: {
+      root: {
+        boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+        borderRadius: '8px',
+        border: '.5px solid #c2c6ca',
+      },
+    },
+    MuiCardHeader: {
+      root: {
+        backgroundColor: '#f5f9fd',
+      },
+    },
+    MuiFormHelperText: {
+      root: {
+        fontSize: '12',
+      },
+    },
+    MuiTable: {
+      root: {
+        borderRadius: '8px',
+      },
+    },
+    MuiTableCell: {
+      head: {
+        color: '#156dac',
+        fontWeight: 800,
+      },
+    },
+    MuiTableRow: {
+      root: {
+        '&:hover': {
+          backgroundColor: 'rgb(245, 249, 253, 0.9)',
+        },
+      },
+    },
+    MuiTableHead: {
+      root: {
+        borderRadius: '8px',
+        '&:hover': {
+          backgroundColor: '#ffffff',
+        },
       },
     },
   },
