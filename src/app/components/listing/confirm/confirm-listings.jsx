@@ -40,7 +40,13 @@ function ChplConfirmListings (props) {
   }, [loadListings]);
 
   const loadListings = useCallback(() => {
-    networkService.getPendingListings(true).then(response => setListings(response));
+    networkService.getPendingListings(true).then(response => {
+      setListings(response);
+      let pending = response.filter(l => l.errorCount === null || l.warningCount === null);
+      if (pending.length > 0) {
+        setTimeout(loadListings, 1000);
+      }
+    });
   }, [networkService]);
 
   const getStatus = listing => {
