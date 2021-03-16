@@ -80,7 +80,7 @@ inputs.forEach(input => {
         browser.waitForFileExists(filePath,10000);
         expect(fs.existsSync(filePath)).toBe.true;
         var stat = fs.statSync(filePath);
-        expect(stat.size).toBeGreaterThan(definitionFileSize);
+        expect(stat.size / 1000).toBeGreaterThan(definitionFileSize);
       }
     });
     if (fileExtension.includes('csv')) {
@@ -105,7 +105,7 @@ inputs.forEach(input => {
       filePath = path.join(global.downloadDir, fileName);
       expect(fs.existsSync(filePath)).toBe.true;
       var stat = fs.statSync(filePath);
-      expect(stat.size).toBeGreaterThan(dataFileSize);
+      expect(stat.size / 1000).toBeGreaterThan(dataFileSize);
     });
 
     it(`should not be older than ${generationFrequencyInDays} days `, () => {
