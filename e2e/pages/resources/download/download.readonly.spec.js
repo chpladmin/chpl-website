@@ -62,17 +62,17 @@ inputs.forEach(input => {
   let file = input.file;
   let definitionFileName = input.definitionFileName;
   let dataFileName = input.dataFileName;
-  let dfSize = input.dfSize;
+  let definitionFileSize = input.definitionFileSize;
   let fileExtension = input.fileExtension;
-  let dSize = input.dSize;
-  let days = input.days;
-  let dfLines = input.dfLines;
-  let dLines = input.dLines;
+  let dataFileSize = input.dataFileSize;
+  let generationFrequencyInDays = input.generationFrequencyInDays;
+  let definitionFileLines = input.definitionFileLines;
+  let dataLines = input.dataLines;
   let fileContents, filePath;
 
   describe(`When downloading ${file} definition file`, () => {
 
-    it(`should download file successfully with file size more than ${dfSize} KB`, () => {
+    it(`should download file successfully with file size more than ${definitionFileSize} KB`, () => {
       if (!(file.includes('2014 edition products (xml)') || file.includes('2011 edition products (xml)'))) {
         page.downloadDropdown.selectByVisibleText(file);
         page.definitionFile.scrollAndClick();
@@ -80,15 +80,15 @@ inputs.forEach(input => {
         browser.waitForFileExists(filePath,10000);
         expect(fs.existsSync(filePath)).toBe.true;
         var stat = fs.statSync(filePath);
-        expect(stat.size).toBeGreaterThan(dfSize);
+        expect(stat.size).toBeGreaterThan(definitionFileSize);
       }
     });
     if (fileExtension.includes('csv')) {
 
-      it(`should have at-least ${dfLines} rows in the file`, () => {
+      it(`should have at-least ${definitionFileLines} rows in the file`, () => {
         fileContents = fs.readFileSync(filePath, 'utf-8');
         var actualLines = fileContents.split('\n').length;
-        expect(actualLines).toBeGreaterThanOrEqual(dfLines);
+        expect(actualLines).toBeGreaterThanOrEqual(definitionFileLines);
       });
     }
   });
@@ -96,7 +96,7 @@ inputs.forEach(input => {
   describe(`When downloading ${file} data file`, () => {
     let fileName;
 
-    it(`should download file successfully with file size more than ${dSize} KB`, () => {
+    it(`should download file successfully with file size more than ${dataFileSize} KB`, () => {
       page.downloadDropdown.selectByVisibleText(file);
       page.dataFile.scrollAndClick();
       browser.pause(config.timeout); // can't add explicit timeout as file name is dynamic here
@@ -105,22 +105,22 @@ inputs.forEach(input => {
       filePath = path.join(global.downloadDir, fileName);
       expect(fs.existsSync(filePath)).toBe.true;
       var stat = fs.statSync(filePath);
-      expect(stat.size).toBeGreaterThan(dSize);
+      expect(stat.size).toBeGreaterThan(dataFileSize);
     });
 
-    it(`should not be older than ${days} days `, () => {
+    it(`should not be older than ${generationFrequencyInDays} days `, () => {
       var actualDate = new Date(fileName.slice((fileName.length - 19),-11).replace(/(\d{4})(\d{2})(\d{2})/,'$1-$2-$3'));
       var currentDate = new Date();
       var diffDays = (actualDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
-      expect(parseInt(diffDays)).toBeLessThanOrEqual(days);
+      expect(parseInt(diffDays)).toBeLessThanOrEqual(generationFrequencyInDays);
     });
 
     if (fileExtension.includes('csv')) {
 
-      it(`should have at-least ${dLines} rows in the file`, () => {
+      it(`should have at-least ${dataLines} rows in the file`, () => {
         fileContents = fs.readFileSync(filePath, 'utf-8');
         var actualLines = fileContents.split('\n').length;
-        expect(actualLines).toBeGreaterThanOrEqual(dLines);
+        expect(actualLines).toBeGreaterThanOrEqual(dataLines);
       });
     }
 
