@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { arrayOf, func, number, shape, string } from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
+import { func } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Button, Checkbox, makeStyles } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
@@ -16,7 +16,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import theme from '../../../themes/theme';
 import { getAngularService } from './';
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers.jsx';
-import { acb } from '../../../shared/prop-types/';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -30,11 +29,19 @@ const useStyles = makeStyles(() => ({
 
 function ChplConfirmListings (props) {
   const [idsToReject, setIdsToReject] = useState([]);
-  const [listings, setListings] = useState(props.listings);
+  const [listings, setListings] = useState([]);
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
   const classes = useStyles();
+
+  useEffect(() => {
+    loadListings();
+  }, [loadListings]);
+
+  const loadListings = useCallback(() => {
+    networkService.getPendingListings(true).then(response => setListings(response));
+  }, [networkService]);
 
   const getStatus = listing => {
     return (
@@ -67,7 +74,7 @@ function ChplConfirmListings (props) {
           body: message,
         });
         setIdsToReject([]);
-        props.onUpdate();
+        loadListings();
       }, error => {
         let message = 'Rejection of ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '') + ' failed';
         if (error?.data?.errorMessages) {
@@ -161,7 +168,7 @@ function ChplConfirmListings (props) {
                         <TableCell>{ getStatus(listing) }</TableCell>
                         <TableCell align="right">
                           <Checkbox onChange={($event) => handleRejectCheckbox($event, listing) }
-                                    inputProps={{ 'aria-label': 'Reject Listing: ' + listing.chplProductNumber }}/>
+                                    inputProps={{ 'aria-label': 'Reject Listing: ' + listing.chplProductNumber }} />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -178,19 +185,7 @@ function ChplConfirmListings (props) {
 export { ChplConfirmListings };
 
 ChplConfirmListings.propTypes = {
-  listings: arrayOf(shape({
-    acb: acb,
-    certificationDate: string,
-    chplProductNumber: string,
-    developer: string,
-    errorCount: number,
-    id: number,
-    product: string,
-    version: string,
-    warningCount: number,
-  })),
   onProcess: func,
-  onUpdate: func,
 };
 
 /*

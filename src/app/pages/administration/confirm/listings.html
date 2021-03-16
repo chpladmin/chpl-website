@@ -53,12 +53,10 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md-12" feature-flag="enhanced-upload" ng-if="$ctrl.uploadedListings">
+  <div class="col-md-12" feature-flag="enhanced-upload">
     <h2>View (Beta) Products in the process of upload</h2>
     <chpl-confirm-listings-bridge
-      listings="$ctrl.uploadedListings"
-      on-process="::$ctrl.handleProcess"
-      on-update="::$ctrl.handleUpdate"></chpl-confirm-listings-bridge>
+      on-process="::$ctrl.handleProcess"></chpl-confirm-listings-bridge>
   </div>
 </div>
 <div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">

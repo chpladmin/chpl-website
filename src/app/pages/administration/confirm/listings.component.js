@@ -19,13 +19,6 @@ export const ConfirmListingsComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.massReject = {};
       this.handleProcess = this.handleProcess.bind(this);
-      this.handleUpdate = this.handleUpdate.bind(this);
-    }
-
-    $onInit () {
-      if (this.featureFlags.isOn('enhanced-upload')) {
-        this.loadListings(this);
-      }
     }
 
     $onChanges (changes) {
@@ -61,10 +54,6 @@ export const ConfirmListingsComponent = {
       this.$state.go('.listing', {id: listingId});
     }
 
-    handleUpdate () {
-      this.loadListings(this);
-    }
-
     inspectCp (cpId) {
       let that = this;
 
@@ -91,7 +80,6 @@ export const ConfirmListingsComponent = {
             this.developers.push(result.developer);
           }
           this.clearPendingListing(cpId);
-          this.loadListings(this);
           if (result.status === 'resolved') {
             this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
           }
@@ -101,16 +89,6 @@ export const ConfirmListingsComponent = {
 
     inspectListing (listingId) {
       this.$state.go('.listing', {id: listingId});
-    }
-
-    loadListings (that) {
-      that.networkService.getPendingListings(true).then(response => {
-        that.uploadedListings = response.map(l => l);
-        let refresh = that.uploadedListings.reduce((refresh, l) => refresh || l.errorCount === null || l.warningCount === null, false);
-        if (refresh) {
-          that.$timeout(that.loadListings, 1000, true, that);
-        }
-      });
     }
 
     massRejectPendingListings () {
