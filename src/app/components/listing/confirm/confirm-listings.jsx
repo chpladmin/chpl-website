@@ -60,7 +60,6 @@ function ChplConfirmListings (props) {
   const handleReject = () => {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
-        props.onUpdate();
         let message = 'Rejected ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '');
         toaster.pop({
           type: 'success',
@@ -68,6 +67,7 @@ function ChplConfirmListings (props) {
           body: message,
         });
         setIdsToReject([]);
+        props.onUpdate();
       }, error => {
         let message = 'Rejection of ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '') + ' failed';
         if (error?.data?.errorMessages) {

@@ -62,7 +62,7 @@ export const ConfirmListingsComponent = {
     }
 
     handleUpdate () {
-      this.onChange();
+      this.loadListings(this);
     }
 
     inspectCp (cpId) {
@@ -91,7 +91,7 @@ export const ConfirmListingsComponent = {
             this.developers.push(result.developer);
           }
           this.clearPendingListing(cpId);
-          this.onChange();
+          this.loadListings(this);
           if (result.status === 'resolved') {
             this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
           }
@@ -105,7 +105,7 @@ export const ConfirmListingsComponent = {
 
     loadListings (that) {
       that.networkService.getPendingListings(true).then(response => {
-        that.uploadedListings = response;
+        that.uploadedListings = response.map(l => l);
         let refresh = that.uploadedListings.reduce((refresh, l) => refresh || l.errorCount === null || l.warningCount === null, false);
         if (refresh) {
           that.$timeout(that.loadListings, 1000, true, that);
@@ -125,20 +125,13 @@ export const ConfirmListingsComponent = {
       });
       this.networkService.massRejectPendingListings(idsToReject)
         .then(() => {
-          that.onChange();
+          that.loadListings(that);
         }, error => {
-          that.onChange();
+          that.loadListings(that);
           if (error.data.errors && error.data.errors.length > 0) {
             that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
           }
         });
-    }
-
-    onChange () {
-      let that = this;
-      this.networkService.getPendingListings(true).then(listings => {
-        that.uploadedListings = angular.copy(listings);
-      });
     }
 
     clearPendingListing (cpId) {
