@@ -103,13 +103,20 @@ export const ConfirmListingsComponent = {
       });
       this.networkService.massRejectPendingListings(idsToReject)
         .then(() => {
-          that.loadListings(that);
+          that.loadListings();
         }, error => {
-          that.loadListings(that);
+          that.loadListings();
           if (error.data.errors && error.data.errors.length > 0) {
             that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
           }
         });
+    }
+
+    loadListings () {
+      let that = this;
+      this.networkService.getPendingListings().then(response => {
+        that.uploadingCps = response;
+      });
     }
 
     clearPendingListing (cpId) {
