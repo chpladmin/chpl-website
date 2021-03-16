@@ -745,6 +745,10 @@ export class NetworkService {
     return this.apiDELETE('/developers/' + developerId + '/users/' + userId);
   }
 
+  requestApiKey (apiKeyRequest) {
+    return this.apiPOST('/key/request', apiKeyRequest);
+  }
+
   resetPassword (userObj) {
     return this.apiPOST('/auth/reset_password_request', userObj);
   }
