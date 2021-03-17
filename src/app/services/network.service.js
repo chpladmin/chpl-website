@@ -27,6 +27,10 @@ export class NetworkService {
     return this.apiPOST(url, userObj);
   }
 
+  confirmApiKey (hash) {
+    return this.apiPOST('/key/confirm', hash);
+  }
+
   confirmPendingCp (request) {
     return this.apiPOST('/certified_products/pending/' + request.pendingListing.id + '/beta/confirm', request);
   }

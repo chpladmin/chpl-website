@@ -11,7 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
-import ValidateJS from 'validate.js';
 
 function ChplApiKeyRegistration () {
   //const $log = getAngularService('$log');
@@ -64,7 +63,7 @@ function ChplApiKeyRegistration () {
   };
 
   const getEmailErrorMessage = (email) => {
-    return ValidateJS.single(email, {email: true, presence: true});
+    return email.length > 0 ? '' : 'Email is required';
   };
 
   const getNameOrOrganizationErrorMessage = (name) => {
@@ -126,6 +125,4 @@ function ChplApiKeyRegistration () {
 
 export { ChplApiKeyRegistration };
 
-ChplApiKeyRegistration.propTypes = {
-
-};
+ChplApiKeyRegistration.propTypes = { };
