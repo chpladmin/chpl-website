@@ -1,4 +1,4 @@
-import { ChplConfirmListings } from './listing/confirm/';
+import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm/';
 import { ChplEllipsis } from './util/';
 import { ChplFuzzyType } from './fuzzy-type/';
 import { ChplUploadListings } from './upload/';
@@ -21,6 +21,7 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
+  .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))

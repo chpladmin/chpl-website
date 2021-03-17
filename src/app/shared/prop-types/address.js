@@ -1,4 +1,4 @@
-import {number, shape, string} from 'prop-types';
+import { number, shape, string } from 'prop-types';
 
 const address = shape({
   addressId: number,

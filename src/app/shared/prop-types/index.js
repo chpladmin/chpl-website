@@ -1,4 +1,6 @@
-import { address } from './address';
 import { acb } from './acb';
+import { address } from './address';
+import { contact } from './contact';
+import { developer } from './developer';
 
-export { address, acb };
+export { acb, address, contact, developer };

@@ -19,6 +19,10 @@
   </div>
   <div ng-switch="$ctrl.stage">
     <div ng-switch-when="developer">
+      <chpl-confirm-developer-bridge
+        developer="$ctrl.pending.developer"
+        developers="$ctrl.developers"
+        ></chpl-confirm-developer-bridge>
       <chpl-confirm-developer
         developers="$ctrl.developers"
         pending="$ctrl.pending.developer"
