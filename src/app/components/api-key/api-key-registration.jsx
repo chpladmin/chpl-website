@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
+import isEmail from 'validator/es/lib/isEmail';
+import isEmpty from 'validator/es/lib/isEmpty';
 
 function ChplApiKeyRegistration () {
   //const $log = getAngularService('$log');
@@ -63,11 +65,17 @@ function ChplApiKeyRegistration () {
   };
 
   const getEmailErrorMessage = (email) => {
-    return email.length > 0 ? '' : 'Email is required';
+    if (isEmpty(email, {ignore_whitespace: true})) {
+      return 'Email is required';
+    } else if (!isEmail(email)) {
+      return '\'' + email + '\' is not a poperly formatted email address';
+    } else {
+      return '';
+    }
   };
 
   const getNameOrOrganizationErrorMessage = (name) => {
-    return name.length > 0 ? '' : 'Name or Organization is required';
+    return isEmpty(name, {ignore_whitespace: true}) ? 'Name or Organization is required' : '';
   };
 
   const handleToastClose = (event, reason) => {
@@ -93,14 +101,14 @@ function ChplApiKeyRegistration () {
               You must register to use this API.
             </Typography>
             <TextField fullWidth
-                        error={ errors.nameOrganization.length > 0 }
+                        error={ !isEmpty(errors.nameOrganization) }
                         label='Name or Organization'
                         helperText={ errors.nameOrganization }
                         value={ formValues.nameOrganization }
                         onChange={ handleNameOrganizationOnChange }/>
             <TextField fullWidth
                           type='email'
-                          error={ errors.email.length > 0 }
+                          error={ !isEmpty(errors.email) }
                           label='Email'
                           helperText={ errors.email }
                           value={ formValues.email }

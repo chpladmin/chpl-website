@@ -66,6 +66,7 @@
     "ngstorage": "^0.3.11",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "validator": "^13.5.2",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
