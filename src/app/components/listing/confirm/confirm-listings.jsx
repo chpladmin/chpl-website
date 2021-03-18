@@ -160,7 +160,8 @@ function ChplConfirmListings (props) {
                     .map(listing => (
                       <TableRow key={ listing.id } >
                         <TableCell>
-                          <Button id={ 'process-pending-listing-' + listing.chplProductNumber } color="primary"
+                          <Button id={ 'process-pending-listing-' + listing.chplProductNumber }
+                                  color="primary"
                                   variant="contained"
                                   onClick={() => handleProcess(listing)}
                                   endIcon={ <PlayArrowIcon/> }>
@@ -174,7 +175,8 @@ function ChplConfirmListings (props) {
                         <TableCell>{ DateUtil.getDisplayDateFormat(listing.certificationDate) }</TableCell>
                         <TableCell>{ getStatus(listing) }</TableCell>
                         <TableCell align="right">
-                          <Checkbox onChange={($event) => handleRejectCheckbox($event, listing) }
+                          <Checkbox id={ 'reject-pending-listing-' + listing.chplProductNumber }
+                                    onChange={($event) => handleRejectCheckbox($event, listing) }
                                     inputProps={{ 'aria-label': 'Reject Listing: ' + listing.chplProductNumber }} />
                         </TableCell>
                       </TableRow>
