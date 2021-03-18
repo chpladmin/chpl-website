@@ -6,8 +6,9 @@
         <div ncy-breadcrumb></div>
         <chpl-surveillance-complaints
           complaint-list-type="ALL"
-          display-add="true"
-          display-delete="true">
+          display-add="$ctrl.displayAdd"
+          display-delete="$ctrl.displayDelete"
+          display-edit="$ctrl.displayEdit">
         </chpl-surveillance-complaints>
       </div>
     </div>

@@ -3,8 +3,9 @@ export const ChartsComponent = {
   bindings: {
   },
   controller: class ChartsComponent {
-    constructor ($log, networkService) {
+    constructor ($analytics, $log, networkService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$log = $log;
       this.networkService = networkService;
     }
@@ -24,6 +25,19 @@ export const ChartsComponent = {
       this.loadParticipantProfessionalExperienceCountChart();
       this.loadParticipantComputerExperienceCountChart();
       this.loadParticipantProductExperienceCountChart();
+    }
+
+    changeTab (target) {
+      this.chartState.tab = target;
+      let title;
+      switch (target) {
+      case 'product': title = 'Unique Product'; break;
+      case 'developer': title = 'Developer'; break;
+      case 'sed': title = 'SED Participants'; break;
+      case 'nonconformity': title = 'Non-conformity'; break;
+        //no default
+      }
+      this.$analytics.eventTrack('Switch to ' + title + ' Charts', { category: 'Charts' });
     }
 
     ////////////////////////////////////////////////////////////////////

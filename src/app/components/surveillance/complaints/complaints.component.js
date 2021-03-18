@@ -4,6 +4,7 @@ export const SurveillanceComplaintsComponent = {
     complaintListType: '@?',
     displayAdd: '<',
     displayDelete: '<',
+    displayEdit: '<',
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
@@ -35,12 +36,6 @@ export const SurveillanceComplaintsComponent = {
     $onChanges (changes) {
       if (changes.complaintListType && changes.complaintListType.currentValue) {
         this.complaintListType = changes.complaintListType.currentValue;
-      }
-      if (changes.displayAdd) {
-        this.displayAdd = changes.displayAdd.currentValue;
-      }
-      if (changes.displayDelete) {
-        this.displayDelete = changes.displayDelete.currentValue;
       }
       if (changes.quarterlyReport && changes.quarterlyReport.currentValue) {
         this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);

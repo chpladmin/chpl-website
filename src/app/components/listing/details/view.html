@@ -4,7 +4,8 @@
   </div>
   <div class="col-sm-12" ng-if="$ctrl.listing">
     <p>
-      <input type="checkbox" ng-model="$ctrl.viewAllCerts" id="viewAllCerts"></input>
+      <input type="checkbox" ng-change="$ctrl.toggleViewAllCerts()"
+             ng-model="$ctrl.viewAllCerts" id="viewAllCerts"></input>
       <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
     </p>
 
@@ -78,6 +79,7 @@
         <ai-sed
           criteria-count="$ctrl.sedCriteriaCount"
           listing="$ctrl.listing"
+          analytics-category="Listing Details"
           task-count="$ctrl.sedTaskCount">
         </ai-sed>
       </div>

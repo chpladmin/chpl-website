@@ -24,7 +24,7 @@
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true, initialPanel: 'sed' },
         { predicate: 'id', display: 'Details', sortType: 'none', transformFn: _makeDetailsButton },
       ];
-      vm.filters = ['acb', 'certificationStatus']; //, 'edition'];
+      vm.filters = ['acb', 'certificationStatus'];
       vm.refineModel = {
         certificationStatus: [
           { value: 'Active', selected: true },
@@ -35,10 +35,6 @@
           { value: 'Withdrawn by Developer Under Surveillance/Review', selected: false },
           { value: 'Withdrawn by ONC-ACB', selected: false },
           { value: 'Terminated by ONC', selected: false },
-        ],
-        edition: [
-          { value: '2014', selected: false },
-          { value: '2015', selected: true },
         ],
       };
     }

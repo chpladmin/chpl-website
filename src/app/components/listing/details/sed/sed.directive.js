@@ -10,6 +10,7 @@
   function aiSed () {
     var directive = {
       bindToController: {
+        analyticsCategory: '@',
         criteriaCount: '=?',
         editMode: '=?',
         listing: '=',

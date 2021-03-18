@@ -12,12 +12,13 @@
       scope: {
         productId: '@',
         productName: '@',
+        chplProductNumber: '@',
       },
       templateUrl: 'chpl.components/cms-widget/cms-widget-button.html',
       link: function (scope, el, attrs, widgetController) {
-        scope.toggleProduct = function (id) {
+        scope.toggleProduct = function (id, number) {
           scope.$emit('ShowWidget');
-          widgetController.toggleProduct(id);
+          widgetController.toggleProduct(id, number);
         };
         scope.isInList = function (id) {
           return widgetController.isInList(id);

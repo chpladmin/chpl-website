@@ -67,7 +67,7 @@
         }
         ret = '<dl>';
         angular.forEach(apis, function (value, key) {
-          ret += '<dt>' + value.join(', ') + '</dt><dd>' + '<a ai-a href="' + key + '">' + key + '</a></dd>';
+          ret += '<dt>' + value.join(', ') + '</dt><dd>' + '<a ai-a href="' + key + '" analytics-on="click" analytics-event="Go to API Documentation Website" analytics-properties="{ category: \'API Information for 2015 Edition Products\' }">' + key + '</a></dd>';
         });
         ret += '</dl>';
       }
@@ -77,7 +77,7 @@
     function disclosuresTransform (data) {
       var ret = 'Unknown';
       if (data) {
-        ret = '<a ai-a href="' + data + '">' + data + '</a>';
+        ret = '<a ai-a href="' + data + '" analytics-on="click" analytics-event="Go to Mandatory Disclosures Website" analytics-properties="{ category: \'API Information for 2015 Edition Products\' }">' + data + '</a>';
       }
       return ret;
     }

@@ -5,8 +5,9 @@ export const ResultsDownloadComponent = {
     categories: '<',
   },
   controller: class ResultsDownloadController {
-    constructor ($log, utilService) {
+    constructor ($analytics, $log, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$log = $log;
       this.utilService = utilService;
       this.csvData = {
@@ -19,12 +20,28 @@ export const ResultsDownloadComponent = {
         this.listings = angular.copy(changes.listings.currentValue);
       }
       if (changes.categories) {
-        this.categories = angular.copy(changes.categories.currentValue);
+        this.categories = changes.categories.currentValue.map(cat => {
+          cat.default = cat.enabled;
+          return cat;
+        });
       }
     }
 
     getCsv () {
       this.makeCsv();
+      let added = this.categories.filter(cat => !cat.default && cat.enabled);
+      let removed = this.categories.filter(cat => cat.default && !cat.enabled);
+      if (added.length === 0 && removed.length === 0) {
+        this.$analytics.eventTrack('Download Results With Default Data', { category: 'Search' });
+      } else {
+        let that = this;
+        added.forEach(cat => {
+          that.$analytics.eventTrack('Download Results With Additional Data', { category: 'Search', label: cat.display });
+        });
+        removed.forEach(cat => {
+          that.$analytics.eventTrack('Download Results With Less Data', { category: 'Search', label: cat.display });
+        });
+      }
       this.utilService.makeCsv(this.csvData);
     }
 

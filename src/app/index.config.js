@@ -11,17 +11,17 @@
   function config ($analyticsProvider, $breadcrumbProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
     // Enable/disable analytics tracking
     $analyticsProvider.developerMode(DEVELOPER_MODE);
-    /*
-        $analyticsProvider.developerMode(false);
-        if (ENABLE_LOGGING) {
-            $analyticsProvider.registerPageTrack(function (path) {
-                console.log('Page tracking: ', path);
-            });
-            $analyticsProvider.registerEventTrack(function (action, properties) {
-                console.log('Event tracking: ', action, properties);
-            });
-        }
-        */
+
+    /* eslint-disable no-console,angular/log */
+    // Enable/disable analytics debug tracking
+    /* - remove from here to comment block end to enable console logs of analytics data
+      if (ENABLE_LOGGING) {
+      $analyticsProvider.developerMode(false);
+      $analyticsProvider.registerPageTrack(path => console.log({path}));
+      $analyticsProvider.registerEventTrack((action, properties) => console.log({action, properties}));
+      }
+    */
+    /* eslint-enable no-console,angular/log */
 
     $breadcrumbProvider.setOptions({
       includeAbstract: true,

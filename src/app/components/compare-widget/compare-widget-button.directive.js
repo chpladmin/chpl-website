@@ -12,11 +12,12 @@
       scope: {
         productId: '@',
         productName: '@',
+        chplProductNumber: '@',
       },
       templateUrl: 'chpl.components/compare-widget/compare-widget-button.html',
       link: function (scope, el, attrs, widgetController) {
-        scope.toggleProduct = function (id, name) {
-          widgetController.toggleProduct(id, name);
+        scope.toggleProduct = function (id, name, number) {
+          widgetController.toggleProduct(id, name, number);
           scope.$emit('ShowCompareWidget');
         };
         scope.isInList = function (id) {

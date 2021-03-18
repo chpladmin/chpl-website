@@ -75,11 +75,15 @@ exports.config = {
     //
     browserName: config.browser,
     'goog:chromeOptions': {
-      args: ['--headless', '--dissable-gpu', '--no-sandbox'],
+      args: ['--headless', '--dissable-gpu', '--no-sandbox' ,
+      'disable-extensions',
+      'safebrowsing-disable-extension-blacklist',
+      'safebrowsing-disable-download-protection'],
       prefs: {
         'directory_upgrade': true,
         'prompt_for_download': false,
-        'download.default_directory': downloadDir
+        'download.default_directory': downloadDir,
+        'safebrowsing.enabled': true
       }
     },
     // If outputDir is provided WebdriverIO can capture driver session logs
@@ -333,8 +337,25 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  // onComplete: function(exitCode, config, capabilities, results) {
-  // },
+  onComplete: function(exitCode, config, capabilities, results) {
+    function rmdir(dir) {
+      var list = fs.readdirSync(dir);
+      for(var i = 0; i < list.length; i++) {
+        var filename = path.join(dir, list[i]);
+        var stat = fs.statSync(filename);
+        if(filename == "allure-results" || filename.includes('wdio') || filename.includes('.png')) {
+          // pass these files
+        } else if(stat.isDirectory()) {
+          // rmdir recursively
+          rmdir(filename);
+        } else {
+          // rm filename
+          fs.unlinkSync(filename);
+        }
+      }
+    }
+    rmdir(downloadDir);
+  },
   /**
    * Gets executed when a refresh happens.
    * @param {String} oldSessionId session ID of the old session
