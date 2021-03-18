@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import { arrayOf } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Switch,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 
 import theme from '../../../themes/theme';
 import { developer } from '../../../shared/prop-types/';
@@ -62,16 +71,42 @@ function ChplConfirmDeveloper (props) {
   const getAddress = address => {
     return (
       <>
-        { address &&
-          <>
-            Line 1: { address.line1 } <br />
-            { address.line2 && ('Line 2: ' + address.line2 + <br />) }
-            City: { address.city } <br />
-            State: { address.state } <br />
-            Zip: { address.zipcode } <br />
-            Country: { address.country } <br />
-          </>
-        }
+        <Grid item xs={ 12 }>
+          <Typography variant="subtitle1">
+            Address
+          </Typography>
+          <Divider/>
+        </Grid>
+        <Grid container item>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Line 1</Typography>
+            <Typography variant="body1">{ address.line1 }</Typography>
+          </Grid>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Line 2</Typography>
+            <Typography variant="body1">{ address.line2 }</Typography>
+          </Grid>
+        </Grid>
+        <Grid container item>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">City</Typography>
+            <Typography variant="body1">{ address.city }</Typography>
+          </Grid>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">State</Typography>
+            <Typography variant="body1">{ address.state }</Typography>
+          </Grid>
+        </Grid>
+        <Grid container item>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Zip</Typography>
+            <Typography variant="body1">{ address.zipcode }</Typography>
+          </Grid>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Country</Typography>
+            <Typography variant="body1">{ address.country }</Typography>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -79,14 +114,32 @@ function ChplConfirmDeveloper (props) {
   const getContact = contact => {
     return (
       <>
-        { contact &&
-          <>
-            Name: { contact.fullName } <br />
-            { contact.title && ('Title: ' + contact.title + <br />) }
-            Phone: { contact.phoneNumber } <br />
-            Email: { contact.email } <br />
-          </>
-        }
+        <Grid item xs={ 12 }>
+          <Typography variant="subtitle1">
+            Contact
+          </Typography>
+          <Divider/>
+        </Grid>
+        <Grid container item>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Name</Typography>
+            <Typography variant="body1">{ contact.fullName }</Typography>
+          </Grid>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Title</Typography>
+            <Typography variant="body1">{ contact.title }</Typography>
+          </Grid>
+        </Grid>
+        <Grid container item>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Email</Typography>
+            <Typography variant="body1">{ contact.email }</Typography>
+          </Grid>
+          <Grid item xs={ 6 }>
+            <Typography variant="subtitle2">Phone</Typography>
+            <Typography variant="body1">{ contact.phoneNumber }</Typography>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -95,16 +148,45 @@ function ChplConfirmDeveloper (props) {
     <ThemeProvider theme={ theme }>
       <Paper>
         { developer.developerId
-          ? <>
-              Developer Name: { developer.name } <br />
-              Developer Code: { developer.developerCode } <br />
-              Self-Developer: { developer.selfDeveloper ? 'Yes' : 'No' } <br />
-              Address <br />
-              { getAddress(developer.address) } <br />
-              Contact <br />
-              { getContact(developer.contact) } <br />
-              Website: { developer.website}
-            </>
+          ? <Container>
+              <Card>
+                <CardHeader title={ developer.name }/>
+                <CardContent>
+                  <Grid container spacing={ 4 }>
+                    <Grid item xs={ 12 }>
+                      <Typography variant="subtitle1">
+                        Developer Information
+                      </Typography>
+                      <Divider/>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item xs={ 6 }>
+                        <Typography variant="subtitle2">Developer Code</Typography>
+                        <Typography variant="body1">{ developer.developerCode }</Typography>
+                      </Grid>
+                      <Grid item xs={ 6 }>
+                        <Typography variant="subtitle2">Self Developer</Typography>
+                        <Typography variant="body1">{ developer.selfDeveloper ? 'Yes' : 'No' }</Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={ 12 }>
+                      <Typography variant="subtitle2">Website</Typography>
+                      <Typography variant="body1">{ developer.website }</Typography>
+                    </Grid>
+                    { developer.address &&
+                      <Grid item xs={ 12 }>
+                        { getAddress(developer.address) } <br />
+                      </Grid>
+                    }
+                    { developer.contact &&
+                      <Grid item xs={ 12 }>
+                        { getContact(developer.contact) } <br />
+                      </Grid>
+                    }
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Container>
           : <form noValidate>
               <TextField id="name"
                          name="name"
