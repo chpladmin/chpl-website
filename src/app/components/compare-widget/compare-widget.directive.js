@@ -17,7 +17,7 @@
     };
   }
   /** @ngInject */
-  function CompareWidgetController ($localStorage, $log, $scope) {
+  function CompareWidgetController ($analytics, $localStorage, $log, $scope) {
     var vm = this;
 
     vm.clearProducts = clearProducts;
@@ -32,12 +32,13 @@
       getWidget();
       var compareAll = $scope.$on('compareAll', (msg, payload) => {
         vm.clearProducts();
-        payload.forEach((item) => { vm.toggleProduct(item.productId, item.name); });
+        payload.forEach((item) => { vm.toggleProduct(item.productId, item.name, item.chplProductNumber, true); });
       });
       $scope.$on('$destroy', compareAll);
     };
 
     function clearProducts () {
+      $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
       vm.compareWidget = {
         products: [],
         productIds: [],
@@ -59,6 +60,7 @@
     }
 
     function saveProducts () {
+      $analytics.eventTrack('Compare Listings', { category: 'Compare Widget' });
       var previously = $localStorage.previouslyCompared;
       if (!previously) {
         previously = [];
@@ -74,11 +76,11 @@
       $localStorage.previouslyCompared = previously;
     }
 
-    function toggleProduct (id, name) {
+    function toggleProduct (id, name, number, doNotTrack) {
       if (vm.isInList(id)) {
-        removeProduct(id);
+        removeProduct(id, number);
       } else {
-        addProduct(id, name);
+        addProduct(id, name, number, doNotTrack);
       }
       vm.compareWidget.productIds = [];
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
@@ -89,9 +91,12 @@
 
     ////////////////////////////////////////////////////////////////////
 
-    function addProduct (id, name) {
+    function addProduct (id, name, number, doNotTrack) {
       if (!isInList(id)) {
-        vm.compareWidget.products.push({id: id, name: name});
+        if (!doNotTrack) {
+          $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
+        }
+        vm.compareWidget.products.push({id: id, name: name, chplProductNumber: number});
       }
     }
 
@@ -103,7 +108,10 @@
       }
     }
 
-    function removeProduct (id) {
+    function removeProduct (id, number) {
+      if (number) {
+        $analytics.eventTrack('Remove Listing', { category: 'Compare Widget', label: number });
+      }
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
         if (vm.compareWidget.products[i].id === id || parseInt(vm.compareWidget.products[i].id) === parseInt(id)) {
           vm.compareWidget.products.splice(i,1);

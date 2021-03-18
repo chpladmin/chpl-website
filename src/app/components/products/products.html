@@ -43,6 +43,22 @@
                     </li>
                   </ul>
                 </div>
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && product.versions.length > 2">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="split-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
+                    <i class="fa fa-scissors"></i> Split
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="split-button" uib-dropdown-menu>
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.splitProduct(product)" ng-if="product.versions.length > 1">Product</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.versions.length === 1">
+                      Product<br />
+                      <span ng-if="product.versions.length === 2">(Cannot split Product with only one Version)</span>
+                    </li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled">
+                      Version<br />
+                      (Functionality coming soon)
+                    </li>
+                  </ul>
+                </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 2)">
                   <button class="btn btn-default dropdown-toggle" type="button" id="merge-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
                     <i class="fa fa-code-fork fa-rotate-180"></i> Merge

@@ -9,6 +9,7 @@
     var vm = this;
 
     vm.browseAll = browseAll;
+    vm.changeItemsPerPage = changeItemsPerPage;
     vm.clear = clear;
     vm.clearPreviouslyCompared = clearPreviouslyCompared;
     vm.clearPreviouslyViewed = clearPreviouslyViewed;
@@ -25,6 +26,7 @@
     vm.reloadResults = reloadResults;
     vm.statusFont = utilService.statusFont;
     vm.stopCacheRefresh = stopCacheRefresh;
+    vm.trackEntry = trackEntry;
     vm.triggerAllowAll = triggerAllowAll;
     vm.triggerClearFilters = triggerClearFilters;
     vm.triggerRestoreState = triggerRestoreState;
@@ -114,6 +116,10 @@
       vm.triggerClearFilters();
       vm.activeSearch = true;
       setTimestamp();
+    }
+
+    function changeItemsPerPage () {
+      $analytics.eventTrack('Change Results Per Page', { category: 'Search', label: vm.filterItems.pageSize });
     }
 
     function clear () {
@@ -248,6 +254,12 @@
       }
     }
 
+    function trackEntry (type, value) {
+      if (!value) { return; }
+      let event = 'Enter value into ' + type + ' Search';
+      $analytics.eventTrack(event, { category: 'Search', label: value });
+    }
+
     function triggerAllowAll () {
       vm.previouslyIds = [];
       vm.viewingPreviouslyCompared = false;
@@ -298,6 +310,7 @@
     }
 
     function viewCertificationStatusLegend () {
+      $analytics.eventTrack('View Certification Status Icon Legend', { category: 'Search' });
       vm.viewCertificationStatusLegendInstance = $uibModal.open({
         templateUrl: 'chpl.components/certification-status/certification-status.html',
         controller: 'CertificationStatusController',
@@ -509,6 +522,7 @@
         .sort(utilService.sortCertActual)
         .forEach(crit => {
           obj = {
+            analyticsLabel: crit.number + (utilService.isCures(crit) ? ' (Cures Update)' : ''),
             value: crit.id,
             selected: false,
             display: (crit.removed ? 'Removed | ' : '') + crit.number + ': ' + crit.title,

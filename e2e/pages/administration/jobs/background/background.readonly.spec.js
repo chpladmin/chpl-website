@@ -12,13 +12,13 @@ beforeEach(async () => {
 });
 
 describe('when an ONC-Staff user is logged in', () => {
-  beforeEach(function () {
+  beforeEach(() => {
     loginComponent.logInWithEmail('oncstaff');
     hooks.open('#/administration/jobs/background');
   });
 
   it('should see the right set of background jobs', () => {
-    const expected = ['Export Annual Report','Export Quarterly Report','MUU Upload','Surveillance Upload'];
+    const expected = ['MUU Upload','Surveillance Upload'];
     assert.equal(background.backgroundJobRows.length,expected.length);
     // get the existing jobs into a de-duplicated array of jobs
     let rows = [...new Set(background.backgroundJobRows.map(row => row.getText()))];
@@ -29,5 +29,4 @@ describe('when an ONC-Staff user is logged in', () => {
       expect(found).toBe(1, 'did not find expected job: "' + exp + '"');
     });
   });
-
 });

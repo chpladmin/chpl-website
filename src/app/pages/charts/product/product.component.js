@@ -4,8 +4,9 @@ export const ChartsProductComponent = {
     criterionProduct: '<',
   },
   controller: class ChartsProductComponent {
-    constructor ($log, utilService) {
+    constructor ($analytics, $log, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$log = $log;
       this.utilService = utilService;
       this.criteriaTypes = [
@@ -22,6 +23,10 @@ export const ChartsProductComponent = {
       if (changes.criterionProduct) {
         this._createCriterionProductCountChart(changes.criterionProduct.currentValue);
       }
+    }
+
+    updateType () {
+      this.$analytics.eventTrack('Filter Unique Product Charts', { category: 'Charts', label: this.chartState.criteriaType });
     }
 
     _createCriterionProductCountChart (data) {

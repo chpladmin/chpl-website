@@ -7,10 +7,10 @@ const elements = {
   editVersionHeader: 'h2=Edit Version Details',
   products: '.products__product',
   editProductName: '#product-name',
+  editProductCode: '#product-code',
   activeVersion: '#active-version',
   editVersionName: '#version-name',
   editDeveloper: 'button#developer-component-edit',
-  merge: '#merge-button',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
   versionList: '.selectable-item.ng-scope.selectable-item',
@@ -75,6 +75,10 @@ class DevelopersPage {
     return $(elements.editProductName);
   }
 
+  get editProductCode () {
+    return $(elements.editProductCode);
+  }
+
   get editVersionName () {
     return $(elements.editVersionName);
   }
@@ -92,6 +96,14 @@ class DevelopersPage {
     return product.$('.product__product-info').$('#edit-button');
   }
 
+  getMergeButton (product) {
+    return product.$('.product__product-info').$('#merge-button');
+  }
+
+  getSplitButton (product) {
+    return product.$('.product__product-info').$('#split-button');
+  }
+
   selectProduct (product) {
     product.$('.products__product-header').click();
   }
@@ -103,6 +115,16 @@ class DevelopersPage {
   editProduct (product) {
     this.getEditButton(product).click();
     product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
+  }
+
+  splitProduct (product) {
+    this.getSplitButton(product).click();
+    let btn = product.$$('li').filter(itm => itm.getText() === 'Product')[0];
+    btn.click();
+  }
+
+  moveVersion (id) {
+    $('#products-version-move-new-' + id).click();
   }
 
   getActiveVersion (product, productId) {
@@ -118,12 +140,14 @@ class DevelopersPage {
     product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
   }
 
-  get versionMergeButton () {
-    return $$('.product__product-action-filter-item.ng-scope')[2];
+  mergeVersion (product) {
+    this.getMergeButton(product).click();
+    let btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
+    btn.click();
   }
 
-  get mergeButton () {
-    return $(elements.merge);
+  get versionMergeButton () {
+    return $$('.product__product-action-filter-item.ng-scope')[2];
   }
 
   get versionName () {

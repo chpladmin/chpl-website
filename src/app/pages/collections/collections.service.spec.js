@@ -94,34 +94,5 @@
         expect(results[0].mainSearch).toEqual('Healthland|Centriq Clinic|12|15.07.07.2751.CE03.01.00.1.170823');
       });
     });
-
-    describe('when focused on transparencyAttestations', () => {
-      var results;
-      beforeEach(() => {
-        results = service.translate('transparencyAttestations', Mock.collections.developers);
-      });
-
-      it('should filter on transparencyAttestations', () => {
-        expect(results.length).toBe(4);
-      });
-
-      it('should generate a mainSearch', () => {
-        expect(results[0].mainSearch).toEqual('ACL Laboratories');
-      });
-
-      it('should join Attestations', () => {
-        expect(results[0].acbAttestations).toEqual('<span class="text-muted">Not Applicable (ICSA Labs)</span>');
-        expect(results[1].acbAttestations).toEqual('<span class="text-success">Supports (Drummond Group)</span>');
-        expect(results[2].acbAttestations).toEqual('<span class="text-success">Supports (ICSA Labs)</span><br /><span class="text-success">Supports (UL LLC)</span>');
-        expect(results[3].acbAttestations).toEqual('<span class="text-success">Supports (UL LLC)</span>');
-      });
-
-      it('should split Urls', () => {
-        expect(results[0].transparencyAttestationUrls).toEqual([]);
-        expect(results[1].transparencyAttestationUrls).toEqual(['http://fiehr.com/Support/Disclosures']);
-        expect(results[2].transparencyAttestationUrls).toEqual(['http://www.asp.md/certified.htm']);
-        expect(results[3].transparencyAttestationUrls).toEqual(['http://insynchcs.com/meaningful-use-certification.html', 'http://www.insynchcs.com/meaningful-use-certification']);
-      });
-    });
   });
 })();

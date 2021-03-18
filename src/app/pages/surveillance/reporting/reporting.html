@@ -9,7 +9,7 @@
             <div class="panel panel-default">
               <div class="panel-heading clickable" ng-click="$ctrl.display[acb.name] = !$ctrl.display[acb.name]" id="onc-acb-{{ acb.name }}">
                 <h3 class="panel-title">
-                  <i class="fa pull-right" ng-class="$ctrl.display[acb.name] ? 'fa-caret-down' : 'fa-caret-up'"></i>
+                  <i class="fa pull-right" ng-class="$ctrl.display[acb.name] ? 'fa-caret-down' : 'fa-caret-left'"></i>
                   {{ acb.name }}
                 </h3>
               </div>
@@ -37,7 +37,7 @@
                                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
                           Initiate
                         </button>
-                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
+                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']) && !$ctrl.findQuarterReport(acb, year, quarter.name)">N/A</span>
                       </td>
                       <td>
                         <button class="btn btn-sm btn-default" id="act-{{ acb.name }}-{{ year }}"
@@ -54,7 +54,7 @@
                                 confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
                           Initiate
                         </button>
-                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
+                        <span ng-if="$ctrl.hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']) && !$ctrl.findAnnualReport(acb, year)">N/A</span>
                       </td>
                     </tr>
                   </tbody>
