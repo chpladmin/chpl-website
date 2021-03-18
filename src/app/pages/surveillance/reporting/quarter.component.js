@@ -20,6 +20,10 @@ export const SurveillanceReportQuarterComponent = {
       this.toaster = toaster;
     }
 
+    $onInit () {
+      this.displayEdit = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ACB']));
+    }
+
     $onChanges (changes) {
       if (changes.report) {
         this.report = angular.copy(changes.report.currentValue);
