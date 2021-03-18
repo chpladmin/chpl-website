@@ -2,7 +2,6 @@ export const ListingDetailsViewComponent = {
   templateUrl: 'chpl.components/listing/details/view.html',
   bindings: {
     listing: '<',
-    directReviews: '<',
     hideDirectReview: '<',
     initialPanel: '@',
     isConfirming: '<',
@@ -17,7 +16,6 @@ export const ListingDetailsViewComponent = {
       this.utilService = utilService;
       this.muuCount = utilService.muuCount;
       this.sortCerts = utilService.sortCert;
-      this.drStatus = 'pending';
       this.viewAllCerts = false;
       this.panelShown = 'cert';
     }
@@ -44,26 +42,6 @@ export const ListingDetailsViewComponent = {
         this.countCqms = this.listing.cqmResults.filter(cqm => cqm.success).length;
         this.cqms = this.listing.cqmResults;
         this.prepCqms();
-      }
-      if (changes.directReviews && changes.directReviews.currentValue) {
-        if (changes.directReviews.currentValue.status === 200) {
-          this.drStatus = 'success';
-          this.directReviews = changes.directReviews.currentValue.drs
-            .filter(dr => {
-              let shouldInclude = !dr.nonConformities
-                  || dr.nonConformities.length === 0
-                  || dr.nonConformities.reduce((acc, nc) => {
-                    let shouldInclude = acc
-                        || !nc.developerAssociatedListings
-                        || nc.developerAssociatedListings.length === 0
-                        || nc.developerAssociatedListings.filter(dal => dal.id === this.listing.id).length > 0;
-                    return shouldInclude;
-                  }, false);
-              return shouldInclude;
-            });
-        } else {
-          this.drStatus = 'error';
-        }
       }
     }
 
