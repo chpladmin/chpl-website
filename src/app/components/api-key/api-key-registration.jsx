@@ -8,8 +8,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import isEmail from 'validator/es/lib/isEmail';
 import isEmpty from 'validator/es/lib/isEmpty';
@@ -17,9 +15,10 @@ import isEmpty from 'validator/es/lib/isEmpty';
 function ChplApiKeyRegistration () {
   //const $log = getAngularService('$log');
   const networkService = getAngularService('networkService');
+  const toaster = getAngularService('toaster');
   const [formValues, setFormValues] = useState({email: '', nameOrganization: ''});
   const [errors, setErrors] = useState({email: '', nameOrganization: ''});
-  const [toast, setToast] = useState({ open: false, message: '', severity: '' });
+  const [disableButton, setDisableButton] = useState(false);
 
   const handleEmailOnChange = (event) => {
     setErrors({ ...errors, email: getEmailErrorMessage(event.target.value) });
@@ -33,26 +32,27 @@ function ChplApiKeyRegistration () {
 
   const handleRegisterClick = (event) => {
     event.preventDefault();
-
     if (!validateAll()) {
       return;
     }
+    setDisableButton(true);
     networkService.requestApiKey({ email: formValues.email, name: formValues.nameOrganization })
       .then((response) => {
         if (response.success) {
-          setToast({
-            severity: 'success',
-            message: 'To confirm your email address, an email was sent to: ' + formValues.email + '  Please follow the instructions in the email to obtain your API key.',
-            open: true,
+          toaster.pop({
+            type: 'success',
+            body: 'To confirm your email address, an email was sent to: ' + formValues.email + '  Please follow the instructions in the email to obtain your API key.',
           });
           setFormValues({ email: '', nameOrganization: '' });
+          setErrors({ email: '', nameOrganization: '' });
+          setDisableButton(false);
         }
       }, error => {
-        setToast({
-          severity: 'error',
-          message: error.data.errorMessages[0],
-          open: true,
+        toaster.pop({
+          type: 'error',
+          body: error.data.errorMessages[0],
         });
+        setDisableButton(false);
       });
   };
 
@@ -76,13 +76,6 @@ function ChplApiKeyRegistration () {
 
   const getNameOrOrganizationErrorMessage = (name) => {
     return isEmpty(name, {ignore_whitespace: true}) ? 'Name or Organization is required' : '';
-  };
-
-  const handleToastClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setToast({ ...toast, open: false });
   };
 
   const gridStyle = {
@@ -116,17 +109,9 @@ function ChplApiKeyRegistration () {
           </div>
         </CardContent>
         <CardActions>
-          <Button fullWidth color='primary' variant='contained' onClick={handleRegisterClick} onMouseOver={ validateAll }>Register</Button>
+          <Button fullWidth color='primary' variant='contained' disabled={ disableButton } onClick={ handleRegisterClick } onMouseOver={ validateAll }>Register</Button>
         </CardActions>
       </Card>
-      <Snackbar open={ toast.open }
-        //autoHideDuration={6000}
-        onClose={handleToastClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right'}}>
-        <MuiAlert onClose={ handleToastClose } severity={ toast.severity }>
-          { toast.message }
-        </MuiAlert>
-      </Snackbar>
     </ThemeProvider>
   );
 }
