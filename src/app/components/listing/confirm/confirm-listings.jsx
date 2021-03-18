@@ -144,7 +144,8 @@ function ChplConfirmListings (props) {
                   <TableRow>
                     <TableCell colSpan={ 7 } />
                     <TableCell align="right">
-                      <Button className={ classes.deleteButton }
+                      <Button id="reject-selected-pending-listings"
+                              className={ classes.deleteButton }
                               variant="contained"
                               onClick={ handleReject }
                               startIcon={ <DeleteIcon/> }
@@ -159,7 +160,7 @@ function ChplConfirmListings (props) {
                     .map(listing => (
                       <TableRow key={ listing.id } >
                         <TableCell>
-                          <Button color="primary"
+                          <Button id={ 'process-pending-listing-' + listing.chplProductNumber } color="primary"
                                   variant="contained"
                                   onClick={() => handleProcess(listing)}
                                   endIcon={ <PlayArrowIcon/> }>
