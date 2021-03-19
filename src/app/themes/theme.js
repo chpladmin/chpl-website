@@ -120,9 +120,14 @@ const theme = createMuiTheme({
         backgroundColor: '#f5f9fd',
       },
     },
+    MuiCardActions: {
+      root: {
+        backgroundColor: '#f9f9f9',
+      },
+    },
     MuiFormHelperText: {
       root: {
-        fontSize: '12',
+        fontSize: 12,
       },
     },
     MuiTable: {
@@ -149,6 +154,16 @@ const theme = createMuiTheme({
         '&:hover': {
           backgroundColor: '#ffffff',
         },
+      },
+    },
+    MuiDivider: {
+      root: {
+        color: '#c2c6ca',
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: '100%',
       },
     },
   },
