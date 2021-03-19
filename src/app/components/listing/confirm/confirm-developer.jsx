@@ -24,7 +24,7 @@ import theme from '../../../themes/theme';
 import { developer } from '../../../shared/prop-types/';
 
 function ChplConfirmDeveloper (props) {
-  const [developer, setDeveloper] = useState(props.developer || {developerId: undefined});
+  const [developer, setDeveloper] = useState(props.developer || {developerId: ''});
   const [developers] = useState(
     props.developers
       .filter(d => !d.deleted)
@@ -358,6 +358,7 @@ function ChplConfirmDeveloper (props) {
                     })}
                   </Select>
                 </FormControl>
+
               </CardActions>
             </Card>
           </Container>

@@ -28,9 +28,13 @@ export const ConfirmListingComponent = {
       if (changes.listing) {
         this.uploaded = angular.copy(changes.listing.currentValue);
         this.pending = angular.copy(changes.listing.currentValue);
+        if (this.pending.developer && !this.pending.developer.developerId) {
+          this.pending.developer.developerId = '';
+        }
+        /*
         if (this.uploaded.developer && !this.uploaded.developer.country) {
           this.uploaded.developer.country = 'USA';
-        }
+        }*/
       }
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
