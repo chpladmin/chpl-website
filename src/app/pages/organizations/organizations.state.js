@@ -98,6 +98,13 @@ let states = [
     },
     data: { title: 'CHPL Developers - Merge Version' },
   },{
+    name: 'organizations.developers.developer.product.version.split',
+    url: '/split',
+    views: {
+      'view@^.^.^': 'chplVersionsSplit',
+    },
+    data: { title: 'CHPL Developers - Split Version' },
+  },{
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizations',
