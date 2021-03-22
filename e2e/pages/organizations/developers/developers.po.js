@@ -10,6 +10,7 @@ const elements = {
   editProductCode: '#product-code',
   activeVersion: '#active-version',
   editVersionName: '#version-name',
+  splitVersionVersion: '#version-version',
   editDeveloper: 'button#developer-component-edit',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
@@ -83,6 +84,10 @@ class DevelopersPage {
     return $(elements.editVersionName);
   }
 
+  get splitVersionVersion () {
+    return $(elements.splitVersionVersion);
+  }
+
   get editDeveloper () {
     return $(elements.editDeveloper);
   }
@@ -102,6 +107,14 @@ class DevelopersPage {
 
   getSplitButton (product) {
     return product.$('.product__product-info').$('#split-button');
+  }
+
+  getProductSplitButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[0];
+  }
+
+  getVersionSplitButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[1];
   }
 
   selectProduct (product) {
