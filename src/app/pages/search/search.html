@@ -16,6 +16,7 @@
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
                    ng-model="vm.query" ng-change="vm.activeSearch = true"
+                   ng-blur="vm.trackEntry('Main', vm.query)"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
             <span class="input-group-btn">
               <button ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="btn btn-default" ng-click="vm.browseAll()"><i class="fa fa-ellipsis-h"></i> Browse all</button>
@@ -43,7 +44,8 @@
                 register-show-retired="vm.registerShowRetired(showRetired)"
                 trigger-show-retired="vm.triggerShowRetired()"
                 match-full="true"
-                name-space="searchTableState"></st-list-multiple>
+                name-space="searchTableState"
+                analytics="{category: 'Search', eventTitle: 'Certification Status'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -62,7 +64,8 @@
                 register-restore-state="vm.registerRestoreState(restoreState)"
                 register-show-retired="vm.registerShowRetired(showRetired)"
                 trigger-show-retired="vm.triggerShowRetired()"
-                name-space="searchTableState"></st-list-multiple>
+                name-space="searchTableState"
+                analytics="{category: 'Search', eventTitle: 'Certification Edition'}"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -87,7 +90,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
@@ -106,7 +109,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
@@ -124,7 +127,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015Cures = !vm.show2015Cures">
@@ -142,7 +145,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'Certification Criterion'}"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -197,7 +200,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'CQM'}"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -215,7 +218,7 @@
                   name-space="searchTableState"
                   allow-and="true"
                   separator="{{ vm.SPLIT_PRIMARY }}"
-                  track-analytics="true"></st-list-multiple>
+                  analytics="{category: 'Search', eventTitle: 'CQM'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -233,7 +236,8 @@
                   register-restore-state="vm.registerRestoreState(restoreState)"
                   register-show-retired="vm.registerShowRetired(showRetired)"
                   trigger-show-retired="vm.triggerShowRetired()"
-                  name-space="searchTableState"></st-list-multiple>
+                  name-space="searchTableState"
+                  analytics="{category: 'Search', eventTitle: 'ONC-ACB'}"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
@@ -263,7 +267,7 @@
                   register-clear-filter="vm.registerClearFilter(clearFilter)"
                   register-restore-state="vm.registerRestoreState(restoreState)"
                   name-space="searchTableState"
-                  track-analytics="true"></ai-date-range>
+                  analytics="{category: 'Search', eventTitle: 'Certification Date'}"></ai-date-range>
               </li>
               <li class="form-horizontal">
                 <div class="form-group">
@@ -279,6 +283,8 @@
                       placeholder="Developer"
                       ai-enhanced-text
                       has-changes="vm.categoryChanged['developer']"
+                      ng-model="vm.developerQuery"
+                      ng-blur="vm.trackEntry('Developer', vm.developerQuery)"
                       predicate="developerSearch"
                       register-clear-filter="vm.registerClearFilter(clearFilter)"
                       register-restore-state="vm.registerRestoreState(restoreState)"
@@ -301,6 +307,8 @@
                       placeholder="Product"
                       ai-enhanced-text
                       has-changes="vm.categoryChanged['product']"
+                      ng-model="vm.productQuery"
+                      ng-blur="vm.trackEntry('Product', vm.productQuery)"
                       predicate="product"
                       register-clear-filter="vm.registerClearFilter(clearFilter)"
                       register-restore-state="vm.registerRestoreState(restoreState)"
@@ -323,6 +331,8 @@
                       placeholder="Version"
                       ai-enhanced-text
                       has-changes="vm.categoryChanged['version']"
+                      ng-model="vm.versionQuery"
+                      ng-blur="vm.trackEntry('Version', vm.versionQuery)"
                       predicate="version"
                       register-clear-filter="vm.registerClearFilter(clearFilter)"
                       register-restore-state="vm.registerRestoreState(restoreState)"
@@ -397,6 +407,7 @@
                       <label for="pageSizeTop" class="sr-only">Show how many results</label>
                       Showing up to&nbsp;
                       <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                              ng-change="vm.changeItemsPerPage()"
                               ng-options="v as v for v in [50,100,250,1000]">
                       </select>
                       &nbsp;results per page
@@ -423,10 +434,10 @@
                         <a ui-sref="listing({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
                       </div>
                       <div class="text-center">
-                        <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>
+                        <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-compare-widget-button>
                       </div>
                       <div class="text-center" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
-                        <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-cms-widget-button>
+                        <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-cms-widget-button>
                       </div>
                     </div>
                   </td>
@@ -442,25 +453,25 @@
     <div id="collections">
       <div class="row">
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/api-documentation">API Info for 2015 Ed. Products</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="collections.api-documentation" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'API Info for 2015 Ed. Products' }">API Info for 2015 Ed. Products</a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/sed">SED Info for 2015 Ed. Products</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="collections.sed" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'SED Info for 2015 Ed. Products' }">SED Info for 2015 Ed. Products</a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/corrective-action">Products: Corrective Action</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="collections.corrective-action" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'Products: Corrective Action' }">Products: Corrective Action</a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/products">Decertified Products</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="collections.products" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'Decertified Products' }">Decertified Products</a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/inactive">Inactive Certificates</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="collections.inactive" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'Inactive Certificates' }">Inactive Certificates</a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/developers">Banned Developers</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="collections.developers" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'Banned Developers' }">Banned Developers</a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="btn btn-lg btn-block btn-ai-grey" href="#/charts">Charts</a>
+          <a class="btn btn-lg btn-block btn-ai-grey" ui-sref="charts" analytics-on="click" analytics-event="Use Shortcut Button" analytics-properties="{ category: 'Navigation', label: 'Charts' }">Charts</a>
         </div>
       </div>
     </div>

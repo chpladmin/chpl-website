@@ -31,9 +31,10 @@
   }
 
   /** @ngInject */
-  function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
+  function CollectionController ($analytics, $filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
     var vm = this;
 
+    vm.changeItemsPerPage = changeItemsPerPage;
     vm.hasResults = hasResults;
     vm.isCategoryChanged = isCategoryChanged;
     vm.isFilterActive = isFilterActive;
@@ -43,6 +44,7 @@
     vm.registerClearFilter = registerClearFilter;
     vm.registerSearch = registerSearch;
     vm.stopCacheRefresh = stopCacheRefresh;
+    vm.trackEntry = trackEntry;
     vm.triggerClearFilters = triggerClearFilters;
     vm.triggerSearch = triggerSearch;
 
@@ -62,6 +64,10 @@
         setFilterInfo();
       });
     };
+
+    function changeItemsPerPage () {
+      $analytics.eventTrack('Change Results Per Page', { category: vm.analyticsCategory, label: vm.filterItems.pageSize });
+    }
 
     function hasResults () {
       return angular.isDefined(vm.allCps);
@@ -96,11 +102,12 @@
         ret = $filter('date')(ret,'mediumDate','UTC');
       }
       if (col.isLink) {
+        let link = '<a ui-sref="listing({id: ' + cp.id;
         if (col.initialPanel) {
-          ret = '<a href="#/listing/' + cp.id + '?panel=' + col.initialPanel + '">' + ret + '</a>';
-        } else {
-          ret = '<a href="#/listing/' + cp.id + '">' + ret + '</a>';
+          link += ', panel: \'' + col.initialPanel + '\'';
         }
+        link += '})" analytics-on="click" analytics-event="Go to Listing Details Page" analytics-properties="{ category: \'' + vm.analyticsCategory + '\' }">' + ret + '</a>';
+        ret = link;
       }
       return ret;
     }
@@ -109,6 +116,7 @@
       networkService.getCollection(vm.collectionKey).then(function (response) {
         response.certificationCriteria = vm.options.certificationCriteria;
         vm.allCps = collectionsService.translate(vm.collectionKey, response);
+        vm.analyticsCategory = collectionsService.getAnalyticsCategory(vm.collectionKey);
         vm.isPreLoading = false;
       }, function (error) {
         $log.debug(error);
@@ -140,6 +148,12 @@
         $interval.cancel(vm.stopCacheRefreshPromise);
         vm.stopCacheRefreshPromise = undefined;
       }
+    }
+
+    function trackEntry (value) {
+      if (!value) { return; }
+      let event = 'Enter value into Search';
+      $analytics.eventTrack(event, { category: vm.analyticsCategory, label: value });
     }
 
     function triggerClearFilters () {
@@ -180,9 +194,6 @@
       }
       if (vm.isFilterActive('certificationStatus')) {
         vm.filterItems.statusItems = angular.copy(vm.refineModel.certificationStatus);
-      }
-      if (vm.isFilterActive('acbAttestations')) {
-        vm.filterItems.acbAttestations = angular.copy(vm.refineModel.acbAttestations);
       }
       if (vm.isFilterActive('edition')) {
         vm.filterItems.editionItemsCures = [

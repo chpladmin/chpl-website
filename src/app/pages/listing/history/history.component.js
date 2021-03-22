@@ -6,8 +6,9 @@ export const ListingHistoryComponent = {
     dismiss: '&',
   },
   controller: class ListingHistoryComponent {
-    constructor ($filter, $log, $q, $state, featureFlags, authService, networkService, utilService) {
+    constructor ($analytics, $filter, $log, $q, $state, featureFlags, authService, networkService, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$filter = $filter;
       this.$log = $log;
       this.$q = $q;
@@ -78,6 +79,7 @@ export const ListingHistoryComponent = {
     }
 
     goToApi () {
+      this.$analytics.eventTrack('Go To API Page', { category: 'Listing Details', label: this.listing.chplProductNumber });
       this.$state.go('resources.chpl-api');
       this.cancel();
     }

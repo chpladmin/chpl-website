@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 11.9.0
+_22 March 2021_
+
+### Features
+* Display ONC-ATL report in updated style
+* Remove Direct Review field that should have no data
+* Allow ROLE_ONC_STAFF to access Complaints
+* Allow ROLE_ONC_STAFF to access quarterly surveillance data
+* Expand analytics collected via Google Tag Manager
+
+---
+
 ## Version 11.8.0
 _8 March 2021_
 

@@ -45,14 +45,16 @@ require('jspdf-autotable');
       }
     };
 
-    function addProduct (id) {
+    function addProduct (id, number) {
       if (!isInList(id)) {
+        $analytics.eventTrack('Add Listing', { category: 'CMS Widget', label: number });
         vm.widget.productIds.push(id);
         vm.search();
       }
     }
 
     function clearProducts () {
+      $analytics.eventTrack('Remove All Listings', { category: 'CMS Widget' });
       vm.widget = {
         productIds: [],
       };
@@ -61,6 +63,7 @@ require('jspdf-autotable');
 
     function compare () {
       const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name }; });
+      $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
       $rootScope.$broadcast('compareAll', payload);
       $rootScope.$broadcast('HideWidget');
       $rootScope.$broadcast('ShowCompareWidget');
@@ -98,7 +101,8 @@ require('jspdf-autotable');
       return false;
     }
 
-    function removeProduct (id) {
+    function removeProduct (id, number) {
+      $analytics.eventTrack('Remove Listing', { category: 'CMS Widget', label: number });
       for (var i = 0; i < vm.widget.productIds.length; i++) {
         if (vm.widget.productIds[i] === id || parseInt(vm.widget.productIds[i]) === parseInt(id)) {
           vm.widget.productIds.splice(i,1);
@@ -107,11 +111,11 @@ require('jspdf-autotable');
       }
     }
 
-    function toggleProduct (id) {
+    function toggleProduct (id, number) {
       if (vm.isInList(id)) {
-        vm.removeProduct(id);
+        vm.removeProduct(id, number);
       } else {
-        vm.addProduct(id);
+        vm.addProduct(id, number);
       }
     }
 
