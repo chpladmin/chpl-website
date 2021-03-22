@@ -62,7 +62,6 @@ export const VersionsSplitComponent = {
     }
 
     toggleMove (listing, toNew) {
-      this.$log.info(this.request, listing);
       if (toNew) {
         this.request.newListings.push(this.request.oldListings.find(l => l.id === listing.id));
         this.request.oldListings = this.request.oldListings.filter(l => l.id !== listing.id);
