@@ -10,6 +10,7 @@ const elements = {
   editProductCode: '#product-code',
   activeVersion: '#active-version',
   editVersionName: '#version-name',
+  editVersionCode: '#version-code',
   splitVersionVersion: '#version-version',
   editDeveloper: 'button#developer-component-edit',
   versionName: '#version-name',
@@ -88,6 +89,10 @@ class DevelopersPage {
     return $(elements.splitVersionVersion);
   }
 
+  get editVersionCode () {
+    return $(elements.editVersionCode);
+  }
+
   get editDeveloper () {
     return $(elements.editDeveloper);
   }
@@ -138,6 +143,14 @@ class DevelopersPage {
 
   moveVersion (id) {
     $('#products-version-move-new-' + id).click();
+  }
+
+  moveListing (id) {
+    $('#listings-listing-move-new-' + id).click();
+  }
+
+  restoreListing (id) {
+    $('#listings-listing-move-old-' + id).click();
   }
 
   getActiveVersion (product, productId) {
