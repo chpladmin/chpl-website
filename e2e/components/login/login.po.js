@@ -44,11 +44,6 @@ class LoginComponent {
     this.loginButton.scrollAndClick();
   }
 
-  logInWithEmail (user) {
-    console.warn('this call is deprecated; use "logIn()" instead');
-    this.logIn(user);
-  }
-
   logOut () {
     if (!this.logoutButton.isDisplayed()) {
       this.openLoginComponent();

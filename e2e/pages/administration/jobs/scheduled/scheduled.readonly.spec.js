@@ -14,7 +14,7 @@ beforeEach(async () => {
 
 describe('when an ONC-Staff user is logged in', () => {
   beforeEach(function () {
-    loginComponent.logInWithEmail('oncstaff');
+    loginComponent.logIn('oncstaff');
     hooks.open('#/administration/jobs/scheduled');
     hooks.waitForSpinnerToDisappear();
   });

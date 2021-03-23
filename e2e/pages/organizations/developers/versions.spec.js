@@ -111,7 +111,7 @@ describe('the Version part of the Developers page', () => {
 
   describe('when logged in as an Admin', () => {
     beforeEach(() => {
-      login.logInWithEmail('admin');
+      login.logIn('admin');
       login.logoutButton.waitForDisplayed();
     });
 

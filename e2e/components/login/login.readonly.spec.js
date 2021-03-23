@@ -33,31 +33,31 @@ describe('when logging in', () => {
   });
 
   it('should be able to log in as ADMIN with an email address', () => {
-    component.logInWithEmail('admin');
+    component.logIn('admin');
     component.logoutButton.waitForDisplayed();
     expect(component.toggleLoginComponent.getText()).toBe('AQA Admin');
   });
 
   it('should be able to log in as ONC with an email address', () => {
-    component.logInWithEmail('onc');
+    component.logIn('onc');
     component.logoutButton.waitForDisplayed();
     expect(component.toggleLoginComponent.getText()).toBe('AQA ONC');
   });
 
   it('should be able to log in as ACB with an email address', () => {
-    component.logInWithEmail('acb');
+    component.logIn('acb');
     component.logoutButton.waitForDisplayed();
     expect(component.toggleLoginComponent.getText()).toBe('AQA ACB');
   });
 
   it('should be able to log in as ONC_STAFF with an email address', () => {
-    component.logInWithEmail('oncstaff');
+    component.logIn('oncstaff');
     component.logoutButton.waitForDisplayed();
     expect(component.toggleLoginComponent.getText()).toBe('AQA ONC Staff');
   });
 
   xit('should be able to log in as developer with an email address', () => {
-    component.logInWithEmail('developer');
+    component.logIn('developer');
     component.logoutButton.waitForDisplayed();
     expect(component.toggleLoginComponent.getText()).toBe('AQA Developers');
   });

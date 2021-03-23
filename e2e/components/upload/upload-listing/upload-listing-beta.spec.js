@@ -17,7 +17,7 @@ beforeEach(async () => {
 
 describe('When ONC-ACB uploads - ', () => {
   beforeEach(function () {
-    loginComponent.logInWithEmail('acb');
+    loginComponent.logIn('acb');
   });
 
   afterEach(function () {

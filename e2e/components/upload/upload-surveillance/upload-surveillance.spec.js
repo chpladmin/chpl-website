@@ -13,7 +13,7 @@ beforeEach(async () => {
 
 describe('when uploading a surveillance activity as ONC-ACB', () => {
   beforeEach(function () {
-    loginComponent.logInWithEmail('acb');
+    loginComponent.logIn('acb');
   });
 
   afterEach(function () {
