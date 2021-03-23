@@ -59,10 +59,10 @@ inputs.forEach(input => {
 describe('User inspects uploaded listing with valid CHPL ID', () => {
   beforeEach(function () {
     hooks.waitForSpinnerToDisappear();
-      if (uploadListingComponent.chooseUploadListingBetaButton.isExisting()) {
-        uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
-        browser.waitUntil( () => toast.toastTitle.isDisplayed());
-      }
+    if (uploadListingComponent.chooseUploadListingBetaButton.isExisting()) {
+      uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
+      browser.waitUntil( () => toast.toastTitle.isDisplayed());
+    }
     hooks.open('#/administration/confirm/listings');
   });
 

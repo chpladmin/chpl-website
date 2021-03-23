@@ -48,7 +48,7 @@ class LoginComponent {
     console.warn('this call is deprecated; use "logIn()" instead');
     this.logIn(user);
   }
-  
+
   logOut () {
     if (!this.logoutButton.isDisplayed()) {
       this.openLoginComponent();
