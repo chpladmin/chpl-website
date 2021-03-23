@@ -247,7 +247,7 @@ import 'jspdf-autotable';
       for (var i = 0; i < productsForTable.length; i++) {
         doc.autoTable(productsForTable[i].columns, productsForTable[i].rows, {
           theme: 'grid',
-          headerStyles: {
+          headStyles: {
             valign: 'middle',
             halign: 'left',
             overflow: 'linebreak',
@@ -259,8 +259,8 @@ import 'jspdf-autotable';
             overflow: 'linebreak',
           },
           columnStyles: {
-            0: {columnWidth: 175},
-            1: {columnWidth: 'auto'},
+            0: {cellWidth: 175},
+            1: {cellWidth: 'auto'},
           },
           startY: i === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
           margin: 20,
@@ -277,18 +277,18 @@ import 'jspdf-autotable';
         doc.setFontSize(fontSize);
         doc.setFont('helvetica', 'normal');
         doc.autoTable(critCols, critRows, {
-          headerStyles: {
+          headStyles: {
             valign: 'middle',
             halign: 'center',
             overflow: 'linebreak',
-            columnWidth: 'auto',
+            cellWidth: 'auto',
             fillColor: [0, 112, 201],
           },
           bodyStyles: {
             valign: 'middle',
             halign: 'left',
             overflow: 'linebreak',
-            columnWidth: 'auto',
+            cellWidth: 'auto',
           },
           margin: 20,
           pageBreak: 'avoid',
