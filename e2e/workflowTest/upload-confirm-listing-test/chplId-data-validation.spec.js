@@ -25,7 +25,8 @@ inputs.forEach(input => {
   describe(`User inspects uploaded listing with invalid CHPL ID as ${listingId}`, () => {
 
     beforeEach(function () {
-      if (uploadListingComponent.uploadBetaButton.isDisplayed()) {
+      hooks.waitForSpinnerToDisappear();
+      if (uploadListingComponent.chooseUploadListingBetaButton.isExisting()) {
         uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');
         browser.waitUntil( () => toast.toastTitle.isDisplayed());
       }
@@ -37,7 +38,6 @@ inputs.forEach(input => {
     });
 
     it('should show all correct expected error messages', () => {
-
       confirmPage.gotoPendingListingPage(listingId);
       hooks.waitForSpinnerToDisappear();
       confirmPage.waitForBarMessages();
@@ -58,11 +58,11 @@ inputs.forEach(input => {
 
 describe('User inspects uploaded listing with valid CHPL ID', () => {
   beforeEach(function () {
-
-    if (uploadListingComponent.uploadBetaButton.isDisplayed()) {
-      uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
-      browser.waitUntil( () => toast.toastTitle.isDisplayed());
-    }
+    hooks.waitForSpinnerToDisappear();
+      if (uploadListingComponent.chooseUploadListingBetaButton.isExisting()) {
+        uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
+        browser.waitUntil( () => toast.toastTitle.isDisplayed());
+      }
     hooks.open('#/administration/confirm/listings');
   });
 
