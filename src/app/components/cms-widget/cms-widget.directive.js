@@ -164,6 +164,26 @@ import 'jspdf-autotable';
       // Setup the product listing
       var prods = data['products'];
       var productsForTable = [];
+      let listings = data['products'].map((l, idx) => {
+        let software = decodeURIComponent(l.additionalSoftware);
+        if (software) {
+          software = software.replace(/\+/g, ' ');
+        }
+        return {
+          head: [['Listing ' + (idx + 1), '']],
+          body: [
+            ['Certifying Body', l.acb],
+            ['Practice Type', (l.practiceType ? l.practiceType : 'N/A')],
+            ['Product Certification #', l.chplProductNumber],
+            ['Developer', l.vendor],
+            ['Product Name', l.name],
+            ['Version', l.version],
+            ['Classification', (l.classification ? l.classification : 'N/A')],
+            ['Certification Edition', l.year + (l.curesUpdate ? ' Cures Update' : '')],
+            ['Relied Upon Software Required', software],
+          ],
+        };
+      });
       prods.forEach(function (item,index) {
         // Decode additional software
         var software = decodeURIComponent(item.additionalSoftware);
@@ -196,6 +216,12 @@ import 'jspdf-autotable';
       var critCols = [
         {title: certificationIdData.year + ' CMS EHR Base Criteria Met', dataKey: 'description'},
       ];
+      let criteria = {
+        head: [[
+          {title: certificationIdData.year + ' CMS EHR Base Criteria Met', dataKey: 'description'},
+        ]],
+        body: getPdfCriteria(data.year),
+      };
 
       var critRows = getPdfCriteria(data.year);
 
@@ -244,8 +270,10 @@ import 'jspdf-autotable';
       // Add products table to PDF
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
-      for (var i = 0; i < productsForTable.length; i++) {
-        doc.autoTable(productsForTable[i].columns, productsForTable[i].rows, {
+      listings.forEach((l, idx) => {
+        doc.autoTable({
+          head: l.head,
+          body: l.body,
           theme: 'grid',
           headStyles: {
             valign: 'middle',
@@ -262,21 +290,23 @@ import 'jspdf-autotable';
             0: {cellWidth: 175},
             1: {cellWidth: 'auto'},
           },
-          startY: i === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
+          startY: idx === 0 ? bodyStartY + 90 : doc.autoTable.previous.finalY + 10,
           margin: 20,
           pageBreak: 'avoid',
           tableWidth: 'auto',
         });
-
-      }
+      });
 
       // Add criteria table to PDF
-      if (critRows) {
+      //if (critRows) {
+      if (criteria.body) {
         var fontSize = 10;
         doc.addPage();
         doc.setFontSize(fontSize);
         doc.setFont('helvetica', 'normal');
-        doc.autoTable(critCols, critRows, {
+        doc.autoTable({
+          head: criteria.head,
+          body: criteria.body,
           headStyles: {
             valign: 'middle',
             halign: 'center',
@@ -332,6 +362,63 @@ import 'jspdf-autotable';
             }
           },
         });
+        /*
+        doc.autoTable(critCols, critRows, {
+          headStyles: {
+            valign: 'middle',
+            halign: 'center',
+            overflow: 'linebreak',
+            cellWidth: 'auto',
+            fillColor: [0, 112, 201],
+          },
+          bodyStyles: {
+            valign: 'middle',
+            halign: 'left',
+            overflow: 'linebreak',
+            cellWidth: 'auto',
+          },
+          margin: 20,
+          pageBreak: 'avoid',
+          tableWidth: 'auto',
+          drawCell: function (cell, cellData) {
+            if (cellData.column.dataKey === 'description') {
+              if (cellData.row.raw.key) {
+                var met = checkCriterionIsMet(cellData.row.raw.key, data.criteria);
+                cell.textPos.x += 32;
+                var descriptionParts = cellData.row.raw.description.split('#');
+                for (var partIndex = 0; partIndex < descriptionParts.length; ++partIndex) {
+                  var outText = descriptionParts[partIndex];
+                  doc.text(outText, cell.textPos.x, cell.textPos.y);
+                  cell.textPos.x += doc.getStringUnitWidth(outText) * fontSize;
+
+                  if (partIndex < met.length) {
+                    if (met[partIndex]) {
+                      checkImages.push({ elem: checkImageData[1], x: cell.textPos.x, y: cell.textPos.y - 8});
+                    } else {
+                      checkImages.push({ elem: checkImageData[0], x: cell.textPos.x, y: cell.textPos.y - 8});
+                    }
+                    cell.textPos.x += 12;
+                  }
+                }
+                return false;
+              } else {
+                checkImages.push(null);
+              }
+
+              return true;
+            }
+            return true;
+          },
+          afterPageContent: function () {
+            var total = checkImages.length;
+            for (var index = 0; index < total; index++) {
+              var img = checkImages.shift();
+              if (img) {
+                doc.addImage(img.elem, 'jpeg', img.x, img.y, 10, 10);
+              }
+            }
+          },
+        });*/
       } else {
         $log.error('No PDF criteria layout for ' + certificationIdData.year + '!');
       }
