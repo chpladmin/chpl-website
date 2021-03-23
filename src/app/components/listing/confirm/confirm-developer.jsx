@@ -19,43 +19,77 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import theme from '../../../themes/theme';
 import { developer } from '../../../shared/prop-types/';
 
+const validationSchema = yup.object({
+  name: yup.string()
+    .required('Developer Name is required'),
+  website: yup.string()
+    .required('Website is required')
+    .url('Enter a valid website'),
+  line1: yup.string()
+    .required('Line 1 is required'),
+  city: yup.string()
+    .required('City is required'),
+  state: yup.string()
+    .required('State is required'),
+  zipcode: yup.string()
+    .required('Zip is required'),
+  country: yup.string()
+    .required('Country is required'),
+  fullName: yup.string()
+    .required('Name is required'),
+  email: yup.string()
+    .required('Email is required')
+    .email('Enter a valid email'),
+  phoneNumber: yup.string()
+    .required('Phone is required'),
+});
+
+const setUpDeveloper = (developer) => {
+  if (!developer) {
+    return {developerId: 'new'};
+  }
+  if (!developer.developerId) {
+    developer.developerId = 'new';
+  }
+  return developer;
+};
+
 function ChplConfirmDeveloper (props) {
-  const [developer, setDeveloper] = useState(props.developer || {developerId: ''});
+  const [developer, setDeveloper] = useState(setUpDeveloper(props.developer));
   const [developers] = useState(
-    props.developers
+    [{developerId: 'new', name: '   Create a new Developer'}].concat(props.developers)
       .filter(d => !d.deleted)
       .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
   );
-  const [errors, setErrors] = useState({
-    name: '',
-    website: '',
-    line1: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    country: '',
-    fullName: '',
-    email: '',
-    phoneNumber: '',
-  });
   const [formValues, setFormValues] = useState({
-    name: props.developer?.name || '',
-    website: props.developer?.website || '',
     selfDeveloper: props.developer?.selfDeveloper || false,
-    line1: props.developer?.address?.line1 || '',
-    line2: props.developer?.address?.line2 || '',
-    city: props.developer?.address?.city || '',
-    state: props.developer?.address?.state || '',
-    zipcode: props.developer?.address?.zipcode || '',
-    country: props.developer?.address?.country || '',
-    fullName: props.developer?.contact?.fullName || '',
-    title: props.developer?.contact?.title || '',
-    email: props.developer?.contact?.email || '',
-    phoneNumber: props.developer?.contact?.phoneNumber || '',
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: props.developer?.name || '',
+      website: props.developer?.website || '',
+      selfDeveloper: props.developer?.selfDeveloper || false,
+      line1: props.developer?.address?.line1 || '',
+      line2: props.developer?.address?.line2 || '',
+      city: props.developer?.address?.city || '',
+      state: props.developer?.address?.state || '',
+      zipcode: props.developer?.address?.zipcode || '',
+      country: props.developer?.address?.country || '',
+      fullName: props.developer?.contact?.fullName || '',
+      title: props.developer?.contact?.title || '',
+      email: props.developer?.contact?.email || '',
+      phoneNumber: props.developer?.contact?.phoneNumber || '',
+    },
+    validationSchema: validationSchema,
+    validateOnChange: false,
+    validateOnMount: true,
   });
 
   const handleSelectOnChange = event => {
@@ -64,11 +98,6 @@ function ChplConfirmDeveloper (props) {
 
   const handleSwitchOnChange = event => {
     setFormValues({ ...formValues, [event.target.name]: event.target.checked });
-  };
-
-  const handleTextOnChange = event => {
-    setErrors({ ...errors, [event.target.name]: !event.target.value && 'Value is required' });
-    setFormValues({ ...formValues, [event.target.name]: event.target.value });
   };
 
   const getAddress = (address, editing) => {
@@ -89,10 +118,11 @@ function ChplConfirmDeveloper (props) {
                            name="line1"
                            label="Line 1"
                            variant="outlined"
-                           error={ !!errors.line1 }
-                           helperText={ errors.line1 }
-                           value={ formValues.line1 }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.line1 }
+                           error={ formik.touched.line1 && Boolean(formik.errors.line1) }
+                           helperText={ formik.touched.line1 && formik.errors.line1 }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Line 1</Typography>
@@ -105,8 +135,9 @@ function ChplConfirmDeveloper (props) {
                            name="line2"
                            label="Line 2"
                            variant="outlined"
-                           value={ formValues.line2 }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.line2 }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Line 2</Typography>
@@ -121,10 +152,11 @@ function ChplConfirmDeveloper (props) {
                            name="city"
                            label="City"
                            variant="outlined"
-                           error={ !!errors.city }
-                           helperText={ errors.city }
-                           value={ formValues.city }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.city }
+                           error={ formik.touched.city && Boolean(formik.errors.city) }
+                           helperText={ formik.touched.city && formik.errors.city }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">City</Typography>
@@ -137,10 +169,11 @@ function ChplConfirmDeveloper (props) {
                            name="state"
                            label="State"
                            variant="outlined"
-                           error={ !!errors.state }
-                           helperText={ errors.state }
-                           value={ formValues.state }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.state }
+                           error={ formik.touched.state && Boolean(formik.errors.state) }
+                           helperText={ formik.touched.state && formik.errors.state }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">State</Typography>
@@ -155,10 +188,11 @@ function ChplConfirmDeveloper (props) {
                            name="zipcode"
                            label="Zip"
                            variant="outlined"
-                           error={ !!errors.zipcode }
-                           helperText={ errors.zipcode }
-                           value={ formValues.zipcode }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.zipcode }
+                           error={ formik.touched.zipcode && Boolean(formik.errors.zipcode) }
+                           helperText={ formik.touched.zipcode && formik.errors.zipcode }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Zip</Typography>
@@ -171,10 +205,11 @@ function ChplConfirmDeveloper (props) {
                            name="country"
                            label="Country"
                            variant="outlined"
-                           error={ !!errors.country }
-                           helperText={ errors.country }
-                           value={ formValues.country }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.country }
+                           error={ formik.touched.country && Boolean(formik.errors.country) }
+                           helperText={ formik.touched.country && formik.errors.country }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Country</Typography>
@@ -204,10 +239,11 @@ function ChplConfirmDeveloper (props) {
                            name="fullName"
                            label="Name"
                            variant="outlined"
-                           error={ !!errors.fullName }
-                           helperText={ errors.fullName }
-                           value={ formValues.fullName }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.fullName }
+                           error={ formik.touched.fullName && Boolean(formik.errors.fullName) }
+                           helperText={ formik.touched.fullName && formik.errors.fullName }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Name</Typography>
@@ -220,8 +256,9 @@ function ChplConfirmDeveloper (props) {
                            name="title"
                            label="Title"
                            variant="outlined"
-                           value={ formValues.title }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.title }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Title</Typography>
@@ -236,10 +273,11 @@ function ChplConfirmDeveloper (props) {
                            name="email"
                            label="Email"
                            variant="outlined"
-                           error={ !!errors.email }
-                           helperText={ errors.email }
-                           value={ formValues.email }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.email }
+                           error={ formik.touched.email && Boolean(formik.errors.email) }
+                           helperText={ formik.touched.email && formik.errors.email }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Email</Typography>
@@ -252,10 +290,11 @@ function ChplConfirmDeveloper (props) {
                            name="phoneNumber"
                            label="Phone"
                            variant="outlined"
-                           error={ !!errors.phoneNumber }
-                           helperText={ errors.phoneNumber }
-                           value={ formValues.phoneNumber }
-                           onChange={ handleTextOnChange } />
+                           value={ formik.values.phoneNumber }
+                           error={ formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber) }
+                           helperText={ formik.touched.phoneNumber && formik.errors.phoneNumber }
+                           onChange={ formik.handleChange }
+                           onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Phone</Typography>
@@ -293,10 +332,11 @@ function ChplConfirmDeveloper (props) {
                                      name="name"
                                      label="Developer Name"
                                      variant="outlined"
-                                     error={ !!errors.name }
-                                     helperText={ errors.name }
-                                     value={ formValues.name }
-                                     onChange={ handleTextOnChange } />
+                                     value={ formik.values.name }
+                                     error={ formik.touched.name && Boolean(formik.errors.name) }
+                                     helperText={ formik.touched.name && formik.errors.name }
+                                     onChange={ formik.handleChange }
+                                     onBlur={ formik.handleBlur } />
                         </Grid>
                     }
                     { developer.developerId
@@ -327,10 +367,11 @@ function ChplConfirmDeveloper (props) {
                                    name="website"
                                    label="Website"
                                    variant="outlined"
-                                   error={ !!errors.website }
-                                   helperText={ errors.website }
-                                   value={ formValues.website }
-                                   onChange={ handleTextOnChange } />
+                                   value={ formik.values.website }
+                                   error={ formik.touched.website && Boolean(formik.errors.website) }
+                                   helperText={ formik.touched.website && formik.errors.website }
+                                   onChange={ formik.handleChange }
+                                   onBlur={ formik.handleBlur } />
                       </Grid>
                   }
                   <Grid item xs={ 12 }>
