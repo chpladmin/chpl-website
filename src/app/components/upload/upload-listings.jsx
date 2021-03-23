@@ -96,6 +96,7 @@ function ChplUploadListings () {
                       component="label">
                 Choose file to upload
                 <input type="file"
+                       id="upload-listings"
                        onChange={ onFileChange }
                        style={{ display: 'none' }} />
               </Button>
