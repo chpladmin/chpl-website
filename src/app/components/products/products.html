@@ -48,10 +48,10 @@
                     <i class="fa fa-scissors"></i> Split
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labeledby="split-button" uib-dropdown-menu>
-                    <li class="product__product-action-filter-item" ng-click="$ctrl.splitProduct(product)" ng-if="product.versions.length > 1">Product</li>
-                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.versions.length === 1">
+                    <li class="product__product-action-filter-item" ng-click="$ctrl.splitProduct(product)" ng-if="product.versions.length > 2">Product</li>
+                    <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.versions.length === 2">
                       Product<br />
-                      <span ng-if="product.versions.length === 2">(Cannot split Product with only one Version)</span>
+                      (Cannot split Product with only one Version)
                     </li>
                     <li class="product__product-action-filter-item" ng-click="$ctrl.splitVersion(product)" ng-if="product.activeVersion.version !== 'All' && product.activeVersion.listings.length > 1">Version</li>
                     <li class="product__product-action-filter-item product__product-action-filter-item--disabled" ng-if="product.activeVersion.version === 'All'">
