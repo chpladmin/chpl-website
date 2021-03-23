@@ -1,13 +1,10 @@
-UNIQUE_CHPL_ID__C,DEVELOPER_C,PRODUCT_C,VERSION_C
-13A!.99.02.8990.ABC.0A.00.A.190729,InteliChart LLC,InteliChart Patient Portal,3.99
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-    ,   ,    ,   
-,,,
-,,,
-,,,
+UNIQUE_CHPL_ID__C,DEVELOPER_C,PRODUCT_C,VERSION_C,CERTIFYING_ACB__C,TESTING_ATL__C,ICS Source
+13A!.AA.02.8990.AQA.0A@.AA.A.20230729,InteliChart LLC,InteliChart Patient Portal,3.99,,,
+13.07.04.XXXX.AQA20.R2.01.4.230511,New Developer,New Product,3.99,,,
+15.07.04.1234.AQA21.R2.00.0.200511,New Developer,New Product,3.99,,,
+15.04.04.3007.AQA22.V1.00.0.200707,InteliChart LLC,InteliChart Patient Portal,3.99,SLI Compliance,ICSA Labs,15.07.04.2916.smar.07.01.1.190328
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+    ,   ,    ,   ,,,

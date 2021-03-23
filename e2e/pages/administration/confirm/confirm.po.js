@@ -9,6 +9,7 @@ const confirmElements = {
   toastContainertitle: '.ng-binding.toast-title',
   rejectButtonOnInspectListing: '#inspect-reject',
   errorMessage: '.bg-danger',
+  errorOnInspect: '.action-bar__error-messages > li',
 };
 
 class ConfirmPage {
@@ -50,6 +51,10 @@ class ConfirmPage {
     return $(confirmElements.errorMessage);
   }
 
+  get errorOnInspect () {
+    return $$(confirmElements.errorOnInspect);
+  }
+
   rejectCheckbox (chplId) {
     return $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input');
   }
@@ -65,6 +70,11 @@ class ConfirmPage {
       this.inspectNextButton.waitAndClick();
       this.inspectConfirmButton.waitForDisplayed();
     }
+  }
+
+  gotoPendingListingPage (pendingListingId ) {
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable();
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
   }
 
   findListingtoReject (chplId) {
@@ -94,6 +104,7 @@ class ConfirmPage {
       }
     );
   }
+
 }
 
 export default ConfirmPage;
