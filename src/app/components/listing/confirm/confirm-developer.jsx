@@ -312,7 +312,7 @@ function ChplConfirmDeveloper (props) {
         <form noValidate>
           <Container>
             <Card>
-              <CardHeader title={ developer.name }/>
+              <CardHeader title={ developer.developerId === 'new' ? '   Create a new Developer' : developer.name }/>
               <CardContent>
                 <Grid container spacing={ 4 }>
                   <Grid item xs={ 12 }>
@@ -322,7 +322,7 @@ function ChplConfirmDeveloper (props) {
                     <Divider/>
                   </Grid>
                   <Grid container item>
-                    { developer.developerId
+                    { developer.developerId !== 'new'
                       ? <Grid item xs={ 6 }>
                           <Typography variant="subtitle2">Developer Code</Typography>
                           <Typography variant="body1">{ developer.developerCode }</Typography>
@@ -339,7 +339,7 @@ function ChplConfirmDeveloper (props) {
                                      onBlur={ formik.handleBlur } />
                         </Grid>
                     }
-                    { developer.developerId
+                    { developer.developerId !== 'new'
                       ? <Grid item xs={ 6 }>
                           <Typography variant="subtitle2">Self Developer</Typography>
                           <Typography variant="body1">{ developer.selfDeveloper ? 'Yes' : 'No' }</Typography>
@@ -357,7 +357,7 @@ function ChplConfirmDeveloper (props) {
                         </Grid>
                     }
                   </Grid>
-                  { developer.developerId
+                  { developer.developerId !== 'new'
                     ? <Grid item xs={ 12 }>
                         <Typography variant="subtitle2">Website</Typography>
                         <Typography variant="body1">{ developer.website }</Typography>
@@ -375,10 +375,10 @@ function ChplConfirmDeveloper (props) {
                       </Grid>
                   }
                   <Grid item xs={ 12 }>
-                    { getAddress(developer.address, !developer.developerId) }
+                    { getAddress(developer.address, developer.developerId === 'new') }
                   </Grid>
                   <Grid item xs={ 12 }>
-                    { getContact(developer.contact, !developer.developerId) }
+                    { getContact(developer.contact, developer.developerId === 'new') }
                   </Grid>
                 </Grid>
               </CardContent>
@@ -394,12 +394,11 @@ function ChplConfirmDeveloper (props) {
                   >
                     { developers.map(d => {
                       return (
-                        <MenuItem key={ d.developerId } value={ d.developerId }>{ d.name }</MenuItem>
+                        <MenuItem key={ d.developerId } value={ d.developerId }>{ d.name }{ d.developerCode && (' (Developer Code: ' + d.developerCode + ')') }</MenuItem>
                       );
                     })}
                   </Select>
                 </FormControl>
-
               </CardActions>
             </Card>
           </Container>
