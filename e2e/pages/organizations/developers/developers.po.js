@@ -126,6 +126,10 @@ class DevelopersPage {
     product.$('.products__product-header').click();
   }
 
+  getSelectableVersions (product, productId) {
+    return product.$(elements.activeVersion + '-' + productId).$$('option');
+  }
+
   selectVersion (product, productId, versionName) {
     product.$(elements.activeVersion + '-' + productId).selectByVisibleText(versionName);
   }
@@ -137,7 +141,7 @@ class DevelopersPage {
 
   splitProduct (product) {
     this.getSplitButton(product).click();
-    let btn = product.$$('li').filter(itm => itm.getText() === 'Product')[0];
+    let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
   }
 
