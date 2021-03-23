@@ -1,5 +1,5 @@
-var jsPDF = require('jspdf');
-require('jspdf-autotable');
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 (function () {
   'use strict';
@@ -213,12 +213,12 @@ require('jspdf-autotable');
 
       // Add header text
       doc.setFontSize(36);
-      doc.setFontType('bold');
+      doc.setFont('helvetica', 'bold');
       doc.text(40, 80, 'Certified Health IT Product List');
 
       // Add body text to PDF
       doc.setFontSize(10);
-      doc.setFontType('normal');
+      doc.setFont('helvetica', 'normal');
       doc.text(
         40,
         bodyStartY,
@@ -238,12 +238,12 @@ require('jspdf-autotable');
 
       // Add Certification ID to PDF
       doc.setFontSize(20);
-      doc.setFontType('bold');
+      doc.setFont('helvetica', 'bold');
       doc.text(300, bodyStartY + 70, 'CMS EHR ID: ' + data.ehrCertificationId);
 
       // Add products table to PDF
       doc.setFontSize(10);
-      doc.setFontType('normal');
+      doc.setFont('helvetica', 'normal');
       for (var i = 0; i < productsForTable.length; i++) {
         doc.autoTable(productsForTable[i].columns, productsForTable[i].rows, {
           theme: 'grid',
@@ -275,7 +275,7 @@ require('jspdf-autotable');
         var fontSize = 10;
         doc.addPage();
         doc.setFontSize(fontSize);
-        doc.setFontType('normal');
+        doc.setFont('helvetica', 'normal');
         doc.autoTable(critCols, critRows, {
           headerStyles: {
             valign: 'middle',
