@@ -164,7 +164,8 @@ function ChplConfirmListings (props) {
                                   color="primary"
                                   variant="contained"
                                   onClick={() => handleProcess(listing)}
-                                  endIcon={ <PlayArrowIcon/> }>
+                                  endIcon={ <PlayArrowIcon/> }
+                                  disabled={ listing.errorCount === null || listing.warningCount === null }>
                             Process Listing
                           </Button>
                         </TableCell>
