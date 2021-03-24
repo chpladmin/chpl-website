@@ -208,8 +208,6 @@ describe('the Version part of the Developers page', () => {
 
         // act
         actionBar.save();
-        //actionBar.cancel();
-        //actionConfirmation.yes.click();
         page.productsHeader.waitForDisplayed();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
