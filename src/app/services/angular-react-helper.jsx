@@ -21,7 +21,6 @@ const reactToAngularComponent = Component => {
       'ngInject';
       this.$onChanges = () => {
         const props = toProps(propTypes, this);
-        //console.log(propTypes, $element[0], changes, props);
         ReactDOM.render(<Component {...props} />, $element[0]);
       };
       this.$onDestroy = () => {

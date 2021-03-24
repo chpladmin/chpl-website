@@ -135,11 +135,3 @@ function ChplUploadListings () {
 export { ChplUploadListings };
 
 ChplUploadListings.propTypes = {};
-
-//ngf-select ngf-accept="'.csv'"
-//ng-model="$ctrl.file"
-// filter as number
-
-//ng-click="$ctrl.upload()" ng-disabled="!$ctrl.file">
-
-//ng-click="$ctrl.file = undefined">

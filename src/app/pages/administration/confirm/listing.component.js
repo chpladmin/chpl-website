@@ -17,7 +17,6 @@ export const ConfirmListingComponent = {
       this.errorMessages = [];
       this.systemRequirements = [];
       this.resources = {};
-      //this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
     }
 
     $onInit () {
@@ -31,10 +30,6 @@ export const ConfirmListingComponent = {
         if (this.pending.developer && !this.pending.developer.developerId) {
           this.pending.developer.developerId = '';
         }
-        /*
-        if (this.uploaded.developer && !this.uploaded.developer.country) {
-          this.uploaded.developer.country = 'USA';
-        }*/
       }
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
@@ -46,7 +41,7 @@ export const ConfirmListingComponent = {
       case 'confirm': return this.stage === 'listing';
       case 'next': return this.showFormErrors && (this.form.$pristine || !this.pending.developer.developerId) && !this.isDisabled();
       case 'previous': return this.stage !== 'developer';
-                // no default
+        // no default
       }
     }
 
@@ -71,7 +66,7 @@ export const ConfirmListingComponent = {
           this.pending.developer.developerId = undefined;
         }
         break;
-                //no default
+        //no default
       }
       this.form.$setPristine();
       this.showFormErrors = false;
@@ -107,7 +102,7 @@ export const ConfirmListingComponent = {
         break;
       case 'reject': this.reject();
         break;
-                // no default
+        // no default
       }
     }
 
@@ -219,7 +214,7 @@ export const ConfirmListingComponent = {
       case 'product': return 2;
       case 'version': return 3;
       case 'listing': return 4;
-                //no default
+        //no default
       }
     }
 
