@@ -22,8 +22,8 @@ import { matchAny} from './filters/match-any';
       var nc = angular.fromJson(actual);
       open = expected.nonconformities.open;
       closed = expected.nonconformities.closed;
-      openNC = nc.openSurveillanceNonConformityCount > 0;
-      closedNC = nc.closedSurveillanceNonConformityCount > 0;
+      openNC = nc.openSurveillanceNonConformityCount > 0 || nc.openDirectReviewNonConformityCount > 0;
+      closedNC = nc.closedSurveillanceNonConformityCount > 0 || nc.closedDirectReviewNonConformityCount > 0;
       if (expected.nonconformities.matchAll) {
         ret = (open === openNC) && (closed === closedNC);
       } else {
