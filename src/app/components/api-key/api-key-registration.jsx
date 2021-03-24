@@ -54,7 +54,7 @@ function ChplApiKeyRegistration () {
           });
           formik.resetForm();
         }
-      }, error => {
+      }, (error) => {
         toaster.pop({
           type: 'error',
           body: error.data.errorMessages[0],
@@ -74,7 +74,7 @@ function ChplApiKeyRegistration () {
               You must register to use this API.
             </Typography>
             <TextField fullWidth
-                        id='nameOrganization'
+                        id='name-organization'
                         name='nameOrganization'
                         label='Name or Organization'
                         value={ formik.values.nameOrganization }
@@ -95,6 +95,8 @@ function ChplApiKeyRegistration () {
         </CardContent>
         <CardActions>
           <Button fullWidth color='primary'
+                  id='register-button'
+                  name='registerButton'
                   variant='contained'
                   disabled={ !formik.isValid }
                   onClick={ formik.handleSubmit }>

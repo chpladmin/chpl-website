@@ -38,6 +38,7 @@ module.exports = env => {
                 exclude: [
                         /specs\.js/,
                         /\.spec\.js/,
+                        /\.test\.js/,
                         /node_modules/,
                         /lib/,
                         /\.mock\.js/,
@@ -51,6 +52,7 @@ module.exports = env => {
                 exclude: [
                         /node_modules/,
                         /\.mock\.js/,
+                        /\.test\.js/,
                 ],
                 use: [{
                     loader: 'babel-loader',
