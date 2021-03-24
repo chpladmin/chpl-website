@@ -139,26 +139,6 @@
           });
           return l;
         });
-      /*
-      var ret = [];
-      var cp;
-      for (var i = 0; i < array.length; i ++) {
-        cp = array[i];
-
-        if (cp.surveillanceCount > 0 && (cp.openSurveillanceNonConformityCount > 0 || cp.closedSurveillanceNonConformityCount > 0)) {
-
-          cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
-          cp.nonconformities = angular.toJson({
-            openSurveillanceNonConformityCount: cp.openSurveillanceNonConformityCount,
-            closedSurveillanceNonConformityCount: cp.closedSurveillanceNonConformityCount,
-          });
-
-          ret.push(cp);
-        }
-      }
-      return ret;
-      */
     }
 
     /*

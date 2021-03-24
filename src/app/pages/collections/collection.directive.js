@@ -24,6 +24,7 @@
       templateUrl: 'chpl.collections/collection.html',
       transclude: {
         aiBodyText: 'aiBodyText',
+        aiErrorText: '?aiErrorText',
         aiFooterText: '?aiFooterText',
         aiTitle: 'aiTitle',
       },
@@ -35,6 +36,7 @@
     var vm = this;
 
     vm.changeItemsPerPage = changeItemsPerPage;
+    vm.hasError = hasError;
     vm.hasResults = hasResults;
     vm.isCategoryChanged = isCategoryChanged;
     vm.isFilterActive = isFilterActive;
@@ -67,6 +69,10 @@
 
     function changeItemsPerPage () {
       $analytics.eventTrack('Change Results Per Page', { category: vm.analyticsCategory, label: vm.filterItems.pageSize });
+    }
+
+    function hasError () {
+      return vm.hasResults() && vm.collectionKey === 'correctiveAction' && !vm.directReviewsAvailable;
     }
 
     function hasResults () {
@@ -118,6 +124,7 @@
         vm.allCps = collectionsService.translate(vm.collectionKey, response);
         vm.analyticsCategory = collectionsService.getAnalyticsCategory(vm.collectionKey);
         vm.isPreLoading = false;
+        vm.directReviewsAvailable = response.directReviewsAvailable;
       }, function (error) {
         $log.debug(error);
       });
