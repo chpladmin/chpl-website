@@ -16,6 +16,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "128☺136☺137☺138☺139☺140☺141☺142☺143",
         "cqmsMet": null
@@ -35,6 +37,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "116☺92☺93",
         "cqmsMet": "CMS100☺CMS102☺CMS104☺CMS105☺CMS107☺CMS108☺CMS109☺CMS110☺CMS111☺CMS113☺CMS114☺CMS171☺CMS172☺CMS178☺CMS185☺CMS188☺CMS190☺CMS26☺CMS30☺CMS31☺CMS32☺CMS53☺CMS55☺CMS60☺CMS71☺CMS72☺CMS73☺CMS9☺CMS91"
@@ -54,6 +58,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "100☺101☺103☺104☺105☺106☺107☺108☺114☺115☺116☺61☺62☺63☺64☺65☺66☺67☺68☺69☺70☺71☺72☺73☺74☺75☺81☺82☺83☺84☺85☺88☺91☺92☺93☺94☺95☺96☺97☺98☺99",
         "cqmsMet": "CMS117☺CMS122☺CMS123☺CMS124☺CMS125☺CMS126☺CMS127☺CMS128☺CMS130☺CMS131☺CMS134☺CMS135☺CMS137☺CMS138☺CMS139☺CMS143☺CMS144☺CMS145☺CMS146☺CMS147☺CMS148☺CMS149☺CMS153☺CMS154☺CMS155☺CMS156☺CMS158☺CMS160☺CMS163☺CMS164☺CMS165☺CMS167☺CMS182☺CMS2☺CMS61☺CMS68☺CMS69☺CMS74☺CMS75☺CMS77☺CMS90"
@@ -73,6 +79,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "101☺106☺116☺91☺92☺93☺94☺98☺99",
         "cqmsMet": "CMS117☺CMS122☺CMS123☺CMS124☺CMS125☺CMS126☺CMS127☺CMS128☺CMS130☺CMS131☺CMS134☺CMS136☺CMS137☺CMS138☺CMS139☺CMS142☺CMS146☺CMS147☺CMS148☺CMS153☺CMS154☺CMS155☺CMS158☺CMS160☺CMS163☺CMS164☺CMS165☺CMS179☺CMS182☺CMS2☺CMS50☺CMS52☺CMS61☺CMS62☺CMS64☺CMS65☺CMS69☺CMS74☺CMS75☺CMS77☺CMS82"
@@ -92,6 +100,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "101☺107☺108☺116☺94☺99",
         "cqmsMet": null
@@ -111,6 +121,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "103☺105☺113☺116☺94☺98",
         "cqmsMet": null
@@ -130,6 +142,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "103☺113☺116☺94☺98",
         "cqmsMet": null
@@ -149,6 +163,8 @@ let allCps = [
         "surveillanceCount": 1,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 3,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 3,
         "previousDevelopers": null,
         "criteriaMet": "29☺37☺38☺53☺54☺55☺56☺57☺58",
         "cqmsMet": null
@@ -168,6 +184,8 @@ let allCps = [
         "surveillanceCount": 0,
         "openSurveillanceNonConformityCount": 0,
         "closedSurveillanceNonConformityCount": 0,
+        "openDirectReviewNonConformityCount": 0,
+        "closedDirectReviewNonConformityCount": 0,
         "previousDevelopers": null,
         "criteriaMet": "1☺10☺11☺12☺14☺15☺19☺2☺21☺29☺3☺30☺31☺32☺33☺34☺35☺36☺4☺49☺5☺52☺53☺54☺55☺6☺7☺8",
         "cqmsMet": null

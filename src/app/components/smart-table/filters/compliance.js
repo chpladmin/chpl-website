@@ -1,4 +1,3 @@
-/* eslint-disable no-console,angular/log */
 const compliance = (input, rules) => {
   let closed, hasClosedNc, hasOpenNc, listing, never, open;
 
@@ -21,8 +20,8 @@ const compliance = (input, rules) => {
   hasOpenNc = listing.openNonConformityCount > 0;
   hasClosedNc = listing.closedNonConformityCount > 0;
   /*
-     * matching only one of the possibles
-     */
+   * matching only one of the possibles
+   */
   if (never && !open && !closed) {
     return !hasOpenNc && !hasClosedNc;
   }
@@ -33,15 +32,15 @@ const compliance = (input, rules) => {
     return hasClosedNc;
   }
   /*
-     * if matching more than one, need to know if matchAll is true or not
-     * if true, only valid "multiple &" is !never && open && closed
-     */
+   * if matching more than one, need to know if matchAll is true or not
+   * if true, only valid "multiple &" is !never && open && closed
+   */
   if (rules.matchAll) {
     return !never && open && closed && hasOpenNc && hasClosedNc;
   }
   /*
-     * now matching "matchAny" with at least two checkboxes selected
-     */
+   * now matching "matchAny" with at least two checkboxes selected
+   */
   if (never && open && !closed) {
     return !hasClosedNc;
   }
@@ -52,11 +51,11 @@ const compliance = (input, rules) => {
     return hasOpenNc || hasClosedNc;
   }
   /*
-     * these triple multiples on matchAny:
-     * * never && open && closed
-     * * !never && !open && !closed
-     * are equivalent to "all", and so if we get here, it's a listing that should be seen
-     */
+   * these triple multiples on matchAny:
+   * * never && open && closed
+   * * !never && !open && !closed
+   * are equivalent to "all", and so if we get here, it's a listing that should be seen
+   */
   return true;
 };
 

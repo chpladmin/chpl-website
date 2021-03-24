@@ -132,10 +132,8 @@
           l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
           l.edition = l.edition + (l.curesUpdate ? ' Cures Update' : '');
           l.nonconformities = angular.toJson({
-            openSurveillanceNonConformityCount: l.openSurveillanceNonConformityCount,
-            closedSurveillanceNonConformityCount: l.closedSurveillanceNonConformityCount,
-            openDirectReviewNonConformityCount: l.openDirectReviewNonConformityCount,
-            closedDirectReviewNonConformityCount: l.closedDirectReviewNonConformityCount,
+            openNonConformityCount: l.openSurveillanceNonConformityCount + l.openDirectReviewNonConformityCount,
+            closedNonConformityCount: l.closedSurveillanceNonConformityCount + l.closedDirectReviewNonConformityCount,
           });
           return l;
         });
