@@ -185,7 +185,7 @@ describe('the Version part of the Developers page', () => {
         page.getSplitButton(product).click();
 
         expect(page.getSplitButton(product)).toExist();
-        expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split a Product with only one Version)');
+        expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split Product with only one Version)');
         expect(page.getVersionSplitButton(product).getText()).toBe('Version\n(Select a specific Version to split)');
         page.selectVersion(product, productId, version);
         page.getSplitButton(product).click();
