@@ -1,10 +1,9 @@
 import React from 'react';
-//import ReactDOM from 'react-dom';
 import * as angularReactHelper from '../../services/angular-react-helper.jsx';
 import { render, cleanup, screen, waitFor, fireEvent } from '@testing-library/react';
 import { toBeInvalid, toBeValid, toBeEnabled, toBeDisabled, toHaveValue } from '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { when, resetAllWhenMocks } from 'jest-when';
+import { when } from 'jest-when';
 import {ChplApiKeyRegistration} from './api-key-registration.jsx';
 
 
@@ -180,14 +179,28 @@ describe('the ChplApiKeyRegistration component', () => {
       });
     });
 
-    //it('should reset the form', async () => {
+    it('should reset the form', async () => {
+      render(<ChplApiKeyRegistration />);
 
-    //});
+      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
+      const email = screen.getByLabelText(/Email/i);
+      const registerButton = screen.getByRole('button', { 'name': /Register/i });
+
+      userEvent.type(nameOrganization, 'MyOrg');
+      userEvent.tab();
+      userEvent.type(email, 'abc@company.com');
+      userEvent.tab();
+      userEvent.click(registerButton);
+
+      await waitFor(() => {
+        expect(nameOrganization).toHaveValue('');
+        expect(email).toHaveValue('');
+      });
+    });
 
     it('should display a toaster indicating failure of API call', async () => {
-      resetAllWhenMocks()
+      // Overwrite the existing mock to return an rejected Promise
       when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceFailureMock);
-      when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
 
       render(<ChplApiKeyRegistration />);
 
