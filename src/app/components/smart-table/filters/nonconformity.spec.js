@@ -9,6 +9,12 @@ const mock = {
 };
 
 describe('the nonconformity filter', () => {
+  it('should not allow items with no data', () => {
+    const filter = {nonconformities: {}};
+    let result = nonconformity(undefined, filter);
+    expect(result).toEqual(false);
+  });
+
   it('should allow all with no filter', () => {
     const filter = {nonconformities: {}};
     let results = mock.collection.map(c => nonconformity(c, filter));
