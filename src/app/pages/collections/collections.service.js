@@ -113,21 +113,18 @@
     }
 
     /*
-     * Listings are part of this collection if:
-     * - Surveillance Count > 0 or Direct Review Count > 0
-     * - at least one of:
-     *   - Open Surveillance NC Count > 0
-     *   - Closed Surveillance NC Count > 0
-     *   - Open Direct Review NC Count > 0
-     *   - Closed Direct Review NC Count > 0
+     * Listings are part of this collection if they have at least one of:
+     *  - Open Surveillance NC Count > 0
+     *  - Closed Surveillance NC Count > 0
+     *  - Open Direct Review NC Count > 0
+     *  - Closed Direct Review NC Count > 0
      */
     function correctiveActions (array) {
       return array
-        .filter(l => (l.surveillanceCount > 0 || l.directReviewCount > 0)
-                && (l.openSurveillanceNonConformityCount > 0
+        .filter(l => l.openSurveillanceNonConformityCount > 0
                     || l.closedSurveillanceNonConformityCount > 0
                     || l.openDirectReviewNonConformityCount > 0
-                    || l.closedDirectReviewNonConformityCount > 0))
+                    || l.closedDirectReviewNonConformityCount > 0)
         .map(l => {
           l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
           l.edition = l.edition + (l.curesUpdate ? ' Cures Update' : '');

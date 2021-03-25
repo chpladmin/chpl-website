@@ -286,7 +286,7 @@ export class NetworkService {
     case 'complaintListings':
       return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
     case 'correctiveAction':
-      return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,directReviewCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount');
+      return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount');
     case 'decertifiedProducts':
     case 'inactiveCertificates':
       return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
