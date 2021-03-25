@@ -8,9 +8,10 @@ export const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor ($log, featureFlags, networkService, utilService) {
+    constructor ($log, authService, featureFlags, networkService, utilService) {
       'ngInject';
       this.$log = $log;
+      this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
       this.isOn = featureFlags.isOn;
