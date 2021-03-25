@@ -74,23 +74,25 @@ function ChplApiKeyRegistration () {
               You must register to use this API.
             </Typography>
             <TextField fullWidth
-                        id='name-organization'
-                        name='nameOrganization'
-                        label='Name or Organization'
-                        value={ formik.values.nameOrganization }
-                        onChange={ formik.handleChange }
-                        onBlur={ formik.handleBlur }
-                        error={ formik.touched.nameOrganization && Boolean(formik.errors.nameOrganization) }
-                        helperText={ formik.touched.nameOrganization && formik.errors.nameOrganization } />
+                       variant="outlined"
+                       id='name-organization'
+                       name='nameOrganization'
+                       label='Name or Organization'
+                       value={ formik.values.nameOrganization }
+                       onChange={ formik.handleChange }
+                       onBlur={ formik.handleBlur }
+                       error={ formik.touched.nameOrganization && Boolean(formik.errors.nameOrganization) }
+                       helperText={ formik.touched.nameOrganization && formik.errors.nameOrganization } />
             <TextField fullWidth
-                        id='email'
-                        name='email'
-                        label='Email'
-                        value={ formik.values.email }
-                        onChange={ formik.handleChange }
-                        onBlur={ formik.handleBlur }
-                        error={ formik.touched.email && Boolean(formik.errors.email) }
-                        helperText={ formik.touched.email && formik.errors.email } />
+                       variant="outlined"
+                       id='email'
+                       name='email'
+                       label='Email'
+                       value={ formik.values.email }
+                       onChange={ formik.handleChange }
+                       onBlur={ formik.handleBlur }
+                       error={ formik.touched.email && Boolean(formik.errors.email) }
+                       helperText={ formik.touched.email && formik.errors.email } />
           </div>
         </CardContent>
         <CardActions>
