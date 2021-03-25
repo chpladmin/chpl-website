@@ -8,12 +8,14 @@ export const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor ($log, featureFlags, networkService) {
+    constructor ($log, featureFlags, networkService, utilService) {
       'ngInject';
       this.$log = $log;
       this.networkService = networkService;
+      this.utilService = utilService;
       this.isOn = featureFlags.isOn;
       this.clearFilterHs = [];
+      this.filename = 'Complaints_' + new Date().getTime() + '.csv';
       this.restoreStateHs = [];
       this.complaintListType = 'ALL';
       this.pageSize = 50;
@@ -125,13 +127,17 @@ export const SurveillanceComplaintsComponent = {
           .map(complaint => {
             if (complaint.receivedDate) {
               complaint.formattedReceivedDate = new Date(complaint.receivedDate);
+              complaint.csvReceivedDate = new Date(complaint.receivedDate).toISOString().substring(0, 10);
             } else {
               complaint.formattedReceivedDate = null;
+              complaint.csvReceivedDate = null;
             }
             if (complaint.closedDate) {
               complaint.formattedClosedDate = new Date(complaint.closedDate);
+              complaint.csvClosedDate = new Date(complaint.closedDate).toISOString().substring(0, 10);
             } else {
               complaint.formattedClosedDate = null;
+              complaint.csvClosedDate = null;
             }
             complaint.acbName = complaint.certificationBody.name;
             complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
@@ -140,6 +146,21 @@ export const SurveillanceComplaintsComponent = {
                             + '|' + complaint.listings.map(l => l.chplProductNumber).join('|')
                             + '|' + complaint.criteria.map(c => c.certificationCriterion.number).join('|');
             that.addFilterItems(complaint);
+            if (complaint.listings) {
+              complaint.csvListings = complaint.listings.map(l => l.chplProductNumber).join(',');
+            }
+            complaint.developerName = 'not possible';
+            complaint.productName = 'not possible';
+            complaint.version = 'not possible';
+            complaint.creationDate = 'not possible';
+            complaint.lastModifiedDate = 'not possible';
+            complaint.userName = 'not possible';
+            if (complaint.surveillances) {
+              complaint.csvSurveillances = complaint.surveillances.map(s => s.surveillance.chplProductNumber + ':' + s.surveillance.friendlyId).join(',');
+            }
+            if (complaint.criteria) {
+              complaint.csvCriteria = complaint.criteria.map(c => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
+            }
             return complaint;
           });
         that.finalizeFilterItems();
