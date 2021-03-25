@@ -150,12 +150,6 @@ export const SurveillanceComplaintsComponent = {
             if (complaint.listings) {
               complaint.csvListings = complaint.listings.map(l => l.chplProductNumber).join(',');
             }
-            complaint.developerName = 'not possible';
-            complaint.productName = 'not possible';
-            complaint.version = 'not possible';
-            complaint.creationDate = 'not possible';
-            complaint.lastModifiedDate = 'not possible';
-            complaint.userName = 'not possible';
             if (complaint.surveillances) {
               complaint.csvSurveillances = complaint.surveillances.map(s => s.surveillance.chplProductNumber + ':' + s.surveillance.friendlyId).join(',');
             }
