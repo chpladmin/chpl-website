@@ -102,7 +102,7 @@
         ret = col.nullDisplay;
       }
       if (col.transformFn) {
-        ret = col.transformFn(ret);
+        ret = col.transformFn(ret, cp);
       }
       if (col.isDate) {
         ret = $filter('date')(ret,'mediumDate','UTC');
