@@ -10,7 +10,6 @@ export const ConfirmApiKeyPage = {
     }
 
     $onChanges (changes) {
-      this.$log.info('Got here');
       this.hash = angular.copy(changes.hash.currentValue);
     }
   },
