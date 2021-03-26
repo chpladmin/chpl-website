@@ -46,24 +46,25 @@ function ChplApiKeyConfirm (props) {
             <CardContent>
               { confirmError ?
                 <>
-                  <Alert severity="error">There was an error confirming your email!</Alert>
-                  <Typography variant="body1" paragraph="true">
+                  <Alert severity="error" data-testid="api-key-alert">There was an error confirming your email!</Alert>
+                  <Typography variant="body1" paragraph={ true }>
                     Possible reasons:
-                    <ul>
-                      <li>This email confirmation request has already been processed.  Be sure to check you email for an email with your API key.</li>
-                      <li>The confirmation token in the URL is not correct.</li>
-                    </ul>
                   </Typography>
+                  <ul className="MuiTypography-body1">
+                    <li>This email confirmation request has already been processed.  Be sure to check you email for an email with your API key.</li>
+                    <li>The confirmation token in the URL is not correct.</li>
+                  </ul>
+
                 </>
                 :
                 <>
-                  <Typography variant="body1" paragraph="true">
+                  <Typography variant="body1" paragraph={ true }>
                     Congratulations on sucessfully registering your email for use with CHPL API.  CHPL has sent you an email containing your new API key.
                   </Typography>
-                  <Typography variant="body1" paragraph="true">
+                  <Typography variant="body1" paragraph={ true } data-testid="api-key-display">
                     Your API key is: &nbsp; <strong>{ apiKey.apiKey }</strong>
                   </Typography>
-                  <Typography variant="body1" paragraph="true">
+                  <Typography variant="body1" paragraph={ true }>
                     Your API key must be included in all API calls via either a header with the name &lsquo;API-Key&lsquo; or as a URL parameter named &lsquo;api_key&lsquo;.
                   </Typography>
                 </>
