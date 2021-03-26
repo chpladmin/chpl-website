@@ -5,8 +5,9 @@ export const ChartsDeveloperComponent = {
     listingCountData: '<',
   },
   controller: class ChartsDeveloperComponent {
-    constructor ($log) {
+    constructor ($analytics, $log) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$log = $log;
       this.chartState = {
         isStacked: 'false',
@@ -30,6 +31,17 @@ export const ChartsDeveloperComponent = {
       Object.keys(this.listingCount.class).forEach(function (key) {
         that.listingCount.class[key].chart.options.isStacked = that.chartState.isStacked;
       });
+      let type;
+      switch (this.chartState.isStacked) {
+      case 'absolute': type = 'Absolute'; break;
+      case 'percent': type = 'Percent'; break;
+      default: type = 'None';
+      }
+      this.$analytics.eventTrack('Change Developer Charts Stacking Type', { category: 'Charts', label: type });
+    }
+
+    updateStatus () {
+      this.$analytics.eventTrack('Filter Developer Charts by Certification Status', { category: 'Charts', label: this.chartState.listingCountType.name });
     }
 
     _createIncumbentDevelopersCountChart (data) {

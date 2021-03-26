@@ -22,8 +22,8 @@
           $location.url('/compare/' + widgetController.queryUrl());
           scope.$emit('HideCompareWidget');
         };
-        scope.toggleProduct = function (id) {
-          widgetController.toggleProduct(id);
+        scope.toggleProduct = function (id, name, number) {
+          widgetController.toggleProduct(id, name, number);
         };
       },
     };

@@ -5,7 +5,7 @@
     .controller('CmsLookupController', CmsLookupController);
 
   /** @ngInject */
-  function CmsLookupController ($localStorage, $log, networkService, utilService) {
+  function CmsLookupController ($analytics, $localStorage, $log, networkService, utilService) {
     var vm = this;
 
     vm.getCsv = getCsv;
@@ -32,6 +32,7 @@
     }
 
     function getCsv () {
+      $analytics.eventTrack('Download Results', { category: 'CMS ID Reverse Lookup' });
       utilService.makeCsv(vm.csvData);
     }
 
@@ -48,6 +49,7 @@
         if (vm.certIds.trim() === '') {
           clearLookup();
         } else {
+          $analytics.eventTrack('Lookup CMS EHR Certification IDs', { category: 'CMS ID Reverse Lookup' });
 
           // Split IDs
           var idArray = vm.certIds.split(/ /);

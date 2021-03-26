@@ -4,8 +4,9 @@ export const ChartsSurveillanceComponent = {
     nonconformityCriteriaCount: '<',
   },
   controller: class ChartsSurveillanceComponent {
-    constructor ($log, utilService) {
+    constructor ($analytics, $log, utilService) {
       'ngInject';
+      this.$analytics = $analytics;
       this.$log = $log;
       this.utilService = utilService;
       this.nonconformityTypes = [
@@ -26,11 +27,17 @@ export const ChartsSurveillanceComponent = {
       }
     }
 
+    updateType () {
+      this.$analytics.eventTrack('Filter Non-conformity Charts by Type of Program Requirements Surveilled', { category: 'Charts', label: this.chartState.nonconformityCountType });
+    }
+
     updateYAxis () {
       let that = this;
       Object.values(this.nonconformityCounts).forEach(value => {
         value.options.vAxis.scaleType = that.chartState.yAxis;
       });
+      let type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
+      this.$analytics.eventTrack('Change Non-conformity Charts Y Axis', { category: 'Charts', label: type });
     }
 
     _createNonconformityCountChart (data) {

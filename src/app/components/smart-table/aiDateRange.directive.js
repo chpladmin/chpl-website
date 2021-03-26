@@ -9,7 +9,7 @@
       bindToController: {
         hasChanges: '=?',
         nameSpace: '@?',
-        trackAnalytics: '@?',
+        analytics: '=?',
       },
       controller: 'AiDateRangeController',
       controllerAs: 'vm',
@@ -88,8 +88,8 @@
           before = new Date(vm.before);
         }
         query.before = before.setUTCDate(before.getUTCDate() + 1);
-        if (vm.trackAnalytics) {
-          $analytics.eventTrack('Certification Date "To" Filter', { category: 'Search', label: $filter('date')(before, 'mediumDate', 'UTC')});
+        if (vm.analytics) {
+          $analytics.eventTrack(vm.analytics.eventTitle + ' "To" Filter', { category: vm.analytics.category, label: $filter('date')(before, 'mediumDate', 'UTC')});
         }
       }
 
@@ -101,8 +101,8 @@
           after = new Date(vm.after);
         }
         query.after = after.getTime();
-        if (vm.trackAnalytics) {
-          $analytics.eventTrack('Certification Date "After" Filter', { category: 'Search', label: $filter('date')(after, 'mediumDate', 'UTC')});
+        if (vm.analytics) {
+          $analytics.eventTrack(vm.analytics.eventTitle + ' "After" Filter', { category: vm.analytics.category, label: $filter('date')(after, 'mediumDate', 'UTC')});
         }
       }
       vm.tableCtrl.search(query, vm.predicate);

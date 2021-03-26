@@ -3,7 +3,6 @@ const uploadElements = {
   title: '.panel-title',
   chooseUploadRwt: '//*[@id="ngf-label-upload-button-rwt"]/input[@id="ngf-upload-button-rwt"]',
   uploadButton: '.btn.btn-ai-success',
-  fileUploadText: '//div/div[2]/div',
 };
 
 const path = require('path');
@@ -20,7 +19,7 @@ class UploadRwtComponent {
   }
 
   get fileUploadText () {
-    return $(uploadElements.root).$(uploadElements.fileUploadText);
+    return $(uploadElements.root).$('div').$('div.panel-body').$('div');
   }
 
   get title () {
@@ -30,7 +29,7 @@ class UploadRwtComponent {
   uploadRwt (uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadRwtButton.addValue(browser.uploadFile(filePath));
-    this.uploadButton.waitAndClick();
+    this.uploadButton.scrollAndClick();
     browser.waitUntil( () => this.fileUploadText.isDisplayed());
   }
 
