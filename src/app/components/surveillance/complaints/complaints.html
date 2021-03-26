@@ -95,6 +95,17 @@
         </button>
       </div>
     </div>
+    <div class="flex-container" ng-if="$ctrl.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">
+      <div class="flex-item text-right">
+        <button class="btn btn-primary" id="download-results"
+                ng-csv="$ctrl.displayedComplaints" filename="{{ $ctrl.filename }}" add-bom="true"
+                ng-disabled="$ctrl.displayedComplaints.length === 0"
+                csv-header="['complaint_id', 'ONC-ACB', 'Complainant Type Name', 'complainant_type_other', 'onc_complaint_id', 'acb_complaint_id', 'received_date', 'summary', 'actions', 'complainant_contacted', 'developer_contacted', 'onc_atl_contacted', 'informed_onc_per_170.523(s)', 'closed_date', 'associated_listings', 'associated_surveillance', 'associated_criteria']"
+                csv-column-order="['id', 'acbName', 'complainantTypeName', 'complainantTypeOther', 'oncComplaintId', 'acbComplaintId', 'csvReceivedDate', 'summary', 'actions', 'complainantContacted', 'developerContacted', 'oncAtlContacted', 'flagForOncReview', 'csvClosedDate', 'csvListings', 'csvSurveillances', 'csvCriteria']">
+          <i class="fa fa-cloud-download"></i> Download {{ $ctrl.displayedComplaints.length }} displayed result{{ $ctrl.displayedComplaints.length !== 1 ? 's' : '' }}
+        </button>
+      </div>
+    </div>
     <div class="flex-container">
       <div class="flex-item table-responsive">
         <table class="table table-condensed" id="complaints-table">
