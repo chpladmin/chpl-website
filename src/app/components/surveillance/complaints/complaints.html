@@ -86,6 +86,15 @@
             register-restore-state="$ctrl.registerRestoreState(restoreState)"
             ></chpl-boolean-filter>
         </chpl-filter>
+        <chpl-filter title="Informed ONC" has-changes="$ctrl.hasChanges['flagForOncReview']">
+          <chpl-boolean-filter
+            collection="$ctrl.complaints"
+            predicate="flagForOncReview"
+            has-changes="$ctrl.hasChanges['flagForOncReview']"
+            register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+            register-restore-state="$ctrl.registerRestoreState(restoreState)"
+            ></chpl-boolean-filter>
+        </chpl-filter>
       </chpl-filters-body>
     </chpl-filters>
     <div class="flex-container">
