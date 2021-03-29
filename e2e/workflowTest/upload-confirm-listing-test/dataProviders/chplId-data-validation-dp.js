@@ -5,7 +5,7 @@ module.exports = [
   },
   {
     listingId: '13.07.04.XXXX.AQA20.R2.01.4.230511',
-    expectedErrors: ['Certification date','Developer city','Developer contact email address','Developer contact name','Developer contact phone number','state','street address','website','zipcode','Self developer value','additional software code is required','certification edition 2013 is not valid','edition code 13','product code is required','unique id indicates the product does have ICS but'],
+    expectedErrors: ['Certification date','Developer city','Developer contact email address','Developer contact name','Developer contact phone number','state','street address','website','zipcode','Self developer value','additional software code is required','certification edition is required','edition code 13','product code is required','unique id indicates the product does have ICS but'],
   },
   {
     listingId: '15.07.04.1234.AQA21.R2.00.0.200511',
