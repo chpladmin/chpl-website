@@ -29,7 +29,6 @@ export const ListingViewPage = {
       if (changes.listing) {
         this.listing = changes.listing.currentValue;
         this.backupListing = angular.copy(this.listing);
-        this.loadDirectReviews();
         if (this.$localStorage.previouslyViewed) {
           this.previouslyViewed = this.$localStorage.previouslyViewed;
 
@@ -67,18 +66,6 @@ export const ListingViewPage = {
           .length > 0;
       }
       return false;
-    }
-
-    loadDirectReviews () {
-      let that = this;
-      this.networkService.getDirectReviews(this.listing.developer.developerId)
-        .then(data => that.directReviews = {
-          status: 200,
-          drs: data,
-        }, error => that.directReviews = {
-          status: error,
-          drs: [],
-        });
     }
 
     takeDeveloperAction (action, developerId) {
