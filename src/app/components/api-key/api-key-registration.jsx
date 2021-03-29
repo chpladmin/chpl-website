@@ -19,6 +19,10 @@ const useStyles = makeStyles(() => ({
     gridTemplateColumns: '1fr',
     gridRowGap: '8px',
   },
+  longLabelFix: {
+    paddingRight: '4px',
+    backgroundColor: '#ffffff',
+  },
 }));
 
 const validationSchema = yup.object({
@@ -82,7 +86,8 @@ function ChplApiKeyRegistration () {
                        onChange={ formik.handleChange }
                        onBlur={ formik.handleBlur }
                        error={ formik.touched.nameOrganization && Boolean(formik.errors.nameOrganization) }
-                       helperText={ formik.touched.nameOrganization && formik.errors.nameOrganization } />
+                       helperText={ formik.touched.nameOrganization && formik.errors.nameOrganization }
+                       InputLabelProps={{ classes: { root: classes.longLabelFix } }} />
             <TextField fullWidth
                        variant="outlined"
                        id='email'
