@@ -10,6 +10,8 @@ const elements = {
   editProductCode: '#product-code',
   activeVersion: '#active-version',
   editVersionName: '#version-name',
+  editVersionCode: '#version-code',
+  splitVersionVersion: '#version-version',
   editDeveloper: 'button#developer-component-edit',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
@@ -83,6 +85,14 @@ class DevelopersPage {
     return $(elements.editVersionName);
   }
 
+  get splitVersionVersion () {
+    return $(elements.splitVersionVersion);
+  }
+
+  get editVersionCode () {
+    return $(elements.editVersionCode);
+  }
+
   get editDeveloper () {
     return $(elements.editDeveloper);
   }
@@ -104,8 +114,20 @@ class DevelopersPage {
     return product.$('.product__product-info').$('#split-button');
   }
 
+  getProductSplitButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[0];
+  }
+
+  getVersionSplitButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[1];
+  }
+
   selectProduct (product) {
     product.$('.products__product-header').click();
+  }
+
+  getSelectableVersions (product, productId) {
+    return product.$(elements.activeVersion + '-' + productId).$$('option');
   }
 
   selectVersion (product, productId, versionName) {
@@ -119,12 +141,20 @@ class DevelopersPage {
 
   splitProduct (product) {
     this.getSplitButton(product).click();
-    let btn = product.$$('li').filter(itm => itm.getText() === 'Product')[0];
+    let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
   }
 
   moveVersion (id) {
     $('#products-version-move-new-' + id).click();
+  }
+
+  moveListing (id) {
+    $('#listings-listing-move-new-' + id).click();
+  }
+
+  restoreListing (id) {
+    $('#listings-listing-move-old-' + id).click();
   }
 
   getActiveVersion (product, productId) {
