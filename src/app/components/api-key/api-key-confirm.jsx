@@ -42,7 +42,7 @@ function ChplApiKeyConfirm (props) {
       <div className={ classes.grid }>
         <div className={ classes.centeredGridItem }>
           <Card>
-            <CardHeader title="API Email Confirmation"/>
+            <CardHeader title="API Key Confirmation"/>
             <CardContent>
               { confirmError ?
                 <>
