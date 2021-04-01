@@ -34,7 +34,6 @@ const validationSchema = yup.object({
 });
 
 function ChplApiKeyRegistration () {
-  //const $log = getAngularService('$log');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
 
@@ -48,7 +47,7 @@ function ChplApiKeyRegistration () {
     validateOnMount: true,
   });
 
-  const createRequest = (values) => {
+  const createRequest = values => {
     networkService.requestApiKey({ email: values.email, name: values.nameOrganization })
       .then((response) => {
         if (response.success) {
