@@ -8,6 +8,8 @@
   function CorrectiveActionController () {
     var vm = this;
 
+    vm.linkTransform = linkTransform;
+
     activate();
 
     ////////////////////////////////////////////////////////////////////
@@ -18,10 +20,12 @@
         { predicate: 'developer', display: 'Developer', sortType: 'multi' },
         { predicate: 'product', display: 'Product', sortType: 'multi' },
         { predicate: 'version', display: 'Version', sortType: 'multi' },
-        { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', isLink: true, initialPanel: 'surveillance' },
+        { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', transformFn: vm.linkTransform },
         { predicate: 'acb', display: 'ONC-ACB', sortType: 'multi' },
-        { predicate: 'openSurveillanceNonConformityCount', display: '# Open NCs', sortType: 'multi', descendingFirst: true, sortDefault: ['-openNonConformityCount', '-edition', 'developer'] },
-        { predicate: 'closedSurveillanceNonConformityCount', display: '# Closed NCs', sortType: 'multi', descendingFirst: true },
+        { predicate: 'openSurveillanceNonConformityCount', display: '# Open Surveillance NCs', sortType: 'multi', descendingFirst: true, sortDefault: ['-openNonConformityCount', '-edition', 'developer'] },
+        { predicate: 'closedSurveillanceNonConformityCount', display: '# Closed Surveillance NCs', sortType: 'multi', descendingFirst: true },
+        { predicate: 'openDirectReviewNonConformityCount', display: '# Open Direct Review NCs', sortType: 'multi', descendingFirst: true },
+        { predicate: 'closedDirectReviewNonConformityCount', display: '# Closed Direct Review NCs', sortType: 'multi', descendingFirst: true },
       ];
       vm.filters = ['acb', 'certificationStatus', 'edition', 'nonconformities'];
       vm.refineModel = {
@@ -36,6 +40,23 @@
           { value: 'Terminated by ONC', selected: false },
         ],
       };
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    function linkTransform (data, listing) {
+      let surv = listing.openSurveillanceNonConformityCount > 0 || listing.closedSurveillanceNonConformityCount > 0;
+      let dr = listing.openDirectReviewNonConformityCount > 0 || listing.closedDirectReviewNonConformityCount > 0;
+      let link = '<a ui-sref="listing({id: ' + listing.id;
+      if (surv && dr) {
+        link += ', panel: \'compliance\'';
+      } else if (surv) {
+        link += ', panel: \'surveillance\'';
+      } else if (dr) {
+        link += ', panel: \'directReviews\'';
+      }
+      link += '})" analytics-on="click" analytics-event="Go to Listing Details Page" analytics-properties="{ category: \'Products: Corrective Action Status\' }">' + data + '</a>';
+      return link;
     }
   }
 })();
