@@ -36,10 +36,10 @@ describe('the ChplApiKeyRegistration component', () => {
     cleanup();
   })
 
-  //it('should renders without crashing', () => {
-  //  const div = document.createElement('div')
-  //  ReactDOM.render(<ChplApiKeyRegistration />, div)
-  //});
+  it.skip('should renders without crashing', () => {
+    const div = document.createElement('div')
+    ReactDOM.render(<ChplApiKeyRegistration />, div)
+  });
 
   describe('when rendering for the first time', () => {
     beforeEach(async () => {
@@ -157,7 +157,6 @@ describe('the ChplApiKeyRegistration component', () => {
   });
 
   describe('when a response is received from API', () => {
-
     it('should display a toaster indicating success when the response is success', async () => {
       render(<ChplApiKeyRegistration />);
 
@@ -220,6 +219,5 @@ describe('the ChplApiKeyRegistration component', () => {
         });
       });
     });
-
   });
 });
