@@ -19,7 +19,7 @@ let states = [{
   data: { title: 'CHPL Registration' },
 },{
   name: 'registration.confirm-user',
-  url: '/~/{hash}',
+  url: '/confirm-user/{hash}',
   component: 'chplRegistrationConfirmUser',
   params: {
     hash: {squash: true, value: null},
