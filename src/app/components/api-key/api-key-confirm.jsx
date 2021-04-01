@@ -64,7 +64,7 @@ function ChplApiKeyConfirm (props) {
                     Your API key is: &nbsp; <strong>{ apiKey.apiKey }</strong>
                   </Typography>
                   <Typography variant="body1" paragraph={ true }>
-                    Your API key must be included in all API calls via either a header with the name 'API-Key' or as a URL parameter named 'api_key'.
+                    Your API key must be included in all API calls via either a header with the name &apos;API-Key&apos; or as a URL parameter named &apos;api_key&apos;.
                   </Typography>
                 </>
               }

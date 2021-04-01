@@ -197,6 +197,14 @@
         $httpBackend.flush();
       });
 
+      it('should confirm API Key', () => {
+        $httpBackend.expectPOST(/^\/rest\/key\/confirm$/).respond(200, {data: 'response'});
+        networkService.confirmApiKey('hashvalue').then(response => {
+          expect(response.data).toEqual('response');
+        });
+        $httpBackend.flush();
+      });
+
       it('should confirmPendingCp', () => {
         $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/1\/beta\/confirm$/).respond(200, {data: 'response'});
         networkService.confirmPendingCp({pendingListing: {id: 1}, warningAcknowledgement: false}).then(response => {
@@ -1667,6 +1675,14 @@
         $httpBackend.expectDELETE(/^\/rest\/developers\/2\/users\/1$/).respond(200);
         networkService.removeUserFromDeveloper(1, 2).then(response => {
           expect(response.status).toEqual(200);
+        });
+        $httpBackend.flush();
+      });
+
+      it('should requestApiKey', () => {
+        $httpBackend.expectPOST(/^\/rest\/key\/request$/).respond(200, {data: 'response'});
+        networkService.requestApiKey('Org', 'abc@company.com').then(response => {
+          expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
       });
