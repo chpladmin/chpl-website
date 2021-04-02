@@ -15,5 +15,5 @@ export const ConfirmApiKeyPage = {
   },
 };
 
-angular.module('chpl.administration')
+angular.module('chpl.registration')
   .component('chplConfirmApiKeyPage', ConfirmApiKeyPage);
