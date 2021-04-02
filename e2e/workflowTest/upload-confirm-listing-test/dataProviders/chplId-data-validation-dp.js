@@ -13,6 +13,6 @@ module.exports = [
   },
   {
     listingId: '15.04.04.3007.AQA22.V1.00.0.200707',
-    expectedErrors: ['ICS parent listings must reference existing listings in the CHPL','ICS parents must not be specified but at least one was found','ONC-ACB SLI Compliance is not valid','ONC-ATL code','developer code','product code'],
+    expectedErrors: ['ICS parent listings must reference existing listings in the CHPL','ICS parents must not be specified but at least one was found','ONC-ACB code','ONC-ATL code','developer code','product code'],
   },
 ];
