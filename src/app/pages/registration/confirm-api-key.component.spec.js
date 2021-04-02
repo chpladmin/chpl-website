@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  fdescribe('the Confirm API Key component', () => {
+  describe('the Confirm API Key component', () => {
     var $compile, $log, ctrl, el, scope;
 
     beforeEach(() => {
