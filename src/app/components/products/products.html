@@ -5,6 +5,7 @@
       <div class="products__products-header-item products__products-header-item--last" ng-if="$ctrl.statusItems">
         <chpl-filter-multiple
           items="$ctrl.statusItems"
+          title="Certification Status"
           on-change="$ctrl.doFilter(items)">
         </chpl-filter-multiple>
         <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i><span class="sr-only">View Certification Status Legend</span></button>

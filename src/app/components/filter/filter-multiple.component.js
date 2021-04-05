@@ -2,13 +2,13 @@ export const FilterMultipleComponent = {
   templateUrl: 'chpl.components/filter/filter-multiple.html',
   bindings: {
     items: '<',
+    title: '@',
     onChange: '&',
   },
   controller: class FilterMultipleComponent {
     constructor ($log) {
       'ngInject';
       this.$log = $log;
-      this.title = 'Certification Status';
     }
 
     $onChanges (changes) {
@@ -34,12 +34,12 @@ export const FilterMultipleComponent = {
     getTitle () {
       let selected = this.howManySelected();
       if (selected === 0) {
-        return 'None';
+        return this.title + ': None';
       }
       if (selected === this.items.length) {
-        return 'All';
+        return this.title + ': All';
       }
-      return selected + ' selected';
+      return this.title + ': ' + selected + ' selected';
     }
 
     selectedClass (item) {
