@@ -22,6 +22,7 @@ const elements = {
   splitDeveloper: '#developer-component-split',
   developerName: '#developer-name',
   errors: 'div.text-danger',
+  mergeDeveloper: '#developer-component-merge',
 };
 
 class DevelopersPage {
@@ -227,8 +228,16 @@ class DevelopersPage {
     return $(elements.errors).$('ul');
   }
 
-  moveDeveloper (id) {
+  get mergeDeveloper () {
+    return $(elements.mergeDeveloper);
+  }
+
+  moveDeveloperToSplit (id) {
     $('#developers-product-move-new-' + id).scrollAndClick();
+  }
+
+  moveDeveloperToBeMerged (developerName) {
+    $('//div[text()=\'' + developerName + '\']').click();
   }
 }
 

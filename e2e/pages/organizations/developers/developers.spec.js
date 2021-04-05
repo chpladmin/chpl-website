@@ -70,10 +70,13 @@ describe('the Developers page', () => {
         });
 
       });
-      describe('when looking at developer with more than on product', () => {
+      describe('when looking at developer with more than one product', () => {
 
         it('should have split developer button', () => {
           expect(page.splitDeveloper.isDisplayed()).toBe(true);
+        });
+        it('should not have merge developer button', () => {
+          expect(page.mergeDeveloper.isDisplayed()).toBe(false);
         });
 
         it('should allow split to happen', () => {
@@ -92,7 +95,7 @@ describe('the Developers page', () => {
             country: 'country' + timestamp,
           };
           contact.set(poc);
-          page.moveDeveloper(3526);
+          page.moveDeveloperToSplitDeveloper(3526);
           actionBar.save();
           browser.waitUntil( () =>toast.toastTitle.isDisplayed());
           expect(toast.toastTitle.getText()).toEqual('Split submitted');
@@ -138,11 +141,64 @@ describe('the Developers page', () => {
         country: 'country' + timestamp,
       };
       contact.set(poc);
-      page.moveDeveloper(3138);
+      page.moveDeveloperToSplitDeveloper(3138);
       actionBar.save();
       expect(page.errors.getText()).toEqual('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
     });
 
   });
-});
 
+  describe('when logged in as ONC', () => {
+    beforeEach(() => {
+      login.logIn('onc');
+      login.logoutButton.waitForDisplayed();
+    });
+
+    afterEach(() => {
+      login.logOut();
+    });
+
+    describe('when on the "Altos Solutions, Inc" Developer page', () => {
+      beforeEach(() => {
+        let developer = 'Altos Solutions, Inc';
+        page = new DevelopersPage();
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+      });
+
+      it('should have merge developer button', () => {
+        expect(page.mergeDeveloper.isDisplayed()).toBe(true);
+      });
+
+      it('should not allow merge to happen if ACB TA are different', () => {
+        page.mergeDeveloper.click();
+        page.moveDeveloperToBeMerged('ACL Laboratories');
+        let timestamp = (new Date()).getTime();
+        let poc = {
+          full: 'name' + timestamp,
+          email: 'email' + timestamp + '@example.com',
+          phone: 'phone' + timestamp,
+        };
+        contact.set(poc);
+        actionBar.save();
+        browser.waitUntil( () =>toast.toastTitle.isDisplayed());
+        expect(toast.toastTitle.getText()).toEqual('Merge error');
+      });
+
+      it('should allow merge to happen', () => {
+        page.mergeDeveloper.click();
+        page.moveDeveloperToBeMerged('ABH Enterprises, LLC');
+        let timestamp = (new Date()).getTime();
+        let poc = {
+          full: 'name' + timestamp,
+          email: 'email' + timestamp + '@example.com',
+          phone: 'phone' + timestamp,
+        };
+        contact.set(poc);
+        actionBar.save();
+        browser.waitUntil( () =>toast.toastTitle.isDisplayed());
+        expect(toast.toastTitle.getText()).toEqual('Merge submitted');
+      });
+    });
+  });
+});
