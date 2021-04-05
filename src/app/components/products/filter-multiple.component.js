@@ -1,5 +1,5 @@
 export const FilterMultipleComponent = {
-  templateUrl: 'chpl.components/filter/filter-multiple.html',
+  templateUrl: 'chpl.components/products/filter-multiple.html',
   bindings: {
     items: '<',
     title: '@',
