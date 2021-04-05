@@ -116,8 +116,12 @@
                   <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">ONC&#8209;ACB</div>
-                  <div class="product__listing-element">{{ listing.acb.name }}</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }"># Open NCs</div>
+                  <div class="product__listing-element">{{ listing.openSurveillanceNonConformityCount }}</div>
+                </div>
+                <div class="product__listing-data-item">
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }"># Closed NCs</div>
+                  <div class="product__listing-element">{{ listing.closedSurveillanceNonConformityCount }}</div>
                 </div>
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Date</div>
