@@ -16,6 +16,12 @@ const elements = {
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
   versionList: '.selectable-item.ng-scope.selectable-item',
+  developerContact: 'chpl-contact',
+  developerWebsite: '//div[text()=\'Website\']/following-sibling::div/a',
+  developerStatus: '#developer-status-0',
+  splitDeveloper: '#developer-component-split',
+  developerName: '#developer-name',
+  errors: 'div.text-danger',
 };
 
 class DevelopersPage {
@@ -195,6 +201,34 @@ class DevelopersPage {
 
   get errorMessage () {
     return $(elements.errorMessage);
+  }
+
+  get developerContact () {
+    return $(elements.developerContact);
+  }
+
+  get developerWebsite () {
+    return $(elements.developerWebsite);
+  }
+
+  get developerStatus () {
+    return $(elements.developerStatus);
+  }
+
+  get splitDeveloper () {
+    return $(elements.splitDeveloper);
+  }
+
+  get developerName () {
+    return $(elements.developerName);
+  }
+
+  get errors () {
+    return $(elements.errors).$('ul');
+  }
+
+  moveDeveloper (id) {
+    $('#developers-product-move-new-' + id).scrollAndClick();
   }
 }
 

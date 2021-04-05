@@ -95,9 +95,9 @@ describe('the Product part of the Developers page', () => {
     });
   });
 
-  describe('when logged in as an Admin', () => {
+  describe('when logged in as an ONC', () => {
     beforeEach(() => {
-      login.logIn('admin');
+      login.logIn('onc');
       login.logoutButton.waitForDisplayed();
     });
 
