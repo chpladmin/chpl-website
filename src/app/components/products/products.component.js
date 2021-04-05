@@ -38,13 +38,15 @@ export const ProductsComponent = {
               version: 'All',
               listings: [],
             };
+            p.openSurveillance = 0;
+            p.totalSurveillance = 0;
             p.activeAcbs = new Set();
             p.versions.forEach(v => {
-              v.listings.forEach(l => p.activeAcbs.add(l.acb.name));
+              p.openSurveillance += v.listings.reduce((sum, l) => sum += l.openSurveillanceCount, 0);
+              p.totalSurveillance += v.listings.reduce((sum, l) => sum += l.surveillanceCount, 0);
               all.listings = all.listings.concat(v.listings);
             });
             p.versions.unshift(all);
-            p.activeAcbs = [...p.activeAcbs].sort((a, b) => a < b ? -1 : a > b ? 1 : 0).join(', ');
             p.activeVersion = p.versions[0];
             p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0).length > 0;
             return p;

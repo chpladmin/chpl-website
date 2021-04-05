@@ -14,7 +14,7 @@
       <div ng-repeat="product in $ctrl.products" class="products__product panel-ai">
         <div class="panel-heading products__product-header" ng-class="{'products__product-header--inactive' : !product.hasActiveListings}" ng-click="product.isOpen = !product.isOpen">
           <div class="products__product-header-item products__product-header-item--first">{{ product.name }}</div>
-          <div class="products__product-header-item">{{ product.activeAcbs }}</div>
+          <div class="products__product-header-item"><span ng-if="product.totalSurveillance > 0">{{ product.openSurveillance }} open / {{ product.totalSurveillance }} surveillance<span ng-if="product.totalSurveillance !== 1">s</span></span></div>
           <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
           <div class="products__product-header-item products__product-header-item--end">{{ product.versions ? product.versions.length - 1 : 0 }} Version<span ng-if="product.versions.length !== 2">s</span></div>
           <div class="products__product-header-item products__product-header-item--end"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
