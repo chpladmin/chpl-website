@@ -25,7 +25,6 @@
     var vm = this;
 
     vm.loadUsers = loadUsers;
-    vm.register = register;
     vm.revoke = revoke;
 
     ////////////////////////////////////////////////////////////////////
@@ -44,20 +43,6 @@
         }, function (error) {
           $log.debug('error in app.registration.apiKey.controller.loadUsers', error);
         });
-    }
-
-    function register () {
-      if (vm.user.name && vm.user.email) {
-        let label = '...@' + vm.user.email.split('@')[1];
-        $analytics.eventTrack('Register For API Key', { category: 'CHPL API', label: label });
-        networkService.registerApi(vm.user)
-          .then(function (result) {
-            vm.key = result.keyRegistered;
-            vm.hasKey = true;
-          },function (error) {
-            $log.debug('error in app.registration.apiKey.controller.register', error);
-          });
-      }
     }
 
     function revoke (user) {
