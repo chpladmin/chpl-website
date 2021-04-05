@@ -1,3 +1,5 @@
+import { compliance } from '../smart-table/filters/compliance';
+
 export const ProductsComponent = {
   templateUrl: 'chpl.components/products/products.html',
   bindings: {
@@ -15,6 +17,10 @@ export const ProductsComponent = {
       this.$q = $q;
       this.$state = $state;
       this.$uibModal = $uibModal;
+      this.filter = {
+        items: [],
+        surveillance: {},
+      };
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.statusFont = utilService.statusFont;
@@ -44,6 +50,14 @@ export const ProductsComponent = {
             p.versions.forEach(v => {
               p.openSurveillance += v.listings.reduce((sum, l) => sum += l.openSurveillanceCount, 0);
               p.totalSurveillance += v.listings.reduce((sum, l) => sum += l.surveillanceCount, 0);
+              v.listings = v.listings.map(l => {
+                l.compliance = JSON.stringify({
+                  complianceCount: l.surveillanceCount,
+                  openNonConformityCount: l.openSurveillanceNonConformityCount,
+                  closedNonConformityCount: l.closedSurveillanceNonConformityCount,
+                });
+                return l;
+              });
               all.listings = all.listings.concat(v.listings);
             });
             p.versions.unshift(all);
@@ -74,7 +88,8 @@ export const ProductsComponent = {
           .filter(p => p.productId === parseInt(this.productId, 10))[0];
       }
       if (this.products && this.statusItems) {
-        this.doFilter(this.statusItems);
+        this.filter.items = this.statusItems;
+        this.doFilter();
       }
     }
 
@@ -83,12 +98,13 @@ export const ProductsComponent = {
       this.onCancel();
     }
 
-    doFilter (items) {
+    doFilter () {
       this.products.forEach(p => {
         p.versions.forEach(v => {
           if (v.listings) {
             v.listings.forEach(l => {
-              l.displayed = items.find(i => i.value === l.certificationStatus).selected;
+              l.displayed = this.filter.items.find(i => i.value === l.certificationStatus).selected
+                && (!this.filter.surveillance.compliance || compliance(l.compliance, this.filter.surveillance));
             });
           }
         });
@@ -106,6 +122,15 @@ export const ProductsComponent = {
         productId: product.productId,
         versionId: product.activeVersion.versionId,
       });
+    }
+
+    handleFilter (filter) {
+      if (filter.surveillance) {
+        this.filter.surveillance = angular.copy(filter.surveillance);
+      } else {
+        this.filter.items = filter;
+      }
+      this.doFilter();
     }
 
     mergeProduct (product) {

@@ -1,5 +1,5 @@
 const compliance = (input, rules) => {
-  let closed, hasClosedNc, hasOpenNc, listing, never, open;
+  let closed, hasClosedNc, hasNoNc, hasOpenNc, listing, never, open;
 
   if (!input) {
     return false;
@@ -19,11 +19,12 @@ const compliance = (input, rules) => {
   closed = rules.NC.closed;
   hasOpenNc = listing.openNonConformityCount > 0;
   hasClosedNc = listing.closedNonConformityCount > 0;
+  hasNoNc = listing.openNonConformityCount === 0 && listing.closedNonConformityCount === 0;
   /*
    * matching only one of the possibles
    */
   if (never && !open && !closed) {
-    return !hasOpenNc && !hasClosedNc;
+    return hasNoNc;
   }
   if (!never && open && !closed) {
     return hasOpenNc;
@@ -42,10 +43,10 @@ const compliance = (input, rules) => {
    * now matching "matchAny" with at least two checkboxes selected
    */
   if (never && open && !closed) {
-    return !hasClosedNc;
+    return hasOpenNc || hasNoNc;
   }
   if (never && !open && closed) {
-    return !hasOpenNc;
+    return hasClosedNc || hasNoNc;
   }
   if (!never && open && closed) {
     return hasOpenNc || hasClosedNc;
