@@ -4,6 +4,7 @@ import { distinct } from './filters/distinct';
 import { dateRange } from './filters/date-range';
 import { matchAll} from './filters/match-all';
 import { matchAny} from './filters/match-any';
+import { nonconformity } from './filters/nonconformity';
 
 (function () {
   'use strict';
@@ -13,28 +14,6 @@ import { matchAny} from './filters/match-any';
   /** @ngInject */
   function CustomFilter ($filter) { // will need cfpLoadingBar back if we want the "spinny circle" on smart-table filtering
     let filterFilter = $filter('filter');
-
-    let nonconformityComparator = (actual, expected) => {
-      let closed, closedNC, open, openNC, ret;
-      if (!actual) {
-        return false;
-      }
-      var nc = angular.fromJson(actual);
-      open = expected.nonconformities.open;
-      closed = expected.nonconformities.closed;
-      openNC = nc.openSurveillanceNonConformityCount > 0;
-      closedNC = nc.closedSurveillanceNonConformityCount > 0;
-      if (expected.nonconformities.matchAll) {
-        ret = (open === openNC) && (closed === closedNC);
-      } else {
-        if (!open && !closed) {
-          ret = true;
-        } else {
-          ret = (open && openNC) || (closed && closedNC);
-        }
-      }
-      return ret;
-    };
 
     let standardComparator = (obj, text) => {
       text = ('' + text).toLowerCase();
@@ -172,7 +151,7 @@ import { matchAny} from './filters/match-any';
 
           //nonconformities match
           if (expected.nonconformities) {
-            return nonconformityComparator(actual, expected);
+            return nonconformity(actual, expected);
           }
 
           //matchAny

@@ -1,24 +1,24 @@
 <li class="text-center">
-  <button ng-click="vm.query.nonconformities.matchAll = !vm.query.nonconformities.matchAll; vm.filterChanged()" class="btn btn-default" ng-class="{ 'emphasis' : vm.query.nonconformities.matchAll }">
+  <button ng-click="vm.query.nonconformities.matchAll = !vm.query.nonconformities.matchAll; vm.filterChanged('toggle')" class="btn btn-default" ng-class="{ 'emphasis' : vm.query.nonconformities.matchAll }">
     Matching <strong>Any</strong> <i class="fa" ng-class="vm.query.nonconformities.matchAll ? 'fa-toggle-on' : 'fa-toggle-off'"></i> <strong>All</strong>
   </button>
 </li>
 <li>
   <label for="filter-open-nonconformity">
-    &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.nonconformities.open" id="filter-open-nonconformity" ng-change="vm.filterChanged()">
-    <span ng-class="{ 'emphasis' : vm.query.nonconformities.open }">Open Nonconformity</span>
+    &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.nonconformities.open" id="filter-open-nonconformity" ng-change="vm.filterChanged('open')">
+    <span ng-class="{ 'emphasis' : vm.query.nonconformities.open }">Open Non-conformity</span>
   </label>
 </li>
 <li>
   <label for="filter-closed-nonconformity">
-    &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.nonconformities.closed" id="filter-closed-nonconformity" ng-change="vm.filterChanged()">
-    <span ng-class="{ 'emphasis' : vm.query.nonconformities.closed }">Closed Nonconformity</span>
+    &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.nonconformities.closed" id="filter-closed-nonconformity" ng-change="vm.filterChanged('closed')">
+    <span ng-class="{ 'emphasis' : vm.query.nonconformities.closed }">Closed Non-conformity</span>
   </label>
 </li>
 <li class="text-center" ng-if="vm.hasChanges">
   <span>
     <a href ng-click="vm.clearFilter(); $event.stopPropagation();">
-      Clear Nonconformitiy Filter
+      Clear Non-conformity Filter
     </a>
   </span>
 </li>
