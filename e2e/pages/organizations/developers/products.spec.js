@@ -37,7 +37,7 @@ describe('the Product part of the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
       });
 
-      describe('when looking at "PrimeSuite"', () => {
+      describe('when looking at "PrimeSuite" product', () => {
         let name = 'PrimeSuite';
         let product;
         beforeEach(() => {
@@ -51,7 +51,11 @@ describe('the Product part of the Developers page', () => {
           expect(page.getSplitButton(product)).toExist();
         });
 
-        it('should show correct error message while split product when listings owned by different ACBs', () => {
+        it('should not have merge product button', () => {
+          expect(page.getMergeButton(product)).not.toExist();
+        });
+
+        it('should show correct error message when spliting product with listings owned by different ACBs', () => {
           const newName = name + ' - split - ' + (new Date()).getTime();
           const newCode = newName.substring(newName.length - 4);
           const movingVersionId = '2039';
@@ -218,6 +222,37 @@ describe('the Product part of the Developers page', () => {
           page.selectProduct(product);
           page.getProductInfo(product).waitForDisplayed({timeout: 55000});
           expect(page.getVersionCount(product).getText()).toBe('1 Version');
+        });
+      });
+
+      describe('when on the "MEDITECH Client/Server" product', () => {
+        const productName = 'MEDITECH Client/Server';
+        const productToBeMerged = 'MEDITECH 6.0 CCD Exchange Suite';
+        let timestamp = (new Date()).getTime();
+        let newProduct = 'New product' + timestamp;
+
+        beforeEach(() => {
+          product = page.getProduct(productName);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        it('should have a product merge button', () => {
+          expect(page.getProductMergeButton(product)).toExist();
+        });
+
+        it('should allow merge products to happen', () => {
+          page.mergeProduct(product);
+          page.moveProductToBeMerged(productToBeMerged);
+          page.editProductName.clearValue();
+          page.editProductName.addValue(newProduct);
+          actionBar.save();
+          page.productsHeader.waitForDisplayed();
+          toast.clearAllToast();
+          expect(page.getProduct(newProduct)).toExist();
+          expect(page.getProduct(productName)).not.toExist();
+          expect(page.getProduct(productToBeMerged)).not.toExist();
         });
       });
     });

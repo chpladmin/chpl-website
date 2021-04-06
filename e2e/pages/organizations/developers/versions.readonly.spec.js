@@ -29,8 +29,7 @@ describe('the Version part of the Developers page', () => {
     });
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
-      const name = 'Greenway Intergy Meaningful Use Edition';
-      const productId = 837;
+
       let newVersion, product, timestamp, version;
       beforeEach(() => {
         let developer = 'Greenway Health, LLC';
@@ -42,6 +41,8 @@ describe('the Version part of the Developers page', () => {
 
       describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
         const versionToBeMerged = 'v10';
+        const productId = 837;
+        let name = 'Greenway Intergy Meaningful Use Edition';
         beforeEach(() => {
           version = 'v11';
           newVersion = version + ' - ' + timestamp;
@@ -73,6 +74,21 @@ describe('the Version part of the Developers page', () => {
           expect(page.errorMessage.getText()).toBe('Field is required');
         });
       });
+
+      describe('on "MediaDent 10.0 using Intergy v9" product', () => {
+        let name = 'MediaDent 10.0 using Intergy v9';
+        beforeEach(() => {
+          product = page.getProduct(name);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        it('should not have split version button as this product has only one listing', () => {
+          expect(page.getSplitButton(product)).not.toExist();
+        });
+      });
+
     });
 
     describe('when on the "GetWellNetwork" Developer page, looking at "CareNavigator" Product', () => {

@@ -15,7 +15,7 @@ const elements = {
   editDeveloper: 'button#developer-component-edit',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
-  versionList: '.selectable-item.ng-scope.selectable-item',
+  list: '.selectable-item.ng-scope.selectable-item',
   developerContact: 'chpl-contact',
   developerWebsite: '//div[text()=\'Website\']/following-sibling::div/a',
   developerStatus: '#developer-status-0',
@@ -125,8 +125,16 @@ class DevelopersPage {
     return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[0];
   }
 
+  getProductMergeButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="merge-button"]').$$('li')[0];
+  }
+
   getVersionSplitButton (product) {
     return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[1];
+  }
+
+  getVersionMergeButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="merge-button"]').$$('li')[1];
   }
 
   selectProduct (product) {
@@ -150,6 +158,21 @@ class DevelopersPage {
     this.getSplitButton(product).click();
     let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
+  }
+
+  mergeProduct (product) {
+    this.getMergeButton(product).click();
+    let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    btn.click();
+  }
+
+  moveProductToBeMerged (productName) {
+    const count = $$(elements.list).length;
+    for (var i = 0; i < count; i++) {
+      if ($$(elements.list)[i].getText() === productName) {
+        $$(elements.list)[i].click();
+      }
+    }
   }
 
   moveVersion (id) {
@@ -192,10 +215,10 @@ class DevelopersPage {
   }
 
   moveVersionToBeMerged (versionName) {
-    const count = $$(elements.versionList).length;
+    const count = $$(elements.list).length;
     for (var i = 0; i < count; i++) {
-      if ($$(elements.versionList)[i].getText() === versionName) {
-        $$(elements.versionList)[i].click();
+      if ($$(elements.list)[i].getText() === versionName) {
+        $$(elements.list)[i].click();
       }
     }
   }

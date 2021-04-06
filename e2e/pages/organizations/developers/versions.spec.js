@@ -19,9 +19,9 @@ describe('the Version part of the Developers page', () => {
     await hooks.open('#/organizations/developers');
   });
 
-  describe('when logged in as an ACB', () => {
+  describe('when logged in as drummond ACB', () => {
     beforeEach(() => {
-      login.logIn('acb');
+      login.logIn('drummond');
       login.logoutButton.waitForDisplayed();
     });
 
@@ -105,6 +105,38 @@ describe('the Version part of the Developers page', () => {
           expect(page.editVersionName.getValue()).toBe(version);
           expect(page.editVersionName.getValue()).not.toBe(newVersion);
         });
+      });
+    });
+
+    describe('when on the "Greenway Health, LLC" Developer page, on the "Greenway Prime Suite" Product', () => {
+      let developer = 'Greenway Health, LLC';
+      let productName = 'Greenway Prime Suite';
+      let product;
+      const productId = 3230;
+      const version = 'v17.30';
+      beforeEach(() => {
+        page = new DevelopersPage();
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        product = page.getProduct(productName);
+        product.scrollIntoView({block: 'center', inline: 'center'});
+        page.selectProduct(product);
+        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+      });
+
+      it('should show error message to split a version which has listings owned by multiple ACBs', () => {
+
+        const newVersion = version + ' - split - ' + (new Date()).getTime();
+        const newCode = newVersion.substring(newVersion.length - 2);
+        const movingListingId = '4653';
+        page.selectVersion(product, productId, version);
+        page.getSplitButton(product).click();
+        page.getVersionSplitButton(product).click();
+        page.splitVersionVersion.setValue(newVersion);
+        page.editVersionCode.setValue(newCode);
+        page.moveListing(movingListingId);
+        actionBar.save();
+        expect(actionBar.errorMessages.getText()).toEqual('Version split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
       });
     });
   });

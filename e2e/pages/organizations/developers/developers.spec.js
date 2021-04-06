@@ -36,6 +36,12 @@ describe('the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
       });
 
+      afterEach(() => {
+        if (toast.toastContainer.isDisplayed()) {
+          toast.clearAllToast();
+        }
+      });
+
       describe('when editing developer information', () => {
         beforeEach(() => {
           page.editDeveloper.click();
@@ -95,59 +101,44 @@ describe('the Developers page', () => {
             country: 'country' + timestamp,
           };
           contact.set(poc);
-          page.moveDeveloperToSplitDeveloper(3526);
+          page.moveDeveloperToSplit(3526);
           actionBar.save();
           browser.waitUntil( () =>toast.toastTitle.isDisplayed());
           expect(toast.toastTitle.getText()).toEqual('Split submitted');
         });
       });
+
+      describe('when on the "athenahealth, Inc." Developer page which has listings owned by multiple ACBs', () => {
+        beforeEach(() => {
+          let developer = 'athenahealth, Inc.';
+          page = new DevelopersPage();
+          page.selectDeveloper(developer);
+          page.getDeveloperPageTitle(developer).waitForDisplayed();
+        });
+
+        it('should show correct error message', () => {
+          page.splitDeveloper.click();
+          let timestamp = (new Date()).getTime();
+          page.developerName.addValue('New developer' + timestamp);
+          let poc = {
+            full: 'name' + timestamp,
+            email: 'email' + timestamp + '@example.com',
+            phone: 'phone' + timestamp,
+            website: 'https://website' + timestamp + '.com',
+            address: 'address' + timestamp,
+            city: 'city' + timestamp,
+            state: 'state' + timestamp,
+            zip: '11111' + timestamp,
+            country: 'country' + timestamp,
+          };
+          contact.set(poc);
+          page.moveDeveloperToSplit(3138);
+          actionBar.save();
+          expect(page.errors.getText()).toEqual('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
+        });
+      });
     });
   });
-  describe('when on the "Breeze EHR" Developer page with only one product', () => {
-    beforeEach(() => {
-      let developer = 'Breeze EHR';
-      page = new DevelopersPage();
-      page.selectDeveloper(developer);
-      page.getDeveloperPageTitle(developer).waitForDisplayed();
-    });
-
-    it('should not have split developer button', () => {
-      expect(page.splitDeveloper.isDisplayed()).toBe(false);
-    });
-
-  });
-
-  describe('when on the "athenahealth, Inc." Developer page which has listings owned by multiple ACBs', () => {
-    beforeEach(() => {
-      let developer = 'athenahealth, Inc.';
-      page = new DevelopersPage();
-      page.selectDeveloper(developer);
-      page.getDeveloperPageTitle(developer).waitForDisplayed();
-    });
-
-    it('should show correct error message', () => {
-      page.splitDeveloper.click();
-      let timestamp = (new Date()).getTime();
-      page.developerName.addValue('New developer' + timestamp);
-      let poc = {
-        full: 'name' + timestamp,
-        email: 'email' + timestamp + '@example.com',
-        phone: 'phone' + timestamp,
-        website: 'https://website' + timestamp + '.com',
-        address: 'address' + timestamp,
-        city: 'city' + timestamp,
-        state: 'state' + timestamp,
-        zip: '11111' + timestamp,
-        country: 'country' + timestamp,
-      };
-      contact.set(poc);
-      page.moveDeveloperToSplitDeveloper(3138);
-      actionBar.save();
-      expect(page.errors.getText()).toEqual('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
-    });
-
-  });
-
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
@@ -166,23 +157,14 @@ describe('the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
       });
 
-      it('should have merge developer button', () => {
-        expect(page.mergeDeveloper.isDisplayed()).toBe(true);
+      afterEach(() => {
+        if (toast.toastContainer.isDisplayed()) {
+          toast.clearAllToast();
+        }
       });
 
-      it('should not allow merge to happen if ACB TA are different', () => {
-        page.mergeDeveloper.click();
-        page.moveDeveloperToBeMerged('ACL Laboratories');
-        let timestamp = (new Date()).getTime();
-        let poc = {
-          full: 'name' + timestamp,
-          email: 'email' + timestamp + '@example.com',
-          phone: 'phone' + timestamp,
-        };
-        contact.set(poc);
-        actionBar.save();
-        browser.waitUntil( () =>toast.toastTitle.isDisplayed());
-        expect(toast.toastTitle.getText()).toEqual('Merge error');
+      it('should have merge developer button', () => {
+        expect(page.mergeDeveloper.isDisplayed()).toBe(true);
       });
 
       it('should allow merge to happen', () => {

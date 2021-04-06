@@ -71,30 +71,6 @@ describe('the Product part of the Developers page', () => {
     });
   });
 
-  describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
-    let developer = 'Procentive';
-    let productName = 'Procentive';
-    let productId = '1987';
-    let product;
-
-    beforeEach(() => {
-      page.selectDeveloper(developer);
-      page.getDeveloperPageTitle(developer).waitForDisplayed();
-      product = page.getProduct(productName);
-      product.scrollIntoView({block: 'center', inline: 'center'});
-      page.selectProduct(product);
-      page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-    });
-
-    it('should have Versions', () => {
-      expect(page.getActiveVersion(product, productId)).toHaveTextContaining('2011');
-    });
-
-    it('should not have an edit button', () => {
-      expect(page.getEditButton(product)).not.toExist();
-    });
-  });
-
   describe('when logged in as an ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
@@ -105,8 +81,28 @@ describe('the Product part of the Developers page', () => {
       login.logOut();
     });
 
+    describe('when on the "ADVault, Inc." Developer page, on the "MyDirectives" Product', () => {
+      let developer = 'ADVault, Inc.';
+      let productName = 'MyDirectives';
+      let product;
+
+      beforeEach(() => {
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        product = page.getProduct(productName);
+        product.scrollIntoView({block: 'center', inline: 'center'});
+        page.selectProduct(product);
+        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+      });
+
+      it('should not have merge product button as this developer has only one product', () => {
+        expect(page.getMergeButton(product)).not.toExist();
+      });
+
+    });
+
     describe('when on the "Medical Information Technology, Inc. (MEDITECH)" Developer page', () => {
-      const developer = 'Medical Information Technology, Inc. (MEDITECH)';
+      let developer = 'Medical Information Technology, Inc. (MEDITECH)';
       let product;
 
       beforeEach(() => {
@@ -115,7 +111,7 @@ describe('the Product part of the Developers page', () => {
       });
 
       describe('when on the "MEDITECH Expanse 2.2 Oncology" product', () => {
-        const productName = 'MEDITECH Expanse 2.2 Oncology';
+        let productName = 'MEDITECH Expanse 2.2 Oncology';
 
         beforeEach(() => {
           product = page.getProduct(productName);
@@ -124,13 +120,13 @@ describe('the Product part of the Developers page', () => {
           page.getProductInfo(product).waitForDisplayed({timeout: 55000});
         });
 
-        it('should not have a product split', () => {
+        it('should not have a split button for the porduct with only one version)', () => {
           expect(page.getSplitButton(product)).not.toExist();
         });
       });
 
       describe('when on the "MEDITECH MAGIC Electronic Health Record Core HCIS" product', () => {
-        const productName = 'MEDITECH MAGIC Electronic Health Record Core HCIS';
+        let productName = 'MEDITECH MAGIC Electronic Health Record Core HCIS';
 
         beforeEach(() => {
           product = page.getProduct(productName);
@@ -158,3 +154,4 @@ describe('the Product part of the Developers page', () => {
     });
   });
 });
+
