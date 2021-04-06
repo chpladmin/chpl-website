@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "11.9.0",
+  "version": "11.10.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "jest": {
@@ -20,11 +20,27 @@
     "test:ci": "karma start --single-run --no-colors",
     "test:react": "jest",
     "lint": "eslint src e2e",
+    "lint:summary": "eslint src e2e -f ./lint-summary.js",
     "e2e": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:lint": "eslint e2e",
     "e2e:clean": "rm test_reports/e2e/* || true",
     "report:generate": "npx allure generate --clean ./test_reports/e2e/allure-results/ -o ./test_reports/e2e/allure-report",
-    "report:open": "npx allure open ./test_reports/e2e/allure-report"
+    "report:open": "npx allure open ./test_reports/e2e/allure-report",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "eslint"
+    ],
+    "src/**/*.jsx": [
+      "eslint"
+    ],
+    "e2e/**/*.js": [
+      "eslint"
+    ],
+    "e2e/**/*.jsx": [
+      "eslint"
+    ]
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
@@ -101,10 +117,14 @@
     "css-loader": "^0.28.11",
     "del": "~2.0.2",
     "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^18.2.1",
     "eslint-formatter-friendly": "^6.0.0",
     "eslint-loader": "^2.1.0",
     "eslint-plugin-angular": "^3.1.1",
-    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "estraverse": "~4.1.0",
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
@@ -112,6 +132,7 @@
     "htmllint-cli": "^0.0.7",
     "htmllint-loader": "https://github.com/andlar/htmllint-loader.git",
     "http-proxy-middleware": "~0.9.0",
+    "husky": "^6.0.0",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine-core": "^3.1.0",
@@ -127,6 +148,7 @@
     "karma-spec-reporter": "^0.0.32",
     "karma-super-dots-reporter": "^0.2.0",
     "karma-webpack": "^3.0.0",
+    "lint-staged": "^10.5.4",
     "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.12.0",
     "postcss": "^5.2.17",

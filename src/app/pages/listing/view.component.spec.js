@@ -3,7 +3,7 @@
 
   describe('the CHPL Listing view page', () => {
 
-    var $compile, $log, $q, $uibModal, actualOptions, authService, ctrl, el, featureFlags, mock, networkService, scope;
+    var $compile, $log, $uibModal, actualOptions, authService, ctrl, el, featureFlags, mock, scope;
     mock = {};
     mock.activity = {};
     mock.listing = {
@@ -46,15 +46,10 @@
           $delegate.isOn = jasmine.createSpy('isOn');
           return $delegate;
         });
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getDirectReviews = jasmine.createSpy('getDirectReviews');
-          return $delegate;
-        });
       });
-      inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _featureFlags_, _networkService_) => {
+      inject((_$compile_, _$log_, $rootScope, _$uibModal_, _authService_, _featureFlags_) => {
         $compile = _$compile_;
         $log = _$log_;
-        $q = _$q_;
         $uibModal = _$uibModal_;
         spyOn($uibModal, 'open').and.callFake(options => {
           actualOptions = options;
@@ -64,8 +59,6 @@
         authService.hasAnyRole.and.returnValue(false);
         featureFlags = _featureFlags_;
         featureFlags.isOn.and.returnValue(false);
-        networkService = _networkService_;
-        networkService.getDirectReviews.and.returnValue($q.when([]));
 
         scope = $rootScope.$new();
         scope.listing = mock.listing;

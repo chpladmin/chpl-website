@@ -5,11 +5,6 @@ module.exports = [
     message: 'Success',
   },
   {
-    testName: 'v18 template',
-    path: '../../../resources/listings/2015_v18_AQA2.csv',
-    message: 'Success',
-  },
-  {
     testName: 'v20 template',
     path: '../../../resources/listings/2015_v20_AQA5.csv',
     message: 'Success',

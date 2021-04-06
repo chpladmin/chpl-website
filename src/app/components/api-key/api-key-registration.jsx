@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as yup from 'yup';
 
 const useStyles = makeStyles(() => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
   },
   longLabelFix: {
     paddingRight: '4px',
-    backgroundColor: '#ffffff',
+    backgroundColor :     '#ffffff'
   },
 }));
 
