@@ -53,7 +53,7 @@ describe('the compliance filter', () => {
       it('should only allow filter on "!never & closed & open"', () => {
         const filter = {compliance: 'has-had', matchAll: true, NC: {closed: true, open: true}};
         let results = mock.collection.map(c => compliance(c, filter));
-        expect(results).toEqual([false, false, false, false, true]);
+        expect(results).toEqual([false, false, false, false, false]);
       });
 
       it('should filter out other "all"', () => {
