@@ -31,6 +31,7 @@ const useStyles = makeStyles(() => ({
 
 function ChplUploadListings () {
   const [file, setFile] = useState(undefined);
+  const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
@@ -39,10 +40,12 @@ function ChplUploadListings () {
 
   const clearFile = () => {
     setFile(undefined);
+    ele.value = null;
   };
 
   const onFileChange = event => {
     setFile(event.target.files[0]);
+    setEle(event.target);
   };
 
   const uploadFile = () => {
