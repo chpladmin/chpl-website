@@ -85,7 +85,6 @@ export const ExpandableListComponent = {
         this.onChange({'action': onChangeObject});
       }
       this.selectedItem = '';
-      //}
       this._validateItems(this.selectedItems);
     }
 
