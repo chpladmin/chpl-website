@@ -3,7 +3,7 @@
     <i class="fa fa-filter"></i> {{ $ctrl.getTitle() }}
   </button>
   <ul class="dropdown-menu filter-multiple__dropdown" aria-labeledby="filter-surveillance" uib-dropdown-menu>
-    <li ng-click="$ctrl.update('neverSurveilled')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('neverSurveilled')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('neverSurveilled')"></i> Has never had a Surveillance</li>
+    <li ng-click="$ctrl.update('neverSurveilled')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('neverSurveilled')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('neverSurveilled')"></i> Has never had a Surveillance Activity</li>
     <li ng-click="$ctrl.update('has-had')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('has-had')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('has-had')"></i> Has had a Surveillance Activity</li>
     <span ng-if="$ctrl.isSelected('has-had')">
       <li class="text-center filter-multiple__item">
