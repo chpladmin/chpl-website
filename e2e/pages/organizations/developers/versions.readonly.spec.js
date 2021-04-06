@@ -74,5 +74,47 @@ describe('the Version part of the Developers page', () => {
         });
       });
     });
+
+    describe('when on the "GetWellNetwork" Developer page, looking at "CareNavigator" Product', () => {
+      let product;
+      const productName = 'CareNavigator';
+      const productId = 2170;
+      const version = '2.5';
+      beforeEach(() => {
+        const developer = 'GetWellNetwork';
+        page = new DevelopersPage();
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        product = page.getProduct(productName);
+        product.scrollIntoView({block: 'center', inline: 'center'});
+        page.selectProduct(product);
+        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+      });
+
+      it('should have a split for the Version, but not the Product, for a Product that has only one Version, with two Listings', () => {
+        page.getSplitButton(product).click();
+
+        expect(page.getSplitButton(product)).toExist();
+        expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split Product with only one Version)');
+        expect(page.getVersionSplitButton(product).getText()).toBe('Version\n(Select a specific Version to split)');
+        page.selectVersion(product, productId, version);
+        page.getSplitButton(product).click();
+        expect(page.getVersionSplitButton(product).getText()).toBe('Version');
+      });
+
+      it('should allow cancellation of a split', () => {
+        let versionCount = page.getVersionCount(product).getText();
+        page.selectVersion(product, productId, version);
+        page.getSplitButton(product).click();
+        page.getVersionSplitButton(product).click();
+
+        page.splitVersionVersion.clearValue();
+        page.splitVersionVersion.setValue(Math.random());
+        actionBar.cancel();
+        actionConfirmation.yes.click();
+        page.productsHeader.waitForDisplayed();
+        expect(page.getVersionCount(product).getText()).toBe(versionCount);
+      });
+    });
   });
 });

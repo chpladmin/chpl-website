@@ -125,6 +125,13 @@ export const ProductsComponent = {
       });
     }
 
+    splitVersion (product) {
+      this.$state.go('organizations.developers.developer.product.version.split', {
+        productId: product.productId,
+        versionId: product.activeVersion.versionId,
+      });
+    }
+
     getListingCounts (product) {
       let counts = product.versions
         .filter(v => v.version !== 'All')

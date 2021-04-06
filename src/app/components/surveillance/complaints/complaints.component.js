@@ -275,6 +275,7 @@ export const SurveillanceComplaintsComponent = {
         'complainantTypeName',
         'complainantContacted',
         'developerContacted',
+        'flagForOncReview',
         'oncAtlContacted',
       ];
       filterItems.forEach(predicate => {
