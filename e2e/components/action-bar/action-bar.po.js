@@ -1,6 +1,7 @@
 const elements = {
   cancel: '#action-bar-cancel',
   save: '#action-bar-save',
+  errorMessages: '.action-bar__error-messages',
 };
 
 class ActionBarComponent {
@@ -12,6 +13,10 @@ class ActionBarComponent {
 
   save () {
     $(elements.save).click();
+  }
+
+  get errorMessages () {
+    return $(elements.errorMessages);
   }
 }
 

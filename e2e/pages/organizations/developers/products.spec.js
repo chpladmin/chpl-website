@@ -20,9 +20,9 @@ describe('the Product part of the Developers page', () => {
     await hooks.open('#/organizations/developers');
   });
 
-  describe('when logged in as an ACB', () => {
+  describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {
-      login.logIn('acb');
+      login.logIn('drummond');
       login.logoutButton.waitForDisplayed();
     });
 
@@ -35,6 +35,34 @@ describe('the Product part of the Developers page', () => {
         let developer = 'Greenway Health, LLC';
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+      });
+
+      describe('when looking at "PrimeSuite"', () => {
+        let name = 'PrimeSuite';
+        let product;
+        beforeEach(() => {
+          product = page.getProduct(name);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        it('should have split product button', () => {
+          expect(page.getSplitButton(product)).toExist();
+        });
+
+        it('should show correct error message while split product when listings owned by different ACBs', () => {
+          const newName = name + ' - split - ' + (new Date()).getTime();
+          const newCode = newName.substring(newName.length - 4);
+          const movingVersionId = '2039';
+          page.splitProduct(product);
+          page.editProductName.setValue(newName);
+          page.editProductCode.setValue(newCode);
+          page.moveVersion(movingVersionId);
+          actionBar.save();
+          expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-009386 because it is owned by CCHIT.');
+        });
+
       });
 
       describe('when looking at "Intergy EHR"', () => {
@@ -124,9 +152,9 @@ describe('the Product part of the Developers page', () => {
     });
   });
 
-  describe('when logged in as an Admin', () => {
+  describe('when logged in as an ONC', () => {
     beforeEach(() => {
-      login.logIn('admin');
+      login.logIn('onc');
       login.logoutButton.waitForDisplayed();
     });
 
