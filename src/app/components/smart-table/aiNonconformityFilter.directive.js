@@ -72,7 +72,29 @@
       vm.filterChanged();
     }
 
-    function filterChanged () {
+    function filterChanged (type) {
+      let event, label;
+      switch (type) {
+      case 'open':
+        event = (vm.query.nonconformities.open ? 'Show' : 'Hide') + ' Listings with Non-conformities';
+        label = 'Open';
+        break;
+      case 'closed':
+        event = (vm.query.nonconformities.closed ? 'Show' : 'Hide') + ' Listings with Non-conformities';
+        label = 'Closed';
+        break;
+      case 'toggle':
+        event = 'Show all Listings Matching ' + (vm.query.nonconformities.matchAll ? 'All' : 'Any') + ' Non-conformity status';
+        break;
+        //no default
+      }
+      if (event) {
+        if (label) {
+          $analytics.eventTrack(event, { category: 'Products: Corrective Action Status', label: label });
+        } else {
+          $analytics.eventTrack(event, { category: 'Products: Corrective Action Status' });
+        }
+      }
       vm.hasChanges = (vm.query.nonconformities.open || vm.query.nonconformities.closed || vm.query.nonconformities.matchAll);
       if (vm.hasChanges) {
         vm.tableCtrl.search(vm.query, 'nonconformities');
