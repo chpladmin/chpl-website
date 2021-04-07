@@ -25,6 +25,9 @@ describe('the Developers page', () => {
     });
 
     afterEach(() => {
+      if (toast.toastContainer.isDisplayed()) {
+        toast.clearAllToast();
+      }
       login.logOut();
     });
 
@@ -34,12 +37,6 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-      });
-
-      afterEach(() => {
-        if (toast.toastContainer.isDisplayed()) {
-          toast.clearAllToast();
-        }
       });
 
       describe('when editing developer information', () => {
@@ -146,6 +143,9 @@ describe('the Developers page', () => {
     });
 
     afterEach(() => {
+      if (toast.toastContainer.isDisplayed()) {
+        toast.clearAllToast();
+      }
       login.logOut();
     });
 
@@ -155,12 +155,6 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-      });
-
-      afterEach(() => {
-        if (toast.toastContainer.isDisplayed()) {
-          toast.clearAllToast();
-        }
       });
 
       it('should have merge developer button', () => {

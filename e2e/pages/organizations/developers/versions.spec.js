@@ -26,6 +26,9 @@ describe('the Version part of the Developers page', () => {
     });
 
     afterEach(() => {
+      if (toast.toastContainer.isDisplayed()) {
+        toast.clearAllToast();
+      }
       login.logOut();
     });
 
@@ -148,6 +151,9 @@ describe('the Version part of the Developers page', () => {
     });
 
     afterEach(() => {
+      if (toast.toastContainer.isDisplayed()) {
+        toast.clearAllToast();
+      }
       login.logOut();
     });
 

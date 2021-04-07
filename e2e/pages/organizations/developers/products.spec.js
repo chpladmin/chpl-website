@@ -27,6 +27,9 @@ describe('the Product part of the Developers page', () => {
     });
 
     afterEach(() => {
+      if (toast.toastContainer.isDisplayed()) {
+        toast.clearAllToast();
+      }
       login.logOut();
     });
 
@@ -163,6 +166,9 @@ describe('the Product part of the Developers page', () => {
     });
 
     afterEach(() => {
+      if (toast.toastContainer.isDisplayed()) {
+        toast.clearAllToast();
+      }
       login.logOut();
     });
 
