@@ -3,7 +3,13 @@
     <div class="panel-heading products__products-header">
       <div class="products__products-header-item"><h2 class="panel-title">Products</h2></div>
       <div class="products__products-header-item products__products-header-item--last" ng-if="$ctrl.statusItems">
+        <button class="btn btn-default"
+                ng-if="$ctrl.isFiltered()"
+                ng-click="$ctrl.clearFilters()">
+          Clear Filters
+        </button>
         <chpl-filter-surveillance
+          filter="$ctrl.filter.surveillance"
           on-change="$ctrl.handleFilter(filter)">
         </chpl-filter-surveillance>
         <chpl-filter-multiple

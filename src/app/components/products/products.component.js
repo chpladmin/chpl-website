@@ -19,7 +19,15 @@ export const ProductsComponent = {
       this.$uibModal = $uibModal;
       this.filter = {
         items: [],
-        surveillance: {},
+        surveillance: {
+          compliance: undefined,
+          matchAll: undefined,
+          NC: {
+            never: undefined,
+            closed: undefined,
+            open: undefined,
+          },
+        },
       };
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
@@ -88,6 +96,7 @@ export const ProductsComponent = {
           .filter(p => p.productId === parseInt(this.productId, 10))[0];
       }
       if (this.products && this.statusItems) {
+        this.backupStatusItems = angular.copy(this.statusItems);
         this.filter.items = this.statusItems;
         this.doFilter();
       }
@@ -96,6 +105,21 @@ export const ProductsComponent = {
     cancel () {
       this.activeProduct = undefined;
       this.onCancel();
+    }
+
+    clearFilters () {
+      this.statusItems = angular.copy(this.backupStatusItems);
+      this.filter.items = [...this.statusItems];
+      this.filter.surveillance = {
+        compliance: undefined,
+        matchAll: undefined,
+        NC: {
+          never: undefined,
+          closed: undefined,
+          open: undefined,
+        },
+      };
+      this.doFilter();
     }
 
     doFilter () {
@@ -128,9 +152,14 @@ export const ProductsComponent = {
       if (filter.surveillance) {
         this.filter.surveillance = angular.copy(filter.surveillance);
       } else {
-        this.filter.items = filter;
+        this.filter.items = angular.copy(filter);
       }
       this.doFilter();
+    }
+
+    isFiltered () {
+      return this.filter.surveillance.compliance
+        || this.backupStatusItems.reduce((acc, item) => acc || (this.filter.items.filter((i) => i.value === item.value)[0].selected !== item.selected), false);
     }
 
     mergeProduct (product) {

@@ -1,6 +1,7 @@
 export const FilterSurveillanceComponent = {
   templateUrl: 'chpl.components/products/filter-surveillance.html',
   bindings: {
+    filter: '<',
     onChange: '&',
   },
   controller: class FilterSurveillanceComponent {
@@ -9,11 +10,13 @@ export const FilterSurveillanceComponent = {
       this.$log = $log;
     }
 
-    $onInit () {
-      this.clearFilter(true);
+    $onChanges (changes) {
+      if (changes.filter) {
+        this.filter = angular.copy(changes.filter.currentValue);
+      }
     }
 
-    clearFilter (initial) {
+    clearFilter () {
       this.filter = {
         compliance: undefined,
         matchAll: undefined,
@@ -23,9 +26,7 @@ export const FilterSurveillanceComponent = {
           open: undefined,
         },
       };
-      if (!initial) {
-        this.onChange({filter: {surveillance: this.filter}});
-      }
+      this.onChange({filter: {surveillance: this.filter}});
     }
 
     getItemStateDisplay (item) {
