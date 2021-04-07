@@ -1,24 +1,23 @@
 (() => {
-  'use strict';
-
   describe('the CMS component', () => {
-    var $compile, $log, $q, authService, ctrl, el, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let authService;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
+    const mock = {};
 
-    var mock = {};
     mock.results = [
-      { id: 'fake', created: 1411117127000, products: '1;2;3'},
+      { id: 'fake', created: 1411117127000, products: '1;2;3' },
     ];
 
     beforeEach(() => {
-      angular.mock.module('chpl.admin', $provide => {
-        $provide.decorator('authService', $delegate => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getCmsDownload = jasmine.createSpy('getCmsDownload');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('authService', ($delegate) => ({ ...$delegate, hasAnyRole: jasmine.createSpy('hasAnyRole') }));
+        $provide.decorator('networkService', ($delegate) => ({ ...$delegate, getCmsDownload: jasmine.createSpy('getCmsDownload') }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
@@ -42,7 +41,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });

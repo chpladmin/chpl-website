@@ -24,6 +24,9 @@
         "module": true,
     },
     "parser": "babel-eslint",
+    "rules": {
+    "max-len": ["off"],
+    },
     "overrides": [
     {
     "files": ["*.jsx", "*.spec.js"],
