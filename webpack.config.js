@@ -59,7 +59,7 @@ module.exports = env => {
                         presets:['@babel/preset-env'],
                         presets:['@babel/preset-react'],
                     },
-                },{
+                }/*,{
                     loader: 'eslint-loader',
                     options: {
                         formatter: require('eslint-formatter-friendly'),
@@ -72,7 +72,7 @@ module.exports = env => {
                             formatter: require('eslint/lib/formatters/html'),
                         },
                     }
-                }],
+                }*/],
             },{
                 test: /\.html$/,
                 exclude: /node_modules/,
