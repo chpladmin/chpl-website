@@ -34,6 +34,7 @@ inputs.forEach(input => {
     });
 
     afterEach(function () {
+      toast.clearAllToast();
       loginComponent.logOut();
     });
 
@@ -67,6 +68,7 @@ describe('User inspects uploaded listing with valid CHPL ID', () => {
   });
 
   afterEach(function () {
+    toast.clearAllToast();
     loginComponent.logOut();
   });
 
