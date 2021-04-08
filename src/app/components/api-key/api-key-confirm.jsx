@@ -7,7 +7,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
-import Alert from '@material-ui/lab/Alert';
 import {getAngularService} from './';
 
 const useStyles = makeStyles(() => ({
@@ -46,8 +45,10 @@ function ChplApiKeyConfirm (props) {
             <CardContent>
               { confirmError ?
                 <>
-                  <Alert severity="error" data-testid="api-key-alert">There was an error confirming your email!</Alert>
-                  <Typography variant="body1" component={'span'}>
+                  <Typography variant="error" component={'div'}>
+                    There was an error confirming your email!
+                  </Typography>
+                  <Typography variant="body1" component={'div'}>
                     Possible reasons:
                     <ul>
                       <li>This email confirmation request has already been processed.  Be sure to check you email for an email with your API key.</li>
@@ -57,13 +58,13 @@ function ChplApiKeyConfirm (props) {
                 </>
                 :
                 <>
-                  <Typography variant="body1" paragraph={ true }>
+                  <Typography variant="body1" gutterBottom={ true }>
                     Congratulations on sucessfully registering your email for use with CHPL API.  CHPL has sent you an email containing your new API key.
                   </Typography>
-                  <Typography variant="body1" paragraph={ true } data-testid="api-key-display">
+                  <Typography variant="body1" gutterBottom={ true } data-testid="api-key-display">
                     Your API key is: &nbsp; <strong>{ apiKey.apiKey }</strong>
                   </Typography>
-                  <Typography variant="body1" paragraph={ true }>
+                  <Typography variant="body1" gutterBottom={ true }>
                     Your API key must be included in all API calls via either a header with the name &apos;API-Key&apos; or as a URL parameter named &apos;api_key&apos;.
                   </Typography>
                 </>
