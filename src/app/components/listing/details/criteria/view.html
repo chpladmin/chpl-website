@@ -50,8 +50,7 @@
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
-              <span ng-if="!$ctrl.isOn('svap-effective-date')">Standard</span>
-              <span ng-if="$ctrl.isOn('svap-effective-date')">Optional Standard</span>
+              <span>Optional Standard</span>
               <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet a certification criterion where additional, optional standards are permitted." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The standard(s) used to meet a certification criterion where additional, optional standards are permitted.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.testStandards && $ctrl.cert.testStandards.length > 0">
