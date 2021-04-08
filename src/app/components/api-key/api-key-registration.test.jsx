@@ -1,7 +1,7 @@
 import React from 'react';
 import * as angularReactHelper from '../../services/angular-react-helper.jsx';
 import { render, cleanup, screen, waitFor, fireEvent } from '@testing-library/react';
-import { toBeInvalid, toBeValid, toBeEnabled, toBeDisabled, toHaveValue } from '@testing-library/jest-dom';
+import { toBeDisabled, toBeEnabled, toBeInvalid, toBeValid, toHaveValue } from '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
 import {ChplApiKeyRegistration} from './api-key-registration.jsx';
