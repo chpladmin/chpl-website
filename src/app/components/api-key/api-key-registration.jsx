@@ -36,6 +36,7 @@ const validationSchema = yup.object({
 function ChplApiKeyRegistration () {
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
+  const classes = useStyles();
 
   const formik = useFormik({
     initialValues: {email: '', nameOrganization: ''},
@@ -64,8 +65,6 @@ function ChplApiKeyRegistration () {
         });
       });
   };
-
-  const classes = useStyles();
 
   return (
     <ThemeProvider theme={ theme }>
