@@ -34,6 +34,7 @@ const validationSchema = yup.object({
 });
 
 function ChplApiKeyRegistration () {
+  const analytics = getAngularService('$analytics');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
   const classes = useStyles();
@@ -42,11 +43,17 @@ function ChplApiKeyRegistration () {
     initialValues: {email: '', nameOrganization: ''},
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      writeAnalytics(values);
       createRequest(values);
     },
     validateOnChange: false,
     validateOnMount: true,
   });
+
+  const writeAnalytics = (values) => {
+    const label = '...@' + values.email.split('@')[1];
+    analytics.eventTrack('Register For API Key', { category: 'CHPL API', label: label });
+  };
 
   const createRequest = values => {
     networkService.requestApiKey({ email: values.email, name: values.nameOrganization })
