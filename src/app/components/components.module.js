@@ -21,8 +21,8 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
-  .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
+  .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
+  .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
 ;
