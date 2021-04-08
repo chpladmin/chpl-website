@@ -20,6 +20,12 @@ describe('the Product part of the Developers page', () => {
     await hooks.open('#/organizations/developers');
   });
 
+  afterEach(() => {
+    if (toast.toastContainer.isDisplayed()) {
+      toast.clearAllToast();
+    }
+  });
+
   describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {
       login.logIn('drummond');
@@ -27,9 +33,6 @@ describe('the Product part of the Developers page', () => {
     });
 
     afterEach(() => {
-      if (toast.toastContainer.isDisplayed()) {
-        toast.clearAllToast();
-      }
       login.logOut();
     });
 
@@ -69,7 +72,6 @@ describe('the Product part of the Developers page', () => {
           actionBar.save();
           expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-009386 because it is owned by CCHIT.');
         });
-
       });
 
       describe('when looking at "Intergy EHR"', () => {
@@ -166,9 +168,6 @@ describe('the Product part of the Developers page', () => {
     });
 
     afterEach(() => {
-      if (toast.toastContainer.isDisplayed()) {
-        toast.clearAllToast();
-      }
       login.logOut();
     });
 

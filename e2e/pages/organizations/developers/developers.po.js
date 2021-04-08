@@ -23,6 +23,7 @@ const elements = {
   developerName: '#developer-name',
   errors: 'div.text-danger',
   mergeDeveloper: '#developer-component-merge',
+  editWebsite: '#developer-website',
 };
 
 class DevelopersPage {
@@ -58,6 +59,10 @@ class DevelopersPage {
 
   get products () {
     return $$(elements.products);
+  }
+
+  get editWebsite () {
+    return $(elements.editWebsite);
   }
 
   getProduct (product) {

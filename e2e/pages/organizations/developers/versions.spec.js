@@ -19,6 +19,12 @@ describe('the Version part of the Developers page', () => {
     await hooks.open('#/organizations/developers');
   });
 
+  afterEach(() => {
+    if (toast.toastContainer.isDisplayed()) {
+      toast.clearAllToast();
+    }
+  });
+
   describe('when logged in as drummond ACB', () => {
     beforeEach(() => {
       login.logIn('drummond');
@@ -26,9 +32,6 @@ describe('the Version part of the Developers page', () => {
     });
 
     afterEach(() => {
-      if (toast.toastContainer.isDisplayed()) {
-        toast.clearAllToast();
-      }
       login.logOut();
     });
 
@@ -128,7 +131,6 @@ describe('the Version part of the Developers page', () => {
       });
 
       it('should show error message to split a version which has listings owned by multiple ACBs', () => {
-
         const newVersion = version + ' - split - ' + (new Date()).getTime();
         const newCode = newVersion.substring(newVersion.length - 2);
         const movingListingId = '4653';
@@ -151,9 +153,6 @@ describe('the Version part of the Developers page', () => {
     });
 
     afterEach(() => {
-      if (toast.toastContainer.isDisplayed()) {
-        toast.clearAllToast();
-      }
       login.logOut();
     });
 

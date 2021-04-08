@@ -2,7 +2,7 @@ import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../../components/toast/toast.po';
 
-let hooks, page,toast;
+let hooks, page, toast;
 
 describe('the Developer pages', () => {
   describe('for existing Developers', () => {
@@ -42,7 +42,6 @@ describe('the Developer pages', () => {
       it('should not have split developer button', () => {
         expect(page.splitDeveloper.isDisplayed()).toBe(false);
       });
-
     });
   });
 

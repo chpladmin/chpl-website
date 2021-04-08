@@ -102,7 +102,7 @@ describe('the Product part of the Developers page', () => {
     });
 
     describe('when on the "Medical Information Technology, Inc. (MEDITECH)" Developer page', () => {
-      let developer = 'Medical Information Technology, Inc. (MEDITECH)';
+      const developer = 'Medical Information Technology, Inc. (MEDITECH)';
       let product;
 
       beforeEach(() => {
