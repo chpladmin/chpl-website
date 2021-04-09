@@ -256,8 +256,6 @@ describe('the Product part of the Developers page', () => {
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
           expect(page.getProduct(newProduct)).toExist();
-          expect(page.getProduct(productName)).not.toExist();
-          expect(page.getProduct(productToBeMerged)).not.toExist();
         });
       });
     });

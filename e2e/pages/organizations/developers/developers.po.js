@@ -175,6 +175,7 @@ class DevelopersPage {
     const count = $$(elements.list).length;
     for (var i = 0; i < count; i++) {
       if ($$(elements.list)[i].getText() === productName) {
+        $$(elements.list)[i].scrollIntoView({block: 'center', inline: 'center'});
         $$(elements.list)[i].click();
       }
     }
