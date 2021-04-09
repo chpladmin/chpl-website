@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 11.10.0
+_5 April 2021_
+
+### Features
+* Allow download of Complaint data
+* Add "Informed ONC per 170.523" option to Complaints
+* Display Direct Review data on Corrective Action collection page
+* Allow splitting of Version
+
+---
+
 ## Version 11.9.0
 _22 March 2021_
 
