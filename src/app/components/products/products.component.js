@@ -52,25 +52,20 @@ export const ProductsComponent = {
               version: 'All',
               listings: [],
             };
-            p.openSurveillance = 0;
-            p.totalSurveillance = 0;
-            p.activeAcbs = new Set();
-            p.versions.forEach(v => {
-              p.openSurveillance += v.listings.reduce((sum, l) => sum += l.openSurveillanceCount, 0);
-              p.totalSurveillance += v.listings.reduce((sum, l) => sum += l.surveillanceCount, 0);
-              v.listings = v.listings.map(l => {
-                l.compliance = JSON.stringify({
-                  complianceCount: l.surveillanceCount,
-                  openNonConformityCount: l.openSurveillanceNonConformityCount,
-                  closedNonConformityCount: l.closedSurveillanceNonConformityCount,
+            p.versions
+              .forEach(v => {
+                v.listings = v.listings.map(l => {
+                  l.compliance = JSON.stringify({
+                    complianceCount: l.surveillanceCount,
+                    openNonConformityCount: l.openSurveillanceNonConformityCount,
+                    closedNonConformityCount: l.closedSurveillanceNonConformityCount,
+                  });
+                  return l;
                 });
-                return l;
+                all.listings = all.listings.concat(v.listings);
               });
-              all.listings = all.listings.concat(v.listings);
-            });
             p.versions.unshift(all);
             p.activeVersion = p.versions[0];
-            p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0).length > 0;
             return p;
           })
           .sort((a, b) => {
@@ -123,16 +118,37 @@ export const ProductsComponent = {
     }
 
     doFilter () {
-      this.products.forEach(p => {
-        p.versions.forEach(v => {
-          if (v.listings) {
-            v.listings.forEach(l => {
-              l.displayed = this.filter.items.find(i => i.value === l.certificationStatus).selected
-                && (!this.filter.surveillance.compliance || compliance(l.compliance, this.filter.surveillance));
-            });
+      this.displayedProducts = this.products
+        .map(p => {
+          p.openSurveillance = 0;
+          p.totalSurveillance = 0;
+          p.hasActiveListings = false;
+          p.availableVersions = p.versions
+            .map(v => {
+              if (v.listings) {
+                v.listings.forEach(l => {
+                  l.displayed = this.filter.items.find(i => i.value === l.certificationStatus).selected
+                    && (!this.filter.surveillance.compliance || compliance(l.compliance, this.filter.surveillance));
+                  if (v.version !== 'All' && l.displayed) {
+                    p.openSurveillance += l.openSurveillanceCount;
+                    p.totalSurveillance += l.surveillanceCount;
+                    p.hasActiveListings = p.hasActiveListings || l.certificationStatus === 'Active';
+                  }
+                });
+              }
+              return v;
+            })
+            .filter(v => v.listings.filter(l => l.displayed).length > 0);
+          p.listingCounts = this.getListingCounts(p);
+          return p;
+        })
+        .filter(p => p.listingCounts !== '0 listings')
+        .sort((a, b) => {
+          if (a.hasActiveListings !== b.hasActiveListings) {
+            return a.hasActiveListings ? -1 : 1;
           }
+          return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
         });
-      });
     }
 
     editProduct (product) {
@@ -146,6 +162,42 @@ export const ProductsComponent = {
         productId: product.productId,
         versionId: product.activeVersion.versionId,
       });
+    }
+
+    getListingCounts (product) {
+      let counts = product.versions
+        .filter(v => v.version !== 'All')
+        .reduce((acc, v) => {
+          acc.active += v.listings
+            .filter(l => l.displayed)
+            .filter(l => l.certificationStatus === 'Active')
+            .length;
+          acc.total += v.listings
+            .filter(l => l.displayed)
+            .length;
+          return acc;
+        }, {active: 0, total: 0});
+      let ret = '';
+      if (counts.active > 0) {
+        ret += counts.active + ' active / ';
+      }
+      ret += counts.total + ' listing';
+      if (counts.total !== 1) {
+        ret += 's';
+      }
+      return ret;
+    }
+
+    handleEdit (action, data) {
+      switch (action) {
+      case 'cancel':
+        this.cancel();
+        break;
+      case 'edit':
+        this.save(data);
+        break;
+          //no default
+      }
     }
 
     handleFilter (filter) {
@@ -175,6 +227,10 @@ export const ProductsComponent = {
       });
     }
 
+    save (data) {
+      this.onEdit({data: data});
+    }
+
     splitProduct (product) {
       this.$state.go('organizations.developers.developer.product.split', {
         productId: product.productId,
@@ -186,47 +242,6 @@ export const ProductsComponent = {
         productId: product.productId,
         versionId: product.activeVersion.versionId,
       });
-    }
-
-    getListingCounts (product) {
-      let counts = product.versions
-        .filter(v => v.version !== 'All')
-        .reduce((acc, v) => {
-          acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
-          acc.total += v.listings.length;
-          return acc;
-        }, {active: 0, total: 0});
-      let ret = '';
-      if (counts.active > 0) {
-        ret += counts.active + ' active / ';
-      }
-      ret += counts.total + ' listing';
-      if (counts.total !== 1) {
-        ret += 's';
-      }
-      return ret;
-    }
-
-    handleEdit (action, data) {
-      switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'edit':
-        this.save(data);
-        break;
-                //no default
-      }
-    }
-
-    noVisibleListings (product) {
-      return product.activeVersion && product.activeVersion.listings
-        .filter(l => l.displayed)
-        .length === 0;
-    }
-
-    save (data) {
-      this.onEdit({data: data});
     }
 
     viewCertificationStatusLegend () {
