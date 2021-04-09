@@ -39,7 +39,7 @@ export const FilterMultipleComponent = {
       if (selected === this.items.length) {
         return this.title + ': All';
       }
-      return this.title + ': ' + selected + ' selected';
+      return this.title + ': ' + selected + ' of ' + this.items.length + ' selected';
     }
 
     selectedClass (item) {
