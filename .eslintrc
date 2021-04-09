@@ -28,7 +28,7 @@
     {
     "files": ["*.jsx", "*.spec.js"],
     "rules": {
-    "no-console": ["off"],
+    "max-len": ["off"],
     },
     },
     ],
