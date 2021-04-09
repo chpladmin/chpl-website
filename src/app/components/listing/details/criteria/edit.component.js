@@ -6,14 +6,13 @@ export const CertificationCriteriaEditComponent = {
     dismiss: '&',
   },
   controller: class CertificationCriteriaEditController {
-    constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultSvap, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+    constructor ($filter, $log, authService, utilService, CertificationResultSvap, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
       'ngInject';
       this.$filter = $filter;
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
       this.addNewValue = utilService.addNewValue;
       this.extendSelect = utilService.extendSelect;
-      this.isOn = featureFlags.isOn;
       this.CertificationResultTestData = CertificationResultTestData;
       this.CertificationResultTestFunctionality = CertificationResultTestFunctionality;
       this.CertificationResultTestProcedure = CertificationResultTestProcedure;
