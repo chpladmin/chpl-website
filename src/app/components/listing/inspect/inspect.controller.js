@@ -5,7 +5,7 @@
     .controller('InspectController', InspectController);
 
   /** @ngInject */
-  function InspectController ($log, $uibModal, $uibModalInstance, beta, developers, inspectingCp, networkService, resources, utilService) {
+  function InspectController ($log, $uibModal, $uibModalInstance, beta, developers, inspectingCp, networkService, resources, toaster, utilService) {
     var vm = this;
 
     vm.loadDev = loadDev;
@@ -90,12 +90,18 @@
 
     function confirm () {
       vm.isConfirming = true;
+      vm.pendingToast = toaster.pop({
+        type: 'warning',
+        title: 'Please stand by',
+        body: 'The Listing is being confirmed. Please stand by',
+      });
       networkService.confirmPendingCp({
         pendingListing: vm.cp,
         acknowledgeWarnings: vm.acknowledgeWarnings,
       }).then(function (result) {
         vm.isConfirming = false;
         $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
+        toaster.clear(vm.pendingToast);
       }, function (error) {
         vm.isConfirming = false;
         if (error.data.contact) {
@@ -108,6 +114,7 @@
           vm.errorMessages = error.data.errorMessages;
           vm.warningMessages = error.data.warningMessages;
         }
+        toaster.clear(vm.pendingToast);
       });
     }
 
