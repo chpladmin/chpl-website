@@ -2,13 +2,14 @@ export const ConfirmListingsComponent = {
   templateUrl: 'chpl.administration/confirm/listings.html',
   bindings: {
     developers: '<',
-    onChange: '&',
     resources: '<',
+    uploadingCps: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $state, $timeout, $uibModal, DateUtil, authService, featureFlags, networkService) {
+    constructor ($log, $scope, $state, $timeout, $uibModal, DateUtil, authService, featureFlags, networkService) {
       'ngInject';
       this.$log = $log;
+      this.$scope = $scope;
       this.$state = $state;
       this.$timeout = $timeout;
       this.$uibModal = $uibModal;
@@ -17,7 +18,6 @@ export const ConfirmListingsComponent = {
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
       this.massReject = {};
-      this.massRejectBeta = {};
     }
 
     $onInit () {
@@ -28,6 +28,7 @@ export const ConfirmListingsComponent = {
           that.uploadedListings = listings;
         });
       }
+      this.handleProcess = this.handleProcess.bind(this);
     }
 
     $onChanges (changes) {
@@ -43,6 +44,9 @@ export const ConfirmListingsComponent = {
           });
           this.resources = resObj;
         }
+      }
+      if (changes.uploadingCps) {
+        this.uploadingCps = angular.copy(changes.uploadingCps.currentValue);
       }
     }
 
@@ -62,14 +66,8 @@ export const ConfirmListingsComponent = {
       return ret;
     }
 
-    getNumberOfListingsToRejectBeta () {
-      var ret = 0;
-      angular.forEach(this.massRejectBeta, value => {
-        if (value) {
-          ret += 1;
-        }
-      });
-      return ret;
+    handleProcess (listingId) {
+      this.$state.go('.listing', {id: listingId});
     }
 
     getUploadingCps () {
@@ -108,7 +106,6 @@ export const ConfirmListingsComponent = {
             this.developers.push(result.developer);
           }
           this.clearPendingListing(cpId);
-          this.onChange();
           if (result.status === 'resolved') {
             this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
           }
@@ -132,42 +129,24 @@ export const ConfirmListingsComponent = {
       });
       this.networkService.massRejectPendingListings(idsToReject)
         .then(() => {
-          that.onChange();
+          that.loadListings();
         }, error => {
-          that.onChange();
+          that.loadListings();
           if (error.data.errors && error.data.errors.length > 0) {
             that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
           }
         });
     }
 
-    massRejectPendingListingsBeta () {
+    loadListings () {
       let that = this;
-      var idsToReject = [];
-      angular.forEach(this.massRejectBeta, (value, key) => {
-        if (value) {
-          idsToReject.push(parseInt(key));
-          this.clearPendingListingBeta(parseInt(key));
-          delete(this.massReject[key]);
-        }
+      this.networkService.getPendingListings().then(response => {
+        that.uploadingCps = response;
       });
-      this.networkService.massRejectPendingListingsBeta(idsToReject)
-        .then(() => {
-          that.onChange();
-        }, error => {
-          that.onChange();
-          if (error.data.errors && error.data.errors.length > 0) {
-            that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
-          }
-        });
     }
 
     clearPendingListing (cpId) {
       this.uploadingCps = this.uploadingCps.filter(l => l.id !== cpId);
-    }
-
-    clearPendingListingBeta (cpId) {
-      this.uploadedListings = this.uploadedListings.filter(l => l.id !== cpId);
     }
   },
 };

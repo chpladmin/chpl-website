@@ -343,11 +343,8 @@ exports.config = {
       for(var i = 0; i < list.length; i++) {
         var filename = path.join(dir, list[i]);
         var stat = fs.statSync(filename);
-        if(filename == "allure-results" || filename.includes('wdio') || filename.includes('.png')) {
+        if(stat.isDirectory() || filename.includes('wdio') || filename.includes('.png')) {
           // pass these files
-        } else if(stat.isDirectory()) {
-          // rmdir recursively
-          rmdir(filename);
         } else {
           // rm filename
           fs.unlinkSync(filename);
