@@ -5,7 +5,7 @@
     .controller('BannedDevelopersController', BannedDevelopersController);
 
   /** @ngInject */
-  function BannedDevelopersController (collectionsService) {
+  function BannedDevelopersController () {
     var vm = this;
 
     vm._acbTransform = acbTransform;
@@ -16,7 +16,7 @@
 
     function activate () {
       vm.columnSet = [
-        { predicate: 'developer', display: 'Developer', sortType: 'multi', transformFn: collectionsService.developerLink },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', isDeveloperLink: true },
         { predicate: 'developer', display: 'Developer', sortType: 'single' },
         { predicate: 'decertificationDate', display: 'Date', sortType: 'single', isDate: true, sortDefault: true },
         { predicate: 'acb', display: 'ONC-ACB', transformFn: acbTransform, sortType: 'none' },

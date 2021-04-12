@@ -5,7 +5,7 @@
     .controller('ApiDocumentationController', ApiDocumentationController);
 
   /** @ngInject */
-  function ApiDocumentationController ($compile, $log, $scope, API, SPLIT_PRIMARY, SPLIT_SECONDARY, authService, collectionsService, networkService) {
+  function ApiDocumentationController ($compile, $log, $scope, API, SPLIT_PRIMARY, SPLIT_SECONDARY, authService, networkService) {
     var vm = this;
 
     vm.apiTransform = apiTransform;
@@ -17,7 +17,7 @@
 
     function activate () {
       vm.columnSet = [
-        { predicate: 'developer', display: 'Developer', sortType: 'multi', transformFn: collectionsService.developerLink },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', isDeveloperLink: true },
         { predicate: 'product', display: 'Product', sortType: 'single' },
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },

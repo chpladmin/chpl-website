@@ -5,7 +5,7 @@
     .controller('InactiveCertificatesController', InactiveCertificatesController);
 
   /** @ngInject */
-  function InactiveCertificatesController (collectionsService) {
+  function InactiveCertificatesController () {
     var vm = this;
 
     activate();
@@ -15,7 +15,7 @@
     function activate () {
       vm.columnSet = [
         { predicate: 'edition', display: 'Edition', sortType: 'single' },
-        { predicate: 'developer', display: 'Developer', sortType: 'multi', transformFn: collectionsService.developerLink },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', isDeveloperLink: true },
         { predicate: 'product', display: 'Product', sortType: 'single' },
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'decertificationDate', display: 'Inactive As Of', sortType: 'single', isDate: true },
