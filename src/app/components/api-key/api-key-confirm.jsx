@@ -46,7 +46,7 @@ function ChplApiKeyConfirm(props) {
               { confirmError
                 ? (
                   <>
-                    <Typography variant="error" component="div">
+                    <Typography variant="error" component="div" data-testid="api-key-error">
                       There was an error confirming your email!
                     </Typography>
                     <Typography variant="body1" component="div">
@@ -81,7 +81,7 @@ function ChplApiKeyConfirm(props) {
   );
 }
 
-export default ChplApiKeyConfirm;
+export { ChplApiKeyConfirm };
 
 ChplApiKeyConfirm.propTypes = {
   hash: string.isRequired,

@@ -127,6 +127,6 @@ function ChplApiKeyRegistration() {
   );
 }
 
-export default ChplApiKeyRegistration;
+export { ChplApiKeyRegistration };
 
 ChplApiKeyRegistration.propTypes = { };

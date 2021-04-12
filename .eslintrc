@@ -1,6 +1,8 @@
 {
     "plugins": [
         "angular",
+        "jest-dom",
+        "react",
         "react-hooks"
     ],
     "extends": [
@@ -17,6 +19,7 @@
         "jasmine": true,
         "amd": true,
         "es6": true,
+        "jest": true,
     },
     "globals": {
         "angular": true,
@@ -26,7 +29,7 @@
     "parser": "babel-eslint",
     "overrides": [
     {
-    "files": ["*.jsx", "*.spec.js"],
+    "files": ["*.jsx", "*.js"],
     "rules": {
     "max-len": ["off"],
     },

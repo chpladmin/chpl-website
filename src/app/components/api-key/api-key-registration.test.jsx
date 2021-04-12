@@ -1,44 +1,50 @@
 import React from 'react';
-import * as angularReactHelper from '../../services/angular-react-helper.jsx';
-import { render, cleanup, screen, waitFor, fireEvent } from '@testing-library/react';
-import { toBeDisabled, toBeEnabled, toBeInvalid, toBeValid, toHaveValue } from '@testing-library/jest-dom';
+import ReactDOM from 'react-dom';
+import {
+  render, cleanup, screen, waitFor,
+} from '@testing-library/react';
+import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
-import {ChplApiKeyRegistration} from './api-key-registration.jsx';
+import * as angularReactHelper from '../../services/angular-react-helper';
+import ChplApiKeyRegistration from './api-key-registration';
 
-
-//These need to be mocked outside the tests due how Jest works
+// These need to be mocked outside the tests due how Jest works
 const networkServiceMock = {
   requestApiKey: jest.fn(() => Promise.resolve({ status: 200, success: true })),
 };
 
 const networkServiceFailureMock = {
-  requestApiKey: jest.fn(() => Promise.reject({
+  requestApiKey: jest.fn(() => Promise.reject(new Error({
     data: {
       errorMessages: [
         'ErrorMessage to display',
       ],
     },
-   })),
+  }))),
 };
 
 const toasterMock = {
   pop: jest.fn(),
 };
 
+const analyticsMock = {
+  eventTrack: jest.fn(),
+};
+
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
 when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
+when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(analyticsMock);
 
 describe('the ChplApiKeyRegistration component', () => {
-
   afterEach(() => {
     cleanup();
-  })
+  });
 
   it.skip('should renders without crashing', () => {
-    const div = document.createElement('div')
-    ReactDOM.render(<ChplApiKeyRegistration />, div)
+    const div = document.createElement('div');
+    ReactDOM.render(<ChplApiKeyRegistration />, div);
   });
 
   describe('when rendering for the first time', () => {
@@ -47,7 +53,7 @@ describe('the ChplApiKeyRegistration component', () => {
     });
 
     it('should disable the Register button', async () => {
-      const registerButton = screen.getByRole('button', { 'name': /Register/i });
+      const registerButton = screen.getByRole('button', { name: /Register/i });
 
       await waitFor(() => expect(registerButton).toBeDisabled());
     });
@@ -89,14 +95,14 @@ describe('the ChplApiKeyRegistration component', () => {
 
       await waitFor(() => {
         expect(email).toBeValid();
-        expect(nameOrganization).toBeValid()
+        expect(nameOrganization).toBeValid();
       });
     });
 
     it('should enable the Register button', async () => {
       const nameOrganization = screen.getByLabelText(/Name or Organization/i);
       const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { 'name': /Register/i });
+      const registerButton = screen.getByRole('button', { name: /Register/i });
 
       userEvent.type(nameOrganization, 'MyOrg');
       userEvent.tab();
@@ -110,7 +116,7 @@ describe('the ChplApiKeyRegistration component', () => {
       it('should call the networkService.requestApiKey method', async () => {
         const nameOrganization = screen.getByLabelText(/Name or Organization/i);
         const email = screen.getByLabelText(/Email/i);
-        const registerButton = screen.getByRole('button', { 'name': /Register/i });
+        const registerButton = screen.getByRole('button', { name: /Register/i });
 
         userEvent.type(nameOrganization, 'MyOrg');
         userEvent.tab();
@@ -162,7 +168,7 @@ describe('the ChplApiKeyRegistration component', () => {
 
       const nameOrganization = screen.getByLabelText(/Name or Organization/i);
       const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { 'name': /Register/i });
+      const registerButton = screen.getByRole('button', { name: /Register/i });
 
       userEvent.type(nameOrganization, 'MyOrg');
       userEvent.tab();
@@ -183,7 +189,7 @@ describe('the ChplApiKeyRegistration component', () => {
 
       const nameOrganization = screen.getByLabelText(/Name or Organization/i);
       const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { 'name': /Register/i });
+      const registerButton = screen.getByRole('button', { name: /Register/i });
 
       userEvent.type(nameOrganization, 'MyOrg');
       userEvent.tab();
@@ -205,7 +211,7 @@ describe('the ChplApiKeyRegistration component', () => {
 
       const nameOrganization = screen.getByLabelText(/Name or Organization/i);
       const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { 'name': /Register/i });
+      const registerButton = screen.getByRole('button', { name: /Register/i });
 
       userEvent.type(nameOrganization, 'MyOrg');
       userEvent.tab();
