@@ -163,6 +163,7 @@ describe('the search page', () => {
     var countBefore;
     var countAfter;
     beforeEach(() => {
+      page.browseAll.click();
       hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
       countBefore = page.listingTotalCount();
