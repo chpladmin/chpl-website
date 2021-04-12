@@ -7,12 +7,19 @@
   /** @ngInject */
   function collectionsService ($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
     var service = {
+      developerLink: developerLink,
       getAnalyticsCategory: getAnalyticsCategory,
       translate: translate,
     };
     return service;
 
     ////////////////////////////////////////////////////////////////////
+
+    function developerLink (data, listing) {
+      let link = '<a ui-sref="organizations.developers.developer({developerId: ' + listing.developerId + '})">' + data + '</a>';
+      //link += '})" analytics-on="click" analytics-event="Go to Listing Details Page" analytics-properties="{ category: \'Products: Corrective Action Status\' }">' + data + '</a>';
+      return link;
+    }
 
     function getAnalyticsCategory (key) {
       switch (key) {
@@ -102,6 +109,7 @@
           acb: [],
           decertificationDate: array[i].decertificationDate,
           developer: array[i].developerName,
+          developerId: array[i].developerId,
           mainSearch: array[i].developerName,
         };
         for (var j = 0; j < array[i].acbNames.length; j++) {

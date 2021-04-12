@@ -5,10 +5,9 @@
     .controller('CorrectiveActionController', CorrectiveActionController);
 
   /** @ngInject */
-  function CorrectiveActionController () {
+  function CorrectiveActionController (collectionsService) {
     var vm = this;
 
-    vm.developerTransform = developerTransform;
     vm.linkTransform = linkTransform;
 
     activate();
@@ -18,7 +17,7 @@
     function activate () {
       vm.columnSet = [
         { predicate: 'edition', display: 'Edition', sortType: 'multi', descendingFirst: true },
-        { predicate: 'developer', display: 'Developer', sortType: 'multi', transformFn: vm.developerTransform },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', transformFn: collectionsService.developerLink },
         { predicate: 'product', display: 'Product', sortType: 'multi' },
         { predicate: 'version', display: 'Version', sortType: 'multi' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', transformFn: vm.linkTransform },
@@ -44,12 +43,6 @@
     }
 
     ////////////////////////////////////////////////////////////////////
-
-    function developerTransform (data, listing) {
-      let link = '<a ui-sref="organizations.developers.developer({developerId: ' + listing.developerId + '})">' + data + '</a>';
-      //link += '})" analytics-on="click" analytics-event="Go to Listing Details Page" analytics-properties="{ category: \'Products: Corrective Action Status\' }">' + data + '</a>';
-      return link;
-    }
 
     function linkTransform (data, listing) {
       let surv = listing.openSurveillanceNonConformityCount > 0 || listing.closedSurveillanceNonConformityCount > 0;

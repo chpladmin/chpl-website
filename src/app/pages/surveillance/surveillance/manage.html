@@ -126,7 +126,7 @@
                           <button class="btn btn-default" ng-class="{'loaded-tab': $ctrl.isLoaded(listing)}"
                                   ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }} <i class="fa fa-info-circle"></i></button>
                         </td>
-                        <td>{{ listing.developer }}</td>
+                        <td><a ui-sref="organizations.developers.developer({developerId: '{{ listing.developerId }} '})">{{ listing.developer }}</a></td>
                         <td>{{ listing.product }}</td>
                         <td>{{ listing.version }}</td>
                         <td>{{ listing.acb }}</td>
