@@ -79,6 +79,7 @@
             ng-if="vm.stage !== 'cp'"
             ng-click="vm.next()">Next</button>
     <button class="btn btn-ai-success btn-large pull-right" id="inspect-confirm"
+            ng-disabled="vm.isConfirming"
             ng-if="vm.stage === 'cp'"
             confirm="Are you sure you wish to confirm this Certified Product?"
             confirm-ok="Yes"

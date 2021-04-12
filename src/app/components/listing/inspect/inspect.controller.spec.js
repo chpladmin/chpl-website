@@ -147,6 +147,7 @@
 
     describe('when analyzing the developer', () => {
       beforeEach(() => {
+        vm.stage = 'dev';
         vm.developer = {
           developerId: 999,
           name: 'Dude',

@@ -89,12 +89,15 @@
     }
 
     function confirm () {
+      vm.isConfirming = true;
       networkService.confirmPendingCp({
         pendingListing: vm.cp,
         acknowledgeWarnings: vm.acknowledgeWarnings,
       }).then(function (result) {
+        vm.isConfirming = false;
         $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
       }, function (error) {
+        vm.isConfirming = false;
         if (error.data.contact) {
           $uibModalInstance.close({
             contact: error.data.contact,
