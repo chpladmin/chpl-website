@@ -17,7 +17,7 @@ beforeEach(async () => {
   hooks = new Hooks();
   edit = new SurveillanceEditComponent();
   hooks.open('#/surveillance/upload');
-  loginComponent.logInWithEmail('acb');
+  loginComponent.logIn('acb');
   upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
   hooks.open('#/surveillance/confirm');
   hooks.waitForSpinnerToDisappear();

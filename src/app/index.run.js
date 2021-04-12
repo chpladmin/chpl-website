@@ -28,6 +28,15 @@ import { states as administrationStates } from './pages/administration/administr
               needsReload = needsReload || $state.$current.name === state.name;
             });
           }
+          if (featureFlags.isOn('enhanced-upload')) {
+            administrationStates['enhanced-upload'].forEach(state => {
+              if ($uiRouter.stateRegistry.get(state.name)) {
+                $uiRouter.stateRegistry.deregister(state.name);
+              }
+              $uiRouter.stateRegistry.register(state);
+              needsReload = needsReload || $state.$current.name === state.name;
+            });
+          }
 
           // Display ui-router state changes
           if (featureFlags.isOn('states')) {

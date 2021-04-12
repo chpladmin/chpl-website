@@ -17,7 +17,7 @@ beforeEach(async () => {
 
 describe('when ACB user is on confirm surveillance page', () => {
   beforeEach(() => {
-    loginComponent.logInWithEmail('acb');
+    loginComponent.logIn('acb');
   });
 
   afterEach(() => {
