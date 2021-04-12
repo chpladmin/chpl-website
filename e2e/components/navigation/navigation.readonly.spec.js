@@ -18,7 +18,7 @@ describe('when logged in', () => {
 
   describe('as an ACB', () => {
     beforeEach(() => {
-      login.logInWithEmail('acb');
+      login.logIn('acb');
       login.logoutButton.waitForDisplayed();
     });
 
@@ -41,7 +41,7 @@ describe('when logged in', () => {
 
   describe('as ONC', () => {
     beforeEach(() => {
-      login.logInWithEmail('onc');
+      login.logIn('onc');
       login.logoutButton.waitForDisplayed();
     });
 

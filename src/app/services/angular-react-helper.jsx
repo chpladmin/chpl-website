@@ -44,4 +44,4 @@ const getAngularService = name => {
   return service;
 };
 
-export {getAngularService, reactToAngularComponent};
+export { getAngularService, reactToAngularComponent };

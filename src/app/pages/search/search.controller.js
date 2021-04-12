@@ -52,6 +52,7 @@
       vm.displayedCps = [];
       vm.isLoading = true;
       vm.isPreLoading = true;
+      vm.previouslyIds = [];
       vm.restoreStateHs = [];
       vm.showRetiredHs = [];
       vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
