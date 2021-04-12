@@ -3,31 +3,18 @@ export const ConfirmListingsComponent = {
   bindings: {
     developers: '<',
     resources: '<',
-    uploadingCps: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $scope, $state, $timeout, $uibModal, DateUtil, authService, featureFlags, networkService) {
+    constructor ($log, $state, $uibModal, authService, networkService) {
       'ngInject';
       this.$log = $log;
-      this.$scope = $scope;
       this.$state = $state;
-      this.$timeout = $timeout;
       this.$uibModal = $uibModal;
-      this.DateUtil = DateUtil;
-      this.featureFlags = featureFlags;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
-      this.massReject = {};
     }
 
     $onInit () {
-      let that = this;
-      this.getUploadingCps();
-      if (this.featureFlags.isOn('enhanced-upload')) {
-        this.networkService.getPendingListings(true).then(listings => {
-          that.uploadedListings = listings;
-        });
-      }
       this.handleProcess = this.handleProcess.bind(this);
     }
 
@@ -45,42 +32,17 @@ export const ConfirmListingsComponent = {
           this.resources = resObj;
         }
       }
-      if (changes.uploadingCps) {
-        this.uploadingCps = angular.copy(changes.uploadingCps.currentValue);
+    }
+
+    handleProcess (listingId, beta) {
+      if (beta) {
+        this.$state.go('.listing', {id: listingId});
+      } else {
+        this.inspectListing(listingId);
       }
     }
 
-    $onDestroy () {
-      if (this.refreshPending) {
-        this.$timeout.cancel(this.refreshPending);
-      }
-    }
-
-    getNumberOfListingsToReject () {
-      var ret = 0;
-      angular.forEach(this.massReject, value => {
-        if (value) {
-          ret += 1;
-        }
-      });
-      return ret;
-    }
-
-    handleProcess (listingId) {
-      this.$state.go('.listing', {id: listingId});
-    }
-
-    getUploadingCps () {
-      let that = this;
-      this.networkService.getPendingListings().then(listings => {
-        that.uploadingCps = listings;
-        if (that.uploadingCps.reduce((processing, listing) => processing || listing.processing, false)) {
-          that.refreshPending = that.$timeout(() => that.getUploadingCps(), 1000);
-        }
-      });
-    }
-
-    inspectCp (cpId) {
+    inspectListing (listingId) {
       let that = this;
 
       this.modalInstance = this.$uibModal.open({
@@ -93,7 +55,7 @@ export const ConfirmListingsComponent = {
         resolve: {
           beta: () => false,
           developers: () => that.developers,
-          inspectingCp: () => that.networkService.getPendingListingById(cpId),
+          inspectingCp: () => that.networkService.getPendingListingById(listingId),
           isAcbAdmin: () => that.hasAnyRole(['ROLE_ACB']),
           isChplAdmin: () => that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']),
           resources: () => that.resources,
@@ -105,48 +67,11 @@ export const ConfirmListingsComponent = {
           if (result.developerCreated) {
             this.developers.push(result.developer);
           }
-          this.clearPendingListing(cpId);
           if (result.status === 'resolved') {
             this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
           }
         }
       });
-    }
-
-    inspectListing (listingId) {
-      this.$state.go('.listing', {id: listingId});
-    }
-
-    massRejectPendingListings () {
-      let that = this;
-      var idsToReject = [];
-      angular.forEach(this.massReject, (value, key) => {
-        if (value) {
-          idsToReject.push(parseInt(key));
-          this.clearPendingListing(parseInt(key));
-          delete(this.massReject[key]);
-        }
-      });
-      this.networkService.massRejectPendingListings(idsToReject)
-        .then(() => {
-          that.loadListings();
-        }, error => {
-          that.loadListings();
-          if (error.data.errors && error.data.errors.length > 0) {
-            that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
-          }
-        });
-    }
-
-    loadListings () {
-      let that = this;
-      this.networkService.getPendingListings().then(response => {
-        that.uploadingCps = response;
-      });
-    }
-
-    clearPendingListing (cpId) {
-      this.uploadingCps = this.uploadingCps.filter(l => l.id !== cpId);
     }
   },
 };
