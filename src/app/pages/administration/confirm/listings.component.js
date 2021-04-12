@@ -6,10 +6,11 @@ export const ConfirmListingsComponent = {
     resources: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $state, $uibModal, DateUtil, authService, featureFlags, networkService) {
+    constructor ($log, $state, $timeout, $uibModal, DateUtil, authService, featureFlags, networkService) {
       'ngInject';
       this.$log = $log;
       this.$state = $state;
+      this.$timeout = $timeout;
       this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
       this.featureFlags = featureFlags;
@@ -21,9 +22,7 @@ export const ConfirmListingsComponent = {
 
     $onInit () {
       let that = this;
-      this.networkService.getPendingListings().then(listings => {
-        that.uploadingCps = listings;
-      });
+      this.getUploadingCps();
       if (this.featureFlags.isOn('enhanced-upload')) {
         this.networkService.getPendingListings(true).then(listings => {
           that.uploadedListings = listings;
@@ -47,6 +46,12 @@ export const ConfirmListingsComponent = {
       }
     }
 
+    $onDestroy () {
+      if (this.refreshPending) {
+        this.$timeout.cancel(this.refreshPending);
+      }
+    }
+
     getNumberOfListingsToReject () {
       var ret = 0;
       angular.forEach(this.massReject, value => {
@@ -65,6 +70,16 @@ export const ConfirmListingsComponent = {
         }
       });
       return ret;
+    }
+
+    getUploadingCps () {
+      let that = this;
+      this.networkService.getPendingListings().then(listings => {
+        that.uploadingCps = listings;
+        if (that.uploadingCps.reduce((processing, listing) => processing || listing.processing, false)) {
+          that.refreshPending = that.$timeout(() => that.getUploadingCps(), 1000);
+        }
+      });
     }
 
     inspectCp (cpId) {
