@@ -58,6 +58,7 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       describe('when editing developer information', () => {
@@ -83,7 +84,7 @@ describe('the Developers page', () => {
           expect(page.developerContact).toHaveTextContaining(poc.title);
           expect(page.developerContact).toHaveTextContaining(poc.phone);
           expect(page.developerContact).toHaveTextContaining(poc.email);
-          expect(page.developerWebsite).toHaveTextContaining(poc.website);
+          expect(page.developerWebsite).toHaveTextContaining(website);
         });
       });
       describe('when looking at developer with more than one product', () => {
@@ -113,6 +114,7 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       it('should show correct error message', () => {
@@ -143,6 +145,7 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       it('should have merge developer button', () => {

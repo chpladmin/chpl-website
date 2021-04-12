@@ -20,6 +20,7 @@ describe('the Developer pages', () => {
         let developer = 'GE Healthcare';
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       it('should have a Direct Reviews section', () => {
@@ -37,6 +38,7 @@ describe('the Developer pages', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       it('should not have split developer button', () => {

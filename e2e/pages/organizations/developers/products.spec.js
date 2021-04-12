@@ -41,6 +41,7 @@ describe('the Product part of the Developers page', () => {
         let developer = 'Greenway Health, LLC';
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       describe('when looking at "PrimeSuite" product', () => {
@@ -113,6 +114,7 @@ describe('the Product part of the Developers page', () => {
             };
             contact.set(poc);
             actionBar.save();
+            page.certificationStatusFilter(0);
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
             product.scrollIntoView({block: 'center', inline: 'center'});
@@ -144,6 +146,7 @@ describe('the Product part of the Developers page', () => {
             let newName = name + ' - ' + timestamp;
             page.editProductName.setValue(newName);
             actionBar.save();
+            page.certificationStatusFilter(0);
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
             product = page.getProduct(newName);
@@ -178,6 +181,7 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       describe('when on the "MEDITECH MAGIC Oncology" product', () => {
@@ -207,6 +211,7 @@ describe('the Product part of the Developers page', () => {
 
           // act
           actionBar.save();
+          page.certificationStatusFilter(0);
           page.productsHeader.waitForDisplayed();
 
           // assert product list is updated
@@ -253,6 +258,7 @@ describe('the Product part of the Developers page', () => {
           page.editProductName.clearValue();
           page.editProductName.addValue(newProduct);
           actionBar.save();
+          page.certificationStatusFilter(0);
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
           expect(page.getProduct(newProduct)).toExist();

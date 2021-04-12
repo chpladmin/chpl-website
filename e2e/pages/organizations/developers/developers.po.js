@@ -160,9 +160,9 @@ class DevelopersPage {
   }
 
   splitProduct (product) {
-    this.getSplitButton(product).click();
+    this.getSplitButton(product).scrollAndClick();
     let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
-    btn.click();
+    btn.scrollAndClick();
   }
 
   mergeProduct (product) {
@@ -267,6 +267,11 @@ class DevelopersPage {
 
   moveDeveloperToBeMerged (developerName) {
     $('//div[text()=\'' + developerName + '\']').click();
+  }
+
+  certificationStatusFilter (idx) {
+    $('#filter-button').click();
+    $('chpl-filter-multiple').$$('.filter-multiple__item')[idx].click();
   }
 }
 

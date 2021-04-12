@@ -28,6 +28,7 @@ describe('the Product part of the Developers page', () => {
     beforeEach(() => {
       page.selectDeveloper(developer);
       page.getDeveloperPageTitle(developer).waitForDisplayed();
+      page.certificationStatusFilter(0);
       product = page.getProduct(productName);
       product.scrollIntoView({block: 'center', inline: 'center'});
       page.selectProduct(product);
@@ -56,6 +57,7 @@ describe('the Product part of the Developers page', () => {
     beforeEach(() => {
       page.selectDeveloper(developer);
       page.getDeveloperPageTitle(developer).waitForDisplayed();
+      page.certificationStatusFilter(0);
       product = page.getProduct(productName);
       product.scrollIntoView({block: 'center', inline: 'center'});
       page.selectProduct(product);
@@ -89,6 +91,7 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -108,6 +111,7 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.certificationStatusFilter(0);
       });
 
       describe('when on the "MEDITECH Expanse 2.2 Oncology" product', () => {
@@ -141,11 +145,13 @@ describe('the Product part of the Developers page', () => {
 
         it('should allow cancellation of a split', () => {
           let productCount = page.products.length;
+          product.scrollIntoView({block: 'center', inline: 'center'});
           page.splitProduct(product);
           page.editProductName.clearValue();
           page.editProductName.setValue(Math.random());
           actionBar.cancel();
           actionConfirmation.yes.click();
+          page.certificationStatusFilter(0);
           page.productsHeader.waitForDisplayed();
           expect(page.getProduct(productName)).toExist();
           expect(page.products.length).toBe(productCount);
