@@ -407,7 +407,7 @@ export const ReportsListingsComponent = {
       ];
       p = 0;
       c = 0;
-      while (pTask[p] || cTask[c]) {
+      while (pTask[p] && cTask[c]) {
         if (pTask.length === p || pTask[p].description > cTask[c].description) {
           ret.push('<li>Task Description "' + cTask[c].description + '" was added</li>');
           c++;
