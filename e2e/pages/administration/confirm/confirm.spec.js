@@ -36,8 +36,8 @@ describe('when user is on confirm listing page', () => {
     it('should allow user to reject a file', () => {
       hooks.open('#/administration/confirm/listings');
       confirmPage.rejectListing(rejectListingId1);
-      assert.equal(toast.toastTitle.getText(), 'Success');
-      assert.isFalse(confirmPage.findListingtoReject(rejectListingId1).isDisplayed());
+      expect(toast.toastTitle.getText()).toHaveTextContaining('Success');
+      expect(confirmPage.findListingtoReject(rejectListingId1).isDisplayed()).toBe(false);
     });
   });
 
@@ -55,8 +55,8 @@ describe('when user is on confirm listing page', () => {
       confirmPage.rejectListingcheckbox(rejectListingId2);
       confirmPage.rejectButton.waitAndClick();
       hooks.waitForSpinnerToDisappear();
-      assert.isFalse(confirmPage.findListingtoReject(rejectListingId1).isDisplayed());
-      assert.isFalse(confirmPage.findListingtoReject(rejectListingId2).isDisplayed());
+      expect(confirmPage.findListingtoReject(rejectListingId1).isDisplayed()).toBe(false);
+      expect(confirmPage.findListingtoReject(rejectListingId2).isDisplayed()).toBe(false);
     });
   });
 });
