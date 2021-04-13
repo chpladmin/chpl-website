@@ -24,9 +24,11 @@ beforeAll( () => {
 describe('When user rejects a listing while inspecting uploaded listing', () => {
 
   it('should allow listing to get rejected', () => {
-    confirmPage.gotoConfirmListingPage(listingId);
+    confirmPage.gotoPendingListingPage(listingId);
+    hooks.waitForSpinnerToDisappear();
     confirmPage.rejectButtonOnInspectListing.click();
     confirmPage.yesConfirmation.click();
+    browser.waitUntil( () => !confirmPage.inspectLabel.isDisplayed());
     hooks.waitForSpinnerToDisappear();
     assert.isFalse(confirmPage.findListingtoReject(listingId).isDisplayed());
   });
