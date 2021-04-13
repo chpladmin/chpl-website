@@ -64,6 +64,10 @@ export const ConfirmListingsComponent = {
       });
       this.modalInstance.result.then(result => {
         if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
+          this.dropped = true;
+          this.networkService.getPendingListings().then(() => {
+            this.dropped = false;
+          });
           if (result.developerCreated) {
             this.developers.push(result.developer);
           }

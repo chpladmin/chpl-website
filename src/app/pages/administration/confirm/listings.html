@@ -1,5 +1,5 @@
 <div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" ui-view>
-  <div class="col-md-12">
+  <div class="col-md-12" ng-if="!$ctrl.dropped">
     <h2>View Products in the process of upload</h2>
     <chpl-confirm-listings-bridge
       on-process="::$ctrl.handleProcess"></chpl-confirm-listings-bridge>
