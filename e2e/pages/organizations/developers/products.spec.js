@@ -258,9 +258,9 @@ describe('the Product part of the Developers page', () => {
           page.editProductName.clearValue();
           page.editProductName.addValue(newProduct);
           actionBar.save();
+          toast.clearAllToast();
           page.certificationStatusFilter(0);
           page.productsHeader.waitForDisplayed();
-          toast.clearAllToast();
           expect(page.getProduct(newProduct)).toExist();
         });
       });

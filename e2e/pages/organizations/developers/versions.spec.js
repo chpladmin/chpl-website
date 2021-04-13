@@ -137,7 +137,7 @@ describe('the Version part of the Developers page', () => {
       it('should show error message to split a version which has listings owned by different ACB than logged in ACB', () => {
         const newVersion = version + ' - split - ' + (new Date()).getTime();
         const newCode = newVersion.substring(newVersion.length - 2);
-        const movingListingId = '661';
+        const movingListingId = '5240';
         page.selectVersion(product, productId, version);
         page.getSplitButton(product).click();
         page.getVersionSplitButton(product).click();

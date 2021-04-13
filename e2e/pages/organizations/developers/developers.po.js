@@ -166,7 +166,7 @@ class DevelopersPage {
   }
 
   mergeProduct (product) {
-    this.getMergeButton(product).click();
+    this.getMergeButton(product).scrollAndClick();
     let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
   }
