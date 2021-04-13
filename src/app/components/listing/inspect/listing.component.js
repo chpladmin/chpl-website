@@ -6,12 +6,9 @@ export const InspectListingComponent = {
     resources: '<',
   },
   controller: class InspectListingController {
-    constructor ($log, $uibModal, authService, utilService) {
+    constructor ($log) {
       'ngInject';
       this.$log = $log;
-      this.$uibModal = $uibModal;
-      this.hasAnyRole = authService.hasAnyRole;
-      this.ternaryFilter = utilService.ternaryFilter;
     }
 
     $onChanges (changes) {
@@ -24,21 +21,17 @@ export const InspectListingComponent = {
     }
 
     editCertifiedProduct () {
-      this.editModalInstance = this.$uibModal.open({
-        component: 'chplListingEditPage',
-        animation: false,
-        backdrop: 'static',
-        keyboard: false,
-        size: 'lg',
-        resolve: {
-          listing: () => this.listing,
-          resources: () => this.resources,
-        },
-      });
-      this.editModalInstance.result.then(result => {
-        this.listing = result;
-        this.onChange({listing: result});
-      });
+      this.isEditing = true;
+    }
+
+    handleCancel () {
+      this.isEditing = false;
+    }
+
+    handleChange (listing) {
+      this.isEditing = false;
+      this.listing = listing;
+      this.onChange({listing: listing});
     }
   },
 };

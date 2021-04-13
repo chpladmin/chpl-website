@@ -1,10 +1,11 @@
 export const ListingEditPageComponent = {
   templateUrl: 'chpl.listing/edit.html',
   bindings: {
+    isConfirming: '<',
     listing: '<',
+    onCancel: '&',
+    onChange: '&',
     resources: '<',
-    resolve: '<',
-    modalInstance: '<',
   },
   controller: class ListingEditPageComponent {
     constructor ($log, $q, $state, networkService) {
@@ -26,15 +27,6 @@ export const ListingEditPageComponent = {
       this.resources = {};
     }
 
-    $onInit () {
-      if (this.resolve) {
-        this.listingBasic = angular.copy(this.resolve.listing);
-        this.listingDetails = angular.copy(this.resolve.listing);
-        this.resources = angular.copy(this.resolve.resources);
-        this.isConfirming = true;
-      }
-    }
-
     $onChanges (changes) {
       if (changes.listing) {
         this.listingBasic = angular.copy(changes.listing.currentValue);
@@ -47,7 +39,7 @@ export const ListingEditPageComponent = {
 
     cancel () {
       if (this.isConfirming) {
-        this.modalInstance.dismiss();
+        this.onCancel();
       } else {
         this.$state.go('^.^');
       }
@@ -82,7 +74,7 @@ export const ListingEditPageComponent = {
       this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
       this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
       if (this.isConfirming) {
-        this.modalInstance.close(this.listingBasic);
+        this.onChange({listing: this.listingBasic});
       } else {
         let updateObject = {
           listing: this.listingBasic,
