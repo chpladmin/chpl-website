@@ -24,35 +24,21 @@ export const InspectListingComponent = {
     }
 
     editCertifiedProduct () {
-      // if listing-edit is off, use this modal. If it's on, we'll need a new thing
       this.editModalInstance = this.$uibModal.open({
-        templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
-        controller: 'EditCertifiedProductController',
-        controllerAs: 'vm',
+        component: 'chplListingEditPage',
         animation: false,
         backdrop: 'static',
         keyboard: false,
         size: 'lg',
         resolve: {
-          activeCP: () => this.listing,
-          isAcbAdmin: () => this.hasAnyRole(['ROLE_ACB']),
-          isChplAdmin: () => this.hasAnyRole(['ROLE_ADMIN']),
+          listing: () => this.listing,
           resources: () => this.resources,
-          workType: () => 'confirm',
         },
       });
       this.editModalInstance.result.then(result => {
         this.listing = result;
         this.onChange({listing: result});
       });
-    }
-
-    checkQmsBoolean (qms) {
-      if (qms === null) {
-        return this.listing.qmsStandards.length > 0 ? 'True' : 'False';
-      } else {
-        return this.listing.hasQms ? 'True' : 'False';
-      }
     }
   },
 };
