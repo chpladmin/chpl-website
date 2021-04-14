@@ -81,11 +81,11 @@ class ConfirmPage {
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
   }
 
-  rejectListingcheckbox (chplId) {
+  rejectListingCheckbox (chplId) {
     $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
   }
 
-  findListingtoReject (chplId) {
+  findListingToReject (chplId) {
     return $('//td[text()="' + chplId + '"]');
   }
 

@@ -34,7 +34,7 @@ describe('listing with no confirm warnings and no errors', () => {
     confirmPage.confirmListing();
     assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
     confirmPage.waitForSuccessfulConfirm();
-    assert.equal(confirmPage.toastContainerTitle.getText(),'Please stand by');
+    assert.equal(confirmPage.toastContainerTitle.getText(), 'Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
     assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
@@ -77,7 +77,7 @@ describe('listing with warnings on confirm and no errors', () => {
     confirmPage.warningCheckbox.click();
     confirmPage.confirmListing();
     confirmPage.waitForSuccessfulConfirm();
-    assert.equal(confirmPage.toastContainerTitle.getText(),'Please stand by');
+    assert.equal(confirmPage.toastContainerTitle.getText(), 'Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
     assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');

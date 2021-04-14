@@ -30,6 +30,6 @@ describe('When user rejects a listing while inspecting uploaded listing', () => 
     confirmPage.yesConfirmation.click();
     browser.waitUntil( () => !confirmPage.inspectLabel.isDisplayed());
     hooks.waitForSpinnerToDisappear();
-    expect(confirmPage.findListingtoReject(listingId).isDisplayed()).toBe(false);
+    expect(confirmPage.findListingToReject(listingId).isDisplayed()).toBe(false);
   });
 });

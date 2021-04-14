@@ -6,7 +6,7 @@ import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../../components/toast/toast.po';
 
-let confirmPage, hooks, loginComponent, toast,uploadPage;
+let confirmPage, hooks, loginComponent, toast, uploadPage;
 const rejectListingId1 = '15.04.04.1722.AQA3.03.01.1.200620';
 const rejectListingId2 = '15.04.04.1722.AQA4.03.01.1.200620';
 
@@ -41,7 +41,7 @@ describe('when user is on confirm listing page', () => {
       hooks.open('#/administration/confirm/listings');
       confirmPage.rejectListing(rejectListingId1);
       expect(toast.toastTitle.getText()).toBe('Success');
-      expect(confirmPage.findListingtoReject(rejectListingId1).isDisplayed()).toBe(false);
+      expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
     });
   });
 
@@ -59,13 +59,13 @@ describe('when user is on confirm listing page', () => {
 
     it('should allow user to mass reject multiple listings', () => {
       hooks.open('#/administration/confirm/listings');
-      confirmPage.rejectListingcheckbox(rejectListingId1);
-      confirmPage.rejectListingcheckbox(rejectListingId2);
+      confirmPage.rejectListingCheckbox(rejectListingId1);
+      confirmPage.rejectListingCheckbox(rejectListingId2);
       confirmPage.rejectButton.waitAndClick();
       hooks.waitForSpinnerToDisappear();
       expect(toast.toastTitle.getText()).toBe('Success');
-      expect(confirmPage.findListingtoReject(rejectListingId1).isDisplayed()).toBe(false);
-      expect(confirmPage.findListingtoReject(rejectListingId2).isDisplayed()).toBe(false);
+      expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
+      expect(confirmPage.findListingToReject(rejectListingId2).isDisplayed()).toBe(false);
     });
   });
 });
