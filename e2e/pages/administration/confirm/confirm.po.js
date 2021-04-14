@@ -82,7 +82,7 @@ class ConfirmPage {
   }
 
   rejectListingcheckbox (chplId) {
-    $('#reject-pending-listing-' + chplId).scrollAndClick();
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
   }
 
   findListingtoReject (chplId) {
