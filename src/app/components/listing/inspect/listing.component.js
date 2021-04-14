@@ -22,16 +22,18 @@ export const InspectListingComponent = {
 
     editCertifiedProduct () {
       this.isEditing = true;
+      this.onChange({action: 'edit'});
     }
 
     handleCancel () {
       this.isEditing = false;
+      this.onChange({action: 'cancel'});
     }
 
     handleChange (listing) {
       this.isEditing = false;
       this.listing = listing;
-      this.onChange({listing: listing});
+      this.onChange({action: 'save', data: listing});
     }
   },
 };

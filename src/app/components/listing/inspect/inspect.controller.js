@@ -20,7 +20,7 @@
 
     vm.confirm = confirm;
     vm.reject = reject;
-    vm.editListing = editListing;
+    vm.handleChange = handleChange;;
 
     vm.next = next;
     vm.previous = previous;
@@ -142,8 +142,20 @@
       }
     }
 
-    function editListing (listing) {
-      vm.cp = listing;
+    function handleChange (action, data) {
+      switch (action) {
+        case 'cancel':
+          vm.isEditing = false;
+          break;
+        case 'edit':
+          vm.isEditing = true;
+          break;
+        case 'save':
+          vm.isEditing = false;
+          vm.cp = data;
+          break;
+          // no default
+      }
     }
 
     function next () {
