@@ -1,7 +1,7 @@
 .products__products-header {
     display: grid;
     align-items: center;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 2fr;
 }
 
 .products__products-header-item--last {
@@ -76,7 +76,7 @@
 
 .product__listings {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
     margin: 8px;
     overflow-x: auto;
 }

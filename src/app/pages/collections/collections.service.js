@@ -102,6 +102,7 @@
           acb: [],
           decertificationDate: array[i].decertificationDate,
           developer: array[i].developerName,
+          developerId: array[i].developerId,
           mainSearch: array[i].developerName,
         };
         for (var j = 0; j < array[i].acbNames.length; j++) {
