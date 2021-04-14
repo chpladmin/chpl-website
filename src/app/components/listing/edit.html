@@ -210,7 +210,7 @@
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
   </div>
   <br />
-  <div class="form-group">
+  <div class="form-group" ng-if="$ctrl.workType !== 'confirm'">
     <label for="reason-for-change">Reason for Change</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.reason" id="reason-for-change" name="reasonForChange" ng-change="$ctrl.update()">
     If changes are made in any of the following ways, a Reason for Change is required:
