@@ -90,11 +90,11 @@ class ConfirmPage {
   }
 
   rejectListing (chplId) {
-    $('#reject-pending-listing-' + chplId).scrollAndClick();
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
     } else {
-      $('#reject-pending-listing-' + chplId).waitAndClick();
+      $('//input[@id="reject-pending-listing-' + chplId + '"]').waitAndClick();
       this.rejectButton.waitAndClick();
     }
   }
