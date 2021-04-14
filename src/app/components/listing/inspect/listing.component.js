@@ -1,4 +1,4 @@
-export const InspectListingComponent = {
+const InspectListingComponent = {
   templateUrl: 'chpl.components/listing/inspect/listing.html',
   bindings: {
     listing: '<',
@@ -6,12 +6,13 @@ export const InspectListingComponent = {
     resources: '<',
   },
   controller: class InspectListingController {
-    constructor ($log) {
+    constructor($log) {
       'ngInject';
+
       this.$log = $log;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.listing) {
         this.listing = angular.copy(changes.listing.currentValue);
       }
@@ -20,23 +21,25 @@ export const InspectListingComponent = {
       }
     }
 
-    editCertifiedProduct () {
+    editCertifiedProduct() {
       this.isEditing = true;
-      this.onChange({action: 'edit'});
+      this.onChange({ action: 'edit' });
     }
 
-    handleCancel () {
+    handleCancel() {
       this.isEditing = false;
-      this.onChange({action: 'cancel'});
+      this.onChange({ action: 'cancel' });
     }
 
-    handleChange (listing) {
+    handleChange(listing) {
       this.isEditing = false;
       this.listing = listing;
-      this.onChange({action: 'save', data: listing});
+      this.onChange({ action: 'save', data: listing });
     }
   },
 };
 
 angular.module('chpl.components')
   .component('chplInspectListing', InspectListingComponent);
+
+export default InspectListingComponent;

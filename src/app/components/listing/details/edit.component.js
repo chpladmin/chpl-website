@@ -97,10 +97,7 @@ const ListingDetailsEditComponent = {
         this.listing.ics.parents = [];
       }
       if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
-        this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map((muu) => {
-          muu.muuDateObject = new Date(muu.muuDate);
-          return muu;
-        });
+        this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map((muu) => ({ ...muu, muuDateObject: new Date(muu.muuDate) }));
       } else {
         this.listing.meaningfulUseUserHistory = [];
       }
@@ -115,21 +112,21 @@ const ListingDetailsEditComponent = {
     prepCqms() {
       if (this.cqms) {
         this.cqms = this.cqms.map((cqm, idx) => {
-          cqm.id = idx;
-          for (let j = 1; j < 5; j++) {
-            cqm[`hasC${j}`] = this.checkC(cqm, j);
+          const ret = { ...cqm, id: idx };
+          for (let j = 1; j < 5; j += 1) {
+            ret[`hasC${j}`] = this.checkC(cqm, j);
           }
-          cqm.allVersions.sort((a, b) => {
+          ret.allVersions.sort((a, b) => {
             const aVal = parseInt(a.substring(1), 10);
             const bVal = parseInt(b.substring(1), 10);
             return aVal - bVal;
           });
-          cqm.successVersions.sort((a, b) => {
+          ret.successVersions.sort((a, b) => {
             const aVal = parseInt(a.substring(1), 10);
             const bVal = parseInt(b.substring(1), 10);
             return aVal - bVal;
           });
-          return cqm;
+          return ret;
         });
       }
     }
@@ -144,7 +141,7 @@ const ListingDetailsEditComponent = {
     }
 
     saveCert(cert) {
-      for (let i = 0; i < this.listing.certificationResults.length; i++) {
+      for (let i = 0; i < this.listing.certificationResults.length; i += 1) {
         if (this.listing.certificationResults[i].number === cert.number
                     && this.listing.certificationResults[i].title === cert.title) {
           this.listing.certificationResults[i] = cert;
@@ -185,18 +182,19 @@ const ListingDetailsEditComponent = {
     }
 
     updateCs() {
-      this.cqms.forEach((cqm) => {
-        cqm.criteria = [];
+      this.cqms = this.cqms.map((cqm) => {
+        const ret = { ...cqm, criteria: [] };
         if (cqm.success || cqm.successVersions.length > 0) {
-          for (let j = 1; j < 5; j++) {
+          for (let j = 1; j < 5; j += 1) {
             if (cqm[`hasC${j}`]) {
               const number = `170.315 (c)(${j})`;
-              cqm.criteria.push({
+              ret.criteria.push({
                 certificationNumber: number,
               });
             }
           }
         }
+        return ret;
       });
       this.listing.cqmResults = angular.copy(this.cqms);
       this.update();
@@ -219,8 +217,7 @@ const ListingDetailsEditComponent = {
           return items.filter((i) => !this.listing.qmsStandards.filter((qs) => qs.qmsStandardName === i.name).length);
         case 'targetedUsers':
           return items.filter((i) => !this.listing.targetedUsers.filter((tu) => tu.targetedUserName === i.name).length);
-        default:
-          this.$log.error('filter', type, items);
+          // no default
       }
     }
 
@@ -285,7 +282,7 @@ const ListingDetailsEditComponent = {
       if (angular.isUndefined(cqm[`hasC${num}`])) {
         ret = false;
         if (cqm.criteria) {
-          for (let i = 0; i < cqm.criteria.length; i++) {
+          for (let i = 0; i < cqm.criteria.length; i += 1) {
             ret = ret || (cqm.criteria[i].certificationNumber === `170.315 (c)(${num})`);
           }
         }
