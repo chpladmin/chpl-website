@@ -74,6 +74,7 @@ function ChplApiKeyRegistration () {
   });
 
   //Debounce the Email text textbox
+  //https://dev.to/przemwo/how-to-execute-a-function-only-after-the-user-stops-typing-beh
   useEffect(() => {
     const timeoutId = setTimeout(() => {}, 1000);
     return () => clearTimeout(timeoutId);
