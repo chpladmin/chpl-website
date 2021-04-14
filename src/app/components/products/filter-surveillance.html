@@ -1,0 +1,24 @@
+<div uib-dropdown auto-close="outsideClick" class="btn-group">
+  <button class="btn btn-default dropdown-toggle" type="button" id="filter-surveillance" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
+    <i class="fa fa-filter"></i> {{ $ctrl.getTitle() }}
+  </button>
+  <ul class="dropdown-menu filter-multiple__dropdown" aria-labeledby="filter-surveillance" uib-dropdown-menu>
+    <li ng-click="$ctrl.update('neverSurveilled')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('neverSurveilled')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('neverSurveilled')"></i> Has never had a Surveillance Activity</li>
+    <li ng-click="$ctrl.update('has-had')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('has-had')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('has-had')"></i> Has had a Surveillance Activity</li>
+    <span ng-if="$ctrl.isSelected('has-had')">
+      <li class="text-center filter-multiple__item">
+        <button ng-click="$ctrl.update('matchAll')" class="btn btn-default">
+          Matching <strong>Any</strong> <i class="fa" ng-class="$ctrl.isSelected('matchAll') ? 'fa-toggle-on' : 'fa-toggle-off'"></i> <strong>All</strong>
+        </button>
+      </li>
+      <li ng-click="$ctrl.update('never')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('never')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('never')"></i> Never had a Non-conformity</li>
+      <li ng-click="$ctrl.update('open')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('open')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('open')"></i> Open Non-conformity</li>
+      <li ng-click="$ctrl.update('closed')" class="filter-multiple__item" ng-class="$ctrl.selectedClass('closed')"><i class="fa" ng-class="$ctrl.getItemStateDisplay('closed')"></i> Closed Non-conformity</li>
+    </span>
+    <li class="text-center" ng-if="$ctrl.isSelected('has-had') || $ctrl.isSelected('neverSurveilled')">
+      <button ng-click="$ctrl.clearFilter(); $event.stopPropagation();" class="btn btn-link">
+        Clear Surveillance Activity Filter
+      </button>
+    </li>
+  </ul>
+</div>

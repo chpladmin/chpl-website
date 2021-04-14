@@ -3,20 +3,32 @@
     <div class="panel-heading products__products-header">
       <div class="products__products-header-item"><h2 class="panel-title">Products</h2></div>
       <div class="products__products-header-item products__products-header-item--last" ng-if="$ctrl.statusItems">
+        <button class="btn btn-default"
+                ng-if="$ctrl.isFiltered()"
+                ng-click="$ctrl.clearFilters()">
+          Clear Filters
+        </button>
+        <chpl-filter-surveillance
+          filter="$ctrl.filter.surveillance"
+          on-change="$ctrl.handleFilter(filter)">
+        </chpl-filter-surveillance>
         <chpl-filter-multiple
           items="$ctrl.statusItems"
-          on-change="$ctrl.doFilter(items)">
+          on-change="$ctrl.handleFilter(items)">
         </chpl-filter-multiple>
         <button class="btn btn-default" ng-click="$ctrl.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i><span class="sr-only">View Certification Status Legend</span></button>
       </div>
     </div>
     <div class="panel-body">
-      <div ng-repeat="product in $ctrl.products" class="products__product panel-ai">
+      <div ng-if="$ctrl.displayedProducts.length === 0">
+        <p>No Listings match the filters</p>
+      </div>
+      <div ng-repeat="product in $ctrl.displayedProducts" class="products__product panel-ai">
         <div class="panel-heading products__product-header" ng-class="{'products__product-header--inactive' : !product.hasActiveListings}" ng-click="product.isOpen = !product.isOpen">
           <div class="products__product-header-item products__product-header-item--first">{{ product.name }}</div>
-          <div class="products__product-header-item">{{ product.activeAcbs }}</div>
-          <div class="products__product-header-item">{{ $ctrl.getListingCounts(product) }}</div>
-          <div class="products__product-header-item products__product-header-item--end">{{ product.versions ? product.versions.length - 1 : 0 }} Version<span ng-if="product.versions.length !== 2">s</span></div>
+          <div class="products__product-header-item"><span ng-if="product.totalSurveillance > 0">{{ product.openSurveillance }} open / {{ product.totalSurveillance }} surveillance<span ng-if="product.totalSurveillance !== 1">s</span></span></div>
+          <div class="products__product-header-item">{{ product.listingCounts }}</div>
+          <div class="products__product-header-item products__product-header-item--end">{{ product.availableVersions ? product.availableVersions.length - 1 : 0 }} Version<span ng-if="product.availableVersions.length !== 2">s</span></div>
           <div class="products__product-header-item products__product-header-item--end"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
         </div>
         <div ng-if="product.isOpen" class="panel-body">
@@ -26,7 +38,7 @@
                 <label for="active-version-{{ product.productId }}">Version</label>
                 <select ng-model="product.activeVersion"
                         id="active-version-{{ product.productId }}" name="product.activeVersion" class="input-sm form-control"
-                        ng-options="v as v.version for v in product.versions">
+                        ng-options="v as v.version for v in product.availableVersions">
                 </select>
               </div>
               <div class="product__product-info-item-action">
@@ -101,7 +113,6 @@
               </div>
             </div>
             <div class="product__listings">
-              <p ng-if="$ctrl.noVisibleListings(product)">No Listings match the filter</p>
               <div class="product__listing" ng-repeat="listing in product.activeVersion.listings | filter:{displayed:true}">
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">CHPL&nbsp;Product&nbsp;Number</div>
@@ -116,8 +127,8 @@
                   <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
                 </div>
                 <div class="product__listing-data-item">
-                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">ONC&#8209;ACB</div>
-                  <div class="product__listing-element">{{ listing.acb.name }}</div>
+                  <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">#&nbsp;Non&#8209;conformities</div>
+                  <div class="product__listing-element">{{ listing.openSurveillanceNonConformityCount }} open / {{ listing.closedSurveillanceNonConformityCount }} closed</div>
                 </div>
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Date</div>

@@ -15,7 +15,7 @@
     function activate () {
       vm.columnSet = [
         { predicate: 'edition', display: 'Edition', sortType: 'single' },
-        { predicate: 'developer', display: 'Developer', sortType: 'single' },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', isDeveloperLink: true },
         { predicate: 'product', display: 'Product', sortType: 'single' },
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'decertificationDate', display: 'Inactive As Of', sortType: 'single', isDate: true },
