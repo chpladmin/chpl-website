@@ -45,7 +45,7 @@ describe('the Version part of the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -67,7 +67,7 @@ describe('the Version part of the Developers page', () => {
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.save();
-          page.certificationStatusFilter(0);
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
           product = page.getProduct(productName);
@@ -99,7 +99,7 @@ describe('the Version part of the Developers page', () => {
           page.editVersionName.setValue(newVersion);
           actionBar.cancel();
           actionConfirmation.yes.click();
-          page.certificationStatusFilter(0);
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           product = page.getProduct(productName);
           product.scrollIntoView({block: 'center', inline: 'center'});
@@ -156,7 +156,7 @@ describe('the Version part of the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -179,7 +179,7 @@ describe('the Version part of the Developers page', () => {
           page.versionName.clearValue();
           page.versionName.addValue(newVersion);
           actionBar.save();
-          page.certificationStatusFilter(0);
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
           product = page.getProduct(name);
@@ -203,7 +203,7 @@ describe('the Version part of the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -236,7 +236,7 @@ describe('the Version part of the Developers page', () => {
 
         // act
         actionBar.save();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         page.productsHeader.waitForDisplayed();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});

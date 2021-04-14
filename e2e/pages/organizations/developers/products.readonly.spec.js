@@ -28,7 +28,7 @@ describe('the Product part of the Developers page', () => {
     beforeEach(() => {
       page.selectDeveloper(developer);
       page.getDeveloperPageTitle(developer).waitForDisplayed();
-      page.certificationStatusFilter(0);
+      page.selectAllCertificationStatus();
       product = page.getProduct(productName);
       product.scrollIntoView({block: 'center', inline: 'center'});
       page.selectProduct(product);
@@ -57,7 +57,7 @@ describe('the Product part of the Developers page', () => {
     beforeEach(() => {
       page.selectDeveloper(developer);
       page.getDeveloperPageTitle(developer).waitForDisplayed();
-      page.certificationStatusFilter(0);
+      page.selectAllCertificationStatus();
       product = page.getProduct(productName);
       product.scrollIntoView({block: 'center', inline: 'center'});
       page.selectProduct(product);
@@ -91,7 +91,7 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -111,11 +111,11 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
       });
 
       describe('when on the "MEDITECH Expanse 2.2 Oncology" product', () => {
-        let productName = 'MEDITECH Expanse 2.2 Oncology';
+        const productName = 'MEDITECH Expanse 2.2 Oncology';
 
         beforeEach(() => {
           product = page.getProduct(productName);
@@ -130,7 +130,7 @@ describe('the Product part of the Developers page', () => {
       });
 
       describe('when on the "MEDITECH MAGIC Electronic Health Record Core HCIS" product', () => {
-        let productName = 'MEDITECH MAGIC Electronic Health Record Core HCIS';
+        const productName = 'MEDITECH MAGIC Electronic Health Record Core HCIS';
 
         beforeEach(() => {
           product = page.getProduct(productName);
@@ -151,7 +151,7 @@ describe('the Product part of the Developers page', () => {
           page.editProductName.setValue(Math.random());
           actionBar.cancel();
           actionConfirmation.yes.click();
-          page.certificationStatusFilter(0);
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           expect(page.getProduct(productName)).toExist();
           expect(page.products.length).toBe(productCount);

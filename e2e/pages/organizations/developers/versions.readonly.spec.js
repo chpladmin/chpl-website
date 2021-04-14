@@ -37,13 +37,13 @@ describe('the Version part of the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
       });
 
       describe('when merging versions of "Greenway Intergy Meaningful Use Edition" product', () => {
         const versionToBeMerged = 'v10';
         const productId = 837;
-        let name = 'Greenway Intergy Meaningful Use Edition';
+        const name = 'Greenway Intergy Meaningful Use Edition';
         beforeEach(() => {
           version = 'v11';
           newVersion = version + ' - ' + timestamp;
@@ -77,7 +77,7 @@ describe('the Version part of the Developers page', () => {
       });
 
       describe('on "MediaDent 10.0 using Intergy v9" product', () => {
-        let name = 'MediaDent 10.0 using Intergy v9';
+        const name = 'MediaDent 10.0 using Intergy v9';
         beforeEach(() => {
           product = page.getProduct(name);
           product.scrollIntoView({block: 'center', inline: 'center'});
@@ -102,7 +102,7 @@ describe('the Version part of the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -128,7 +128,7 @@ describe('the Version part of the Developers page', () => {
         page.splitVersionVersion.setValue(Math.random());
         actionBar.cancel();
         actionConfirmation.yes.click();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
         page.productsHeader.waitForDisplayed();
         expect(page.getVersionCount(product).getText()).toBe(versionCount);
       });

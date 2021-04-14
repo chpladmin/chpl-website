@@ -10,13 +10,13 @@ let actionBar, address, contact, hooks, login, page, toast;
 describe('the Developers page', () => {
   let timestamp = (new Date()).getTime();
   let website = 'https://website' + timestamp + '.com';
-  let poc = {
+  let developerContact = {
     full: 'name' + timestamp,
     title: 'title' + timestamp,
     email: 'email' + timestamp + '@example.com',
     phone: 'phone' + timestamp,
   };
-  let ad = {
+  let developerAddress = {
     address: 'address' + timestamp,
     city: 'city' + timestamp,
     state: 'state' + timestamp,
@@ -58,7 +58,7 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
       });
 
       describe('when editing developer information', () => {
@@ -75,18 +75,19 @@ describe('the Developers page', () => {
         });
 
         it('should allow editing of POC', () => {
-          contact.set(poc);
+          contact.set(developerContact);
           page.editWebsite.setValue(website);
           actionBar.save();
           expect(toast.toastTitle.getText()).toEqual('Update processing');
           hooks.waitForSpinnerToDisappear();
-          expect(page.developerContact).toHaveTextContaining(poc.full);
-          expect(page.developerContact).toHaveTextContaining(poc.title);
-          expect(page.developerContact).toHaveTextContaining(poc.phone);
-          expect(page.developerContact).toHaveTextContaining(poc.email);
+          expect(page.developerContact).toHaveTextContaining(developerContact.full);
+          expect(page.developerContact).toHaveTextContaining(developerContact.title);
+          expect(page.developerContact).toHaveTextContaining(developerContact.phone);
+          expect(page.developerContact).toHaveTextContaining(developerContact.email);
           expect(page.developerWebsite).toHaveTextContaining(website);
         });
       });
+
       describe('when looking at developer with more than one product', () => {
         it('should have split developer button', () => {
           expect(page.splitDeveloper.isDisplayed()).toBe(true);
@@ -99,8 +100,8 @@ describe('the Developers page', () => {
         it('should allow split to happen', () => {
           page.splitDeveloper.click();
           page.developerName.addValue('New developer' + timestamp);
-          contact.set(poc);
-          address.set(ad);
+          contact.set(developerContact);
+          address.set(developerAddress);
           page.moveDeveloperToSplit(3526);
           actionBar.save();
           browser.waitUntil( () =>toast.toastTitle.isDisplayed());
@@ -114,14 +115,14 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
       });
 
       it('should show correct error message', () => {
         page.splitDeveloper.click();
         page.developerName.addValue('New developer' + timestamp);
-        contact.set(poc);
-        address.set(ad);
+        contact.set(developerContact);
+        address.set(developerAddress);
         page.moveDeveloperToSplit(3138);
         actionBar.save();
         expect(page.errors.getText()).toEqual('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
@@ -145,7 +146,7 @@ describe('the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
+        page.selectAllCertificationStatus();
       });
 
       it('should have merge developer button', () => {
@@ -155,7 +156,7 @@ describe('the Developers page', () => {
       it('should allow merge to happen', () => {
         page.mergeDeveloper.click();
         page.moveDeveloperToBeMerged('ABH Enterprises, LLC');
-        contact.set(poc);
+        contact.set(developerContact);
         actionBar.save();
         browser.waitUntil( () =>toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toEqual('Merge submitted');

@@ -269,9 +269,9 @@ class DevelopersPage {
     $('//div[text()=\'' + developerName + '\']').click();
   }
 
-  certificationStatusFilter (idx) {
+  selectAllCertificationStatus () {
     $('#filter-button').click();
-    $('chpl-filter-multiple').$$('.filter-multiple__item')[idx].click();
+    $('chpl-filter-multiple').$$('.filter-multiple__item')[0].click();
   }
 }
 
