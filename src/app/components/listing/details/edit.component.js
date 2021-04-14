@@ -107,6 +107,8 @@ const ListingDetailsEditComponent = {
         this.networkService.getRelatedListings(this.listing.product.productId)
           .then((family) => that.relatedListings = family.filter((item) => item.edition === '2015' && item.id !== that.listing.id));
       }
+
+      this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => ts.year === this.listing.certificationEdition.name);
     }
 
     prepCqms() {
