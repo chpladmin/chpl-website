@@ -431,7 +431,7 @@ export const ReportsListingsComponent = {
           let added = 0, removed = 0;
           let pParts = pTask[p].testParticipants.sort((a, b) => a.id - b.id);
           let cParts = cTask[c].testParticipants.sort((a, b) => a.id - b.id);
-          while (pParts[j] || cParts[k]) {
+          while (pParts[j] && cParts[k]) {
             if (pParts.length === j || pParts[j].id > cParts[k].id) {
               added++;
               k++;
