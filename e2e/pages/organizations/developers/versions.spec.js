@@ -115,37 +115,22 @@ describe('the Version part of the Developers page', () => {
           expect(page.editVersionName.getValue()).not.toBe(newVersion);
         });
       });
-    });
+      describe('when splitting "Version 2015"', () => {
+        let version = 'Version 2015';
 
-    describe('when on the "Greenway Health, LLC" Developer page, on the "Greenway Prime Suite" Product', () => {
-      let developer = 'Greenway Health, LLC';
-      let productName = 'Greenway Prime Suite';
-      let product;
-      const productId = 3230;
-      const version = '2014 (17.0)';
-      beforeEach(() => {
-        page = new DevelopersPage();
-        page.selectDeveloper(developer);
-        page.getDeveloperPageTitle(developer).waitForDisplayed();
-        page.certificationStatusFilter(0);
-        product = page.getProduct(productName);
-        product.scrollIntoView({block: 'center', inline: 'center'});
-        page.selectProduct(product);
-        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-      });
-
-      it('should show error message to split a version which has listings owned by different ACB than logged in ACB', () => {
-        const newVersion = version + ' - split - ' + (new Date()).getTime();
-        const newCode = newVersion.substring(newVersion.length - 2);
-        const movingListingId = '5240';
-        page.selectVersion(product, productId, version);
-        page.getSplitButton(product).click();
-        page.getVersionSplitButton(product).click();
-        page.splitVersionVersion.setValue(newVersion);
-        page.editVersionCode.setValue(newCode);
-        page.moveListing(movingListingId);
-        actionBar.save();
-        expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-018402 because it is owned by CCHIT.');
+        it('should show error message to split a version which has listings owned by different ACB than logged in ACB', () => {
+          const newVersion = version + ' - split - ' + (new Date()).getTime();
+          const newCode = newVersion.substring(newVersion.length - 2);
+          const movingListingId = '6299';
+          page.selectVersion(product, productId, version);
+          page.getSplitButton(product).click();
+          page.getVersionSplitButton(product).click();
+          page.splitVersionVersion.setValue(newVersion);
+          page.editVersionCode.setValue(newCode);
+          page.moveListing(movingListingId);
+          actionBar.save();
+          expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-025300 because it is owned by ICSA Labs.');
+        });
       });
     });
   });
