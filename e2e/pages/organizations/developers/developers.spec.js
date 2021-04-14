@@ -54,7 +54,7 @@ describe('the Developers page', () => {
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
       beforeEach(() => {
-        let developer = 'Greenway Health, LLC';
+        const developer = 'Greenway Health, LLC';
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
@@ -111,7 +111,7 @@ describe('the Developers page', () => {
     });
     describe('when on the "athenahealth, Inc." Developer page which has listings owned by multiple ACBs', () => {
       beforeEach(() => {
-        let developer = 'athenahealth, Inc.';
+        const developer = 'athenahealth, Inc.';
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
@@ -142,7 +142,7 @@ describe('the Developers page', () => {
 
     describe('when on the "Altos Solutions, Inc" Developer page', () => {
       beforeEach(() => {
-        let developer = 'Altos Solutions, Inc';
+        const developer = 'Altos Solutions, Inc';
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
