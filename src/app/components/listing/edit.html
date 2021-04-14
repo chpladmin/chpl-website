@@ -51,7 +51,7 @@
     <div class="data-label">Certification Status</div>
     <div class="data-label">Effective Date</div>
     <div class="data-label">Reason for status change</div>
-    <div class="manage-list__item-start" ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
+    <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
       {{ item.status.name }}
       <div class="text-danger" ng-if="!$last && $ctrl.matchesPreviousStatus(item)">Certification Status must differ from previous Status</div>
       <div class="text-danger" ng-if="$first && $ctrl.mayCauseSuspension($ctrl.certificationStatusWhenEditing($ctrl.listing))">Setting this product to this status may trigger a ban by ONC</div>
@@ -69,7 +69,7 @@
     <div class="manage-list__item--end" ng-repeat-end>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('certificationEvents', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
     </div>
-    <div class="manage-list__item-start" ng-if="$ctrl.addingItem['certificationEvents']">
+    <div class="manage-list__item--start" ng-if="$ctrl.addingItem['certificationEvents']">
       <label for="certification-event-add-new-status" class="sr-only"><span ng-if="$first">Current </span>Certification Status</label>
       <select ng-model="$ctrl.newItem['certificationEvents'].status" required
               ng-options="status as status.name disable when $ctrl.disabledStatus(status.name) for status in $ctrl.resources.statuses | orderBy:'name'"
@@ -98,7 +98,7 @@
               ng-disabled="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewStatus.$touched || $ctrl.form.certificationEventAddNewDate.$touched || $ctrl.form.certificationEventAddNewReason.$touched) && ($ctrl.form.certificationEventAddNewStatus.$error.required || $ctrl.form.certificationEventAddNewStatus.$error.required)"><i class="fa fa-save"></i></button>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('certificationEvents')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
     </div>
-    <div class="manage-list__item-start" ng-if="!$ctrl.addingItem['certificationEvents']">
+    <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['certificationEvents']">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['certificationEvents'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
     </div>
   </div>
@@ -129,13 +129,13 @@
   </div>
   <div class="manage-list__container">
     <div class="data-label">Testing Lab</div>
-    <div class="manage-list__item-start" ng-repeat-start="item in $ctrl.listing.testingLabs track by $index">
+    <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.testingLabs track by $index">
       {{ item.testingLabName }}
     </div>
     <div class="manage-list__item--end" ng-repeat-end>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('oncAtls', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
     </div>
-    <div class="manage-list__item-start" ng-if="$ctrl.addingItem['oncAtls']">
+    <div class="manage-list__item--start" ng-if="$ctrl.addingItem['oncAtls']">
       <div class="data-label sr-only"><label for="testing-lab-add-new">Add new Testing Lab</label></div>
       <select class="form-control" ng-model="$ctrl.newItem['oncAtls'].testingLabName" id="testing-lab-add-new" name="testingLabAddNew" required
               ng-options="option.name as option.name for option in $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs)">
@@ -146,7 +146,7 @@
               ng-disabled="($ctrl.showFormErrors || $ctrl.form.testingLabAddNew.$touched) && $ctrl.form.testingLabAddNew.$error.required"><i class="fa fa-save"></i></button>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('oncAtls')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
     </div>
-    <div class="manage-list__item-start" ng-if="!$ctrl.addingItem['oncAtls'] && $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs).length > 0">
+    <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['oncAtls'] && $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs).length > 0">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['oncAtls'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
     </div>
   </div>
