@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -32,7 +32,7 @@ const validationSchema = yup.object({
     .required('Name or Organization is required'),
 });
 
-function ChplApiKeyRegistration() {
+function ChplApiKeyRegistration () {
   const analytics = getAngularService('$analytics');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
@@ -69,9 +69,15 @@ function ChplApiKeyRegistration() {
       writeAnalytics(values);
       createRequest(values);
     },
-    validateOnChange: false,
+    validateOnChange: true,
     validateOnMount: true,
   });
+
+  //Debounce the Email text textbox
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {}, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [formik.values.email]);
 
   return (
     <ThemeProvider theme={theme}>
