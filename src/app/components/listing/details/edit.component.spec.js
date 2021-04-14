@@ -29,6 +29,7 @@
       accessibilityStandards: {data: []},
       qmsStandards: {data: []},
       targetedUsers: {data: []},
+      testStandards: {data: []},
     };
 
     beforeEach(() => {

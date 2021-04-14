@@ -47,10 +47,7 @@
                                      + '     additional-input2="true"'
                                      + '     additional-input2-label="Alteration"'
                                      + '     additional-input2-max-length="50"'
-                                     + '     additional-input2-required="false"'
-                                     + '     add-items="true"'
-                                     + '     add-items-option-text="Add a new option"'
-                                     + '     add-items-placeholder="Enter new option">'
+                                     + '     additional-input2-required="false">'
                                      + ' </chpl-expandable-list>');
 
         $compile(el)(scope);
@@ -80,60 +77,11 @@
 
       describe('when initializing', () => {
         it('should populate the options', () => {
-          expect(ctrl.options.length).toBe(5);
+          expect(ctrl.options.length).toBe(4);
         });
 
         it('should populate the selected items', () => {
           expect(ctrl.selectedItems.length).toBe(2);
-        });
-      });
-
-      describe('when adding item(s) to the list', () => {
-        it('should set add mode = false', () => {
-          ctrl.inAddMode = true;
-          ctrl.addItemToListClick();
-          expect(ctrl.inAddMode).toBe(false);
-        });
-
-        it('should add item to selected items', () => {
-          ctrl.selectedItems = [];
-          ctrl.addOption = 'New Option';
-          ctrl.addItemToListClick();
-          expect(ctrl.selectedItems.length).toBe(1);
-        });
-
-        it('should call onChange callback', () => {
-          ctrl.addItemToListClick();
-          expect(scope.onChange).toHaveBeenCalled();
-        });
-
-        it('should add item to options', () => {
-          ctrl.options = [];
-          ctrl.addOption = 'New Option';
-          ctrl.addItemToListClick();
-          expect(ctrl.options.length).toBe(1);
-        });
-
-        it('should clear the selected item', () => {
-          ctrl.selectedItem = 'New Option';
-          ctrl.addItemToListClick();
-          expect(ctrl.selectedItem).toBe('');
-        });
-
-        it('should clear addOption', () => {
-          ctrl.addOption = 'New Option';
-          ctrl.addItemToListClick();
-          expect(ctrl.addOption).toBe('');
-        });
-      });
-
-      describe('when cancelling addition of item', () => {
-        it('should reset the control to not be in add mode', () => {
-          ctrl.inAddMode = true;
-          ctrl.cancelAddItemToListClick();
-          expect(ctrl.inAddMode).toBe(false);
-          expect(ctrl.selectedItem).toBe('');
-          expect(ctrl.addOption).toBe('');
         });
       });
 
@@ -164,13 +112,6 @@
       });
 
       describe('when an item is selected', () => {
-        it('should should not add the selected item if it is already selected', () => {
-          const initialLength = ctrl.selectedItems.length;
-          ctrl.selectedItem = mock.selectedItems[0];
-          ctrl.selectOnChange();
-          expect(ctrl.selectedItems.length).toBe(initialLength);
-        });
-
         it('should should add the selected item to selectedItems', () => {
           const initialLength = ctrl.selectedItems.length;
           ctrl.selectedItem = {id: 3, name: 'test3'};
