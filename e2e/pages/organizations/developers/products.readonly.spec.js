@@ -38,8 +38,8 @@ describe('the Product part of the Developers page', () => {
       expect(contact.get(product)).toHaveTextContaining('Tamara Grassle');
     });
 
-    it('should have ACB name', () => {
-      expect(page.getAcbName(product).getText()).toBe('UL LLC');
+    it('should have surveillance data', () => {
+      expect(page.getSurveillanceData(product).getText()).toBe('0 open / 1 surveillance');
     });
 
     it('should have listings count', () => {

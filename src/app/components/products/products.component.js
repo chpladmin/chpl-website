@@ -1,3 +1,5 @@
+import { compliance } from '../smart-table/filters/compliance';
+
 export const ProductsComponent = {
   templateUrl: 'chpl.components/products/products.html',
   bindings: {
@@ -15,6 +17,18 @@ export const ProductsComponent = {
       this.$q = $q;
       this.$state = $state;
       this.$uibModal = $uibModal;
+      this.filter = {
+        items: [],
+        surveillance: {
+          compliance: undefined,
+          matchAll: undefined,
+          NC: {
+            never: undefined,
+            closed: undefined,
+            open: undefined,
+          },
+        },
+      };
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.statusFont = utilService.statusFont;
@@ -38,15 +52,20 @@ export const ProductsComponent = {
               version: 'All',
               listings: [],
             };
-            p.activeAcbs = new Set();
-            p.versions.forEach(v => {
-              v.listings.forEach(l => p.activeAcbs.add(l.acb.name));
-              all.listings = all.listings.concat(v.listings);
-            });
+            p.versions
+              .forEach(v => {
+                v.listings = v.listings.map(l => {
+                  l.compliance = JSON.stringify({
+                    complianceCount: l.surveillanceCount,
+                    openNonConformityCount: l.openSurveillanceNonConformityCount,
+                    closedNonConformityCount: l.closedSurveillanceNonConformityCount,
+                  });
+                  return l;
+                });
+                all.listings = all.listings.concat(v.listings);
+              });
             p.versions.unshift(all);
-            p.activeAcbs = [...p.activeAcbs].sort((a, b) => a < b ? -1 : a > b ? 1 : 0).join(', ');
             p.activeVersion = p.versions[0];
-            p.hasActiveListings = p.versions.filter(v => v.listings.filter(l => l.certificationStatus === 'Active').length > 0).length > 0;
             return p;
           })
           .sort((a, b) => {
@@ -72,7 +91,9 @@ export const ProductsComponent = {
           .filter(p => p.productId === parseInt(this.productId, 10))[0];
       }
       if (this.products && this.statusItems) {
-        this.doFilter(this.statusItems);
+        this.backupStatusItems = angular.copy(this.statusItems);
+        this.filter.items = this.statusItems;
+        this.doFilter();
       }
     }
 
@@ -81,16 +102,53 @@ export const ProductsComponent = {
       this.onCancel();
     }
 
-    doFilter (items) {
-      this.products.forEach(p => {
-        p.versions.forEach(v => {
-          if (v.listings) {
-            v.listings.forEach(l => {
-              l.displayed = items.find(i => i.value === l.certificationStatus).selected;
-            });
+    clearFilters () {
+      this.statusItems = angular.copy(this.backupStatusItems);
+      this.filter.items = [...this.statusItems];
+      this.filter.surveillance = {
+        compliance: undefined,
+        matchAll: undefined,
+        NC: {
+          never: undefined,
+          closed: undefined,
+          open: undefined,
+        },
+      };
+      this.doFilter();
+    }
+
+    doFilter () {
+      this.displayedProducts = this.products
+        .map(p => {
+          p.openSurveillance = 0;
+          p.totalSurveillance = 0;
+          p.hasActiveListings = false;
+          p.availableVersions = p.versions
+            .map(v => {
+              if (v.listings) {
+                v.listings.forEach(l => {
+                  l.displayed = this.filter.items.find(i => i.value === l.certificationStatus).selected
+                    && (!this.filter.surveillance.compliance || compliance(l.compliance, this.filter.surveillance));
+                  if (v.version !== 'All' && l.displayed) {
+                    p.openSurveillance += l.openSurveillanceCount;
+                    p.totalSurveillance += l.surveillanceCount;
+                    p.hasActiveListings = p.hasActiveListings || l.certificationStatus === 'Active';
+                  }
+                });
+              }
+              return v;
+            })
+            .filter(v => v.listings.filter(l => l.displayed).length > 0);
+          p.listingCounts = this.getListingCounts(p);
+          return p;
+        })
+        .filter(p => p.listingCounts !== '0 listings')
+        .sort((a, b) => {
+          if (a.hasActiveListings !== b.hasActiveListings) {
+            return a.hasActiveListings ? -1 : 1;
           }
+          return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
         });
-      });
     }
 
     editProduct (product) {
@@ -106,38 +164,17 @@ export const ProductsComponent = {
       });
     }
 
-    mergeProduct (product) {
-      this.$state.go('organizations.developers.developer.product.merge', {
-        productId: product.productId,
-      });
-    }
-
-    mergeVersion (product) {
-      this.$state.go('organizations.developers.developer.product.version.merge', {
-        productId: product.productId,
-        versionId: product.activeVersion.versionId,
-      });
-    }
-
-    splitProduct (product) {
-      this.$state.go('organizations.developers.developer.product.split', {
-        productId: product.productId,
-      });
-    }
-
-    splitVersion (product) {
-      this.$state.go('organizations.developers.developer.product.version.split', {
-        productId: product.productId,
-        versionId: product.activeVersion.versionId,
-      });
-    }
-
     getListingCounts (product) {
       let counts = product.versions
         .filter(v => v.version !== 'All')
         .reduce((acc, v) => {
-          acc.active += v.listings.filter(l => l.certificationStatus === 'Active').length;
-          acc.total += v.listings.length;
+          acc.active += v.listings
+            .filter(l => l.displayed)
+            .filter(l => l.certificationStatus === 'Active')
+            .length;
+          acc.total += v.listings
+            .filter(l => l.displayed)
+            .length;
           return acc;
         }, {active: 0, total: 0});
       let ret = '';
@@ -159,18 +196,52 @@ export const ProductsComponent = {
       case 'edit':
         this.save(data);
         break;
-                //no default
+          //no default
       }
     }
 
-    noVisibleListings (product) {
-      return product.activeVersion && product.activeVersion.listings
-        .filter(l => l.displayed)
-        .length === 0;
+    handleFilter (filter) {
+      if (filter.surveillance) {
+        this.filter.surveillance = angular.copy(filter.surveillance);
+      } else {
+        this.filter.items = angular.copy(filter);
+      }
+      this.doFilter();
+    }
+
+    isFiltered () {
+      return this.filter.surveillance.compliance
+        || this.backupStatusItems.reduce((acc, item) => acc || (this.filter.items.filter((i) => i.value === item.value)[0].selected !== item.selected), false);
+    }
+
+    mergeProduct (product) {
+      this.$state.go('organizations.developers.developer.product.merge', {
+        productId: product.productId,
+      });
+    }
+
+    mergeVersion (product) {
+      this.$state.go('organizations.developers.developer.product.version.merge', {
+        productId: product.productId,
+        versionId: product.activeVersion.versionId,
+      });
     }
 
     save (data) {
       this.onEdit({data: data});
+    }
+
+    splitProduct (product) {
+      this.$state.go('organizations.developers.developer.product.split', {
+        productId: product.productId,
+      });
+    }
+
+    splitVersion (product) {
+      this.$state.go('organizations.developers.developer.product.version.split', {
+        productId: product.productId,
+        versionId: product.activeVersion.versionId,
+      });
     }
 
     viewCertificationStatusLegend () {
