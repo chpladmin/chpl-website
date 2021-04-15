@@ -56,7 +56,9 @@
               ng-mouseover="$ctrl.act('mouseover')">Save</button>
     </div>
   </div>
-  <div class="action-bar__buttons" ng-if="$ctrl.isWizard" ng-mouseover="$ctrl.act('mouseover')">
+  <div class="action-bar__buttons"
+       ng-if="$ctrl.isWizard"
+       ng-mouseover="$ctrl.act('mouseover')">
     <div class="action-bar__button">
       <button class="btn btn-secondary" id="action-bar-cancel"
               confirm="Are you sure you wish to cancel? Your changes will not be saved."
