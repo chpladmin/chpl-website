@@ -69,16 +69,9 @@ function ChplApiKeyRegistration () {
       writeAnalytics(values);
       createRequest(values);
     },
-    validateOnChange: true,
-    validateOnMount: true,
+    validateOnChange: false,
+    validateOnBlur: true,
   });
-
-  //Debounce the Email text textbox
-  //https://dev.to/przemwo/how-to-execute-a-function-only-after-the-user-stops-typing-beh
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {}, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [formik.values.email]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,6 +88,7 @@ function ChplApiKeyRegistration () {
               id="name-organization"
               name="nameOrganization"
               label="Name or Organization"
+              required={ true }
               value={formik.values.nameOrganization}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -108,6 +102,7 @@ function ChplApiKeyRegistration () {
               id="email"
               name="email"
               label="Email"
+              required={ true }
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -123,7 +118,6 @@ function ChplApiKeyRegistration () {
             id="register-button"
             name="registerButton"
             variant="contained"
-            disabled={!formik.isValid}
             onClick={formik.handleSubmit}
           >
             Register
