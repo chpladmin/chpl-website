@@ -408,10 +408,16 @@ export const ReportsListingsComponent = {
       p = 0;
       c = 0;
       while (pTask[p] || cTask[c]) {
-        if (pTask.length === p || pTask[p].description > cTask[c].description) {
+        if (!pTask[p]) { // reached the end of the previous tasks; all remaining were added
           ret.push('<li>Task Description "' + cTask[c].description + '" was added</li>');
           c++;
-        } else if (cTask.length === c || pTask[p].description < cTask[c].description) {
+        } else if (!cTask[c]) { // reached the end of the current tasks; all remaining were removed
+          ret.push('<li>Task Description "' + pTask[p].description + '" was removed</li>');
+          p++;
+        } else if (pTask[p].description > cTask[c].description) { // found a new current task; it's added
+          ret.push('<li>Task Description "' + cTask[c].description + '" was added</li>');
+          c++;
+        } else if (pTask[p].description < cTask[c].description) { // found a previous task that's not in the current set; it's removed
           ret.push('<li>Task Description "' + pTask[p].description + '" was removed</li>');
           p++;
         } else {
@@ -432,10 +438,16 @@ export const ReportsListingsComponent = {
           let pParts = pTask[p].testParticipants.sort((a, b) => a.id - b.id);
           let cParts = cTask[c].testParticipants.sort((a, b) => a.id - b.id);
           while (pParts[j] || cParts[k]) {
-            if (pParts.length === j || pParts[j].id > cParts[k].id) {
+            if (!pParts[j]) {
               added++;
               k++;
-            } else if (cParts.length === k || pParts[j].id < cParts[k].id) {
+            } else if (!cParts[k]) {
+              removed++;
+              j++;
+            } else if (pParts[j].id > cParts[k].id) {
+              added++;
+              k++;
+            } else if (pParts[j].id < cParts[k].id) {
               removed++;
               j++;
             } else {
