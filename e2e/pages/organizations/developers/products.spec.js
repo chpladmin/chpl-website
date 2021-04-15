@@ -129,7 +129,7 @@ describe('the Product part of the Developers page', () => {
       });
 
       describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
-        let name = 'MediaDent 10.0 using SuccessEHS 7.20';
+        const name = 'MediaDent 10.0 using SuccessEHS 7.20';
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
@@ -239,7 +239,7 @@ describe('the Product part of the Developers page', () => {
         const productName = 'MEDITECH Client/Server';
         const productToBeMerged = 'MEDITECH 6.0 CCD Exchange Suite';
         let timestamp = (new Date()).getTime();
-        let newProduct = 'New product' + timestamp;
+        const newProduct = 'New product' + timestamp;
 
         beforeEach(() => {
           product = page.getProduct(productName);

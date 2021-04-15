@@ -9,14 +9,14 @@ let actionBar, address, contact, hooks, login, page, toast;
 
 describe('the Developers page', () => {
   let timestamp = (new Date()).getTime();
-  let website = 'https://website' + timestamp + '.com';
-  let developerContact = {
+  const website = 'https://website' + timestamp + '.com';
+  const developerContact = {
     full: 'name' + timestamp,
     title: 'title' + timestamp,
     email: 'email' + timestamp + '@example.com',
     phone: 'phone' + timestamp,
   };
-  let developerAddress = {
+  const developerAddress = {
     address: 'address' + timestamp,
     city: 'city' + timestamp,
     state: 'state' + timestamp,

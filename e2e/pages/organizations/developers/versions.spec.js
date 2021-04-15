@@ -53,7 +53,7 @@ describe('the Version part of the Developers page', () => {
       });
 
       describe('when editing Version "2015"', () => {
-        let version = '2015';
+        const version = '2015';
 
         beforeEach(() => {
           page.selectVersion(product, productId, version);
@@ -116,7 +116,7 @@ describe('the Version part of the Developers page', () => {
         });
       });
       describe('when splitting "Version 2015"', () => {
-        let version = 'Version 2015';
+        const version = 'Version 2015';
 
         it('should show error message to split a version which has listings owned by different ACB than logged in ACB', () => {
           const newVersion = version + ' - split - ' + (new Date()).getTime();
