@@ -173,6 +173,13 @@
             <td ng-if="$ctrl.cert.useCases"><a ai-a href="{{ $ctrl.cert.useCases }}" analytics-on="click" analytics-event="Use Cases" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.useCases }">{{ $ctrl.cert.useCases }}</a></td>
             <td ng-if="!$ctrl.cert.useCases">None</td>
           </tr>
+          <tr ng-if="$ctrl.cert.serviceBaseUrlList !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_service_base_url_list{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+            <td>
+              Service Base URL List <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.serviceBaseUrlList"><a ai-a href="{{ $ctrl.cert.serviceBaseUrlList }}" analytics-on="click" analytics-event="Service Base URL List" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.serviceBaseUrlList }">{{ $ctrl.cert.serviceBaseUrlList }}</a></td>
+            <td ng-if="!$ctrl.cert.serviceBaseUrlList">None</td>
+          </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Privacy_Security_Framework{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Privacy &amp; Security Framework <button class="btn btn-link btn-xs pull-right" uib-tooltip="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). " tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). </span><i class="fa fa-info-circle fa-lg"></i></button>
