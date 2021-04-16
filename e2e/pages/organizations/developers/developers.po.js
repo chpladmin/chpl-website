@@ -272,6 +272,7 @@ class DevelopersPage {
   selectAllCertificationStatus () {
     $('#filter-button').click();
     $('chpl-filter-multiple').$$('.filter-multiple__item')[0].click();
+    $('#filter-button').click();
   }
 }
 

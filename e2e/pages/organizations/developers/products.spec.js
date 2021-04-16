@@ -71,7 +71,7 @@ describe('the Product part of the Developers page', () => {
           page.editProductCode.setValue(newCode);
           page.moveVersion(movingVersionId);
           actionBar.save();
-          expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-009386 because it is owned by CCHIT.');
+          expect(actionBar.errorMessages.getText()).toEqual('Product split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
         });
       });
 
@@ -114,9 +114,9 @@ describe('the Product part of the Developers page', () => {
             };
             contact.set(poc);
             actionBar.save();
-            page.selectAllCertificationStatus();
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
+            page.selectAllCertificationStatus();
             product.scrollIntoView({block: 'center', inline: 'center'});
             page.selectProduct(product);
             page.getProductInfo(product).waitForDisplayed({timeout: 55000});

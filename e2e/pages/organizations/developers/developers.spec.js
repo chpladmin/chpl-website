@@ -96,17 +96,6 @@ describe('the Developers page', () => {
         it('should not have merge developer button', () => {
           expect(page.mergeDeveloper.isDisplayed()).toBe(false);
         });
-
-        it('should allow split to happen', () => {
-          page.splitDeveloper.click();
-          page.developerName.addValue('New developer' + timestamp);
-          contact.set(developerContact);
-          address.set(developerAddress);
-          page.moveDeveloperToSplit(3526);
-          actionBar.save();
-          browser.waitUntil( () =>toast.toastTitle.isDisplayed());
-          expect(toast.toastTitle.getText()).toEqual('Split submitted');
-        });
       });
     });
     describe('when on the "athenahealth, Inc." Developer page which has listings owned by multiple ACBs', () => {
@@ -160,6 +149,26 @@ describe('the Developers page', () => {
         actionBar.save();
         browser.waitUntil( () =>toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toEqual('Merge submitted');
+      });
+    });
+    describe('when looking at developer with more than one product', () => {
+      beforeEach(() => {
+        const developer = 'Greenway Health, LLC';
+        page = new DevelopersPage();
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
+      });
+
+      it('should allow split to happen', () => {
+        page.splitDeveloper.click();
+        page.developerName.addValue('New developer' + timestamp);
+        contact.set(developerContact);
+        address.set(developerAddress);
+        page.moveDeveloperToSplit(3526);
+        actionBar.save();
+        browser.waitUntil( () =>toast.toastTitle.isDisplayed());
+        expect(toast.toastTitle.getText()).toEqual('Split submitted');
       });
     });
   });
