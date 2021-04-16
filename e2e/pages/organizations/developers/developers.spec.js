@@ -8,7 +8,7 @@ import AddressComponent from '../../../components/address/address.po';
 let actionBar, address, contact, hooks, login, page, toast;
 
 describe('the Developers page', () => {
-  let timestamp = (new Date()).getTime();
+  const timestamp = (new Date()).getTime();
   const website = 'https://website' + timestamp + '.com';
   const developerContact = {
     full: 'name' + timestamp,

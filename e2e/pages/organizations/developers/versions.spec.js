@@ -179,9 +179,9 @@ describe('the Version part of the Developers page', () => {
           page.versionName.clearValue();
           page.versionName.addValue(newVersion);
           actionBar.save();
-          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
+          page.selectAllCertificationStatus();
           product = page.getProduct(name);
           product.scrollIntoView({block: 'center', inline: 'center'});
           page.selectProduct(product);
