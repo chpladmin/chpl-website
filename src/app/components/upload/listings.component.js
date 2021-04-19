@@ -2,7 +2,6 @@ export const UploadListingsComponent = {
   templateUrl: 'chpl.components/upload/listings.html',
   bindings: {
     onChange: '&',
-    beta: '@',
   },
   controller: class UploadListingsComponent {
     constructor ($filter, $log, API, Upload, authService, networkService, toaster) {

@@ -13,7 +13,7 @@ beforeEach(async () => {
 
 describe('When uploading a listing as ONC-ACB', () => {
   beforeEach(function () {
-    loginComponent.logInWithEmail('acb');
+    loginComponent.logIn('acb');
   });
 
   afterEach(function () {

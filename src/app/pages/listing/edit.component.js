@@ -1,7 +1,10 @@
 export const ListingEditPageComponent = {
   templateUrl: 'chpl.listing/edit.html',
   bindings: {
+    isConfirming: '<',
     listing: '<',
+    onCancel: '&',
+    onChange: '&',
     resources: '<',
   },
   controller: class ListingEditPageComponent {
@@ -35,7 +38,11 @@ export const ListingEditPageComponent = {
     }
 
     cancel () {
-      this.$state.go('^.^');
+      if (this.isConfirming) {
+        this.onCancel();
+      } else {
+        this.$state.go('^.^');
+      }
     }
 
     consolidateErrors () {
@@ -44,9 +51,10 @@ export const ListingEditPageComponent = {
     }
 
     isValid () {
-      return this.form.$valid
-                && this.errors.basic.length === 0
-                && this.errors.details.length === 0;
+      return this.isConfirming ||
+        (this.form.$valid
+         && this.errors.basic.length === 0
+         && this.errors.details.length === 0);
     }
 
     save () {
@@ -65,57 +73,61 @@ export const ListingEditPageComponent = {
       this.listingBasic.reportFileLocation = this.listingDetails.reportFileLocation;
       this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
       this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
-      let updateObject = {
-        listing: this.listingBasic,
-        reason: this.reason,
-        acknowledgeWarnings: this.acknowledgeWarnings,
-      };
-      this.isSaving = true;
-      this.networkService.updateCP(updateObject).then(response => {
-        if (!response.status || response.status === 200) {
-          that.listingBasic = angular.copy(response);
-          that.listingDetails = angular.copy(response);
-          that.$state.go('^.^', {forceReload: true}, {reload: true});
-        } else {
+      if (this.isConfirming) {
+        this.onChange({listing: this.listingBasic});
+      } else {
+        let updateObject = {
+          listing: this.listingBasic,
+          reason: this.reason,
+          acknowledgeWarnings: this.acknowledgeWarnings,
+        };
+        this.isSaving = true;
+        this.networkService.updateCP(updateObject).then(response => {
+          if (!response.status || response.status === 200) {
+            that.listingBasic = angular.copy(response);
+            that.listingDetails = angular.copy(response);
+            that.$state.go('^.^', {forceReload: true}, {reload: true});
+          } else {
+            that.isSaving = undefined;
+            that.errors.save = [response.error];
+            that.consolidateErrors();
+          }
+        }, error => {
           that.isSaving = undefined;
-          that.errors.save = [response.error];
-          that.consolidateErrors();
-        }
-      }, error => {
-        that.isSaving = undefined;
-        if (error.data) {
-          that.errors.save = [];
-          that.warnings.save = [];
-          if (error.data.error && error.data.error.length > 0) {
-            that.errors.save.push(error.data.error);
+          if (error.data) {
+            that.errors.save = [];
+            that.warnings.save = [];
+            if (error.data.error && error.data.error.length > 0) {
+              that.errors.save.push(error.data.error);
+            }
+            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+              that.errors.save = that.errors.save.concat(error.data.errorMessages);
+            }
+            if (error.data.warningMessages && error.data.warningMessages.length > 0) {
+              that.warnings.save = that.warnings.save.concat(error.data.warningMessages);
+            }
+            that.consolidateErrors();
           }
-          if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-            that.errors.save = that.errors.save.concat(error.data.errorMessages);
-          }
-          if (error.data.warningMessages && error.data.warningMessages.length > 0) {
-            that.warnings.save = that.warnings.save.concat(error.data.warningMessages);
-          }
-          that.consolidateErrors();
-        }
-      });
+        });
+      }
     }
 
     takeActionBarAction (action, data) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'mouseover':
-        this.consolidateErrors();
-        this.showFormErrors = true;
-        break;
-      case 'save':
-        this.save();
-        break;
-      case 'updateAcknowledgement':
-        this.acknowledgeWarnings = data;
-        break;
-                //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'mouseover':
+          this.consolidateErrors();
+          this.showFormErrors = true;
+          break;
+        case 'save':
+          this.save();
+          break;
+        case 'updateAcknowledgement':
+          this.acknowledgeWarnings = data;
+          break;
+          //no default
       }
     }
 

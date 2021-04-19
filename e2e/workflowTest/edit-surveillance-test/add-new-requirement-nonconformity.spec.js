@@ -18,7 +18,7 @@ beforeEach(async () => {
   upload = new UploadSurveillanceComponent();
   hooks = new Hooks();
   hooks.open('#/surveillance/upload');
-  loginComponent.logInWithEmail('acb');
+  loginComponent.logIn('acb');
 });
 
 afterEach(() =>{

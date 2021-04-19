@@ -10,6 +10,7 @@
           on-change="$ctrl.updateBasic(listing, messages, reason)"
           resources="$ctrl.resources"
           show-form-errors="$ctrl.showFormErrors"
+          work-type="$ctrl.isConfirming ? 'confirm' : 'edit'"
           >
         </chpl-listing-edit>
       </div>

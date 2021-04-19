@@ -17,7 +17,7 @@
     function activate () {
       vm.columnSet = [
         { predicate: 'edition', display: 'Edition', sortType: 'multi', descendingFirst: true },
-        { predicate: 'developer', display: 'Developer', sortType: 'multi' },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', isDeveloperLink: true },
         { predicate: 'product', display: 'Product', sortType: 'multi' },
         { predicate: 'version', display: 'Version', sortType: 'multi' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', transformFn: vm.linkTransform },

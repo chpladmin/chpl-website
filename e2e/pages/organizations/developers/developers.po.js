@@ -65,7 +65,7 @@ class DevelopersPage {
     return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
   }
 
-  getAcbName (product) {
+  getSurveillanceData (product) {
     return product.$('.products__product-header').$$('.products__product-header-item')[1];
   }
 

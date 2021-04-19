@@ -59,8 +59,7 @@
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
           <td>
-            <span ng-if="!$ctrl.isOn('svap-effective-date')">Test Standard</span>
-            <span ng-if="$ctrl.isOn('svap-effective-date')">Optional Standard</span>
+            <span>Optional Standard</span>
           </td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -74,10 +73,7 @@
                     new-items="$ctrl.newTestStandards"
                     selected-item-keys="$ctrl.selectedTestStandardKeys"
                     placeholder="Select a Test Standard"
-                    on-change="$ctrl.testStandardOnChange(action)"
-                    add-items="true"
-                    add-items-option-text="Add a new Test Standard"
-                    add-items-placeholder="Enter new Test Standard">
+                    on-change="$ctrl.testStandardOnChange(action)">
                   </chpl-expandable-list>
                 </div>
               </div>
