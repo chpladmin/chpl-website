@@ -1,12 +1,13 @@
-export const ConfirmListingsComponent = {
+const ConfirmListingsComponent = {
   templateUrl: 'chpl.administration/confirm/listings.html',
   bindings: {
     developers: '<',
     resources: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $state, $uibModal, authService, networkService, toaster) {
+    constructor($log, $state, $uibModal, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.$uibModal = $uibModal;
@@ -15,19 +16,19 @@ export const ConfirmListingsComponent = {
       this.toaster = toaster;
     }
 
-    $onInit () {
+    $onInit() {
       this.handleProcess = this.handleProcess.bind(this);
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
       }
       if (changes.resources) {
         this.resources = angular.copy(changes.resources.currentValue);
         if (Array.isArray(this.resources)) {
-          let resObj = {};
-          this.resources.forEach(item => {
+          const resObj = {};
+          this.resources.forEach((item) => {
             Object.assign(resObj, item);
           });
           this.resources = resObj;
@@ -35,16 +36,16 @@ export const ConfirmListingsComponent = {
       }
     }
 
-    handleProcess (listingId, beta) {
+    handleProcess(listingId, beta) {
       if (beta) {
-        this.$state.go('.listing', {id: listingId});
+        this.$state.go('.listing', { id: listingId });
       } else {
         this.inspectListing(listingId);
       }
     }
 
-    inspectListing (listingId) {
-      let that = this;
+    inspectListing(listingId) {
+      const that = this;
 
       this.modalInstance = this.$uibModal.open({
         templateUrl: 'chpl.components/listing/inspect/inspect.html',
@@ -63,7 +64,7 @@ export const ConfirmListingsComponent = {
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(result => {
+      this.modalInstance.result.then((result) => {
         if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
           this.dropped = true;
           this.networkService.getPendingListings().then(() => {
@@ -76,12 +77,12 @@ export const ConfirmListingsComponent = {
             this.toaster.pop({
               type: 'success',
               title: 'Success',
-              body: 'The Listing has been confirmed. Details are available at <a href="#/listing/' + result.listing.id + '">' + result.listing.chplProductNumber + '</a>',
+              body: `The Listing has been confirmed. Details are available at <a href="#/listing/${result.listing.id}">${result.listing.chplProductNumber}</a>`,
               bodyOutputType: 'trustedHtml',
             });
           }
           if (result.status === 'resolved') {
-            this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
+            this.uploadedListingsMessages = [`Product with ID: "${result.objectId}" has already been resolved by "${result.contact.fullName}"`];
           }
         }
       });
@@ -91,3 +92,5 @@ export const ConfirmListingsComponent = {
 
 angular.module('chpl.administration')
   .component('chplConfirmListings', ConfirmListingsComponent);
+
+export default ConfirmListingsComponent;
