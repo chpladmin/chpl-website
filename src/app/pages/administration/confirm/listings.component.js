@@ -5,13 +5,14 @@ export const ConfirmListingsComponent = {
     resources: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $state, $uibModal, authService, networkService) {
+    constructor ($log, $state, $uibModal, authService, networkService, toaster) {
       'ngInject';
       this.$log = $log;
       this.$state = $state;
       this.$uibModal = $uibModal;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
+      this.toaster = toaster;
     }
 
     $onInit () {
@@ -69,7 +70,15 @@ export const ConfirmListingsComponent = {
             this.dropped = false;
           });
           if (result.developerCreated) {
-            this.developers.push(result.developer);
+            this.developers.push(result.listing.developer);
+          }
+          if (result.status === 'confirmed') {
+            this.toaster.pop({
+              type: 'success',
+              title: 'Success',
+              body: 'The Listing has been confirmed. Details are available at <a href="#/listing/' + result.listing.id + '">' + result.listing.chplProductNumber + '</a>',
+              bodyOutputType: 'trustedHtml',
+            });
           }
           if (result.status === 'resolved') {
             this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];

@@ -134,7 +134,8 @@
         it('should add a new developer if one was created', () => {
           var result = {
             status: 'confirmed',
-            developerCreated: {id: 'new'},
+            developerCreated: true,
+            listing: {developer: {id: 'new'}},
           };
           ctrl.inspectListing(1);
           ctrl.modalInstance.close(result);

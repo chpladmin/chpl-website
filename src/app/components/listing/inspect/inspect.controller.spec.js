@@ -82,7 +82,7 @@
         expect(Mock.modalInstance.close).toHaveBeenCalledWith({
           status: 'confirmed',
           developerCreated: false,
-          developer: undefined,
+          listing: {},
         });
       });
 

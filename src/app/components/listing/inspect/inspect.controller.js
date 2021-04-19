@@ -68,7 +68,7 @@
         acknowledgeWarnings: vm.acknowledgeWarnings,
       }).then((result) => {
         vm.isConfirming = false;
-        $uibModalInstance.close({ status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer });
+        $uibModalInstance.close({ status: 'confirmed', developerCreated: vm.developerChoice === 'create', listing: result });
         toaster.clear(vm.pendingToast);
       }, (error) => {
         vm.isConfirming = false;
