@@ -126,7 +126,7 @@ exports.config = {
   baseUrl: 'http://localhost:3000/',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: config.timeout,
+  waitforTimeout: config.longTimeout,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
