@@ -146,6 +146,7 @@ export const ReportsListingsComponent = {
         {key: 'documentationUrl', display: 'Documentation URL'},
         {key: 'attestationAnswer', display: 'Attestation'},
         {key: 'useCases', display: 'Use Cases'},
+        {key: 'serviceBaseUrlList', display: 'Service Base URL List'},
         {key: 'g1Success', display: 'Certified to G1'},
         {key: 'g2Success', display: 'Certified to G2'},
         {key: 'gap', display: 'GAP Tested'},
