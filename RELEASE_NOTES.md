@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 11.11.0
+_19 April 2021_
+
+### Features
+* Show Listing Surveillance data on Developer pages
+* Do not allow users to create new test standard during edit
+
+### Flagged Features
+* Use updated Developer inspection screen during upload/confirm workflow
+
+---
+
 ## Version 11.10.0
 _5 April 2021_
 
