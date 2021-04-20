@@ -362,10 +362,16 @@ export const ReportsListingsComponent = {
       p = 0;
       c = 0;
       while (pUcd[p] || cUcd[c]) {
-        if (pUcd.length === p || pUcd[p].name > cUcd[c].name) {
+        if (!pUcd[p]) {
           ret.push('<li>UCD Process Name "' + cUcd[c].name + '" was added</li>');
           c++;
-        } else if (cUcd.length === c || pUcd[p].name < cUcd[c].name) {
+        } else if (!cUcd[c]) {
+          ret.push('<li>UCD Process Name "' + pUcd[p].name + '" was removed</li>');
+          p++;
+        } else if (pUcd[p].name > cUcd[c].name) {
+          ret.push('<li>UCD Process Name "' + cUcd[c].name + '" was added</li>');
+          c++;
+        } else if (pUcd[p].name < cUcd[c].name) {
           ret.push('<li>UCD Process Name "' + pUcd[p].name + '" was removed</li>');
           p++;
         } else {
