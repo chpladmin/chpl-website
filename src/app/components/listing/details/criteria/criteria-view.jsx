@@ -17,7 +17,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
   makeStyles,
   withStyles,
@@ -25,17 +24,8 @@ import {
 
 import theme from '../../../../themes/theme';
 import { getAngularService } from './';
-import { ChplEllipsis, ChplLink } from '../../../util/';
+import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util/';
 import { ChplReliedUponSoftware } from '../relied-upon-software';
-
-const ChplTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: '#000000',
-    color: '#ffffff',
-    boxShadow: theme.shadows[1],
-    fontSize: '.8rem',
-  },
-}))(Tooltip);
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
