@@ -25,7 +25,8 @@ import {
 
 import theme from '../../../../themes/theme';
 import { getAngularService } from './';
-import { ChplEllipsis } from '../../../util/';
+import { ChplEllipsis, ChplLink } from '../../../util/';
+import { ChplReliedUponSoftware } from '../relied-upon-software';
 
 const ChplTooltip = withStyles((theme) => ({
   tooltip: {
@@ -116,6 +117,17 @@ function ChplCriteriaView (props) {
                 </TableRow>
               </TableHead>
               <TableBody>
+                { criteria.additionalSoftware?.length > 0 &&
+                  <TableRow key="additionalSoftware">
+                    <TableCell component="th" scope="row">
+                      Relied Upon Software
+                      <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right"><ChplReliedUponSoftware sw={criteria.additionalSoftware}></ChplReliedUponSoftware></TableCell>
+                  </TableRow>
+                }
                 { criteria.gap !== null &&
                   <TableRow key="gap">
                     <TableCell component="th" scope="row">
@@ -341,6 +353,103 @@ function ChplCriteriaView (props) {
                       }
                       { criteria.testDataUsed.length === 0 && 'None' }
                     </TableCell>
+                  </TableRow>
+                }
+                { criteria.apiDocumentation !== null &&
+                  <TableRow key="apiDocumentation">
+                    <TableCell component="th" scope="row">
+                      API Documentation
+                      <ChplTooltip title="The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9)).">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">
+                      { criteria.apiDocumentation &&
+                        <ChplLink href={criteria.apiDocumentation} text={criteria.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criteria.apiDocumentation }} />
+                      }
+                      { !criteria.apiDocumentation && 'None' }
+                    </TableCell>
+                  </TableRow>
+                }
+                { criteria.exportDocumentation !== null &&
+                  <TableRow key="exportDocumentation">
+                    <TableCell component="th" scope="row">
+                      Export Documentation
+                      <ChplTooltip title="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">
+                      { criteria.exportDocumentation &&
+                        <ChplLink href={criteria.exportDocumentation} text={criteria.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criteria.exportDocumentation }} />
+                      }
+                      { !criteria.exportDocumentation && 'None' }
+                    </TableCell>
+                  </TableRow>
+                }
+                { criteria.attestationAnswer !== null &&
+                  <TableRow key="attestationAnswer">
+                    <TableCell component="th" scope="row">
+                      Attestation
+                      <ChplTooltip title="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">{criteria.attestationAnswer ? 'Yes' : 'No'}</TableCell>
+                  </TableRow>
+                }
+                { criteria.documentation !== null &&
+                  <TableRow key="documentation">
+                    <TableCell component="th" scope="row">
+                      Documentation
+                      <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">
+                      { criteria.documentation &&
+                        <ChplLink href={criteria.documentation} text={criteria.documentation} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentation }} />
+                      }
+                      { !criteria.documentation && 'None' }
+                    </TableCell>
+                  </TableRow>
+                }
+                { criteria.useCases !== null && criteria.attestationAnswer &&
+                  <TableRow key="useCases">
+                    <TableCell component="th" scope="row">
+                      Use Case(s)
+                      <ChplTooltip title="Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">
+                      { criteria.useCases &&
+                        <ChplLink href={criteria.useCases} text={criteria.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criteria.useCases }} />
+                      }
+                      { !criteria.useCases && 'None' }
+                    </TableCell>
+                  </TableRow>
+                }
+                { criteria.privacySecurityFramework !== null &&
+                  <TableRow key="privacySecurityFramework">
+                    <TableCell component="th" scope="row">
+                      Privacy &amp; Security Framework
+                      <ChplTooltip title="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). ">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">{criteria.privacySecurityFramework}</TableCell>
+                  </TableRow>
+                }
+                { criteria.sed !== null &&
+                  <TableRow key="sed">
+                    <TableCell component="th" scope="row">
+                      SED
+                      <ChplTooltip title="The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition.">
+                        <InfoOutlinedIcon className={classes.infoIcon} />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell align="right">{criteria.sed ? 'True' : 'False'}</TableCell>
                   </TableRow>
                 }
               </TableBody>

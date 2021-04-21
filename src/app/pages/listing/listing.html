@@ -126,6 +126,7 @@
             </div>
             <div class="product-element" id="listing-information-mandatory-disclosures">
               <h2 class="product-heading">Mandatory Disclosures</h2>
+              <chpl-link-bridge ng-if="$ctrl.listing.transparencyAttestationUrl" href="$ctrl.listing.transparencyAttestationUrl" text="$ctrl.listing.transparencyAttestationUrl" analytics="{event:'Transparency Disclosure', category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl}"></chpl-link-bridge>
               <a ai-a ng-if="$ctrl.listing.transparencyAttestationUrl" href="{{ $ctrl.listing.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }">{{ $ctrl.listing.transparencyAttestationUrl }}</a>
               <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
               <div class="clearfix"></div>

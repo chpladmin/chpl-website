@@ -1,3 +1,4 @@
 import {ChplEllipsis} from './ellipsis.jsx';
+import {ChplLink} from './link.jsx';
 
-export {ChplEllipsis};
+export {ChplEllipsis, ChplLink};
