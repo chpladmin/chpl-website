@@ -4,7 +4,6 @@
 .settings/
 .vscode/
 node_modules/
-test_reports/
 .sass-cache/
 prod-website.sh
 generate-release-notes.sh
