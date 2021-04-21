@@ -17,10 +17,11 @@ beforeEach(async () => {
 
 describe('When ONC-ACB uploads - ', () => {
   beforeEach(function () {
-    loginComponent.logInWithEmail('acb');
+    loginComponent.logIn('acb');
   });
 
   afterEach(function () {
+    hooks.waitForSpinnerToDisappear();
     toast.clearAllToast();
     loginComponent.logOut();
   });
@@ -32,7 +33,7 @@ describe('When ONC-ACB uploads - ', () => {
 
     it(`${testName} - shows ${message} status of upload`, () => {
       browser.pause(2000); //Finding beta component exist or not doesnt work without this pause
-      if (uploadListingComponent.uploadBetaButton.isDisplayed()) {
+      if (uploadListingComponent.chooseUploadListingBetaButton.isExisting()) {
         uploadListingComponent.uploadListingBeta(path);
         browser.waitUntil( () => toast.toastTitle.isDisplayed());
         assert.equal(toast.toastTitle.getText(), message);

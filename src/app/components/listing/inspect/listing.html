@@ -10,7 +10,7 @@
       <div class="panel-heading">
         <span>{{ $ctrl.listing.chplProductNumber }}</span>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" ng-if="!$ctrl.isEditing">
         <span>
           <strong>ACB Certification Id:</strong> {{ $ctrl.listing.acbCertificationId }} <br />
           <strong>Certification Date:</strong> {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
@@ -29,6 +29,16 @@
                                    listing="$ctrl.listing">
         </chpl-listing-details-view>
         <p><button class="btn btn-default btn-block" ng-click="$ctrl.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
+      </div>
+      <div class="panel-body" ng-if="$ctrl.isEditing">
+        <chpl-listing-edit-page
+          is-confirming="true"
+          listing="$ctrl.listing"
+          on-cancel="$ctrl.handleCancel()"
+          on-change="$ctrl.handleChange(listing)"
+          resources="$ctrl.resources"
+          >
+        </chpl-listing-edit-page>
       </div>
     </div>
   </div>

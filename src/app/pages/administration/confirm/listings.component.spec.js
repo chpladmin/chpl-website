@@ -65,7 +65,8 @@
         scope = $rootScope.$new();
         scope.developers = mock.developers;
         scope.resources = mock.resources;
-        el = angular.element('<chpl-confirm-listings developers="developers" resources="resources"></chpl-confirm-listings>');
+        scope.pendingListings = mock.pendingListings;
+        el = angular.element('<chpl-confirm-listings developers="developers" resources="resources" uploading-cps="pendingListings"></chpl-confirm-listings>');
 
         $compile(el)(scope);
         scope.$digest();
@@ -94,7 +95,6 @@
 
       describe('when loading', () => {
         it('should get the pending listing metadata', () => {
-          expect(networkService.getPendingListings).toHaveBeenCalled();
           expect(ctrl.uploadingCps.length).toBe(2);
         });
 

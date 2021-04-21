@@ -14,10 +14,10 @@ describe('when logging in', () => {
     component.logOut();
   });
 
-  it('should be able to log in as ACB', () => {
-    component.logIn('acb');
+  it('should be able to log in as drummond ACB', () => {
+    component.logIn('drummond');
     component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA ACB');
+    expect(component.toggleLoginComponent.getText()).toBe('AQA Drummond');
   });
 
   it('should be able to log in as ONC', () => {
@@ -44,10 +44,10 @@ describe('when logging in', () => {
     expect(component.toggleLoginComponent.getText()).toBe('AQA ONC');
   });
 
-  it('should be able to log in as ACB with an email address', () => {
-    component.logInWithEmail('acb');
+  it('should be able to log in as drummond ACB with an email address', () => {
+    component.logInWithEmail('drummond');
     component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA ACB');
+    expect(component.toggleLoginComponent.getText()).toBe('AQA Drummond');
   });
 
   it('should be able to log in as ONC_STAFF with an email address', () => {

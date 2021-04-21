@@ -1,9 +1,6 @@
 export const ExpandableListComponent = {
   templateUrl: 'chpl.components/util/expandable-list.html',
   bindings: {
-    addItems: '@',                      //Boolean value indicating if the control has the functionality to add new items to the drop down.  When this is true, an extra item will appear in the list and when the user selects that item, they will be presented with a text box to type in the new value.
-    addItemsOptionText: '@',            //Text for the additional option
-    addItemsPlaceholder: '@',           //Direction that appear in the text box
     additionalInput: '@',               //Boolean value indicating whether the control renders an additional text box for data associated with the selected item.
     additionalInputLabel: '@',          //String that is the label for the additional input text box.
     additionalInputRequired: '@',       //Boolean indicating if the additional input is required.
@@ -29,8 +26,6 @@ export const ExpandableListComponent = {
     }
 
     $onInit () {
-      this.addItem = '';
-      this.inAddMode = false;
       this.options = [];
       this.selectedItem = '';
       this.selectedItems = [];
@@ -55,34 +50,9 @@ export const ExpandableListComponent = {
       }
     }
 
-    addItemToListClick () {
-      this.inAddMode = false;
-
-      var addItem = {};
-      addItem[this.itemText] = this.addOption;
-      addItem[this.itemKey] = '';
-
-      var item = this._createSelectedItem(addItem);
-      this.selectedItems.push(item);
-      var action = this._getOnChangeObject('Add', item);
-      this.onChange({'action': action});
-
-      this.options.push(
-        {text: addItem[this.itemText], value: addItem}
-      );
-      this.selectedItem = '';
-      this.addOption = '';
-    }
-
     inputChange () {
       var action = this._getOnChangeObject('Edit', this.selectedItems);
       this.onChange({'action': action});
-    }
-
-    cancelAddItemToListClick () {
-      this.inAddMode = false;
-      this.selectedItem = '';
-      this.addOption = '';
     }
 
     filteredOptions () {
@@ -108,17 +78,13 @@ export const ExpandableListComponent = {
     }
 
     selectOnChange () {
-      if (this.selectedItem[this.itemKey] === undefined) {
-        this.inAddMode = true;
-      } else {
-        if (!this._doesItemExistInSelectedItems(this.selectedItem)) {
-          var item = this._createSelectedItem(this.selectedItem);
-          this.selectedItems.push(item);
-          var onChangeObject = this._getOnChangeObject('Add', item);
-          this.onChange({'action': onChangeObject});
-        }
-        this.selectedItem = '';
+      if (!this._doesItemExistInSelectedItems(this.selectedItem)) {
+        var item = this._createSelectedItem(this.selectedItem);
+        this.selectedItems.push(item);
+        var onChangeObject = this._getOnChangeObject('Add', item);
+        this.onChange({'action': onChangeObject});
       }
+      this.selectedItem = '';
       this._validateItems(this.selectedItems);
     }
 
@@ -155,14 +121,6 @@ export const ExpandableListComponent = {
 
     _populateOptions () {
       this.options = [];
-      if (this.addItems) {
-        var addItem = {};
-        addItem[this.itemText] = this.addItemsOptionText;
-        addItem[this.itemKey] = undefined;
-        this.options.push(
-          {text: addItem[this.itemText], value: addItem}
-        );
-      }
       this.items
         .sort((a, b) => a[this.itemText] < b[this.itemText] ? -1 : a[this.itemText] > b[this.itemText] ? 1 : 0)
         .forEach(arrayItem => {
@@ -212,5 +170,6 @@ export const ExpandableListComponent = {
     }
   },
 };
+
 angular.module('chpl.components')
   .component('chplExpandableList', ExpandableListComponent);

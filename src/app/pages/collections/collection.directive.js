@@ -102,10 +102,14 @@
         ret = col.nullDisplay;
       }
       if (col.transformFn) {
-        ret = col.transformFn(ret, cp);
+        ret = col.transformFn(ret, cp, vm.analyticsCategory);
       }
       if (col.isDate) {
         ret = $filter('date')(ret,'mediumDate','UTC');
+      }
+      if (col.isDeveloperLink) {
+        let link = '<a ui-sref="organizations.developers.developer({developerId: ' + cp.developerId + '})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: \'' + vm.analyticsCategory + '\' }">' + ret + '</a>';
+        ret = link;
       }
       if (col.isLink) {
         let link = '<a ui-sref="listing({id: ' + cp.id;

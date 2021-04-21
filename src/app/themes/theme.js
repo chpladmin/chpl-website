@@ -27,7 +27,6 @@ const theme = createMuiTheme({
 
   typography: {
     fontFamily: 'Lato, sans-serif',
-
     h1: {
       fontSize: '3.5em',
       fontWeight: 800,
@@ -52,7 +51,6 @@ const theme = createMuiTheme({
       fontSize: '1.3em',
       fontWeight: 400,
     },
-
     body1: {
       fontSize: '1.2em',
       lineHeight: '1.3em',
@@ -74,14 +72,15 @@ const theme = createMuiTheme({
       contained: {
         backgroundColor: '#eeeeee',
         boxShadow: 'none',
+        fontSize: 14,
         '&:hover, selected': {
           boxShadow: 'none',
         },
       },
-
       containedSecondary: {
         border: '.5px solid #156dac',
         backgroundColor: '#ffffff',
+        fontSize: 14,
         color: '#156dac',
         '&:hover': {
           backgroundColor: 'rgb(245, 249, 253, 0.9)',
@@ -91,7 +90,6 @@ const theme = createMuiTheme({
         },
       },
     },
-
     MuiListItem: {
       root: {
         '&:hover': {
@@ -102,6 +100,12 @@ const theme = createMuiTheme({
     MuiCheckbox: {
       root: {
         color: '#156dac',
+      },
+      colorSecondary: {
+        color: '#156dac',
+        '&$checked': {
+          color: '#156dac',
+        },
       },
     },
     MuiCard: {
@@ -116,9 +120,50 @@ const theme = createMuiTheme({
         backgroundColor: '#f5f9fd',
       },
     },
+    MuiCardActions: {
+      root: {
+        backgroundColor: '#f9f9f9',
+      },
+    },
     MuiFormHelperText: {
       root: {
-        fontSize: 14,
+        fontSize: 12,
+      },
+    },
+    MuiTable: {
+      root: {
+        borderRadius: '8px',
+      },
+    },
+    MuiTableCell: {
+      head: {
+        color: '#156dac',
+        fontWeight: 800,
+      },
+    },
+    MuiTableRow: {
+      root: {
+        '&:hover': {
+          backgroundColor: 'rgb(245, 249, 253, 0.9)',
+        },
+      },
+    },
+    MuiTableHead: {
+      root: {
+        borderRadius: '8px',
+        '&:hover': {
+          backgroundColor: '#ffffff',
+        },
+      },
+    },
+    MuiDivider: {
+      root: {
+        color: '#c2c6ca',
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: '100%',
       },
     },
   },

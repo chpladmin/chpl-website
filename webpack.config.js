@@ -18,7 +18,6 @@ module.exports = env => {
         mode: env.NODE_ENV,
         entry: {
             app: path.resolve(__dirname, './src/app/index.js'),
-            admin: path.resolve(__dirname, './src/app/admin/index.js'),
             administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
             charts: path.resolve(__dirname, './src/app/pages/charts/index.js'),
             collections: path.resolve(__dirname, './src/app/pages/collections/index.js'),

@@ -18,7 +18,7 @@
       vm.API = API;
       vm.API_KEY = authService.getApiKey();
       vm.columnSet = [
-        { predicate: 'developer', display: 'Developer', sortType: 'single' },
+        { predicate: 'developer', display: 'Developer', sortType: 'multi', isDeveloperLink: true },
         { predicate: 'product', display: 'Product', sortType: 'single' },
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true, initialPanel: 'sed' },
