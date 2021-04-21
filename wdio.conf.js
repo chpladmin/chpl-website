@@ -171,7 +171,7 @@ exports.config = {
   reporters: [
     'spec',
     ['junit', {
-      outputDir: './test_reports/e2e/junitreport/',
+      outputDir: './test_reports/e2e/junitreport',
       outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
     }],
     ['allure', {
