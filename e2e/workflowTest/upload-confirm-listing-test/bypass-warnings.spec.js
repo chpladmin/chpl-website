@@ -32,12 +32,12 @@ describe('listing with no confirm warnings and no errors', () => {
   it('should not show warning bypass checkbox and confirm works successfully', () => {
     confirmPage.gotoConfirmListingPage(listingIdNoWarningError);
     confirmPage.confirmListing();
-    assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
+    expect(confirmPage.warningCheckbox.isDisplayed()).toBeFalse;
     confirmPage.waitForSuccessfulConfirm();
-    assert.equal(confirmPage.toastContainerTitle.getText(), 'Please stand by');
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    assert.equal(confirmPage.toastContainerTitle.getText(), 'Success');
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Success');
   });
   afterEach(function () {
     browser.refresh();
@@ -58,7 +58,7 @@ describe('listing with warnings on confirm and no errors', () => {
     confirmPage.gotoConfirmListingPage(listingIdWithWarning);
     confirmPage.confirmListing();
     hooks.waitForSpinnerToDisappear();
-    assert.isTrue(confirmPage.warningCheckbox.isDisplayed());
+    expect(confirmPage.warningCheckbox.isDisplayed()).toBeTrue;
   });
 
   it('should not get confirmed until bypasscheckbox is checked', () => {
@@ -67,7 +67,7 @@ describe('listing with warnings on confirm and no errors', () => {
     browser.waitUntil( () => confirmPage.warningCheckbox.isDisplayed());
     confirmPage.confirmListing();
     hooks.waitForSpinnerToDisappear();
-    assert.isTrue(confirmPage.confirmButton.isDisplayed());
+    expect(confirmPage.confirmButton.isDisplayed()).toBeTrue;
   });
 
   it('should get confirm if user checks checkbox for bypass warnings', () => {
@@ -77,10 +77,10 @@ describe('listing with warnings on confirm and no errors', () => {
     confirmPage.warningCheckbox.click();
     confirmPage.confirmListing();
     confirmPage.waitForSuccessfulConfirm();
-    assert.equal(confirmPage.toastContainerTitle.getText(), 'Please stand by');
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    assert.equal(confirmPage.toastContainerTitle.getText(), 'Success');
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Success');
   });
 
   afterEach(function () {
