@@ -156,7 +156,7 @@ exports.config = {
         return;
       }
       var message = assertion.error.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      var location = `${__dirname}/test_reports/e2e/assertionError_` + message + '.png';
+      var location = `${__dirname}/test_reports/e2e/screenshot/assertionError_` + message + '.png';
       browser.saveScreenshot(location);
     }
   },
@@ -171,7 +171,7 @@ exports.config = {
   reporters: [
     'spec',
     ['junit', {
-      outputDir: './test_reports/e2e/',
+      outputDir: './test_reports/e2e/junitreport/',
       outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
     }],
     ['allure', {
@@ -199,6 +199,21 @@ exports.config = {
       // if it doesn't exist, create it
       fs.mkdirSync(downloadDir);
     }
+    function rmdir(dir) {
+      var list = fs.readdirSync(dir);
+      for(var i = 0; i < list.length; i++) {
+        var filename = path.join(dir, list[i]);
+        var stat = fs.statSync(filename);
+        if(stat.isDirectory()) {
+          // pass these files
+        } else {
+          // rm filename
+          fs.unlinkSync(filename);
+        }
+      }
+    }
+    rmdir(downloadDir + '/screenshot');
+    rmdir(downloadDir + '/junitreport');  
   },
   /**
    * Gets executed just before initialising the webdriver session and test framework. It allows you
@@ -337,22 +352,9 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  onComplete: function(exitCode, config, capabilities, results) {
-    function rmdir(dir) {
-      var list = fs.readdirSync(dir);
-      for(var i = 0; i < list.length; i++) {
-        var filename = path.join(dir, list[i]);
-        var stat = fs.statSync(filename);
-        if(stat.isDirectory() || filename.includes('wdio') || filename.includes('.png')) {
-          // pass these files
-        } else {
-          // rm filename
-          fs.unlinkSync(filename);
-        }
-      }
-    }
-    rmdir(downloadDir);
-  },
+  // onComplete: function(exitCode, config, capabilities, results) {
+
+  // },
   /**
    * Gets executed when a refresh happens.
    * @param {String} oldSessionId session ID of the old session
