@@ -1,5 +1,5 @@
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
-import { ChplCriteriaView } from './listing/details/criteria';
+import { ChplCriteria } from './listing/details/criteria';
 import { ChplEllipsis, ChplLink } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplUploadListings } from './upload';
@@ -24,7 +24,7 @@ angular
   ])
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
-  .component('chplCriteriaViewBridge', reactToAngularComponent(ChplCriteriaView))
+  .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))

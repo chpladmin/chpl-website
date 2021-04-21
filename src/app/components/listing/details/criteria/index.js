@@ -1,4 +1,5 @@
-import { ChplCriteriaView } from './criteria-view.jsx';
+import { ChplCriteria } from './criteria.jsx';
+import { ChplCriteriaDetailsView } from './criteria-details-view.jsx';
 import { getAngularService } from '../../../../services/angular-react-helper.jsx';
 
-export { ChplCriteriaView, getAngularService };
+export { ChplCriteria, ChplCriteriaDetailsView, getAngularService };
