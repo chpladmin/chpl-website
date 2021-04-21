@@ -21,8 +21,8 @@ describe('the Product part of the Developers page', () => {
   });
 
   describe('when on the "GE Healthcare" Developer page, on the "Centricity Perinatal" Product', () => {
-    let developer = 'GE Healthcare';
-    let productName = 'Centricity Perinatal';
+    const developer = 'GE Healthcare';
+    const productName = 'Centricity Perinatal';
     let product;
 
     beforeEach(() => {
@@ -49,9 +49,9 @@ describe('the Product part of the Developers page', () => {
   });
 
   describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
-    let developer = 'Procentive';
-    let productName = 'Procentive';
-    let productId = '1987';
+    const developer = 'Procentive';
+    const productName = 'Procentive';
+    const productId = '1987';
     let product;
 
     beforeEach(() => {
@@ -84,8 +84,8 @@ describe('the Product part of the Developers page', () => {
     });
 
     describe('when on the "ADVault, Inc." Developer page, on the "MyDirectives" Product', () => {
-      let developer = 'ADVault, Inc.';
-      let productName = 'MyDirectives';
+      const developer = 'ADVault, Inc.';
+      const productName = 'MyDirectives';
       let product;
 
       beforeEach(() => {
@@ -144,7 +144,7 @@ describe('the Product part of the Developers page', () => {
         });
 
         it('should allow cancellation of a split', () => {
-          let productCount = page.products.length;
+          const productCount = page.products.length;
           product.scrollIntoView({block: 'center', inline: 'center'});
           page.splitProduct(product);
           page.editProductName.clearValue();

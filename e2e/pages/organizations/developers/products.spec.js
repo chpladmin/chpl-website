@@ -38,14 +38,14 @@ describe('the Product part of the Developers page', () => {
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
       beforeEach(() => {
-        let developer = 'Greenway Health, LLC';
+        const developer = 'Greenway Health, LLC';
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
         page.selectAllCertificationStatus();
       });
 
       describe('when looking at "PrimeSuite" product', () => {
-        let name = 'PrimeSuite';
+        const name = 'PrimeSuite';
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
@@ -76,7 +76,7 @@ describe('the Product part of the Developers page', () => {
       });
 
       describe('when looking at "Intergy EHR"', () => {
-        let name = 'Intergy EHR';
+        const name = 'Intergy EHR';
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
@@ -105,8 +105,8 @@ describe('the Product part of the Developers page', () => {
           });
 
           it('should allow editing of the POC', () => {
-            let timestamp = (new Date()).getTime();
-            let poc = {
+            const timestamp = (new Date()).getTime();
+            const poc = {
               full: 'name' + timestamp,
               title: 'title' + timestamp,
               email: 'email' + timestamp + '@example.com',
@@ -142,8 +142,8 @@ describe('the Product part of the Developers page', () => {
 
         describe('when editing that Product', () => {
           it('should allow editing of the Name', () => {
-            let timestamp = (new Date()).getTime();
-            let newName = name + ' - ' + timestamp;
+            const timestamp = (new Date()).getTime();
+            const newName = name + ' - ' + timestamp;
             page.editProductName.setValue(newName);
             actionBar.save();
             page.selectAllCertificationStatus();
@@ -200,7 +200,7 @@ describe('the Product part of the Developers page', () => {
 
         it('should allow a split to happen', () => {
           // arrange
-          let productCount = page.products.length;
+          const productCount = page.products.length;
           const newName = productName + ' - split - ' + (new Date()).getTime();
           const newCode = newName.substring(newName.length - 4);
           const movingVersionId = '6266';
@@ -238,7 +238,7 @@ describe('the Product part of the Developers page', () => {
       describe('when on the "MEDITECH Client/Server" product', () => {
         const productName = 'MEDITECH Client/Server';
         const productToBeMerged = 'MEDITECH 6.0 CCD Exchange Suite';
-        let timestamp = (new Date()).getTime();
+        const timestamp = (new Date()).getTime();
         const newProduct = 'New product' + timestamp;
 
         beforeEach(() => {

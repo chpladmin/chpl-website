@@ -161,13 +161,13 @@ class DevelopersPage {
 
   splitProduct (product) {
     this.getSplitButton(product).scrollAndClick();
-    let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.scrollAndClick();
   }
 
   mergeProduct (product) {
     this.getMergeButton(product).scrollAndClick();
-    let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
   }
 
@@ -208,7 +208,7 @@ class DevelopersPage {
 
   mergeVersion (product) {
     this.getMergeButton(product).click();
-    let btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
+    const btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
     btn.click();
   }
 

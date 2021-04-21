@@ -36,9 +36,9 @@ describe('the Version part of the Developers page', () => {
     });
 
     describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
-      let developer = 'Procentive';
-      let productName = 'Procentive';
-      let productId = '1987';
+      const developer = 'Procentive';
+      const productName = 'Procentive';
+      const productId = '1987';
       let product;
 
       beforeEach(() => {
@@ -62,8 +62,8 @@ describe('the Version part of the Developers page', () => {
         });
 
         it('should allow Versions to be edited', () => {
-          let timestamp = (new Date()).getTime();
-          let newVersion = version + ' - ' + timestamp;
+          const timestamp = (new Date()).getTime();
+          const newVersion = version + ' - ' + timestamp;
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.save();
@@ -84,7 +84,7 @@ describe('the Version part of the Developers page', () => {
       });
 
       describe('when editing Version "Version 2015"', () => {
-        let version = 'Version 2015';
+        const version = 'Version 2015';
 
         beforeEach(() => {
           page.selectVersion(product, productId, version);
@@ -93,8 +93,8 @@ describe('the Version part of the Developers page', () => {
         });
 
         it('should allow cancellation', () => {
-          let timestamp = (new Date()).getTime();
-          let newVersion = version + ' - ' + timestamp;
+          const timestamp = (new Date()).getTime();
+          const newVersion = version + ' - ' + timestamp;
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.cancel();
@@ -151,7 +151,7 @@ describe('the Version part of the Developers page', () => {
       let newVersion, product, timestamp, version;
 
       beforeEach(() => {
-        let developer = 'Greenway Health, LLC';
+        const developer = 'Greenway Health, LLC';
         timestamp = (new Date()).getTime();
         page = new DevelopersPage();
         page.selectDeveloper(developer);

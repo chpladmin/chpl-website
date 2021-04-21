@@ -32,7 +32,7 @@ describe('the Version part of the Developers page', () => {
 
       let newVersion, product, timestamp, version;
       beforeEach(() => {
-        let developer = 'Greenway Health, LLC';
+        const developer = 'Greenway Health, LLC';
         timestamp = (new Date()).getTime();
         page = new DevelopersPage();
         page.selectDeveloper(developer);
@@ -120,7 +120,7 @@ describe('the Version part of the Developers page', () => {
       });
 
       it('should allow cancellation of a split', () => {
-        let versionCount = page.getVersionCount(product).getText();
+        const versionCount = page.getVersionCount(product).getText();
         page.selectVersion(product, productId, version);
         page.getSplitButton(product).click();
         page.getVersionSplitButton(product).click();

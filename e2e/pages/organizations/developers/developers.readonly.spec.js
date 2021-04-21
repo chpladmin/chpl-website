@@ -17,7 +17,7 @@ describe('the Developer pages', () => {
 
     describe('on the "GE Healthcare" Developer page', () => {
       beforeEach(() => {
-        let developer = 'GE Healthcare';
+        const developer = 'GE Healthcare';
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
         page.selectAllCertificationStatus();
@@ -34,7 +34,7 @@ describe('the Developer pages', () => {
 
     describe('when on the "Breeze EHR" Developer page with only one product', () => {
       beforeEach(() => {
-        let developer = 'Breeze EHR';
+        const developer = 'Breeze EHR';
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
