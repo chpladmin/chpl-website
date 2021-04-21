@@ -37,7 +37,7 @@ describe('listing with no confirm warnings and no errors', () => {
     assert.equal(confirmPage.toastContainerTitle.getText(), 'Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    assert.equal(confirmPage.toastContainerTitle.getText(), 'Update processing');
+    assert.equal(confirmPage.toastContainerTitle.getText(), 'Success');
   });
   afterEach(function () {
     browser.refresh();
@@ -80,7 +80,7 @@ describe('listing with warnings on confirm and no errors', () => {
     assert.equal(confirmPage.toastContainerTitle.getText(), 'Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    assert.equal(confirmPage.toastContainerTitle.getText(), 'Update processing');
+    assert.equal(confirmPage.toastContainerTitle.getText(), 'Success');
   });
 
   afterEach(function () {
