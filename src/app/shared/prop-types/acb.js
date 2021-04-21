@@ -1,9 +1,12 @@
-import { bool, number, shape, string } from 'prop-types';
-import { address } from './';
+/* eslint-disable import/no-extraneous-dependencies */
+import {
+  bool, number, shape, string,
+} from 'prop-types';
+import { address } from '.';
 
 const acb = shape({
   acbCode: string,
-  address: address,
+  address,
   id: number,
   name: string,
   retired: bool,
@@ -11,4 +14,4 @@ const acb = shape({
   website: string,
 });
 
-export { acb };
+export default acb;

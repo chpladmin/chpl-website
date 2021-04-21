@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { number, shape, string } from 'prop-types';
 
 const address = shape({
@@ -10,4 +11,4 @@ const address = shape({
   zipcode: string,
 });
 
-export { address };
+export default address;

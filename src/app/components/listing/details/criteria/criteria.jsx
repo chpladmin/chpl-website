@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../../../themes/theme';
-import { getAngularService } from '.';
-import { ChplCriteriaDetailsView } from '.';
+import { getAngularService, ChplCriteriaDetailsView } from '.';
+import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplCriteria (props) {
+function ChplCriteria(props) {
   const [canEdit] = useState(props.canEdit);
   const [criteria] = useState(props.certificationResult);
   const [editing, setEditing] = useState(false);
@@ -42,27 +42,30 @@ function ChplCriteria (props) {
   const classes = useStyles();
 
   return (
-    <ThemeProvider theme={ theme }>
+    <ThemeProvider theme={theme}>
       <Accordion disabled={!criteria.success} className={classes.NestedAccordionLevelOne}>
         <AccordionSummary
           className={classes.NestedAccordionLevelOneSummary}
           expandIcon={<ExpandMoreIcon />}
-          id={criteria.id + '-header'}>
+          id={`${criteria.id}-header`}
+        >
           <Grid container spacing={4}>
             <Grid item xs={1}>
-              { criteria.success &&
+              { criteria.success
+                && (
                 <Typography variant="subtitle1">
                   <DoneAllIcon size="small" />
                 </Typography>
-              }
+                )}
             </Grid>
             <Grid item xs={3}>
               <Typography variant="subtitle1">
-                { criteria.criterion.removed &&
+                { criteria.criterion.removed
+                  && (
                   <>
                     Removed |
                   </>
-                }
+                  )}
                 {criteria.criterion.number}
               </Typography>
             </Grid>
@@ -75,22 +78,36 @@ function ChplCriteria (props) {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={4}>
-            { canEdit &&
-              <Grid item xs={12}>
-                <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(true)}>
-                  Edit Criteria
-                  <EditOutlinedIcon
-                    className={classes.iconSpacing}
-                    fontSize="small"
-                  />
-                </Button>
-              </Grid>
-            }
-            <ChplCriteriaDetailsView
-              criteria={criteria}
-              accessibilityStandards={accessibilityStandards}
-              qmsStandards={qmsStandards}
-            />
+            { canEdit && !editing
+              && (
+                <Grid item xs={12}>
+                  <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(true)}>
+                    Edit Criteria
+                    <EditOutlinedIcon
+                      className={classes.iconSpacing}
+                      fontSize="small"
+                    />
+                  </Button>
+                </Grid>
+              )}
+            { editing
+              ? (
+                <Grid item xs={12}>
+                  <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(false)}>
+                    Cancel
+                    <EditOutlinedIcon
+                      className={classes.iconSpacing}
+                      fontSize="small"
+                    />
+                  </Button>
+                </Grid>
+              ) : (
+                <ChplCriteriaDetailsView
+                  criteria={criteria}
+                  accessibilityStandards={accessibilityStandards}
+                  qmsStandards={qmsStandards}
+                />
+              )}
           </Grid>
         </AccordionDetails>
       </Accordion>
@@ -98,11 +115,15 @@ function ChplCriteria (props) {
   );
 }
 
-export { ChplCriteria };
+export default ChplCriteria;
 
 ChplCriteria.propTypes = {
   canEdit: bool,
-  certificationResult: object,
-  qmsStandards: arrayOf(object),
-  accessibilityStandards: arrayOf(object),
+  certificationResult: object.isRequired,
+  accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
+  qmsStandards: arrayOf(qmsStandard).isRequired,
+};
+
+ChplCriteria.defaultProps = {
+  canEdit: false,
 };

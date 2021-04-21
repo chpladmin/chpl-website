@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { number, shape, string } from 'prop-types';
 
 const reliedUponSoftware = shape({
@@ -11,4 +12,4 @@ const reliedUponSoftware = shape({
   version: string,
 });
 
-export { reliedUponSoftware };
+export default reliedUponSoftware;

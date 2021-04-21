@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { arrayOf, bool, object } from 'prop-types';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { arrayOf, object } from 'prop-types';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
   Grid,
@@ -15,9 +13,10 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService } from './';
-import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util/';
+import { getAngularService } from '.';
+import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
 import { ChplReliedUponSoftware } from '../relied-upon-software';
+import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   infoIcon: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplCriteriaDetailsView (props) {
+function ChplCriteriaDetailsView(props) {
   const [criteria] = useState(props.criteria);
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
@@ -43,7 +42,8 @@ function ChplCriteriaDetailsView (props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            { criteria.additionalSoftware?.length > 0 &&
+            { criteria.additionalSoftware?.length > 0
+              && (
               <TableRow key="additionalSoftware">
                 <TableCell component="th" scope="row">
                   Relied Upon Software
@@ -51,10 +51,11 @@ function ChplCriteriaDetailsView (props) {
                     <InfoOutlinedIcon className={classes.infoIcon} />
                   </ChplTooltip>
                 </TableCell>
-                <TableCell align="right"><ChplReliedUponSoftware sw={criteria.additionalSoftware}></ChplReliedUponSoftware></TableCell>
+                <TableCell align="right"><ChplReliedUponSoftware sw={criteria.additionalSoftware} /></TableCell>
               </TableRow>
-            }
-            { criteria.gap !== null &&
+)}
+            { criteria.gap !== null
+              && (
               <TableRow key="gap">
                 <TableCell component="th" scope="row">
                   Gap
@@ -64,8 +65,9 @@ function ChplCriteriaDetailsView (props) {
                 </TableCell>
                 <TableCell align="right">{criteria.gap ? 'True' : 'False'}</TableCell>
               </TableRow>
-            }
-            { criteria.svaps?.length > 0 &&
+              )}
+            { criteria.svaps?.length > 0
+              && (
               <TableRow key="svap">
                 <TableCell component="th" scope="row">
                   Standards Version Advancement Process
@@ -77,19 +79,21 @@ function ChplCriteriaDetailsView (props) {
                   <ul>
                     { criteria.svaps.map((svap) => (
                       <li key={svap.id}>
-                        <ChplEllipsis text={(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion} maxLength="100" wordBoundaries="true"/>
-                        { svap.replaced &&
+                        <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength="100" wordBoundaries="true" />
+                        { svap.replaced
+                          && (
                           <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
                             <InfoOutlinedIcon className={classes.infoIcon} />
                           </ChplTooltip>
-                        }
+                          )}
                       </li>
                     ))}
                   </ul>
                 </TableCell>
               </TableRow>
-            }
-            { criteria.testStandards &&
+)}
+            { criteria.testStandards
+              && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
                   Optional Standard
@@ -98,23 +102,24 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.testStandards.length > 0 &&
+                  { criteria.testStandards.length > 0
+                    && (
                     <ul>
                       { criteria.testStandards.map((ts) => (
                         <li key={ts.id}>
-                          { ts.testStandardDescription &&
-                            <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries={true}/>
-                          }
+                          { ts.testStandardDescription
+                            && <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries />}
                           { !ts.testStandardDescription && ts.testStandardName }
                         </li>
                       ))}
                     </ul>
-                  }
+                    )}
                   { criteria.testStandards.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.g1Success !== null &&
+              )}
+            { criteria.g1Success !== null
+              && (
               <TableRow key="g1Success">
                 <TableCell component="th" scope="row">
                   Measure Successfully Tested for G1
@@ -124,8 +129,9 @@ function ChplCriteriaDetailsView (props) {
                 </TableCell>
                 <TableCell align="right">{criteria.g1Success ? 'True' : 'False'}</TableCell>
               </TableRow>
-            }
-            { criteria.g2Success !== null &&
+              )}
+            { criteria.g2Success !== null
+              && (
               <TableRow key="g2Success">
                 <TableCell component="th" scope="row">
                   Measure Successfully Tested for G2
@@ -135,8 +141,9 @@ function ChplCriteriaDetailsView (props) {
                 </TableCell>
                 <TableCell align="right">{criteria.g2Success ? 'True' : 'False'}</TableCell>
               </TableRow>
-            }
-            { criteria.testFunctionality &&
+              )}
+            { criteria.testFunctionality
+              && (
               <TableRow key="testFunctionality">
                 <TableCell component="th" scope="row">
                   Functionality Tested
@@ -145,23 +152,24 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.testFunctionality.length > 0 &&
+                  { criteria.testFunctionality.length > 0
+                    && (
                     <ul>
                       { criteria.testFunctionality.map((tf) => (
                         <li key={tf.id}>
-                          { tf.description &&
-                            <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries={true}/>
-                          }
+                          { tf.description
+                            && <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries />}
                           { !tf.description && tf.name }
                         </li>
                       ))}
                     </ul>
-                  }
+                    )}
                   { criteria.testFunctionality.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.testProcedures &&
+              )}
+            { criteria.testProcedures
+              && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">
                   Test Procedure
@@ -170,20 +178,27 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.testProcedures.length > 0 &&
+                  { criteria.testProcedures.length > 0
+                    && (
                     <ul>
                       { criteria.testProcedures.map((tp) => (
                         <li key={tp.id}>
-                          Name: { tp.testProcedure.name }; Version: { tp.testProcedureVersion }
+                          Name:
+                          {' '}
+                          { tp.testProcedure.name }
+                          ; Version:
+                          {' '}
+                          { tp.testProcedureVersion }
                         </li>
                       ))}
                     </ul>
-                  }
+                    )}
                   { criteria.testProcedures.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { (criteria.criterion.number === '170.315 (g)(4)' || criteria.criterion.number === '170.314 (g)(4)') &&
+              )}
+            { (criteria.criterion.number === '170.315 (g)(4)' || criteria.criterion.number === '170.314 (g)(4)')
+              && (
               <TableRow key="qms">
                 <TableCell component="th" scope="row">
                   Quality Management System
@@ -192,30 +207,35 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { qmsStandards?.length > 0 &&
+                  { qmsStandards?.length > 0
+                    && (
                     <ul>
                       { qmsStandards.map((qms) => (
-                        <li key={ qms.id }>
-                          <strong>Standard: </strong>{ qms.qmsStandardName }<br />
+                        <li key={qms.id}>
+                          <strong>Standard: </strong>
+                          { qms.qmsStandardName }
+                          <br />
                           <strong>Description: </strong>
                           {
-                            qms.qmsModification &&
-                              <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries={true} />
+                            qms.qmsModification
+                              && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />
                           }
-                          { !qms.modification &&
-                            <>N/A</>
-                          }
+                          { !qms.modification
+                            && <>N/A</>}
                           <br />
-                          <strong>Applicable Criteria: </strong>{ qms.applicableCriteria || 'N/A' }<br />
+                          <strong>Applicable Criteria: </strong>
+                          { qms.applicableCriteria || 'N/A' }
+                          <br />
                         </li>
                       ))}
                     </ul>
-                  }
+)}
                   { (!qmsStandards || qmsStandards.length === 0) && 'N/A' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.criterion.number === '170.315 (g)(5)' &&
+              )}
+            { criteria.criterion.number === '170.315 (g)(5)'
+              && (
               <TableRow key="accessibility">
                 <TableCell component="th" scope="row">
                   Accessibility Standard
@@ -224,20 +244,22 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { accessibilityStandards?.length > 0 &&
+                  { accessibilityStandards?.length > 0
+                    && (
                     <ul>
                       { accessibilityStandards.map((std) => (
-                        <li key={ std.id }>
+                        <li key={std.id}>
                           { std.accessibilityStandardName }
                         </li>
                       ))}
                     </ul>
-                  }
+)}
                   { (!accessibilityStandards || accessibilityStandards.length === 0) && 'N/A' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.testToolsUsed &&
+              )}
+            { criteria.testToolsUsed
+              && (
               <TableRow key="testToolsUsed">
                 <TableCell component="th" scope="row">
                   Test Tool
@@ -246,20 +268,27 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.testToolsUsed.length > 0 &&
+                  { criteria.testToolsUsed.length > 0
+                    && (
                     <ul>
                       { criteria.testToolsUsed.map((tt) => (
-                        <li key={ tt.id }>
-                          Tool: { tt.testToolName }; Version: { tt.testToolVersion || 'N/A' }
+                        <li key={tt.id}>
+                          Tool:
+                          {' '}
+                          { tt.testToolName }
+                          ; Version:
+                          {' '}
+                          { tt.testToolVersion || 'N/A' }
                         </li>
                       ))}
                     </ul>
-                  }
+                    )}
                   { criteria.testToolsUsed.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.testDataUsed &&
+              )}
+            { criteria.testDataUsed
+              && (
               <TableRow key="testDataUsed">
                 <TableCell component="th" scope="row">
                   Test Data
@@ -268,20 +297,30 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.testDataUsed.length > 0 &&
+                  { criteria.testDataUsed.length > 0
+                    && (
                     <ul>
                       { criteria.testDataUsed.map((td) => (
-                        <li key={ td.id }>
-                          Data: { td.testData.name || 'N/A' }; Version: { td.version }; Alteration: { td.alteration || 'N/A' }
+                        <li key={td.id}>
+                          Data:
+                          {' '}
+                          { td.testData.name || 'N/A' }
+                          ; Version:
+                          {' '}
+                          { td.version }
+                          ; Alteration:
+                          {' '}
+                          { td.alteration || 'N/A' }
                         </li>
                       ))}
                     </ul>
-                  }
+                    )}
                   { criteria.testDataUsed.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.apiDocumentation !== null &&
+              )}
+            { criteria.apiDocumentation !== null
+              && (
               <TableRow key="apiDocumentation">
                 <TableCell component="th" scope="row">
                   API Documentation
@@ -290,14 +329,14 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.apiDocumentation &&
-                    <ChplLink href={criteria.apiDocumentation} text={criteria.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criteria.apiDocumentation }} />
-                  }
+                  { criteria.apiDocumentation
+                    && <ChplLink href={criteria.apiDocumentation} text={criteria.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criteria.apiDocumentation }} />}
                   { !criteria.apiDocumentation && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.exportDocumentation !== null &&
+              )}
+            { criteria.exportDocumentation !== null
+              && (
               <TableRow key="exportDocumentation">
                 <TableCell component="th" scope="row">
                   Export Documentation
@@ -306,14 +345,14 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.exportDocumentation &&
-                    <ChplLink href={criteria.exportDocumentation} text={criteria.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criteria.exportDocumentation }} />
-                  }
+                  { criteria.exportDocumentation
+                    && <ChplLink href={criteria.exportDocumentation} text={criteria.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criteria.exportDocumentation }} />}
                   { !criteria.exportDocumentation && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.attestationAnswer !== null &&
+              )}
+            { criteria.attestationAnswer !== null
+              && (
               <TableRow key="attestationAnswer">
                 <TableCell component="th" scope="row">
                   Attestation
@@ -323,8 +362,9 @@ function ChplCriteriaDetailsView (props) {
                 </TableCell>
                 <TableCell align="right">{criteria.attestationAnswer ? 'Yes' : 'No'}</TableCell>
               </TableRow>
-            }
-            { criteria.documentation !== null &&
+              )}
+            { criteria.documentation !== null
+              && (
               <TableRow key="documentation">
                 <TableCell component="th" scope="row">
                   Documentation
@@ -333,14 +373,14 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.documentation &&
-                    <ChplLink href={criteria.documentation} text={criteria.documentation} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentation }} />
-                  }
+                  { criteria.documentation
+                    && <ChplLink href={criteria.documentation} text={criteria.documentation} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentation }} />}
                   { !criteria.documentation && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.useCases !== null && criteria.attestationAnswer &&
+              )}
+            { criteria.useCases !== null && criteria.attestationAnswer
+              && (
               <TableRow key="useCases">
                 <TableCell component="th" scope="row">
                   Use Case(s)
@@ -349,14 +389,14 @@ function ChplCriteriaDetailsView (props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell align="right">
-                  { criteria.useCases &&
-                    <ChplLink href={criteria.useCases} text={criteria.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criteria.useCases }} />
-                  }
+                  { criteria.useCases
+                    && <ChplLink href={criteria.useCases} text={criteria.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criteria.useCases }} />}
                   { !criteria.useCases && 'None' }
                 </TableCell>
               </TableRow>
-            }
-            { criteria.privacySecurityFramework !== null &&
+              )}
+            { criteria.privacySecurityFramework !== null
+              && (
               <TableRow key="privacySecurityFramework">
                 <TableCell component="th" scope="row">
                   Privacy &amp; Security Framework
@@ -366,8 +406,9 @@ function ChplCriteriaDetailsView (props) {
                 </TableCell>
                 <TableCell align="right">{criteria.privacySecurityFramework}</TableCell>
               </TableRow>
-            }
-            { criteria.sed !== null &&
+              )}
+            { criteria.sed !== null
+              && (
               <TableRow key="sed">
                 <TableCell component="th" scope="row">
                   SED
@@ -377,7 +418,7 @@ function ChplCriteriaDetailsView (props) {
                 </TableCell>
                 <TableCell align="right">{criteria.sed ? 'True' : 'False'}</TableCell>
               </TableRow>
-            }
+              )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -385,10 +426,10 @@ function ChplCriteriaDetailsView (props) {
   );
 }
 
-export { ChplCriteriaDetailsView };
+export default ChplCriteriaDetailsView;
 
 ChplCriteriaDetailsView.propTypes = {
-  criteria: object,
-  qmsStandards: arrayOf(object),
-  accessibilityStandards: arrayOf(object),
+  criteria: object.isRequired,
+  accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
+  qmsStandards: arrayOf(qmsStandard).isRequired,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { shape, string } from 'prop-types';
 
 const analyticsConfig = shape({
@@ -6,4 +7,4 @@ const analyticsConfig = shape({
   label: string,
 });
 
-export { analyticsConfig };
+export default analyticsConfig;
