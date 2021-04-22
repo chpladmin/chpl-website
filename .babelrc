@@ -6,6 +6,5 @@
             "corejs":"2.0",
             "debug":true
         }],
-        "@babel/preset-react",
     ]
 }
