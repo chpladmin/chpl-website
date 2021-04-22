@@ -14,13 +14,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import { getAngularService } from '.';
 import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
 import { ChplReliedUponSoftware } from '../relied-upon-software';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
+
+const validationSchema = yup.object({
+});
 
 const useStyles = makeStyles(() => ({
   infoIcon: {
@@ -36,20 +42,79 @@ function ChplCriteriaDetailsEdit(props) {
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
+  const formik = useFormik({
+    initialValues: {
+      success: props.criteria.success || false,
+      gap: props.criteria.gap,
+      g1Success: props.criteria.g1Success,
+      g1Success: props.criteria.g1Success,
+      sed: props.criteria.sed,
+    },
+    validationSchema: validationSchema,
+    validateOnChange: false,
+    validateOnMount: true,
+  });
+
   return (
     <>
       <Grid item xs={12}>
         <FormControlLabel
           control={
-            <Switch color="primary" checked={checked} onChange={(prev) => setChecked(!prev)} />
+            <Switch
+              id="success"
+              name="success"
+              color="primary"
+              checked={ formik.values.success }
+              onChange={ formik.handleChange }
+            />
           }
-          labelPlacement="start"
           label={`${criteria.criterion.number}: ${criteria.criterion.title}`}
         />
       </Grid>
-      <Collapse in={checked}>
-        <Grid item xs={12}>
-          <Divider></Divider>
+      <Collapse in={formik.values.success}>
+        <Grid container spacing={4}>
+          { formik.values.gap !== null
+            && <>
+                 <Grid item xs={12}>
+                   <Divider></Divider>
+                 </Grid>
+                 <Grid item xs={12}>
+                   <FormControlLabel
+                     control={
+                       <Switch
+                         id="gap"
+                         name="gap"
+                         color="primary"
+                         checked={ formik.values.gap }
+                         onChange={ formik.handleChange }
+                       />
+                     }
+                     label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
+                   />
+                 </Grid>
+               </>
+          }
+          { formik.values.sed !== null
+            && <>
+                 <Grid item xs={12}>
+                   <Divider></Divider>
+                 </Grid>
+                 <Grid item xs={12}>
+                   <FormControlLabel
+                     control={
+                       <Switch
+                         id="sed"
+                         name="sed"
+                         color="primary"
+                         checked={ formik.values.sed }
+                         onChange={ formik.handleChange }
+                       />
+                     }
+                     label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
+                   />
+                 </Grid>
+               </>
+          }
         </Grid>
       </Collapse>
     </>
