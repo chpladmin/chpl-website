@@ -442,7 +442,7 @@ export default class NetworkService {
 
   getPendingListings(beta) {
     if (beta) {
-      return this.apiGET('/listings/pending', {ignoreLoadingBar: true});
+      return this.apiGET('/listings/pending', { ignoreLoadingBar: true });
     }
     return this.apiGET('/certified_products/pending/metadata');
   }
@@ -852,7 +852,9 @@ export default class NetworkService {
     return this.apiPUT('/versions', versionObject);
   }
 
-  /// /////////////////////////////////////////////////////////////////
+  /*
+   * Helper functions
+   */
 
   apiDELETE(endpoint, deleteObject) {
     return this.$http.delete(this.API + endpoint, { data: deleteObject, headers: { 'Content-Type': 'application/json;charset=utf-8' } })
