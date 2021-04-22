@@ -84,7 +84,7 @@ describe('the ChplApiKeyRegistration component', () => {
       render(<ChplApiKeyRegistration />);
     });
 
-    it('should not have any invlid fields', async () => {
+    it('should not have any invalid fields', async () => {
       const nameOrganization = screen.getByLabelText(/Name or Organization/i);
       const email = screen.getByLabelText(/Email/i);
 
