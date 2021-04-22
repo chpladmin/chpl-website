@@ -20,7 +20,6 @@
     "test:ci": "karma start --single-run --no-colors",
     "test:react": "jest --coverage --coverageDirectory=./test_reports/coverage",
     "lint": "eslint src e2e",
-    "lint:summary": "eslint src e2e -f ./lint-summary.js",
     "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:full": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:lint": "eslint e2e",
