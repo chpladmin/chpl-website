@@ -65,7 +65,6 @@ function ChplApiKeyConfirm(props) {
                     </Typography>
                     <Typography variant="body1" gutterBottom data-testid="api-key-display">
                       Your API key is: &nbsp;
-                      {' '}
                       <strong>{ apiKey.apiKey }</strong>
                     </Typography>
                     <Typography variant="body1" gutterBottom>
