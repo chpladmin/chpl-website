@@ -214,6 +214,7 @@ exports.config = {
     }
     rmdir(downloadDir + 'screenshot');
     rmdir(downloadDir + 'junitreport');  
+    rmdir(downloadDir);
   },
   /**
    * Gets executed just before initialising the webdriver session and test framework. It allows you
