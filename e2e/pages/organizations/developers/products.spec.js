@@ -20,9 +20,15 @@ describe('the Product part of the Developers page', () => {
     await hooks.open('#/organizations/developers');
   });
 
-  describe('when logged in as an ACB', () => {
+  afterEach(() => {
+    if (toast.toastContainer.isDisplayed()) {
+      toast.clearAllToast();
+    }
+  });
+
+  describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {
-      login.logIn('acb');
+      login.logIn('drummond');
       login.logoutButton.waitForDisplayed();
     });
 
@@ -32,13 +38,45 @@ describe('the Product part of the Developers page', () => {
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
       beforeEach(() => {
-        let developer = 'Greenway Health, LLC';
+        const developer = 'Greenway Health, LLC';
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
+      });
+
+      describe('when looking at "PrimeSuite" product', () => {
+        const name = 'PrimeSuite';
+        let product;
+        beforeEach(() => {
+          product = page.getProduct(name);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        it('should have split product button', () => {
+          expect(page.getSplitButton(product)).toExist();
+        });
+
+        it('should not have merge product button', () => {
+          expect(page.getMergeButton(product)).not.toExist();
+        });
+
+        it('should show correct error message when spliting product with listings owned by different ACBs', () => {
+          const newName = name + ' - split - ' + (new Date()).getTime();
+          const newCode = newName.substring(newName.length - 4);
+          const movingVersionId = '2039';
+          page.splitProduct(product);
+          page.editProductName.setValue(newName);
+          page.editProductCode.setValue(newCode);
+          page.moveVersion(movingVersionId);
+          actionBar.save();
+          expect(actionBar.errorMessages.getText()).toEqual('Product split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
+        });
       });
 
       describe('when looking at "Intergy EHR"', () => {
-        let name = 'Intergy EHR';
+        const name = 'Intergy EHR';
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
@@ -67,8 +105,8 @@ describe('the Product part of the Developers page', () => {
           });
 
           it('should allow editing of the POC', () => {
-            let timestamp = (new Date()).getTime();
-            let poc = {
+            const timestamp = (new Date()).getTime();
+            const poc = {
               full: 'name' + timestamp,
               title: 'title' + timestamp,
               email: 'email' + timestamp + '@example.com',
@@ -78,6 +116,7 @@ describe('the Product part of the Developers page', () => {
             actionBar.save();
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
+            page.selectAllCertificationStatus();
             product.scrollIntoView({block: 'center', inline: 'center'});
             page.selectProduct(product);
             page.getProductInfo(product).waitForDisplayed({timeout: 55000});
@@ -90,7 +129,7 @@ describe('the Product part of the Developers page', () => {
       });
 
       describe('when planning to change "MediaDent 10.0 using SuccessEHS 7.20"\'s name', () => {
-        let name = 'MediaDent 10.0 using SuccessEHS 7.20';
+        const name = 'MediaDent 10.0 using SuccessEHS 7.20';
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
@@ -103,10 +142,11 @@ describe('the Product part of the Developers page', () => {
 
         describe('when editing that Product', () => {
           it('should allow editing of the Name', () => {
-            let timestamp = (new Date()).getTime();
-            let newName = name + ' - ' + timestamp;
+            const timestamp = (new Date()).getTime();
+            const newName = name + ' - ' + timestamp;
             page.editProductName.setValue(newName);
             actionBar.save();
+            page.selectAllCertificationStatus();
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
             product = page.getProduct(newName);
@@ -124,9 +164,9 @@ describe('the Product part of the Developers page', () => {
     });
   });
 
-  describe('when logged in as an Admin', () => {
+  describe('when logged in as an ONC', () => {
     beforeEach(() => {
-      login.logIn('admin');
+      login.logIn('onc');
       login.logoutButton.waitForDisplayed();
     });
 
@@ -141,6 +181,7 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
       });
 
       describe('when on the "MEDITECH MAGIC Oncology" product', () => {
@@ -159,7 +200,7 @@ describe('the Product part of the Developers page', () => {
 
         it('should allow a split to happen', () => {
           // arrange
-          let productCount = page.products.length;
+          const productCount = page.products.length;
           const newName = productName + ' - split - ' + (new Date()).getTime();
           const newCode = newName.substring(newName.length - 4);
           const movingVersionId = '6266';
@@ -170,6 +211,7 @@ describe('the Product part of the Developers page', () => {
 
           // act
           actionBar.save();
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
 
           // assert product list is updated
@@ -190,6 +232,36 @@ describe('the Product part of the Developers page', () => {
           page.selectProduct(product);
           page.getProductInfo(product).waitForDisplayed({timeout: 55000});
           expect(page.getVersionCount(product).getText()).toBe('1 Version');
+        });
+      });
+
+      describe('when on the "MEDITECH Client/Server" product', () => {
+        const productName = 'MEDITECH Client/Server';
+        const productToBeMerged = 'MEDITECH 6.0 CCD Exchange Suite';
+        const timestamp = (new Date()).getTime();
+        const newProduct = 'New product' + timestamp;
+
+        beforeEach(() => {
+          product = page.getProduct(productName);
+          product.scrollIntoView({block: 'center', inline: 'center'});
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        });
+
+        it('should have a product merge button', () => {
+          expect(page.getProductMergeButton(product)).toExist();
+        });
+
+        it('should allow merge products to happen', () => {
+          page.mergeProduct(product);
+          page.moveProductToBeMerged(productToBeMerged);
+          page.editProductName.clearValue();
+          page.editProductName.addValue(newProduct);
+          actionBar.save();
+          toast.clearAllToast();
+          page.selectAllCertificationStatus();
+          page.productsHeader.waitForDisplayed();
+          expect(page.getProduct(newProduct)).toExist();
         });
       });
     });
