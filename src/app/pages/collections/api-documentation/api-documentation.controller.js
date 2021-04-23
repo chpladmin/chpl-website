@@ -22,6 +22,7 @@
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
         { predicate: 'apiDocumentation', display: 'API Documentation', sortType: 'single', transformFn: vm.apiTransform },
+        { predicate: 'serviceBaseUrlList', display: 'Service Base URL List', sortType: 'single', transformFn: vm.apiTransform },
         { predicate: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL', sortType: 'single', transformFn: vm.disclosuresTransform },
       ];
       vm.filters = ['certificationStatus'];
@@ -49,7 +50,7 @@
     ////////////////////////////////////////////////////////////////////
 
     function apiTransform (data) {
-      var ret = 'Unknown';
+      var ret = 'N/A';
       if (data) {
         var apis = {};
         var pairs = data.split(SPLIT_PRIMARY);
