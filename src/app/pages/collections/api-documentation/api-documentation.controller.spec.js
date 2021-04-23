@@ -65,9 +65,9 @@
     });
 
     describe('transforming API Documentation data', function () {
-      it('should return "Unknown" if no data', function () {
+      it('should return "N/A" if no data', function () {
         var data;
-        expect(vm.apiTransform(data)).toBe('Unknown');
+        expect(vm.apiTransform(data)).toBe('N/A');
       });
 
       it('should create a list of three elements if the APIs are all different', function () {
