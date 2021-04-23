@@ -22,7 +22,7 @@ import * as yup from 'yup';
 
 import { getAngularService } from '.';
 import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
-import { ChplReliedUponSoftware } from '../relied-upon-software';
+import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const validationSchema = yup.object({
@@ -55,6 +55,10 @@ function ChplCriteriaDetailsEdit(props) {
     validateOnMount: true,
   });
 
+  const handleReliedUponSoftwareChange = (action, sw) => {
+    console.log({action, sw});
+  }
+
   return (
     <>
       <Grid item xs={12}>
@@ -73,6 +77,13 @@ function ChplCriteriaDetailsEdit(props) {
       </Grid>
       <Collapse in={formik.values.success}>
         <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">Relied Upon Software</Typography>
+            <ChplReliedUponSoftwareEdit
+              sw={criteria.additionalSoftware}
+              onChange={handleReliedUponSoftwareChange}
+            />
+          </Grid>
           { formik.values.gap !== null
             && <>
                  <Grid item xs={12}>

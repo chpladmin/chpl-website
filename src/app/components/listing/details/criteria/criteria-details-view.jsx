@@ -15,7 +15,7 @@ import {
 
 import { getAngularService } from '.';
 import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
-import { ChplReliedUponSoftware } from '../relied-upon-software';
+import { ChplReliedUponSoftwareView } from './relied-upon-software';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -51,7 +51,7 @@ function ChplCriteriaDetailsView(props) {
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right"><ChplReliedUponSoftware sw={criteria.additionalSoftware} /></TableCell>
+                  <TableCell align="right"><ChplReliedUponSoftwareView sw={criteria.additionalSoftware} /></TableCell>
                 </TableRow>
               )}
             { criteria.gap !== null

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { arrayOf } from 'prop-types';
 
-import { reliedUponSoftware } from '../../../../shared/prop-types';
+import { reliedUponSoftware } from '../../../../../shared/prop-types';
 
 const getDisplay = (sw) => (
   <>
     { sw.certifiedProductId
-        && <a href="#/listing/{ sw.certifiedProductId }">{ sw.certifiedProductNumber }</a>}
+      && <a href={`#/listing/${sw.certifiedProductId}`}>{ sw.certifiedProductNumber }</a>}
     { !sw.certifiedProductId && sw.certifiedProductNumber
         && (
         <>
@@ -28,7 +28,7 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
   return '';
 };
 
-function ChplReliedUponSoftware(props) {
+function ChplReliedUponSoftwareView(props) {
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
   useEffect(() => {
@@ -80,8 +80,8 @@ function ChplReliedUponSoftware(props) {
   );
 }
 
-export { ChplReliedUponSoftware };
+export { ChplReliedUponSoftwareView };
 
-ChplReliedUponSoftware.propTypes = {
+ChplReliedUponSoftwareView.propTypes = {
   sw: arrayOf(reliedUponSoftware),
 };
