@@ -204,10 +204,7 @@ exports.config = {
       for(var i = 0; i < list.length; i++) {
         var filename = path.join(dir, list[i]);
         var stat = fs.statSync(filename);
-        if(filename == "allure-results" || filename.includes('wdio') || filename.includes('.png') || stat.isDirectory()) {
-          // pass these files- this will be download data, definition files and screenshot, report folder
-        } else {
-          // rm filename
+        if(!stat.isDirectory()) {
           fs.unlinkSync(filename);
         }
       }
