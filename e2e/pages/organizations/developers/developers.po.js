@@ -15,7 +15,15 @@ const elements = {
   editDeveloper: 'button#developer-component-edit',
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
-  versionList: '.selectable-item.ng-scope.selectable-item',
+  list: '.selectable-item.ng-scope.selectable-item',
+  developerContact: 'chpl-contact',
+  developerWebsite: '//div[text()=\'Website\']/following-sibling::div/a',
+  developerStatus: '#developer-status-0',
+  splitDeveloper: '#developer-component-split',
+  developerName: '#developer-name',
+  errors: 'div.text-danger',
+  mergeDeveloper: '#developer-component-merge',
+  editWebsite: '#developer-website',
 };
 
 class DevelopersPage {
@@ -51,6 +59,10 @@ class DevelopersPage {
 
   get products () {
     return $$(elements.products);
+  }
+
+  get editWebsite () {
+    return $(elements.editWebsite);
   }
 
   getProduct (product) {
@@ -118,8 +130,16 @@ class DevelopersPage {
     return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[0];
   }
 
+  getProductMergeButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="merge-button"]').$$('li')[0];
+  }
+
   getVersionSplitButton (product) {
     return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[1];
+  }
+
+  getVersionMergeButton (product) {
+    return product.$('.product__product-info').$('ul[aria-labeledby="merge-button"]').$$('li')[1];
   }
 
   selectProduct (product) {
@@ -140,9 +160,25 @@ class DevelopersPage {
   }
 
   splitProduct (product) {
-    this.getSplitButton(product).click();
-    let btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    this.getSplitButton(product).scrollAndClick();
+    const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    btn.scrollAndClick();
+  }
+
+  mergeProduct (product) {
+    this.getMergeButton(product).scrollAndClick();
+    const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
+  }
+
+  moveProductToBeMerged (productName) {
+    const count = $$(elements.list).length;
+    for (var i = 0; i < count; i++) {
+      if ($$(elements.list)[i].getText() === productName) {
+        $$(elements.list)[i].scrollIntoView({block: 'center', inline: 'center'});
+        $$(elements.list)[i].click();
+      }
+    }
   }
 
   moveVersion (id) {
@@ -172,7 +208,7 @@ class DevelopersPage {
 
   mergeVersion (product) {
     this.getMergeButton(product).click();
-    let btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
+    const btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
     btn.click();
   }
 
@@ -185,16 +221,58 @@ class DevelopersPage {
   }
 
   moveVersionToBeMerged (versionName) {
-    const count = $$(elements.versionList).length;
+    const count = $$(elements.list).length;
     for (var i = 0; i < count; i++) {
-      if ($$(elements.versionList)[i].getText() === versionName) {
-        $$(elements.versionList)[i].click();
+      if ($$(elements.list)[i].getText() === versionName) {
+        $$(elements.list)[i].click();
       }
     }
   }
 
   get errorMessage () {
     return $(elements.errorMessage);
+  }
+
+  get developerContact () {
+    return $(elements.developerContact);
+  }
+
+  get developerWebsite () {
+    return $(elements.developerWebsite);
+  }
+
+  get developerStatus () {
+    return $(elements.developerStatus);
+  }
+
+  get splitDeveloper () {
+    return $(elements.splitDeveloper);
+  }
+
+  get developerName () {
+    return $(elements.developerName);
+  }
+
+  get errors () {
+    return $(elements.errors).$('ul');
+  }
+
+  get mergeDeveloper () {
+    return $(elements.mergeDeveloper);
+  }
+
+  moveDeveloperToSplit (id) {
+    $('#developers-product-move-new-' + id).scrollAndClick();
+  }
+
+  moveDeveloperToBeMerged (developerName) {
+    $('//div[text()=\'' + developerName + '\']').click();
+  }
+
+  selectAllCertificationStatus () {
+    $('#filter-button').click();
+    $('chpl-filter-multiple').$$('.filter-multiple__item')[0].click();
+    $('#filter-button').click();
   }
 }
 
