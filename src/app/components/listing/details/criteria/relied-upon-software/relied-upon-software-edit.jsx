@@ -85,7 +85,7 @@ function ChplReliedUponSoftwareEdit(props) {
                   <Typography variant="subtitle2">{ sw.certifiedProductNumber }</Typography>
                 </Grid>
                 <Grid item xs={2}>
-                  <Typography variant="subtitle2">{ sw.group }</Typography>
+                  <Typography variant="subtitle2">{ sw.grouping }</Typography>
                 </Grid>
                 <Grid item xs={1}>
                   <IconButton>
