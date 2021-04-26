@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf, func, object } from 'prop-types';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
   Collapse,
   Divider,
   FormControlLabel,
@@ -55,79 +62,119 @@ function ChplCriteriaDetailsEdit(props) {
     validateOnMount: true,
   });
 
+  const save = () => {
+    const toSave = {
+      ...criteria,
+      success: formik.values.success,
+      sed: formik.values.sed,
+      gap: formik.values.gap,
+      g1Success: formik.values.g1Success,
+      g1Success: formik.values.g1Success,
+      sed: formik.values.sed,
+    }
+    console.log(toSave);
+    props.onSave(toSave);
+  }
+
   const handleReliedUponSoftwareChange = (action, sw) => {
     console.log({action, sw});
   }
 
   return (
     <>
-      <Grid item xs={12}>
-        <FormControlLabel
-          control={
-            <Switch
-              id="success"
-              name="success"
-              color="primary"
-              checked={ formik.values.success }
-              onChange={ formik.handleChange }
-            />
-          }
-          label={`${criteria.criterion.number}: ${criteria.criterion.title}`}
-        />
-      </Grid>
-      <Collapse in={formik.values.success}>
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1">Relied Upon Software</Typography>
-            <ChplReliedUponSoftwareEdit
-              sw={criteria.additionalSoftware}
-              onChange={handleReliedUponSoftwareChange}
-            />
+      <Card>
+        <CardContent>
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    id="success"
+                    name="success"
+                    color="primary"
+                    checked={ formik.values.success }
+                    onChange={ formik.handleChange }
+                  />
+                }
+                label={`${criteria.criterion.number}: ${criteria.criterion.title}`}
+              />
+            </Grid>
+            <Collapse in={formik.values.success}>
+              <Grid item xs={12}>
+                <Divider></Divider>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1">Relied Upon Software</Typography>
+                <ChplReliedUponSoftwareEdit
+                  sw={criteria.additionalSoftware}
+                  onChange={handleReliedUponSoftwareChange}
+                />
+              </Grid>
+              { formik.values.gap !== null
+                && <>
+                     <Grid item xs={12}>
+                       <Divider></Divider>
+                     </Grid>
+                     <Grid item xs={12}>
+                       <FormControlLabel
+                         control={
+                           <Switch
+                             id="gap"
+                             name="gap"
+                             color="primary"
+                             checked={ formik.values.gap }
+                             onChange={ formik.handleChange }
+                           />
+                         }
+                         label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
+                       />
+                     </Grid>
+                   </>
+              }
+              { formik.values.sed !== null
+                && <>
+                     <Grid item xs={12}>
+                       <Divider></Divider>
+                     </Grid>
+                     <Grid item xs={12}>
+                       <FormControlLabel
+                         control={
+                           <Switch
+                             id="sed"
+                             name="sed"
+                             color="primary"
+                             checked={ formik.values.sed }
+                             onChange={ formik.handleChange }
+                           />
+                         }
+                         label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
+                       />
+                     </Grid>
+                   </>
+              }
+            </Collapse>
           </Grid>
-          { formik.values.gap !== null
-            && <>
-                 <Grid item xs={12}>
-                   <Divider></Divider>
-                 </Grid>
-                 <Grid item xs={12}>
-                   <FormControlLabel
-                     control={
-                       <Switch
-                         id="gap"
-                         name="gap"
-                         color="primary"
-                         checked={ formik.values.gap }
-                         onChange={ formik.handleChange }
-                       />
-                     }
-                     label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
-                   />
-                 </Grid>
-               </>
-          }
-          { formik.values.sed !== null
-            && <>
-                 <Grid item xs={12}>
-                   <Divider></Divider>
-                 </Grid>
-                 <Grid item xs={12}>
-                   <FormControlLabel
-                     control={
-                       <Switch
-                         id="sed"
-                         name="sed"
-                         color="primary"
-                         checked={ formik.values.sed }
-                         onChange={ formik.handleChange }
-                       />
-                     }
-                     label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
-                   />
-                 </Grid>
-               </>
-          }
-        </Grid>
-      </Collapse>
+        </CardContent>
+        <CardActions>
+          <Button
+            color="default"
+            variant="contained"
+            size="small"
+            onClick={() => props.onCancel()}
+          >
+            <CloseOutlinedIcon /> Cancel
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            size="small"
+            onClick={save}
+          >
+            Accept
+            <CheckOutlinedIcon />
+          </Button>
+        </CardActions>
+      </Card>
     </>
   );
 }
@@ -138,6 +185,8 @@ ChplCriteriaDetailsEdit.propTypes = {
   criteria: object.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
+  onCancel: func,
+  onSave: func,
 };
 
 

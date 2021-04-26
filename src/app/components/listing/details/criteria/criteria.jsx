@@ -47,6 +47,10 @@ function ChplCriteria(props) {
     }
   };
 
+  const handleSave = (event) => {
+    console.log(event);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Accordion disabled={!criteria.success} className={classes.NestedAccordionLevelOne} onChange={() => handleChange()}>
@@ -87,19 +91,12 @@ function ChplCriteria(props) {
             { editing
               ? (
                 <>
-                  <Grid item xs={12}>
-                    <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(false)}>
-                      Cancel
-                      <EditOutlinedIcon
-                        className={classes.iconSpacing}
-                        fontSize="small"
-                      />
-                    </Button>
-                  </Grid>
                   <ChplCriteriaDetailsEdit
                     criteria={criteria}
                     accessibilityStandards={accessibilityStandards}
                     qmsStandards={qmsStandards}
+                    onCancel={() => setEditing(false)}
+                    onSave={handleSave}
                   />
                 </>
               ) : (
