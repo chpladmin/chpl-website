@@ -23,7 +23,7 @@
 
         scope = $rootScope.$new();
         vm = $controller('ApiDocumentationController', {
-          $scope: scope,
+          //$scope: scope,
           networkService,
         });
         scope.$digest();
@@ -63,12 +63,12 @@
     describe('transforming API Documentation data', () => {
       it('should return "N/A" if no data', () => {
         let data;
-        expect(vm.apiTransform(data)).toBe('N/A');
+        expect(vm.criteriaUrlTransform(data)).toBe('N/A');
       });
 
       it('should create a list of three elements if the APIs are all different', () => {
         const data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☹http://example2.com☺170.315 (g)(9)☹http://example3.com';
-        const output = vm.apiTransform(data);
+        const output = vm.criteriaUrlTransform(data);
         expect(output.indexOf('<dt>170.315 (g)(7)</dt>')).toBeGreaterThan(-1);
         expect(output.indexOf('<dt>170.315 (g)(8)</dt>')).toBeGreaterThan(-1);
         expect(output.indexOf('<dt>170.315 (g)(9)</dt>')).toBeGreaterThan(-1);
@@ -76,13 +76,13 @@
 
       it('should combine elements a list of three elements if the APIs the same', () => {
         const data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☹http://example1.com☺170.315 (g)(9)☹http://example1.com';
-        const output = vm.apiTransform(data);
+        const output = vm.criteriaUrlTransform(data);
         expect(output.indexOf('<dt>170.315 (g)(7), 170.315 (g)(8), 170.315 (g)(9)</dt>')).toBeGreaterThan(-1);
       });
 
       it('should only have one element if only one api link', () => {
         const data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☺170.315 (g)(9)☹';
-        const output = vm.apiTransform(data);
+        const output = vm.criteriaUrlTransform(data);
         expect(output.indexOf('<dt>170.315 (g)(7)</dt>')).toBeGreaterThan(-1);
         expect(output.indexOf('170.315 (g)(8)')).toBe(-1);
         expect(output.indexOf('170.315 (g)(9)')).toBe(-1);

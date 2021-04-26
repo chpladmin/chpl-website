@@ -5,10 +5,10 @@
     .controller('ApiDocumentationController', ApiDocumentationController);
 
   /** @ngInject */
-  function ApiDocumentationController ($compile, $log, $scope, API, SPLIT_PRIMARY, SPLIT_SECONDARY, authService, networkService) {
+  function ApiDocumentationController ($log, API, SPLIT_PRIMARY, SPLIT_SECONDARY, authService, networkService) {
     var vm = this;
 
-    vm.apiTransform = apiTransform;
+    vm.criteriaUrlTransform = criteriaUrlTransform;
     vm.disclosuresTransform = disclosuresTransform;
 
     activate();
@@ -21,8 +21,8 @@
         { predicate: 'product', display: 'Product', sortType: 'single' },
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
-        { predicate: 'apiDocumentation', display: 'API Documentation', sortType: 'single', transformFn: vm.apiTransform },
-        { predicate: 'serviceBaseUrlList', display: 'Service Base URL List', sortType: 'single', transformFn: vm.apiTransform },
+        { predicate: 'apiDocumentation', display: 'API Documentation', sortType: 'single', transformFn: vm.criteriaUrlTransform },
+        { predicate: 'serviceBaseUrlList', display: 'Service Base URL List', sortType: 'single', transformFn: vm.criteriaUrlTransform },
         { predicate: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL', sortType: 'single', transformFn: vm.disclosuresTransform },
       ];
       vm.filters = ['certificationStatus'];
@@ -49,7 +49,7 @@
 
     ////////////////////////////////////////////////////////////////////
 
-    function apiTransform (data) {
+    function criteriaUrlTransform (data) {
       var ret = 'N/A';
       if (data) {
         var apis = {};
