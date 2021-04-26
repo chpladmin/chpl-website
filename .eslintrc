@@ -35,6 +35,7 @@
     {
     "files": ["*.jsx", "*.js"],
     "rules": {
+      "no-console": ["off"],
     },
     },
     ],
