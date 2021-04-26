@@ -18,7 +18,7 @@
     "lint": "eslint src e2e",
     "e2e": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:lint": "eslint e2e",
-    "e2e:clean": "rm test_reports/e2e/* || true",
+    "e2e:clean": "rm test_reports/e2e/**/* && rm test_reports/e2e/* || true",
     "report:generate": "npx allure generate --clean ./test_reports/e2e/allure-results/ -o ./test_reports/e2e/allure-report",
     "report:open": "npx allure open ./test_reports/e2e/allure-report"
   },

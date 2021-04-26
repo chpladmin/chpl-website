@@ -199,19 +199,6 @@ exports.config = {
       // if it doesn't exist, create it
       fs.mkdirSync(downloadDir);
     }
-    function rmdir(dir) {
-      var list = fs.readdirSync(dir);
-      for(var i = 0; i < list.length; i++) {
-        var filename = path.join(dir, list[i]);
-        var stat = fs.statSync(filename);
-        if(!stat.isDirectory()) {
-          fs.unlinkSync(filename);
-        }
-      }
-    }
-    rmdir(downloadDir + 'screenshot');
-    rmdir(downloadDir + 'junitreport');  
-    rmdir(downloadDir);
   },
   /**
    * Gets executed just before initialising the webdriver session and test framework. It allows you
