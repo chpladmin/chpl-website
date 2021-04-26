@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -32,7 +32,7 @@ const validationSchema = yup.object({
     .required('Name or Organization is required'),
 });
 
-function ChplApiKeyRegistration () {
+function ChplApiKeyRegistration() {
   const analytics = getAngularService('$analytics');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
@@ -88,11 +88,11 @@ function ChplApiKeyRegistration () {
               id="name-organization"
               name="nameOrganization"
               label="Name or Organization"
-              required={ true }
+              required
               value={formik.values.nameOrganization}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.nameOrganization && Boolean(formik.errors.nameOrganization)}
+              error={formik.touched.nameOrganization && formik.errors.nameOrganization}
               helperText={formik.touched.nameOrganization && formik.errors.nameOrganization}
               InputLabelProps={{ classes: { root: classes.longLabelFix } }}
             />
@@ -102,11 +102,11 @@ function ChplApiKeyRegistration () {
               id="email"
               name="email"
               label="Email"
-              required={ true }
+              required
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.email && Boolean(formik.errors.email)}
+              error={formik.touched.email && formik.errors.email}
               helperText={formik.touched.email && formik.errors.email}
             />
           </div>
