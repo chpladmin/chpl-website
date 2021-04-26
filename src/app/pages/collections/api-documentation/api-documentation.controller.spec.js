@@ -23,7 +23,6 @@
 
         scope = $rootScope.$new();
         vm = $controller('ApiDocumentationController', {
-          //$scope: scope,
           networkService,
         });
         scope.$digest();
