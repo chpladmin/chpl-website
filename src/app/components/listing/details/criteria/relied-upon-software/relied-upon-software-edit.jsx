@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { arrayOf, func } from 'prop-types';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
+  Button,
   Collapse,
   Divider,
   FormControlLabel,
@@ -15,6 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -27,7 +30,7 @@ const validationSchema = yup.object({
 });
 
 function ChplReliedUponSoftwareEdit(props) {
-  const [isAdding, setAdding] = useState(false);
+  const [adding, setAdding] = useState(false);
   const [software, setSoftware] = useState(props.sw);
 
   const formik = useFormik({
@@ -51,12 +54,20 @@ function ChplReliedUponSoftwareEdit(props) {
         version: formik.values.version,
         certifiedProductNumber: formik.values.certifiedProductNumber,
         grouping: formik.values.grouping,
+        key: (new Date()).getTime(),
       },
     ]);
+    formik.resetForm();
+    setAdding(false);
   }
 
-  const removeItem = (event) => {
-    console.log(event);
+  const cancelAdd = () => {
+    formik.resetForm();
+    setAdding(false);
+  }
+
+  const removeItem = (sw) => {
+    setSoftware(software.filter((s) => !(s.id === sw.id && s.key === sw.key)));
   }
 
   return (
@@ -94,7 +105,7 @@ function ChplReliedUponSoftwareEdit(props) {
           </Grid>
         </Grid>
         { software.map((sw) => (
-          <Grid item xs={12} key={sw.id}>
+          <Grid item xs={12} key={sw.id || sw.key}>
             <Grid container spacing={4}>
               <Grid item xs={3}>
                 <Typography variant="subtitle2">{ sw.name }</Typography>
@@ -109,30 +120,31 @@ function ChplReliedUponSoftwareEdit(props) {
                 <Typography variant="subtitle2">{ sw.grouping }</Typography>
               </Grid>
               <Grid item xs={1}>
-                <IconButton
-                  onClick={(event) => removeItem(event)}>
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small" />
-                </IconButton>
+                { !adding &&
+                  <IconButton
+                    onClick={() => removeItem(sw)}>
+                    <CloseOutlinedIcon
+                      color="primary"
+                      size="small" />
+                  </IconButton>}
               </Grid>
             </Grid>
           </Grid>
         ))}
-        { !isAdding &&
-        <Grid item xs={12}>
-          <Button
-            onClick={() => setAdding(true)}
-          >Add item
-          </Button>
-        </Grid>}
-        { isAdding &&
+        { !adding &&
+          <Grid item xs={12}>
+            <Button
+              onClick={() => setAdding(true)}
+            >Add item
+            </Button>
+          </Grid>}
+        { adding &&
           <Grid item xs={12}>
             <Grid container spacing={4}>
               <Grid item xs={3}>
                 <TextField
-                  id="new-name"
-                  name="newName"
+                  id="name"
+                  name="name"
                   label="Name"
                   value={formik.values.name}
                   onChange={formik.handleChange}
@@ -143,8 +155,8 @@ function ChplReliedUponSoftwareEdit(props) {
               </Grid>
               <Grid item xs={3}>
                 <TextField
-                  id="new-version"
-                  version="newVersion"
+                  id="version"
+                  name="version"
                   label="Version"
                   value={formik.values.version}
                   onChange={formik.handleChange}
@@ -155,8 +167,8 @@ function ChplReliedUponSoftwareEdit(props) {
               </Grid>
               <Grid item xs={3}>
                 <TextField
-                  id="new-certifiedProductNumber"
-                  certifiedProductNumber="newCertifiedProductNumber"
+                  id="certified-product-number"
+                  name="certifiedProductNumber"
                   label="Certified Product Number"
                   value={formik.values.certifiedProductNumber}
                   onChange={formik.handleChange}
@@ -167,8 +179,8 @@ function ChplReliedUponSoftwareEdit(props) {
               </Grid>
               <Grid item xs={2}>
                 <TextField
-                  id="new-grouping"
-                  grouping="newGrouping"
+                  id="grouping"
+                  name="grouping"
                   label="Grouping"
                   value={formik.values.grouping}
                   onChange={formik.handleChange}
@@ -185,6 +197,12 @@ function ChplReliedUponSoftwareEdit(props) {
                 >
                   <CheckOutlinedIcon />
                 </Button>
+                <IconButton
+                  onClick={() => cancelAdd()}>
+                  <CloseOutlinedIcon
+                    color="primary"
+                    size="small" />
+                </IconButton>
               </Grid>
             </Grid>
           </Grid>
@@ -197,7 +215,7 @@ function ChplReliedUponSoftwareEdit(props) {
 export { ChplReliedUponSoftwareEdit };
 
 ChplReliedUponSoftwareEdit.propTypes = {
-  handleReliedUponSoftwareChange: func,
+  onChange: func,
   sw: arrayOf(reliedUponSoftware),
 };
 
