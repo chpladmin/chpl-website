@@ -1,3 +1,4 @@
+import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import { ChplEllipsis, ChplLink } from './util';
@@ -22,6 +23,8 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
+  .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
+  .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
