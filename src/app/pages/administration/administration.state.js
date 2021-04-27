@@ -165,10 +165,6 @@ let states = {
           'ngInject';
           return getResources($q, networkService);
         },
-        uploadingCps: ($q, networkService) => {
-          'ngInject';
-          return networkService.getPendingListings().then(response => response);
-        },
       },
       data: { title: 'CHPL Administration - Confirm Listings' },
     },{

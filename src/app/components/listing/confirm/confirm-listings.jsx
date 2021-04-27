@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Button, Checkbox, makeStyles } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
@@ -40,19 +40,19 @@ function ChplConfirmListings (props) {
   }, [loadListings]);
 
   const loadListings = useCallback(() => {
-    networkService.getPendingListings(true).then(response => {
+    networkService.getPendingListings(props.beta).then(response => {
       setListings(response);
-      let pending = response.filter(l => l.errorCount === null || l.warningCount === null);
+      let pending = response.filter(l => l.errorCount === null || l.warningCount === null || l.processing);
       if (pending.length > 0) {
         setTimeout(loadListings, 1000);
       }
     });
-  }, [networkService]);
+  }, [networkService, props.beta]);
 
   const getStatus = listing => {
     return (
       <>
-        { listing.errorCount !== null && listing.warningCount !== null
+        { listing.errorCount !== null && listing.warningCount !== null && !listing.processing
           ? <>
               { listing.errorCount + ' error' + (listing.errorCount !== 1 ? 's' : '') }
               <br />
@@ -67,10 +67,45 @@ function ChplConfirmListings (props) {
   };
 
   const handleProcess = listing => {
-    props.onProcess(listing.id);
+    props.onProcess(listing.id, props.beta);
   };
 
   const handleReject = () => {
+    if (props.beta) {
+      handleRejectBeta();
+    } else {
+      handleRejectOriginal();
+    }
+  };
+
+  const handleRejectOriginal = () => {
+    networkService.massRejectPendingListings(idsToReject)
+      .then(() => {
+        let message = 'Rejected ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '');
+        toaster.pop({
+          type: 'success',
+          title: 'Success',
+          body: message,
+        });
+        setIdsToReject([]);
+        loadListings();
+      }, error => {
+        let message = 'Rejection of ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '') + ' failed';
+        if (error?.data?.errorMessages) {
+          message += '. ' + error.data.errorMessages.join(', ');
+        }
+        if (error?.data?.error) {
+          message += '. ' + error.data.error;
+        }
+        toaster.pop({
+          type: 'error',
+          title: 'Error',
+          body: message,
+        });
+      });
+  };
+
+  const handleRejectBeta = () => {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
         let message = 'Rejected ' + idsToReject.length + ' listing' + (idsToReject.length !== 1 ? 's' : '');
@@ -121,13 +156,22 @@ function ChplConfirmListings (props) {
     };
   };
 
-  const headers = [
+  const headers = props.beta ? [
     {text: 'Action', invisible: true},
     {text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true},
     {text: 'Developer', property: 'developer', sortable: true},
     {text: 'Product', property: 'product', sortable: true},
     {text: 'Version', property: 'version', sortable: true},
     {text: 'Certification Date', property: 'certificationDate', sortable: true},
+    {text: 'Status'},
+    {text: 'Reject Listing', invisible: true},
+  ] : [
+    {text: 'Action', invisible: true},
+    {text: 'CHPL Product Number'},
+    {text: 'Developer'},
+    {text: 'Product'},
+    {text: 'Version'},
+    {text: 'Certification Date'},
     {text: 'Status'},
     {text: 'Reject Listing', invisible: true},
   ];
@@ -165,14 +209,14 @@ function ChplConfirmListings (props) {
                                   variant="contained"
                                   onClick={() => handleProcess(listing)}
                                   endIcon={ <PlayArrowIcon/> }
-                                  disabled={ listing.errorCount === null || listing.warningCount === null }>
+                                  disabled={ listing.errorCount === null || listing.warningCount === null || listing.processing }>
                             Process Listing
                           </Button>
                         </TableCell>
                         <TableCell>{ listing.chplProductNumber }</TableCell>
-                        <TableCell>{ listing.developer }</TableCell>
-                        <TableCell>{ listing.product }</TableCell>
-                        <TableCell>{ listing.version }</TableCell>
+                        <TableCell>{ props.beta ? listing.developer : listing.developer.name }</TableCell>
+                        <TableCell>{ props.beta ? listing.product : listing.product.name }</TableCell>
+                        <TableCell>{ props.beta ? listing.version : listing.version.version }</TableCell>
                         <TableCell>{ DateUtil.getDisplayDateFormat(listing.certificationDate) }</TableCell>
                         <TableCell>{ getStatus(listing) }</TableCell>
                         <TableCell align="right">
@@ -181,12 +225,14 @@ function ChplConfirmListings (props) {
                                     inputProps={{ 'aria-label': 'Reject Listing: ' + listing.chplProductNumber }} />
                         </TableCell>
                       </TableRow>
-                    ))}
+                    ))
+                  }
                 </TableBody>
               </Table>
             </TableContainer>
           </>
-        : <div>None found</div>
+        :
+        <div>No products currently in queue</div>
       }
     </ThemeProvider>
   );
@@ -195,5 +241,6 @@ function ChplConfirmListings (props) {
 export { ChplConfirmListings };
 
 ChplConfirmListings.propTypes = {
+  beta: bool,
   onProcess: func,
 };

@@ -1,61 +1,51 @@
-export const ConfirmListingsComponent = {
+const ConfirmListingsComponent = {
   templateUrl: 'chpl.administration/confirm/listings.html',
   bindings: {
     developers: '<',
     resources: '<',
-    uploadingCps: '<',
   },
   controller: class ConfirmListingsComponent {
-    constructor ($log, $scope, $state, $timeout, $uibModal, DateUtil, authService, featureFlags, networkService) {
+    constructor($log, $state, $uibModal, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
-      this.$scope = $scope;
       this.$state = $state;
-      this.$timeout = $timeout;
       this.$uibModal = $uibModal;
-      this.DateUtil = DateUtil;
-      this.featureFlags = featureFlags;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
-      this.massReject = {};
+      this.toaster = toaster;
+    }
+
+    $onInit() {
       this.handleProcess = this.handleProcess.bind(this);
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
       }
       if (changes.resources) {
         this.resources = angular.copy(changes.resources.currentValue);
         if (Array.isArray(this.resources)) {
-          let resObj = {};
-          this.resources.forEach(item => {
+          const resObj = {};
+          this.resources.forEach((item) => {
             Object.assign(resObj, item);
           });
           this.resources = resObj;
         }
       }
-      if (changes.uploadingCps) {
-        this.uploadingCps = angular.copy(changes.uploadingCps.currentValue);
+    }
+
+    handleProcess(listingId, beta) {
+      if (beta) {
+        this.$state.go('.listing', { id: listingId });
+      } else {
+        this.inspectListing(listingId);
       }
     }
 
-    getNumberOfListingsToReject () {
-      var ret = 0;
-      angular.forEach(this.massReject, value => {
-        if (value) {
-          ret += 1;
-        }
-      });
-      return ret;
-    }
-
-    handleProcess (listingId) {
-      this.$state.go('.listing', {id: listingId});
-    }
-
-    inspectCp (cpId) {
-      let that = this;
+    inspectListing(listingId) {
+      const that = this;
 
       this.modalInstance = this.$uibModal.open({
         templateUrl: 'chpl.components/listing/inspect/inspect.html',
@@ -67,63 +57,40 @@ export const ConfirmListingsComponent = {
         resolve: {
           beta: () => false,
           developers: () => that.developers,
-          inspectingCp: () => that.networkService.getPendingListingById(cpId),
+          inspectingCp: () => that.networkService.getPendingListingById(listingId),
           isAcbAdmin: () => that.hasAnyRole(['ROLE_ACB']),
           isChplAdmin: () => that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']),
           resources: () => that.resources,
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(result => {
+      this.modalInstance.result.then((result) => {
         if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
+          this.dropped = true;
+          this.networkService.getPendingListings().then(() => {
+            this.dropped = false;
+          });
           if (result.developerCreated) {
-            this.developers.push(result.developer);
+            this.developers.push(result.listing.developer);
           }
-          this.clearPendingListing(cpId);
+          if (result.status === 'confirmed') {
+            this.toaster.pop({
+              type: 'success',
+              title: 'Success',
+              body: `The Listing has been confirmed. Details are available at <a href="#/listing/${result.listing.id}">${result.listing.chplProductNumber}</a>`,
+              bodyOutputType: 'trustedHtml',
+            });
+          }
           if (result.status === 'resolved') {
-            this.uploadedListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
+            this.uploadedListingsMessages = [`Product with ID: "${result.objectId}" has already been resolved by "${result.contact.fullName}"`];
           }
         }
       });
-    }
-
-    inspectListing (listingId) {
-      this.$state.go('.listing', {id: listingId});
-    }
-
-    massRejectPendingListings () {
-      let that = this;
-      var idsToReject = [];
-      angular.forEach(this.massReject, (value, key) => {
-        if (value) {
-          idsToReject.push(parseInt(key));
-          this.clearPendingListing(parseInt(key));
-          delete(this.massReject[key]);
-        }
-      });
-      this.networkService.massRejectPendingListings(idsToReject)
-        .then(() => {
-          that.loadListings();
-        }, error => {
-          that.loadListings();
-          if (error.data.errors && error.data.errors.length > 0) {
-            that.uploadedListingsMessages = error.data.errors.map(error => 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
-          }
-        });
-    }
-
-    loadListings () {
-      let that = this;
-      this.networkService.getPendingListings().then(response => {
-        that.uploadingCps = response;
-      });
-    }
-
-    clearPendingListing (cpId) {
-      this.uploadingCps = this.uploadingCps.filter(l => l.id !== cpId);
     }
   },
 };
 
 angular.module('chpl.administration')
   .component('chplConfirmListings', ConfirmListingsComponent);
+
+export default ConfirmListingsComponent;
