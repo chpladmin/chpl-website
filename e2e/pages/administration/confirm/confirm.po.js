@@ -3,7 +3,7 @@ const confirmElements = {
   inspectNext: '#inspect-next',
   inspectConfirm: '#inspect-confirm',
   yesConfirmation: '//button[text()="Yes"]',
-  rejectButton: '//table[@id="pending-listings-table"]/tfoot/tr/th/button',
+  rejectButton: '#reject-selected-pending-listings',
   warningCheckbox: '#acknowledge-warnings',
   confirmButton: '#inspect-confirm',
   toastContainertitle: '.ng-binding.toast-title',
@@ -17,6 +17,10 @@ class ConfirmPage {
 
   get inspectNextButton () {
     return $(confirmElements.inspectNext);
+  }
+
+  get inspectLabel () {
+    return $('#inspect-label');
   }
 
   get inspectConfirmButton () {
@@ -60,7 +64,7 @@ class ConfirmPage {
   }
 
   gotoConfirmListingPage (inspectListingId ) {
-    $('//button[@id="pending-listing-inspect-' + inspectListingId + '"]').scrollAndClick();
+    $('//button[@id="process-pending-listing-' + inspectListingId + '"]').scrollAndClick();
     this.inspectNextButton.waitAndClick();
     this.inspectNextButton.waitAndClick();
     this.inspectNextButton.waitAndClick();
@@ -77,19 +81,22 @@ class ConfirmPage {
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
   }
 
-  findListingtoReject (chplId) {
+  rejectListingCheckbox (chplId) {
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
+  }
+
+  findListingToReject (chplId) {
     return $('//td[text()="' + chplId + '"]');
   }
 
   rejectListing (chplId) {
-    $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').scrollAndClick();
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
     } else {
-      $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
+      $('//input[@id="reject-pending-listing-' + chplId + '"]').waitAndClick();
       this.rejectButton.waitAndClick();
     }
-    this.yesConfirmation.waitAndClick();
   }
 
   confirmListing () {

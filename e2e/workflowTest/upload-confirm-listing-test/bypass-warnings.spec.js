@@ -4,8 +4,9 @@ import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
+import ToastComponent from '../../components/toast/toast.po';
 
-let confirmPage , hooks, loginComponent, uploadPage;
+let confirmPage , hooks, loginComponent, toast, uploadPage;
 const listingIdNoWarningError = '15.04.04.1722.AQA3.03.01.1.200620';
 const listingIdWithWarning = '15.04.04.1722.AQA4.03.01.1.200620';
 
@@ -14,6 +15,7 @@ beforeAll( () => {
   uploadPage = new UploadPage();
   confirmPage = new ConfirmPage();
   loginComponent = new LoginComponent();
+  toast = new ToastComponent();
   hooks = new Hooks();
   hooks.open('#/administration/upload');
   loginComponent.logIn('acb');
@@ -30,9 +32,12 @@ describe('listing with no confirm warnings and no errors', () => {
   it('should not show warning bypass checkbox and confirm works successfully', () => {
     confirmPage.gotoConfirmListingPage(listingIdNoWarningError);
     confirmPage.confirmListing();
-    assert.isFalse(confirmPage.warningCheckbox.isDisplayed());
+    expect(confirmPage.warningCheckbox.isDisplayed()).toBeFalse;
     confirmPage.waitForSuccessfulConfirm();
-    assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Please stand by');
+    toast.clearAllToast();
+    hooks.waitForSpinnerToDisappear();
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Success');
   });
   afterEach(function () {
     browser.refresh();
@@ -53,7 +58,7 @@ describe('listing with warnings on confirm and no errors', () => {
     confirmPage.gotoConfirmListingPage(listingIdWithWarning);
     confirmPage.confirmListing();
     hooks.waitForSpinnerToDisappear();
-    assert.isTrue(confirmPage.warningCheckbox.isDisplayed());
+    expect(confirmPage.warningCheckbox.isDisplayed()).toBeTrue;
   });
 
   it('should not get confirmed until bypasscheckbox is checked', () => {
@@ -62,7 +67,7 @@ describe('listing with warnings on confirm and no errors', () => {
     browser.waitUntil( () => confirmPage.warningCheckbox.isDisplayed());
     confirmPage.confirmListing();
     hooks.waitForSpinnerToDisappear();
-    assert.isTrue(confirmPage.confirmButton.isDisplayed());
+    expect(confirmPage.confirmButton.isDisplayed()).toBeTrue;
   });
 
   it('should get confirm if user checks checkbox for bypass warnings', () => {
@@ -72,7 +77,10 @@ describe('listing with warnings on confirm and no errors', () => {
     confirmPage.warningCheckbox.click();
     confirmPage.confirmListing();
     confirmPage.waitForSuccessfulConfirm();
-    assert.equal(confirmPage.toastContainerTitle.getText(),'Update processing');
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Please stand by');
+    toast.clearAllToast();
+    hooks.waitForSpinnerToDisappear();
+    expect(confirmPage.toastContainerTitle.getText()).toBe('Success');
   });
 
   afterEach(function () {

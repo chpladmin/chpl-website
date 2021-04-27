@@ -23,9 +23,9 @@
     "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:full": "eslint e2e && node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
     "e2e:lint": "eslint e2e",
-    "e2e:clean": "rm test_reports/e2e/* || true",
-    "report:generate": "npx allure generate --clean ./test_reports/e2e/allure-results/ -o ./test_reports/e2e/allure-report",
-    "report:open": "npx allure open ./test_reports/e2e/allure-report"
+    "e2e:clean": "rm -r test_reports/e2e/* || true",
+    "report:generate": "npx allure generate --clean /chpl/dev/allure/results/ -o /chpl/dev/allure/report",
+    "report:open": "npx allure open /chpl/dev/allure/report"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
