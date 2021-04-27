@@ -175,7 +175,7 @@ exports.config = {
       outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
     }],
     ['allure', {
-      outputDir: './test_reports/e2e/allure-results',
+      outputDir: '/chpl/dev/allure/results/',
       disableWebdriverStepsReporting: true,
       disableWebdriverScreenshotsReporting: false,
     }],
@@ -196,8 +196,10 @@ exports.config = {
   onPrepare: function (config, capabilities) {
     // make sure download directory exists
     if (!fs.existsSync(downloadDir)){
-      // if it doesn't exist, create it
       fs.mkdirSync(downloadDir);
+    }
+    if (!fs.existsSync(downloadDir + 'screenshot')){
+      fs.mkdirSync(downloadDir + 'screenshot');
     }
   },
   /**
