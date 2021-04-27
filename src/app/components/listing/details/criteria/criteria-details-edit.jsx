@@ -80,12 +80,13 @@ function ChplCriteriaDetailsEdit(props) {
     props.onSave(toSave);
   }
 
-  const handleReliedUponSoftwareChange = (software) => {
-    props.onChange();
-    setCriteria({
+  const handleReliedUponSoftwareChange = (change) => {
+    const updated = {
       ...criteria,
-      additionalSoftware: software,
-    });
+    };
+    updated[change.key] = change.data;
+    setCriteria(updated);
+    props.onChange();
   }
 
   return (

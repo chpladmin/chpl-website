@@ -73,7 +73,7 @@ function ChplReliedUponSoftwareEdit(props) {
   }
 
   const update = (updated) => {
-    props.onChange(updated);
+    props.onChange({key: 'additionalSoftware', data: updated});
   }
 
   return (
