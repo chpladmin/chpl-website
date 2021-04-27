@@ -126,7 +126,7 @@ exports.config = {
   baseUrl: 'http://localhost:3000/',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: config.timeout,
+  waitforTimeout: config.longTimeout,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
@@ -156,7 +156,7 @@ exports.config = {
         return;
       }
       var message = assertion.error.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      var location = `${__dirname}/test_reports/e2e/assertionError_` + message + '.png';
+      var location = `${__dirname}/test_reports/e2e/screenshot/assertionError_${message}.png`;;
       browser.saveScreenshot(location);
     }
   },
@@ -171,11 +171,11 @@ exports.config = {
   reporters: [
     'spec',
     ['junit', {
-      outputDir: './test_reports/e2e/',
+      outputDir: './test_reports/e2e/junitreport',
       outputFileFormat: options => 'wdio-' + (new Date()).getTime() + '-junit-reporter.xml',
     }],
     ['allure', {
-      outputDir: './test_reports/e2e/allure-results',
+      outputDir: '/chpl/dev/allure/results/',
       disableWebdriverStepsReporting: true,
       disableWebdriverScreenshotsReporting: false,
     }],
@@ -196,8 +196,10 @@ exports.config = {
   onPrepare: function (config, capabilities) {
     // make sure download directory exists
     if (!fs.existsSync(downloadDir)){
-      // if it doesn't exist, create it
       fs.mkdirSync(downloadDir);
+    }
+    if (!fs.existsSync(downloadDir + 'screenshot')){
+      fs.mkdirSync(downloadDir + 'screenshot');
     }
   },
   /**
@@ -337,22 +339,9 @@ exports.config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  onComplete: function(exitCode, config, capabilities, results) {
-    function rmdir(dir) {
-      var list = fs.readdirSync(dir);
-      for(var i = 0; i < list.length; i++) {
-        var filename = path.join(dir, list[i]);
-        var stat = fs.statSync(filename);
-        if(stat.isDirectory() || filename.includes('wdio') || filename.includes('.png')) {
-          // pass these files
-        } else {
-          // rm filename
-          fs.unlinkSync(filename);
-        }
-      }
-    }
-    rmdir(downloadDir);
-  },
+  // onComplete: function(exitCode, config, capabilities, results) {
+
+  // },
   /**
    * Gets executed when a refresh happens.
    * @param {String} oldSessionId session ID of the old session
