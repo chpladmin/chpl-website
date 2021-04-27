@@ -1,8 +1,7 @@
 (() => {
   /** @ngInject */
-  function InspectController($log, $uibModal, $uibModalInstance, beta, developers, inspectingCp, networkService, resources, utilService) {
+  function InspectController($log, $uibModal, $uibModalInstance, beta, developers, inspectingCp, networkService, resources, toaster, utilService) {
     const vm = this;
-
     function activate() {
       vm.cp = angular.copy(inspectingCp);
       vm.stage = 'dev';
@@ -58,12 +57,21 @@
     }
 
     function confirm() {
+      vm.isConfirming = true;
+      vm.pendingToast = toaster.pop({
+        type: 'warning',
+        title: 'Please stand by',
+        body: 'The Listing is being confirmed. Please stand by',
+      });
       networkService.confirmPendingCp({
         pendingListing: vm.cp,
         acknowledgeWarnings: vm.acknowledgeWarnings,
       }).then((result) => {
-        $uibModalInstance.close({ status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer });
+        vm.isConfirming = false;
+        $uibModalInstance.close({ status: 'confirmed', developerCreated: vm.developerChoice === 'create', listing: result });
+        toaster.clear(vm.pendingToast);
       }, (error) => {
+        vm.isConfirming = false;
         if (error.data.contact) {
           $uibModalInstance.close({
             contact: error.data.contact,
@@ -74,6 +82,7 @@
           vm.errorMessages = error.data.errorMessages;
           vm.warningMessages = error.data.warningMessages;
         }
+        toaster.clear(vm.pendingToast);
       });
     }
 
