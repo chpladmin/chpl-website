@@ -19,9 +19,15 @@ describe('the Version part of the Developers page', () => {
     await hooks.open('#/organizations/developers');
   });
 
-  describe('when logged in as an ACB', () => {
+  afterEach(() => {
+    if (toast.toastContainer.isDisplayed()) {
+      toast.clearAllToast();
+    }
+  });
+
+  describe('when logged in as drummond ACB', () => {
     beforeEach(() => {
-      login.logIn('acb');
+      login.logIn('drummond');
       login.logoutButton.waitForDisplayed();
     });
 
@@ -30,15 +36,16 @@ describe('the Version part of the Developers page', () => {
     });
 
     describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
-      let developer = 'Procentive';
-      let productName = 'Procentive';
-      let productId = '1987';
+      const developer = 'Procentive';
+      const productName = 'Procentive';
+      const productId = '1987';
       let product;
 
       beforeEach(() => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -46,7 +53,7 @@ describe('the Version part of the Developers page', () => {
       });
 
       describe('when editing Version "2015"', () => {
-        let version = '2015';
+        const version = '2015';
 
         beforeEach(() => {
           page.selectVersion(product, productId, version);
@@ -55,11 +62,12 @@ describe('the Version part of the Developers page', () => {
         });
 
         it('should allow Versions to be edited', () => {
-          let timestamp = (new Date()).getTime();
-          let newVersion = version + ' - ' + timestamp;
+          const timestamp = (new Date()).getTime();
+          const newVersion = version + ' - ' + timestamp;
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.save();
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
           product = page.getProduct(productName);
@@ -76,7 +84,7 @@ describe('the Version part of the Developers page', () => {
       });
 
       describe('when editing Version "Version 2015"', () => {
-        let version = 'Version 2015';
+        const version = 'Version 2015';
 
         beforeEach(() => {
           page.selectVersion(product, productId, version);
@@ -85,12 +93,13 @@ describe('the Version part of the Developers page', () => {
         });
 
         it('should allow cancellation', () => {
-          let timestamp = (new Date()).getTime();
-          let newVersion = version + ' - ' + timestamp;
+          const timestamp = (new Date()).getTime();
+          const newVersion = version + ' - ' + timestamp;
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.cancel();
           actionConfirmation.yes.click();
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           product = page.getProduct(productName);
           product.scrollIntoView({block: 'center', inline: 'center'});
@@ -104,6 +113,23 @@ describe('the Version part of the Developers page', () => {
           expect(page.editVersionName).toBeDisplayed();
           expect(page.editVersionName.getValue()).toBe(version);
           expect(page.editVersionName.getValue()).not.toBe(newVersion);
+        });
+      });
+      describe('when splitting "Version 2015"', () => {
+        const version = 'Version 2015';
+
+        it('should show error message to split a version which has listings owned by different ACB than logged in ACB', () => {
+          const newVersion = version + ' - split - ' + (new Date()).getTime();
+          const newCode = newVersion.substring(newVersion.length - 2);
+          const movingListingId = '6299';
+          page.selectVersion(product, productId, version);
+          page.getSplitButton(product).click();
+          page.getVersionSplitButton(product).click();
+          page.splitVersionVersion.setValue(newVersion);
+          page.editVersionCode.setValue(newCode);
+          page.moveListing(movingListingId);
+          actionBar.save();
+          expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-025300 because it is owned by ICSA Labs.');
         });
       });
     });
@@ -125,11 +151,12 @@ describe('the Version part of the Developers page', () => {
       let newVersion, product, timestamp, version;
 
       beforeEach(() => {
-        let developer = 'Greenway Health, LLC';
+        const developer = 'Greenway Health, LLC';
         timestamp = (new Date()).getTime();
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -154,6 +181,7 @@ describe('the Version part of the Developers page', () => {
           actionBar.save();
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
+          page.selectAllCertificationStatus();
           product = page.getProduct(name);
           product.scrollIntoView({block: 'center', inline: 'center'});
           page.selectProduct(product);
@@ -175,6 +203,7 @@ describe('the Version part of the Developers page', () => {
         page = new DevelopersPage();
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});
         page.selectProduct(product);
@@ -183,7 +212,6 @@ describe('the Version part of the Developers page', () => {
 
       it('should have a version split, but not a product split', () => {
         page.getSplitButton(product).click();
-
         expect(page.getSplitButton(product)).toExist();
         expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split Product with only one Version)');
         expect(page.getVersionSplitButton(product).getText()).toBe('Version\n(Select a specific Version to split)');
@@ -208,6 +236,7 @@ describe('the Version part of the Developers page', () => {
 
         // act
         actionBar.save();
+        page.selectAllCertificationStatus();
         page.productsHeader.waitForDisplayed();
         product = page.getProduct(productName);
         product.scrollIntoView({block: 'center', inline: 'center'});

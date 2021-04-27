@@ -1,6 +1,8 @@
 {
     "plugins": [
         "angular",
+        "jest-dom",
+        "react",
         "react-hooks"
     ],
     "extends": [
@@ -18,6 +20,7 @@
         "jasmine": true,
         "amd": true,
         "es6": true,
+        "jest": true,
     },
     "globals": {
         "angular": true,
@@ -32,7 +35,7 @@
     {
     "files": ["*.jsx", "*.spec.js"],
     "rules": {
-    "no-console": ["off"],
+      "no-console": ["off"],
     },
     },
     ],

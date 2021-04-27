@@ -1,3 +1,4 @@
+import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm/';
 import { ChplEllipsis } from './util/';
 import { ChplFuzzyType } from './fuzzy-type/';
@@ -21,6 +22,8 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
+  .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
+  .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
