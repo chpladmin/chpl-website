@@ -19,7 +19,6 @@ import {
   TableRow,
   TextField,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -31,11 +30,10 @@ const validationSchema = yup.object({
 
 function ChplReliedUponSoftwareEdit(props) {
   const [adding, setAdding] = useState(false);
-  const [software, setSoftware] = useState(props.sw);
+  const [software, setSoftware] = useState(props.software);
 
   const formik = useFormik({
     initialValues: {
-      relies: props.sw.length > 0,
       name: '',
       version: '',
       certifiedProductNumber: '',
@@ -47,7 +45,7 @@ function ChplReliedUponSoftwareEdit(props) {
   });
 
   const addNew = () => {
-    setSoftware([
+    const updated = [
       ...software,
       {
         name: formik.values.name,
@@ -56,9 +54,11 @@ function ChplReliedUponSoftwareEdit(props) {
         grouping: formik.values.grouping,
         key: (new Date()).getTime(),
       },
-    ]);
+    ];
+    setSoftware(updated);
     formik.resetForm();
     setAdding(false);
+    update(updated);
   }
 
   const cancelAdd = () => {
@@ -66,148 +66,145 @@ function ChplReliedUponSoftwareEdit(props) {
     setAdding(false);
   }
 
-  const removeItem = (sw) => {
-    setSoftware(software.filter((s) => !(s.id === sw.id && s.key === sw.key)));
+  const removeItem = (item) => {
+    const updated = software.filter((s) => !(s.id === item.id && s.key === item.key));
+    setSoftware(updated);
+    update(updated);
+  }
+
+  const update = (updated) => {
+    props.onChange(updated);
   }
 
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
-        <FormControlLabel
-          control={
-            <Switch
-              id="relies"
-              name="relies"
-              color="primary"
-              checked={ formik.values.relies }
-              onChange={ formik.handleChange }
-            />
-          }
-          label={`Relies upon additional software: ${formik.values.relies ? 'True' : 'False'}`}
-        />
+        <Grid container spacing={4}>
+          <Grid item xs={3}>
+            <Typography variant="subtitle2">Name</Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="subtitle2">Version</Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="subtitle2">CHPL ID</Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <Typography variant="subtitle2">Group</Typography>
+          </Grid>
+          <Grid item xs={1} />
+        </Grid>
       </Grid>
-      <Collapse in={formik.values.relies}>
-        <Grid item xs={12}>
+      { software.map((item) => (
+        <Grid item xs={12} key={item.id || item.key}>
           <Grid container spacing={4}>
             <Grid item xs={3}>
-              <Typography variant="subtitle2">Name</Typography>
+              <Typography variant="subtitle2">{ item.name }</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="subtitle2">Version</Typography>
+              <Typography variant="subtitle2">{ item.version }</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="subtitle2">CHPL ID</Typography>
+              <Typography variant="subtitle2">{ item.certifiedProductNumber }</Typography>
             </Grid>
             <Grid item xs={2}>
-              <Typography variant="subtitle2">Group</Typography>
+              <Typography variant="subtitle2">{ item.grouping }</Typography>
             </Grid>
-            <Grid item xs={1} />
-          </Grid>
-        </Grid>
-        { software.map((sw) => (
-          <Grid item xs={12} key={sw.id || sw.key}>
-            <Grid container spacing={4}>
-              <Grid item xs={3}>
-                <Typography variant="subtitle2">{ sw.name }</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant="subtitle2">{ sw.version }</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant="subtitle2">{ sw.certifiedProductNumber }</Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="subtitle2">{ sw.grouping }</Typography>
-              </Grid>
-              <Grid item xs={1}>
-                { !adding &&
-                  <IconButton
-                    onClick={() => removeItem(sw)}>
-                    <CloseOutlinedIcon
-                      color="primary"
-                      size="small" />
-                  </IconButton>}
-              </Grid>
-            </Grid>
-          </Grid>
-        ))}
-        { !adding &&
-          <Grid item xs={12}>
-            <Button
-              onClick={() => setAdding(true)}
-            >Add item
-            </Button>
-          </Grid>}
-        { adding &&
-          <Grid item xs={12}>
-            <Grid container spacing={4}>
-              <Grid item xs={3}>
-                <TextField
-                  id="name"
-                  name="name"
-                  label="Name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.name && formik.errors.name}
-                  helperText={formik.touched.name && formik.errors.name}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  id="version"
-                  name="version"
-                  label="Version"
-                  value={formik.values.version}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.version && formik.errors.version}
-                  helperText={formik.touched.version && formik.errors.version}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  id="certified-product-number"
-                  name="certifiedProductNumber"
-                  label="Certified Product Number"
-                  value={formik.values.certifiedProductNumber}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
-                  helperText={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <TextField
-                  id="grouping"
-                  name="grouping"
-                  label="Grouping"
-                  value={formik.values.grouping}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.grouping && formik.errors.grouping}
-                  helperText={formik.touched.grouping && formik.errors.grouping}
-                />
-              </Grid>
-              <Grid item xs={1}>
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  onClick={addNew}
-                >
-                  <CheckOutlinedIcon />
-                </Button>
+            <Grid item xs={1}>
+              { !adding &&
                 <IconButton
-                  onClick={() => cancelAdd()}>
+                  onClick={() => removeItem(item)}>
                   <CloseOutlinedIcon
                     color="primary"
                     size="small" />
-                </IconButton>
-              </Grid>
+                </IconButton>}
             </Grid>
           </Grid>
-        }
-      </Collapse>
+        </Grid>
+      ))}
+      { !adding &&
+        <Grid item xs={12}>
+          <Button
+            onClick={() => setAdding(true)}
+          >Add item
+          </Button>
+        </Grid>}
+      { adding &&
+        <Grid item xs={12}>
+          <Grid container spacing={4}>
+            <Grid item xs={3}>
+              <TextField
+                id="name"
+                name="name"
+                label="Name"
+                variant="outlined"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={!!formik.values.certifiedProductNumber}
+                error={formik.touched.name && formik.errors.name}
+                helperText={formik.touched.name && formik.errors.name}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                id="version"
+                name="version"
+                label="Version"
+                variant="outlined"
+                value={formik.values.version}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={!!formik.values.certifiedProductNumber}
+                error={formik.touched.version && formik.errors.version}
+                helperText={formik.touched.version && formik.errors.version}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <TextField
+                id="certified-product-number"
+                name="certifiedProductNumber"
+                label="Certified Product Number"
+                variant="outlined"
+                value={formik.values.certifiedProductNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={!!(formik.values.name || formik.values.version)}
+                error={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
+                helperText={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                id="grouping"
+                name="grouping"
+                label="Grouping"
+                variant="outlined"
+                value={formik.values.grouping}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.grouping && formik.errors.grouping}
+                helperText={formik.touched.grouping && formik.errors.grouping}
+              />
+            </Grid>
+            <Grid item xs={1}>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={addNew}
+              >
+                <CheckOutlinedIcon />
+              </Button>
+              <IconButton
+                onClick={() => cancelAdd()}>
+                <CloseOutlinedIcon
+                  color="primary"
+                  size="small" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Grid>
+      }
     </Grid>
   );
 }
@@ -216,61 +213,5 @@ export { ChplReliedUponSoftwareEdit };
 
 ChplReliedUponSoftwareEdit.propTypes = {
   onChange: func,
-  sw: arrayOf(reliedUponSoftware),
+  software: arrayOf(reliedUponSoftware),
 };
-
-/*
-  <Grid container spacing={4}>
-  <Grid item xs={12}>
-  <FormControlLabel
-  control={
-  <Switch
-  id="relies"
-  name="relies"
-  color="primary"
-  checked={ formik.values.relies }
-  onChange={ formik.handleChange }
-  />
-  }
-  label={`Relies upon additional software: ${formik.values.relies ? 'True' : 'False'}`}
-  />
-  </Grid>
-  <Grid item xs={12}>
-  <Grid container spacing={4}>
-  <Grid item xs={3}>
-  <Typography variant="subtitle2">Name</Typography>
-  </Grid>
-  <Grid item xs={3}>
-  <Typography variant="subtitle2">Version</Typography>
-  </Grid>
-  <Grid item xs={3}>
-  <Typography variant="subtitle2">CHPL ID</Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography variant="subtitle2">Group</Typography>
-  </Grid>
-  <Grid item xs={1}></Grid>
-  </Grid>
-  </Grid>
-
-  <Grid item xs={12}>
-  <Grid container spacing={4}>
-  <Grid item xs={3}>
-  <Typography variant="body1">ONC Test Method</Typography>
-  </Grid>
-  <Grid item xs={3}>
-  <Typography variant="body1">2.1</Typography>
-  </Grid>
-  <Grid item xs={3}>
-  <Typography variant="body1">-</Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography variant="body1">-</Typography>
-  </Grid>
-  <Grid item xs={1}>
-  <IconButton>
-  <CloseOutlinedIcon color="primary" size="small" />
-  </IconButton>
-  </Grid>
-  </Grid>
-*/

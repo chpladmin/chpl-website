@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplCriteriaDetailsEdit(props) {
-  const [criteria] = useState(props.criteria);
+  const [criteria, setCriteria] = useState(props.criteria);
   const [checked, setChecked] = useState(props.criteria.success);
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
@@ -62,6 +62,11 @@ function ChplCriteriaDetailsEdit(props) {
     validateOnMount: true,
   });
 
+  const onChange = (...args) => {
+    formik.handleChange(...args);
+    props.onChange();
+  }
+
   const save = () => {
     const toSave = {
       ...criteria,
@@ -72,12 +77,15 @@ function ChplCriteriaDetailsEdit(props) {
       g1Success: formik.values.g1Success,
       sed: formik.values.sed,
     }
-    console.log(toSave);
     props.onSave(toSave);
   }
 
-  const handleReliedUponSoftwareChange = (action, sw) => {
-    console.log({action, sw});
+  const handleReliedUponSoftwareChange = (software) => {
+    props.onChange();
+    setCriteria({
+      ...criteria,
+      additionalSoftware: software,
+    });
   }
 
   return (
@@ -93,7 +101,7 @@ function ChplCriteriaDetailsEdit(props) {
                     name="success"
                     color="primary"
                     checked={ formik.values.success }
-                    onChange={ formik.handleChange }
+                    onChange={ onChange }
                   />
                 }
                 label={`${criteria.criterion.number}: ${criteria.criterion.title}`}
@@ -106,7 +114,7 @@ function ChplCriteriaDetailsEdit(props) {
               <Grid item xs={12}>
                 <Typography variant="subtitle1">Relied Upon Software</Typography>
                 <ChplReliedUponSoftwareEdit
-                  sw={criteria.additionalSoftware}
+                  software={criteria.additionalSoftware}
                   onChange={handleReliedUponSoftwareChange}
                 />
               </Grid>
@@ -123,7 +131,7 @@ function ChplCriteriaDetailsEdit(props) {
                              name="gap"
                              color="primary"
                              checked={ formik.values.gap }
-                             onChange={ formik.handleChange }
+                             onChange={ onChange }
                            />
                          }
                          label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
@@ -144,7 +152,7 @@ function ChplCriteriaDetailsEdit(props) {
                              name="sed"
                              color="primary"
                              checked={ formik.values.sed }
-                             onChange={ formik.handleChange }
+                             onChange={ onChange }
                            />
                          }
                          label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
@@ -186,6 +194,7 @@ ChplCriteriaDetailsEdit.propTypes = {
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
   onCancel: func,
+  onChange: func,
   onSave: func,
 };
 
