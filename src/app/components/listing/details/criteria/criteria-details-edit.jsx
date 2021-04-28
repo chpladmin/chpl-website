@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
-import { arrayOf, func, object } from 'prop-types';
+import { func, object } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
   Button,
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Collapse,
   Divider,
   FormControlLabel,
   Grid,
-  Paper,
   Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -28,7 +19,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { getAngularService } from '.';
-import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
 import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 
@@ -43,18 +33,17 @@ const useStyles = makeStyles(() => ({
 
 function ChplCriteriaDetailsEdit(props) {
   const [criteria, setCriteria] = useState(props.criteria);
-  const [checked, setChecked] = useState(props.criteria.success);
   const [resources] = useState(props.resources);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
   const formik = useFormik({
     initialValues: {
-      success: props.criteria.success || false,
-      gap: props.criteria.gap,
-      g1Success: props.criteria.g1Success,
-      g1Success: props.criteria.g1Success,
-      sed: props.criteria.sed,
+      success: criteria.success || false,
+      gap: criteria.gap,
+      g1Success: criteria.g1Success,
+      g2Success: criteria.g2Success,
+      sed: criteria.sed,
     },
     validationSchema,
     validateOnChange: false,
@@ -70,16 +59,15 @@ function ChplCriteriaDetailsEdit(props) {
     const toSave = {
       ...criteria,
       success: formik.values.success,
-      sed: formik.values.sed,
       gap: formik.values.gap,
       g1Success: formik.values.g1Success,
-      g1Success: formik.values.g1Success,
+      g2Success: formik.values.g2Success,
       sed: formik.values.sed,
     };
     props.onSave(toSave);
   };
 
-  const handleReliedUponSoftwareChange = (change) => {
+  const handleDetailChange = (change) => {
     const updated = {
       ...criteria,
     };
@@ -115,7 +103,7 @@ function ChplCriteriaDetailsEdit(props) {
                 <Typography variant="subtitle1">Relied Upon Software</Typography>
                 <ChplReliedUponSoftwareEdit
                   software={criteria.additionalSoftware}
-                  onChange={handleReliedUponSoftwareChange}
+                  onChange={handleDetailChange}
                 />
               </Grid>
               { formik.values.gap !== null
@@ -151,10 +139,54 @@ function ChplCriteriaDetailsEdit(props) {
                       <ChplOptionalStandardsEdit
                         optionalStandards={criteria.testStandards}
                         options={resources.testStandards.data}
-                        onChange={handleReliedUponSoftwareChange}
+                        onChange={handleDetailChange}
                       />
                     </Grid>
                   </>
+                )}
+              { formik.values.g1Success !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="g1Success"
+                          name="g1Success"
+                          color="primary"
+                          checked={formik.values.g1Success}
+                          onChange={onChange}
+                        />
+                         )}
+                      label={`Measure Successfully Tested for G1: ${formik.values.g1Success ? 'True' : 'False'}`}
+                    />
+                  </Grid>
+                </>
+                )}
+              { formik.values.g2Success !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="g2Success"
+                          name="g2Success"
+                          color="primary"
+                          checked={formik.values.g2Success}
+                          onChange={onChange}
+                        />
+                         )}
+                      label={`Measure Successfully Tested for G2: ${formik.values.g2Success ? 'True' : 'False'}`}
+                    />
+                  </Grid>
+                </>
                 )}
               { formik.values.sed !== null
                 && (
@@ -212,9 +244,9 @@ export default ChplCriteriaDetailsEdit;
 ChplCriteriaDetailsEdit.propTypes = {
   criteria: object.isRequired,
   resources: object.isRequired,
-  onCancel: func,
-  onChange: func,
-  onSave: func,
+  onCancel: func.isRequired,
+  onChange: func.isRequired,
+  onSave: func.isRequired,
 };
 
 /*
@@ -246,56 +278,9 @@ gap
                 </TableCell>
               </TableRow>
 )}
-            { criteria.testStandards
-              && (
-              <TableRow key="optionalStandards">
-                <TableCell component="th" scope="row">
-                  Optional Standard
-                  <ChplTooltip title="The standard(s) used to meet a certification criterion where additional, optional standards are permitted.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.testStandards.length > 0
-                    && (
-                    <ul>
-                      { criteria.testStandards.map((ts) => (
-                        <li key={ts.id}>
-                          { ts.testStandardDescription
-                            && <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries />}
-                          { !ts.testStandardDescription && ts.testStandardName }
-                        </li>
-                      ))}
-                    </ul>
-                    )}
-                  { criteria.testStandards.length === 0 && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
-            { criteria.g1Success !== null
-              && (
-              <TableRow key="g1Success">
-                <TableCell component="th" scope="row">
-                  Measure Successfully Tested for G1
-                  <ChplTooltip title="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(1)).">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">{criteria.g1Success ? 'True' : 'False'}</TableCell>
-              </TableRow>
-              )}
-            { criteria.g2Success !== null
-              && (
-              <TableRow key="g2Success">
-                <TableCell component="th" scope="row">
-                  Measure Successfully Tested for G2
-                  <ChplTooltip title="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(2)).">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">{criteria.g2Success ? 'True' : 'False'}</TableCell>
-              </TableRow>
-              )}
+testStandards
+g1Success
+g2Success
             { criteria.testFunctionality
               && (
               <TableRow key="testFunctionality">
