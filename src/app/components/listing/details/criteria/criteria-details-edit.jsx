@@ -21,6 +21,7 @@ import * as yup from 'yup';
 import { getAngularService } from '.';
 import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
+import { ChplTestFunctionalityEdit } from './test-functionality';
 
 const validationSchema = yup.object({
 });
@@ -34,6 +35,7 @@ const useStyles = makeStyles(() => ({
 function ChplCriteriaDetailsEdit(props) {
   const [criteria, setCriteria] = useState(props.criteria);
   const [resources] = useState(props.resources);
+  console.log(props.resources);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
@@ -187,6 +189,22 @@ function ChplCriteriaDetailsEdit(props) {
                     />
                   </Grid>
                 </>
+                )}
+              { criteria.testFunctionality
+                && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle1">Test Functionality</Typography>
+                      <ChplTestFunctionalityEdit
+                        testFunctionality={criteria.testFunctionality}
+                        options={criteria.allowedTestFunctionalities}
+                        onChange={handleDetailChange}
+                      />
+                    </Grid>
+                  </>
                 )}
               { formik.values.sed !== null
                 && (

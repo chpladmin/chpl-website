@@ -7,6 +7,7 @@ import developer from './developer';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
+import { testFunctionality, selectedTestFunctionality } from './test-functionality';
 
 export {
   acb,
@@ -19,4 +20,6 @@ export {
   qmsStandard,
   reliedUponSoftware,
   selectedOptionalStandard,
+  selectedTestFunctionality,
+  testFunctionality,
 };

@@ -156,7 +156,7 @@ function ChplCriteriaDetailsView(props) {
                       && (
                         <ul>
                           { criteria.testFunctionality.map((tf) => (
-                            <li key={tf.id}>
+                            <li key={tf.id || tf.key}>
                               { tf.description
                                 && <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries />}
                               { !tf.description && tf.name }
