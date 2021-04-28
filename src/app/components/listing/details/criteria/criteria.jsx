@@ -102,28 +102,32 @@ function ChplCriteria(props) {
                   )}
                 {criteria.criterion.number}
               </Typography>
-              { pending &&
+              { pending
+              && (
               <Chip
                 overlap="circle"
                 label="Pending Changes"
                 className={classes.pendingChip}
-                avatar={
+                avatar={(
                   <Avatar className={classes.pendingChip}>
                     <SyncIcon color="secondary" />
                   </Avatar>
-                }
-              />}
-              { staged &&
+                )}
+              />
+              )}
+              { staged
+              && (
               <Chip
                 overlap="circle"
                 label="Staged Changes"
                 className={classes.stagedChip}
-                avatar={
+                avatar={(
                   <Avatar className={classes.stagedChip}>
                     <CloudDoneIcon color="secondary" />
                   </Avatar>
-                }
-              />}
+                )}
+              />
+              )}
             </Grid>
             <Grid item xs={8}>
               <Typography>

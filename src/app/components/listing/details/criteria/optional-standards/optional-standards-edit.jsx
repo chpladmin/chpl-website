@@ -34,14 +34,14 @@ const validationSchema = yup.object({
 
 function ChplOptionalStandardsEdit(props) {
   const [adding, setAdding] = useState(false);
-  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => a.name < b.name ? -1 : 1));
+  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options] = useState(props.options);
 
   const formik = useFormik({
     initialValues: {
       testStandardName: '',
     },
-    validationSchema: validationSchema,
+    validationSchema,
     validateOnChange: false,
     validateOnMount: true,
   });
@@ -58,22 +58,22 @@ function ChplOptionalStandardsEdit(props) {
     formik.resetForm();
     setAdding(false);
     update(updated);
-  }
+  };
 
   const cancelAdd = () => {
     formik.resetForm();
     setAdding(false);
-  }
+  };
 
   const removeItem = (item) => {
     const updated = optionalStandards.filter((s) => !(s.id === item.id && s.key === item.key));
     setOptionalStandards(updated);
     update(updated);
-  }
+  };
 
   const update = (updated) => {
-    props.onChange({key: 'testStandards', data: updated});
-  }
+    props.onChange({ key: 'testStandards', data: updated });
+  };
 
   return (
     <Grid container spacing={4}>
@@ -89,28 +89,36 @@ function ChplOptionalStandardsEdit(props) {
         <Grid item xs={12} key={item.id || item.key}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <Typography variant="subtitle2"><ChplEllipsis text={ item.testStandardName } maxLength={ 100 } wordBoundaries /></Typography>
+              <Typography variant="subtitle2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
             </Grid>
             <Grid item xs={1}>
-              { !adding &&
+              { !adding
+                && (
                 <IconButton
-                  onClick={() => removeItem(item)}>
+                  onClick={() => removeItem(item)}
+                >
                   <CloseOutlinedIcon
                     color="primary"
-                    size="small" />
-                </IconButton>}
+                    size="small"
+                  />
+                </IconButton>
+                )}
             </Grid>
           </Grid>
         </Grid>
       ))}
-      { !adding &&
+      { !adding
+        && (
         <Grid item xs={12}>
           <Button
             onClick={() => setAdding(true)}
-          >Add item
+          >
+            Add item
           </Button>
-        </Grid>}
-      { adding &&
+        </Grid>
+        )}
+      { adding
+        && (
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
@@ -138,15 +146,17 @@ function ChplOptionalStandardsEdit(props) {
                 <CheckOutlinedIcon />
               </Button>
               <IconButton
-                onClick={() => cancelAdd()}>
+                onClick={() => cancelAdd()}
+              >
                 <CloseOutlinedIcon
                   color="primary"
-                  size="small" />
+                  size="small"
+                />
               </IconButton>
             </Grid>
           </Grid>
         </Grid>
-      }
+        )}
     </Grid>
   );
 }

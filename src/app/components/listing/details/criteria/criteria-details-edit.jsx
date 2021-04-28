@@ -56,7 +56,7 @@ function ChplCriteriaDetailsEdit(props) {
       g1Success: props.criteria.g1Success,
       sed: props.criteria.sed,
     },
-    validationSchema: validationSchema,
+    validationSchema,
     validateOnChange: false,
     validateOnMount: true,
   });
@@ -64,7 +64,7 @@ function ChplCriteriaDetailsEdit(props) {
   const onChange = (...args) => {
     formik.handleChange(...args);
     props.onChange();
-  }
+  };
 
   const save = () => {
     const toSave = {
@@ -75,9 +75,9 @@ function ChplCriteriaDetailsEdit(props) {
       g1Success: formik.values.g1Success,
       g1Success: formik.values.g1Success,
       sed: formik.values.sed,
-    }
+    };
     props.onSave(toSave);
-  }
+  };
 
   const handleReliedUponSoftwareChange = (change) => {
     const updated = {
@@ -86,7 +86,7 @@ function ChplCriteriaDetailsEdit(props) {
     updated[change.key] = change.data;
     setCriteria(updated);
     props.onChange();
-  }
+  };
 
   return (
     <>
@@ -95,21 +95,21 @@ function ChplCriteriaDetailsEdit(props) {
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <FormControlLabel
-                control={
+                control={(
                   <Switch
                     id="success"
                     name="success"
                     color="primary"
-                    checked={ formik.values.success }
-                    onChange={ onChange }
+                    checked={formik.values.success}
+                    onChange={onChange}
                   />
-                }
+                )}
                 label={`${criteria.criterion.number}: ${criteria.criterion.title}`}
               />
             </Grid>
             <Collapse in={formik.values.success}>
               <Grid item xs={12}>
-                <Divider></Divider>
+                <Divider />
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subtitle1">Relied Upon Software</Typography>
@@ -119,31 +119,32 @@ function ChplCriteriaDetailsEdit(props) {
                 />
               </Grid>
               { formik.values.gap !== null
-                && <>
-                     <Grid item xs={12}>
-                       <Divider></Divider>
-                     </Grid>
-                     <Grid item xs={12}>
-                       <FormControlLabel
-                         control={
-                           <Switch
-                             id="gap"
-                             name="gap"
-                             color="primary"
-                             checked={ formik.values.gap }
-                             onChange={ onChange }
-                           />
-                         }
-                         label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
-                       />
-                     </Grid>
-                   </>
-              }
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="gap"
+                          name="gap"
+                          color="primary"
+                          checked={formik.values.gap}
+                          onChange={onChange}
+                        />
+                         )}
+                      label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
+                    />
+                  </Grid>
+                </>
+                )}
               { criteria.testStandards
                 && (
                   <>
                     <Grid item xs={12}>
-                      <Divider></Divider>
+                      <Divider />
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Optional Standard</Typography>
@@ -156,26 +157,27 @@ function ChplCriteriaDetailsEdit(props) {
                   </>
                 )}
               { formik.values.sed !== null
-                && <>
-                     <Grid item xs={12}>
-                       <Divider></Divider>
-                     </Grid>
-                     <Grid item xs={12}>
-                       <FormControlLabel
-                         control={
-                           <Switch
-                             id="sed"
-                             name="sed"
-                             color="primary"
-                             checked={ formik.values.sed }
-                             onChange={ onChange }
-                           />
-                         }
-                         label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
-                       />
-                     </Grid>
-                   </>
-              }
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="sed"
+                          name="sed"
+                          color="primary"
+                          checked={formik.values.sed}
+                          onChange={onChange}
+                        />
+                         )}
+                      label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
+                    />
+                  </Grid>
+                </>
+                )}
             </Collapse>
           </Grid>
         </CardContent>
@@ -186,7 +188,9 @@ function ChplCriteriaDetailsEdit(props) {
             size="small"
             onClick={() => props.onCancel()}
           >
-            <CloseOutlinedIcon /> Cancel
+            <CloseOutlinedIcon />
+            {' '}
+            Cancel
           </Button>
           <Button
             color="primary"
@@ -212,7 +216,6 @@ ChplCriteriaDetailsEdit.propTypes = {
   onChange: func,
   onSave: func,
 };
-
 
 /*
 additional software

@@ -2,7 +2,7 @@ import { administrationStatesConfig as administrationStates } from './pages/admi
 import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state';
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state';
-import { listingStatesConfig as listingStates } from './pages/listing/listing.state';
+import listingStates from './pages/listing/listing.state';
 import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
 import { reportsStatesConfig as reportsStates } from './pages/reports/reports.state';
@@ -10,7 +10,7 @@ import { resourcesStatesConfig as resourcesStates } from './pages/resources/reso
 import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state';
 import { usersStatesConfig as usersStates } from './pages/users/users.state';
 
-(function () {
+(() => {
   function routeConfig($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('search', {
@@ -40,4 +40,4 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state';
     .config(resourcesStates)
     .config(surveillanceStates)
     .config(usersStates);
-}());
+})();
