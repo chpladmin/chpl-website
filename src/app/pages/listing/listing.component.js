@@ -2,6 +2,7 @@ export const ListingComponent = {
   templateUrl: 'chpl.listing/listing.html',
   bindings: {
     listing: '<',
+    resources: '<',
   },
   controller: class ListingComponent {
     constructor ($analytics, $localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
@@ -43,6 +44,9 @@ export const ListingComponent = {
         } else {
           this.$localStorage.previouslyViewed = [this.listing.id + ''];
         }
+      }
+      if (changes.resources) {
+        this.resources = changes.resources.currentValue;
       }
     }
 

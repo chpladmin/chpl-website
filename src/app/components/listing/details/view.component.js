@@ -5,6 +5,7 @@ export const ListingDetailsViewComponent = {
     hideDirectReview: '<',
     initialPanel: '@',
     isConfirming: '<',
+    resources: '<',
     viewAllCerts: '<defaultAll',
   },
   controller: class ListingDetailsViewComponent {

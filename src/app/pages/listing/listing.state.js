@@ -14,18 +14,6 @@ let states = [{
         return networkService.getListing($transition$.params().id, $transition$.params().forceReload);
       }
     },
-  },
-  data: { title: 'CHPL Listing Details' },
-},{
-  name: 'listing.view',
-  url: '/view',
-  component: 'chplListingViewPage',
-  data: { title: 'CHPL Listing Details - View' },
-},{
-  name: 'listing.view.edit',
-  url: '/edit',
-  component: 'chplListingEditPage',
-  resolve: {
     resources: ($q, networkService) => {
       'ngInject';
       let resources = {};
@@ -55,6 +43,16 @@ let states = [{
       });
     },
   },
+  data: { title: 'CHPL Listing Details' },
+},{
+  name: 'listing.view',
+  url: '/view',
+  component: 'chplListingViewPage',
+  data: { title: 'CHPL Listing Details - View' },
+},{
+  name: 'listing.view.edit',
+  url: '/edit',
+  component: 'chplListingEditPage',
   data: { title: 'CHPL Listing Details - Edit' },
 },{
   name: 'product',

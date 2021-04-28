@@ -106,7 +106,7 @@ function ChplCriteriaDetailsView(props) {
                       && (
                         <ul>
                           { criteria.testStandards.map((ts) => (
-                            <li key={ts.id}>
+                            <li key={ts.id || ts.key}>
                               { ts.testStandardDescription
                                 && <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries />}
                               { !ts.testStandardDescription && ts.testStandardName }

@@ -29,8 +29,8 @@ import * as yup from 'yup';
 
 import { getAngularService } from '.';
 import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
+import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
-import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const validationSchema = yup.object({
 });
@@ -44,8 +44,7 @@ const useStyles = makeStyles(() => ({
 function ChplCriteriaDetailsEdit(props) {
   const [criteria, setCriteria] = useState(props.criteria);
   const [checked, setChecked] = useState(props.criteria.success);
-  const [qmsStandards] = useState(props.qmsStandards);
-  const [accessibilityStandards] = useState(props.accessibilityStandards);
+  const [resources] = useState(props.resources);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
@@ -140,6 +139,22 @@ function ChplCriteriaDetailsEdit(props) {
                      </Grid>
                    </>
               }
+              { criteria.testStandards
+                && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider></Divider>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle1">Optional Standard</Typography>
+                      <ChplOptionalStandardsEdit
+                        optionalStandards={criteria.testStandards}
+                        options={resources.testStandards.data}
+                        onChange={handleReliedUponSoftwareChange}
+                      />
+                    </Grid>
+                  </>
+                )}
               { formik.values.sed !== null
                 && <>
                      <Grid item xs={12}>
@@ -192,8 +207,7 @@ export default ChplCriteriaDetailsEdit;
 
 ChplCriteriaDetailsEdit.propTypes = {
   criteria: object.isRequired,
-  accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
-  qmsStandards: arrayOf(qmsStandard).isRequired,
+  resources: object.isRequired,
   onCancel: func,
   onChange: func,
   onSave: func,
@@ -201,30 +215,8 @@ ChplCriteriaDetailsEdit.propTypes = {
 
 
 /*
-            { criteria.additionalSoftware?.length > 0
-              && (
-              <TableRow key="additionalSoftware">
-                <TableCell component="th" scope="row">
-                  Relied Upon Software
-                  <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right"><ChplReliedUponSoftware sw={criteria.additionalSoftware} /></TableCell>
-              </TableRow>
-)}
-            { criteria.gap !== null
-              && (
-              <TableRow key="gap">
-                <TableCell component="th" scope="row">
-                  Gap
-                  <ChplTooltip title="The corresponding certification criteria are gap certified (True or False).">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">{criteria.gap ? 'True' : 'False'}</TableCell>
-              </TableRow>
-              )}
+additional software
+gap
             { criteria.svaps?.length > 0
               && (
               <TableRow key="svap">

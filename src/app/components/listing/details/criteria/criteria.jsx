@@ -139,8 +139,7 @@ function ChplCriteria(props) {
                 <>
                   <ChplCriteriaDetailsEdit
                     criteria={criteria}
-                    accessibilityStandards={accessibilityStandards}
-                    qmsStandards={qmsStandards}
+                    resources={props.resources}
                     onCancel={() => setEditing(false)}
                     onChange={handleChange}
                     onSave={handleSave}
@@ -179,6 +178,7 @@ export default ChplCriteria;
 ChplCriteria.propTypes = {
   canEdit: bool,
   certificationResult: object.isRequired,
+  resources: object.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
 };
