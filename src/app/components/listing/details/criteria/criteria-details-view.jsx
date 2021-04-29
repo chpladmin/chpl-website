@@ -182,7 +182,7 @@ function ChplCriteriaDetailsView(props) {
                       && (
                         <ul>
                           { criteria.testProcedures.map((tp) => (
-                            <li key={tp.id}>
+                            <li key={tp.id || tp.key}>
                               Name:
                               {' '}
                               { tp.testProcedure.name }

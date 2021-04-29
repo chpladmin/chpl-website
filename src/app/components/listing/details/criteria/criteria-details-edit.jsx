@@ -22,7 +22,7 @@ import { getAngularService } from '.';
 import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import { ChplTestFunctionalityEdit } from './test-functionality';
-import { ChplTestProceduresEdit } from './test-procedures';
+import ChplTestProceduresEdit from './test-procedures';
 
 const validationSchema = yup.object({
 });
@@ -36,7 +36,6 @@ const useStyles = makeStyles(() => ({
 function ChplCriteriaDetailsEdit(props) {
   const [criteria, setCriteria] = useState(props.criteria);
   const [resources] = useState(props.resources);
-  console.log(props.resources);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
@@ -317,96 +316,7 @@ testStandards
 g1Success
 g2Success
 testFunctionality
-            { criteria.testProcedures
-              && (
-              <TableRow key="testProcedures">
-                <TableCell component="th" scope="row">
-                  Test Procedure
-                  <ChplTooltip title="The type of test procedure and the version used during testing of the certification criterion functionality.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.testProcedures.length > 0
-                    && (
-                    <ul>
-                      { criteria.testProcedures.map((tp) => (
-                        <li key={tp.id}>
-                          Name:
-                          {' '}
-                          { tp.testProcedure.name }
-                          ; Version:
-                          {' '}
-                          { tp.testProcedureVersion }
-                        </li>
-                      ))}
-                    </ul>
-                    )}
-                  { criteria.testProcedures.length === 0 && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
-            { (criteria.criterion.number === '170.315 (g)(4)' || criteria.criterion.number === '170.314 (g)(4)')
-              && (
-              <TableRow key="qms">
-                <TableCell component="th" scope="row">
-                  Quality Management System
-                  <ChplTooltip title="If the corresponding certified product has a Quality Management System (QMS): 1) the standard or mapping used to meet the quality management system certification criterion, and 2) if a QMS standard or mapping was modified, documentation on the changes made. Specific requirements for 2015 Edition are different than for 2014 Edition.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { qmsStandards?.length > 0
-                    && (
-                    <ul>
-                      { qmsStandards.map((qms) => (
-                        <li key={qms.id}>
-                          <strong>Standard: </strong>
-                          { qms.qmsStandardName }
-                          <br />
-                          <strong>Description: </strong>
-                          {
-                            qms.qmsModification
-                              && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />
-                          }
-                          { !qms.modification
-                            && <>N/A</>}
-                          <br />
-                          <strong>Applicable Criteria: </strong>
-                          { qms.applicableCriteria || 'N/A' }
-                          <br />
-                        </li>
-                      ))}
-                    </ul>
-)}
-                  { (!qmsStandards || qmsStandards.length === 0) && 'N/A' }
-                </TableCell>
-              </TableRow>
-              )}
-            { criteria.criterion.number === '170.315 (g)(5)'
-              && (
-              <TableRow key="accessibility">
-                <TableCell component="th" scope="row">
-                  Accessibility Standard
-                  <ChplTooltip title="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { accessibilityStandards?.length > 0
-                    && (
-                    <ul>
-                      { accessibilityStandards.map((std) => (
-                        <li key={std.id}>
-                          { std.accessibilityStandardName }
-                        </li>
-                      ))}
-                    </ul>
-)}
-                  { (!accessibilityStandards || accessibilityStandards.length === 0) && 'N/A' }
-                </TableCell>
-              </TableRow>
-              )}
+testProcedures
             { criteria.testToolsUsed
               && (
               <TableRow key="testToolsUsed">

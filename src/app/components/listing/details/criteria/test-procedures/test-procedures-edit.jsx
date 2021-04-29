@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { arrayOf, func, object } from 'prop-types';
+import React, { useState } from 'react';
+import { arrayOf, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
-  Collapse,
-  Divider,
-  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -46,12 +35,18 @@ function ChplTestProceduresEdit(props) {
     validateOnMount: true,
   });
 
+  const update = (updated) => {
+    props.onChange({ key: 'testProcedures', data: updated });
+  };
+
   const addNew = () => {
     const updated = [
       ...testProcedures,
       {
-        name: formik.values.name,
-        version: formik.values.version,
+        testProcedure: {
+          name: formik.values.name,
+        },
+        testProcedureVersion: formik.values.version,
         key: (new Date()).getTime(),
       },
     ];
@@ -74,10 +69,6 @@ function ChplTestProceduresEdit(props) {
     update(updated);
   };
 
-  const update = (updated) => {
-    props.onChange({ key: 'testProcedures', data: updated });
-  };
-
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
@@ -98,7 +89,7 @@ function ChplTestProceduresEdit(props) {
               <Typography variant="subtitle2">{ item.testProcedure.name }</Typography>
             </Grid>
             <Grid item xs={5}>
-              <Typography variant="subtitle2">{ item.version }</Typography>
+              <Typography variant="subtitle2">{ item.testProcedureVersion }</Typography>
             </Grid>
             <Grid item xs={1}>
               { !adding
@@ -184,10 +175,10 @@ function ChplTestProceduresEdit(props) {
   );
 }
 
-export { ChplTestProceduresEdit };
+export default ChplTestProceduresEdit;
 
 ChplTestProceduresEdit.propTypes = {
-  testProcedures: arrayOf(selectedTestProcedure),
-  options: arrayOf(testProcedure),
-  onChange: func,
+  testProcedures: arrayOf(selectedTestProcedure).isRequired,
+  options: arrayOf(testProcedure).isRequired,
+  onChange: func.isRequired,
 };

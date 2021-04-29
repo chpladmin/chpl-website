@@ -1,3 +1,3 @@
-import { ChplTestProceduresEdit } from './test-procedures-edit.jsx';
+import ChplTestProceduresEdit from './test-procedures-edit';
 
-export { ChplTestProceduresEdit };
+export default ChplTestProceduresEdit;
