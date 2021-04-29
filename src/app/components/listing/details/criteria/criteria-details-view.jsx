@@ -272,7 +272,7 @@ function ChplCriteriaDetailsView(props) {
                       && (
                         <ul>
                           { criteria.testToolsUsed.map((tt) => (
-                            <li key={tt.id}>
+                            <li key={tt.id || tt.key}>
                               Tool:
                               {' '}
                               { tt.testToolName }

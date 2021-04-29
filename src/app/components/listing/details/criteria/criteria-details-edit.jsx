@@ -24,6 +24,7 @@ import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import { ChplTestFunctionalityEdit } from './test-functionality';
 import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
+import ChplTestToolsEdit from './test-tools';
 
 const validationSchema = yup.object({
 });
@@ -223,6 +224,22 @@ function ChplCriteriaDetailsEdit(props) {
                     </Grid>
                   </>
                 )}
+              { criteria.testToolsUsed
+                && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle1">Test Tools Used</Typography>
+                      <ChplTestToolsEdit
+                        testTools={criteria.testToolsUsed}
+                        options={resources.testTools.data}
+                        onChange={handleDetailChange}
+                      />
+                    </Grid>
+                  </>
+                )}
               { criteria.testDataUsed
                 && (
                   <>
@@ -363,38 +380,7 @@ testProcedures
                 </TableCell>
               </TableRow>
               )}
-            { criteria.testDataUsed
-              && (
-              <TableRow key="testDataUsed">
-                <TableCell component="th" scope="row">
-                  Test Data
-                  <ChplTooltip title="The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.testDataUsed.length > 0
-                    && (
-                    <ul>
-                      { criteria.testDataUsed.map((td) => (
-                        <li key={td.id}>
-                          Data:
-                          {' '}
-                          { td.testData.name || 'N/A' }
-                          ; Version:
-                          {' '}
-                          { td.version }
-                          ; Alteration:
-                          {' '}
-                          { td.alteration || 'N/A' }
-                        </li>
-                      ))}
-                    </ul>
-                    )}
-                  { criteria.testDataUsed.length === 0 && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
+testDataUsed
             { criteria.apiDocumentation !== null
               && (
               <TableRow key="apiDocumentation">
