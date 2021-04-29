@@ -22,6 +22,7 @@ import { getAngularService } from '.';
 import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import { ChplTestFunctionalityEdit } from './test-functionality';
+import { ChplTestProceduresEdit } from './test-procedures';
 
 const validationSchema = yup.object({
 });
@@ -197,10 +198,26 @@ function ChplCriteriaDetailsEdit(props) {
                       <Divider />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="subtitle1">Test Functionality</Typography>
+                      <Typography variant="subtitle1">Functionality Tested</Typography>
                       <ChplTestFunctionalityEdit
                         testFunctionality={criteria.testFunctionality}
                         options={criteria.allowedTestFunctionalities}
+                        onChange={handleDetailChange}
+                      />
+                    </Grid>
+                  </>
+                )}
+              { criteria.testProcedures
+                && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle1">Test Procedure</Typography>
+                      <ChplTestProceduresEdit
+                        testProcedures={criteria.testProcedures}
+                        options={resources.testProcedures.data}
                         onChange={handleDetailChange}
                       />
                     </Grid>
@@ -299,32 +316,7 @@ gap
 testStandards
 g1Success
 g2Success
-            { criteria.testFunctionality
-              && (
-              <TableRow key="testFunctionality">
-                <TableCell component="th" scope="row">
-                  Functionality Tested
-                  <ChplTooltip title="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.testFunctionality.length > 0
-                    && (
-                    <ul>
-                      { criteria.testFunctionality.map((tf) => (
-                        <li key={tf.id}>
-                          { tf.description
-                            && <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries />}
-                          { !tf.description && tf.name }
-                        </li>
-                      ))}
-                    </ul>
-                    )}
-                  { criteria.testFunctionality.length === 0 && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
+testFunctionality
             { criteria.testProcedures
               && (
               <TableRow key="testProcedures">
