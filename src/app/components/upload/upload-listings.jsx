@@ -62,7 +62,7 @@ function ChplUploadListings() {
     Upload.upload(item)
       .then((response) => {
         if (response.status === 206) {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>`;
+          const message = `File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
           toaster.pop({
             type: 'warning',
             title: 'Partial success',
@@ -70,7 +70,7 @@ function ChplUploadListings() {
             bodyOutputType: 'trustedHtml',
           });
         } else {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.length} pending product${response.data.length > 1 ? 's are' : ' is'} processing.`;
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploadslength > 1 ? 's are' : ' is'} processing.`;
           toaster.pop({
             type: 'success',
             title: 'Success',
