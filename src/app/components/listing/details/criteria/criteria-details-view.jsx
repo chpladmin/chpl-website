@@ -363,9 +363,9 @@ function ChplCriteriaDetailsView(props) {
                   <TableCell align="right">{criteria.attestationAnswer ? 'Yes' : 'No'}</TableCell>
                 </TableRow>
               )}
-            { criteria.documentation !== null
+            { criteria.documentationUrl !== null
               && (
-                <TableRow key="documentation">
+                <TableRow key="documentationUrl">
                   <TableCell component="th" scope="row">
                     Documentation
                     <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
@@ -373,9 +373,9 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.documentation
-                      && <ChplLink href={criteria.documentation} text={criteria.documentation} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentation }} />}
-                    { !criteria.documentation && 'None' }
+                    { criteria.documentationUrl
+                      && <ChplLink href={criteria.documentationUrl} text={criteria.documentationUrl} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentationUrl }} />}
+                    { !criteria.documentationUrl && 'None' }
                   </TableCell>
                 </TableRow>
               )}
