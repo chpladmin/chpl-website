@@ -70,7 +70,7 @@ function ChplUploadListings() {
             bodyOutputType: 'trustedHtml',
           });
         } else {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploadslength > 1 ? 's are' : ' is'} processing.`;
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
           toaster.pop({
             type: 'success',
             title: 'Success',
