@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import theme from '../../themes/theme';
-import { getAngularService } from './';
+import { getAngularService } from '.';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplUploadListings () {
+function ChplUploadListings() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
@@ -43,26 +43,25 @@ function ChplUploadListings () {
     ele.value = null;
   };
 
-  const onFileChange = event => {
+  const onFileChange = (event) => {
     setFile(event.target.files[0]);
     setEle(event.target);
   };
 
   const uploadFile = () => {
-    let item = {
-      url: API + '/listings/upload',
+    const item = {
+      url: `${API}/listings/upload`,
       headers: {
-        Authorization: 'Bearer ' + authService.getToken(),
+        Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
       },
       data: {
-        file: file,
+        file,
       },
     };
     Upload.upload(item)
-      .then(response => {
+      .then((response) => {
         if (response.status === 206) {
-          console.log({response});
           const message = `File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>`;
           toaster.pop({
             type: 'warning',
@@ -71,7 +70,7 @@ function ChplUploadListings () {
             bodyOutputType: 'trustedHtml',
           });
         } else {
-          const message = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending product' + (response.data.length > 1 ? 's are' : ' is') + ' processing.';
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.length} pending product${response.data.length > 1 ? 's are' : ' is'} processing.`;
           toaster.pop({
             type: 'success',
             title: 'Success',
@@ -79,11 +78,10 @@ function ChplUploadListings () {
           });
         }
       })
-      .catch(error => {
-        console.log({error});
-        let message = 'File "' + file.name + '" was not uploaded successfully.';
+      .catch((error) => {
+        let message = `File "${file.name}" was not uploaded successfully.`;
         if (error?.data?.errorMessages) {
-          message += ' ' + error.data.errorMessages.join(', ');
+          message += ` ${error.data.errorMessages.join(', ')}`;
         }
         toaster.pop({
           type: 'error',
@@ -97,49 +95,68 @@ function ChplUploadListings () {
   };
 
   return (
-    <ThemeProvider theme={ theme }>
+    <ThemeProvider theme={theme}>
       <Card>
         <CardHeader title="Upload Certified Products (Beta)" />
         <CardContent>
-          <div className={ classes.gridStyle }>
-            <Typography variant="body1" className={ classes.firstRow }>
+          <div className={classes.gridStyle}>
+            <Typography variant="body1" className={classes.firstRow}>
               CSV files only
             </Typography>
             <div>
-              <Button color="primary"
-                      variant={ file ? 'outlined' : 'contained' }
-                      component="label">
+              <Button
+                color="primary"
+                variant={file ? 'outlined' : 'contained'}
+                component="label"
+              >
                 Choose file to upload
-                <input type="file"
-                       id="upload-listings"
-                       onChange={ onFileChange }
-                       style={{ display: 'none' }} />
+                <input
+                  type="file"
+                  id="upload-listings"
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                />
               </Button>
             </div>
-            { file &&
+            { file
+              && (
               <div>
-                <strong>Filename:</strong> { file.name }
+                <strong>Filename:</strong>
+                {' '}
+                { file.name }
               </div>
-            }
-            { file &&
+              )}
+            { file
+              && (
               <div>
-                <strong>File size:</strong> { file.size }
+                <strong>File size:</strong>
+                {' '}
+                { file.size }
               </div>
-            }
-            { file &&
+              )}
+            { file
+              && (
               <div>
-                <Button color="primary"
-                        variant="contained"
-                        onClick={ uploadFile }>
-                  <i className="fa fa-cloud-upload"></i> Upload
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={uploadFile}
+                >
+                  <i className="fa fa-cloud-upload" />
+                  {' '}
+                  Upload
                 </Button>
-                <Button className={ classes.deleteButton }
-                        variant="contained"
-                        onClick={ clearFile }>
-                  <i className="fa fa-trash-o"></i> Remove
+                <Button
+                  className={classes.deleteButton}
+                  variant="contained"
+                  onClick={clearFile}
+                >
+                  <i className="fa fa-trash-o" />
+                  {' '}
+                  Remove
                 </Button>
               </div>
-            }
+              )}
           </div>
         </CardContent>
       </Card>
@@ -147,6 +164,6 @@ function ChplUploadListings () {
   );
 }
 
-export { ChplUploadListings };
-
 ChplUploadListings.propTypes = {};
+
+export default ChplUploadListings;
