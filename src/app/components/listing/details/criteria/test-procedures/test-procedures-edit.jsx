@@ -39,6 +39,7 @@ function ChplTestProceduresEdit(props) {
   const formik = useFormik({
     initialValues: {
       name: '',
+      version: '',
     },
     validationSchema,
     validateOnChange: false,
@@ -50,6 +51,7 @@ function ChplTestProceduresEdit(props) {
       ...testProcedures,
       {
         name: formik.values.name,
+        version: formik.values.version,
         key: (new Date()).getTime(),
       },
     ];
@@ -80,8 +82,11 @@ function ChplTestProceduresEdit(props) {
     <Grid container spacing={4}>
       <Grid item xs={12}>
         <Grid container spacing={4}>
-          <Grid item xs={11}>
+          <Grid item xs={6}>
             <Typography variant="subtitle2">Name</Typography>
+          </Grid>
+          <Grid item xs={5}>
+            <Typography variant="subtitle2">Version</Typography>
           </Grid>
           <Grid item xs={1} />
         </Grid>
@@ -89,8 +94,11 @@ function ChplTestProceduresEdit(props) {
       { testProcedures.map((item) => (
         <Grid item xs={12} key={item.id || item.key}>
           <Grid container spacing={4}>
-            <Grid item xs={11}>
-              <Typography variant="subtitle2">{ item.name }</Typography>
+            <Grid item xs={6}>
+              <Typography variant="subtitle2">{ item.testProcedure.name }</Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <Typography variant="subtitle2">{ item.version }</Typography>
             </Grid>
             <Grid item xs={1}>
               { !adding
@@ -122,7 +130,7 @@ function ChplTestProceduresEdit(props) {
         && (
         <Grid item xs={12}>
           <Grid container spacing={4}>
-            <Grid item xs={11}>
+            <Grid item xs={6}>
               <InputLabel id="name-label">Procedure Tested</InputLabel>
               <Select
                 labelId="name-label"
@@ -137,6 +145,20 @@ function ChplTestProceduresEdit(props) {
                   <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
                 ))}
               </Select>
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                id="version"
+                name="version"
+                label="Version"
+                variant="outlined"
+                value={formik.values.version}
+                required
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.version && formik.errors.version}
+                helperText={formik.touched.version && formik.errors.version}
+              />
             </Grid>
             <Grid item xs={1}>
               <Button
