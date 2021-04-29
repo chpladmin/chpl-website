@@ -16,28 +16,27 @@ beforeEach(async () => {
 });
 
 describe('When ONC-ACB uploads - ', () => {
-  beforeEach(function () {
-    loginComponent.logIn('acb');
-  });
+  if(process.env.ENV === 'dev' || process.env.ENV === 'qa') {
+    beforeEach(function () {
+      loginComponent.logIn('acb');
+    });
 
-  afterEach(function () {
-    hooks.waitForSpinnerToDisappear();
-    toast.clearAllToast();
-    loginComponent.logOut();
-  });
+    afterEach(function () {
+      hooks.waitForSpinnerToDisappear();
+      toast.clearAllToast();
+      loginComponent.logOut();
+    });
 
-  inputs.forEach(input => {
-    let testName = input.testName;
-    let path = input.path;
-    let message = input.message;
+    inputs.forEach(input => {
+      let testName = input.testName;
+      let path = input.path;
+      let message = input.message;
 
-    it(`${testName} - shows ${message} status of upload`, () => {
-      browser.pause(2000); //Finding beta component exist or not doesnt work without this pause
-      if (uploadListingComponent.chooseUploadListingBetaButton.isExisting()) {
+      it(`${testName} - shows ${message} status of upload`, () => {
         uploadListingComponent.uploadListingBeta(path);
         browser.waitUntil( () => toast.toastTitle.isDisplayed());
         assert.equal(toast.toastTitle.getText(), message);
-      }
+      });
     });
-  });
+  }
 });
