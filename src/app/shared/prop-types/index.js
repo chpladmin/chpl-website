@@ -8,6 +8,7 @@ import developer from './developer';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
+import { testData, selectedTestData } from './test-data';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testFunctionality, selectedTestFunctionality } from './test-functionality';
 
@@ -25,6 +26,8 @@ export {
   selectedOptionalStandard,
   selectedTestFunctionality,
   selectedTestProcedure,
+  selectedTestData,
   testFunctionality,
   testProcedure,
+  testData,
 };

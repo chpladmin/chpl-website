@@ -301,7 +301,7 @@ function ChplCriteriaDetailsView(props) {
                       && (
                         <ul>
                           { criteria.testDataUsed.map((td) => (
-                            <li key={td.id}>
+                            <li key={td.id || td.key}>
                               Data:
                               {' '}
                               { td.testData.name || 'N/A' }

@@ -22,6 +22,7 @@ import { getAngularService } from '.';
 import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import { ChplTestFunctionalityEdit } from './test-functionality';
+import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 
 const validationSchema = yup.object({
@@ -217,6 +218,22 @@ function ChplCriteriaDetailsEdit(props) {
                       <ChplTestProceduresEdit
                         testProcedures={criteria.testProcedures}
                         options={resources.testProcedures.data}
+                        onChange={handleDetailChange}
+                      />
+                    </Grid>
+                  </>
+                )}
+              { criteria.testDataUsed
+                && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle1">Test Data Used</Typography>
+                      <ChplTestDataEdit
+                        testData={criteria.testDataUsed}
+                        options={resources.testData.data}
                         onChange={handleDetailChange}
                       />
                     </Grid>
