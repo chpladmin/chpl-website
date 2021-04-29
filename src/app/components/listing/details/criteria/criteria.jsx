@@ -63,14 +63,20 @@ function ChplCriteria(props) {
     }
   };
 
+  const handleCancel =  () => {
+    setEditing(false);
+    setPending(false);
+  };
+
   const handleChange = () => {
     setPending(true);
-    setStaged(false);
   };
 
   const handleSave = (criteria) => {
-    setPending(false);
-    setStaged(true);
+    if (pending) {
+      setPending(false);
+      setStaged(true);
+    }
     setEditing(false);
     setCriteria(criteria);
   };
@@ -115,7 +121,7 @@ function ChplCriteria(props) {
                 )}
               />
               )}
-              { staged
+              { staged && !pending
               && (
               <Chip
                 overlap="circle"
@@ -144,7 +150,7 @@ function ChplCriteria(props) {
                   <ChplCriteriaDetailsEdit
                     criteria={criteria}
                     resources={props.resources}
-                    onCancel={() => setEditing(false)}
+                    onCancel={handleCancel}
                     onChange={handleChange}
                     onSave={handleSave}
                   />
