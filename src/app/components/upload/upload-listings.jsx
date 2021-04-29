@@ -61,14 +61,26 @@ function ChplUploadListings () {
     };
     Upload.upload(item)
       .then(response => {
-        let message = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending product' + (response.data.length > 1 ? 's are' : ' is') + ' processing.';
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
-        });
+        if (response.status === 206) {
+          console.log({response});
+          const message = `File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>`;
+          toaster.pop({
+            type: 'warning',
+            title: 'Partial success',
+            body: message,
+            bodyOutputType: 'trustedHtml',
+          });
+        } else {
+          const message = 'File "' + response.config.data.file.name + '" was uploaded successfully. ' + response.data.length + ' pending product' + (response.data.length > 1 ? 's are' : ' is') + ' processing.';
+          toaster.pop({
+            type: 'success',
+            title: 'Success',
+            body: message,
+          });
+        }
       })
       .catch(error => {
+        console.log({error});
         let message = 'File "' + file.name + '" was not uploaded successfully.';
         if (error?.data?.errorMessages) {
           message += ' ' + error.data.errorMessages.join(', ');
