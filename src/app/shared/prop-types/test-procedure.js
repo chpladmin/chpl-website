@@ -1,9 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { arrayOf, number, shape, string } from 'prop-types';
+import {
+  number, shape, string,
+} from 'prop-types';
 import { criterion } from '.';
 
 const testProcedure = shape({
-  criteria: arrayOf(criterion),
+  criteria: criterion,
   description: string,
   id: number,
   name: string,
