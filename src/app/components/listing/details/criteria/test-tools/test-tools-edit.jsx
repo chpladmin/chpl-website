@@ -36,7 +36,7 @@ function ChplTestToolsEdit(props) {
   });
 
   const update = (updated) => {
-    props.onChange({ key: 'testToolsUsed', tools: updated });
+    props.onChange({ key: 'testToolsUsed', data: updated });
   };
 
   const addNew = () => {
