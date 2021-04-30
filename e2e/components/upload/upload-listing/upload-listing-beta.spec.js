@@ -16,7 +16,7 @@ beforeEach(async () => {
 });
 
 describe('When ONC-ACB uploads - ', () => {
-  if(process.env.ENV === 'dev' || process.env.ENV === 'qa') {
+  if(process.env.ENV !== 'stage') {
     beforeEach(function () {
       loginComponent.logIn('acb');
     });
