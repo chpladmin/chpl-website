@@ -81,3 +81,7 @@ When debugging, taking screenshots can be useful. The command `browser.saveScree
 #### Automation credetials set up
 
 Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
+
+#### Automation environment Urls set up
+
+Copy `e2e/config/urlsEXAMPLE.js` to the file `e2e/config/urls.js` and set the urls for each environments in the file
