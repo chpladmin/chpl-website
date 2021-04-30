@@ -83,7 +83,7 @@ function ChplCriteria(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Accordion disabled={!criteria.success} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
+      <Accordion disabled={!criteria.success && !canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
         <AccordionSummary
           className={classes.NestedAccordionLevelOneSummary}
           expandIcon={<ExpandMoreIcon />}
