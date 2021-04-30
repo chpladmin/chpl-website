@@ -4,7 +4,17 @@ const fs = require('fs');
 
 // Store the directory path in a global, which allows us to access this path inside our tests
 global.downloadDir = path.join(`${__dirname}`, 'test_reports/e2e/');
+let baseUrl='http://localhost:3000/';
 
+if (process.env.ENV === 'dev') {
+  baseUrl='https://chpl.ahrqdev.org/'
+}
+else if (process.env.ENV === 'qa') {
+  baseUrl='https://chpl-qa.ahrqdev.org/'
+}
+else if (process.env.ENV === 'stage') {
+  baseUrl='https://chpl-qa.ahrqdev.org/'
+}
 exports.config = {
   //
   // ====================
@@ -123,7 +133,7 @@ exports.config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'http://localhost:3000/',
+  baseUrl,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: config.longTimeout,

@@ -63,9 +63,7 @@ On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpa
 
 #### E2E testing
 
-By default, E2E tests will be executed against http://localhost:3000/. This URL can be configured at runtime with the parameter `baseUrl`. For example: `ENV='Environment you want to run on' yarn e2e --baseUrl http://www.example.com/` would set all tests to run against www.example.com
-
-ENV options are 'dev', 'qa', 'stage'
+By default, E2E tests will be executed against http://localhost:3000/. To run against different environments, pass ENV variable with 'dev', 'qa' ,'stage' options. For example: `ENV='Environment you want to run on' yarn e2e` would set all tests to run against environment passed in.
 
 If a single spec file should be tested, instead of all of them, the command `ENV='Environment you want to run on' yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
 
