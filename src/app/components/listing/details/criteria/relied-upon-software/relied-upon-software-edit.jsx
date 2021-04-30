@@ -209,7 +209,7 @@ function ChplReliedUponSoftwareEdit(props) {
   );
 }
 
-export { ChplReliedUponSoftwareEdit };
+export default ChplReliedUponSoftwareEdit;
 
 ChplReliedUponSoftwareEdit.propTypes = {
   onChange: func,

@@ -1,3 +1,3 @@
-import { ChplTestFunctionalityEdit } from './test-functionality-edit.jsx';
+import ChplTestFunctionalityEdit from './test-functionality-edit.jsx';
 
-export { ChplTestFunctionalityEdit };
+export default ChplTestFunctionalityEdit;

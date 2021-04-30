@@ -1,60 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { arrayOf, func, object } from 'prop-types';
+import React, { useState } from 'react';
+import { arrayOf, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
-  Collapse,
-  Divider,
-  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplEllipsis } from '../../../../util';
-import { optionalStandard, selectedOptionalStandard } from '../../../../../shared/prop-types';
+import { svap, selectedSvap } from '../../../../../shared/prop-types';
 
 const validationSchema = yup.object({
 });
 
-function ChplOptionalStandardsEdit(props) {
+function ChplSvapsEdit(props) {
   const [adding, setAdding] = useState(false);
-  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options] = useState(props.options);
+  const [svaps, setSvaps] = useState(props.svaps);
+  const [options, setOptions] = useState(props.options);
 
   const formik = useFormik({
     initialValues: {
-      testStandardName: '',
+      regulatoryTextCitation: '',
     },
     validationSchema,
     validateOnChange: false,
     validateOnMount: true,
   });
 
+  const update = (updated) => {
+    props.onChange({ key: 'svaps', data: updated });
+  };
+
   const addNew = () => {
     const updated = [
-      ...optionalStandards,
+      ...svaps,
       {
-        testStandardName: formik.values.testStandardName,
+        svaps: {
+          regulatoryTextCitation: formik.values.regulatoryTextCitation,
+        },
         key: (new Date()).getTime(),
       },
     ];
-    setOptionalStandards(updated);
+    setSvaps(updated);
+    setOptions(options.filter((option) => option.regulatoryTextCitation !== formik.values.regulatoryTextCitation));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -66,13 +61,10 @@ function ChplOptionalStandardsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = optionalStandards.filter((s) => !(s.id === item.id && s.key === item.key));
-    setOptionalStandards(updated);
+    const updated = svaps.filter((s) => !(s.id === item.id && s.key === item.key));
+    setSvaps(updated);
+    setOptions([...options, item]);
     update(updated);
-  };
-
-  const update = (updated) => {
-    props.onChange({ key: 'testStandards', data: updated });
   };
 
   return (
@@ -80,16 +72,16 @@ function ChplOptionalStandardsEdit(props) {
       <Grid item xs={12}>
         <Grid container spacing={4}>
           <Grid item xs={11}>
-            <Typography variant="subtitle2">Name</Typography>
+            <Typography variant="subtitle2">Regulatory Text Citation</Typography>
           </Grid>
           <Grid item xs={1} />
         </Grid>
       </Grid>
-      { optionalStandards.map((item) => (
+      { svaps.map((item) => (
         <Grid item xs={12} key={item.id || item.key}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <Typography variant="subtitle2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
+              <Typography variant="subtitle2">{ item.regulatoryTextCitation }</Typography>
             </Grid>
             <Grid item xs={1}>
               { !adding
@@ -107,7 +99,7 @@ function ChplOptionalStandardsEdit(props) {
           </Grid>
         </Grid>
       ))}
-      { !adding
+      { !adding && options.length > 0
         && (
         <Grid item xs={12}>
           <Button
@@ -122,18 +114,18 @@ function ChplOptionalStandardsEdit(props) {
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <InputLabel id="test-standard-name-label">Optional Standard</InputLabel>
+              <InputLabel id="name-label">Standards Version Advancement Process</InputLabel>
               <Select
-                labelId="test-standard-name-label"
-                id="test-standard-name"
-                name="testStandardName"
+                labelId="name-label"
+                id="regulatory-text-citation"
+                name="regulatoryTextCitation"
                 variant="outlined"
-                value={formik.values.testStandardName}
+                value={formik.values.regulatoryTextCitation}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
                 { options.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item.regulatoryTextCitation} key={item.id}>{item.regulatoryTextCitation}</MenuItem>
                 ))}
               </Select>
             </Grid>
@@ -161,10 +153,10 @@ function ChplOptionalStandardsEdit(props) {
   );
 }
 
-export default ChplOptionalStandardsEdit;
+export default ChplSvapsEdit;
 
-ChplOptionalStandardsEdit.propTypes = {
-  optionalStandards: arrayOf(selectedOptionalStandard),
-  options: arrayOf(optionalStandard),
-  onChange: func,
+ChplSvapsEdit.propTypes = {
+  svaps: arrayOf(selectedSvap).isRequired,
+  options: arrayOf(svap).isRequired,
+  onChange: func.isRequired,
 };

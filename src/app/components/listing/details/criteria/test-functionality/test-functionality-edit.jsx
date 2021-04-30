@@ -162,7 +162,7 @@ function ChplTestFunctionalityEdit(props) {
   );
 }
 
-export { ChplTestFunctionalityEdit };
+export default ChplTestFunctionalityEdit;
 
 ChplTestFunctionalityEdit.propTypes = {
   testFunctionality: arrayOf(selectedTestFunctionality),

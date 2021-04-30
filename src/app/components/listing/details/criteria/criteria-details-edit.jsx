@@ -19,9 +19,10 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { getAngularService } from '.';
-import { ChplOptionalStandardsEdit } from './optional-standards';
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
-import { ChplTestFunctionalityEdit } from './test-functionality';
+import ChplOptionalStandardsEdit from './optional-standards';
+import ChplSvapsEdit from './svaps';
+import ChplTestFunctionalityEdit from './test-functionality';
 import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestToolsEdit from './test-tools';
@@ -131,6 +132,22 @@ function ChplCriteriaDetailsEdit(props) {
                     />
                   </Grid>
                 </>
+                )}
+              { criteria.allowedSvaps?.length > 0
+                && (
+                  <>
+                    <Grid item xs={12}>
+                      <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle1">Standards Version Advancement Process</Typography>
+                      <ChplSvapsEdit
+                        svaps={criteria.svaps}
+                        options={criteria.allowedSvaps}
+                        onChange={handleDetailChange}
+                      />
+                    </Grid>
+                  </>
                 )}
               { criteria.testStandards
                 && (
@@ -351,35 +368,7 @@ g1Success
 g2Success
 testFunctionality
 testProcedures
-            { criteria.testToolsUsed
-              && (
-              <TableRow key="testToolsUsed">
-                <TableCell component="th" scope="row">
-                  Test Tool
-                  <ChplTooltip title="The name and version of the test tool used during testing of the certification criterion functionality.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.testToolsUsed.length > 0
-                    && (
-                    <ul>
-                      { criteria.testToolsUsed.map((tt) => (
-                        <li key={tt.id}>
-                          Tool:
-                          {' '}
-                          { tt.testToolName }
-                          ; Version:
-                          {' '}
-                          { tt.testToolVersion || 'N/A' }
-                        </li>
-                      ))}
-                    </ul>
-                    )}
-                  { criteria.testToolsUsed.length === 0 && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
+testToolsUsed
 testDataUsed
             { criteria.apiDocumentation !== null
               && (
@@ -469,19 +458,5 @@ testDataUsed
                 <TableCell align="right">{criteria.privacySecurityFramework}</TableCell>
               </TableRow>
               )}
-            { criteria.sed !== null
-              && (
-              <TableRow key="sed">
-                <TableCell component="th" scope="row">
-                  SED
-                  <ChplTooltip title="The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition.">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">{criteria.sed ? 'True' : 'False'}</TableCell>
-              </TableRow>
-              )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+sed
 */

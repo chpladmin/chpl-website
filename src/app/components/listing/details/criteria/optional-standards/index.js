@@ -1,3 +1,3 @@
-import { ChplOptionalStandardsEdit } from './optional-standards-edit.jsx';
+import ChplOptionalStandardsEdit from './optional-standards-edit.jsx';
 
-export { ChplOptionalStandardsEdit };
+export default ChplOptionalStandardsEdit;

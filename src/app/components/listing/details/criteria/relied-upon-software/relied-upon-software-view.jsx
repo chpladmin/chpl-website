@@ -80,7 +80,7 @@ function ChplReliedUponSoftwareView(props) {
   );
 }
 
-export { ChplReliedUponSoftwareView };
+export default ChplReliedUponSoftwareView;
 
 ChplReliedUponSoftwareView.propTypes = {
   sw: arrayOf(reliedUponSoftware),

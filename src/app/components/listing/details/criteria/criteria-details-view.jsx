@@ -78,7 +78,7 @@ function ChplCriteriaDetailsView(props) {
                   <TableCell align="right">
                     <ul>
                       { criteria.svaps.map((svap) => (
-                        <li key={svap.id}>
+                        <li key={svap.id || svap.key}>
                           <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength="100" wordBoundaries="true" />
                           { svap.replaced
                             && (
