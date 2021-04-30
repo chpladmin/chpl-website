@@ -79,7 +79,7 @@ function ChplCriteriaDetailsView(props) {
                     <ul>
                       { criteria.svaps.map((svap) => (
                         <li key={svap.id || svap.key}>
-                          <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength="100" wordBoundaries="true" />
+                          <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength={100} wordBoundaries />
                           { svap.replaced
                             && (
                               <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
