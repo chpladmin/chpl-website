@@ -42,10 +42,10 @@ function ChplSvapsEdit(props) {
     const updated = [
       ...svaps,
       {
-        svaps: {
-          regulatoryTextCitation: formik.values.regulatoryTextCitation,
-        },
+        regulatoryTextCitation: formik.values.regulatoryTextCitation,
+        approvedStandardVersion: options.filter((option) => option.regulatoryTextCitation === formik.values.regulatoryTextCitation)[0].approvedStandardVersion,
         key: (new Date()).getTime(),
+        svapId: options.filter((option) => option.regulatoryTextCitation === formik.values.regulatoryTextCitation)[0].svapId,
       },
     ];
     setSvaps(updated);
@@ -71,8 +71,11 @@ function ChplSvapsEdit(props) {
     <Grid container spacing={4}>
       <Grid item xs={12}>
         <Grid container spacing={4}>
-          <Grid item xs={11}>
+          <Grid item xs={3}>
             <Typography variant="subtitle2">Regulatory Text Citation</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="subtitle2">Approved Standard Version</Typography>
           </Grid>
           <Grid item xs={1} />
         </Grid>
@@ -80,8 +83,11 @@ function ChplSvapsEdit(props) {
       { svaps.map((item) => (
         <Grid item xs={12} key={item.id || item.key}>
           <Grid container spacing={4}>
-            <Grid item xs={11}>
+            <Grid item xs={3}>
               <Typography variant="subtitle2">{ item.regulatoryTextCitation }</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="subtitle2">{ item.approvedStandardVersion }</Typography>
             </Grid>
             <Grid item xs={1}>
               { !adding

@@ -1,11 +1,11 @@
 import {
-  bool, number, shape, string,
+  arrayOf, bool, number, shape, string,
 } from 'prop-types';
 import { criterion } from '.';
 
 const svap = shape({
   approvedStandardVersion: string,
-  criteria: criterion,
+  criteria: arrayOf(criterion),
   regulatoryTextCitation: string,
   replaced: bool,
   svapId: number,
@@ -13,7 +13,7 @@ const svap = shape({
 
 const selectedSvap = shape({
   approvedStandardVersion: string,
-  criteria: criterion,
+  id: number,
   regulatoryTextCitation: string,
   replaced: bool,
   svapId: number,
