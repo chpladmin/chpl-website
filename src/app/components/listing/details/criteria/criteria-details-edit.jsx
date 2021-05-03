@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Grid,
   Switch,
+  TextField,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -28,6 +29,8 @@ import ChplTestProceduresEdit from './test-procedures';
 import ChplTestToolsEdit from './test-tools';
 
 const validationSchema = yup.object({
+  apiDocumentation: yup.string()
+    .url('Enter a valid URL'),
 });
 
 const useStyles = makeStyles(() => ({
@@ -45,9 +48,10 @@ function ChplCriteriaDetailsEdit(props) {
   const formik = useFormik({
     initialValues: {
       success: criteria.success || false,
-      gap: criteria.gap,
+      apiDocumentation: criteria.apiDocumentation,
       g1Success: criteria.g1Success,
       g2Success: criteria.g2Success,
+      gap: criteria.gap,
       sed: criteria.sed,
     },
     validationSchema,
@@ -64,9 +68,10 @@ function ChplCriteriaDetailsEdit(props) {
     const toSave = {
       ...criteria,
       success: formik.values.success,
-      gap: formik.values.gap,
+      apiDocumentation: formik.values.apiDocumentation,
       g1Success: formik.values.g1Success,
       g2Success: formik.values.g2Success,
+      gap: formik.values.gap,
       sed: formik.values.sed,
     };
     props.onSave(toSave);
@@ -295,6 +300,28 @@ function ChplCriteriaDetailsEdit(props) {
                   </Grid>
                 </>
                 )}
+              { formik.values.apiDocumentation !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      id="api-documentation"
+                      name="apiDocumentation"
+                      label="API Documentation"
+                      value={formik.values.apiDocumentation}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.apiDocumentation && formik.errors.apiDocumentation}
+                      helperText={formik.touched.apiDocumentation && formik.errors.apiDocumentation}
+                    />
+                  </Grid>
+                </>
+                )}
             </Collapse>
           </Grid>
         </CardContent>
@@ -337,32 +364,7 @@ ChplCriteriaDetailsEdit.propTypes = {
 /*
 additional software
 gap
-            { criteria.svaps?.length > 0
-              && (
-              <TableRow key="svap">
-                <TableCell component="th" scope="row">
-                  Standards Version Advancement Process
-                  <ChplTooltip title="Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  <ul>
-                    { criteria.svaps.map((svap) => (
-                      <li key={svap.id}>
-                        <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength="100" wordBoundaries="true" />
-                        { svap.replaced
-                          && (
-                          <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
-                            <InfoOutlinedIcon className={classes.infoIcon} />
-                          </ChplTooltip>
-                          )}
-                      </li>
-                    ))}
-                  </ul>
-                </TableCell>
-              </TableRow>
-)}
+svaps
 testStandards
 g1Success
 g2Success
@@ -370,22 +372,7 @@ testFunctionality
 testProcedures
 testToolsUsed
 testDataUsed
-            { criteria.apiDocumentation !== null
-              && (
-              <TableRow key="apiDocumentation">
-                <TableCell component="th" scope="row">
-                  API Documentation
-                  <ChplTooltip title="The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9)).">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.apiDocumentation
-                    && <ChplLink href={criteria.apiDocumentation} text={criteria.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criteria.apiDocumentation }} />}
-                  { !criteria.apiDocumentation && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
+apiDocumentation
             { criteria.exportDocumentation !== null
               && (
               <TableRow key="exportDocumentation">
