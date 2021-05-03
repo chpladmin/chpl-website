@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { arrayOf, bool, func, object } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  object,
+} from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
@@ -46,7 +51,7 @@ function ChplCriteria(props) {
   /* eslint-enable react/destructuring-assignment */
 
   const handleSave = (criterion) => {
-    let updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
+    const updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
     updated.push(criterion);
     setCriteria(updated);
     props.onSave(updated);
@@ -120,6 +125,7 @@ ChplCriteria.propTypes = {
 ChplCriteria.defaultProps = {
   accessibilityStandards: [],
   canEdit: false,
+  onSave: () => {},
   qmsStandards: [],
   resources: {},
   viewAll: false,

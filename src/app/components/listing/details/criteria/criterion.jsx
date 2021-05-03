@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { arrayOf, bool, func, object } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  object,
+} from 'prop-types';
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -62,7 +67,7 @@ function ChplCriterion(props) {
     }
   };
 
-  const handleCancel =  () => {
+  const handleCancel = () => {
     setEditing(false);
     setPending(false);
   };
@@ -71,14 +76,14 @@ function ChplCriterion(props) {
     setPending(true);
   };
 
-  const handleSave = (criterion) => {
+  const handleSave = (updatedCriterion) => {
     if (pending) {
       setPending(false);
       setStaged(true);
     }
     setEditing(false);
-    setCriterion(criterion);
-    props.onSave(criterion);
+    setCriterion(updatedCriterion);
+    props.onSave(updatedCriterion);
   };
 
   return (
@@ -194,5 +199,6 @@ ChplCriterion.propTypes = {
 
 ChplCriterion.defaultProps = {
   canEdit: false,
+  onSave: () => {},
   resources: {},
 };
