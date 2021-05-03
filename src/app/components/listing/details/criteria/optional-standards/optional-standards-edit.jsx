@@ -124,6 +124,7 @@ function ChplOptionalStandardsEdit(props) {
             <Grid item xs={11}>
               <InputLabel id="test-standard-name-label">Optional Standard</InputLabel>
               <Select
+                fullWidth
                 labelId="test-standard-name-label"
                 id="test-standard-name"
                 name="testStandardName"

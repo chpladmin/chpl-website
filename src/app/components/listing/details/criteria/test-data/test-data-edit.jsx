@@ -132,6 +132,7 @@ function ChplTestDataEdit(props) {
             <Grid item xs={3}>
               <InputLabel id="name-label">Test Data Used</InputLabel>
               <Select
+                fullWidth
                 labelId="name-label"
                 id="name"
                 name="name"

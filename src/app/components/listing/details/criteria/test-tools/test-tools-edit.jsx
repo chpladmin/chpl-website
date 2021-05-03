@@ -122,6 +122,7 @@ function ChplTestToolsEdit(props) {
             <Grid item xs={6}>
               <InputLabel id="name-label">Test Tool Used</InputLabel>
               <Select
+                fullWidth
                 labelId="name-label"
                 id="name"
                 name="name"

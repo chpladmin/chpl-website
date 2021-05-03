@@ -124,6 +124,7 @@ function ChplTestProceduresEdit(props) {
             <Grid item xs={6}>
               <InputLabel id="name-label">Procedure Tested</InputLabel>
               <Select
+                fullWidth
                 labelId="name-label"
                 id="name"
                 name="name"

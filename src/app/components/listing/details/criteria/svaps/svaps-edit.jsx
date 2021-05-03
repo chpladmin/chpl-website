@@ -122,6 +122,7 @@ function ChplSvapsEdit(props) {
             <Grid item xs={11}>
               <InputLabel id="name-label">Standards Version Advancement Process</InputLabel>
               <Select
+                fullWidth
                 labelId="name-label"
                 id="regulatory-text-citation"
                 name="regulatoryTextCitation"
