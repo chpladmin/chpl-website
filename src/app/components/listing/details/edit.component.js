@@ -26,6 +26,8 @@ const ListingDetailsEditComponent = {
       this.addingItem = {};
       this.creatingItem = {};
       this.relatedListings = [];
+
+      this.handleCriteriaSave = this.handleCriteriaSave.bind(this);
     }
 
     $onInit() {
@@ -142,6 +144,7 @@ const ListingDetailsEditComponent = {
       return removeHandler;
     }
 
+    /*
     saveCert(cert) {
       for (let i = 0; i < this.listing.certificationResults.length; i += 1) {
         if (this.listing.certificationResults[i].number === cert.number
@@ -149,6 +152,12 @@ const ListingDetailsEditComponent = {
           this.listing.certificationResults[i] = cert;
         }
       }
+      this.updateCs();
+    }
+    */
+
+    handleCriteriaSave(criteria) {
+      this.listing.certificationResults = criteria;
       this.updateCs();
     }
 

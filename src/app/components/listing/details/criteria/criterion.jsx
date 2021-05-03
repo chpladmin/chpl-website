@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { arrayOf, bool, object } from 'prop-types';
+import { arrayOf, bool, func, object } from 'prop-types';
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -78,6 +78,7 @@ function ChplCriterion(props) {
     }
     setEditing(false);
     setCriterion(criterion);
+    props.onSave(criterion);
   };
 
   return (
@@ -183,13 +184,15 @@ function ChplCriterion(props) {
 export default ChplCriterion;
 
 ChplCriterion.propTypes = {
-  certificationResult: object.isRequired,
-  canEdit: bool,
-  resources: object.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
+  canEdit: bool,
+  certificationResult: object.isRequired,
+  onSave: func,
   qmsStandards: arrayOf(qmsStandard).isRequired,
+  resources: object,
 };
 
 ChplCriterion.defaultProps = {
   canEdit: false,
+  resources: {},
 };

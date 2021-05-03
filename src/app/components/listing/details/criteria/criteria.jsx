@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { arrayOf, bool, object } from 'prop-types';
+import { arrayOf, bool, func, object } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
@@ -39,60 +39,29 @@ const useStyles = makeStyles(() => ({
 }));
 */
 
-function setUpCriteria(criteria, sort) {
-  return criteria.sort((a, b) => {
-    if (a.criterion.removed !== b.criterion.removed) {
-      return a.criterion.removed ? 1 : -1;
-    }
-    return sort(a, b);
-  });
-}
-
 function ChplCriteria(props) {
-  //const $analytics = getAngularService('$analytics');
-  const sortCerts = getAngularService('utilService').sortCertActual;
   /* eslint-disable react/destructuring-assignment */
-  const [criteria/*, setCriteria*/] = useState(setUpCriteria(props.certificationResults, sortCerts));
+  const sortCerts = getAngularService('utilService').sortCertActual;
+  const [criteria, setCriteria] = useState(props.certificationResults);
   /* eslint-enable react/destructuring-assignment */
-  //const [editing, setEditing] = useState(false);
-  //const [pending, setPending] = useState(false);
-  //const [staged, setStaged] = useState(false);
-  //  const classes = useStyles();
-
-  /*
-  const handleAccordionChange = (event, isExpanded) => {
-    if (!isExpanded) {
-      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: criterion.criterion.number });
-    }
-  };
-
-  const handleCancel =  () => {
-    setEditing(false);
-    setPending(false);
-  };
-
-  const handleChange = () => {
-    setPending(true);
-  };
 
   const handleSave = (criterion) => {
-    if (pending) {
-      setPending(false);
-      setStaged(true);
-    }
-    setEditing(false);
-    setCriterion(criterion);
+    let updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
+    updated.push(criterion);
+    setCriteria(updated);
+    props.onSave(updated);
   };
 
-  */
   return (
     <ThemeProvider theme={theme}>
       { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
+        .sort((a, b) => sortCerts(a, b))
         .map((cc) => (
           <ChplCriterion
             key={cc.id}
             certificationResult={cc}
             canEdit={props.canEdit}
+            onSave={handleSave}
             resources={props.resources}
             accessibilityStandards={props.accessibilityStandards}
             qmsStandards={props.qmsStandards}
@@ -112,6 +81,7 @@ function ChplCriteria(props) {
         <AccordionDetails>
           <Grid container spacing={4}>
             { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
+              .sort((a, b) => sortCerts(a, b))
               .map((cc) => (
                 <Grid
                   item
@@ -121,6 +91,7 @@ function ChplCriteria(props) {
                   <ChplCriterion
                     certificationResult={cc}
                     canEdit={props.canEdit}
+                    onSave={handleSave}
                     resources={props.resources}
                     accessibilityStandards={props.accessibilityStandards}
                     qmsStandards={props.qmsStandards}
@@ -137,15 +108,19 @@ function ChplCriteria(props) {
 export default ChplCriteria;
 
 ChplCriteria.propTypes = {
-  canEdit: bool,
   certificationResults: arrayOf(object).isRequired,
-  resources: object.isRequired,
-  accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
-  qmsStandards: arrayOf(qmsStandard).isRequired,
+  accessibilityStandards: arrayOf(accessibilityStandard),
+  canEdit: bool,
+  onSave: func,
+  qmsStandards: arrayOf(qmsStandard),
+  resources: object,
   viewAll: bool,
 };
 
 ChplCriteria.defaultProps = {
+  accessibilityStandards: [],
   canEdit: false,
+  qmsStandards: [],
+  resources: {},
   viewAll: false,
 };
