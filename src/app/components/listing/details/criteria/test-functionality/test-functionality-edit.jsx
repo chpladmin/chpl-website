@@ -1,26 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { arrayOf, func, object } from 'prop-types';
+import React, { useState } from 'react';
+import { arrayOf, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
-  Collapse,
-  Divider,
-  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
@@ -33,7 +21,7 @@ const validationSchema = yup.object({
 
 function ChplTestFunctionalityEdit(props) {
   const [adding, setAdding] = useState(false);
-  const [testFunctionality, setTestFunctionality] = useState(props.testFunctionality.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [testFunctionalityUsed, setTestFunctionalityUsed] = useState(props.testFunctionality.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(props.options);
 
   const formik = useFormik({
@@ -45,15 +33,19 @@ function ChplTestFunctionalityEdit(props) {
     validateOnMount: true,
   });
 
+  const update = (updated) => {
+    props.onChange({ key: 'testFunctionality', data: updated });
+  };
+
   const addNew = () => {
     const updated = [
-      ...testFunctionality,
+      ...testFunctionalityUsed,
       {
         name: formik.values.name,
         key: (new Date()).getTime(),
       },
     ];
-    setTestFunctionality(updated);
+    setTestFunctionalityUsed(updated);
     setOptions(options.filter((option) => option.name !== formik.values.name));
     formik.resetForm();
     setAdding(false);
@@ -66,14 +58,10 @@ function ChplTestFunctionalityEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testFunctionality.filter((s) => !(s.id === item.id && s.key === item.key));
-    setTestFunctionality(updated);
+    const updated = testFunctionalityUsed.filter((s) => !(s.id === item.id && s.key === item.key));
+    setTestFunctionalityUsed(updated);
     setOptions([...options, item]);
     update(updated);
-  };
-
-  const update = (updated) => {
-    props.onChange({ key: 'testFunctionality', data: updated });
   };
 
   return (
@@ -86,7 +74,7 @@ function ChplTestFunctionalityEdit(props) {
           <Grid item xs={1} />
         </Grid>
       </Grid>
-      { testFunctionality.map((item) => (
+      { testFunctionalityUsed.map((item) => (
         <Grid item xs={12} key={item.id || item.key}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
@@ -166,7 +154,7 @@ function ChplTestFunctionalityEdit(props) {
 export default ChplTestFunctionalityEdit;
 
 ChplTestFunctionalityEdit.propTypes = {
-  testFunctionality: arrayOf(selectedTestFunctionality),
-  options: arrayOf(testFunctionality),
-  onChange: func,
+  testFunctionality: arrayOf(selectedTestFunctionality).isRequired,
+  options: arrayOf(testFunctionality).isRequired,
+  onChange: func.isRequired,
 };

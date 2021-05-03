@@ -1,26 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { arrayOf, func, object } from 'prop-types';
+import React, { useState } from 'react';
+import { arrayOf, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
-  Collapse,
-  Divider,
-  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
@@ -46,6 +34,10 @@ function ChplOptionalStandardsEdit(props) {
     validateOnMount: true,
   });
 
+  const update = (updated) => {
+    props.onChange({ key: 'testStandards', data: updated });
+  };
+
   const addNew = () => {
     const updated = [
       ...optionalStandards,
@@ -69,10 +61,6 @@ function ChplOptionalStandardsEdit(props) {
     const updated = optionalStandards.filter((s) => !(s.id === item.id && s.key === item.key));
     setOptionalStandards(updated);
     update(updated);
-  };
-
-  const update = (updated) => {
-    props.onChange({ key: 'testStandards', data: updated });
   };
 
   return (
@@ -165,7 +153,7 @@ function ChplOptionalStandardsEdit(props) {
 export default ChplOptionalStandardsEdit;
 
 ChplOptionalStandardsEdit.propTypes = {
-  optionalStandards: arrayOf(selectedOptionalStandard),
-  options: arrayOf(optionalStandard),
-  onChange: func,
+  optionalStandards: arrayOf(selectedOptionalStandard).isRequired,
+  options: arrayOf(optionalStandard).isRequired,
+  onChange: func.isRequired,
 };
