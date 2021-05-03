@@ -1,6 +1,6 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
-import { ChplCriterion } from './listing/details/criteria';
+import { ChplCriteria } from './listing/details/criteria';
 import { ChplEllipsis, ChplLink } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplUploadListings } from './upload';
@@ -27,7 +27,7 @@ angular
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
-  .component('chplCriterionBridge', reactToAngularComponent(ChplCriterion))
+  .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))

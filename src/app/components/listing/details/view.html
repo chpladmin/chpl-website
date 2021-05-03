@@ -17,6 +17,17 @@
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
+        <chpl-criteria-bridge
+          can-edit="true"
+          certification-results="$ctrl.listing.certificationResults"
+          accessibility-standards="$ctrl.listing.accessibilityStandards"
+          qms-standards="$ctrl.listing.qmsStandards"
+          resources="$ctrl.resources"
+          view-all="$ctrl.viewAllCerts"
+          >
+        </chpl-criteria-bridge>
+
+        <!--
         <div ng-repeat="n in $ctrl.listing.certificationResults | orderBy:$ctrl.sortCerts track by n.criterion.id">
           <chpl-criterion-bridge
             ng-if="n.success || $ctrl.viewAllCerts"
@@ -36,8 +47,8 @@
                                        qms-standards="$ctrl.listing.qmsStandards"
                                        view-all="$ctrl.viewAllCerts">
           </chpl-certification-criteria>
-          -->
         </div>
+          -->
       </div>
     </div>
 

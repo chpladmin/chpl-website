@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { arrayOf, bool, object } from 'prop-types';
-import { ThemeProvider } from '@material-ui/core/styles';
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -18,7 +17,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../../themes/theme';
 import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
@@ -47,7 +45,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplCriterion(props) {
-  const [canEdit] = useState(props.canEdit);
   const [criterion, setCriterion] = useState(props.certificationResult);
   const [editing, setEditing] = useState(false);
   const [pending, setPending] = useState(false);
@@ -82,112 +79,110 @@ function ChplCriterion(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Accordion disabled={!criterion.success && !canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
-        <AccordionSummary
-          className={classes.NestedAccordionLevelOneSummary}
-          expandIcon={<ExpandMoreIcon />}
-          id={`${criterion.id}-header`}
-        >
-          <Grid container spacing={4}>
-            <Grid item xs={1}>
-              { criterion.success
+    <Accordion disabled={!criterion.success && !props.canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
+      <AccordionSummary
+        className={classes.NestedAccordionLevelOneSummary}
+        expandIcon={<ExpandMoreIcon />}
+        id={`${criterion.id}-header`}
+      >
+        <Grid container spacing={4}>
+          <Grid item xs={1}>
+            { criterion.success
+              && (
+                <Typography variant="subtitle1">
+                  <DoneAllIcon size="small" />
+                </Typography>
+              )}
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="subtitle1">
+              { criterion.criterion.removed
                 && (
-                  <Typography variant="subtitle1">
-                    <DoneAllIcon size="small" />
-                  </Typography>
+                  <>
+                    Removed |
+                  </>
                 )}
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle1">
-                { criterion.criterion.removed
-                  && (
-                    <>
-                      Removed |
-                    </>
+              {criterion.criterion.number}
+            </Typography>
+            { pending
+              && (
+                <Chip
+                  overlap="circle"
+                  label="Pending Changes"
+                  className={classes.pendingChip}
+                  avatar={(
+                    <Avatar className={classes.pendingChip}>
+                      <SyncIcon color="secondary" />
+                    </Avatar>
                   )}
-                {criterion.criterion.number}
-              </Typography>
-              { pending
-              && (
-              <Chip
-                overlap="circle"
-                label="Pending Changes"
-                className={classes.pendingChip}
-                avatar={(
-                  <Avatar className={classes.pendingChip}>
-                    <SyncIcon color="secondary" />
-                  </Avatar>
-                )}
-              />
+                />
               )}
-              { staged && !pending
+            { staged && !pending
               && (
-              <Chip
-                overlap="circle"
-                label="Staged Changes"
-                className={classes.stagedChip}
-                avatar={(
-                  <Avatar className={classes.stagedChip}>
-                    <CloudDoneIcon color="secondary" />
-                  </Avatar>
-                )}
-              />
-              )}
-            </Grid>
-            <Grid item xs={8}>
-              <Typography>
-                {criterion.criterion.title}
-              </Typography>
-            </Grid>
-          </Grid>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid container spacing={4}>
-            { editing
-              ? (
-                <>
-                  <ChplCriterionDetailsEdit
-                    criterion={criterion}
-                    resources={props.resources}
-                    onCancel={handleCancel}
-                    onChange={handleChange}
-                    onSave={handleSave}
-                  />
-                </>
-              ) : (
-                <>
-                  { canEdit
-                    && (
-                      <Grid item xs={12}>
-                        <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(true)}>
-                          Edit Criteria
-                          <EditOutlinedIcon
-                            className={classes.iconSpacing}
-                            fontSize="small"
-                          />
-                        </Button>
-                      </Grid>
-                    )}
-                  <ChplCriterionDetailsView
-                    criterion={criterion}
-                    accessibilityStandards={accessibilityStandards}
-                    qmsStandards={qmsStandards}
-                  />
-                </>
+                <Chip
+                  overlap="circle"
+                  label="Staged Changes"
+                  className={classes.stagedChip}
+                  avatar={(
+                    <Avatar className={classes.stagedChip}>
+                      <CloudDoneIcon color="secondary" />
+                    </Avatar>
+                  )}
+                />
               )}
           </Grid>
-        </AccordionDetails>
-      </Accordion>
-    </ThemeProvider>
+          <Grid item xs={8}>
+            <Typography>
+              {criterion.criterion.title}
+            </Typography>
+          </Grid>
+        </Grid>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Grid container spacing={4}>
+          { editing
+            ? (
+              <>
+                <ChplCriterionDetailsEdit
+                  criterion={criterion}
+                  resources={props.resources}
+                  onCancel={handleCancel}
+                  onChange={handleChange}
+                  onSave={handleSave}
+                />
+              </>
+            ) : (
+              <>
+                { props.canEdit
+                  && (
+                    <Grid item xs={12}>
+                      <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(true)}>
+                        Edit Criteria
+                        <EditOutlinedIcon
+                          className={classes.iconSpacing}
+                          fontSize="small"
+                        />
+                      </Button>
+                    </Grid>
+                  )}
+                <ChplCriterionDetailsView
+                  criterion={criterion}
+                  accessibilityStandards={accessibilityStandards}
+                  qmsStandards={qmsStandards}
+                />
+              </>
+            )}
+        </Grid>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 
 export default ChplCriterion;
 
 ChplCriterion.propTypes = {
-  canEdit: bool,
   certificationResult: object.isRequired,
+  canEdit: bool,
   resources: object.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
