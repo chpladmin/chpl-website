@@ -7,6 +7,7 @@ import {
 } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
   Accordion,
   AccordionDetails,
@@ -15,6 +16,7 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../../../themes/theme';
+import { ChplTooltip } from '../../../util';
 import { getAngularService, ChplCriterion } from '.';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
@@ -80,6 +82,9 @@ function ChplCriteria(props) {
           <Grid container spacing={4}>
             <Grid item xs={12}>
               Removed Certification Criteria
+              <ChplTooltip title="These certification criteria have been removed from the Program.">
+                <InfoOutlinedIcon />
+              </ChplTooltip>
             </Grid>
           </Grid>
         </AccordionSummary>

@@ -9,6 +9,7 @@ import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import SyncIcon from '@material-ui/icons/Sync';
 import {
   Accordion,
@@ -23,6 +24,7 @@ import {
 } from '@material-ui/core';
 
 import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.';
+import { ChplTooltip } from '../../../util';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -142,6 +144,12 @@ function ChplCriterion(props) {
           <Grid item xs={8}>
             <Typography>
               {criterion.criterion.title}
+              { criterion.criterion.removed
+                && (
+                  <ChplTooltip title="This certification criterion has been removed from the Program.">
+                    <InfoOutlinedIcon />
+                  </ChplTooltip>
+                )}
             </Typography>
           </Grid>
         </Grid>
