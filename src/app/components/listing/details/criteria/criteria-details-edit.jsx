@@ -11,6 +11,9 @@ import {
   Divider,
   FormControlLabel,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   Switch,
   TextField,
   Typography,
@@ -31,6 +34,12 @@ import ChplTestToolsEdit from './test-tools';
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
     .url('Enter a valid URL'),
+  documentationUrl: yup.string()
+    .url('Enter a valid URL'),
+  exportDocumentation: yup.string()
+    .url('Enter a valid URL'),
+  useCases: yup.string()
+    .url('Enter a valid URL'),
 });
 
 const useStyles = makeStyles(() => ({
@@ -49,10 +58,15 @@ function ChplCriteriaDetailsEdit(props) {
     initialValues: {
       success: criteria.success || false,
       apiDocumentation: criteria.apiDocumentation,
+      attestationAnswer: criteria.attestationAnswer,
+      documentationUrl: criteria.documentationUrl,
+      exportDocumentation: criteria.exportDocumentation,
       g1Success: criteria.g1Success,
       g2Success: criteria.g2Success,
       gap: criteria.gap,
+      privacySecurityFramework: criteria.privacySecurityFramework,
       sed: criteria.sed,
+      useCases: criteria.useCases,
     },
     validationSchema,
     validateOnChange: false,
@@ -69,10 +83,15 @@ function ChplCriteriaDetailsEdit(props) {
       ...criteria,
       success: formik.values.success,
       apiDocumentation: formik.values.apiDocumentation,
+      attestationAnswer: formik.values.attestationAnswer,
+      documentationUrl: formik.values.documentationUrl,
+      exportDocumentation: formik.values.exportDocumentation,
       g1Success: formik.values.g1Success,
       g2Success: formik.values.g2Success,
       gap: formik.values.gap,
+      privacySecurityFramework: formik.values.privacySecurityFramework,
       sed: formik.values.sed,
+      useCases: formik.values.useCases,
     };
     props.onSave(toSave);
   };
@@ -314,11 +333,124 @@ function ChplCriteriaDetailsEdit(props) {
                       name="apiDocumentation"
                       label="API Documentation"
                       value={formik.values.apiDocumentation}
-                      onChange={formik.handleChange}
+                      onChange={onChange}
                       onBlur={formik.handleBlur}
                       error={formik.touched.apiDocumentation && formik.errors.apiDocumentation}
                       helperText={formik.touched.apiDocumentation && formik.errors.apiDocumentation}
                     />
+                  </Grid>
+                </>
+                )}
+              { formik.values.exportDocumentation !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      id="export-documentation"
+                      name="exportDocumentation"
+                      label="Export Documentation"
+                      value={formik.values.exportDocumentation}
+                      onChange={onChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.exportDocumentation && formik.errors.exportDocumentation}
+                      helperText={formik.touched.exportDocumentation && formik.errors.exportDocumentation}
+                    />
+                  </Grid>
+                </>
+                )}
+              { formik.values.attestationAnswer !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="attestation-answer"
+                          name="attestationAnswer"
+                          color="primary"
+                          checked={formik.values.attestationAnswer}
+                          onChange={onChange}
+                        />
+                         )}
+                      label={`Attestation: ${formik.values.attestationAnswer ? 'Yes' : 'No'}`}
+                    />
+                  </Grid>
+                </>
+                )}
+              { formik.values.documentationUrl !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      id="documentation-url"
+                      name="documentationUrl"
+                      label="Documentation"
+                      value={formik.values.documentationUrl}
+                      onChange={onChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.documentationUrl && formik.errors.documentationUrl}
+                      helperText={formik.touched.documentationUrl && formik.errors.documentationUrl}
+                    />
+                  </Grid>
+                </>
+                )}
+              { formik.values.useCases !== null && formik.values.attestationAnswer
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      id="use-cases"
+                      name="useCases"
+                      label="Use Cases"
+                      value={formik.values.useCases}
+                      onChange={onChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.useCases && formik.errors.useCases}
+                      helperText={formik.touched.useCases && formik.errors.useCases}
+                    />
+                  </Grid>
+                </>
+                )}
+              { formik.values.privacySecurityFramework !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <InputLabel id="privacy-and-security-framework-label">Privacy &amp; Security Framework</InputLabel>
+                    <Select
+                      fullWidth
+                      labelId="privacy-security-framework-label"
+                      id="privacy-security-framework"
+                      name="privacySecurityFramework"
+                      variant="outlined"
+                      value={formik.values.privacySecurityFramework}
+                      onChange={onChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <MenuItem value="Approach 1" key="Approach 1">Approach 1</MenuItem>
+                      <MenuItem value="Approach 2" key="Approach 2">Approach 2</MenuItem>
+                      <MenuItem value="Approach 1;Approach 2" key="Approach 1;Approach 2">Approach 1;Approach 2</MenuItem>
+                    </Select>
                   </Grid>
                 </>
                 )}
@@ -360,90 +492,3 @@ ChplCriteriaDetailsEdit.propTypes = {
   onChange: func.isRequired,
   onSave: func.isRequired,
 };
-
-/*
-additional software
-gap
-svaps
-testStandards
-g1Success
-g2Success
-testFunctionality
-testProcedures
-testToolsUsed
-testDataUsed
-apiDocumentation
-            { criteria.exportDocumentation !== null
-              && (
-              <TableRow key="exportDocumentation">
-                <TableCell component="th" scope="row">
-                  Export Documentation
-                  <ChplTooltip title="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.exportDocumentation
-                    && <ChplLink href={criteria.exportDocumentation} text={criteria.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criteria.exportDocumentation }} />}
-                  { !criteria.exportDocumentation && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
-            { criteria.attestationAnswer !== null
-              && (
-              <TableRow key="attestationAnswer">
-                <TableCell component="th" scope="row">
-                  Attestation
-                  <ChplTooltip title="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">{criteria.attestationAnswer ? 'Yes' : 'No'}</TableCell>
-              </TableRow>
-              )}
-            { criteria.documentation !== null
-              && (
-              <TableRow key="documentation">
-                <TableCell component="th" scope="row">
-                  Documentation
-                  <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.documentation
-                    && <ChplLink href={criteria.documentation} text={criteria.documentation} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentation }} />}
-                  { !criteria.documentation && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
-            { criteria.useCases !== null && criteria.attestationAnswer
-              && (
-              <TableRow key="useCases">
-                <TableCell component="th" scope="row">
-                  Use Case(s)
-                  <ChplTooltip title="Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">
-                  { criteria.useCases
-                    && <ChplLink href={criteria.useCases} text={criteria.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criteria.useCases }} />}
-                  { !criteria.useCases && 'None' }
-                </TableCell>
-              </TableRow>
-              )}
-            { criteria.privacySecurityFramework !== null
-              && (
-              <TableRow key="privacySecurityFramework">
-                <TableCell component="th" scope="row">
-                  Privacy &amp; Security Framework
-                  <ChplTooltip title="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). ">
-                    <InfoOutlinedIcon className={classes.infoIcon} />
-                  </ChplTooltip>
-                </TableCell>
-                <TableCell align="right">{criteria.privacySecurityFramework}</TableCell>
-              </TableRow>
-              )}
-sed
-*/
