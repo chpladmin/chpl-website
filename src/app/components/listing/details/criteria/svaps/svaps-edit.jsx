@@ -20,9 +20,11 @@ const validationSchema = yup.object({
 });
 
 function ChplSvapsEdit(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [svaps, setSvaps] = useState(props.svaps);
   const [options, setOptions] = useState(props.options);
+  /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {

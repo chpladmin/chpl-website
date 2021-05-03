@@ -21,9 +21,11 @@ const validationSchema = yup.object({
 });
 
 function ChplTestToolsEdit(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(props.options);
+  /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {

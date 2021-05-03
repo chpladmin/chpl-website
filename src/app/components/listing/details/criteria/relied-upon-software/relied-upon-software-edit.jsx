@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { arrayOf, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
-  Collapse,
-  Divider,
-  FormControlLabel,
   Grid,
   IconButton,
-  Paper,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -29,8 +18,10 @@ const validationSchema = yup.object({
 });
 
 function ChplReliedUponSoftwareEdit(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [software, setSoftware] = useState(props.software);
+  /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
@@ -39,10 +30,14 @@ function ChplReliedUponSoftwareEdit(props) {
       certifiedProductNumber: '',
       grouping: '',
     },
-    validationSchema: validationSchema,
+    validationSchema,
     validateOnChange: false,
     validateOnMount: true,
   });
+
+  const update = (updated) => {
+    props.onChange({ key: 'additionalSoftware', data: updated });
+  };
 
   const addNew = () => {
     const updated = [
@@ -59,22 +54,18 @@ function ChplReliedUponSoftwareEdit(props) {
     formik.resetForm();
     setAdding(false);
     update(updated);
-  }
+  };
 
   const cancelAdd = () => {
     formik.resetForm();
     setAdding(false);
-  }
+  };
 
   const removeItem = (item) => {
     const updated = software.filter((s) => !(s.id === item.id && s.key === item.key));
     setSoftware(updated);
     update(updated);
-  }
-
-  const update = (updated) => {
-    props.onChange({key: 'additionalSoftware', data: updated});
-  }
+  };
 
   return (
     <Grid container spacing={4}>
@@ -111,25 +102,33 @@ function ChplReliedUponSoftwareEdit(props) {
               <Typography variant="subtitle2">{ item.grouping }</Typography>
             </Grid>
             <Grid item xs={1}>
-              { !adding &&
+              { !adding
+                && (
                 <IconButton
-                  onClick={() => removeItem(item)}>
+                  onClick={() => removeItem(item)}
+                >
                   <CloseOutlinedIcon
                     color="primary"
-                    size="small" />
-                </IconButton>}
+                    size="small"
+                  />
+                </IconButton>
+                )}
             </Grid>
           </Grid>
         </Grid>
       ))}
-      { !adding &&
+      { !adding
+        && (
         <Grid item xs={12}>
           <Button
             onClick={() => setAdding(true)}
-          >Add item
+          >
+            Add item
           </Button>
-        </Grid>}
-      { adding &&
+        </Grid>
+        )}
+      { adding
+        && (
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={3}>
@@ -196,15 +195,17 @@ function ChplReliedUponSoftwareEdit(props) {
                 <CheckOutlinedIcon />
               </Button>
               <IconButton
-                onClick={() => cancelAdd()}>
+                onClick={() => cancelAdd()}
+              >
                 <CloseOutlinedIcon
                   color="primary"
-                  size="small" />
+                  size="small"
+                />
               </IconButton>
             </Grid>
           </Grid>
         </Grid>
-      }
+        )}
     </Grid>
   );
 }
@@ -212,6 +213,6 @@ function ChplReliedUponSoftwareEdit(props) {
 export default ChplReliedUponSoftwareEdit;
 
 ChplReliedUponSoftwareEdit.propTypes = {
-  onChange: func,
-  software: arrayOf(reliedUponSoftware),
+  onChange: func.isRequired,
+  software: arrayOf(reliedUponSoftware).isRequired,
 };

@@ -29,8 +29,11 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
 };
 
 function ChplReliedUponSoftwareView(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
+  /* eslint-enable react/destructuring-assignment */
+
   useEffect(() => {
     const displaySw = {};
     let count = 0;
@@ -83,5 +86,5 @@ function ChplReliedUponSoftwareView(props) {
 export default ChplReliedUponSoftwareView;
 
 ChplReliedUponSoftwareView.propTypes = {
-  sw: arrayOf(reliedUponSoftware),
+  sw: arrayOf(reliedUponSoftware).isRequired,
 };
