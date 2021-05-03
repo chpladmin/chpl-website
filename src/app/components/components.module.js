@@ -1,10 +1,10 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
-import { ChplCriteria } from './listing/details/criteria';
+import { ChplCriterion } from './listing/details/criteria';
 import { ChplEllipsis, ChplLink } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplUploadListings } from './upload';
-import { reactToAngularComponent } from '../services/angular-react-helper.jsx';
+import { reactToAngularComponent } from '../services/angular-react-helper';
 
 angular
   .module('chpl.components', [
@@ -27,7 +27,7 @@ angular
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
-  .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
+  .component('chplCriterionBridge', reactToAngularComponent(ChplCriterion))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))

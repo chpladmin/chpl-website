@@ -24,8 +24,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplCriteriaDetailsView(props) {
-  const [criteria] = useState(props.criteria);
+function ChplCriterionDetailsView(props) {
+  const [criterion] = useState(props.criterion);
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const $analytics = getAngularService('$analytics');
@@ -34,7 +34,7 @@ function ChplCriteriaDetailsView(props) {
   return (
     <Grid item xs={12}>
       <TableContainer component={Paper}>
-        <Table aria-label="Criteria Details Table">
+        <Table aria-label="Criterion Details Table">
           <TableHead>
             <TableRow>
               <TableCell>Attribute</TableCell>
@@ -42,31 +42,31 @@ function ChplCriteriaDetailsView(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            { criteria.additionalSoftware?.length > 0
+            { criterion.additionalSoftware?.length > 0
               && (
                 <TableRow key="additionalSoftware">
                   <TableCell component="th" scope="row">
                     Relied Upon Software
-                    <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.">
+                    <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criterion.">
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right"><ChplReliedUponSoftwareView sw={criteria.additionalSoftware} /></TableCell>
+                  <TableCell align="right"><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
                 </TableRow>
               )}
-            { criteria.gap !== null
+            { criterion.gap !== null
               && (
                 <TableRow key="gap">
                   <TableCell component="th" scope="row">
                     Gap
-                    <ChplTooltip title="The corresponding certification criteria are gap certified (True or False).">
+                    <ChplTooltip title="The corresponding certification criterion are gap certified (True or False).">
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right">{criteria.gap ? 'True' : 'False'}</TableCell>
+                  <TableCell align="right">{criterion.gap ? 'True' : 'False'}</TableCell>
                 </TableRow>
               )}
-            { criteria.svaps?.length > 0
+            { criterion.svaps?.length > 0
               && (
                 <TableRow key="svap">
                   <TableCell component="th" scope="row">
@@ -77,7 +77,7 @@ function ChplCriteriaDetailsView(props) {
                   </TableCell>
                   <TableCell align="right">
                     <ul>
-                      { criteria.svaps.map((svap) => (
+                      { criterion.svaps.map((svap) => (
                         <li key={svap.id || svap.key}>
                           <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength={100} wordBoundaries />
                           { svap.replaced
@@ -92,7 +92,7 @@ function ChplCriteriaDetailsView(props) {
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.testStandards
+            { criterion.testStandards
               && (
                 <TableRow key="optionalStandards">
                   <TableCell component="th" scope="row">
@@ -102,10 +102,10 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.testStandards.length > 0
+                    { criterion.testStandards.length > 0
                       && (
                         <ul>
-                          { criteria.testStandards.map((ts) => (
+                          { criterion.testStandards.map((ts) => (
                             <li key={ts.id || ts.key}>
                               { ts.testStandardDescription
                                 && <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries />}
@@ -114,11 +114,11 @@ function ChplCriteriaDetailsView(props) {
                           ))}
                         </ul>
                       )}
-                    { criteria.testStandards.length === 0 && 'None' }
+                    { criterion.testStandards.length === 0 && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.g1Success !== null
+            { criterion.g1Success !== null
               && (
                 <TableRow key="g1Success">
                   <TableCell component="th" scope="row">
@@ -127,10 +127,10 @@ function ChplCriteriaDetailsView(props) {
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right">{criteria.g1Success ? 'True' : 'False'}</TableCell>
+                  <TableCell align="right">{criterion.g1Success ? 'True' : 'False'}</TableCell>
                 </TableRow>
               )}
-            { criteria.g2Success !== null
+            { criterion.g2Success !== null
               && (
                 <TableRow key="g2Success">
                   <TableCell component="th" scope="row">
@@ -139,10 +139,10 @@ function ChplCriteriaDetailsView(props) {
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right">{criteria.g2Success ? 'True' : 'False'}</TableCell>
+                  <TableCell align="right">{criterion.g2Success ? 'True' : 'False'}</TableCell>
                 </TableRow>
               )}
-            { criteria.testFunctionality
+            { criterion.testFunctionality
               && (
                 <TableRow key="testFunctionality">
                   <TableCell component="th" scope="row">
@@ -152,10 +152,10 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.testFunctionality.length > 0
+                    { criterion.testFunctionality.length > 0
                       && (
                         <ul>
-                          { criteria.testFunctionality.map((tf) => (
+                          { criterion.testFunctionality.map((tf) => (
                             <li key={tf.id || tf.key}>
                               { tf.description
                                 && <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries />}
@@ -164,11 +164,11 @@ function ChplCriteriaDetailsView(props) {
                           ))}
                         </ul>
                       )}
-                    { criteria.testFunctionality.length === 0 && 'None' }
+                    { criterion.testFunctionality.length === 0 && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.testProcedures
+            { criterion.testProcedures
               && (
                 <TableRow key="testProcedures">
                   <TableCell component="th" scope="row">
@@ -178,10 +178,10 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.testProcedures.length > 0
+                    { criterion.testProcedures.length > 0
                       && (
                         <ul>
-                          { criteria.testProcedures.map((tp) => (
+                          { criterion.testProcedures.map((tp) => (
                             <li key={tp.id || tp.key}>
                               Name:
                               {' '}
@@ -193,11 +193,11 @@ function ChplCriteriaDetailsView(props) {
                           ))}
                         </ul>
                       )}
-                    { criteria.testProcedures.length === 0 && 'None' }
+                    { criterion.testProcedures.length === 0 && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { (criteria.criterion.number === '170.315 (g)(4)' || criteria.criterion.number === '170.314 (g)(4)')
+            { (criterion.criterion.number === '170.315 (g)(4)' || criterion.criterion.number === '170.314 (g)(4)')
               && (
                 <TableRow key="qms">
                   <TableCell component="th" scope="row">
@@ -234,7 +234,7 @@ function ChplCriteriaDetailsView(props) {
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.criterion.number === '170.315 (g)(5)'
+            { criterion.criterion.number === '170.315 (g)(5)'
               && (
                 <TableRow key="accessibility">
                   <TableCell component="th" scope="row">
@@ -258,7 +258,7 @@ function ChplCriteriaDetailsView(props) {
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.testToolsUsed
+            { criterion.testToolsUsed
               && (
                 <TableRow key="testToolsUsed">
                   <TableCell component="th" scope="row">
@@ -268,10 +268,10 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.testToolsUsed.length > 0
+                    { criterion.testToolsUsed.length > 0
                       && (
                         <ul>
-                          { criteria.testToolsUsed.map((tt) => (
+                          { criterion.testToolsUsed.map((tt) => (
                             <li key={tt.id || tt.key}>
                               Tool:
                               {' '}
@@ -283,11 +283,11 @@ function ChplCriteriaDetailsView(props) {
                           ))}
                         </ul>
                       )}
-                    { criteria.testToolsUsed.length === 0 && 'None' }
+                    { criterion.testToolsUsed.length === 0 && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.testDataUsed
+            { criterion.testDataUsed
               && (
                 <TableRow key="testDataUsed">
                   <TableCell component="th" scope="row">
@@ -297,10 +297,10 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.testDataUsed.length > 0
+                    { criterion.testDataUsed.length > 0
                       && (
                         <ul>
-                          { criteria.testDataUsed.map((td) => (
+                          { criterion.testDataUsed.map((td) => (
                             <li key={td.id || td.key}>
                               Data:
                               {' '}
@@ -315,11 +315,11 @@ function ChplCriteriaDetailsView(props) {
                           ))}
                         </ul>
                       )}
-                    { criteria.testDataUsed.length === 0 && 'None' }
+                    { criterion.testDataUsed.length === 0 && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.apiDocumentation !== null
+            { criterion.apiDocumentation !== null
               && (
                 <TableRow key="apiDocumentation">
                   <TableCell component="th" scope="row">
@@ -329,13 +329,13 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.apiDocumentation
-                      && <ChplLink href={criteria.apiDocumentation} text={criteria.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criteria.apiDocumentation }} />}
-                    { !criteria.apiDocumentation && 'None' }
+                    { criterion.apiDocumentation
+                      && <ChplLink href={criterion.apiDocumentation} text={criterion.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criterion.apiDocumentation }} />}
+                    { !criterion.apiDocumentation && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.exportDocumentation !== null
+            { criterion.exportDocumentation !== null
               && (
                 <TableRow key="exportDocumentation">
                   <TableCell component="th" scope="row">
@@ -345,13 +345,13 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.exportDocumentation
-                      && <ChplLink href={criteria.exportDocumentation} text={criteria.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criteria.exportDocumentation }} />}
-                    { !criteria.exportDocumentation && 'None' }
+                    { criterion.exportDocumentation
+                      && <ChplLink href={criterion.exportDocumentation} text={criterion.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criterion.exportDocumentation }} />}
+                    { !criterion.exportDocumentation && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.attestationAnswer !== null
+            { criterion.attestationAnswer !== null
               && (
                 <TableRow key="attestationAnswer">
                   <TableCell component="th" scope="row">
@@ -360,10 +360,10 @@ function ChplCriteriaDetailsView(props) {
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right">{criteria.attestationAnswer ? 'Yes' : 'No'}</TableCell>
+                  <TableCell align="right">{criterion.attestationAnswer ? 'Yes' : 'No'}</TableCell>
                 </TableRow>
               )}
-            { criteria.documentationUrl !== null
+            { criterion.documentationUrl !== null
               && (
                 <TableRow key="documentationUrl">
                   <TableCell component="th" scope="row">
@@ -373,13 +373,13 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.documentationUrl
-                      && <ChplLink href={criteria.documentationUrl} text={criteria.documentationUrl} analytics={{ event: 'Documentation', category: 'Download Details', label: criteria.documentationUrl }} />}
-                    { !criteria.documentationUrl && 'None' }
+                    { criterion.documentationUrl
+                      && <ChplLink href={criterion.documentationUrl} text={criterion.documentationUrl} analytics={{ event: 'Documentation', category: 'Download Details', label: criterion.documentationUrl }} />}
+                    { !criterion.documentationUrl && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.useCases !== null && criteria.attestationAnswer
+            { criterion.useCases !== null && criterion.attestationAnswer
               && (
                 <TableRow key="useCases">
                   <TableCell component="th" scope="row">
@@ -389,13 +389,13 @@ function ChplCriteriaDetailsView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell align="right">
-                    { criteria.useCases
-                      && <ChplLink href={criteria.useCases} text={criteria.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criteria.useCases }} />}
-                    { !criteria.useCases && 'None' }
+                    { criterion.useCases
+                      && <ChplLink href={criterion.useCases} text={criterion.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criterion.useCases }} />}
+                    { !criterion.useCases && 'None' }
                   </TableCell>
                 </TableRow>
               )}
-            { criteria.privacySecurityFramework !== null
+            { criterion.privacySecurityFramework !== null
               && (
                 <TableRow key="privacySecurityFramework">
                   <TableCell component="th" scope="row">
@@ -404,10 +404,10 @@ function ChplCriteriaDetailsView(props) {
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right">{criteria.privacySecurityFramework}</TableCell>
+                  <TableCell align="right">{criterion.privacySecurityFramework}</TableCell>
                 </TableRow>
               )}
-            { criteria.sed !== null
+            { criterion.sed !== null
               && (
                 <TableRow key="sed">
                   <TableCell component="th" scope="row">
@@ -416,7 +416,7 @@ function ChplCriteriaDetailsView(props) {
                       <InfoOutlinedIcon className={classes.infoIcon} />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell align="right">{criteria.sed ? 'True' : 'False'}</TableCell>
+                  <TableCell align="right">{criterion.sed ? 'True' : 'False'}</TableCell>
                 </TableRow>
               )}
           </TableBody>
@@ -426,10 +426,10 @@ function ChplCriteriaDetailsView(props) {
   );
 }
 
-export default ChplCriteriaDetailsView;
+export default ChplCriterionDetailsView;
 
-ChplCriteriaDetailsView.propTypes = {
-  criteria: object.isRequired,
+ChplCriterionDetailsView.propTypes = {
+  criterion: object.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
 };

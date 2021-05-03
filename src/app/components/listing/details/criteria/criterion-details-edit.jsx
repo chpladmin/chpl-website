@@ -48,25 +48,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplCriteriaDetailsEdit(props) {
-  const [criteria, setCriteria] = useState(props.criteria);
+function ChplCriterionDetailsEdit(props) {
+  const [criterion, setCriterion] = useState(props.criterion);
   const [resources] = useState(props.resources);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
   const formik = useFormik({
     initialValues: {
-      success: criteria.success || false,
-      apiDocumentation: criteria.apiDocumentation,
-      attestationAnswer: criteria.attestationAnswer,
-      documentationUrl: criteria.documentationUrl,
-      exportDocumentation: criteria.exportDocumentation,
-      g1Success: criteria.g1Success,
-      g2Success: criteria.g2Success,
-      gap: criteria.gap,
-      privacySecurityFramework: criteria.privacySecurityFramework,
-      sed: criteria.sed,
-      useCases: criteria.useCases,
+      success: criterion.success || false,
+      apiDocumentation: criterion.apiDocumentation,
+      attestationAnswer: criterion.attestationAnswer,
+      documentationUrl: criterion.documentationUrl,
+      exportDocumentation: criterion.exportDocumentation,
+      g1Success: criterion.g1Success,
+      g2Success: criterion.g2Success,
+      gap: criterion.gap,
+      privacySecurityFramework: criterion.privacySecurityFramework,
+      sed: criterion.sed,
+      useCases: criterion.useCases,
     },
     validationSchema,
     validateOnChange: false,
@@ -80,7 +80,7 @@ function ChplCriteriaDetailsEdit(props) {
 
   const save = () => {
     const toSave = {
-      ...criteria,
+      ...criterion,
       success: formik.values.success,
       apiDocumentation: formik.values.apiDocumentation,
       attestationAnswer: formik.values.attestationAnswer,
@@ -98,10 +98,10 @@ function ChplCriteriaDetailsEdit(props) {
 
   const handleDetailChange = (change) => {
     const updated = {
-      ...criteria,
+      ...criterion,
     };
     updated[change.key] = change.data;
-    setCriteria(updated);
+    setCriterion(updated);
     props.onChange();
   };
 
@@ -121,7 +121,7 @@ function ChplCriteriaDetailsEdit(props) {
                     onChange={onChange}
                   />
                 )}
-                label={`${criteria.criterion.number}: ${criteria.criterion.title}`}
+                label={`${criterion.criterion.number}: ${criterion.criterion.title}`}
               />
             </Grid>
             <Collapse in={formik.values.success}>
@@ -131,7 +131,7 @@ function ChplCriteriaDetailsEdit(props) {
               <Grid item xs={12}>
                 <Typography variant="subtitle1">Relied Upon Software</Typography>
                 <ChplReliedUponSoftwareEdit
-                  software={criteria.additionalSoftware}
+                  software={criterion.additionalSoftware}
                   onChange={handleDetailChange}
                 />
               </Grid>
@@ -157,7 +157,7 @@ function ChplCriteriaDetailsEdit(props) {
                   </Grid>
                 </>
                 )}
-              { criteria.allowedSvaps?.length > 0
+              { criterion.allowedSvaps?.length > 0
                 && (
                   <>
                     <Grid item xs={12}>
@@ -166,14 +166,14 @@ function ChplCriteriaDetailsEdit(props) {
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Standards Version Advancement Process</Typography>
                       <ChplSvapsEdit
-                        svaps={criteria.svaps}
-                        options={criteria.allowedSvaps}
+                        svaps={criterion.svaps}
+                        options={criterion.allowedSvaps}
                         onChange={handleDetailChange}
                       />
                     </Grid>
                   </>
                 )}
-              { criteria.testStandards
+              { criterion.testStandards
                 && (
                   <>
                     <Grid item xs={12}>
@@ -182,7 +182,7 @@ function ChplCriteriaDetailsEdit(props) {
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Optional Standard</Typography>
                       <ChplOptionalStandardsEdit
-                        optionalStandards={criteria.testStandards}
+                        optionalStandards={criterion.testStandards}
                         options={resources.testStandards.data}
                         onChange={handleDetailChange}
                       />
@@ -233,7 +233,7 @@ function ChplCriteriaDetailsEdit(props) {
                   </Grid>
                 </>
                 )}
-              { criteria.testFunctionality
+              { criterion.testFunctionality
                 && (
                   <>
                     <Grid item xs={12}>
@@ -242,14 +242,14 @@ function ChplCriteriaDetailsEdit(props) {
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Functionality Tested</Typography>
                       <ChplTestFunctionalityEdit
-                        testFunctionality={criteria.testFunctionality}
-                        options={criteria.allowedTestFunctionalities}
+                        testFunctionality={criterion.testFunctionality}
+                        options={criterion.allowedTestFunctionalities}
                         onChange={handleDetailChange}
                       />
                     </Grid>
                   </>
                 )}
-              { criteria.testProcedures
+              { criterion.testProcedures
                 && (
                   <>
                     <Grid item xs={12}>
@@ -258,14 +258,14 @@ function ChplCriteriaDetailsEdit(props) {
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Test Procedure</Typography>
                       <ChplTestProceduresEdit
-                        testProcedures={criteria.testProcedures}
+                        testProcedures={criterion.testProcedures}
                         options={resources.testProcedures.data}
                         onChange={handleDetailChange}
                       />
                     </Grid>
                   </>
                 )}
-              { criteria.testToolsUsed
+              { criterion.testToolsUsed
                 && (
                   <>
                     <Grid item xs={12}>
@@ -274,14 +274,14 @@ function ChplCriteriaDetailsEdit(props) {
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Test Tools Used</Typography>
                       <ChplTestToolsEdit
-                        testTools={criteria.testToolsUsed}
+                        testTools={criterion.testToolsUsed}
                         options={resources.testTools.data}
                         onChange={handleDetailChange}
                       />
                     </Grid>
                   </>
                 )}
-              { criteria.testDataUsed
+              { criterion.testDataUsed
                 && (
                   <>
                     <Grid item xs={12}>
@@ -290,7 +290,7 @@ function ChplCriteriaDetailsEdit(props) {
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">Test Data Used</Typography>
                       <ChplTestDataEdit
-                        testData={criteria.testDataUsed}
+                        testData={criterion.testDataUsed}
                         options={resources.testData.data}
                         onChange={handleDetailChange}
                       />
@@ -483,10 +483,10 @@ function ChplCriteriaDetailsEdit(props) {
   );
 }
 
-export default ChplCriteriaDetailsEdit;
+export default ChplCriterionDetailsEdit;
 
-ChplCriteriaDetailsEdit.propTypes = {
-  criteria: object.isRequired,
+ChplCriterionDetailsEdit.propTypes = {
+  criterion: object.isRequired,
   resources: object.isRequired,
   onCancel: func.isRequired,
   onChange: func.isRequired,

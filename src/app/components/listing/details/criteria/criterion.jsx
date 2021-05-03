@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../../../themes/theme';
-import { getAngularService, ChplCriteriaDetailsEdit, ChplCriteriaDetailsView } from '.';
+import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -46,9 +46,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplCriteria(props) {
+function ChplCriterion(props) {
   const [canEdit] = useState(props.canEdit);
-  const [criteria, setCriteria] = useState(props.certificationResult);
+  const [criterion, setCriterion] = useState(props.certificationResult);
   const [editing, setEditing] = useState(false);
   const [pending, setPending] = useState(false);
   const [staged, setStaged] = useState(false);
@@ -59,7 +59,7 @@ function ChplCriteria(props) {
 
   const handleAccordionChange = (event, isExpanded) => {
     if (!isExpanded) {
-      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: criteria.criterion.number });
+      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: criterion.criterion.number });
     }
   };
 
@@ -72,26 +72,26 @@ function ChplCriteria(props) {
     setPending(true);
   };
 
-  const handleSave = (criteria) => {
+  const handleSave = (criterion) => {
     if (pending) {
       setPending(false);
       setStaged(true);
     }
     setEditing(false);
-    setCriteria(criteria);
+    setCriterion(criterion);
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Accordion disabled={!criteria.success && !canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
+      <Accordion disabled={!criterion.success && !canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
         <AccordionSummary
           className={classes.NestedAccordionLevelOneSummary}
           expandIcon={<ExpandMoreIcon />}
-          id={`${criteria.id}-header`}
+          id={`${criterion.id}-header`}
         >
           <Grid container spacing={4}>
             <Grid item xs={1}>
-              { criteria.success
+              { criterion.success
                 && (
                   <Typography variant="subtitle1">
                     <DoneAllIcon size="small" />
@@ -100,13 +100,13 @@ function ChplCriteria(props) {
             </Grid>
             <Grid item xs={3}>
               <Typography variant="subtitle1">
-                { criteria.criterion.removed
+                { criterion.criterion.removed
                   && (
                     <>
                       Removed |
                     </>
                   )}
-                {criteria.criterion.number}
+                {criterion.criterion.number}
               </Typography>
               { pending
               && (
@@ -137,7 +137,7 @@ function ChplCriteria(props) {
             </Grid>
             <Grid item xs={8}>
               <Typography>
-                {criteria.criterion.title}
+                {criterion.criterion.title}
               </Typography>
             </Grid>
           </Grid>
@@ -147,8 +147,8 @@ function ChplCriteria(props) {
             { editing
               ? (
                 <>
-                  <ChplCriteriaDetailsEdit
-                    criteria={criteria}
+                  <ChplCriterionDetailsEdit
+                    criterion={criterion}
                     resources={props.resources}
                     onCancel={handleCancel}
                     onChange={handleChange}
@@ -169,8 +169,8 @@ function ChplCriteria(props) {
                         </Button>
                       </Grid>
                     )}
-                  <ChplCriteriaDetailsView
-                    criteria={criteria}
+                  <ChplCriterionDetailsView
+                    criterion={criterion}
                     accessibilityStandards={accessibilityStandards}
                     qmsStandards={qmsStandards}
                   />
@@ -183,9 +183,9 @@ function ChplCriteria(props) {
   );
 }
 
-export default ChplCriteria;
+export default ChplCriterion;
 
-ChplCriteria.propTypes = {
+ChplCriterion.propTypes = {
   canEdit: bool,
   certificationResult: object.isRequired,
   resources: object.isRequired,
@@ -193,6 +193,6 @@ ChplCriteria.propTypes = {
   qmsStandards: arrayOf(qmsStandard).isRequired,
 };
 
-ChplCriteria.defaultProps = {
+ChplCriterion.defaultProps = {
   canEdit: false,
 };
