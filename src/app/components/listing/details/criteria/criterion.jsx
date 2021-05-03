@@ -45,6 +45,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplCriterion(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [criterion, setCriterion] = useState(props.certificationResult);
   const [editing, setEditing] = useState(false);
   const [pending, setPending] = useState(false);
@@ -53,6 +54,7 @@ function ChplCriterion(props) {
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
+  /* eslint-enable react/destructuring-assignment */
 
   const handleAccordionChange = (event, isExpanded) => {
     if (!isExpanded) {

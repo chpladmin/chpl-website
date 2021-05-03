@@ -51,7 +51,9 @@ function setUpCriteria(criteria, sort) {
 function ChplCriteria(props) {
   //const $analytics = getAngularService('$analytics');
   const sortCerts = getAngularService('utilService').sortCertActual;
+  /* eslint-disable react/destructuring-assignment */
   const [criteria/*, setCriteria*/] = useState(setUpCriteria(props.certificationResults, sortCerts));
+  /* eslint-enable react/destructuring-assignment */
   //const [editing, setEditing] = useState(false);
   //const [pending, setPending] = useState(false);
   //const [staged, setStaged] = useState(false);
