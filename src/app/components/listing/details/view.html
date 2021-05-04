@@ -118,19 +118,16 @@
         <div class="panel panel-ai" ng-if="!$ctrl.hideDirectReview">
           <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showSubPanel('directReviews')" aria-expanded="{{ $ctrl.subPanelShown === 'directReviews' }}">
             <div class="listing-details__element-header-title">Direct Review Activities</div>
-            <div><span ng-if="$ctrl.drStatus === 'success'">({{ $ctrl.directReviews && $ctrl.directReviews.length ? $ctrl.directReviews.length : 0 }} found)</span><span ng-if="$ctrl.drStatus === 'error'" class="listing-details__direct-review-error badge badge-error">error</span></div>
+            <div><span ng-if="$ctrl.listing.directReviewsAvailable">({{ $ctrl.listing.directReviews && $ctrl.listing.directReviews.length ? $ctrl.listing.directReviews.length : 0 }} found)</span><span ng-if="!$ctrl.listing.directReviewsAvailable" class="listing-details__direct-review-error badge badge-error">error</span></div>
             <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'directReviews' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
           </div>
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'directReviews'" id="panel-direct-reviews-activities">
-            <span ng-if="$ctrl.drStatus === 'success'">
+            <span ng-if="$ctrl.listing.directReviewsAvailable">
               <p>Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing</p>
-              <chpl-direct-reviews direct-reviews="$ctrl.directReviews"></chpl-direct-reviews>
+              <chpl-direct-reviews direct-reviews="$ctrl.listing.directReviews"></chpl-direct-reviews>
             </span>
-            <span ng-if="$ctrl.drStatus === 'error'">
+            <span ng-if="!$ctrl.listing.directReviewsAvailable">
               <p>Direct Review information is not currently available, please check back later</p>
-            </span>
-            <span ng-if="$ctrl.drStatus === 'pending'">
-              <p><i class="fa fa-spin fa-spinner"></i> Direct Review information is loading</p>
             </span>
           </div>
         </div>

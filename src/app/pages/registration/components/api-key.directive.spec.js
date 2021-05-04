@@ -86,38 +86,6 @@
         expect($log.debug.logs.length).toBeGreaterThan(0);
       });
 
-      it('should register a user if they have valid components', function () {
-        ctrl.user = mockCommonService.fakeUser;
-        spyOn(networkService, 'registerApi').and.callThrough();
-        ctrl.register();
-        scope.$digest();
-        expect(ctrl.key).toBe(mockCommonService.registered.keyRegistered);
-        expect(ctrl.hasKey).toBeTruthy();
-      });
-
-      it('should log an error if registerApi fails', function () {
-        var deferred = $q.defer();
-        ctrl.user = mockCommonService.fakeUser;
-        spyOn(networkService, 'registerApi').and.returnValue(deferred.promise);
-        ctrl.register();
-        deferred.reject('expected error');
-        scope.$digest();
-        expect($log.debug.logs.length).toBeGreaterThan(0);
-      });
-
-      it('should not call registerApi if name or email is blank', function () {
-        ctrl.user = mockCommonService.fakeUser;
-        delete (ctrl.user.name);
-        spyOn(networkService, 'registerApi').and.callThrough();
-        ctrl.register();
-        scope.$digest();
-        ctrl.user.name = 'temp';
-        delete (ctrl.user.email);
-        ctrl.register();
-        scope.$digest();
-        expect(networkService.registerApi.calls.any()).toBeFalsy();
-      });
-
       it('should revoke a user with valid components and refresh', function () {
         spyOn(networkService, 'revokeApi').and.callThrough();
         spyOn(networkService, 'getApiUsers').and.returnValue($q.when([{}]));

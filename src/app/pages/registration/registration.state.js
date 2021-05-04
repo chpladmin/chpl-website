@@ -31,6 +31,20 @@ let states = [{
     },
   },
   data: { title: 'CHPL Registration' },
+},{
+  name: 'registration.api-key',
+  url: '/api-key/{hash}',
+  component: 'chplConfirmApiKeyPage',
+  params: {
+    hash: {squash: true, value: null},
+  },
+  resolve: {
+    hash: $transition$ => {
+      'ngInject';
+      return $transition$.params().hash;
+    },
+  },
+  data: { title: 'CHPL Registration' },
 }];
 
 function registrationStatesConfig ($stateProvider) {

@@ -78,6 +78,20 @@ let states = {
       data: { title: 'CHPL Administration - Change Requests' },
     },
   ],
+  'enhanced-upload': [
+    {
+      name: 'administration.confirm.listings.listing',
+      url: '/{id}/confirm',
+      component: 'chplConfirmListing',
+      resolve: {
+        listing: (networkService, $transition$) => {
+          'ngInject';
+          return networkService.getPendingListingByIdBeta($transition$.params().id);
+        },
+      },
+      data: { title: 'CHPL Administration - Confirm Listing' },
+    },
+  ],
   'base': [
     {
       name: 'authorizePasswordReset',
@@ -156,13 +170,7 @@ let states = {
     },{
       name: 'administration.confirm.listings.listing',
       url: '/{id}/confirm',
-      component: 'chplConfirmListing',
-      resolve: {
-        listing: (networkService, $transition$) => {
-          'ngInject';
-          return networkService.getPendingListingByIdBeta($transition$.params().id);
-        },
-      },
+      template: '<div><i class="fa fa-spinner fa-spin"></i/>processing</div>',
       data: { title: 'CHPL Administration - Confirm Listing' },
     },{
       name: 'administration.fuzzy-matching',

@@ -24,6 +24,7 @@
       templateUrl: 'chpl.collections/collection.html',
       transclude: {
         aiBodyText: 'aiBodyText',
+        aiErrorText: '?aiErrorText',
         aiFooterText: '?aiFooterText',
         aiTitle: 'aiTitle',
       },
@@ -35,6 +36,7 @@
     var vm = this;
 
     vm.changeItemsPerPage = changeItemsPerPage;
+    vm.hasError = hasError;
     vm.hasResults = hasResults;
     vm.isCategoryChanged = isCategoryChanged;
     vm.isFilterActive = isFilterActive;
@@ -69,6 +71,10 @@
       $analytics.eventTrack('Change Results Per Page', { category: vm.analyticsCategory, label: vm.filterItems.pageSize });
     }
 
+    function hasError () {
+      return vm.hasResults() && vm.collectionKey === 'correctiveAction' && !vm.directReviewsAvailable;
+    }
+
     function hasResults () {
       return angular.isDefined(vm.allCps);
     }
@@ -96,10 +102,14 @@
         ret = col.nullDisplay;
       }
       if (col.transformFn) {
-        ret = col.transformFn(ret);
+        ret = col.transformFn(ret, cp, vm.analyticsCategory);
       }
       if (col.isDate) {
         ret = $filter('date')(ret,'mediumDate','UTC');
+      }
+      if (col.isDeveloperLink) {
+        let link = '<a ui-sref="organizations.developers.developer({developerId: ' + cp.developerId + '})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: \'' + vm.analyticsCategory + '\' }">' + ret + '</a>';
+        ret = link;
       }
       if (col.isLink) {
         let link = '<a ui-sref="listing({id: ' + cp.id;
@@ -118,6 +128,7 @@
         vm.allCps = collectionsService.translate(vm.collectionKey, response);
         vm.analyticsCategory = collectionsService.getAnalyticsCategory(vm.collectionKey);
         vm.isPreLoading = false;
+        vm.directReviewsAvailable = response.directReviewsAvailable;
       }, function (error) {
         $log.debug(error);
       });

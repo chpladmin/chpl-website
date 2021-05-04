@@ -1,5 +1,41 @@
 # Release Notes
 
+## Version 11.12.0
+_4 May 2021_
+
+### Features
+* API Key registration requires confirmation of email
+* Indicate "Processing" of pending Listings
+
+### Bug Fixes
+* Display SED changes in Listing Reports correctly
+* Disable double-click on Listing confirmation
+
+---
+
+## Version 11.11.0
+_19 April 2021_
+
+### Features
+* Show Listing Surveillance data on Developer pages
+* Do not allow users to create new test standard during edit
+
+### Flagged Features
+* Use updated Developer inspection screen during upload/confirm workflow
+
+---
+
+## Version 11.10.0
+_5 April 2021_
+
+### Features
+* Allow download of Complaint data
+* Add "Informed ONC per 170.523" option to Complaints
+* Display Direct Review data on Corrective Action collection page
+* Allow splitting of Version
+
+---
+
 ## Version 11.9.0
 _22 March 2021_
 

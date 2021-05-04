@@ -15,8 +15,7 @@
           <button class="btn btn-secondary" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i> Listing History</button>
         </div>
         <div ng-if="$ctrl.canEdit()">
-          <a feature-flag="listing-edit" feature-flag-hide ng-href="#/admin/dpManagement/manage/{{ $ctrl.listing.id}}"><i class="fa fa-pencil-square-o"></i> Edit</a>
-          <button feature-flag="listing-edit" class="btn btn-default" ui-sref=".edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+          <button class="btn btn-default" ui-sref=".edit"><i class="fa fa-pencil-square-o"></i> Edit</button>
         </div>
         <div>
           <ai-cms-widget-button
@@ -157,8 +156,7 @@
           </div>
           <div class="panel-body">
             <chpl-listing-details-view initial-panel="{{ $ctrl.panel }}"
-                                       listing="$ctrl.listing"
-                                       direct-reviews="$ctrl.directReviews">
+                                       listing="$ctrl.listing">
             </chpl-listing-details-view>
           </div>
         </div>

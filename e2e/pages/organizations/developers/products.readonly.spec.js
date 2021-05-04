@@ -21,13 +21,14 @@ describe('the Product part of the Developers page', () => {
   });
 
   describe('when on the "GE Healthcare" Developer page, on the "Centricity Perinatal" Product', () => {
-    let developer = 'GE Healthcare';
-    let productName = 'Centricity Perinatal';
+    const developer = 'GE Healthcare';
+    const productName = 'Centricity Perinatal';
     let product;
 
     beforeEach(() => {
       page.selectDeveloper(developer);
       page.getDeveloperPageTitle(developer).waitForDisplayed();
+      page.selectAllCertificationStatus();
       product = page.getProduct(productName);
       product.scrollIntoView({block: 'center', inline: 'center'});
       page.selectProduct(product);
@@ -38,8 +39,8 @@ describe('the Product part of the Developers page', () => {
       expect(contact.get(product)).toHaveTextContaining('Tamara Grassle');
     });
 
-    it('should have ACB name', () => {
-      expect(page.getAcbName(product).getText()).toBe('UL LLC');
+    it('should have surveillance data', () => {
+      expect(page.getSurveillanceData(product).getText()).toBe('0 open / 1 surveillance');
     });
 
     it('should have listings count', () => {
@@ -48,14 +49,15 @@ describe('the Product part of the Developers page', () => {
   });
 
   describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
-    let developer = 'Procentive';
-    let productName = 'Procentive';
-    let productId = '1987';
+    const developer = 'Procentive';
+    const productName = 'Procentive';
+    const productId = '1987';
     let product;
 
     beforeEach(() => {
       page.selectDeveloper(developer);
       page.getDeveloperPageTitle(developer).waitForDisplayed();
+      page.selectAllCertificationStatus();
       product = page.getProduct(productName);
       product.scrollIntoView({block: 'center', inline: 'center'});
       page.selectProduct(product);
@@ -71,38 +73,35 @@ describe('the Product part of the Developers page', () => {
     });
   });
 
-  describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
-    let developer = 'Procentive';
-    let productName = 'Procentive';
-    let productId = '1987';
-    let product;
-
+  describe('when logged in as an ONC', () => {
     beforeEach(() => {
-      page.selectDeveloper(developer);
-      page.getDeveloperPageTitle(developer).waitForDisplayed();
-      product = page.getProduct(productName);
-      product.scrollIntoView({block: 'center', inline: 'center'});
-      page.selectProduct(product);
-      page.getProductInfo(product).waitForDisplayed({timeout: 55000});
-    });
-
-    it('should have Versions', () => {
-      expect(page.getActiveVersion(product, productId)).toHaveTextContaining('2011');
-    });
-
-    it('should not have an edit button', () => {
-      expect(page.getEditButton(product)).not.toExist();
-    });
-  });
-
-  describe('when logged in as an Admin', () => {
-    beforeEach(() => {
-      login.logIn('admin');
+      login.logIn('onc');
       login.logoutButton.waitForDisplayed();
     });
 
     afterEach(() => {
       login.logOut();
+    });
+
+    describe('when on the "ADVault, Inc." Developer page, on the "MyDirectives" Product', () => {
+      const developer = 'ADVault, Inc.';
+      const productName = 'MyDirectives';
+      let product;
+
+      beforeEach(() => {
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
+        product = page.getProduct(productName);
+        product.scrollIntoView({block: 'center', inline: 'center'});
+        page.selectProduct(product);
+        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+      });
+
+      it('should not have merge product button as this developer has only one product', () => {
+        expect(page.getMergeButton(product)).not.toExist();
+      });
+
     });
 
     describe('when on the "Medical Information Technology, Inc. (MEDITECH)" Developer page', () => {
@@ -112,6 +111,7 @@ describe('the Product part of the Developers page', () => {
       beforeEach(() => {
         page.selectDeveloper(developer);
         page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
       });
 
       describe('when on the "MEDITECH Expanse 2.2 Oncology" product', () => {
@@ -124,7 +124,7 @@ describe('the Product part of the Developers page', () => {
           page.getProductInfo(product).waitForDisplayed({timeout: 55000});
         });
 
-        it('should not have a product split', () => {
+        it('should not have a split button for the porduct with only one version)', () => {
           expect(page.getSplitButton(product)).not.toExist();
         });
       });
@@ -144,12 +144,14 @@ describe('the Product part of the Developers page', () => {
         });
 
         it('should allow cancellation of a split', () => {
-          let productCount = page.products.length;
+          const productCount = page.products.length;
+          product.scrollIntoView({block: 'center', inline: 'center'});
           page.splitProduct(product);
           page.editProductName.clearValue();
           page.editProductName.setValue(Math.random());
           actionBar.cancel();
           actionConfirmation.yes.click();
+          page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           expect(page.getProduct(productName)).toExist();
           expect(page.products.length).toBe(productCount);
@@ -158,3 +160,4 @@ describe('the Product part of the Developers page', () => {
     });
   });
 });
+

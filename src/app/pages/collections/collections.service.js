@@ -102,6 +102,7 @@
           acb: [],
           decertificationDate: array[i].decertificationDate,
           developer: array[i].developerName,
+          developerId: array[i].developerId,
           mainSearch: array[i].developerName,
         };
         for (var j = 0; j < array[i].acbNames.length; j++) {
@@ -113,31 +114,27 @@
     }
 
     /*
-     * Listings are part of this collection if:
-     * - Surveillance Count > 0 and
-     * - at least one of:
-     *   - Open NC Count > 0
-     *   - Closed NC Count > 0
+     * Listings are part of this collection if they have at least one of:
+     *  - Open Surveillance NC Count > 0
+     *  - Closed Surveillance NC Count > 0
+     *  - Open Direct Review NC Count > 0
+     *  - Closed Direct Review NC Count > 0
      */
     function correctiveActions (array) {
-      var ret = [];
-      var cp;
-      for (var i = 0; i < array.length; i ++) {
-        cp = array[i];
-
-        if (cp.surveillanceCount > 0 && (cp.openSurveillanceNonConformityCount > 0 || cp.closedSurveillanceNonConformityCount > 0)) {
-
-          cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
-          cp.nonconformities = angular.toJson({
-            openSurveillanceNonConformityCount: cp.openSurveillanceNonConformityCount,
-            closedSurveillanceNonConformityCount: cp.closedSurveillanceNonConformityCount,
+      return array
+        .filter(l => l.openSurveillanceNonConformityCount > 0
+                    || l.closedSurveillanceNonConformityCount > 0
+                    || l.openDirectReviewNonConformityCount > 0
+                    || l.closedDirectReviewNonConformityCount > 0)
+        .map(l => {
+          l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
+          l.edition = l.edition + (l.curesUpdate ? ' Cures Update' : '');
+          l.nonconformities = angular.toJson({
+            openNonConformityCount: l.openSurveillanceNonConformityCount + l.openDirectReviewNonConformityCount,
+            closedNonConformityCount: l.closedSurveillanceNonConformityCount + l.closedDirectReviewNonConformityCount,
           });
-
-          ret.push(cp);
-        }
-      }
-      return ret;
+          return l;
+        });
     }
 
     /*

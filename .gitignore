@@ -15,3 +15,5 @@ reset-qa.sh
 reset-local.sh
 update-pr.sh
 e2e/config/credentials.js
+yarn-error.log
+

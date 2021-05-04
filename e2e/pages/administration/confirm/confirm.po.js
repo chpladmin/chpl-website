@@ -3,12 +3,13 @@ const confirmElements = {
   inspectNext: '#inspect-next',
   inspectConfirm: '#inspect-confirm',
   yesConfirmation: '//button[text()="Yes"]',
-  rejectButton: '//table[@id="pending-listings-table"]/tfoot/tr/th/button',
+  rejectButton: '#reject-selected-pending-listings',
   warningCheckbox: '#acknowledge-warnings',
   confirmButton: '#inspect-confirm',
   toastContainertitle: '.ng-binding.toast-title',
   rejectButtonOnInspectListing: '#inspect-reject',
   errorMessage: '.bg-danger',
+  errorOnInspect: '.action-bar__error-messages > li',
 };
 
 class ConfirmPage {
@@ -16,6 +17,10 @@ class ConfirmPage {
 
   get inspectNextButton () {
     return $(confirmElements.inspectNext);
+  }
+
+  get inspectLabel () {
+    return $('#inspect-label');
   }
 
   get inspectConfirmButton () {
@@ -50,12 +55,16 @@ class ConfirmPage {
     return $(confirmElements.errorMessage);
   }
 
+  get errorOnInspect () {
+    return $$(confirmElements.errorOnInspect);
+  }
+
   rejectCheckbox (chplId) {
     return $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input');
   }
 
   gotoConfirmListingPage (inspectListingId ) {
-    $('//button[@id="pending-listing-inspect-' + inspectListingId + '"]').scrollAndClick();
+    $('//button[@id="process-pending-listing-' + inspectListingId + '"]').scrollAndClick();
     this.inspectNextButton.waitAndClick();
     this.inspectNextButton.waitAndClick();
     this.inspectNextButton.waitAndClick();
@@ -67,19 +76,27 @@ class ConfirmPage {
     }
   }
 
-  findListingtoReject (chplId) {
+  gotoPendingListingPage (pendingListingId ) {
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: 35000 });
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
+  }
+
+  rejectListingCheckbox (chplId) {
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
+  }
+
+  findListingToReject (chplId) {
     return $('//td[text()="' + chplId + '"]');
   }
 
   rejectListing (chplId) {
-    $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').scrollAndClick();
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
     } else {
-      $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input').waitAndClick();
+      $('//input[@id="reject-pending-listing-' + chplId + '"]').waitAndClick();
       this.rejectButton.waitAndClick();
     }
-    this.yesConfirmation.waitAndClick();
   }
 
   confirmListing () {
@@ -94,6 +111,11 @@ class ConfirmPage {
       }
     );
   }
+
+  waitForBarMessages () {
+    $('.action-bar__messages').waitForDisplayed();
+  }
+
 }
 
 export default ConfirmPage;

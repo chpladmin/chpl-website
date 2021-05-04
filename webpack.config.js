@@ -18,7 +18,6 @@ module.exports = env => {
         mode: env.NODE_ENV,
         entry: {
             app: path.resolve(__dirname, './src/app/index.js'),
-            admin: path.resolve(__dirname, './src/app/admin/index.js'),
             administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
             charts: path.resolve(__dirname, './src/app/pages/charts/index.js'),
             collections: path.resolve(__dirname, './src/app/pages/collections/index.js'),
@@ -38,6 +37,7 @@ module.exports = env => {
                 exclude: [
                         /specs\.js/,
                         /\.spec\.js/,
+                        /\.test\.jsx/,
                         /node_modules/,
                         /lib/,
                         /\.mock\.js/,
@@ -59,7 +59,7 @@ module.exports = env => {
                         presets:['@babel/preset-env'],
                         presets:['@babel/preset-react'],
                     },
-                },{
+                },/*{
                     loader: 'eslint-loader',
                     options: {
                         formatter: require('eslint-formatter-friendly'),
@@ -72,7 +72,7 @@ module.exports = env => {
                             formatter: require('eslint/lib/formatters/html'),
                         },
                     }
-                }],
+                }*/],
             },{
                 test: /\.html$/,
                 exclude: /node_modules/,
