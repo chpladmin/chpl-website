@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  TextField,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import theme from '../../themes/theme';
-import { getAngularService } from './';
+import { getAngularService } from '.';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -38,7 +40,7 @@ const validationSchema = yup.object({
     .required('Accurate as of date is required'),
 });
 
-function ChplUploadMeaningfulUse () {
+function ChplUploadMeaningfulUse() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
@@ -47,47 +49,37 @@ function ChplUploadMeaningfulUse () {
   const $state = getAngularService('$state');
   const toaster = getAngularService('toaster');
   const classes = useStyles();
-  const formik = useFormik({
-    validationSchema,
-    initialValues: {
-      accurateAsOf: new Date(),
-    },
-    validateOnChange: false,
-    validateOnBlur: true,
-    onSubmit: () => {
-      uploadFile()
-    },
-  });
+  let formik;
 
   const clearFile = () => {
     setFile(undefined);
     ele.value = null;
   };
 
-  const onFileChange = event => {
+  const onFileChange = (event) => {
     setFile(event.target.files[0]);
     setEle(event.target);
   };
 
   const uploadFile = () => {
-    let item = {
-      url: API + '/meaningful_use/upload',
+    const item = {
+      url: `${API}/meaningful_use/upload`,
       headers: {
-        Authorization: 'Bearer ' + authService.getToken(),
+        Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
       },
       data: {
-        file: file,
+        file,
       },
     };
     if (typeof formik.values.accurateAsOf === 'object') {
-      item.url += '?accurate_as_of=' + formik.values.accurateAsOf.getTime();
+      item.url += `?accurate_as_of=${formik.values.accurateAsOf.getTime()}`;
     } else {
-      item.url += '?accurate_as_of=' + new Date(formik.values.accurateAsOf).getTime();
+      item.url += `?accurate_as_of=${new Date(formik.values.accurateAsOf).getTime()}`;
     }
     Upload.upload(item)
-      .then(response => {
-        let message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
+      .then((response) => {
+        const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
         toaster.pop({
           type: 'success',
           title: 'Success',
@@ -95,10 +87,10 @@ function ChplUploadMeaningfulUse () {
         });
         $state.go('administration.jobs.scheduled');
       })
-      .catch(error => {
+      .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
         if (error?.data?.errorMessages) {
-          message += ' ' + error.data.errorMessages.join(', ');
+          message += ` ${error.data.errorMessages.join(', ')}`;
         }
         toaster.pop({
           type: 'error',
@@ -112,51 +104,82 @@ function ChplUploadMeaningfulUse () {
       });
   };
 
+  formik = useFormik({
+    validationSchema,
+    initialValues: {
+      accurateAsOf: new Date(),
+    },
+    validateOnChange: false,
+    validateOnBlur: true,
+    onSubmit: () => {
+      uploadFile();
+    },
+  });
+
   return (
-    <ThemeProvider theme={ theme }>
+    <ThemeProvider theme={theme}>
       <Card>
-        <CardHeader title="Upload Meaningful Use Users" subtitle="CSV files only"/>
+        <CardHeader title="Upload Meaningful Use Users" subtitle="CSV files only" />
         <CardContent>
-          <div className={ classes.gridStyle }>
-            <Typography variant="body1" className={ classes.firstRow }>
+          <div className={classes.gridStyle}>
+            <Typography variant="body1" className={classes.firstRow}>
               CSV files only
             </Typography>
             <div>
-              <Button color="primary"
-                      variant={ file ? 'outlined' : 'contained' }
-                      component="label">
+              <Button
+                color="primary"
+                variant={file ? 'outlined' : 'contained'}
+                component="label"
+              >
                 Choose file to upload
-                <input type="file"
-                       id="upload-meaningful-use"
-                       onChange={ onFileChange }
-                       style={{ display: 'none' }} />
+                <input
+                  type="file"
+                  id="upload-meaningful-use"
+                  onChange={onFileChange}
+                  style={{ display: 'none' }}
+                />
               </Button>
             </div>
-            { file &&
+            { file
+              && (
               <div>
-                <strong>Filename:</strong> { file.name }
+                <strong>Filename:</strong>
+                {' '}
+                { file.name }
               </div>
-            }
-            { file &&
+              )}
+            { file
+              && (
               <div>
-                <strong>File size:</strong> { file.size }
+                <strong>File size:</strong>
+                {' '}
+                { file.size }
               </div>
-            }
-            { file &&
+              )}
+            { file
+              && (
               <div>
-                <Button color="primary"
-                        variant="contained"
-                        onClick={ formik.handleSubmit }>
-                  <i className="fa fa-cloud-upload"></i> Upload
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={formik.handleSubmit}
+                >
+                  <i className="fa fa-cloud-upload" />
+                  {' '}
+                  Upload
                 </Button>
-                <Button className={ classes.deleteButton }
-                        variant="contained"
-                        onClick={ clearFile }>
-                  <i className="fa fa-trash-o"></i> Remove
+                <Button
+                  className={classes.deleteButton}
+                  variant="contained"
+                  onClick={clearFile}
+                >
+                  <i className="fa fa-trash-o" />
+                  {' '}
+                  Remove
                 </Button>
               </div>
-            }
-            <div className={ classes.firstRow }>
+              )}
+            <div className={classes.firstRow}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -178,6 +201,6 @@ function ChplUploadMeaningfulUse () {
   );
 }
 
-export { ChplUploadMeaningfulUse };
+export default ChplUploadMeaningfulUse;
 
 ChplUploadMeaningfulUse.propTypes = {};

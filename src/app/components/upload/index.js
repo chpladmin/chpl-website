@@ -1,5 +1,5 @@
-import {ChplUploadListings} from './upload-listings.jsx';
-import {ChplUploadMeaningfulUse} from './upload-meaningful-use.jsx';
-import {getAngularService} from '../../services/angular-react-helper.jsx';
+import { ChplUploadListings } from './upload-listings';
+import ChplUploadMeaningfulUse from './upload-meaningful-use';
+import { getAngularService } from '../../services/angular-react-helper';
 
-export {ChplUploadListings, ChplUploadMeaningfulUse, getAngularService};
+export { ChplUploadListings, ChplUploadMeaningfulUse, getAngularService };
