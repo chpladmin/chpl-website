@@ -192,17 +192,6 @@ let states = {
       url: '/jobs',
       template: '<ui-view/>',
     },{
-      name: 'administration.jobs.background',
-      url: '/background',
-      component: 'chplJobsBackgroundPage',
-      resolve: {
-        types: networkService => {
-          'ngInject';
-          return networkService.getJobTypes();
-        },
-      },
-      data: { title: 'CHPL Administration - Jobs - Background' },
-    },{
       name: 'administration.jobs.scheduled',
       url: '/scheduled',
       component: 'chplJobsScheduledPage',

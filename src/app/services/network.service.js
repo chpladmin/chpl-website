@@ -368,14 +368,6 @@ export default class NetworkService {
     return this.apiGET('/statistics/incumbent_developers');
   }
 
-  getJobTypes() {
-    return this.apiGET('/data/job_types');
-  }
-
-  getJobs() {
-    return this.apiGET('/jobs');
-  }
-
   getIcsFamily(id) {
     return this.apiGET(`/certified_products/${id}/ics_relationships`);
   }

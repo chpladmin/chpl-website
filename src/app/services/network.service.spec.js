@@ -935,22 +935,6 @@
         $httpBackend.flush();
       });
 
-      it('should getJobTypes', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/job_types$/).respond(200, { data: 'response' });
-        networkService.getJobTypes().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getJobs', () => {
-        $httpBackend.expectGET(/^\/rest\/jobs$/).respond(200, { data: 'response' });
-        networkService.getJobs().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getIcsFamily', () => {
         $httpBackend.expectGET(/^\/rest\/certified_products\/id\/ics_relationships$/).respond(200, { data: 'response' });
         networkService.getIcsFamily('id').then((response) => {
