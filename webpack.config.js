@@ -47,7 +47,10 @@ module.exports = env => {
                     options: { esModules: true },
                 },
             },{
-                test: /\.(js|jsx)$/,
+              test: /\.(js|jsx)$/,
+              resolve: {
+          extensions: ['.js', '.jsx'],
+        },
                 exclude: [
                         /node_modules/,
                         /\.mock\.js/,
