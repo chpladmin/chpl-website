@@ -64,12 +64,22 @@ function ChplUploadSurveillance() {
     };
     Upload.upload(item)
       .then((response) => {
-        const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
-        });
+        if (response.data.pendingSurveillance) {
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.pendingSurveillance.length} pending surveillance record${response.data.pendingSurveillance.length !== 1 ? 's are' : 'is'} ready for confirmation on the <a href="#/surveillance/confirm">Confirm Surveillance</a> page`;
+          toaster.pop({
+            type: 'success',
+            title: 'Success',
+            body: message,
+            bodyOutputType: 'trustedHtml',
+          });
+        } else {
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
+          toaster.pop({
+            type: 'success',
+            title: 'Success',
+            body: message,
+          });
+        }
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
