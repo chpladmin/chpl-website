@@ -19,19 +19,20 @@ describe('When uploading Muu file as an admin', () => {
   });
 
   afterEach(function () {
+    hooks.waitForSpinnerToDisappear();
+    toast.clearAllToast();
     loginComponent.logOut();
   });
 
   it('can upload valid format of Muu file', () => {
     uploadMuuComponent.uploadMuu('../../../resources/muu/MUU_upload.csv');
-    uploadMuuComponent.date.setValue('05/01/2021');
     browser.waitUntil( () => toast.toastTitle.isDisplayed());
-    assert.equal(toast.toastTitle.getText(), 'Success');
+    expect(toast.toastTitle.getText()).toBe('Success');
   });
 
   it('cant upload invalid format of Muu file', () => {
     uploadMuuComponent.uploadMuu('../../../resources/apiDoc/APIDoc_File.xlsx');
     browser.waitUntil( () => toast.toastTitle.isDisplayed());
-    assert.equal(toast.toastTitle.getText(), 'Error');
+    expect(toast.toastTitle.getText()).toBe('Error');
   });
 });
