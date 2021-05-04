@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 11.12.0
+_4 May 2021_
+
+### Features
+* API Key registration requires confirmation of email
+* Indicate "Processing" of pending Listings
+
+### Bug Fixes
+* Display SED changes in Listing Reports correctly
+* Disable double-click on Listing confirmation
+
+---
+
 ## Version 11.11.0
 _19 April 2021_
 
