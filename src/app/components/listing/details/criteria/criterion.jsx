@@ -49,6 +49,9 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#999900',
     color: '#ffffff',
   },
+  criterionNumber: {
+    textTransform: 'none',
+  },
 }));
 
 function ChplCriterion(props) {
@@ -92,7 +95,7 @@ function ChplCriterion(props) {
     <Accordion disabled={!criterion.success && !props.canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
       <AccordionSummary
         className={classes.NestedAccordionLevelOneSummary}
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
         id={`${criterion.id}-header`}
       >
         <Grid container spacing={4}>
@@ -100,7 +103,7 @@ function ChplCriterion(props) {
             { criterion.success
               && (
                 <Typography variant="subtitle1">
-                  <DoneAllIcon size="small" />
+                  <DoneAllIcon fontSize="large" />
                 </Typography>
               )}
           </Grid>
@@ -112,7 +115,9 @@ function ChplCriterion(props) {
                     Removed |
                   </>
                 )}
-              {criterion.criterion.number}
+              <div className={classes.criterionNumber}>
+                {criterion.criterion.number}
+              </div>
             </Typography>
             { pending
               && (
@@ -147,7 +152,7 @@ function ChplCriterion(props) {
               { criterion.criterion.removed
                 && (
                   <ChplTooltip title="This certification criterion has been removed from the Program.">
-                    <InfoOutlinedIcon />
+                    <InfoOutlinedIcon fontSize="large"/>
                   </ChplTooltip>
                 )}
             </Typography>
@@ -176,7 +181,7 @@ function ChplCriterion(props) {
                         Edit Criteria
                         <EditOutlinedIcon
                           className={classes.iconSpacing}
-                          fontSize="small"
+                          fontSize="large"
                         />
                       </Button>
                     </Grid>
