@@ -59,6 +59,16 @@ function ChplCriteria(props) {
     props.onSave(updated);
   };
 
+  const prepareResources = (resources, criterion) => {
+    const updated = {
+      ...resources,
+      testData: { ...resources.testData, data: resources.testData.data.filter((item) => item.criteria.id === criterion.id) },
+      testProcedures: { ...resources.testProcedures, data: resources.testProcedures.data.filter((item) => item.criteria.id === criterion.id) },
+      testStandards: { ...resources.testStandards, data: resources.testStandards.data.filter((item) => item.year === criterion.certificationEdition) },
+    };
+    return updated;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
@@ -69,7 +79,7 @@ function ChplCriteria(props) {
             certificationResult={cc}
             canEdit={props.canEdit}
             onSave={handleSave}
-            resources={props.resources}
+            resources={prepareResources(props.resources, cc.criterion)}
             accessibilityStandards={props.accessibilityStandards}
             qmsStandards={props.qmsStandards}
           />
