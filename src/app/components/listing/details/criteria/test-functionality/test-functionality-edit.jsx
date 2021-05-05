@@ -23,12 +23,12 @@ function ChplTestFunctionalityEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [testFunctionalityUsed, setTestFunctionalityUsed] = useState(props.testFunctionality.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options, setOptions] = useState(props.options);
+  const [options, setOptions] = useState(props.options.filter((option) => props.testFunctionality.filter((used) => used.testFunctionalityId === option.id).length === 0));
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      tf: '',
     },
     validationSchema,
     validateOnChange: false,
@@ -42,13 +42,10 @@ function ChplTestFunctionalityEdit(props) {
   const addNew = () => {
     const updated = [
       ...testFunctionalityUsed,
-      {
-        name: formik.values.name,
-        key: (new Date()).getTime(),
-      },
+      formik.values.tf,
     ];
     setTestFunctionalityUsed(updated);
-    setOptions(options.filter((option) => option.name !== formik.values.name));
+    setOptions(options.filter((option) => option.id !== formik.values.tf.testFunctionalityId));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -60,7 +57,7 @@ function ChplTestFunctionalityEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testFunctionalityUsed.filter((s) => !(s.id === item.id && s.key === item.key));
+    const updated = testFunctionalityUsed.filter((s) => !(s.id === item.id));
     setTestFunctionalityUsed(updated);
     setOptions([...options, item]);
     update(updated);
@@ -113,19 +110,19 @@ function ChplTestFunctionalityEdit(props) {
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <InputLabel id="name-label">Functionality Tested</InputLabel>
+              <InputLabel id="tf-label">Functionality Tested</InputLabel>
               <Select
                 fullWidth
-                labelId="name-label"
-                id="name"
-                name="name"
+                labelId="tf-label"
+                id="tf"
+                name="tf"
                 variant="outlined"
-                value={formik.values.name}
+                value={formik.values.tf}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
                 { options.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </Select>
             </Grid>
