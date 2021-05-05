@@ -24,7 +24,7 @@ function ChplTestProceduresEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [testProcedures, setTestProcedures] = useState(props.testProcedures.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options, setOptions] = useState(props.options);
+  const [options, setOptions] = useState(props.options.filter((option) => props.testProcedures.filter((used) => used.testProcedure.id === option.id).length === 0));
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -45,15 +45,13 @@ function ChplTestProceduresEdit(props) {
     const updated = [
       ...testProcedures,
       {
-        testProcedure: {
-          name: formik.values.name,
-        },
+        testProcedure: formik.values.name,
         testProcedureVersion: formik.values.version,
         key: (new Date()).getTime(),
       },
     ];
     setTestProcedures(updated);
-    setOptions(options.filter((option) => option.name !== formik.values.name));
+    setOptions(options.filter((option) => option.id !== formik.values.name.id));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -67,7 +65,7 @@ function ChplTestProceduresEdit(props) {
   const removeItem = (item) => {
     const updated = testProcedures.filter((s) => !(s.id === item.id && s.key === item.key));
     setTestProcedures(updated);
-    setOptions([...options, item]);
+    setOptions([...options, item.testProcedure]);
     update(updated);
   };
 
@@ -96,14 +94,14 @@ function ChplTestProceduresEdit(props) {
             <Grid item xs={1}>
               { !adding
                 && (
-                <IconButton
-                  onClick={() => removeItem(item)}
-                >
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small"
-                  />
-                </IconButton>
+                  <IconButton
+                    onClick={() => removeItem(item)}
+                  >
+                    <CloseOutlinedIcon
+                      color="primary"
+                      size="small"
+                    />
+                  </IconButton>
                 )}
             </Grid>
           </Grid>
@@ -111,68 +109,68 @@ function ChplTestProceduresEdit(props) {
       ))}
       { !adding && options.length > 0
         && (
-        <Grid item xs={12}>
-          <Button
-            onClick={() => setAdding(true)}
-          >
-            Add item
-          </Button>
-        </Grid>
+          <Grid item xs={12}>
+            <Button
+              onClick={() => setAdding(true)}
+            >
+              Add item
+            </Button>
+          </Grid>
         )}
       { adding
         && (
-        <Grid item xs={12}>
-          <Grid container spacing={4}>
-            <Grid item xs={6}>
-              <InputLabel id="name-label">Procedure Tested</InputLabel>
-              <Select
-                fullWidth
-                labelId="name-label"
-                id="name"
-                name="name"
-                variant="outlined"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                { options.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={5}>
-              <TextField
-                id="version"
-                name="version"
-                label="Version"
-                variant="outlined"
-                value={formik.values.version}
-                required
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.version && formik.errors.version}
-                helperText={formik.touched.version && formik.errors.version}
-              />
-            </Grid>
-            <Grid item xs={1}>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={addNew}
-              >
-                <CheckOutlinedIcon />
-              </Button>
-              <IconButton
-                onClick={() => cancelAdd()}
-              >
-                <CloseOutlinedIcon
-                  color="primary"
-                  size="small"
+          <Grid item xs={12}>
+            <Grid container spacing={4}>
+              <Grid item xs={6}>
+                <InputLabel id="name-label">Procedure Tested</InputLabel>
+                <Select
+                  fullWidth
+                  labelId="name-label"
+                  id="name"
+                  name="name"
+                  variant="outlined"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  { options.map((item) => (
+                    <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={5}>
+                <TextField
+                  id="version"
+                  name="version"
+                  label="Version"
+                  variant="outlined"
+                  value={formik.values.version}
+                  required
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.version && formik.errors.version}
+                  helperText={formik.touched.version && formik.errors.version}
                 />
-              </IconButton>
+              </Grid>
+              <Grid item xs={1}>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={addNew}
+                >
+                  <CheckOutlinedIcon />
+                </Button>
+                <IconButton
+                  onClick={() => cancelAdd()}
+                >
+                  <CloseOutlinedIcon
+                    color="primary"
+                    size="small"
+                  />
+                </IconButton>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
         )}
     </Grid>
   );
