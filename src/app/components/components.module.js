@@ -29,5 +29,6 @@ angular
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
-  .component('chplSurveillanceActivityReportingDateSelector', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
+  .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings));
+
