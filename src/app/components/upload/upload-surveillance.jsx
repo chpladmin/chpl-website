@@ -65,7 +65,7 @@ function ChplUploadSurveillance() {
     Upload.upload(item)
       .then((response) => {
         if (response.data.pendingSurveillance) {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.pendingSurveillance.length} pending surveillance record${response.data.pendingSurveillance.length !== 1 ? 's are' : 'is'} ready for confirmation on the <a href="#/surveillance/confirm">Confirm Surveillance</a> page`;
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.pendingSurveillance.length} pending surveillance record${response.data.pendingSurveillance.length !== 1 ? 's are' : ' is'} ready for confirmation on the <a href="#/surveillance/confirm">Confirm Surveillance</a> page`;
           toaster.pop({
             type: 'success',
             title: 'Success',
