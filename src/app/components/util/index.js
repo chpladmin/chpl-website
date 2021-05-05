@@ -1,5 +1,6 @@
-import { ChplEllipsis } from './ellipsis.jsx';
-import { ChplLink } from './link.jsx';
-import { ChplTooltip } from './tooltip.jsx';
+import { ChplEllipsis } from './ellipsis';
+import { ChplLink } from './link';
+import { ChplTooltip } from './tooltip';
+import ChplTextField from './chpl-text-field';
 
-export { ChplEllipsis, ChplLink, ChplTooltip };
+export { ChplEllipsis, ChplTextField, ChplLink, ChplTooltip };
