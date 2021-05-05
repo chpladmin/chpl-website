@@ -30,8 +30,12 @@ const useStyles = makeStyles(() => ({
     gridRowGap: '8px',
     gridColumnGap: '8px',
   },
-  firstRow: {
+  fullRow: {
     gridColumn: '1 / -1',
+  },
+  longLabelFix: {
+    paddingRight: '4px',
+    backgroundColor: '#ffffff',
   },
 }));
 
@@ -107,7 +111,7 @@ function ChplUploadMeaningfulUse() {
   formik = useFormik({
     validationSchema,
     initialValues: {
-      accurateAsOf: new Date(),
+      accurateAsOf: '',
     },
     validateOnChange: false,
     validateOnBlur: true,
@@ -122,7 +126,7 @@ function ChplUploadMeaningfulUse() {
         <CardHeader title="Upload Meaningful Use Users" subtitle="CSV files only" />
         <CardContent>
           <div className={classes.gridStyle}>
-            <Typography variant="body1" className={classes.firstRow}>
+            <Typography variant="body1" className={classes.fullRow}>
               CSV files only
             </Typography>
             <div>
@@ -179,7 +183,7 @@ function ChplUploadMeaningfulUse() {
                 </Button>
               </div>
               )}
-            <div className={classes.firstRow}>
+            <div className={classes.fullRow}>
               <TextField
                 fullWidth
                 type="date"
@@ -188,11 +192,13 @@ function ChplUploadMeaningfulUse() {
                 name="accurateAsOf"
                 label="Enter the Accurate As of date for Meaningful Use Users associated with this upload"
                 required
+                size="small"
                 value={formik.values.accurateAsOf}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
                 helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
+                InputLabelProps={{ classes: { root: classes.longLabelFix } }}
               />
             </div>
           </div>
