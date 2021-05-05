@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  TextField,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -14,6 +13,7 @@ import * as yup from 'yup';
 
 import theme from '../../themes/theme';
 import { getAngularService } from '.';
+import { ChplTextField } from '../util';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -32,10 +32,6 @@ const useStyles = makeStyles(() => ({
   },
   fullRow: {
     gridColumn: '1 / -1',
-  },
-  longLabelFix: {
-    paddingRight: '4px',
-    backgroundColor: '#ffffff',
   },
 }));
 
@@ -184,21 +180,17 @@ function ChplUploadMeaningfulUse() {
               </div>
               )}
             <div className={classes.fullRow}>
-              <TextField
-                fullWidth
+              <ChplTextField
                 type="date"
-                variant="outlined"
                 id="accurate-as-of"
                 name="accurateAsOf"
                 label="Enter the Accurate As of date for Meaningful Use Users associated with this upload"
                 required
-                size="small"
                 value={formik.values.accurateAsOf}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
                 helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
-                InputLabelProps={{ classes: { root: classes.longLabelFix } }}
               />
             </div>
           </div>
