@@ -182,6 +182,7 @@ function ChplUploadMeaningfulUse() {
             <div className={classes.firstRow}>
               <TextField
                 fullWidth
+                type="date"
                 variant="outlined"
                 id="accurate-as-of"
                 name="accurateAsOf"
