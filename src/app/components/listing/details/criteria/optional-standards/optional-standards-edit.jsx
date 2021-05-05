@@ -24,12 +24,15 @@ function ChplOptionalStandardsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options] = useState(props.options);
+  const [options, setOptions] = useState(
+    props.options
+      .filter((option) => props.optionalStandards.filter((used) => (used.testStandardId === option.id).length === 0))
+      .sort((a, b) => (a.name < b.name ? -1 : 1)));
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
-      testStandardName: '',
+      os: '',
     },
     validationSchema,
     validateOnChange: false,
@@ -44,11 +47,14 @@ function ChplOptionalStandardsEdit(props) {
     const updated = [
       ...optionalStandards,
       {
-        testStandardName: formik.values.testStandardName,
-        key: (new Date()).getTime(),
+        testStandardDescription: formik.values.os.description,
+        testStandardId: formik.values.os.id,
+        testStandardName: formik.values.os.name,
+        key: Date.now(),
       },
     ];
     setOptionalStandards(updated);
+    setOptions(options.filter((option) => option.id !== formik.values.os.testStandardId));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -60,8 +66,16 @@ function ChplOptionalStandardsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = optionalStandards.filter((s) => !(s.id === item.id && s.key === item.key));
+    const updated = optionalStandards.filter((s) => !(s.testStandardId === item.testStandardId));
     setOptionalStandards(updated);
+    setOptions([
+      ...options,
+      {
+        description: item.testStandardDescription,
+        id: item.testStandardId,
+        name: item.testStandardName,
+      },
+    ]);
     update(updated);
   };
 
@@ -112,19 +126,19 @@ function ChplOptionalStandardsEdit(props) {
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <InputLabel id="test-standard-name-label">Optional Standard</InputLabel>
+              <InputLabel id="os-label">Optional Standard</InputLabel>
               <Select
                 fullWidth
-                labelId="test-standard-name-label"
-                id="test-standard-name"
-                name="testStandardName"
+                labelId="os-label"
+                id="os"
+                name="os"
                 variant="outlined"
-                value={formik.values.testStandardName}
+                value={formik.values.os}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
                 { options.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </Select>
             </Grid>
