@@ -31,4 +31,3 @@ angular
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings));
-

@@ -42,11 +42,12 @@ function ChplSurveillanceActivityReportingDateSelector() {
     for (i = startYear; i <= currentYear; i += 1) {
       years.push(i);
     }
+    years.sort((a, b) => b - a);
     return years;
   };
 
-  const dateRange = (year, range) => {
-    switch (range) {
+  const dateRange = (year, quarter) => {
+    switch (quarter) {
       case 'all':
         return {
           startDate: LocalDate.of(year, 1, 1),
@@ -79,7 +80,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
 
   const submitRequest = (values) => {
     networkService
-      .getSurveillanceActivityReport(dateRange(values.year, values.range))
+      .getSurveillanceActivityReport(dateRange(values.year, values.quarter))
       .then((response) => {
         if (response.success) {
           toaster.pop({
@@ -91,7 +92,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
   };
 
   formik = useFormik({
-    initialValues: { year: '', range: '' },
+    initialValues: { year: '', quarter: '' },
     onSubmit: (values) => {
       submitRequest(values);
     },
@@ -130,10 +131,10 @@ function ChplSurveillanceActivityReportingDateSelector() {
           select
           size="small"
           variant="outlined"
-          id="range"
-          name="range"
-          label="range"
-          value={formik.values.range}
+          id="quarter"
+          name="quarter"
+          label="Quarter"
+          value={formik.values.quarter}
           onChange={formik.handleChange}
           InputLabelProps={{ classes: { root: classes.longLabelFix } }}
         >
