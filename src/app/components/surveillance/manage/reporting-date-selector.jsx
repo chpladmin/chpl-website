@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     gridRowGap: '8px',
   },
   fullWidth: {
-    gridColumn: 'span 2',
+    gridColumn: '1 / -1',
   },
 }));
 
@@ -78,12 +78,12 @@ function ChplSurveillanceActivityReportingDateSelector() {
     networkService
       .getSurveillanceActivityReport(dateRange(values.year, values.quarter))
       .then((response) => {
-        if (response.success) {
-          toaster.pop({
-            type: 'success',
-            body: 'Something good happened',
-          });
-        }
+        const message = `Request for Surveillance Activity Report was successfully submitted. An email will be sent to ${response.job.jobDataMap.email} with the report.`;
+        toaster.pop({
+          type: 'success',
+          title: 'Success',
+          body: message,
+        });
       });
   };
 
