@@ -206,16 +206,22 @@
         let complaint = { id: 1, formattedReceivedDate: new Date('2019-06-04') };
         ctrl.isEditing = true;
         ctrl.saveComplaint(complaint);
-        expect(complaint.receivedDate).toBeDefined();
-        expect(networkService.updateComplaint).toHaveBeenCalledWith(complaint);
+        expect(networkService.updateComplaint).toHaveBeenCalledWith({
+          ...complaint,
+          receivedDate: 1559606400000,
+          closedDate: null,
+        });
       });
 
       it('should save/create a complaint', () => {
         let complaint = { formattedReceivedDate: new Date('2019-06-04') };
         ctrl.isEditing = true;
         ctrl.saveComplaint(complaint);
-        expect(complaint.receivedDate).toBeDefined();
-        expect(networkService.createComplaint).toHaveBeenCalledWith(complaint);
+        expect(networkService.createComplaint).toHaveBeenCalledWith({
+          ...complaint,
+          receivedDate: 1559606400000,
+          closedDate: null,
+        });
       });
 
       it('should cancel current editing and go to select mode', () => {
