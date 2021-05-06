@@ -86,6 +86,22 @@
             .sort((a, b) => utilService.sortCert(a.criteria) - utilService.sortCert(b.criteria))
             .map(object => object.criteria.number + (object.criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + SPLIT_SECONDARY + object.url)
             .join(SPLIT_PRIMARY);
+          if (listing.serviceBaseUrlList !== '') {
+            listing.serviceBaseUrlList = listing.serviceBaseUrlList
+              .split(SPLIT_PRIMARY)
+              .map(item => {
+                let ret = {};
+                const data = item.split(SPLIT_SECONDARY);
+                ret.criteria = certificationCriteria.find(cc => (cc.id + '') === data[0]);
+                ret.url = data[1];
+                return ret;
+              })
+              .sort((a, b) => utilService.sortCert(a.criteria) - utilService.sortCert(b.criteria))
+              .map(object => object.criteria.number + (object.criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + SPLIT_SECONDARY + object.url)
+              .join(SPLIT_PRIMARY);
+          } else {
+            listing.serviceBaseUrlList = undefined;
+          }
           return listing;
         });
       return ret;
