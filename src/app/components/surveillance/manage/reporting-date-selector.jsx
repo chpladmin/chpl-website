@@ -140,6 +140,8 @@ function ChplSurveillanceActivityReportingDateSelector() {
             color="primary"
             variant="contained"
             size="small"
+            name="downloadResults"
+            id="download-results"
             onClick={formik.handleSubmit}
           >
             Download Results

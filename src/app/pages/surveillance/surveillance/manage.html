@@ -169,7 +169,7 @@
             </div>
           </div>
         </uib-tab>
-        <uib-tab index="1" heading="Reporting">
+        <uib-tab ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" index="1" heading="Reporting">
           <chpl-surveillance-activity-reporting-date-selector-bridge>
           </chpl-surveillance-activity-reporting-date-selector-bridge>
         </uib-tab>
