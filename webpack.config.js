@@ -12,7 +12,7 @@ module.exports = env => {
         env = {};
     };
     if (!env.NODE_ENV) {
-        env.NODE_ENV =  'development'; // default to development if not provided
+        env.NODE_ENV = 'development'; // default to development if not provided
     }
     let config = {
         mode: env.NODE_ENV,
@@ -35,32 +35,29 @@ module.exports = env => {
                 enforce: 'post',
                 test: /\.js$/,
                 exclude: [
-                        /specs\.js/,
-                        /\.spec\.js/,
-                        /\.test\.jsx/,
-                        /node_modules/,
-                        /lib/,
-                        /\.mock\.js/,
+                    /specs\.js/,
+                    /\.spec\.js/,
+                    /\.test\.jsx/,
+                    /node_modules/,
+                    /lib/,
+                    /\.mock\.js/,
                 ],
                 use: {
                     loader: 'istanbul-instrumenter-loader',
                     options: { esModules: true },
                 },
-            },{
-              test: /\.(js|jsx)$/,
-              resolve: {
-          extensions: ['.js', '.jsx'],
-        },
+            }, {
+                test: /\.(js|jsx)$/,
                 exclude: [
-                        /node_modules/,
-                        /\.mock\.js/,
+                    /node_modules/,
+                    /\.mock\.js/,
                 ],
                 use: [{
                     loader: 'babel-loader',
                     options: {
                         plugins: [BabelPluginAngularjsAnnotate],
-                        presets:['@babel/preset-env'],
-                        presets:['@babel/preset-react'],
+                        presets: ['@babel/preset-env'],
+                        presets: ['@babel/preset-react'],
                     },
                 },/*{
                     loader: 'eslint-loader',
@@ -76,7 +73,7 @@ module.exports = env => {
                         },
                     }
                 }*/],
-            },{
+            }, {
                 test: /\.html$/,
                 exclude: /node_modules/,
                 use: [
@@ -89,10 +86,10 @@ module.exports = env => {
                         },
                     },
                 ],
-            },{
+            }, {
                 test: /\.png$/,
-                use: [ 'url-loader?mimetype=image/png' ],
-            },{
+                use: ['url-loader?mimetype=image/png'],
+            }, {
                 test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
                     loader: "url-loader?limit=10000&mimetype=application/font-woff",
@@ -100,7 +97,7 @@ module.exports = env => {
                         name: '[path][name].[ext]',
                     },
                 },
-            },{
+            }, {
                 test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
                     loader: "url-loader?limit=10000&mimetype=application/font-woff",
@@ -108,7 +105,7 @@ module.exports = env => {
                         name: '[path][name].[ext]',
                     },
                 },
-            },{
+            }, {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
                     loader: "url-loader?limit=10000&mimetype=application/octet-stream",
@@ -116,7 +113,7 @@ module.exports = env => {
                         name: '[path][name].[ext]',
                     },
                 },
-            },{
+            }, {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
                     loader: "file-loader",
@@ -124,7 +121,7 @@ module.exports = env => {
                         name: '[path][name].[ext]',
                     },
                 },
-            },{
+            }, {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
                     loader: "url-loader?limit=10000&mimetype=image/svg+xml",
@@ -132,19 +129,19 @@ module.exports = env => {
                         name: '[path][name].[ext]',
                     },
                 },
-            },{
+            }, {
                 test: /\.(s*)css$/, ///\.scss$/,
                 use: [{
                     loader: 'style-loader', // inject CSS to page
                     options: {
                         sourceMap: true,
                     },
-                },{
+                }, {
                     loader: 'css-loader',
                     options: {
                         sourceMap: true,
                     },
-                },{
+                }, {
                     loader: 'postcss-loader', // Run post css actions
                     options: {
                         plugins: function () { // post css plugins, can be exported to postcss.config.js
@@ -156,7 +153,7 @@ module.exports = env => {
                         },
                         sourceMap: true,
                     }
-                },{
+                }, {
                     loader: 'sass-loader',
                     options: {
                         sourceMap: true,
@@ -224,7 +221,7 @@ module.exports = env => {
     if (env.NODE_ENV === 'development') {
         config.devtool = 'inline-source-map';
     };
-    if (env.style ) {
+    if (env.style) {
         config.plugins.push(
             new HtmlWebpackPlugin({
                 filename: 'style.html',
@@ -243,7 +240,7 @@ module.exports = env => {
                 '/rest': {
                     target: env.useDev ? 'https://chpl.ahrqdev.org/rest' : 'http://localhost:8181/chpl-service',
                     changeOrigin: env.useDev,
-                    pathRewrite: {'^/rest' : ''},
+                    pathRewrite: { '^/rest': '' },
                 },
             },
         };
