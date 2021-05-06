@@ -248,6 +248,14 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.serviceBaseUrlList !== null">
+          <td><label class="control-label" for="data_service_base_url_list{{ $ctrl.cert.number }}">Service Base URL List</label></td>
+          <td>
+            <input class="form-control input-sm" type="url" id="data_service_base_url_list{{ $ctrl.cert.number }}" name="data_serviceBaseUrlList" ng-model="$ctrl.cert.serviceBaseUrlList" ng-maxlength="1024"></input>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.url">Field is an invalid format (http://www.example.com)</div>
+          </td>
+        </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null">
           <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework" ng-disabled="!$ctrl.canEdit()">
