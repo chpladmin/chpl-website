@@ -147,17 +147,12 @@ export const SurveillanceComplaintsComponent = {
                             + '|' + complaint.listings.map(l => l.chplProductNumber).join('|')
                             + '|' + complaint.criteria.map(c => c.certificationCriterion.number).join('|');
             that.addFilterItems(complaint);
-            if (complaint.listings) {
-              complaint.csvListings = complaint.listings.map(l => l.chplProductNumber).join(',');
-            }
-            if (complaint.surveillances) {
-              complaint.csvSurveillances = complaint.surveillances.map(s => s.surveillance.chplProductNumber + ':' + s.surveillance.friendlyId).join(',');
-            }
             if (complaint.criteria) {
               complaint.csvCriteria = complaint.criteria.map(c => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
             }
             return complaint;
           });
+        that.expandCsvRows();
         that.finalizeFilterItems();
       });
     }
@@ -172,6 +167,26 @@ export const SurveillanceComplaintsComponent = {
       if (!this.filterItems.complainantTypeItems.find(item => item.value === complaint.complainantTypeName)) {
         this.filterItems.complainantTypeItems.push({value: complaint.complainantTypeName, selected: true});
       }
+    }
+
+    expandCsvRows () {
+      this.csvComplaints = this.complaints.flatMap((complaint) => {
+        if (complaint.listings.length === 0) {
+          return [complaint];
+        }
+        const complaints = complaint.listings.map((l) => ({
+          ...complaint,
+          csvListing: l.chplProductNumber,
+          developerName: l.developerName,
+          productName: l.productName,
+          versionName: l.versionName,
+          csvSurveillances: complaint.surveillances
+            .filter((s) => s.surveillance.chplProductNumber === l.chplProductNumber)
+            .map((s) => s.surveillance.friendlyId)
+            .join(','),
+        }));
+        return complaints;
+      });
     }
 
     finalizeFilterItems () {
