@@ -6,15 +6,13 @@ import {
   Button,
   Grid,
   IconButton,
-  InputLabel,
   MenuItem,
-  Select,
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplEllipsis } from '../../../../util';
+import { ChplEllipsis, ChplTextField } from '../../../../util';
 import { optionalStandard, selectedOptionalStandard } from '../../../../../shared/prop-types';
 
 const validationSchema = yup.object({
@@ -27,7 +25,8 @@ function ChplOptionalStandardsEdit(props) {
   const [options, setOptions] = useState(
     props.options
       .filter((option) => props.optionalStandards.filter((used) => (used.testStandardId === option.id).length === 0))
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+      .sort((a, b) => (a.name < b.name ? -1 : 1)),
+  );
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -126,21 +125,18 @@ function ChplOptionalStandardsEdit(props) {
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <InputLabel id="os-label">Optional Standard</InputLabel>
-              <Select
-                fullWidth
-                labelId="os-label"
+              <ChplTextField
+                select
                 id="os"
                 name="os"
-                variant="outlined"
+                label="Optional Standard"
                 value={formik.values.os}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
-              </Select>
+              </ChplTextField>
             </Grid>
             <Grid item xs={1}>
               <Button

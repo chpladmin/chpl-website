@@ -6,14 +6,13 @@ import {
   Button,
   Grid,
   IconButton,
-  InputLabel,
   MenuItem,
-  Select,
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { ChplTextField } from '../../../../util';
 import { svap, selectedSvap } from '../../../../../shared/prop-types';
 
 const validationSchema = yup.object({
@@ -121,21 +120,18 @@ function ChplSvapsEdit(props) {
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <InputLabel id="name-label">Standards Version Advancement Process</InputLabel>
-              <Select
-                fullWidth
-                labelId="name-label"
+              <ChplTextField
+                select
                 id="regulatory-text-citation"
                 name="regulatoryTextCitation"
-                variant="outlined"
+                label="Standards Version Advancement Process"
                 value={formik.values.regulatoryTextCitation}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               >
                 { options.map((item) => (
                   <MenuItem value={item.regulatoryTextCitation} key={item.id}>{item.regulatoryTextCitation}</MenuItem>
                 ))}
-              </Select>
+              </ChplTextField>
             </Grid>
             <Grid item xs={1}>
               <Button

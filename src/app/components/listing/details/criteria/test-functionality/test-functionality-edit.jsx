@@ -6,14 +6,13 @@ import {
   Button,
   Grid,
   IconButton,
-  InputLabel,
   MenuItem,
-  Select,
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { ChplTextField } from '../../../../util';
 import { testFunctionality, selectedTestFunctionality } from '../../../../../shared/prop-types';
 
 const validationSchema = yup.object({
@@ -110,21 +109,18 @@ function ChplTestFunctionalityEdit(props) {
         <Grid item xs={12}>
           <Grid container spacing={4}>
             <Grid item xs={11}>
-              <InputLabel id="tf-label">Functionality Tested</InputLabel>
-              <Select
-                fullWidth
-                labelId="tf-label"
+              <ChplTextField
+                select
                 id="tf"
                 name="tf"
-                variant="outlined"
+                label="Functionality Tested"
                 value={formik.values.tf}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
-              </Select>
+              </ChplTextField>
             </Grid>
             <Grid item xs={1}>
               <Button
