@@ -299,7 +299,7 @@ export default class NetworkService {
         return this.apiGET('/collections/certified-products?fields=id,edition,developer,developerId,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
       case 'surveillanceManagement':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
-      // no default
+        // no default
     }
     return null;
   }
