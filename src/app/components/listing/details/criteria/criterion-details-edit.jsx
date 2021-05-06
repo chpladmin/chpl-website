@@ -11,13 +11,9 @@ import {
   Divider,
   FormControlLabel,
   Grid,
-  InputLabel,
   MenuItem,
-  Select,
   Switch,
-  TextField,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -30,6 +26,7 @@ import ChplTestFunctionalityEdit from './test-functionality';
 import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestToolsEdit from './test-tools';
+import { ChplTextField } from '../../../util';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
@@ -42,17 +39,12 @@ const validationSchema = yup.object({
     .url('Enter a valid URL'),
 });
 
-const useStyles = makeStyles(() => ({
-  infoIcon: {
-    fontSize: '1rem',
-  },
-}));
-
 function ChplCriterionDetailsEdit(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [criterion, setCriterion] = useState(props.criterion);
   const [resources] = useState(props.resources);
   const $analytics = getAngularService('$analytics');
-  const classes = useStyles();
+  /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
@@ -326,9 +318,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
+                    <ChplTextField
                       id="api-documentation"
                       name="apiDocumentation"
                       label="API Documentation"
@@ -348,9 +338,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
+                    <ChplTextField
                       id="export-documentation"
                       name="exportDocumentation"
                       label="Export Documentation"
@@ -392,9 +380,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
+                    <ChplTextField
                       id="documentation-url"
                       name="documentationUrl"
                       label="Documentation"
@@ -414,9 +400,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
+                    <ChplTextField
                       id="use-cases"
                       name="useCases"
                       label="Use Cases"
@@ -436,21 +420,18 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <InputLabel id="privacy-and-security-framework-label">Privacy &amp; Security Framework</InputLabel>
-                    <Select
-                      fullWidth
-                      labelId="privacy-security-framework-label"
+                    <ChplTextField
+                      select
                       id="privacy-security-framework"
                       name="privacySecurityFramework"
-                      variant="outlined"
+                      label="Privacy &amp; Security Framework"
                       value={formik.values.privacySecurityFramework}
                       onChange={onChange}
-                      onBlur={formik.handleBlur}
                     >
                       <MenuItem value="Approach 1" key="Approach 1">Approach 1</MenuItem>
                       <MenuItem value="Approach 2" key="Approach 2">Approach 2</MenuItem>
                       <MenuItem value="Approach 1;Approach 2" key="Approach 1;Approach 2">Approach 1;Approach 2</MenuItem>
-                    </Select>
+                    </ChplTextField>
                   </Grid>
                 </>
                 )}
