@@ -9,7 +9,7 @@ import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { useFormik } from 'formik';
 import { LocalDate } from '@js-joda/core';
 import { getAngularService } from '.';
-import ChplTextField from '../../../components/util/chpl-text-field';
+import ChplTextField from '../../util/chpl-text-field';
 import theme from '../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
