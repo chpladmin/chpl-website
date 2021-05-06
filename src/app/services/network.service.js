@@ -285,7 +285,7 @@ export default class NetworkService {
   getCollection(type) {
     switch (type) {
     case 'apiDocumentation':
-      return this.apiGET('/collections/certified-products?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
+      return this.apiGET('/collections/certified-products?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,serviceBaseUrlList,transparencyAttestationUrl');
     case 'bannedDevelopers':
       return this.apiGET('/collections/decertified-developers');
     case 'complaintListings':
