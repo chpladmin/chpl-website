@@ -784,7 +784,7 @@
       });
 
       it('should getCollection', () => {
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl$/).respond(200, {data: 'response'});
+        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,serviceBaseUrlList,transparencyAttestationUrl$/).respond(200, {data: 'response'});
         networkService.getCollection('apiDocumentation').then(response => {
           expect(response.data).toEqual('response');
         });
