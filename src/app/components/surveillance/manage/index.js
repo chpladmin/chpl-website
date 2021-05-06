@@ -1,4 +1,4 @@
-import { ChplSurveillanceActivityReportingDateSelector } from './reporting-date-selector.jsx';
-import { getAngularService } from '../../../services/angular-react-helper.jsx';
+import { ChplSurveillanceActivityReportingDateSelector } from './reporting-date-selector';
+import { getAngularService } from '../../../services/angular-react-helper';
 
 export { ChplSurveillanceActivityReportingDateSelector, getAngularService };

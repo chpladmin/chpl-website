@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Button,
   MenuItem,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -10,6 +9,7 @@ import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { useFormik } from 'formik';
 import { LocalDate } from '@js-joda/core';
 import { getAngularService } from '.';
+import ChplTextField from '../../../components/util/chpl-text-field';
 import theme from '../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -21,10 +21,6 @@ const useStyles = makeStyles(() => ({
   },
   fullWidth: {
     gridColumn: 'span 2',
-  },
-  longLabelFix: {
-    paddingRight: '4px',
-    backgroundColor: '#ffffff',
   },
 }));
 
@@ -109,16 +105,13 @@ function ChplSurveillanceActivityReportingDateSelector() {
         <div className={classes.fullWidth}>
           <Typography variant="subtitle2">Choose a Preset Range</Typography>
         </div>
-        <TextField
+        <ChplTextField
           select
-          size="small"
-          variant="outlined"
           id="year"
           name="year"
           label="year"
           value={formik.values.year}
           onChange={formik.handleChange}
-          InputLabelProps={{ classes: { root: classes.longLabelFix } }}
         >
           <MenuItem value="" />
           {getYears().map((year) => (
@@ -126,17 +119,14 @@ function ChplSurveillanceActivityReportingDateSelector() {
               {year}
             </MenuItem>
           ))}
-        </TextField>
-        <TextField
+        </ChplTextField>
+        <ChplTextField
           select
-          size="small"
-          variant="outlined"
           id="quarter"
           name="quarter"
           label="Quarter"
           value={formik.values.quarter}
           onChange={formik.handleChange}
-          InputLabelProps={{ classes: { root: classes.longLabelFix } }}
         >
           <MenuItem value="" />
           <MenuItem value="all">All</MenuItem>
@@ -144,7 +134,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
           <MenuItem value="q2">Q2</MenuItem>
           <MenuItem value="q3">Q3</MenuItem>
           <MenuItem value="q4">Q4</MenuItem>
-        </TextField>
+        </ChplTextField>
         <div className={classes.fullWidth}>
           <Button
             color="primary"
