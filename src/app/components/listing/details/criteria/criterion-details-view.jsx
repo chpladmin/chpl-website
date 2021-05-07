@@ -18,10 +18,12 @@ import { ChplReliedUponSoftwareView } from './relied-upon-software';
 import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
 
 function ChplCriterionDetailsView(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [criterion] = useState(props.criterion);
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const $analytics = getAngularService('$analytics');
+  /* eslint-enable react/destructuring-assignment */
 
   return (
     <Grid item xs={12}>
@@ -384,6 +386,22 @@ function ChplCriterionDetailsView(props) {
                     { criterion.useCases
                       && <ChplLink href={criterion.useCases} text={criterion.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criterion.useCases }} />}
                     { !criterion.useCases && 'None' }
+                  </TableCell>
+                </TableRow>
+              )}
+            { criterion.serviceBaseUrlList !== null
+              && (
+                <TableRow key="serviceBaseUrlList">
+                  <TableCell component="th" scope="row">
+                    Service Base URL List
+                    <ChplTooltip title="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.">
+                      <InfoOutlinedIcon />
+                    </ChplTooltip>
+                  </TableCell>
+                  <TableCell>
+                    { criterion.serviceBaseUrlList
+                      && <ChplLink href={criterion.serviceBaseUrlList} text={criterion.serviceBaseUrlList} analytics={{ event: 'Service Base URL List', category: 'Download Details', label: criterion.serviceBaseUrlList }} />}
+                    { !criterion.serviceBaseUrlList && 'None' }
                   </TableCell>
                 </TableRow>
               )}
