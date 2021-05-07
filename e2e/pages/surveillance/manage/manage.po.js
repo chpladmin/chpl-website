@@ -1,33 +1,30 @@
 const reportingElements = {
   reportingTab: '//*[@heading="Reporting"]',
   year: '#year',
-  range: '#range',
-  donwloadResults: '//span[text()="Download Results"]',
+  quarter: '#quarter',
+  downloadResults: '//span[text()="Download Results"]',
 };
 
 class ManagePage {
-  constructor () { }
-
-  get reportingTab () {
+  get reportingTab() {
     return $(reportingElements.reportingTab);
   }
 
-  get year () {
+  get year() {
     return $(reportingElements.year);
   }
 
-  get range () {
-    return $(reportingElements.range);
+  get quarter() {
+    return $(reportingElements.quarter);
   }
 
-  get donwloadResultsButton () {
-    return $(reportingElements.donwloadResults);
+  get downloadResultsButton() {
+    return $(reportingElements.downloadResults);
   }
 
-  chooseDropdownValue (value) {
-    $('//*[@data-value="' + value + '"]').click();
+  chooseDropdownValue(value) {
+    $(`//*[@data-value="${value}"]`).click();
   }
-
 }
 
 export default ManagePage;
