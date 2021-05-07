@@ -9,7 +9,7 @@ let login;
 let page;
 
 describe('the ONC-ACB Management page', () => {
-  const timestamp = (new Date()).getTime();
+  const timestamp = Date.now();
   const websiteUrl = `https://website${timestamp}.com`;
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   const acbAddress = {

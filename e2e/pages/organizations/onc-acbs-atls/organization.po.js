@@ -23,7 +23,7 @@ class OrganizationPage {
   }
 
   organizationListCount() {
-    return $(elements.organizationList).length;
+    return this.organizationList.length;
   }
 
   get organizationEditButton() {

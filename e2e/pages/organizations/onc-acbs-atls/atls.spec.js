@@ -13,7 +13,7 @@ let toast;
 let user;
 
 describe('the ONC-ATL Management page', () => {
-  const timestamp = (new Date()).getTime();
+  const timestamp = Date.now();
   const websiteUrl = `http://www.example${timestamp}.com`;
   const atlAddress = {
     address: `address${timestamp}`,

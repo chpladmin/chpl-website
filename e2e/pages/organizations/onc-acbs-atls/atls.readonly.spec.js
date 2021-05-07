@@ -11,7 +11,7 @@ let page;
 let user;
 
 describe('the ONC-ATL Management page', () => {
-  const timestamp = (new Date()).getTime();
+  const timestamp = Date.now();
   const websiteUrl = `http://www.example${timestamp}.com`;
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   const atlAddress = {
