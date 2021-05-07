@@ -17,6 +17,7 @@ import {
   AccordionSummary,
   Avatar,
   Button,
+  Container,
   Chip,
   Grid,
   Typography,
@@ -160,23 +161,21 @@ function ChplCriterion(props) {
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container spacing={4}>
+        <Container>
           { editing
             ? (
-              <>
-                <ChplCriterionDetailsEdit
-                  criterion={criterion}
-                  resources={props.resources}
-                  onCancel={handleCancel}
-                  onChange={handleChange}
-                  onSave={handleSave}
-                />
-              </>
+              <ChplCriterionDetailsEdit
+                criterion={criterion}
+                resources={props.resources}
+                onCancel={handleCancel}
+                onChange={handleChange}
+                onSave={handleSave}
+              />
             ) : (
               <>
                 { props.canEdit
                   && (
-                    <Grid item xs={12}>
+                    <div>
                       <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(true)}>
                         Edit Criteria
                         <EditOutlinedIcon
@@ -184,16 +183,21 @@ function ChplCriterion(props) {
                           fontSize="large"
                         />
                       </Button>
-                    </Grid>
+                    </div>
                   )}
-                <ChplCriterionDetailsView
-                  criterion={criterion}
-                  accessibilityStandards={accessibilityStandards}
-                  qmsStandards={qmsStandards}
-                />
+                { criterion.success
+                  && (
+                    <div>
+                      <ChplCriterionDetailsView
+                        criterion={criterion}
+                        accessibilityStandards={accessibilityStandards}
+                        qmsStandards={qmsStandards}
+                      />
+                    </div>
+                  )}
               </>
             )}
-        </Grid>
+        </Container>
       </AccordionDetails>
     </Accordion>
   );

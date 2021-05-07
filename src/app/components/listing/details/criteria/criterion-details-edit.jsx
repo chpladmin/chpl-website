@@ -7,10 +7,10 @@ import {
   Card,
   CardActions,
   CardContent,
+  Container,
   Collapse,
   Divider,
   FormControlLabel,
-  Grid,
   MenuItem,
   Switch,
   Typography,
@@ -100,42 +100,39 @@ function ChplCriterionDetailsEdit(props) {
   };
 
   return (
-    <>
+    <Container>
       <Card>
         <CardContent>
-          <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="success"
-                    name="success"
-                    color="primary"
-                    checked={formik.values.success}
-                    onChange={onChange}
-                  />
-                )}
-                label={`${criterion.criterion.number}: ${criterion.criterion.title}`}
+          <FormControlLabel
+            control={(
+              <Switch
+                id="success"
+                name="success"
+                color="primary"
+                checked={formik.values.success}
+                onChange={onChange}
               />
-            </Grid>
-            <Collapse in={formik.values.success}>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subtitle1">Relied Upon Software</Typography>
-                <ChplReliedUponSoftwareEdit
-                  software={criterion.additionalSoftware}
-                  onChange={handleDetailChange}
-                />
-              </Grid>
-              { formik.values.gap !== null
-                && (
+            )}
+            label={`${criterion.criterion.number}: ${criterion.criterion.title}`}
+          />
+          <Collapse in={formik.values.success}>
+            <div>
+              <Divider />
+            </div>
+            <div>
+              <Typography variant="subtitle1">Relied Upon Software</Typography>
+              <ChplReliedUponSoftwareEdit
+                software={criterion.additionalSoftware}
+                onChange={handleDetailChange}
+              />
+            </div>
+            { formik.values.gap !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -145,51 +142,51 @@ function ChplCriterionDetailsEdit(props) {
                           checked={formik.values.gap}
                           onChange={onChange}
                         />
-                         )}
+                      )}
                       label={`Gap: ${formik.values.gap ? 'True' : 'False'}`}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { criterion.allowedSvaps?.length > 0
-                && (
-                  <>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle1">Standards Version Advancement Process</Typography>
-                      <ChplSvapsEdit
-                        svaps={criterion.svaps}
-                        options={criterion.allowedSvaps}
-                        onChange={handleDetailChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-              { criterion.testStandards
-                && (
-                  <>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle1">Optional Standard</Typography>
-                      <ChplOptionalStandardsEdit
-                        optionalStandards={criterion.testStandards}
-                        options={resources.testStandards.data}
-                        onChange={handleDetailChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-              { formik.values.g1Success !== null
-                && (
+              )}
+            { criterion.allowedSvaps?.length > 0
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1">Standards Version Advancement Process</Typography>
+                    <ChplSvapsEdit
+                      svaps={criterion.svaps}
+                      options={criterion.allowedSvaps}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { criterion.testStandards
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1">Optional Standard</Typography>
+                    <ChplOptionalStandardsEdit
+                      optionalStandards={criterion.testStandards}
+                      options={resources.testStandards.data}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { formik.values.g1Success !== null
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -199,19 +196,19 @@ function ChplCriterionDetailsEdit(props) {
                           checked={formik.values.g1Success}
                           onChange={onChange}
                         />
-                         )}
+                      )}
                       label={`Measure Successfully Tested for G1: ${formik.values.g1Success ? 'True' : 'False'}`}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.g2Success !== null
-                && (
+              )}
+            { formik.values.g2Success !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -221,83 +218,83 @@ function ChplCriterionDetailsEdit(props) {
                           checked={formik.values.g2Success}
                           onChange={onChange}
                         />
-                         )}
+                      )}
                       label={`Measure Successfully Tested for G2: ${formik.values.g2Success ? 'True' : 'False'}`}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { criterion.testFunctionality
-                && (
-                  <>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle1">Functionality Tested</Typography>
-                      <ChplTestFunctionalityEdit
-                        testFunctionality={criterion.testFunctionality}
-                        options={criterion.allowedTestFunctionalities}
-                        onChange={handleDetailChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-              { criterion.testProcedures
-                && (
-                  <>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle1">Test Procedure</Typography>
-                      <ChplTestProceduresEdit
-                        testProcedures={criterion.testProcedures}
-                        options={resources.testProcedures.data}
-                        onChange={handleDetailChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-              { criterion.testToolsUsed
-                && (
-                  <>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle1">Test Tools Used</Typography>
-                      <ChplTestToolsEdit
-                        testTools={criterion.testToolsUsed}
-                        options={resources.testTools.data}
-                        onChange={handleDetailChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-              { criterion.testDataUsed
-                && (
-                  <>
-                    <Grid item xs={12}>
-                      <Divider />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle1">Test Data Used</Typography>
-                      <ChplTestDataEdit
-                        testData={criterion.testDataUsed}
-                        options={resources.testData.data}
-                        onChange={handleDetailChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-              { formik.values.sed !== null
-                && (
+              )}
+            { criterion.testFunctionality
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1">Functionality Tested</Typography>
+                    <ChplTestFunctionalityEdit
+                      testFunctionality={criterion.testFunctionality}
+                      options={criterion.allowedTestFunctionalities}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { criterion.testProcedures
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1">Test Procedure</Typography>
+                    <ChplTestProceduresEdit
+                      testProcedures={criterion.testProcedures}
+                      options={resources.testProcedures.data}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { criterion.testToolsUsed
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1">Test Tools Used</Typography>
+                    <ChplTestToolsEdit
+                      testTools={criterion.testToolsUsed}
+                      options={resources.testTools.data}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { criterion.testDataUsed
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1">Test Data Used</Typography>
+                    <ChplTestDataEdit
+                      testData={criterion.testDataUsed}
+                      options={resources.testData.data}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { formik.values.sed !== null
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -307,19 +304,19 @@ function ChplCriterionDetailsEdit(props) {
                           checked={formik.values.sed}
                           onChange={onChange}
                         />
-                         )}
+                      )}
                       label={`SED: ${formik.values.sed ? 'True' : 'False'}`}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.apiDocumentation !== null
-                && (
+              )}
+            { formik.values.apiDocumentation !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <ChplTextField
                       id="api-documentation"
                       name="apiDocumentation"
@@ -330,16 +327,16 @@ function ChplCriterionDetailsEdit(props) {
                       error={formik.touched.apiDocumentation && formik.errors.apiDocumentation}
                       helperText={formik.touched.apiDocumentation && formik.errors.apiDocumentation}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.exportDocumentation !== null
-                && (
+              )}
+            { formik.values.exportDocumentation !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <ChplTextField
                       id="export-documentation"
                       name="exportDocumentation"
@@ -350,16 +347,16 @@ function ChplCriterionDetailsEdit(props) {
                       error={formik.touched.exportDocumentation && formik.errors.exportDocumentation}
                       helperText={formik.touched.exportDocumentation && formik.errors.exportDocumentation}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.attestationAnswer !== null
-                && (
+              )}
+            { formik.values.attestationAnswer !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -369,19 +366,19 @@ function ChplCriterionDetailsEdit(props) {
                           checked={formik.values.attestationAnswer}
                           onChange={onChange}
                         />
-                         )}
+                      )}
                       label={`Attestation: ${formik.values.attestationAnswer ? 'Yes' : 'No'}`}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.documentationUrl !== null
-                && (
+              )}
+            { formik.values.documentationUrl !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <ChplTextField
                       id="documentation-url"
                       name="documentationUrl"
@@ -392,16 +389,16 @@ function ChplCriterionDetailsEdit(props) {
                       error={formik.touched.documentationUrl && formik.errors.documentationUrl}
                       helperText={formik.touched.documentationUrl && formik.errors.documentationUrl}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.useCases !== null && formik.values.attestationAnswer
-                && (
+              )}
+            { formik.values.useCases !== null && formik.values.attestationAnswer
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <ChplTextField
                       id="use-cases"
                       name="useCases"
@@ -412,16 +409,16 @@ function ChplCriterionDetailsEdit(props) {
                       error={formik.touched.useCases && formik.errors.useCases}
                       helperText={formik.touched.useCases && formik.errors.useCases}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.serviceBaseUrlList !== null
-                && (
+              )}
+            { formik.values.serviceBaseUrlList !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <ChplTextField
                       id="service-base-url-list"
                       name="serviceBaseUrlList"
@@ -432,16 +429,16 @@ function ChplCriterionDetailsEdit(props) {
                       error={formik.touched.serviceBaseUrlList && formik.errors.serviceBaseUrlList}
                       helperText={formik.touched.serviceBaseUrlList && formik.errors.serviceBaseUrlList}
                     />
-                  </Grid>
+                  </div>
                 </>
-                )}
-              { formik.values.privacySecurityFramework !== null
-                && (
+              )}
+            { formik.values.privacySecurityFramework !== null
+              && (
                 <>
-                  <Grid item xs={12}>
+                  <div>
                     <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
+                  </div>
+                  <div>
                     <ChplTextField
                       select
                       id="privacy-security-framework"
@@ -454,11 +451,10 @@ function ChplCriterionDetailsEdit(props) {
                       <MenuItem value="Approach 2" key="Approach 2">Approach 2</MenuItem>
                       <MenuItem value="Approach 1;Approach 2" key="Approach 1;Approach 2">Approach 1;Approach 2</MenuItem>
                     </ChplTextField>
-                  </Grid>
+                  </div>
                 </>
-                )}
-            </Collapse>
-          </Grid>
+              )}
+          </Collapse>
         </CardContent>
         <CardActions>
           <Button
@@ -482,7 +478,7 @@ function ChplCriterionDetailsEdit(props) {
           </Button>
         </CardActions>
       </Card>
-    </>
+    </Container>
   );
 }
 
