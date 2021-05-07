@@ -22,12 +22,15 @@ function ChplSvapsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [svaps, setSvaps] = useState(props.svaps);
-  const [options, setOptions] = useState(props.options);
+  const [options, setOptions] = useState(
+    props.options
+      .filter((option) => !(props.svaps.find((used) => used.svapId === option.svapId))),
+  );
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
-      regulatoryTextCitation: '',
+      svap: '',
     },
     validationSchema,
     validateOnChange: false,
@@ -42,14 +45,12 @@ function ChplSvapsEdit(props) {
     const updated = [
       ...svaps,
       {
-        regulatoryTextCitation: formik.values.regulatoryTextCitation,
-        approvedStandardVersion: options.filter((option) => option.regulatoryTextCitation === formik.values.regulatoryTextCitation)[0].approvedStandardVersion,
+        ...formik.values.svap,
         key: (new Date()).getTime(),
-        svapId: options.filter((option) => option.regulatoryTextCitation === formik.values.regulatoryTextCitation)[0].svapId,
       },
     ];
     setSvaps(updated);
-    setOptions(options.filter((option) => option.regulatoryTextCitation !== formik.values.regulatoryTextCitation));
+    setOptions(options.filter((option) => option.svapId !== formik.values.svap.svapId));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -61,7 +62,7 @@ function ChplSvapsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = svaps.filter((s) => !(s.id === item.id && s.key === item.key));
+    const updated = svaps.filter((s) => !(s.svapId === item.svapId));
     setSvaps(updated);
     setOptions([...options, item]);
     update(updated);
@@ -122,14 +123,14 @@ function ChplSvapsEdit(props) {
             <Grid item xs={11}>
               <ChplTextField
                 select
-                id="regulatory-text-citation"
-                name="regulatoryTextCitation"
+                id="svap"
+                name="svap"
                 label="Standards Version Advancement Process"
-                value={formik.values.regulatoryTextCitation}
+                value={formik.values.svap}
                 onChange={formik.handleChange}
               >
                 { options.map((item) => (
-                  <MenuItem value={item.regulatoryTextCitation} key={item.id}>{item.regulatoryTextCitation}</MenuItem>
+                  <MenuItem value={item} key={item.svapId}>{item.regulatoryTextCitation}</MenuItem>
                 ))}
               </ChplTextField>
             </Grid>
