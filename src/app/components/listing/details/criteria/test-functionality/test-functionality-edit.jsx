@@ -41,7 +41,12 @@ function ChplTestFunctionalityEdit(props) {
   const addNew = () => {
     const updated = [
       ...testFunctionalityUsed,
-      formik.values.tf,
+      {
+        ...formik.values.tf,
+        id: undefined,
+        testFunctionalityId: formik.values.tf.id,
+        key: Date.now(),
+      },
     ];
     setTestFunctionalityUsed(updated);
     setOptions(options.filter((option) => option.id !== formik.values.tf.testFunctionalityId));
@@ -56,9 +61,12 @@ function ChplTestFunctionalityEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testFunctionalityUsed.filter((s) => !(s.id === item.id));
+    const updated = testFunctionalityUsed.filter((used) => used.testFunctionalityId !== item.testFunctionalityId);
     setTestFunctionalityUsed(updated);
-    setOptions([...options, item]);
+    setOptions([...options, {
+      ...item,
+      id: item.testFunctionalityId,
+    }]);
     update(updated);
   };
 
