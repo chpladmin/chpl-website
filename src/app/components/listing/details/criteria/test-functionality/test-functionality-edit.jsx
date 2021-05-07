@@ -42,14 +42,15 @@ function ChplTestFunctionalityEdit(props) {
     const updated = [
       ...testFunctionalityUsed,
       {
-        ...formik.values.tf,
+        description: formik.values.tf.description,
         id: undefined,
+        name: formik.values.tf.name,
         testFunctionalityId: formik.values.tf.id,
         key: Date.now(),
       },
     ];
     setTestFunctionalityUsed(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.tf.testFunctionalityId));
+    setOptions(options.filter((option) => option.id !== formik.values.tf.id));
     formik.resetForm();
     setAdding(false);
     update(updated);
