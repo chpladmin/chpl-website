@@ -96,7 +96,7 @@ function ChplCriterion(props) {
       <AccordionSummary
         className={classes.NestedAccordionLevelOneSummary}
         expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
-        id={`${criterion.id}-header`}
+        id={`criterion-id-${criterion.criterion.id}-header`}
       >
         <Grid container spacing={4}>
           <Grid item xs={1}>
@@ -152,7 +152,7 @@ function ChplCriterion(props) {
               { criterion.criterion.removed
                 && (
                   <ChplTooltip title="This certification criterion has been removed from the Program.">
-                    <InfoOutlinedIcon fontSize="large"/>
+                    <InfoOutlinedIcon fontSize="large" />
                   </ChplTooltip>
                 )}
             </Typography>
