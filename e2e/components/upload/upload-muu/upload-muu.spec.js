@@ -25,12 +25,14 @@ describe('When uploading Muu file as an admin', () => {
   });
 
   it('can upload valid format of Muu file', () => {
+    uploadMuuComponent.accurateAsOfDate.setValue('01/01/2021');
     uploadMuuComponent.uploadMuu('../../../resources/muu/MUU_upload.csv');
     browser.waitUntil( () => toast.toastTitle.isDisplayed());
     expect(toast.toastTitle.getText()).toBe('Success');
   });
 
   it('cant upload invalid format of Muu file', () => {
+    uploadMuuComponent.accurateAsOfDate.setValue('01/01/2021');
     uploadMuuComponent.uploadMuu('../../../resources/apiDoc/APIDoc_File.xlsx');
     browser.waitUntil( () => toast.toastTitle.isDisplayed());
     expect(toast.toastTitle.getText()).toBe('Error');

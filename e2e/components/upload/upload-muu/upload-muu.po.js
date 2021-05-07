@@ -2,6 +2,7 @@ const uploadElements = {
   root: 'chpl-upload-meaningful-use-bridge',
   chooseUploadMuu: '//input[@id="upload-meaningful-use"]',
   uploadButton: '.MuiButton-containedPrimary',
+  accurateAsOfDate: '#accurate-as-of',
 };
 
 const path = require('path');
@@ -15,6 +16,10 @@ class UploadMuuComponent {
 
   get uploadButton () {
     return $(uploadElements.root).$(uploadElements.uploadButton);
+  }
+
+  get accurateAsOfDate () {
+    return $(uploadElements.accurateAsOfDate);
   }
 
   uploadMuu (uploadfilePath) {
