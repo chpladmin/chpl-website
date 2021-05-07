@@ -1,16 +1,17 @@
-import OrganizationPage from './organizations.po';
+import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import LoginComponent from '../../../components/login/login.po';
 import AddressComponent from '../../../components/address/address.po';
 
-let address; let hooks; let login; let
-  page;
+let address;
+let hooks;
+let login;
+let page;
 
 describe('the ONC-ACB Management page', () => {
   const timestamp = (new Date()).getTime();
   const websiteUrl = `https://website${timestamp}.com`;
   const organizationType = 'ACB';
-  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   const acbAddress = {
     address: `address${timestamp}`,
     city: `city${timestamp}`,
@@ -91,27 +92,6 @@ describe('the ONC-ACB Management page', () => {
       expect(page.newOrganizationGeneralInfo.getText()).toContain(acbAddress.state);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(acbAddress.zip);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(acbAddress.country);
-    });
-
-    it('should allow user to unretire and retire existing ACB', () => {
-      const acb = 'CCHIT';
-      const acbId = '2';
-      page.organizationNameButton(acb).click();
-      page.organizationEditButton.click();
-      page.retireOrganizationCheckbox.click();
-      page.organizationWebsite.setValue(websiteUrl);
-      address.set(acbAddress);
-      page.saveOrganizationButton.click();
-      expect(page.retiredStatus(organizationType, acbId).getText()).toContain('Retired: No');
-      hooks.open('#/organizations/onc-acbs');
-      page.organizationNameButton(acb).click();
-      page.organizationEditButton.click();
-      hooks.waitForSpinnerToDisappear();
-      page.retireOrganizationCheckbox.click();
-      page.retirementDate.setValue(today);
-      page.saveOrganizationButton.click();
-      hooks.waitForSpinnerToDisappear();
-      expect(page.retiredStatus(organizationType, acbId).getText()).toContain('Retired: Yes');
     });
   });
 });

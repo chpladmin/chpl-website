@@ -6,11 +6,9 @@ const elements = {
   organizationList: '.organizations-side-nav',
   retireOrganization: '#organization-retired',
   retirementDate: '#retirement-date',
+  addressOnEdit: 'chpl-address',
   manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
   errorMessage: '.text-danger.ng-scope',
-  newOrganizationGeneralInfo: '//*[@id="main-content"]/div/div/ui-view/chpl-onc-organizations/div[2]/div[2]/div[1]/div[2]',
-  addressLine1OnEdit: '//*[@id="chpl-organization-edit"]/div/chpl-address/span/span/div[1]/div[1]/div',
-  manageUsersPanelBody: '//*[@id="main-content"]/div/div/ui-view/chpl-onc-organizations/div[2]/div[2]/div[2]/div[2]/chpl-users/span/div[2]',
 };
 
 class OrganizationPage {
@@ -22,6 +20,10 @@ class OrganizationPage {
 
   get organizationList() {
     return $(elements.organizationList);
+  }
+
+  organizationListCount() {
+    return $(elements.organizationList).length;
   }
 
   get organizationEditButton() {
@@ -57,11 +59,11 @@ class OrganizationPage {
   }
 
   get manageUsersPanel() {
-    return $(elements.manageUsersPanelBody);
+    return $('chpl-users');
   }
 
   get newOrganizationGeneralInfo() {
-    return $(elements.newOrganizationGeneralInfo);
+    return $('chpl-onc-organization');
   }
 
   retiredStatus(organizationType, organizationId) {
@@ -76,12 +78,8 @@ class OrganizationPage {
     return $(elements.errorMessage);
   }
 
-  get addressLine1errorMessage() {
-    return $(elements.addressLine1OnEdit);
-  }
-
-  impersonateUser(userId) {
-    return $(`//*[@id="user-component-impersonate-${userId}"]`);
+  get addressErrorMessage() {
+    return $(elements.addressOnEdit);
   }
 }
 

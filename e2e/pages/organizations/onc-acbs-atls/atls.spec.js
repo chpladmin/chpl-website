@@ -1,16 +1,20 @@
-import OrganizationPage from './organizations.po';
+import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
+import UsersPage from '../../users/user.po';
 
-let address; let hooks; let login; let page; let
-  toast;
+let address;
+let hooks;
+let login;
+let page;
+let toast;
+let user;
 
 describe('the ONC-ATL Management page', () => {
   const timestamp = (new Date()).getTime();
   const websiteUrl = `http://www.example${timestamp}.com`;
-  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   const atlAddress = {
     address: `address${timestamp}`,
     city: `city${timestamp}`,
@@ -27,6 +31,7 @@ describe('the ONC-ATL Management page', () => {
     address = new AddressComponent();
     login = new LoginComponent();
     toast = new ToastComponent();
+    user = new UsersPage();
     await hooks.open('#/organizations/onc-atls');
   });
 
@@ -36,8 +41,8 @@ describe('the ONC-ATL Management page', () => {
       login.logIn('onc');
       login.logoutButton.waitForDisplayed();
       hooks.open('#/users');
-      page.impersonateUser(userID).scrollIntoView({ block: 'center', inline: 'center' });
-      page.impersonateUser(userID).click();
+      user.impersonateUser(userID).scrollIntoView({ block: 'center', inline: 'center' });
+      user.impersonateUser(userID).click();
       hooks.open('#/organizations/onc-atls');
     });
 
@@ -71,6 +76,7 @@ describe('the ONC-ATL Management page', () => {
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(atlAddress.country);
     });
   });
+
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
@@ -98,29 +104,6 @@ describe('the ONC-ATL Management page', () => {
       expect(page.newOrganizationGeneralInfo.getText()).toContain(atlAddress.state);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(atlAddress.zip);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(atlAddress.country);
-    });
-
-    it('should allow user to unretire and retire existing ATL', () => {
-      const atl = 'CCHIT';
-      const organizationType = 'ATL';
-      const atlId = '2';
-      hooks.open('#/organizations/onc-atls');
-      page.organizationNameButton(atl).click();
-      page.organizationEditButton.click();
-      page.retireOrganizationCheckbox.click();
-      page.organizationWebsite.setValue(websiteUrl);
-      address.set(atlAddress);
-      page.saveOrganizationButton.click();
-      expect(page.retiredStatus(organizationType, atlId).getText()).toContain('Retired: No');
-      hooks.open('#/organizations/onc-atls');
-      page.organizationNameButton(atl).click();
-      page.organizationEditButton.click();
-      hooks.waitForSpinnerToDisappear();
-      page.retireOrganizationCheckbox.click();
-      page.retirementDate.setValue(today);
-      page.saveOrganizationButton.click();
-      hooks.waitForSpinnerToDisappear();
-      expect(page.retiredStatus(organizationType, atlId).getText()).toContain('Retired: Yes');
     });
   });
 });
