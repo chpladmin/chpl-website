@@ -58,6 +58,7 @@ function ChplCriterionDetailsEdit(props) {
       gap: criterion.gap,
       privacySecurityFramework: criterion.privacySecurityFramework,
       sed: criterion.sed,
+      serviceBaseUrlList: criterion.serviceBaseUrlList,
       useCases: criterion.useCases,
     },
     validationSchema,
@@ -83,6 +84,7 @@ function ChplCriterionDetailsEdit(props) {
       gap: formik.values.gap,
       privacySecurityFramework: formik.values.privacySecurityFramework,
       sed: formik.values.sed,
+      serviceBaseUrlList: formik.values.serviceBaseUrlList,
       useCases: formik.values.useCases,
     };
     props.onSave(toSave);
@@ -409,6 +411,26 @@ function ChplCriterionDetailsEdit(props) {
                       onBlur={formik.handleBlur}
                       error={formik.touched.useCases && formik.errors.useCases}
                       helperText={formik.touched.useCases && formik.errors.useCases}
+                    />
+                  </Grid>
+                </>
+                )}
+              { formik.values.serviceBaseUrlList !== null
+                && (
+                <>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ChplTextField
+                      id="service-base-url-list"
+                      name="serviceBaseUrlList"
+                      label="Service Base URL List"
+                      value={formik.values.serviceBaseUrlList}
+                      onChange={onChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.serviceBaseUrlList && formik.errors.serviceBaseUrlList}
+                      helperText={formik.touched.serviceBaseUrlList && formik.errors.serviceBaseUrlList}
                     />
                   </Grid>
                 </>
