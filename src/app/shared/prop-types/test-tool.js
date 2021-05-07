@@ -14,7 +14,7 @@ const selectedTestTool = shape({
   retired: bool,
   testToolId: number,
   testToolName: string,
-  testToolVerion: string,
+  testToolVersion: string,
 });
 
 export { testTool, selectedTestTool };

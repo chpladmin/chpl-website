@@ -22,12 +22,16 @@ function ChplTestToolsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options, setOptions] = useState(props.options);
+  const [options, setOptions] = useState(
+    props.options
+      .filter((option) => !(props.testTools.find((used) => used.testToolId === option.id)))
+      .sort((a, b) => (a.name < b.name ? -1 : 1)),
+  );
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      tt: '',
       version: '',
     },
     validationSchema,
@@ -43,13 +47,14 @@ function ChplTestToolsEdit(props) {
     const updated = [
       ...testToolsUsed,
       {
-        testToolName: formik.values.name,
+        testToolId: formik.values.tt.id,
+        testToolName: formik.values.tt.name,
         testToolVersion: formik.values.version,
         key: (new Date()).getTime(),
       },
     ];
     setTestToolsUsed(updated);
-    setOptions(options.filter((option) => option.name !== formik.values.name));
+    setOptions(options.filter((option) => option.id !== formik.values.tt.id));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -61,9 +66,15 @@ function ChplTestToolsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testToolsUsed.filter((s) => !(s.id === item.id && s.key === item.key));
+    const updated = testToolsUsed.filter((s) => !(s.testToolId === item.testToolId));
     setTestToolsUsed(updated);
-    setOptions([...options, item]);
+    setOptions([
+      ...options,
+      {
+        id: item.testToolId,
+        name: item.testToolName,
+      },
+    ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);
   };
 
@@ -122,14 +133,14 @@ function ChplTestToolsEdit(props) {
             <Grid item xs={6}>
               <ChplTextField
                 select
-                id="name"
-                name="name"
+                id="tt"
+                name="tt"
                 label="Test Tool Used"
-                value={formik.values.name}
+                value={formik.values.tt}
                 onChange={formik.handleChange}
               >
                 { options.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
             </Grid>
