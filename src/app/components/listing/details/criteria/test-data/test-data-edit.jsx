@@ -22,12 +22,12 @@ function ChplTestDataEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [testDataUsed, setTestDataUsed] = useState(props.testData.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options, setOptions] = useState(props.options);
+  const [options, setOptions] = useState(props.options.filter((option) => props.testData.filter((used) => used.testData.id === option.id).length === 0));
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      td: '',
       version: '',
       alteration: '',
     },
@@ -44,16 +44,14 @@ function ChplTestDataEdit(props) {
     const updated = [
       ...testDataUsed,
       {
-        testData: {
-          name: formik.values.name,
-        },
+        testData: formik.values.td,
         version: formik.values.version,
         alteration: formik.values.alteration,
         key: (new Date()).getTime(),
       },
     ];
     setTestDataUsed(updated);
-    setOptions(options.filter((option) => option.name !== formik.values.name));
+    setOptions(options.filter((option) => option.id !== formik.values.td.id));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -65,9 +63,9 @@ function ChplTestDataEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testDataUsed.filter((s) => !(s.id === item.id && s.key === item.key));
+    const updated = testDataUsed.filter((s) => !(s.testData.id === item.testData.id));
     setTestDataUsed(updated);
-    setOptions([...options, item]);
+    setOptions([...options, item.testData]);
     update(updated);
   };
 
@@ -132,14 +130,14 @@ function ChplTestDataEdit(props) {
             <Grid item xs={3}>
               <ChplTextField
                 select
-                id="name"
-                name="name"
+                id="td"
+                name="td"
                 label="Test Data Used"
-                value={formik.values.name}
+                value={formik.values.td}
                 onChange={formik.handleChange}
               >
                 { options.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
             </Grid>
