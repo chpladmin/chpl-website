@@ -7,6 +7,7 @@ import {
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { LocalDate } from '@js-joda/core';
 import { getAngularService } from '.';
 import ChplTextField from '../../util/chpl-text-field';
@@ -23,6 +24,13 @@ const useStyles = makeStyles(() => ({
     gridColumn: '1 / -1',
   },
 }));
+
+const validationSchema = yup.object({
+  year: yup.string()
+    .required('Year is required'),
+  quarter: yup.string()
+    .required('Quarter is required'),
+});
 
 function ChplSurveillanceActivityReportingDateSelector() {
   const networkService = getAngularService('networkService');
@@ -92,6 +100,9 @@ function ChplSurveillanceActivityReportingDateSelector() {
     onSubmit: (values) => {
       submitRequest(values);
     },
+    validationSchema,
+    validateOnChange: false,
+    validateOnBlur: true,
   });
 
   return (
@@ -112,6 +123,9 @@ function ChplSurveillanceActivityReportingDateSelector() {
           label="year"
           value={formik.values.year}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.year && formik.errors.year}
+          helperText={formik.touched.year && formik.errors.year}
         >
           <MenuItem value="" />
           {getYears().map((year) => (
@@ -127,6 +141,9 @@ function ChplSurveillanceActivityReportingDateSelector() {
           label="Quarter"
           value={formik.values.quarter}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.quarter && formik.errors.quarter}
+          helperText={formik.touched.quarter && formik.errors.quarter}
         >
           <MenuItem value="" />
           <MenuItem value="all">All</MenuItem>
