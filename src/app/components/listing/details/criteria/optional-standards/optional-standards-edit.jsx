@@ -24,7 +24,7 @@ function ChplOptionalStandardsEdit(props) {
   const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
-      .filter((option) => props.optionalStandards.filter((used) => (used.testStandardId === option.id).length === 0))
+      .filter((option) => !(props.optionalStandards.find((used) => used.testStandardId === option.id)))
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
   /* eslint-enable react/destructuring-assignment */
@@ -53,7 +53,7 @@ function ChplOptionalStandardsEdit(props) {
       },
     ];
     setOptionalStandards(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.os.testStandardId));
+    setOptions(options.filter((option) => option.id !== formik.values.os.id));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -65,7 +65,7 @@ function ChplOptionalStandardsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = optionalStandards.filter((s) => !(s.testStandardId === item.testStandardId));
+    const updated = optionalStandards.filter((s) => s.testStandardId !== item.testStandardId);
     setOptionalStandards(updated);
     setOptions([
       ...options,
@@ -74,7 +74,7 @@ function ChplOptionalStandardsEdit(props) {
         id: item.testStandardId,
         name: item.testStandardName,
       },
-    ]);
+    ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);
   };
 
