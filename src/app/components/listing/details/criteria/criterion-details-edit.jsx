@@ -330,6 +330,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">API Documentation</Typography>
                     <ChplTextField
                       id="api-documentation"
                       name="apiDocumentation"
@@ -350,6 +351,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Export Documentation</Typography>
                     <ChplTextField
                       id="export-documentation"
                       name="exportDocumentation"
@@ -393,6 +395,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Documentation</Typography>
                     <ChplTextField
                       id="documentation-url"
                       name="documentationUrl"
@@ -413,6 +416,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Use Cases</Typography>
                     <ChplTextField
                       id="use-cases"
                       name="useCases"
@@ -433,6 +437,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Service Base URL List</Typography>
                     <ChplTextField
                       id="service-base-url-list"
                       name="serviceBaseUrlList"
@@ -453,6 +458,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Privacy &amp; Security Framework</Typography>
                     <ChplTextField
                       select
                       id="privacy-security-framework"
