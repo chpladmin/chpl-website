@@ -147,7 +147,7 @@ function ChplOptionalStandardsEdit(props) {
           </TableContainer>
         )}
       <div className={classes.dataEntry}>
-        { !adding
+        { !adding && options.length > 0
           && (
             <div className={classes.dataEntryAddNew}>
               <Button
