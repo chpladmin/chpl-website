@@ -1,19 +1,49 @@
 import React, { useState } from 'react';
 import { arrayOf, func } from 'prop-types';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
-  Grid,
+  ButtonGroup,
+  Container,
   IconButton,
   MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from '../../../../util';
 import { svap, selectedSvap } from '../../../../../shared/prop-types';
+
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'grid',
+    gap: '8px',
+  },
+  dataEntry: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 1fr',
+    gap: '4px',
+  },
+  dataEntryActions: {
+    gridColumn: '3 / 3',
+    alignSelf: 'center',
+    justifySelf: 'center',
+  },
+  dataEntryAddNew: {
+    gridColumn: '1 / 3',
+  },
+}));
 
 const validationSchema = yup.object({
 });
@@ -26,6 +56,7 @@ function ChplSvapsEdit(props) {
     props.options
       .filter((option) => !(props.svaps.find((used) => used.svapId === option.svapId))),
   );
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -69,58 +100,64 @@ function ChplSvapsEdit(props) {
   };
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
-        <Grid container spacing={4}>
-          <Grid item xs={3}>
-            <Typography variant="subtitle2">Regulatory Text Citation</Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Typography variant="subtitle2">Approved Standard Version</Typography>
-          </Grid>
-          <Grid item xs={1} />
-        </Grid>
-      </Grid>
-      { svaps.map((item) => (
-        <Grid item xs={12} key={item.id || item.key}>
-          <Grid container spacing={4}>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">{ item.regulatoryTextCitation }</Typography>
-            </Grid>
-            <Grid item xs={8}>
-              <Typography variant="subtitle2">{ item.approvedStandardVersion }</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              { !adding
-                && (
-                <IconButton
-                  onClick={() => removeItem(item)}
-                >
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small"
-                  />
-                </IconButton>
-                )}
-            </Grid>
-          </Grid>
-        </Grid>
-      ))}
-      { !adding && options.length > 0
+    <Container className={classes.container}>
+      { svaps.length > 0
         && (
-        <Grid item xs={12}>
-          <Button
-            onClick={() => setAdding(true)}
-          >
-            Add item
-          </Button>
-        </Grid>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><Typography variant="subtitle2">Regulatory Text Citation</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">Approved Standard Version</Typography></TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { svaps.map((item) => (
+                  <TableRow key={item.id || item.key}>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.regulatoryTextCitation }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.approvedStandardVersion }</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      { !adding
+                        && (
+                          <IconButton
+                            onClick={() => removeItem(item)}
+                          >
+                            <CloseIcon
+                              color="primary"
+                              size="small"
+                            />
+                          </IconButton>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
-      { adding
-        && (
-        <Grid item xs={12}>
-          <Grid container spacing={4}>
-            <Grid item xs={11}>
+      <div className={classes.dataEntry}>
+        { !adding && options.length > 0
+          && (
+            <div className={classes.dataEntryAddNew}>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => setAdding(true)}
+              >
+                Add item
+                {' '}
+                <AddIcon />
+              </Button>
+            </div>
+          )}
+        { adding
+          && (
+            <>
               <ChplTextField
                 select
                 id="svap"
@@ -133,28 +170,25 @@ function ChplSvapsEdit(props) {
                   <MenuItem value={item} key={item.svapId}>{item.regulatoryTextCitation}</MenuItem>
                 ))}
               </ChplTextField>
-            </Grid>
-            <Grid item xs={1}>
-              <Button
+              <ButtonGroup
                 color="primary"
-                variant="outlined"
-                onClick={addNew}
+                className={classes.dataEntryActions}
               >
-                <CheckOutlinedIcon />
-              </Button>
-              <IconButton
-                onClick={() => cancelAdd()}
-              >
-                <CloseOutlinedIcon
-                  color="primary"
-                  size="small"
-                />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Grid>
-        )}
-    </Grid>
+                <Button
+                  onClick={addNew}
+                >
+                  <CheckIcon />
+                </Button>
+                <Button
+                  onClick={() => cancelAdd()}
+                >
+                  <CloseIcon />
+                </Button>
+              </ButtonGroup>
+            </>
+          )}
+      </div>
+    </Container>
   );
 }
 
