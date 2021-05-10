@@ -4,15 +4,39 @@ import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
-  Grid,
+  Container,
   IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from '../../../../util';
 import { reliedUponSoftware } from '../../../../../shared/prop-types';
+
+const useStyles = makeStyles(() => ({
+  dataEntry: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 2fr 1fr',
+  },
+  dataEntryActions: {
+    gridColumn: '3 / 4',
+    gridRow: '1 / 3',
+    alignSelf: 'center',
+  },
+  dataEntryAddNew: {
+    gridColumn: '1 / 4',
+    gridRow: '1 / 3',
+  },
+}));
 
 const validationSchema = yup.object({
 });
@@ -21,6 +45,7 @@ function ChplReliedUponSoftwareEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [software, setSoftware] = useState(props.software);
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -68,70 +93,82 @@ function ChplReliedUponSoftwareEdit(props) {
   };
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
-        <Grid container spacing={4}>
-          <Grid item xs={3}>
-            <Typography variant="subtitle2">Name</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="subtitle2">Version</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="subtitle2">CHPL ID</Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography variant="subtitle2">Group</Typography>
-          </Grid>
-          <Grid item xs={1} />
-        </Grid>
-      </Grid>
-      { software.map((item) => (
-        <Grid item xs={12} key={item.id || item.key}>
-          <Grid container spacing={4}>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">{ item.name }</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">{ item.version }</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">{ item.certifiedProductNumber }</Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle2">{ item.grouping }</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              { !adding
-                && (
+    <Container>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
+              <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
+              <TableCell><Typography variant="subtitle2">CHPL ID</Typography></TableCell>
+              <TableCell><Typography variant="subtitle2">Group</Typography></TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { software.map((item) => (
+              <TableRow key={item.id || item.key}>
+                <TableCell>
+                  <Typography variant="subtitle2">{ item.name }</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">{ item.version }</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">{ item.certifiedProductNumber }</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2">{ item.grouping }</Typography>
+                </TableCell>
+                <TableCell>
+                  { !adding
+                    && (
+                      <IconButton
+                        onClick={() => removeItem(item)}
+                      >
+                        <CloseOutlinedIcon
+                          color="primary"
+                          size="small"
+                        />
+                      </IconButton>
+                    )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <div className={classes.dataEntry}>
+        { !adding
+          && (
+            <div className={classes.dataEntryAddNew}>
+              <Button
+                onClick={() => setAdding(true)}
+              >
+                Add item
+              </Button>
+            </div>
+          )}
+        { adding
+          && (
+            <>
+              <div className={classes.dataEntryActions}>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={addNew}
+                >
+                  <CheckOutlinedIcon />
+                </Button>
                 <IconButton
-                  onClick={() => removeItem(item)}
+                  onClick={() => cancelAdd()}
                 >
                   <CloseOutlinedIcon
                     color="primary"
                     size="small"
                   />
                 </IconButton>
-                )}
-            </Grid>
-          </Grid>
-        </Grid>
-      ))}
-      { !adding
-        && (
-        <Grid item xs={12}>
-          <Button
-            onClick={() => setAdding(true)}
-          >
-            Add item
-          </Button>
-        </Grid>
-        )}
-      { adding
-        && (
-        <Grid item xs={12}>
-          <Grid container spacing={4}>
-            <Grid item xs={6}>
+              </div>
               <ChplTextField
                 id="name"
                 name="name"
@@ -143,8 +180,6 @@ function ChplReliedUponSoftwareEdit(props) {
                 error={formik.touched.name && formik.errors.name}
                 helperText={formik.touched.name && formik.errors.name}
               />
-            </Grid>
-            <Grid item xs={6}>
               <ChplTextField
                 id="version"
                 name="version"
@@ -156,8 +191,6 @@ function ChplReliedUponSoftwareEdit(props) {
                 error={formik.touched.version && formik.errors.version}
                 helperText={formik.touched.version && formik.errors.version}
               />
-            </Grid>
-            <Grid item xs={6}>
               <ChplTextField
                 id="certified-product-number"
                 name="certifiedProductNumber"
@@ -169,8 +202,6 @@ function ChplReliedUponSoftwareEdit(props) {
                 error={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
                 helperText={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
               />
-            </Grid>
-            <Grid item xs={4}>
               <ChplTextField
                 id="grouping"
                 name="grouping"
@@ -181,28 +212,10 @@ function ChplReliedUponSoftwareEdit(props) {
                 error={formik.touched.grouping && formik.errors.grouping}
                 helperText={formik.touched.grouping && formik.errors.grouping}
               />
-            </Grid>
-            <Grid item xs={2}>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={addNew}
-              >
-                <CheckOutlinedIcon />
-              </Button>
-              <IconButton
-                onClick={() => cancelAdd()}
-              >
-                <CloseOutlinedIcon
-                  color="primary"
-                  size="small"
-                />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Grid>
-        )}
-    </Grid>
+            </>
+          )}
+      </div>
+    </Container>
   );
 }
 
