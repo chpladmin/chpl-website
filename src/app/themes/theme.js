@@ -168,6 +168,7 @@ const theme = createMuiTheme({
     MuiDivider: {
       root: {
         color: '#c2c6ca',
+        margin: '8px 0',
       },
     },
     MuiFormControl: {
