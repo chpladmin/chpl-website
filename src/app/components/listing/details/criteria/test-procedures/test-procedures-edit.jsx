@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { arrayOf, func } from 'prop-types';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
-  Grid,
+  ButtonGroup,
+  Container,
   IconButton,
   MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,11 +28,31 @@ import { testProcedure, selectedTestProcedure } from '../../../../../shared/prop
 const validationSchema = yup.object({
 });
 
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'grid',
+    gap: '8px',
+  },
+  dataEntry: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 2fr 1fr',
+    gap: '4px',
+  },
+  dataEntryActions: {
+    alignSelf: 'center',
+    justifySelf: 'center',
+  },
+  dataEntryAddNew: {
+    gridColumn: '1 / -1',
+  },
+}));
+
 function ChplTestProceduresEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
   const [testProcedures, setTestProcedures] = useState(props.testProcedures.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(props.options.filter((option) => props.testProcedures.filter((used) => used.testProcedure.id === option.id).length === 0));
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -68,105 +98,106 @@ function ChplTestProceduresEdit(props) {
   };
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
-        <Grid container spacing={4}>
-          <Grid item xs={6}>
-            <Typography variant="subtitle2">Name</Typography>
-          </Grid>
-          <Grid item xs={5}>
-            <Typography variant="subtitle2">Version</Typography>
-          </Grid>
-          <Grid item xs={1} />
-        </Grid>
-      </Grid>
-      { testProcedures.map((item) => (
-        <Grid item xs={12} key={item.id || item.key}>
-          <Grid container spacing={4}>
-            <Grid item xs={6}>
-              <Typography variant="subtitle2">{ item.testProcedure.name }</Typography>
-            </Grid>
-            <Grid item xs={5}>
-              <Typography variant="subtitle2">{ item.testProcedureVersion }</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              { !adding
-                && (
-                  <IconButton
-                    onClick={() => removeItem(item)}
-                  >
-                    <CloseOutlinedIcon
-                      color="primary"
-                      size="small"
-                    />
-                  </IconButton>
-                )}
-            </Grid>
-          </Grid>
-        </Grid>
-      ))}
-      { !adding && options.length > 0
+    <Container className={classes.container}>
+      { testProcedures.length > 0
         && (
-          <Grid item xs={12}>
-            <Button
-              onClick={() => setAdding(true)}
-            >
-              Add item
-            </Button>
-          </Grid>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { testProcedures.map((item) => (
+                  <TableRow key={item.id || item.key}>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.testProcedure.name }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.testProcedureVersion }</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      { !adding
+                        && (
+                          <IconButton
+                            onClick={() => removeItem(item)}
+                          >
+                            <CloseIcon
+                              color="primary"
+                              size="small"
+                            />
+                          </IconButton>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
-      { adding
-        && (
-          <Grid item xs={12}>
-            <Grid container spacing={4}>
-              <Grid item xs={6}>
-                <ChplTextField
-                  select
-                  id="name"
-                  name="name"
-                  label="Procedure Tested"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                >
-                  { options.map((item) => (
-                    <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                  ))}
-                </ChplTextField>
-              </Grid>
-              <Grid item xs={5}>
-                <ChplTextField
-                  id="version"
-                  name="version"
-                  label="Version"
-                  required
-                  value={formik.values.version}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.version && formik.errors.version}
-                  helperText={formik.touched.version && formik.errors.version}
-                />
-              </Grid>
-              <Grid item xs={1}>
+      <div className={classes.dataEntry}>
+        { !adding && options.length > 0
+          && (
+            <div className={classes.dataEntryAddNew}>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => setAdding(true)}
+              >
+                Add item
+                {' '}
+                <AddIcon />
+              </Button>
+            </div>
+          )}
+        { adding
+          && (
+            <>
+              <ChplTextField
+                select
+                id="name"
+                name="name"
+                label="Procedure Tested"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+              >
+                { options.map((item) => (
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                ))}
+              </ChplTextField>
+              <ChplTextField
+                id="version"
+                name="version"
+                label="Version"
+                required
+                value={formik.values.version}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.version && formik.errors.version}
+                helperText={formik.touched.version && formik.errors.version}
+              />
+              <ButtonGroup
+                color="primary"
+                className={classes.dataEntryActions}
+              >
                 <Button
-                  color="primary"
-                  variant="outlined"
                   onClick={addNew}
                 >
-                  <CheckOutlinedIcon />
+                  <CheckIcon />
                 </Button>
-                <IconButton
+                <Button
                   onClick={() => cancelAdd()}
                 >
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small"
-                  />
-                </IconButton>
-              </Grid>
-            </Grid>
-          </Grid>
-        )}
-    </Grid>
+                  <CloseIcon />
+                </Button>
+              </ButtonGroup>
+            </>
+          )}
+      </div>
+    </Container>
   );
 }
 
