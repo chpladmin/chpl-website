@@ -36,12 +36,11 @@ const useStyles = makeStyles(() => ({
     gap: '4px',
   },
   dataEntryActions: {
-    gridColumn: '3 / 3',
     alignSelf: 'center',
     justifySelf: 'center',
   },
   dataEntryAddNew: {
-    gridColumn: '1 / 3',
+    gridColumn: '1 / -1',
   },
 }));
 

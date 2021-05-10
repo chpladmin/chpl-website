@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
     justifySelf: 'center',
   },
   dataEntryAddNew: {
-    gridColumn: '1 / 4',
+    gridColumn: '1 / -1',
     gridRow: '1 / 3',
   },
 }));
