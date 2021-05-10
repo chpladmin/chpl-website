@@ -12,6 +12,7 @@ import { LocalDate } from '@js-joda/core';
 import { getAngularService } from '.';
 import ChplTextField from '../../util/chpl-text-field';
 import theme from '../../../themes/theme';
+import { within } from '@testing-library/dom';
 
 const useStyles = makeStyles(() => ({
   grid: {
@@ -118,14 +119,17 @@ function ChplSurveillanceActivityReportingDateSelector() {
         </div>
         <ChplTextField
           select
+          required
           id="year"
           name="year"
-          label="year"
+          label="Year"
           value={formik.values.year}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.year && formik.errors.year}
           helperText={formik.touched.year && formik.errors.year}
+          inputProps={{ 'data-testid': 'year-input' }}
+          formHelperTextProps={{ 'data-testid': 'year-helper-text' }}
         >
           <MenuItem value="" />
           {getYears().map((year) => (
@@ -136,6 +140,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
         </ChplTextField>
         <ChplTextField
           select
+          required
           id="quarter"
           name="quarter"
           label="Quarter"
@@ -144,6 +149,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
           onBlur={formik.handleBlur}
           error={formik.touched.quarter && formik.errors.quarter}
           helperText={formik.touched.quarter && formik.errors.quarter}
+          inputProps={{ 'data-testid': 'quarter-input' }}
         >
           <MenuItem value="" />
           <MenuItem value="all">All</MenuItem>

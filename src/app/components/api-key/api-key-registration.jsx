@@ -55,6 +55,7 @@ function ChplApiKeyRegistration() {
           formik.resetForm();
         }
       }, (error) => {
+        console.log(JSON.stringify(error));
         toaster.pop({
           type: 'error',
           body: error.data.errorMessages[0],
