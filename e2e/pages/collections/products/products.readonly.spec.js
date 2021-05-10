@@ -1,22 +1,22 @@
-import CorrectiveActionPage from './corrective-action.po';
+import ProductsPage from './products.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let
   page;
 const DEVELOPER_COL_IDX = 2;
-const developerName = 'Greenway';
+const developerName = 'LifeSource';
 const VERSION_COL_IDX = 4;
-const versionName = 'v.12';
+const versionName = 'Version 7';
 const PRODUCT_COL_IDX = 3;
-const productName = 'Intergy EHR';
-const CHPLID_COL_IDX = 5;
-const chplIdName = '15.04.04.2913.Gree.11.01.1.180919';
+const productName = 'AtTheScene';
+const CHPLID_COL_IDX = 9;
+const chplIdName = '15.04.04.2943.Soci.01.00.1.161215';
 
 describe('the Corrective Action collection page', () => {
   beforeEach(async () => {
-    page = new CorrectiveActionPage();
+    page = new ProductsPage();
     hooks = new Hooks();
-    await hooks.open('#/collections/corrective-action');
+    await hooks.open('#/collections/products');
   });
 
   describe('after it\'s loaded', () => {
@@ -25,11 +25,11 @@ describe('the Corrective Action collection page', () => {
     });
 
     it('should have body text', () => {
-      expect(page.bodyText.getText()).toContain('This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as "Surveillance NCs", while non-conformities identified though an ONC Direct Review are noted as "Direct Review NCs". Not all non-conformities affect a product\'s functionality, and the existence of a non-conformity does not by itself mean that a product is "defective." Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product\'s CHPL ID.\nPlease note that by default, only listings that are active or suspended are shown in the search results.');
+      expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the CHPL Public User Guide.');
     });
 
     it('should have table headers in a defined order', () => {
-      const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'CHPL ID', 'ONC-ACB', '# Open Surveillance NCs', '# Closed Surveillance NCs', '# Open Direct Review NCs', '# Closed Direct Review NCs'];
+      const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Date', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID', 'Status'];
       const actualHeaders = page.getListingTableHeaders();
       expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
       actualHeaders.forEach((header, idx) => {
@@ -72,20 +72,22 @@ describe('the Corrective Action collection page', () => {
         });
       });
 
-      describe('using certification status filter to select withdrawn by developer', () => {
+      describe('using certification status filter to select withdrawn by ONC-ACB', () => {
         beforeEach(() => {
-          page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
+          page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
           page.waitForUpdatedListingResultsCount();
         });
 
         it('should filter listing results', () => {
           countAfter = page.listingTotalCount();
-          expect(countAfter).toBeGreaterThan(countBefore);
+          expect(countAfter).toBeLessThanOrEqual(countBefore);
         });
       });
-      describe('using certification status filter to select open non conformity', () => {
+      describe('using date filter', () => {
         beforeEach(() => {
-          page.selectFilter('nonconformities', 'open-nonconformity');
+          page.dateFilter.click();
+          page.fromDate.addValue('09/01/2017');
+          page.toDate.addValue('10/01/2020');
           page.waitForUpdatedListingResultsCount();
         });
 

@@ -1,7 +1,7 @@
 import CollectionsPage from '../collections.po';
 
 class CorrectiveActionPage extends CollectionsPage {
-  constructor () {
+  constructor() {
     super();
   }
 }

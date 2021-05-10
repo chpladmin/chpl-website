@@ -4,66 +4,81 @@ const elements = {
   searchBar: '#generalFilter',
   pagination: '.pagination--results-found',
   clearFilters: '//a[text()="Clear Filters"]',
+  dateFilter: '#filter-button-decertificationDate',
+  fromDate: '#after',
+  toDate: '#before',
 };
 
 class CollectionsPage {
-  constructor () { }
+  constructor() { }
 
-  get bodyText () {
+  get bodyText() {
     return $(elements.bodyText);
   }
 
-  selectFilter ( name ,value) {
-    if( name === 'nonconformities') {
-      $('#filter-button-' + name).click();
-    $('#filter-' + value ).scrollAndClick();
+  selectFilter(name, value) {
+    if (name === 'nonconformities') {
+      $(`#filter-button-${name}`).click();
+      $(`#filter-${value}`).scrollAndClick();
     } else {
-    $('#filter-button-' + name).click();
-    $('#filter-list-' + value ).scrollAndClick();
+      $(`#filter-button-${name}`).click();
+      $(`#filter-list-${value}`).scrollAndClick();
     }
   }
 
-  get editionFilter () {
+  get editionFilter() {
     return $(elements.editionFilter);
   }
 
-  get statusFilter () {
+  get statusFilter() {
     return $(elements.statusFilter);
   }
 
-  get nonConformityFilter () {
+  get nonConformityFilter() {
     return $(elements.nonConformityFilter);
   }
 
-  get searchBar () {
+  get searchBar() {
     return $(elements.searchBar);
   }
 
-  get pagination () {
+  get pagination() {
     return $(elements.pagination);
   }
 
-  get clearFilters () {
+  get clearFilters() {
     return $(elements.clearFilters);
   }
 
-  getListingTableHeaders () {
+  get dateFilter() {
+    return $(elements.dateFilter);
+  }
+
+  get fromDate() {
+    return $(elements.fromDate);
+  }
+
+  get toDate() {
+    return $(elements.toDate);
+  }
+
+  getListingTableHeaders() {
     return $(elements.listingTable).$('thead').$$('th');
   }
 
-  searchForListing (text) {
+  searchForListing(text) {
     this.searchBar.clearValue();
     this.searchBar.addValue(text);
   }
 
-  listingTotalCount () {
+  listingTotalCount() {
     if (this.pagination.isExisting()) {
       return parseInt((this.pagination).$('div div').getText().split(' ')[4], 10);
     }
     return 0;
   }
 
-  waitForUpdatedListingResultsCount () {
+  waitForUpdatedListingResultsCount() {
     let start;
     let next;
     do {
@@ -73,8 +88,8 @@ class CollectionsPage {
     } while (start !== next);
   }
 
-  getColumnText (rowNumber, columnNumber) {
-    return $('//table/tbody/tr[' + rowNumber + ']/td[' + columnNumber + ']').getText();
+  getColumnText(rowNumber, columnNumber) {
+    return $(`//table/tbody/tr[${rowNumber}]/td[${columnNumber}]`).getText();
   }
 }
 

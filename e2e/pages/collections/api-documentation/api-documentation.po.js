@@ -5,14 +5,13 @@ const elements = {
 };
 
 class ApiDocumentationPage extends CollectionsPage {
-  constructor () {
+  constructor() {
     super();
   }
 
-  get downloadApiDocButton () {
+  get downloadApiDocButton() {
     return $(elements.downloadApiDoc);
   }
-  
 }
 
 export default ApiDocumentationPage;
