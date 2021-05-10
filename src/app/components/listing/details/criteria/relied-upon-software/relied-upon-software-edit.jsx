@@ -43,9 +43,9 @@ function ChplReliedUponSoftwareEdit(props) {
     const updated = [
       ...software,
       {
-        name: formik.values.name,
-        version: formik.values.version,
-        certifiedProductNumber: formik.values.certifiedProductNumber,
+        name: formik.values.name || null,
+        version: formik.values.version || null,
+        certifiedProductNumber: formik.values.certifiedProductNumber || null,
         grouping: formik.values.grouping,
         key: (new Date()).getTime(),
       },
