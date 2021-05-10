@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { func, object } from 'prop-types';
+import { func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
@@ -18,7 +18,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { getAngularService } from '.';
+// import { getAngularService } from '.'; // eslint-disable-line import/no-cycle
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
@@ -27,6 +27,10 @@ import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestToolsEdit from './test-tools';
 import { ChplTextField } from '../../../util';
+import {
+  certificationResult,
+  resources as resourceDefinition,
+} from '../../../../shared/prop-types';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
@@ -43,7 +47,7 @@ function ChplCriterionDetailsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [criterion, setCriterion] = useState(props.criterion);
   const [resources] = useState(props.resources);
-  const $analytics = getAngularService('$analytics');
+  // const $analytics = getAngularService('$analytics');
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -103,7 +107,11 @@ function ChplCriterionDetailsEdit(props) {
     <Container>
       <Card>
         <CardContent>
-          <Typography variant="subtitle1">{formik.values.success ? 'Attests' : 'Does not attest'} to Criterion</Typography>
+          <Typography variant="subtitle1">
+            {formik.values.success ? 'Attests' : 'Does not attest'}
+            {' '}
+            to Criterion
+          </Typography>
           <FormControlLabel
             control={(
               <Switch
@@ -491,8 +499,8 @@ function ChplCriterionDetailsEdit(props) {
 export default ChplCriterionDetailsEdit;
 
 ChplCriterionDetailsEdit.propTypes = {
-  criterion: object.isRequired,
-  resources: object.isRequired,
+  criterion: certificationResult.isRequired,
+  resources: resourceDefinition.isRequired,
   onCancel: func.isRequired,
   onChange: func.isRequired,
   onSave: func.isRequired,

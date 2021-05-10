@@ -158,7 +158,9 @@ function ChplReliedUponSoftwareEdit(props) {
                 variant="outlined"
                 onClick={() => setAdding(true)}
               >
-                Add item <AddIcon />
+                Add item
+                {' '}
+                <AddIcon />
               </Button>
             </div>
           )}
