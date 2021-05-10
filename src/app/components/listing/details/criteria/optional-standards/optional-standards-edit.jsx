@@ -1,19 +1,49 @@
 import React, { useState } from 'react';
 import { arrayOf, func } from 'prop-types';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
-  Grid,
+  ButtonGroup,
+  Container,
   IconButton,
   MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplEllipsis, ChplTextField } from '../../../../util';
 import { optionalStandard, selectedOptionalStandard } from '../../../../../shared/prop-types';
+
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'grid',
+    gap: '8px',
+  },
+  dataEntry: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 1fr',
+    gap: '4px',
+  },
+  dataEntryActions: {
+    gridColumn: '3 / 3',
+    alignSelf: 'center',
+    justifySelf: 'center',
+  },
+  dataEntryAddNew: {
+    gridColumn: '1 / 3',
+  },
+}));
 
 const validationSchema = yup.object({
 });
@@ -27,6 +57,7 @@ function ChplOptionalStandardsEdit(props) {
       .filter((option) => !(props.optionalStandards.find((used) => used.testStandardId === option.id)))
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -79,52 +110,60 @@ function ChplOptionalStandardsEdit(props) {
   };
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
-        <Grid container spacing={4}>
-          <Grid item xs={11}>
-            <Typography variant="subtitle2">Name</Typography>
-          </Grid>
-          <Grid item xs={1} />
-        </Grid>
-      </Grid>
-      { optionalStandards.map((item) => (
-        <Grid item xs={12} key={item.id || item.key}>
-          <Grid container spacing={4}>
-            <Grid item xs={11}>
-              <Typography variant="subtitle2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
-            </Grid>
-            <Grid item xs={1}>
-              { !adding
-                && (
-                <IconButton
-                  onClick={() => removeItem(item)}
-                >
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small"
-                  />
-                </IconButton>
-                )}
-            </Grid>
-          </Grid>
-        </Grid>
-      ))}
-      { !adding
+    <Container className={classes.container}>
+      { optionalStandards.length > 0
         && (
-        <Grid item xs={12}>
-          <Button
-            onClick={() => setAdding(true)}
-          >
-            Add item
-          </Button>
-        </Grid>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { optionalStandards.map((item) => (
+                  <TableRow key={item.id || item.key}>
+                    <TableCell>
+                      <Typography variant="subtitle2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      { !adding
+                        && (
+                          <IconButton
+                            onClick={() => removeItem(item)}
+                          >
+                            <CloseIcon
+                              color="primary"
+                              size="small"
+                            />
+                          </IconButton>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
-      { adding
-        && (
-        <Grid item xs={12}>
-          <Grid container spacing={4}>
-            <Grid item xs={11}>
+      <div className={classes.dataEntry}>
+        { !adding
+          && (
+            <div className={classes.dataEntryAddNew}>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => setAdding(true)}
+              >
+                Add item
+                {' '}
+                <AddIcon />
+              </Button>
+            </div>
+          )}
+        { adding
+          && (
+            <>
               <ChplTextField
                 select
                 id="os"
@@ -137,28 +176,25 @@ function ChplOptionalStandardsEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-            </Grid>
-            <Grid item xs={1}>
-              <Button
+              <ButtonGroup
                 color="primary"
-                variant="outlined"
-                onClick={addNew}
+                className={classes.dataEntryActions}
               >
-                <CheckOutlinedIcon />
-              </Button>
-              <IconButton
-                onClick={() => cancelAdd()}
-              >
-                <CloseOutlinedIcon
-                  color="primary"
-                  size="small"
-                />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Grid>
-        )}
-    </Grid>
+                <Button
+                  onClick={addNew}
+                >
+                  <CheckIcon />
+                </Button>
+                <Button
+                  onClick={() => cancelAdd()}
+                >
+                  <CloseIcon />
+                </Button>
+              </ButtonGroup>
+            </>
+          )}
+      </div>
+    </Container>
   );
 }
 
