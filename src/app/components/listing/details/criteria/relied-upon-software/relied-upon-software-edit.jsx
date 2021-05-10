@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { arrayOf, func } from 'prop-types';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
+  ButtonGroup,
   Container,
   IconButton,
   Paper,
@@ -23,14 +25,20 @@ import { ChplTextField } from '../../../../util';
 import { reliedUponSoftware } from '../../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
+  container: {
+    display: 'grid',
+    gap: '8px',
+  },
   dataEntry: {
     display: 'grid',
     gridTemplateColumns: '2fr 2fr 1fr',
+    gap: '4px',
   },
   dataEntryActions: {
     gridColumn: '3 / 4',
     gridRow: '1 / 3',
     alignSelf: 'center',
+    justifySelf: 'center',
   },
   dataEntryAddNew: {
     gridColumn: '1 / 4',
@@ -93,82 +101,85 @@ function ChplReliedUponSoftwareEdit(props) {
   };
 
   return (
-    <Container>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
-              <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
-              <TableCell><Typography variant="subtitle2">CHPL ID</Typography></TableCell>
-              <TableCell><Typography variant="subtitle2">Group</Typography></TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { software.map((item) => (
-              <TableRow key={item.id || item.key}>
-                <TableCell>
-                  <Typography variant="subtitle2">{ item.name }</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2">{ item.version }</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2">{ item.certifiedProductNumber }</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle2">{ item.grouping }</Typography>
-                </TableCell>
-                <TableCell>
-                  { !adding
-                    && (
-                      <IconButton
-                        onClick={() => removeItem(item)}
-                      >
-                        <CloseOutlinedIcon
-                          color="primary"
-                          size="small"
-                        />
-                      </IconButton>
-                    )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <Container className={classes.container}>
+      { software.length > 0
+        && (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">CHPL ID</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">Group</Typography></TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { software.map((item) => (
+                  <TableRow key={item.id || item.key}>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.name }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.version }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.certifiedProductNumber }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.grouping }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      { !adding
+                        && (
+                          <IconButton
+                            onClick={() => removeItem(item)}
+                          >
+                            <CloseIcon
+                              color="primary"
+                              size="small"
+                            />
+                          </IconButton>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       <div className={classes.dataEntry}>
         { !adding
           && (
             <div className={classes.dataEntryAddNew}>
               <Button
+                color="primary"
+                variant="outlined"
                 onClick={() => setAdding(true)}
               >
-                Add item
+                Add item <AddIcon />
               </Button>
             </div>
           )}
         { adding
           && (
             <>
-              <div className={classes.dataEntryActions}>
+              <ButtonGroup
+                color="primary"
+                className={classes.dataEntryActions}
+              >
                 <Button
-                  color="primary"
-                  variant="outlined"
                   onClick={addNew}
                 >
-                  <CheckOutlinedIcon />
+                  <CheckIcon />
                 </Button>
-                <IconButton
+                <Button
                   onClick={() => cancelAdd()}
                 >
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small"
-                  />
-                </IconButton>
-              </div>
+                  <CloseIcon />
+                </Button>
+              </ButtonGroup>
               <ChplTextField
                 id="name"
                 name="name"
