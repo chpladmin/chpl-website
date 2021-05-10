@@ -1,19 +1,48 @@
 import React, { useState } from 'react';
 import { arrayOf, func } from 'prop-types';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
-  Grid,
+  ButtonGroup,
+  Container,
   IconButton,
   MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from '../../../../util';
 import { testData, selectedTestData } from '../../../../../shared/prop-types';
+
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'grid',
+    gap: '8px',
+  },
+  dataEntry: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 2fr 2fr 1fr',
+    gap: '4px',
+  },
+  dataEntryActions: {
+    alignSelf: 'center',
+    justifySelf: 'center',
+  },
+  dataEntryAddNew: {
+    gridColumn: '1 / -1',
+  },
+}));
 
 const validationSchema = yup.object({
 });
@@ -23,6 +52,7 @@ function ChplTestDataEdit(props) {
   const [adding, setAdding] = useState(false);
   const [testDataUsed, setTestDataUsed] = useState(props.testData.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(props.options.filter((option) => props.testData.filter((used) => used.testData.id === option.id).length === 0));
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -70,64 +100,68 @@ function ChplTestDataEdit(props) {
   };
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12}>
-        <Grid container spacing={4}>
-          <Grid item xs={3}>
-            <Typography variant="subtitle2">Name</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="subtitle2">Version</Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography variant="subtitle2">Alteration</Typography>
-          </Grid>
-          <Grid item xs={1} />
-        </Grid>
-      </Grid>
-      { testDataUsed.map((item) => (
-        <Grid item xs={12} key={item.id || item.key}>
-          <Grid container spacing={4}>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">{ item.testData.name }</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">{ item.version }</Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle2">{ item.alteration }</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              { !adding
-                && (
-                <IconButton
-                  onClick={() => removeItem(item)}
-                >
-                  <CloseOutlinedIcon
-                    color="primary"
-                    size="small"
-                  />
-                </IconButton>
-                )}
-            </Grid>
-          </Grid>
-        </Grid>
-      ))}
-      { !adding && options.length > 0
+    <Container className={classes.container}>
+      { testDataUsed.length > 0
         && (
-        <Grid item xs={12}>
-          <Button
-            onClick={() => setAdding(true)}
-          >
-            Add item
-          </Button>
-        </Grid>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
+                  <TableCell><Typography variant="subtitle2">Alteration</Typography></TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { testDataUsed.map((item) => (
+                  <TableRow key={item.id || item.key}>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.testData.name }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.version }</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{ item.alteration }</Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      { !adding
+                        && (
+                          <IconButton
+                            onClick={() => removeItem(item)}
+                          >
+                            <CloseIcon
+                              color="primary"
+                              size="small"
+                            />
+                          </IconButton>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
-      { adding
-        && (
-        <Grid item xs={12}>
-          <Grid container spacing={4}>
-            <Grid item xs={3}>
+      <div className={classes.dataEntry}>
+        { !adding && options.length > 0
+          && (
+            <div className={classes.dataEntryAddNew}>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => setAdding(true)}
+              >
+                Add item
+                {' '}
+                <AddIcon />
+              </Button>
+            </div>
+          )}
+        { adding
+          && (
+            <>
               <ChplTextField
                 select
                 id="td"
@@ -140,8 +174,6 @@ function ChplTestDataEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-            </Grid>
-            <Grid item xs={3}>
               <ChplTextField
                 id="version"
                 name="version"
@@ -153,8 +185,6 @@ function ChplTestDataEdit(props) {
                 error={formik.touched.version && formik.errors.version}
                 helperText={formik.touched.version && formik.errors.version}
               />
-            </Grid>
-            <Grid item xs={2}>
               <ChplTextField
                 id="alteration"
                 name="alteration"
@@ -165,28 +195,25 @@ function ChplTestDataEdit(props) {
                 error={formik.touched.alteration && formik.errors.alteration}
                 helperText={formik.touched.alteration && formik.errors.alteration}
               />
-            </Grid>
-            <Grid item xs={1}>
-              <Button
+              <ButtonGroup
                 color="primary"
-                variant="outlined"
-                onClick={addNew}
+                className={classes.dataEntryActions}
               >
-                <CheckOutlinedIcon />
-              </Button>
-              <IconButton
-                onClick={() => cancelAdd()}
-              >
-                <CloseOutlinedIcon
-                  color="primary"
-                  size="small"
-                />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Grid>
-        )}
-    </Grid>
+                <Button
+                  onClick={addNew}
+                >
+                  <CheckIcon />
+                </Button>
+                <Button
+                  onClick={() => cancelAdd()}
+                >
+                  <CloseIcon />
+                </Button>
+              </ButtonGroup>
+            </>
+          )}
+      </div>
+    </Container>
   );
 }
 
