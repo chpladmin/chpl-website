@@ -1,11 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { number, shape, string } from 'prop-types';
+import practiceType from './practice-type';
 
 const testFunctionality = shape({
   description: string,
   id: number,
   name: string,
-  practiceType: string,
+  practiceType,
   year: string,
 });
 

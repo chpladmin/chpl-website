@@ -1,7 +1,7 @@
 import {
   number, shape, string,
 } from 'prop-types';
-import { criterion } from '.';
+import criterion from './criterion';
 
 const testProcedure = shape({
   criteria: criterion,

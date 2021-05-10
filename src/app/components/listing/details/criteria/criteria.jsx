@@ -3,7 +3,6 @@ import {
   arrayOf,
   bool,
   func,
-  object,
 } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -17,8 +16,13 @@ import {
 
 import theme from '../../../../themes/theme';
 import { ChplTooltip } from '../../../util';
-import { getAngularService, ChplCriterion } from '.';
-import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
+import { getAngularService, ChplCriterion } from '.'; // eslint-disable-line import/no-cycle
+import {
+  accessibilityStandard,
+  certificationResult,
+  resources as resourceDefinition,
+  qmsStandard,
+} from '../../../../shared/prop-types';
 
 /*
 const useStyles = makeStyles(() => ({
@@ -128,12 +132,12 @@ function ChplCriteria(props) {
 export default ChplCriteria;
 
 ChplCriteria.propTypes = {
-  certificationResults: arrayOf(object).isRequired,
+  certificationResults: arrayOf(certificationResult).isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard),
   canEdit: bool,
   onSave: func,
   qmsStandards: arrayOf(qmsStandard),
-  resources: object,
+  resources: resourceDefinition,
   viewAll: bool,
 };
 

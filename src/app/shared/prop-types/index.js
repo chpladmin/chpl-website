@@ -2,29 +2,33 @@ import acb from './acb';
 import accessibilityStandard from './accessibility-standard';
 import address from './address';
 import analyticsConfig from './analytics-config';
+import certificationResult from './certification-result';
 import contact from './contact';
 import criterion from './criterion';
 import developer from './developer';
-import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
+import resources from './resources';
+import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import { svap, selectedSvap } from './svap';
 import { testData, selectedTestData } from './test-data';
-import { testTool, selectedTestTool } from './test-tool';
-import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testFunctionality, selectedTestFunctionality } from './test-functionality';
+import { testProcedure, selectedTestProcedure } from './test-procedure';
+import { testTool, selectedTestTool } from './test-tool';
 
 export {
   acb,
   accessibilityStandard,
   address,
   analyticsConfig,
+  certificationResult,
   contact,
   criterion,
   developer,
   optionalStandard,
   qmsStandard,
   reliedUponSoftware,
+  resources,
   selectedOptionalStandard,
   selectedTestFunctionality,
   selectedTestProcedure,

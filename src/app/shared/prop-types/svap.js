@@ -1,7 +1,7 @@
 import {
   arrayOf, bool, number, shape, string,
 } from 'prop-types';
-import { criterion } from '.';
+import criterion from './criterion';
 
 const svap = shape({
   approvedStandardVersion: string,
