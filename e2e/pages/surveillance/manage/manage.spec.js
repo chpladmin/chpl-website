@@ -33,7 +33,7 @@ describe('on manage surveillance page', () => {
         manage.reportingTab.click();
       });
 
-      it('should be able to download results based on year and range chosen', () => {
+      it('should be able to download results based on year and quarter chosen', () => {
         manage.year.click();
         manage.chooseDropdownValue('2020');
         manage.quarter.click();
