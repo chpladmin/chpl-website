@@ -130,7 +130,7 @@ function ChplReliedUponSoftwareEdit(props) {
                     <TableCell>
                       <Typography variant="subtitle2">{ item.grouping }</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="right">
                       { !adding
                         && (
                           <IconButton
@@ -167,21 +167,6 @@ function ChplReliedUponSoftwareEdit(props) {
         { adding
           && (
             <>
-              <ButtonGroup
-                color="primary"
-                className={classes.dataEntryActions}
-              >
-                <Button
-                  onClick={addNew}
-                >
-                  <CheckIcon />
-                </Button>
-                <Button
-                  onClick={() => cancelAdd()}
-                >
-                  <CloseIcon />
-                </Button>
-              </ButtonGroup>
               <ChplTextField
                 id="name"
                 name="name"
@@ -225,6 +210,21 @@ function ChplReliedUponSoftwareEdit(props) {
                 error={formik.touched.grouping && formik.errors.grouping}
                 helperText={formik.touched.grouping && formik.errors.grouping}
               />
+              <ButtonGroup
+                color="primary"
+                className={classes.dataEntryActions}
+              >
+                <Button
+                  onClick={addNew}
+                >
+                  <CheckIcon />
+                </Button>
+                <Button
+                  onClick={() => cancelAdd()}
+                >
+                  <CloseIcon />
+                </Button>
+              </ButtonGroup>
             </>
           )}
       </div>
