@@ -103,6 +103,7 @@ function ChplCriterionDetailsEdit(props) {
     <Container>
       <Card>
         <CardContent>
+          <Typography variant="subtitle1">{formik.values.success ? 'Attests' : 'Does not attest'} to Criterion</Typography>
           <FormControlLabel
             control={(
               <Switch
@@ -133,6 +134,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">GAP</Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -187,6 +189,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Measure Successfully Tested for G1</Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -209,6 +212,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Measure Successfully Tested for G2</Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -295,6 +299,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">SED</Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -357,6 +362,7 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
+                    <Typography variant="subtitle1">Attestation</Typography>
                     <FormControlLabel
                       control={(
                         <Switch
