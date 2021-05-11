@@ -14,9 +14,9 @@ describe('on manage surveillance page', () => {
     await hooks.open('#/surveillance/manage');
   });
 
-  describe('When admin user is logged in', () => {
+  describe('When ONC user is logged in', () => {
     beforeEach(() => {
-      loginComponent.logIn('admin');
+      loginComponent.logIn('onc');
     });
 
     afterEach(() => {
