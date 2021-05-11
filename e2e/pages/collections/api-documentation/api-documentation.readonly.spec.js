@@ -28,7 +28,7 @@ describe('the Api Documentation collection page', () => {
   });
 
   it('should have table headers in a defined order', () => {
-    const expectedHeaders = ['Developer', 'Product', 'Version', 'CHPL ID', 'API Documentation', 'Mandatory Disclosures URL'];
+    const expectedHeaders = ['Developer', 'Product', 'Version', 'CHPL ID', 'API Documentation', 'Service Base URL List', 'Mandatory Disclosures URL'];
     const actualHeaders = page.getListingTableHeaders();
     expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     actualHeaders.forEach((header, idx) => {
