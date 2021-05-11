@@ -113,9 +113,6 @@ function ChplSurveillanceActivityReportingDateSelector() {
             Select a Date Range to Download Reports
           </Typography>
         </div>
-        <div className={classes.fullWidth}>
-          <Typography variant="subtitle2">Choose a Preset Range</Typography>
-        </div>
         <ChplTextField
           select
           required
