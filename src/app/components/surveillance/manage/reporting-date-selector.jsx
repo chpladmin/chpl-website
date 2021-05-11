@@ -44,10 +44,9 @@ function ChplSurveillanceActivityReportingDateSelector() {
     const years = [];
     const startYear = 2016;
     let i;
-    for (i = startYear; i <= currentYear; i += 1) {
+    for (i = currentYear; i >= startYear; i -= 1) {
       years.push(i);
     }
-    years.sort((a, b) => b - a);
     return years;
   };
 
