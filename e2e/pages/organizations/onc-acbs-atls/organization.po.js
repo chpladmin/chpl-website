@@ -66,12 +66,8 @@ class OrganizationPage {
     return $('chpl-onc-organization');
   }
 
-  retiredStatus(organizationType, organizationId) {
-    return $(`//*[@id="chpl-organization-ONC-${organizationType}-${organizationId}"]/ui-view/div/div`);
-  }
-
   generalInformation(organizationType, organizationId) {
-    return $(`//*[@id="chpl-organization-ONC-${organizationType}-${organizationId}"]`);
+    return $(`#chpl-organization-ONC-${organizationType}-${organizationId}`);
   }
 
   get errorMessage() {

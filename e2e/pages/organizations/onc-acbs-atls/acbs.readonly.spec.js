@@ -113,7 +113,7 @@ describe('the ONC-ACB Management page', () => {
       page.organizationWebsite.setValue(websiteUrl);
       address.set(acbAddress);
       page.saveOrganizationButton.click();
-      expect(page.retiredStatus(organizationType, acbId).getText()).toContain('Retired: No');
+      expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-acbs');
       page.organizationNameButton(acb).click();
       page.organizationEditButton.click();
@@ -122,7 +122,7 @@ describe('the ONC-ACB Management page', () => {
       page.retirementDate.setValue(today);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      expect(page.retiredStatus(organizationType, acbId).getText()).toContain('Retired: Yes');
+      expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: Yes');
     });
   });
 });

@@ -99,7 +99,7 @@ describe('the ONC-ATL Management page', () => {
       page.organizationWebsite.setValue(websiteUrl);
       address.set(atlAddress);
       page.saveOrganizationButton.click();
-      expect(page.retiredStatus(organizationType, atlId).getText()).toContain('Retired: No');
+      expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-atls');
       page.organizationNameButton(atl).click();
       page.organizationEditButton.click();
@@ -108,7 +108,7 @@ describe('the ONC-ATL Management page', () => {
       page.retirementDate.setValue(today);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      expect(page.retiredStatus(organizationType, atlId).getText()).toContain('Retired: Yes');
+      expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: Yes');
     });
   });
 });

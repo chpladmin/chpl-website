@@ -48,7 +48,7 @@ class UsersPage {
   }
 
   impersonateUser(userId) {
-    return $(`//*[@id="user-component-impersonate-${userId}"]`);
+    return $(`#user-component-impersonate-${userId}`);
   }
 }
 
