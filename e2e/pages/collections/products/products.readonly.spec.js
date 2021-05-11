@@ -16,139 +16,134 @@ describe('the Decertified Products collection page', () => {
   beforeEach(async () => {
     page = new ProductsPage();
     hooks = new Hooks();
-    await hooks.open('#/collections/products');
+    hooks.open('#/collections/products');
+    await hooks.waitForSpinnerToDisappear();
   });
 
-  describe('after it\'s loaded', () => {
+  it('should have body text', () => {
+    expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the CHPL Public User Guide.');
+  });
+
+  it('should have table headers in a defined order', () => {
+    const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Date', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID', 'Status'];
+    const actualHeaders = page.getListingTableHeaders();
+    expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
+    actualHeaders.forEach((header, idx) => {
+      expect(header.getText()).toBe(expectedHeaders[idx]);
+    });
+  });
+
+  describe('when filtering', () => {
+    let countBefore;
+    let countAfter;
     beforeEach(() => {
-      hooks.waitForSpinnerToDisappear();
+      countBefore = page.listingTotalCount();
     });
 
-    it('should have body text', () => {
-      expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the CHPL Public User Guide.');
+    afterEach(() => {
+      page.clearFilters.click();
     });
 
-    it('should have table headers in a defined order', () => {
-      const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Date', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID', 'Status'];
-      const actualHeaders = page.getListingTableHeaders();
-      expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-      actualHeaders.forEach((header, idx) => {
-        expect(header.getText()).toBe(expectedHeaders[idx]);
-      });
-    });
-
-    describe('when filtering', () => {
-      let countBefore;
-      let countAfter;
+    describe('using acb filter to de select drummond group', () => {
       beforeEach(() => {
-        countBefore = page.listingTotalCount();
-      });
-
-      afterEach(() => {
-        page.clearFilters.click();
-      });
-
-      describe('using acb filter to de select drummond group', () => {
-        beforeEach(() => {
-          page.selectFilter('acb', 'Drummond_Group');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
-        });
-      });
-
-      describe('using certification edition filter to de select 2015 cures update', () => {
-        beforeEach(() => {
-          page.selectFilter('edition', '2015_Cures_Update');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
-        });
-      });
-
-      describe('using certification status filter to select withdrawn by ONC-ACB', () => {
-        beforeEach(() => {
-          page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThanOrEqual(countBefore);
-        });
-      });
-      describe('using date filter', () => {
-        beforeEach(() => {
-          page.dateFilter.click();
-          page.fromDate.addValue('09/01/2017');
-          page.toDate.addValue('10/01/2020');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
-        });
-      });
-    });
-
-    describe('when searching listing by developer', () => {
-      beforeEach(() => {
-        page.searchForListing(developerName);
+        page.selectFilter('acb', 'Drummond_Group');
         page.waitForUpdatedListingResultsCount();
       });
 
-      it('should only show listings that match the developer', () => {
-        const count = page.listingTotalCount();
-        for (let i = 1; i <= count; i++) {
-          expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
-        }
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
       });
     });
-    describe('when searching listing by version', () => {
+
+    describe('using certification edition filter to de select 2015 cures update', () => {
       beforeEach(() => {
-        page.searchForListing(versionName);
+        page.selectFilter('edition', '2015_Cures_Update');
         page.waitForUpdatedListingResultsCount();
       });
 
-      it('should only show listings that match the version', () => {
-        const count = page.listingTotalCount();
-        for (let i = 1; i <= count; i++) {
-          expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
-        }
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
       });
     });
-    describe('when searching listing by product', () => {
+
+    describe('using certification status filter to select withdrawn by ONC-ACB', () => {
       beforeEach(() => {
-        page.searchForListing(productName);
+        page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
         page.waitForUpdatedListingResultsCount();
       });
 
-      it('should only show listings that match the product', () => {
-        const count = page.listingTotalCount();
-        for (let i = 1; i <= count; i++) {
-          expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
-        }
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThanOrEqual(countBefore);
       });
     });
-    describe('when searching listing by CHPL ID', () => {
+    describe('using date filter', () => {
       beforeEach(() => {
-        page.searchForListing(chplIdName);
+        page.dateFilter.click();
+        page.fromDate.addValue('09/01/2017');
+        page.toDate.addValue('10/01/2020');
         page.waitForUpdatedListingResultsCount();
       });
 
-      it('should only show listings that match the product', () => {
-        const count = page.listingTotalCount();
-        for (let i = 1; i <= count; i++) {
-          expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);
-        }
+      it('should filter listing results', () => {
+        countAfter = page.listingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
       });
+    });
+  });
+
+  describe('when searching listing by developer', () => {
+    beforeEach(() => {
+      page.searchForListing(developerName);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    it('should only show listings that match the developer', () => {
+      const count = page.listingTotalCount();
+      for (let i = 1; i <= count; i++) {
+        expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
+      }
+    });
+  });
+  describe('when searching listing by version', () => {
+    beforeEach(() => {
+      page.searchForListing(versionName);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    it('should only show listings that match the version', () => {
+      const count = page.listingTotalCount();
+      for (let i = 1; i <= count; i++) {
+        expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
+      }
+    });
+  });
+  describe('when searching listing by product', () => {
+    beforeEach(() => {
+      page.searchForListing(productName);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    it('should only show listings that match the product', () => {
+      const count = page.listingTotalCount();
+      for (let i = 1; i <= count; i++) {
+        expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
+      }
+    });
+  });
+  describe('when searching listing by CHPL ID', () => {
+    beforeEach(() => {
+      page.searchForListing(chplIdName);
+      page.waitForUpdatedListingResultsCount();
+    });
+
+    it('should only show listings that match the product', () => {
+      const count = page.listingTotalCount();
+      for (let i = 1; i <= count; i++) {
+        expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);
+      }
     });
   });
 });
