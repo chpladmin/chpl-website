@@ -1,22 +1,21 @@
-import ProductsPage from './products.po';
+import InactivePage from './inactive.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let
-  page;
+let hooks; let page;
 const DEVELOPER_COL_IDX = 2;
-const developerName = 'LifeSource';
+const developerName = 'Allscripts';
 const VERSION_COL_IDX = 4;
-const versionName = 'Version 7';
+const versionName = 'Version 2.1';
 const PRODUCT_COL_IDX = 3;
-const productName = 'AtTheScene';
+const productName = 'TouchWorks';
 const CHPLID_COL_IDX = 9;
-const chplIdName = '15.04.04.2943.Soci.01.00.1.161215';
+const chplIdName = '15.04.04.2891.Alls.AC.00.1.160804';
 
-describe('the Decertified Products collection page', () => {
+describe('the Inactive Certificates collection page', () => {
   beforeEach(async () => {
-    page = new ProductsPage();
+    page = new InactivePage();
     hooks = new Hooks();
-    await hooks.open('#/collections/products');
+    await hooks.open('#/collections/inactive');
   });
 
   describe('after it\'s loaded', () => {
@@ -25,11 +24,11 @@ describe('the Decertified Products collection page', () => {
     });
 
     it('should have body text', () => {
-      expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the CHPL Public User Guide.');
+      expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the CHPL Public User Guide');
     });
 
     it('should have table headers in a defined order', () => {
-      const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Date', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID', 'Status'];
+      const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Inactive As Of', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID'];
       const actualHeaders = page.getListingTableHeaders();
       expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
       actualHeaders.forEach((header, idx) => {
@@ -72,17 +71,6 @@ describe('the Decertified Products collection page', () => {
         });
       });
 
-      describe('using certification status filter to select withdrawn by ONC-ACB', () => {
-        beforeEach(() => {
-          page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThanOrEqual(countBefore);
-        });
-      });
       describe('using date filter', () => {
         beforeEach(() => {
           page.dateFilter.click();

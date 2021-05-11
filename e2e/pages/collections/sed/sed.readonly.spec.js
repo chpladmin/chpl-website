@@ -1,40 +1,42 @@
-import ProductsPage from './products.po';
+import SedPage from './sed.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let
-  page;
-const DEVELOPER_COL_IDX = 2;
-const developerName = 'LifeSource';
-const VERSION_COL_IDX = 4;
-const versionName = 'Version 7';
-const PRODUCT_COL_IDX = 3;
-const productName = 'AtTheScene';
-const CHPLID_COL_IDX = 9;
-const chplIdName = '15.04.04.2943.Soci.01.00.1.161215';
+let hooks; let page;
+const DEVELOPER_COL_IDX = 1;
+const developerName = 'Allscripts';
+const VERSION_COL_IDX = 3;
+const versionName = '2017.1.1';
+const PRODUCT_COL_IDX = 2;
+const productName = 'Helios';
+const CHPLID_COL_IDX = 4;
+const chplIdName = '15.02.02.1044.A093.01.00.1.190329';
+const path = require('path');
+const fs = require('fs');
+const config = require('../../../config/mainConfig');
 
-describe('the Decertified Products collection page', () => {
+describe('the SED Information for 2015 Edition Products collection page', () => {
   beforeEach(async () => {
-    page = new ProductsPage();
+    page = new SedPage();
     hooks = new Hooks();
-    await hooks.open('#/collections/products');
-  });
-
-  describe('after it\'s loaded', () => {
-    beforeEach(() => {
-      hooks.waitForSpinnerToDisappear();
+    hooks.open('#/collections/sed');
+    await hooks.waitForSpinnerToDisappear();
     });
 
     it('should have body text', () => {
-      expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the CHPL Public User Guide.');
+      expect(page.bodyText.getText()).toContain('This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED):');
     });
 
     it('should have table headers in a defined order', () => {
-      const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Date', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID', 'Status'];
+      const expectedHeaders = ['Developer', 'Product', 'Version', 'CHPL ID','Details'];
       const actualHeaders = page.getListingTableHeaders();
       expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
       actualHeaders.forEach((header, idx) => {
         expect(header.getText()).toBe(expectedHeaders[idx]);
       });
+    });
+
+    it('should have sed details download button', () => {
+      expect(page.sedDetailsDownloadButton.isDisplayed()).toBe(true);
     });
 
     describe('when filtering', () => {
@@ -59,41 +61,15 @@ describe('the Decertified Products collection page', () => {
           expect(countAfter).toBeLessThan(countBefore);
         });
       });
-
-      describe('using certification edition filter to de select 2015 cures update', () => {
+      describe('using certification status filter to select withdrawn by developer', () => {
         beforeEach(() => {
-          page.selectFilter('edition', '2015_Cures_Update');
+          page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
           page.waitForUpdatedListingResultsCount();
         });
 
         it('should filter listing results', () => {
           countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
-        });
-      });
-
-      describe('using certification status filter to select withdrawn by ONC-ACB', () => {
-        beforeEach(() => {
-          page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThanOrEqual(countBefore);
-        });
-      });
-      describe('using date filter', () => {
-        beforeEach(() => {
-          page.dateFilter.click();
-          page.fromDate.addValue('09/01/2017');
-          page.toDate.addValue('10/01/2020');
-          page.waitForUpdatedListingResultsCount();
-        });
-
-        it('should filter listing results', () => {
-          countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
+          expect(countAfter).toBeGreaterThan(countBefore);
         });
       });
     });
@@ -150,5 +126,19 @@ describe('the Decertified Products collection page', () => {
         }
       });
     });
-  });
+
+    describe('when clicking on api documentation download button', () => {
+      beforeEach(() => {
+        page.sedDetailsDownloadButton.click();
+      });
+
+      it('should download a file', () => {
+        let fileName;
+        const sedFileName = 'chpl-sed-all-details';
+        browser.pause(config.timeout); // can't add explicit timeout as file name is dynamic here
+        let files = fs.readdirSync( global.downloadDir );
+        fileName = files.filter( file => file.match(new RegExp(sedFileName + `.*.csv`))).toString();
+        expect(fileName).toContain(sedFileName);
+      });
+    });
 });

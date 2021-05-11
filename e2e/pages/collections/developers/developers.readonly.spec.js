@@ -5,7 +5,7 @@ let hooks; let page;
 const DEVELOPER_COL_IDX = 1;
 const developerName = 'Rabbit';
 
-describe('the Api Documentation collection page', () => {
+describe('the Developers Under Certification Ban collection page', () => {
   beforeEach(async () => {
     page = new DevelopersPage();
     hooks = new Hooks();
