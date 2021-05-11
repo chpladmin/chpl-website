@@ -75,37 +75,40 @@ function ChplCriteria(props) {
             qmsStandards={props.qmsStandards}
           />
         ))}
-      <Accordion
-        className={classes.NestedAccordionLevelOne}
-      >
-        <AccordionSummary
-          className={classes.NestedAccordionLevelOneSummary}
-          expandIcon={<ExpandMoreIcon />}
-          id="removed-header"
-        >
-          Removed Certification Criteria
-          <ChplTooltip title="These certification criteria have been removed from the Program.">
-            <InfoOutlinedIcon />
-          </ChplTooltip>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Container>
-            { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
-              .sort((a, b) => sortCerts(a, b))
-              .map((cc) => (
-                <ChplCriterion
-                  key={cc.id}
-                  certificationResult={cc}
-                  canEdit={props.canEdit}
-                  onSave={handleSave}
-                  resources={prepareResources(props.resources, cc.criterion)}
-                  accessibilityStandards={props.accessibilityStandards}
-                  qmsStandards={props.qmsStandards}
-                />
-              ))}
-          </Container>
-        </AccordionDetails>
-      </Accordion>
+      { (props.viewAll || criteria.filter((cc) => cc.criterion.removed && cc.success).length > 0)
+        && (
+          <Accordion
+            className={classes.NestedAccordionLevelOne}
+          >
+            <AccordionSummary
+              className={classes.NestedAccordionLevelOneSummary}
+              expandIcon={<ExpandMoreIcon />}
+              id="removed-header"
+            >
+              Removed Certification Criteria
+              <ChplTooltip title="These certification criteria have been removed from the Program.">
+                <InfoOutlinedIcon />
+              </ChplTooltip>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Container>
+                { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
+                  .sort((a, b) => sortCerts(a, b))
+                  .map((cc) => (
+                    <ChplCriterion
+                      key={cc.id}
+                      certificationResult={cc}
+                      canEdit={props.canEdit}
+                      onSave={handleSave}
+                      resources={prepareResources(props.resources, cc.criterion)}
+                      accessibilityStandards={props.accessibilityStandards}
+                      qmsStandards={props.qmsStandards}
+                    />
+                  ))}
+              </Container>
+            </AccordionDetails>
+          </Accordion>
+        )}
     </ThemeProvider>
   );
 }
