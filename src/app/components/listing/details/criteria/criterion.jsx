@@ -93,7 +93,11 @@ function ChplCriterion(props) {
   };
 
   return (
-    <Accordion disabled={!criterion.success && !props.canEdit} className={classes.NestedAccordionLevelOne} onChange={() => handleAccordionChange()}>
+    <Accordion
+      disabled={!criterion.success && !props.canEdit}
+      className={classes.NestedAccordionLevelOne}
+      onChange={() => handleAccordionChange()}
+    >
       <AccordionSummary
         className={classes.NestedAccordionLevelOneSummary}
         expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}

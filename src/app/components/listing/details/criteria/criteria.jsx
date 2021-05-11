@@ -11,7 +11,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Grid,
+  Container,
+  makeStyles,
 } from '@material-ui/core';
 
 import theme from '../../../../themes/theme';
@@ -24,7 +25,6 @@ import {
   qmsStandard,
 } from '../../../../shared/prop-types';
 
-/*
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
     borderRadius: '8px',
@@ -34,26 +34,13 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f9f9f9',
     borderRadius: '8px',
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-  pendingChip: {
-    fontSize: '.7rem',
-    backgroundColor: '#d98c54',
-    color: '#ffffff',
-  },
-  stagedChip: {
-    fontSize: '.7rem',
-    backgroundColor: '#999900',
-    color: '#ffffff',
-  },
 }));
-*/
 
 function ChplCriteria(props) {
   /* eslint-disable react/destructuring-assignment */
   const sortCerts = getAngularService('utilService').sortCertActual;
   const [criteria, setCriteria] = useState(props.certificationResults);
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const handleSave = (criterion) => {
@@ -88,41 +75,35 @@ function ChplCriteria(props) {
             qmsStandards={props.qmsStandards}
           />
         ))}
-      <Accordion>
+      <Accordion
+        className={classes.NestedAccordionLevelOne}
+      >
         <AccordionSummary
+          className={classes.NestedAccordionLevelOneSummary}
           expandIcon={<ExpandMoreIcon />}
           id="removed-header"
         >
-          <Grid container spacing={4}>
-            <Grid item xs={12}>
-              Removed Certification Criteria
-              <ChplTooltip title="These certification criteria have been removed from the Program.">
-                <InfoOutlinedIcon />
-              </ChplTooltip>
-            </Grid>
-          </Grid>
+          Removed Certification Criteria
+          <ChplTooltip title="These certification criteria have been removed from the Program.">
+            <InfoOutlinedIcon />
+          </ChplTooltip>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container spacing={4}>
+          <Container>
             { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
               .sort((a, b) => sortCerts(a, b))
               .map((cc) => (
-                <Grid
-                  item
-                  xs={12}
+                <ChplCriterion
                   key={cc.id}
-                >
-                  <ChplCriterion
-                    certificationResult={cc}
-                    canEdit={props.canEdit}
-                    onSave={handleSave}
-                    resources={props.resources}
-                    accessibilityStandards={props.accessibilityStandards}
-                    qmsStandards={props.qmsStandards}
-                  />
-                </Grid>
+                  certificationResult={cc}
+                  canEdit={props.canEdit}
+                  onSave={handleSave}
+                  resources={prepareResources(props.resources, cc.criterion)}
+                  accessibilityStandards={props.accessibilityStandards}
+                  qmsStandards={props.qmsStandards}
+                />
               ))}
-          </Grid>
+          </Container>
         </AccordionDetails>
       </Accordion>
     </ThemeProvider>
