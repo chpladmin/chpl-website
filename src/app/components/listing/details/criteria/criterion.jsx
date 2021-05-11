@@ -3,7 +3,6 @@ import {
   arrayOf,
   bool,
   func,
-  object,
 } from 'prop-types';
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
@@ -24,9 +23,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.';
+import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.'; // eslint-disable-line import/no-cycle
 import { ChplTooltip } from '../../../util';
-import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
+import {
+  accessibilityStandard,
+  certificationResult,
+  resources as resourceDefinition,
+  qmsStandard,
+} from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
@@ -212,10 +216,10 @@ export default ChplCriterion;
 ChplCriterion.propTypes = {
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   canEdit: bool,
-  certificationResult: object.isRequired,
+  certificationResult: certificationResult.isRequired,
   onSave: func,
   qmsStandards: arrayOf(qmsStandard).isRequired,
-  resources: object,
+  resources: resourceDefinition,
 };
 
 ChplCriterion.defaultProps = {
