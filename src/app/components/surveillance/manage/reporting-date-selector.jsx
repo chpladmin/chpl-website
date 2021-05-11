@@ -12,14 +12,15 @@ import { LocalDate } from '@js-joda/core';
 import { getAngularService } from '.';
 import ChplTextField from '../../util/chpl-text-field';
 import theme from '../../../themes/theme';
-import { within } from '@testing-library/dom';
 
 const useStyles = makeStyles(() => ({
   grid: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
     columnGap: '8px',
-    gridRowGap: '8px',
+    gridRowGap: '16px',
+    gridTemplateColumns: '1fr 1fr',
+    backgroundColor: '#ffffff',
+    padding: '8px',
   },
   fullWidth: {
     gridColumn: '1 / -1',
@@ -158,7 +159,6 @@ function ChplSurveillanceActivityReportingDateSelector() {
           <Button
             color="primary"
             variant="contained"
-            size="small"
             name="downloadResults"
             id="download-results"
             onClick={formik.handleSubmit}
@@ -166,7 +166,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
             Download Results
             <ArrowForwardOutlinedIcon
               className={classes.iconSpacing}
-              fontSize="small"
+              fontSize="medium"
             />
           </Button>
         </div>
