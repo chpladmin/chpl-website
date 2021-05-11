@@ -18,7 +18,6 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-// import { getAngularService } from '.'; // eslint-disable-line import/no-cycle
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
@@ -47,7 +46,6 @@ function ChplCriterionDetailsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [criterion, setCriterion] = useState(props.criterion);
   const [resources] = useState(props.resources);
-  // const $analytics = getAngularService('$analytics');
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({

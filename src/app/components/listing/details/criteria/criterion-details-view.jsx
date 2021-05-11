@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf } from 'prop-types';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
   Paper,
@@ -11,17 +11,19 @@ import {
   TableRow,
 } from '@material-ui/core';
 
-import { getAngularService } from '.';
 import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
 import { ChplReliedUponSoftwareView } from './relied-upon-software';
-import { accessibilityStandard, qmsStandard } from '../../../../shared/prop-types';
+import {
+  accessibilityStandard,
+  certificationResult,
+  qmsStandard,
+} from '../../../../shared/prop-types';
 
 function ChplCriterionDetailsView(props) {
   /* eslint-disable react/destructuring-assignment */
   const [criterion] = useState(props.criterion);
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
-  const $analytics = getAngularService('$analytics');
   /* eslint-enable react/destructuring-assignment */
 
   return (
@@ -326,7 +328,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
                 <TableCell>
                   { criterion.apiDocumentation
-                    && <ChplLink href={criterion.apiDocumentation} text={criterion.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criterion.apiDocumentation }} />}
+                    && <ChplLink href={criterion.apiDocumentation} analytics={{ event: 'API Documentation', category: 'Download Details', label: criterion.apiDocumentation }} />}
                   { !criterion.apiDocumentation && 'None' }
                 </TableCell>
               </TableRow>
@@ -342,7 +344,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
                 <TableCell>
                   { criterion.exportDocumentation
-                    && <ChplLink href={criterion.exportDocumentation} text={criterion.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criterion.exportDocumentation }} />}
+                    && <ChplLink href={criterion.exportDocumentation} analytics={{ event: 'Export Documentation', category: 'Download Details', label: criterion.exportDocumentation }} />}
                   { !criterion.exportDocumentation && 'None' }
                 </TableCell>
               </TableRow>
@@ -370,7 +372,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
                 <TableCell>
                   { criterion.documentationUrl
-                    && <ChplLink href={criterion.documentationUrl} text={criterion.documentationUrl} analytics={{ event: 'Documentation', category: 'Download Details', label: criterion.documentationUrl }} />}
+                    && <ChplLink href={criterion.documentationUrl} analytics={{ event: 'Documentation', category: 'Download Details', label: criterion.documentationUrl }} />}
                   { !criterion.documentationUrl && 'None' }
                 </TableCell>
               </TableRow>
@@ -386,7 +388,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
                 <TableCell>
                   { criterion.useCases
-                    && <ChplLink href={criterion.useCases} text={criterion.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criterion.useCases }} />}
+                    && <ChplLink href={criterion.useCases} analytics={{ event: 'Use Cases', category: 'Download Details', label: criterion.useCases }} />}
                   { !criterion.useCases && 'None' }
                 </TableCell>
               </TableRow>
@@ -402,7 +404,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
                 <TableCell>
                   { criterion.serviceBaseUrlList
-                    && <ChplLink href={criterion.serviceBaseUrlList} text={criterion.serviceBaseUrlList} analytics={{ event: 'Service Base URL List', category: 'Download Details', label: criterion.serviceBaseUrlList }} />}
+                    && <ChplLink href={criterion.serviceBaseUrlList} analytics={{ event: 'Service Base URL List', category: 'Download Details', label: criterion.serviceBaseUrlList }} />}
                   { !criterion.serviceBaseUrlList && 'None' }
                 </TableCell>
               </TableRow>
@@ -440,7 +442,7 @@ function ChplCriterionDetailsView(props) {
 export default ChplCriterionDetailsView;
 
 ChplCriterionDetailsView.propTypes = {
-  criterion: object.isRequired,
+  criterion: certificationResult.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
 };

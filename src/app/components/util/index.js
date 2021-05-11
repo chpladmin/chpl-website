@@ -1,6 +1,11 @@
-import { ChplEllipsis } from './ellipsis';
-import { ChplLink } from './link';
-import { ChplTooltip } from './tooltip';
+import { ChplEllipsis } from './chpl-ellipsis';
+import ChplLink from './chpl-link';
+import { ChplTooltip } from './chpl-tooltip';
 import ChplTextField from './chpl-text-field';
 
-export { ChplEllipsis, ChplTextField, ChplLink, ChplTooltip };
+export {
+  ChplEllipsis,
+  ChplLink,
+  ChplTextField,
+  ChplTooltip,
+};
