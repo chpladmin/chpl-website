@@ -208,21 +208,21 @@ const interpretCertificationStatusChanges = (listing) => {
     });
 }
 
-const interpretMuuHistory = (listing) => {
+const interpretMuuHistory = (listing, DateUtil) => {
   return listing.meaningfulUseUserHistory
     .sort((a, b) => a.muuDate - b.muuDate)
     .map((item, idx, arr) => {
       if (idx > 0) {
         item.activityDate = parseInt(item.muuDate, 10);
         item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
-                       + ' to ' + item.muuCount + ' on ' + item.muuDate];
+                       + ' to ' + item.muuCount + ' on ' + DateUtil.getDisplayDateFormat(item.muuDate)];
         /*
         item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
                        + ' to ' + item.muuCount + ' on ' + this.$filter('date')(item.muuDate, 'mediumDate')];
                        */
       } else {
         item.activityDate = parseInt(item.muuDate, 10);
-        item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + item.muuDate];
+        item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + DateUtil.getDisplayDateFormat(item.muuDate)];
 //        item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + this.$filter('date')(item.muuDate, 'mediumDate')];
       }
       return item;

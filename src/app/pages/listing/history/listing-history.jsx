@@ -60,6 +60,7 @@ function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
   const [listing] = useState(props.listing);
   const [open, setOpen] = React.useState(false);
+  const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const utilService = getAngularService('utilService');
 
@@ -67,7 +68,7 @@ function ChplListingHistory(props) {
     setActivity((activity) => [
       ...activity,
       ...interpretCertificationStatusChanges(listing),
-      ...interpretMuuHistory(listing),
+      ...interpretMuuHistory(listing, DateUtil),
     ]);
     networkService.getSingleListingActivityMetadata(listing.id).then((response) => {
       response.forEach(item => networkService.getActivityById(item.id).then((response) => {
@@ -114,7 +115,7 @@ function ChplListingHistory(props) {
                     { activity.map((item) => (
                       <TableRow key={item.id}>
                         <TableCell>
-                          { item.activityDate }
+                          { DateUtil.timestampToString(item.activityDate) }
                         </TableCell>
                         <TableCell>
                           <ul className="list-unstyled">
