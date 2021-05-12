@@ -3,20 +3,19 @@ const elements = {
 };
 
 class MeasuresComponent {
-  constructor () { }
+  constructor() { }
 
-  get measuresHeader () {
+  get measuresHeader() {
     return $(elements.measuresHeader);
   }
 
-  expandMeasures () {
+  expandMeasures() {
     $('//div[text()="Successfully Tested G1/G2 Measures"]/following-sibling::div').scrollAndClick();
   }
 
-  measuresCount () {
+  measuresCount() {
     return $('chpl-g1g2-view').$('tbody').$$('tr').length;
   }
-
 }
 
 export default MeasuresComponent;

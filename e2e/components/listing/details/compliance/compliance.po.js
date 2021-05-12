@@ -5,35 +5,35 @@ const elements = {
 };
 
 class ComplianceComponent {
-  constructor () { }
+  constructor() { }
 
-  get complianceHeader () {
+  get complianceHeader() {
     return $(elements.complianceHeader);
   }
 
-  get surveillanceHeader () {
+  get surveillanceHeader() {
     return $(elements.surveillanceHeader);
   }
-  get drHeader () {
+
+  get drHeader() {
     return $(elements.drHeader);
   }
 
-  expandCompliance () {
+  expandCompliance() {
     $('//div[text()="Compliance Activities"]/following-sibling::div').scrollAndClick();
   }
 
-  expandSurveillance () {
+  expandSurveillance() {
     $('//div[text()="Surveillance Activities"]/following-sibling::div').scrollAndClick();
   }
 
-  expandDr () {
+  expandDr() {
     $('//div[text()="Direct Review Activities"]/following-sibling::div').scrollAndClick();
   }
 
-  get survActivity () {
+  get survActivity() {
     return $('ai-surveillance');
   }
-
 }
 
 export default ComplianceComponent;

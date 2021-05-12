@@ -3,20 +3,19 @@ const elements = {
 };
 
 class CriteriaComponent {
-  constructor () { }
+  constructor() { }
 
-  get cqmHeader () {
+  get cqmHeader() {
     return $(elements.cqmHeader);
   }
 
-  expandCqm () {
+  expandCqm() {
     $('//div[text()="Clinical Quality Measures"]/following-sibling::div').scrollAndClick();
   }
 
-  cqmCount () {
+  cqmCount() {
     return $('#panel-cqm').$('table').$('tbody').$$('tr').length;
   }
-
 }
 
 export default CriteriaComponent;

@@ -5,32 +5,31 @@ const elements = {
 };
 
 class SedComponent {
-  constructor () { }
+  constructor() { }
 
-  get sedHeader () {
+  get sedHeader() {
     return $(elements.sedHeader);
   }
 
-  get ucdProcess () {
+  get ucdProcess() {
     return $(elements.ucdProcess);
   }
 
-  get tasksTable () {
+  get tasksTable() {
     return $(elements.tasksTable);
   }
 
-  expandSed () {
+  expandSed() {
     $('//div[text()="Safety Enhanced Design (SED)"]/following-sibling::div').scrollAndClick();
   }
 
-  criteriaUcdCount () {
+  criteriaUcdCount() {
     return $('#sed-ucd-processes-table').$$('li').length;
   }
 
-  testingTasksCount () {
+  testingTasksCount() {
     return $('#sed-tasks-table').$('tbody').$$('tr').length;
   }
-
 }
 
 export default SedComponent;

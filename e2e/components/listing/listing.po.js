@@ -13,143 +13,133 @@ const listingEditElements = {
 };
 
 class ListingEditComponent {
-  constructor () { }
+  constructor() { }
 
-  get editcertifiedProduct () {
+  get editcertifiedProduct() {
     return $(listingEditElements.editcertifiedProduct);
   }
 
-  get testProcedureName () {
+  get testProcedureName() {
     return $(listingEditElements.testProcedureName);
   }
 
-  get allTestProcedureVersion () {
+  get allTestProcedureVersion() {
     return $$(listingEditElements.allTestProcedureVersion);
   }
 
-  get testToolsName () {
+  get testToolsName() {
     return $(listingEditElements.testToolsName);
   }
 
-  get allTestToolsVersion () {
+  get allTestToolsVersion() {
     return $$(listingEditElements.allTestToolsVersion);
   }
 
-  get testDataName () {
+  get testDataName() {
     return $(listingEditElements.testDataName);
   }
 
-  get allTestDataVersion () {
+  get allTestDataVersion() {
     return $$(listingEditElements.allTestDataVersion);
   }
 
-  get testFunctionalityName () {
+  get testFunctionalityName() {
     return $(listingEditElements.testFunctionalityName);
   }
 
-  get saveCertifiedProduct () {
+  get saveCertifiedProduct() {
     return $(listingEditElements.saveCertifiedProduct);
   }
 
-  get closeListingEditButton () {
+  get closeListingEditButton() {
     return $(listingEditElements.closeListingEditButton);
   }
 
-  get yesConfirmation () {
+  get yesConfirmation() {
     return $(listingEditElements.yesConfirmation);
   }
 
-  openEditCriteria (editCriteriaId , cures) {
+  openEditCriteria(editCriteriaId, cures) {
     this.editcertifiedProduct.click();
     if (cures) {
-      //click on Edit for on the criteria
-      $('//*[@id="criteria_' + editCriteriaId + '_details_header_cures"]').$$('button')[1].click();
-    }
-    else {
-      $('//*[@id="criteria_' + editCriteriaId + '_details_header"]').$$('button')[1].click();
+      // click on Edit for on the criteria
+      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].click();
+    } else {
+      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].click();
     }
   }
 
-  addTestProcedures (name , version) {
+  addTestProcedures(name, version) {
     this.testProcedureName.selectByVisibleText(name);
     const totalTestProc = this.allTestProcedureVersion.length;
-    //This will get latest added test procedure version text box
-    $('//*[@id="testProcedures-additional-input-' + (totalTestProc - 1) + '"]').addValue(version);
+    // This will get latest added test procedure version text box
+    $(`//*[@id="testProcedures-additional-input-${totalTestProc - 1}"]`).addValue(version);
   }
 
-  addTestFunctionality (name) {
+  addTestFunctionality(name) {
     this.testFunctionalityName.selectByVisibleText(name);
   }
 
-  addTestData (name , version) {
+  addTestData(name, version) {
     this.testDataName.selectByVisibleText(name);
     const totalTestData = (this.allTestDataVersion.length) / 2;
-    //This will get latest added test data version text box, alteration has same id so this below locator is different than test proc, tools
-    $('//*[@id="testData-additional-input-' + (totalTestData - 1) + '"]').addValue(version);
+    // This will get latest added test data version text box, alteration has same id so this below locator is different than test proc, tools
+    $(`//*[@id="testData-additional-input-${totalTestData - 1}"]`).addValue(version);
   }
 
-  addTestTools (name , version) {
+  addTestTools(name, version) {
     this.testToolsName.selectByVisibleText(name);
     const totalTestTools = this.allTestToolsVersion.length;
-    //This will get latest added test tools version text box
-    $('//*[@id="testTools-additional-input-' + (totalTestTools - 1) + '"]').addValue(version);
+    // This will get latest added test tools version text box
+    $(`//*[@id="testTools-additional-input-${totalTestTools - 1}"]`).addValue(version);
   }
 
-  removeTestProcToolData (name) {
-    $('//span[text()="' + name + '"]/parent::button').click();
+  removeTestProcToolData(name) {
+    $(`//span[text()="${name}"]/parent::button`).click();
   }
 
-  viewDetailsCriteria (criteriaId , cures) {
+  viewDetailsCriteria(criteriaId, cures) {
     if (cures) {
-      //click on Edit for on the criteria
-      $('//*[@id="criteria_' + criteriaId + '_details_link_cures"]').waitAndClick();
-    }
-    else {
-      $('//*[@id="criteria_' + criteriaId + '_details_link"]').waitAndClick();
+      // click on Edit for on the criteria
+      $(`//*[@id="criteria_${criteriaId}_details_link_cures"]`).waitAndClick();
+    } else {
+      $(`//*[@id="criteria_${criteriaId}_details_link"]`).waitAndClick();
     }
   }
 
-  closeEditListing () {
+  closeEditListing() {
     this.closeListingEditButton.waitAndClick();
     this.yesConfirmation.waitAndClick();
     this.closeListingEditButton.waitAndClick();
     this.yesConfirmation.waitAndClick();
   }
 
-  getTestFunctionalityDetail (criteriaId , cures) {
+  getTestFunctionalityDetail(criteriaId, cures) {
     if (cures) {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Functionality_Tested_cures"]');
+      return $(`//*[@id="criteria_${criteriaId}_details_row_Functionality_Tested_cures"]`);
     }
-    else {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Functionality_Tested"]');
-    }
+    return $(`//*[@id="criteria_${criteriaId}_details_row_Functionality_Tested"]`);
   }
 
-  getTestDataDetail (criteriaId , cures) {
+  getTestDataDetail(criteriaId, cures) {
     if (cures) {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_data_cures"]');
+      return $(`//*[@id="criteria_${criteriaId}_details_row_Test_data_cures"]`);
     }
-    else {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_data"]');
-    }
+    return $(`//*[@id="criteria_${criteriaId}_details_row_Test_data"]`);
   }
 
-  getTestToolDetail (criteriaId , cures) {
+  getTestToolDetail(criteriaId, cures) {
     if (cures) {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_tool_cures"]');
+      return $(`//*[@id="criteria_${criteriaId}_details_row_Test_tool_cures"]`);
     }
-    else {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_tool"]');
-    }
+    return $(`//*[@id="criteria_${criteriaId}_details_row_Test_tool"]`);
   }
 
-  getTestProcedureDetail (criteriaId , cures) {
+  getTestProcedureDetail(criteriaId, cures) {
     if (cures) {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_procedure_cures"]');
+      return $(`//*[@id="criteria_${criteriaId}_details_row_Test_procedure_cures"]`);
     }
-    else {
-      return $('//*[@id="criteria_' + criteriaId + '_details_row_Test_procedure"]');
-    }
+    return $(`//*[@id="criteria_${criteriaId}_details_row_Test_procedure"]`);
   }
 }
 

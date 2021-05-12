@@ -4,20 +4,19 @@ const elements = {
 };
 
 class AdditionalComponent {
-  constructor () { }
+  constructor() { }
 
-  get additionalHeader () {
+  get additionalHeader() {
     return $(elements.additionalHeader);
   }
 
-  get IcsButton () {
+  get IcsButton() {
     return $(elements.IcsButton);
   }
 
-  expandAdditional () {
+  expandAdditional() {
     $('//div[text()="Additional Information"]/following-sibling::div').scrollAndClick();
   }
-
 }
 
 export default AdditionalComponent;
