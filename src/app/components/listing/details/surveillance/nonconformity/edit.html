@@ -132,9 +132,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.status.name === 'Closed'">*</span></label>
+      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.nonConformityCloseDateObject">*</span></label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.status.name === 'Closed'" ng-disabled="$ctrl.nonconformity.status.name === 'Open'"></textarea>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonConformityCloseDateObject" ng-disabled="!$ctrl.nonconformity.nonConformityCloseDateObject"></textarea>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
