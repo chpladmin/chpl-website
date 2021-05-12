@@ -13,14 +13,6 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="nonconformity-status" class="col-sm-3">Non-Conformity Status <span class="text-danger">*</span></label>
-      <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="$ctrl.nonconformity.status" id="nonconformity-status" name="nonconformityStatus" ng-options="type as type.name for type in $ctrl.data.nonconformityStatusTypes.data | orderBy:'name'" required>
-        </select>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityStatus.$touched) && $ctrl.editForm.nonconformityStatus.$error.required">Field is required</div>
-      </div>
-    </div>
-    <div class="form-group">
       <label for="date-of-determination" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
