@@ -77,12 +77,11 @@
         <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.capMustCompleteDate.$error.required">Field is required</div>
       </div>
     </div>
-
     <div class="form-group">
       <label for="non-conformity-close-date" class="col-sm-3">Non-conformity Close Date <span class="text-danger" ng-if="$ctrl.nonconformity.nonConformityCloseDateObject">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonConformityCloseDateObject" is-open="$ctrl.nonconformity.nonconformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonConformityCloseDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.nonConformityCloseDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonConformityCloseDateObject" is-open="$ctrl.nonconformity.nonConformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonConformityCloseDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.nonConformityCloseDateObject">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonConformityCloseDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -91,7 +90,6 @@
         <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.nonConformityCloseDate.$error.required">Field is required</div>
       </div>
     </div>
-
     <div class="form-group">
       <label for="sites-passed" class="col-sm-3">Number of Sites Passed <span class="text-danger" ng-if="$ctrl.randomized">*</span></label>
       <div class="col-sm-9">
