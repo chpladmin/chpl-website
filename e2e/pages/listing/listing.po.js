@@ -1,5 +1,6 @@
 const elements = {
   realWortldTestingHeader: 'h2=Real World Testing',
+  seeAll: '#viewAllCerts',
 };
 
 class ListingPage {
@@ -7,6 +8,10 @@ class ListingPage {
 
   get realWorldTestingHeader () {
     return $(elements.realWorldTestingHeader);
+  }
+
+  get seeAll () {
+    return $(elements.seeAll);
   }
 }
 

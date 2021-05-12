@@ -2,7 +2,7 @@
 
 import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
-import ListingEditComponent from '../../components/listing/edit/listingEdit.po';
+import ListingEditComponent from '../../components/listing/listing.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 
@@ -28,7 +28,7 @@ describe('an ACB user', () => {
     hooks.open('#/administration/confirm/listings');
   });
 
-  it('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {
+  it.skip('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {
     confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
     listingEditComponent.openEditCriteria('170.315 (b)(3)' , true);
     listingEditComponent.addTestFunctionality('(b)(3)(ii)(B)(4)');
@@ -43,7 +43,7 @@ describe('an ACB user', () => {
     assert.include(listingEditComponent.getTestToolDetail('170.315 (b)(3)' ,true).getText(), 'Inferno');
   });
 
-  it('should be able to remove uploaded test procedure, test tools (170.315 (b)(3) cures criteria)', () => {
+  it.skip('should be able to remove uploaded test procedure, test tools (170.315 (b)(3) cures criteria)', () => {
     confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
     listingEditComponent.openEditCriteria('170.315 (b)(3)' , true);
     //Remove test tool
