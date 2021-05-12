@@ -140,20 +140,22 @@ function ChplListingHistory(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    { activity.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell>
-                          { DateUtil.timestampToString(item.activityDate) }
-                        </TableCell>
-                        <TableCell>
-                          <ul className="list-unstyled">
-                            { item.change.map((change, idx) => (
-                              <li key={idx} dangerouslySetInnerHTML={{__html: `${change}`}} />
-                            ))}
-                          </ul>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    { activity
+                      .sort((a, b) => b.activityDate - a.activityDate)
+                      .map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell>
+                            { DateUtil.timestampToString(item.activityDate) }
+                          </TableCell>
+                          <TableCell>
+                            <ul className="list-unstyled">
+                              { item.change.map((change, idx) => (
+                                <li key={idx} dangerouslySetInnerHTML={{__html: `${change}`}} />
+                              ))}
+                            </ul>
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>
