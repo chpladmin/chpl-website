@@ -1,10 +1,9 @@
 const compliance = (input, rules) => {
-  let closed, hasClosedNc, hasNoNc, hasOpenNc, listing, never, open;
-
   if (!input) {
     return false;
   }
-  listing = angular.fromJson(input);
+
+  const listing = angular.fromJson(input);
   if (rules.compliance === 'never') {
     return listing.complianceCount === 0;
   }
@@ -14,12 +13,12 @@ const compliance = (input, rules) => {
   if (listing.complianceCount === 0) {
     return false;
   }
-  never = !!rules.NC.never;
-  open = !!rules.NC.open;
-  closed = !!rules.NC.closed;
-  hasNoNc = listing.openNonConformityCount === 0 && listing.closedNonConformityCount === 0;
-  hasOpenNc = listing.openNonConformityCount > 0;
-  hasClosedNc = listing.closedNonConformityCount > 0;
+  const never = !!rules.NC.never;
+  const open = !!rules.NC.open;
+  const closed = !!rules.NC.closed;
+  const hasNoNc = listing.openNonConformityCount === 0 && listing.closedNonConformityCount === 0;
+  const hasOpenNc = listing.openNonConformityCount > 0;
+  const hasClosedNc = listing.closedNonConformityCount > 0;
   /*
    * If matching all
    */
@@ -61,4 +60,4 @@ const compliance = (input, rules) => {
   return true;
 };
 
-export { compliance };
+export default compliance;
