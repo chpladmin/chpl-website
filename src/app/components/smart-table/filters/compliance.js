@@ -14,9 +14,9 @@ const compliance = (input, rules) => {
   if (listing.complianceCount === 0) {
     return false;
   }
-  never = rules.NC.never;
-  open = rules.NC.open;
-  closed = rules.NC.closed;
+  never = !!rules.NC.never;
+  open = !!rules.NC.open;
+  closed = !!rules.NC.closed;
   hasNoNc = listing.openNonConformityCount === 0 && listing.closedNonConformityCount === 0;
   hasOpenNc = listing.openNonConformityCount > 0;
   hasClosedNc = listing.closedNonConformityCount > 0;
