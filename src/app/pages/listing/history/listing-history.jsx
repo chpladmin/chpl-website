@@ -1,16 +1,32 @@
-import React, {useState} from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  ThemeProvider,
   Typography,
+  withStyles,
 } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import { object } from 'prop-types';
+
+import {
+  interpretActivity,
+  interpretCertificationStatusChanges,
+  interpretMuuHistory,
+} from './history.service';
+import theme from '../../../themes/theme';
+import { getAngularService } from '../../../services/angular-react-helper.jsx';
 
 const styles = (theme) => ({
   root: {
@@ -28,20 +44,43 @@ const styles = (theme) => ({
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
+    <MuiDialogTitle className={classes.root} {...other}>
+      {children}
+      {onClose
+       && (
+         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+           <CloseIcon />
+         </IconButton>
+       )}
     </MuiDialogTitle>
   );
 });
 
 function ChplListingHistory(props) {
+  const [activity, setActivity] = useState([]);
   const [listing] = useState(props.listing);
   const [open, setOpen] = React.useState(false);
+  const networkService = getAngularService('networkService');
+  const utilService = getAngularService('utilService');
+
+  useEffect(() => {
+    setActivity((activity) => [
+      ...activity,
+      ...interpretCertificationStatusChanges(listing),
+      ...interpretMuuHistory(listing),
+    ]);
+    networkService.getSingleListingActivityMetadata(listing.id).then((response) => {
+      response.forEach(item => networkService.getActivityById(item.id).then((response) => {
+        let interpreted = interpretActivity(response, utilService);
+        if (interpreted.change.length > 0) {
+          setActivity((activity) => [
+            ...activity,
+            interpreted,
+          ]);
+        }
+      }))
+    });
+  }, [listing]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,28 +91,47 @@ function ChplListingHistory(props) {
   };
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Button color="primary" variant="outlined" onClick={handleClickOpen}>
-        <i className="fa fa-eye"></i> Listing History
+        <i className="fa fa-eye"></i>
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="listing-history-title" open={open}>
         <DialogTitle id="listing-history-title" onClose={handleClose}>
           Listing History
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-            lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-            auctor fringilla.
-          </Typography>
+          { activity.length > 0
+            ? (
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Activity</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { activity.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>
+                          { item.activityDate }
+                        </TableCell>
+                        <TableCell>
+                          <ul className="list-unstyled">
+                            { item.change.map((change, idx) => (
+                              <li key={idx} dangerouslySetInnerHTML={{__html: `${change}`}} />
+                            ))}
+                          </ul>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <Typography>No changes have been made to this Listing</Typography>
+            )
+          }
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
@@ -81,7 +139,7 @@ function ChplListingHistory(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </ThemeProvider>
   );
 }
 
@@ -91,6 +149,8 @@ ChplListingHistory.propTypes = {
   listing: object.isRequired,
 };
 
+/*
+*/
 /*
 
   <div class="product-history" role="modal" aria-labeled-by="title-label" id="product-history-modal">
