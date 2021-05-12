@@ -17,7 +17,7 @@
             <p ng-if="$ctrl.listing.acbCertificationId">ONC-ACB Certification ID: {{ $ctrl.listing.acbCertificationId }}</p>
           </div>
           <div class="col-sm-8 text-right">
-            <p>Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <button class="btn btn-default btn-sm" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i><span class="sr-only">View Details</span></button></p>
+            <p>Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <button class="btn btn-default btn-sm" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i><span class="sr-only">View Details</span></button> | <chpl-listing-history-bridge listing="$ctrl.listing"></chpl-listing-history-bridge></p>
             <span ng-if="$ctrl.canEdit()">
               <button class="btn btn-default" ui-sref=".view.edit"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button>
             </span>

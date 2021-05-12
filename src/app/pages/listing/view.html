@@ -12,6 +12,7 @@
           <a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a>
         </div>
         <div>
+          <chpl-listing-history-bridge listing="$ctrl.listing"></chpl-listing-history-bridge>
           <button class="btn btn-secondary" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i> Listing History</button>
         </div>
         <div ng-if="$ctrl.canEdit()">
