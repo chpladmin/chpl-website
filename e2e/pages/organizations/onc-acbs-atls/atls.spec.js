@@ -35,7 +35,7 @@ describe('the ONC-ATL Management page', () => {
     await hooks.open('#/organizations/onc-atls');
   });
 
-  describe('when impersonating as an ATL', () => {
+  describe('when impersonating as UL', () => {
     beforeEach(() => {
       const userID = '41';
       login.logIn('onc');
@@ -55,7 +55,7 @@ describe('the ONC-ATL Management page', () => {
       login.logOut();
     });
 
-    it('should allow user to edit own ATL details', () => {
+    it('should allow user to edit UL details', () => {
       const atl = 'UL LLC';
       const newAtlName = `${atl} - ${timestamp}`;
       const organizationType = 'ATL';

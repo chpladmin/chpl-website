@@ -30,7 +30,7 @@ describe('the ONC-ACB Management page', () => {
     await hooks.open('#/organizations/onc-acbs');
   });
 
-  describe('when logged in as an ACB', () => {
+  describe('when logged in as UL', () => {
     beforeEach(() => {
       login.logIn('ul');
       login.logoutButton.waitForDisplayed();
@@ -45,7 +45,7 @@ describe('the ONC-ACB Management page', () => {
       login.logOut();
     });
 
-    it('should allow user to edit own ACB details', () => {
+    it('should allow user to edit UL details', () => {
       const acb = 'UL LLC';
       const newAcbName = `${acb} - ${timestamp}`;
       const acbId = '1';
