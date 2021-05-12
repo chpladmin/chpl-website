@@ -134,10 +134,6 @@
                     ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) :
                     noncon.nonconformityType }}</td>
                 </tr>
-                <tr>
-                  <th scope="row"><a href uib-tooltip="Whether the non-conformity is open or closed (has been resolved)." tooltip-trigger="'mouseenter focus click'">Non-Conformity Status</a></th>
-                  <td>{{ noncon.status.name }}</td>
-                </tr>
                 <tr ng-if="surv.type.name === 'Randomized'">
                   <th scope="row"><a href uib-tooltip="Pass rates only apply to non-conformities found as a result of random surveillance. The numerator for the pass rate is the number of sites for each criterion that passed randomized surveillance for the Health IT module being evaluated. The denominator is the total number of sites for which randomized surveillance was conducted on the Health IT module." tooltip-trigger="'mouseenter focus click'">Pass Rate</a></th>
                   <td>{{ noncon.sitesPassed }} / {{ noncon.totalSites }}</td>
