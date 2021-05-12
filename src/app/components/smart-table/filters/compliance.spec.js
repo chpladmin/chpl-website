@@ -1,4 +1,3 @@
-/* eslint-disable no-console,angular/log */
 import { compliance } from './compliance';
 
 const mock = {
@@ -50,13 +49,49 @@ describe('the compliance filter', () => {
     });
 
     describe('when matching all', () => {
-      it('should only allow filter on "!never & closed & open"', () => {
-        const filter = {compliance: 'has-had', matchAll: true, NC: {closed: true, open: true}};
+      it('should filter on "!never & !closed & !open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {}};
         let results = mock.collection.map(c => compliance(c, filter));
         expect(results).toEqual([false, false, false, false, false]);
       });
 
-      it('should filter out other "all"', () => {
+      it('should filter on "never & !closed & !open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {never: true}};
+        let results = mock.collection.map(c => compliance(c, filter));
+        expect(results).toEqual([false, true, false, false, false]);
+      });
+
+      it('should filter on "!never & closed & !open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {closed: true}};
+        let results = mock.collection.map(c => compliance(c, filter));
+        expect(results).toEqual([false, false, true, false, false]);
+      });
+
+      it('should filter on "never & closed & !open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {never: true, closed: true}};
+        let results = mock.collection.map(c => compliance(c, filter));
+        expect(results).toEqual([false, false, false, false, false]);
+      });
+
+      it('should filter on "!never & !closed & open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {open: true}};
+        let results = mock.collection.map(c => compliance(c, filter));
+        expect(results).toEqual([false, false, false, true, false]);
+      });
+
+      it('should filter on "never & !closed & open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {never: true, open: true}};
+        let results = mock.collection.map(c => compliance(c, filter));
+        expect(results).toEqual([false, false, false, false, false]);
+      });
+
+      it('should filter on "!never & closed & open"', () => {
+        const filter = {compliance: 'has-had', matchAll: true, NC: {closed: true, open: true}};
+        let results = mock.collection.map(c => compliance(c, filter));
+        expect(results).toEqual([false, false, false, false, true]);
+      });
+
+      it('should filter on "never & closed & open"', () => {
         const filter = {compliance: 'has-had', matchAll: true, NC: {never: true, closed: true, open: true}};
         let results = mock.collection.map(c => compliance(c, filter));
         expect(results).toEqual([false, false, false, false, false]);
