@@ -6,7 +6,7 @@ export const SurveillanceNonconformityEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceNonconformityEditController {
-    constructor ($log, API, Upload, authService, networkService, utilService) {
+    constructor($log, API, Upload, authService, networkService, utilService) {
       'ngInject';
       this.$log = $log;
       this.API = API;
@@ -22,7 +22,7 @@ export const SurveillanceNonconformityEditComponent = {
       };
     }
 
-    $onInit () {
+    $onInit() {
       this.data = angular.copy(this.resolve.surveillanceTypes);
       this.disableValidation = this.resolve.disableValidation;
       this.nonconformity = angular.copy(this.resolve.nonconformity);
@@ -52,6 +52,9 @@ export const SurveillanceNonconformityEditComponent = {
       if (this.nonconformity.capMustCompleteDate) {
         this.nonconformity.capMustCompleteDateObject = new Date(this.nonconformity.capMustCompleteDate);
       }
+      if (this.nonconformity.nonConformityCloseDate) {
+        this.nonconformity.nonConformityCloseDateObject = new Date(this.nonconformity.nonConformityCloseDate);
+      }
       if (this.nonconformity.criterion) {
         this.nonconformityType = this.data.nonconformityTypes.data
           .find(t => t.number === this.nonconformity.criterion.number && t.title === this.nonconformity.criterion.title);
@@ -61,17 +64,17 @@ export const SurveillanceNonconformityEditComponent = {
       }
     }
 
-    cancel () {
+    cancel() {
       this.dismiss();
     }
 
-    deleteDoc (docId) {
+    deleteDoc(docId) {
       let that = this;
       this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
         .then(() => {
           for (var i = 0; i < this.nonconformity.documents.length; i++) {
             if (this.nonconformity.documents[i].id === docId) {
-              this.nonconformity.documents.splice(i,1);
+              this.nonconformity.documents.splice(i, 1);
             }
           }
         }, (error) => {
@@ -84,7 +87,7 @@ export const SurveillanceNonconformityEditComponent = {
         });
     }
 
-    save () {
+    save() {
       if (this.nonconformity.dateOfDeterminationObject) {
         this.nonconformity.dateOfDetermination = this.nonconformity.dateOfDeterminationObject.getTime();
       } else {
@@ -110,14 +113,19 @@ export const SurveillanceNonconformityEditComponent = {
       } else {
         this.nonconformity.capMustCompleteDate = null;
       }
+      if (this.nonconformity.nonConformityCloseDateObject) {
+        this.nonconformity.nonConformityCloseDate = this.nonconformity.nonConformityCloseDateObject.getTime();
+      } else {
+        this.nonconformity.nonConformityCloseDate = null;
+      }
       if (this.nonconformityType.title) {
         this.nonconformity.criterion = this.nonconformityType;
       }
       this.nonconformity.nonconformityType = this.nonconformityType.number;
-      this.close({$value: this.nonconformity});
+      this.close({ $value: this.nonconformity });
     }
 
-    upload () {
+    upload() {
       if (this.file) {
         this.item.data = {
           file: this.file,
