@@ -31,11 +31,11 @@ describe('the ONC-ACB Management page', () => {
   });
 
   it('should display all ACB organizations', () => {
-    const acbCount = page.organizationListCount();
-    const expectedAcbs = ['ONC-ACBs', 'CCHIT', 'Drummond Group', 'ICSA Labs', 'SLI Compliance', 'Surescripts LLC', 'UL LLC'];
+    const expectedAcbs = ['CCHIT', 'Drummond Group', 'ICSA Labs', 'SLI Compliance', 'Surescripts LLC', 'UL LLC'];
+    const actualAcbs = page.organizationList.getText();
     let i;
-    for (i = 1; i <= acbCount; i += 1) {
-      expect(page.organizationList.getText()).toContain(expectedAcbs[i]);
+    for (i = 1; i <= expectedAcbs.length; i += 1) {
+      expect(actualAcbs).toContain(expectedAcbs[i - 1]);
     }
   });
 

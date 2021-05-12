@@ -34,11 +34,11 @@ describe('the ONC-ATL Management page', () => {
   });
 
   it('should display all ATL organizations', () => {
-    const atlCount = page.organizationListCount();
-    const expectedAtls = ['ONC-ATLs', 'CCHIT', 'Drummond Group', 'ICSA Labs', 'National Committee for Quality Assurance (NCQA)', 'National Technical Systems', 'SLI Compliance', 'UL LLC'];
+    const expectedAtls = ['CCHIT', 'Drummond Group', 'ICSA Labs', 'National Committee for Quality Assurance (NCQA)', 'National Technical Systems', 'SLI Compliance', 'UL LLC'];
+    const actualAtls = page.organizationList.getText();
     let i;
-    for (i = 1; i <= atlCount; i += 1) {
-      expect(page.organizationList.getText()).toContain(expectedAtls[i]);
+    for (i = 1; i <= expectedAtls.length; i += 1) {
+      expect(actualAtls).toContain(expectedAtls[i - 1]);
     }
   });
 
