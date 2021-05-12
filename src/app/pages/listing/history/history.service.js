@@ -216,23 +216,43 @@ const interpretMuuHistory = (listing, DateUtil) => {
         item.activityDate = parseInt(item.muuDate, 10);
         item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
                        + ' to ' + item.muuCount + ' on ' + DateUtil.getDisplayDateFormat(item.muuDate)];
-        /*
-        item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
-                       + ' to ' + item.muuCount + ' on ' + this.$filter('date')(item.muuDate, 'mediumDate')];
-                       */
       } else {
         item.activityDate = parseInt(item.muuDate, 10);
         item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + DateUtil.getDisplayDateFormat(item.muuDate)];
-//        item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + this.$filter('date')(item.muuDate, 'mediumDate')];
       }
       return item;
     })
+}
+
+const interpretProduct = (activity) => {
+  let ret = {
+    ...activity,
+    change: [],
+  }
+  const SPLIT_DATE_SKEW_ADJUSTMENT = 5 * 1000; // in milliseconds
+  const {originalData: prev, newData: curr} = activity;
+  let change = [];
+  let merged = [];
+  let split = {};
+  if (activity.description.startsWith('Product ')) {
+    if (prev && prev.name !== curr.name) {
+      ret.change.push('Product changed from ' + prev.name + ' to ' + curr.name);
+    }
+  } else if (activity.description.startsWith('Merged ')) {
+    ret.change.push('Products ' + prev.map(p => p.name).join(' and ') + ' merged to form ' + curr.name);
+    merged = prev.map((p) => p.id);
+  } else if (activity.description.startsWith('Split ')) {
+    ret.change.push('Product ' + prev.name + ' split to become Products ' + curr[0].name + ' and ' + curr[1].name);
+    split = {id: prev.id, end: activity.activityDate - SPLIT_DATE_SKEW_ADJUSTMENT};
+  }
+  return {interpreted: ret, merged, split};
 }
 
 export {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
+  interpretProduct,
 };
 
 /*

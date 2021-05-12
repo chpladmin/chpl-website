@@ -24,6 +24,7 @@ import {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
+  interpretProduct,
 } from './history.service';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper.jsx';
@@ -58,18 +59,14 @@ const DialogTitle = withStyles(styles)((props) => {
 
 function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
+  const [interpretedProducts, setInterpretedProducts] = useState(new Set());
   const [listing] = useState(props.listing);
   const [open, setOpen] = React.useState(false);
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const utilService = getAngularService('utilService');
 
-  useEffect(() => {
-    setActivity((activity) => [
-      ...activity,
-      ...interpretCertificationStatusChanges(listing),
-      ...interpretMuuHistory(listing, DateUtil),
-    ]);
+  const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((response) => {
       response.forEach(item => networkService.getActivityById(item.id).then((response) => {
         let interpreted = interpretActivity(response, utilService);
@@ -79,8 +76,39 @@ function ChplListingHistory(props) {
             interpreted,
           ]);
         }
-      }))
+      }));
     });
+  }
+
+  const evaluateProductActivity = (productId, end = Date.now()) => {
+    if (!interpretedProducts.has(productId)) {
+      networkService.getSingleProductActivityMetadata(productId, {end: end}).then(response => {
+        setInterpretedProducts((interpretedProducts) => new Set(interpretedProducts.add(productId)));
+        response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+          let {interpreted, merged, split} = interpretProduct(response);
+          if (interpreted.change.length > 0) {
+            setActivity((activity) => [
+              ...activity,
+              interpreted,
+            ]);
+          }
+          merged.forEach((next) => evaluateProductActivity(next));
+          if (split?.id) {
+            evaluateProductActivity(split.id, split.end);
+          }
+        }));
+      });
+    }
+  }
+
+  useEffect(() => {
+    setActivity((activity) => [
+      ...activity,
+      ...interpretCertificationStatusChanges(listing),
+      ...interpretMuuHistory(listing, DateUtil),
+    ]);
+    evaluateListingActivity();
+    evaluateProductActivity(listing.product.productId);
   }, [listing]);
 
   const handleClickOpen = () => {
