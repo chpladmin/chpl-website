@@ -117,6 +117,9 @@ export const ReportsVersionsComponent = {
       item.filterText = item.developerName + '|' + item.productName + '|' + item.version + '|' + item.responsibleUser.fullName;
       item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
       item.fullName = item.responsibleUser.fullName;
+      if (!item.productName) {
+        item.productName = 'Undetermined';
+      }
       if (!item.developerName) {
         item.developerName = 'Undetermined';
       }
