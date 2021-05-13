@@ -29,26 +29,21 @@ angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
 when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
 
-const selectMaterialUiSelectOption = async (element, optionText) =>
-  new Promise((resolve) => {
-    // The the button that opens the dropdown, which is a sibling of the input
-    const selectButton = element.parentNode.querySelector('[role=button]');
-
-    // Open the select dropdown
-    userEvent.click(selectButton);
-
-    // Get the dropdown element. We don't use getByRole() because it includes <select>s too.
-    const listbox = document.body.querySelector('ul[role=listbox]');
-
-    // Click the list item
-    const listItem = within(listbox).getByText(optionText);
-    userEvent.click(listItem);
-
-    // Wait for the listbox to be removed, so it isn't visible in subsequent calls
-    waitForElementToBeRemoved(() => document.body.querySelector('ul[role=listbox]')).then(
-      resolve,
-    );
-  });
+const selectMaterialUiSelectOption = async (element, optionText) => new Promise((resolve) => {
+  // The the button that opens the dropdown, which is a sibling of the input
+  const selectButton = element.parentNode.querySelector('[role=button]');
+  // Open the select dropdown
+  userEvent.click(selectButton);
+  // Get the dropdown element. We don't use getByRole() because it includes <select>s too.
+  const listbox = document.body.querySelector('ul[role=listbox]');
+  // Click the list item
+  const listItem = within(listbox).getByText(optionText);
+  userEvent.click(listItem);
+  // Wait for the listbox to be removed, so it isn't visible in subsequent calls
+  waitForElementToBeRemoved(() => document.body.querySelector('ul[role=listbox]')).then(
+    resolve,
+  );
+});
 
 describe('the ChplSurveillanceActivityReportingDateSelector component', () => {
   beforeEach(async () => {
@@ -97,90 +92,38 @@ describe('the ChplSurveillanceActivityReportingDateSelector component', () => {
   });
 
   describe('when entering valid data', () => {
-    describe('when the year 2020 is selected', () => {
-      describe('when Q1 is selected', () => {
-        it('should generate a range of 1/1/2020 to 3/31/2020', async () => {
-          const year = screen.getByLabelText(/Year/i);
-          const quarter = screen.getByLabelText(/Quarter/i);
-          const button = screen.getByRole('button', { name: /Download Results/i });
+    const testData = [
+      {
+        year: '2020', quarter: 'Q1', expectedStartDate: LocalDate.of(2020, 1, 1), expectedEndDate: LocalDate.of(2020, 3, 31),
+      },
+      {
+        year: '2020', quarter: 'Q2', expectedStartDate: LocalDate.of(2020, 4, 1), expectedEndDate: LocalDate.of(2020, 6, 30),
+      },
+      {
+        year: '2020', quarter: 'Q3', expectedStartDate: LocalDate.of(2020, 7, 1), expectedEndDate: LocalDate.of(2020, 9, 30),
+      },
+      {
+        year: '2020', quarter: 'Q4', expectedStartDate: LocalDate.of(2020, 10, 1), expectedEndDate: LocalDate.of(2020, 12, 31),
+      },
+      {
+        year: '2020', quarter: 'All', expectedStartDate: LocalDate.of(2020, 1, 1), expectedEndDate: LocalDate.of(2020, 12, 31),
+      },
+    ];
+    testData.forEach((item) => {
+      it('should generate the valid range', async () => {
+        const year = screen.getByLabelText(/Year/i);
+        const quarter = screen.getByLabelText(/Quarter/i);
+        const button = screen.getByRole('button', { name: /Download Results/i });
 
-          await selectMaterialUiSelectOption(year, '2020');
-          await selectMaterialUiSelectOption(quarter, 'Q1');
-          userEvent.click(button);
+        await selectMaterialUiSelectOption(year, item.year);
+        await selectMaterialUiSelectOption(quarter, item.quarter);
+        userEvent.click(button);
 
-          const startDate = LocalDate.of(2020, 1, 1);
-          const endDate = LocalDate.of(2020, 3, 31);
-          await waitFor(() => {
-            expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
-          });
-        });
-      });
-      describe('when Q2 is selected', () => {
-        it('should generate a range of 4/1/2020 to 6/30/2020', async () => {
-          const year = screen.getByLabelText(/Year/i);
-          const quarter = screen.getByLabelText(/Quarter/i);
-          const button = screen.getByRole('button', { name: /Download Results/i });
+        const startDate = item.expectedStartDate;
+        const endDate = item.expectedEndDate;
 
-          await selectMaterialUiSelectOption(year, '2020');
-          await selectMaterialUiSelectOption(quarter, 'Q2');
-          userEvent.click(button);
-
-          const startDate = LocalDate.of(2020, 4, 1);
-          const endDate = LocalDate.of(2020, 6, 30);
-          await waitFor(() => {
-            expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
-          });
-        });
-      });
-      describe('when Q3 is selected', () => {
-        it('should generate a range of 7/1/2020 to 9/30/2020', async () => {
-          const year = screen.getByLabelText(/Year/i);
-          const quarter = screen.getByLabelText(/Quarter/i);
-          const button = screen.getByRole('button', { name: /Download Results/i });
-
-          await selectMaterialUiSelectOption(year, '2020');
-          await selectMaterialUiSelectOption(quarter, 'Q3');
-          userEvent.click(button);
-
-          const startDate = LocalDate.of(2020, 7, 1);
-          const endDate = LocalDate.of(2020, 9, 30);
-          await waitFor(() => {
-            expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
-          });
-        });
-      });
-      describe('when Q4 is selected', () => {
-        it('should generate a range of 10/1/2020 to 12/31/2020', async () => {
-          const year = screen.getByLabelText(/Year/i);
-          const quarter = screen.getByLabelText(/Quarter/i);
-          const button = screen.getByRole('button', { name: /Download Results/i });
-
-          await selectMaterialUiSelectOption(year, '2020');
-          await selectMaterialUiSelectOption(quarter, 'Q4');
-          userEvent.click(button);
-
-          const startDate = LocalDate.of(2020, 10, 1);
-          const endDate = LocalDate.of(2020, 12, 31);
-          await waitFor(() => {
-            expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
-          });
-        });
-      });
-      describe('when All is selected', () => {
-        it('should generate a range of 1/1/2020 to 12/31/2020', async () => {
-          const year = screen.getByLabelText(/Year/i);
-          const quarter = screen.getByLabelText(/Quarter/i);
-          const button = screen.getByRole('button', { name: /Download Results/i });
-
-          await selectMaterialUiSelectOption(year, '2020');
-          await selectMaterialUiSelectOption(quarter, 'All');
-          userEvent.click(button);
-
-          const startDate = LocalDate.of(2020, 1, 1);
-          const endDate = LocalDate.of(2020, 12, 31);
-          await waitFor(() => {
-            expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
-          });
+        await waitFor(() => {
+          expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
         });
       });
     });
