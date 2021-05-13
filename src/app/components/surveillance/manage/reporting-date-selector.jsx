@@ -126,7 +126,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
           error={formik.touched.year && formik.errors.year}
           helperText={formik.touched.year && formik.errors.year}
           inputProps={{ 'data-testid': 'year-input' }}
-          formHelperTextProps={{ 'data-testid': 'year-helper-text' }}
+          FormHelperTextProps={{ 'data-testid': 'year-error-text' }}
         >
           <MenuItem value="" />
           {getYears().map((year) => (
@@ -147,6 +147,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
           error={formik.touched.quarter && formik.errors.quarter}
           helperText={formik.touched.quarter && formik.errors.quarter}
           inputProps={{ 'data-testid': 'quarter-input' }}
+          FormHelperTextProps={{ 'data-testid': 'quarter-error-text' }}
         >
           <MenuItem value="" />
           <MenuItem value="all">All</MenuItem>
