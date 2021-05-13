@@ -146,6 +146,7 @@ function ChplTestProceduresEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
+                id="test-procedures-add-item"
               >
                 Add item
                 {' '}

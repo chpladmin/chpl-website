@@ -61,9 +61,11 @@ const useStyles = makeStyles(() => ({
 
 function ChplCriterion(props) {
   /* eslint-disable react/destructuring-assignment */
+  const [canEdit] = useState(props.canEdit);
   const [criterion, setCriterion] = useState(props.certificationResult);
   const [editing, setEditing] = useState(false);
   const [pending, setPending] = useState(false);
+  const [resources] = useState(props.resources);
   const [staged, setStaged] = useState(false);
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
@@ -98,9 +100,10 @@ function ChplCriterion(props) {
 
   return (
     <Accordion
-      disabled={!criterion.success && !props.canEdit}
+      disabled={!criterion.success && !canEdit}
       className={classes.NestedAccordionLevelOne}
       onChange={() => handleAccordionChange()}
+      id={`criterion-id-${criterion.criterion.id}`}
     >
       <AccordionSummary
         className={classes.NestedAccordionLevelOneSummary}
@@ -168,23 +171,31 @@ function ChplCriterion(props) {
           </Grid>
         </Grid>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails
+        id={`criterion-id-${criterion.criterion.id}-details`}
+      >
         <Container>
           { editing
             ? (
               <ChplCriterionDetailsEdit
                 criterion={criterion}
-                resources={props.resources}
+                resources={resources}
                 onCancel={handleCancel}
                 onChange={handleChange}
                 onSave={handleSave}
               />
             ) : (
               <>
-                { props.canEdit
+                { canEdit
                   && (
                     <div>
-                      <Button fullWidth color="secondary" variant="contained" onClick={() => setEditing(true)}>
+                      <Button
+                        fullWidth
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => setEditing(true)}
+                        id={`criterion-id-${criterion.criterion.id}-edit`}
+                      >
                         Edit Criteria
                         <EditOutlinedIcon
                           className={classes.iconSpacing}

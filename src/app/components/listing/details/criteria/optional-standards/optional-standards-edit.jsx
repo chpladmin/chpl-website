@@ -153,6 +153,7 @@ function ChplOptionalStandardsEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
+                id="optional-standards-add-item"
               >
                 Add item
                 {' '}

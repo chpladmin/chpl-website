@@ -147,6 +147,7 @@ function ChplSvapsEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
+                id="svaps-add-item"
               >
                 Add item
                 {' '}

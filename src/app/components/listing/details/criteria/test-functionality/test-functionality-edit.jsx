@@ -146,6 +146,7 @@ function ChplTestFunctionalityEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
+                id="test-functionality-add-item"
               >
                 Add item
                 {' '}

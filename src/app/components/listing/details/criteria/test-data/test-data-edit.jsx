@@ -152,6 +152,7 @@ function ChplTestDataEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
+                id="test-data-add-item"
               >
                 Add item
                 {' '}

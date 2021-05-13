@@ -157,6 +157,7 @@ function ChplReliedUponSoftwareEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
+                id="relied-upon-software-add-item"
               >
                 Add item
                 {' '}
