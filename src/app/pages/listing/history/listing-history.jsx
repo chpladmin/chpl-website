@@ -25,6 +25,7 @@ import {
   interpretCertificationStatusChanges,
   interpretMuuHistory,
   interpretProduct,
+  interpretVersion,
 } from './history.service';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper.jsx';
@@ -59,7 +60,6 @@ const DialogTitle = withStyles(styles)((props) => {
 
 function ChplListingHistory(props) {
   const [activity, setActivity] = useState([]);
-  const [interpretedProducts, setInterpretedProducts] = useState(new Set());
   const [listing] = useState(props.listing);
   const [open, setOpen] = React.useState(false);
   const DateUtil = getAngularService('DateUtil');
@@ -80,10 +80,11 @@ function ChplListingHistory(props) {
     });
   }
 
+  const interpretedProducts = new Set();
   const evaluateProductActivity = (productId, end = Date.now()) => {
     if (!interpretedProducts.has(productId)) {
       networkService.getSingleProductActivityMetadata(productId, {end: end}).then(response => {
-        setInterpretedProducts((interpretedProducts) => new Set(interpretedProducts.add(productId)));
+        interpretedProducts.add(productId);
         response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           let {interpreted, merged, split} = interpretProduct(response);
           if (interpreted.change.length > 0) {
@@ -101,6 +102,28 @@ function ChplListingHistory(props) {
     }
   }
 
+  const interpretedVersions = new Set();
+  const evaluateVersionActivity = (versionId, end = Date.now()) => {
+    if (!interpretedVersions.has(versionId)) {
+      networkService.getSingleVersionActivityMetadata(versionId, {end: end}).then(response => {
+        interpretedVersions.add(versionId);
+        response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+          let {interpreted, merged, split} = interpretVersion(response);
+          if (interpreted.change.length > 0) {
+            setActivity((activity) => [
+              ...activity,
+              interpreted,
+            ]);
+          }
+          merged.forEach((next) => evaluateVersionActivity(next));
+          if (split?.id) {
+            evaluateVersionActivity(split.id, split.end);
+          }
+        }));
+      });
+    }
+  }
+
   useEffect(() => {
     setActivity((activity) => [
       ...activity,
@@ -109,6 +132,7 @@ function ChplListingHistory(props) {
     ]);
     evaluateListingActivity();
     evaluateProductActivity(listing.product.productId);
+    evaluateVersionActivity(listing.version.versionId);
   }, [listing]);
 
   const handleClickOpen = () => {
@@ -145,6 +169,7 @@ function ChplListingHistory(props) {
                       .map((item) => (
                         <TableRow key={item.id}>
                           <TableCell>
+                            Key: { item.id }
                             { DateUtil.timestampToString(item.activityDate) }
                           </TableCell>
                           <TableCell>

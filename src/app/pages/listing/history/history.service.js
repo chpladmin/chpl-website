@@ -248,11 +248,36 @@ const interpretProduct = (activity) => {
   return {interpreted: ret, merged, split};
 }
 
+const interpretVersion = (activity) => {
+  let ret = {
+    ...activity,
+    change: [],
+  }
+  const SPLIT_DATE_SKEW_ADJUSTMENT = 5 * 1000; // in milliseconds
+  const {originalData: prev, newData: curr} = activity;
+  let change = [];
+  let merged = [];
+  let split = {};
+  if (activity.description.startsWith('Product Version ')) {
+    if (prev && prev.version !== curr.version) {
+      ret.change.push('Version changed from ' + prev.version + ' to ' + curr.version);
+    }
+  } else if (activity.description.startsWith('Merged ')) {
+    ret.change.push('Versions ' + prev.map(p => p.version).join(' and ') + ' merged to form ' + curr.version);
+    merged = prev.map((p) => p.id);
+  } else if (activity.description.startsWith('Split ')) {
+    ret.change.push('Version ' + prev.version + ' split to become Versions ' + curr[0].version + ' and ' + curr[1].version);
+    split = {id: prev.id, end: activity.activityDate - SPLIT_DATE_SKEW_ADJUSTMENT};
+  }
+  return {interpreted: ret, merged, split};
+}
+
 export {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
   interpretProduct,
+  interpretVersion,
 };
 
 /*
