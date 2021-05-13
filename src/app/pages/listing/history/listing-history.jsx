@@ -32,7 +32,7 @@ import {
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper.jsx';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
@@ -46,7 +46,10 @@ const styles = (theme) => ({
 });
 
 const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
+  const {
+    children, classes, onClose, ...other
+  } = props;
+  /* eslint-disable react/jsx-props-no-spreading */
   return (
     <MuiDialogTitle className={classes.root} {...other}>
       {children}
@@ -58,6 +61,7 @@ const DialogTitle = withStyles(styles)((props) => {
        )}
     </MuiDialogTitle>
   );
+  /* eslint-enable react/jsx-props-no-spreading */
 });
 
 function ChplListingHistory(props) {
@@ -74,9 +78,9 @@ function ChplListingHistory(props) {
   /* eslint-enable react/destructuring-assignment */
 
   const evaluateListingActivity = () => {
-    networkService.getSingleListingActivityMetadata(listing.id).then((response) => {
-      response.forEach(item => networkService.getActivityById(item.id).then((response) => {
-        let interpreted = interpretActivity(response, utilService);
+    networkService.getSingleListingActivityMetadata(listing.id).then((metadata) => {
+      metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+        const interpreted = interpretActivity(response, utilService);
         if (interpreted.change.length > 0) {
           setActivity((activity) => [
             ...activity,
@@ -85,15 +89,15 @@ function ChplListingHistory(props) {
         }
       }));
     });
-  }
+  };
 
   const interpretedDevelopers = new Set();
   const evaluateDeveloperActivity = (developerId, end = Date.now()) => {
     if (!interpretedDevelopers.has(developerId)) {
-      networkService.getSingleDeveloperActivityMetadata(developerId, {end: end}).then(response => {
+      networkService.getSingleDeveloperActivityMetadata(developerId, { end }).then((metadata) => {
         interpretedDevelopers.add(developerId);
-        response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          let {interpreted, merged, split} = interpretDeveloper(response);
+        metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+          const { interpreted, merged, split } = interpretDeveloper(response);
           if (interpreted.change.length > 0) {
             setActivity((activity) => [
               ...activity,
@@ -107,15 +111,15 @@ function ChplListingHistory(props) {
         }));
       });
     }
-  }
+  };
 
   const interpretedProducts = new Set();
   const evaluateProductActivity = (productId, end = Date.now()) => {
     if (!interpretedProducts.has(productId)) {
-      networkService.getSingleProductActivityMetadata(productId, {end: end}).then(response => {
+      networkService.getSingleProductActivityMetadata(productId, { end }).then((metadata) => {
         interpretedProducts.add(productId);
-        response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          let {interpreted, merged, split} = interpretProduct(response);
+        metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+          const { interpreted, merged, split } = interpretProduct(response);
           if (interpreted.change.length > 0) {
             setActivity((activity) => [
               ...activity,
@@ -129,15 +133,15 @@ function ChplListingHistory(props) {
         }));
       });
     }
-  }
+  };
 
   const interpretedVersions = new Set();
   const evaluateVersionActivity = (versionId, end = Date.now()) => {
     if (!interpretedVersions.has(versionId)) {
-      networkService.getSingleVersionActivityMetadata(versionId, {end: end}).then(response => {
+      networkService.getSingleVersionActivityMetadata(versionId, { end }).then((metadata) => {
         interpretedVersions.add(versionId);
-        response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          let {interpreted, merged, split} = interpretVersion(response);
+        metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+          const { interpreted, merged, split } = interpretVersion(response);
           if (interpreted.change.length > 0) {
             setActivity((activity) => [
               ...activity,
@@ -151,7 +155,7 @@ function ChplListingHistory(props) {
         }));
       });
     }
-  }
+  };
 
   useEffect(() => {
     setActivity((activity) => [
@@ -189,14 +193,14 @@ function ChplListingHistory(props) {
   return (
     <ThemeProvider theme={theme}>
       <Button color="primary" variant="outlined" onClick={handleClickOpen}>
-        <i className="fa fa-eye"></i>
+        <i className="fa fa-eye" />
       </Button>
       <Dialog
         onClose={handleClose}
         aria-labelledby="listing-history-title"
         open={open}
-        fullWidth={true}
-        maxWidth={'lg'}
+        fullWidth
+        maxWidth="lg"
       >
         <DialogTitle id="listing-history-title" onClose={handleClose}>
           Listing History
@@ -223,7 +227,7 @@ function ChplListingHistory(props) {
                           <TableCell>
                             <ul className="list-unstyled">
                               { item.change.map((change, idx) => (
-                                <li key={idx} dangerouslySetInnerHTML={{__html: `${change}`}} />
+                                <li key={idx} dangerouslySetInnerHTML={{ __html: `${change}` }} />
                               ))}
                             </ul>
                           </TableCell>
@@ -234,11 +238,18 @@ function ChplListingHistory(props) {
               </TableContainer>
             ) : (
               <Typography>No changes have been made to this Listing</Typography>
-            )
-          }
+            )}
         </DialogContent>
         <DialogActions>
-          <Typography>This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the <code>/activity/certified_products/{ listing.id }</code> API call described on the CHPL API page.</Typography>
+          <Typography>
+            This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the
+            <code>
+              /activity/certified_products/
+              { listing.id }
+            </code>
+            {' '}
+            API call described on the CHPL API page.
+          </Typography>
           <ButtonGroup
             color="primary"
             variant="outlined"
@@ -255,8 +266,7 @@ function ChplListingHistory(props) {
                 >
                   Go to Full History
                 </Button>
-              )
-            }
+              )}
           </ButtonGroup>
         </DialogActions>
       </Dialog>
@@ -273,4 +283,4 @@ ChplListingHistory.propTypes = {
 
 ChplListingHistory.defaultProps = {
   canSeeHistory: false,
-}
+};
