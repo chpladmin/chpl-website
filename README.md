@@ -63,13 +63,13 @@ On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpa
 
 #### E2E testing
 
-By default, E2E tests will be executed against http://localhost:3000/. This URL can be configured at runtime with the parameter `baseUrl`. For example: `yarn e2e --baseUrl http://www.example.com/` would set all tests to run against www.example.com
+By default, E2E tests will be executed against http://localhost:3000/. To run against different environments, pass ENV variable with 'dev', 'qa' ,'stage' options. For example: `ENV='Environment you want to run on' yarn e2e` would set all tests to run against environment passed in.
 
-If a single spec file should be tested, instead of all of them, the command `yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
+If a single spec file should be tested, instead of all of them, the command `ENV='Environment you want to run on' yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
 
-To change the loglevel, test could be run as `yarn e2e --l info`
+To change the loglevel, test could be run as `ENV='Environment you want to run on' yarn e2e --l info`
 
-To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
+To run a suite of tests, execute `ENV='Environment you want to run on' yarn e2e --suite suite-name`. For example, `ENV='Environment you want to run on' yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
 
 When debugging, taking screenshots can be useful. The command `browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
 
@@ -81,3 +81,7 @@ When debugging, taking screenshots can be useful. The command `browser.saveScree
 #### Automation credetials set up
 
 Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
+
+#### Automation environment Urls set up
+
+Copy `e2e/config/urlsEXAMPLE.js` to the file `e2e/config/urls.js` and set the urls for each environments in the file

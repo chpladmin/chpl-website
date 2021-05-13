@@ -1,11 +1,15 @@
 (() => {
-  'use strict';
-
   describe('the Upload Surveillances component', () => {
-    var $compile, $log, ctrl, el, scope;
+    let $compile;
+    let $log;
+    let ctrl;
+    let el;
+    let scope;
 
     beforeEach(() => {
-      angular.mock.module('chpl.surveillance');
+      angular.mock.module('chpl.surveillance', ($provide) => {
+        $provide.factory('chplUploadSurveillanceBridgeDirective', () => ({}));
+      });
 
       inject((_$compile_, _$log_, $rootScope) => {
         $compile = _$compile_;
@@ -23,7 +27,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
