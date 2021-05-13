@@ -3,6 +3,7 @@ const elements = {
   seeAll: '#viewAllCerts',
   editCertifiedProduct: '//button[text()=" Edit Certified Product"]',
   reason: '#reason-for-change',
+  bypassWarning: '#acknowledge-warnings',
 };
 
 class ListingPage {
@@ -22,6 +23,10 @@ class ListingPage {
 
   get reason() {
     return $(elements.reason);
+  }
+
+  get bypassWarning() {
+    return $(elements.bypassWarning);
   }
 }
 

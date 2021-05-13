@@ -14,6 +14,6 @@ describe('the Listing page', () => {
   it('should show measures', () => {
     measures.measuresHeader.scrollIntoView();
     measures.expandMeasures();
-    expect(measures.measuresCount()).toBe(25);
+    expect(measures.measuresCount()).toBeGreaterThan(15);
   });
 });

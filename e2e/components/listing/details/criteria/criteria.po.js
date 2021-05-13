@@ -1,8 +1,13 @@
+import { element } from 'prop-types';
+
 const elements = {
   removedCriteria: '#removed-header',
-  editCriteria: '//span[text()="Edit Criteria"]',
   attestToggle: '#success',
   accept: '//span[text()="Accept"]',
+  testProcedureName: '#name',
+  version: '#version',
+  testToolsName: '#tt',
+  privacySecurityName: '#privacy-security-framework',
 };
 
 class CriteriaComponent {
@@ -12,8 +17,8 @@ class CriteriaComponent {
     return $(elements.removedCriteria);
   }
 
-  get editCriteria() {
-    return $(elements.editCriteria);
+  editCriteria(id) {
+    $(`#criterion-id-${id}-edit`).scrollAndClick();
   }
 
   get attestToggle() {
@@ -33,6 +38,7 @@ class CriteriaComponent {
   }
 
   expandCriteria(id) {
+    $(`#criterion-id-${id}-header`).scrollIntoView();
     $(`#criterion-id-${id}-header`).$$('div')[1].scrollAndClick();
   }
 
@@ -46,6 +52,40 @@ class CriteriaComponent {
 
   criteriaDetailTable(id) {
     return $(`//*[@id="criterion-id-${id}-header"]/parent::div`).$('table');
+  }
+
+  addItem(type) {
+    $(`#${type}-add-item`).scrollAndClick();
+  }
+
+  checkItem(type) {
+    $(`#${type}-check-item`).scrollAndClick();
+  }
+
+  choosePrivacySecurityFramework(value) {
+    $('#privacy-security-framework').click();
+    $(`//*[@data-value="${value}"]`).click();
+  }
+
+  addTestProcedures(name, version) {
+    this.addItem('test-procedures');
+    $(elements.testProcedureName).click();
+    $('#menu-name').$(`li*=${name}`).click();
+    $(elements.version).addValue(version);
+    this.checkItem('test-procedures');
+  }
+
+  addTestTools(name, version) {
+    this.addItem('test-tools');
+    $(elements.testToolsName).click();
+    $('#menu-tt').$(`li*=${name}`).click();
+    $(elements.version).addValue(version);
+    this.checkItem('test-tools');
+  }
+
+  addPrivacySecurity(value) {
+    $(elements.privacySecurityName).click();
+    $(`//*[@data-value="${value}"]`).click();
   }
 }
 

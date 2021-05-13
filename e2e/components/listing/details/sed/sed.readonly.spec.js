@@ -15,13 +15,13 @@ describe('the Listing page', () => {
     sed.sedHeader.scrollIntoView();
     sed.expandSed();
     expect(sed.ucdProcess.isDisplayed()).toBe(true);
-    expect(sed.criteriaUcdCount()).toBe(12);
+    expect(sed.criteriaUcdCount()).toBeGreaterThan(5);
   });
 
   it('should show all testings tasks under SED information', () => {
     sed.sedHeader.scrollIntoView();
     sed.expandSed();
     expect(sed.tasksTable.isDisplayed()).toBe(true);
-    expect(sed.testingTasksCount()).toBe(60);
+    expect(sed.testingTasksCount()).toBeGreaterThan(40);
   });
 });
