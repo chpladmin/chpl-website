@@ -202,11 +202,13 @@ function ChplTestDataEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  id="test-data-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  id="test-data-close-item"
                 >
                   <CloseIcon />
                 </Button>

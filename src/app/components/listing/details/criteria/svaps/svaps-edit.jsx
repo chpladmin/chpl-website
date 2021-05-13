@@ -176,11 +176,13 @@ function ChplSvapsEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  id="svaps-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  id="svaps-close-item"
                 >
                   <CloseIcon />
                 </Button>

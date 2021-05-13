@@ -182,11 +182,13 @@ function ChplOptionalStandardsEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  id="optional-standards-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  id="optional-standards-close-item"
                 >
                   <CloseIcon />
                 </Button>

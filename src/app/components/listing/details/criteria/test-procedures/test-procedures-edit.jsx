@@ -186,11 +186,13 @@ function ChplTestProceduresEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  id="test-procedures-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  id="test-procedures-close-item"
                 >
                   <CloseIcon />
                 </Button>

@@ -175,11 +175,13 @@ function ChplTestFunctionalityEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  id="test-functionality-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  id="test-functionality-close-item"
                 >
                   <CloseIcon />
                 </Button>

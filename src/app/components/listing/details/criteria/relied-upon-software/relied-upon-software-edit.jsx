@@ -217,11 +217,13 @@ function ChplReliedUponSoftwareEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  id="relied-upon-software-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  id="relied-upon-software-close-item"
                 >
                   <CloseIcon />
                 </Button>
