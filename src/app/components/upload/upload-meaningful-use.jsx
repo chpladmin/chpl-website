@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
 import theme from '../../themes/theme';
 import { getAngularService } from '.';
+import { ChplTextField } from '../util';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -24,19 +30,26 @@ const useStyles = makeStyles(() => ({
     gridRowGap: '8px',
     gridColumnGap: '8px',
   },
-  firstRow: {
+  fullRow: {
     gridColumn: '1 / -1',
   },
 }));
 
-function ChplUploadListings() {
+const validationSchema = yup.object({
+  accurateAsOf: yup.date()
+    .required('Accurate as of date is required'),
+});
+
+function ChplUploadMeaningfulUse() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
+  const $state = getAngularService('$state');
   const toaster = getAngularService('toaster');
   const classes = useStyles();
+  let formik;
 
   const clearFile = () => {
     setFile(undefined);
@@ -50,7 +63,7 @@ function ChplUploadListings() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/listings/upload`,
+      url: `${API}/meaningful_use/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
@@ -59,24 +72,20 @@ function ChplUploadListings() {
         file,
       },
     };
+    if (typeof formik.values.accurateAsOf === 'object') {
+      item.url += `?accurate_as_of=${formik.values.accurateAsOf.getTime()}`;
+    } else {
+      item.url += `?accurate_as_of=${new Date(formik.values.accurateAsOf).getTime()}`;
+    }
     Upload.upload(item)
       .then((response) => {
-        if (response.status === 206) {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
-          toaster.pop({
-            type: 'warning',
-            title: 'Partial success',
-            body: message,
-            bodyOutputType: 'trustedHtml',
-          });
-        } else {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
-          toaster.pop({
-            type: 'success',
-            title: 'Success',
-            body: message,
-          });
-        }
+        const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
+        toaster.pop({
+          type: 'success',
+          title: 'Success',
+          body: message,
+        });
+        $state.go('administration.jobs.scheduled');
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
@@ -90,17 +99,30 @@ function ChplUploadListings() {
         });
       })
       .finally(() => {
+        formik.resetForm();
         clearFile();
       });
   };
 
+  formik = useFormik({
+    validationSchema,
+    initialValues: {
+      accurateAsOf: '',
+    },
+    validateOnChange: false,
+    validateOnBlur: true,
+    onSubmit: () => {
+      uploadFile();
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <Card>
-        <CardHeader title="Upload Certified Products (Beta)" />
+        <CardHeader title="Upload Meaningful Use Users" subtitle="CSV files only" />
         <CardContent>
           <div className={classes.gridStyle}>
-            <Typography variant="body1" className={classes.firstRow}>
+            <Typography variant="body1" className={classes.fullRow}>
               CSV files only
             </Typography>
             <div>
@@ -112,7 +134,7 @@ function ChplUploadListings() {
                 Choose file to upload
                 <input
                   type="file"
-                  id="upload-listings"
+                  id="upload-meaningful-use"
                   onChange={onFileChange}
                   style={{ display: 'none' }}
                 />
@@ -140,7 +162,7 @@ function ChplUploadListings() {
                 <Button
                   color="primary"
                   variant="contained"
-                  onClick={uploadFile}
+                  onClick={formik.handleSubmit}
                 >
                   <i className="fa fa-cloud-upload" />
                   {' '}
@@ -157,6 +179,20 @@ function ChplUploadListings() {
                 </Button>
               </div>
               )}
+            <div className={classes.fullRow}>
+              <ChplTextField
+                type="date"
+                id="accurate-as-of"
+                name="accurateAsOf"
+                label="Enter the Accurate As of date for Meaningful Use Users associated with this upload"
+                required
+                value={formik.values.accurateAsOf}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
+                helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -164,6 +200,6 @@ function ChplUploadListings() {
   );
 }
 
-ChplUploadListings.propTypes = {};
+export default ChplUploadMeaningfulUse;
 
-export default ChplUploadListings;
+ChplUploadMeaningfulUse.propTypes = {};

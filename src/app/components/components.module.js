@@ -1,10 +1,11 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
-import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import { ChplEllipsis } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
-import { ChplUploadListings } from './upload';
-import { reactToAngularComponent } from '../services/angular-react-helper.jsx';
+import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
+
+import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
+import { reactToAngularComponent } from '../services/angular-react-helper';
 
 angular
   .module('chpl.components', [
@@ -30,4 +31,6 @@ angular
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
-  .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings));
+  .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
+  .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
+  .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance));
