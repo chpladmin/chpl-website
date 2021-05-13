@@ -10,6 +10,10 @@ class Hooks {
   waitForSpinnerToDisappear () {
     browser.waitUntil( () => !$('#loading-bar-spinner').isDisplayed());
   }
+
+  waitForSpinnerToAppear () {
+    browser.waitUntil( () => $('#loading-bar-spinner').isDisplayed());
+  }
 }
 
 export default Hooks;

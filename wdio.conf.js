@@ -1,10 +1,21 @@
-const config= require('./e2e/config/mainConfig');
+const config = require('./e2e/config/mainConfig');
 const path = require('path');
 const fs = require('fs');
+const urls = require('./e2e/config/urls');
 
 // Store the directory path in a global, which allows us to access this path inside our tests
 global.downloadDir = path.join(`${__dirname}`, 'test_reports/e2e/');
 
+let baseUrl='http://localhost:3000/';
+if (process.env.ENV === 'dev') {
+  baseUrl = urls.devURL
+}
+else if (process.env.ENV === 'qa') {
+  baseUrl = urls.qaURL
+}
+else if (process.env.ENV === 'stage') {
+  baseUrl = urls.stageURL
+}
 exports.config = {
   //
   // ====================
@@ -123,7 +134,7 @@ exports.config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'http://localhost:3000/',
+  baseUrl,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: config.longTimeout,
