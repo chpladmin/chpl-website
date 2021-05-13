@@ -2,14 +2,6 @@ import InactivePage from './inactive.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let page;
-const DEVELOPER_COL_IDX = 2;
-const developerName = 'Allscripts';
-const VERSION_COL_IDX = 4;
-const versionName = 'Version 2.1';
-const PRODUCT_COL_IDX = 3;
-const productName = 'TouchWorks';
-const CHPLID_COL_IDX = 9;
-const chplIdName = '15.04.04.2891.Alls.AC.00.1.160804';
 
 describe('the Inactive Certificates collection page', () => {
   beforeEach(async () => {
@@ -44,38 +36,32 @@ describe('the Inactive Certificates collection page', () => {
     });
 
     describe('using acb filter to de select drummond group', () => {
-      beforeEach(() => {
-        page.selectFilter('acb', 'Drummond_Group');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('acb', 'Drummond_Group');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
 
     describe('using certification edition filter to de select 2015 cures update', () => {
-      beforeEach(() => {
-        page.selectFilter('edition', '2015_Cures_Update');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('edition', '2015_Cures_Update');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
 
     describe('using date filter', () => {
-      beforeEach(() => {
+
+      it('should filter listing results', () => {
         page.dateFilter.click();
         page.fromDate.addValue('09/01/2017');
         page.toDate.addValue('10/01/2020');
         page.waitForUpdatedListingResultsCount();
-      });
-
-      it('should filter listing results', () => {
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
@@ -83,51 +69,50 @@ describe('the Inactive Certificates collection page', () => {
   });
 
   describe('when searching listing by developer', () => {
-    beforeEach(() => {
+    const DEVELOPER_COL_IDX = 2;
+    const developerName = 'Allscripts';
+    it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the developer', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
       }
     });
   });
+
   describe('when searching listing by version', () => {
-    beforeEach(() => {
+    const VERSION_COL_IDX = 4;
+    const versionName = 'Version 2.1';
+    it('should only show listings that match the version', () => {
       page.searchForListing(versionName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the version', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
       }
     });
   });
+
   describe('when searching listing by product', () => {
-    beforeEach(() => {
+    const PRODUCT_COL_IDX = 3;
+    const productName = 'TouchWorks';
+    it('should only show listings that match the product', () => {
       page.searchForListing(productName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
       }
     });
   });
+
   describe('when searching listing by CHPL ID', () => {
-    beforeEach(() => {
+    const CHPLID_COL_IDX = 9;
+    const chplIdName = '15.04.04.2891.Alls.AC.00.1.160804';
+    it('should only show listings that match the product', () => {
       page.searchForListing(chplIdName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);

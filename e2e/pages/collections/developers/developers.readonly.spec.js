@@ -2,8 +2,6 @@ import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let page;
-const DEVELOPER_COL_IDX = 1;
-const developerName = 'Rabbit';
 
 describe('the Developers Under Certification Ban collection page', () => {
   beforeEach(async () => {
@@ -40,38 +38,34 @@ describe('the Developers Under Certification Ban collection page', () => {
     });
 
     describe('using acb filter to de select drummond group', () => {
-      beforeEach(() => {
-        page.selectFilter('acb', 'Drummond_Group');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('acb', 'Drummond_Group');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
 
     describe('using date filter', () => {
-      beforeEach(() => {
+
+      it('should filter listing results', () => {
         page.dateFilter.click();
         page.fromDate.addValue('09/01/2017');
         page.toDate.addValue('10/01/2019');
         page.waitForUpdatedListingResultsCount();
-      });
-
-      it('should filter listing results', () => {
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
   });
+  
   describe('when searching listing by developer', () => {
-    beforeEach(() => {
+    const DEVELOPER_COL_IDX = 1;
+    const developerName = 'Rabbit';
+    it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the developer', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);

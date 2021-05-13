@@ -2,14 +2,6 @@ import ApiDocumentationPage from './api-documentation.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let page;
-const DEVELOPER_COL_IDX = 1;
-const developerName = 'MD Charts';
-const VERSION_COL_IDX = 3;
-const versionName = '2018 R1';
-const PRODUCT_COL_IDX = 2;
-const productName = 'Acumen EHR';
-const CHPLID_COL_IDX = 4;
-const chplIdName = '15.07.07.1582.HC01.03.00.1.200507';
 const path = require('path');
 const fs = require('fs');
 const config = require('../../../config/mainConfig');
@@ -52,12 +44,10 @@ describe('the Api Documentation collection page', () => {
     });
 
     describe('using certification status filter to select withdrawn by developer', () => {
-      beforeEach(() => {
-        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeGreaterThan(countBefore);
       });
@@ -65,12 +55,11 @@ describe('the Api Documentation collection page', () => {
   });
 
   describe('when searching listing by developer', () => {
-    beforeEach(() => {
+    const DEVELOPER_COL_IDX = 1;
+    const developerName = 'MD Charts';
+    it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the developer', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
@@ -78,12 +67,11 @@ describe('the Api Documentation collection page', () => {
     });
   });
   describe('when searching listing by version', () => {
-    beforeEach(() => {
+    const VERSION_COL_IDX = 3;
+    const versionName = '2018 R1';
+    it('should only show listings that match the version', () => {
       page.searchForListing(versionName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the version', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
@@ -91,25 +79,24 @@ describe('the Api Documentation collection page', () => {
     });
   });
   describe('when searching listing by product', () => {
-    beforeEach(() => {
+    const PRODUCT_COL_IDX = 2;
+    const productName = 'Acumen EHR';
+    it('should only show listings that match the product', () => {
       page.searchForListing(productName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
       }
     });
   });
+
   describe('when searching listing by CHPL ID', () => {
-    beforeEach(() => {
+    const CHPLID_COL_IDX = 4;
+    const chplIdName = '15.07.07.1582.HC01.03.00.1.200507';
+    it('should only show listings that match the product', () => {
       page.searchForListing(chplIdName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);
@@ -118,17 +105,14 @@ describe('the Api Documentation collection page', () => {
   });
 
   describe('when clicking on api documentation download button', () => {
-    beforeEach(() => {
-      page.downloadApiDocButton.click();
-    });
 
     it('should download a file', () => {
+      page.downloadApiDocButton.click();
       const fileName = 'APIDocData-20193112.xlsx';
       const filePath = path.join(global.downloadDir, fileName);
       browser.waitForFileExists(filePath, config.timeout);
       expect(fs.existsSync(filePath)).toBe(true);
       const stat = fs.statSync(filePath);
-      console.log(stat.size / 1000);
       expect(stat.size / 1000).toBeGreaterThan(10);
     });
   });

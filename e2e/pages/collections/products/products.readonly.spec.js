@@ -1,16 +1,7 @@
 import ProductsPage from './products.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let
-  page;
-const DEVELOPER_COL_IDX = 2;
-const developerName = 'LifeSource';
-const VERSION_COL_IDX = 4;
-const versionName = 'Version 7';
-const PRODUCT_COL_IDX = 3;
-const productName = 'AtTheScene';
-const CHPLID_COL_IDX = 9;
-const chplIdName = '15.04.04.2943.Soci.01.00.1.161215';
+let hooks; let page;
 
 describe('the Decertified Products collection page', () => {
   beforeEach(async () => {
@@ -45,49 +36,42 @@ describe('the Decertified Products collection page', () => {
     });
 
     describe('using acb filter to de select drummond group', () => {
-      beforeEach(() => {
-        page.selectFilter('acb', 'Drummond_Group');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('acb', 'Drummond_Group');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
 
     describe('using certification edition filter to de select 2015 cures update', () => {
-      beforeEach(() => {
-        page.selectFilter('edition', '2015_Cures_Update');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('edition', '2015_Cures_Update');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
 
     describe('using certification status filter to select withdrawn by ONC-ACB', () => {
-      beforeEach(() => {
-        page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('certificationStatus', 'Withdrawn_by_ONC-ACB');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThanOrEqual(countBefore);
       });
     });
+
     describe('using date filter', () => {
-      beforeEach(() => {
+
+      it('should filter listing results', () => {
         page.dateFilter.click();
         page.fromDate.addValue('09/01/2017');
         page.toDate.addValue('10/01/2020');
         page.waitForUpdatedListingResultsCount();
-      });
-
-      it('should filter listing results', () => {
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
@@ -95,51 +79,50 @@ describe('the Decertified Products collection page', () => {
   });
 
   describe('when searching listing by developer', () => {
-    beforeEach(() => {
+    const DEVELOPER_COL_IDX = 2;
+    const developerName = 'LifeSource';
+    it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the developer', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
       }
     });
   });
+
   describe('when searching listing by version', () => {
-    beforeEach(() => {
+    const VERSION_COL_IDX = 4;
+    const versionName = 'Version 7';
+    it('should only show listings that match the version', () => {
       page.searchForListing(versionName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the version', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
       }
     });
   });
+
   describe('when searching listing by product', () => {
-    beforeEach(() => {
+    const PRODUCT_COL_IDX = 3;
+    const productName = 'AtTheScene';
+    it('should only show listings that match the product', () => {
       page.searchForListing(productName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
       }
     });
   });
+
   describe('when searching listing by CHPL ID', () => {
-    beforeEach(() => {
+    const CHPLID_COL_IDX = 9;
+    const chplIdName = '15.04.04.2943.Soci.01.00.1.161215';
+    it('should only show listings that match the product', () => {
       page.searchForListing(chplIdName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);

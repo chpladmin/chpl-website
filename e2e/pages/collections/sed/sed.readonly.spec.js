@@ -2,17 +2,9 @@ import SedPage from './sed.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let page;
-const DEVELOPER_COL_IDX = 1;
-const developerName = 'Allscripts';
-const VERSION_COL_IDX = 3;
-const versionName = '2017.1.1';
-const PRODUCT_COL_IDX = 2;
-const productName = 'Helios';
-const CHPLID_COL_IDX = 4;
-const chplIdName = '15.02.02.1044.A093.01.00.1.190329';
 const path = require('path');
 const fs = require('fs');
-const config = require('../../../config/mainConfig');
+const config = require('../../../config/mnainConfig');
 
 describe('the SED Information for 2015 Edition Products collection page', () => {
   beforeEach(async () => {
@@ -51,23 +43,20 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
     });
 
     describe('using acb filter to de select drummond group', () => {
-      beforeEach(() => {
-        page.selectFilter('acb', 'Drummond_Group');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('acb', 'Drummond_Group');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
+
     describe('using certification status filter to select withdrawn by developer', () => {
-      beforeEach(() => {
-        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
-        page.waitForUpdatedListingResultsCount();
-      });
 
       it('should filter listing results', () => {
+        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
+        page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeGreaterThan(countBefore);
       });
@@ -75,51 +64,50 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
   });
 
   describe('when searching listing by developer', () => {
-    beforeEach(() => {
+    const DEVELOPER_COL_IDX = 1;
+    const developerName = 'Allscripts';
+    it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the developer', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
       }
     });
   });
+
   describe('when searching listing by version', () => {
-    beforeEach(() => {
+    const VERSION_COL_IDX = 3;
+    const versionName = '2017.1.1';
+    it('should only show listings that match the version', () => {
       page.searchForListing(versionName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the version', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
       }
     });
   });
+  
   describe('when searching listing by product', () => {
-    beforeEach(() => {
+    const PRODUCT_COL_IDX = 2;
+    const productName = 'Helios';
+    it('should only show listings that match the product', () => {
       page.searchForListing(productName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
       }
     });
   });
+
   describe('when searching listing by CHPL ID', () => {
-    beforeEach(() => {
+    const CHPLID_COL_IDX = 4;
+    const chplIdName = '15.02.02.1044.A093.01.00.1.190329';
+    it('should only show listings that match the product', () => {
       page.searchForListing(chplIdName);
       page.waitForUpdatedListingResultsCount();
-    });
-
-    it('should only show listings that match the product', () => {
       const count = page.listingTotalCount();
       for (let i = 1; i <= count; i++) {
         expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);
@@ -128,11 +116,9 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
   });
 
   describe('when clicking on sed details download button', () => {
-    beforeEach(() => {
-      page.sedDetailsDownloadButton.click();
-    });
 
     it('should download a file', () => {
+      page.sedDetailsDownloadButton.click();
       let fileName;
       const sedFileName = 'chpl-sed-all-details';
       browser.pause(config.timeout); // can't add explicit timeout as file name is dynamic here
