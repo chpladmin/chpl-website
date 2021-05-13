@@ -16,4 +16,4 @@ reset-local.sh
 update-pr.sh
 e2e/config/credentials.js
 yarn-error.log
-
+e2e/config/urls.js

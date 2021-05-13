@@ -1,4 +1,4 @@
-import {ChplUploadListings} from './upload-listings.jsx';
-import {getAngularService} from '../../services/angular-react-helper.jsx';
+import ChplUploadListings from './upload-listings';
+import { getAngularService } from '../../services/angular-react-helper';
 
-export {ChplUploadListings, getAngularService};
+export { ChplUploadListings, getAngularService };
