@@ -30,13 +30,15 @@ describe('the ONC-ACB Management page', () => {
     await hooks.open('#/organizations/onc-acbs');
   });
 
-  it('should display all ACB organizations', () => {
-    const expectedAcbs = ['CCHIT', 'Drummond Group', 'ICSA Labs', 'SLI Compliance', 'Surescripts LLC', 'UL LLC'];
-    const actualAcbs = page.organizationList.getText();
-    let i;
-    for (i = 1; i <= expectedAcbs.length; i += 1) {
-      expect(actualAcbs).toContain(expectedAcbs[i - 1]);
-    }
+  it('should have at least 6 ACB organizations', () => {
+    expect(page.organizationListCount()).toBeGreaterThanOrEqual(6);
+  });
+
+  it('should display ACB organizations in alphabetical order', () => {
+    const acbList = page.organizationList.getText();
+    const currentAcbList = acbList.split();
+    const sortedAcbList = currentAcbList.sort();
+    expect(currentAcbList).toEqual(sortedAcbList);
   });
 
   describe('when logged in as UL', () => {

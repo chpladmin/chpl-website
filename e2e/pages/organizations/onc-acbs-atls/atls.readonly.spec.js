@@ -33,13 +33,15 @@ describe('the ONC-ATL Management page', () => {
     await hooks.open('#/organizations/onc-atls');
   });
 
-  it('should display all ATL organizations', () => {
-    const expectedAtls = ['CCHIT', 'Drummond Group', 'ICSA Labs', 'National Committee for Quality Assurance (NCQA)', 'National Technical Systems', 'SLI Compliance', 'UL LLC'];
-    const actualAtls = page.organizationList.getText();
-    let i;
-    for (i = 1; i <= expectedAtls.length; i += 1) {
-      expect(actualAtls).toContain(expectedAtls[i - 1]);
-    }
+  it('should have at least 7 ATL organizations', () => {
+    expect(page.organizationListCount()).toBeGreaterThanOrEqual(7);
+  });
+
+  it('should display ATL organizations in alphabetical order', () => {
+    const atlList = page.organizationList.getText();
+    const currentAtlList = atlList.split();
+    const sortedList = currentAtlList.sort();
+    expect(currentAtlList).toEqual(sortedList);
   });
 
   describe('when impersonating as UL', () => {
