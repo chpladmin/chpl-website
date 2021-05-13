@@ -224,6 +224,30 @@ const interpretMuuHistory = (listing, DateUtil) => {
     })
 }
 
+const interpretDeveloper = (activity) => {
+  let ret = {
+    ...activity,
+    change: [],
+  }
+  const SPLIT_DATE_SKEW_ADJUSTMENT = 5 * 1000; // in milliseconds
+  const {originalData: prev, newData: curr} = activity;
+  let change = [];
+  let merged = [];
+  let split = {};
+  if (activity.description.startsWith('Developer ')) {
+    if (prev && prev.name !== curr.name) {
+      ret.change.push('Developer changed from ' + prev.name + ' to ' + curr.name);
+    }
+  } else if (activity.description.startsWith('Merged ')) {
+    ret.change.push('Developers ' + prev.map(p => p.name).join(' and ') + ' merged to form ' + curr.name);
+    merged = prev.map((p) => p.id);
+  } else if (activity.description.startsWith('Split ')) {
+    ret.change.push('Developer ' + prev.name + ' split to become Developers ' + curr[0].name + ' and ' + curr[1].name);
+    split = {id: prev.id, end: activity.activityDate - SPLIT_DATE_SKEW_ADJUSTMENT};
+  }
+  return {interpreted: ret, merged, split};
+}
+
 const interpretProduct = (activity) => {
   let ret = {
     ...activity,
@@ -276,6 +300,7 @@ export {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
+  interpretDeveloper,
   interpretProduct,
   interpretVersion,
 };

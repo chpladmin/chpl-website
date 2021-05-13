@@ -24,6 +24,7 @@ import {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
+  interpretDeveloper,
   interpretProduct,
   interpretVersion,
 } from './history.service';
@@ -80,6 +81,28 @@ function ChplListingHistory(props) {
     });
   }
 
+  const interpretedDevelopers = new Set();
+  const evaluateDeveloperActivity = (developerId, end = Date.now()) => {
+    if (!interpretedDevelopers.has(developerId)) {
+      networkService.getSingleDeveloperActivityMetadata(developerId, {end: end}).then(response => {
+        interpretedDevelopers.add(developerId);
+        response.forEach((item) => networkService.getActivityById(item.id).then((response) => {
+          let {interpreted, merged, split} = interpretDeveloper(response);
+          if (interpreted.change.length > 0) {
+            setActivity((activity) => [
+              ...activity,
+              interpreted,
+            ]);
+          }
+          merged.forEach((next) => evaluateDeveloperActivity(next));
+          if (split?.id) {
+            evaluateDeveloperActivity(split.id, split.end);
+          }
+        }));
+      });
+    }
+  }
+
   const interpretedProducts = new Set();
   const evaluateProductActivity = (productId, end = Date.now()) => {
     if (!interpretedProducts.has(productId)) {
@@ -131,6 +154,7 @@ function ChplListingHistory(props) {
       ...interpretMuuHistory(listing, DateUtil),
     ]);
     evaluateListingActivity();
+    evaluateDeveloperActivity(listing.developer.developerId);
     evaluateProductActivity(listing.product.productId);
     evaluateVersionActivity(listing.version.versionId);
   }, [listing]);
