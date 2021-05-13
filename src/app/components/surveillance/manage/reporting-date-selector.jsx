@@ -14,7 +14,7 @@ import ChplTextField from '../../util/chpl-text-field';
 import theme from '../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
-  grid: {
+  apiRegistrationLayout: {
     display: 'grid',
     columnGap: '8px',
     gridRowGap: '16px',
@@ -108,7 +108,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.grid}>
+      <div className={classes.apiRegistrationLayout}>
         <div className={classes.fullWidth}>
           <Typography variant="subtitle1">
             Select a Date Range to Download Reports
