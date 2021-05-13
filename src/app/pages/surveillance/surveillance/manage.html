@@ -15,7 +15,8 @@
               <div class="col-sm-4">
                 <div class="input-group">
                   <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                  <input type="text" class="form-control input-sm" id="generalFilter" placeholder="Search by Developer, Product, Version, or CHPL Product Number" ai-enhanced-text predicate="mainSearch" register-clear-filter="$ctrl.registerClearFilter(clearFilter)">
+                  <input type="text" class="form-control input-sm" id="generalFilter" placeholder="Search by Developer, Product, Version, or CHPL Product Number"
+                         ai-enhanced-text predicate="mainSearch" register-clear-filter="$ctrl.registerClearFilter(clearFilter)">
                   <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL Product Number</span></label>
                 </div>
               </div>
@@ -26,7 +27,12 @@
                     ONC-ACB <i class="fa fa-filter"></i>
                   </button>
                   <ul class="dropdown-menu" aria-labeledby="filter-button-acb" uib-dropdown-menu>
-                    <st-list-multiple collection="$ctrl.availableListings" predicate="acb" fixed-items="$ctrl.filterItems.acbItems" has-changes="$ctrl.categoryChanged['acb']" register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
+                    <st-list-multiple
+                       collection="$ctrl.availableListings"
+                       predicate="acb"
+                       fixed-items="$ctrl.filterItems.acbItems"
+                       has-changes="$ctrl.categoryChanged['acb']"
+                       register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
                   </ul>
                 </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
@@ -35,7 +41,12 @@
                     Certification Edition <i class="fa fa-filter"></i>
                   </button>
                   <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
-                    <st-list-multiple collection="$ctrl.availableListings" predicate="edition" fixed-items="$ctrl.filterItems.editionItems" has-changes="$ctrl.categoryChanged['edition']" register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
+                    <st-list-multiple
+                       collection="$ctrl.availableListings"
+                       predicate="edition"
+                       fixed-items="$ctrl.filterItems.editionItems"
+                       has-changes="$ctrl.categoryChanged['edition']"
+                       register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></st-list-multiple>
                   </ul>
                 </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
@@ -44,7 +55,13 @@
                     Certification Status <i class="fa fa-filter"></i>
                   </button>
                   <ul class="dropdown-menu" aria-labeledby="filter-button-certificationStatus" uib-dropdown-menu>
-                    <st-list-multiple collection="$ctrl.availableListings" predicate="certificationStatus" fixed-items="$ctrl.filterItems.statusItems" has-changes="$ctrl.categoryChanged['certificationStatus']" register-clear-filter="$ctrl.registerClearFilter(clearFilter)" match-full="true"></st-list-multiple>
+                    <st-list-multiple
+                       collection="$ctrl.availableListings"
+                       predicate="certificationStatus"
+                       fixed-items="$ctrl.filterItems.statusItems"
+                       has-changes="$ctrl.categoryChanged['certificationStatus']"
+                       register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+                       match-full="true"></st-list-multiple>
                   </ul>
                 </div>
                 <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
@@ -53,7 +70,9 @@
                     Surveillance Activity <i class="fa fa-filter"></i>
                   </button>
                   <ul class="dropdown-menu" aria-labeledby="filter-button-surveillance" uib-dropdown-menu>
-                    <chpl-surveillance-filter has-changes="$ctrl.categoryChanged['surveillance']" register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></chpl-surveillance-filter>
+                    <chpl-surveillance-filter
+                       has-changes="$ctrl.categoryChanged['surveillance']"
+                       register-clear-filter="$ctrl.registerClearFilter(clearFilter)"></chpl-surveillance-filter>
                   </ul>
                 </div>
                 <button class="btn btn-link" ng-click="$ctrl.triggerClearFilters()" ng-if="$ctrl.isCategoryChanged()">Clear Filters</button>
@@ -92,7 +111,8 @@
                           <div class="text-right" ng-if="$ctrl.displayedListings && $ctrl.displayedListings.length > 0">
                             <label for="pageSizeTop" class="sr-only">Show how many results</label>
                             Showing up to&nbsp;
-                            <select ng-model="$ctrl.filterItems.pageSize" id="pageSizeTop" ng-options="v as v for v in [50,100,250]">
+                            <select ng-model="$ctrl.filterItems.pageSize" id="pageSizeTop"
+                                    ng-options="v as v for v in [50,100,250]">
                             </select>
                             &nbsp;results per page
                           </div>
@@ -103,7 +123,8 @@
                     <tbody>
                       <tr ng-repeat="listing in $ctrl.displayedListings">
                         <td>
-                          <button class="btn btn-default" ng-class="{'loaded-tab': $ctrl.isLoaded(listing)}" ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }} <i class="fa fa-info-circle"></i></button>
+                          <button class="btn btn-default" ng-class="{'loaded-tab': $ctrl.isLoaded(listing)}"
+                                  ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }} <i class="fa fa-info-circle"></i></button>
                         </td>
                         <td><a ui-sref="organizations.developers.developer({developerId: '{{ listing.developerId }}'})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: 'Surveillance Management' }">{{ listing.developer }}</a></td>
                         <td>{{ listing.product }}</td>
