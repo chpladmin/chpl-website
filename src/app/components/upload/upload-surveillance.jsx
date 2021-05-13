@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
+
 import theme from '../../themes/theme';
 import { getAngularService } from '.';
 
@@ -29,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplUploadListings() {
+function ChplUploadSurveillance() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
@@ -50,7 +53,7 @@ function ChplUploadListings() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/listings/upload`,
+      url: `${API}/surveillance/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
@@ -61,16 +64,16 @@ function ChplUploadListings() {
     };
     Upload.upload(item)
       .then((response) => {
-        if (response.status === 206) {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully, however there ${response.data.errorMessages.length !== 1 ? 'were errors' : 'was an error'} in the file.<ul>${response.data.errorMessages.map((m) => (`<li>${m}</li>`)).join()}</ul>${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
+        if (response.data.pendingSurveillance) {
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.pendingSurveillance.length} pending surveillance record${response.data.pendingSurveillance.length !== 1 ? 's are' : ' is'} ready for confirmation on the <a href="#/surveillance/confirm">Confirm Surveillance</a> page`;
           toaster.pop({
-            type: 'warning',
-            title: 'Partial success',
+            type: 'success',
+            title: 'Success',
             body: message,
             bodyOutputType: 'trustedHtml',
           });
         } else {
-          const message = `File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
+          const message = `File "${response.config.data.file.name}" was uploaded successfully. The file will be processed and an email will be sent to ${response.data.job.jobDataMap.user.email} when processing is complete`;
           toaster.pop({
             type: 'success',
             title: 'Success',
@@ -97,7 +100,7 @@ function ChplUploadListings() {
   return (
     <ThemeProvider theme={theme}>
       <Card>
-        <CardHeader title="Upload Certified Products (Beta)" />
+        <CardHeader title="Upload Surveillance Activities" />
         <CardContent>
           <div className={classes.gridStyle}>
             <Typography variant="body1" className={classes.firstRow}>
@@ -112,7 +115,7 @@ function ChplUploadListings() {
                 Choose file to upload
                 <input
                   type="file"
-                  id="upload-listings"
+                  id="upload-surveillance"
                   onChange={onFileChange}
                   style={{ display: 'none' }}
                 />
@@ -164,6 +167,6 @@ function ChplUploadListings() {
   );
 }
 
-ChplUploadListings.propTypes = {};
+export default ChplUploadSurveillance;
 
-export default ChplUploadListings;
+ChplUploadSurveillance.propTypes = {};

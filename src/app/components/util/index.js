@@ -1,3 +1,4 @@
-import {ChplEllipsis} from './ellipsis.jsx';
+import { ChplEllipsis } from './ellipsis';
+import ChplTextField from './chpl-text-field';
 
-export {ChplEllipsis};
+export { ChplEllipsis, ChplTextField };
