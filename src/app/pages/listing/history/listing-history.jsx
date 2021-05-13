@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,7 +19,7 @@ import {
 } from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
-import { object } from 'prop-types';
+import { bool, object } from 'prop-types';
 
 import {
   interpretActivity,
@@ -60,12 +61,17 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 function ChplListingHistory(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [activity, setActivity] = useState([]);
+  const [canSeeHistory] = useState(props.canSeeHistory);
   const [listing] = useState(props.listing);
   const [open, setOpen] = React.useState(false);
+  const $analytics = getAngularService('$analytics');
+  const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const utilService = getAngularService('utilService');
+  /* eslint-enable react/destructuring-assignment */
 
   const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((response) => {
@@ -159,6 +165,19 @@ function ChplListingHistory(props) {
     evaluateVersionActivity(listing.version.versionId);
   }, [listing]);
 
+  const goToApi = () => {
+    $analytics.eventTrack('Go To API Page', { category: 'Listing Details', label: listing.chplProductNumber });
+    setOpen(false);
+    $state.go('resources.chpl-api');
+  };
+
+  const goToHistory = () => {
+    setOpen(false);
+    $state.go('reports.listings', {
+      productId: listing.id,
+    });
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -172,7 +191,13 @@ function ChplListingHistory(props) {
       <Button color="primary" variant="outlined" onClick={handleClickOpen}>
         <i className="fa fa-eye"></i>
       </Button>
-      <Dialog onClose={handleClose} aria-labelledby="listing-history-title" open={open}>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="listing-history-title"
+        open={open}
+        fullWidth={true}
+        maxWidth={'lg'}
+      >
         <DialogTitle id="listing-history-title" onClose={handleClose}>
           Listing History
         </DialogTitle>
@@ -214,9 +239,26 @@ function ChplListingHistory(props) {
           }
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Close
-          </Button>
+          <Typography>This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the <code>/activity/certified_products/{ listing.id }</code> API call described on the CHPL API page.</Typography>
+          <ButtonGroup
+            color="primary"
+            variant="outlined"
+          >
+            <Button
+              onClick={goToApi}
+            >
+              Go to API
+            </Button>
+            { canSeeHistory
+              && (
+                <Button
+                  onClick={goToHistory}
+                >
+                  Go to Full History
+                </Button>
+              )
+            }
+          </ButtonGroup>
         </DialogActions>
       </Dialog>
     </ThemeProvider>
@@ -226,6 +268,7 @@ function ChplListingHistory(props) {
 export default ChplListingHistory;
 
 ChplListingHistory.propTypes = {
+  canSeeHistory: bool,
   listing: object.isRequired,
 };
 
