@@ -4,7 +4,6 @@ import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import ToastComponent from '../../components/toast/toast.po';
 import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
-import { assert } from 'chai';
 
 let confirmPage, edit, hooks, loginComponent, toast, upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
@@ -19,8 +18,10 @@ beforeEach(async () => {
   upload = new UploadSurveillanceComponent();
   hooks = new Hooks();
   hooks.open('#/surveillance/upload');
-  loginComponent.logIn('acb');
+  loginComponent.logIn('drummond');
   upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
+  browser.waitUntil( () => toast.toastTitle.isDisplayed());
+  toast.clearAllToast();
   hooks.open('#/surveillance/confirm');
   hooks.waitForSpinnerToDisappear();
 });
@@ -45,7 +46,7 @@ describe('when confirming surveillance, ACB', () => {
     confirmPage.yesConfirmation.scrollAndClick();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil( () => toast.toastTitle.isDisplayed());
-    assert.equal(toast.toastTitle.getText() , 'Update processing');
+    expect(toast.toastTitle.getText()).toBe('Update processing');
   });
 
   it('should not be able to confirm when the surveillance has a requirement the listing does not attest to', () => {
@@ -60,7 +61,7 @@ describe('when confirming surveillance, ACB', () => {
     confirmPage.confirmButton.scrollAndClick();
     confirmPage.yesConfirmation.scrollAndClick();
     browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
-    assert.include(confirmPage.errorOnConfirm.getText(),error1);
+    expect(confirmPage.errorOnConfirm.getText()).toContain(error1);
   });
 
   it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
@@ -88,6 +89,6 @@ describe('when confirming surveillance, ACB', () => {
     confirmPage.confirmButton.scrollAndClick();
     confirmPage.yesConfirmation.scrollAndClick();
     browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
-    assert.include(confirmPage.errorOnConfirm.getText(),error2);
+    expect(confirmPage.errorOnConfirm.getText()).toContain(error2);
   });
 });

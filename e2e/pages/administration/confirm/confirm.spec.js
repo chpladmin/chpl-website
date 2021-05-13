@@ -18,12 +18,11 @@ describe('when user is on confirm listing page', () => {
     toast = new ToastComponent();
     hooks = new Hooks();
     hooks.open('#/administration/upload');
-    loginComponent.logIn('acb');
+    loginComponent.logIn('drummond');
   });
 
   afterEach(() => {
     toast.clearAllToast();
-    loginComponent.openLoginComponent();
     loginComponent.logOut();
   });
 
@@ -31,10 +30,6 @@ describe('when user is on confirm listing page', () => {
     beforeEach(() => {
       uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA3.csv');
       uploadPage.waitForSuccessfulUpload('AQA3');
-    });
-
-    afterEach(() => {
-      toast.clearAllToast();
     });
 
     it('should allow user to reject a file', () => {
@@ -53,10 +48,6 @@ describe('when user is on confirm listing page', () => {
       uploadPage.waitForSuccessfulUpload('AQA4');
     });
 
-    afterEach(() => {
-      toast.clearAllToast();
-    });
-
     it('should allow user to mass reject multiple listings', () => {
       hooks.open('#/administration/confirm/listings');
       confirmPage.rejectListingCheckbox(rejectListingId1);
@@ -64,8 +55,8 @@ describe('when user is on confirm listing page', () => {
       confirmPage.rejectButton.waitAndClick();
       hooks.waitForSpinnerToDisappear();
       expect(toast.toastTitle.getText()).toBe('Success');
-      expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
-      expect(confirmPage.findListingToReject(rejectListingId2).isDisplayed()).toBe(false);
+      expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBeFalse;
+      expect(confirmPage.findListingToReject(rejectListingId2).isDisplayed()).toBeFalse;
     });
   });
 });
