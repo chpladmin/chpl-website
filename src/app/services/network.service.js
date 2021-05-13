@@ -549,7 +549,7 @@ export default class NetworkService {
   }
 
   getSurveillanceActivityReport(range) {
-    const url = `/surveillance/reports/activity/?start=${range.startDate}&end=${range.endDate}`;
+    const url = `/surveillance/reports/activity?start=${range.startDate}&end=${range.endDate}`;
     return this.apiGET(url);
   }
 
