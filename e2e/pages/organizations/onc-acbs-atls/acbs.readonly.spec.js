@@ -41,8 +41,9 @@ describe('the ONC-ACB Management page', () => {
     for (i = 1; i <= acbCount; i += 1) {
       actualList.push(page.organizationListValue(i - 1).getText());
     }
-    const expectedList = actualList.sort();
-    expect(actualList).toEqual(expectedList);
+    for (i = 2; i < acbCount; i += 1) {
+      expect(actualList[i - 1]).toBeLessThan(actualList[i]);
+    }
   });
 
   describe('when logged in as UL', () => {
