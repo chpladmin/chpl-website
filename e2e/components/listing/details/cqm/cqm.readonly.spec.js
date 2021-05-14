@@ -28,7 +28,7 @@ describe('the Listing page', () => {
     it('should display all cqms', () => {
       cqm.cqmHeader.scrollIntoView();
       cqm.expandCqm();
-      expect(cqm.criteriaCount()).toBe(100);
+      expect(cqm.cqmCount()).toBe(100);
     });
   });
 });

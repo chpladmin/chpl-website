@@ -47,7 +47,7 @@ class CriteriaComponent {
   }
 
   criteriaCount() {
-    return $$('//*[starts-with(@id,"criterion-id")]').length;
+    return $$('//*[starts-with(@id,"criterion-id")] [contains(@id,"header")]').length;
   }
 
   criteriaDetailTable(id) {
