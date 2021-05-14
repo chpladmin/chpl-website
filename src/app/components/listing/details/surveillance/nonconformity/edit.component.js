@@ -8,6 +8,7 @@ export const SurveillanceNonconformityEditComponent = {
   controller: class SurveillanceNonconformityEditController {
     constructor($log, API, Upload, authService, networkService, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.API = API;
       this.Upload = Upload;
@@ -16,7 +17,7 @@ export const SurveillanceNonconformityEditComponent = {
       this.sortNonconformityTypes = utilService.sortNonconformityTypes;
       this.item = {
         headers: {
-          Authorization: 'Bearer ' + authService.getToken(),
+          Authorization: `Bearer ${authService.getToken()}`,
           'API-Key': authService.getApiKey(),
         },
       };
@@ -32,11 +33,8 @@ export const SurveillanceNonconformityEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      this.item.url = this.API + '/surveillance/' + this.surveillanceId + '/nonconformity/' + this.nonconformity.id + '/document';
+      this.item.url = `${this.API}/surveillance/${this.surveillanceId}/nonconformity/${this.nonconformity.id}/document`;
 
-      if (this.nonconformity.status) {
-        this.nonconformity.status = this.utilService.findModel(this.nonconformity.status, this.data.nonconformityStatusTypes.data, 'name');
-      }
       if (this.nonconformity.dateOfDetermination) {
         this.nonconformity.dateOfDeterminationObject = new Date(this.nonconformity.dateOfDetermination);
       }
@@ -57,10 +55,10 @@ export const SurveillanceNonconformityEditComponent = {
       }
       if (this.nonconformity.criterion) {
         this.nonconformityType = this.data.nonconformityTypes.data
-          .find(t => t.number === this.nonconformity.criterion.number && t.title === this.nonconformity.criterion.title);
+          .find((t) => t.number === this.nonconformity.criterion.number && t.title === this.nonconformity.criterion.title);
       } else {
         this.nonconformityType = this.data.nonconformityTypes.data
-          .find(t => t.number === this.nonconformity.nonconformityType);
+          .find((t) => t.number === this.nonconformity.nonconformityType);
       }
     }
 
@@ -69,10 +67,10 @@ export const SurveillanceNonconformityEditComponent = {
     }
 
     deleteDoc(docId) {
-      let that = this;
+      const that = this;
       this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
         .then(() => {
-          for (var i = 0; i < this.nonconformity.documents.length; i++) {
+          for (let i = 0; i < this.nonconformity.documents.length; i++) {
             if (this.nonconformity.documents[i].id === docId) {
               this.nonconformity.documents.splice(i, 1);
             }
@@ -130,21 +128,21 @@ export const SurveillanceNonconformityEditComponent = {
         this.item.data = {
           file: this.file,
         };
-        let that = this;
+        const that = this;
         this.uploadErrors = [];
-        this.Upload.upload(this.item).then(response => {
+        this.Upload.upload(this.item).then((response) => {
           that.nonconformity.documents.push({
-            fileName: response.config.data.file.name + ' is pending',
+            fileName: `${response.config.data.file.name} is pending`,
             fileType: response.config.data.file.type,
           });
-          that.uploadMessage = 'File "' + response.config.data.file.name + '" was uploaded successfully.';
+          that.uploadMessage = `File "${response.config.data.file.name}" was uploaded successfully.`;
           that.uploadSuccess = true;
           that.file = undefined;
-        }, error => {
+        }, (error) => {
           if (error.data.fileName) {
-            that.uploadMessage = 'File "' + error.data.fileName + '" was not uploaded successfully.';
+            that.uploadMessage = `File "${error.data.fileName}" was not uploaded successfully.`;
           } else if (error.config.data.file.name) {
-            that.uploadMessage = 'File "' + error.config.data.file.name + '" was not uploaded successfully.';
+            that.uploadMessage = `File "${error.config.data.file.name}" was not uploaded successfully.`;
           } else {
             that.uploadMessage = 'File was not uploaded successfully.';
           }
@@ -155,9 +153,9 @@ export const SurveillanceNonconformityEditComponent = {
           }
           that.uploadSuccess = false;
           that.file = undefined;
-        }, event => {
+        }, (event) => {
           that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
-          that.$log.info('progress: ' + that.progressPercentage + '% ' + event.config.data.file.name);
+          that.$log.info(`progress: ${that.progressPercentage}% ${event.config.data.file.name}`);
         });
       }
     }
