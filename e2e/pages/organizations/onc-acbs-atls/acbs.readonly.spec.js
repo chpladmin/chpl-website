@@ -35,10 +35,14 @@ describe('the ONC-ACB Management page', () => {
   });
 
   it('should display ACB organizations in alphabetical order', () => {
-    const acbList = page.organizationList.getText();
-    const currentAcbList = acbList.split();
-    const sortedAcbList = currentAcbList.sort();
-    expect(currentAcbList).toEqual(sortedAcbList);
+    const acbCount = page.organizationListCount();
+    const actualList = [];
+    let i;
+    for (i = 1; i <= acbCount; i += 1) {
+      actualList.push(page.organizationListValue(i - 1).getText());
+    }
+    const expectedList = actualList.sort();
+    expect(actualList).toEqual(expectedList);
   });
 
   describe('when logged in as UL', () => {

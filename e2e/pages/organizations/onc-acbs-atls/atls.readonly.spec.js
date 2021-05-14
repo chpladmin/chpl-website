@@ -38,10 +38,14 @@ describe('the ONC-ATL Management page', () => {
   });
 
   it('should display ATL organizations in alphabetical order', () => {
-    const atlList = page.organizationList.getText();
-    const currentAtlList = atlList.split();
-    const sortedList = currentAtlList.sort();
-    expect(currentAtlList).toEqual(sortedList);
+    const atlCount = page.organizationListCount();
+    const actualList = [];
+    let i;
+    for (i = 1; i <= atlCount; i += 1) {
+      actualList.push(page.organizationListValue(i - 1).getText());
+    }
+    const expectedList = actualList.sort();
+    expect(actualList).toEqual(expectedList);
   });
 
   describe('when impersonating as UL', () => {

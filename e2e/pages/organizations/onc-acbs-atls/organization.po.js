@@ -78,6 +78,11 @@ class OrganizationPage {
   get addressErrorMessage() {
     return $(elements.addressOnEdit);
   }
+
+  organizationListValue(key) {
+    const keyValue = $(elements.organizationList).$$('.btn.btn-link')[key];
+    return keyValue;
+  }
 }
 
 export default OrganizationPage;
