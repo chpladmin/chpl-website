@@ -26,6 +26,10 @@ import { ChplTextField } from '../../../../util';
 import { testTool, selectedTestTool } from '../../../../../shared/prop-types';
 
 const validationSchema = yup.object({
+  tt: yup.object()
+    .required('Test Tool is required'),
+  version: yup.string()
+    .required('Version is required'),
 });
 
 const useStyles = makeStyles(() => ({
@@ -65,6 +69,9 @@ function ChplTestToolsEdit(props) {
     initialValues: {
       tt: '',
       version: '',
+    },
+    onSubmit: () => {
+      addNew();
     },
     validationSchema,
     validateOnChange: false,
@@ -177,8 +184,12 @@ function ChplTestToolsEdit(props) {
                 id="tt"
                 name="tt"
                 label="Test Tool Used"
+                required
                 value={formik.values.tt}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.tt && !!formik.errors.tt}
+                helperText={formik.touched.tt && formik.errors.tt}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id} disabled={isDisabled(item)}>{item.name}</MenuItem>
@@ -192,7 +203,7 @@ function ChplTestToolsEdit(props) {
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.version && formik.errors.version}
+                error={formik.touched.version && !!formik.errors.version}
                 helperText={formik.touched.version && formik.errors.version}
               />
               <ButtonGroup
@@ -200,7 +211,7 @@ function ChplTestToolsEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   id="test-tools-check-item"
                 >
                   <CheckIcon />
