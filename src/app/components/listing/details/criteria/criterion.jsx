@@ -105,7 +105,7 @@ function ChplCriterion(props) {
 
   return (
     <Accordion
-      disabled={!criterion.success && !canEdit}
+      disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
       className={classes.criterionAccordion}
       onChange={() => handleAccordionChange()}
       id={`criterion-id-${criterion.criterion.id}`}
@@ -212,16 +212,13 @@ function ChplCriterion(props) {
                       </Button>
                     </div>
                   )}
-                { criterion.success
-                  && (
-                    <div>
-                      <ChplCriterionDetailsView
-                        criterion={criterion}
-                        accessibilityStandards={accessibilityStandards}
-                        qmsStandards={qmsStandards}
-                      />
-                    </div>
-                  )}
+                <div>
+                  <ChplCriterionDetailsView
+                    criterion={criterion}
+                    accessibilityStandards={accessibilityStandards}
+                    qmsStandards={qmsStandards}
+                  />
+                </div>
               </>
             )}
         </Container>

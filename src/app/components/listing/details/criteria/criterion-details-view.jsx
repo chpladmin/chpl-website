@@ -51,7 +51,7 @@ function ChplCriterionDetailsView(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          { criterion.additionalSoftware?.length > 0
+          { criterion.success && criterion.additionalSoftware?.length > 0
             && (
               <TableRow key="additionalSoftware">
                 <TableCell component="th" scope="row">
@@ -65,7 +65,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
               </TableRow>
             )}
-          { criterion.gap !== null
+          { criterion.success && criterion.gap !== null
             && (
               <TableRow key="gap">
                 <TableCell component="th" scope="row">
@@ -79,7 +79,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-          { criterion.svaps?.length > 0
+          { criterion.success && criterion.svaps?.length > 0
             && (
               <TableRow key="svap">
                 <TableCell component="th" scope="row">
@@ -109,7 +109,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.testStandards
+          { criterion.success && criterion.testStandards
             && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
@@ -165,7 +165,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.g2Success ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-          { criterion.testFunctionality
+          { criterion.success && criterion.testFunctionality
             && (
               <TableRow key="testFunctionality">
                 <TableCell component="th" scope="row">
@@ -193,7 +193,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.testProcedures
+          { criterion.success && criterion.testProcedures
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">
@@ -224,7 +224,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { (criterion.criterion.number === '170.315 (g)(4)' || criterion.criterion.number === '170.314 (g)(4)')
+          { criterion.success && (criterion.criterion.number === '170.315 (g)(4)' || criterion.criterion.number === '170.314 (g)(4)')
             && (
               <TableRow key="qms">
                 <TableCell component="th" scope="row">
@@ -263,7 +263,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.criterion.number === '170.315 (g)(5)'
+          { criterion.success && criterion.criterion.number === '170.315 (g)(5)'
             && (
               <TableRow key="accessibility">
                 <TableCell component="th" scope="row">
@@ -289,7 +289,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.testToolsUsed
+          { criterion.success && criterion.testToolsUsed
             && (
               <TableRow key="testToolsUsed">
                 <TableCell component="th" scope="row">
@@ -320,7 +320,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.testDataUsed
+          { criterion.success && criterion.testDataUsed
             && (
               <TableRow key="testDataUsed">
                 <TableCell component="th" scope="row">
@@ -354,7 +354,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.apiDocumentation !== null
+          { criterion.success && criterion.apiDocumentation !== null
             && (
               <TableRow key="apiDocumentation">
                 <TableCell component="th" scope="row">
@@ -372,7 +372,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.exportDocumentation !== null
+          { criterion.success && criterion.exportDocumentation !== null
             && (
               <TableRow key="exportDocumentation">
                 <TableCell component="th" scope="row">
@@ -390,7 +390,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.attestationAnswer !== null
+          { criterion.success && criterion.attestationAnswer !== null
             && (
               <TableRow key="attestationAnswer">
                 <TableCell component="th" scope="row">
@@ -404,7 +404,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.attestationAnswer ? 'Yes' : 'No'}</TableCell>
               </TableRow>
             )}
-          { criterion.documentationUrl !== null
+          { criterion.success && criterion.documentationUrl !== null
             && (
               <TableRow key="documentationUrl">
                 <TableCell component="th" scope="row">
@@ -422,7 +422,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.useCases !== null && criterion.attestationAnswer
+          { criterion.success && criterion.useCases !== null && criterion.attestationAnswer
             && (
               <TableRow key="useCases">
                 <TableCell component="th" scope="row">
@@ -440,7 +440,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.serviceBaseUrlList !== null
+          { criterion.success && criterion.serviceBaseUrlList !== null
             && (
               <TableRow key="serviceBaseUrlList">
                 <TableCell component="th" scope="row">
@@ -458,7 +458,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.privacySecurityFramework !== null
+          { criterion.success && criterion.privacySecurityFramework !== null
             && (
               <TableRow key="privacySecurityFramework">
                 <TableCell component="th" scope="row">
@@ -472,7 +472,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.privacySecurityFramework}</TableCell>
               </TableRow>
             )}
-          { criterion.sed !== null
+          { criterion.success && criterion.sed !== null
             && (
               <TableRow key="sed">
                 <TableCell component="th" scope="row">
