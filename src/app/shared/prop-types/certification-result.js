@@ -8,11 +8,11 @@ import {
 } from 'prop-types';
 import criterion from './criterion';
 import reliedUponSoftware from './relied-upon-software';
-import { selectedOptionalStandard } from './optional-standard';
 import { selectedSvap, svap } from './svap';
 import { selectedTestData } from './test-data';
 import { selectedTestFunctionality, testFunctionality } from './test-functionality';
 import { selectedTestProcedure } from './test-procedure';
+import { selectedTestStandard } from './test-standard';
 import { selectedTestTool } from './test-tool';
 
 const certificationResult = shape({
@@ -38,7 +38,7 @@ const certificationResult = shape({
   testDataUsed: arrayOf(selectedTestData),
   testFunctionalityUsed: arrayOf(selectedTestFunctionality),
   testProcedures: arrayOf(selectedTestProcedure),
-  testStandards: arrayOf(selectedOptionalStandard),
+  testStandards: arrayOf(selectedTestStandard),
   testToolsUsed: arrayOf(selectedTestTool),
   title: string,
   useCases: string,

@@ -6,11 +6,11 @@ import {
   shape,
 } from 'prop-types';
 import acb from './acb';
-import { optionalStandard } from './optional-standard';
 import practiceType from './practice-type';
 import { testData } from './test-data';
 import { testFunctionality } from './test-functionality';
 import { testProcedure } from './test-procedure';
+import { testStandard } from './test-standard';
 import { testTool } from './test-tool';
 
 const resources = shape({
@@ -44,7 +44,7 @@ const resources = shape({
   }),
   testStandards: shape({
     expandable: bool,
-    data: arrayOf(optionalStandard),
+    data: arrayOf(testStandard),
   }),
   testTools: shape({
     expandable: bool,

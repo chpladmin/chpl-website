@@ -19,11 +19,11 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
-import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
 import ChplTestFunctionalityEdit from './test-functionality';
 import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
+import ChplTestStandardsEdit from './test-standards';
 import ChplTestToolsEdit from './test-tools';
 import { ChplTextField } from '../../../util';
 import {
@@ -180,8 +180,8 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                   <div>
                     <Typography variant="subtitle1">Optional Standard</Typography>
-                    <ChplOptionalStandardsEdit
-                      optionalStandards={criterion.testStandards}
+                    <ChplTestStandardsEdit
+                      testStandards={criterion.testStandards}
                       options={resources.testStandards.data}
                       onChange={handleDetailChange}
                     />

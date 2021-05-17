@@ -23,7 +23,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplEllipsis, ChplTextField } from '../../../../util';
-import { optionalStandard, selectedOptionalStandard } from '../../../../../shared/prop-types';
+import { testStandard, selectedTestStandard } from '../../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -47,13 +47,13 @@ const useStyles = makeStyles(() => ({
 const validationSchema = yup.object({
 });
 
-function ChplOptionalStandardsEdit(props) {
+function ChplTestStandardsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [testStandards, setTestStandards] = useState(props.testStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
-      .filter((option) => !(props.optionalStandards.find((used) => used.testStandardId === option.id)))
+      .filter((option) => !(props.testStandards.find((used) => used.testStandardId === option.id)))
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
   const classes = useStyles();
@@ -61,7 +61,7 @@ function ChplOptionalStandardsEdit(props) {
 
   const formik = useFormik({
     initialValues: {
-      os: '',
+      ts: '',
     },
     validationSchema,
     validateOnChange: false,
@@ -74,16 +74,16 @@ function ChplOptionalStandardsEdit(props) {
 
   const addNew = () => {
     const updated = [
-      ...optionalStandards,
+      ...testStandards,
       {
-        testStandardDescription: formik.values.os.description,
-        testStandardId: formik.values.os.id,
-        testStandardName: formik.values.os.name,
+        testStandardDescription: formik.values.ts.description,
+        testStandardId: formik.values.ts.id,
+        testStandardName: formik.values.ts.name,
         key: Date.now(),
       },
     ];
-    setOptionalStandards(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.os.id));
+    setTestStandards(updated);
+    setOptions(options.filter((option) => option.id !== formik.values.ts.id));
     formik.resetForm();
     setAdding(false);
     update(updated);
@@ -95,8 +95,8 @@ function ChplOptionalStandardsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = optionalStandards.filter((s) => s.testStandardId !== item.testStandardId);
-    setOptionalStandards(updated);
+    const updated = testStandards.filter((s) => s.testStandardId !== item.testStandardId);
+    setTestStandards(updated);
     setOptions([
       ...options,
       {
@@ -110,7 +110,7 @@ function ChplOptionalStandardsEdit(props) {
 
   return (
     <Container className={classes.container}>
-      { optionalStandards.length > 0
+      { testStandards.length > 0
         && (
           <TableContainer component={Paper}>
             <Table>
@@ -121,7 +121,7 @@ function ChplOptionalStandardsEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { optionalStandards.map((item) => (
+                { testStandards.map((item) => (
                   <TableRow key={item.id || item.key}>
                     <TableCell>
                       <Typography variant="subtitle2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
@@ -153,7 +153,7 @@ function ChplOptionalStandardsEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
-                id="optional-standards-add-item"
+                id="test-standards-add-item"
               >
                 Add item
                 {' '}
@@ -166,10 +166,10 @@ function ChplOptionalStandardsEdit(props) {
             <>
               <ChplTextField
                 select
-                id="os"
-                name="os"
+                id="ts"
+                name="ts"
                 label="Optional Standard"
-                value={formik.values.os}
+                value={formik.values.ts}
                 onChange={formik.handleChange}
               >
                 { options.map((item) => (
@@ -182,13 +182,13 @@ function ChplOptionalStandardsEdit(props) {
               >
                 <Button
                   onClick={addNew}
-                  id="optional-standards-check-item"
+                  id="test-standards-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
-                  id="optional-standards-close-item"
+                  id="test-standards-close-item"
                 >
                   <CloseIcon />
                 </Button>
@@ -200,10 +200,10 @@ function ChplOptionalStandardsEdit(props) {
   );
 }
 
-export default ChplOptionalStandardsEdit;
+export default ChplTestStandardsEdit;
 
-ChplOptionalStandardsEdit.propTypes = {
-  optionalStandards: arrayOf(selectedOptionalStandard).isRequired,
-  options: arrayOf(optionalStandard).isRequired,
+ChplTestStandardsEdit.propTypes = {
+  testStandards: arrayOf(selectedTestStandard).isRequired,
+  options: arrayOf(testStandard).isRequired,
   onChange: func.isRequired,
 };

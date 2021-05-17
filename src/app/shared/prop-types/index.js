@@ -9,11 +9,11 @@ import developer from './developer';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
-import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import { svap, selectedSvap } from './svap';
 import { testData, selectedTestData } from './test-data';
 import { testFunctionality, selectedTestFunctionality } from './test-functionality';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
+import { testStandard, selectedTestStandard } from './test-standard';
 import { testTool, selectedTestTool } from './test-tool';
 
 export {
@@ -25,19 +25,19 @@ export {
   contact,
   criterion,
   developer,
-  optionalStandard,
   qmsStandard,
   reliedUponSoftware,
   resources,
-  selectedOptionalStandard,
   selectedTestFunctionality,
   selectedTestProcedure,
   selectedTestData,
+  selectedTestStandard,
   selectedTestTool,
   selectedSvap,
   svap,
   testFunctionality,
   testProcedure,
   testData,
+  testStandard,
   testTool,
 };
