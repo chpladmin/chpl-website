@@ -583,7 +583,7 @@ function ChplCriterionDetailsEdit(props) {
           <Button
             color="default"
             variant="contained"
-            size="small"
+            size="medium"
             onClick={() => props.onCancel()}
           >
             <CloseOutlinedIcon />
@@ -593,7 +593,7 @@ function ChplCriterionDetailsEdit(props) {
           <Button
             color="primary"
             variant="contained"
-            size="small"
+            size="medium"
             onClick={save}
           >
             Accept

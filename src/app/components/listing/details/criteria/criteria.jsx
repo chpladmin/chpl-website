@@ -92,7 +92,7 @@ function ChplCriteria(props) {
             >
               Removed Certification Criteria
               <ChplTooltip title="These certification criteria have been removed from the Program.">
-                <InfoOutlinedIcon />
+                <InfoOutlinedIcon fontSize="large" />
               </ChplTooltip>
             </AccordionSummary>
             <AccordionDetails>
