@@ -4,9 +4,6 @@ const elements = {
   searchBar: '#generalFilter',
   pagination: '.pagination--results-found',
   clearFilters: '//a[text()="Clear Filters"]',
-  dateFilter: '#filter-button-decertificationDate',
-  fromDate: '#after',
-  toDate: '#before',
 };
 
 class CollectionsPage {
@@ -48,18 +45,6 @@ class CollectionsPage {
 
   get clearFilters() {
     return $(elements.clearFilters);
-  }
-
-  get dateFilter() {
-    return $(elements.dateFilter);
-  }
-
-  get fromDate() {
-    return $(elements.fromDate);
-  }
-
-  get toDate() {
-    return $(elements.toDate);
   }
 
   getListingTableHeaders() {

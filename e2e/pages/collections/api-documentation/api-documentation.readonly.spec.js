@@ -107,7 +107,7 @@ describe('the Api Documentation collection page', () => {
   describe('when clicking on api documentation download button', () => {
 
     it('should download a file', () => {
-      page.downloadApiDocButton.click();
+      page.downloadApiDocButton.scrollAndClick();
       const fileName = 'APIDocData-20193112.xlsx';
       const filePath = path.join(global.downloadDir, fileName);
       browser.waitForFileExists(filePath, config.timeout);

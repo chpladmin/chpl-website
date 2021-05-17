@@ -1,11 +1,11 @@
-import CorrectiveActionPage from './corrective-action.po';
+import CollectionsPage from '../collections.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let page;
 
 describe('the Corrective Action collection page', () => {
   beforeEach(async () => {
-    page = new CorrectiveActionPage();
+    page = new CollectionsPage();
     hooks = new Hooks();
     hooks.open('#/collections/corrective-action');
     await hooks.waitForSpinnerToDisappear();
