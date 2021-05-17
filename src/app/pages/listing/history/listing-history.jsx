@@ -55,7 +55,12 @@ const DialogTitle = withStyles(styles)((props) => {
       {children}
       {onClose
        && (
-         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+         <IconButton
+           id="close-dialog"
+           aria-label="close"
+           className={classes.closeButton}
+           onClick={onClose}
+         >
            <CloseIcon />
          </IconButton>
        )}
@@ -193,7 +198,12 @@ function ChplListingHistory(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Button color="primary" variant="outlined" onClick={handleClickOpen}>
+      <Button
+        id="view-listing-history"
+        color="primary"
+        variant="outlined"
+        onClick={handleClickOpen}
+      >
         <i className="fa fa-eye" />
       </Button>
       <Dialog
@@ -256,6 +266,7 @@ function ChplListingHistory(props) {
             variant="outlined"
           >
             <Button
+              id="go-to-api"
               onClick={goToApi}
             >
               Go to API
@@ -263,6 +274,7 @@ function ChplListingHistory(props) {
             { canSeeHistory
               && (
                 <Button
+                  id="see-full-history"
                   onClick={goToHistory}
                 >
                   Go to Full History
