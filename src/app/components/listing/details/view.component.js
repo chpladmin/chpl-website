@@ -152,8 +152,6 @@ export const ListingDetailsViewComponent = {
       });
     }
 
-    /// /////////////////////////////////////////////////////////////////
-
     checkC(cqm, num) {
       let ret;
       if (angular.isUndefined(cqm[`hasC${num}`])) {

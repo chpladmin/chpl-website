@@ -63,12 +63,6 @@ function ChplReliedUponSoftwareView(props) {
     setGroupCount(count);
   }, []);
 
-  if (software.length === 0) {
-    return (
-      <>None</>
-    );
-  }
-
   return (
     <ul className={classes.unindentedData}>
       { Object.values(software).map((group, groupIndex) => (group.length > 1 ? (
