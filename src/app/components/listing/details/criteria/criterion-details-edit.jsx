@@ -14,6 +14,7 @@ import {
   MenuItem,
   Switch,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -42,10 +43,17 @@ const validationSchema = yup.object({
     .url('Enter a valid URL'),
 });
 
+const useStyles = makeStyles(() => ({
+  subtitleSpacing: {
+    marginBottom: '8px',
+  },
+}));
+
 function ChplCriterionDetailsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [criterion, setCriterion] = useState(props.criterion);
   const [resources] = useState(props.resources);
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -105,7 +113,10 @@ function ChplCriterionDetailsEdit(props) {
     <Container>
       <Card>
         <CardContent>
-          <Typography variant="subtitle1">
+          <Typography
+            variant="subtitle1"
+            className={classes.subtitleSpacing}
+          >
             {formik.values.success ? 'Attests' : 'Does not attest'}
             {' '}
             to Criterion
@@ -127,7 +138,12 @@ function ChplCriterionDetailsEdit(props) {
               <Divider />
             </div>
             <div>
-              <Typography variant="subtitle1">Relied Upon Software</Typography>
+              <Typography
+                variant="subtitle1"
+                className={classes.subtitleSpacing}
+              >
+                Relied Upon Software
+              </Typography>
               <ChplReliedUponSoftwareEdit
                 software={criterion.additionalSoftware}
                 onChange={handleDetailChange}
@@ -140,7 +156,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">GAP</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      GAP
+                    </Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -163,7 +184,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Standards Version Advancement Process</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Standards Version Advancement Process
+                    </Typography>
                     <ChplSvapsEdit
                       svaps={criterion.svaps}
                       options={criterion.allowedSvaps}
@@ -179,7 +205,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Optional Standard</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Optional Standard
+                    </Typography>
                     <ChplTestStandardsEdit
                       testStandards={criterion.testStandards}
                       options={resources.testStandards.data}
@@ -195,7 +226,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Measure Successfully Tested for G1</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Measure Successfully Tested for G1
+                    </Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -218,7 +254,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Measure Successfully Tested for G2</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Measure Successfully Tested for G2
+                    </Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -241,7 +282,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Functionality Tested</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Functionality Tested
+                    </Typography>
                     <ChplTestFunctionalityEdit
                       testFunctionality={criterion.testFunctionality}
                       options={criterion.allowedTestFunctionalities}
@@ -257,7 +303,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Test Procedure</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Test Procedure
+                    </Typography>
                     <ChplTestProceduresEdit
                       testProcedures={criterion.testProcedures}
                       options={resources.testProcedures.data}
@@ -273,7 +324,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Test Tools Used</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Test Tools Used
+                    </Typography>
                     <ChplTestToolsEdit
                       testTools={criterion.testToolsUsed}
                       options={resources.testTools.data}
@@ -289,7 +345,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Test Data Used</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Test Data Used
+                    </Typography>
                     <ChplTestDataEdit
                       testData={criterion.testDataUsed}
                       options={resources.testData.data}
@@ -305,7 +366,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">SED</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      SED
+                    </Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -328,7 +394,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">API Documentation</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      API Documentation
+                    </Typography>
                     <ChplTextField
                       id="api-documentation"
                       name="apiDocumentation"
@@ -349,7 +420,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Export Documentation</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Export Documentation
+                    </Typography>
                     <ChplTextField
                       id="export-documentation"
                       name="exportDocumentation"
@@ -370,7 +446,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Attestation</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Attestation
+                    </Typography>
                     <FormControlLabel
                       control={(
                         <Switch
@@ -393,7 +474,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Documentation</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Documentation
+                    </Typography>
                     <ChplTextField
                       id="documentation-url"
                       name="documentationUrl"
@@ -414,7 +500,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Use Cases</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Use Cases
+                    </Typography>
                     <ChplTextField
                       id="use-cases"
                       name="useCases"
@@ -435,7 +526,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Service Base URL List</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Service Base URL List
+                    </Typography>
                     <ChplTextField
                       id="service-base-url-list"
                       name="serviceBaseUrlList"
@@ -456,7 +552,12 @@ function ChplCriterionDetailsEdit(props) {
                     <Divider />
                   </div>
                   <div>
-                    <Typography variant="subtitle1">Privacy &amp; Security Framework</Typography>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Privacy &amp; Security Framework
+                    </Typography>
                     <ChplTextField
                       select
                       id="privacy-security-framework"

@@ -107,9 +107,9 @@ function ChplTestDataEdit(props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">Alteration</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Version</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Alteration</Typography></TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -117,13 +117,13 @@ function ChplTestDataEdit(props) {
                 { testDataUsed.map((item) => (
                   <TableRow key={item.id || item.key}>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.testData.name }</Typography>
+                      <Typography variant="body2">{ item.testData.name }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.version }</Typography>
+                      <Typography variant="body2">{ item.version }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.alteration }</Typography>
+                      <Typography variant="body2">{ item.alteration }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding

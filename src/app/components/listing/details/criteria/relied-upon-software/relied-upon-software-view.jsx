@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { arrayOf } from 'prop-types';
+import {
+  makeStyles,
+} from '@material-ui/core';
 
 import { reliedUponSoftware } from '../../../../../shared/prop-types';
 
@@ -28,10 +31,17 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
   return '';
 };
 
+const useStyles = makeStyles(() => ({
+  unindentedData: {
+    marginLeft: '-25px',
+  },
+}));
+
 function ChplReliedUponSoftwareView(props) {
   /* eslint-disable react/destructuring-assignment */
   const [software, setSoftware] = useState([]);
   const [groupCount, setGroupCount] = useState(0);
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
@@ -60,7 +70,7 @@ function ChplReliedUponSoftwareView(props) {
   }
 
   return (
-    <ul>
+    <ul className={classes.unindentedData}>
       { Object.values(software).map((group, groupIndex) => (group.length > 1 ? (
         <li key={`oneOf-${groupIndex}`}>
           One of

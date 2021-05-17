@@ -108,10 +108,10 @@ function ChplReliedUponSoftwareEdit(props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">CHPL ID</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">Group</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Version</Typography></TableCell>
+                  <TableCell><Typography variant="body2">CHPL ID</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Group</Typography></TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -119,16 +119,16 @@ function ChplReliedUponSoftwareEdit(props) {
                 { software.map((item) => (
                   <TableRow key={item.id || item.key}>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.name }</Typography>
+                      <Typography variant="body2">{ item.name }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.version }</Typography>
+                      <Typography variant="body2">{ item.version }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.certifiedProductNumber }</Typography>
+                      <Typography variant="body2">{ item.certifiedProductNumber }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.grouping }</Typography>
+                      <Typography variant="body2">{ item.grouping }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding

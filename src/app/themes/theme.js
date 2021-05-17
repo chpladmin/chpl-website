@@ -134,6 +134,11 @@ const theme = createMuiTheme({
         backgroundColor: '#f9f9f9',
       },
     },
+    MuiChip: {
+      root: {
+        fontSize: '.8em',
+      },
+    },
     MuiFormHelperText: {
       root: {
         fontSize: 12,

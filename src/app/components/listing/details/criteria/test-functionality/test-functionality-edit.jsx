@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
   dataEntry: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr',
+    gridTemplateColumns: '4fr 1fr',
     gap: '4px',
   },
   dataEntryActions: {
@@ -109,7 +109,7 @@ function ChplTestFunctionalityEdit(props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Name</Typography></TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -117,7 +117,7 @@ function ChplTestFunctionalityEdit(props) {
                 { testFunctionalityUsed.map((item) => (
                   <TableRow key={item.id || item.key}>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.name }</Typography>
+                      <Typography variant="body2">{ item.name }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding

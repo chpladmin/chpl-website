@@ -16,8 +16,8 @@ import {
   AccordionSummary,
   Avatar,
   Button,
-  Container,
   Chip,
+  Container,
   Grid,
   Typography,
   makeStyles,
@@ -33,11 +33,11 @@ import {
 } from '../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
-  NestedAccordionLevelOne: {
+  criterionAccordion: {
     borderRadius: '8px',
     display: 'grid',
   },
-  NestedAccordionLevelOneSummary: {
+  criterionAccordionSummary: {
     backgroundColor: '#f9f9f9',
     borderRadius: '8px',
   },
@@ -56,6 +56,9 @@ const useStyles = makeStyles(() => ({
   },
   criterionNumber: {
     textTransform: 'none',
+  },
+  editCriterion: {
+    margin: '8px 0px',
   },
 }));
 
@@ -101,12 +104,12 @@ function ChplCriterion(props) {
   return (
     <Accordion
       disabled={!criterion.success && !canEdit}
-      className={classes.NestedAccordionLevelOne}
+      className={classes.criterionAccordion}
       onChange={() => handleAccordionChange()}
       id={`criterion-id-${criterion.criterion.id}`}
     >
       <AccordionSummary
-        className={classes.NestedAccordionLevelOneSummary}
+        className={classes.criterionAccordionSummary}
         expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
         id={`criterion-id-${criterion.criterion.id}-header`}
       >
@@ -193,6 +196,7 @@ function ChplCriterion(props) {
                         fullWidth
                         color="secondary"
                         variant="contained"
+                        className={classes.editCriterion}
                         onClick={() => setEditing(true)}
                         id={`criterion-id-${criterion.criterion.id}-edit`}
                       >

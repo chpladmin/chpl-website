@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
   dataEntry: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr',
+    gridTemplateColumns: '4fr 1fr',
     gap: '4px',
   },
   dataEntryActions: {
@@ -106,8 +106,8 @@ function ChplSvapsEdit(props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><Typography variant="subtitle2">Regulatory Text Citation</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">Approved Standard Version</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Regulatory Text Citation</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Approved Standard Version</Typography></TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -115,10 +115,10 @@ function ChplSvapsEdit(props) {
                 { svaps.map((item) => (
                   <TableRow key={item.id || item.key}>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.regulatoryTextCitation }</Typography>
+                      <Typography variant="body2">{ item.regulatoryTextCitation }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.approvedStandardVersion }</Typography>
+                      <Typography variant="body2">{ item.approvedStandardVersion }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding

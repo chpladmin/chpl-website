@@ -105,8 +105,8 @@ function ChplTestProceduresEdit(props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell><Typography variant="subtitle2">Name</Typography></TableCell>
-                  <TableCell><Typography variant="subtitle2">Version</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Version</Typography></TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -114,10 +114,10 @@ function ChplTestProceduresEdit(props) {
                 { testProcedures.map((item) => (
                   <TableRow key={item.id || item.key}>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.testProcedure.name }</Typography>
+                      <Typography variant="body2">{ item.testProcedure.name }</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="subtitle2">{ item.testProcedureVersion }</Typography>
+                      <Typography variant="body2">{ item.testProcedureVersion }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
