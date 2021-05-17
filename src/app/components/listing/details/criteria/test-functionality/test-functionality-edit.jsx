@@ -45,6 +45,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const validationSchema = yup.object({
+  tf: yup.object()
+    .required('Test Functionality is required'),
 });
 
 function ChplTestFunctionalityEdit(props) {
@@ -58,6 +60,9 @@ function ChplTestFunctionalityEdit(props) {
   const formik = useFormik({
     initialValues: {
       tf: '',
+    },
+    onSubmit: () => {
+      addNew();
     },
     validationSchema,
     validateOnChange: false,
@@ -79,10 +84,11 @@ function ChplTestFunctionalityEdit(props) {
         key: Date.now(),
       },
     ];
-    setTestFunctionalityUsed(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.tf.id));
-    formik.resetForm();
+    const removed = formik.values.tf.id;
     setAdding(false);
+    formik.resetForm();
+    setTestFunctionalityUsed(updated);
+    setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
 
@@ -164,6 +170,9 @@ function ChplTestFunctionalityEdit(props) {
                 label="Functionality Tested"
                 value={formik.values.tf}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.tf && !!formik.errors.tf}
+                helperText={formik.touched.tf && formik.errors.tf}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
@@ -174,7 +183,7 @@ function ChplTestFunctionalityEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   id="test-functionality-check-item"
                 >
                   <CheckIcon />

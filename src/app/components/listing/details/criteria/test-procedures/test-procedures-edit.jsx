@@ -25,9 +25,6 @@ import * as yup from 'yup';
 import { ChplTextField } from '../../../../util';
 import { testProcedure, selectedTestProcedure } from '../../../../../shared/prop-types';
 
-const validationSchema = yup.object({
-});
-
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
@@ -47,6 +44,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const validationSchema = yup.object({
+  name: yup.object()
+    .required('Test Procedure is required'),
+  version: yup.string()
+    .required('Version is required'),
+});
+
 function ChplTestProceduresEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
@@ -59,6 +63,9 @@ function ChplTestProceduresEdit(props) {
     initialValues: {
       name: '',
       version: '',
+    },
+    onSubmit: () => {
+      addNew();
     },
     validationSchema,
     validateOnChange: false,
@@ -78,10 +85,11 @@ function ChplTestProceduresEdit(props) {
         key: (new Date()).getTime(),
       },
     ];
-    setTestProcedures(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.name.id));
-    formik.resetForm();
+    const removed = formik.values.name.id;
     setAdding(false);
+    formik.resetForm();
+    setTestProcedures(updated);
+    setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
 
@@ -162,8 +170,12 @@ function ChplTestProceduresEdit(props) {
                 id="name"
                 name="name"
                 label="Procedure Tested"
+                required
                 value={formik.values.name}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.name && !!formik.errors.name}
+                helperText={formik.touched.name && formik.errors.name}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
@@ -177,7 +189,7 @@ function ChplTestProceduresEdit(props) {
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.version && formik.errors.version}
+                error={formik.touched.version && !!formik.errors.version}
                 helperText={formik.touched.version && formik.errors.version}
               />
               <ButtonGroup
@@ -185,7 +197,7 @@ function ChplTestProceduresEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   id="test-procedures-check-item"
                 >
                   <CheckIcon />

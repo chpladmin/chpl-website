@@ -45,6 +45,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const validationSchema = yup.object({
+  svap: yup.object()
+    .required('Standards Version Advancement Process is required'),
 });
 
 function ChplSvapsEdit(props) {
@@ -61,6 +63,9 @@ function ChplSvapsEdit(props) {
   const formik = useFormik({
     initialValues: {
       svap: '',
+    },
+    onSubmit: () => {
+      addNew();
     },
     validationSchema,
     validateOnChange: false,
@@ -79,10 +84,11 @@ function ChplSvapsEdit(props) {
         key: (new Date()).getTime(),
       },
     ];
-    setSvaps(updated);
-    setOptions(options.filter((option) => option.svapId !== formik.values.svap.svapId));
-    formik.resetForm();
+    const removed = formik.values.svap.svapId;
     setAdding(false);
+    formik.resetForm();
+    setSvaps(updated);
+    setOptions(options.filter((option) => option.svapId !== removed));
     update(updated);
   };
 
@@ -163,8 +169,12 @@ function ChplSvapsEdit(props) {
                 id="svap"
                 name="svap"
                 label="Standards Version Advancement Process"
+                required
                 value={formik.values.svap}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.svap && !!formik.errors.svap}
+                helperText={formik.touched.svap && formik.errors.svap}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.svapId}>{item.regulatoryTextCitation}</MenuItem>
@@ -175,7 +185,7 @@ function ChplSvapsEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   id="svaps-check-item"
                 >
                   <CheckIcon />

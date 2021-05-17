@@ -25,13 +25,6 @@ import * as yup from 'yup';
 import { ChplTextField } from '../../../../util';
 import { testTool, selectedTestTool } from '../../../../../shared/prop-types';
 
-const validationSchema = yup.object({
-  tt: yup.object()
-    .required('Test Tool is required'),
-  version: yup.string()
-    .required('Version is required'),
-});
-
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
@@ -50,6 +43,13 @@ const useStyles = makeStyles(() => ({
     gridColumn: '1 / -1',
   },
 }));
+
+const validationSchema = yup.object({
+  tt: yup.object()
+    .required('Test Tool is required'),
+  version: yup.string()
+    .required('Version is required'),
+});
 
 function ChplTestToolsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
@@ -92,10 +92,11 @@ function ChplTestToolsEdit(props) {
         key: (new Date()).getTime(),
       },
     ];
-    setTestToolsUsed(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.tt.id));
-    formik.resetForm();
+    const removed = formik.values.tt.id;
     setAdding(false);
+    formik.resetForm();
+    setTestToolsUsed(updated);
+    setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
 

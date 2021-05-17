@@ -45,6 +45,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const validationSchema = yup.object({
+  td: yup.object()
+    .required('Test Data Used is required'),
+  version: yup.string()
+    .required('Version is required'),
 });
 
 function ChplTestDataEdit(props) {
@@ -60,6 +64,9 @@ function ChplTestDataEdit(props) {
       td: '',
       version: '',
       alteration: '',
+    },
+    onSubmit: () => {
+      addNew();
     },
     validationSchema,
     validateOnChange: false,
@@ -80,10 +87,11 @@ function ChplTestDataEdit(props) {
         key: (new Date()).getTime(),
       },
     ];
-    setTestDataUsed(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.td.id));
-    formik.resetForm();
+    const removed = formik.values.td.id;
     setAdding(false);
+    formik.resetForm();
+    setTestDataUsed(updated);
+    setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
 
@@ -170,6 +178,9 @@ function ChplTestDataEdit(props) {
                 label="Test Data Used"
                 value={formik.values.td}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.td && !!formik.errors.td}
+                helperText={formik.touched.td && formik.errors.td}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
@@ -183,7 +194,7 @@ function ChplTestDataEdit(props) {
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.version && formik.errors.version}
+                error={formik.touched.version && !!formik.errors.version}
                 helperText={formik.touched.version && formik.errors.version}
               />
               <ChplTextField
@@ -193,7 +204,7 @@ function ChplTestDataEdit(props) {
                 value={formik.values.alteration}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.alteration && formik.errors.alteration}
+                error={formik.touched.alteration && !!formik.errors.alteration}
                 helperText={formik.touched.alteration && formik.errors.alteration}
               />
               <ButtonGroup
@@ -201,7 +212,7 @@ function ChplTestDataEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   id="test-data-check-item"
                 >
                   <CheckIcon />

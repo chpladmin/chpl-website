@@ -45,6 +45,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const validationSchema = yup.object({
+  ts: yup.object()
+    .required('Optional Standard is required'),
 });
 
 function ChplTestStandardsEdit(props) {
@@ -62,6 +64,9 @@ function ChplTestStandardsEdit(props) {
   const formik = useFormik({
     initialValues: {
       ts: '',
+    },
+    onSubmit: () => {
+      addNew();
     },
     validationSchema,
     validateOnChange: false,
@@ -82,10 +87,11 @@ function ChplTestStandardsEdit(props) {
         key: Date.now(),
       },
     ];
-    setTestStandards(updated);
-    setOptions(options.filter((option) => option.id !== formik.values.ts.id));
-    formik.resetForm();
+    const removed = formik.values.ts.id;
     setAdding(false);
+    formik.resetForm();
+    setTestStandards(updated);
+    setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
 
@@ -169,8 +175,12 @@ function ChplTestStandardsEdit(props) {
                 id="ts"
                 name="ts"
                 label="Optional Standard"
+                required
                 value={formik.values.ts}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.ts && !!formik.errors.ts}
+                helperText={formik.touched.ts && formik.errors.ts}
               >
                 { options.map((item) => (
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
@@ -181,7 +191,7 @@ function ChplTestStandardsEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   id="test-standards-check-item"
                 >
                   <CheckIcon />
