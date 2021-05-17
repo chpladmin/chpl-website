@@ -39,10 +39,10 @@ const useStyles = makeStyles(() => ({
 function ChplCriteria(props) {
   /* eslint-disable react/destructuring-assignment */
   const sortCerts = getAngularService('utilService').sortCertActual;
+  const hasAnyRole = getAngularService('authService').hasAnyRole;
   const [criteria, setCriteria] = useState(props.certificationResults);
   const [hasIcs] = useState(props.hasIcs);
   const [isConfirming] = useState(props.isConfirming);
-  const [viewAll] = useState(props.viewAll);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -65,7 +65,7 @@ function ChplCriteria(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || viewAll))
+      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
         .sort((a, b) => sortCerts(a, b))
         .map((cc) => (
           <ChplCriterion
@@ -80,7 +80,7 @@ function ChplCriteria(props) {
             qmsStandards={props.qmsStandards}
           />
         ))}
-      { (viewAll || criteria.filter((cc) => cc.criterion.removed && cc.success).length > 0)
+      { (criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll)).length > 0)
         && (
           <Accordion
             className={classes.NestedAccordionLevelOne}
@@ -97,13 +97,13 @@ function ChplCriteria(props) {
             </AccordionSummary>
             <AccordionDetails>
               <Container>
-                { criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll))
+                { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
                   .sort((a, b) => sortCerts(a, b))
                   .map((cc) => (
                     <ChplCriterion
                       key={cc.criterion.id}
                       certificationResult={cc}
-                      canEdit={props.canEdit}
+                      canEdit={props.canEdit && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
                       onSave={handleSave}
                       resources={prepareResources(props.resources, cc.criterion)}
                       accessibilityStandards={props.accessibilityStandards}
