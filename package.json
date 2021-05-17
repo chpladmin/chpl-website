@@ -19,6 +19,7 @@
     "test:ahrq": "karma start --single-run --ahrq",
     "test:ci": "karma start --single-run --no-colors",
     "test:react": "jest --coverage --coverageDirectory=./test_reports/coverage",
+    "test:react:auto": "jest --watchAll --coverage --coverageDirectory=./test_reports/coverage",
     "lint": "eslint src e2e",
     "lint:fix": "eslint --fix",
     "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
