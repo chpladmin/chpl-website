@@ -92,8 +92,8 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
                 <TableCell>
                   <ul className={classes.unindentedData}>
-                    { criterion.svaps.map((svap) => (
-                      <li key={svap.id || svap.key}>
+                    { criterion.svaps.map((svap, index) => (
+                      <li key={svap.id || svap.key || index}>
                         <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength={100} wordBoundaries />
                         { svap.replaced
                           && (
@@ -124,8 +124,8 @@ function ChplCriterionDetailsView(props) {
                   { criterion.testStandards.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { criterion.testStandards.map((ts) => (
-                          <li key={ts.id || ts.key}>
+                        { criterion.testStandards.map((ts, index) => (
+                          <li key={ts.id || ts.key || index}>
                             { ts.testStandardDescription
                               && <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries />}
                             { !ts.testStandardDescription && ts.testStandardName }
@@ -180,8 +180,8 @@ function ChplCriterionDetailsView(props) {
                   { criterion.testFunctionality.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { criterion.testFunctionality.map((tf) => (
-                          <li key={tf.id || tf.key}>
+                        { criterion.testFunctionality.map((tf, index) => (
+                          <li key={tf.id || tf.key || index}>
                             { tf.description
                               && <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries />}
                             { !tf.description && tf.name }
@@ -208,8 +208,8 @@ function ChplCriterionDetailsView(props) {
                   { criterion.testProcedures.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { criterion.testProcedures.map((tp) => (
-                          <li key={tp.id || tp.key}>
+                        { criterion.testProcedures.map((tp, index) => (
+                          <li key={tp.id || tp.key || index}>
                             Name:
                             {' '}
                             { tp.testProcedure.name }
@@ -239,8 +239,8 @@ function ChplCriterionDetailsView(props) {
                   { qmsStandards?.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { qmsStandards.map((qms) => (
-                          <li key={qms.id}>
+                        { qmsStandards.map((qms, index) => (
+                          <li key={qms.id || index}>
                             <strong>Standard: </strong>
                             { qms.qmsStandardName }
                             <br />
@@ -278,8 +278,8 @@ function ChplCriterionDetailsView(props) {
                   { accessibilityStandards?.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { accessibilityStandards.map((std) => (
-                          <li key={std.id}>
+                        { accessibilityStandards.map((std, index) => (
+                          <li key={std.id || index}>
                             { std.accessibilityStandardName }
                           </li>
                         ))}
@@ -304,8 +304,8 @@ function ChplCriterionDetailsView(props) {
                   { criterion.testToolsUsed.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { criterion.testToolsUsed.map((tt) => (
-                          <li key={tt.id || tt.key}>
+                        { criterion.testToolsUsed.map((tt, index) => (
+                          <li key={tt.id || tt.key || index}>
                             Tool:
                             {' '}
                             { tt.testToolName }
@@ -335,8 +335,8 @@ function ChplCriterionDetailsView(props) {
                   { criterion.testDataUsed.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { criterion.testDataUsed.map((td) => (
-                          <li key={td.id || td.key}>
+                        { criterion.testDataUsed.map((td, index) => (
+                          <li key={td.id || td.key || index}>
                             Data:
                             {' '}
                             { td.testData.name || 'N/A' }

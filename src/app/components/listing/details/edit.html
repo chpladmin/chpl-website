@@ -21,17 +21,13 @@
           accessibility-standards="$ctrl.listing.accessibilityStandards"
           can-edit="true"
           certification-results="$ctrl.listing.certificationResults"
+          has-ics="$ctrl.listing.ics.inherits"
+          is-confirming="$ctrl.isConfirming"
           on-save="::$ctrl.handleCriteriaSave"
           qms-standards="$ctrl.listing.qmsStandards"
           resources="$ctrl.resources"
           view-all="$ctrl.viewAllCerts"
           >
-          <!--
-              things to look into: has-ics, is-confirming, refresh-sed
-              has-ics="$ctrl.listing.ics.inherits"
-              is-confirming="$ctrl.isConfirming"
-              refresh-sed="$ctrl.hasEdited()"
-            -->
         </chpl-criteria-bridge>
       </div>
     </div>

@@ -116,8 +116,8 @@ function ChplReliedUponSoftwareEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { software.map((item) => (
-                  <TableRow key={item.id || item.key}>
+                { software.map((item, index) => (
+                  <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2">{ item.name }</Typography>
                     </TableCell>

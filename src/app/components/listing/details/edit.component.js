@@ -146,6 +146,7 @@ const ListingDetailsEditComponent = {
 
     handleCriteriaSave(criteria) {
       this.listing.certificationResults = criteria;
+      this.hasEdited();
       this.updateCs();
     }
 

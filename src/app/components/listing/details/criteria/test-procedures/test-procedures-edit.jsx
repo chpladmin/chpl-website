@@ -111,8 +111,8 @@ function ChplTestProceduresEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { testProcedures.map((item) => (
-                  <TableRow key={item.id || item.key}>
+                { testProcedures.map((item, index) => (
+                  <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2">{ item.testProcedure.name }</Typography>
                     </TableCell>

@@ -121,8 +121,8 @@ function ChplTestStandardsEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { testStandards.map((item) => (
-                  <TableRow key={item.id || item.key}>
+                { testStandards.map((item, index) => (
+                  <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>

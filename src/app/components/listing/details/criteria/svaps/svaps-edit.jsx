@@ -112,8 +112,8 @@ function ChplSvapsEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { svaps.map((item) => (
-                  <TableRow key={item.id || item.key}>
+                { svaps.map((item, index) => (
+                  <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2">{ item.regulatoryTextCitation }</Typography>
                     </TableCell>

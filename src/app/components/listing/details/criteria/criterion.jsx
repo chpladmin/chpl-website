@@ -67,6 +67,8 @@ function ChplCriterion(props) {
   const [canEdit] = useState(props.canEdit);
   const [criterion, setCriterion] = useState(props.certificationResult);
   const [editing, setEditing] = useState(false);
+  const [hasIcs] = useState(props.hasIcs);
+  const [isConfirming] = useState(props.isConfirming);
   const [pending, setPending] = useState(false);
   const [resources] = useState(props.resources);
   const [staged, setStaged] = useState(false);
@@ -182,10 +184,12 @@ function ChplCriterion(props) {
             ? (
               <ChplCriterionDetailsEdit
                 criterion={criterion}
-                resources={resources}
+                hasIcs={hasIcs}
+                isConfirming={isConfirming}
                 onCancel={handleCancel}
                 onChange={handleChange}
                 onSave={handleSave}
+                resources={resources}
               />
             ) : (
               <>
@@ -232,6 +236,8 @@ ChplCriterion.propTypes = {
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   canEdit: bool,
   certificationResult: certificationResult.isRequired,
+  isConfirming: bool,
+  hasIcs: bool,
   onSave: func,
   qmsStandards: arrayOf(qmsStandard).isRequired,
   resources: resourceDefinition,
@@ -239,6 +245,8 @@ ChplCriterion.propTypes = {
 
 ChplCriterion.defaultProps = {
   canEdit: false,
+  isConfirming: false,
+  hasIcs: false,
   onSave: () => {},
   resources: {},
 };

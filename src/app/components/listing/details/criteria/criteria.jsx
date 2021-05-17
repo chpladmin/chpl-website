@@ -40,6 +40,9 @@ function ChplCriteria(props) {
   /* eslint-disable react/destructuring-assignment */
   const sortCerts = getAngularService('utilService').sortCertActual;
   const [criteria, setCriteria] = useState(props.certificationResults);
+  const [hasIcs] = useState(props.hasIcs);
+  const [isConfirming] = useState(props.isConfirming);
+  const [viewAll] = useState(props.viewAll);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -62,20 +65,22 @@ function ChplCriteria(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
+      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || viewAll))
         .sort((a, b) => sortCerts(a, b))
         .map((cc) => (
           <ChplCriterion
-            key={cc.id}
+            key={cc.criterion.id}
             certificationResult={cc}
             canEdit={props.canEdit}
+            hasIcs={hasIcs}
+            isConfirming={isConfirming}
             onSave={handleSave}
             resources={prepareResources(props.resources, cc.criterion)}
             accessibilityStandards={props.accessibilityStandards}
             qmsStandards={props.qmsStandards}
           />
         ))}
-      { (props.viewAll || criteria.filter((cc) => cc.criterion.removed && cc.success).length > 0)
+      { (viewAll || criteria.filter((cc) => cc.criterion.removed && cc.success).length > 0)
         && (
           <Accordion
             className={classes.NestedAccordionLevelOne}
@@ -92,11 +97,11 @@ function ChplCriteria(props) {
             </AccordionSummary>
             <AccordionDetails>
               <Container>
-                { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
+                { criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll))
                   .sort((a, b) => sortCerts(a, b))
                   .map((cc) => (
                     <ChplCriterion
-                      key={cc.id}
+                      key={cc.criterion.id}
                       certificationResult={cc}
                       canEdit={props.canEdit}
                       onSave={handleSave}
@@ -119,6 +124,8 @@ ChplCriteria.propTypes = {
   certificationResults: arrayOf(certificationResult).isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard),
   canEdit: bool,
+  isConfirming: bool,
+  hasIcs: bool,
   onSave: func,
   qmsStandards: arrayOf(qmsStandard),
   resources: resourceDefinition,
@@ -128,6 +135,8 @@ ChplCriteria.propTypes = {
 ChplCriteria.defaultProps = {
   accessibilityStandards: [],
   canEdit: false,
+  isConfirming: false,
+  hasIcs: false,
   onSave: () => {},
   qmsStandards: [],
   resources: {},

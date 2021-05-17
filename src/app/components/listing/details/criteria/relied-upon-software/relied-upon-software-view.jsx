@@ -76,7 +76,7 @@ function ChplReliedUponSoftwareView(props) {
           One of
           <ul key={`group-${groupIndex}`}>
             { group.map((sw, subIndex) => (
-              <li key={sw.id || sw.key}>
+              <li key={sw.id || sw.key || subIndex}>
                 { getDisplay(sw) }
                 { isAndOrOr(subIndex, group.length, groupIndex, groupCount) }
               </li>
@@ -84,7 +84,7 @@ function ChplReliedUponSoftwareView(props) {
           </ul>
         </li>
       ) : (
-        <li key={group[0].id || group[0].key}>
+        <li key={group[0].id || group[0].key || groupIndex}>
           { getDisplay(group[0]) }
           { groupIndex !== groupCount - 1 && ' AND' }
         </li>

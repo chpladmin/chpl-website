@@ -114,8 +114,8 @@ function ChplTestDataEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { testDataUsed.map((item) => (
-                  <TableRow key={item.id || item.key}>
+                { testDataUsed.map((item, index) => (
+                  <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2">{ item.testData.name }</Typography>
                     </TableCell>

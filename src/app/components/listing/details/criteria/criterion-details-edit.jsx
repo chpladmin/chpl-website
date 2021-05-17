@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
@@ -52,6 +52,8 @@ const useStyles = makeStyles(() => ({
 function ChplCriterionDetailsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [criterion, setCriterion] = useState(props.criterion);
+  const [hasIcs] = useState(props.hasIcs);
+  const [isConfirming] = useState(props.isConfirming);
   const [resources] = useState(props.resources);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -331,6 +333,8 @@ function ChplCriterionDetailsEdit(props) {
                       Test Tools Used
                     </Typography>
                     <ChplTestToolsEdit
+                      hasIcs={hasIcs}
+                      isConfirming={isConfirming}
                       testTools={criterion.testToolsUsed}
                       options={resources.testTools.data}
                       onChange={handleDetailChange}
@@ -605,8 +609,15 @@ export default ChplCriterionDetailsEdit;
 
 ChplCriterionDetailsEdit.propTypes = {
   criterion: certificationResult.isRequired,
-  resources: resourceDefinition.isRequired,
+  isConfirming: bool,
+  hasIcs: bool,
   onCancel: func.isRequired,
   onChange: func.isRequired,
   onSave: func.isRequired,
+  resources: resourceDefinition.isRequired,
+};
+
+ChplCriterionDetailsEdit.defaultProps = {
+  isConfirming: false,
+  hasIcs: false,
 };

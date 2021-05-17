@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { arrayOf, func } from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -50,6 +50,8 @@ const useStyles = makeStyles(() => ({
 function ChplTestToolsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
+  const [hasIcs] = useState(props.hasIcs);
+  const [isConfirming] = useState(props.isConfirming);
   const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.name < b.name ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
@@ -95,6 +97,8 @@ function ChplTestToolsEdit(props) {
     setAdding(false);
   };
 
+  const isDisabled = (tool) => tool.retired && isConfirming && !hasIcs;
+
   const removeItem = (item) => {
     const updated = testToolsUsed.filter((s) => !(s.testToolId === item.testToolId));
     setTestToolsUsed(updated);
@@ -122,8 +126,8 @@ function ChplTestToolsEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { testToolsUsed.map((item) => (
-                  <TableRow key={item.id || item.key}>
+                { testToolsUsed.map((item, index) => (
+                  <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2">{ item.testToolName }</Typography>
                     </TableCell>
@@ -177,7 +181,7 @@ function ChplTestToolsEdit(props) {
                 onChange={formik.handleChange}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id} disabled={isDisabled(item)}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
               <ChplTextField
@@ -218,7 +222,14 @@ function ChplTestToolsEdit(props) {
 export default ChplTestToolsEdit;
 
 ChplTestToolsEdit.propTypes = {
-  testTools: arrayOf(selectedTestTool).isRequired,
-  options: arrayOf(testTool).isRequired,
+  isConfirming: bool,
+  hasIcs: bool,
   onChange: func.isRequired,
+  options: arrayOf(testTool).isRequired,
+  testTools: arrayOf(selectedTestTool).isRequired,
+};
+
+ChplTestToolsEdit.defaultProps = {
+  isConfirming: false,
+  hasIcs: false,
 };
