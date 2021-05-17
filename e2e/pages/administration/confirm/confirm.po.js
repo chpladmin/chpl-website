@@ -10,6 +10,7 @@ const confirmElements = {
   rejectButtonOnInspectListing: '#inspect-reject',
   errorMessage: '.bg-danger',
   errorOnInspect: '.action-bar__error-messages > li',
+  warningOnInspect: '.action-bar__warning-messages > li',
 };
 
 class ConfirmPage {
@@ -57,6 +58,10 @@ class ConfirmPage {
 
   get errorOnInspect () {
     return $$(confirmElements.errorOnInspect);
+  }
+
+  get warningOnInspect () {
+    return $$(confirmElements.warningOnInspect);
   }
 
   rejectCheckbox (chplId) {
