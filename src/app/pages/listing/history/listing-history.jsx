@@ -73,6 +73,7 @@ function ChplListingHistory(props) {
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
+  const ReportService = getAngularService('ReportService');
   const networkService = getAngularService('networkService');
   const utilService = getAngularService('utilService');
   /* eslint-enable react/destructuring-assignment */
@@ -80,7 +81,7 @@ function ChplListingHistory(props) {
   const evaluateListingActivity = () => {
     networkService.getSingleListingActivityMetadata(listing.id).then((metadata) => {
       metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-        const interpreted = interpretActivity(response, utilService);
+        const interpreted = interpretActivity(response, utilService, ReportService);
         if (interpreted.change.length > 0) {
           setActivity((activity) => [
             ...activity,

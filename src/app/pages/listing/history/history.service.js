@@ -1,4 +1,4 @@
-const interpretActivity = (activity, utilService) => {
+const interpretActivity = (activity, utilService, ReportService) => {
   const ret = {
     ...activity,
     change: [],
@@ -19,7 +19,7 @@ const interpretActivity = (activity, utilService) => {
         ...cqmChanges,
       ];
     }
-    const basicChanges = interpretListingChange(prev, curr, utilService);
+    const basicChanges = interpretListingChange(prev, curr, utilService, ReportService);
     if (basicChanges.length > 0) {
       ret.change = [
         ...ret.change,
@@ -164,7 +164,7 @@ const compareArray = (prev, curr, root) => {
   return ret;
 };
 
-const interpretListingChange = (prev, curr, utilService) => {
+const interpretListingChange = (prev, curr, utilService, ReportService) => {
   const changes = [];
   if (prev.chplProductNumber !== curr.chplProductNumber) {
     changes.push(`CHPL Product Number changed from ${prev.chplProductNumber} to ${curr.chplProductNumber}`);
@@ -190,24 +190,10 @@ const interpretListingChange = (prev, curr, utilService) => {
       changes.push(`Real World Testing Results URL changed from ${prev.rwtResultsUrl} to ${curr.rwtResultsUrl}`);
     }
   }
-  let measures = utilService.arrayCompare(prev.measures, curr.measures);
-  console.log({measures});
-  let j;
-  if (measures.added.length > 0) {
-    changes.push(`<li>Added Measure${measures.added.length > 1 ? 's' : ''}:<ul>`);
-    for (j = 0; j < measures.added.length; j += 1) {
-      changes.push(`<li>${measures.added[j].measure.name} (${measures.added[j].measureType.name})</li>`);
-    }
-    changes.push('</ul></li>');
+  const measures = ReportService.compare(prev.measures, curr.measures, 'measures');
+  if (measures.length > 0) {
+    changes.push(`G1/G2 measure changes:<ul>${measures.join('')}</ul>`);
   }
-  if (measures.removed.length > 0) {
-    changes.push(`<li>Removed Measure${measures.removed.length > 1 ? 's' : ''}:<ul>`);
-    for (j = 0; j < measures.removed.length; j += 1) {
-      changes.push(`<li>${measures.removed[j].measure.name} (${measures.removed[j].measureType.name})</li>`);
-    }
-    changes.push('</ul></li>');
-  }
-
   return changes;
 };
 
