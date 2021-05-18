@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-  render, cleanup, screen, waitFor,
+  cleanup, fireEvent, render, screen, waitFor, within,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
-import { when } from 'jest-when';
 
-import * as angularReactHelper from '../../../../../services/angular-react-helper';
 import ChplTestStandardsEdit from './test-standards-edit';
 
 const hocMock = {
@@ -18,187 +15,177 @@ describe('the ChplTestStandardsEdit component', () => {
     cleanup();
   });
 
-  describe('when rendering for the first time', () => {
+  describe('when rendering', () => {
     beforeEach(async () => {
       render(
         <ChplTestStandardsEdit
-          testStandards={[]}
-          options={[]}
+          testStandards={[
+            { testStandardName: 'zz name', testStandardId: 2 },
+            { testStandardName: 'name 1', testStandardId: 3 },
+          ]}
+          options={[
+            { name: 'zz name', id: 2 },
+            { name: 'extra name', id: 6 },
+            { name: 'name 1', id: 3 },
+            { name: 'fake name', id: 5 },
+            { name: 'a name', id: 4 },
+          ]}
           onChange={hocMock.onChange}
-        />);
+        />,
+      );
     });
 
-    it('should enable the Add Item button', async () => {
-      const addItemButton = screen.getByRole('button', { name: /Add item/i });
-
-      await waitFor(() => expect(addItemButton).toBeEnabled());
-    });
-
-    it.skip('should not have any values initially', async () => {
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
+    it('should sort the selected test standards by name', async () => {
+      const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
 
       await waitFor(() => {
-        expect(nameOrganization).toHaveValue('');
-        expect(email).toHaveValue('');
+        expect(rows.length).toBe(2);
+        expect(within(rows[0]).getByText('name 1')).toBeInTheDocument();
+        expect(within(rows[1]).getByText('zz name')).toBeInTheDocument();
       });
     });
 
-    it.skip('should not have any error messages', async () => {
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
+    it('should sort the available test standards by name', async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
 
       await waitFor(() => {
-        expect(nameOrganization).toHaveAttribute('aria-invalid', 'false');
-        expect(email).toHaveAttribute('aria-invalid', 'false');
+        const options = within(screen.getByRole('listbox')).getAllByRole('option');
+        expect(within(options[0]).getByText('a name')).toBeInTheDocument();
+        expect(within(options[1]).getByText('extra name')).toBeInTheDocument();
+        expect(within(options[2]).getByText('fake name')).toBeInTheDocument();
+      });
+    });
+
+    it('should remove selected items from the list available to add', async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+
+      await waitFor(() => {
+        const options = within(screen.getByRole('listbox')).getAllByRole('option');
+        expect(options.length).toBe(3);
       });
     });
   });
 
-  describe.skip('when entering valid information', () => {
+  describe('when selecting items', () => {
     beforeEach(async () => {
-      render(<ChplApiKeyRegistration />);
+      render(
+        <ChplTestStandardsEdit
+          testStandards={[
+            { testStandardName: 'zz name', testStandardId: 2 },
+            { testStandardName: 'name 1', testStandardId: 3 },
+          ]}
+          options={[
+            { name: 'zz name', id: 2 },
+            { name: 'name 1', id: 3 },
+            { name: 'a name', id: 4 },
+          ]}
+          onChange={hocMock.onChange}
+        />,
+      );
     });
 
-    it('should not have any invalid fields', async () => {
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
-
-      userEvent.type(nameOrganization, 'MyOrg');
-      userEvent.tab();
-      userEvent.type(email, 'abc@company.com');
-      userEvent.tab();
+    it('should add the option to the table', async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      fireEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       await waitFor(() => {
-        expect(email).toBeValid();
-        expect(nameOrganization).toBeValid();
+        const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
+        expect(rows.length).toBe(3);
+        expect(within(rows[0]).getByText('name 1')).toBeInTheDocument();
+        expect(within(rows[1]).getByText('zz name')).toBeInTheDocument();
+        expect(within(rows[2]).getByText('a name')).toBeInTheDocument();
       });
     });
 
-    it('should enable the Register button', async () => {
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { name: /Register/i });
-
-      userEvent.type(nameOrganization, 'MyOrg');
-      userEvent.tab();
-      userEvent.type(email, 'abc@company.com');
-      userEvent.tab();
-
-      await waitFor(() => expect(registerButton).toBeEnabled());
-    });
-
-    describe('when the Register button is clicked', () => {
-      it('should call the networkService.requestApiKey method', async () => {
-        const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-        const email = screen.getByLabelText(/Email/i);
-        const registerButton = screen.getByRole('button', { name: /Register/i });
-
-        userEvent.type(nameOrganization, 'MyOrg');
-        userEvent.tab();
-        userEvent.type(email, 'abc@company.com');
-        userEvent.tab();
-        userEvent.click(registerButton);
-
-        await waitFor(() => expect(networkServiceMock.requestApiKey).toHaveBeenCalled());
-      });
-    });
-  });
-
-  describe.skip('when entering invalid data', () => {
-    beforeEach(async () => {
-      render(<ChplApiKeyRegistration />);
-    });
-
-    it('should display Name or Organization as invalid when not entered', async () => {
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-
-      userEvent.click(nameOrganization);
-      userEvent.tab();
-
-      await waitFor(() => expect(nameOrganization).toBeInvalid());
-    });
-
-    it('should display Email as invalid when not entered', async () => {
-      const email = screen.getByLabelText(/Email/i);
-
-      userEvent.click(email);
-      userEvent.tab();
-
-      await waitFor(() => expect(email).toBeInvalid());
-    });
-
-    it('should display Email as invalid when not not a vaild format', async () => {
-      const email = screen.getByLabelText(/Email/i);
-
-      userEvent.type(email, 'abc');
-      userEvent.tab();
-
-      await waitFor(() => expect(email).toBeInvalid());
-    });
-  });
-
-  describe.skip('when a response is received from API', () => {
-    it('should display a toaster indicating success when the response is success', async () => {
-      render(<ChplApiKeyRegistration />);
-
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { name: /Register/i });
-
-      userEvent.type(nameOrganization, 'MyOrg');
-      userEvent.tab();
-      userEvent.type(email, 'abc@company.com');
-      userEvent.tab();
-      userEvent.click(registerButton);
+    it('should allow cancellation', async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      fireEvent.click(screen.getByRole('button', { name: /Cancel adding item/i }));
 
       await waitFor(() => {
-        expect(toasterMock.pop).toHaveBeenCalledWith({
-          type: 'success',
-          body: 'To confirm your email address, an email was sent to: abc@company.com  Please follow the instructions in the email to obtain your API key.',
+        const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
+        expect(rows.length).toBe(2);
+        expect(within(rows[0]).getByText('name 1')).toBeInTheDocument();
+        expect(within(rows[1]).getByText('zz name')).toBeInTheDocument();
+      });
+    });
+
+    it('should remove the "add item" button when all options are selected', async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      fireEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
+
+      await waitFor(() => {
+        expect(screen.queryByRole('button', { name: /Add Item/i })).toBeNull();
+      });
+    });
+
+    it('should call the callback', async () => {
+      hocMock.onChange.mockClear();
+      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      fireEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
+
+      await waitFor(() => {
+        expect(hocMock.onChange).toHaveBeenCalledWith({
+          data: [
+            { testStandardId: 3, testStandardName: 'name 1' },
+            { testStandardId: 2, testStandardName: 'zz name' },
+            {
+              testStandardId: 4, testStandardName: 'a name', testStandardDescription: undefined, key: expect.any(Number),
+            },
+          ],
+          key: 'testStandards',
         });
       });
     });
+  });
 
-    it('should reset the form', async () => {
-      render(<ChplApiKeyRegistration />);
+  describe('when removing items', () => {
+    beforeEach(async () => {
+      render(
+        <ChplTestStandardsEdit
+          testStandards={[
+            { testStandardName: 'zz name', testStandardId: 2 },
+            { testStandardName: 'name 1', testStandardId: 3 },
+          ]}
+          options={[
+            { name: 'zz name', id: 2 },
+            { name: 'name 1', id: 3 },
+            { name: 'a name', id: 4 },
+          ]}
+          onChange={hocMock.onChange}
+        />,
+      );
+    });
 
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { name: /Register/i });
-
-      userEvent.type(nameOrganization, 'MyOrg');
-      userEvent.tab();
-      userEvent.type(email, 'abc@company.com');
-      userEvent.tab();
-      userEvent.click(registerButton);
+    it('should remove the option from the table', async () => {
+      fireEvent.click(within(within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')[0]).getByRole('button'));
 
       await waitFor(() => {
-        expect(nameOrganization).toHaveValue('');
-        expect(email).toHaveValue('');
+        const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
+        expect(rows.length).toBe(1);
+        expect(within(rows[0]).getByText('zz name')).toBeInTheDocument();
       });
     });
 
-    it('should display a toaster indicating failure of API call', async () => {
-      // Overwrite the existing mock to return an rejected Promise
-      when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceFailureMock);
-
-      render(<ChplApiKeyRegistration />);
-
-      const nameOrganization = screen.getByLabelText(/Name or Organization/i);
-      const email = screen.getByLabelText(/Email/i);
-      const registerButton = screen.getByRole('button', { name: /Register/i });
-
-      userEvent.type(nameOrganization, 'MyOrg');
-      userEvent.tab();
-      userEvent.type(email, 'abc@company.com');
-      userEvent.tab();
-      userEvent.click(registerButton);
+    it('should call the callback', async () => {
+      hocMock.onChange.mockClear();
+      fireEvent.click(within(within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')[0]).getByRole('button'));
 
       await waitFor(() => {
-        expect(toasterMock.pop).toHaveBeenCalledWith({
-          type: 'error',
-          body: 'ErrorMessage to display',
+        expect(hocMock.onChange).toHaveBeenCalledWith({
+          data: [
+            { testStandardId: 2, testStandardName: 'zz name' },
+          ],
+          key: 'testStandards',
         });
       });
     });
