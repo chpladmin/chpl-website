@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  cleanup, fireEvent, render, screen, waitFor, within,
+  cleanup, render, screen, waitFor, within,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 
 import ChplTestStandardsEdit from './test-standards-edit';
 
@@ -46,8 +47,8 @@ describe('the ChplTestStandardsEdit component', () => {
     });
 
     it('should sort the available test standards by name', async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
 
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
@@ -58,8 +59,8 @@ describe('the ChplTestStandardsEdit component', () => {
     });
 
     it('should remove selected items from the list available to add', async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
 
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
@@ -87,10 +88,10 @@ describe('the ChplTestStandardsEdit component', () => {
     });
 
     it('should add the option to the table', async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
-      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
-      fireEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       await waitFor(() => {
         const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
@@ -102,10 +103,10 @@ describe('the ChplTestStandardsEdit component', () => {
     });
 
     it('should allow cancellation', async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
-      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
-      fireEvent.click(screen.getByRole('button', { name: /Cancel adding item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.click(screen.getByRole('button', { name: /Cancel adding item/i }));
 
       await waitFor(() => {
         const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
@@ -116,10 +117,10 @@ describe('the ChplTestStandardsEdit component', () => {
     });
 
     it('should remove the "add item" button when all options are selected', async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
-      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
-      fireEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       await waitFor(() => {
         expect(screen.queryByRole('button', { name: /Add Item/i })).toBeNull();
@@ -128,10 +129,10 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should call the callback', async () => {
       hocMock.onChange.mockClear();
-      fireEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      fireEvent.mouseDown(screen.getByRole('button', { name: /Optional Standard/i }));
-      fireEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
-      fireEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
+      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
@@ -167,7 +168,7 @@ describe('the ChplTestStandardsEdit component', () => {
     });
 
     it('should remove the option from the table', async () => {
-      fireEvent.click(within(within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')[0]).getByRole('button'));
+      userEvent.click(within(within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')[0]).getByRole('button'));
 
       await waitFor(() => {
         const rows = within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row');
@@ -178,7 +179,7 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should call the callback', async () => {
       hocMock.onChange.mockClear();
-      fireEvent.click(within(within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')[0]).getByRole('button'));
+      userEvent.click(within(within(screen.getAllByRole('rowgroup')[1]).getAllByRole('row')[0]).getByRole('button'));
 
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
