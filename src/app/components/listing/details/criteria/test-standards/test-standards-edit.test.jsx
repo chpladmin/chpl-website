@@ -139,9 +139,7 @@ describe('the ChplTestStandardsEdit component', () => {
           data: [
             { testStandardId: 3, testStandardName: 'name 1' },
             { testStandardId: 2, testStandardName: 'zz name' },
-            {
-              testStandardId: 4, testStandardName: 'a name', testStandardDescription: undefined, key: expect.any(Number),
-            },
+            { testStandardId: 4, testStandardName: 'a name', key: expect.any(Number) },
           ],
           key: 'testStandards',
         });
