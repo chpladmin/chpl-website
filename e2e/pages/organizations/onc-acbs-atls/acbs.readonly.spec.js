@@ -36,13 +36,9 @@ describe('the ONC-ACB Management page', () => {
 
   it('should display ACB organizations in alphabetical order', () => {
     const acbCount = page.organizationListCount();
-    const actualList = [];
     let i;
-    for (i = 1; i <= acbCount; i += 1) {
-      actualList.push(page.organizationListValue(i - 1).getText());
-    }
-    for (i = 2; i < acbCount; i += 1) {
-      expect(actualList[i - 1]).toBeLessThan(actualList[i]);
+    for (i = 1; i < acbCount; i += 1) {
+      expect(page.organizationListValue(i - 1).getText()).toBeLessThan(page.organizationListValue(i).getText());
     }
   });
 

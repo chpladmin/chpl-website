@@ -39,13 +39,9 @@ describe('the ONC-ATL Management page', () => {
 
   it('should display ATL organizations in alphabetical order', () => {
     const atlCount = page.organizationListCount();
-    const actualList = [];
     let i;
-    for (i = 1; i <= atlCount; i += 1) {
-      actualList.push(page.organizationListValue(i - 1).getText());
-    }
-    for (i = 2; i < atlCount; i += 1) {
-      expect(actualList[i - 1]).toBeLessThan(actualList[i]);
+    for (i = 1; i < atlCount; i += 1) {
+      expect(page.organizationListValue(i - 1).getText()).toBeLessThan(page.organizationListValue(i).getText());
     }
   });
 
