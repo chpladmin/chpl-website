@@ -17,7 +17,7 @@ const selectedTestProcedure = shape({
     id: number,
     name: string,
   }),
-  version: string,
+  testProcedureVersion: string,
 });
 
 export { testProcedure, selectedTestProcedure };
