@@ -87,7 +87,7 @@ function ChplCriteria(props) {
           >
             <AccordionSummary
               className={classes.NestedAccordionLevelOneSummary}
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
               id="removed-header"
             >
               Removed Certification Criteria
