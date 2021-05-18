@@ -184,12 +184,14 @@ function ChplTestFunctionalityEdit(props) {
               >
                 <Button
                   onClick={formik.handleSubmit}
+                  aria-label="Confirm adding item"
                   id="test-functionality-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  aria-label="Cancel adding item"
                   id="test-functionality-close-item"
                 >
                   <CloseIcon />
