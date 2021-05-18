@@ -108,10 +108,13 @@ describe('the Api Documentation collection page', () => {
 
     it('should download a file', () => {
       page.downloadApiDocButton.scrollAndClick();
-      const fileName = 'APIDocData-20193112.xlsx';
+      let fileName;
+      const apiFileName = 'APIDocData';
+      browser.pause(config.timeout);
+      const files = fs.readdirSync(global.downloadDir);
+      fileName = files.filter((file) => file.match(new RegExp(`${apiFileName}.*.xlsx`))).toString();
+      expect(fileName).toContain(apiFileName);
       const filePath = path.join(global.downloadDir, fileName);
-      browser.waitForFileExists(filePath, config.timeout);
-      expect(fs.existsSync(filePath)).toBe(true);
       const stat = fs.statSync(filePath);
       expect(stat.size / 1000).toBeGreaterThan(10);
     });
