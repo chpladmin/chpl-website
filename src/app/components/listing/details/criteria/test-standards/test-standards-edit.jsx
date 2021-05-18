@@ -52,7 +52,7 @@ const validationSchema = yup.object({
 function ChplTestStandardsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [testStandards, setTestStandards] = useState(props.testStandards.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [testStandards, setTestStandards] = useState(props.testStandards.sort((a, b) => (a.testStandardName < b.testStandardName ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
       .filter((option) => !(props.testStandards.find((used) => used.testStandardId === option.id)))
