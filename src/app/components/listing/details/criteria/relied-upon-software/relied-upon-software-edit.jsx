@@ -217,12 +217,14 @@ function ChplReliedUponSoftwareEdit(props) {
               >
                 <Button
                   onClick={addNew}
+                  aria-label="Confirm adding item"
                   id="relied-upon-software-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  aria-label="Cancel adding item"
                   id="relied-upon-software-close-item"
                 >
                   <CloseIcon />
