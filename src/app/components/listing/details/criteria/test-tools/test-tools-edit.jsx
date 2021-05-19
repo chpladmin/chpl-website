@@ -56,7 +56,7 @@ function ChplTestToolsEdit(props) {
   const [adding, setAdding] = useState(false);
   const [hasIcs] = useState(props.hasIcs);
   const [isConfirming] = useState(props.isConfirming);
-  const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.testToolName < b.testToolName ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
       .filter((option) => !(props.testTools.find((used) => used.testToolId === option.id)))
