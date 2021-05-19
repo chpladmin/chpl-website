@@ -186,12 +186,14 @@ function ChplSvapsEdit(props) {
               >
                 <Button
                   onClick={formik.handleSubmit}
+                  aria-label="Confirm adding item"
                   id="svaps-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
+                  aria-label="Cancel adding item"
                   id="svaps-close-item"
                 >
                   <CloseIcon />
