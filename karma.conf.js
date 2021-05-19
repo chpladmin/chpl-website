@@ -49,7 +49,7 @@ module.exports = config => {
             },
         },
         coverageIstanbulReporter: {
-            dir: 'test_reports/coverage/',
+            dir: 'test_reports/coverage/js',
             reports: ['html', 'lcov', 'text-summary'],
         },
         webpack: webpack({NODE_ENV: 'development'}),

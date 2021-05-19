@@ -3,9 +3,6 @@
   "version": "11.13.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
-  "jest": {
-    "testRegex": "(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$"
-  },
   "scripts": {
     "build": "webpack",
     "html-lint": "htmllint src/app/**/*.html",
@@ -18,8 +15,8 @@
     "test:auto": "karma start",
     "test:ahrq": "karma start --single-run --ahrq",
     "test:ci": "karma start --single-run --no-colors",
-    "test:react": "jest --coverage --coverageDirectory=./test_reports/coverage",
-    "test:react:auto": "jest --watchAll --coverage --coverageDirectory=./test_reports/coverage",
+    "test:react": "jest",
+    "test:react:auto": "jest --watchAll",
     "lint": "eslint src e2e",
     "lint:fix": "eslint --fix",
     "e2e": "node node_modules/@wdio/cli/bin/wdio.js run wdio.conf.js",
