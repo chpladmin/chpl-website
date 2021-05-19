@@ -54,7 +54,7 @@ const validationSchema = yup.object({
 function ChplTestDataEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [testDataUsed, setTestDataUsed] = useState(props.testData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [testDataUsed, setTestDataUsed] = useState(props.testData.sort((a, b) => (a.testData.name < b.testData.name ? -1 : 1)));
   const [options, setOptions] = useState(props.options.filter((option) => props.testData.filter((used) => used.testData.id === option.id).length === 0));
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
