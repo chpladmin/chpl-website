@@ -1,6 +1,7 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplEllipsis } from './util';
+import { ChplSavedFilter } from './filter';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
 import { reactToAngularComponent } from '../services/angular-react-helper';
@@ -28,6 +29,7 @@ angular
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
+  .component('chplSavedFilterBridge', reactToAngularComponent(ChplSavedFilter))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance));
