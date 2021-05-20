@@ -87,26 +87,36 @@ import { states as administrationStates } from './pages/administration/administr
     });
 
     $transitions.onError({}, (transition) => {
-      transition.router.stateService.go('not-found');
+      console.error('onError', transition?.error());
+      const error = transition.error();
+      console.error(error);
+      if (error?.detail?.name && error?.detail?.name() === 'login') {
+        console.log('bypass');
+        const params = error.detail.params();
+        console.log(params);
+      } else {
+        console.log('go to not-found');
+        transition.router.stateService.go('not-found');
+      }
     });
 
     $transitions.onBefore({}, (transition) => {
-      let { roles } = transistion.to().data;
+      let { roles } = transition.to().data;
       if (roles && !authService.hasAnyRole(roles)) {
-        console.log('intercepted by security check');
+        console.log('intercepted by security check', transition.to(), transition.from());
         const params = {
-          to: transition.to(),
-          params: transition.params(),
+          name: transition.to().name,
+          params: JSON.stringify(transition.params()),
         };
         console.log({params});
         const target = transition.router.stateService.target('login', params);
         console.log({target});
-        //return target;
+        return target;
       }
     });
 
-    $state.defaultErrorHandler(() => {
-      // console.error('intercepted', error);
+    $state.defaultErrorHandler((error) => {
+      console.error('intercepted', error);
       // no op
     });
 

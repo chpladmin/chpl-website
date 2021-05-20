@@ -254,6 +254,12 @@ const states = {
       name: 'login',
       url: '/login',
       component: 'chplLoginBridge',
+      resolve: {
+        params: ($transition$) => {
+          'ngInject';
+          console.log($transition$.params());
+        },
+      },
       data: { title: 'CHPL Login' },
     },
   ],
