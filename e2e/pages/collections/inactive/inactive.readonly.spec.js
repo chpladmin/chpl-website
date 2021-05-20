@@ -1,22 +1,22 @@
-import CollectionsPage from '../collections.po';
+import InactivePage from './inactive.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks; let page;
 
-describe('the Corrective Action collection page', () => {
+describe('the Inactive Certificates collection page', () => {
   beforeEach(async () => {
-    page = new CollectionsPage();
+    page = new InactivePage();
     hooks = new Hooks();
-    hooks.open('#/collections/corrective-action');
+    hooks.open('#/collections/inactive');
     await hooks.waitForSpinnerToDisappear();
   });
 
   it('should have body text', () => {
-    expect(page.bodyText.getText()).toContain('This is a list of all health IT products for which a non-conformity has been recorded. A certified product is non-conforming if, at any time, an ONC-Authorized Certification Body (ONC-ACB) or ONC determines that the product does not comply with a requirement of certification. Non-conformities reported as part of surveillance are noted as "Surveillance NCs", while non-conformities identified though an ONC Direct Review are noted as "Direct Review NCs". Not all non-conformities affect a product\'s functionality, and the existence of a non-conformity does not by itself mean that a product is "defective." Developers of certified products are required to notify customers of non-conformities and must take approved corrective actions to address such non-conformities in a timely and effective manner. Detailed information about non-conformities, and associated corrective action plans, can be accessed below by clicking on the product\'s CHPL ID.\nPlease note that by default, only listings that are active or suspended are shown in the search results.');
+    expect(page.bodyText.getText()).toContain('This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the CHPL Public User Guide');
   });
 
   it('should have table headers in a defined order', () => {
-    const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'CHPL ID', 'ONC-ACB', '# Open Surveillance NCs', '# Closed Surveillance NCs', '# Open Direct Review NCs', '# Closed Direct Review NCs'];
+    const expectedHeaders = ['Edition', 'Developer', 'Product', 'Version', 'Inactive As Of', '# of Known Users', '# Last Updated Date', 'ONC-ACB', 'CHPL ID'];
     const actualHeaders = page.getListingTableHeaders();
     expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     actualHeaders.forEach((header, idx) => {
@@ -55,20 +55,12 @@ describe('the Corrective Action collection page', () => {
       });
     });
 
-    describe('using certification status filter to select withdrawn by developer', () => {
+    describe('using date filter', () => {
 
       it('should filter listing results', () => {
-        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
-        page.waitForUpdatedListingResultsCount();
-        countAfter = page.listingTotalCount();
-        expect(countAfter).toBeGreaterThan(countBefore);
-      });
-    });
-
-    describe('using certification status filter to select open non conformity', () => {
-
-      it('should filter listing results', () => {
-        page.selectFilter('nonconformities', 'open-nonconformity');
+        page.dateFilter.click();
+        page.fromDate.addValue('09/01/2017');
+        page.toDate.addValue('10/01/2020');
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
@@ -78,7 +70,7 @@ describe('the Corrective Action collection page', () => {
 
   describe('when searching listing by developer', () => {
     const DEVELOPER_COL_IDX = 2;
-    const developerName = 'Greenway';
+    const developerName = 'Allscripts';
     it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
@@ -91,7 +83,7 @@ describe('the Corrective Action collection page', () => {
 
   describe('when searching listing by version', () => {
     const VERSION_COL_IDX = 4;
-    const versionName = 'v.12';
+    const versionName = 'Version 2.1';
     it('should only show listings that match the version', () => {
       page.searchForListing(versionName);
       page.waitForUpdatedListingResultsCount();
@@ -104,7 +96,7 @@ describe('the Corrective Action collection page', () => {
 
   describe('when searching listing by product', () => {
     const PRODUCT_COL_IDX = 3;
-    const productName = 'Intergy EHR';
+    const productName = 'TouchWorks';
     it('should only show listings that match the product', () => {
       page.searchForListing(productName);
       page.waitForUpdatedListingResultsCount();
@@ -116,8 +108,8 @@ describe('the Corrective Action collection page', () => {
   });
 
   describe('when searching listing by CHPL ID', () => {
-    const CHPLID_COL_IDX = 5;
-    const chplIdName = '15.04.04.2913.Gree.11.01.1.180919';
+    const CHPLID_COL_IDX = 9;
+    const chplIdName = '15.04.04.2891.Alls.AC.00.1.160804';
     it('should only show listings that match the product', () => {
       page.searchForListing(chplIdName);
       page.waitForUpdatedListingResultsCount();
