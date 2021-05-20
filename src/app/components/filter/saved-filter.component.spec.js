@@ -60,10 +60,19 @@
         expect(ctrl.availableFilters.length).toBe(3);
       });
 
-      it('when saving a filter', () => {
+      it('should give errors when saving a filter with no name', () => {
+        ctrl.saveFilter();
+        expect(scope.createFilterDataObject).not.toHaveBeenCalled();
+        expect(networkService.createFilter).not.toHaveBeenCalled();
+        expect(ctrl.errorMessage).toBe('Filter name is required');
+      });
+
+      it('should succeed when saving a filter', () => {
+        ctrl.filterName = 'a new name';
         ctrl.saveFilter();
         expect(scope.createFilterDataObject).toHaveBeenCalled();
         expect(networkService.createFilter).toHaveBeenCalled();
+        expect(ctrl.errorMessage).toBeUndefined();
       });
 
       it('when refreshing the list of filters', () => {
