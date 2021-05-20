@@ -23,7 +23,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state';
         data: { title: 'CHPL Search' },
       });
 
-    $urlRouterProvider.otherwise('/search');
+    $urlRouterProvider.otherwise('/not-found');
   }
 
   angular

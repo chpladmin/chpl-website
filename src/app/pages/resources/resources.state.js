@@ -32,6 +32,11 @@ let states = [
     url: '/overview',
     component: 'aiOverview',
     data: { title: 'CHPL Overview' },
+  },{
+    name: 'not-found',
+    url: '/not-found',
+    component: 'chplNotFoundBridge',
+    data: { title: 'Error: page not found' },
   },
 ];
 
