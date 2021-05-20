@@ -50,6 +50,11 @@ export const SavedFilterComponent = {
     }
 
     saveFilter () {
+      this.errorMessage = undefined;
+      if (!this.filterName) {
+        this.errorMessage = 'Filter name is required';
+        return;
+      }
       let that = this;
       let filter = {};
       filter.filterType = {};
