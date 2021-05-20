@@ -91,7 +91,8 @@ import { states as administrationStates } from './pages/administration/administr
     });
 
     $transitions.onBefore({}, (transition) => {
-      if (transition.to().data.roles && !authService.hasAnyRole(transition.to().data.roles)) {
+      let { roles } = transistion.to().data;
+      if (roles && !authService.hasAnyRole(roles)) {
         console.log('intercepted by security check');
         const params = {
           to: transition.to(),
@@ -100,9 +101,7 @@ import { states as administrationStates } from './pages/administration/administr
         console.log({params});
         const target = transition.router.stateService.target('login', params);
         console.log({target});
-        return target;
-        //return transition.stateService.go('login', {notify: false});
-        //$state.go(result.to, result.params, {notify: false});
+        //return target;
       }
     });
 

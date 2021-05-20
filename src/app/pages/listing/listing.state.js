@@ -59,6 +59,9 @@ let states = [{
     title: 'CHPL Listing Details - Edit',
     roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
   },
+  onEnter: (trans, state) => {
+    console.log({trans, state});
+  },
 },{
   name: 'product',
   url: '/product/{id}',
