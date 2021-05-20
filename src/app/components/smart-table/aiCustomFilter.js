@@ -1,5 +1,5 @@
 import { boolean } from './filters/boolean';
-import { compliance } from './filters/compliance';
+import compliance from './filters/compliance';
 import { distinct } from './filters/distinct';
 import { dateRange } from './filters/date-range';
 import { matchAll} from './filters/match-all';
