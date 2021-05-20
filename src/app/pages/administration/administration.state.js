@@ -250,6 +250,11 @@ const states = {
         },
       },
       data: { title: 'CHPL Administration - SVAPs' },
+    }, {
+      name: 'login',
+      url: '/login',
+      component: 'chplLoginBridge',
+      data: { title: 'CHPL Login' },
     },
   ],
 };

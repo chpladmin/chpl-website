@@ -90,6 +90,22 @@ import { states as administrationStates } from './pages/administration/administr
       transition.router.stateService.go('not-found');
     });
 
+    $transitions.onBefore({}, (transition) => {
+      if (transition.to().data.roles && !authService.hasAnyRole(transition.to().data.roles)) {
+        console.log('intercepted by security check');
+        const params = {
+          to: transition.to(),
+          params: transition.params(),
+        };
+        console.log({params});
+        const target = transition.router.stateService.target('login', params);
+        console.log({target});
+        return target;
+        //return transition.stateService.go('login', {notify: false});
+        //$state.go(result.to, result.params, {notify: false});
+      }
+    });
+
     $state.defaultErrorHandler(() => {
       // console.error('intercepted', error);
       // no op
