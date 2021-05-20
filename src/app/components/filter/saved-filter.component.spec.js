@@ -1,19 +1,23 @@
 (() => {
-  'use strict';
-
   describe('the Saved Filter component', () => {
-
-    var $compile, $log, $q, Mock, ctrl, el, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let Mock;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
     beforeEach(() => {
-      angular.mock.module('chpl.mock', 'chpl.components', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getFilters = jasmine.createSpy('getFilters');
-          $delegate.createFilter = jasmine.createSpy('createFilter');
-          $delegate.deleteFilter = jasmine.createSpy('deleteFilter');
-          $delegate.getFilterTypes = jasmine.createSpy('getFilterTypes');
-          return $delegate;
-        });
+      angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getFilters: jasmine.createSpy('getFilters'),
+          createFilter: jasmine.createSpy('createFilter'),
+          deleteFilter: jasmine.createSpy('deleteFilter'),
+          getFilterTypes: jasmine.createSpy('getFilterTypes'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
@@ -44,7 +48,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -86,7 +90,7 @@
       });
 
       it('should apply filters when one is selected when selecting a filter', () => {
-        let filter = {filter: {test: 'test'}};
+        const filter = { filter: { test: 'test' } };
         ctrl.applyFilter(filter);
         expect(scope.onApplyFilter).toHaveBeenCalledWith(filter.filter);
       });
