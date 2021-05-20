@@ -1,26 +1,19 @@
 import { Visualizer } from '@uirouter/visualizer';
-import { states as administrationStates } from './pages/administration/administration.state.js';
+import { states as administrationStates } from './pages/administration/administration.state';
 
 (() => {
-  'use strict';
-
-  angular
-    .module('chpl')
-    .run(runBlock);
-
   /** @ngInject */
-  function runBlock ($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService, toaster) {
-
-    let loadFlags = () => {
+  function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
+    const loadFlags = () => {
       // get flag state from API
       featureFlags.set($http.get('/rest/feature-flags'))
         .then(() => {
           let needsReload = false;
-          let needsRedirect = false;
+          const needsRedirect = false;
 
           // load states dependent on features
           if (featureFlags.isOn('change-request')) {
-            administrationStates['change-request'].forEach(state => {
+            administrationStates['change-request'].forEach((state) => {
               if ($uiRouter.stateRegistry.get(state.name)) {
                 $uiRouter.stateRegistry.deregister(state.name);
               }
@@ -29,7 +22,7 @@ import { states as administrationStates } from './pages/administration/administr
             });
           }
           if (featureFlags.isOn('enhanced-upload')) {
-            administrationStates['enhanced-upload'].forEach(state => {
+            administrationStates['enhanced-upload'].forEach((state) => {
               if ($uiRouter.stateRegistry.get(state.name)) {
                 $uiRouter.stateRegistry.deregister(state.name);
               }
@@ -47,7 +40,7 @@ import { states as administrationStates } from './pages/administration/administr
           if (needsRedirect) {
             $state.go('search');
           } else if (needsReload) {
-            $state.go($state.$current.name, $stateParams, {reload: true});
+            $state.go($state.$current.name, $stateParams, { reload: true });
           }
         });
     };
@@ -56,7 +49,7 @@ import { states as administrationStates } from './pages/administration/administr
       networkService.keepalive()
         .then(() => {
           loadFlags();
-        }).catch(error => {
+        }).catch((error) => {
           $log.info('error', error);
           authService.logout();
           loadFlags();
@@ -66,25 +59,25 @@ import { states as administrationStates } from './pages/administration/administr
     }
 
     // Update page title on state change
-    $transitions.onSuccess({}, transition => {
-      let title = transition.to().data.title;
+    $transitions.onSuccess({}, (transition) => {
+      let { title } = transition.to().data;
       if (title) {
         if (title instanceof Function) {
           title = title.call(transition.to(), transition.params());
         }
-        $window.document.title = title;
+        $window.document.title = title; // eslint-disable-line no-param-reassign
 
         // Set currentPage for internal page links
-        $rootScope.currentPage = $location.path();
+        $rootScope.currentPage = $location.path(); // eslint-disable-line no-param-reassign
       }
 
       // If there's an anchor, scroll to it
       if ($location.hash()) {
-        let target = $location.hash();
+        const target = $location.hash();
         $anchorScroll();
         $timeout(() => {
-          var element = $window.document.getElementById(target);
-          var elementAng = angular.element($window.document.getElementById(target));
+          const element = $window.document.getElementById(target);
+          const elementAng = angular.element($window.document.getElementById(target));
           if (element && elementAng) {
             elementAng.attr('tabindex', '-1');
             element.focus();
@@ -93,13 +86,13 @@ import { states as administrationStates } from './pages/administration/administr
       }
     });
 
-    $transitions.onError({}, transition => {
+    $transitions.onError({}, (transition) => {
       transition.router.stateService.go('not-found');
     });
 
-    $state.defaultErrorHandler((error) => {
-      // This is a naive example of how to silence the default error handler.
-      console.error('intercepted', error);
+    $state.defaultErrorHandler(() => {
+      // console.error('intercepted', error);
+      // no op
     });
 
     /*
@@ -117,4 +110,8 @@ import { states as administrationStates } from './pages/administration/administr
     });
     */
   }
+
+  angular
+    .module('chpl')
+    .run(runBlock);
 })();
