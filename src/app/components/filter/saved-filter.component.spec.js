@@ -75,17 +75,17 @@
         expect(ctrl.errorMessage).toBeUndefined();
       });
 
-      it('when refreshing the list of filters', () => {
+      it('should get filters from the network on refresh', () => {
         ctrl.refreshFilterList();
         expect(networkService.getFilters).toHaveBeenCalled();
       });
 
-      it('when deleteing a filters', () => {
+      it('should use the network service to deleting filters', () => {
         ctrl.deleteFilter();
         expect(networkService.deleteFilter).toHaveBeenCalled();
       });
 
-      it('when selecting a filter', () => {
+      it('should apply filters when one is selected when selecting a filter', () => {
         let filter = {filter: {test: 'test'}};
         ctrl.applyFilter(filter);
         expect(scope.onApplyFilter).toHaveBeenCalledWith(filter.filter);
