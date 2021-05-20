@@ -93,6 +93,16 @@ import { states as administrationStates } from './pages/administration/administr
       }
     });
 
+    $transitions.onError({}, transition => {
+      transition.router.stateService.go('not-found');
+    });
+
+    $state.defaultErrorHandler((error) => {
+      // This is a naive example of how to silence the default error handler.
+      console.error('intercepted', error);
+    });
+
+    /*
     $transitions.onError({to: 'organizations.developers.**'}, transition => {
       transition.router.stateService.go('search');
     });
@@ -105,5 +115,6 @@ import { states as administrationStates } from './pages/administration/administr
         body: message,
       });
     });
+    */
   }
 })();
