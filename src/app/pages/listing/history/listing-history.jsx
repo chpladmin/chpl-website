@@ -168,6 +168,7 @@ function ChplListingHistory(props) {
     <ThemeProvider theme={theme}>
       <Button
         id="view-listing-history"
+        aria-label="Open Listing History dialog"
         color="primary"
         variant="outlined"
         onClick={handleClickOpen}
