@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -15,10 +14,8 @@ import {
   TableRow,
   ThemeProvider,
   Typography,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
 import { bool, object } from 'prop-types';
 
 import {
@@ -31,43 +28,13 @@ import {
 } from './history.service';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper.jsx';
+import { ChplDialogTitle } from '../../../components/util';
 
-const styles = () => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
+const useStyles = makeStyles(() => ({
+  noWrap: {
+    whiteSpace: 'nowrap',
   },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)((props) => {
-  const {
-    children, classes, onClose, ...other
-  } = props;
-  /* eslint-disable react/jsx-props-no-spreading */
-  return (
-    <MuiDialogTitle className={classes.root} {...other}>
-      {children}
-      {onClose
-       && (
-         <IconButton
-           id="close-dialog"
-           aria-label="close"
-           className={classes.closeButton}
-           onClick={onClose}
-         >
-           <CloseIcon />
-         </IconButton>
-       )}
-    </MuiDialogTitle>
-  );
-  /* eslint-enable react/jsx-props-no-spreading */
-});
+}));
 
 function ChplListingHistory(props) {
   /* eslint-disable react/destructuring-assignment */
@@ -213,9 +180,12 @@ function ChplListingHistory(props) {
         fullWidth
         maxWidth="lg"
       >
-        <DialogTitle id="listing-history-title" onClose={handleClose}>
+        <ChplDialogTitle
+          id="listing-history-title"
+          onClose={handleClose}
+        >
           Listing History
-        </DialogTitle>
+        </ChplDialogTitle>
         <DialogContent dividers>
           { activity.length > 0
             ? (
