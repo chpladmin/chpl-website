@@ -4,7 +4,7 @@ import Hooks from '../../../utilities/hooks';
 let hooks; let page;
 const path = require('path');
 const fs = require('fs');
-const config = require('../../../config/mnainConfig');
+const config = require('../../../config/mainConfig');
 
 describe('the SED Information for 2015 Edition Products collection page', () => {
   beforeEach(async () => {
