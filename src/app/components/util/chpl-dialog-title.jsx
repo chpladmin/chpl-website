@@ -9,14 +9,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import theme from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
   closeButton: {
     position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
+    right: theme.spacing(2),
+    top: '11px',
     color: theme.palette.grey[500],
   },
 }));
@@ -28,7 +24,7 @@ function ChplDialogTitle(props) {
   const classes = useStyles();
   /* eslint-disable react/jsx-props-no-spreading */
   return (
-    <MuiDialogTitle className={classes.root} {...other}>
+    <MuiDialogTitle {...other}>
       {children}
       {onClose
        && (

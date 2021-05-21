@@ -48,6 +48,7 @@ function ChplListingHistory(props) {
   const ReportService = getAngularService('ReportService');
   const networkService = getAngularService('networkService');
   const utilService = getAngularService('utilService');
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const evaluateListingActivity = () => {
@@ -232,6 +233,7 @@ function ChplListingHistory(props) {
             API call described on the CHPL API page.
           </Typography>
           <ButtonGroup
+            className={classes.noWrap}
             color="primary"
             variant="outlined"
           >
