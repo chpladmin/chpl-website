@@ -13,7 +13,6 @@
         </div>
         <div>
           <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])"></chpl-listing-history-bridge>
-          <button class="btn btn-secondary" ng-click="$ctrl.viewListingHistory()" id="view-listing-history"><i class="fa fa-eye"></i> Listing History</button>
         </div>
         <div ng-if="$ctrl.canEdit()">
           <button class="btn btn-default" ui-sref=".edit"><i class="fa fa-pencil-square-o"></i> Edit</button>

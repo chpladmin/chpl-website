@@ -4,14 +4,13 @@ export const ListingViewPage = {
     listing: '<',
   },
   controller: class ListingViewPage {
-    constructor ($localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
+    constructor ($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, networkService, utilService) {
       'ngInject';
       this.$localStorage = $localStorage;
       this.$log = $log;
       this.$q = $q;
       this.$state = $state;
       this.$stateParams = $stateParams;
-      this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
@@ -71,20 +70,6 @@ export const ListingViewPage = {
     takeDeveloperAction (action, developerId) {
       this.$state.go('organizations.developers.developer', {
         developerId: developerId,
-      });
-    }
-
-    viewListingHistory () {
-      let that = this;
-      this.$uibModal.open({
-        component: 'chplListingHistory',
-        animation: false,
-        backdrop: 'static',
-        keyboard: false,
-        size: 'lg',
-        resolve: {
-          listing: () => that.listing,
-        },
       });
     }
   },

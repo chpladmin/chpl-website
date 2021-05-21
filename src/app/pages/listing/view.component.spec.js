@@ -2,8 +2,6 @@
   describe('the CHPL Listing view page', () => {
     let $compile;
     let $log;
-    let $uibModal;
-    let actualOptions;
     let authService;
     let ctrl;
     let el;
@@ -22,26 +20,6 @@
     };
     mock.productId = 123123;
     mock.products = [{ developer: 'Developer', product: 'Product' }];
-    mock.fakeModal = {
-      result: {
-        then: (confirmCallback, cancelCallback) => {
-          this.confirmCallBack = confirmCallback;
-          this.cancelCallback = cancelCallback;
-        },
-      },
-      close: (item) => { this.result.confirmCallBack(item); },
-      dismiss: (type) => { this.result.cancelCallback(type); },
-    };
-    mock.fakeModalOptions = {
-      component: 'chplListingHistory',
-      animation: false,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
-      resolve: {
-        listing: jasmine.any(Function),
-      },
-    };
 
     beforeEach(() => {
       angular.mock.module('chpl.listing', ($provide) => {
@@ -55,14 +33,9 @@
           isOn: jasmine.createSpy('isOn'),
         }));
       });
-      inject((_$compile_, _$log_, $rootScope, _$uibModal_, _authService_, _featureFlags_) => {
+      inject((_$compile_, _$log_, $rootScope, _authService_, _featureFlags_) => {
         $compile = _$compile_;
         $log = _$log_;
-        $uibModal = _$uibModal_;
-        spyOn($uibModal, 'open').and.callFake((options) => {
-          actualOptions = options;
-          return mock.fakeModal;
-        });
         authService = _authService_;
         authService.hasAnyRole.and.returnValue(false);
         featureFlags = _featureFlags_;
@@ -90,19 +63,6 @@
     describe('controller', () => {
       it('should exist', () => {
         expect(ctrl).toBeDefined();
-      });
-
-      describe('viewing product history', () => {
-        it('should have a function to view product history', () => {
-          expect(ctrl.viewListingHistory).toBeDefined();
-        });
-
-        it('should resolve modal stuff when product history is viewed', () => {
-          [ctrl.listing] = mock.products;
-          ctrl.viewListingHistory();
-          expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-          expect(actualOptions.resolve.listing()).toEqual(mock.products[0]);
-        });
       });
 
       describe('with respect to editing', () => {

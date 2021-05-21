@@ -1,3 +1,3 @@
-import ChplListingHistory from './listing-history.jsx';
+import ChplListingHistory from './listing-history';
 
 export default ChplListingHistory;

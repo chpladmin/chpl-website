@@ -4,15 +4,13 @@ export const ListingComponent = {
     listing: '<',
   },
   controller: class ListingComponent {
-    constructor ($analytics, $localStorage, $log, $q, $state, $stateParams, $uibModal, DateUtil, authService, networkService, utilService) {
+    constructor ($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, networkService, utilService) {
       'ngInject';
-      this.$analytics = $analytics;
       this.$localStorage = $localStorage;
       this.$log = $log;
       this.$q = $q;
       this.$state = $state;
       this.$stateParams = $stateParams;
-      this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
@@ -72,21 +70,6 @@ export const ListingComponent = {
     takeDeveloperAction (action, developerId) {
       this.$state.go('organizations.developers.developer', {
         developerId: developerId,
-      });
-    }
-
-    viewListingHistory () {
-      this.$analytics.eventTrack('Open Listing History', { category: 'Listing Details', label: this.listing.chplProductNumber });
-      let that = this;
-      this.$uibModal.open({
-        component: 'chplListingHistory',
-        animation: false,
-        backdrop: 'static',
-        keyboard: false,
-        size: 'lg',
-        resolve: {
-          listing: () => that.listing,
-        },
       });
     }
   },
