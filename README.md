@@ -8,7 +8,7 @@ The web UI for chpl
 
 ## Prerequisites
 
-Git, Node.js, npm, and gulp are required to install and test this project.
+Git, Node.js, Yarn, and Webpack are required to install and test this project.
 
  * Git: [git][git]
  * Node.js: [nodejs][nodejs]
@@ -36,16 +36,19 @@ yarn install
 ### Yarn scripts
 
 * `yarn build`: Build deployable artifacts
-* `yarn html`: Run HTML Linter with rules that should all pass
+* `yarn html-ling`: Run HTML Linter with rules that should all pass
 * `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
 * `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
 * `yarn start:dev`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but connecting to the DEV environment for data
 * `yarn start:prod`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but using the production settings for js minification / packaging / etc.
 * `yarn profile`: Generate a webpack statistics output file
-* `yarn test`: Run the unit tests once
-* `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
-* `yarn test:ahrq`: Run tests once in a fashion suitable for the deployment environment
-* `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
+* `yarn test`: Run the Karma-based unit tests once (tests based on the AngularJS components)
+* `yarn test:auto`: Run the Karma-based unit tests continuously (tests based on the AngularJS components), re-running the tests on any file change
+* `yarn test:ahrq`: Run Karma-based tests once in a fashion suitable for the deployment environment (tests based on the AngularJS components)
+* `yarn test:ci`: Run Karma-based tests once in a fashion suitable for a Continuous Integration environment (tests based on the AngularJS components)
+* `yarn test:react`: Run Jest-based unit tests once (tests based on the React components)
+* `lint`: Run ESLint against all JavaScript files in the project
+* `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically
 * `yarn e2e`: Run the end to end integration tests, as well as e2e linting
 * `yarn e2e:lint`: Run code and syntax rules
 * `yarn e2e:clean`: Clear out old E2E artifacts
@@ -59,7 +62,7 @@ Usable on `yarn build` and `yarn start`, these parameters control configuration 
 
 #### Linting
 
-On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue
+On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue.
 
 #### E2E testing
 
