@@ -20,7 +20,7 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state';
         template: require('./pages/search/search.html'), // eslint-disable-line global-require
         data: { title: 'CHPL Search' },
       });
-
+    $urlRouterProvider.when('', '/search');
     $urlRouterProvider.otherwise('/not-found');
   }
 
