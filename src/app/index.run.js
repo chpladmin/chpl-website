@@ -100,14 +100,12 @@ import { states as administrationStates } from './pages/administration/administr
 
     $transitions.onError({}, (transition) => {
       const error = transition.error();
-      if (!error.detail?.name || error.detail.name() !== 'login') {
-        // console.log('go to not-found');
+      if ((!error.detail?.name || error.detail.name() !== 'login') && error.message !== 'The transition was ignored') {
         transition.router.stateService.go('not-found');
       }
     });
 
     $state.defaultErrorHandler(() => {
-      // console.error('intercepted', error);
       // no op
     });
   }
