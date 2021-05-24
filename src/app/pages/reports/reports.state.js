@@ -3,7 +3,10 @@ let states = [{
   abstract: true,
   url: '/reports',
   component: 'chplReports',
-  data: { title: 'CHPL Reports' },
+  data: {
+    title: 'CHPL Reports',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
 },{
   name: 'reports.acbs',
   url: '/onc-acbs',
@@ -13,17 +16,26 @@ let states = [{
   name: 'reports.announcements',
   url: '/announcements',
   component: 'chplReportsAnnouncements',
-  data: { title: 'CHPL Reports - Announcements' },
+  data: {
+    title: 'CHPL Reports - Announcements',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
 },{
   name: 'reports.api-keys',
   url: '/api-keys',
   component: 'chplReportsApiKeys',
-  data: { title: 'CHPL Reports - Api Key Management' },
+  data: {
+    title: 'CHPL Reports - Api Key Management',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
 },{
   name: 'reports.atls',
   url: '/onc-atls',
   component: 'chplReportsAtls',
-  data: { title: 'CHPL Reports - ONC-ATLs' },
+  data: {
+    title: 'CHPL Reports - ONC-ATLs',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
 },{
   name: 'reports.listings',
   url: '/listings/{productId}?',
@@ -52,12 +64,18 @@ let states = [{
   name: 'reports.user-actions',
   url: '/user-actions',
   component: 'chplReportsUserActions',
-  data: { title: 'CHPL Reports - User Actions' },
+  data: {
+    title: 'CHPL Reports - User Actions',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
 },{
   name: 'reports.users',
   url: '/users',
   component: 'chplReportsUsers',
-  data: { title: 'CHPL Reports - Users' },
+  data: {
+    title: 'CHPL Reports - Users',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
 },{
   name: 'reports.versions',
   url: '/versions',

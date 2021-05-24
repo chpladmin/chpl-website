@@ -3,7 +3,10 @@ let states = [{
   abstract: true,
   url: '/surveillance',
   component: 'chplSurveillance',
-  data: { title: 'CHPL Surveillance' },
+  data: {
+    title: 'CHPL Surveillance',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+  },
   ncyBreadcrumb: {
     label: 'Surveillance',
   },
@@ -11,7 +14,10 @@ let states = [{
   name: 'surveillance.upload',
   url: '/upload',
   component: 'chplUploadSurveillances',
-  data: { title: 'CHPL Surveillance - Upload' },
+  data: {
+    title: 'CHPL Surveillance - Upload',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
   ncyBreadcrumb: {
     label: 'Upload',
   },
@@ -19,7 +25,10 @@ let states = [{
   name: 'surveillance.confirm',
   url: '/confirm',
   component: 'chplConfirmSurveillance',
-  data: { title: 'CHPL Surveillance - Confirmation' },
+  data: {
+    title: 'CHPL Surveillance - Confirmation',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
   ncyBreadcrumb: {
     label: 'Confirm',
   },
@@ -51,7 +60,10 @@ let states = [{
       return networkService.getCollection('surveillanceManagement');
     },
   },
-  data: { title: 'CHPL Surveillance - Manage' },
+  data: {
+    title: 'CHPL Surveillance - Manage',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
   ncyBreadcrumb: {
     label: 'Manage',
   },

@@ -39,21 +39,30 @@ let states = [
     views: {
       'developer@^': 'chplDevelopersEdit',
     },
-    data: { title: 'CHPL Developers - Edit' },
+    data: {
+      title: 'CHPL Developers - Edit',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.split',
     url: '/split',
     views: {
       'view@^': 'chplDevelopersSplit',
     },
-    data: { title: 'CHPL Developers - Split' },
+    data: {
+      title: 'CHPL Developers - Split',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.merge',
     url: '/merge',
     views: {
       'view@^': 'chplDevelopersMerge',
     },
-    data: { title: 'CHPL Developers - Merge' },
+    data: {
+      title: 'CHPL Developers - Merge',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.product',
     url: '/products/{productId}',
@@ -64,21 +73,30 @@ let states = [
     views: {
       'products@^.^': 'chplProductsEdit',
     },
-    data: { title: 'CHPL Developers - Edit Product' },
+    data: {
+      title: 'CHPL Developers - Edit Product',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.product.merge',
     url: '/merge',
     views: {
       'view@^.^': 'chplProductsMerge',
     },
-    data: { title: 'CHPL Developers - Merge Product' },
+    data: {
+      title: 'CHPL Developers - Merge Product',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.product.split',
     url: '/split',
     views: {
       'view@^.^': 'chplProductsSplit',
     },
-    data: { title: 'CHPL Developers - Split Product' },
+    data: {
+      title: 'CHPL Developers - Split Product',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.product.version',
     url: '/versions/{versionId}',
@@ -89,21 +107,30 @@ let states = [
     views: {
       'products@^.^.^': 'chplVersionsEdit',
     },
-    data: { title: 'CHPL Developers - Edit Version' },
+    data: {
+      title: 'CHPL Developers - Edit Version',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.product.version.merge',
     url: '/merge',
     views: {
       'view@^.^.^': 'chplVersionsMerge',
     },
-    data: { title: 'CHPL Developers - Merge Version' },
+    data: {
+      title: 'CHPL Developers - Merge Version',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.developers.developer.product.version.split',
     url: '/split',
     views: {
       'view@^.^.^': 'chplVersionsSplit',
     },
-    data: { title: 'CHPL Developers - Split Version' },
+    data: {
+      title: 'CHPL Developers - Split Version',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   },{
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
@@ -150,7 +177,10 @@ let states = [
     name: 'organizations.onc-acbs.organization.edit',
     url: '/edit',
     component: 'chplOncOrganizationEdit',
-    data: { title: 'CHPL ONC-ACB' },
+    data: {
+      title: 'CHPL ONC-ACB',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
     ncyBreadcrumb: {
       label: 'Edit',
     },
@@ -158,7 +188,10 @@ let states = [
     name: 'organizations.onc-acbs.create',
     url: '/create',
     component: 'chplOncOrganizationEdit',
-    data: { title: 'CHPL ONC-ACB' },
+    data: {
+      title: 'CHPL ONC-ACB',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
     ncyBreadcrumb: {
       label: 'Create',
     },
@@ -208,7 +241,10 @@ let states = [
     name: 'organizations.onc-atls.organization.edit',
     url: '/edit',
     component: 'chplOncOrganizationEdit',
-    data: { title: 'CHPL ONC-ATL' },
+    data: {
+      title: 'CHPL ONC-ATL',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'],
+    },
     ncyBreadcrumb: {
       label: 'Edit',
     },
@@ -216,7 +252,10 @@ let states = [
     name: 'organizations.onc-atls.create',
     url: '/create',
     component: 'chplOncOrganizationEdit',
-    data: { title: 'CHPL ONC-ATL' },
+    data: {
+      title: 'CHPL ONC-ATL',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
     ncyBreadcrumb: {
       label: 'Create',
     },

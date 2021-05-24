@@ -13,7 +13,10 @@ let states = [
         }
       },
     },
-    data: { title: 'CHPL Users' },
+    data: {
+      title: 'CHPL Users',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
+    },
   },
 ];
 
