@@ -1,4 +1,4 @@
-let states = [
+const states = [
   {
     name: 'organizations',
     abstract: true,
@@ -7,33 +7,34 @@ let states = [
     ncyBreadcrumb: {
       label: 'Organizations',
     },
-  },{
+  }, {
     name: 'organizations.developers',
     url: '/developers',
     component: 'chplDevelopers',
     resolve: {
-      developers: networkService => {
+      developers: (networkService) => {
         'ngInject';
+
         return networkService.getDevelopers();
       },
     },
     data: { title: 'CHPL Developers' },
-  },{
+  }, {
     name: 'organizations.developers.developer',
     url: '/{developerId}',
     component: 'chplDeveloperView',
     resolve: {
       developer: (networkService, $location, $transition$) => {
         'ngInject';
+
         if (!$transition$.params().developerId) {
           $location.path('/organizations/developers');
-        } else {
-          return networkService.getDeveloperHierarchy($transition$.params().developerId);
         }
+        return networkService.getDeveloperHierarchy($transition$.params().developerId);
       },
     },
     data: { title: 'CHPL Developers' },
-  },{
+  }, {
     name: 'organizations.developers.developer.edit',
     url: '/edit',
     views: {
@@ -43,7 +44,7 @@ let states = [
       title: 'CHPL Developers - Edit',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.split',
     url: '/split',
     views: {
@@ -53,7 +54,7 @@ let states = [
       title: 'CHPL Developers - Split',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.merge',
     url: '/merge',
     views: {
@@ -63,11 +64,11 @@ let states = [
       title: 'CHPL Developers - Merge',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.product',
     url: '/products/{productId}',
     abstract: true,
-  },{
+  }, {
     name: 'organizations.developers.developer.product.edit',
     url: '/edit',
     views: {
@@ -77,7 +78,7 @@ let states = [
       title: 'CHPL Developers - Edit Product',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.product.merge',
     url: '/merge',
     views: {
@@ -87,7 +88,7 @@ let states = [
       title: 'CHPL Developers - Merge Product',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.product.split',
     url: '/split',
     views: {
@@ -97,11 +98,11 @@ let states = [
       title: 'CHPL Developers - Split Product',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.product.version',
     url: '/versions/{versionId}',
     abstract: true,
-  },{
+  }, {
     name: 'organizations.developers.developer.product.version.edit',
     url: '/edit',
     views: {
@@ -111,7 +112,7 @@ let states = [
       title: 'CHPL Developers - Edit Version',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.product.version.merge',
     url: '/merge',
     views: {
@@ -121,7 +122,7 @@ let states = [
       title: 'CHPL Developers - Merge Version',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.developers.developer.product.version.split',
     url: '/split',
     views: {
@@ -131,17 +132,19 @@ let states = [
       title: 'CHPL Developers - Split Version',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  },{
+  }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizations',
     resolve: {
       allOrgs: (authService, networkService) => {
         'ngInject';
+
         return networkService.getAcbs(false);
       },
       editableOrgs: (authService, networkService) => {
         'ngInject';
+
         return networkService.getAcbs(true);
       },
       roles: () => ['ROLE_ACB'],
@@ -159,13 +162,14 @@ let states = [
     ncyBreadcrumb: {
       label: 'ONC-ACBs',
     },
-  },{
+  }, {
     name: 'organizations.onc-acbs.organization',
     url: '/organization/{id}',
     component: 'chplOncOrganization',
     resolve: {
       organization: ($transition$, networkService) => {
         'ngInject';
+
         return networkService.getAcb($transition$.params().id);
       },
     },
@@ -173,7 +177,7 @@ let states = [
     ncyBreadcrumb: {
       label: undefined, // must be filled in $onChanges in relevant component
     },
-  },{
+  }, {
     name: 'organizations.onc-acbs.organization.edit',
     url: '/edit',
     component: 'chplOncOrganizationEdit',
@@ -184,7 +188,7 @@ let states = [
     ncyBreadcrumb: {
       label: 'Edit',
     },
-  },{
+  }, {
     name: 'organizations.onc-acbs.create',
     url: '/create',
     component: 'chplOncOrganizationEdit',
@@ -195,17 +199,19 @@ let states = [
     ncyBreadcrumb: {
       label: 'Create',
     },
-  },{
+  }, {
     name: 'organizations.onc-atls',
     url: '/onc-atls',
     component: 'chplOncOrganizations',
     resolve: {
       allOrgs: (authService, networkService) => {
         'ngInject';
+
         return networkService.getAtls(false);
       },
       editableOrgs: (authService, networkService) => {
         'ngInject';
+
         return networkService.getAtls(true);
       },
       roles: () => ['ROLE_ATL'],
@@ -223,13 +229,14 @@ let states = [
     ncyBreadcrumb: {
       label: 'ONC-ATLs',
     },
-  },{
+  }, {
     name: 'organizations.onc-atls.organization',
     url: '/organization/{id}',
     component: 'chplOncOrganization',
     resolve: {
       organization: ($transition$, networkService) => {
         'ngInject';
+
         return networkService.getAtl($transition$.params().id);
       },
     },
@@ -237,7 +244,7 @@ let states = [
     ncyBreadcrumb: {
       label: undefined, // must be filled in $onChanges in relevant component
     },
-  },{
+  }, {
     name: 'organizations.onc-atls.organization.edit',
     url: '/edit',
     component: 'chplOncOrganizationEdit',
@@ -248,7 +255,7 @@ let states = [
     ncyBreadcrumb: {
       label: 'Edit',
     },
-  },{
+  }, {
     name: 'organizations.onc-atls.create',
     url: '/create',
     component: 'chplOncOrganizationEdit',
@@ -262,11 +269,12 @@ let states = [
   },
 ];
 
-function organizationsStatesConfig ($stateProvider) {
+function organizationsStatesConfig($stateProvider) {
   'ngInject';
-  states.forEach(state => {
+
+  states.forEach((state) => {
     $stateProvider.state(state);
   });
 }
 
-export { organizationsStatesConfig };
+export default organizationsStatesConfig;

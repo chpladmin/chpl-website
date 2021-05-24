@@ -1,4 +1,4 @@
-let states = [
+const states = [
   {
     name: 'users',
     url: '/users',
@@ -6,11 +6,11 @@ let states = [
     resolve: {
       users: (authService, networkService) => {
         'ngInject';
+
         if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
           return networkService.getUsers();
-        } else {
-          return [];
         }
+        return [];
       },
     },
     data: {
@@ -20,11 +20,12 @@ let states = [
   },
 ];
 
-function usersStatesConfig ($stateProvider) {
+function usersStatesConfig($stateProvider) {
   'ngInject';
-  states.forEach(state => {
+
+  states.forEach((state) => {
     $stateProvider.state(state);
   });
 }
 
-export { usersStatesConfig };
+export default usersStatesConfig;
