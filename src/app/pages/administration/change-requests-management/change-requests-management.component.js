@@ -6,10 +6,9 @@ export const ChangeRequestsManagementComponent = {
     changeRequestTypes: '<',
   },
   controller: class ChangeRequestsManagementComponent {
-    constructor ($log, authService, networkService, toaster) {
+    constructor ($log, networkService, toaster) {
       'ngInject';
       this.$log = $log;
-      this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
     }

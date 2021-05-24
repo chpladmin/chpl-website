@@ -4,12 +4,11 @@ export const FuzzyMatchingComponent = {
     fuzzyTypes: '<',
   },
   controller: class FuzzyMatchingComponent {
-    constructor ($log, $scope, authService, networkService) {
+    constructor ($log, $scope, networkService) {
       'ngInject';
       this.$log = $log;
       this.$scope = $scope;
       this.networkService = networkService;
-      this.hasAnyRole = authService.hasAnyRole;
       this.takeAction = this.takeAction.bind(this);
     }
 

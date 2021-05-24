@@ -3,10 +3,9 @@ export const ReportsComponent = {
   bindings: {
   },
   controller: class ReportsComponent {
-    constructor ($log, authService) {
+    constructor ($log) {
       'ngInject';
       this.$log = $log;
-      this.hasAnyRole = authService.hasAnyRole;
     }
   },
 };

@@ -3,10 +3,9 @@ export const CmsComponent = {
   bindings: {
   },
   controller: class CmsComponent {
-    constructor ($log, authService) {
+    constructor ($log) {
       'ngInject';
       this.$log = $log;
-      this.hasAnyRole = authService.hasAnyRole;
     }
   },
 };

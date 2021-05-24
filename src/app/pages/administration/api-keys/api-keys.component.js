@@ -4,11 +4,10 @@ export const ApiKeysComponent = {
     apiKeys: '<',
   },
   controller: class ApiKeysComponent {
-    constructor ($log, authService, networkService) {
+    constructor ($log, networkService) {
       'ngInject';
       this.$log = $log;
       this.networkService = networkService;
-      this.hasAnyRole = authService.hasAnyRole;
     }
 
     $onChanges (changes) {
