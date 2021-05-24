@@ -254,16 +254,26 @@ const states = {
       name: 'login',
       url: '/login',
       component: 'chplLoginBridge',
-      resolve: {
-        params: ($transition$) => {
-          'ngInject';
-          console.log($transition$.params());
-        },
-      },
+      resolve: { returnTo: returnTo },
       data: { title: 'CHPL Login' },
     },
   ],
 };
+
+/** @ngInject */
+function returnTo($transition$) {
+  if ($transition$.redirectedFrom() != null) {
+    return $transition$.redirectedFrom().targetState();
+  }
+
+  let $state = $transition$.router.stateService;
+
+  if ($transition$.from().name !== '') {
+    return $state.target($transition$.from(), $transition$.params('from'));
+  }
+
+  return $state.target('search');
+}
 
 function administrationStatesConfig($stateProvider) {
   'ngInject';

@@ -1,4 +1,5 @@
 import React from 'react';
+import { object } from 'prop-types';
 import {
   Button,
   Container,
@@ -21,6 +22,11 @@ function ChplLogin(props) {
   console.log(props);
   const $state = getAngularService('$state');
   const classes = useStyles();
+  const state = props.returnTo.state();
+  const params = props.returnTo.params();
+  const options = Object.assign({}, props.returnTo.options(), { reload: true });
+
+  let formik;
 
   const login = () => {
     console.log('logging in');
@@ -53,3 +59,7 @@ function ChplLogin(props) {
 }
 
 export default ChplLogin;
+
+ChplLogin.propTypes = {
+  returnTo: object.isRequired,
+};
