@@ -1,25 +1,26 @@
-export const ApiKeysComponent = {
+const ApiKeysComponent = {
   templateUrl: 'chpl.administration/api-keys/api-keys.html',
   bindings: {
     apiKeys: '<',
   },
   controller: class ApiKeysComponent {
-    constructor ($log, networkService) {
+    constructor($log, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.networkService = networkService;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.apiKeys) {
         this.apiKeys = angular.copy(changes.apiKeys.currentValue);
       }
     }
 
-    revoke (key) {
-      let that = this;
+    revoke(key) {
+      const that = this;
       if (key.key) {
-        this.networkService.revokeApi(key).then(() => that.networkService.getApiUsers().then(response => that.apiKeys = response));
+        this.networkService.revokeApi(key).then(() => that.networkService.getApiUsers().then((response) => { that.apiKeys = response; }));
       }
     }
   },
@@ -27,3 +28,5 @@ export const ApiKeysComponent = {
 
 angular.module('chpl.administration')
   .component('chplApiKeys', ApiKeysComponent);
+
+export default ApiKeysComponent;

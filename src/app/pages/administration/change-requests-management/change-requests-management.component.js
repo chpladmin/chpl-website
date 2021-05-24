@@ -1,4 +1,4 @@
-export const ChangeRequestsManagementComponent = {
+const ChangeRequestsManagementComponent = {
   templateUrl: 'chpl.administration/change-requests-management/change-requests-management.html',
   bindings: {
     changeRequests: '<',
@@ -6,14 +6,15 @@ export const ChangeRequestsManagementComponent = {
     changeRequestTypes: '<',
   },
   controller: class ChangeRequestsManagementComponent {
-    constructor ($log, networkService, toaster) {
+    constructor($log, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.networkService = networkService;
       this.toaster = toaster;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.changeRequests) {
         this.changeRequests = angular.copy(changes.changeRequests.currentValue);
       }
@@ -25,27 +26,27 @@ export const ChangeRequestsManagementComponent = {
       }
     }
 
-    takeAction (action, data) {
-      let that = this;
+    takeAction(action, data) {
+      const that = this;
       switch (action) {
-      case 'save':
-        this.networkService.updateChangeRequest(data)
-          .then(() => {
-            that.networkService.getChangeRequests().then(response => {
-              that.changeRequests = response;
-              that.state = 'confirmation';
-              that.confirmationText = 'The update has been completed successfully.';
+        case 'save':
+          this.networkService.updateChangeRequest(data)
+            .then(() => {
+              that.networkService.getChangeRequests().then((response) => {
+                that.changeRequests = response;
+                that.state = 'confirmation';
+                that.confirmationText = 'The update has been completed successfully.';
+              });
+            }, (error) => {
+              that.toaster.pop({
+                type: 'error',
+                title: 'Error in submission',
+                body: `Message${error.data.errorMessages.length > 1 ? 's' : ''}:<ul>${error.data.errorMessages.map((e) => `<li>${e}</li>`).join('')}</ul>`,
+                bodyOutputType: 'trustedHtml',
+              });
             });
-          }, error => {
-            that.toaster.pop({
-              type: 'error',
-              title: 'Error in submission',
-              body: 'Message' + (error.data.errorMessages.length > 1 ? 's' : '') + ':<ul>' + error.data.errorMessages.map(e => '<li>' + e + '</li>').join('') + '</ul>',
-              bodyOutputType: 'trustedHtml',
-            });
-          });
-        break;
-                //no default
+          break;
+                // no default
       }
     }
   },
@@ -53,3 +54,5 @@ export const ChangeRequestsManagementComponent = {
 
 angular.module('chpl.administration')
   .component('chplChangeRequestsManagement', ChangeRequestsManagementComponent);
+
+export default ChangeRequestsManagementComponent;

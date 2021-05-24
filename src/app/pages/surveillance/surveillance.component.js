@@ -1,10 +1,11 @@
-export const SurveillanceComponent = {
+const SurveillanceComponent = {
   templateUrl: 'chpl.surveillance/surveillance.html',
   bindings: {
   },
   controller: class SurveillanceComponent {
-    constructor ($log) {
+    constructor($log) {
       'ngInject';
+
       this.$log = $log;
     }
   },
@@ -12,3 +13,5 @@ export const SurveillanceComponent = {
 
 angular.module('chpl.surveillance')
   .component('chplSurveillance', SurveillanceComponent);
+
+export default SurveillanceComponent;

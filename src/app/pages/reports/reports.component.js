@@ -1,10 +1,11 @@
-export const ReportsComponent = {
+const ReportsComponent = {
   templateUrl: 'chpl.reports/reports.html',
   bindings: {
   },
   controller: class ReportsComponent {
-    constructor ($log) {
+    constructor($log) {
       'ngInject';
+
       this.$log = $log;
     }
   },
@@ -12,3 +13,5 @@ export const ReportsComponent = {
 
 angular.module('chpl.reports')
   .component('chplReports', ReportsComponent);
+
+export default ReportsComponent;
