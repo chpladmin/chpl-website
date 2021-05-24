@@ -86,54 +86,30 @@ import { states as administrationStates } from './pages/administration/administr
       }
     });
 
+    const requiresAuthentication = {
+      to: (state) => state.data && state.data.roles,
+    };
+
+    $transitions.onBefore(requiresAuthentication, (transition) => {
+      const { roles } = transition.to().data;
+      if (roles && !authService.hasAnyRole(roles)) {
+        return transition.router.stateService.target('login', undefined, { location: false });
+      }
+      return true;
+    });
+
     $transitions.onError({}, (transition) => {
-      console.error('onError', transition?.error());
       const error = transition.error();
-      console.error(error);
-      if (error?.detail?.name && error?.detail?.name() === 'login') {
-        console.log('bypass');
-        const params = error.detail.params();
-        console.log(params);
-      } else {
-        console.log('go to not-found');
+      if (!error.detail?.name || error.detail.name() !== 'login') {
+        // console.log('go to not-found');
         transition.router.stateService.go('not-found');
       }
     });
 
-    $transitions.onBefore({}, (transition) => {
-      let { roles } = transition.to().data;
-      if (roles && !authService.hasAnyRole(roles)) {
-        console.log('intercepted by security check', transition.to(), transition.from());
-        const params = {
-          name: transition.to().name,
-          params: JSON.stringify(transition.params()),
-        };
-        console.log({params});
-        const target = transition.router.stateService.target('login', params);
-        console.log({target});
-        return target;
-      }
-    });
-
-    $state.defaultErrorHandler((error) => {
-      console.error('intercepted', error);
+    $state.defaultErrorHandler(() => {
+      // console.error('intercepted', error);
       // no op
     });
-
-    /*
-    $transitions.onError({to: 'organizations.developers.**'}, transition => {
-      transition.router.stateService.go('search');
-    });
-
-    $transitions.onError({}, transition => {
-      let message = transition.promise.$$state.value.detail.data.error;
-      toaster.pop({
-        type: 'error',
-        title: 'Error',
-        body: message,
-      });
-    });
-    */
   }
 
   angular
