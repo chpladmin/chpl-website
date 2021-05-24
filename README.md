@@ -48,7 +48,7 @@ yarn install
 * `yarn test:ci`: Run Karma-based tests once in a fashion suitable for a Continuous Integration environment (tests based on the AngularJS components)
 * `yarn test:react`: Run Jest-based unit tests once (tests based on the React components)
 * `lint`: Run ESLint against all JavaScript files in the project
-* `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically
+* `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically. Especially useful when run as `yarn lint:fix src/app/path/to/file.js[x]` to automatically apply fixes against a single file
 * `yarn e2e`: Run the end to end integration tests, as well as e2e linting
 * `yarn e2e:lint`: Run code and syntax rules
 * `yarn e2e:clean`: Clear out old E2E artifacts
