@@ -1,5 +1,5 @@
 import React from 'react';
-import { object } from 'prop-types';
+import { func, shape } from 'prop-types'; // eslint-disable-line import/no-extraneous-dependencies
 import {
   Button,
   Container,
@@ -9,7 +9,6 @@ import {
   CardContent,
   ThemeProvider,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -17,9 +16,6 @@ import * as yup from 'yup';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../../components/util';
-
-const useStyles = makeStyles(() => ({
-}));
 
 const validationSchema = yup.object({
   userName: yup.string()
@@ -29,6 +25,7 @@ const validationSchema = yup.object({
 });
 
 function ChplLogin(props) {
+  /* eslint-disable react/destructuring-assignment */
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
@@ -36,18 +33,18 @@ function ChplLogin(props) {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const classes = useStyles();
   const state = props.returnTo.state();
   const params = props.returnTo.params();
-  const options = Object.assign({}, props.returnTo.options(), { reload: true });
+  const options = { ...props.returnTo.options(), reload: true };
+  /* eslint-enable react/destructuring-assignment */
 
   let formik;
 
   const login = () => {
-    networkService.login({userName: formik.values.userName, password: formik.values.password})
+    networkService.login({ userName: formik.values.userName, password: formik.values.password })
       .then(() => {
         networkService.getUserById(authService.getUserId())
-          .then(user => {
+          .then((user) => {
             $analytics.eventTrack('Log In', { category: 'Authentication' });
             authService.saveCurrentUser(user);
             Idle.watch();
@@ -122,5 +119,9 @@ function ChplLogin(props) {
 export default ChplLogin;
 
 ChplLogin.propTypes = {
-  returnTo: object.isRequired,
+  returnTo: shape({
+    state: func.isRequired,
+    params: func.isRequired,
+    options: func.isRequired,
+  }).isRequired,
 };

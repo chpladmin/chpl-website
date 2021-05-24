@@ -37,6 +37,21 @@ const getResources = ($q, networkService) => {
     .then((response) => response);
 };
 
+/** @ngInject */
+function returnTo($transition$) {
+  if ($transition$.redirectedFrom() != null) {
+    return $transition$.redirectedFrom().targetState();
+  }
+
+  const $state = $transition$.router.stateService;
+
+  if ($transition$.from().name !== '') {
+    return $state.target($transition$.from(), $transition$.params('from'));
+  }
+
+  return $state.target('search');
+}
+
 const states = {
   'change-request': [
     {
@@ -254,26 +269,11 @@ const states = {
       name: 'login',
       url: '/login',
       component: 'chplLoginBridge',
-      resolve: { returnTo: returnTo },
+      resolve: { returnTo },
       data: { title: 'CHPL Login' },
     },
   ],
 };
-
-/** @ngInject */
-function returnTo($transition$) {
-  if ($transition$.redirectedFrom() != null) {
-    return $transition$.redirectedFrom().targetState();
-  }
-
-  let $state = $transition$.router.stateService;
-
-  if ($transition$.from().name !== '') {
-    return $state.target($transition$.from(), $transition$.params('from'));
-  }
-
-  return $state.target('search');
-}
 
 function administrationStatesConfig($stateProvider) {
   'ngInject';
