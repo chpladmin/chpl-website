@@ -36,7 +36,7 @@ yarn install
 ### Yarn scripts
 
 * `yarn build`: Build deployable artifacts
-* `yarn html-ling`: Run HTML Linter with rules that should all pass
+* `yarn html-lint`: Run HTML Linter with rules that should all pass
 * `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
 * `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
 * `yarn start:dev`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but connecting to the DEV environment for data
