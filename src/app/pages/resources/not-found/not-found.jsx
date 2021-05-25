@@ -42,7 +42,7 @@ function ChplNotFound() {
             </Link>
             <Link
               color="primary"
-              href="http://www.google.com"
+              href="https://www.healthit.gov/form/healthit-feedback-form"
             >
               Support Portal
             </Link>
