@@ -63,8 +63,9 @@ export const SurveillanceReportRelevantListingComponent = {
       this._fixRequirementOptions();
       this.networkService.getListing(this.listing.id, true).then(listing => {
         let surveillance = listing.surveillance.find(s => s.id === relevantSurveillance.id);
+        this.$log.info(surveillance);
         that.uibModalInstance = that.$uibModal.open({
-          component: 'chplSurveillanceView',
+          component: 'chplSurveillanceViewContainerComponent',
           animation: false,
           backdrop: 'static',
           keyboard: false,

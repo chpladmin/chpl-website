@@ -2,7 +2,7 @@ import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplEllipsis } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
-import { ChplSurveillanceView } from './listing/details/surveillance';
+import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 

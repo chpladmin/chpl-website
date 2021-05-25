@@ -11,4 +11,4 @@ const acb = shape({
   website: string,
 });
 
-export { acb };
+export default { acb };

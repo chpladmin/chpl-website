@@ -11,4 +11,4 @@ const developer = shape({
   website: string,
 });
 
-export { developer };
+export default { developer };
