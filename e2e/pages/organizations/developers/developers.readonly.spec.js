@@ -54,10 +54,9 @@ describe('the Developer pages', () => {
       await hooks.open('#/organizations/developers/' + dummyDeveloperId);
     });
 
-    it('should go to Home page', () => {
+    it('should go to the custom 404 page', () => {
       hooks.waitForSpinnerToDisappear();
-      expect(toast.toastTitle.getText()).toEqual('Error');
-      expect(browser.getUrl()).toContain('#/search');
+      expect(browser.getUrl()).toContain('#/not-found');
     });
   });
 });
