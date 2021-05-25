@@ -8,19 +8,11 @@ import {
   Link,
   ThemeProvider,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 
 import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-
-const useStyles = makeStyles(() => ({
-}));
 
 function ChplNotFound() {
-  const $state = getAngularService('$state');
-  const classes = useStyles();
-
   return (
     <ThemeProvider theme={theme}>
       <Container>
