@@ -1,7 +1,8 @@
 import LoginComponent from './login.po';
 import Hooks from '../../utilities/hooks';
 
-let component, hooks;
+let component;
+let hooks;
 
 describe('the login component', () => {
   beforeEach(async () => {

@@ -1,43 +1,43 @@
-import credentials from '../../config/credentials.js';
-
-const elements = {
-  component: '#login-component',
-  loginToggle: '//*[@id="login-toggle"]',
-  userName: '[name="userName"]',
-  password: '[name="password"]',
-  login: 'button=Log In',
-  logout: '//button[text()="Log Out"]',
-};
+import credentials from '../../config/credentials';
 
 class LoginComponent {
-  constructor () { }
-
-  getLoggedInUserName () {
-    return $(elements.loginToggle).getText();
+  constructor() {
+    this.elements = {
+      component: '#login-component',
+      loginToggle: '//*[@id="login-toggle"]',
+      userName: '[name="userName"]',
+      password: '[name="password"]',
+      login: 'button=Log In',
+      logout: '//button[text()="Log Out"]',
+    };
   }
 
-  waitForLoggedIn () {
-    if (!($(elements.logout).isDisplayed())) {
+  getLoggedInUserName() {
+    return $(this.elements.loginToggle).getText();
+  }
+
+  waitForLoggedIn() {
+    if (!($(this.elements.logout).isDisplayed())) {
       this.toggleLoginComponent();
     }
-    $(elements.logout).waitForDisplayed();
+    $(this.elements.logout).waitForDisplayed();
   }
 
-  toggleLoginComponent () {
-    $(elements.loginToggle).scrollAndClick();
+  toggleLoginComponent() {
+    $(this.elements.loginToggle).scrollAndClick();
   }
 
-  logIn (user) {
-    $(elements.component).$(elements.userName).addValue(credentials[user].email || credentials[user].username);
-    $(elements.component).$(elements.password).addValue(credentials[user].password);
-    $(elements.component).$(elements.login).scrollAndClick();
+  logIn(user) {
+    $(this.elements.component).$(this.elements.userName).addValue(credentials[user].email || credentials[user].username);
+    $(this.elements.component).$(this.elements.password).addValue(credentials[user].password);
+    $(this.elements.component).$(this.elements.login).scrollAndClick();
   }
 
-  logOut () {
-    if (!($(elements.logout).isDisplayed())) {
+  logOut() {
+    if (!($(this.elements.logout).isDisplayed())) {
       this.toggleLoginComponent();
     }
-    $(elements.logout).scrollAndClick();
+    $(this.elements.logout).scrollAndClick();
     this.toggleLoginComponent();
   }
 }
