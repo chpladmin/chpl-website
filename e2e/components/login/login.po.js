@@ -1,8 +1,9 @@
 import credentials from '../../config/credentials.js';
 
-const loginElements = {
-  loginButton: '//*[@id="login-toggle"]',
-  userName: '[name="username"]',
+const elements = {
+  component: '#login-component',
+  loginToggle: '//*[@id="login-toggle"]',
+  userName: '[name="userName"]',
   password: '[name="password"]',
   login: 'button=Log In',
   logout: '//button[text()="Log Out"]',
@@ -11,50 +12,33 @@ const loginElements = {
 class LoginComponent {
   constructor () { }
 
-  get toggleLoginComponent () {
-    return $(loginElements.loginButton);
+  getLoggedInUserName () {
+    return $(elements.loginToggle).getText();
   }
 
-  get usernameInput () {
-    return $(loginElements.userName);
+  waitForLoggedIn () {
+    if (!($(elements.logout).isDisplayed())) {
+      this.toggleLoginComponent();
+    }
+    $(elements.logout).waitForDisplayed();
   }
 
-  get passwordInput () {
-    return $(loginElements.password);
-  }
-
-  get loginButton () {
-    return $(loginElements.login);
-  }
-
-  get logoutButton () {
-    return $(loginElements.logout);
-  }
-
-  openLoginComponent () {
-    this.toggleLoginComponent.scrollAndClick();
+  toggleLoginComponent () {
+    $(elements.loginToggle).scrollAndClick();
   }
 
   logIn (user) {
-    if (!this.usernameInput.isDisplayed()) {
-      this.openLoginComponent();
-    }
-    this.usernameInput.addValue(credentials[user].email || credentials[user].username);
-    this.passwordInput.addValue(credentials[user].password);
-    this.loginButton.scrollAndClick();
-  }
-
-  logInWithEmail (user) {
-    console.warn('this call is deprecated; use "logIn()" instead');
-    this.logIn(user);
+    $(elements.component).$(elements.userName).addValue(credentials[user].email || credentials[user].username);
+    $(elements.component).$(elements.password).addValue(credentials[user].password);
+    $(elements.component).$(elements.login).scrollAndClick();
   }
 
   logOut () {
-    if (!this.logoutButton.isDisplayed()) {
-      this.openLoginComponent();
+    if (!($(elements.logout).isDisplayed())) {
+      this.toggleLoginComponent();
     }
-    this.logoutButton.waitForDisplayed();
-    this.logoutButton.scrollAndClick();
+    $(elements.logout).scrollAndClick();
+    this.toggleLoginComponent();
   }
 }
 
