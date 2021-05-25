@@ -39,7 +39,7 @@ describe('the ONC-ATL Management page', () => {
     beforeEach(() => {
       const userID = '41';
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
+      login.waitToBeLoggedIn();
       hooks.open('#/users');
       user.impersonateUser(userID).scrollIntoView({ block: 'center', inline: 'center' });
       user.impersonateUser(userID).click();
@@ -80,7 +80,7 @@ describe('the ONC-ATL Management page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
+      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {

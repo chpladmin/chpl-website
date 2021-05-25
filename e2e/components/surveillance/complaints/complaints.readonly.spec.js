@@ -14,7 +14,7 @@ beforeEach(async () => {
 describe('when logged in as an ADMIN', () => {
   beforeEach(() => {
     login.logIn('admin');
-    login.logoutButton.waitForDisplayed();
+    login.waitToBeLoggedIn();
   });
 
   afterEach(() => {
@@ -52,7 +52,7 @@ describe('when logged in as an ADMIN', () => {
 describe('when logged in as an ACB', () => {
   beforeEach(() => {
     login.logIn('drummond');
-    login.logoutButton.waitForDisplayed();
+    login.waitToBeLoggedIn();
   });
 
   afterEach(() => {

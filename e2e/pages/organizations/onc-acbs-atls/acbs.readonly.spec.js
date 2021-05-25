@@ -45,7 +45,7 @@ describe('the ONC-ACB Management page', () => {
   describe('when logged in as UL', () => {
     beforeEach(() => {
       login.logIn('ul');
-      login.logoutButton.waitForDisplayed();
+      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {
@@ -99,7 +99,7 @@ describe('the ONC-ACB Management page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
+      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {

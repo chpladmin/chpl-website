@@ -16,7 +16,7 @@ class LoginComponent {
     return $(this.elements.loginToggle).getText();
   }
 
-  waitForLoggedIn() {
+  waitToBeLoggedIn() {
     if (!($(this.elements.logout).isDisplayed())) {
       this.toggleLoginComponent();
     }

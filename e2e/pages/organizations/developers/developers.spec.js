@@ -45,7 +45,7 @@ describe('the Developers page', () => {
   describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {
       login.logIn('drummond');
-      login.logoutButton.waitForDisplayed();
+      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {
@@ -122,7 +122,7 @@ describe('the Developers page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
+      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {
