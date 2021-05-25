@@ -5,7 +5,12 @@ import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let actionBar, actionConfirmation, contact, hooks, login, page;
+let actionBar;
+let actionConfirmation;
+let contact;
+let hooks;
+let login;
+let page;
 
 describe('the Product part of the Developers page', () => {
   beforeEach(async () => {
@@ -30,9 +35,9 @@ describe('the Product part of the Developers page', () => {
       page.getDeveloperPageTitle(developer).waitForDisplayed();
       page.selectAllCertificationStatus();
       product = page.getProduct(productName);
-      product.scrollIntoView({block: 'center', inline: 'center'});
+      product.scrollIntoView({ block: 'center', inline: 'center' });
       page.selectProduct(product);
-      page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+      page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
     });
 
     it('should have product Contact information', () => {
@@ -59,9 +64,9 @@ describe('the Product part of the Developers page', () => {
       page.getDeveloperPageTitle(developer).waitForDisplayed();
       page.selectAllCertificationStatus();
       product = page.getProduct(productName);
-      product.scrollIntoView({block: 'center', inline: 'center'});
+      product.scrollIntoView({ block: 'center', inline: 'center' });
       page.selectProduct(product);
-      page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+      page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
     });
 
     it('should have Versions', () => {
@@ -93,15 +98,14 @@ describe('the Product part of the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
         page.selectAllCertificationStatus();
         product = page.getProduct(productName);
-        product.scrollIntoView({block: 'center', inline: 'center'});
+        product.scrollIntoView({ block: 'center', inline: 'center' });
         page.selectProduct(product);
-        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
       });
 
       it('should not have merge product button as this developer has only one product', () => {
         expect(page.getMergeButton(product)).not.toExist();
       });
-
     });
 
     describe('when on the "Medical Information Technology, Inc. (MEDITECH)" Developer page', () => {
@@ -119,9 +123,9 @@ describe('the Product part of the Developers page', () => {
 
         beforeEach(() => {
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should not have a split button for the porduct with only one version)', () => {
@@ -134,9 +138,9 @@ describe('the Product part of the Developers page', () => {
 
         beforeEach(() => {
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should have a product split', () => {
@@ -145,7 +149,7 @@ describe('the Product part of the Developers page', () => {
 
         it('should allow cancellation of a split', () => {
           const productCount = page.products.length;
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.splitProduct(product);
           page.editProductName.clearValue();
           page.editProductName.setValue(Math.random());

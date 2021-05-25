@@ -5,23 +5,30 @@ import LoginComponent from '../../../components/login/login.po';
 import ActionBarComponent from '../../../components/action-bar/action-bar.po';
 import ToastComponent from '../../../components/toast/toast.po';
 import AddressComponent from '../../../components/address/address.po';
-let actionBar, address, contact, hooks, login, page, toast;
+
+let actionBar;
+let address;
+let contact;
+let hooks;
+let login;
+let page;
+let toast;
 
 describe('the Developers page', () => {
   const timestamp = (new Date()).getTime();
-  const website = 'https://website' + timestamp + '.com';
+  const website = `https://website${timestamp}.com`;
   const developerContact = {
-    full: 'name' + timestamp,
-    title: 'title' + timestamp,
-    email: 'email' + timestamp + '@example.com',
-    phone: 'phone' + timestamp,
+    full: `name${timestamp}`,
+    title: `title${timestamp}`,
+    email: `email${timestamp}@example.com`,
+    phone: `phone${timestamp}`,
   };
   const developerAddress = {
-    address: 'address' + timestamp,
-    city: 'city' + timestamp,
-    state: 'state' + timestamp,
-    zip: '11111' + timestamp,
-    country: 'country' + timestamp,
+    address: `address${timestamp}`,
+    city: `city${timestamp}`,
+    state: `state${timestamp}`,
+    zip: `11111${timestamp}`,
+    country: `country${timestamp}`,
   };
 
   beforeEach(async () => {
@@ -109,7 +116,7 @@ describe('the Developers page', () => {
 
       it('should show correct error message', () => {
         page.splitDeveloper.click();
-        page.developerName.addValue('New developer' + timestamp);
+        page.developerName.addValue(`New developer${timestamp}`);
         contact.set(developerContact);
         address.set(developerAddress);
         page.moveDeveloperToSplit(3138);
@@ -147,7 +154,7 @@ describe('the Developers page', () => {
         page.moveDeveloperToBeMerged('ABH Enterprises, LLC');
         contact.set(developerContact);
         actionBar.save();
-        browser.waitUntil( () =>toast.toastTitle.isDisplayed());
+        browser.waitUntil(() => toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toEqual('Merge submitted');
       });
     });
@@ -162,12 +169,12 @@ describe('the Developers page', () => {
 
       it('should allow split to happen', () => {
         page.splitDeveloper.click();
-        page.developerName.addValue('New developer' + timestamp);
+        page.developerName.addValue(`New developer${timestamp}`);
         contact.set(developerContact);
         address.set(developerAddress);
         page.moveDeveloperToSplit(3526);
         actionBar.save();
-        browser.waitUntil( () =>toast.toastTitle.isDisplayed());
+        browser.waitUntil(() => toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toEqual('Split submitted');
       });
     });

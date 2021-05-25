@@ -5,7 +5,12 @@ import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
 
-let actionBar, contact, hooks, login, page, toast;
+let actionBar;
+let contact;
+let hooks;
+let login;
+let page;
+let toast;
 
 describe('the Product part of the Developers page', () => {
   beforeEach(async () => {
@@ -49,9 +54,9 @@ describe('the Product part of the Developers page', () => {
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should have split product button', () => {
@@ -63,7 +68,7 @@ describe('the Product part of the Developers page', () => {
         });
 
         it.skip('should show correct error message when spliting product with listings owned by different ACBs', () => {
-          const newName = name + ' - split - ' + (new Date()).getTime();
+          const newName = `${name} - split - ${(new Date()).getTime()}`;
           const newCode = newName.substring(newName.length - 4);
           const movingVersionId = '2039';
           page.splitProduct(product);
@@ -80,9 +85,9 @@ describe('the Product part of the Developers page', () => {
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should have an edit button', () => {
@@ -107,19 +112,19 @@ describe('the Product part of the Developers page', () => {
           it('should allow editing of the POC', () => {
             const timestamp = (new Date()).getTime();
             const poc = {
-              full: 'name' + timestamp,
-              title: 'title' + timestamp,
-              email: 'email' + timestamp + '@example.com',
-              phone: 'phone' + timestamp,
+              full: `name${timestamp}`,
+              title: `title${timestamp}`,
+              email: `email${timestamp}@example.com`,
+              phone: `phone${timestamp}`,
             };
             contact.set(poc);
             actionBar.save();
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
             page.selectAllCertificationStatus();
-            product.scrollIntoView({block: 'center', inline: 'center'});
+            product.scrollIntoView({ block: 'center', inline: 'center' });
             page.selectProduct(product);
-            page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+            page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
             expect(contact.get(product)).toHaveTextContaining(poc.full);
             expect(contact.get(product)).toHaveTextContaining(poc.title);
             expect(contact.get(product)).toHaveTextContaining(poc.email);
@@ -133,9 +138,9 @@ describe('the Product part of the Developers page', () => {
         let product;
         beforeEach(() => {
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           page.editProduct(product);
           page.editProductsHeader.waitForDisplayed();
         });
@@ -143,17 +148,17 @@ describe('the Product part of the Developers page', () => {
         describe('when editing that Product', () => {
           it('should allow editing of the Name', () => {
             const timestamp = (new Date()).getTime();
-            const newName = name + ' - ' + timestamp;
+            const newName = `${name} - ${timestamp}`;
             page.editProductName.setValue(newName);
             actionBar.save();
             page.selectAllCertificationStatus();
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
             product = page.getProduct(newName);
-            product.scrollIntoView({block: 'center', inline: 'center'});
+            product.scrollIntoView({ block: 'center', inline: 'center' });
             browser.waitUntil(() => page.getVersionCount(product).getText() === '1 Version');
             page.selectProduct(product);
-            page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+            page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
             page.editProduct(product);
             page.editProductsHeader.waitForDisplayed();
             expect(page.editProductName).toBeDisplayed();
@@ -189,9 +194,9 @@ describe('the Product part of the Developers page', () => {
 
         beforeEach(() => {
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should have a product split', () => {
@@ -201,7 +206,7 @@ describe('the Product part of the Developers page', () => {
         it('should allow a split to happen', () => {
           // arrange
           const productCount = page.products.length;
-          const newName = productName + ' - split - ' + (new Date()).getTime();
+          const newName = `${productName} - split - ${(new Date()).getTime()}`;
           const newCode = newName.substring(newName.length - 4);
           const movingVersionId = '6266';
           page.splitProduct(product);
@@ -221,16 +226,16 @@ describe('the Product part of the Developers page', () => {
 
           // assert old product is updated
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           expect(page.getVersionCount(product).getText()).toBe('1 Version');
 
           // assert new product is correct
           product = page.getProduct(newName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           expect(page.getVersionCount(product).getText()).toBe('1 Version');
         });
       });
@@ -239,13 +244,13 @@ describe('the Product part of the Developers page', () => {
         const productName = 'MEDITECH Client/Server';
         const productToBeMerged = 'MEDITECH 6.0 CCD Exchange Suite';
         const timestamp = (new Date()).getTime();
-        const newProduct = 'New product' + timestamp;
+        const newProduct = `New product${timestamp}`;
 
         beforeEach(() => {
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should have a product merge button', () => {

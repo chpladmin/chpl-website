@@ -2,7 +2,9 @@ import LoginComponent from '../login/login.po';
 import NavigationComponent from './navigation.po';
 import Hooks from '../../utilities/hooks';
 
-let component, hooks, login;
+let component;
+let hooks;
+let login;
 
 beforeEach(async () => {
   component = new NavigationComponent();
@@ -31,10 +33,10 @@ describe('when logged in', () => {
         'Versions',
       ];
       component.reportsToggle.click();
-      let reports = new Set(component.reports.map(item => item.getText()));
+      const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
-      expected.forEach(exp => {
-        expect(reports.has(exp)).toBe(true, 'did not find expected report: "' + exp + '"');
+      expected.forEach((exp) => {
+        expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
       });
     });
   });
@@ -59,10 +61,10 @@ describe('when logged in', () => {
         'Versions',
       ];
       component.reportsToggle.click();
-      let reports = new Set(component.reports.map(item => item.getText()));
+      const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
-      expected.forEach(exp => {
-        expect(reports.has(exp)).toBe(true, 'did not find expected report: "' + exp + '"');
+      expected.forEach((exp) => {
+        expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
       });
     });
   });

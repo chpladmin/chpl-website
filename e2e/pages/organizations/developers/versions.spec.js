@@ -5,7 +5,12 @@ import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
 import Hooks from '../../../utilities/hooks';
 
-let actionBar, actionConfirmation, hooks, login, page, toast;
+let actionBar;
+let actionConfirmation;
+let hooks;
+let login;
+let page;
+let toast;
 
 describe('the Version part of the Developers page', () => {
   beforeEach(async () => {
@@ -47,9 +52,9 @@ describe('the Version part of the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
         page.selectAllCertificationStatus();
         product = page.getProduct(productName);
-        product.scrollIntoView({block: 'center', inline: 'center'});
+        product.scrollIntoView({ block: 'center', inline: 'center' });
         page.selectProduct(product);
-        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
       });
 
       describe('when editing Version "2015"', () => {
@@ -63,7 +68,7 @@ describe('the Version part of the Developers page', () => {
 
         it('should allow Versions to be edited', () => {
           const timestamp = (new Date()).getTime();
-          const newVersion = version + ' - ' + timestamp;
+          const newVersion = `${version} - ${timestamp}`;
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.save();
@@ -71,9 +76,9 @@ describe('the Version part of the Developers page', () => {
           page.productsHeader.waitForDisplayed();
           toast.clearAllToast();
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
           page.selectVersion(product, productId, newVersion);
           page.editVersion(product);
@@ -94,7 +99,7 @@ describe('the Version part of the Developers page', () => {
 
         it('should allow cancellation', () => {
           const timestamp = (new Date()).getTime();
-          const newVersion = version + ' - ' + timestamp;
+          const newVersion = `${version} - ${timestamp}`;
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.cancel();
@@ -102,9 +107,9 @@ describe('the Version part of the Developers page', () => {
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           product = page.getProduct(productName);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
           expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(newVersion);
           page.selectVersion(product, productId, version);
@@ -119,7 +124,7 @@ describe('the Version part of the Developers page', () => {
         const version = 'Version 2015';
 
         it('should show error message to split a version which has listings owned by different ACB than logged in ACB', () => {
-          const newVersion = version + ' - split - ' + (new Date()).getTime();
+          const newVersion = `${version} - split - ${(new Date()).getTime()}`;
           const newCode = newVersion.substring(newVersion.length - 2);
           const movingListingId = '6299';
           page.selectVersion(product, productId, version);
@@ -148,7 +153,8 @@ describe('the Version part of the Developers page', () => {
     describe('when on the "Greenway Health, LLC" Developer page', () => {
       const name = 'Greenway Intergy Meaningful Use Edition';
       const productId = 837;
-      let newVersion, product, timestamp, version;
+      let newVersion; let product; let timestamp; let
+        version;
 
       beforeEach(() => {
         const developer = 'Greenway Health, LLC';
@@ -165,11 +171,11 @@ describe('the Version part of the Developers page', () => {
         const versionToBeMerged = 'v9.30';
 
         beforeEach(() => {
-          newVersion = 'New version - ' + timestamp;
+          newVersion = `New version - ${timestamp}`;
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           page.selectVersion(product, productId, version);
         });
 
@@ -183,9 +189,9 @@ describe('the Version part of the Developers page', () => {
           toast.clearAllToast();
           page.selectAllCertificationStatus();
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           expect(page.getActiveVersion(product, productId)).toHaveTextContaining(newVersion);
           expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(version);
           expect(page.getActiveVersion(product, productId)).not.toHaveTextContaining(versionToBeMerged);
@@ -205,9 +211,9 @@ describe('the Version part of the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
         page.selectAllCertificationStatus();
         product = page.getProduct(productName);
-        product.scrollIntoView({block: 'center', inline: 'center'});
+        product.scrollIntoView({ block: 'center', inline: 'center' });
         page.selectProduct(product);
-        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
       });
 
       it('should have a version split, but not a product split', () => {
@@ -224,7 +230,7 @@ describe('the Version part of the Developers page', () => {
         // arrange
         const versionCountText = page.getVersionCount(product).getText();
         const versionCount = page.getSelectableVersions(product, productId).length;
-        const newVersion = version + ' - split - ' + (new Date()).getTime();
+        const newVersion = `${version} - split - ${(new Date()).getTime()}`;
         const newCode = newVersion.substring(newVersion.length - 2);
         const movingListingId = '6678';
         page.selectVersion(product, productId, version);
@@ -239,9 +245,9 @@ describe('the Version part of the Developers page', () => {
         page.selectAllCertificationStatus();
         page.productsHeader.waitForDisplayed();
         product = page.getProduct(productName);
-        product.scrollIntoView({block: 'center', inline: 'center'});
+        product.scrollIntoView({ block: 'center', inline: 'center' });
         page.selectProduct(product);
-        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
 
         // assert version count has increased
         expect(page.getVersionCount(product).getText()).not.toBe(versionCountText);
