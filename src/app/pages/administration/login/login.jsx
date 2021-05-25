@@ -70,7 +70,7 @@ function ChplLogin(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
+      <Container id="login-component">
         <Card>
           <CardHeader title="Login required" />
           <CardContent>
