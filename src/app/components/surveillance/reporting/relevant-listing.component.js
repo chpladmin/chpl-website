@@ -8,7 +8,7 @@ export const SurveillanceReportRelevantListingComponent = {
     onCancel: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
-    constructor ($log, $state, $stateParams, $uibModal, authService, networkService) {
+    constructor($log, $state, $stateParams, $uibModal, authService, networkService) {
       'ngInject';
       this.$log = $log;
       this.$state = $state;
@@ -18,11 +18,11 @@ export const SurveillanceReportRelevantListingComponent = {
       this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onInit () {
+    $onInit() {
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.listing) {
         this.listing = angular.copy(changes.listing.currentValue);
       }
@@ -40,11 +40,11 @@ export const SurveillanceReportRelevantListingComponent = {
       }
     }
 
-    cancelEdit () {
+    cancelEdit() {
       this.activeSurveillance = undefined;
     }
 
-    save (surveillance) {
+    save(surveillance) {
       let that = this;
       this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(() => {
         let currentState = {
@@ -52,27 +52,25 @@ export const SurveillanceReportRelevantListingComponent = {
         };
         that.$state.go(
           that.$state.current,
-          {...that.$stateParams, ...currentState},
-          {reload: true},
+          { ...that.$stateParams, ...currentState },
+          { reload: true },
         );
       });
     }
 
-    editSurveillance (relevantSurveillance) {
+    editSurveillance(relevantSurveillance) {
       let that = this;
       this._fixRequirementOptions();
       this.networkService.getListing(this.listing.id, true).then(listing => {
         let surveillance = listing.surveillance.find(s => s.id === relevantSurveillance.id);
         that.uibModalInstance = that.$uibModal.open({
-          component: 'aiSurveillanceEdit',
+          component: 'chplSurveillanceView',
           animation: false,
           backdrop: 'static',
           keyboard: false,
           size: 'lg',
           resolve: {
             surveillance: () => { return surveillance; },
-            surveillanceTypes: () => { return that.surveillanceTypes; },
-            workType: () => { return 'edit'; },
           },
         });
         that.uibModalInstance.result.then(() => {
@@ -81,14 +79,14 @@ export const SurveillanceReportRelevantListingComponent = {
           };
           that.$state.go(
             that.$state.current,
-            {...that.$stateParams, ...currentState},
-            {reload: true},
+            { ...that.$stateParams, ...currentState },
+            { reload: true },
           );
         });
       });
     }
 
-    _fixRequirementOptions () {
+    _fixRequirementOptions() {
       if (this.listing.edition === '2015') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
       } else if (this.listing.edition === '2014') {
@@ -96,26 +94,26 @@ export const SurveillanceReportRelevantListingComponent = {
       }
     }
 
-    cancel () {
+    cancel() {
       this.activeSurveillance = undefined;
       this.onCancel();
     }
 
-    calculateCompletion (surveillance) {
+    calculateCompletion(surveillance) {
       surveillance.completed = Math.round((
-        (surveillance.surveillanceOutcome ? 1 : 0 ) +
-                    (surveillance.surveillanceProcessType ? 1 : 0 ) +
-                    (surveillance.k1Reviewed ? 1 : 0 ) +
-                    (surveillance.groundsForInitiating ? 1 : 0 ) +
-                    (surveillance.nonconformityCauses ? 1 : 0 ) +
-                    (surveillance.nonconformityNature ? 1 : 0 ) +
-                    (surveillance.stepsToSurveil ? 1 : 0 ) +
-                    (surveillance.stepsToEngage ? 1 : 0 ) +
-                    (surveillance.additionalCostsEvaluation ? 1 : 0 ) +
-                    (surveillance.limitationsEvaluation ? 1 : 0 ) +
-                    (surveillance.nondisclosureEvaluation ? 1 : 0 ) +
-                    (surveillance.directionDeveloperResolution ? 1 : 0 ) +
-                    (surveillance.completedCapVerification ? 1 : 0)
+        (surveillance.surveillanceOutcome ? 1 : 0) +
+        (surveillance.surveillanceProcessType ? 1 : 0) +
+        (surveillance.k1Reviewed ? 1 : 0) +
+        (surveillance.groundsForInitiating ? 1 : 0) +
+        (surveillance.nonconformityCauses ? 1 : 0) +
+        (surveillance.nonconformityNature ? 1 : 0) +
+        (surveillance.stepsToSurveil ? 1 : 0) +
+        (surveillance.stepsToEngage ? 1 : 0) +
+        (surveillance.additionalCostsEvaluation ? 1 : 0) +
+        (surveillance.limitationsEvaluation ? 1 : 0) +
+        (surveillance.nondisclosureEvaluation ? 1 : 0) +
+        (surveillance.directionDeveloperResolution ? 1 : 0) +
+        (surveillance.completedCapVerification ? 1 : 0)
       ) * 100 / 13);
       return surveillance;
     }
