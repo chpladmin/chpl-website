@@ -1,8 +1,8 @@
 import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
-import ToastComponent from '../../../components/toast/toast.po';
 
-let hooks, page, toast;
+let hooks;
+let page;
 
 describe('the Developer pages', () => {
   describe('for existing Developers', () => {
@@ -10,7 +10,6 @@ describe('the Developer pages', () => {
       browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
       browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
       page = new DevelopersPage();
-      toast = new ToastComponent();
       hooks = new Hooks();
       await hooks.open('#/organizations/developers');
     });
@@ -51,7 +50,7 @@ describe('the Developer pages', () => {
     beforeEach(async () => {
       hooks = new Hooks();
       const dummyDeveloperId = '0000';
-      await hooks.open('#/organizations/developers/' + dummyDeveloperId);
+      await hooks.open(`#/organizations/developers/${dummyDeveloperId}`);
     });
 
     it('should go to the custom 404 page', () => {
