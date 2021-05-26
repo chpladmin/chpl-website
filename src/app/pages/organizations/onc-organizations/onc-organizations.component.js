@@ -75,6 +75,9 @@ export const OncOrganizationsComponent = {
     loadOrgs () {
       let that = this;
       this.networkService[this.functions.get](true).then(response => that.editableOrgs = angular.copy(response[that.key]));
+      if (this.$state.params.id) {
+        this.loadUsers();
+      }
     }
 
     loadUsers (id) {
