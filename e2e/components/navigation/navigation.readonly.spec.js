@@ -65,5 +65,37 @@ describe('when logged in', () => {
         expect(reports.has(exp)).toBe(true, 'did not find expected report: "' + exp + '"');
       });
     });
+      it('should have specific options under surveillance', () => {
+       const expected = [
+          'Manage',
+          'Complaints Reporting',
+          'Reporting',
+        ];
+        component.surveillanceToggle.click();
+        let surveillanceOptions = new Set(component.surveillanceOptions.map(item => item.getText()));
+        expect(surveillanceOptions.size).toBe(expected.length);
+        expected.forEach(exp => {
+          expect(surveillanceOptions.has(exp)).toBe(true);
+        });
+      });
+  });
+  describe('as ONC-STAFF', () => {
+    beforeEach(() => {
+      login.logIn('oncstaff');
+      login.logoutButton.waitForDisplayed();
+    });
+
+      it('should have specific options under surveillance', () => {
+       const expected = [
+          'Complaints Reporting',
+          'Reporting',
+        ];
+        component.surveillanceToggle.click();
+        let surveillanceOptions = new Set(component.surveillanceOptions.map(item => item.getText()));
+        expect(surveillanceOptions.size).toBe(expected.length);
+        expected.forEach(exp => {
+          expect(surveillanceOptions.has(exp)).toBe(true);
+        });
+      });
   });
 });

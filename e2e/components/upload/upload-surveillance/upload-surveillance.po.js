@@ -9,6 +9,10 @@ const path = require('path');
 class UploadSurveillanceComponent {
   constructor () { }
 
+  get root () {
+    return $(uploadElements.root);
+  }
+
   get chooseUploadSurveillanceButton () {
     return $(uploadElements.chooseUploadSurveillance);
   }

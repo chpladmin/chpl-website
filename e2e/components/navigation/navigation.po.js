@@ -1,6 +1,9 @@
 const elements = {
   reportsToggle: '#reports-toggle',
   reports: '#reports-dropdown-menu>li',
+  surveillanceToggle : '#surveillance-toggle',
+  surveillanceOptions: '#surveillance-dropdown-menu>li',
+  
 };
 
 class NavigationComponent {
@@ -12,6 +15,14 @@ class NavigationComponent {
 
   get reports () {
     return $$(elements.reports);
+  }
+
+  get surveillanceToggle () {
+    return $(elements.surveillanceToggle);
+  }
+
+  get surveillanceOptions () {
+    return $$(elements.surveillanceOptions);
   }
 }
 
