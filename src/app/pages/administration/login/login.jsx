@@ -9,6 +9,7 @@ import {
   CardContent,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -16,6 +17,14 @@ import * as yup from 'yup';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../../components/util';
+
+const useStyles = makeStyles(() => ({
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridRowGap: '8px',
+  },
+}));
 
 const validationSchema = yup.object({
   userName: yup.string()
@@ -36,6 +45,7 @@ function ChplLogin(props) {
   const state = props.returnTo.state();
   const params = props.returnTo.params();
   const options = { ...props.returnTo.options(), reload: true };
+  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   let formik;
@@ -73,7 +83,7 @@ function ChplLogin(props) {
       <Container id="login-component">
         <Card>
           <CardHeader title="Login required" />
-          <CardContent>
+          <CardContent className={classes.grid}>
             <ChplTextField
               id="user-name"
               name="userName"
@@ -97,7 +107,7 @@ function ChplLogin(props) {
               error={formik.touched.password && !!formik.errors.password}
               helperText={formik.touched.password && formik.errors.password}
             />
-            <Typography>
+            <Typography variant="body2">
               This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.
             </Typography>
           </CardContent>
