@@ -161,6 +161,21 @@ const theme = createMuiTheme({
         color: '#c2c6ca',
       },
     },
+    MuiDialogActions: {
+      root: {
+        padding: '16px',
+      },
+    },
+    MuiDialogContent: {
+      dividers: {
+        padding: '16px',
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        padding: '16px',
+      },
+    },
     MuiFormControl: {
       root: {
         width: '100%',
