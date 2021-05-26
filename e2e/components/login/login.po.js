@@ -22,6 +22,7 @@ class LoginComponent {
       this.toggleLoginComponent();
     }
     $(this.elements.logout).waitForDisplayed();
+    this.toggleLoginComponent();
   }
 
   toggleLoginComponent() {
