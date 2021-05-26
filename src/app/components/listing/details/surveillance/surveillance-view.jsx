@@ -9,11 +9,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@material-ui/core';
 
 import { ChplTooltip } from '../../../util/chpl-tooltip';
 import { getAngularService } from '.';
 import surveillance from '../../../../shared/prop-types/surveillance';
+import ChplSurveillanceNonconformity from './nonconformity/nonconformity-view';
 import theme from '../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -22,6 +24,10 @@ const useStyles = makeStyles(() => ({
   },
   unindentedData: {
     marginLeft: '-25px',
+  },
+  nonconformityContainer: {
+    paddingLeft: '8px',
+    paddingRight: '8px',
   },
 }));
 
@@ -158,6 +164,17 @@ function ChplSurveillanceView(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      <div className={classes.nonconformityContainer}>
+        <Typography variant="subtitle1">
+          Non-Conformities
+        </Typography>
+        { surv.requirements.length > 0
+          && surv.requirements.map((requirement) => (
+            requirement.nonconformities.map((nonconformity) => (
+              <ChplSurveillanceNonconformity key={requirement.id} requirement={requirement} nonconformity={nonconformity} />
+            ))
+          ))}
+      </div>
     </ThemeProvider>
   );
 }
