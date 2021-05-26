@@ -29,23 +29,24 @@ class LoginComponent {
   }
 
   logIn(user) {
+    const usingLegacy = !($(this.elements.component).isDisplayed());
     let un;
     let pw;
     let btn;
-    if ($(this.elements.component).isDisplayed()) {
-      un = $(this.elements.component).$(this.elements.userName);
-      pw = $(this.elements.component).$(this.elements.password);
-      btn = $(this.elements.component).$(this.elements.login);
-    } else {
+    if (usingLegacy) {
       this.toggleLoginComponent();
       un = $(this.elements.username);
       pw = $(this.elements.password);
       btn = $(this.elements.login);
+    } else {
+      un = $(this.elements.component).$(this.elements.userName);
+      pw = $(this.elements.component).$(this.elements.password);
+      btn = $(this.elements.component).$(this.elements.login);
     }
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
     btn.scrollAndClick();
-    if (!($(this.elements.component).isDisplayed())) {
+    if (usingLegacy) {
       this.toggleLoginComponent();
     }
   }

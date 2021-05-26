@@ -13,7 +13,9 @@ describe('the new login component', () => {
 
   describe('when logging in', () => {
     afterEach(() => {
+      hooks.waitForSpinnerToDisappear();
       component.logOut();
+      hooks.waitForSpinnerToDisappear();
     });
 
     it('should be able to log in as drummond ACB', () => {
@@ -52,7 +54,9 @@ describe('the legacy login component', () => {
 
   describe('when logging in', () => {
     afterEach(() => {
+      hooks.waitForSpinnerToDisappear();
       component.logOut();
+      hooks.waitForSpinnerToDisappear();
     });
 
     it('should be able to log in as drummond ACB', () => {
