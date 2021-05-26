@@ -10,6 +10,7 @@ export const SurveillanceReportRelevantListingComponent = {
   controller: class SurveillanceReportRelevantListingComponent {
     constructor($log, $state, $stateParams, $uibModal, authService, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
@@ -36,7 +37,7 @@ export const SurveillanceReportRelevantListingComponent = {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
       }
       if (this.listing.surveillances) {
-        this.surveillances = this.listing.surveillances.map(s => this.calculateCompletion(s));
+        this.surveillances = this.listing.surveillances.map((s) => this.calculateCompletion(s));
       }
     }
 
@@ -45,9 +46,9 @@ export const SurveillanceReportRelevantListingComponent = {
     }
 
     save(surveillance) {
-      let that = this;
+      const that = this;
       this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(() => {
-        let currentState = {
+        const currentState = {
           relevantListing: that.listing.id,
         };
         that.$state.go(
@@ -59,11 +60,10 @@ export const SurveillanceReportRelevantListingComponent = {
     }
 
     editSurveillance(relevantSurveillance) {
-      let that = this;
+      const that = this;
       this._fixRequirementOptions();
-      this.networkService.getListing(this.listing.id, true).then(listing => {
-        let surveillance = listing.surveillance.find(s => s.id === relevantSurveillance.id);
-        this.$log.info(surveillance);
+      this.networkService.getListing(this.listing.id, true).then((listing) => {
+        const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
         that.uibModalInstance = that.$uibModal.open({
           component: 'chplSurveillanceViewContainerComponent',
           animation: false,
@@ -71,11 +71,11 @@ export const SurveillanceReportRelevantListingComponent = {
           keyboard: false,
           size: 'lg',
           resolve: {
-            surveillance: () => { return surveillance; },
+            surveillance: () => surveillance,
           },
         });
         that.uibModalInstance.result.then(() => {
-          let currentState = {
+          const currentState = {
             relevantListing: that.listing.id,
           };
           that.$state.go(
@@ -102,19 +102,19 @@ export const SurveillanceReportRelevantListingComponent = {
 
     calculateCompletion(surveillance) {
       surveillance.completed = Math.round((
-        (surveillance.surveillanceOutcome ? 1 : 0) +
-        (surveillance.surveillanceProcessType ? 1 : 0) +
-        (surveillance.k1Reviewed ? 1 : 0) +
-        (surveillance.groundsForInitiating ? 1 : 0) +
-        (surveillance.nonconformityCauses ? 1 : 0) +
-        (surveillance.nonconformityNature ? 1 : 0) +
-        (surveillance.stepsToSurveil ? 1 : 0) +
-        (surveillance.stepsToEngage ? 1 : 0) +
-        (surveillance.additionalCostsEvaluation ? 1 : 0) +
-        (surveillance.limitationsEvaluation ? 1 : 0) +
-        (surveillance.nondisclosureEvaluation ? 1 : 0) +
-        (surveillance.directionDeveloperResolution ? 1 : 0) +
-        (surveillance.completedCapVerification ? 1 : 0)
+        (surveillance.surveillanceOutcome ? 1 : 0)
+        + (surveillance.surveillanceProcessType ? 1 : 0)
+        + (surveillance.k1Reviewed ? 1 : 0)
+        + (surveillance.groundsForInitiating ? 1 : 0)
+        + (surveillance.nonconformityCauses ? 1 : 0)
+        + (surveillance.nonconformityNature ? 1 : 0)
+        + (surveillance.stepsToSurveil ? 1 : 0)
+        + (surveillance.stepsToEngage ? 1 : 0)
+        + (surveillance.additionalCostsEvaluation ? 1 : 0)
+        + (surveillance.limitationsEvaluation ? 1 : 0)
+        + (surveillance.nondisclosureEvaluation ? 1 : 0)
+        + (surveillance.directionDeveloperResolution ? 1 : 0)
+        + (surveillance.completedCapVerification ? 1 : 0)
       ) * 100 / 13);
       return surveillance;
     }
