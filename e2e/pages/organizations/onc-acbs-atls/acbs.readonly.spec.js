@@ -71,28 +71,28 @@ describe('the ONC-ACB Management page', () => {
       page.organizationNameButton(acb).click();
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);
     });
-  });
 
-  describe('when editing UL details', () => {
-    beforeEach(() => {
-      const acb = 'UL LLC';
-      page.organizationNameButton(acb).click();
-      page.organizationEditButton.click();
-    });
+    describe('when editing UL details', () => {
+      beforeEach(() => {
+        const acb = 'UL LLC';
+        page.organizationNameButton(acb).click();
+        page.organizationEditButton.click();
+      });
 
-    it('should show error for missing input in required field - ACB Name', () => {
-      page.organizationName.clearValue();
-      expect(page.errorMessage.getText()).toBe('Field is required');
-    });
+      it('should show error for missing input in required field - ACB Name', () => {
+        page.organizationName.clearValue();
+        expect(page.errorMessage.getText()).toBe('Field is required');
+      });
 
-    it('should show error for missing input in required field - Website', () => {
-      page.organizationWebsite.clearValue();
-      expect(page.errorMessage.getText()).toBe('Field is required');
-    });
+      it('should show error for missing input in required field - Website', () => {
+        page.organizationWebsite.clearValue();
+        expect(page.errorMessage.getText()).toBe('Field is required');
+      });
 
-    it('should show error for missing input in required field - Address', () => {
-      address.editAddress.clearValue();
-      expect(page.addressErrorMessage.getText()).toContain('Field is required');
+      it('should show error for missing input in required field - Address', () => {
+        address.editAddress.clearValue();
+        expect(page.addressErrorMessage.getText()).toContain('Field is required');
+      });
     });
   });
 
@@ -118,9 +118,10 @@ describe('the ONC-ACB Management page', () => {
       page.saveOrganizationButton.click();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-acbs');
-      page.organizationNameButton(acb).click();
-      page.organizationEditButton.click();
       hooks.waitForSpinnerToDisappear();
+      page.organizationNameButton(acb).click();
+      hooks.waitForSpinnerToDisappear();
+      page.organizationEditButton.click();
       page.retireOrganizationCheckbox.click();
       page.retirementDate.setValue(today);
       page.saveOrganizationButton.click();
