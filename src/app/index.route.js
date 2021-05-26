@@ -21,6 +21,7 @@ import usersStates from './pages/users/users.state';
         data: { title: 'CHPL Search' },
       });
     $urlRouterProvider.when('', '/search');
+    $urlRouterProvider.when('/', '/search');
     $urlRouterProvider.otherwise('/not-found');
   }
 
