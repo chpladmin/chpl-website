@@ -20,8 +20,8 @@ describe('when an ONC-Staff user is logged in', () => {
   });
 
   it('should see the right set of scheduled jobs', () => {
-    const expected = new Set(['All Broken Surveillance Rules Report','Developer Access Report','Inherited Certification Status Errors Report','Listing Validation Email Report','ONC-ACB Questionable URL Report','Overnight Broken Surveillance Rules Report','Pending "Change Request" Report','Questionable Activity Report','Questionable URL Report','Real World Testing Email Report','Summary Statistics Email','Trigger Developer Ban Notification']);
-    browser.waitUntil(() => scheduled.scheduledJobTable.isDisplayed());
+    const expected = new Set(['All Broken Surveillance Rules Report','Cures Statistics Email','Developer Access Report','Inherited Certification Status Errors Report','Listing Validation Email Report','ONC-ACB Questionable URL Report','Overnight Broken Surveillance Rules Report','Pending "Change Request" Report','Questionable Activity Report','Questionable URL Report','Real World Testing Email Report','Summary Statistics Email','Trigger Developer Ban Notification']);
+    browser.waitUntil(() => scheduled.scheduledJobRows.length > 1);
     assert.equal(scheduled.scheduledJobRows.length,expected.size);
     // get the existing jobs into a de-duplicated array of jobs
     let rows = [...new Set(scheduled.scheduledJobRows.map(row => row.getText()))];
