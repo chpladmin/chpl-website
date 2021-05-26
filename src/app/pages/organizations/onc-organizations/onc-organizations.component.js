@@ -9,8 +9,9 @@ export const OncOrganizationsComponent = {
     functions: '<',
   },
   controller: class OncOrganizationsComponent {
-    constructor ($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster, utilService) {
+    constructor($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster, utilService) {
       'ngInject';
+
       this.$anchorScroll = $anchorScroll;
       this.$log = $log;
       this.$q = $q;
@@ -24,16 +25,16 @@ export const OncOrganizationsComponent = {
       this.columnCount = 2;
     }
 
-    $onInit () {
-      let that = this;
-      let loggedIn = this.$scope.$on('loggedIn', () => that.loadOrgs());
+    $onInit() {
+      const that = this;
+      const loggedIn = this.$scope.$on('loggedIn', () => that.loadOrgs());
       this.$scope.$on('$destroy', loggedIn);
       if (this.$state.params.id) {
         this.loadUsers();
       }
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.allOrgs && changes.allOrgs.currentValue) {
         this.allOrgs = angular.copy(changes.allOrgs.currentValue[this.key]);
       }
@@ -51,51 +52,51 @@ export const OncOrganizationsComponent = {
       }
     }
 
-    canEdit (org) {
+    canEdit(org) {
       return !this.$state.includes('**.edit') // not editing
                 && this.$state.includes('**.organization') // at an organization level
                 && this.editableOrgs // has editable orgs
                 && this.editableOrgs.reduce((acc, cur) => acc || cur.id.toString() === org, false); // can edit specific org
     }
 
-    hasOrg () {
+    hasOrg() {
       return this.$state.includes('**.organization') || this.$state.includes('**.edit') || this.$state.includes('**.create');
     }
 
-    edit ($event) {
+    edit($event) {
       this.$state.go('.edit');
       $event.preventDefault();
       $event.stopPropagation();
     }
 
-    toggleGeneral () {
+    toggleGeneral() {
       this.generalCollapsed = !this.generalCollapsed;
     }
 
-    loadOrgs () {
-      let that = this;
-      this.networkService[this.functions.get](true).then(response => that.editableOrgs = angular.copy(response[that.key]));
+    loadOrgs() {
+      const that = this;
+      this.networkService[this.functions.get](true).then((response) => that.editableOrgs = angular.copy(response[that.key]));
       if (this.$state.params.id) {
         this.loadUsers();
       }
     }
 
-    loadUsers (id) {
+    loadUsers(id) {
       if (!id) {
         id = this.$state.params.id;
       }
-      let allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC'];
+      const allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC'];
       allowedRoles.push(this.roles[0]);
       if (this.hasAnyRole(allowedRoles)) {
-        this.networkService[this.functions.getUsers](id).then(results => this.users = results.users);
+        this.networkService[this.functions.getUsers](id).then((results) => this.users = results.users);
       }
     }
 
-    prepOrgs () {
-      this.allOrgs = this.allOrgs.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+    prepOrgs() {
+      this.allOrgs = this.allOrgs.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
     }
 
-    showOrg (org) {
+    showOrg(org) {
       if (this.$state.includes('**.edit')) {
         this.$state.go('^.^.organization', {
           id: org.id,
@@ -116,7 +117,7 @@ export const OncOrganizationsComponent = {
       this.$anchorScroll();
     }
 
-    create () {
+    create() {
       if (this.$state.includes('**.edit')) {
         this.$state.go('^.^.create');
       } else if (this.$state.includes('**.organization')) {
@@ -126,65 +127,65 @@ export const OncOrganizationsComponent = {
       }
     }
 
-    takeAction (action, data) {
-      let that = this;
+    takeAction(action, data) {
+      const that = this;
       switch (action) {
-      case 'save':
-        this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then(response => {
-          that.allOrgs = response[that.key];
-          that.prepOrgs();
-          that.$state.reload();
-        }));
-        this.$state.go('^');
-        this.$anchorScroll();
-        break;
-      case 'cancel':
-        this.$state.go('^');
-        this.$anchorScroll();
-        break;
-      case 'create':
-        this.networkService[this.functions.create](data).then(newOrg => {
-          let promises = [
-            that.networkService[that.functions.get](false).then(allOrgs => {
-              that.allOrgs = allOrgs[that.key];
-              that.prepOrgs();
-            }),
-            that.networkService[that.functions.get](true).then(editableOrgs => that.editableOrgs = editableOrgs[that.key]),
-          ];
-          that.$q.all(promises);
+        case 'save':
+          this.networkService[this.functions.modify](data).then(() => that.networkService[that.functions.get](false).then((response) => {
+            that.allOrgs = response[that.key];
+            that.prepOrgs();
+            that.$state.reload();
+          }));
           this.$state.go('^');
-          that.showOrg(newOrg);
-        });
-        break;
-                //no default
+          this.$anchorScroll();
+          break;
+        case 'cancel':
+          this.$state.go('^');
+          this.$anchorScroll();
+          break;
+        case 'create':
+          this.networkService[this.functions.create](data).then((newOrg) => {
+            const promises = [
+              that.networkService[that.functions.get](false).then((allOrgs) => {
+                that.allOrgs = allOrgs[that.key];
+                that.prepOrgs();
+              }),
+              that.networkService[that.functions.get](true).then((editableOrgs) => that.editableOrgs = editableOrgs[that.key]),
+            ];
+            that.$q.all(promises);
+            this.$state.go('^');
+            that.showOrg(newOrg);
+          });
+          break;
+                // no default
       }
     }
 
-    takeUserAction (action, data) {
-      let that = this;
+    takeUserAction(action, data) {
+      const that = this;
       switch (action) {
-      case 'delete':
-        this.networkService[this.functions.removeUser](data, this.$state.params.id)
-          .then(() => that.loadUsers());
-        break;
-      case 'invite':
-        this.networkService.inviteUser({
-          role: data.role,
-          emailAddress: data.email,
-          permissionObjectId: this.$state.params.id,
-        }).then(() => that.toaster.pop({
-          type: 'success',
-          title: 'Email sent',
-          body: 'Email sent successfully to ' + data.email,
-        }));
-        break;
-      case 'refresh':
-        that.loadUsers();
-        break;
-      case 'impersonate':
-        this.$state.reload();
-        break;
-                //no default
+        case 'delete':
+          this.networkService[this.functions.removeUser](data, this.$state.params.id)
+            .then(() => that.loadUsers());
+          break;
+        case 'invite':
+          this.networkService.inviteUser({
+            role: data.role,
+            emailAddress: data.email,
+            permissionObjectId: this.$state.params.id,
+          }).then(() => that.toaster.pop({
+            type: 'success',
+            title: 'Email sent',
+            body: `Email sent successfully to ${data.email}`,
+          }));
+          break;
+        case 'refresh':
+          that.loadUsers();
+          break;
+        case 'impersonate':
+          this.$state.reload();
+          break;
+                // no default
       }
     }
   },
