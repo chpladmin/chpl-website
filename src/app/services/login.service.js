@@ -27,7 +27,7 @@
     ////////////////////////////////////////////////////////////////////////
 
     function canImpersonate (target) {
-      let userRole = parseJwt(getToken()).Authority;
+      let userRole = parseJwt(getToken())?.Authority;
       let targetRole = target.role;
       return !isImpersonating() &&
                 ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
@@ -118,8 +118,8 @@
 
     function isImpersonating () {
       var token = getToken();
-      var identity = parseJwt(token).Identity;
-      return identity.length !== 3;
+      var identity = parseJwt(token)?.Identity;
+      return identity && identity.length !== 3;
     }
 
     function logout () {
