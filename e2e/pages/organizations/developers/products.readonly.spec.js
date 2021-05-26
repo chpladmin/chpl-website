@@ -81,7 +81,6 @@ describe('the Product part of the Developers page', () => {
   describe('when logged in as an ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {

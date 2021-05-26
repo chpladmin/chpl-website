@@ -25,7 +25,6 @@ describe('the Version part of the Developers page', () => {
   describe('when logged in as an Admin', () => {
     beforeEach(() => {
       login.logIn('admin');
-      login.waitToBeLoggedIn();
     });
 
     afterEach(() => {

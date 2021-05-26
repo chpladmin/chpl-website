@@ -17,14 +17,6 @@ class LoginComponent {
     return $(this.elements.loginToggle).getText();
   }
 
-  waitToBeLoggedIn() {
-    if (!($(this.elements.logout).isDisplayed())) {
-      this.toggleLoginComponent();
-    }
-    $(this.elements.logout).waitForDisplayed();
-    this.toggleLoginComponent();
-  }
-
   toggleLoginComponent() {
     $(this.elements.loginToggle).scrollAndClick();
   }
@@ -47,9 +39,11 @@ class LoginComponent {
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
     btn.scrollAndClick();
-    if (usingLegacy) {
+    if (!usingLegacy) {
       this.toggleLoginComponent();
     }
+    $(this.elements.logout).waitForDisplayed();
+    this.toggleLoginComponent();
   }
 
   logOut() {

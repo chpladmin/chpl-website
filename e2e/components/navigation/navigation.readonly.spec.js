@@ -21,7 +21,6 @@ describe('when logged in', () => {
   describe('as an ACB', () => {
     beforeEach(() => {
       login.logIn('acb');
-      login.waitToBeLoggedIn();
     });
 
     it('should have specific reports', () => {
@@ -44,7 +43,6 @@ describe('when logged in', () => {
   describe('as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.waitToBeLoggedIn();
     });
 
     it('should have specific reports', () => {
