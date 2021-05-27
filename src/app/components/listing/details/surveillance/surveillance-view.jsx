@@ -41,7 +41,7 @@ const getSurveillanceResults = (surv) => {
     for (j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
       const result = {
         id: surv.requirements[i].id,
-        statusName: surv.requirements[i].nonconformities[j].status.name, // + ' Non-Conformity Found for ';
+        statusName: surv.requirements[i].nonconformities[j].status.name,
         criterion: surv.requirements[i].criterion,
         requirement: surv.requirements[i].requirement,
       };
@@ -49,6 +49,20 @@ const getSurveillanceResults = (surv) => {
     }
   }
   return results;
+  /*
+  const x = surv.requirements.map((req) => req.nonconformities.map((nc) => {
+    const result = {
+      id: req.id,
+      statusName: nc.status.name,
+      criterion: req.criterion,
+      requirement: req.requirement,
+    };
+    return result;
+  }));
+  console.log('Results');
+  console.log(x);
+  */
+
 };
 
 function ChplSurveillanceView({ surveillance }) {
