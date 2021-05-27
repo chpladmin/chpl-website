@@ -1,4 +1,4 @@
-export const OncOrganizationsComponent = {
+const OncOrganizationsComponent = {
   templateUrl: 'chpl.organizations/onc-organizations/onc-organizations.html',
   bindings: {
     allOrgs: '<',
@@ -75,25 +75,22 @@ export const OncOrganizationsComponent = {
 
     loadOrgs() {
       const that = this;
-      this.networkService[this.functions.get](true).then((response) => that.editableOrgs = angular.copy(response[that.key]));
+      this.networkService[this.functions.get](true).then((response) => { that.editableOrgs = angular.copy(response[that.key]); });
       if (this.$state.params.id) {
         this.loadUsers();
       }
     }
 
-    loadUsers(id) {
-      if (!id) {
-        id = this.$state.params.id;
-      }
+    loadUsers(id = this.$state.params.id) {
       const allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC'];
       allowedRoles.push(this.roles[0]);
       if (this.hasAnyRole(allowedRoles)) {
-        this.networkService[this.functions.getUsers](id).then((results) => this.users = results.users);
+        this.networkService[this.functions.getUsers](id).then((results) => { this.users = results.users; });
       }
     }
 
     prepOrgs() {
-      this.allOrgs = this.allOrgs.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+      this.allOrgs = this.allOrgs.sort((a, b) => (a.name < b.name ? -1 : 1));
     }
 
     showOrg(org) {
@@ -144,20 +141,19 @@ export const OncOrganizationsComponent = {
           this.$anchorScroll();
           break;
         case 'create':
-          this.networkService[this.functions.create](data).then((newOrg) => {
+          this.networkService[this.functions.create](data).then(() => {
             const promises = [
               that.networkService[that.functions.get](false).then((allOrgs) => {
                 that.allOrgs = allOrgs[that.key];
                 that.prepOrgs();
               }),
-              that.networkService[that.functions.get](true).then((editableOrgs) => that.editableOrgs = editableOrgs[that.key]),
+              that.networkService[that.functions.get](true).then((editableOrgs) => { that.editableOrgs = editableOrgs[that.key]; }),
             ];
             that.$q.all(promises);
             this.$state.go('^');
-            that.showOrg(newOrg);
           });
           break;
-                // no default
+          // no default
       }
     }
 
@@ -193,3 +189,5 @@ export const OncOrganizationsComponent = {
 
 angular.module('chpl.organizations')
   .component('chplOncOrganizations', OncOrganizationsComponent);
+
+export default OncOrganizationsComponent;
