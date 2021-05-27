@@ -408,6 +408,10 @@ export default class NetworkService {
     return this.apiGET('/schedules/jobs');
   }
 
+  getOptionalStandards() {
+    return this.apiGET('/data/optional_standards');
+  }
+
   getParticipantAgeStatistics() {
     return this.apiGET('/statistics/participant_age_count');
   }

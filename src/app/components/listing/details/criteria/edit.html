@@ -57,9 +57,41 @@
           </td>
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.optionalStandards !== null">
           <td>
             <span>Optional Standard</span>
+          </td>
+          <td ng-if="$ctrl.canEdit()">
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                  <chpl-expandable-list
+                    identifier="optionalStandard"
+                    item-key="id"
+                    item-text="name"
+                    items="$ctrl.resources.optionalStandards.data"
+                    new-items="$ctrl.newOptionalStandards"
+                    selected-item-keys="$ctrl.selectedOptionalStandardKeys"
+                    placeholder="Select an Optional Standard"
+                    on-change="$ctrl.optionalStandardOnChange(action)">
+                  </chpl-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td ng-if="$ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0 && !$ctrl.canEdit()">
+            <ul>
+              <li ng-repeat="m in $ctrl.cert.optionalStandards">
+                <span ng-if="m.optionalStandardDescription"><chpl-ellipsis-bridge text="m.optionalStandardDescription" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge></span>
+                <span ng-if="!m.optionalStandardDescription">{{ m.optionalStandardName }}</span>
+              </li>
+            </ul>
+          </td>
+          <td ng-if="(!$ctrl.cert.optionalStandards || $ctrl.cert.optionalStandards.length === 0) && !$ctrl.canEdit()">None</td>
+        </tr>
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null">
+          <td>
+            <span>Test Standard</span>
           </td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">

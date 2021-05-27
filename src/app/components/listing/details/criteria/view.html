@@ -48,10 +48,18 @@
               </ul>
             </td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && ($ctrl.cert.optionalStandards !== null || $ctrl.cert.testStandards !== null)" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               <span>Optional Standard</span>
               <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet a certification criterion where additional, optional standards are permitted." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The standard(s) used to meet a certification criterion where additional, optional standards are permitted.</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0">
+              <ul>
+                <li ng-repeat="m in $ctrl.cert.optionalStandards">
+                  <span ng-if="m.optionalStandard.description"><chpl-ellipsis-bridge text="m.optionalStandard.description" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge></span>
+                  <span ng-if="!m.optionalStandard.description">{{ m.optionalStandard.name }}</span>
+                </li>
+              </ul>
             </td>
             <td ng-if="$ctrl.cert.testStandards && $ctrl.cert.testStandards.length > 0">
               <ul>
@@ -61,7 +69,7 @@
                 </li>
               </ul>
             </td>
-            <td ng-if="!$ctrl.cert.testStandards || $ctrl.cert.testStandards.length === 0">None</td>
+            <td ng-if="(!$ctrl.cert.optionalStandards || $ctrl.cert.optionalStandards.length === 0) && (!$ctrl.cert.testStandards || $ctrl.cert.testStandards.length === 0)">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.g1Success != null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Measure_G1{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
