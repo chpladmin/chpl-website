@@ -1,1 +1,15 @@
-<chpl-surveillance-view-bridge surveillance="$ctrl.surveillance"></chpl-surveillance-view-bridge>
+<div role="modal" aria-labeled-by="edit-surveillance-label">
+  <div class="modal-header">
+    <button type="button"
+            class="close pull-right"
+            aria-label="Cancel">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="edit-surveillance-label">
+      Surveillance Activity
+    </h4>
+  </div>
+  <div class="modal-body form-horizontal">
+    <chpl-surveillance-view-bridge surveillance="$ctrl.surveillance"></chpl-surveillance-view-bridge>
+  </div>
+</div>
