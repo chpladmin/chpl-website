@@ -14,8 +14,9 @@ import {
 
 import { ChplTooltip } from '../../../util/chpl-tooltip';
 import { getAngularService } from '.';
-import surveillance from '../../../../shared/prop-types/surveillance';
+import ChplCriterionTitle from '../../../util/criterion-title';
 import ChplSurveillanceNonconformity from './nonconformity/nonconformity-view';
+import surveillance from '../../../../shared/prop-types/surveillance';
 import theme from '../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -124,10 +125,8 @@ function ChplSurveillanceView(props) {
                     <ul className={classes.unindentedData}>
                       { surv.requirements.map((req) => (
                         <li key={req.id}>
-                          { req.type.name }
-                          <span className={req.criterion.removed ? 'removed' : ''}>
-                            { `: ${(req.criterion.removed ? 'Removed | ' : '')} ${req.criterion.number} : ${req.criterion.title}` }
-                          </span>
+                          { `${req.type.name} ${req.criterion ? ': ' : ''}` }
+                          <ChplCriterionTitle criterion={req.criterion} useRemovedClass />
                         </li>
                       ))}
                     </ul>
@@ -151,9 +150,7 @@ function ChplSurveillanceView(props) {
                       { surveillanceResults.map((result) => (
                         <li key={result.id}>
                           { `${result.statusName} Non-Conformity Found for` }
-                          <span className={result.criterion.removed ? 'removed' : ''}>
-                            { `: ${(result.criterion.removed ? 'Removed | ' : '')} ${result.criterion.number} : ${result.criterion.title}` }
-                          </span>
+                          <ChplCriterionTitle criterion={result.criterion} useRemovedClass />
                         </li>
                       ))}
                     </ul>

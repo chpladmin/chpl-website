@@ -14,8 +14,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@material-ui/core';
 
+import ChplCriterionTitle from '../../../../util/criterion-title';
 import { ChplTooltip } from '../../../../util/chpl-tooltip';
 import { getAngularService } from '.';
 import requirement from '../../../../../shared/prop-types/surveillance-requirement';
@@ -58,12 +60,8 @@ function ChplNonconformityView(props) {
           expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
         >
           <div>
-            <span className={requirement.criterion.removed ? 'removed' : ''}>
-              { ` ${(requirement.criterion.removed ? 'Removed | ' : '')} ${requirement.criterion.number} : ${requirement.criterion.title}` }
-            </span>
-          </div>
-          <div>
-            { requirement.result.name }
+            <ChplCriterionTitle criterion={nonconformity.criterion} />
+            { ` ${requirement.result.name}` }
           </div>
         </AccordionSummary>
         <AccordionDetails>
@@ -146,7 +144,13 @@ function ChplNonconformityView(props) {
                       </ChplTooltip>
                     </TableCell>
                     <TableCell>
-                      { nonconformity.criterion ? `${(nonconformity.criterion.removed ? 'Removed | ' : '')} ${nonconformity.criterion.number} : ${nonconformity.criterion.title}` : nonconformity.nonconformityType }
+                      { nonconformity.criterion
+                        ? <ChplCriterionTitle criterion={nonconformity.criterion} useRemovedClass />
+                        : (
+                          <span>
+                            {nonconformity.nonconformityType}
+                          </span>
+                        )}
                     </TableCell>
                   </TableRow>
                   { surveillance.type?.name === 'Randomized'
