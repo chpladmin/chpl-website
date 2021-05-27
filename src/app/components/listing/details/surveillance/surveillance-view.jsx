@@ -171,7 +171,7 @@ function ChplSurveillanceView(props) {
         { surv.requirements.length > 0
           && surv.requirements.map((requirement) => (
             requirement.nonconformities.map((nonconformity) => (
-              <ChplSurveillanceNonconformity key={requirement.id} requirement={requirement} nonconformity={nonconformity} />
+              <ChplSurveillanceNonconformity key={requirement.id} surveillance={surv} requirement={requirement} nonconformity={nonconformity} />
             ))
           ))}
       </div>
