@@ -64,7 +64,7 @@ function ChplSurveillanceView(props) {
   return (
     <ThemeProvider theme={theme}>
       <TableContainer component={Paper}>
-        <Table aria-label="Surveillance Table">
+        <Table size="small" aria-label="Surveillance Table">
           <TableHead>
             <TableRow>
               <TableCell

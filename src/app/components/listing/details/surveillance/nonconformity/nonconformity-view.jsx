@@ -69,7 +69,7 @@ function ChplNonconformityView(props) {
         <AccordionDetails>
           <Container>
             <TableContainer component={Paper}>
-              <Table aria-label="Non-conformity Table">
+              <Table size="small" aria-label="Non-conformity Table">
                 <TableHead>
                   <TableRow>
                     <TableCell
