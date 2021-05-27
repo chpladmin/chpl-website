@@ -58,6 +58,16 @@ const theme = createMuiTheme({
     body2: {
       fontSize: '1em',
     },
+    subtitle1: {
+      fontWeight: 800,
+      textTransform: 'uppercase',
+      fontSize: '1em',
+    },
+    subtitle2: {
+      fontWeight: 800,
+      textTransform: 'uppercase',
+      fontSize: '0.875em',
+    },
   },
 
   overrides: {
