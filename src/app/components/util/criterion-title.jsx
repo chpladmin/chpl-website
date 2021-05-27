@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
 /* eslint-disable import/no-extraneous-dependencies */
+import React, { useState } from 'react';
 import { bool } from 'prop-types';
 
-import criterion from '../../shared/prop-types/criterion';
+import criterionPropType from '../../shared/prop-types/criterion';
 
-function ChplCriterionTitle(props) {
-  const crit = useState(props.criterion)[0];
-  const removedClass = useState(props.useRemovedClass)[0];
+function ChplCriterionTitle({ criterion, useRemovedClass }) {
+  const currentCriterion = useState(criterion)[0];
+  const removedClass = useState(useRemovedClass)[0];
 
   return (
-    <span className={crit.removed && removedClass ? 'removed' : ''}>
-      { `${(crit.removed ? 'Removed | ' : '')} ${crit.number} : ${crit.title}` }
+    <span className={currentCriterion.removed && removedClass ? 'removed' : ''}>
+      { `${(currentCriterion.removed ? 'Removed | ' : '')} ${currentCriterion.number} : ${currentCriterion.title}` }
     </span>
   );
 }
@@ -18,7 +18,7 @@ function ChplCriterionTitle(props) {
 export default ChplCriterionTitle;
 
 ChplCriterionTitle.propTypes = {
-  criterion: criterion.isRequired,
+  criterion: criterionPropType.isRequired,
   useRemovedClass: bool,
 };
 

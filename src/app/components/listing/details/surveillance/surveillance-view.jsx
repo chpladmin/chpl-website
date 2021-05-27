@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
@@ -16,7 +17,7 @@ import { ChplTooltip } from '../../../util/chpl-tooltip';
 import { getAngularService } from '.';
 import ChplCriterionTitle from '../../../util/criterion-title';
 import ChplSurveillanceNonconformity from './nonconformity/nonconformity-view';
-import surveillance from '../../../../shared/prop-types/surveillance';
+import surveillancePropType from '../../../../shared/prop-types/surveillance';
 import theme from '../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -50,17 +51,17 @@ const getSurveillanceResults = (surv) => {
   return results;
 };
 
-function ChplSurveillanceView(props) {
+function ChplSurveillanceView({ surveillance }) {
   const DateUtil = getAngularService('DateUtil');
-  const surv = useState(props.surveillance)[0];
+  const [currentSurveillance] = useState(surveillance);
   const [surveillanceResults, setSurveillanceResults] = useState([]);
   const dateFormat = 'MMM d, y';
 
   const classes = useStyles();
 
   useEffect(() => {
-    setSurveillanceResults(getSurveillanceResults(surv));
-  }, [surv]);
+    setSurveillanceResults(getSurveillanceResults(currentSurveillance));
+  }, [currentSurveillance]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -86,7 +87,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.timestampToString(surv.startDate, dateFormat) }</TableCell>
+              <TableCell>{ DateUtil.timestampToString(currentSurveillance.startDate, dateFormat) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -97,7 +98,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.timestampToString(surv.endDate, dateFormat) }</TableCell>
+              <TableCell>{ DateUtil.timestampToString(currentSurveillance.endDate, dateFormat) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -108,7 +109,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ surv.type.name }</TableCell>
+              <TableCell>{ currentSurveillance.type.name }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -120,10 +121,10 @@ function ChplSurveillanceView(props) {
                 </ChplTooltip>
               </TableCell>
               <TableCell>
-                { surv.requirements.length > 0
+                { currentSurveillance.requirements.length > 0
                   && (
                     <ul className={classes.unindentedData}>
-                      { surv.requirements.map((req) => (
+                      { currentSurveillance.requirements.map((req) => (
                         <li key={req.id}>
                           { `${req.type.name} ${req.criterion ? ': ' : ''}` }
                           <ChplCriterionTitle criterion={req.criterion} useRemovedClass />
@@ -131,7 +132,7 @@ function ChplSurveillanceView(props) {
                       ))}
                     </ul>
                   )}
-                { surv.requirements.length === 0 && 'None' }
+                { currentSurveillance.requirements.length === 0 && 'None' }
               </TableCell>
             </TableRow>
             <TableRow>
@@ -165,10 +166,10 @@ function ChplSurveillanceView(props) {
         <Typography variant="subtitle1">
           Non-Conformities
         </Typography>
-        { surv.requirements.length > 0
-          && surv.requirements.map((requirement) => (
+        { currentSurveillance.requirements.length > 0
+          && currentSurveillance.requirements.map((requirement) => (
             requirement.nonconformities.map((nonconformity) => (
-              <ChplSurveillanceNonconformity key={requirement.id} surveillance={surv} requirement={requirement} nonconformity={nonconformity} />
+              <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} />
             ))
           ))}
       </div>
@@ -179,5 +180,5 @@ function ChplSurveillanceView(props) {
 export default ChplSurveillanceView;
 
 ChplSurveillanceView.propTypes = {
-  surveillance: surveillance.isRequired,
+  surveillance: surveillancePropType.isRequired,
 };
