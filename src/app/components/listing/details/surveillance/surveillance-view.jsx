@@ -35,34 +35,16 @@ const useStyles = makeStyles(() => ({
 
 const getSurveillanceResults = (surv) => {
   const results = [];
-  let i;
-  let j;
-  for (i = 0; i < surv.requirements.length; i += 1) {
-    for (j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
-      const result = {
-        id: surv.requirements[i].id,
-        statusName: surv.requirements[i].nonconformities[j].status.name,
-        criterion: surv.requirements[i].criterion,
-        requirement: surv.requirements[i].requirement,
-      };
-      results.push(result);
-    }
-  }
-  return results;
-  /*
-  const x = surv.requirements.map((req) => req.nonconformities.map((nc) => {
+  surv.requirements.forEach((req) => req.nonconformities.forEach((nc) => {
     const result = {
       id: req.id,
       statusName: nc.status.name,
       criterion: req.criterion,
       requirement: req.requirement,
     };
-    return result;
+    results.push(result);
   }));
-  console.log('Results');
-  console.log(x);
-  */
-
+  return results;
 };
 
 function ChplSurveillanceView({ surveillance }) {

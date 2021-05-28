@@ -8,6 +8,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   Container,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -29,15 +30,9 @@ const useStyles = makeStyles(() => ({
   nonconformityAccordion: {
     borderRadius: '8px',
   },
-
-  nonconformityAccordionSummary: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    display: 'grid',
-    gridTemplateColumns: '4fr 1fr',
-    gridRowGap: '8px',
+  nonconformityAccordionSummaryStatus: {
+    textAlign: 'right',
   },
-
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -56,13 +51,17 @@ function ChplNonconformityView({ surveillance, requirement, nonconformity }) {
     <ThemeProvider theme={theme}>
       <Accordion className={classes.nonconformityAccordion}>
         <AccordionSummary
-          className={classes.nonconformityAccordionSummary}
           expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
         >
-          <div>
-            <ChplCriterionTitle criterion={currentNonconformity.criterion} />
-            { ` ${currentRequirement.result.name}` }
-          </div>
+          <Grid container spacing={4}>
+            <Grid item xs={9}>
+              <ChplCriterionTitle criterion={currentNonconformity.criterion} />
+              { ` ${currentRequirement.result.name}` }
+            </Grid>
+            <Grid item xs={3} className={classes.nonconformityAccordionSummaryStatus}>
+              { nonconformity.status.name }
+            </Grid>
+          </Grid>
         </AccordionSummary>
         <AccordionDetails>
           <Container>
@@ -169,6 +168,17 @@ function ChplNonconformityView({ surveillance, requirement, nonconformity }) {
                         </TableCell>
                       </TableRow>
                     )}
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      Non-Conformity Status
+                      <ChplTooltip title="Whether the non-conformity is open or closed (has been resolved).">
+                        <InfoOutlinedIcon
+                          className={classes.iconSpacing}
+                        />
+                      </ChplTooltip>
+                    </TableCell>
+                    <TableCell>{ currentNonconformity.status.name }</TableCell>
+                  </TableRow>
                   <TableRow>
                     <TableCell component="th" scope="row">
                       Non-Conformity Summary
