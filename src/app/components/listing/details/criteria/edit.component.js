@@ -6,11 +6,12 @@ export const CertificationCriteriaEditComponent = {
     dismiss: '&',
   },
   controller: class CertificationCriteriaEditController {
-    constructor ($filter, $log, authService, utilService, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+    constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
       'ngInject';
       this.$filter = $filter;
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
+      this.isOn = featureFlags.isOn;
       this.addNewValue = utilService.addNewValue;
       this.extendSelect = utilService.extendSelect;
       this.CertificationResultOptionalStandard = CertificationResultOptionalStandard;
@@ -63,7 +64,7 @@ export const CertificationCriteriaEditComponent = {
 
     canEdit () {
       return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
-                || !this.cert.criterion.removed; // ROLE_ACB can only edit when not removed criteria
+        || !this.cert.criterion.removed; // ROLE_ACB can only edit when not removed criteria
     }
 
     isToolDisabled (tool) {
@@ -80,62 +81,62 @@ export const CertificationCriteriaEditComponent = {
 
     svapOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.svaps = this.cert.svaps
-          .filter(svap => svap.svapId !== action.item.item.svapId);
-        break;
-      case 'Add':
-        this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
-        break;
-            // no default
+        case 'Remove':
+          this.cert.svaps = this.cert.svaps
+            .filter(svap => svap.svapId !== action.item.item.svapId);
+          break;
+        case 'Add':
+          this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
+          break;
+          // no default
       }
     }
 
     testDataOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.testDataUsed = this.cert.testDataUsed
-          .filter(crtd => !(crtd.testData.id === action.item.item.id
-                                      && crtd.version === action.item.additionalInputValue
-                                      && crtd.alteration === action.item.additionalInput2Value));
-        break;
-      case 'Add':
-        this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
-        break;
-      case 'Edit':
-        this.cert.testDataUsed = action.item.map(i => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
-        break;
-                // no default
+        case 'Remove':
+          this.cert.testDataUsed = this.cert.testDataUsed
+            .filter(crtd => !(crtd.testData.id === action.item.item.id
+                              && crtd.version === action.item.additionalInputValue
+                              && crtd.alteration === action.item.additionalInput2Value));
+          break;
+        case 'Add':
+          this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
+          break;
+        case 'Edit':
+          this.cert.testDataUsed = action.item.map(i => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
+          break;
+          // no default
       }
     }
 
     testFunctionalityOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.testFunctionality = this.cert.testFunctionality
-          .filter(crtf => crtf.testFunctionalityId !== action.item.item.id);
-        break;
-      case 'Add':
-        this.cert.testFunctionality.push(new this.CertificationResultTestFunctionality(action.item.item));
-        break;
-      default:
+        case 'Remove':
+          this.cert.testFunctionality = this.cert.testFunctionality
+            .filter(crtf => crtf.testFunctionalityId !== action.item.item.id);
+          break;
+        case 'Add':
+          this.cert.testFunctionality.push(new this.CertificationResultTestFunctionality(action.item.item));
+          break;
+        default:
       }
     }
 
     testProceduresOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.testProcedures = this.cert.testProcedures
-          .filter(crtp => !(crtp.testProcedure.id === action.item.item.id
-                                      && crtp.testProcedureVersion === action.item.additionalInputValue));
-        break;
-      case 'Add':
-        this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
-        break;
-      case 'Edit':
-        this.cert.testProcedures = action.item.map(i => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
-        break;
-                // no default
+        case 'Remove':
+          this.cert.testProcedures = this.cert.testProcedures
+            .filter(crtp => !(crtp.testProcedure.id === action.item.item.id
+                              && crtp.testProcedureVersion === action.item.additionalInputValue));
+          break;
+        case 'Add':
+          this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
+          break;
+        case 'Edit':
+          this.cert.testProcedures = action.item.map(i => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
+          break;
+          // no default
       }
     }
 
@@ -158,35 +159,35 @@ export const CertificationCriteriaEditComponent = {
 
     testStandardOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.testStandards = this.cert.testStandards.filter(crts => {
-          if (action.item.item.id === 'newItem') {
-            return crts.testStandardName !== action.item.item.name;
-          }
-          return crts.testStandardId !== action.item.item.id;
-        });
-        break;
-      case 'Add':
-        this.cert.testStandards.push(new this.CertificationResultTestStandard(action.item.item));
-        break;
-      default:
+        case 'Remove':
+          this.cert.testStandards = this.cert.testStandards.filter(crts => {
+            if (action.item.item.id === 'newItem') {
+              return crts.testStandardName !== action.item.item.name;
+            }
+            return crts.testStandardId !== action.item.item.id;
+          });
+          break;
+        case 'Add':
+          this.cert.testStandards.push(new this.CertificationResultTestStandard(action.item.item));
+          break;
+        default:
       }
     }
 
     testToolsOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.testToolsUsed = this.cert.testToolsUsed
-          .filter(crtt => !(crtt.testToolId === action.item.item.id
-                                      && crtt.testToolVersion === action.item.additionalInputValue));
-        break;
-      case 'Add':
-        this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
-        break;
-      case 'Edit':
-        this.cert.testToolsUsed = action.item.map(i => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
-        break;
-                // no default
+        case 'Remove':
+          this.cert.testToolsUsed = this.cert.testToolsUsed
+            .filter(crtt => !(crtt.testToolId === action.item.item.id
+                              && crtt.testToolVersion === action.item.additionalInputValue));
+          break;
+        case 'Add':
+          this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
+          break;
+        case 'Edit':
+          this.cert.testToolsUsed = action.item.map(i => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
+          break;
+          // no default
       }
     }
 
@@ -258,11 +259,18 @@ export const CertificationCriteriaEditComponent = {
 
     _getSelectedTestStandardKeys () {
       if (!this.cert.testStandards) {
+        if (this.isOn('optional-standards')) {
+          this.resources.testStandards.data = [];
+        }
         return [];
       }
-      return this.cert.testStandards
-        .filter(ts => ts.testStandardId)
-        .map(ts => ({key: ts.testStandardId}));
+      const keys = this.cert.testStandards
+            .filter(ts => ts.testStandardId)
+            .map(ts => ({key: ts.testStandardId}));
+      if (this.isOn('optional-standards')) {
+        this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => keys.find((k) => k.key === ts.id));
+      }
+      return keys;
     }
 
     _getNewTestStandards () {
