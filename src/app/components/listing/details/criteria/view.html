@@ -48,7 +48,7 @@
               </ul>
             </td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && ($ctrl.cert.optionalStandards !== null || $ctrl.cert.testStandards !== null)" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.optionalStandards !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Standard{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               <span>Optional Standard</span>
               <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet a certification criterion where additional, optional standards are permitted." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The standard(s) used to meet a certification criterion where additional, optional standards are permitted.</span><i class="fa fa-info-circle fa-lg"></i></button>
