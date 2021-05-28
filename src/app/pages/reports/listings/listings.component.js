@@ -697,6 +697,38 @@ const ReportsListingsComponent = {
           }
         });
       }
+      if (prev.optionalStandards && curr.optionalStandards) {
+        prev.optionalStandards.forEach((pre) => {
+          if (pre.optionalStandard) {
+            curr.optionalStandards.forEach((cur) => {
+              if (!cur.found && !pre.found && pre.optionalStandard.name === cur.optionalStandard.name) {
+                pre.found = true;
+                cur.found = true;
+              }
+            });
+          }
+        });
+        prev.optionalStandards.forEach((pre) => {
+          if (pre.optionalStandard) {
+            curr.optionalStandards.forEach((cur) => {
+              if (!cur.found && !pre.found && pre.optionalStandard.name === cur.optionalStandard.name) {
+                pre.found = true;
+                cur.found = true;
+              }
+            });
+            if (!pre.found) {
+              ret.push(`<li>Optional Standard "${pre.optionalStandard.name}" was removed</li>`);
+            }
+          }
+        });
+        curr.optionalStandards.forEach((cur) => {
+          if (cur.optionalStandard) {
+            if (!cur.found) {
+              ret.push(`<li>Optional Standard "${cur.optionalStandard.name}" was added</li>`);
+            }
+          }
+        });
+      }
       return ret;
     }
 
