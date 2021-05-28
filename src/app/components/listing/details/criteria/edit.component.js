@@ -46,7 +46,6 @@ export const CertificationCriteriaEditComponent = {
       this.selectedTestFunctionalityKeys = this._getSelectedTestFunctionalityKeys();
       this.selectedTestProcedureKeys = this._getSelectedTestProcedureKeys();
       this.selectedOptionalStandardKeys = this._getSelectedOptionalStandardKeys();
-      this.newOptionalStandards = this._getNewOptionalStandards();
       this.selectedTestStandardKeys = this._getSelectedTestStandardKeys();
       this.newTestStandards = this._getNewTestStandards();
       this.selectedTestToolKeys = this._getSelectedTestToolKeys();
@@ -142,18 +141,18 @@ export const CertificationCriteriaEditComponent = {
 
     optionalStandardOnChange (action) {
       switch (action.action) {
-      case 'Remove':
-        this.cert.optionalStandards = this.cert.optionalStandards.filter(crts => {
-          if (action.item.item.id === 'newItem') {
-            return crts.optionalStandard.name !== action.item.item.name;
-          }
-          return crts.optionalStandardId !== action.item.item.id;
-        });
-        break;
-      case 'Add':
-        this.cert.optionalStandards.push(new this.CertificationResultOptionalStandard(action.item.item));
-        break;
-      default:
+        case 'Remove':
+          this.cert.optionalStandards = this.cert.optionalStandards.filter(cros => {
+            if (action.item.item.id === 'newItem') {
+              return cros.optionalStandard.name !== action.item.item.name;
+            }
+            return cros.optionalStandard.id !== action.item.item.id;
+          });
+          break;
+        case 'Add':
+          this.cert.optionalStandards.push({optionalStandard: new this.CertificationResultOptionalStandard(action.item.item)});
+          break;
+        default:
       }
     }
 
@@ -253,8 +252,8 @@ export const CertificationCriteriaEditComponent = {
         return [];
       }
       return this.cert.optionalStandards
-        .filter(os => os.optionalStandardId)
-        .map(os => ({key: os.optionalStandardId}));
+        .filter(os => os.optionalStandard.id)
+        .map(os => ({key: os.optionalStandard.id}));
     }
 
     _getSelectedTestStandardKeys () {
@@ -264,15 +263,6 @@ export const CertificationCriteriaEditComponent = {
       return this.cert.testStandards
         .filter(ts => ts.testStandardId)
         .map(ts => ({key: ts.testStandardId}));
-    }
-
-    _getNewOptionalStandards () {
-      if (!this.cert.optionalStandards) {
-        return [];
-      }
-      return this.cert.optionalStandards
-        .filter(os => !os.optionalStandardId)
-        .map(os => os.optionalStandardName);
     }
 
     _getNewTestStandards () {
