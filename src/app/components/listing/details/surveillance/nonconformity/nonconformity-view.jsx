@@ -28,6 +28,7 @@ import theme from '../../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
   nonconformityAccordion: {
+    backgroundColor: '#f9f9f9',
     borderRadius: '8px',
   },
   nonconformityAccordionSummaryStatus: {
