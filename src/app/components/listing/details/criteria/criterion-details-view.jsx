@@ -109,7 +109,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.testStandards
+          { criterion.success && criterion.allowedOptionalStandards
             && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
@@ -121,7 +121,17 @@ function ChplCriterionDetailsView(props) {
                   </ChplTooltip>
                 </TableCell>
                 <TableCell>
-                  { criterion.testStandards.length > 0
+                  { criterion.optionalStandards?.length > 0
+                    && (
+                      <ul className={classes.unindentedData}>
+                        { criterion.optionalStandards.map((os, index) => (
+                          <li key={os.id || os.key || index}>
+                            <ChplEllipsis text={os.optionalStandard.optionalStandard} maxLength={100} wordBoundaries />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  { criterion.testStandards?.length > 0
                     && (
                       <ul className={classes.unindentedData}>
                         { criterion.testStandards.map((ts, index) => (
@@ -133,7 +143,7 @@ function ChplCriterionDetailsView(props) {
                         ))}
                       </ul>
                     )}
-                  { criterion.testStandards.length === 0 && 'None' }
+                  { (!criterion.optionalStandards || criterion.optionalStandards.length === 0) && (!criterion.testStandards || criterion.testStandards.length === 0) && 'None' }
                 </TableCell>
               </TableRow>
             )}

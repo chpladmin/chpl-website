@@ -9,6 +9,7 @@ import developer from './developer';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
+import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import { svap, selectedSvap } from './svap';
 import { testData, selectedTestData } from './test-data';
 import { testFunctionality, selectedTestFunctionality } from './test-functionality';
@@ -26,8 +27,10 @@ export {
   criterion,
   developer,
   qmsStandard,
+  optionalStandard,
   reliedUponSoftware,
   resources,
+  selectedOptionalStandard,
   selectedTestFunctionality,
   selectedTestProcedure,
   selectedTestData,

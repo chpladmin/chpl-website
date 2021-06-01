@@ -23,7 +23,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplEllipsis, ChplTextField } from '../../../../util';
-import { testStandard, selectedTestStandard } from '../../../../../shared/prop-types';
+import { optionalStandard, selectedOptionalStandard } from '../../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -45,18 +45,18 @@ const useStyles = makeStyles(() => ({
 }));
 
 const validationSchema = yup.object({
-  ts: yup.object()
-    .required('Test Standard is required'),
+  os: yup.object()
+    .required('Optional Standard is required'),
 });
 
-function ChplTestStandardsEdit(props) {
+function ChplOptionalStandardsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [testStandards, setTestStandards] = useState(props.testStandards.sort((a, b) => (a.testStandardName < b.testStandardName ? -1 : 1)));
+  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.optionalStandard.optionalStandard < b.optionalStandard.optionalStandard ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
-      .filter((option) => !(props.testStandards.find((used) => used.testStandardId === option.id)))
-      .sort((a, b) => (a.name < b.name ? -1 : 1)),
+      .filter((option) => !(props.optionalStandards.find((used) => used.optionalStandard.id === option.id)))
+      .sort((a, b) => (a.optionalStandard < b.optionalStandard ? -1 : 1)),
   );
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -64,23 +64,24 @@ function ChplTestStandardsEdit(props) {
   let formik;
 
   const update = (updated) => {
-    props.onChange({ key: 'testStandards', data: updated });
+    props.onChange({ key: 'optionalStandards', data: updated });
   };
 
   const addNew = () => {
     const updated = [
-      ...testStandards,
+      ...optionalStandards,
       {
-        testStandardDescription: formik.values.ts.description,
-        testStandardId: formik.values.ts.id,
-        testStandardName: formik.values.ts.name,
+        optionalStandard: {
+          id: formik.values.os.id,
+          optionalStandard: formik.values.os.optionalStandard,
+        },
         key: Date.now(),
       },
     ];
-    const removed = formik.values.ts.id;
+    const removed = formik.values.os.id;
     setAdding(false);
     formik.resetForm();
-    setTestStandards(updated);
+    setOptionalStandards(updated);
     setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
@@ -91,22 +92,21 @@ function ChplTestStandardsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testStandards.filter((s) => s.testStandardId !== item.testStandardId);
-    setTestStandards(updated);
+    const updated = optionalStandards.filter((s) => s.optionalStandard.id !== item.optionalStandard.id);
+    setOptionalStandards(updated);
     setOptions([
       ...options,
       {
-        description: item.testStandardDescription,
-        id: item.testStandardId,
-        name: item.testStandardName,
+        optionalStandard: item.optionalStandard.optionalStandard,
+        id: item.optionalStandard.id,
       },
-    ].sort((a, b) => (a.name < b.name ? -1 : 1)));
+    ].sort((a, b) => (a.optionalStandard.optionalStandard < b.optionalStandard.optionalStandard ? -1 : 1)));
     update(updated);
   };
 
   formik = useFormik({
     initialValues: {
-      ts: '',
+      os: '',
     },
     onSubmit: () => {
       addNew();
@@ -118,7 +118,7 @@ function ChplTestStandardsEdit(props) {
 
   return (
     <Container className={classes.container}>
-      { testStandards.length > 0
+      { optionalStandards.length > 0
         && (
           <TableContainer component={Paper}>
             <Table>
@@ -129,10 +129,10 @@ function ChplTestStandardsEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { testStandards.map((item, index) => (
+                { optionalStandards.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.testStandardName} maxLength={100} wordBoundaries /></Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.optionalStandard.optionalStandard} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
@@ -161,7 +161,7 @@ function ChplTestStandardsEdit(props) {
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
-                id="test-standards-add-item"
+                id="optional-standards-add-item"
               >
                 Add item
                 {' '}
@@ -174,18 +174,18 @@ function ChplTestStandardsEdit(props) {
             <>
               <ChplTextField
                 select
-                id="ts"
-                name="ts"
-                label="Test Standard"
+                id="os"
+                name="os"
+                label="Optional Standard"
                 required
-                value={formik.values.ts}
+                value={formik.values.os}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.ts && !!formik.errors.ts}
-                helperText={formik.touched.ts && formik.errors.ts}
+                error={formik.touched.os && !!formik.errors.os}
+                helperText={formik.touched.os && formik.errors.os}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.optionalStandard}</MenuItem>
                 ))}
               </ChplTextField>
               <ButtonGroup
@@ -195,14 +195,14 @@ function ChplTestStandardsEdit(props) {
                 <Button
                   onClick={formik.handleSubmit}
                   aria-label="Confirm adding item"
-                  id="test-standards-check-item"
+                  id="optional-standards-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
                   aria-label="Cancel adding item"
-                  id="test-standards-close-item"
+                  id="optional-standards-close-item"
                 >
                   <CloseIcon />
                 </Button>
@@ -214,10 +214,10 @@ function ChplTestStandardsEdit(props) {
   );
 }
 
-export default ChplTestStandardsEdit;
+export default ChplOptionalStandardsEdit;
 
-ChplTestStandardsEdit.propTypes = {
-  testStandards: arrayOf(selectedTestStandard).isRequired,
-  options: arrayOf(testStandard).isRequired,
+ChplOptionalStandardsEdit.propTypes = {
+  optionalStandards: arrayOf(selectedOptionalStandard).isRequired,
+  options: arrayOf(optionalStandard).isRequired,
   onChange: func.isRequired,
 };

@@ -20,6 +20,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
+import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
 import ChplTestFunctionalityEdit from './test-functionality';
 import ChplTestDataEdit from './test-data';
@@ -200,7 +201,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.testStandards
+            { criterion.allowedOptionalStandards
               && (
                 <>
                   <div>
@@ -212,6 +213,27 @@ function ChplCriterionDetailsEdit(props) {
                       className={classes.subtitleSpacing}
                     >
                       Optional Standard
+                    </Typography>
+                    <ChplOptionalStandardsEdit
+                      optionalStandards={criterion.optionalStandards}
+                      options={criterion.allowedOptionalStandards}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { criterion.testStandards
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Test Standard
                     </Typography>
                     <ChplTestStandardsEdit
                       testStandards={criterion.testStandards}
