@@ -144,6 +144,16 @@ const ListingDetailsEditComponent = {
       return removeHandler;
     }
 
+    saveCert(cert) {
+      for (let i = 0; i < this.listing.certificationResults.length; i += 1) {
+        if (this.listing.certificationResults[i].number === cert.number
+                    && this.listing.certificationResults[i].title === cert.title) {
+          this.listing.certificationResults[i] = cert;
+        }
+      }
+      this.updateCs();
+    }
+
     handleCriteriaSave(criteria) {
       this.listing.certificationResults = criteria;
       this.hasEdited();
