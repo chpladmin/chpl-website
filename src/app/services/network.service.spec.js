@@ -992,7 +992,7 @@
       });
 
       it('should getOptionalStandards', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/optional_standards$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/data\/optional-standards$/).respond(200, { data: 'response' });
         networkService.getOptionalStandards().then((response) => {
           expect(response.data).toEqual('response');
         });

@@ -409,7 +409,7 @@ export default class NetworkService {
   }
 
   getOptionalStandards() {
-    return this.apiGET('/data/optional_standards');
+    return this.apiGET('/data/optional-standards');
   }
 
   getParticipantAgeStatistics() {
