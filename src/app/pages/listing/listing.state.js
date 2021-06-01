@@ -43,7 +43,6 @@ let states = [{
         networkService.getMeasures().then(response => resources.measures = response),
         networkService.getMeasureTypes().then(response => resources.measureTypes = response),
         networkService.getQmsStandards().then(response => resources.qmsStandards = response),
-        networkService.getOptionalStandards().then(response => resources.optionalStandards = response),
         networkService.getTargetedUsers().then(response => resources.targetedUsers = response),
         networkService.getTestData().then(response => resources.testData = response),
         networkService.getTestFunctionality().then(response => resources.testFunctionalities = response),

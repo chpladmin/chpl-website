@@ -701,7 +701,7 @@ const ReportsListingsComponent = {
         prev.optionalStandards.forEach((pre) => {
           if (pre.optionalStandard) {
             curr.optionalStandards.forEach((cur) => {
-              if (!cur.found && !pre.found && pre.optionalStandard.name === cur.optionalStandard.name) {
+              if (!cur.found && !pre.found && pre.optionalStandard.optionalStandard === cur.optionalStandard.optionalStandard) {
                 pre.found = true;
                 cur.found = true;
               }
@@ -711,20 +711,20 @@ const ReportsListingsComponent = {
         prev.optionalStandards.forEach((pre) => {
           if (pre.optionalStandard) {
             curr.optionalStandards.forEach((cur) => {
-              if (!cur.found && !pre.found && pre.optionalStandard.name === cur.optionalStandard.name) {
+              if (!cur.found && !pre.found && pre.optionalStandard.optionalStandard === cur.optionalStandard.optionalStandard) {
                 pre.found = true;
                 cur.found = true;
               }
             });
             if (!pre.found) {
-              ret.push(`<li>Optional Standard "${pre.optionalStandard.name}" was removed</li>`);
+              ret.push(`<li>Optional Standard "${pre.optionalStandard.optionalStandard}" was removed</li>`);
             }
           }
         });
         curr.optionalStandards.forEach((cur) => {
           if (cur.optionalStandard) {
             if (!cur.found) {
-              ret.push(`<li>Optional Standard "${cur.optionalStandard.name}" was added</li>`);
+              ret.push(`<li>Optional Standard "${cur.optionalStandard.optionalStandard}" was added</li>`);
             }
           }
         });

@@ -6,8 +6,7 @@
       var CertificationResultOptionalStandard = function (optionalStandard) {
         return {
           id: optionalStandard.id,
-          name: optionalStandard.name,
-          description: optionalStandard.description,
+          optionalStandard: optionalStandard.optionalStandard,
         };
       };
 

@@ -143,12 +143,7 @@ export const CertificationCriteriaEditComponent = {
     optionalStandardOnChange (action) {
       switch (action.action) {
         case 'Remove':
-          this.cert.optionalStandards = this.cert.optionalStandards.filter(cros => {
-            if (action.item.item.id === 'newItem') {
-              return cros.optionalStandard.name !== action.item.item.name;
-            }
-            return cros.optionalStandard.id !== action.item.item.id;
-          });
+          this.cert.optionalStandards = this.cert.optionalStandards.filter(cros => cros.optionalStandard.id !== action.item.item.id);
           break;
         case 'Add':
           this.cert.optionalStandards.push({optionalStandard: new this.CertificationResultOptionalStandard(action.item.item)});

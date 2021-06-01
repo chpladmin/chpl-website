@@ -991,14 +991,6 @@
         $httpBackend.flush();
       });
 
-      it('should getOptionalStandards', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/optional-standards$/).respond(200, { data: 'response' });
-        networkService.getOptionalStandards().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getParticipantAgeStatistics', () => {
         $httpBackend.expectGET(/^\/rest\/statistics\/participant_age_count$/).respond(200, { data: 'response' });
         networkService.getParticipantAgeStatistics().then((response) => {
