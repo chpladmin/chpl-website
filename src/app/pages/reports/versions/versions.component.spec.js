@@ -57,7 +57,7 @@ import {getActivity, getMetadata} from './history.mock';
       describe('when loading', () => {
         it('should get activity from the network', () => {
           expect(networkService.getActivityMetadata).toHaveBeenCalledWith('versions', jasmine.any(Object));
-          expect(ctrl.results.length).toBe(4);
+          expect(ctrl.results.length).toBe(6);
         });
 
         it('should set the friendly date on metadata', () => {
@@ -65,6 +65,17 @@ import {getActivity, getMetadata} from './history.mock';
           expect(ctrl.results[1].friendlyActivityDate).toBe('2019-05-14');
           expect(ctrl.results[2].friendlyActivityDate).toBe('2019-05-14');
           expect(ctrl.results[3].friendlyActivityDate).toBe('2019-05-14');
+          expect(ctrl.results[4].friendlyActivityDate).toBe('2019-05-14');
+          expect(ctrl.results[5].friendlyActivityDate).toBe('2019-05-14');
+        });
+
+        it('should set the developer name to Undetermined if it is not present', () => {
+          expect(ctrl.results[0].developerName).toBe('Undetermined');
+          expect(ctrl.results[1].developerName).toBe('Undetermined');
+          expect(ctrl.results[2].developerName).toBe('Undetermined');
+          expect(ctrl.results[3].developerName).toBe('Undetermined');
+          expect(ctrl.results[4].developerName).toBe('Undetermined');
+          expect(ctrl.results[5].developerName).toBe('Epic Systems Corporation');
         });
       });
 

@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 11.14.0
+_2 June 2021_
+
+### Features
+* Update README documentation
+* Add developer column to version activity report
+
+### Bug Fixes
+* Require name when saving filters
+* Show G1/G2 measure changes in Listing history component
+* Filter Listings by Compliance correctly when "Matching All" is selected
+
+### User Interface Updates
+* Display Listing History in updated style
+
+---
+
 ## Version 11.13.0
 _17 May 2021_
 

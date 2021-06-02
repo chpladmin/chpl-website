@@ -1,4 +1,4 @@
-import { compliance } from '../smart-table/filters/compliance';
+import compliance from '../smart-table/filters/compliance';
 
 export const ProductsComponent = {
   templateUrl: 'chpl.components/products/products.html',
