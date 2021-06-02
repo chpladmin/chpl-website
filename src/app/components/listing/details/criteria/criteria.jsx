@@ -24,6 +24,7 @@ import {
   resources as resourceDefinition,
   qmsStandard,
 } from '../../../../shared/prop-types';
+import FlagContext from '../../../../shared/contexts';
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
@@ -39,11 +40,14 @@ const useStyles = makeStyles(() => ({
 function ChplCriteria(props) {
   /* eslint-disable react/destructuring-assignment */
   const sortCerts = getAngularService('utilService').sortCertActual;
-  const hasAnyRole = getAngularService('authService').hasAnyRole;
+  const { hasAnyRole } = getAngularService('authService');
   const [criteria, setCriteria] = useState(props.certificationResults);
   const [hasIcs] = useState(props.hasIcs);
   const [isConfirming] = useState(props.isConfirming);
   const classes = useStyles();
+  const flags = {
+    optionalStandardsIsOn: props.optionalStandardsIsOn,
+  };
   /* eslint-enable react/destructuring-assignment */
 
   const handleSave = (criterion) => {
@@ -64,57 +68,59 @@ function ChplCriteria(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
-        .sort((a, b) => sortCerts(a, b))
-        .map((cc) => (
-          <ChplCriterion
-            key={cc.criterion.id}
-            certificationResult={cc}
-            canEdit={props.canEdit}
-            hasIcs={hasIcs}
-            isConfirming={isConfirming}
-            onSave={handleSave}
-            resources={prepareResources(props.resources, cc.criterion)}
-            accessibilityStandards={props.accessibilityStandards}
-            qmsStandards={props.qmsStandards}
-          />
-        ))}
-      { (criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll)).length > 0)
-        && (
-          <Accordion
-            className={classes.NestedAccordionLevelOne}
-          >
-            <AccordionSummary
-              className={classes.NestedAccordionLevelOneSummary}
-              expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
-              id="removed-header"
+    <FlagContext.Provider value={flags}>
+      <ThemeProvider theme={theme}>
+        { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
+          .sort((a, b) => sortCerts(a, b))
+          .map((cc) => (
+            <ChplCriterion
+              key={cc.criterion.id}
+              certificationResult={cc}
+              canEdit={props.canEdit}
+              hasIcs={hasIcs}
+              isConfirming={isConfirming}
+              onSave={handleSave}
+              resources={prepareResources(props.resources, cc.criterion)}
+              accessibilityStandards={props.accessibilityStandards}
+              qmsStandards={props.qmsStandards}
+            />
+          ))}
+        { (criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll)).length > 0)
+          && (
+            <Accordion
+              className={classes.NestedAccordionLevelOne}
             >
-              Removed Certification Criteria
-              <ChplTooltip title="These certification criteria have been removed from the Program.">
-                <InfoOutlinedIcon fontSize="large" />
-              </ChplTooltip>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Container>
-                { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
-                  .sort((a, b) => sortCerts(a, b))
-                  .map((cc) => (
-                    <ChplCriterion
-                      key={cc.criterion.id}
-                      certificationResult={cc}
-                      canEdit={props.canEdit && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
-                      onSave={handleSave}
-                      resources={prepareResources(props.resources, cc.criterion)}
-                      accessibilityStandards={props.accessibilityStandards}
-                      qmsStandards={props.qmsStandards}
-                    />
-                  ))}
-              </Container>
-            </AccordionDetails>
-          </Accordion>
-        )}
-    </ThemeProvider>
+              <AccordionSummary
+                className={classes.NestedAccordionLevelOneSummary}
+                expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
+                id="removed-header"
+              >
+                Removed Certification Criteria
+                <ChplTooltip title="These certification criteria have been removed from the Program.">
+                  <InfoOutlinedIcon fontSize="large" />
+                </ChplTooltip>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Container>
+                  { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
+                    .sort((a, b) => sortCerts(a, b))
+                    .map((cc) => (
+                      <ChplCriterion
+                        key={cc.criterion.id}
+                        certificationResult={cc}
+                        canEdit={props.canEdit && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
+                        onSave={handleSave}
+                        resources={prepareResources(props.resources, cc.criterion)}
+                        accessibilityStandards={props.accessibilityStandards}
+                        qmsStandards={props.qmsStandards}
+                      />
+                    ))}
+                </Container>
+              </AccordionDetails>
+            </Accordion>
+          )}
+      </ThemeProvider>
+    </FlagContext.Provider>
   );
 }
 
@@ -127,6 +133,7 @@ ChplCriteria.propTypes = {
   isConfirming: bool,
   hasIcs: bool,
   onSave: func,
+  optionalStandardsIsOn: bool,
   qmsStandards: arrayOf(qmsStandard),
   resources: resourceDefinition,
   viewAll: bool,
@@ -138,6 +145,7 @@ ChplCriteria.defaultProps = {
   isConfirming: false,
   hasIcs: false,
   onSave: () => {},
+  optionalStandardsIsOn: false,
   qmsStandards: [],
   resources: {},
   viewAll: false,

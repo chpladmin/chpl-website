@@ -9,7 +9,7 @@ const ListingDetailsEditComponent = {
     showFormErrors: '<',
   },
   controller: class ListingDetailsEditComponent {
-    constructor($analytics, $filter, $log, $uibModal, networkService, utilService) {
+    constructor($analytics, $filter, $log, $uibModal, featureFlags, networkService, utilService) {
       this.$analytics = $analytics;
       this.$filter = $filter;
       this.$log = $log;
@@ -19,6 +19,7 @@ const ListingDetailsEditComponent = {
       this.addNewValue = utilService.addNewValue;
       this.sortCerts = utilService.sortCert;
       this.handlers = [];
+      this.isOn = featureFlags.isOn;
       this.drStatus = 'pending';
       this.viewAllCerts = true;
       this.panelShown = 'cert';

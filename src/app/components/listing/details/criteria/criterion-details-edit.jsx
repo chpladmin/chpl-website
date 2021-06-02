@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { bool, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
@@ -32,6 +32,7 @@ import {
   certificationResult,
   resources as resourceDefinition,
 } from '../../../../shared/prop-types';
+import FlagContext from '../../../../shared/contexts';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
@@ -57,6 +58,7 @@ function ChplCriterionDetailsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [resources] = useState(props.resources);
   const classes = useStyles();
+  const { optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -201,7 +203,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.allowedOptionalStandards
+            { optionalStandardsIsOn && criterion.optionalStandards
               && (
                 <>
                   <div>
