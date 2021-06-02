@@ -28,6 +28,7 @@ const useStyles = makeStyles(() => ({
     marginLeft: '-25px',
   },
   nonconformityContainer: {
+    paddingTop: '16px',
     paddingLeft: '8px',
     paddingRight: '8px',
   },
@@ -158,17 +159,19 @@ function ChplSurveillanceView({ surveillance }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <div className={classes.nonconformityContainer}>
-        <Typography variant="subtitle1">
-          Non-Conformities
-        </Typography>
-        { currentSurveillance.requirements.length > 0
-          && currentSurveillance.requirements.map((requirement) => (
+      { getSurveillanceResults(currentSurveillance).length > 0
+        && (
+        <div className={classes.nonconformityContainer}>
+          <Typography variant="subtitle1">
+            Non-Conformities
+          </Typography>
+          { currentSurveillance.requirements.map((requirement) => (
             requirement.nonconformities.map((nonconformity) => (
               <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} />
             ))
           ))}
-      </div>
+        </div>
+        )}
     </ThemeProvider>
   );
 }
