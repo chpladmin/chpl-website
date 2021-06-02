@@ -9,44 +9,47 @@ const userElements = {
 };
 
 class UsersPage {
-  constructor () { }
+  constructor() { }
 
-  get usersButton () {
+  get usersButton() {
     return $(userElements.users);
   }
 
-  get userManagementButton () {
+  get userManagementButton() {
     return $(userElements.usermanagement);
   }
 
-  get userTitle () {
+  get userTitle() {
     return $(userElements.usertitle);
   }
 
-  get userPhoneNumber () {
+  get userPhoneNumber() {
     return $(userElements.userPhoneNumber);
   }
 
-  get lockedCheckbox () {
+  get lockedCheckbox() {
     return $(userElements.lockedCheckbox);
   }
 
-  get enabledCheckbox () {
+  get enabledCheckbox() {
     return $(userElements.enabledCheckbox);
   }
 
-  get pwChangeCheckbox () {
+  get pwChangeCheckbox() {
     return $(userElements.pwChangeCheckbox);
   }
 
-  editUser (name) {
-    $('//span[text() =" Edit ' + name + '"]/parent::button').click();
+  editUser(name) {
+    $(`//span[text() =" Edit ${name}"]/parent::button`).click();
   }
 
-  userInformation (name) {
-    return $('//h2[text()="' + name + '"]/parent::div/parent::div/following-sibling::div');
+  userInformation(name) {
+    return $(`//h2[text()="${name}"]/parent::div/parent::div/following-sibling::div`);
   }
 
+  impersonateUser(userId) {
+    return $(`#user-component-impersonate-${userId}`);
+  }
 }
 
 export default UsersPage;

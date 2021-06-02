@@ -42,7 +42,7 @@ describe('when logged in as an ADMIN', () => {
 
       it('should have a button to download results', () => {
         let button = component.downloadResultsButton;
-        expect(button.getText()).toBe('Download 50 displayed results');
+        expect(button.getText()).toBe('Download all complaints');
         expect(button).toBeClickable();
       });
     });

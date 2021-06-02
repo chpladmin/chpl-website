@@ -1,4 +1,4 @@
-export const SurveillanceComplaintsComponent = {
+const SurveillanceComplaintsComponent = {
   templateUrl: 'chpl.components/surveillance/complaints/complaints.html',
   bindings: {
     complaintListType: '@?',
@@ -8,15 +8,16 @@ export const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor ($log, authService, featureFlags, networkService, utilService) {
+    constructor($log, authService, featureFlags, networkService, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
       this.isOn = featureFlags.isOn;
       this.clearFilterHs = [];
-      this.filename = 'Complaints_' + new Date().getTime() + '.csv';
+      this.filename = `Complaints_${new Date().getTime()}.csv`;
       this.restoreStateHs = [];
       this.complaintListType = 'ALL';
       this.pageSize = 50;
@@ -28,7 +29,7 @@ export const SurveillanceComplaintsComponent = {
       this.hasChanges = {};
     }
 
-    $onInit () {
+    $onInit() {
       this.refreshComplainantTypes();
       this.refreshCertificationBodies();
       this.refreshListings();
@@ -36,7 +37,7 @@ export const SurveillanceComplaintsComponent = {
       this.refreshCriteria();
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.complaintListType && changes.complaintListType.currentValue) {
         this.complaintListType = changes.complaintListType.currentValue;
       }
@@ -46,8 +47,8 @@ export const SurveillanceComplaintsComponent = {
       this.refreshComplaints();
     }
 
-    deleteComplaint (complaint) {
-      let that = this;
+    deleteComplaint(complaint) {
+      const that = this;
       this.clearErrorMessages();
       this.networkService.deleteComplaint(complaint.id).then(() => {
         that.complaint = {};
@@ -56,182 +57,202 @@ export const SurveillanceComplaintsComponent = {
       });
     }
 
-    selectComplaint (complaint) {
+    selectComplaint(complaint) {
       this.refreshSurveillances(complaint);
       this.clearErrorMessages();
       this.isEditing = true;
       this.complaint = complaint;
     }
 
-    selectListing (complaint) {
+    selectListing(complaint) {
       this.refreshSurveillances(complaint);
     }
 
-    saveComplaint (complaint) {
-      complaint.receivedDate = complaint.formattedReceivedDate.getTime();
+    saveComplaint(complaint) {
+      const toSave = {
+        ...complaint,
+      };
+      toSave.receivedDate = complaint.formattedReceivedDate.getTime();
       if (complaint.formattedClosedDate) {
-        complaint.closedDate = complaint.formattedClosedDate.getTime();
+        toSave.closedDate = complaint.formattedClosedDate.getTime();
       } else {
-        complaint.closedDate = null;
+        toSave.closedDate = null;
       }
       if (complaint.id) {
-        this.updateComplaint(complaint);
+        this.updateComplaint(toSave);
       } else {
-        this.createComplaint(complaint);
+        this.createComplaint(toSave);
       }
     }
 
-    updateComplaint (complaint) {
-      let that = this;
+    updateComplaint(complaint) {
+      const that = this;
       this.clearErrorMessages();
       this.networkService.updateComplaint(complaint)
         .then(() => {
           that.refreshComplaints();
           that.isEditing = false;
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.status === 400) {
             that.errorMessages = error.data.errorMessages;
           }
         });
     }
 
-    createComplaint (complaint) {
-      let that = this;
+    createComplaint(complaint) {
+      const that = this;
       this.clearErrorMessages();
       this.networkService.createComplaint(complaint)
         .then(() => {
           that.refreshComplaints();
           that.isEditing = false;
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.status === 400) {
             that.errorMessages = error.data.errorMessages;
           }
         });
     }
 
-    cancelEdit () {
+    cancelEdit() {
       this.isEditing = false;
     }
 
-    displayAddComplaint () {
+    displayAddComplaint() {
       this.clearErrorMessages();
       this.complaint = {};
       this.isEditing = true;
     }
 
-    refreshComplaints () {
-      let that = this;
-      this.getComplaintsPromise().then(response => {
+    refreshComplaints() {
+      const that = this;
+      this.getComplaintsPromise().then((response) => {
         that.complaints = response.results
-          .map(complaint => {
+          .map((complaint) => {
+            const updated = {
+              ...complaint,
+            };
             if (complaint.receivedDate) {
-              complaint.formattedReceivedDate = new Date(complaint.receivedDate);
-              complaint.csvReceivedDate = new Date(complaint.receivedDate).toISOString().substring(0, 10);
+              updated.formattedReceivedDate = new Date(complaint.receivedDate);
+              updated.csvReceivedDate = new Date(complaint.receivedDate).toISOString().substring(0, 10);
             } else {
-              complaint.formattedReceivedDate = null;
-              complaint.csvReceivedDate = null;
+              updated.formattedReceivedDate = null;
+              updated.csvReceivedDate = null;
             }
             if (complaint.closedDate) {
-              complaint.formattedClosedDate = new Date(complaint.closedDate);
-              complaint.csvClosedDate = new Date(complaint.closedDate).toISOString().substring(0, 10);
+              updated.formattedClosedDate = new Date(complaint.closedDate);
+              updated.csvClosedDate = new Date(complaint.closedDate).toISOString().substring(0, 10);
             } else {
-              complaint.formattedClosedDate = null;
-              complaint.csvClosedDate = null;
+              updated.formattedClosedDate = null;
+              updated.csvClosedDate = null;
             }
-            complaint.acbName = complaint.certificationBody.name;
-            complaint.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
-            complaint.complainantTypeName = complaint.complainantType.name;
-            complaint.filterText = complaint.oncComplaintId + '|' + complaint.acbComplaintId
-                            + '|' + complaint.listings.map(l => l.chplProductNumber).join('|')
-                            + '|' + complaint.criteria.map(c => c.certificationCriterion.number).join('|');
-            that.addFilterItems(complaint);
-            if (complaint.listings) {
-              complaint.csvListings = complaint.listings.map(l => l.chplProductNumber).join(',');
-            }
-            if (complaint.surveillances) {
-              complaint.csvSurveillances = complaint.surveillances.map(s => s.surveillance.chplProductNumber + ':' + s.surveillance.friendlyId).join(',');
-            }
+            updated.acbName = complaint.certificationBody.name;
+            updated.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
+            updated.complainantTypeName = complaint.complainantType.name;
+            updated.filterText = `${complaint.oncComplaintId}|${complaint.acbComplaintId
+            }|${complaint.listings.map((l) => l.chplProductNumber).join('|')
+            }|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`;
+            that.addFilterItems(updated);
             if (complaint.criteria) {
-              complaint.csvCriteria = complaint.criteria.map(c => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
+              updated.csvCriteria = complaint.criteria.map((c) => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
             }
-            return complaint;
+            return updated;
           });
+        that.expandCsvRows();
         that.finalizeFilterItems();
       });
     }
 
-    addFilterItems (complaint) {
-      if (!this.filterItems.acbItems.find(item => item.value === complaint.acbName)) {
-        this.filterItems.acbItems.push({value: complaint.acbName, selected: true});
+    addFilterItems(complaint) {
+      if (!this.filterItems.acbItems.find((item) => item.value === complaint.acbName)) {
+        this.filterItems.acbItems.push({ value: complaint.acbName, selected: true });
       }
-      if (!this.filterItems.complaintStatusTypeItems.find(item => item.value === complaint.complaintStatusTypeName)) {
-        this.filterItems.complaintStatusTypeItems.push({value: complaint.complaintStatusTypeName, selected: true});
+      if (!this.filterItems.complaintStatusTypeItems.find((item) => item.value === complaint.complaintStatusTypeName)) {
+        this.filterItems.complaintStatusTypeItems.push({ value: complaint.complaintStatusTypeName, selected: true });
       }
-      if (!this.filterItems.complainantTypeItems.find(item => item.value === complaint.complainantTypeName)) {
-        this.filterItems.complainantTypeItems.push({value: complaint.complainantTypeName, selected: true});
+      if (!this.filterItems.complainantTypeItems.find((item) => item.value === complaint.complainantTypeName)) {
+        this.filterItems.complainantTypeItems.push({ value: complaint.complainantTypeName, selected: true });
       }
     }
 
-    finalizeFilterItems () {
-      this.filterItems.acbItems = this.filterItems.acbItems.sort((a, b) => a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
-      this.filterItems.complaintStatusTypeItems = this.filterItems.complaintStatusTypeItems.sort((a, b) => a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
-      this.filterItems.complainantTypeItems = this.filterItems.complainantTypeItems.sort((a, b) => a.value < b.value ? -1 : a.value > b.value ? 1 : 0);
+    expandCsvRows() {
+      this.csvComplaints = this.complaints.flatMap((complaint) => {
+        if (complaint.listings.length === 0) {
+          return [complaint];
+        }
+        const complaints = complaint.listings.map((l) => ({
+          ...complaint,
+          csvListing: l.chplProductNumber,
+          developerName: l.developerName,
+          productName: l.productName,
+          versionName: l.versionName,
+          csvSurveillances: complaint.surveillances
+            .filter((s) => s.surveillance.chplProductNumber === l.chplProductNumber)
+            .map((s) => s.surveillance.friendlyId)
+            .join(','),
+        }));
+        return complaints;
+      });
     }
 
-    getComplaintsPromise () {
+    finalizeFilterItems() {
+      this.filterItems.acbItems = this.filterItems.acbItems.sort((a, b) => (a.value < b.value ? -1 : 1));
+      this.filterItems.complaintStatusTypeItems = this.filterItems.complaintStatusTypeItems.sort((a, b) => (a.value < b.value ? -1 : 1));
+      this.filterItems.complainantTypeItems = this.filterItems.complainantTypeItems.sort((a, b) => (a.value < b.value ? -1 : 1));
+    }
+
+    getComplaintsPromise() {
       if (this.complaintListType === 'ALL') {
         return this.networkService.getComplaints();
-      } else if (this.complaintListType === 'RELEVANT') {
-        return this.networkService.getRelevantComplaints(this.quarterlyReport);
       }
+      return this.networkService.getRelevantComplaints(this.quarterlyReport);
     }
 
-    refreshComplainantTypes () {
-      let that = this;
-      this.networkService.getComplainantTypes().then(response => {
+    refreshComplainantTypes() {
+      const that = this;
+      this.networkService.getComplainantTypes().then((response) => {
         that.complainantTypes = response.data;
       });
     }
 
-    refreshCertificationBodies () {
-      let that = this;
-      //get all acbs that the user has edit capability of
-      this.networkService.getAcbs(true).then(response => {
+    refreshCertificationBodies() {
+      const that = this;
+      // get all acbs that the user has edit capability of
+      this.networkService.getAcbs(true).then((response) => {
         that.certificationBodies = response.acbs;
       });
     }
 
-    refreshListings () {
-      let that = this;
-      this.networkService.getCollection('complaintListings').then(response => {
+    refreshListings() {
+      const that = this;
+      this.networkService.getCollection('complaintListings').then((response) => {
         that.listings = response.results;
       });
     }
 
-    refreshEditions () {
-      let that = this;
-      this.networkService.getEditions().then(response => {
+    refreshEditions() {
+      const that = this;
+      this.networkService.getEditions().then((response) => {
         that.editions = response;
       });
     }
 
-    refreshCriteria () {
-      let that = this;
-      this.networkService.getCriteria().then(response => {
+    refreshCriteria() {
+      const that = this;
+      this.networkService.getCriteria().then((response) => {
         that.criteria = response.criteria;
       });
     }
 
-    refreshSurveillances (complaint) {
-      let that = this;
+    refreshSurveillances(complaint) {
+      const that = this;
       this.surveillances = [];
       if (complaint && Array.isArray(complaint.listings)) {
-        complaint.listings.forEach(listing => {
-          this.networkService.getListingBasic(listing.listingId, true).then(response => {
+        complaint.listings.forEach((listing) => {
+          this.networkService.getListingBasic(listing.listingId, true).then((response) => {
             if (Array.isArray(response.surveillance)) {
-              response.surveillance.forEach(surv => {
+              response.surveillance.forEach((surv) => {
                 that.surveillances.push({
                   id: surv.id,
                   friendlyId: surv.friendlyId,
@@ -247,27 +268,27 @@ export const SurveillanceComplaintsComponent = {
       }
     }
 
-    clearErrorMessages () {
+    clearErrorMessages() {
       this.errorMessages = [];
     }
 
-    onApplyFilter (filter) {
-      let f = angular.fromJson(filter);
+    onApplyFilter(filter) {
+      const f = angular.fromJson(filter);
       this.doFilter(f);
     }
 
-    onClearFilter () {
-      let filterData = {};
+    onClearFilter() {
+      const filterData = {};
       filterData.dataFilter = '';
       filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach(handler => handler());
+      this.clearFilterHs.forEach((handler) => handler());
       this.doFilter(filterData);
     }
 
-    doFilter (filter) {
-      let that = this;
+    doFilter(filter) {
+      const that = this;
       this.filterText = filter.dataFilter;
-      let filterItems = [
+      const filterItems = [
         'acbName',
         'complaintStatusTypeName',
         'receivedDate',
@@ -278,33 +299,33 @@ export const SurveillanceComplaintsComponent = {
         'flagForOncReview',
         'oncAtlContacted',
       ];
-      filterItems.forEach(predicate => {
+      filterItems.forEach((predicate) => {
         if (filter.tableState.search.predicateObject[predicate]) {
           this.tableController.search(filter.tableState.search.predicateObject[predicate], predicate);
         } else {
           this.tableController.search({}, predicate);
         }
       });
-      this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+      this.restoreStateHs.forEach((handler) => handler(that.tableController.tableState()));
       this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
     }
 
-    registerClearFilter (handler) {
+    registerClearFilter(handler) {
       this.clearFilterHs.push(handler);
     }
 
-    registerRestoreState (handler) {
+    registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
     }
 
-    getFilterData () {
-      let filterData = {};
+    getFilterData() {
+      const filterData = {};
       filterData.dataFilter = this.filterText;
       filterData.tableState = this.tableController.tableState();
       return filterData;
     }
 
-    tableStateListener (tableController) {
+    tableStateListener(tableController) {
       this.tableController = tableController;
     }
   },
@@ -312,3 +333,5 @@ export const SurveillanceComplaintsComponent = {
 
 angular.module('chpl.components')
   .component('chplSurveillanceComplaints', SurveillanceComplaintsComponent);
+
+export default SurveillanceComplaintsComponent;

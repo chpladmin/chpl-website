@@ -3,9 +3,9 @@ import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
-import { assert } from 'chai';
+import ToastComponent from '../../components/toast/toast.po';
 
-let confirmPage, edit, hooks, loginComponent, upload;
+let confirmPage, edit, hooks, loginComponent, toast, upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
 const listingId1 = '15.04.04.2496.ARIA.16.03.1.200623';
 const inputs = require('../../components/surveillance/edit/requirement-dp');
@@ -17,8 +17,9 @@ beforeEach(async () => {
   confirmPage = new ConfirmPage();
   upload = new UploadSurveillanceComponent();
   hooks = new Hooks();
+  toast = new ToastComponent();
   hooks.open('#/surveillance/upload');
-  loginComponent.logIn('acb');
+  loginComponent.logIn('drummond');
 });
 
 afterEach(() =>{
@@ -32,6 +33,8 @@ afterEach(() =>{
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
   beforeEach(() =>{
     upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
+    browser.waitUntil( () => toast.toastTitle.isDisplayed());
+    toast.clearAllToast();
     hooks.open('#/surveillance/confirm');
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil( () => confirmPage.table.isDisplayed());
@@ -43,7 +46,6 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     let testName = input.testName;
 
     it(`should be able to ${testName} without non-conformity`, () => {
-
       var countBefore = edit.requirementTableRows().length;
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'No Non-Conformity');
@@ -51,7 +53,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
       var countAfter = edit.requirementTableRows().length;
-      assert.equal(countAfter,countBefore + 1);
+      expect(countAfter).toBe(countBefore + 1);
     });
 
     it(`should be able to ${testName} with non-conformity to reactive surveillance activity`, () => {
@@ -71,15 +73,15 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
       edit.addnonConformity(nonConformitydetails , 'Reactive');
-      assert.isFalse(edit.sites.isEnabled());
-      assert.isFalse(edit.totalSites.isEnabled());
+      expect(edit.sites.isEnabled()).toBeFalse;
+      expect(edit.totalSites.isEnabled()).toBeFalse;
       edit.saveButton.scrollAndClick();
-      assert.equal(edit.nonConformityTableRows().length,1);
+      expect(edit.nonConformityTableRows().length).toEqual(1);
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
       var countAfter = edit.requirementTableRows().length;
-      assert.equal(countAfter,countBefore + 1);
+      expect(countAfter).toEqual(countBefore + 1);
     });
 
     it(`should not be able to ${testName} as non conformity without adding non-conformity`, () => {
@@ -88,7 +90,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       do {
         edit.saveButton.click();
       } while (!edit.errorMessages.isDisplayed());
-      assert.include(edit.errorMessages.getText(),error);
+      expect(edit.errorMessages.getText()).toContain(error);
     });
   });
 });
@@ -96,6 +98,8 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
   beforeEach(() =>{
     upload.uploadSurveillance('../../../resources/surveillance/SAQA3.csv');
+    browser.waitUntil( () => toast.toastTitle.isDisplayed());
+    toast.clearAllToast();
     hooks.open('#/surveillance/confirm');
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil( () => confirmPage.table.isDisplayed());
@@ -126,12 +130,12 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
       edit.addnonConformity(nonConformitydetails , 'Randomized');
       edit.saveButton.scrollAndClick();
-      assert.equal(edit.nonConformityTableRows().length,1);
+      expect(edit.nonConformityTableRows().length).toEqual(1);
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
       var countAfter = edit.requirementTableRows().length;
-      assert.equal(countAfter,countBefore + 1);
+      expect(countAfter).toEqual(countBefore + 1);
     });
   });
 });
