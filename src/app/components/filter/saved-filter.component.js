@@ -1,4 +1,4 @@
-export const SavedFilterComponent = {
+const SavedFilterComponent = {
   templateUrl: 'chpl.components/filter/saved-filter.html',
   bindings: {
     filterTypeName: '@',
@@ -7,8 +7,9 @@ export const SavedFilterComponent = {
     getFilterData: '&',
   },
   controller: class SavedFilterComponent {
-    constructor ($filter, $log, $scope, networkService, utilService) {
+    constructor($filter, $log, $scope, networkService, utilService) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.$scope = $scope;
@@ -16,42 +17,47 @@ export const SavedFilterComponent = {
       this.utilService = utilService;
     }
 
-    $onInit () {
-      let that = this;
+    $onInit() {
+      const that = this;
       this.filterName = '';
       this.networkService.getFilterTypes()
-        .then(response => {
-          that.filterTypeId = response.data.find(item => item.name === that.filterTypeName).id;
+        .then((response) => {
+          that.filterTypeId = response.data.find((item) => item.name === that.filterTypeName).id;
           that.refreshFilterList();
         });
 
-      //Handle unimpersonate
-      let unimpersonating = this.$scope.$on('unimpersonating', () => {
+      // Handle unimpersonate
+      const unimpersonating = this.$scope.$on('unimpersonating', () => {
         that.refreshFilterList();
       });
       this.$scope.$on('$destroy', unimpersonating);
     }
 
-    refreshFilterList () {
-      let that = this;
+    refreshFilterList() {
+      const that = this;
       this.networkService.getFilters(this.filterTypeId)
-        .then(response => {
+        .then((response) => {
           that.availableFilters = response.results;
-          that.availableFilters.sort((a, b) => (a.name > b.name) ? 1 : -1);
+          that.availableFilters.sort((a, b) => ((a.name > b.name) ? 1 : -1));
         });
     }
 
-    applyFilter (filter) {
+    applyFilter(filter) {
       this.onApplyFilter(filter);
     }
 
-    clearFilter () {
+    clearFilter() {
       this.onClearFilter();
     }
 
-    saveFilter () {
-      let that = this;
-      let filter = {};
+    saveFilter() {
+      this.errorMessage = undefined;
+      if (!this.filterName) {
+        this.errorMessage = 'Filter name is required';
+        return;
+      }
+      const that = this;
+      const filter = {};
       filter.filterType = {};
       filter.filterType.id = this.filterTypeId;
       filter.filter = JSON.stringify(this.getFilterData());
@@ -64,8 +70,8 @@ export const SavedFilterComponent = {
         });
     }
 
-    deleteFilter (filterId) {
-      let that = this;
+    deleteFilter(filterId) {
+      const that = this;
       this.networkService.deleteFilter(filterId)
         .then(() => that.refreshFilterList());
     }
@@ -74,3 +80,5 @@ export const SavedFilterComponent = {
 
 angular.module('chpl.components')
   .component('chplSavedFilter', SavedFilterComponent);
+
+export default SavedFilterComponent;
