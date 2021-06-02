@@ -23,12 +23,12 @@ module.exports = config => {
         },
         reporters: config.useSpecReporter ? ['html', 'junit', 'spec', 'coverage-istanbul'] : ['html', 'junit', 'super-dots', 'coverage-istanbul'],
         junitReporter: {
-            outputDir: 'test_reports',
+            outputDir: 'test_reports/unit/js',
             suite: 'unit',
         },
         htmlReporter: {
             groupSuites: true,
-            outputFile: 'test_reports/units.html',
+            outputFile: 'test_reports/unit/units.html',
             useCompactStyle: true,
         },
         superDotsReporter: {
@@ -49,7 +49,7 @@ module.exports = config => {
             },
         },
         coverageIstanbulReporter: {
-            dir: 'test_reports/coverage/js',
+            dir: 'test_reports/unit/coverage/js',
             reports: ['html', 'lcov', 'text-summary'],
         },
         webpack: webpack({NODE_ENV: 'development'}),
