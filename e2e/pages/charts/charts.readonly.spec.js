@@ -3,8 +3,7 @@ import Hooks from '../../utilities/hooks';
 
 const config = require('../../config/mainConfig');
 
-let hooks; let
-  page;
+let hooks; let page;
 
 describe('the charts page', () => {
   beforeAll(async () => {
@@ -40,7 +39,7 @@ describe('the charts page', () => {
       expect(page.chart.length).toBe(1);
     });
 
-    it('should only show 2015 edition products', () => {
+    it('should display correct title of the chart about 2015 edition products', () => {
       expect(page.chartTitle.getText()).toBe('Number of 2015 Edition Unique Products certified to specific Certification Criteria');
     });
 
@@ -65,7 +64,7 @@ describe('the charts page', () => {
       expect(page.chart.length).toBe(1);
     });
 
-    it('should have the right options in the "view certification criteria" dropdown', () => {
+    it('should have the right options in the "View the number of Non-conformities" dropdown', () => {
       const expected = new Set(['All', '2015', '2015 Cures Update', 'Program']);
       expect(page.programTypeDropdownOptions.length).toBe(expected.size);
       const options = [...new Set(page.programTypeDropdownOptions.map((item) => item.getText()))];
