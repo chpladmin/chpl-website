@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { when } from 'jest-when';
+
 import * as angularReactHelper from '../../services/angular-react-helper';
 import ChplApiKeyConfirm from './api-key-confirm';
 
@@ -26,7 +27,7 @@ const networkServiceFailureMock = {
 
 angularReactHelper.getAngularService = jest.fn();
 
-describe('the ChplApiKeyConfirm component', () => {
+describe.skip('the ChplApiKeyConfirm component', () => {
   afterEach(() => {
     cleanup();
   });
