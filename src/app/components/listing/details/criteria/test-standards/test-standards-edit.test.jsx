@@ -48,7 +48,7 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should sort the available test standards by name', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Test Standard/i }));
 
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
@@ -60,7 +60,7 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should remove selected items from the list available to add', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Test Standard/i }));
 
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
@@ -89,7 +89,7 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should add the option to the table', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Test Standard/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
@@ -104,7 +104,7 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should allow cancellation', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Test Standard/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
       userEvent.click(screen.getByRole('button', { name: /Cancel adding item/i }));
 
@@ -118,7 +118,7 @@ describe('the ChplTestStandardsEdit component', () => {
 
     it('should remove the "add item" button when all options are selected', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Test Standard/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
@@ -130,7 +130,7 @@ describe('the ChplTestStandardsEdit component', () => {
     it('should call the callback', async () => {
       hocMock.onChange.mockClear();
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Optional Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Test Standard/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
