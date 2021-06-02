@@ -15,6 +15,7 @@ describe('the Listing page', () => {
   });
 
   it('should display attested criteria by default', () => {
+    browser.waitUntil(() => criteria.criteriaCount() > 1);
     expect(criteria.criteriaCount()).toBeGreaterThan(35);
   });
 

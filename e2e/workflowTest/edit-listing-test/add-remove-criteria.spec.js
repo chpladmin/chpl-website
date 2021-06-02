@@ -15,52 +15,68 @@ describe('On the 2015 Listing page', () => {
     login = new loginComponent();
     criteria = new CriteriaComponent();
     action = new ActionBarComponent();
-    await hooks.open('#/listing/9833');
+    await hooks.open('#/listing/10599');
   });
 
   describe('When ONC logged in', () => {
     beforeEach(async () => {
       login.logIn('onc');
       hooks.waitForSpinnerToDisappear();
+      page.editCertifiedProduct.click();
+      hooks.waitForSpinnerToDisappear();
     });
 
-    it.skip('should able to unattest attested criteria 170.315 (a)(1)', () => {
-      page.editCertifiedProduct.click();
-      criteria.expandCriteria('1');
-      criteria.editCriteria('1');
-      criteria.attestToggle.click();
-      criteria.accept.click();
-      expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
+    afterEach(async () => {
+      login.logOut();
+    });
+    it('should able to unattest attested criteria 170.315 (d)(3) cures update', () => {
+      if (criteria.uiUpgradeFlag()) {
+        criteria.expandCriteria('174');
+        criteria.editCriteria('174');
+        criteria.attestToggle.click();
+        criteria.accept.click();
+        expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
+      } else {
+        criteria.openAttestedCriteriaOld('170.315 (d)(3)', true);
+        criteria.attestCriteriaOld('170.315 (d)(3)');
+        criteria.saveCertifiedProductOld.waitAndClick();
+      }
       page.reason.addValue('test');
       action.save();
       hooks.waitForSpinnerToDisappear();
-      page.bypassWarning.click();
-      action.save();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
       expect(toast.toastTitle.getText()).toBe('Update processing');
+      toast.clearAllToast();
       hooks.waitForSpinnerToDisappear();
-      expect(criteria.criteriaHeader('1').isDisplayed()).toBe(false);
+      expect(criteria.criteriaHeader('174', '170.315 (d)(3)', true).isDisplayed()).toBe(false);
     });
 
-    it.skip('should able to attest unattested criteria 170.315 (b)(7) cures update', () => {
-      page.editCertifiedProduct.click();
-      criteria.expandCriteria('168');
-      criteria.editCriteria('168');
-      criteria.attestToggle.click();
-      criteria.addTestProcedures('ONC Test Method', '1.1');
-      criteria.addTestTools('Cypress', '1.1');
-      criteria.addTestTools('Edge Testing Tool', '2.1');
-      criteria.addPrivacySecurity('Approach 1');
-      criteria.accept.scrollAndClick();
-      expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
+    it('should able to attest unattested criteria 170.315 (g)(6) cures update', () => {
+      if (criteria.uiUpgradeFlag()) {
+        criteria.expandCriteria('180');
+        criteria.editCriteria('180');
+        criteria.attestToggle.click();
+        hooks.waitForSpinnerToDisappear();
+        criteria.addTestProcedures('ONC Test Method', '1.1');
+        criteria.addTestTools('Cypress', '1.1');
+        criteria.addTestTools('Edge Testing Tool', '2.1');
+        criteria.accept.scrollAndClick();
+        expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
+      } else {
+        criteria.openUnattestedCriteriaOld('170.315 (g)(6)', true);
+
+        criteria.attestCriteriaOld('170.315 (g)(6)');
+        criteria.addTestProceduresOld('ONC Test Method', '1.1');
+        criteria.addTestToolsOld('Cypress', '1.1');
+        criteria.saveCertifiedProductOld.waitAndClick();
+      }
       action.save();
       hooks.waitForSpinnerToDisappear();
-      page.bypassWarning.click();
-      action.save();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
       expect(toast.toastTitle.getText()).toBe('Update processing');
+      toast.clearAllToast();
       hooks.waitForSpinnerToDisappear();
-      expect(criteria.criteriaHeader('168').isDisplayed()).toBe(true);
+      expect(criteria.criteriaHeader('180', '170.315 (g)(6)', true).isDisplayed()).toBe(true);
     });
   });
 });
