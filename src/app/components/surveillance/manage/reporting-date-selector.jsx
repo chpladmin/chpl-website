@@ -123,7 +123,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
           value={formik.values.year}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.year && formik.errors.year}
+          error={formik.touched.year && Boolean(formik.errors.year)}
           helperText={formik.touched.year && formik.errors.year}
           inputProps={{ 'data-testid': 'year-input' }}
           FormHelperTextProps={{ 'data-testid': 'year-error-text' }}
@@ -144,7 +144,7 @@ function ChplSurveillanceActivityReportingDateSelector() {
           value={formik.values.quarter}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.quarter && formik.errors.quarter}
+          error={formik.touched.quarter && Boolean(formik.errors.quarter)}
           helperText={formik.touched.quarter && formik.errors.quarter}
           inputProps={{ 'data-testid': 'quarter-input' }}
           FormHelperTextProps={{ 'data-testid': 'quarter-error-text' }}
@@ -167,7 +167,6 @@ function ChplSurveillanceActivityReportingDateSelector() {
             Download Results
             <ArrowForwardOutlinedIcon
               className={classes.iconSpacing}
-              fontSize="medium"
             />
           </Button>
         </div>
