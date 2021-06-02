@@ -2,6 +2,7 @@ export const SurveillanceViewContainerComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/view-container.html',
   bindings: {
     resolve: '<',
+    dismiss: '&',
   },
   controller: class SurveillanceViewContainerController {
     constructor($log) {
@@ -15,6 +16,9 @@ export const SurveillanceViewContainerComponent = {
     }
   },
 };
+
 angular
   .module('chpl.components')
   .component('chplSurveillanceViewContainerComponent', SurveillanceViewContainerComponent);
+
+export default SurveillanceViewContainerComponent;

@@ -74,16 +74,6 @@ export const SurveillanceReportRelevantListingComponent = {
             surveillance: () => surveillance,
           },
         });
-        that.uibModalInstance.result.then(() => {
-          const currentState = {
-            relevantListing: that.listing.id,
-          };
-          that.$state.go(
-            that.$state.current,
-            { ...that.$stateParams, ...currentState },
-            { reload: true },
-          );
-        });
       });
     }
 
