@@ -8,14 +8,24 @@ import {
   Link,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 
+const useStyles = makeStyles({
+  container: {
+    padding: '32px',
+  },
+});
+
 function ChplNotFound() {
   const $analytics = getAngularService('$analytics');
   const $stateParams = getAngularService('$stateParams');
+  const classes = useStyles();
 
   useEffect(() => {
     const { target } = $stateParams;
@@ -26,7 +36,7 @@ function ChplNotFound() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
+      <Container className={classes.container}>
         <Card>
           <CardHeader title="404 Page Not Found" />
           <CardContent>
@@ -38,17 +48,19 @@ function ChplNotFound() {
           </CardContent>
           <CardActions>
             <Link
-              color="primary"
               href="#/search"
             >
               Back to Search
+              {' '}
+              <ArrowBackIcon fontSize="default" />
             </Link>
             <div>|</div>
             <Link
-              color="primary"
               href="https://www.healthit.gov/form/healthit-feedback-form"
             >
               Support Portal
+              {' '}
+              <SupervisedUserCircleIcon fontSize="default" />
             </Link>
           </CardActions>
         </Card>
