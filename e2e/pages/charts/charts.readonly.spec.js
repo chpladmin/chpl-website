@@ -3,7 +3,8 @@ import Hooks from '../../utilities/hooks';
 
 const config = require('../../config/mainConfig');
 
-let hooks; let page;
+let hooks;
+let page;
 
 describe('the charts page', () => {
   beforeAll(async () => {
