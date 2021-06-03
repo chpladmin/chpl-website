@@ -2,8 +2,9 @@ import LoginComponent from '../login/login.po';
 import NavigationComponent from './navigation.po';
 import Hooks from '../../utilities/hooks';
 
-let component; let hooks; let
-  login;
+let component;
+let hooks;
+let login;
 
 beforeEach(async () => {
   component = new NavigationComponent();

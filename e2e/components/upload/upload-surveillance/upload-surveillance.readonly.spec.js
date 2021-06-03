@@ -2,8 +2,9 @@ import UploadSurveillanceComponent from './upload-surveillance.po';
 import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let loginComponent; let
-  uploadSurveillanceComponent;
+let hooks;
+let loginComponent;
+let uploadSurveillanceComponent;
 
 beforeEach(async () => {
   uploadSurveillanceComponent = new UploadSurveillanceComponent();
