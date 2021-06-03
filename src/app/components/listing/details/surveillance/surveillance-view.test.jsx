@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  cleanup, render, screen, waitFor, //waitForElementToBeRemoved, within,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-//import userEvent from '@testing-library/user-event';
-//import { when } from 'jest-when';
-//import { LocalDate } from '@js-joda/core';
-//import * as angularReactHelper from '../../../services/angular-react-helper';
+import { when } from 'jest-when';
+import * as angularReactHelper from '../../../../services/angular-react-helper';
 import ChplSurveillanceView from './surveillance-view';
+// import ChplNonconformityView from './nonconformity/nonconformity-view';
+// import ChplCriterionTitle from '../../../util/criterion-title';
 
 const survWith1Nonconformity = {
   id: 973,
@@ -85,6 +85,15 @@ const survWith1Nonconformity = {
   lastModifiedDate: 1597786978488,
 };
 
+const dateUtilMock = {
+  timestampToString: jest.fn(() => 'June 1, 2020'),
+};
+
+jest.mock('./nonconformity/nonconformity-view', () => () =><div data-testid="non-conformity-component" />);
+
+angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(dateUtilMock);
+
 describe('the ChplSurveillanceView component', () => {
   beforeEach(async () => {
     render(
@@ -102,6 +111,36 @@ describe('the ChplSurveillanceView component', () => {
 
     await waitFor(() => {
       expect(table).toBeVisible();
+    });
+  });
+  it('should use the DateUtil.timestampToString to format dates', async () => {
+    await waitFor(() => {
+      expect(dateUtilMock.timestampToString).toHaveBeenCalled();
+    });
+  });
+
+  describe('when the surveillance has a closed non-formity', () => {
+    /*
+    it("should display 'Certified Capability : 170.315 (c)(1) : Clinical Quality Measures - Record and Export' for CertificationCriteria and Program Requirements Surveilled", async () => {
+      const tableCell = screen.getByTestId('criteria-reqs-surveilled');
+      await waitFor(() => {
+        expect(tableCell).toC
+        Certified Capability : 170.315 (c)(1) : Clinical Quality Measures - Record and Export
+      });
+    })
+    */
+    it('should display the non-conformities header', async () => {
+      const header = screen.getByTestId('non-conformity-header');
+
+      await waitFor(() => {
+        expect(header).toBeVisible();
+      });
+    });
+    it('should display 1 non-conformity component', async () => {
+      await waitFor(() => {
+        const components = screen.getAllByTestId('non-conformity-component');
+        expect(components.length).toEqual(1);
+      });
     });
   });
 });

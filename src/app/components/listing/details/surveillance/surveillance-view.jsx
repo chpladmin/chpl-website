@@ -63,7 +63,7 @@ function ChplSurveillanceView({ surveillance }) {
   return (
     <ThemeProvider theme={theme}>
       <TableContainer component={Paper}>
-        <Table size="small" aria-label="Surveillance Table">
+        <Table size="small" aria-label="Surveillance Table" data-testid="surveillance-attributes-table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -141,7 +141,7 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>
+              <TableCell test_dataid="">
                 { surveillanceResults.length > 0
                   && (
                     <ul className={classes.unindentedData}>
@@ -162,14 +162,16 @@ function ChplSurveillanceView({ surveillance }) {
       { getSurveillanceResults(currentSurveillance).length > 0
         && (
         <div className={classes.nonconformityContainer}>
-          <Typography variant="subtitle1">
+          <Typography variant="subtitle1" data-testid="non-conformity-header">
             Non-Conformities
           </Typography>
-          { currentSurveillance.requirements.map((requirement) => (
-            requirement.nonconformities.map((nonconformity) => (
-              <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} />
-            ))
-          ))}
+          <div data-testid="non-conformity-component-container">
+            { currentSurveillance.requirements.map((requirement) => (
+              requirement.nonconformities.map((nonconformity) => (
+                <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component"/>
+              ))
+            ))}
+          </div>
         </div>
         )}
     </ThemeProvider>
