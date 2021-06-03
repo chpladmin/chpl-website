@@ -101,7 +101,9 @@ import { states as administrationStates } from './pages/administration/administr
     $transitions.onError({}, (transition) => {
       const error = transition.error();
       if ((!error.detail?.name || error.detail.name() !== 'login') && error.message !== 'The transition was ignored') {
-        transition.router.stateService.go('not-found');
+        transition.router.stateService.go('not-found', {
+          target: error.message,
+        });
       }
     });
 
