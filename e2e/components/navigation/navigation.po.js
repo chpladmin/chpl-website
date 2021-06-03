@@ -1,28 +1,27 @@
-const elements = {
-  reportsToggle: '#reports-toggle',
-  reports: '#reports-dropdown-menu>li',
-  surveillanceToggle : '#surveillance-toggle',
-  surveillanceOptions: '#surveillance-dropdown-menu>li',
-  
-};
-
 class NavigationComponent {
-  constructor () { }
-
-  get reportsToggle () {
-    return $(elements.reportsToggle);
+  constructor() {
+    this.elements = {
+      reportsToggle: '#reports-toggle',
+      reports: '#reports-dropdown-menu>li',
+      surveillanceToggle: '#surveillance-toggle',
+      surveillanceOptions: '#surveillance-dropdown-menu>li',
+    };
   }
 
-  get reports () {
-    return $$(elements.reports);
+  get reportsToggle() {
+    return $(this.elementselements.reportsToggle);
   }
 
-  get surveillanceToggle () {
-    return $(elements.surveillanceToggle);
+  get reports() {
+    return $$(this.elements.reports);
   }
 
-  get surveillanceOptions () {
-    return $$(elements.surveillanceOptions);
+  get surveillanceToggle() {
+    return $(this.elements.surveillanceToggle);
+  }
+
+  get surveillanceOptions() {
+    return $$(this.elements.surveillanceOptions);
   }
 }
 

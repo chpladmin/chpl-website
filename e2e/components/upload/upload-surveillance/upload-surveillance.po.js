@@ -1,32 +1,31 @@
-const uploadElements = {
-  root: 'chpl-upload-surveillance-bridge',
-  chooseUploadSurveillance: '//input[@id="upload-surveillance"]',
-  uploadButton: '.MuiButton-containedPrimary',
-};
-
 const path = require('path');
 
 class UploadSurveillanceComponent {
-  constructor () { }
-
-  get root () {
-    return $(uploadElements.root);
+  constructor() {
+    this.elements = {
+      root: 'chpl-upload-surveillance-bridge',
+      chooseUploadSurveillance: '//input[@id="upload-surveillance"]',
+      uploadButton: '.MuiButton-containedPrimary',
+    };
   }
 
-  get chooseUploadSurveillanceButton () {
-    return $(uploadElements.chooseUploadSurveillance);
+  get root() {
+    return $(this.elements.root);
   }
 
-  get uploadButton () {
-    return $(uploadElements.root).$(uploadElements.uploadButton);
+  get chooseUploadSurveillanceButton() {
+    return $(this.elements.chooseUploadSurveillance);
   }
 
-  uploadSurveillance (uploadfilePath) {
+  get uploadButton() {
+    return $(this.elements.root).$(this.elements.uploadButton);
+  }
+
+  uploadSurveillance(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadSurveillanceButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.waitAndClick();
   }
-
 }
 
 export default UploadSurveillanceComponent;

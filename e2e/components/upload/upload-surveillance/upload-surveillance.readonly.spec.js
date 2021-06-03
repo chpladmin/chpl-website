@@ -2,7 +2,8 @@ import UploadSurveillanceComponent from './upload-surveillance.po';
 import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks, loginComponent, uploadSurveillanceComponent;
+let hooks; let loginComponent; let
+  uploadSurveillanceComponent;
 
 beforeEach(async () => {
   uploadSurveillanceComponent = new UploadSurveillanceComponent();
@@ -12,13 +13,23 @@ beforeEach(async () => {
 });
 
 describe('when on administration upload page as ONC', () => {
-
-  beforeEach(function () {
+  beforeEach(() => {
     loginComponent.logIn('onc');
     hooks.waitForSpinnerToDisappear();
   });
 
   it('can\'t see surveillance upload section', () => {
     expect(uploadSurveillanceComponent.root.isDisplayed()).toBe(false);
+  });
+});
+
+describe('when on administration upload page as admin', () => {
+  beforeEach(() => {
+    loginComponent.logIn('admin');
+    hooks.waitForSpinnerToDisappear();
+  });
+
+  it('can see surveillance upload section', () => {
+    expect(uploadSurveillanceComponent.root.isDisplayed()).toBe(true);
   });
 });
