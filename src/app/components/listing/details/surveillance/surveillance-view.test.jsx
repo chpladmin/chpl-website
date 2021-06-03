@@ -169,15 +169,6 @@ describe('the ChplSurveillanceView component', () => {
   });
 
   describe('when the surveillance has a closed non-conformity', () => {
-    /*
-    it("should display 'Certified Capability : 170.315 (c)(1) : Clinical Quality Measures - Record and Export' for CertificationCriteria and Program Requirements Surveilled", async () => {
-      const tableCell = screen.getByTestId('criteria-reqs-surveilled');
-      await waitFor(() => {
-        expect(tableCell).toC
-        Certified Capability : 170.315 (c)(1) : Clinical Quality Measures - Record and Export
-      });
-    })
-    */
     it('should display the non-conformities header', async () => {
       render(
         <ChplSurveillanceView
