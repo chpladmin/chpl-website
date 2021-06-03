@@ -46,16 +46,20 @@ class CriteriaComponent {
     $(elements.removedCriteria).$$('div')[1].scrollAndClick();
   }
 
-  expandCriteria(id) {
-    $(`#criterion-id-${id}-header`).scrollIntoView();
-    $(`#criterion-id-${id}-header`).$$('div')[1].scrollAndClick();
-  }
-
   uiUpgradeFlag() {
     if ($('chpl-certification-criteria').isExisting()) {
       return false;
     }
     return true;
+  }
+
+  expandCriteria(id, criteria) {
+    if (this.uiUpgradeFlag()) {
+      $(`#criterion-id-${id}-header`).scrollIntoView();
+      $(`#criterion-id-${id}-header`).$$('div')[1].scrollAndClick();
+    } else {
+      $(`//*[@id="criteria_${criteria}_details_link"]`).scrollAndClick();
+    }
   }
 
   criteriaHeader(id, criteria, cures) {
@@ -71,11 +75,15 @@ class CriteriaComponent {
   }
 
   criteriaCount() {
-    return $$('//*[starts-with(@id,"criterion-id")] [contains(@id,"header")]').length;
+    return $$('//*[starts-with(@id,"criteri")] [contains(@id,"header")]').length;
   }
 
-  criteriaDetailTable(id) {
-    return $(`//*[@id="criterion-id-${id}-header"]/parent::div`).$('table');
+  criteriaDetailTable(id, criteria) {
+    if (this.uiUpgradeFlag()) {
+      return $(`//*[@id="criterion-id-${id}-header"]/parent::div`).$('table');
+    }
+
+    return $(`//*[@id="criteria_${criteria}_details_header"]/parent::div`).$('table');
   }
 
   addItem(type) {
