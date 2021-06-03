@@ -33,7 +33,7 @@ function ChplNotFound() {
             <Typography
               variant="body1"
             >
-              The page you were looking for may have been moved to a new location or no longer exists. Use the buttons below to either return to the search page or contact us to report a problem with the CHPL site.
+              The page you were looking for may have been moved to a new location or no longer exists. Use the links below to either return to the search page or contact us to report a problem with the CHPL site.
             </Typography>
           </CardContent>
           <CardActions>
@@ -43,6 +43,7 @@ function ChplNotFound() {
             >
               Back to Search
             </Link>
+            <div>|</div>
             <Link
               color="primary"
               href="https://www.healthit.gov/form/healthit-feedback-form"
