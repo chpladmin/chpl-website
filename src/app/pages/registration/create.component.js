@@ -106,7 +106,6 @@ export const CreateUserComponent = {
       valid = valid && this.userDetails.user.password && this.userDetails.user.password.length > 0;
       valid = valid && this.userDetails.user.fullName && this.userDetails.user.fullName.length > 0;
       valid = valid && this.userDetails.user.email && this.userDetails.user.email.length > 0;
-      valid = valid && this.userDetails.user.phoneNumber && this.userDetails.user.phoneNumber.length > 0;
       valid = valid && this.userDetails.user.password === this.userDetails.user.passwordverify;
       return valid;
     }
