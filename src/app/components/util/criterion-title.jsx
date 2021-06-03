@@ -4,13 +4,16 @@ import { bool } from 'prop-types';
 
 import criterionPropType from '../../shared/prop-types/criterion';
 
-function ChplCriterionTitle({ criterion, useRemovedClass }) {
-  const currentCriterion = useState(criterion)[0];
-  const removedClass = useState(useRemovedClass)[0];
+function ChplCriterionTitle(props) {
+  /* eslint-disable react/destructuring-assignment */
+  const [criterion] = useState(props.criterion);
+  const [removedClass] = useState(props.useRemovedClass);
+  const [displayTitle] = useState(props.displayTitle);
+  /* eslint-enable react/destructuring-assignment */
 
   return (
-    <span className={currentCriterion.removed && removedClass ? 'removed' : ''}>
-      { `${(currentCriterion.removed ? 'Removed | ' : '')} ${currentCriterion.number} : ${currentCriterion.title}` }
+    <span className={criterion.removed && removedClass ? 'removed' : ''} data-testid="criterion-title">
+      { `${(criterion.removed && 'Removed | ')} ${criterion.number}  ${(displayTitle && ' : ' && criterion.title)}` }
     </span>
   );
 }
@@ -20,8 +23,10 @@ export default ChplCriterionTitle;
 ChplCriterionTitle.propTypes = {
   criterion: criterionPropType.isRequired,
   useRemovedClass: bool,
+  displayTitle: bool,
 };
 
 ChplCriterionTitle.defaultProps = {
   useRemovedClass: false,
+  displayTitle: true,
 };
