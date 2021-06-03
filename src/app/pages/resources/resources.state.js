@@ -35,6 +35,9 @@ const states = [
   }, {
     name: 'not-found',
     url: '/not-found',
+    params: {
+      target: { squash: true, value: null },
+    },
     component: 'chplNotFoundBridge',
     data: { title: 'Error: page not found' },
   },

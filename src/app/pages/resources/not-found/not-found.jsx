@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Card,
@@ -11,8 +11,19 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../../themes/theme';
+import { getAngularService } from '../../../services/angular-react-helper';
 
 function ChplNotFound() {
+  const $analytics = getAngularService('$analytics');
+  const $stateParams = getAngularService('$stateParams');
+
+  useEffect(() => {
+    const { target } = $stateParams;
+    if (target) {
+      $analytics.eventTrack('Page Not Found', { category: 'navigation', label: target });
+    }
+  }, [$analytics, $stateParams]);
+
   return (
     <ThemeProvider theme={theme}>
       <Container>

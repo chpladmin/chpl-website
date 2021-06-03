@@ -10,6 +10,15 @@ import resourcesStates from './pages/resources/resources.state';
 import surveillanceStates from './pages/surveillance/surveillance.state';
 import usersStates from './pages/users/users.state';
 
+/** @ngInject */
+function otherwise($injector, $location) {
+  const $state = $injector.get('$state');
+  const target = $location.url();
+  $state.go('not-found', {
+    target,
+  });
+}
+
 (() => {
   function routeConfig($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -22,7 +31,7 @@ import usersStates from './pages/users/users.state';
       });
     $urlRouterProvider.when('', '/search');
     $urlRouterProvider.when('/', '/search');
-    $urlRouterProvider.otherwise('/not-found');
+    $urlRouterProvider.otherwise(otherwise);
   }
 
   angular
