@@ -117,8 +117,8 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>
-                { currentSurveillance.requirements.length > 0
+              <TableCell data-testid="reqs-surveilled-cell">
+                { currentSurveillance.requirements?.length > 0
                   && (
                     <ul className={classes.unindentedData}>
                       { currentSurveillance.requirements.map((req) => (
@@ -129,7 +129,7 @@ function ChplSurveillanceView({ surveillance }) {
                       ))}
                     </ul>
                   )}
-                { currentSurveillance.requirements.length === 0 && 'None' }
+                { currentSurveillance.requirements?.length === 0 && 'None' }
               </TableCell>
             </TableRow>
             <TableRow>
