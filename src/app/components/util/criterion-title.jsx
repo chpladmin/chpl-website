@@ -13,7 +13,7 @@ function ChplCriterionTitle(props) {
 
   return (
     <span className={criterion.removed && removedClass ? 'removed' : ''} data-testid="criterion-title">
-      { `${(criterion.removed && 'Removed | ')} ${criterion.number}  ${(displayTitle && ' : ' && criterion.title)}` }
+      { `${(criterion.removed ? 'Removed | ' : '')} ${criterion.number}  ${(displayTitle && ' : ' && criterion.title)}` }
     </span>
   );
 }
