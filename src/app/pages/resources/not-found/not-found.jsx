@@ -10,15 +10,29 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 
 const useStyles = makeStyles({
   container: {
-    padding: '32px',
+    padding: '64px 32px',
+    maxWidth: '90%',
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '80%',
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '70%',
+    },
+    [theme.breakpoints.up('lg')]: {
+      maxWidth: '60%',
+    },
+    [theme.breakpoints.up('xl')]: {
+      maxWidth: '50%',
+    },
+  },
+  cardActions: {
+    padding: '16px',
   },
 });
 
@@ -46,22 +60,22 @@ function ChplNotFound() {
               The page you were looking for may have been moved to a new location or no longer exists. Use the links below to either return to the search page or contact us to report a problem with the CHPL site.
             </Typography>
           </CardContent>
-          <CardActions>
-            <Link
-              href="#/search"
-            >
-              Back to Search
-              {' '}
-              <ArrowBackIcon fontSize="default" />
-            </Link>
-            <div>|</div>
-            <Link
-              href="https://www.healthit.gov/form/healthit-feedback-form"
-            >
-              Support Portal
-              {' '}
-              <SupervisedUserCircleIcon fontSize="default" />
-            </Link>
+          <CardActions className={classes.cardActions}>
+            <Typography>
+              <Link
+                href="#/search"
+              >
+                Back to Search
+              </Link>
+            </Typography>
+            <Typography>|</Typography>
+            <Typography>
+              <Link
+                href="https://www.healthit.gov/form/healthit-feedback-form"
+              >
+                Support Portal
+              </Link>
+            </Typography>
           </CardActions>
         </Card>
       </Container>
