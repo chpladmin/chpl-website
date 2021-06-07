@@ -7,12 +7,13 @@ export const UsersComponent = {
     takeAction: '&',
   },
   controller: class UsersComponent {
-    constructor ($analytics, $anchorScroll, $log, $rootScope, authService, networkService, utilService) {
+    constructor ($analytics, $anchorScroll, $log, $rootScope, $scope, authService, networkService, utilService) {
       'ngInject';
       this.$analytics = $analytics;
       this.$anchorScroll = $anchorScroll;
       this.$log = $log;
       this.$rootScope = $rootScope;
+      this.$scope = $scope;
       this.authService = authService;
       this.canImpersonate = authService.canImpersonate;
       this.networkService = networkService;
@@ -22,6 +23,7 @@ export const UsersComponent = {
 
     $onInit () {
       this.columnCount = this.columnCount || 2;
+      this.act = this.act.bind(this);
     }
 
     $onChanges (changes) {
@@ -38,7 +40,7 @@ export const UsersComponent = {
       }
     }
 
-    act (action, data) {
+    act (action, data, react) {
       let that = this;
       this.errors = undefined;
       switch (action) {
@@ -78,6 +80,9 @@ export const UsersComponent = {
           });
         break;
                 //no default
+      }
+      if (react) {
+        this.$scope.$apply();
       }
     }
 
