@@ -50,7 +50,7 @@
       <div class="panel panel-default" ng-if="$ctrl.filteredUsers[idx + col]">
         <div class="panel-body">
           <chpl-user user="$ctrl.filteredUsers[idx + col]" take-action="$ctrl.act(action, data)"></chpl-user>
-          <chpl-user-bridge user="$ctrl.filteredUsers[idx + col]" dispatch="::$ctrl.act"></chpl-user-bridge>
+          <chpl-user-view-bridge user="$ctrl.filteredUsers[idx + col]" dispatch="::$ctrl.act"></chpl-user-view-bridge>
         </div>
       </div>
     </div>

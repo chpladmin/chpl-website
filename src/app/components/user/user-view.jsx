@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplUser(props) {
+function ChplUserView(props) {
   /* eslint-disable react/destructuring-assignment */
   const [user] = useState(props.user);
   const DateUtil = getAngularService('DateUtil');
@@ -162,13 +162,13 @@ function ChplUser(props) {
   );
 }
 
-export default ChplUser;
+export default ChplUserView;
 
-ChplUser.propTypes = {
+ChplUserView.propTypes = {
   user: userPropType.isRequired,
   dispatch: func,
 };
 
-ChplUser.defaultProps = {
+ChplUserView.defaultProps = {
   dispatch: () => {},
 };

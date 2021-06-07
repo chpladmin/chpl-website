@@ -1,5 +1,5 @@
-import ChplUser from './user';
+import ChplUserView from './user-view';
 
 export {
-  ChplUser,
+  ChplUserView,
 };
