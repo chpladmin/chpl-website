@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import {
-  arrayOf,
-  bool,
   func,
-} from 'prop-types';
+} from 'prop-types'; // eslint-disable-line import/no-extraneous-dependencies
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -32,9 +30,6 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
 }));
 
 function ChplUserView(props) {
@@ -47,7 +42,7 @@ function ChplUserView(props) {
 
   const edit = () => {
     props.dispatch('edit', user, true);
-  }
+  };
 
   const impersonate = () => {
     props.dispatch('impersonate', user, true);
@@ -64,75 +59,89 @@ function ChplUserView(props) {
           <CardContent className={classes.content}>
             <div>
               <Typography>
-                {user.title &&
+                {user.title
+                 && (
                  <>
-                   <strong>Title:</strong> {user.title}
+                   <strong>Title:</strong>
+                   {' '}
+                   {user.title}
                  </>
-                }
+                 )}
               </Typography>
               <Typography>
-                {user.phoneNumber &&
+                {user.phoneNumber
+                 && (
                  <>
-                   <strong>Phone Number:</strong> {user.phoneNumber}
+                   <strong>Phone Number:</strong>
+                   {' '}
+                   {user.phoneNumber}
                  </>
-                }
+                 )}
               </Typography>
               <Typography>
-                {user.email &&
+                {user.email
+                 && (
                  <>
-                   <strong>Email:</strong> {user.email}
+                   <strong>Email:</strong>
+                   {' '}
+                   {user.email}
                  </>
-                }
+                 )}
               </Typography>
               <Typography>
-                {user.subjectName &&
+                {user.subjectName
+                 && (
                  <>
-                   <strong>User Name:</strong> {user.subjectName}
+                   <strong>User Name:</strong>
+                   {' '}
+                   {user.subjectName}
                  </>
-                }
+                 )}
               </Typography>
               <Typography>
-                {user.role &&
+                {user.role
+                 && (
                  <>
-                   <strong>Role:</strong> {user.role}
+                   <strong>Role:</strong>
+                   {' '}
+                   {user.role}
                  </>
-                }
+                 )}
               </Typography>
               <Typography>
-                {user.organizations && user.organizations.length > 0 &&
+                {user.organizations && user.organizations.length > 0
+                 && (
                  <>
-                   <strong>Organization:</strong> {user.organizations.map((org) => (org.name)).join('; ')}
+                   <strong>Organization:</strong>
+                   {' '}
+                   {user.organizations.map((org) => (org.name)).join('; ')}
                  </>
-                }
+                 )}
               </Typography>
             </div>
             <div>
               <Typography>
-                <strong>Last Login:</strong> {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
+                <strong>Last Login:</strong>
+                {' '}
+                {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
               </Typography>
               <Typography>
                 <strong>Account Locked:</strong>
-                {user.accountLocked ?
-                 <CheckBoxOutlinedIcon />
-                 :
-                 <CheckBoxOutlineBlankOutlinedIcon />
-                }
+                {user.accountLocked
+                  ? <CheckBoxOutlinedIcon />
+                  : <CheckBoxOutlineBlankOutlinedIcon />}
               </Typography>
               <Typography>
                 <strong>Account Enabled:</strong>
-                { user.accountEnabled ?
-                  <CheckBoxOutlinedIcon />
-                  :
-                  <CheckBoxOutlineBlankOutlinedIcon />
-                }
+                { user.accountEnabled
+                  ? <CheckBoxOutlinedIcon />
+                  : <CheckBoxOutlineBlankOutlinedIcon />}
               </Typography>
               <Typography>
                 <strong>Password change on next login:</strong>
-                { user.passwordResetRequired ?
-                  <CheckBoxOutlinedIcon />
-                  :
-                  <CheckBoxOutlineBlankOutlinedIcon />
-                }
+                { user.passwordResetRequired
+                  ? <CheckBoxOutlinedIcon />
+                  : <CheckBoxOutlineBlankOutlinedIcon />}
               </Typography>
             </div>
           </CardContent>
@@ -144,16 +153,17 @@ function ChplUserView(props) {
                 variant="contained"
                 onClick={edit}
               >
-                <EditOutlinedIcon/>
+                <EditOutlinedIcon />
               </Button>
-              { canImpersonate &&
+              { canImpersonate
+                && (
                 <Button
                   variant="outlined"
                   onClick={impersonate}
                 >
-                  <GroupIcon/>
+                  <GroupIcon />
                 </Button>
-              }
+                )}
             </ButtonGroup>
           </CardActions>
         </Card>
