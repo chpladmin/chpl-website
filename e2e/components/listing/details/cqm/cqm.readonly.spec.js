@@ -2,8 +2,9 @@ import ListingPage from '../../../../pages/listing/listing.po';
 import Hooks from '../../../../utilities/hooks';
 import CqmComponent from './cqm.po';
 
-let cqm; let hooks; let
-  page;
+let cqm;
+let hooks; 
+let page;
 
 describe('the Listing page', () => {
   beforeEach(async () => {

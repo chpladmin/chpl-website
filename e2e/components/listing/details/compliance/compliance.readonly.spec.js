@@ -1,7 +1,8 @@
 import Hooks from '../../../../utilities/hooks';
 import ComplianceComponent from './compliance.po';
 
-let compliance; let hooks;
+let compliance;
+let hooks;
 
 describe('the Listing page', () => {
   beforeEach(async () => {

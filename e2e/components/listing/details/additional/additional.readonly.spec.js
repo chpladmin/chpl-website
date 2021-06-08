@@ -1,7 +1,8 @@
 import Hooks from '../../../../utilities/hooks';
 import AdditionalComponent from './additional.po';
 
-let additional; let hooks;
+let additional;
+let hooks;
 
 beforeEach(() => {
   hooks = new Hooks();
@@ -16,7 +17,7 @@ describe('the Listing page for listing with ICS 0', () => {
   it('should not display ICS relationship button under additional information', () => {
     additional.additionalHeader.scrollIntoView();
     additional.expandAdditional();
-    expect(additional.IcsButton.isDisplayed()).toBe(false);
+    expect(additional.icsButton.isDisplayed()).toBe(false);
   });
 });
 

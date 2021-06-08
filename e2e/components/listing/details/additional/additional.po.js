@@ -1,6 +1,6 @@
 const elements = {
   additionalHeader: '//div[text()="Additional Information"]',
-  IcsButton: '//button[text()="View ICS Relationships"]',
+  icsButton: '//button[text()="View ICS Relationships"]',
 };
 
 class AdditionalComponent {
@@ -10,8 +10,8 @@ class AdditionalComponent {
     return $(elements.additionalHeader);
   }
 
-  get IcsButton() {
-    return $(elements.IcsButton);
+  get icsButton() {
+    return $(elements.icsButton);
   }
 
   expandAdditional() {

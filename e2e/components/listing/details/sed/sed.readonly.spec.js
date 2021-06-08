@@ -1,7 +1,8 @@
 import Hooks from '../../../../utilities/hooks';
 import SedComponent from './sed.po';
 
-let hooks; let sed;
+let hooks;
+let sed;
 
 describe('the Listing page', () => {
   beforeEach(async () => {

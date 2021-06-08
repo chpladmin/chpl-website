@@ -1,7 +1,8 @@
 import Hooks from '../../../../utilities/hooks';
 import MeasuresComponent from './measures.po';
 
-let hooks; let measures;
+let hooks;
+let measures;
 
 describe('the Listing page', () => {
   beforeEach(async () => {

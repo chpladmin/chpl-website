@@ -2,7 +2,10 @@ import CriteriaComponent from './criteria.po';
 import Hooks from '../../../../utilities/hooks';
 import ListingPage from '../../../../pages/listing/listing.po';
 
-let criteria; let hooks; let page; let uiUpgradeFlag;
+let criteria;
+let hooks;
+let page;
+let uiUpgradeFlag;
 
 describe('the Listing page', () => {
   beforeEach(async () => {

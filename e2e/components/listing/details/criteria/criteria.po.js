@@ -47,10 +47,7 @@ class CriteriaComponent {
   }
 
   uiUpgradeFlag() {
-    if ($('chpl-certification-criteria').isExisting()) {
-      return false;
-    }
-    return true;
+    return !$('chpl-certification-criteria').isExisting();
   }
 
   expandCriteria(id, criteria) {
@@ -66,7 +63,7 @@ class CriteriaComponent {
     if (this.uiUpgradeFlag()) {
       return $(`#criterion-id-${id}-header`);
     }
-    if (!this.uiUpgradeFlag()) {
+    else {
       if (cures) {
         return $(`//*[@id="criteria_${criteria}_details_header_cures"]`);
       }
