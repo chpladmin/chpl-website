@@ -5,7 +5,12 @@ import loginComponent from '../../components/login/login.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import ToastComponent from '../../components/toast/toast.po';
 
-let action; let criteria; let hooks; let login; let page; let toast;
+let action;
+let criteria;
+let hooks;
+let login;
+let page;
+let toast;
 
 describe('On the 2015 Listing page', () => {
   beforeEach(async () => {
