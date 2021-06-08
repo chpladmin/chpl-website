@@ -194,7 +194,7 @@ const survWithRandomized = {
   lastModifiedDate: 1597786978488,
 };
 
-jest.mock('../../../../util/criterion-title', () => () =><div>Criteria Title</div>);
+jest.mock('../../../../util/criterion-title', () => () => <div>Criteria Title</div>);
 
 const dateUtilMock = {
   timestampToString: jest.fn(() => 'June 1, 2020'),
@@ -315,12 +315,14 @@ describe('the ChplNonconformityView component', () => {
   /*
   it('should use the DateUtil.timestampToString to format dates', async () => {
     render(
-      <ChplSurveillanceView
-        surveillance={survWith1Nonconformity}
+      <ChplNonconformityView
+        surveillance={survWithRandomized}
+        requirement={survWithRandomized.requirements[0]}
+        nonconformity={survWithRandomized.requirements[0].nonconformities[0]}
       />,
     );
     await waitFor(() => {
-      expect(dateUtilMock.timestampToString).toHaveBeenCalled();
+      expect(dateUtilMock.timestampToString).toHaveBeenCalledTimes(5); // This is coming back as 30, not sure why
     });
   });
   */
