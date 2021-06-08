@@ -1,4 +1,4 @@
-<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+<div class="row">
   <div class="col-md-12">
     <h2>Announcements</h2>
     <table class="table table-condensed" st-table="$ctrl.displayedAnnouncements" st-safe-src="$ctrl.announcements" ng-if="!$ctrl.activeAnnouncement">
@@ -32,13 +32,5 @@
     <span ng-if="$ctrl.activeAnnouncement">
       <chpl-announcement announcement="$ctrl.activeAnnouncement" take-action="$ctrl.takeAction(data, action)"></chpl-announcement>
     </span>
-  </div>
-</div>
-<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
-  <div class="col-md-6 col-md-offset-3 jumbotron">
-    <chpl-login form-class=""
-                p-class="bg-success lead"
-                p-class-fail="bg-danger lead">
-    </chpl-login>
   </div>
 </div>

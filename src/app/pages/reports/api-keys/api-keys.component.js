@@ -1,20 +1,20 @@
-export const ReportsApiKeysComponent = {
+const ReportsApiKeysComponent = {
   templateUrl: 'chpl.reports/api-keys/api-keys.html',
   controller: class ReportsApiKeyComponent {
-    constructor ($filter, $log, ReportService, authService, networkService, utilService) {
+    constructor($filter, $log, ReportService, networkService, utilService) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.ReportService = ReportService;
       this.networkService = networkService;
       this.utilService = utilService;
-      this.hasAnyRole = authService.hasAnyRole;
 
       this.results = [];
       this.displayed = [];
       this.clearFilterHs = [];
       this.restoreStateHs = [];
-      this.filename = 'Reports_' + new Date().getTime() + '.csv';
+      this.filename = `Reports_${new Date().getTime()}.csv`;
       this.filterText = '';
       this.tableController = {};
       this.loadProgress = {
@@ -24,77 +24,79 @@ export const ReportsApiKeysComponent = {
       this.pageSize = 50;
     }
 
-    $onInit () {
+    $onInit() {
       this.search();
     }
 
-    $onDestroy () {
+    $onDestroy() {
       this.isDestroyed = true;
     }
 
-    onApplyFilter (filterObj) {
-      let f = angular.fromJson(filterObj);
+    onApplyFilter(filterObj) {
+      const f = angular.fromJson(filterObj);
       this.doFilter(f);
     }
 
-    onClearFilter () {
-      let filterData = {};
+    onClearFilter() {
+      const filterData = {};
       filterData.dataFilter = '';
       filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach(handler => handler());
+      this.clearFilterHs.forEach((handler) => handler());
       this.doFilter(filterData);
     }
 
-    doFilter (filter) {
-      let that = this;
+    doFilter(filter) {
+      const that = this;
       this.filterText = filter.dataFilter;
       if (filter.tableState.search.predicateObject.date) {
         this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
       } else {
         this.tableController.search({}, 'date');
       }
-      this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+      this.restoreStateHs.forEach((handler) => handler(that.tableController.tableState()));
       this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
     }
 
-    registerClearFilter (handler) {
+    registerClearFilter(handler) {
       this.clearFilterHs.push(handler);
     }
 
-    registerRestoreState (handler) {
+    registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
     }
 
-    createFilterDataObject () {
-      let filterData = {};
+    createFilterDataObject() {
+      const filterData = {};
       filterData.dataFilter = this.filterText;
       filterData.tableState = this.tableController.tableState();
       return filterData;
     }
 
-    tableStateListener (tableController) {
+    tableStateListener(tableController) {
       this.tableController = tableController;
     }
 
-    prepare (item) {
-      item.filterText = item.description;
-      item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-      return item;
+    prepare(item) {
+      return {
+        ...item,
+        filterText: item.description,
+        friendlyActivityDate: new Date(item.date).toISOString().substring(0, 10),
+      };
     }
 
-    showLoadingBar () {
-      let tableState = this.tableController.tableState && this.tableController.tableState();
+    showLoadingBar() {
+      const tableState = this.tableController.tableState && this.tableController.tableState();
       return this.ReportService.showLoadingBar(tableState, this.results, this.loadProgress);
     }
 
-    search () {
-      let that = this;
+    search() {
+      const that = this;
       this.networkService.getActivityMetadata('beta/api-keys')
-        .then(results => {
+        .then((results) => {
           that.results = results.activities
-            .map(item => that.prepare(item));
+            .map((item) => that.prepare(item));
           that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
-          let filter = {};
+          const filter = {};
           filter.dataFilter = '';
           filter.tableState = this.tableController.tableState();
           filter.tableState.search = {
@@ -110,11 +112,11 @@ export const ReportsApiKeysComponent = {
         });
     }
 
-    addPageToData (page) {
-      let that = this;
+    addPageToData(page) {
+      const that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/api-keys', {pageNum: page, ignoreLoadingBar: true}).then(results => {
-        results.activities.forEach(item => {
+      this.networkService.getActivityMetadata('beta/api-keys', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
+        results.activities.forEach((item) => {
           that.results.push(that.prepare(item));
         });
         that.loadProgress.complete += 1;
@@ -129,3 +131,5 @@ export const ReportsApiKeysComponent = {
 
 angular.module('chpl.reports')
   .component('chplReportsApiKeys', ReportsApiKeysComponent);
+
+export default ReportsApiKeysComponent;
