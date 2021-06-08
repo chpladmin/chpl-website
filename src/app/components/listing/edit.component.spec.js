@@ -185,7 +185,8 @@
 
     describe('when handling certification status history', () => {
       it('should add statusEventObjects for each statusDate in history', () => {
-        expect(ctrl.listing.certificationEvents[0].statusDateObject).toEqual(new Date(ctrl.listing.certificationEvents[0].eventDate));
+        const aDate = new Date(1498622400000);
+        expect(ctrl.listing.certificationEvents[0].statusDateObject).toEqual(aDate);
       });
 
       it('should know when the "earliest" status is not "Active"', () => {

@@ -6,8 +6,14 @@
     var $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
     mock = {
-      listing: {},
-      resources: {},
+      listing: {
+        certificationEdition: {},
+      },
+      resources: {
+        testStandards: {
+          data: [],
+        },
+      },
     };
 
     beforeEach(() => {
