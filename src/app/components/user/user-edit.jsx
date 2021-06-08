@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
 import {
-  arrayOf,
-  bool,
   func,
 } from 'prop-types';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import GroupIcon from '@material-ui/icons/Group';
 import {
-  Button,
-  ButtonGroup,
   Container,
   Card,
-  CardActions,
   CardHeader,
   CardContent,
+  FormControlLabel,
+  Switch,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import theme from '../../themes/theme';
+import { ChplTextField } from '../util/';
 import {
   user as userPropType,
 } from '../../shared/prop-types';
@@ -30,132 +28,165 @@ import {
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
+    gap: '8px',
     gridTemplateColumns: '1fr 1fr',
+    alignItems: 'center',
   },
-  iconSpacing: {
-    marginLeft: '4px',
+  dataEntry: {
+    display: 'grid',
+    gap: '8px',
   },
 }));
+
+const validationSchema = yup.object({
+  fullName: yup.string()
+    .required('Full Name is required'),
+  email: yup.string()
+    .required('Email is required')
+    .email('Enter a valid Email'),
+});
 
 function ChplUserEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [user] = useState(props.user);
-  const DateUtil = getAngularService('DateUtil');
-  const canImpersonate = getAngularService('authService').canImpersonate(props.user);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
-  const edit = () => {
-    props.dispatch('edit', user, true);
+  let formik;
+
+  const save = () => {
+    console.log('saving');
+    //props.dispatch('save', user, true);
   }
 
-  const impersonate = () => {
-    props.dispatch('impersonate', user, true);
-  };
+  formik = useFormik({
+    initialValues: {
+      fullName: user.fullName,
+      friendlyName: user.friendlyName || '',
+      title: user.title || '',
+      phoneNumber: user.phoneNumber || '',
+      email: user.email,
+      accountLocked: user.accountLocked,
+      accountEnabled: user.accountEnabled,
+      passwordResetRequired: user.passwordResetRequired,
+    },
+    onSubmit: () => {
+      save();
+    },
+    validationSchema,
+    validateOnChange: false,
+    validateOnMount: true,
+  });
 
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <Card>
           <CardHeader
-            title={user.fullName}
-            subheader={user.friendlyName}
+            title="Edit User"
           />
           <CardContent className={classes.content}>
-            <div>
-              <Typography>
-                {user.title &&
-                 <>
-                   <strong>Title:</strong> {user.title}
-                 </>
-                }
-              </Typography>
-              <Typography>
-                {user.phoneNumber &&
-                 <>
-                   <strong>Phone Number:</strong> {user.phoneNumber}
-                 </>
-                }
-              </Typography>
-              <Typography>
-                {user.email &&
-                 <>
-                   <strong>Email:</strong> {user.email}
-                 </>
-                }
-              </Typography>
-              <Typography>
-                {user.subjectName &&
-                 <>
-                   <strong>User Name:</strong> {user.subjectName}
-                 </>
-                }
-              </Typography>
-              <Typography>
-                {user.role &&
-                 <>
-                   <strong>Role:</strong> {user.role}
-                 </>
-                }
-              </Typography>
-              <Typography>
-                {user.organizations && user.organizations.length > 0 &&
-                 <>
-                   <strong>Organization:</strong> {user.organizations.map((org) => (org.name)).join('; ')}
-                 </>
-                }
-              </Typography>
+            <div className={classes.dataEntry}>
+              <ChplTextField
+                id="full-name"
+                name="fullName"
+                label="Full Name"
+                required
+                value={formik.values.fullName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.fullName && !!formik.errors.fullName}
+                helperText={formik.touched.fullName && formik.errors.fullName}
+              />
+              <ChplTextField
+                id="friendly-name"
+                name="friendlyName"
+                label="Friendly Name"
+                value={formik.values.friendlyName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.friendlyName && !!formik.errors.friendlyName}
+                helperText={formik.touched.friendlyName && formik.errors.friendlyName}
+              />
+              <ChplTextField
+                id="title"
+                name="title"
+                label="Title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.title && !!formik.errors.title}
+                helperText={formik.touched.title && formik.errors.title}
+              />
+              <ChplTextField
+                id="phone-number"
+                name="phoneNumber"
+                label="Phone Number"
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+                helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+              />
+              <ChplTextField
+                id="email"
+                name="email"
+                label="Email"
+                required
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && !!formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
+              />
             </div>
-            <div>
-              <Typography>
-                <strong>Last Login:</strong> {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
-              </Typography>
-              <Typography>
-                <strong>Account Locked:</strong>
-                {user.accountLocked ?
-                 <CheckBoxOutlinedIcon />
-                 :
-                 <CheckBoxOutlineBlankOutlinedIcon />
-                }
-              </Typography>
-              <Typography>
-                <strong>Account Enabled:</strong>
-                { user.accountEnabled ?
-                  <CheckBoxOutlinedIcon />
-                  :
-                  <CheckBoxOutlineBlankOutlinedIcon />
-                }
-              </Typography>
-              <Typography>
-                <strong>Password change on next login:</strong>
-                { user.passwordResetRequired ?
-                  <CheckBoxOutlinedIcon />
-                  :
-                  <CheckBoxOutlineBlankOutlinedIcon />
-                }
-              </Typography>
+            <div className={classes.dataEntry}>
+              <div>
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      id="account-locked"
+                      name="accountLocked"
+                      color="primary"
+                      checked={formik.values.accountLocked}
+                      onChange={formik.handleChange}
+                    />
+                  )}
+                  label="Account Locked"
+                />
+              </div>
+              <div>
+
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      id="account-enabled"
+                      name="accountEnabled"
+                      color="primary"
+                      checked={formik.values.accountEnabled}
+                      onChange={formik.handleChange}
+                    />
+                  )}
+                  label="Account Enabled"
+                />
+              </div>
+              <div>
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      id="password-reset-required"
+                      name="passwordResetRequired"
+                      color="primary"
+                      checked={formik.values.passwordResetRequired}
+                      onChange={formik.handleChange}
+                    />
+                  )}
+                  label="Password change on next login"
+                />
+              </div>
+
             </div>
           </CardContent>
-          <CardActions className={classes.cardActions}>
-            <ButtonGroup
-              color="primary"
-            >
-              <Button
-                variant="contained"
-                onClick={edit}
-              >
-                <EditOutlinedIcon/>
-              </Button>
-              { canImpersonate &&
-                <Button
-                  variant="outlined"
-                  onClick={impersonate}
-                >
-                  <GroupIcon/>
-                </Button>
-              }
-            </ButtonGroup>
-          </CardActions>
         </Card>
       </Container>
     </ThemeProvider>
