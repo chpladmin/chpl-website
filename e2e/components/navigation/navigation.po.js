@@ -9,7 +9,7 @@ class NavigationComponent {
   }
 
   get reportsToggle() {
-    return $(this.elementselements.reportsToggle);
+    return $(this.elements.reportsToggle);
   }
 
   get reports() {

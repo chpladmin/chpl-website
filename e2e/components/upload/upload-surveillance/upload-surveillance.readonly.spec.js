@@ -34,3 +34,14 @@ describe('when on administration upload page as admin', () => {
     expect(uploadSurveillanceComponent.root.isDisplayed()).toBe(true);
   });
 });
+
+describe('when on administration upload page as ACB', () => {
+  beforeEach(() => {
+    loginComponent.logIn('drummond');
+    hooks.waitForSpinnerToDisappear();
+  });
+
+  it('can see surveillance upload section', () => {
+    expect(uploadSurveillanceComponent.root.isDisplayed()).toBe(true);
+  });
+});

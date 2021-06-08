@@ -21,7 +21,6 @@ describe('when logged in', () => {
   describe('as an ACB', () => {
     beforeEach(() => {
       login.logIn('acb');
-      login.logoutButton.waitForDisplayed();
     });
 
     it('should have specific reports', () => {
@@ -44,7 +43,6 @@ describe('when logged in', () => {
   describe('as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
     });
 
     it('should have specific reports', () => {
@@ -84,7 +82,6 @@ describe('when logged in', () => {
   describe('as ONC-STAFF', () => {
     beforeEach(() => {
       login.logIn('oncstaff');
-      login.logoutButton.waitForDisplayed();
     });
 
     it('should have specific options under surveillance', () => {

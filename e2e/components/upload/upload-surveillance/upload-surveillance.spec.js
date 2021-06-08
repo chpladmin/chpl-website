@@ -3,8 +3,10 @@ import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../toast/toast.po';
 
-let hooks; let loginComponent; let toast; let
-  uploadSurveillanceComponent;
+let hooks;
+let loginComponent;
+let toast;
+let uploadSurveillanceComponent;
 
 beforeEach(async () => {
   uploadSurveillanceComponent = new UploadSurveillanceComponent();
