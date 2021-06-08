@@ -158,8 +158,8 @@ const dateUtilMock = {
   timestampToString: jest.fn(() => 'June 1, 2020'),
 };
 
-jest.mock('./nonconformity/nonconformity-view', () => () =><div data-testid="non-conformity-component" />);
-jest.mock('../../../util/criterion-title', () => () =><div>Criteria Title</div>);
+jest.mock('./nonconformity/nonconformity-view', () => () => <div data-testid="non-conformity-component" />);
+jest.mock('../../../util/criterion-title', () => () => <div>Criteria Title</div>);
 
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(dateUtilMock);
@@ -175,8 +175,8 @@ describe('the ChplSurveillanceView component', () => {
         surveillance={survWith1Nonconformity}
       />,
     );
-    const table = screen.getByTestId('surveillance-attributes-table');
-
+    const table = screen.getByLabelText('Surveillance Table');
+git
     await waitFor(() => {
       expect(table).toBeVisible();
     });

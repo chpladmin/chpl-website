@@ -64,7 +64,7 @@ function ChplSurveillanceView({ surveillance }) {
   return (
     <ThemeProvider theme={theme}>
       <TableContainer component={Paper}>
-        <Table size="small" aria-label="Surveillance Table" data-testid="surveillance-attributes-table">
+        <Table size="small" aria-label="Surveillance Table">
           <TableHead>
             <TableRow>
               <TableCell
