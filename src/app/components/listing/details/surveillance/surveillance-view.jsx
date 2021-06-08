@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
@@ -14,7 +13,9 @@ import {
 } from '@material-ui/core';
 
 import { ChplTooltip } from '../../../util/chpl-tooltip';
+/* eslint-disable import/no-cycle */
 import { getAngularService } from '.';
+/* eslint-enable import/no-cycle */
 import ChplCriterionTitle from '../../../util/criterion-title';
 import ChplSurveillanceNonconformity from './nonconformity/nonconformity-view';
 import surveillancePropType from '../../../../shared/prop-types/surveillance';
@@ -168,7 +169,7 @@ function ChplSurveillanceView({ surveillance }) {
           <div data-testid="non-conformity-component-container">
             { currentSurveillance.requirements.map((requirement) => (
               requirement.nonconformities.map((nonconformity) => (
-                <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component"/>
+                <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component" />
               ))
             ))}
           </div>
