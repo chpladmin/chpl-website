@@ -21,7 +21,6 @@ describe('On the 2015 Listing page', () => {
   describe('When ONC logged in', () => {
     beforeEach(async () => {
       login.logIn('onc');
-      hooks.waitForSpinnerToDisappear();
       page.editCertifiedProduct.click();
       hooks.waitForSpinnerToDisappear();
     });

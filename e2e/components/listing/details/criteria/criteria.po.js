@@ -63,12 +63,10 @@ class CriteriaComponent {
     if (this.uiUpgradeFlag()) {
       return $(`#criterion-id-${id}-header`);
     }
-    else {
-      if (cures) {
-        return $(`//*[@id="criteria_${criteria}_details_header_cures"]`);
-      }
-      return $(`//*[@id="criteria_${criteria}_details_header"]`);
+    if (cures) {
+      return $(`//*[@id="criteria_${criteria}_details_header_cures"]`);
     }
+    return $(`//*[@id="criteria_${criteria}_details_header"]`);
   }
 
   criteriaCount() {
