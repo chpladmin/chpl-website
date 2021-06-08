@@ -1,4 +1,4 @@
-export const JobsScheduledPageComponent = {
+const JobsScheduledPageComponent = {
   templateUrl: 'chpl.administration/jobs/scheduled/page.html',
   bindings: {
     acbs: '<',
@@ -7,17 +7,17 @@ export const JobsScheduledPageComponent = {
     triggers: '<',
   },
   controller: class JobsScheduledPageComponent {
-    constructor ($anchorScroll, $log, authService, networkService, toaster) {
+    constructor($anchorScroll, $log, networkService, toaster) {
       'ngInject';
+
       this.$anchorScroll = $anchorScroll;
       this.$log = $log;
       this.networkService = networkService;
-      this.hasAnyRole = authService.hasAnyRole;
       this.toaster = toaster;
       this.mode = 'view';
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.acbs && changes.acbs.currentValue) {
         this.acbs = angular.copy(changes.acbs.currentValue.acbs);
       }
@@ -32,45 +32,45 @@ export const JobsScheduledPageComponent = {
       }
     }
 
-    takeTriggerAction (action, data) {
+    takeTriggerAction(action, data) {
       this.activeTrigger = data;
       this.mode = 'editTrigger';
       this.isRecurring = true;
     }
 
-    takeJobAction (action, data) {
+    takeJobAction(action, data) {
       switch (action) {
-      case 'edit':
-        this.activeJob = data;
-        this.mode = 'editJob';
-        break;
-      case 'scheduleOneTime':
-        this.activeTrigger = {
-          job: data,
-        };
-        this.mode = 'editTrigger';
-        this.isRecurring = false;
-        break;
-      case 'scheduleRecurring':
-        this.activeTrigger = {
-          job: data,
-        };
-        this.mode = 'editTrigger';
-        this.isRecurring = true;
-        break;
-                //no default
+        case 'edit':
+          this.activeJob = data;
+          this.mode = 'editJob';
+          break;
+        case 'scheduleOneTime':
+          this.activeTrigger = {
+            job: data,
+          };
+          this.mode = 'editTrigger';
+          this.isRecurring = false;
+          break;
+        case 'scheduleRecurring':
+          this.activeTrigger = {
+            job: data,
+          };
+          this.mode = 'editTrigger';
+          this.isRecurring = true;
+          break;
+                // no default
       }
     }
 
-    cancel () {
+    cancel() {
       this.mode = 'view';
       this.errorMessage = undefined;
       this.activeJob = undefined;
       this.activeTrigger = undefined;
     }
 
-    saveJob (job) {
-      let that = this;
+    saveJob(job) {
+      const that = this;
       this.networkService.updateJob(job)
         .then(() => {
           that.toaster.pop({
@@ -80,14 +80,14 @@ export const JobsScheduledPageComponent = {
           });
           that.refreshJobs();
           that.cancel();
-        }, error => {
+        }, (error) => {
           that.errorMessage = error.data.error;
           that.$anchorScroll();
         });
     }
 
-    saveTrigger (trigger) {
-      let that = this;
+    saveTrigger(trigger) {
+      const that = this;
       if (this.isRecurring) {
         if (trigger.trigger.name) {
           this.networkService.updateScheduleTrigger(trigger.trigger)
@@ -99,7 +99,7 @@ export const JobsScheduledPageComponent = {
               });
               that.cancel();
               that.refreshTriggers();
-            }, error => {
+            }, (error) => {
               that.errorMessage = error.data.error;
               that.$anchorScroll();
             });
@@ -113,7 +113,7 @@ export const JobsScheduledPageComponent = {
               });
               that.cancel();
               that.refreshTriggers();
-            }, error => {
+            }, (error) => {
               that.errorMessage = error.data.error;
               that.$anchorScroll();
             });
@@ -128,15 +128,15 @@ export const JobsScheduledPageComponent = {
             });
             that.cancel();
             this.refreshSystemTriggers();
-          }, error => {
+          }, (error) => {
             that.errorMessage = error.data.error;
             that.$anchorScroll();
           });
       }
     }
 
-    deleteTrigger (trigger) {
-      let that = this;
+    deleteTrigger(trigger) {
+      const that = this;
       this.networkService.deleteScheduleTrigger(trigger)
         .then(() => {
           that.toaster.pop({
@@ -146,28 +146,30 @@ export const JobsScheduledPageComponent = {
           });
           that.cancel();
           that.refreshTriggers();
-        }, error => {
+        }, (error) => {
           that.errorMessage = error.data.error;
           that.$anchorScroll();
         });
     }
 
-    refreshJobs () {
-      let that = this;
-      this.networkService.getScheduleJobs().then(results => that.jobs = results.results);
+    refreshJobs() {
+      const that = this;
+      this.networkService.getScheduleJobs().then((results) => { that.jobs = results.results; });
     }
 
-    refreshTriggers () {
-      let that = this;
-      this.networkService.getScheduleTriggers().then(results => that.triggers = results.results);
+    refreshTriggers() {
+      const that = this;
+      this.networkService.getScheduleTriggers().then((results) => { that.triggers = results.results; });
     }
 
-    refreshSystemTriggers () {
-      let that = this;
-      this.networkService.getScheduledSystemJobs().then(results => that.scheduledSystemJobs = results.results);
+    refreshSystemTriggers() {
+      const that = this;
+      this.networkService.getScheduledSystemJobs().then((results) => { that.scheduledSystemJobs = results.results; });
     }
   },
 };
 
 angular.module('chpl.administration')
   .component('chplJobsScheduledPage', JobsScheduledPageComponent);
+
+export default JobsScheduledPageComponent;

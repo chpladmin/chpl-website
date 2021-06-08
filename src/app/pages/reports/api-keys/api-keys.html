@@ -1,4 +1,4 @@
-<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
+<div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
   <div class="row">
     <div class="col-sm-12">
       <h3>Api Key Management</h3>
@@ -86,13 +86,5 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>
-<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">
-  <div class="col-md-6 col-md-offset-3 jumbotron">
-    <chpl-login form-class=""
-                p-class="bg-success lead"
-                p-class-fail="bg-danger lead">
-    </chpl-login>
   </div>
 </div>
