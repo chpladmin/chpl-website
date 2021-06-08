@@ -8,7 +8,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   Container,
-  Grid,
   Paper,
   Table,
   TableBody,
@@ -27,6 +26,12 @@ import surveillancePropType from '../../../../../shared/prop-types/surveillance'
 import theme from '../../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
+  nonconformityAccordionSummaryGrid: {
+    display: 'grid',
+    gridTemplateColumns: '3fr 1fr',
+    gridRowGap: '8px',
+    width: '100%',
+  },
   nonconformityAccordion: {
     backgroundColor: '#f9f9f9',
     borderRadius: '8px',
@@ -57,15 +62,15 @@ function ChplNonconformityView(props) {
           expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
           data-testid="nonconformity-accordion-header"
         >
-          <Grid container spacing={4}>
-            <Grid item xs={9}>
+          <div className={classes.nonconformityAccordionSummaryGrid}>
+            <div>
               <ChplCriterionTitle criterion={currentNonconformity.criterion} />
               { ` ${currentRequirement.result.name}` }
-            </Grid>
-            <Grid item xs={3} className={classes.nonconformityAccordionSummaryStatus}>
+            </div>
+            <div className={classes.nonconformityAccordionSummaryStatus}>
               { currentNonconformity.status.name }
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         </AccordionSummary>
         <AccordionDetails>
           <Container>
