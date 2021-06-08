@@ -45,9 +45,6 @@ const ListingEditPageComponent = {
       if (this.isOn('optional-standards')) {
         this.resources.testStandards.listingEdition = this.listingDetails.certificationEdition.name;
       }
-      if (this.isOn('optional-standards') && this.listingDetails.certificationEdition.name === '2015') {
-        this.resources.testStandards.data = [];
-      }
       this.resources.testStandards.data = this.resources.testStandards.data.filter((item) => !item.year || item.year === this.listingDetails.certificationEdition.name);
     }
 
