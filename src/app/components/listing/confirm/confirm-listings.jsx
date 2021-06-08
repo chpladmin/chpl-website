@@ -1,14 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { bool, func } from 'prop-types';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { Button, Checkbox, makeStyles } from '@material-ui/core';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
-import Paper from '@material-ui/core/Paper';
+import {
+  Button,
+  Checkbox,
+  Chip,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableRow,
+  ThemeProvider,
+  makeStyles,
+} from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -35,10 +40,6 @@ function ChplConfirmListings (props) {
   const toaster = getAngularService('toaster');
   const classes = useStyles();
 
-  useEffect(() => {
-    loadListings();
-  }, [loadListings]);
-
   const loadListings = useCallback(() => {
     networkService.getPendingListings(props.beta).then(response => {
       setListings(response);
@@ -49,19 +50,29 @@ function ChplConfirmListings (props) {
     });
   }, [networkService, props.beta]);
 
+  useEffect(() => {
+    loadListings();
+  }, [loadListings]);
+
+  const canProcess = listing => {
+    return listing.errorCount !== null && listing.errorCount !== -1 && listing.warningCount !== null && listing.warningCount !== -1 && !listing.processing;
+  }
+
   const getStatus = listing => {
+    if (listing.errorCount === null || listing.warningCount === null || listing.processing) {
+      return <CircularProgress />
+    }
+    if (listing.errorCount === -1 && listing.warningCount === -1) {
+      return <Chip
+               label="Processing error"
+               className={ classes.deleteButton }
+             />
+    }
     return (
       <>
-        { listing.errorCount !== null && listing.warningCount !== null && !listing.processing
-          ? <>
-              { listing.errorCount + ' error' + (listing.errorCount !== 1 ? 's' : '') }
-              <br />
-              { listing.warningCount + ' warning' + (listing.warningCount !== 1 ? 's' : '') }
-            </>
-          : <>
-              <CircularProgress />
-            </>
-        }
+        { listing.errorCount + ' error' + (listing.errorCount !== 1 ? 's' : '') }
+        <br />
+        { listing.warningCount + ' warning' + (listing.warningCount !== 1 ? 's' : '') }
       </>
     );
   };
@@ -209,7 +220,7 @@ function ChplConfirmListings (props) {
                                   variant="contained"
                                   onClick={() => handleProcess(listing)}
                                   endIcon={ <PlayArrowIcon/> }
-                                  disabled={ listing.errorCount === null || listing.warningCount === null || listing.processing }>
+                                  disabled={ !canProcess(listing) }>
                             Process Listing
                           </Button>
                         </TableCell>
@@ -242,5 +253,9 @@ export { ChplConfirmListings };
 
 ChplConfirmListings.propTypes = {
   beta: bool,
-  onProcess: func,
+  onProcess: func.isRequired,
 };
+
+ChplConfirmListings.defaultProps = {
+  beta: false,
+}
