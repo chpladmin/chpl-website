@@ -39,12 +39,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplNonconformityView({ surveillance, requirement, nonconformity }) {
+function ChplNonconformityView(props) {
+  /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const currentSurveillance = useState(surveillance)[0];
-  const currentRequirement = useState(requirement)[0];
-  const currentNonconformity = useState(nonconformity)[0];
+  const [currentSurveillance] = useState(props.surveillance);
+  const [currentRequirement] = useState(props.requirement);
+  const [currentNonconformity] = useState(props.nonconformity);
   const dateFormat = 'MMM d, y';
+  /* eslint-enable react/destructuring-assignment */
 
   const classes = useStyles();
 
@@ -61,7 +63,7 @@ function ChplNonconformityView({ surveillance, requirement, nonconformity }) {
               { ` ${currentRequirement.result.name}` }
             </Grid>
             <Grid item xs={3} className={classes.nonconformityAccordionSummaryStatus}>
-              { nonconformity.status.name }
+              { currentNonconformity.status.name }
             </Grid>
           </Grid>
         </AccordionSummary>
