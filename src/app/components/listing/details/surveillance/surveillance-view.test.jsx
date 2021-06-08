@@ -176,7 +176,7 @@ describe('the ChplSurveillanceView component', () => {
       />,
     );
     const table = screen.getByLabelText('Surveillance Table');
-git
+
     await waitFor(() => {
       expect(table).toBeVisible();
     });

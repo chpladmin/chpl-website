@@ -124,7 +124,7 @@ function ChplSurveillanceView({ surveillance }) {
                     <ul className={classes.unindentedData}>
                       { currentSurveillance.requirements.map((req) => (
                         <li key={req.id}>
-                          { `${req.type.name} ${req.criterion ? ': ' : ''}` }
+                          { `${req.type.name} ${req.criterion && ': '}` }
                           <ChplCriterionTitle criterion={req.criterion} useRemovedClass />
                         </li>
                       ))}

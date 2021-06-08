@@ -10,4 +10,4 @@ const address = shape({
   zipcode: string,
 });
 
-export default { address };
+export default address;
