@@ -1,76 +1,77 @@
 import LoginComponent from './login.po';
 import Hooks from '../../utilities/hooks';
 
-let component, hooks;
+let component;
+let hooks;
 
-beforeEach(async () => {
-  component = new LoginComponent();
-  hooks = new Hooks();
-  await hooks.open('#/resources/overview');
-});
-
-describe('when logging in', () => {
-  afterEach(() => {
-    component.logOut();
+describe('the new login component', () => {
+  beforeEach(async () => {
+    component = new LoginComponent();
+    hooks = new Hooks();
+    await hooks.open('#/login');
   });
 
-  it('should be able to log in as drummond ACB', () => {
-    component.logIn('drummond');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA Drummond');
-  });
+  describe('when logging in', () => {
+    afterEach(() => {
+      component.logOut();
+    });
 
-  it('should be able to log in as ONC', () => {
-    component.logIn('onc');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA ONC');
-  });
+    it('should be able to log in as drummond ACB', () => {
+      component.logIn('drummond');
+      expect(component.getLoggedInUserName()).toBe('AQA Drummond');
+    });
 
-  it('should be able to log in as ADMIN', () => {
-    component.logIn('admin');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA Admin');
-  });
+    it('should be able to log in as ONC', () => {
+      component.logIn('onc');
+      expect(component.getLoggedInUserName()).toBe('AQA ONC');
+    });
 
-  it('should be able to log in as ADMIN with an email address', () => {
-    component.logInWithEmail('admin');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA Admin');
-  });
-
-  it('should be able to log in as ONC with an email address', () => {
-    component.logInWithEmail('onc');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA ONC');
-  });
-
-  it('should be able to log in as drummond ACB with an email address', () => {
-    component.logInWithEmail('drummond');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA Drummond');
-  });
-
-  it('should be able to log in as ONC_STAFF with an email address', () => {
-    component.logInWithEmail('oncstaff');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA ONC Staff');
-  });
-
-  xit('should be able to log in as developer with an email address', () => {
-    component.logInWithEmail('developer');
-    component.logoutButton.waitForDisplayed();
-    expect(component.toggleLoginComponent.getText()).toBe('AQA Developers');
-  });
-});
-
-describe('when logging out', () => {
-  beforeEach(() => {
-    component.logIn('acb');
-    component.toggleLoginComponent.click();
+    it('should be able to log in as ADMIN', () => {
+      component.logIn('admin');
+      expect(component.getLoggedInUserName()).toBe('AQA Admin');
+    });
   });
 
   it('should be able to log out', () => {
+    component.logIn('onc');
+    expect(component.getLoggedInUserName()).toBe('AQA ONC');
     component.logOut();
-    expect(component.loginButton).toBeDisplayed();
+    expect(component.getLoggedInUserName()).toBe('Administrator Login');
+  });
+});
+
+describe('the legacy login component', () => {
+  beforeEach(async () => {
+    component = new LoginComponent();
+    hooks = new Hooks();
+    await hooks.open('#/resources/overview');
+  });
+
+  describe('when logging in', () => {
+    afterEach(() => {
+      component.logOut();
+    });
+
+    it('should be able to log in as drummond ACB', () => {
+      component.logIn('drummond');
+      expect(component.getLoggedInUserName()).toBe('AQA Drummond');
+    });
+
+    it('should be able to log in as ONC', () => {
+      component.logIn('onc');
+      expect(component.getLoggedInUserName()).toBe('AQA ONC');
+    });
+
+    it('should be able to log in as ADMIN', () => {
+      component.logIn('admin');
+      expect(component.getLoggedInUserName()).toBe('AQA Admin');
+    });
+  });
+
+  it('should be able to log out', () => {
+    component.logIn('onc');
+    expect(component.getLoggedInUserName()).toBe('AQA ONC');
+    component.logOut();
+    expect(component.getLoggedInUserName()).toBe('Administrator Login');
   });
 });

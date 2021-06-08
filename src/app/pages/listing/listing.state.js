@@ -42,7 +42,6 @@ const states = [{
       ]).then(() => resources);
     },
   },
-  data: { title: 'CHPL Listing Details' },
 }, {
   name: 'listing.view',
   url: '/view',
@@ -52,7 +51,10 @@ const states = [{
   name: 'listing.view.edit',
   url: '/edit',
   component: 'chplListingEditPage',
-  data: { title: 'CHPL Listing Details - Edit' },
+  data: {
+    title: 'CHPL Listing Details - Edit',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
 }, {
   name: 'product',
   url: '/product/{id}',

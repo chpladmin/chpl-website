@@ -3,12 +3,21 @@ import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state'
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state';
 import listingStates from './pages/listing/listing.state';
-import { organizationsStatesConfig as organizationsStates } from './pages/organizations/organizations.state';
+import organizationsStates from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
-import { reportsStatesConfig as reportsStates } from './pages/reports/reports.state';
-import { resourcesStatesConfig as resourcesStates } from './pages/resources/resources.state';
-import { surveillanceStatesConfig as surveillanceStates } from './pages/surveillance/surveillance.state';
-import { usersStatesConfig as usersStates } from './pages/users/users.state';
+import reportsStates from './pages/reports/reports.state';
+import resourcesStates from './pages/resources/resources.state';
+import surveillanceStates from './pages/surveillance/surveillance.state';
+import usersStates from './pages/users/users.state';
+
+/** @ngInject */
+function otherwise($injector, $location) {
+  const $state = $injector.get('$state');
+  const target = $location.url();
+  $state.go('not-found', {
+    target,
+  });
+}
 
 (() => {
   function routeConfig($stateProvider, $urlRouterProvider) {
@@ -17,13 +26,12 @@ import { usersStatesConfig as usersStates } from './pages/users/users.state';
         url: '/search',
         controller: 'SearchController',
         controllerAs: 'vm',
-        /* eslint-disable global-require */
-        template: require('./pages/search/search.html'),
-        /* eslint-enable global-require */
+        template: require('./pages/search/search.html'), // eslint-disable-line global-require
         data: { title: 'CHPL Search' },
       });
-
-    $urlRouterProvider.otherwise('/search');
+    $urlRouterProvider.when('', '/search');
+    $urlRouterProvider.when('/', '/search');
+    $urlRouterProvider.otherwise(otherwise);
   }
 
   angular
