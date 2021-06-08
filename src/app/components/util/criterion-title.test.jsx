@@ -4,9 +4,6 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
-//import { when } from 'jest-when';
-//import userEvent from '@testing-library/user-event';
-//import * as angularReactHelper from '../../../../../services/angular-react-helper';
 import ChplCriterionTitle from './criterion-title';
 
 describe('when rendering ChplCriterionTitle component', () => {
