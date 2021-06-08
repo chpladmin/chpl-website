@@ -1,4 +1,4 @@
-export const CertificationCriteriaEditComponent = {
+const CertificationCriteriaEditComponent = {
   templateUrl: 'chpl.components/listing/details/criteria/edit.html',
   bindings: {
     resolve: '<',
@@ -6,8 +6,9 @@ export const CertificationCriteriaEditComponent = {
     dismiss: '&',
   },
   controller: class CertificationCriteriaEditController {
-    constructor ($filter, $log, authService, featureFlags, utilService, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+    constructor($filter, $log, authService, featureFlags, utilService, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
@@ -23,67 +24,66 @@ export const CertificationCriteriaEditComponent = {
       this.CertificationResultSvap = CertificationResultSvap;
     }
 
-    $onInit () {
+    $onInit() {
       this.cert = angular.copy(this.resolve.cert);
       this.hasIcs = this.resolve.hasIcs;
       this.isConfirming = this.resolve.isConfirming;
       this.resources = angular.copy(this.resolve.resources);
       this.options = [
-        {name: 'True', value: true},
-        {name: 'False', value: false},
+        { name: 'True', value: true },
+        { name: 'False', value: false },
       ];
       this.yesNo = [
-        {name: 'Yes', value: true},
-        {name: 'No', value: false},
+        { name: 'Yes', value: true },
+        { name: 'No', value: false },
       ];
       this.allMeasures = [
-        {abbreviation: 'MD'},
-        {abbreviation: 'LP'},
+        { abbreviation: 'MD' },
+        { abbreviation: 'LP' },
       ];
       this.cert.metViaAdditionalSoftware = this.cert.additionalSoftware && this.cert.additionalSoftware.length > 0;
       this.certSave = angular.copy(this.cert);
 
-      this.selectedTestDataKeys = this._getSelectedTestDataKeys();
-      this.selectedTestFunctionalityKeys = this._getSelectedTestFunctionalityKeys();
-      this.selectedTestProcedureKeys = this._getSelectedTestProcedureKeys();
-      this.selectedOptionalStandardKeys = this._getSelectedOptionalStandardKeys();
-      this.selectedTestStandardKeys = this._getSelectedTestStandardKeys();
-      this.newTestStandards = this._getNewTestStandards();
-      this.selectedTestToolKeys = this._getSelectedTestToolKeys();
-      this.sortedTestFunctionalities = this._getSortedTestFunctionalities();
-      this.selectedSvapKeys = this._getSelectedSvapKeys();
-      this._setAvailableTestValues();
-      this._setTestToolDropDownText();
-      this._setSvapDisplayText();
+      this.selectedTestDataKeys = this.getSelectedTestDataKeys();
+      this.selectedTestFunctionalityKeys = this.getSelectedTestFunctionalityKeys();
+      this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
+      this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
+      this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
+      this.newTestStandards = this.getNewTestStandards();
+      this.selectedTestToolKeys = this.getSelectedTestToolKeys();
+      this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
+      this.selectedSvapKeys = this.getSelectedSvapKeys();
+      this.setAvailableTestValues();
+      this.setTestToolDropDownText();
+      this.setSvapDisplayText();
     }
 
-    cancel () {
+    cancel() {
       this.cert = angular.copy(this.certSave);
       this.dismiss();
     }
 
-    canEdit () {
+    canEdit() {
       return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
         || !this.cert.criterion.removed; // ROLE_ACB can only edit when not removed criteria
     }
 
-    isToolDisabled (tool) {
+    isToolDisabled(tool) {
       if (this.isConfirming) {
         return tool.retired && !this.hasIcs;
-      } else {
-        return false;
       }
+      return false;
     }
 
-    save () {
-      this.close({$value: this.cert});
+    save() {
+      this.close({ $value: this.cert });
     }
 
-    svapOnChange (action) {
+    svapOnChange(action) {
       switch (action.action) {
         case 'Remove':
           this.cert.svaps = this.cert.svaps
-            .filter(svap => svap.svapId !== action.item.item.svapId);
+            .filter((svap) => svap.svapId !== action.item.item.svapId);
           break;
         case 'Add':
           this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
@@ -92,11 +92,11 @@ export const CertificationCriteriaEditComponent = {
       }
     }
 
-    testDataOnChange (action) {
+    testDataOnChange(action) {
       switch (action.action) {
         case 'Remove':
           this.cert.testDataUsed = this.cert.testDataUsed
-            .filter(crtd => !(crtd.testData.id === action.item.item.id
+            .filter((crtd) => !(crtd.testData.id === action.item.item.id
                               && crtd.version === action.item.additionalInputValue
                               && crtd.alteration === action.item.additionalInput2Value));
           break;
@@ -104,17 +104,17 @@ export const CertificationCriteriaEditComponent = {
           this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
           break;
         case 'Edit':
-          this.cert.testDataUsed = action.item.map(i => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
+          this.cert.testDataUsed = action.item.map((i) => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
           break;
           // no default
       }
     }
 
-    testFunctionalityOnChange (action) {
+    testFunctionalityOnChange(action) {
       switch (action.action) {
         case 'Remove':
           this.cert.testFunctionality = this.cert.testFunctionality
-            .filter(crtf => crtf.testFunctionalityId !== action.item.item.id);
+            .filter((crtf) => crtf.testFunctionalityId !== action.item.item.id);
           break;
         case 'Add':
           this.cert.testFunctionality.push(new this.CertificationResultTestFunctionality(action.item.item));
@@ -123,39 +123,39 @@ export const CertificationCriteriaEditComponent = {
       }
     }
 
-    testProceduresOnChange (action) {
+    testProceduresOnChange(action) {
       switch (action.action) {
         case 'Remove':
           this.cert.testProcedures = this.cert.testProcedures
-            .filter(crtp => !(crtp.testProcedure.id === action.item.item.id
+            .filter((crtp) => !(crtp.testProcedure.id === action.item.item.id
                               && crtp.testProcedureVersion === action.item.additionalInputValue));
           break;
         case 'Add':
           this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
           break;
         case 'Edit':
-          this.cert.testProcedures = action.item.map(i => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
+          this.cert.testProcedures = action.item.map((i) => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
           break;
           // no default
       }
     }
 
-    optionalStandardOnChange (action) {
+    optionalStandardOnChange(action) {
       switch (action.action) {
         case 'Remove':
-          this.cert.optionalStandards = this.cert.optionalStandards.filter(cros => cros.optionalStandard.id !== action.item.item.id);
+          this.cert.optionalStandards = this.cert.optionalStandards.filter((cros) => cros.optionalStandard.id !== action.item.item.id);
           break;
         case 'Add':
-          this.cert.optionalStandards.push({optionalStandard: new this.CertificationResultOptionalStandard(action.item.item)});
+          this.cert.optionalStandards.push({ optionalStandard: new this.CertificationResultOptionalStandard(action.item.item) });
           break;
         default:
       }
     }
 
-    testStandardOnChange (action) {
+    testStandardOnChange(action) {
       switch (action.action) {
         case 'Remove':
-          this.cert.testStandards = this.cert.testStandards.filter(crts => {
+          this.cert.testStandards = this.cert.testStandards.filter((crts) => {
             if (action.item.item.id === 'newItem') {
               return crts.testStandardName !== action.item.item.name;
             }
@@ -169,142 +169,141 @@ export const CertificationCriteriaEditComponent = {
       }
     }
 
-    testToolsOnChange (action) {
+    testToolsOnChange(action) {
       switch (action.action) {
         case 'Remove':
           this.cert.testToolsUsed = this.cert.testToolsUsed
-            .filter(crtt => !(crtt.testToolId === action.item.item.id
+            .filter((crtt) => !(crtt.testToolId === action.item.item.id
                               && crtt.testToolVersion === action.item.additionalInputValue));
           break;
         case 'Add':
           this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
           break;
         case 'Edit':
-          this.cert.testToolsUsed = action.item.map(i => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
+          this.cert.testToolsUsed = action.item.map((i) => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
           break;
           // no default
       }
     }
 
-    testToolValidation (item) {
-      var validation = {};
+    testToolValidation(item) {
+      const validation = {};
       validation.valid = true;
       validation.errors = [];
       validation.warnings = [];
       if (this.isConfirming) {
         if (item.retired && !this.hasIcs) {
           validation.valid = false;
-          validation.errors.push(item.name + ' is retired.  Retired test tools are only valid if the Certified Product carries ICS.');
+          validation.errors.push(`${item.name} is retired.  Retired test tools are only valid if the Certified Product carries ICS.`);
         }
-      } else {
-        if (item.retired) {
-          validation.valid = false;
-          validation.warnings.push(item.name + ' is retired. Please ensure it is appropriate to use it.');
-        }
+      } else if (item.retired) {
+        validation.valid = false;
+        validation.warnings.push(`${item.name} is retired. Please ensure it is appropriate to use it.`);
       }
       return validation;
     }
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
     // setup helper functions
-    _getSelectedSvapKeys () {
+    getSelectedSvapKeys() {
       if (!this.cert.svaps) {
         return [];
       }
-      return this.cert.svaps.map(s => ({key: s.svapId}));
+      return this.cert.svaps.map((s) => ({ key: s.svapId }));
     }
 
-    _getSelectedTestDataKeys () {
+    getSelectedTestDataKeys() {
       if (!this.cert.testDataUsed) {
         return [];
       }
-      return this.cert.testDataUsed.map(td => ({
+      return this.cert.testDataUsed.map((td) => ({
         key: td.testData.id,
         additionalInputValue: td.version,
         additionalInput2Value: td.alteration,
       }));
     }
 
-    _getSelectedTestFunctionalityKeys () {
+    getSelectedTestFunctionalityKeys() {
       if (!this.cert.testFunctionality) {
         return [];
       }
-      return this.cert.testFunctionality.map(tf => ({key: tf.testFunctionalityId}));
+      return this.cert.testFunctionality.map((tf) => ({ key: tf.testFunctionalityId }));
     }
 
-    _getSelectedTestProcedureKeys () {
+    getSelectedTestProcedureKeys() {
       if (!this.cert.testProcedures) {
         return [];
       }
-      return this.cert.testProcedures.map(tp => ({
+      return this.cert.testProcedures.map((tp) => ({
         key: tp.testProcedure.id,
         additionalInputValue: tp.testProcedureVersion,
       }));
     }
 
-    _getSelectedOptionalStandardKeys () {
+    getSelectedOptionalStandardKeys() {
       if (!this.cert.optionalStandards) {
         return [];
       }
       return this.cert.optionalStandards
-        .filter(os => os.optionalStandard.id)
-        .map(os => ({key: os.optionalStandard.id}));
+        .filter((os) => os.optionalStandard.id)
+        .map((os) => ({ key: os.optionalStandard.id }));
     }
 
-    _getSelectedTestStandardKeys () {
+    getSelectedTestStandardKeys() {
       if (!this.cert.testStandards) {
         return [];
       }
       const keys = this.cert.testStandards
-            .filter(ts => ts.testStandardId)
-            .map(ts => ({key: ts.testStandardId}));
+        .filter((ts) => ts.testStandardId)
+        .map((ts) => ({ key: ts.testStandardId }));
       if (this.isOn('optional-standards') && this.resources.testStandards.listingEdition === '2015') {
         this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => keys.find((k) => k.key === ts.id));
       }
       return keys;
     }
 
-    _getNewTestStandards () {
+    getNewTestStandards() {
       if (!this.cert.testStandards) {
         return [];
       }
       return this.cert.testStandards
-        .filter(ts => !ts.testStandardId)
-        .map(ts => ts.testStandardName);
+        .filter((ts) => !ts.testStandardId)
+        .map((ts) => ts.testStandardName);
     }
 
-    _getSelectedTestToolKeys () {
+    getSelectedTestToolKeys() {
       if (!this.cert.testToolsUsed) {
         return [];
       }
-      return this.cert.testToolsUsed.map(tt => ({
+      return this.cert.testToolsUsed.map((tt) => ({
         key: tt.testToolId,
         additionalInputValue: tt.testToolVersion,
       }));
     }
 
-    _getSortedTestFunctionalities () {
+    getSortedTestFunctionalities() {
       return this.$filter('orderBy')(this.cert.allowedTestFunctionalities, 'name');
     }
 
-    _setAvailableTestValues () {
-      let number = this.cert.number;
-      let title = this.cert.title;
-      this.availableTestData = this.resources.testData.data.filter(item => item.criteria.number === number && item.criteria.title === title);
-      this.availableTestProcedures = this.resources.testProcedures.data.filter(item => item.criteria.number === number && item.criteria.title === title);
+    setAvailableTestValues() {
+      const { number } = this.cert;
+      const { title } = this.cert;
+      this.availableTestData = this.resources.testData.data.filter((item) => item.criteria.number === number && item.criteria.title === title);
+      this.availableTestProcedures = this.resources.testProcedures.data.filter((item) => item.criteria.number === number && item.criteria.title === title);
     }
 
-    _setSvapDisplayText () {
+    setSvapDisplayText() {
       if (Array.isArray(this.cert.allowedSvaps)) {
-        this.cert.allowedSvaps = this.cert.allowedSvaps.map(svap => ({...svap, displayText: (svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation + ' ' + svap.approvedStandardVersion}));
+        this.cert.allowedSvaps = this.cert.allowedSvaps.map((svap) => ({ ...svap, displayText: `${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}` }));
       }
     }
 
-    _setTestToolDropDownText () {
-      this.resources.testTools.data.forEach(tt => {
-        tt.dropDownText = tt.name + (tt.retired ? ' (Retired)' : '');
-      });
+    setTestToolDropDownText() {
+      this.resources.testTools.data.map((tt) => ({
+        ...tt,
+        dropDownText: tt.name + (tt.retired ? ' (Retired)' : ''),
+      }));
     }
   },
 };
@@ -312,3 +311,5 @@ export const CertificationCriteriaEditComponent = {
 angular
   .module('chpl.components')
   .component('chplCertificationCriteriaEdit', CertificationCriteriaEditComponent);
+
+export default CertificationCriteriaEditComponent;
