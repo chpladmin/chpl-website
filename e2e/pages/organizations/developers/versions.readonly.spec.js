@@ -4,7 +4,11 @@ import LoginComponent from '../../../components/login/login.po';
 import ActionBarComponent from '../../../components/action-bar/action-bar.po';
 import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
 
-let actionBar, actionConfirmation, hooks, login, page;
+let actionBar;
+let actionConfirmation;
+let hooks;
+let login;
+let page;
 
 describe('the Version part of the Developers page', () => {
   beforeEach(async () => {
@@ -21,7 +25,6 @@ describe('the Version part of the Developers page', () => {
   describe('when logged in as an Admin', () => {
     beforeEach(() => {
       login.logIn('admin');
-      login.logoutButton.waitForDisplayed();
     });
 
     afterEach(() => {
@@ -29,8 +32,8 @@ describe('the Version part of the Developers page', () => {
     });
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
-
-      let newVersion, product, timestamp, version;
+      let newVersion; let product; let timestamp; let
+        version;
       beforeEach(() => {
         const developer = 'Greenway Health, LLC';
         timestamp = (new Date()).getTime();
@@ -46,11 +49,11 @@ describe('the Version part of the Developers page', () => {
         const name = 'Greenway Intergy Meaningful Use Edition';
         beforeEach(() => {
           version = 'v11';
-          newVersion = version + ' - ' + timestamp;
+          newVersion = `${version} - ${timestamp}`;
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           page.selectVersion(product, productId, version);
         });
 
@@ -62,9 +65,9 @@ describe('the Version part of the Developers page', () => {
           actionConfirmation.yes.click();
           page.productsHeader.waitForDisplayed();
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
           expect(page.getActiveVersion(product, productId)).toHaveTextContaining(version);
         });
 
@@ -80,16 +83,15 @@ describe('the Version part of the Developers page', () => {
         const name = 'MediaDent 10.0 using Intergy v9';
         beforeEach(() => {
           product = page.getProduct(name);
-          product.scrollIntoView({block: 'center', inline: 'center'});
+          product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
-          page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
         it('should not have split version button as this product has only one listing', () => {
           expect(page.getSplitButton(product)).not.toExist();
         });
       });
-
     });
 
     describe('when on the "GetWellNetwork" Developer page, looking at "CareNavigator" Product', () => {
@@ -104,9 +106,9 @@ describe('the Version part of the Developers page', () => {
         page.getDeveloperPageTitle(developer).waitForDisplayed();
         page.selectAllCertificationStatus();
         product = page.getProduct(productName);
-        product.scrollIntoView({block: 'center', inline: 'center'});
+        product.scrollIntoView({ block: 'center', inline: 'center' });
         page.selectProduct(product);
-        page.getProductInfo(product).waitForDisplayed({timeout: 55000});
+        page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
       });
 
       it('should have a split for the Version, but not the Product, for a Product that has only one Version, with two Listings', () => {

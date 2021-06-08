@@ -1,10 +1,11 @@
-export const AdministrationComponent = {
+const AdministrationComponent = {
   templateUrl: 'chpl.administration/administration.html',
   bindings: {
   },
   controller: class AdministrationComponent {
-    constructor ($log, authService) {
+    constructor($log, authService) {
       'ngInject';
+
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
     }
@@ -13,3 +14,5 @@ export const AdministrationComponent = {
 
 angular.module('chpl.administration')
   .component('chplAdministration', AdministrationComponent);
+
+export default AdministrationComponent;
