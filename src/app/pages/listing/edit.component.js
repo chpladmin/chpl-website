@@ -8,11 +8,12 @@ export const ListingEditPageComponent = {
     resources: '<',
   },
   controller: class ListingEditPageComponent {
-    constructor ($log, $q, $state, networkService) {
+    constructor ($log, $q, $state, featureFlags, networkService) {
       'ngInject';
       this.$log = $log;
       this.$q = $q;
       this.$state = $state;
+      this.isOn = featureFlags.isOn;
       this.errors = {
         basic: [],
         details: [],
@@ -24,7 +25,6 @@ export const ListingEditPageComponent = {
         save: [],
       };
       this.networkService = networkService;
-      this.resources = {};
     }
 
     $onChanges (changes) {
@@ -33,8 +33,21 @@ export const ListingEditPageComponent = {
         this.listingDetails = angular.copy(changes.listing.currentValue);
       }
       if (changes.resources) {
-        this.resources = changes.resources.currentValue;
+        this.resources = angular.copy(changes.resources.currentValue);
       }
+      if (this.listingDetails && this.resources) {
+        this.prepareResources();
+      }
+    }
+
+    prepareResources () {
+      if (this.isOn('optional-standards')) {
+        this.resources.testStandards.listingEdition = this.listingDetails.certificationEdition.name;
+      }
+      if (this.listingDetails.certificationEdition.name === '2015' && this.isOn('optional-standards')) {
+        this.resources.testStandards.data = [];
+      }
+      this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listingDetails.certificationEdition.name);
     }
 
     cancel () {

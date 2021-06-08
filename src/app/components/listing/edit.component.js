@@ -57,18 +57,11 @@ export const ListingEditComponent = {
       this.listing.certificationEvents = this.listing.certificationEvents.map(ce => {
         ce.statusDateObject = new Date(ce.eventDate);
         return ce;
-        //ce.status = this.utilService.findModel(ce.status, this.resources.statuses);
       });
 
       this.listing.practiceType = this.utilService.findModel(this.listing.practiceType, this.resources.practices);
       this.listing.classificationType = this.utilService.findModel(this.listing.classificationType, this.resources.classifications);
       this.listing.certifyingBody = this.utilService.findModel(this.listing.certifyingBody, this.resources.bodies);
-      /*
-            if (this.listing.testingLab) {
-                this.listing.testingLab = this.utilService.findModel(this.listing.testingLab, this.resources.testingLabs);
-            }
-            */
-      this.resources.testStandards.data = this.resources.testStandards.data.filter(item => !item.year || item.year === this.listing.certificationEdition.name);
       if (this.listing.rwtPlansCheckDate) {
         this.listing.rwtPlansCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlansCheckDate));
       }
