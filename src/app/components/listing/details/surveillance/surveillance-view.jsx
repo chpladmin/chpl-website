@@ -35,19 +35,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const getSurveillanceResults = (surv) => {
-  const results = [];
-  surv.requirements.forEach((req) => req.nonconformities.forEach((nc) => {
-    const result = {
-      id: req.id,
-      statusName: nc.status.name,
-      criterion: req.criterion,
-      requirement: req.requirement,
-    };
-    results.push(result);
-  }));
-  return results;
-};
+const getSurveillanceResults = (surv) => surv.requirements.map((req) => req.nonconformities.map((nc) => ({
+  id: req.id,
+  statusName: nc.status.name,
+  criterion: req.criterion,
+  requirement: req.requirement,
+})))
+  .flat();
 
 function ChplSurveillanceView({ surveillance }) {
   const DateUtil = getAngularService('DateUtil');
