@@ -3,7 +3,7 @@ import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplEllipsis } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
-import { ChplUserEdit, ChplUserView } from './user';
+import { ChplUserEdit, ChplUserInvite, ChplUserView } from './user';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
 angular
@@ -32,5 +32,6 @@ angular
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
   .component('chplUserEditBridge', reactToAngularComponent(ChplUserEdit))
+  .component('chplUserInviteBridge', reactToAngularComponent(ChplUserInvite))
   .component('chplUserViewBridge', reactToAngularComponent(ChplUserView))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance));

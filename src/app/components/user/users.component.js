@@ -82,30 +82,15 @@ export const UsersComponent = {
                 that.takeAction({action: 'impersonate'});
               });
           });
-        break;
-                //no default
+          break;
+        case 'invite':
+          this.takeAction({action: 'invite', data: data});
+          break;
+          //no default
       }
       if (react) {
         this.$scope.$apply();
       }
-    }
-
-    inviteUser () {
-      let invitation = {
-        email: this.inviteEmail,
-        role: this.newRole,
-      };
-      this.takeAction({action: 'invite', data: invitation});
-      this.inviteEmail = undefined;
-      if (this.roles && this.roles.length === 1) {
-        this.newRole = this.roles[0];
-      } else {
-        this.newRole = undefined;
-      }
-      this.form.$setPristine();
-      this.form.$setUntouched();
-      this.showFormErrors = false;
-      this.invitationOpen = false;
     }
 
     filter () {

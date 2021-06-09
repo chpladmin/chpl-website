@@ -48,9 +48,9 @@ const validationSchema = yup.object({
 function ChplUserEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [user] = useState(props.user);
-  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
+  const classes = useStyles();
   let formik;
 
   const cancel = () => {
