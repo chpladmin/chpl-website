@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   func,
-} from 'prop-types'; // eslint-disable-line import/no-extraneous-dependencies
+} from 'prop-types';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
