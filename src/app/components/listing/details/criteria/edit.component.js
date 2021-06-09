@@ -300,7 +300,7 @@ const CertificationCriteriaEditComponent = {
     }
 
     setTestToolDropDownText() {
-      this.resources.testTools.data.map((tt) => ({
+      this.resources.testTools.data = this.resources.testTools.data.map((tt) => ({
         ...tt,
         dropDownText: tt.name + (tt.retired ? ' (Retired)' : ''),
       }));
