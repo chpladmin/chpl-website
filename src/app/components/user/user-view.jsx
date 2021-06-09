@@ -13,7 +13,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Container,
   ThemeProvider,
   Typography,
   makeStyles,
@@ -51,130 +50,128 @@ function ChplUserView(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <Card>
-          <CardHeader
-            title={user.fullName}
-            subheader={user.friendlyName}
-          />
-          <CardContent className={classes.content}>
-            <div>
-              <Typography>
-                {user.title
-                 && (
+      <Card>
+        <CardHeader
+          title={user.fullName}
+          subheader={user.friendlyName}
+        />
+        <CardContent className={classes.content}>
+          <div>
+            <Typography>
+              {user.title
+               && (
                  <>
                    <strong>Title:</strong>
                    {' '}
                    {user.title}
                  </>
-                 )}
-              </Typography>
-              <Typography>
-                {user.phoneNumber
-                 && (
+               )}
+            </Typography>
+            <Typography>
+              {user.phoneNumber
+               && (
                  <>
                    <strong>Phone Number:</strong>
                    {' '}
                    {user.phoneNumber}
                  </>
-                 )}
-              </Typography>
-              <Typography>
-                {user.email
-                 && (
+               )}
+            </Typography>
+            <Typography>
+              {user.email
+               && (
                  <>
                    <strong>Email:</strong>
                    {' '}
                    {user.email}
                  </>
-                 )}
-              </Typography>
-              <Typography>
-                {user.subjectName
-                 && (
+               )}
+            </Typography>
+            <Typography>
+              {user.subjectName
+               && (
                  <>
                    <strong>User Name:</strong>
                    {' '}
                    {user.subjectName}
                  </>
-                 )}
-              </Typography>
-              <Typography>
-                {user.role
-                 && (
+               )}
+            </Typography>
+            <Typography>
+              {user.role
+               && (
                  <>
                    <strong>Role:</strong>
                    {' '}
                    {user.role}
                  </>
-                 )}
-              </Typography>
-              <Typography>
-                {user.organizations && user.organizations.length > 0
-                 && (
+               )}
+            </Typography>
+            <Typography>
+              {user.organizations && user.organizations.length > 0
+               && (
                  <>
                    <strong>Organization:</strong>
                    {' '}
                    {user.organizations.map((org) => (org.name)).join('; ')}
                  </>
-                 )}
-              </Typography>
-            </div>
-            <div>
-              <Typography>
-                <strong>Last Login:</strong>
-                {' '}
-                {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
-              </Typography>
-              <Typography>
-                <strong>Account Locked:</strong>
-                {user.accountLocked
-                  ? <CheckBoxOutlinedIcon />
-                  : <CheckBoxOutlineBlankOutlinedIcon />}
-              </Typography>
-              <Typography>
-                <strong>Account Enabled:</strong>
-                { user.accountEnabled
-                  ? <CheckBoxOutlinedIcon />
-                  : <CheckBoxOutlineBlankOutlinedIcon />}
-              </Typography>
-              <Typography>
-                <strong>Password change on next login:</strong>
-                { user.passwordResetRequired
-                  ? <CheckBoxOutlinedIcon />
-                  : <CheckBoxOutlineBlankOutlinedIcon />}
-              </Typography>
-            </div>
-          </CardContent>
-          <CardActions className={classes.cardActions}>
-            <ButtonGroup
-              color="primary"
-            >
-              <ChplTooltip title={`Edit ${user.fullName}`}>
-                <Button
-                  variant="contained"
-                  aria-label={`Edit ${user.fullName}`}
-                  onClick={edit}
-                >
-                  <EditOutlinedIcon />
-                </Button>
-              </ChplTooltip>
-              { canImpersonate
-                && (
-                  <ChplTooltip title={`Impersonate ${user.fullName}`}>
-                    <Button
-                      variant="outlined"
-                      aria-label={`Impersonate ${user.fullName}`}
-                      onClick={impersonate}
-                    >
-                      <GroupIcon />
-                    </Button>
-                  </ChplTooltip>
-                )}
-            </ButtonGroup>
-          </CardActions>
-        </Card>
-      </Container>
+               )}
+            </Typography>
+          </div>
+          <div>
+            <Typography>
+              <strong>Last Login:</strong>
+              {' '}
+              {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
+            </Typography>
+            <Typography>
+              <strong>Account Locked:</strong>
+              {user.accountLocked
+                ? <CheckBoxOutlinedIcon />
+                : <CheckBoxOutlineBlankOutlinedIcon />}
+            </Typography>
+            <Typography>
+              <strong>Account Enabled:</strong>
+              { user.accountEnabled
+                ? <CheckBoxOutlinedIcon />
+                : <CheckBoxOutlineBlankOutlinedIcon />}
+            </Typography>
+            <Typography>
+              <strong>Password change on next login:</strong>
+              { user.passwordResetRequired
+                ? <CheckBoxOutlinedIcon />
+                : <CheckBoxOutlineBlankOutlinedIcon />}
+            </Typography>
+          </div>
+        </CardContent>
+        <CardActions className={classes.cardActions}>
+          <ButtonGroup
+            color="primary"
+          >
+            <ChplTooltip title={`Edit ${user.fullName}`}>
+              <Button
+                variant="contained"
+                aria-label={`Edit ${user.fullName}`}
+                onClick={edit}
+              >
+                <EditOutlinedIcon />
+              </Button>
+            </ChplTooltip>
+            { canImpersonate
+              && (
+                <ChplTooltip title={`Impersonate ${user.fullName}`}>
+                  <Button
+                    variant="outlined"
+                    aria-label={`Impersonate ${user.fullName}`}
+                    onClick={impersonate}
+                  >
+                    <GroupIcon />
+                  </Button>
+                </ChplTooltip>
+              )}
+          </ButtonGroup>
+        </CardActions>
+      </Card>
     </ThemeProvider>
   );
 }
