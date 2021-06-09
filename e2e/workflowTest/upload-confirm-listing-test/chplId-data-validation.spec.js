@@ -4,11 +4,16 @@ import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import ToastComponent from '../../components/toast/toast.po';
 
-let confirmPage , hooks, loginComponent, toast, uploadListingComponent;
+let confirmPage;
+let hooks;
+let loginComponent;
+let toast;
+let uploadListingComponent;
 const inputs = require('./dataProviders/chplId-data-validation-dp');
+
 const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
 
-beforeEach( () => {
+beforeEach(() => {
   confirmPage = new ConfirmPage();
   uploadListingComponent = new UploadListingComponent();
   loginComponent = new LoginComponent();
@@ -18,21 +23,20 @@ beforeEach( () => {
   loginComponent.logIn('admin');
 });
 
-inputs.forEach(input => {
-  let listingId = input.listingId;
-  let expectedErrors = input.expectedErrors;
-  let expectedWarnings = input.expectedWarnings;
+inputs.forEach((input) => {
+  const { listingId } = input;
+  const { expectedErrors } = input;
+  const { expectedWarnings } = input;
 
   describe(`User inspects uploaded listing with invalid CHPL ID as ${listingId}`, () => {
-
-    if(process.env.ENV !== 'stage') {
-      beforeEach(function () {
+    if (process.env.ENV !== 'stage') {
+      beforeEach(() => {
         uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');
-        browser.waitUntil( () => toast.toastTitle.isDisplayed());
+        browser.waitUntil(() => toast.toastTitle.isDisplayed());
         hooks.open('#/administration/confirm/listings');
       });
 
-      afterEach(function () {
+      afterEach(() => {
         toast.clearAllToast();
         loginComponent.logOut();
       });
@@ -41,13 +45,13 @@ inputs.forEach(input => {
         confirmPage.gotoPendingListingPage(listingId);
         hooks.waitForSpinnerToDisappear();
         confirmPage.waitForBarMessages();
-        let errors = new Set(confirmPage.errorOnInspect.map(item => item.getText()));
+        const errors = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
         expect(errors.size).toBe(expectedErrors.length);
         let count = 0;
-        errors.forEach(err => {
-          expectedErrors.forEach(exp => {
+        errors.forEach((err) => {
+          expectedErrors.forEach((exp) => {
             if (err.includes(exp)) {
-              count ++;
+              count += 1;
             }
           });
         });
@@ -58,13 +62,13 @@ inputs.forEach(input => {
         confirmPage.gotoPendingListingPage(listingId);
         hooks.waitForSpinnerToDisappear();
         confirmPage.waitForBarMessages();
-        let warnings = new Set(confirmPage.warningOnInspect.map(item => item.getText()));
+        const warnings = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
         expect(warnings.size).toBe(expectedWarnings.length);
         let count = 0;
-        warnings.forEach(err => {
-          expectedWarnings.forEach(exp => {
+        warnings.forEach((err) => {
+          expectedWarnings.forEach((exp) => {
             if (err.includes(exp)) {
-              count ++;
+              count += 1;
             }
           });
         });
@@ -75,14 +79,14 @@ inputs.forEach(input => {
 });
 
 describe('User inspects uploaded listing with valid CHPL ID', () => {
-  if(process.env.ENV !== 'stage') {
-    beforeEach(function () {
+  if (process.env.ENV !== 'stage') {
+    beforeEach(() => {
       uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
-      browser.waitUntil( () => toast.toastTitle.isDisplayed());
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
       hooks.open('#/administration/confirm/listings');
     });
 
-    afterEach(function () {
+    afterEach(() => {
       toast.clearAllToast();
       loginComponent.logOut();
     });
