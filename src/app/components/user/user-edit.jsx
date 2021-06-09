@@ -58,8 +58,7 @@ function ChplUserEdit(props) {
   };
 
   const deleteUser = () => {
-    console.log('deleting');
-    // props.dispatch('delete', user.userId, true);
+    props.dispatch('delete', user.userId, true);
   };
 
   const save = () => {
