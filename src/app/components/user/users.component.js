@@ -59,7 +59,12 @@ export const UsersComponent = {
             that.takeAction({action: 'refresh'});
             that.activeUser = undefined;
           }, error => {
-            that.errors = [error.data.error];
+            that.$log.error(error);
+            if (error.data.error) {
+              that.errors = [error.data.error];
+            } else if (error.data?.errorMessages?.length > 0) {
+              that.errors = error.data.errorMessages;
+            }
           });
         break;
       case 'cancel':

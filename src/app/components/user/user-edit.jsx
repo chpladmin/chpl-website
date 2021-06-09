@@ -48,7 +48,6 @@ const validationSchema = yup.object({
 function ChplUserEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [user] = useState(props.user);
-  const [errors] = useState(props.errors);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -64,8 +63,18 @@ function ChplUserEdit(props) {
   };
 
   const save = () => {
-    console.log('saving');
-    // props.dispatch('save', user, true);
+    const updatedUser = {
+      ...user,
+      fullName: formik.values.fullName,
+      friendlyName: formik.values.friendlyName,
+      title: formik.values.title,
+      phoneNumber: formik.values.phoneNumber,
+      email: formik.values.email,
+      accountLocked: formik.values.accountLocked,
+      accountEnabled: formik.values.accountEnabled,
+      passwordResetRequired: formik.values.passwordResetRequired,
+    };
+    props.dispatch('save', updatedUser, true);
   };
 
   const handleDispatch = (action) => {
@@ -214,7 +223,9 @@ function ChplUserEdit(props) {
       </Container>
       <ChplActionBar
         dispatch={handleDispatch}
-        errors={errors}
+        errors={props.errors}
+        canDelete={true}
+        isDisabled={!formik.isValid}
       />
     </ThemeProvider>
   );
