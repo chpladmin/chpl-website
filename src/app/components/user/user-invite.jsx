@@ -5,17 +5,17 @@ import {
   DialogActions,
   DialogContent,
   MenuItem,
-  Paper,
   ThemeProvider,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import EmailIcon from '@material-ui/icons/Email';
 import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import theme from '../../themes/theme';
-import { ChplDialogTitle, ChplTextField } from '../util';
+import { ChplDialogTitle, ChplTooltip, ChplTextField } from '../util';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -33,7 +33,7 @@ const validationSchema = yup.object({
 
 function ChplUserInvite(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [roles] = useState(props.roles.sort((a, b) => a < b ? -1 : 1));
+  const [roles] = useState(props.roles.sort((a, b) => (a < b ? -1 : 1)));
   /* eslint-enable react/destructuring-assignment */
 
   const [open, setOpen] = React.useState(false);
@@ -61,7 +61,7 @@ function ChplUserInvite(props) {
   formik = useFormik({
     initialValues: {
       email: '',
-      role: roles.length > 1 ? '': roles[0],
+      role: roles.length > 1 ? '' : roles[0],
     },
     onSubmit: () => {
       invite();
@@ -81,7 +81,7 @@ function ChplUserInvite(props) {
           variant="outlined"
           onClick={handleClickOpen}
         >
-          <i className="fa fa-user-plus" />
+          <PersonAddIcon />
         </Button>
       </ChplTooltip>
       <Dialog
@@ -110,7 +110,8 @@ function ChplUserInvite(props) {
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
-          { roles.length > 1 &&
+          { roles.length > 1
+            && (
             <ChplTextField
               select
               id="role"
@@ -127,16 +128,17 @@ function ChplUserInvite(props) {
                 <MenuItem value={item} key={item}>{item}</MenuItem>
               ))}
             </ChplTextField>
-          }
+            )}
         </DialogContent>
         <DialogActions>
           <Button
-            id="go-to-api"
+            id="invite-user-button"
+            aria-label="Send invitation to new user"
             color="primary"
             onClick={formik.handleSubmit}
             disabled={!formik.isValid}
           >
-            <i className="fa fa-envelope"></i>
+            <EmailIcon />
           </Button>
         </DialogActions>
       </Dialog>
@@ -148,5 +150,5 @@ export default ChplUserInvite;
 
 ChplUserInvite.propTypes = {
   roles: arrayOf(string).isRequired,
-  dispatch: func.isRequired
+  dispatch: func.isRequired,
 };

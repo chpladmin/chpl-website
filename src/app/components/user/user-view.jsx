@@ -9,17 +9,18 @@ import GroupIcon from '@material-ui/icons/Group';
 import {
   Button,
   ButtonGroup,
-  Container,
   Card,
   CardActions,
-  CardHeader,
   CardContent,
+  CardHeader,
+  Container,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
 import { getAngularService } from '../../services/angular-react-helper';
+import { ChplTooltip } from '../util';
 import theme from '../../themes/theme';
 import {
   user as userPropType,
@@ -149,20 +150,26 @@ function ChplUserView(props) {
             <ButtonGroup
               color="primary"
             >
-              <Button
-                variant="contained"
-                onClick={edit}
-              >
-                <EditOutlinedIcon />
-              </Button>
+              <ChplTooltip title={`Edit ${user.fullName}`}>
+                <Button
+                  variant="contained"
+                  aria-label={`Edit ${user.fullName}`}
+                  onClick={edit}
+                >
+                  <EditOutlinedIcon />
+                </Button>
+              </ChplTooltip>
               { canImpersonate
                 && (
-                <Button
-                  variant="outlined"
-                  onClick={impersonate}
-                >
-                  <GroupIcon />
-                </Button>
+                  <ChplTooltip title={`Impersonate ${user.fullName}`}>
+                    <Button
+                      variant="outlined"
+                      aria-label={`Impersonate ${user.fullName}`}
+                      onClick={impersonate}
+                    >
+                      <GroupIcon />
+                    </Button>
+                  </ChplTooltip>
                 )}
             </ButtonGroup>
           </CardActions>
