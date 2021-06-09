@@ -12,23 +12,32 @@ import {
 } from '@material-ui/core';
 
 import { getAngularService } from '../../services/angular-react-helper';
-import { ChplUserEdit, ChplUserInvite, ChplUserView } from '.';
+import ChplUserEdit from './user-edit';
+import ChplUserInvite from './user-invite';
+import ChplUserView from './user-view';
+import { ChplTextField } from '../util';
 import theme from '../../themes/theme';
 import {
   user as userPropType,
 } from '../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
-  header: {
-    display: 'flex',
-  },
-  filter: {
-    flex: 5,
-  },
-  users: {
+  container: {
     display: 'grid',
     gap: '8px',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(480px, 1fr))',
+  },
+  header: {
+    padding: '16px',
+    display: 'grid',
+    gap: '8px',
+    gridTemplateColumns: '4fr 64px',
+  },
+  users: {
+    padding: '16px',
+    display: 'grid',
+    gap: '8px',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+    alignItems: 'start',
   },
 }));
 
@@ -41,6 +50,18 @@ function ChplUsers(props) {
   const networkService = getAngularService('networkService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
+  const handleFilter = (event) => {
+    const regex = new RegExp(event.target.value, 'i');
+    setUsers(props.users
+             .filter((user) =>
+                     regex.test(user.fullName)
+                     || regex.test(user.friendlyName)
+                     || regex.test(user.title)
+                     || regex.test(user.email)
+                     || regex.test(user.subjectName))
+             .sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+  }
 
   const handleDispatch = (action, data) => {
     switch (action) {
@@ -59,7 +80,7 @@ function ChplUsers(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth={false}>
-        <Paper>
+        <Paper className={classes.container}>
           { user &&
             <ChplUserEdit
               user={user}
@@ -69,13 +90,18 @@ function ChplUsers(props) {
           { !user &&
             <>
               <div className={classes.header}>
-                <div className={classes.filter}>Search</div>
+                <ChplTextField
+                  id="user-filter"
+                  name="userFilter"
+                  label="Full Name, Friendly Name, Title, Email, or User Name"
+                  onChange={handleFilter}
+                />
                 <ChplUserInvite
                   roles={roles}
                   dispatch={handleDispatch} />
               </div>
               <div className={classes.users}>
-                { filteredUsers.map((user) =>
+                { users.map((user) =>
                             <ChplUserView
                               key={user.userId}
                               user={user}
