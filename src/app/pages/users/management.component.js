@@ -1,11 +1,12 @@
-export const UserManagementComponent = {
+const UserManagementComponent = {
   templateUrl: 'chpl.users/management.html',
   bindings: {
     users: '<',
   },
   controller: class UserManagementComponent {
-    constructor ($log, $scope, $state, authService, networkService, toaster) {
+    constructor($log, $scope, $state, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$scope = $scope;
       this.$state = $state;
@@ -14,21 +15,21 @@ export const UserManagementComponent = {
       this.toaster = toaster;
     }
 
-    $onInit () {
-      let that = this;
-      let loggedIn = this.$scope.$on('loggedIn', that.handleRole());
+    $onInit() {
+      const that = this;
+      const loggedIn = this.$scope.$on('loggedIn', that.handleRole());
       this.$scope.$on('$destroy', loggedIn);
       this.handleRole();
       this.takeAction = this.takeAction.bind(this);
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.users.currentValue) {
         this.users = angular.copy(changes.users.currentValue.users);
       }
     }
 
-    handleRole () {
+    handleRole() {
       this.roles = ['ROLE_ONC_STAFF'];
       if (this.hasAnyRole(['ROLE_ADMIN'])) {
         this.roles.push('ROLE_ADMIN');
@@ -39,12 +40,12 @@ export const UserManagementComponent = {
       }
     }
 
-    takeAction (action, data) {
-      let that = this;
+    takeAction(action, data) {
+      const that = this;
       switch (action) {
         case 'delete':
           this.networkService.deleteUser(data)
-            .then(() => that.networkService.getUsers().then(response => that.users = response.users));
+            .then(() => that.networkService.getUsers().then((response) => { that.users = response.users; }));
           break;
         case 'invite':
           this.networkService.inviteUser({
@@ -53,12 +54,12 @@ export const UserManagementComponent = {
           }).then(() => that.toaster.pop({
             type: 'success',
             title: 'Email sent',
-            body: 'Email sent successfully to ' + data.email,
+            body: `Email sent successfully to ${data.email}`,
           }));
           break;
         case 'refresh':
           this.networkService.getUsers()
-            .then(response => that.users = response.users);
+            .then((response) => { that.users = response.users; });
           break;
         case 'impersonate':
           if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
@@ -67,7 +68,7 @@ export const UserManagementComponent = {
             this.$state.reload();
           }
           break;
-          //no default
+          // no default
       }
       this.$scope.$apply();
     }
@@ -76,3 +77,5 @@ export const UserManagementComponent = {
 
 angular.module('chpl.users')
   .component('chplUserManagement', UserManagementComponent);
+
+export default UserManagementComponent;

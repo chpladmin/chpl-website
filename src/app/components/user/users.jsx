@@ -57,14 +57,13 @@ function ChplUsers(props) {
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
     setUsers(props.users
-             .filter((user) =>
-                     regex.test(user.fullName)
-                     || regex.test(user.friendlyName)
-                     || regex.test(user.title)
-                     || regex.test(user.email)
-                     || regex.test(user.subjectName))
-             .sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
-  }
+      .filter((u) => regex.test(u.fullName)
+                     || regex.test(u.friendlyName)
+                     || regex.test(u.title)
+                     || regex.test(u.email)
+                     || regex.test(u.subjectName))
+      .sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+  };
 
   const handleDispatch = (action, data) => {
     switch (action) {
@@ -80,12 +79,12 @@ function ChplUsers(props) {
         break;
       case 'impersonate':
         networkService.impersonateUser(data)
-          .then(token => {
+          .then((token) => {
             $analytics.eventTrack('Impersonate User', { category: 'Authentication' });
             authService.saveToken(token.token);
             networkService.getUserById(authService.getUserId())
-              .then((user) => {
-                authService.saveCurrentUser(user);
+              .then((u) => {
+                authService.saveCurrentUser(u);
                 $rootScope.$broadcast('impersonating');
                 props.dispatch('impersonate');
               });
@@ -99,7 +98,7 @@ function ChplUsers(props) {
           .then(() => {
             setUser(undefined);
             props.dispatch('refresh');
-          }, error => {
+          }, (error) => {
             if (error.data.error) {
               setErrors([error.data.error]);
             } else if (error.data?.errorMessages?.length > 0) {
@@ -115,13 +114,16 @@ function ChplUsers(props) {
     <ThemeProvider theme={theme}>
       <Container maxWidth={false}>
         <Paper className={classes.container}>
-          { user &&
+          { user
+            && (
             <ChplUserEdit
               user={user}
               errors={errors}
-              dispatch={handleDispatch} />
-          }
-          { !user &&
+              dispatch={handleDispatch}
+            />
+            )}
+          { !user
+            && (
             <>
               <div className={classes.header}>
                 <ChplTextField
@@ -132,18 +134,20 @@ function ChplUsers(props) {
                 />
                 <ChplUserInvite
                   roles={roles}
-                  dispatch={handleDispatch} />
+                  dispatch={handleDispatch}
+                />
               </div>
               <div className={classes.users}>
-                { users.map((user) =>
-                            <ChplUserView
-                              key={user.userId}
-                              user={user}
-                              dispatch={handleDispatch}/>
-                           )}
+                { users.map((u) => (
+                  <ChplUserView
+                    key={u.userId}
+                    user={u}
+                    dispatch={handleDispatch}
+                  />
+                ))}
               </div>
             </>
-          }
+            )}
         </Paper>
       </Container>
     </ThemeProvider>
