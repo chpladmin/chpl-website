@@ -4,5 +4,8 @@ import ChplUserView from './user-view';
 import ChplUsers from './users';
 
 export {
-  ChplUsers, ChplUserEdit, ChplUserInvite, ChplUserView,
+  ChplUserEdit,
+  ChplUserInvite,
+  ChplUserView,
+  ChplUsers,
 };
