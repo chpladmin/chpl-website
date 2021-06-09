@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
+  arrayOf,
   func,
+  string,
 } from 'prop-types';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
@@ -20,7 +22,8 @@ import * as yup from 'yup';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import theme from '../../themes/theme';
-import { ChplTextField } from '../util/';
+import { ChplTextField } from '../util';
+import { ChplActionBar } from '../action-bar';
 import {
   user as userPropType,
 } from '../../shared/prop-types';
@@ -49,15 +52,42 @@ const validationSchema = yup.object({
 function ChplUserEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [user] = useState(props.user);
+  const [errors] = useState(props.errors);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   let formik;
 
+  const cancel = () => {
+    console.log('cancelling');
+    //props.dispatch('cancel', {}, true);
+  };
+
+  const deleteUser = () => {
+    console.log('deleting');
+    //props.dispatch('delete', user.userId, true);
+  };
+
   const save = () => {
     console.log('saving');
     //props.dispatch('save', user, true);
-  }
+  };
+
+  const handleDispatch = (action) => {
+    switch (action) {
+      case 'cancel':
+        cancel();
+        break;
+      case 'delete':
+        deleteUser();
+        break;
+      case 'save':
+        formik.submitForm();
+        //save();
+        break;
+        //no default
+    }
+  };
 
   formik = useFormik({
     initialValues: {
@@ -184,11 +214,14 @@ function ChplUserEdit(props) {
                   label="Password change on next login"
                 />
               </div>
-
             </div>
           </CardContent>
         </Card>
       </Container>
+      <ChplActionBar
+        takeAction={handleDispatch}
+        errors={errors}
+      />
     </ThemeProvider>
   );
 }
@@ -197,9 +230,11 @@ export default ChplUserEdit;
 
 ChplUserEdit.propTypes = {
   user: userPropType.isRequired,
+  errors: arrayOf(string),
   dispatch: func,
 };
 
 ChplUserEdit.defaultProps = {
+  errors: [],
   dispatch: () => {},
 };
