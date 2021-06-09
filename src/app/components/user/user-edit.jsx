@@ -78,9 +78,8 @@ function ChplUserEdit(props) {
         break;
       case 'save':
         formik.submitForm();
-        //save();
         break;
-        //no default
+        // no default
     }
   };
 
