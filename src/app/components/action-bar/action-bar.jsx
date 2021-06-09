@@ -51,7 +51,7 @@ function ChplActionBar(props) {
                       </>
                     )}
                   { props.errors && props.errors.length > 0 && props.warnings && props.warnings.length > 0
-                    && <>and </>}
+                    && <> and </>}
                   { props.warnings && props.warnings.length > 0
                     && (
                       <>

@@ -13,6 +13,7 @@
 
     beforeEach(() => {
       angular.mock.module('chpl.organizations', $provide => {
+        $provide.factory('chplUsersBridgeDirective', () => ({}));
         $provide.decorator('authService', $delegate => {
           $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
           return $delegate;

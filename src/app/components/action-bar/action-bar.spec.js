@@ -2,14 +2,16 @@ import React from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {act} from 'react-dom/test-utils';
 
-import {ChplActionBar} from './action-bar.jsx';
+import ChplActionBar from './action-bar';
 
 let container = null;
+let dispatch;
 
 describe('the ChplActionBar component', () => {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
+    dispatch = jasmine.createSpy('dispatch');
   });
 
   afterEach(() => {
@@ -20,7 +22,7 @@ describe('the ChplActionBar component', () => {
 
   it('renders', () => {
     act(() => {
-      render(<ChplActionBar />, container);
+      render(<ChplActionBar dispatch={dispatch} />, container);
     });
     expect(container.textContent).not.toBeUndefined();
   });
@@ -29,7 +31,7 @@ describe('the ChplActionBar component', () => {
     it('should indicate there are more than one error', () => {
       act(() => {
         let errors = ['b', 'a'];
-        render(<ChplActionBar errors={errors} />, container);
+        render(<ChplActionBar dispatch={dispatch} errors={errors} />, container);
       });
       let text = container.textContent;
       const expected = 'Errors';
@@ -39,7 +41,7 @@ describe('the ChplActionBar component', () => {
     it('should indicate there is exactly one error', () => {
       act(() => {
         let errors = ['b'];
-        render(<ChplActionBar errors={errors} />, container);
+        render(<ChplActionBar dispatch={dispatch} errors={errors} />, container);
       });
       let text = container.textContent;
       const expected = 'Error';
@@ -49,7 +51,7 @@ describe('the ChplActionBar component', () => {
     it('should indicate there are more than one warning', () => {
       act(() => {
         let warnings = ['b', 'a'];
-        render(<ChplActionBar warnings={warnings} />, container);
+        render(<ChplActionBar dispatch={dispatch} warnings={warnings} />, container);
       });
       let text = container.textContent;
       const expected = 'Warnings';
@@ -59,7 +61,7 @@ describe('the ChplActionBar component', () => {
     it('should indicate there is exactly one warning', () => {
       act(() => {
         let warnings = ['b'];
-        render(<ChplActionBar warnings={warnings} />, container);
+        render(<ChplActionBar dispatch={dispatch} warnings={warnings} />, container);
       });
       let text = container.textContent;
       const expected = 'Warning';
@@ -70,7 +72,7 @@ describe('the ChplActionBar component', () => {
       act(() => {
         let errors = ['c', 'd'];
         let warnings = ['b', 'a'];
-        render(<ChplActionBar errors={errors} warnings={warnings} />, container);
+        render(<ChplActionBar dispatch={dispatch} errors={errors} warnings={warnings} />, container);
       });
       let text = container.textContent;
       const expected = 'Errors and Warnings';
