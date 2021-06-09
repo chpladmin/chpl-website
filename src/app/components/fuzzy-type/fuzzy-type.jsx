@@ -137,7 +137,7 @@ function ChplFuzzyType (props) {
               ) }
             </div>
           </form>
-          <ChplActionBar takeAction={act} errors={errors} warnings={warnings}/>
+          <ChplActionBar dispatch={act} errors={errors} warnings={warnings}/>
         </>
       ) : (
         <>

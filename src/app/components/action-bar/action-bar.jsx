@@ -6,8 +6,8 @@ function ChplActionBar (props) {
 
   const act = (action) => {
     console.log({type: 'act', action});
-    if (props.takeAction) {
-      props.takeAction(action);
+    if (props.dispatch) {
+      props.dispatch(action);
     }
   };
 
@@ -96,6 +96,6 @@ export {ChplActionBar};
 ChplActionBar.propTypes = {
   errors: arrayOf(string),
   isDisabled: bool,
-  takeAction: func,
+  dispatch: func,
   warnings: arrayOf(string),
 };

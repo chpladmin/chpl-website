@@ -4,8 +4,6 @@ import {
   func,
   string,
 } from 'prop-types';
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
-import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
 import {
   Container,
   Card,
@@ -14,13 +12,11 @@ import {
   FormControlLabel,
   Switch,
   ThemeProvider,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { getAngularService } from '../../services/angular-react-helper';
 import theme from '../../themes/theme';
 import { ChplTextField } from '../util';
 import { ChplActionBar } from '../action-bar';
@@ -59,18 +55,17 @@ function ChplUserEdit(props) {
   let formik;
 
   const cancel = () => {
-    console.log('cancelling');
-    //props.dispatch('cancel', {}, true);
+    props.dispatch('cancel', {}, true);
   };
 
   const deleteUser = () => {
     console.log('deleting');
-    //props.dispatch('delete', user.userId, true);
+    // props.dispatch('delete', user.userId, true);
   };
 
   const save = () => {
     console.log('saving');
-    //props.dispatch('save', user, true);
+    // props.dispatch('save', user, true);
   };
 
   const handleDispatch = (action) => {
@@ -219,7 +214,7 @@ function ChplUserEdit(props) {
         </Card>
       </Container>
       <ChplActionBar
-        takeAction={handleDispatch}
+        dispatch={handleDispatch}
         errors={errors}
       />
     </ThemeProvider>
