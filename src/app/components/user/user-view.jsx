@@ -41,11 +41,11 @@ function ChplUserView(props) {
   /* eslint-enable react/destructuring-assignment */
 
   const edit = () => {
-    props.dispatch('edit', user, true);
+    props.dispatch('edit', user);
   };
 
   const impersonate = () => {
-    props.dispatch('impersonate', user, true);
+    props.dispatch('impersonate', user);
   };
 
   return (

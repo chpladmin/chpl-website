@@ -53,7 +53,7 @@ function ChplUserInvite(props) {
       email: formik.values.email,
       role: formik.values.role,
     };
-    props.dispatch('invite', invitation, true);
+    props.dispatch('invite', invitation);
     formik.resetForm();
     handleClose();
   };

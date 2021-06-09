@@ -47,6 +47,9 @@ function ChplUsers(props) {
   const [roles] = useState(props.roles);
   const [user, setUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
+  const $analytics = getAngularService('$analytics');
+  const $rootScope = getAngularService('$rootScope');
+  const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -65,15 +68,46 @@ function ChplUsers(props) {
 
   const handleDispatch = (action, data) => {
     switch (action) {
-      case 'edit':
-        setUser(data);
-        break;
       case 'cancel':
         setUser(undefined);
         break;
-      default:
-        console.log({action, data});
-        // props.dispatch(something);
+      case 'delete':
+        setUser(undefined);
+        props.dispatch('delete', data);
+        break;
+      case 'edit':
+        setUser(data);
+        break;
+      case 'impersonate':
+        networkService.impersonateUser(data)
+          .then(token => {
+            $analytics.eventTrack('Impersonate User', { category: 'Authentication' });
+            authService.saveToken(token.token);
+            networkService.getUserById(authService.getUserId())
+              .then((user) => {
+                authService.saveCurrentUser(user);
+                $rootScope.$broadcast('impersonating');
+                props.dispatch('impersonate');
+              });
+          });
+        break;
+      case 'invite':
+        props.dispatch('invite', data);
+        break;
+      case 'save':
+        networkService.updateUser(data)
+          .then(() => {
+            setUser(undefined);
+            props.dispatch('refresh');
+          }, error => {
+            if (error.data.error) {
+              setErrors([error.data.error]);
+            } else if (error.data?.errorMessages?.length > 0) {
+              setErrors(error.data.errorMessages);
+            }
+          });
+        break;
+        // no default
     }
   };
 

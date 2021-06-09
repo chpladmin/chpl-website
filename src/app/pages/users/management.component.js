@@ -19,6 +19,7 @@ export const UserManagementComponent = {
       let loggedIn = this.$scope.$on('loggedIn', that.handleRole());
       this.$scope.$on('$destroy', loggedIn);
       this.handleRole();
+      this.takeAction = this.takeAction.bind(this);
     }
 
     $onChanges (changes) {
@@ -41,33 +42,34 @@ export const UserManagementComponent = {
     takeAction (action, data) {
       let that = this;
       switch (action) {
-      case 'delete':
-        this.networkService.deleteUser(data)
-          .then(() => that.networkService.getUsers().then(response => that.users = response.users));
-        break;
-      case 'invite':
-        this.networkService.inviteUser({
-          role: data.role,
-          emailAddress: data.email,
-        }).then(() => that.toaster.pop({
-          type: 'success',
-          title: 'Email sent',
-          body: 'Email sent successfully to ' + data.email,
-        }));
-        break;
-      case 'refresh':
-        this.networkService.getUsers()
-          .then(response => that.users = response.users);
-        break;
-      case 'impersonate':
-        if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
-          this.$state.go('dashboard');
-        } else {
-          this.$state.reload();
-        }
-        break;
-                //no default
+        case 'delete':
+          this.networkService.deleteUser(data)
+            .then(() => that.networkService.getUsers().then(response => that.users = response.users));
+          break;
+        case 'invite':
+          this.networkService.inviteUser({
+            role: data.role,
+            emailAddress: data.email,
+          }).then(() => that.toaster.pop({
+            type: 'success',
+            title: 'Email sent',
+            body: 'Email sent successfully to ' + data.email,
+          }));
+          break;
+        case 'refresh':
+          this.networkService.getUsers()
+            .then(response => that.users = response.users);
+          break;
+        case 'impersonate':
+          if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
+            this.$state.go('dashboard');
+          } else {
+            this.$state.reload();
+          }
+          break;
+          //no default
       }
+      this.$scope.$apply();
     }
   },
 };

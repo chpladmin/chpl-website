@@ -54,11 +54,11 @@ function ChplUserEdit(props) {
   let formik;
 
   const cancel = () => {
-    props.dispatch('cancel', {}, true);
+    props.dispatch('cancel', {});
   };
 
   const deleteUser = () => {
-    props.dispatch('delete', user.userId, true);
+    props.dispatch('delete', user.userId);
   };
 
   const save = () => {
@@ -73,7 +73,7 @@ function ChplUserEdit(props) {
       accountEnabled: formik.values.accountEnabled,
       passwordResetRequired: formik.values.passwordResetRequired,
     };
-    props.dispatch('save', updatedUser, true);
+    props.dispatch('save', updatedUser);
   };
 
   const handleDispatch = (action) => {
