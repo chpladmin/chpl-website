@@ -107,25 +107,32 @@ function ChplActionBar(props) {
             )}
           <div className="action-bar__buttons">
             <ButtonGroup>
-              { props.canDelete &&
-                <Button id="action-bar-delete"
-                        className={ classes.deleteButton }
-                        onClick={() => act('delete')}>
+              { props.canDelete
+                && (
+                <Button
+                  id="action-bar-delete"
+                  className={classes.deleteButton}
+                  onClick={() => act('delete')}
+                >
                   Delete
                 </Button>
-              }
-              <Button id="action-bar-cancel"
-                      color="primary"
-                      variant="outlined"
-                      onClick={() => act('cancel')}>
+                )}
+              <Button
+                id="action-bar-cancel"
+                color="primary"
+                variant="outlined"
+                onClick={() => act('cancel')}
+              >
                 Cancel
               </Button>
-              <Button id="action-bar-save"
-                      color="primary"
-                      variant="contained"
-                      onClick={() => act('save')}
-                      disabled={props.isDisabled}
-                      onMouseOver={() => act('mouseover')}>
+              <Button
+                id="action-bar-save"
+                color="primary"
+                variant="contained"
+                onClick={() => act('save')}
+                disabled={props.isDisabled}
+                onMouseOver={() => act('mouseover')}
+              >
                 Save
               </Button>
             </ButtonGroup>
@@ -151,4 +158,4 @@ ChplActionBar.defaultProps = {
   warnings: [],
   canDelete: false,
   isDisabled: false,
-}
+};

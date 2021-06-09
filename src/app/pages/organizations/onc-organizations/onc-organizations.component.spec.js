@@ -1,10 +1,15 @@
 (() => {
-  'use strict';
-
   describe('the ONC-Organizations component', () => {
-    var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let authService;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {
+    const mock = {
       orgs: [
         { name: 'an org' },
         { name: 'another org' },
@@ -12,17 +17,17 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.organizations', $provide => {
+      angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('chplUsersBridgeDirective', () => ({}));
-        $provide.decorator('authService', $delegate => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getOrg = jasmine.createSpy('getOrg');
-          $delegate.getOrgs = jasmine.createSpy('getOrgs');
-          return $delegate;
-        });
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          hasAnyRole: jasmine.createSpy('hasAnyRole'),
+        }));
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getOrg: jasmine.createSpy('getOrg'),
+          getOrgs: jasmine.createSpy('getOrgs'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
@@ -33,10 +38,10 @@
         authService.hasAnyRole.and.returnValue(true);
         networkService = _networkService_;
         networkService.getOrg.and.returnValue($q.when(mock.orgs[0]));
-        networkService.getOrgs.and.returnValue($q.when({orgs: mock.orgs}));
+        networkService.getOrgs.and.returnValue($q.when({ orgs: mock.orgs }));
 
         scope = $rootScope.$new();
-        scope.orgs = {orgs: mock.orgs};
+        scope.orgs = { orgs: mock.orgs };
         scope.editableOrgs = [];
 
         el = angular.element('<chpl-onc-organizations all-orgs="orgs" key="\'orgs\'" editable-orgs="editableOrgs"></chpl-onc-organizations>');
@@ -50,7 +55,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
