@@ -19,7 +19,7 @@ import * as yup from 'yup';
 
 import theme from '../../themes/theme';
 import { ChplTextField } from '../util';
-import { ChplActionBar } from '../action-bar';
+import ChplActionBar from '../action-bar';
 import {
   user as userPropType,
 } from '../../shared/prop-types';
@@ -224,7 +224,7 @@ function ChplUserEdit(props) {
       <ChplActionBar
         dispatch={handleDispatch}
         errors={props.errors}
-        canDelete={true}
+        canDelete
         isDisabled={!formik.isValid}
       />
     </ThemeProvider>

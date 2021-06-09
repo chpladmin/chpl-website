@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../themes/theme';
+
 const useStyles = makeStyles(() => ({
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -135,7 +136,7 @@ function ChplActionBar(props) {
   );
 }
 
-export { ChplActionBar };
+export default ChplActionBar;
 
 ChplActionBar.propTypes = {
   dispatch: func.isRequired,
