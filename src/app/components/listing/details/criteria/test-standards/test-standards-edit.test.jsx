@@ -5,11 +5,14 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
+import FlagContext from '../../../../../shared/contexts';
 import ChplTestStandardsEdit from './test-standards-edit';
 
 const hocMock = {
   onChange: jest.fn(),
 };
+
+const flags = { optionalStandardsIsOn: false };
 
 describe('the ChplTestStandardsEdit component', () => {
   afterEach(() => {
@@ -19,20 +22,22 @@ describe('the ChplTestStandardsEdit component', () => {
   describe('when rendering', () => {
     beforeEach(async () => {
       render(
-        <ChplTestStandardsEdit
-          testStandards={[
-            { testStandardName: 'zz name', testStandardId: 2 },
-            { testStandardName: 'name 1', testStandardId: 3 },
-          ]}
-          options={[
-            { name: 'zz name', id: 2 },
-            { name: 'extra name', id: 6 },
-            { name: 'name 1', id: 3 },
-            { name: 'fake name', id: 5 },
-            { name: 'a name', id: 4 },
-          ]}
-          onChange={hocMock.onChange}
-        />,
+        <FlagContext.Provider value={flags}>
+          <ChplTestStandardsEdit
+            testStandards={[
+              { testStandardName: 'zz name', testStandardId: 2 },
+              { testStandardName: 'name 1', testStandardId: 3 },
+            ]}
+            options={[
+              { name: 'zz name', id: 2 },
+              { name: 'extra name', id: 6 },
+              { name: 'name 1', id: 3 },
+              { name: 'fake name', id: 5 },
+              { name: 'a name', id: 4 },
+            ]}
+            onChange={hocMock.onChange}
+          />
+        </FlagContext.Provider>,
       );
     });
 
@@ -72,18 +77,20 @@ describe('the ChplTestStandardsEdit component', () => {
   describe('when selecting items', () => {
     beforeEach(async () => {
       render(
-        <ChplTestStandardsEdit
-          testStandards={[
-            { testStandardName: 'zz name', testStandardId: 2 },
-            { testStandardName: 'name 1', testStandardId: 3 },
-          ]}
-          options={[
-            { name: 'zz name', id: 2 },
-            { name: 'name 1', id: 3 },
-            { name: 'a name', id: 4 },
-          ]}
-          onChange={hocMock.onChange}
-        />,
+        <FlagContext.Provider value={flags}>
+          <ChplTestStandardsEdit
+            testStandards={[
+              { testStandardName: 'zz name', testStandardId: 2 },
+              { testStandardName: 'name 1', testStandardId: 3 },
+            ]}
+            options={[
+              { name: 'zz name', id: 2 },
+              { name: 'name 1', id: 3 },
+              { name: 'a name', id: 4 },
+            ]}
+            onChange={hocMock.onChange}
+          />
+        </FlagContext.Provider>,
       );
     });
 
@@ -150,18 +157,20 @@ describe('the ChplTestStandardsEdit component', () => {
   describe('when removing items', () => {
     beforeEach(async () => {
       render(
-        <ChplTestStandardsEdit
-          testStandards={[
-            { testStandardName: 'zz name', testStandardId: 2 },
-            { testStandardName: 'name 1', testStandardId: 3 },
-          ]}
-          options={[
-            { name: 'zz name', id: 2 },
-            { name: 'name 1', id: 3 },
-            { name: 'a name', id: 4 },
-          ]}
-          onChange={hocMock.onChange}
-        />,
+        <FlagContext.Provider value={flags}>
+          <ChplTestStandardsEdit
+            testStandards={[
+              { testStandardName: 'zz name', testStandardId: 2 },
+              { testStandardName: 'name 1', testStandardId: 3 },
+            ]}
+            options={[
+              { name: 'zz name', id: 2 },
+              { name: 'name 1', id: 3 },
+              { name: 'a name', id: 4 },
+            ]}
+            onChange={hocMock.onChange}
+          />
+        </FlagContext.Provider>,
       );
     });
 
