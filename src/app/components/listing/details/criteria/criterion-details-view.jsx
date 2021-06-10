@@ -109,7 +109,10 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.allowedOptionalStandards
+          {/*
+             consider removing year check below when optional-standards-error flag is implemented as "on". Theoretically, at that point, no 2015 Edition Listings should have TS -->
+           */}
+          { criterion.success && ((criterion.optionalStandards?.length > 0) || (criterion?.testStandards?.length > 0 && criterion.criterion.certificationEdition === '2014'))
             && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
@@ -143,7 +146,6 @@ function ChplCriterionDetailsView(props) {
                         ))}
                       </ul>
                     )}
-                  { (!criterion.optionalStandards || criterion.optionalStandards.length === 0) && (!criterion.testStandards || criterion.testStandards.length === 0) && 'None' }
                 </TableCell>
               </TableRow>
             )}
