@@ -717,14 +717,14 @@ const ReportsListingsComponent = {
               }
             });
             if (!pre.found) {
-              ret.push(`<li>Optional Standard "${pre.optionalStandard.optionalStandard}" was removed</li>`);
+              ret.push(`<li>Optional Standard "${pre.optionalStandard.citation}: ${pre.optionalStandard.description}" was removed</li>`);
             }
           }
         });
         curr.optionalStandards.forEach((cur) => {
           if (cur.optionalStandard) {
             if (!cur.found) {
-              ret.push(`<li>Optional Standard "${cur.optionalStandard.optionalStandard}" was added</li>`);
+              ret.push(`<li>Optional Standard "${cur.optionalStandard.citation}: ${cur.optionalStandard.description}" was added</li>`);
             }
           }
         });
