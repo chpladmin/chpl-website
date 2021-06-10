@@ -102,7 +102,7 @@ function ChplOptionalStandardsEdit(props) {
         description: item.optionalStandard.description,
         id: item.optionalStandard.id,
       },
-    ].sort((a, b) => (a.optionalStandard.citation < b.optionalStandard.citation ? -1 : 1)));
+    ].sort((a, b) => (a.citation < b.citation ? -1 : 1)));
     update(updated);
   };
 
