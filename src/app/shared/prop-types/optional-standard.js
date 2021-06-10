@@ -3,13 +3,15 @@ import { number, shape, string } from 'prop-types';
 
 const optionalStandard = shape({
   id: number,
-  optionalStandard: string,
+  citation: string,
+  description: string,
 });
 
 const selectedOptionalStandard = shape({
   id: number,
   optionalStandard: shape({
-    optionalStandard: string,
+    citation: string,
+    description: string,
     id: number,
   }),
 });

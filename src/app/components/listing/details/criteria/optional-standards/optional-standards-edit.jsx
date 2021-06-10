@@ -52,11 +52,11 @@ const validationSchema = yup.object({
 function ChplOptionalStandardsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.optionalStandard.optionalStandard < b.optionalStandard.optionalStandard ? -1 : 1)));
+  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.optionalStandard.citation < b.optionalStandard.citation ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
       .filter((option) => !(props.optionalStandards.find((used) => used.optionalStandard.id === option.id)))
-      .sort((a, b) => (a.optionalStandard < b.optionalStandard ? -1 : 1)),
+      .sort((a, b) => (a.citation < b.citation ? -1 : 1)),
   );
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -73,7 +73,8 @@ function ChplOptionalStandardsEdit(props) {
       {
         optionalStandard: {
           id: formik.values.os.id,
-          optionalStandard: formik.values.os.optionalStandard,
+          citation: formik.values.os.citation,
+          description: formik.values.os.description,
         },
         key: Date.now(),
       },
@@ -97,10 +98,11 @@ function ChplOptionalStandardsEdit(props) {
     setOptions([
       ...options,
       {
-        optionalStandard: item.optionalStandard.optionalStandard,
+        citation: item.optionalStandard.citation,
+        description: item.optionalStandard.description,
         id: item.optionalStandard.id,
       },
-    ].sort((a, b) => (a.optionalStandard.optionalStandard < b.optionalStandard.optionalStandard ? -1 : 1)));
+    ].sort((a, b) => (a.optionalStandard.citation < b.optionalStandard.citation ? -1 : 1)));
     update(updated);
   };
 
@@ -132,7 +134,7 @@ function ChplOptionalStandardsEdit(props) {
                 { optionalStandards.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.optionalStandard.optionalStandard} maxLength={100} wordBoundaries /></Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.optionalStandard.description} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
@@ -185,7 +187,7 @@ function ChplOptionalStandardsEdit(props) {
                 helperText={formik.touched.os && formik.errors.os}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.optionalStandard}</MenuItem>
+                  <MenuItem value={item} key={item.id}>{item.citation}</MenuItem>
                 ))}
               </ChplTextField>
               <ButtonGroup
