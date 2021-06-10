@@ -49,7 +49,7 @@ describe('On the 2015 Listing page', () => {
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
-      expect(toast.toastTitle.getText()).toBe('Update processing');
+      expect(toast.toastTitle.getText()).toBe('CHPL ID Changed');
       toast.clearAllToast();
       hooks.waitForSpinnerToDisappear();
       expect(criteria.criteriaHeader('174', '170.315 (d)(3)', true).isDisplayed()).toBe(false);
