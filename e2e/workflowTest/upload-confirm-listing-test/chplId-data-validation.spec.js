@@ -28,7 +28,7 @@ inputs.forEach((input) => {
   const { expectedErrors } = input;
   const { expectedWarnings } = input;
 
-  describe(`User inspects uploaded listing with invalid CHPL ID as ${listingId}`, () => {
+  describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields`, () => {
     if (process.env.ENV !== 'stage') {
       beforeEach(() => {
         uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');
@@ -41,7 +41,7 @@ inputs.forEach((input) => {
         loginComponent.logOut();
       });
 
-      it('should show all correct expected error messages', () => {
+      it('should show all expected error messages on pending listing inspect', () => {
         confirmPage.gotoPendingListingPage(listingId);
         hooks.waitForSpinnerToDisappear();
         confirmPage.waitForBarMessages();
