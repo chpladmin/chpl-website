@@ -21,15 +21,15 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { optionalStandard: { optionalStandard: 'zz name', id: 2 } },
-            { optionalStandard: { optionalStandard: 'name 1', id: 3 } },
+            { optionalStandard: { citation: 'zz name', description: 'zz name', id: 2 } },
+            { optionalStandard: { citation: 'name 1', description: 'name 1', id: 3 } },
           ]}
           options={[
-            { optionalStandard: 'zz name', id: 2 },
-            { optionalStandard: 'extra name', id: 6 },
-            { optionalStandard: 'name 1', id: 3 },
-            { optionalStandard: 'fake name', id: 5 },
-            { optionalStandard: 'a name', id: 4 },
+            { citation: 'zz name', description: 'zz name', id: 2 },
+            { citation: 'extra name', description: 'extra name', id: 6 },
+            { citation: 'name 1', description: 'name 1', id: 3 },
+            { citation: 'fake name', description: 'fake name', id: 5 },
+            { citation: 'a name', description: 'a name', id: 4 },
           ]}
           onChange={hocMock.onChange}
         />,
@@ -74,13 +74,13 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { optionalStandard: { optionalStandard: 'zz name', id: 2 } },
-            { optionalStandard: { optionalStandard: 'name 1', id: 3 } },
+            { optionalStandard: { citation: 'zz name', description: 'zz name', id: 2 } },
+            { optionalStandard: { citation: 'name 1', description: 'name 1', id: 3 } },
           ]}
           options={[
-            { optionalStandard: 'zz name', id: 2 },
-            { optionalStandard: 'name 1', id: 3 },
-            { optionalStandard: 'a name', id: 4 },
+            { citation: 'zz name', description: 'zz name', id: 2 },
+            { citation: 'name 1', description: 'name 1', id: 3 },
+            { citation: 'a name', description: 'a name', id: 4 },
           ]}
           onChange={hocMock.onChange}
         />,
@@ -137,9 +137,9 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { optionalStandard: { id: 3, optionalStandard: 'name 1' } },
-            { optionalStandard: { id: 2, optionalStandard: 'zz name' } },
-            { optionalStandard: { id: 4, optionalStandard: 'a name' }, key: expect.any(Number) },
+            { optionalStandard: { id: 3, citation: 'name 1', description: 'name 1' } },
+            { optionalStandard: { id: 2, citation: 'zz name', description: 'zz name' } },
+            { optionalStandard: { id: 4, citation: 'a name', description: 'a name' }, key: expect.any(Number) },
           ],
           key: 'optionalStandards',
         });
@@ -152,13 +152,13 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { optionalStandard: { optionalStandard: 'zz name', id: 2 } },
-            { optionalStandard: { optionalStandard: 'name 1', id: 3 } },
+            { optionalStandard: { citation: 'zz name', description: 'zz name', id: 2 } },
+            { optionalStandard: { citation: 'name 1', description: 'name 1', id: 3 } },
           ]}
           options={[
-            { optionalStandard: 'zz name', id: 2 },
-            { optionalStandard: 'name 1', id: 3 },
-            { optionalStandard: 'a name', id: 4 },
+            { citation: 'zz name', description: 'zz name', id: 2 },
+            { citation: 'name 1', description: 'name 1', id: 3 },
+            { citation: 'a name', description: 'a name', id: 4 },
           ]}
           onChange={hocMock.onChange}
         />,
@@ -182,7 +182,7 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { optionalStandard: { id: 2, optionalStandard: 'zz name' } },
+            { optionalStandard: { id: 2, citation: 'zz name', description: 'zz name' } },
           ],
           key: 'optionalStandards',
         });
