@@ -7,27 +7,23 @@ export const CreateUserComponent = {
     hash: '<',
   },
   controller: class CreateUserComponent {
-    constructor ($analytics, $location, $log, authService, networkService, utilService) {
+    constructor ($analytics, $location, $log, authService, networkService) {
       'ngInject';
       this.$analytics = $analytics;
       this.$location = $location;
       this.$log = $log;
       this.authService = authService;
       this.networkService = networkService;
-      this.utilService = utilService;
-      this.passwordClass = utilService.passwordClass;
-      this.passwordTitle = utilService.passwordTitle;
-      this.userDetails = {user: {}};
       this.authorizeDetails = {};
       this.message = {value: '', success: null};
-      this.extras = ['chpl'];
       this.displayMode = 'SIGN-IN';
+      this.displayMode = 'CREATE-ACCOUNT';
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onChanges (changes) {
       if (changes.hash.currentValue) {
         this.hash = changes.hash.currentValue;
-        this.userDetails.hash = changes.hash.currentValue;
         this.authorizeDetails.hash = changes.hash.currentValue;
       }
       if (this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
@@ -62,26 +58,23 @@ export const CreateUserComponent = {
       this.displayMode = mode;
     }
 
-    createUser () {
-      if (this.validateUser()) {
-        this.networkService.createInvitedUser(this.userDetails)
-          .then(() => {
-            this.$analytics.eventTrack('Create Account', { category: 'Authentication' });
-            this.message.value = 'Your account has been created. Please check your email to confirm your account';
-            this.userDetails = {user: {}};
-            this.changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
-          }, error => {
-            if (error.data.errorMessages) {
-              this.message.value = error.data.errorMessages;
-            } else if (error.data.error) {
-              this.message.value = error.data.error;
-            }
-          });
+    handleDispatch(data) {
+      const invitation = {
+        hash: this.hash,
+        user: data,
       }
-    }
-
-    editContact (contact) {
-      this.userDetails.user = Object.assign(this.userDetails.user, contact);
+      this.networkService.createInvitedUser(invitation)
+        .then(() => {
+          this.$analytics.eventTrack('Create Account', { category: 'Authentication' });
+          this.message.value = 'Your account has been created. Please check your email to confirm your account';
+          this.changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
+        }, error => {
+          if (error.data.errorMessages) {
+            this.message.value = error.data.errorMessages;
+          } else if (error.data.error) {
+            this.message.value = error.data.error;
+          }
+        });
     }
 
     isCreateAccountMode () {
@@ -94,29 +87,6 @@ export const CreateUserComponent = {
 
     isSignInMode () {
       return this.displayMode === 'SIGN-IN';
-    }
-
-    misMatchPasswords () {
-      return this.passwordStrength.password !== this.userDetails.user.passwordverify;
-    }
-
-    validateUser () {
-      var valid = true;
-      valid = valid && this.userDetails.hash && this.userDetails.hash.length > 0;
-      valid = valid && this.userDetails.user.password && this.userDetails.user.password.length > 0;
-      valid = valid && this.userDetails.user.fullName && this.userDetails.user.fullName.length > 0;
-      valid = valid && this.userDetails.user.email && this.userDetails.user.email.length > 0;
-      valid = valid && this.userDetails.user.password === this.userDetails.user.passwordverify;
-      return valid;
-    }
-
-    setExtras () {
-      let vals = ['chpl'];
-      if (this.userDetails.user.fullName) { vals.push(this.userDetails.user.fullName); }
-      if (this.userDetails.user.friendlyName) { vals.push(this.userDetails.user.friendlyName); }
-      if (this.userDetails.user.email) { vals.push(this.userDetails.user.email); }
-      if (this.userDetails.user.phoneNumber) { vals.push(this.userDetails.user.phoneNumber); }
-      this.extras = vals;
     }
   },
 };
