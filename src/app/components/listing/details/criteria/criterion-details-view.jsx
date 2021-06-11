@@ -37,6 +37,12 @@ function ChplCriterionDetailsView(props) {
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
+  if (criterion.criterion.certificationEdition === '2011') {
+    return (
+      <></>
+    );
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="Criterion Details Table">
