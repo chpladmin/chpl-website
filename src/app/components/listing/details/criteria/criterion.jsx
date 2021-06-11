@@ -117,9 +117,7 @@ function ChplCriterion(props) {
           <Grid item xs={1}>
             { criterion.success
               && (
-                <Typography variant="subtitle1">
-                  <DoneAllIcon fontSize="large" />
-                </Typography>
+                <DoneAllIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
               )}
           </Grid>
           <Grid item xs={3}>
