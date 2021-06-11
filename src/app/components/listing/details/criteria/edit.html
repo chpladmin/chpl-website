@@ -57,7 +57,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.optionalStandards !== null" feature-flag="optional-standards">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.allowedOptionalStandards && $ctrl.cert.allowedOptionalStandards.length > 0" feature-flag="optional-standards">
           <td>
             <span>Optional Standard</span>
           </td>
@@ -85,7 +85,6 @@
               </li>
             </ul>
           </td>
-          <td ng-if="(!$ctrl.cert.optionalStandards || $ctrl.cert.optionalStandards.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testStandards !== null && $ctrl.resources.testStandards.data.length > 0">
           <td>

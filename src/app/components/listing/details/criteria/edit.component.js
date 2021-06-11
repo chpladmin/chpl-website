@@ -257,7 +257,7 @@ const CertificationCriteriaEditComponent = {
       const keys = this.cert.testStandards
         .filter((ts) => ts.testStandardId)
         .map((ts) => ({ key: ts.testStandardId }));
-      if (this.isOn('optional-standards') && this.resources.testStandards.listingEdition === '2015') {
+      if (this.isOn('optional-standards')) {
         this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => keys.find((k) => k.key === ts.id));
       }
       return keys;
