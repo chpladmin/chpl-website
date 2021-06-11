@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import theme from '../../themes/theme';
+// eslint-disable-next-line import/no-cycle
+import { getAngularService } from '.';
 
 const useStyles = makeStyles(() => ({
   NavBarCallout: {
@@ -16,42 +18,60 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ChplNonProdIndicator = () => {
+function ChplNonProdIndicator() {
+  const networkService = getAngularService('networkService');
+  // eslint-disable-next-line react/destructuring-assignment
+  const [production, setProduction] = useState(true);
   const classes = useStyles();
 
+  useEffect(() => {
+    networkService.getSystemStatus()
+      .then((response) => {
+        console.log(response);
+        if (response.headers) {
+          console.log(response.headers('environment'));
+          setProduction(response.headers('environment') === 'PRODUCTION');
+        }
+      });
+  }, []);
+
   return (
-    { process.env.NODE_ENV !== 'production' &&
-      <ThemeProvider theme={theme}>
-        <AppBar color="primary" className={classes.NavBarCallout}>
-          <Toolbar className={classes.NavBarTextBox}>
-            <Typography variant="body2" noWrap>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-              <b> | </b>
-              THIS IS NOT THE PRODUCTION SITE
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </ThemeProvider>}
+    <ThemeProvider theme={theme}>
+      <>
+        { !production
+          && (
+            <AppBar color="primary" className={classes.NavBarCallout}>
+              <Toolbar className={classes.NavBarTextBox}>
+                <Typography variant="body2" noWrap>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                  <b> | </b>
+                  THIS IS NOT THE PRODUCTION SITE
+                </Typography>
+              </Toolbar>
+            </AppBar>
+          )}
+      </>
+    </ThemeProvider>
   );
 };
 

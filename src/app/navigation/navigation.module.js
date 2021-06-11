@@ -31,13 +31,6 @@
       },
 
       response: function (response) {
-        if (response.headers && response.headers()['environment']) {
-          if (response.headers()['environment'] === 'production') {
-            $rootScope.broadcast('server.environment.production');
-          } else {
-            $rootScope.broadcast('server.environment.non-production');
-          }
-        }
         if (response.headers && response.headers()['cache-cleared']) {
           parseCacheCleared(response.headers()['cache-cleared']);
         }
