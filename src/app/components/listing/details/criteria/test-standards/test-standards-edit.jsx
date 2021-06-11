@@ -65,7 +65,7 @@ function ChplTestStandardsEdit(props) {
 
   useEffect(() => {
     if (optionalStandardsIsOn) {
-      setOptions(options.filter((option) => option.year === '2014' || testStandards.find((s) => s.testStandardId === option.id)));
+      setOptions(options.filter((option) => testStandards.find((s) => s.testStandardId === option.id)));
     }
   }, []);
 
