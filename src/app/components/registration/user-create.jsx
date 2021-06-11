@@ -1,4 +1,3 @@
-const zxcvbn = require('zxcvbn');
 import React, { useState } from 'react';
 import {
   func,
@@ -18,6 +17,8 @@ import * as yup from 'yup';
 import theme from '../../themes/theme';
 import { ChplTextField } from '../util';
 
+const zxcvbn = require('zxcvbn');
+
 function PasswordStrengthMeter(props) {
   const score = props.value * 25;
   let text;
@@ -32,7 +33,7 @@ function PasswordStrengthMeter(props) {
   const newProps = {
     ...props,
     value: score,
-  }
+  };
   return (
     <Box display="flex" alignItems="center">
       <Box width="100%" mr={1}>
@@ -64,13 +65,15 @@ const validationSchema = yup.object({
     .test(
       'password-strength',
       'Password is not strong enough',
-      (value, context) => context.parent.passwordStrength >= 3),
+      (value, context) => context.parent.passwordStrength >= 3,
+    ),
   verificationPassword: yup.string()
     .required('Verification Password is required')
     .test(
       'password-matches',
       'Verification Password does not match Password',
-      (value, context) => value === context.parent.newPassword),
+      (value, context) => value === context.parent.newPassword,
+    ),
   fullName: yup.string()
     .required('Full Name is required'),
   email: yup.string()
@@ -110,9 +113,10 @@ function ChplUserCreate(props) {
     setPasswordMessages(
       [passwordStrength.feedback?.warning]
         .concat(passwordStrength.feedback?.suggestions)
-        .filter((msg) => msg));
-    formik.handleChange(event)
-  }
+        .filter((msg) => msg),
+    );
+    formik.handleChange(event);
+  };
 
   formik = useFormik({
     initialValues: {
@@ -209,13 +213,14 @@ function ChplUserCreate(props) {
         <PasswordStrengthMeter
           value={strength}
         />
-        { passwordMessages.length > 0 &&
+        { passwordMessages.length > 0
+          && (
           <ul>
             { passwordMessages.map((msg) => (
               <li key={msg}>{ msg }</li>
             ))}
           </ul>
-        }
+          )}
         <ChplTextField
           type="password"
           id="password-verification"
@@ -238,7 +243,11 @@ function ChplUserCreate(props) {
           Create account
         </Button>
         <Typography>
-          If you require accessibility assistance, please visit the <a href="https://inquiry.healthit.gov/">Health IT Feedback and Inquiry Portal</a> and select “Certified Health IT Product List (CHPL)” to submit a ticket.
+          If you require accessibility assistance, please visit the
+          {' '}
+          <a href="https://inquiry.healthit.gov/">Health IT Feedback and Inquiry Portal</a>
+          {' '}
+          and select “Certified Health IT Product List (CHPL)” to submit a ticket.
         </Typography>
       </Paper>
     </ThemeProvider>
