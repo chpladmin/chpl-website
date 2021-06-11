@@ -139,21 +139,26 @@ function ChplCriterionDetailsEdit(props) {
             label={`${criterion.criterion.number}: ${criterion.criterion.title}`}
           />
           <Collapse in={formik.values.success}>
-            <div>
-              <Divider />
-            </div>
-            <div>
-              <Typography
-                variant="subtitle1"
-                className={classes.subtitleSpacing}
-              >
-                Relied Upon Software
-              </Typography>
-              <ChplReliedUponSoftwareEdit
-                software={criterion.additionalSoftware}
-                onChange={handleDetailChange}
-              />
-            </div>
+            { criterion.additionalSoftware !== null
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Relied Upon Software
+                    </Typography>
+                    <ChplReliedUponSoftwareEdit
+                      software={criterion.additionalSoftware}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
             { formik.values.gap !== null
               && (
                 <>
