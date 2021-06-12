@@ -27,11 +27,7 @@ function ChplNonProdIndicator() {
   useEffect(() => {
     networkService.getSystemStatus()
       .then((response) => {
-        console.log(response);
-        if (response.headers) {
-          console.log(response.headers('environment'));
-          setProduction(response.headers('environment') === 'PRODUCTION');
-        }
+        setProduction(response.headers('Environment') === 'PRODUCTION');
       });
   }, []);
 
