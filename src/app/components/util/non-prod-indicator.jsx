@@ -27,7 +27,13 @@ function ChplNonProdIndicator() {
   useEffect(() => {
     networkService.getSystemStatus()
       .then((response) => {
-        setProduction(response.headers('Environment') === 'PRODUCTION');
+        let headerValue = '';
+        if (response.headers('Environment')) {
+          headerValue = response.headers('Environment');
+        } else if (response.headers('environment')) {
+          headerValue = response.headers('environment');
+        }
+        setProduction(headerValue === 'PRODUCTION');
       });
   }, []);
 
@@ -69,7 +75,7 @@ function ChplNonProdIndicator() {
       </>
     </ThemeProvider>
   );
-};
+}
 
 export default ChplNonProdIndicator;
 
