@@ -38,24 +38,25 @@ function ChplCriterionDetailsView(props) {
   /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
-    return (
-      <></>
-    );
+    return null;
   }
 
   return (
     <TableContainer component={Paper}>
       <Table aria-label="Criterion Details Table">
-        <TableHead>
-          <TableRow>
-            <TableCell
-              style={{ width: '33%' }}
-            >
-              Attribute
-            </TableCell>
-            <TableCell>Value</TableCell>
-          </TableRow>
-        </TableHead>
+        { (criterion.success || criterion.g1Success !== null || criterion.g2Success !== null)
+          && (
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  style={{ width: '33%' }}
+                >
+                  Attribute
+                </TableCell>
+                <TableCell>Value</TableCell>
+              </TableRow>
+            </TableHead>
+          )}
         <TableBody>
           { criterion.success && criterion.additionalSoftware?.length > 0
             && (
