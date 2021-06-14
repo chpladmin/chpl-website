@@ -6,11 +6,6 @@
   </div>
   <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-md-8 col-md-offset-2">
-      <div class="row" ng-if="$ctrl.isSignInMode()">
-        <div class="col-md-12">
-          <p>Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by selecting the ‘create a new account’ button below.</p>
-        </div>
-      </div>
       <div class="row" ng-if="$ctrl.isCreateAccountSuccessMode()">
         <div class="col-md-12">
           <p class="alert alert-success">{{ $ctrl.message }}</p>

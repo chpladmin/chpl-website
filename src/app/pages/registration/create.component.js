@@ -2,7 +2,7 @@ const zxcvbn = require('zxcvbn');
 
 window.zxcvbn = zxcvbn;
 
-export const CreateUserComponent = {
+const CreateUserComponent = {
   templateUrl: 'chpl.registration/create-user.html',
   bindings: {
     hash: '<',
@@ -97,3 +97,5 @@ export const CreateUserComponent = {
 
 angular.module('chpl.registration')
   .component('chplRegistrationCreateUser', CreateUserComponent);
+
+export default CreateUserComponent;
