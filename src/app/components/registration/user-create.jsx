@@ -98,7 +98,7 @@ function ChplUserCreate(props) {
       phoneNumber: formik.values.phoneNumber,
       title: formik.values.title,
     };
-    props.dispatch(user);
+    props.dispatch('create', user);
   };
 
   const updatePassword = (event) => {

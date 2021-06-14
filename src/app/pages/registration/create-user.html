@@ -6,65 +6,28 @@
   </div>
   <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-md-8 col-md-offset-2">
-      <div ng-if="$ctrl.isSignInMode()" class="row">
+      <div class="row" ng-if="$ctrl.isSignInMode()">
         <div class="col-md-12">
           <p>Welcome to ONC’s Certified Health IT Product List (CHPL). You have been invited to be an Administrator, which will allow you to manage your organization’s information on the CHPL. Please log in to your existing account to add any permissions and/or organizations, or create a new account by selecting the ‘create a new account’ button below.</p>
         </div>
       </div>
-      <div ng-if="$ctrl.isCreateAccountSuccessMode()" class="row">
-        <div class="col-md-8 col-md-offset-2">
-          <p class="alert alert-success">{{ $ctrl.message.value }}</p>
+      <div class="row" ng-if="$ctrl.isCreateAccountSuccessMode()">
+        <div class="col-md-12">
+          <p class="alert alert-success">{{ $ctrl.message }}</p>
         </div>
       </div>
       <div class="row" ng-if="$ctrl.isCreateAccountMode()">
-        <div class="col-md-8 col-md-offset-2" ng-if="$ctrl.message.value">
-          <p class="alert alert-danger">{{ $ctrl.message.value }}</p>
+        <div class="col-md-12">
+          <p class="alert alert-danger" ng-if="$ctrl.message">{{ $ctrl.message }}</p>
+          <chpl-user-create-bridge dispatch="::$ctrl.handleDispatch"></chpl-user-create-bridge>
+          <p>Or <button class="btn btn-secondary" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">log in to your existing account</button></p>
         </div>
-        <chpl-user-create-bridge dispatch="::$ctrl.handleDispatch"></chpl-user-create-bridge>
-        <div class="flex-container">
-          <div class="flex-item">
-            <p>Or <button class="btn btn-secondary" ng-click="$ctrl.changeDisplayMode('SIGN-IN')">log in to your existing account</button></p>
-          </div>
-        </div>
-      </div>
       </div>
       <div class="row" ng-if="$ctrl.isSignInMode()" ng-form="$ctrl.authorizeUserForm">
         <div class="col-md-12">
-          <div class="flex-container">
-            <div class="flex-item">
-              <p>Log in to your existing account</p>
-            </div>
-          </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <label for="authorize-username" class="control-label">Email <span class="text-danger">*</span> (Or Username)</label>
-              <input type="text" id="authorize-username" ng-model="$ctrl.authorizeDetails.userName" class="form-control" required />
-            </div>
-          </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
-              <input type="password" id="authorize-password" ng-model="$ctrl.authorizeDetails.password" class="form-control" required />
-            </div>
-          </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <button class="btn btn-primary btn-block" ng-click="$ctrl.authorizeUser()" ng-disabled="$ctrl.authorizeUserForm.$invalid">Log in to your account</button>
-            </div>
-          </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <p>Or <button class="btn btn-secondary" ng-click="$ctrl.changeDisplayMode('CREATE-ACCOUNT')">create a new account</button></p>
-            </div>
-          </div>
-          <div class="flex-container">
-            <div class="flex-item">
-              <p>If you require accessibility assistance, please visit the <a href="https://inquiry.healthit.gov/">Health IT Feedback and Inquiry Portal</a> and select “Certified Health IT Product List (CHPL)” to submit a ticket.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8 col-md-offset-2" ng-if="$ctrl.message.value">
-          <p class="alert alert-danger">{{ $ctrl.message.value }}</p>
+          <p class="alert alert-danger" ng-if="$ctrl.message">{{ $ctrl.message }}</p>
+          <chpl-user-add-permissions-bridge dispatch="::$ctrl.handleDispatch"></chpl-user-add-permissions-bridge>
+          <p>Or <button class="btn btn-secondary" ng-click="$ctrl.changeDisplayMode('CREATE-ACCOUNT')">create a new account</button></p>
         </div>
       </div>
     </div>
