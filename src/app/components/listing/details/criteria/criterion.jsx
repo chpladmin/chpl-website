@@ -23,6 +23,7 @@ import {
 } from '@material-ui/core';
 
 import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.'; // eslint-disable-line import/no-cycle
+import { ChplHighlightCures } from '../../../util';
 import {
   accessibilityStandard,
   certificationResult,
@@ -161,7 +162,7 @@ function ChplCriterion(props) {
           </Grid>
           <Grid item xs={8}>
             <Typography>
-              {criterion.criterion.title}
+              <ChplHighlightCures text={criterion.criterion.title} />
             </Typography>
           </Grid>
         </Grid>
