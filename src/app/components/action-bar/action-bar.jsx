@@ -22,8 +22,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplActionBar(props) {
+  /* eslint-disable react/destructuring-assignment */
+  const [canDelete] = useState(props.canDelete);
+  const [isDisabled] = useState(props.isDisabled);
+  const [errors] = useState(props.errors.sort((a, b) => (a < b ? -1 : 1)));
+  const [warnings] = useState(props.warnings.sort((a, b) => (a < b ? -1 : 1)));
   const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
+  /* eslint-enable react/destructuring-assignment */
 
   const act = (action) => {
     if (props.dispatch) {
@@ -39,24 +45,29 @@ function ChplActionBar(props) {
     <ThemeProvider theme={theme}>
       <form onSubmit={submit}>
         <div className="action-bar">
-          { ((props.errors && props.errors.length > 0) || (props.warnings && props.warnings.length > 0))
+          { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
             && (
               <div className="action-bar__error-toggle">
-                <span onClick={() => setShowMessages(!showMessages)}>
-                  { props.errors && props.errors.length > 0
+                <span
+                  onClick={() => setShowMessages(!showMessages)}
+                  onKeyDown={() => setShowMessages(!showMessages)}
+                  tabIndex={0}
+                  role="button"
+                >
+                  { errors && errors.length > 0
                     && (
                       <>
                         Error
-                        { props.errors.length > 1 && 's'}
+                        { errors.length > 1 && 's'}
                       </>
                     )}
-                  { props.errors && props.errors.length > 0 && props.warnings && props.warnings.length > 0
+                  { errors && errors.length > 0 && warnings && warnings.length > 0
                     && <> and </>}
-                  { props.warnings && props.warnings.length > 0
+                  { warnings && warnings.length > 0
                     && (
                       <>
                         Warning
-                        { props.warnings.length > 1 && 's'}
+                        { warnings.length > 1 && 's'}
                       </>
                     )}
                   <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`} />
@@ -67,34 +78,33 @@ function ChplActionBar(props) {
             && (
               <>
                 <div className="action-bar__messages">
-                  { props.errors && props.errors.length > 0
+                  { errors && errors.length > 0
                     && (
                       <div className="action-bar__errors">
                         <strong>
                           Error
-                          { props.errors.length > 1 && 's'}
+                          { errors.length > 1 && 's'}
                         </strong>
                         <ul className="action-bar__error-messages">
                           {
-                            props.errors.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
-                              .map((message) => (
-                                <li key={message}>{message}</li>
-                              ))
+                            errors.map((message) => (
+                              <li key={message}>{message}</li>
+                            ))
                           }
                         </ul>
                       </div>
                     )}
-                  { props.warnings && props.warnings.length > 0
+                  { warnings && warnings.length > 0
                     && (
                       <>
                         <div className="action-bar__warnings">
                           <strong>
                             Warning
-                            { props.warnings.length > 1 && 's'}
+                            { warnings.length > 1 && 's'}
                           </strong>
                           <ul className="action-bar__warning-messages">
                             {
-                              props.warnings.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)).map((message) => (
+                              warnings.map((message) => (
                                 <li key={message}>{message}</li>
                               ))
                             }
@@ -107,7 +117,7 @@ function ChplActionBar(props) {
             )}
           <div className="action-bar__buttons">
             <ButtonGroup>
-              { props.canDelete
+              { canDelete
                 && (
                 <Button
                   id="action-bar-delete"
@@ -130,7 +140,7 @@ function ChplActionBar(props) {
                 color="primary"
                 variant="contained"
                 onClick={() => act('save')}
-                disabled={props.isDisabled}
+                disabled={isDisabled}
                 onMouseOver={() => act('mouseover')}
               >
                 Save
