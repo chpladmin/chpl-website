@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
     gap: '8px',
   },
 }));
+
 const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')

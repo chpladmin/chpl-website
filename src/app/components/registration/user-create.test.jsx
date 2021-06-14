@@ -24,7 +24,7 @@ describe('the ChplUserCreate component', () => {
     cleanup();
   });
 
-  describe('when adding permissions', () => {
+  describe('when creating a user', () => {
     it('should call the callback', async () => {
       hocMock.dispatch.mockClear();
       userEvent.type(screen.getByLabelText(/Full Name/), 'full name');
