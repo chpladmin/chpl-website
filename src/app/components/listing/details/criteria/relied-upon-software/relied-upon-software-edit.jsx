@@ -115,7 +115,7 @@ function ChplReliedUponSoftwareEdit(props) {
                   <TableCell><Typography variant="body2">Version</Typography></TableCell>
                   <TableCell><Typography variant="body2">CHPL ID</Typography></TableCell>
                   <TableCell><Typography variant="body2">Group</Typography></TableCell>
-                  <TableCell />
+                  <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -138,6 +138,7 @@ function ChplReliedUponSoftwareEdit(props) {
                         && (
                           <IconButton
                             onClick={() => removeItem(item)}
+                            aria-label="Remove item"
                           >
                             <CloseIcon
                               color="primary"

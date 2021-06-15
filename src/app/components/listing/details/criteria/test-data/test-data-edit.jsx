@@ -118,7 +118,7 @@ function ChplTestDataEdit(props) {
                   <TableCell><Typography variant="body2">Name</Typography></TableCell>
                   <TableCell><Typography variant="body2">Version</Typography></TableCell>
                   <TableCell><Typography variant="body2">Alteration</Typography></TableCell>
-                  <TableCell />
+                  <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -138,6 +138,7 @@ function ChplTestDataEdit(props) {
                         && (
                           <IconButton
                             onClick={() => removeItem(item)}
+                            aria-label="Remove item"
                           >
                             <CloseIcon
                               color="primary"

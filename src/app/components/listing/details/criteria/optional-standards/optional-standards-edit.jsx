@@ -127,7 +127,7 @@ function ChplOptionalStandardsEdit(props) {
               <TableHead>
                 <TableRow>
                   <TableCell><Typography variant="body2">Name</Typography></TableCell>
-                  <TableCell />
+                  <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -141,6 +141,7 @@ function ChplOptionalStandardsEdit(props) {
                         && (
                           <IconButton
                             onClick={() => removeItem(item)}
+                            aria-label="Remove item"
                           >
                             <CloseIcon
                               color="primary"
