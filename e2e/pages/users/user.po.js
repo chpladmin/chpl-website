@@ -1,42 +1,43 @@
-const userElements = {
-  users: '#users-toggle',
-  usermanagement: '*=User Management',
-  usertitle: '#user-title',
-  userPhoneNumber: '#user-phone-number',
-  lockedCheckbox: '#is-locked',
-  enabledCheckbox: '#is-enabled',
-  pwChangeCheckbox: '#is-pwchange',
-};
-
+/* eslint-disable class-methods-use-this */
 class UsersPage {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      users: '#users-toggle',
+      usermanagement: '*=User Management',
+      usertitle: '#user-title',
+      userPhoneNumber: '#user-phone-number',
+      lockedCheckbox: '#is-locked',
+      enabledCheckbox: '#is-enabled',
+      pwChangeCheckbox: '#is-pwchange',
+    };
+  }
 
   get usersButton() {
-    return $(userElements.users);
+    return $(this.elements.users);
   }
 
   get userManagementButton() {
-    return $(userElements.usermanagement);
+    return $(this.elements.usermanagement);
   }
 
   get userTitle() {
-    return $(userElements.usertitle);
+    return $(this.elements.usertitle);
   }
 
   get userPhoneNumber() {
-    return $(userElements.userPhoneNumber);
+    return $(this.elements.userPhoneNumber);
   }
 
   get lockedCheckbox() {
-    return $(userElements.lockedCheckbox);
+    return $(this.elements.lockedCheckbox);
   }
 
   get enabledCheckbox() {
-    return $(userElements.enabledCheckbox);
+    return $(this.elements.enabledCheckbox);
   }
 
   get pwChangeCheckbox() {
-    return $(userElements.pwChangeCheckbox);
+    return $(this.elements.pwChangeCheckbox);
   }
 
   editUser(name) {

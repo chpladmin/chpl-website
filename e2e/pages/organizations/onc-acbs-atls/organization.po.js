@@ -1,34 +1,35 @@
-const elements = {
-  organizationEditButton: '#edit-organization',
-  organizationName: '#organization-name',
-  organizationWebsite: '#organization-website',
-  saveOrganizationButton: '#chpl-organization-save',
-  organizationList: '.organizations-side-nav',
-  retireOrganization: '#organization-retired',
-  retirementDate: '#retirement-date',
-  addressOnEdit: 'chpl-address',
-  manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
-  errorMessage: '.text-danger.ng-scope',
-};
-
+/* eslint-disable class-methods-use-this */
 class OrganizationPage {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      organizationEditButton: '#edit-organization',
+      organizationName: '#organization-name',
+      organizationWebsite: '#organization-website',
+      saveOrganizationButton: '#chpl-organization-save',
+      organizationList: '.organizations-side-nav',
+      retireOrganization: '#organization-retired',
+      retirementDate: '#retirement-date',
+      addressOnEdit: 'chpl-address',
+      manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
+      errorMessage: '.text-danger.ng-scope',
+    };
+  }
 
   organizationNameButton(organizationName) {
     return $(`//*[contains(text(),"${organizationName}")]`);
   }
 
   get organizationList() {
-    return $(elements.organizationList);
+    return $(this.elements.organizationList);
   }
 
   organizationListCount() {
-    const count = $(elements.organizationList).$$('.btn.btn-link').length;
+    const count = $(this.elements.organizationList).$$('.btn.btn-link').length;
     return count;
   }
 
   get organizationEditButton() {
-    return $(elements.organizationEditButton);
+    return $(this.elements.organizationEditButton);
   }
 
   createOrganizationButton(organization) {
@@ -36,27 +37,27 @@ class OrganizationPage {
   }
 
   get organizationName() {
-    return $(elements.organizationName);
+    return $(this.elements.organizationName);
   }
 
   get organizationWebsite() {
-    return $(elements.organizationWebsite);
+    return $(this.elements.organizationWebsite);
   }
 
   get saveOrganizationButton() {
-    return $(elements.saveOrganizationButton);
+    return $(this.elements.saveOrganizationButton);
   }
 
   get retireOrganizationCheckbox() {
-    return $(elements.retireOrganization);
+    return $(this.elements.retireOrganization);
   }
 
   get retirementDate() {
-    return $(elements.retirementDate);
+    return $(this.elements.retirementDate);
   }
 
   get manageUsersPanelHeader() {
-    return $(elements.manageUsersPanelHeader);
+    return $(this.elements.manageUsersPanelHeader);
   }
 
   get manageUsersPanel() {
@@ -72,15 +73,15 @@ class OrganizationPage {
   }
 
   get errorMessage() {
-    return $(elements.errorMessage);
+    return $(this.elements.errorMessage);
   }
 
   get addressErrorMessage() {
-    return $(elements.addressOnEdit);
+    return $(this.elements.addressOnEdit);
   }
 
   organizationListValue(key) {
-    const keyValue = $(elements.organizationList).$$('.btn.btn-link')[key];
+    const keyValue = $(this.elements.organizationList).$$('.btn.btn-link')[key];
     return keyValue;
   }
 }
