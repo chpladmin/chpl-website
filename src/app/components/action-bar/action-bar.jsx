@@ -25,8 +25,8 @@ function ChplActionBar(props) {
   /* eslint-disable react/destructuring-assignment */
   const [canDelete] = useState(props.canDelete);
   const [isDisabled] = useState(props.isDisabled);
-  const [errors] = useState(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  const [warnings] = useState(props.warnings.sort((a, b) => (a < b ? -1 : 1)));
+  const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
+  const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
   const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -37,16 +37,12 @@ function ChplActionBar(props) {
     }
   };
 
-  const submit = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <ThemeProvider theme={theme}>
-      <form onSubmit={submit}>
-        <div className="action-bar">
-          { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
-            && (
+      <div className="action-bar">
+        { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
+          && (
+            <>
               <div className="action-bar__error-toggle">
                 <span
                   onClick={() => setShowMessages(!showMessages)}
@@ -73,52 +69,53 @@ function ChplActionBar(props) {
                   <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`} />
                 </span>
               </div>
-            )}
-          { showMessages
-            && (
-              <>
-                <div className="action-bar__messages">
-                  { errors && errors.length > 0
-                    && (
-                      <div className="action-bar__errors">
+            </>
+          )}
+        { showMessages
+          && (
+            <>
+              <div className="action-bar__messages">
+                { errors && errors.length > 0
+                  && (
+                    <div className="action-bar__errors">
+                      <strong>
+                        Error
+                        { errors.length > 1 && 's'}
+                      </strong>
+                      <ul className="action-bar__error-messages">
+                        {
+                          errors.map((message) => (
+                            <li key={message}>{message}</li>
+                          ))
+                        }
+                      </ul>
+                    </div>
+                  )}
+                { warnings && warnings.length > 0
+                  && (
+                    <>
+                      <div className="action-bar__warnings">
                         <strong>
-                          Error
-                          { errors.length > 1 && 's'}
+                          Warning
+                          { warnings.length > 1 && 's'}
                         </strong>
-                        <ul className="action-bar__error-messages">
+                        <ul className="action-bar__warning-messages">
                           {
-                            errors.map((message) => (
+                            warnings.map((message) => (
                               <li key={message}>{message}</li>
                             ))
                           }
                         </ul>
                       </div>
-                    )}
-                  { warnings && warnings.length > 0
-                    && (
-                      <>
-                        <div className="action-bar__warnings">
-                          <strong>
-                            Warning
-                            { warnings.length > 1 && 's'}
-                          </strong>
-                          <ul className="action-bar__warning-messages">
-                            {
-                              warnings.map((message) => (
-                                <li key={message}>{message}</li>
-                              ))
-                            }
-                          </ul>
-                        </div>
-                      </>
-                    )}
-                </div>
-              </>
-            )}
-          <div className="action-bar__buttons">
-            <ButtonGroup>
-              { canDelete
-                && (
+                    </>
+                  )}
+              </div>
+            </>
+          )}
+        <div className="action-bar__buttons">
+          <ButtonGroup>
+            { canDelete
+              && (
                 <Button
                   id="action-bar-delete"
                   className={classes.deleteButton}
@@ -126,29 +123,28 @@ function ChplActionBar(props) {
                 >
                   Delete
                 </Button>
-                )}
-              <Button
-                id="action-bar-cancel"
-                color="primary"
-                variant="outlined"
-                onClick={() => act('cancel')}
-              >
-                Cancel
-              </Button>
-              <Button
-                id="action-bar-save"
-                color="primary"
-                variant="contained"
-                onClick={() => act('save')}
-                disabled={isDisabled}
-                onMouseOver={() => act('mouseover')}
-              >
-                Save
-              </Button>
-            </ButtonGroup>
-          </div>
+              )}
+            <Button
+              id="action-bar-cancel"
+              color="primary"
+              variant="outlined"
+              onClick={() => act('cancel')}
+            >
+              Cancel
+            </Button>
+            <Button
+              id="action-bar-save"
+              color="primary"
+              variant="contained"
+              onClick={() => act('save')}
+              disabled={isDisabled}
+              onMouseOver={() => act('mouseover')}
+            >
+              Save
+            </Button>
+          </ButtonGroup>
         </div>
-      </form>
+      </div>
     </ThemeProvider>
   );
 }
