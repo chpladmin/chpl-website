@@ -54,7 +54,9 @@ function ChplUserView(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Card>
+      <Card
+        title={`${user.fullName} Information`}
+      >
         <CardHeader
           title={user.fullName}
           subheader={user.friendlyName}
