@@ -27,8 +27,8 @@ describe('ONC STAFF can ', () => {
   it('change title successfully', () => {
     page.editUser('AQA ONC Staff');
     let title = 'Mr' + (new Date()).getDate();
-    page.userTitle.clearValue();
-    page.userTitle.addValue(title);
+    page.title.clearValue();
+    page.title.addValue(title);
     actionBarComponent.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(title));
@@ -38,8 +38,8 @@ describe('ONC STAFF can ', () => {
   it('change phone number successfully', () => {
     page.editUser('AQA ONC Staff');
     const number = (new Date()).getTime() % 1000000;
-    page.userPhoneNumber.clearValue();
-    page.userPhoneNumber.addValue(number);
+    page.phoneNumber.clearValue();
+    page.phoneNumber.addValue(number);
     actionBarComponent.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(number));
