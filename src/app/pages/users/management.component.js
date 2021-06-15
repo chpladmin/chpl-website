@@ -47,7 +47,6 @@ const UserManagementComponent = {
           this.networkService.deleteUser(data)
             .then(() => that.networkService.getUsers().then((response) => {
               that.users = response.users;
-              that.$scope.$apply();
             }));
           break;
         case 'invite':
@@ -64,7 +63,6 @@ const UserManagementComponent = {
           this.networkService.getUsers()
             .then((response) => {
               that.users = response.users;
-              that.$scope.$apply();
             });
           break;
         case 'impersonate':

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   arrayOf,
   func,
@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
 
 function ChplUsers(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [users, setUsers] = useState(props.users.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+  const [users, setUsers] = useState([]);
   const [roles] = useState(props.roles);
   const [user, setUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
@@ -53,6 +53,10 @@ function ChplUsers(props) {
   const networkService = getAngularService('networkService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setUsers(props.users.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+  }, [props.users]);
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');

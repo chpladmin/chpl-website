@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   func,
 } from 'prop-types';
@@ -34,11 +34,15 @@ const useStyles = makeStyles(() => ({
 
 function ChplUserView(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [user] = useState(props.user);
+  const [user, setUser] = useState({});
   const DateUtil = getAngularService('DateUtil');
   const canImpersonate = getAngularService('authService').canImpersonate(props.user);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setUser(props.user);
+  }, [props.user]);
 
   const edit = () => {
     props.dispatch('edit', user);
