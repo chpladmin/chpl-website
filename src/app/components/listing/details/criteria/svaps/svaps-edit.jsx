@@ -60,6 +60,8 @@ function ChplSvapsEdit(props) {
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
+  let addNew;
+
   const formik = useFormik({
     initialValues: {
       svap: '',
@@ -76,7 +78,7 @@ function ChplSvapsEdit(props) {
     props.onChange({ key: 'svaps', data: updated });
   };
 
-  const addNew = () => {
+  addNew = () => {
     const updated = [
       ...svaps,
       {

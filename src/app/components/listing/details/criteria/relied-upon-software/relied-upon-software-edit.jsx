@@ -56,6 +56,8 @@ function ChplReliedUponSoftwareEdit(props) {
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
+  let addNew;
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -75,7 +77,7 @@ function ChplReliedUponSoftwareEdit(props) {
     props.onChange({ key: 'additionalSoftware', data: updated });
   };
 
-  const addNew = () => {
+  addNew = () => {
     const updated = [
       ...software,
       {

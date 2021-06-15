@@ -65,6 +65,8 @@ function ChplTestToolsEdit(props) {
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
+  let addNew;
+
   const formik = useFormik({
     initialValues: {
       tt: '',
@@ -82,7 +84,7 @@ function ChplTestToolsEdit(props) {
     props.onChange({ key: 'testToolsUsed', data: updated });
   };
 
-  const addNew = () => {
+  addNew = () => {
     const updated = [
       ...testToolsUsed,
       {

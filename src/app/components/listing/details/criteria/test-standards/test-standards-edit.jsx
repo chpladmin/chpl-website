@@ -69,13 +69,25 @@ function ChplTestStandardsEdit(props) {
     }
   }, []);
 
-  let formik;
+  let addNew;
+
+  const formik = useFormik({
+    initialValues: {
+      ts: '',
+    },
+    onSubmit: () => {
+      addNew();
+    },
+    validationSchema,
+    validateOnChange: false,
+    validateOnMount: true,
+  });
 
   const update = (updated) => {
     props.onChange({ key: 'testStandards', data: updated });
   };
 
-  const addNew = () => {
+  addNew = () => {
     const updated = [
       ...testStandards,
       {
@@ -111,18 +123,6 @@ function ChplTestStandardsEdit(props) {
     ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);
   };
-
-  formik = useFormik({
-    initialValues: {
-      ts: '',
-    },
-    onSubmit: () => {
-      addNew();
-    },
-    validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
-  });
 
   return (
     <Container className={classes.container}>
