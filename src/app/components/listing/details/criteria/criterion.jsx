@@ -45,12 +45,12 @@ const useStyles = makeStyles(() => ({
   },
   pendingChip: {
     fontSize: '.7rem',
-    backgroundColor: '#d98c54',
+    backgroundColor: '#3e0d59',
     color: '#ffffff',
   },
   stagedChip: {
     fontSize: '.7rem',
-    backgroundColor: '#999900',
+    backgroundColor: '#0d5928',
     color: '#ffffff',
   },
   criterionNumber: {
