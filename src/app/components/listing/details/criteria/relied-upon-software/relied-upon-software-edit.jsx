@@ -63,6 +63,9 @@ function ChplReliedUponSoftwareEdit(props) {
       certifiedProductNumber: '',
       grouping: '',
     },
+    onSubmit: () => {
+      addNew();
+    },
     validationSchema,
     validateOnChange: false,
     validateOnMount: true,
@@ -83,9 +86,9 @@ function ChplReliedUponSoftwareEdit(props) {
         key: (new Date()).getTime(),
       },
     ];
-    setSoftware(updated);
-    formik.resetForm();
     setAdding(false);
+    formik.resetForm();
+    setSoftware(updated);
     update(updated);
   };
 
@@ -216,7 +219,7 @@ function ChplReliedUponSoftwareEdit(props) {
                 className={classes.dataEntryActions}
               >
                 <Button
-                  onClick={addNew}
+                  onClick={formik.handleSubmit}
                   aria-label="Confirm adding item"
                   id="relied-upon-software-check-item"
                 >
