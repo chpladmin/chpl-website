@@ -45,7 +45,10 @@ const UserManagementComponent = {
       switch (action) {
         case 'delete':
           this.networkService.deleteUser(data)
-            .then(() => that.networkService.getUsers().then((response) => { that.users = response.users; }));
+            .then(() => that.networkService.getUsers().then((response) => {
+              that.users = response.users;
+              that.$scope.$apply();
+            }));
           break;
         case 'invite':
           this.networkService.inviteUser({
@@ -59,7 +62,10 @@ const UserManagementComponent = {
           break;
         case 'refresh':
           this.networkService.getUsers()
-            .then((response) => { that.users = response.users; });
+            .then((response) => {
+              that.users = response.users;
+              that.$scope.$apply();
+            });
           break;
         case 'impersonate':
           if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
@@ -70,7 +76,6 @@ const UserManagementComponent = {
           break;
           // no default
       }
-      this.$scope.$apply();
     }
   },
 };
