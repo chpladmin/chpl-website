@@ -69,6 +69,7 @@ function ChplUsers(props) {
     switch (action) {
       case 'cancel':
         setUser(undefined);
+        handleFilter({ target: { value: '' } });
         break;
       case 'delete':
         setUser(undefined);
