@@ -60,7 +60,7 @@ class OrganizationPage {
   }
 
   get manageUsersPanel() {
-    return $('chpl-users');
+    return $('chpl-users-bridge');
   }
 
   get newOrganizationGeneralInfo() {

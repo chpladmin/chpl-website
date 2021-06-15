@@ -47,8 +47,9 @@ class UsersPage {
     return $(`//h2[text()="${name}"]/parent::div/parent::div/following-sibling::div`);
   }
 
-  impersonateUser(userId) {
-    return $(`#user-component-impersonate-${userId}`);
+  impersonateUser(fullName) {
+    $(`button[title="Impersonate ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`button[title="Impersonate ${fullName}"]`).click();
   }
 }
 
