@@ -3,7 +3,10 @@ import UsersPage from './user.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import Hooks from '../../utilities/hooks';
 
-let actionBarComponent, hooks, loginComponent, page;
+let actionBarComponent;
+let hooks;
+let loginComponent;
+let page;
 
 beforeEach(async () => {
   loginComponent = new LoginComponent();
@@ -14,25 +17,25 @@ beforeEach(async () => {
 });
 
 describe('ONC STAFF can ', () => {
-  beforeEach(function () {
+  beforeEach(() => {
     loginComponent.logIn('oncstaff');
     page.usersButton.click();
     page.userManagementButton.click();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     loginComponent.logOut();
   });
 
   it('change title successfully', () => {
     page.editUser('AQA ONC Staff');
-    let title = 'Mr' + (new Date()).getDate();
+    const title = `Mr${(new Date()).getDate()}`;
     page.title.clearValue();
     page.title.addValue(title);
     actionBarComponent.save();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(title));
-    assert.include(page.userInformation('AQA ONC Staff').getText(),title);
+    browser.waitUntil(() => page.userInformation('AQA ONC Staff').getText().includes(title));
+    assert.include(page.userInformation('AQA ONC Staff').getText(), title);
   });
 
   it('change phone number successfully', () => {
@@ -42,7 +45,7 @@ describe('ONC STAFF can ', () => {
     page.phoneNumber.addValue(number);
     actionBarComponent.save();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil( () => page.userInformation('AQA ONC Staff').getText().includes(number));
-    assert.include(page.userInformation('AQA ONC Staff').getText(),number);
+    browser.waitUntil(() => page.userInformation('AQA ONC Staff').getText().includes(number));
+    assert.include(page.userInformation('AQA ONC Staff').getText(), number);
   });
 });
