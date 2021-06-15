@@ -46,6 +46,7 @@ function ChplUserInvite(props) {
   };
 
   const handleClose = () => {
+    formik.resetForm();
     setOpen(false);
   };
 
@@ -55,7 +56,6 @@ function ChplUserInvite(props) {
       role: formik.values.role,
     };
     props.dispatch('invite', invitation);
-    formik.resetForm();
     handleClose();
   };
 
