@@ -111,6 +111,7 @@ function ChplRegisterUser(props) {
             <ChplUserCreate dispatch={handleDispatch} />
             <Typography>
               Or
+              {' '}
               <Button
                 color="primary"
                 variant="outlined"
@@ -135,6 +136,7 @@ function ChplRegisterUser(props) {
             <ChplUserAddPermissions dispatch={handleDispatch} />
             <Typography>
               Or
+              {' '}
               <Button
                 color="primary"
                 variant="outlined"
