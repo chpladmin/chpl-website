@@ -38,6 +38,11 @@ export const DevelopersEditComponent = {
       }, {reload: true});
     }
 
+    closeConfirmation () {
+      this.action = undefined;
+      this.$state.go('^', undefined, {reload: true});
+    }
+
     save (developer) {
       if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
         this.saveRequest(developer);

@@ -1,3 +1,8 @@
+<chpl-confirmation
+  ng-if="$ctrl.action === 'confirmation'"
+  take-action="$ctrl.closeConfirmation()"
+  text="{{ $ctrl.confirmationText }}"
+  ></chpl-confirmation>
 <chpl-developer developer="$ctrl.developer"
                 allowed-acbs="$ctrl.allowedAcbs"
                 is-editing="true"
