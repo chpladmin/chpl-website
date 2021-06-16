@@ -35,7 +35,7 @@ describe('ONC STAFF can ', () => {
     actionBarComponent.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => page.userInformation('AQA ONC Staff').getText().includes(title));
-    assert.include(page.userInformation('AQA ONC Staff').getText(), title);
+    expect(page.userInformation('AQA ONC Staff').getText()).toContain(title);
   });
 
   it('change phone number successfully', () => {
@@ -46,6 +46,6 @@ describe('ONC STAFF can ', () => {
     actionBarComponent.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => page.userInformation('AQA ONC Staff').getText().includes(number));
-    assert.include(page.userInformation('AQA ONC Staff').getText(), number);
+    expect(page.userInformation('AQA ONC Staff').getText()).toContain(number);
   });
 });
