@@ -4,13 +4,14 @@ export const VersionsMergeComponent = {
     developer: '<',
   },
   controller: class VersionsMergeController {
-    constructor ($log, $state, $stateParams, authService, networkService) {
+    constructor ($log, $state, $stateParams, authService, networkService, toaster) {
       'ngInject';
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
+      this.toaster = toaster;
     }
 
     $onChanges (changes) {
@@ -54,7 +55,11 @@ export const VersionsMergeComponent = {
             reload: true,
           });
         }, error => {
-          that.$log.error(error);
+          that.toaster.pop({
+            type: 'error',
+            title: 'Merge error',
+            body: error.data.error,
+          });
         });
     }
 
