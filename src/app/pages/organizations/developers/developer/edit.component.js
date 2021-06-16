@@ -15,6 +15,7 @@ const DevelopersEditComponent = {
       this.toaster = toaster;
       this.backup = {};
       this.activeAcbs = [];
+      this.closeConfirmation = this.closeConfirmation.bind(this);
     }
 
     $onInit() {

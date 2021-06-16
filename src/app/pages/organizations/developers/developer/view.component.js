@@ -22,6 +22,7 @@ const DeveloperViewComponent = {
       this.movingProducts = [];
       this.activeAcbs = [];
       this.roles = ['ROLE_DEVELOPER'];
+      this.closeConfirmation = this.closeConfirmation.bind(this);
     }
 
     $onInit() {
