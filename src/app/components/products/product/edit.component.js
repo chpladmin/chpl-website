@@ -179,35 +179,6 @@ export const ProductEditComponent = {
       this.mergeOptions = {
         name: Array.from(new Set([this.productBackup.name].concat(this.mergingProducts.map(p => p.name)))),
       };
-      this.contactOptions = {
-        fullName: [],
-        title: [],
-        email: [],
-        phoneNumber: [],
-      };
-      this.fillMergeOptionByProduct(this.productBackup);
-      this.mergingProducts.forEach(p => this.fillMergeOptionByProduct(p));
-      this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
-      this.contactOptions.title = Array.from(new Set(this.contactOptions.title));
-      this.contactOptions.email = Array.from(new Set(this.contactOptions.email));
-      this.contactOptions.phoneNumber = Array.from(new Set(this.contactOptions.phoneNumber));
-    }
-
-    fillMergeOptionByProduct (product) {
-      if (product.contact) {
-        if (product.contact.fullName) {
-          this.contactOptions.fullName.push(product.contact.fullName);
-        }
-        if (product.contact.title) {
-          this.contactOptions.title.push(product.contact.title);
-        }
-        if (product.contact.email) {
-          this.contactOptions.email.push(product.contact.email);
-        }
-        if (product.contact.phoneNumber) {
-          this.contactOptions.phoneNumber.push(product.contact.phoneNumber);
-        }
-      }
     }
 
     getDifferences (predicate) {
