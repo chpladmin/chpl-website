@@ -55,7 +55,7 @@ function ChplConfirmation(props) {
           <Typography
             align="center"
           >
-            <i className="fa fa-check-circle-o fa-5x"></i>
+            <i className="fa fa-check-circle-o fa-5x" />
           </Typography>
           <Typography
             variant="h1"
@@ -74,7 +74,8 @@ function ChplConfirmation(props) {
           <Button
             id="close-confirmation"
             color="primary"
-            onClick={handleClose}>
+            onClick={handleClose}
+          >
             Close
           </Button>
         </DialogActions>

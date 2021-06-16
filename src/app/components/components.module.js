@@ -1,7 +1,6 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
-import { ChplConfirmation } from './confirmation';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
-import { ChplEllipsis } from './util';
+import { ChplConfirmation, ChplEllipsis } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
 import { reactToAngularComponent } from '../services/angular-react-helper';
