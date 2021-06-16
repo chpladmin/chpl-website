@@ -27,7 +27,7 @@ const DeveloperViewComponent = {
 
     $onInit() {
       const that = this;
-      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct' && this.action !== 'editVersion') {
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
         this.loadData();
       }
       this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
