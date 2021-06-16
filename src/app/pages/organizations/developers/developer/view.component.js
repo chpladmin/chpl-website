@@ -80,9 +80,6 @@ export const DeveloperViewComponent = {
 
     closeConfirmation () {
       this.action = undefined;
-      if (this.$state.$current.name === 'organizations.developers.developer.edit') {
-        this.$state.go('^', undefined, {reload: true});
-      }
     }
 
     loadData () {
