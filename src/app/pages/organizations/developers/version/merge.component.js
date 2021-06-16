@@ -1,11 +1,12 @@
-export const VersionsMergeComponent = {
+const VersionsMergeComponent = {
   templateUrl: 'chpl.organizations/developers/version/merge.html',
   bindings: {
     developer: '<',
   },
   controller: class VersionsMergeController {
-    constructor ($log, $state, $stateParams, authService, networkService, toaster) {
+    constructor($log, $state, $stateParams, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
@@ -14,24 +15,24 @@ export const VersionsMergeComponent = {
       this.toaster = toaster;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.product = this.developer.products
-          .find(p => p.productId === parseInt(this.$stateParams.productId, 10));
+          .find((p) => p.productId === parseInt(this.$stateParams.productId, 10));
         this.version = this.product.versions
-          .find(v => v.versionId === parseInt(this.$stateParams.versionId, 10));
+          .find((v) => v.versionId === parseInt(this.$stateParams.versionId, 10));
         this.versions = this.product.versions
-          .filter(v => v.versionId !== parseInt(this.$stateParams.versionId, 10))
-          .map(v => {
+          .filter((v) => v.versionId !== parseInt(this.$stateParams.versionId, 10))
+          .map((v) => {
             v.selected = false;
             return v;
           })
-          .sort((a, b) => a.version < b.version ? -1 : a.version > b.version ? 1 : 0);
+          .sort((a, b) => (a.version < b.version ? -1 : 1));
       }
     }
 
-    cancel () {
+    cancel() {
       this.$state.go('organizations.developers.developer', {
         developerId: this.developer.developerId,
       }, {
@@ -39,14 +40,14 @@ export const VersionsMergeComponent = {
       });
     }
 
-    merge (version) {
-      let versionToSave = {
-        version: version,
-        versionIds: this.selectedVersions.map(d => d.versionId),
+    merge(version) {
+      const versionToSave = {
+        version,
+        versionIds: this.selectedVersions.map((d) => d.versionId),
         newProductId: this.product.productId,
       };
       versionToSave.versionIds.push(this.version.versionId);
-      let that = this;
+      const that = this;
       this.networkService.updateVersion(versionToSave)
         .then(() => {
           that.$state.go('organizations.developers.developer', {
@@ -54,7 +55,7 @@ export const VersionsMergeComponent = {
           }, {
             reload: true,
           });
-        }, error => {
+        }, (error) => {
           that.toaster.pop({
             type: 'error',
             title: 'Merge error',
@@ -63,25 +64,25 @@ export const VersionsMergeComponent = {
         });
     }
 
-    selectVersion (version) {
+    selectVersion(version) {
       this.versions
-        .filter(d => d.versionId === version.versionId)
-        .forEach(d => d.selected = !d.selected);
+        .filter((d) => d.versionId === version.versionId)
+        .forEach((d) => d.selected = !d.selected);
       this.selectedVersions = this.versions
-        .filter(d => d.selected)
-        .sort((a, b) => a.version < b.version ? -1 : a.version > b.version ? 1 : 0);
+        .filter((d) => d.selected)
+        .sort((a, b) => (a.version < b.version ? -1 : 1));
       this.selectedToMerge = null;
     }
 
-    takeAction (action, data) {
+    takeAction(action, data) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'edit':
-        this.merge(data);
-        break;
-                //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'edit':
+          this.merge(data);
+          break;
+          // no default
       }
     }
   },
@@ -90,3 +91,5 @@ export const VersionsMergeComponent = {
 angular
   .module('chpl.organizations')
   .component('chplVersionsMerge', VersionsMergeComponent);
+
+export default VersionsMergeComponent;
