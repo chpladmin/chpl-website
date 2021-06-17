@@ -181,6 +181,16 @@ const theme = createMuiTheme({
         width: '100%',
       },
     },
+
+    MuiPaper: {
+      root: {
+        borderRadius: '8px',
+      },
+      rounded:{
+        borderRadius: '8px',
+      }
+    },
+
   },
 });
 
