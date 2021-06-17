@@ -1,4 +1,5 @@
 <div id="chpl-complaint" class="container-fluid" ng-form="$ctrl.form">
+  <chpl-complaint-view-bridge complaint="$ctrl.complaint"></chpl-complaint-view-bridge>
   <div class="form-group">
     <label class="control-label" for="certification-body">ONC-ACB<span class="text-danger">*</span></label>
     <div ng-if="$ctrl.currentMode === $ctrl.modes.EDIT" name="certificationBody" class="read-only-data">
