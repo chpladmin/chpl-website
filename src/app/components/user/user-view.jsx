@@ -29,7 +29,8 @@ const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    minHeight:'250px',
+    minHeight:'286px',
+    gap:'8px',
   },
 }));
 
@@ -69,17 +70,18 @@ function ChplUserView(props) {
                && (
                  <>
                    <strong>Title:</strong>
-                   {' '}
+                   {' '} <br></br>
                    {user.title}
                  </>
                )}
             </Typography>
+           
             <Typography>
               {user.phoneNumber
                && (
                  <>
                    <strong>Phone Number:</strong>
-                   {' '}
+                   {' '} <br></br>
                    {user.phoneNumber}
                  </>
                )}
@@ -89,7 +91,7 @@ function ChplUserView(props) {
                && (
                  <>
                    <strong>Email:</strong>
-                   {' '}
+                   {' '}<br></br>
                    {user.email}
                  </>
                )}
@@ -99,7 +101,7 @@ function ChplUserView(props) {
                && (
                  <>
                    <strong>User Name:</strong>
-                   {' '}
+                   {' '} <br></br>
                    {user.subjectName}
                  </>
                )}
@@ -109,7 +111,7 @@ function ChplUserView(props) {
                && (
                  <>
                    <strong>Role:</strong>
-                   {' '}
+                   {' '} <br></br>
                    {user.role}
                  </>
                )}
@@ -119,7 +121,7 @@ function ChplUserView(props) {
                && (
                  <>
                    <strong>Organization:</strong>
-                   {' '}
+                   {' '} <br></br>
                    {user.organizations.map((org) => (org.name)).join('; ')}
                  </>
                )}
@@ -128,23 +130,26 @@ function ChplUserView(props) {
           <div>
             <Typography>
               <strong>Last Login:</strong>
-              {' '}
+              {' '} <br></br>
               {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
             </Typography>
             <Typography>
-              <strong>Account Locked:</strong>
+              <strong>Account Locked:</strong> 
+              <br></br>
               {user.accountLocked
                 ? <CheckBoxOutlinedIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
             <Typography>
-              <strong>Account Enabled:</strong>
+              <strong>Account Enabled:</strong> 
+              <br></br>
               { user.accountEnabled
                 ? <CheckBoxOutlinedIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
             <Typography>
               <strong>Password change on next login:</strong>
+              <br></br>
               { user.passwordResetRequired
                 ? <CheckBoxOutlinedIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
