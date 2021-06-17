@@ -68,6 +68,7 @@ const theme = createMuiTheme({
         '&:hover': {
           boxShadow: 'none',
         },
+        padding: '8px',
       },
       contained: {
         backgroundColor: '#eeeeee',
