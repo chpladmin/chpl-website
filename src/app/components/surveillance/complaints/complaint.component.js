@@ -16,11 +16,12 @@ export const SurveillanceComplaintComponent = {
     surveillances: '<',
   },
   controller: class SurveillanceComplaintComponent {
-    constructor ($anchorScroll, $filter, $log, authService, featureFlags, toaster, utilService) {
+    constructor ($anchorScroll, $filter, $log, DateUtil, authService, featureFlags, toaster, utilService) {
       'ngInject';
       this.$anchorScroll = $anchorScroll;
       this.$filter = $filter;
       this.$log = $log;
+      this.DateUtil = DateUtil;
       this.isOn = featureFlags.isOn;
       this.hasAnyRole = authService.hasAnyRole;
       this.modes = {
@@ -42,6 +43,12 @@ export const SurveillanceComplaintComponent = {
           this.currentMode = this.modes.EDIT;
         } else {
           this.currentMode = this.modes.ADD;
+        }
+        if (this.complaint?.receivedDate) {
+          this.complaint.receivedDateObject = new Date(this.DateUtil.localDateToTimestamp(this.complaint.receivedDate));
+        }
+        if (this.complaint?.closedDate) {
+          this.complaint.closedDateObject = new Date(this.DateUtil.localDateToTimestamp(this.complaint.closedDate));
         }
         this.sortCertifications(this.complaint);
         this.$anchorScroll();
@@ -75,178 +82,188 @@ export const SurveillanceComplaintComponent = {
       }
     }
 
-    deleteComplaint (complaint) {
-      if (this.onDelete) {
-        this.onDelete({complaint: complaint});
-      }
-    }
-
-    selectComplaint (complaint) {
-      if (this.onSelect) {
-        this.onSelect({complaint: complaint});
-      }
-    }
-
-    saveComplaint (complaint) {
-      if (this.onSave) {
-        this.onSave({complaint: complaint});
-      }
-    }
-
-    cancelEdit () {
-      if (this.onCancel) {
-        this.onCancel();
-      }
-    }
-
-    selectListing ($item) {
-      if (!Array.isArray(this.complaint.listings)) {
-        this.complaint.listings = [];
-      }
-      if (!this.isListingAlreadyAssociatedToComplaint($item)) {
-        this.complaint.listings.push({
-          listingId: $item.id,
-          chplProductNumber: $item.chplProductNumber,
-        });
-        if (this.onListingSelected) {
-          this.onListingSelected({ complaint: this.complaint });
+      deleteComplaint (complaint) {
+        if (this.onDelete) {
+          this.onDelete({complaint: complaint});
         }
-      } else {
-        this.toaster.pop({
-          type: 'warning',
-          body: $item.chplProductNumber + ' already exists',
-        });
       }
-      this.listing = '';
-    }
 
-    isListingAlreadyAssociatedToComplaint (listing) {
-      let found = this.complaint.listings.find(item => item.chplProductNumber === listing.chplProductNumber);
-      return found !== undefined;
-    }
-
-    removeListing (listingToRemove) {
-      this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
-      //Remove any surveillances related to the removed listing
-      let friendlyIds = [];
-      let surveillances = angular.copy(this.complaint.surveillances);
-      surveillances.forEach(surveillance => {
-        if (surveillance.surveillance.certifiedProductId === listingToRemove.listingId) {
-          friendlyIds.push(surveillance.surveillance.friendlyId);
-          this.removeSurveillance(surveillance);
+      selectComplaint (complaint) {
+        if (this.onSelect) {
+          this.onSelect({complaint: complaint});
         }
-      });
-      //If there were any surveillances remove, show them
-      if (friendlyIds.length > 0) {
-        let surveillancesString = friendlyIds.join(', ');
-        this.toaster.pop({
-          type: 'success',
-          body: 'The following surveillances are associated with the listing and have been removed: ' + surveillancesString,
-        });
       }
 
-      this.onListingSelected({ complaint: this.complaint });
-    }
-
-    disableListing (listing) {
-      this.$log.info(listing);
-      return true;
-    }
-
-    startsWith (valueToCheck, viewValue) {
-      return valueToCheck.substr(0, viewValue.length).toLowerCase() === viewValue.toLowerCase();
-    }
-
-    changeAcb () {
-      this.filterListingsBasedOnSelectedAcb();
-    }
-
-    filterListingsBasedOnSelectedAcb () {
-      if (this.complaint.certificationBody && this.complaint.certificationBody.name) {
-        // Filter the available listings based on the selected acb
-        this.filteredListings = this.listings.filter(item => {
-          return item.acb === this.complaint.certificationBody.name;
-        });
+      saveComplaint (complaint) {
+        if (complaint.receivedDateObject) {
+          complaint.receivedDate = this.DateUtil.timestampToString(complaint.receivedDateObject.getTime(), 'yyyy-MM-dd');
+        } else {
+          complaint.receivedDate = null;
+        }
+        if (complaint.closedDateObject) {
+          complaint.closedDate = this.DateUtil.timestampToString(complaint.closedDateObject.getTime(), 'yyyy-MM-dd');
+        } else {
+          complaint.closedDate = null;
+        }
+        if (this.onSave) {
+          this.onSave({complaint: complaint});
+        }
       }
-    }
 
-    getDefaultEdition () {
-      return this.editions.find(item => item.name === '2015');
-    }
-
-    selectEdition (edition) {
-      this.edition = edition;
-      this.filterCriteriaBasedOnSelectedEdition();
-    }
-
-    filterCriteriaBasedOnSelectedEdition () {
-      this.filteredCriteria = this.criteria.filter(item => item.certificationEditionId === this.edition.id);
-    }
-
-    selectCriteria () {
-      if (!Array.isArray(this.complaint.criteria)) {
-        this.complaint.criteria = [];
+      cancelEdit () {
+        if (this.onCancel) {
+          this.onCancel();
+        }
       }
-      if (!this.isCriterionAlreadyAssociatedToComplaint(this.criterion)) {
-        this.complaint.criteria.push({
-          complaintId: this.complaint.id,
-          certificationCriterion: this.criterion,
-        });
-        this.sortCertifications(this.complaint);
-      } else {
-        this.toaster.pop({
-          type: 'warning',
-          body: 'Certification Criterion :"' + this.criterion.number + ': ' + this.criterion.title + '" is already associated with this complaint',
-        });
+
+      selectListing ($item) {
+        if (!Array.isArray(this.complaint.listings)) {
+          this.complaint.listings = [];
+        }
+        if (!this.isListingAlreadyAssociatedToComplaint($item)) {
+          this.complaint.listings.push({
+            listingId: $item.id,
+            chplProductNumber: $item.chplProductNumber,
+          });
+          if (this.onListingSelected) {
+            this.onListingSelected({ complaint: this.complaint });
+          }
+        } else {
+          this.toaster.pop({
+            type: 'warning',
+            body: $item.chplProductNumber + ' already exists',
+          });
+        }
+        this.listing = '';
       }
-      this.criterion = {};
-    }
 
-    isCriterionAlreadyAssociatedToComplaint (criterion) {
-      return this.complaint.criteria
-        .find(item => item.certificationCriterion.number === criterion.number
-                      && item.certificationCriterion.title === criterion.title);
-    }
-
-    removeCriterion (criterionToRemove) {
-      this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterion.id !== criterionToRemove.certificationCriterion.id);
-    }
-
-    sortCertifications (complaint) {
-      if (Array.isArray(complaint.criteria)) {
-        complaint.criteria.sort((a, b) => {
-          return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
-        });
+      isListingAlreadyAssociatedToComplaint (listing) {
+        let found = this.complaint.listings.find(item => item.chplProductNumber === listing.chplProductNumber);
+        return found !== undefined;
       }
-    }
 
-    selectSurveillance () {
-      if (!Array.isArray(this.complaint.surveillances)) {
-        this.complaint.surveillances = [];
-      }
-      if (!this.isSurveillanceAlreadyAssociatedToComplaint(this.surveillance)) {
-        this.complaint.surveillances.push({
-          complaintId: this.complaint.id,
-          surveillance: this.surveillance,
+      removeListing (listingToRemove) {
+        this.complaint.listings = this.complaint.listings.filter(listing => listing.listingId !== listingToRemove.listingId);
+        //Remove any surveillances related to the removed listing
+        let friendlyIds = [];
+        let surveillances = angular.copy(this.complaint.surveillances);
+        surveillances.forEach(surveillance => {
+          if (surveillance.surveillance.certifiedProductId === listingToRemove.listingId) {
+            friendlyIds.push(surveillance.surveillance.friendlyId);
+            this.removeSurveillance(surveillance);
+          }
         });
-      } else {
-        this.toaster.pop({
-          type: 'warning',
-          body: this.surveillance.friendlyId + ' already exists',
-        });
+        //If there were any surveillances remove, show them
+        if (friendlyIds.length > 0) {
+          let surveillancesString = friendlyIds.join(', ');
+          this.toaster.pop({
+            type: 'success',
+            body: 'The following surveillances are associated with the listing and have been removed: ' + surveillancesString,
+          });
+        }
+
+        this.onListingSelected({ complaint: this.complaint });
       }
-      this.surveillance = {};
-    }
 
-    isSurveillanceAlreadyAssociatedToComplaint (surveillance) {
-      let found = this.complaint.surveillances.find(item => item.surveillance.id === surveillance.id);
-      return found !== undefined;
-    }
+      disableListing (listing) {
+        this.$log.info(listing);
+        return true;
+      }
 
-    removeSurveillance (surveillanceToRemove) {
-      this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillance.id !== surveillanceToRemove.surveillance.id);
-    }
-  },
+      startsWith (valueToCheck, viewValue) {
+        return valueToCheck.substr(0, viewValue.length).toLowerCase() === viewValue.toLowerCase();
+      }
+
+      changeAcb () {
+        this.filterListingsBasedOnSelectedAcb();
+      }
+
+      filterListingsBasedOnSelectedAcb () {
+        if (this.complaint.certificationBody && this.complaint.certificationBody.name) {
+          // Filter the available listings based on the selected acb
+          this.filteredListings = this.listings.filter(item => {
+            return item.acb === this.complaint.certificationBody.name;
+          });
+        }
+      }
+
+      getDefaultEdition () {
+        return this.editions.find(item => item.name === '2015');
+      }
+
+      selectEdition (edition) {
+        this.edition = edition;
+        this.filterCriteriaBasedOnSelectedEdition();
+      }
+
+      filterCriteriaBasedOnSelectedEdition () {
+        this.filteredCriteria = this.criteria.filter(item => item.certificationEditionId === this.edition.id);
+      }
+
+      selectCriteria () {
+        if (!Array.isArray(this.complaint.criteria)) {
+          this.complaint.criteria = [];
+        }
+        if (!this.isCriterionAlreadyAssociatedToComplaint(this.criterion)) {
+          this.complaint.criteria.push({
+            complaintId: this.complaint.id,
+            certificationCriterion: this.criterion,
+          });
+          this.sortCertifications(this.complaint);
+        } else {
+          this.toaster.pop({
+            type: 'warning',
+            body: 'Certification Criterion :"' + this.criterion.number + ': ' + this.criterion.title + '" is already associated with this complaint',
+          });
+        }
+        this.criterion = {};
+      }
+
+      isCriterionAlreadyAssociatedToComplaint (criterion) {
+        return this.complaint.criteria
+          .find(item => item.certificationCriterion.number === criterion.number
+                && item.certificationCriterion.title === criterion.title);
+      }
+
+      removeCriterion (criterionToRemove) {
+        this.complaint.criteria = this.complaint.criteria.filter(criterion => criterion.certificationCriterion.id !== criterionToRemove.certificationCriterion.id);
+      }
+
+      sortCertifications (complaint) {
+        if (Array.isArray(complaint.criteria)) {
+          complaint.criteria.sort((a, b) => {
+            return this.utilService.sortCertActual(a.certificationCriterion, b.certificationCriterion);
+          });
+        }
+      }
+
+      selectSurveillance () {
+        if (!Array.isArray(this.complaint.surveillances)) {
+          this.complaint.surveillances = [];
+        }
+        if (!this.isSurveillanceAlreadyAssociatedToComplaint(this.surveillance)) {
+          this.complaint.surveillances.push({
+            complaintId: this.complaint.id,
+            surveillance: this.surveillance,
+          });
+        } else {
+          this.toaster.pop({
+            type: 'warning',
+            body: this.surveillance.friendlyId + ' already exists',
+          });
+        }
+        this.surveillance = {};
+      }
+
+      isSurveillanceAlreadyAssociatedToComplaint (surveillance) {
+        let found = this.complaint.surveillances.find(item => item.surveillance.id === surveillance.id);
+        return found !== undefined;
+      }
+
+      removeSurveillance (surveillanceToRemove) {
+        this.complaint.surveillances = this.complaint.surveillances.filter(surveillance => surveillance.surveillance.id !== surveillanceToRemove.surveillance.id);
+      }
+    },
 };
 
 angular.module('chpl.components')

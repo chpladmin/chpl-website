@@ -8,10 +8,11 @@ const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor($log, authService, featureFlags, networkService, utilService) {
+    constructor($log, DateUtil, authService, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
+      this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
@@ -72,12 +73,6 @@ const SurveillanceComplaintsComponent = {
       const toSave = {
         ...complaint,
       };
-      toSave.receivedDate = complaint.formattedReceivedDate.getTime();
-      if (complaint.formattedClosedDate) {
-        toSave.closedDate = complaint.formattedClosedDate.getTime();
-      } else {
-        toSave.closedDate = null;
-      }
       if (complaint.id) {
         this.updateComplaint(toSave);
       } else {
@@ -134,15 +129,15 @@ const SurveillanceComplaintsComponent = {
               ...complaint,
             };
             if (complaint.receivedDate) {
-              updated.formattedReceivedDate = new Date(complaint.receivedDate);
-              updated.csvReceivedDate = new Date(complaint.receivedDate).toISOString().substring(0, 10);
+              updated.formattedReceivedDate = this.DateUtil.getDisplayDateFormat(complaint.receivedDate);
+              updated.csvReceivedDate = complaint.receivedDate;
             } else {
               updated.formattedReceivedDate = null;
               updated.csvReceivedDate = null;
             }
             if (complaint.closedDate) {
-              updated.formattedClosedDate = new Date(complaint.closedDate);
-              updated.csvClosedDate = new Date(complaint.closedDate).toISOString().substring(0, 10);
+              updated.formattedClosedDate = this.DateUtil.getDisplayDateFormat(complaint.closedDate);
+              updated.csvClosedDate = complaint.closedDate;
             } else {
               updated.formattedClosedDate = null;
               updated.csvClosedDate = null;

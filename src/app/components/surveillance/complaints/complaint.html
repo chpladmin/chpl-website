@@ -16,7 +16,7 @@
     <label class="control-label" for="received-date">Received Date<span class="text-danger">*</span></label>
     <div>
       <div class="input-group">
-        <input type="text" class="form-control" ng-model="$ctrl.complaint.formattedReceivedDate" required
+        <input type="text" class="form-control" ng-model="$ctrl.complaint.receivedDateObject" required
                name="receivedDate" id="received-date" placeholder="MM/dd/yyyy"
                ng-model-options="{timezone: 'UTC'}"
                uib-datepicker-popup="MM/dd/yyyy"
@@ -36,7 +36,7 @@
     <label class="control-label" for="closed-date">Closed Date</label>
     <div>
       <div class="input-group">
-        <input type="text" class="form-control" ng-model="$ctrl.complaint.formattedClosedDate"
+        <input type="text" class="form-control" ng-model="$ctrl.complaint.closedDateObject"
                name="closedDate" id="closed-date" placeholder="MM/dd/yyyy"
                ng-model-options="{ timezone: 'UTC' }"
                uib-datepicker-popup="MM/dd/yyyy"
