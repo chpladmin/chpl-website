@@ -29,6 +29,7 @@ const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
+    minHeight:'250px',
   },
 }));
 
