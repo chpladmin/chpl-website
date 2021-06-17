@@ -173,6 +173,7 @@ function ChplUserEdit(props) {
               />
             </div>
             <div className={classes.dataEntry}>
+              Settings
               <div>
                 <FormControlLabel
                   control={(
