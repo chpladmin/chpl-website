@@ -1279,6 +1279,14 @@
         $httpBackend.flush();
       });
 
+      it('should getSurveillanceActivityReport', () => {
+        $httpBackend.expectGET(/^\/rest\/surveillance\/reports\/activity\?start=start&end=end$/).respond(200, { data: 'response' });
+        networkService.getSurveillanceActivityReport({ startDate: 'start', endDate: 'end' }).then((response) => {
+          expect(response.data).toEqual('response');
+        });
+        $httpBackend.flush();
+      });
+
       it('should getSurveillanceLookups', () => {
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_types$/).respond(200, { data: 'surveillance_types' });
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirement_types$/).respond(200, { data: 'surveillance_requirement_types' });
