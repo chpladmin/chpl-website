@@ -27,7 +27,7 @@ const states = [{
   component: 'chplConfirmSurveillance',
   data: {
     title: 'CHPL Surveillance - Confirmation',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['ROLE_ADMIN', 'ROLE_ACB'],
   },
   ncyBreadcrumb: {
     label: 'Confirm',
