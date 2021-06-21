@@ -16,7 +16,7 @@ const states = [{
   component: 'chplUploadSurveillances',
   data: {
     title: 'CHPL Surveillance - Upload',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['ROLE_ADMIN', 'ROLE_ACB'],
   },
   ncyBreadcrumb: {
     label: 'Upload',
