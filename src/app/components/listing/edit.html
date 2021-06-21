@@ -139,7 +139,7 @@
     <div class="manage-list__item--start" ng-if="$ctrl.addingItem['oncAtls']">
       <div class="data-label sr-only"><label for="testing-lab-add-new">Add new Testing Lab</label></div>
       <select class="form-control" ng-model="$ctrl.newItem['oncAtls'].testingLabName" id="testing-lab-add-new" name="testingLabAddNew" required
-              ng-options="option.name as option.name for option in $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs)">
+              ng-options="option.name as option.name for option in $ctrl.filterListEditItems($ctrl.resources.testingLabs)">
       </select>
     </div>
     <div class="manage-list__item--end" ng-if="$ctrl.addingItem['oncAtls']">
@@ -147,7 +147,7 @@
               ng-disabled="($ctrl.showFormErrors || $ctrl.form.testingLabAddNew.$touched) && $ctrl.form.testingLabAddNew.$error.required"><i class="fa fa-save"></i></button>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('oncAtls')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
     </div>
-    <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['oncAtls'] && $ctrl.filterListEditItems('oncAtls', $ctrl.resources.testingLabs).length > 0">
+    <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['oncAtls'] && $ctrl.filterListEditItems($ctrl.resources.testingLabs).length > 0">
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['oncAtls'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
     </div>
   </div>
