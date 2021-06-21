@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   func,
 } from 'prop-types';
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import GroupIcon from '@material-ui/icons/Group';
@@ -137,21 +137,21 @@ function ChplUserView(props) {
               <strong>Account Locked:</strong> 
               <br></br>
               {user.accountLocked
-                ? <CheckBoxOutlinedIcon />
+                ? <CheckBoxIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
             <Typography>
               <strong>Account Enabled:</strong> 
               <br></br>
               { user.accountEnabled
-                ? <CheckBoxOutlinedIcon />
+                ? <CheckBoxIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
             <Typography>
               <strong>Password change on next login:</strong>
               <br></br>
               { user.passwordResetRequired
-                ? <CheckBoxOutlinedIcon />
+                ? <CheckBoxIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
           </div>
