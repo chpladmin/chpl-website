@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-  cleanup, render, screen, waitFor, waitForElementToBeRemoved, within,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
 import { LocalDate } from '@js-joda/core';
+
 import * as angularReactHelper from '../../../services/angular-react-helper';
 import { ChplSurveillanceActivityReportingDateSelector } from './reporting-date-selector';
+import selectMaterialUiSelectOption from '../../../test/testing-utils';
 
 // These need to be mocked outside the tests due how Jest works
 const networkServiceMock = {
@@ -28,22 +30,6 @@ const toasterMock = {
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
 when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
-
-const selectMaterialUiSelectOption = async (element, optionText) => new Promise((resolve) => {
-  // The the button that opens the dropdown, which is a sibling of the input
-  const selectButton = element.parentNode.querySelector('[role=button]');
-  // Open the select dropdown
-  userEvent.click(selectButton);
-  // Get the dropdown element. We don't use getByRole() because it includes <select>s too.
-  const listbox = document.body.querySelector('ul[role=listbox]');
-  // Click the list item
-  const listItem = within(listbox).getByText(optionText);
-  userEvent.click(listItem);
-  // Wait for the listbox to be removed, so it isn't visible in subsequent calls
-  waitForElementToBeRemoved(() => document.body.querySelector('ul[role=listbox]')).then(
-    resolve,
-  );
-});
 
 describe('the ChplSurveillanceActivityReportingDateSelector component', () => {
   beforeEach(async () => {
