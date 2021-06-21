@@ -64,16 +64,17 @@ export const SurveillanceReportRelevantListingComponent = {
       this._fixRequirementOptions();
       this.networkService.getListing(this.listing.id, true).then((listing) => {
         const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
-        that.uibModalInstance = that.$uibModal.open({
-          component: 'chplSurveillanceViewContainerComponent',
-          animation: false,
-          backdrop: 'static',
-          keyboard: false,
-          size: 'lg',
-          resolve: {
-            surveillance: () => surveillance,
-          },
-        });
+        const component =
+          that.uibModalInstance = that.$uibModal.open({
+            component: that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
+            animation: false,
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+              surveillance: () => surveillance,
+            },
+          });
       });
     }
 
