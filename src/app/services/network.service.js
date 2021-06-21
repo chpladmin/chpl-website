@@ -9,7 +9,7 @@ export default class NetworkService {
     this.API = API;
     this.store = {
       activity: {
-        types: { },
+        types: {},
       },
     };
   }
@@ -299,7 +299,7 @@ export default class NetworkService {
         return this.apiGET('/collections/certified-products?fields=id,edition,developer,developerId,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
       case 'surveillanceManagement':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
-        // no default
+      // no default
     }
     return null;
   }
@@ -537,6 +537,11 @@ export default class NetworkService {
     if (options && options.end) {
       url += `?end=${options.end}`;
     }
+    return this.apiGET(url);
+  }
+
+  getSurveillanceActivityReport(range) {
+    const url = `/surveillance/reports/activity?start=${range.startDate}&end=${range.endDate}`;
     return this.apiGET(url);
   }
 
