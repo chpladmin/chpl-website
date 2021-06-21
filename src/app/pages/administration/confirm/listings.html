@@ -1,4 +1,4 @@
-<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" ui-view>
+<div class="row" ui-view>
   <div class="col-md-12" ng-if="!$ctrl.dropped">
     <h2>View Products in the process of upload</h2>
     <chpl-confirm-listings-bridge
@@ -9,13 +9,5 @@
     <chpl-confirm-listings-bridge
       beta="true"
       on-process="::$ctrl.handleProcess"></chpl-confirm-listings-bridge>
-  </div>
-</div>
-<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">
-  <div class="col-md-6 col-md-offset-3 jumbotron">
-    <chpl-login form-class=""
-                p-class="bg-success lead"
-                p-class-fail="bg-danger lead">
-    </chpl-login>
   </div>
 </div>
