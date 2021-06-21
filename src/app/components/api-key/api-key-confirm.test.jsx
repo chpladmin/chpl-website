@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import { when } from 'jest-when';
 
 import * as angularReactHelper from '../../services/angular-react-helper';
-import ChplApiKeyConfirm from './api-key-confirm';
+import { ChplApiKeyConfirm } from './api-key-confirm';
 
 // These need to be mocked outside the tests due how Jest works
 const networkServiceMock = {
