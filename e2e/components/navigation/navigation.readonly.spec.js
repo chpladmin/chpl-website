@@ -40,7 +40,7 @@ describe('when logged in', () => {
     });
   });
 
-  describe('as ONC', () => {
+  describe('as an ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
     });
@@ -79,13 +79,34 @@ describe('when logged in', () => {
       });
     });
   });
-  describe('as ONC-STAFF', () => {
+  describe('as an ONC-STAFF', () => {
     beforeEach(() => {
       login.logIn('oncstaff');
     });
 
     it('should have specific options under surveillance', () => {
       const expected = [
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
+      });
+    });
+  });
+  describe('as an Admin', () => {
+    beforeEach(() => {
+      login.logIn('admin');
+    });
+
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Upload',
+        'Confirm',
+        'Manage',
         'Complaints Reporting',
         'Reporting',
       ];
