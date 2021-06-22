@@ -1,18 +1,24 @@
 import OverviewPage from './overview.po.js';
 import Hooks from '../../../utilities/hooks';
+import EnvironmentIndicatorComponent from '../../../components/environment-indicator/environment-indicator.po.js';
 
-let hooks, page;
+let hooks, page, indicator;
 
 beforeEach(async () => {
   page = new OverviewPage();
   hooks = new Hooks();
+  indicator= new EnvironmentIndicatorComponent();
   await hooks.open('#/resources/overview');
 });
 
 describe('the Overview page', () => {
 
+  it('should have an indicator to show non prod environment', () => {
+    expect(indicator.nonProdIndicator.isDisplayed()).toBe(true);
+  });
+
   it('should have an ONC ACB ATL table', () => {
-    assert.equal(page.acbatlTable.isDisplayed(),true);
+    expect(page.acbatlTable.isDisplayed()).toBe(true);
   });
 
   it('should have acb and atl data in the table', () => {
@@ -32,6 +38,6 @@ describe('the Overview page', () => {
         isSame = true;
       }
     }
-    assert.equal(isSame,true);
+    expect(isSame).toBe(true);
   });
 });
