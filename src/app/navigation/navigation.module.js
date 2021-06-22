@@ -14,7 +14,7 @@
     });
 
   /** @ngInclude */
-  function authInterceptor($log, $rootScope, API, authService, toaster) {
+  function authInterceptor($log, API, authService, toaster) {
     return {
       // automatically attach Authorization header
       request: function (config) {
