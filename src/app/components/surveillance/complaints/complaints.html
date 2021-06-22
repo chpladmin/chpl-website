@@ -115,6 +115,9 @@
         </button>
       </div>
     </div>
+    <chpl-complaints-bridge
+      ng-if="$ctrl.complaints"
+      complaints="$ctrl.displayedComplaints"></chpl-complaints-bridge>
     <div class="flex-container">
       <div class="flex-item table-responsive">
         <table class="table table-condensed" id="complaints-table">
