@@ -67,8 +67,18 @@ const SurveillanceComplaintsComponent = {
         case 'edit':
           this.selectComplaint(payload);
           break;
+        case 'view':
+          this.viewComplaint(payload);
+          break;
           // no default
       }
+    }
+
+    viewComplaint(complaint) {
+      this.refreshSurveillances(complaint);
+      this.clearErrorMessages();
+      this.isViewing = true;
+      this.complaint = complaint;
     }
 
     selectComplaint(complaint) {
@@ -125,6 +135,7 @@ const SurveillanceComplaintsComponent = {
 
     cancelEdit() {
       this.isEditing = false;
+      this.isViewing = false;
     }
 
     displayAddComplaint() {

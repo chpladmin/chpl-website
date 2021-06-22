@@ -1,5 +1,5 @@
 <div st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
-  <div ng-if="!$ctrl.isEditing">
+  <div ng-if="!$ctrl.isEditing && !$ctrl.isViewing">
     <chpl-filters
       clear-all-filters="$ctrl.onClearFilter()">
       <chpl-filters-header>
@@ -119,6 +119,11 @@
       ng-if="$ctrl.complaints"
       complaints="$ctrl.displayedComplaints"
       dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
+  </div>
+  <div class="flex-container" ng-if="$ctrl.isViewing">
+    <chpl-complaint-view-bridge
+      complaint="$ctrl.complaint"></chpl-complaint-view-bridge>
+    <button type="button" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i></button>
   </div>
   <div class="flex-container" ng-if="$ctrl.isEditing">
     <div class="flex-item">

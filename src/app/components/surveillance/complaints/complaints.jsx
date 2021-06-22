@@ -142,12 +142,8 @@ function ChplComplaints(props) {
     setPage(0);
   };
 
-  const handleDelete = (complaint) => {
-    props.dispatch('delete', complaint);
-  };
-
-  const handleEdit = (complaint) => {
-    props.dispatch('edit', complaint);
+  const handleAction = (action, complaint) => {
+    props.dispatch(action, complaint);
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, complaints.length - page * rowsPerPage);
@@ -191,12 +187,17 @@ function ChplComplaints(props) {
                       color="primary"
                     >
                       <Button
-                        onClick={() => handleEdit(complaint)}
+                        onClick={() => handleAction('view', complaint)}
+                      >
+                        View
+                      </Button>
+                      <Button
+                        onClick={() => handleAction('edit', complaint)}
                       >
                         Edit
                       </Button>
                       <Button
-                        onClick={() => handleDelete(complaint)}
+                        onClick={() => handleAction('delete', complaint)}
                       >
                         Delete
                       </Button>
