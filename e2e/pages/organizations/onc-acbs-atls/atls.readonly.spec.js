@@ -49,11 +49,13 @@ describe('the ONC-ATL Management page', () => {
     beforeEach(() => {
       const userID = '41';
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
       hooks.open('#/users');
+      hooks.waitForSpinnerToDisappear();
       user.impersonateUser(userID).scrollIntoView({ block: 'center', inline: 'center' });
       user.impersonateUser(userID).click();
+      hooks.waitForSpinnerToDisappear();
       hooks.open('#/organizations/onc-atls');
+      hooks.waitForSpinnerToDisappear();
     });
 
     afterEach(() => {
@@ -84,7 +86,6 @@ describe('the ONC-ATL Management page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
     });
 
     afterEach(() => {
@@ -96,17 +97,21 @@ describe('the ONC-ATL Management page', () => {
       const organizationType = 'ATL';
       const atlId = '2';
       hooks.open('#/organizations/onc-atls');
+      hooks.waitForSpinnerToDisappear();
       page.organizationNameButton(atl).click();
+      hooks.waitForSpinnerToDisappear();
       page.organizationEditButton.click();
       page.retireOrganizationCheckbox.click();
       page.organizationWebsite.setValue(websiteUrl);
       address.set(atlAddress);
       page.saveOrganizationButton.click();
+      hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-atls');
-      page.organizationNameButton(atl).click();
-      page.organizationEditButton.click();
       hooks.waitForSpinnerToDisappear();
+      page.organizationNameButton(atl).click();
+      hooks.waitForSpinnerToDisappear();
+      page.organizationEditButton.click();
       page.retireOrganizationCheckbox.click();
       page.retirementDate.setValue(today);
       page.saveOrganizationButton.click();
