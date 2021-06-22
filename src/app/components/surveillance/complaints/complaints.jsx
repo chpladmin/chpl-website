@@ -16,7 +16,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, func, number, object, oneOf, string } from 'prop-types';
+import {
+  arrayOf, func, oneOf, string,
+} from 'prop-types';
 
 import theme from '../../../themes/theme';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
@@ -37,13 +39,11 @@ const descendingComparator = (a, b, orderBy) => {
   return 0;
 };
 
-const getComparator = (order, orderBy) => {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-};
+const getComparator = (order, orderBy) => (order === 'desc'
+  ? (a, b) => descendingComparator(a, b, orderBy)
+  : (a, b) => -descendingComparator(a, b, orderBy));
 
-const stableSort = (array, comparator) =>{
+const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -60,11 +60,13 @@ const headCells = [
   { id: 'acbComplaintId', label: 'ONC-ACB Complaint ID' },
   { id: 'oncComplaintId', label: 'ONC Complaint ID' },
   { id: 'complainantTypeName', label: 'Complainant Type' },
-  { id: 'actions', label: 'Actions', doNotSort: true, },
+  { id: 'actions', label: 'Actions', doNotSort: true },
 ];
 
 const EnhancedTableHead = (props) => {
-  const { onRequestSort, order, orderBy, rowCount } = props;
+  const {
+    onRequestSort, order, orderBy,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -79,10 +81,12 @@ const EnhancedTableHead = (props) => {
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            { headCell.doNotSort ?
-              <Typography variant="srOnly">
-                {headCell.label}
-              </Typography>
+            { headCell.doNotSort
+              ? (
+                <Typography variant="srOnly">
+                  {headCell.label}
+                </Typography>
+              )
               : (
                 <TableSortLabel
                   active={orderBy === headCell.id}
@@ -96,20 +100,17 @@ const EnhancedTableHead = (props) => {
                     </Typography>
                   ) : null}
                 </TableSortLabel>
-              )
-            }
+              )}
           </TableCell>
         ))}
       </TableRow>
     </TableHead>
   );
-}
-;
+};
 EnhancedTableHead.propTypes = {
   onRequestSort: func.isRequired,
   order: oneOf(['asc', 'desc']).isRequired,
   orderBy: string.isRequired,
-  rowCount: number.isRequired,
 };
 
 function ChplComplaints(props) {
@@ -124,7 +125,7 @@ function ChplComplaints(props) {
 
   useEffect(() => {
     setComplaints(props.complaints);
-  }, [props.complaints]);
+  }, [props.complaints]); // eslint-disable-line react/destructuring-assignment
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -143,11 +144,11 @@ function ChplComplaints(props) {
 
   const handleDelete = (complaint) => {
     props.dispatch('delete', complaint);
-  }
+  };
 
   const handleEdit = (complaint) => {
     props.dispatch('edit', complaint);
-  }
+  };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, complaints.length - page * rowsPerPage);
 
@@ -174,34 +175,35 @@ function ChplComplaints(props) {
           />
           <TableBody>
             {stableSort(complaints, getComparator(order, orderBy))
-             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-             .map((complaint, index) => {
-               return (
-                 <TableRow key={complaint.id}>
-                   <TableCell>{complaint.acbName}</TableCell>
-                   <TableCell>
-                     <Chip color="primary" label={complaint.complaintStatusTypeName} variant={complaint.complaintStatusTypeName === 'Open' ? 'outlined' : 'default'}/>
-                   </TableCell>
-                   <TableCell>{complaint.receivedDate}</TableCell>
-                   <TableCell>{complaint.acbComplaintId}</TableCell>
-                   <TableCell>{complaint.oncComplaintId}</TableCell>
-                   <TableCell>{complaint.complainantTypeName}</TableCell>
-                   <TableCell>
-                     <ButtonGroup
-                       color="primary">
-                       <Button
-                         onClick={() => handleEdit(complaint)}
-                       >Edit
-                       </Button>
-                       <Button
-                         onClick={() => handleDelete(complaint)}
-                       >Delete
-                       </Button>
-                     </ButtonGroup>
-                   </TableCell>
-                 </TableRow>
-               );
-             })}
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((complaint) => (
+                <TableRow key={complaint.id}>
+                  <TableCell>{complaint.acbName}</TableCell>
+                  <TableCell>
+                    <Chip color="primary" label={complaint.complaintStatusTypeName} variant={complaint.complaintStatusTypeName === 'Open' ? 'outlined' : 'default'} />
+                  </TableCell>
+                  <TableCell>{complaint.receivedDate}</TableCell>
+                  <TableCell>{complaint.acbComplaintId}</TableCell>
+                  <TableCell>{complaint.oncComplaintId}</TableCell>
+                  <TableCell>{complaint.complainantTypeName}</TableCell>
+                  <TableCell>
+                    <ButtonGroup
+                      color="primary"
+                    >
+                      <Button
+                        onClick={() => handleEdit(complaint)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(complaint)}
+                      >
+                        Delete
+                      </Button>
+                    </ButtonGroup>
+                  </TableCell>
+                </TableRow>
+              ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 33 * emptyRows }}>
                 <TableCell colSpan={headCells.length} />
