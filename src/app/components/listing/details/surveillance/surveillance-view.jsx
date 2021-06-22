@@ -13,9 +13,8 @@ import {
 } from '@material-ui/core';
 
 import { ChplTooltip } from '../../../util/chpl-tooltip';
-/* eslint-disable import/no-cycle */
+// eslint-disable-next-line import/no-cycle
 import { getAngularService } from '.';
-/* eslint-enable import/no-cycle */
 import ChplCriterionTitle from '../../../util/criterion-title';
 import ChplSurveillanceNonconformity from './nonconformity/nonconformity-view';
 import surveillancePropType from '../../../../shared/prop-types/surveillance';
