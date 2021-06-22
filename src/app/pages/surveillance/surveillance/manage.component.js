@@ -5,10 +5,11 @@ export const SurveillanceManagementComponent = {
     listings: '<',
   },
   controller: class SurveillanceManagementComponent {
-    constructor ($log, $stateParams, networkService, utilService) {
+    constructor($log, $stateParams, authService, networkService, utilService) {
       'ngInject';
       this.$log = $log;
       this.$stateParams = $stateParams;
+      this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.certificationStatus = utilService.certificationStatus;
       this.filterItems = {
@@ -35,7 +36,7 @@ export const SurveillanceManagementComponent = {
       this.activeTab = 0;
     }
 
-    $onInit () {
+    $onInit() {
       if (this.$stateParams.listingId && this.$stateParams.chplProductNumber) {
         this.load({
           id: this.$stateParams.listingId,
@@ -45,7 +46,7 @@ export const SurveillanceManagementComponent = {
       }
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.allowedAcbs && changes.allowedAcbs.currentValue && changes.allowedAcbs.currentValue.acbs) {
         this.allowedAcbs = angular.copy(changes.allowedAcbs.currentValue.acbs);
       }
@@ -72,7 +73,7 @@ export const SurveillanceManagementComponent = {
       }
     }
 
-    parse () {
+    parse() {
       this.availableListings = this.listings
         .filter(l => this.hasPermission(l))
         .map(l => {
@@ -89,15 +90,15 @@ export const SurveillanceManagementComponent = {
         });
     }
 
-    hasPermission (listing) {
+    hasPermission(listing) {
       return this.allowedAcbs.reduce((acc, acb) => acc || acb.name === listing.acb, false);
     }
 
-    isLoaded (listing) {
+    isLoaded(listing) {
       return this.tabs.reduce((acc, tab) => acc || tab.id === listing.id, false);
     }
 
-    load (listing) {
+    load(listing) {
       if (!this.isLoaded(listing)) {
         this.tabs.push({
           id: listing.id,
@@ -113,7 +114,7 @@ export const SurveillanceManagementComponent = {
       }
     }
 
-    takeTabAction (action, data, $event) {
+    takeTabAction(action, data, $event) {
       if (action === 'close') {
         this.tabs = this.tabs.filter(t => t.id !== data.id);
       }
@@ -123,7 +124,7 @@ export const SurveillanceManagementComponent = {
       }
     }
 
-    registerClearFilter (handler) {
+    registerClearFilter(handler) {
       let that = this;
       this.clearFilterHs.push(handler);
       let removeHandler = () => {
@@ -132,14 +133,14 @@ export const SurveillanceManagementComponent = {
       return removeHandler;
     }
 
-    triggerClearFilters () {
+    triggerClearFilters() {
       this.clearFilterHs.forEach(h => h());
       if (this.tableSearchHs && this.tableSearchHs[0]) {
         this.tableSearchHs[0]();
       }
     }
 
-    registerSearch (handler) {
+    registerSearch(handler) {
       let that = this;
       this.tableSearchHs = [handler];
       let removeHandler = () => {
@@ -148,7 +149,7 @@ export const SurveillanceManagementComponent = {
       return removeHandler;
     }
 
-    isCategoryChanged () {
+    isCategoryChanged() {
       let changed = false;
       angular.forEach(this.categoryChanged, v => changed = changed || v);
       return changed;

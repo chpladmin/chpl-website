@@ -3,6 +3,7 @@ import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplEllipsis } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
+import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
@@ -30,6 +31,7 @@ angular
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
+  .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance));
