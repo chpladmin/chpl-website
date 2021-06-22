@@ -1,7 +1,7 @@
 class EnvironmentIndicatorComponent {
   constructor() {
     this.elements = {
-      nonprod: 'chpl-non-prod-indicator-bridge',
+      nonprod: '#non-prod-indicator',
     };
   }
 
