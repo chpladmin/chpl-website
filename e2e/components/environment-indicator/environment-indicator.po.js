@@ -1,5 +1,5 @@
 class EnvironmentIndicatorComponent {
-  constructor () {
+  constructor() {
     this.elements = {
       nonprod: 'chpl-non-prod-indicator-bridge',
     };
@@ -8,7 +8,6 @@ class EnvironmentIndicatorComponent {
   get nonProdIndicator() {
     return $(this.elements.nonprod);
   }
-
 }
 
 export default EnvironmentIndicatorComponent;
