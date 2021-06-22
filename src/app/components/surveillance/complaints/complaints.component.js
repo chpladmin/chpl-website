@@ -21,7 +21,7 @@ const SurveillanceComplaintsComponent = {
       this.filename = `Complaints_${new Date().getTime()}.csv`;
       this.restoreStateHs = [];
       this.complaintListType = 'ALL';
-      this.pageSize = 50;
+      this.pageSize = 600;
       this.filterItems = {
         acbItems: [],
         complaintStatusTypeItems: [],

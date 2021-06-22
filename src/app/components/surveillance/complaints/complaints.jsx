@@ -100,8 +100,8 @@ const EnhancedTableHead = (props) => {
       </TableRow>
     </TableHead>
   );
-};
-
+}
+;
 EnhancedTableHead.propTypes = {
   onRequestSort: func.isRequired,
   order: oneOf(['asc', 'desc']).isRequired,
@@ -156,7 +156,7 @@ function ChplComplaints(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <TableContainer component={Paper}>
+      <TableContainer className={classes.container} component={Paper}>
         <Table
           size="small"
           aria-label="Complaints table"
@@ -207,7 +207,7 @@ function ChplComplaints(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 25, 50, { value: complaints.length, label: 'All' }]}
         component="div"
         count={complaints.length}
         rowsPerPage={rowsPerPage}
