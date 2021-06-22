@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
   Chip,
   Paper,
   Table,
@@ -76,9 +77,9 @@ const EnhancedTableHead = (props) => {
             sortDirection={orderBy === headCell.id ? order : false}
           >
             { headCell.doNotSort ?
-              <>
+              <Typography variant="srOnly">
                 {headCell.label}
-              </>
+              </Typography>
               : (
                 <TableSortLabel
                   active={orderBy === headCell.id}
@@ -137,6 +138,14 @@ function ChplComplaints(props) {
     setPage(0);
   };
 
+  const handleDelete = (complaint) => {
+    props.dispatch('delete', complaint);
+  }
+
+  const handleEdit = (complaint) => {
+    props.dispatch('edit', complaint);
+  }
+
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, complaints.length - page * rowsPerPage);
 
   if (!complaints || complaints.length === 0) {
@@ -173,7 +182,19 @@ function ChplComplaints(props) {
                    <TableCell>{complaint.acbComplaintId}</TableCell>
                    <TableCell>{complaint.oncComplaintId}</TableCell>
                    <TableCell>{complaint.complainantTypeName}</TableCell>
-                   <TableCell><Button>Act</Button></TableCell>
+                   <TableCell>
+                     <ButtonGroup
+                       color="primary">
+                       <Button
+                         onClick={() => handleEdit(complaint)}
+                       >Edit
+                       </Button>
+                       <Button
+                         onClick={() => handleDelete(complaint)}
+                       >Delete
+                       </Button>
+                     </ButtonGroup>
+                   </TableCell>
                  </TableRow>
                );
              })}
@@ -202,4 +223,5 @@ export default ChplComplaints;
 
 ChplComplaints.propTypes = {
   complaints: arrayOf(complaintPropType).isRequired,
+  dispatch: func.isRequired,
 };

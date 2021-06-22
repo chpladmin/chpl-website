@@ -117,87 +117,8 @@
     </div>
     <chpl-complaints-bridge
       ng-if="$ctrl.complaints"
-      complaints="$ctrl.displayedComplaints"></chpl-complaints-bridge>
-    <div class="flex-container">
-      <div class="flex-item table-responsive">
-        <table class="table table-condensed" id="complaints-table">
-          <thead>
-            <tr>
-              <td colspan="7" class="text-center">
-                <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="col" class="search-header" st-sort="acbName" st-skip-natural="true">ONC-ACB</th>
-              <th scope="col" class="search-header" st-sort="complaintStatusTypeName" st-skip-natural="true">Status</th>
-              <th scope="col" class="search-header" st-sort="receivedDate" st-skip-natural="true" st-sort-default="reverse">Received Date</th>
-              <th scope="col" class="search-header" st-sort="acbComplaintId" st-skip-natural="true">ONC-ACB Complaint Id</th>
-              <th scope="col" class="search-header" st-sort="oncComplaintId" st-skip-natural="true">ONC Complaint Id</th>
-              <th scope="col" class="search-header" st-sort="complainantTypeName" st-skip-natural="true">Complainant Type</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="7" class="text-center">
-                <div class="text-right">
-                  <label for="pageSizeTop" class="sr-only">Show how many results</label>
-                  Showing up to&nbsp;
-                  <select ng-model="$ctrl.pageSize" id="pageSizeTop"
-                          ng-options="v as v for v in [50,100,250,1000,5000]">
-                  </select>
-                  &nbsp;results per page
-                </div>
-                <div st-pagination="" st-items-by-page="$ctrl.pageSize" st-displayed-pages="10"></div>
-              </td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr ng-repeat="complaint in $ctrl.displayedComplaints">
-              <td>{{ complaint.certificationBody.name }}</td>
-              <td>
-                <span class="badge" ng-class="{ 'badge-success': complaint.complaintStatusTypeName === 'Open' }">
-                  {{ complaint.complaintStatusTypeName }}
-                </span>
-              </td>
-              <td>{{ complaint.formattedReceivedDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td>{{ complaint.acbComplaintId }}</td>
-              <td>{{ complaint.oncComplaintId }}</td>
-              <td>
-                {{ complaint.complainantType.name }}
-                <span ng-if="complaint.complainantType.name === 'Other - [Please Describe]'">{{ complaint.complainantTypeOther }}</span>
-              </td>
-              <td>
-                <button class="btn btn-link"
-                        ng-click="$ctrl.selectComplaint(complaint)"
-                        ng-if="$ctrl.displayEdit"
-                        title="Edit Complaint"
-                        id="edit-complaint-{{ complaint.id }}">
-                  <i class="fa fa-edit"></i><span class="sr-only">Edit complaint</span></button>
-                <button class="btn btn-danger btn-link"
-                        title="Delete Complaint"
-                        id="delete-complaint-{{ complaint.id }}"
-                        ng-click="$ctrl.deleteComplaint(complaint)"
-                        ng-if="$ctrl.displayDelete"
-                        confirm="Are you sure you wish to delete this complaint?"
-                        confirm-ok="Delete Complaint"
-                        confirm-cancel="Cancel"
-                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}">
-                  <span class="text-danger"><i class="fa fa-trash"></i><span class="sr-only"> Delete</span></span>
-                </button>
-                <button class="btn btn-link"
-                        ng-click="$ctrl.selectComplaint(complaint)"
-                        ng-if="!$ctrl.displayEdit"
-                        title="View Complaint"
-                        id="view-complaint-{{ complaint.id }}">
-                  <i class="fa fa-eye"></i><span class="sr-only">View complaint</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      complaints="$ctrl.displayedComplaints"
+      dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
   </div>
   <div class="flex-container" ng-if="$ctrl.isEditing">
     <div class="flex-item">

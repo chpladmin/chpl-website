@@ -28,6 +28,7 @@ const SurveillanceComplaintsComponent = {
         complainantTypeItems: [],
       };
       this.hasChanges = {};
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onInit() {
@@ -56,6 +57,18 @@ const SurveillanceComplaintsComponent = {
         that.isEditing = false;
         that.refreshComplaints();
       });
+    }
+
+    handleDispatch(action, payload) {
+      switch (action) {
+        case 'delete':
+          this.deleteComplaint(payload);
+          break;
+        case 'edit':
+          this.selectComplaint(payload);
+          break;
+          // no default
+      }
     }
 
     selectComplaint(complaint) {
