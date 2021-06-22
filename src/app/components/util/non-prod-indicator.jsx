@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
 
   NavBarTextBox: {
     minHeight: '25px',
+    backgroundColor: '#c44f65',
+    width: '100%',
+    color: '#ffffff',
   },
 }));
 
@@ -42,35 +45,33 @@ function ChplNonProdIndicator() {
       <>
         { !production
           && (
-            <AppBar color="primary" className={classes.NavBarCallout}>
-              <Toolbar className={classes.NavBarTextBox}>
-                <Typography variant="body2" noWrap>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                  <b> | </b>
-                  THIS IS NOT THE PRODUCTION SITE
-                </Typography>
-              </Toolbar>
-            </AppBar>
+            <Toolbar className={classes.NavBarTextBox}>
+              <Typography variant="body2" noWrap>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+                <b> | </b>
+                THIS IS NOT THE PRODUCTION SITE
+              </Typography>
+            </Toolbar>
           )}
       </>
     </ThemeProvider>
