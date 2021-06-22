@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AppBar, Toolbar } from '@material-ui/core';
+import { Toolbar } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
@@ -47,7 +47,7 @@ function ChplNonProdIndicator() {
       <>
         { !production
           && (
-            <Toolbar className={classes.NavBarTextBox}>
+            <Toolbar className={classes.NavBarTextBox} id="non-prod-indicator">
               <Typography variant="body2" noWrap>
                 THIS IS NOT THE PRODUCTION SITE
                 <b> | </b>
