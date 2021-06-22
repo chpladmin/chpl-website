@@ -47,7 +47,6 @@ function ChplSurveillanceView({ surveillance }) {
   const DateUtil = getAngularService('DateUtil');
   const [currentSurveillance] = useState(surveillance);
   const [surveillanceResults, setSurveillanceResults] = useState([]);
-  const dateFormat = 'MMM d, y';
 
   const classes = useStyles();
 
@@ -79,7 +78,7 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.timestampToString(currentSurveillance.startDate, dateFormat) }</TableCell>
+              <TableCell>{ DateUtil.getDisplayDateFormat(currentSurveillance.startDate) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -90,7 +89,7 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.timestampToString(currentSurveillance.endDate, dateFormat) }</TableCell>
+              <TableCell>{ DateUtil.getDisplayDateFormat(currentSurveillance.endDate) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">

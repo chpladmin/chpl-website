@@ -50,7 +50,6 @@ function ChplNonconformityView(props) {
   const [currentSurveillance] = useState(props.surveillance);
   const [currentRequirement] = useState(props.requirement);
   const [currentNonconformity] = useState(props.nonconformity);
-  const dateFormat = 'MMM d, y';
   /* eslint-enable react/destructuring-assignment */
 
   const classes = useStyles();
@@ -96,7 +95,7 @@ function ChplNonconformityView(props) {
                         />
                       </ChplTooltip>
                     </TableCell>
-                    <TableCell>{ DateUtil.timestampToString(currentNonconformity.dateOfDetermination, dateFormat) }</TableCell>
+                    <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.dateOfDetermination) }</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th" scope="row">
@@ -107,7 +106,7 @@ function ChplNonconformityView(props) {
                         />
                       </ChplTooltip>
                     </TableCell>
-                    <TableCell>{ DateUtil.timestampToString(currentNonconformity.capApprovalDate, dateFormat) }</TableCell>
+                    <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capApprovalDate) }</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th" scope="row">
@@ -118,7 +117,7 @@ function ChplNonconformityView(props) {
                         />
                       </ChplTooltip>
                     </TableCell>
-                    <TableCell>{ DateUtil.timestampToString(currentNonconformity.capStartDate, dateFormat) }</TableCell>
+                    <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capStartDate) }</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th" scope="row">
@@ -129,7 +128,7 @@ function ChplNonconformityView(props) {
                         />
                       </ChplTooltip>
                     </TableCell>
-                    <TableCell>{ DateUtil.timestampToString(currentNonconformity.capMustCompleteDate, dateFormat) }</TableCell>
+                    <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capMustCompleteDate) }</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th" scope="row">
@@ -140,7 +139,7 @@ function ChplNonconformityView(props) {
                         />
                       </ChplTooltip>
                     </TableCell>
-                    <TableCell>{ DateUtil.timestampToString(currentNonconformity.capEndDate, dateFormat) }</TableCell>
+                    <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capEndDate) }</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell component="th" scope="row">
