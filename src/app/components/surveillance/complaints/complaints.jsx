@@ -22,6 +22,9 @@ import theme from '../../../themes/theme';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
+  container: {
+    maxHeight: '40vh',
+  },
 }));
 
 const descendingComparator = (a, b, orderBy) => {
@@ -158,6 +161,7 @@ function ChplComplaints(props) {
     <ThemeProvider theme={theme}>
       <TableContainer className={classes.container} component={Paper}>
         <Table
+          stickyHeader
           size="small"
           aria-label="Complaints table"
         >
