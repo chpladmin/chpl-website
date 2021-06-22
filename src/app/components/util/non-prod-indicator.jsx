@@ -31,6 +31,8 @@ function ChplNonProdIndicator() {
     networkService.getSystemStatus()
       .then((response) => {
         let headerValue = '';
+        // Local environments send the header key in all lower case
+        // but other environments send the header key capitalized
         if (response.headers('Environment')) {
           headerValue = response.headers('Environment');
         } else if (response.headers('environment')) {
