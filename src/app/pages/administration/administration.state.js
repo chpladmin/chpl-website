@@ -37,6 +37,21 @@ const getResources = ($q, networkService) => {
     .then((response) => response);
 };
 
+/** @ngInject */
+function returnTo($transition$) {
+  if ($transition$.redirectedFrom() != null) {
+    return $transition$.redirectedFrom().targetState();
+  }
+
+  const $state = $transition$.router.stateService;
+
+  if ($transition$.from().name !== '') {
+    return $state.target($transition$.from(), $transition$.params('from'));
+  }
+
+  return $state.target('search');
+}
+
 const states = {
   'change-request': [
     {
@@ -69,7 +84,10 @@ const states = {
           return [];
         },
       },
-      data: { title: 'CHPL Administration - Change Requests' },
+      data: {
+        title: 'CHPL Administration - Change Requests',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      },
     },
   ],
   'enhanced-upload': [
@@ -84,7 +102,10 @@ const states = {
           return networkService.getPendingListingByIdBeta($transition$.params().id);
         },
       },
-      data: { title: 'CHPL Administration - Confirm Listing' },
+      data: {
+        title: 'CHPL Administration - Confirm Listing',
+        roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+      },
     },
   ],
   base: [
@@ -116,7 +137,10 @@ const states = {
           return [];
         },
       },
-      data: { title: 'CHPL Administration - Announcements' },
+      data: {
+        title: 'CHPL Administration - Announcements',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+      },
     }, {
       name: 'administration.api-keys',
       url: '/api-keys',
@@ -131,7 +155,10 @@ const states = {
           return [];
         },
       },
-      data: { title: 'CHPL Administration - API Keys' },
+      data: {
+        title: 'CHPL Administration - API Keys',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      },
     }, {
       name: 'administration.change-requests',
       url: '/change-requests',
@@ -141,7 +168,10 @@ const states = {
       name: 'administration.cms',
       url: '/cms',
       component: 'chplCms',
-      data: { title: 'CHPL Administration - CMS' },
+      data: {
+        title: 'CHPL Administration - CMS',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'],
+      },
     }, {
       name: 'administration.confirm',
       abstract: true,
@@ -163,7 +193,10 @@ const states = {
           return getResources($q, networkService);
         },
       },
-      data: { title: 'CHPL Administration - Confirm Listings' },
+      data: {
+        title: 'CHPL Administration - Confirm Listings',
+        roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+      },
     }, {
       name: 'administration.confirm.listings.listing',
       url: '/{id}/confirm',
@@ -183,7 +216,10 @@ const states = {
           return [];
         },
       },
-      data: { title: 'CHPL Administration - Fuzzy Matching' },
+      data: {
+        title: 'CHPL Administration - Fuzzy Matching',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+      },
     }, {
       name: 'administration.jobs',
       abstract: true,
@@ -224,12 +260,18 @@ const states = {
           return [];
         },
       },
-      data: { title: 'CHPL Administration - Jobs - Scheduled' },
+      data: {
+        title: 'CHPL Administration - Jobs - Scheduled',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+      },
     }, {
       name: 'administration.upload',
       url: '/upload',
       component: 'chplUpload',
-      data: { title: 'CHPL Administration - Upload' },
+      data: {
+        title: 'CHPL Administration - Upload',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      },
     }, {
       name: 'administration.svaps',
       url: '/svaps',
@@ -249,7 +291,16 @@ const states = {
           return networkService.getCertificationCriteriaForSvap();
         },
       },
-      data: { title: 'CHPL Administration - SVAPs' },
+      data: {
+        title: 'CHPL Administration - SVAPs',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+      },
+    }, {
+      name: 'login',
+      url: '/login',
+      component: 'chplLoginBridge',
+      resolve: { returnTo },
+      data: { title: 'CHPL Login' },
     },
   ],
 };

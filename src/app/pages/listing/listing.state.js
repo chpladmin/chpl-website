@@ -55,7 +55,10 @@ let states = [{
       });
     },
   },
-  data: { title: 'CHPL Listing Details - Edit' },
+  data: {
+    title: 'CHPL Listing Details - Edit',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
 },{
   name: 'product',
   url: '/product/{id}',
