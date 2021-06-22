@@ -8,4 +8,4 @@ const contact = shape({
   title: string,
 });
 
-export default { contact };
+export default contact;
