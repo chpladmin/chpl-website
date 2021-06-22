@@ -42,7 +42,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Edit',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'],
     },
   }, {
     name: 'organizations.developers.developer.split',

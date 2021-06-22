@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, shape } from 'prop-types'; // eslint-disable-line import/no-extraneous-dependencies
+import { func, shape } from 'prop-types';
 import {
   Button,
   Container,

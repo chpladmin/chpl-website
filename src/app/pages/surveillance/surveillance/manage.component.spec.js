@@ -9,10 +9,10 @@
         {
           acb: 'one', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
           openSurveillanceCount: 10, closedSurveillanceCount: 3, openSurveillanceNonConformityCount: 3, closedSurveillanceNonConformityCount: 5, surveillanceDates: 'something',
-        },{
+        }, {
           acb: 'two', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
           openSurveillanceCount: 10, closedSurveillanceCount: 3, openSurveillanceNonConformityCount: 3, closedSurveillanceNonConformityCount: 5, surveillanceDates: 'something',
-        },{
+        }, {
           acb: 'three', developer: 'developer', product: 'product', version: 'version', chplProductNumber: 'cpn', edition: '2015',
           openSurveillanceCount: 10, closedSurveillanceCount: 3, openSurveillanceNonConformityCount: 3, closedSurveillanceNonConformityCount: 5, surveillanceDates: 'something',
         },
@@ -22,6 +22,7 @@
 
     beforeEach(() => {
       angular.mock.module('chpl.mock', 'chpl.surveillance', $provide => {
+        $provide.factory('chplSurveillanceActivityReportingDateSelectorBridgeDirective', () => ({}));
         $provide.decorator('networkService', $delegate => {
           $delegate.getListing = jasmine.createSpy('getListing');
           $delegate.search = jasmine.createSpy('search');
@@ -39,8 +40,8 @@
         networkService.search.and.returnValue($q.when([]));
 
         scope = $rootScope.$new();
-        scope.acbs = {acbs: mock.acbs};
-        scope.listings = {results: mock.listings};
+        scope.acbs = { acbs: mock.acbs };
+        scope.listings = { results: mock.listings };
 
         el = angular.element('<chpl-surveillance-management allowed-acbs="acbs" listings="listings"></chpl-surveillance-management>');
 
@@ -71,12 +72,12 @@
 
       describe('when prepping data', () => {
         it('should filter out listings without permission', () => {
-          ctrl.allowedAcbs = [{name: 'two'}];
+          ctrl.allowedAcbs = [{ name: 'two' }];
           expect(mock.listings.filter(l => ctrl.hasPermission(l))).toEqual([mock.listings[1]]);
         });
 
         it('should format data for display / search', () => {
-          ctrl.allowedAcbs = [{name: 'one'}];
+          ctrl.allowedAcbs = [{ name: 'one' }];
           ctrl.parse();
           let expected = [Object.assign({}, mock.listings[0], {
             mainSearch: 'developer|product|version|cpn',
