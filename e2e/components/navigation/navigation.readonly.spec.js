@@ -18,7 +18,7 @@ describe('when logged in', () => {
     login.logOut();
   });
 
-  describe('as an ACB', () => {
+  describe('as ROLE_ACB', () => {
     beforeEach(() => {
       login.logIn('acb');
     });
@@ -40,7 +40,7 @@ describe('when logged in', () => {
     });
   });
 
-  describe('as an ONC', () => {
+  describe('as ROLE_ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
     });
@@ -79,7 +79,7 @@ describe('when logged in', () => {
       });
     });
   });
-  describe('as an ONC-STAFF', () => {
+  describe('as ROLE_ONC_STAFF', () => {
     beforeEach(() => {
       login.logIn('oncstaff');
     });
@@ -97,7 +97,7 @@ describe('when logged in', () => {
       });
     });
   });
-  describe('as an Admin', () => {
+  describe('as ROLE_ADMIN', () => {
     beforeEach(() => {
       login.logIn('admin');
     });
